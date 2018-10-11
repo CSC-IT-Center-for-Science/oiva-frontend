@@ -17,7 +17,7 @@ const Lupa = (props) => {
   let pdfLink = (
     <Th alignItems="center" className="lupa-pdf">
       <img src={pdf} alt="pdf" title="pdf"/>
-      <a href={`${API_BASE_URL}/pdf/${diaarinumero}`} target="_blank">
+      <a href={`${API_BASE_URL}/pdf/esikatsele/${diaarinumero}`} target="_blank">
         <Moment format="DD.MM.YYYY">{alkupvm}</Moment>
       </a>
     </Th>

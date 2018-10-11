@@ -146,7 +146,7 @@ class MuutospyyntoWizardToimialue extends Component {
 
         {valitutMaakunnat.length > 0 &&
           <div>
-            <h4>Valitut maakunnat</h4>
+            <h4>Maakunnat</h4>
             {valitutMaakunnat.map(alue => {
               const { label, type } = alue
               const customClass = type === MUUTOS_TYPES.ADDITION ? 'is-added' : type === MUUTOS_TYPES.REMOVAL ? 'is-removed' : 'is-in-lupa'
@@ -159,7 +159,7 @@ class MuutospyyntoWizardToimialue extends Component {
 
         {valitutKunnat.length > 0 &&
           <div>
-            <h4>Valitut kunnat</h4>
+            <h4>Kunnat</h4>
             {valitutKunnat.map(alue => {
               const { label, type } = alue
               const customClass = type === MUUTOS_TYPES.ADDITION ? 'is-added' : type === MUUTOS_TYPES.REMOVAL ? 'is-removed' : 'is-in-lupa'
@@ -208,7 +208,7 @@ class MuutospyyntoWizardToimialue extends Component {
             />
             <label htmlFor="valtakunnallinencheckbox"></label>
           </Checkbox>
-          <Nimi>Valtakunnallinen</Nimi>
+          <Nimi>Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta Ahvenanmaan maakuntaa lukuunottamatta koko Suomen osaamis- ja koulutustarpeeseen.</Nimi>
         </CheckboxRowContainer>
       </div>
     )

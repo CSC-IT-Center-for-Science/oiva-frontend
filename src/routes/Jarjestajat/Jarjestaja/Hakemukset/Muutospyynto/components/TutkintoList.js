@@ -62,11 +62,15 @@ class TutkintoList extends Component {
   }
 
   render() {
-    const { nimi, koulutukset, maaraykset } = this.props
+    const { nimi, maaraykset } = this.props
     const alaKoodiArvo = this.props.koodiarvo
     const { editValues } = this.props
-    let { fields } = this.props
+    let { fields, koulutukset } = this.props
     let muutokset = []
+
+    koulutukset = _.sortBy(koulutukset, k => {
+      return k.koodiArvo
+    })
 
     if (editValues) {
       _.forEach(editValues, value => {
