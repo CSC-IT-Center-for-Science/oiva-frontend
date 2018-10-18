@@ -41,12 +41,13 @@ class Header extends Component {
             {/*<HeaderLinks>*/}
 
               {/*<LinkItem to="/sv" className="text-small has-separator">På svenska</LinkItem>*/}
+            {/*
               {(sessionStorage.getItem('role')!==ROLE_ESITTELIJA && sessionStorage.getItem('role')!==ROLE_KAYTTAJA)
               ? (<LinkItem to="/cas-auth" className="text-small">Kirjaudu sisään</LinkItem>) : null}
 
               {(sessionStorage.getItem('role')===ROLE_ESITTELIJA || sessionStorage.getItem('role')===ROLE_KAYTTAJA)
               ? (<LinkItem to="/cas-logout" className="text-small">Kirjaudu ulos ({sessionStorage.getItem('username')})</LinkItem>) : null}
-
+            */}
             {/*</HeaderLinks>*/}
           </HeaderBarInner>
         </HeaderBar>
