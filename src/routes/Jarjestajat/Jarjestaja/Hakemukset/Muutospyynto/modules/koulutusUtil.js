@@ -269,8 +269,13 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
 }
 
 export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isInLupa, value, currentObj) {
-  const { koodi, nimi, maaraysId, kohde, maaraystyyppi } = currentObj
+  const { nimi, kohde, maaraystyyppi } = currentObj
+  let { koodi } = currentObj
   const koodistoUri = "kieli"
+
+  if (!koodi && currentObj.koodiarvo) {
+    koodi = currentObj.koodiarvo
+  }
 
   const { checked } = event.target
 
@@ -287,7 +292,6 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
         koodiarvo: koodi,
         koodisto: koodistoUri,
         nimi,
-        // maaraysId,
         kohde,
         maaraystyyppi,
         value,
@@ -306,7 +310,6 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
         koodi,
         koodisto: koodistoUri,
         nimi,
-        // maaraysId,
         value,
         kohde,
         maaraystyyppi,

@@ -7,6 +7,7 @@ import { BreadcrumbsProvider, Breadcrumbs } from 'react-breadcrumbs-dynamic'
 import 'modules/polyfills'
 import store from 'store'
 import Header from 'modules/Header/containers/HeaderContainer'
+import Footer from 'modules/Footer/containers/FooterContainer'
 import Routes from 'routes'
 import { COLORS, APP_WIDTH } from './modules/styles'
 import { AppContainer, BreadcrumbsContainer } from './modules/elements'
@@ -32,6 +33,7 @@ ReactDOM.render(
             </BreadcrumbsContainer>
             <Routes />
           </AppContainer>
+          <Footer maxWidth={`${APP_WIDTH}`}/>
         </div>
       </BrowserRouter>
     </BreadcrumbsProvider>

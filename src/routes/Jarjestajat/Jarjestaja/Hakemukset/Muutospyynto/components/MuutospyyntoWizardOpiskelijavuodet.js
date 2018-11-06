@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import styled from 'styled-components'
@@ -33,9 +34,50 @@ const Yhteensa = styled.div`
   margin-right:10px;
 `
 
-
+const Pakollinen = styled.h4`
+  background-color: #FFC;
+  padding: 3px;
+`
 
 class MuutospyyntoWizardOpiskelijavuodet extends Component {
+  componentDidUpdate() {
+    const fixedHeaderHeight = 100
+    const marginaali = 10
+    const { opiskelijavuosimuutoksetValue, muutmuutoksetValue } = this.props
+
+    const pakollisetVuosikentat = [
+      {'koodiarvo': '2', 'ref': this.refs.opiskelijavuodetVaativatuki},
+      {'koodiarvo': '4', 'ref': this.refs.opiskelijavuodetSisaoppilaitos},
+    ]
+
+    pakollisetVuosikentat.some(kentta => {
+      // Jos lupaan on lisätty vähimmäisvuodet vaativa tehtävä, kentän arvo on tyhjä 
+      // eikä kenttä ole näkyvissä, skrollaa kentän luo
+      if (_.find(muutmuutoksetValue, obj => { 
+          return obj.koodiarvo === kentta.koodiarvo && obj.type === MUUTOS_TYPES.ADDITION 
+        }) 
+        && (!opiskelijavuosimuutoksetValue 
+          || !_.find(opiskelijavuosimuutoksetValue, obj => { return obj.koodiarvo === kentta.koodiarvo}) 
+          || _.find(opiskelijavuosimuutoksetValue, obj => { return obj.koodiarvo === kentta.koodiarvo && !obj.arvo }))) {
+        const elementti = ReactDOM.findDOMNode(kentta.ref)
+        if (elementti) {
+          // Skrollaa elementti ensin sivun yläreunaan ja siirrä sitten alaspäin,
+          // jotta elementti ei jää kiinteän headerin taakse
+          elementti.scrollIntoView()
+          const scrolledY = window.scrollY
+          if (scrolledY) {
+            window.scroll(0, scrolledY-fixedHeaderHeight-marginaali)
+          }
+        }
+        // Skrollaa vain yhden kentän luo
+        return true
+      }
+      return false
+    })
+       
+  }
+
+
   render() {
     const { lupa, opiskelijavuosimuutoksetValue, muutmuutoksetValue } = this.props
     const { kohteet } = lupa
@@ -99,7 +141,7 @@ class MuutospyyntoWizardOpiskelijavuodet extends Component {
     let muutosVaativa = 0
 
     if(haettuVaativaObj) {
-        muutosVaativa = (Number.parseInt(haettuVaativaObj.arvo) - ((vaativaArvoInitial) ? vaativaArvoInitial : 0))
+        muutosVaativa = (Number.parseInt(haettuVaativaObj.arvo, 10) - ((vaativaArvoInitial) ? vaativaArvoInitial : 0))
         if(muutosVaativa > 0) muutosVaativa = "+"+muutosVaativa
     }
 
@@ -107,7 +149,7 @@ class MuutospyyntoWizardOpiskelijavuodet extends Component {
     let muutosSisaoppilaitos = 0
 
     if(haettuSisaoppilaitosObj) {
-        muutosSisaoppilaitos = (Number.parseInt(haettuSisaoppilaitosObj.arvo) - ((sisaoppilaitosArvoInitial) ? sisaoppilaitosArvoInitial : 0))
+        muutosSisaoppilaitos = (Number.parseInt(haettuSisaoppilaitosObj.arvo, 10) - ((sisaoppilaitosArvoInitial) ? sisaoppilaitosArvoInitial : 0))
         if(muutosSisaoppilaitos > 0) muutosSisaoppilaitos = "+"+muutosSisaoppilaitos
     }
 
@@ -142,7 +184,7 @@ class MuutospyyntoWizardOpiskelijavuodet extends Component {
 
         {showVaativa ?
         <Row>
-          <h4>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_OPISKELIJAVUODET.VAATIVA_TUKI.FI}</h4>
+          <Pakollinen ref="opiskelijavuodetVaativatuki">{MUUTOS_WIZARD_TEKSTIT.MUUTOS_OPISKELIJAVUODET.VAATIVA_TUKI.FI}</Pakollinen>
           <Opiskelijavuosi>
             <Voimassaoleva>NYKYINEN</Voimassaoleva>
             <HaettuMuutos>HAETTAVA</HaettuMuutos>
@@ -169,7 +211,7 @@ class MuutospyyntoWizardOpiskelijavuodet extends Component {
 
         {showSisaoppilaitos ?
         <Row>
-          <h4>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_OPISKELIJAVUODET.SISAOPPILAITOS.FI}</h4>
+          <Pakollinen ref="opiskelijavuodetSisaoppilaitos">{MUUTOS_WIZARD_TEKSTIT.MUUTOS_OPISKELIJAVUODET.SISAOPPILAITOS.FI}</Pakollinen>
           <Opiskelijavuosi>
             <Voimassaoleva>NYKYINEN</Voimassaoleva>
             <HaettuMuutos>HAETTAVA</HaettuMuutos>

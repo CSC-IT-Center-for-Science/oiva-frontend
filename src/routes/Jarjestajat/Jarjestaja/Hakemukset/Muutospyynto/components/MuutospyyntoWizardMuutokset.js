@@ -12,6 +12,7 @@ import { Button, SubtleButton, Kohde, WizardBottom, Container } from "./Muutospy
 import styled from 'styled-components'
 import { FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
 import { hasFormChanges } from "../modules/muutospyyntoUtil"
+import { MUUT_KEYS } from "../modules/constants"
 
 const Otsikko = styled.div`
   display: flex;
@@ -27,16 +28,29 @@ class MuutospyyntoWizardMuutokset extends Component {
     }
   }
 
+  componentWillMount() {
+    // MuutospyyntoWIzardTutkinnot ja MuutospyyntoWizardTutkintokielet tarvitsevat listan tutkinnoista
+    if (!this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) {
+      this.props.fetchKoulutusalat()
+        .then(() => {
+          if (this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) {
+            this.props.fetchKoulutuksetAll()
+            this.props.fetchKoulutuksetMuut(MUUT_KEYS.KULJETTAJAKOULUTUS)
+            this.props.fetchKoulutuksetMuut(MUUT_KEYS.OIVA_TYOVOIMAKOULUTUS)
+            this.props.fetchKoulutuksetMuut(MUUT_KEYS.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS)
+            this.props.fetchKoulutus("999901")
+            this.props.fetchKoulutus("999903")
+          }
+        })
+    }
+  }
+
   render() {
     const {
       onSubmit,
       save,
-      update,
+//      update,
       lupa,
-      fetchKoulutusalat,
-      fetchKoulutuksetAll,
-      fetchKoulutuksetMuut,
-      fetchKoulutus,
       formValues
     } = this.props
 
@@ -51,10 +65,6 @@ class MuutospyyntoWizardMuutokset extends Component {
         <form onSubmit={onSubmit}>
           <MuutospyyntoWizardTutkinnot
             lupa={lupa}
-            fetchKoulutusalat={fetchKoulutusalat}
-            fetchKoulutuksetAll={fetchKoulutuksetAll}
-            fetchKoulutuksetMuut={fetchKoulutuksetMuut}
-            fetchKoulutus={fetchKoulutus}
           />
 
           <Kohde>
@@ -119,6 +129,7 @@ export default connect(state => {
   }
 
   return {
-    formValues: formVals
+    formValues: formVals,
+    koulutusalat: state.koulutusalat
   }
 })(MuutospyyntoWizardMuutokset)

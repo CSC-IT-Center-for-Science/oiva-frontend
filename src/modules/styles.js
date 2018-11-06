@@ -9,6 +9,7 @@
 import styled, { injectGlobal } from 'styled-components'
 
 import background from 'static/images/palikat.png'
+import leijona from 'static/images/OKM_FiSve_LM_RGB_logot.png'
 
 import 'static/fonts/OpenSans-Regular.ttf'
 import 'static/fonts/OpenSans-SemiBold.ttf'
@@ -30,8 +31,15 @@ export const COLORS = {
   ACTIVE_BLUE: '#E9F6FA',
   OIVA_OPAQUE_GREEN: 'rgba(90,138,112,0.4)',
   OIVA_DARK_GREEN: '#517c64',
-  OIVA_LIGHT_GREEN: '#eef3f0'
+  OIVA_LIGHT_GREEN: '#eef3f0',
+  OIVA_MENU_FONT_COLOR: '#EBF4F4',
+  OIVA_MENU_BG_COLOR: '#70A489',
+  OIVA_MENU_HOVER_COLOR: '#A8C8B7',
+  OIVA_MENU_HOVER_2_COLOR: '#99C6C6',
+  OIVA_MENU_BG_2_COLOR: '#519D9D'
+
 }
+
 
 export const FONT_STACK = {
   GOTHAM_NARROW: `"Gotham Narrow", Helvetica, Arial, sans-serif`,
@@ -39,7 +47,8 @@ export const FONT_STACK = {
   OPEN_SANS_REGULAR: `"Open Sans", Helvetica, Arial, sans-serif`,
   OPEN_SANS_SEMIBOLD: `"Open Sans", Helvetica, Arial, sans-serif`,
   PT_SANS_NARROW: `"PT Sans Narrow", "Open Sans", Helvetica, Arial, sans-serif`,
-  SOURCE_SANS: `"Source Sans", "Open Sans", Helvetica, Arial, sans-serif`
+  SOURCE_SANS: `"Source Sans", "Open Sans", Helvetica, Arial, sans-serif`,
+  ARIAL: `"Arial", "Open Sans", Helvetica, sans-serif`
 }
 
 export const APP_WIDTH = 1030
@@ -256,4 +265,10 @@ export const BackgroundImage = styled.div`
   right: 0;
   opacity: 0.3;
   z-index: -1;
+`
+
+export const Leijona = styled.div`
+  height: 110px;
+  width: 300px;
+  background: url(${leijona});
 `

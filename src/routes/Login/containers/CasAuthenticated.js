@@ -8,6 +8,8 @@ import { ROLE_ESITTELIJA } from "../../../modules/constants";
 
 const Successful = styled.div`
   padding-left: 20px;
+  margin:auto;
+  width:1200px;
 `
 
 class CasAuthenticated extends Component {
@@ -48,7 +50,7 @@ class CasAuthenticated extends Component {
                   :
                   <Successful><h2>Tervetuloa Oiva-palveluun {sessionStorage.getItem('username')}</h2>
                       <div><br/>Valitse organisaatio:<br/>
-                          <Link ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus, ytunnus: ytunnus}}>{ytunnus} {nimi}</Link>
+                          <Link ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus + "/jarjestamislupa", ytunnus: ytunnus}}>{ytunnus} {nimi}</Link>
                       </div>
 
                   </Successful>

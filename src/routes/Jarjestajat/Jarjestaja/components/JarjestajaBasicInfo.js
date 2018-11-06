@@ -15,6 +15,7 @@ const LargeParagraph = styled.p`
 const JarjestajaBasicInfo = (props) => {
   const { jarjestaja } = props
   const name = jarjestaja.nimi.fi || jarjestaja.nimi.sv || ''
+  const ytunnus = jarjestaja.ytunnus
   const address = jarjestaja.kayntiosoite.osoite
   const postalCode = parsePostalCode(jarjestaja.kayntiosoite.postinumeroUri)
   const city = parseLocalizedField(jarjestaja.kuntaKoodi.metadata)
@@ -22,6 +23,7 @@ const JarjestajaBasicInfo = (props) => {
   return (
     <div>
       <OrganizerH1>{name}</OrganizerH1>
+      <LargeParagraph>{ytunnus}</LargeParagraph>
       <LargeParagraph>{address}</LargeParagraph>
       <LargeParagraph>{postalCode} {city}</LargeParagraph>
     </div>

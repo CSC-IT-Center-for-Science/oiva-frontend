@@ -34,10 +34,9 @@ class LuvatList extends Component {
           <Table>
             <Thead>
             <Tr>
-              <Th>Diaarinumero</Th>
-              <Th flex="3">Järjestäjä</Th>
-              <Th>Maakunta</Th>
-              <Th>Voimassa oleva lupa</Th>
+              <Th flex="3">Koulutuksen järjestäjä</Th>
+              <Th>Kotipaikan maakunta</Th>
+              <Th>Ajantasainen järjestämislupa</Th>
             </Tr>
             </Thead>
             <Tbody>

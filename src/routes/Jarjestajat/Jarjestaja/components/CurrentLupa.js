@@ -65,7 +65,7 @@ const CurrentLupa = (props) => {
             <LupaTextWrapper>
               <p>{diaarinumero}</p>
               <p>{jarjestaja}</p>
-              <p>Voimassaolo: <Moment format="D.M.YYYY">{voimassaolo}</Moment> alkaen</p>
+              <p><Moment format="D.M.YYYY">{voimassaolo}</Moment> lukien</p>
             </LupaTextWrapper>
         </CurrentLupaWrapper>
       </OuterWrapper>

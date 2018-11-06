@@ -19,13 +19,14 @@ class MuutospyyntoWizardTutkintokielet extends Component {
     if (kielet && !kielet.fetched) {
       this.props.fetchKielet()
     }
+
   }
 
   render() {
-    const { lupa } = this.props
+    const { lupa, koulutukset } = this.props
     const { kohteet} = lupa
     const kohde = kohteet[2]
-    const { kielet, tutkintokielimuutoksetValue } = this.props
+    const { kielet, tutkintokielimuutoksetValue, tutkinnotJaKoulutuksetValue } = this.props
 
     if (kielet.fetched) {
       return (
@@ -36,8 +37,10 @@ class MuutospyyntoWizardTutkintokielet extends Component {
               name={FIELD_ARRAY_NAMES.OPETUS_JA_TUTKINTOKIELET}
               kohde={kohde}
               kielet={kielet.data}
+              koulutukset={koulutukset}
               kieliList={kielet.kieliList}
               tutkintomaaraykset={kohteet[1].maaraykset}
+              tutkinnotJaKoulutuksetValue={tutkinnotJaKoulutuksetValue}
               editValues={tutkintokielimuutoksetValue}
               component={this.renderTutkintokieliList}
             />
@@ -54,8 +57,8 @@ class MuutospyyntoWizardTutkintokielet extends Component {
   }
 
   renderTutkintokieliList(props) {
-    const { kielet, kieliList, fields, editValues, kohde, tutkintomaaraykset } = props
-    const { kohdeArvot, tutkinnotjakielet } = kohde
+    const { kielet, kieliList, fields, editValues, kohde, tutkintomaaraykset, koulutukset, tutkinnotJaKoulutuksetValue } = props
+    const { tutkinnotjakielet } = kohde
 
     // TODO: Tarvitaanko valittujen tutkintokielten listausta tässä?
     // const valitutKielet = getSelectedTutkintoKielet(tutkinnotjakielet, editValues)
@@ -63,11 +66,13 @@ class MuutospyyntoWizardTutkintokielet extends Component {
     return (
       <div>
         <Row>
+
           {_.map(tutkintomaaraykset, (koulutusala, i) => {
             const koodiarvo = koulutusala.koodi || koulutusala.koodiarvo || koulutusala.koodiArvo
             const { nimi, metadata, koulutusalat } = koulutusala
             let nimiText = nimi
             let arrays = _.flatten(_.concat(_.map(koulutusalat, ala => { return ala.koulutukset })))
+            let koulutuslista = koulutukset.koulutusdata ? koulutukset.koulutusdata[koodiarvo].koulutukset : []
 
             if (!nimi && metadata) {
               nimiText = parseLocalizedField(metadata)
@@ -80,16 +85,18 @@ class MuutospyyntoWizardTutkintokielet extends Component {
                 key={i}
                 koodiarvo={koodiarvo}
                 nimi={nimiText}
-                koulutukset={arrays}
+                koulutukset={koulutuslista}
                 maaraykset={arrays}
                 editValues={editValues}
                 fields={fields}
                 kielet={kielet}
                 kieliList={kieliList}
                 tutkinnotjakielet={tutkinnotjakielet}
+                tutkinnotJaKoulutuksetValue={tutkinnotJaKoulutuksetValue}
               />
             )
           })}
+
         </Row>
       </div>
     )
@@ -100,9 +107,11 @@ const selector = formValueSelector(FORM_NAME_UUSI_HAKEMUS)
 
 MuutospyyntoWizardTutkintokielet = connect(state => {
   const tutkintokielimuutoksetValue = selector(state, FIELD_ARRAY_NAMES.OPETUS_JA_TUTKINTOKIELET)
+  const tutkinnotJaKoulutuksetValue = selector(state, FIELD_ARRAY_NAMES.TUTKINNOT_JA_KOULUTUKSET)
 
   return {
-    tutkintokielimuutoksetValue
+    tutkintokielimuutoksetValue,
+    tutkinnotJaKoulutuksetValue
   }
 })(MuutospyyntoWizardTutkintokielet)
 

@@ -57,19 +57,19 @@ class Jarjestaja extends Component {
         // Alanavigaation tabivalikon routet
         const tabNavRoutes = [
             {
-                path: `${match.url}`,
-                exact: true,
-                text: 'Julkiset tiedot',
+                path: `${match.url}/jarjestamislupa`,
+                text: 'Ajantasainen järjestämislupa',
                 authenticated: true
             },
             {
-                path: `${match.url}/jarjestamislupa`,
-                text: 'Järjestämislupa',
+                path: `${match.url}`,
+                exact: true,
+                text: 'Päätöshistoria',
                 authenticated: true
             },
             {
                 path: `${match.url}/hakemukset-ja-paatokset`,
-                text: 'Hakemukset ja päätökset',
+                text: 'Hakemukset',
                 authenticated: authenticated
             },
             {
@@ -96,8 +96,8 @@ class Jarjestaja extends Component {
 
             <FullWidthWrapper backgroundColor={COLORS.BG_GRAY}>
               <ContentContainer padding={'40px 15px 80px'} margin={'28px auto 0'}>
+                <Route path={`${match.url}/jarjestamislupa`}  render={() => <JarjestamislupaContainer ytunnus={match.params.ytunnus} /> } />
                 <Route path={`${match.url}`} exact render={() => <JulkisetTiedot lupadata={lupadata} />} />
-                <Route path={`${match.url}/jarjestamislupa`} render={() => <JarjestamislupaContainer ytunnus={match.params.ytunnus} /> } />
                 {(authenticated) ? (<Route path={`${match.path}/hakemukset-ja-paatokset`} exact render={(props) =>  <HakemuksetJaPaatoksetContainer {...props} />} />) : null }
               </ContentContainer>
             </FullWidthWrapper>

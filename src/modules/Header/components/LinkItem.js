@@ -4,27 +4,27 @@ import { NavLink } from 'react-router-dom'
 import { COLORS, FONT_STACK, MEDIA_QUERIES } from 'modules/styles'
 
 const LinkItem = styled(NavLink)`
-  padding: 15px 20px;
-  text-decoration: none;
+  padding: 10px 10px;
+  font-weight: bold;
   color: white;
-  text-transform: uppercase;
+  text-transform: none;
   margin-left: 0px;
-  font-size: 18px;
-  font-family: ${FONT_STACK.OPEN_SANS_REGULAR};
-  line-height: 18px;
+  font-size: 11.5px;
+  font-family: ${FONT_STACK.ARIAL};
+  line-height: 26px;
 
   a:visited {
     color: white;
   }
 
   &:hover {
-    background-color: ${COLORS.WHITE};
-    color: ${COLORS.BLACK};
+    background-color: ${COLORS.OIVA_MENU_HOVER_COLOR};
+    color: ${COLORS.WHITE};
   }
 
   &.active {
-    color: ${COLORS.BLACK};
-    background: white;
+    color: ${COLORS.WHITE};
+    background: ${COLORS.OIVA_MENU_HOVER_COLOR};
   }
 
   &.text-small {
@@ -37,11 +37,11 @@ const LinkItem = styled(NavLink)`
   }
   
   &.has-separator {
-  border-right: 1px solid rgba(255, 255, 255, 0.25);
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
   }
   
   @media ${MEDIA_QUERIES.MOBILE} {
-    font-size: 16px;
+    font-size: 14px;
   }
 `
 

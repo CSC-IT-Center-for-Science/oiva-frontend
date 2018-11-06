@@ -19,14 +19,14 @@ class Jarjestajat extends Component {
       return (
         <ContentContainer>
           <Helmet>
-            <title>Oiva | Koulutuksen järjestäjät</title>
+            <title>Oiva | Ammatillinen koulutus</title>
           </Helmet>
           <BackgroundImage />
           <BreadcrumbsItem to='/'>Etusivu</BreadcrumbsItem>
-          <BreadcrumbsItem to='/jarjestajat'>Koulutuksen järjestäjät</BreadcrumbsItem>
+          <BreadcrumbsItem to='/jarjestajat'>Ammatillinen koulutus</BreadcrumbsItem>
 
-          <h1>Koulutuksen järjestäjät</h1>
-          <P>Voimassa olevat koulutuksen järjestämisluvat ({Object.keys(data).length} kpl)</P>
+          <h1>Ammatillisen koulutuksen järjestäjät</h1>
+          <P>Voimassa olevat järjestämisluvat ({Object.keys(data).length} kpl)</P>
           <LuvatList luvat={data}/>
         </ContentContainer>
       )

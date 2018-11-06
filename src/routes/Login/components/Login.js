@@ -30,12 +30,6 @@ class Login extends Component {
         <Helmet>
           <title>Oiva | Kirjaudu sisään</title>
         </Helmet>
-        <BreadcrumbsItem to='/'>Etusivu</BreadcrumbsItem>
-        <BreadcrumbsItem to='/kirjaudu'>Kirjaudu sisään</BreadcrumbsItem>
-        <h1>Kirjautuminen</h1>
-        <FakeButton>
-          <Link to="/cas-auth">CAS-Kirjautuminen</Link>
-        </FakeButton>
         <LoginForm />
       </div>
     )

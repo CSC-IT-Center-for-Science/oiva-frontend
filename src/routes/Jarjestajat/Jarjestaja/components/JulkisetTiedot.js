@@ -38,8 +38,8 @@ const JulkisetTiedot = (props) => {
     <InnerContentContainer>
       <InnerContentWrapper>
         <LupaInfoWrapper>
-          <h2>Koulutuksen järjestämisluvat</h2>
-          <LargeParagraph>Voimassa oleva lupa</LargeParagraph>
+          <h2>Päätöshistoria</h2>
+          <LargeParagraph>Viimeisin päätös</LargeParagraph>
         </LupaInfoWrapper>
 
         <CurrentLupa

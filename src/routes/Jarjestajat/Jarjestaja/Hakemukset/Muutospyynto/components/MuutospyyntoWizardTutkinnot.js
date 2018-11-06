@@ -1,9 +1,8 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
+import { FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import validate from '../modules/validateWizard'
-import { MUUT_KEYS } from "../modules/constants"
 import { TUTKINTO_TEKSTIT } from "../../../modules/constants"
 import TutkintoList from './TutkintoList'
 import KoulutusList from './KoulutusList'
@@ -17,29 +16,9 @@ import {
   Kohde,
   Info,
 } from './MuutospyyntoWizardComponents'
-import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS, MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
+import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
 
 class MuutospyyntoWizardTutkinnot extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  componentWillMount() {
-    if (!this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) {
-      this.props.fetchKoulutusalat()
-        .then(() => {
-          if (this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) {
-            this.props.fetchKoulutuksetAll()
-            this.props.fetchKoulutuksetMuut(MUUT_KEYS.KULJETTAJAKOULUTUS)
-            this.props.fetchKoulutuksetMuut(MUUT_KEYS.OIVA_TYOVOIMAKOULUTUS)
-            this.props.fetchKoulutuksetMuut(MUUT_KEYS.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS)
-            this.props.fetchKoulutus("999901")
-            this.props.fetchKoulutus("999903")
-          }
-        })
-    }
-  }
-
   render() {
     const { lupa, tutkintomuutoksetValue } = this.props
     const { kohteet } = lupa
@@ -78,9 +57,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
               <FieldArray
                 name={FIELD_ARRAY_NAMES.TUTKINNOT_JA_KOULUTUKSET}
                 kohde={kohteet[1]}
-                lupa={lupa}
                 data={koulutusdata}
-                muut={muuData}
                 editValue={tutkintomuutoksetValue}
                 component={this.renderTutkinnot}
               />
@@ -90,9 +67,9 @@ class MuutospyyntoWizardTutkinnot extends Component {
               <FieldArray
                 name={FIELD_ARRAY_NAMES.TUTKINNOT_JA_KOULUTUKSET}
                 kohde={kohteet[1]}
+                poikkeukset={poikkeusData}
                 lupa={lupa}
                 muut={muuData}
-                poikkeukset={poikkeusData}
                 editValue={tutkintomuutoksetValue}
                 component={this.renderKoulutukset}
               />
@@ -111,8 +88,8 @@ class MuutospyyntoWizardTutkinnot extends Component {
 
   renderTutkinnot(props) {
     let { fields, data } = props
-    const { kohde, lupa, editValue, muut } = props
-    const { headingNumber, heading, maaraykset, muutMaaraykset } = kohde
+    const { kohde, editValue } = props
+    const { maaraykset } = kohde
 
     data = _.sortBy(data, d => {
       return d.koodiArvo
@@ -162,7 +139,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
           <KoulutusList
             key="ammatilliseentehtavaanvalmistavakoulutus"
             koodisto="ammatilliseentehtavaanvalmistavakoulutus"
-            nimi="Ammatilliseen tehtavaan valmistavat koulutukset"
+            nimi="Ammatilliseen tehtävään valmistavat koulutukset"
             koulutukset={muut.ammatilliseentehtavaanvalmistavakoulutus}
             muutMaaraykset={muutMaaraykset}
             editValues={editValue}
@@ -206,7 +183,6 @@ MuutospyyntoWizardTutkinnot = connect(state => {
 
   return {
     tutkintomuutoksetValue,
-    koulutusalat: state.koulutusalat,
     koulutukset: state.koulutukset,
     paatoskierrokset: state.paatoskierrokset
   }

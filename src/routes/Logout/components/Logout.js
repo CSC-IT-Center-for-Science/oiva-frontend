@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logoutUser } from 'routes/Login/modules/user'
+import styled from 'styled-components'
+
+const LogoutText = styled.div`
+  padding: 14px 20px;
+  line-height: 18px;
+  width:1200px;
+  margin:auto;
+`
 
 class Logout extends Component {
     componentWillMount() {
@@ -9,11 +17,9 @@ class Logout extends Component {
 
     render() {
         return (
-            <div>
+            <LogoutText>
               <p>Olet kirjautunut ulos.</p>
-
-                {sessionStorage.getItem('username')}
-            </div>
+            </LogoutText>
         )
     }
 }

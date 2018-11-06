@@ -9,7 +9,7 @@ const HeaderLink = styled(Link)`
   color: white;
   text-transform: none;
   margin-left: 0px;
-  font-size: 18px;
+  font-size: 11.5px;
   line-height: 18px;
 
   a:visited {
@@ -21,7 +21,7 @@ const HeaderLink = styled(Link)`
   }
 
   &.active {
-    color: ${COLORS.DARK_GRAY};
+    color: ${COLORS.WHITE};
     background: white;
   }
 

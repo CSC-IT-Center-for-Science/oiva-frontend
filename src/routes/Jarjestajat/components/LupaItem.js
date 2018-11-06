@@ -41,8 +41,7 @@ const Lupa = (props) => {
 
   return (
     <Tr>
-      <Th className="lupa-diaarinumero">{lupaException === undefined ? diaarinumero : lupaException.diaarinumero}</Th>
-      <Th flex="3" className="lupa-jarjestaja"><Link ytunnus={jarjestajaYtunnus} to={{pathname: "/jarjestajat/" + jarjestajaYtunnus, ytunnus: jarjestajaYtunnus}}>{jarjestajaNimi}</Link></Th>
+      <Th flex="3" className="lupa-jarjestaja"><Link ytunnus={jarjestajaYtunnus} to={{pathname: "/jarjestajat/" + jarjestajaYtunnus + "/jarjestamislupa", ytunnus: jarjestajaYtunnus}}>{jarjestajaNimi}</Link></Th>
       <Th className="lupa-maakunta">{maakunta}</Th>
       {pdfLink}
     </Tr>
