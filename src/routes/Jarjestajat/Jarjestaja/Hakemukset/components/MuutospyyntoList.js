@@ -41,10 +41,6 @@ class MuutospyynnotList extends Component {
     const { muutospyynnot } = this.props
 
     const columns = [{
-        Header: props => <TableHeader>Diaari</TableHeader>,
-        accessor: 'diaarinumero',
-        Cell: props => <TableCell>{props.value}</TableCell>
-      }, {
         Header: props => <TableHeader>Tila</TableHeader>,
         accessor: 'tila',
         Cell: props => <TableCell>{props.value}</TableCell>
