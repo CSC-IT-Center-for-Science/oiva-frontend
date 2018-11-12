@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { APP_WIDTH, COLORS, MEDIA_QUERIES } from "./styles"
 
 export const AppContainer = styled.div`
+  margin-bottom: 170px;
 `
 
 export const ContentContainer = styled.div`
@@ -10,7 +11,6 @@ export const ContentContainer = styled.div`
   margin: ${props => props.margin ? props.margin : '28px auto'};  
   padding: ${props => props.padding ? props.padding : '0 15px'};
   box-sizing: border-box;
-  
   @media ${MEDIA_QUERIES.MOBILE} {
     margin: 0 auto;
   }

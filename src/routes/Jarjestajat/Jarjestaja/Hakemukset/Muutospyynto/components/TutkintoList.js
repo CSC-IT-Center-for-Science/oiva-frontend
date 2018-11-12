@@ -11,11 +11,14 @@ import {
   SpanMuutos,
   KoulutusalaListWrapper,
   TutkintoWrapper,
+  OsaamisalaWrapper,
+  Osaamisala,
+  TutkintoBlock,
   Koodi,
   Nimi
 } from './MuutospyyntoWizardComponents'
 import { parseLocalizedField } from "../../../../../../modules/helpers"
-import { handleCheckboxChange } from "../modules/koulutusUtil"
+import { handleCheckboxChange, handleOsaamislaCheckboxChange } from "../modules/koulutusUtil"
 import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
 
 class TutkintoList extends Component {
@@ -105,8 +108,8 @@ class TutkintoList extends Component {
             const koodiarvo = koulutus.koodiarvo || koulutus.koodiArvo
             const identifier = `input-${koodiarvo}`
             const { nimi, metadata } = koulutus
-            let nimiText = ""
 
+            let nimiText = ""
             if (!nimi && metadata) {
               nimiText = parseLocalizedField(metadata)
             } else {
@@ -116,6 +119,17 @@ class TutkintoList extends Component {
             let isInLupa = false
             let isAdded = false
             let isRemoved = false
+
+            // osaamisala addons
+            let isOaInLupa = false
+            let isOaAdded = false
+            let isOaRemoved = false
+            const osaamisala = koulutus.osaamisala
+            let identifierOa = ''
+            if(osaamisala) {
+              identifierOa = `input-${osaamisala.koodiArvo}`
+            }
+
 
             if (alat) {
               _.forEach(alat, ({ koulutukset }) => {
@@ -130,6 +144,14 @@ class TutkintoList extends Component {
                         val.type === MUUTOS_TYPES.ADDITION ? isAdded = true : null
                         val.type === MUUTOS_TYPES.REMOVAL ? isRemoved = true : null
                       }
+
+                      if(osaamisala) {
+                        if (val.koodiarvo === osaamisala.koodiArvo) {
+                          val.type === MUUTOS_TYPES.ADDITION ? isOaAdded = true : null
+                          val.type === MUUTOS_TYPES.REMOVAL ? isOaRemoved = true : null
+                        }
+                      }
+
                     })
                   }
                 })
@@ -156,20 +178,49 @@ class TutkintoList extends Component {
               isChecked = true
             }
 
+            let customClassNameForOa = ""
+            isOaInLupa ? customClassNameForOa = "is-in-lupa" : null
+            isOaAdded ? customClassNameForOa = "is-added" : null
+            isOaRemoved ? customClassNameForOa = "is-removed" : null
+
+            let isOaChecked = false
+            if ((isOaInLupa && !isOaRemoved) || isOaAdded) {
+              isOaChecked = true
+            }
+
+
             return (
-              <TutkintoWrapper key={i} className={customClassName}>
-                <Checkbox>
-                  <input
-                    type="checkbox"
-                    id={identifier}
-                    checked={isChecked}
-                    onChange={(e) => { handleCheckboxChange(e, editValues, fields, isInLupa, koulutus) }}
-                  />
-                  <label htmlFor={identifier}></label>
-                </Checkbox>
-                <Koodi>{koodiarvo}</Koodi>
-                <Nimi>{nimiText}</Nimi>
-              </TutkintoWrapper>
+              <TutkintoBlock>
+                <TutkintoWrapper key={i} className={customClassName}>
+                  <Checkbox>
+                    <input
+                      type="checkbox"
+                      id={identifier}
+                      checked={isChecked}
+                      onChange={(e) => { handleCheckboxChange(e, editValues, fields, isInLupa, koulutus) }}
+                    />
+                    <label htmlFor={identifier}></label>
+                  </Checkbox>
+                  <Koodi>{koodiarvo}</Koodi>
+                  <Nimi>{nimiText}</Nimi>
+                </TutkintoWrapper>
+
+                { osaamisala ?
+                  <OsaamisalaWrapper key={i+999} className={customClassNameForOa}>
+                    <Checkbox>
+                      <input
+                        type="checkbox"
+                        id={identifierOa}
+                        checked={isOaChecked}
+                        onChange={(eoa) => { handleOsaamislaCheckboxChange(eoa, editValues, fields, isOaInLupa, osaamisala) }}
+                      />
+                      <label htmlFor={identifierOa}></label>
+                    </Checkbox>
+                    <Osaamisala>{osaamisala.koodiArvo} {parseLocalizedField(osaamisala.metadata)} (rajoite)</Osaamisala>
+                  </OsaamisalaWrapper> : ""
+                }
+
+              </TutkintoBlock>
             )
           })}
         </KoulutusalaListWrapper>

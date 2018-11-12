@@ -239,6 +239,327 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         kohde,
         maaraystyyppi,
         type: MUUTOS_TYPES.ADDITION,
+        meta: {
+          perusteluteksti: null,
+          perusteluteksti_oppisopimus: {
+            "tarpeellisuus": null,
+            "henkilosto": null,
+            "osaaminen": null,
+            "sidosryhma": null,
+            "vuodet": {
+              "arvo_1": {"vuosi": null, "maara": null},
+              "arvo_2": {"vuosi": null, "maara": null},
+              "arvo_3": {"vuosi": null, "maara": null}
+            }
+          },
+          perusteluteksti_vaativa: {
+            "tarpeellisuus": null,
+            "henkilosto": null,
+            "osaaminen": null,
+            "sidosryhma": null,
+            "pedagogiset": null,
+            "suunnitelma": null,
+            "vuodet": {
+              "arvo_1": {"vuosi": null, "maara": null},
+              "arvo_2": {"vuosi": null, "maara": null},
+              "arvo_3": {"vuosi": null, "maara": null}
+            }
+          },
+          perusteluteksti_vankila: {
+            "tarpeellisuus": null,
+            "henkilosto": null,
+            "osaaminen": null,
+            "sidosryhma": null,
+            "pedagogiset": null,
+            "vuodet": {
+              "arvo_1": {"vuosi": null, "maara": null},
+              "arvo_2": {"vuosi": null, "maara": null},
+              "arvo_3": {"vuosi": null, "maara": null}
+            }
+          },
+          perusteluteksti_tyovoima: {
+            "tarpeellisuus": null,
+            "henkilosto": null,
+            "osaaminen": null,
+            "sidosryhma": null,
+            "vuodet": {
+              "arvo_1": {"vuosi": null, "maara": null},
+              "arvo_2": {"vuosi": null, "maara": null},
+              "arvo_3": {"vuosi": null, "maara": null}
+            }
+          },
+          perusteluteksti_kuljetus_perus: {
+            "tarpeellisuus": null,
+            "voimassaoleva": null,
+            "voimassaoleva_pvm": null,
+            "suunnitelma": null,
+            "toimipisteet": {
+              "nimi": null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "henkilot": {
+              "nimi":null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "kanta_linja_auto": null,
+            "kanta_kuorma_auto": null,
+            "kanta_peravaunu": null,
+            "kanta_muut": null,
+            "valineet_asetus": null,
+            "valineet_muut": null
+          },
+          perusteluteksti_kuljetus_jatko: {
+            "tarpeellisuus": null,
+            "voimassaoleva": null,
+            "voimassaoleva_pvm": null,
+            "suunnitelma": null,
+            "osaaminen":null,
+            "toimipisteet": {
+              "nimi": null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "henkilot": {
+              "nimi":null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "kanta_linja_auto": null,
+            "kanta_kuorma_auto": null,
+            "kanta_peravaunu": null,
+            "kanta_muut": null,
+            "valineet_asetus": null,
+            "valineet_muut": null
+          },
+          muutosperustelukoodiarvo: null
+        }
+      })
+    }
+  } else {
+    if (isInLupa) {
+      // Tutkinto oli luvassa --> lisätään muutos formiin
+      fields.push({
+        koodiarvo: koodiArvo,
+        koodisto: koodistoUri,
+        nimi,
+        kuvaus,
+        isInLupa,
+        kohde,
+        maaraystyyppi,
+        type: MUUTOS_TYPES.REMOVAL,
+        meta: {
+          perusteluteksti: null,
+          perusteluteksti_oppisopimus: {
+            "tarpeellisuus": null,
+            "henkilosto": null,
+            "osaaminen": null,
+            "sidosryhma": null,
+            "vuodet": {
+              "arvo_1": {"vuosi": null, "maara": null},
+              "arvo_2": {"vuosi": null, "maara": null},
+              "arvo_3": {"vuosi": null, "maara": null}
+            }
+          },
+          perusteluteksti_vaativa: {
+              "tarpeellisuus": null,
+              "henkilosto": null,
+              "osaaminen": null,
+              "sidosryhma": null,
+              "pedagogiset": null,
+              "suunnitelma": null,
+              "vuodet": {
+                "arvo_1": {"vuosi": null, "maara": null},
+                "arvo_2": {"vuosi": null, "maara": null},
+                "arvo_3": {"vuosi": null, "maara": null}
+              }
+          },
+          perusteluteksti_vankila: {
+              "tarpeellisuus": null,
+              "henkilosto": null,
+              "osaaminen": null,
+              "sidosryhma": null,
+              "pedagogiset": null,
+              "vuodet": {
+                "arvo_1": {"vuosi": null, "maara": null},
+                "arvo_2": {"vuosi": null, "maara": null},
+                "arvo_3": {"vuosi": null, "maara": null}
+              }
+          },
+          perusteluteksti_tyovoima: {
+              "tarpeellisuus": null,
+              "henkilosto": null,
+              "osaaminen": null,
+              "sidosryhma": null,
+              "vuodet": {
+                "arvo_1": {"vuosi": null, "maara": null},
+                "arvo_2": {"vuosi": null, "maara": null},
+                "arvo_3": {"vuosi": null, "maara": null}
+              }
+          },
+          perusteluteksti_kuljetus_perus: {
+            "tarpeellisuus": null,
+            "voimassaoleva": null,
+            "voimassaoleva_pvm": null,
+            "suunnitelma": null,
+            "toimipisteet": {
+              "nimi": null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "henkilot": {
+              "nimi":null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "kanta_linja_auto": null,
+            "kanta_kuorma_auto": null,
+            "kanta_peravaunu": null,
+            "kanta_muut": null,
+            "valineet_asetus": null,
+            "valineet_muut": null
+          },
+          perusteluteksti_kuljetus_jatko: {
+            "tarpeellisuus": null,
+            "voimassaoleva": null,
+            "voimassaoleva_pvm": null,
+            "suunnitelma": null,
+            "osaaminen":null,
+            "toimipisteet": {
+              "nimi": null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "henkilot": {
+              "nimi":null,
+              "lupa": null,
+              "voimassa_kuorma_auto": null,
+              "voimassa_linja_auto": null,
+              "luokka_C" : null,
+              "luokka_CE": null,
+              "luokka_D": null,
+              "tutkinto_linja_auto": null,
+              "tutkinto_yhdistelma": null,
+              "tutkinto_puutavara": null,
+              "tutkinto_kuljetuspalvelu": null,
+              "tutkinto_kuljetusala": null
+            },
+            "kanta_linja_auto": null,
+            "kanta_kuorma_auto": null,
+            "kanta_peravaunu": null,
+            "kanta_muut": null,
+            "valineet_asetus": null,
+            "valineet_muut": null
+          },
+          muutosperustelukoodiarvo: null
+        }
+      })
+    } else {
+      // Tutkinto ei ollut luvassa --> poistetaan muutos formista
+      const i = getEditIndex(editValue, koodiArvo, koodistoUri)
+      if (i !== undefined) {
+        fields.remove(i)
+      }
+    }
+  }
+}
+
+export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa, currentObj) {
+  const { koodiArvo, metadata, koodisto } = currentObj
+  const { koodistoUri } = koodisto
+  const nimi = parseLocalizedField(metadata, 'FI', 'nimi')
+  const kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus')
+
+  const { checked } = event.target
+
+  // osaamisala spesific
+  let kohde = getKohdeByTunniste(KOHTEET.TUTKINNOT)
+  let maaraystyyppi = getMaaraystyyppiByTunniste(MAARAYSTYYPIT.RAJOITE)
+
+
+  if (checked) {
+    if (isInLupa) {
+      // osaamisala oli luvassa --> poistetaan se formista
+      const i = getEditIndex(editValue, koodiArvo, koodistoUri)
+      if (i !== undefined) {
+        fields.remove(i)
+      }
+    } else {
+      // osaamisala ei ollut luvassa --> lisätään se formiin
+
+      fields.push({
+        koodiarvo: koodiArvo,
+        koodisto: koodistoUri,
+        nimi,
+        kuvaus,
+        isInLupa,
+        kohde,
+        maaraystyyppi,
+        type: MUUTOS_TYPES.ADDITION,
         meta: { perusteluteksti: null },
         muutosperustelukoodiarvo: null
       })

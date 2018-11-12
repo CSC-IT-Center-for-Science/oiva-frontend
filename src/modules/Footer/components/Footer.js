@@ -36,7 +36,6 @@ const FooterBarUpper = styled.div`
   display:flex;
   margin: 0 auto;
   width: 100%;
-  max-width: ${props => props.maxWidth ? props.maxWidth : '1280px'};
   background: ${COLORS.WHITE};
   font-size:11px;
 `

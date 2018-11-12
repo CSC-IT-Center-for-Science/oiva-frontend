@@ -124,8 +124,33 @@ export const KoulutusTyyppiWrapper = styled.div`
   font-weight: bold;
 `
 
-export const TutkintoWrapper = styled.div`
+export const TutkintoBlock = styled.div`
   margin: 6px 0 6px 30px;
+  font-size: 15px;
+`
+
+
+export const TutkintoWrapper = styled.div`
+  display: flex;
+  position: relative;
+  align-items: center;
+  
+  &.is-removed {
+    text-decoration: line-through;
+    color: ${COLORS.OIVA_PURPLE};
+  }
+  
+  &.is-added {
+    color: ${COLORS.OIVA_PURPLE};
+  }
+  
+  &.is-in-lupa {
+    font-weight: bold;
+  }
+`
+
+export const OsaamisalaWrapper = styled.div`
+  margin: 6px 0 6px 150px;
   font-size: 15px;
   display: flex;
   position: relative;
@@ -143,6 +168,10 @@ export const TutkintoWrapper = styled.div`
   &.is-in-lupa {
     font-weight: bold;
   }
+`
+
+export const Osaamisala = styled.div`
+  margin-left: 5px;
 `
 
 export const Koodi = styled.span`

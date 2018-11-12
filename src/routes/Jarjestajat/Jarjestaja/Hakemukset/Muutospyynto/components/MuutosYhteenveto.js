@@ -47,8 +47,9 @@ const MuutosTyyppi = styled.div`
 class MuutosYhteenveto extends Component {
   render() {
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, label, arvo } = muutos
-    const nimi = getTutkintoNimiByKoodiarvo(koodiarvo)
+    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo } = muutos
+    //const nimi = getTutkintoNimiByKoodiarvo(koodiarvo)
+
     const { perusteluteksti } = meta
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
     const tyyppi =
@@ -57,6 +58,9 @@ class MuutosYhteenveto extends Component {
           type === MUUTOS_TYPES.CHANGE ? MUUTOS_TYPE_TEXTS.CHANGE.FI : null
 
     let name = `${koodiarvo} ${nimi}`
+    if(koodisto==='osaamisala') {
+      name = `${koodiarvo} ${nimi} (rajoite)`
+    }
 
     if (kategoria === 'toimialue') {
       name = `${label}`

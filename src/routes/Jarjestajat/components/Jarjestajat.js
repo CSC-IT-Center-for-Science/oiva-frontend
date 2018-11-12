@@ -21,7 +21,6 @@ class Jarjestajat extends Component {
           <Helmet>
             <title>Oiva | Ammatillinen koulutus</title>
           </Helmet>
-          <BackgroundImage />
           <BreadcrumbsItem to='/'>Etusivu</BreadcrumbsItem>
           <BreadcrumbsItem to='/jarjestajat'>Ammatillinen koulutus</BreadcrumbsItem>
 

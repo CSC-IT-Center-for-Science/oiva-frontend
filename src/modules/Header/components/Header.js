@@ -9,11 +9,11 @@ import { COLORS, FONT_STACK } from 'modules/styles'
 
 const HeaderTitle = styled.div`
   font-family: 'Arial';
-  font-size: 14px;
+  font-size: 16px;
   color: black;
   text-decoration: none;
   padding: 14px 0px;
-  margin-left: 0px;
+  margin-left: 30px;
   line-height: 18px;
 `
 
@@ -22,7 +22,6 @@ const HeaderBarUpper = styled.div`
   justify-content: ${props => props.justifyContent ? props.justifyContent : 'flex-start'};
   margin: 0 auto;
   width: 100%;
-  max-width: ${props => props.maxWidth ? props.maxWidth : '1280px'};
   background: ${COLORS.WHITE};
 
 `
@@ -31,8 +30,8 @@ const HeaderBarLower = styled.div`
   display: flex;
   justify-content: ${props => props.justifyContent ? props.justifyContent : 'flex-start'};
   margin: 0 auto;
+  padding-left:20px;
   width: 100%;
-  max-width: ${props => props.maxWidth ? props.maxWidth : '1280px'};
   background: ${COLORS.OIVA_MENU_BG_COLOR};
 `
 

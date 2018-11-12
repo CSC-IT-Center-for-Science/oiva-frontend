@@ -5,11 +5,10 @@ import { COLORS, FONT_STACK, MEDIA_QUERIES } from 'modules/styles'
 
 const LinkItem = styled(NavLink)`
   padding: 10px 10px;
-  font-weight: bold;
   color: white;
   text-transform: none;
   margin-left: 0px;
-  font-size: 11.5px;
+  font-size: 15px;
   font-family: ${FONT_STACK.ARIAL};
   line-height: 26px;
 

@@ -19,7 +19,7 @@ export function fetchKoulutuksetAll() {
   return (dispatch) => {
     dispatch({ type: FETCH_KOULUTUKSET_ALL_START })
 
-    const request = fetch(`${API_BASE_URL}/koodistot/ammatillinen/koulutukset`)
+    const request = fetch(`${API_BASE_URL}/koodistot/ammatillinen/tutkinnot`)
 
     request
       .then(response => response.json())

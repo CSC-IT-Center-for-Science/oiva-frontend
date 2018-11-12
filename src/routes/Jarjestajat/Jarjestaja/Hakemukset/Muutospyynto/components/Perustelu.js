@@ -2,8 +2,19 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { getIndex } from "../modules/muutosUtil"
 import { COLORS } from "../../../../../../modules/styles"
+import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
+import { KOODISTOT } from "../../../modules/constants"
+
 
 import PerusteluSelect from './PerusteluSelect'
+import PerusteluOppisopimus from './PerusteluOppisopimus'
+import PerusteluVaativa from './PerusteluVaativa'
+import PerusteluTyovoima from './PerusteluTyovoima'
+import PerusteluVankila from './PerusteluVankila'
+import PerusteluKuljettajaPerus from './PerusteluKuljettajaPerus'
+import PerusteluKuljettajaJatko from './PerusteluKuljettajaJatko'
+
+import LiiteKategoriaSelect from './LiiteKategoriaSelect'
 
 const PerusteluWrapper = styled.div`
   display: flex;
@@ -31,6 +42,13 @@ const PerusteluTopArea = styled.div`
   margin-bottom: 10px;
 `
 
+const LiiteTopArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+`
+
 class Perustelu extends Component {
   componentWillMount() {
     const { muutosperustelut } = this.props
@@ -41,7 +59,118 @@ class Perustelu extends Component {
   }
 
   render() {
+
     const { helpText, muutos, muutokset, koodiarvo, fields, perusteluteksti, muutosperustelukoodiarvo, muutosperustelut } = this.props
+    const { perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima, perusteluteksti_vankila } = this.props
+    const { perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko, filename, file} = this.props
+    const { koodisto, type } = muutos
+
+    // lisälomakkeet
+    // tulevat vain lisäyksille tai muutoksille.
+    // koodisto on oiva muut
+
+    // laajennettu oppisopimus
+    if (koodisto == KOODISTOT.OIVA_MUUT  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+      return (
+        <PerusteluWrapper>
+          <PerusteluOppisopimus
+            muutosperustelut={muutosperustelut}
+            perusteluteksti_oppisopimus={perusteluteksti_oppisopimus}
+            fields={fields}
+            muutokset={muutokset}
+            koodiarvo={koodiarvo}
+          />
+        </PerusteluWrapper>
+      )
+    }
+
+    // vaativa erityinen tuki
+    // pitääkö tulla vain yksi perustelu-lomake, vaikka kaikki kolme eri vaihtoehtoa on valittu?
+    if (koodisto == KOODISTOT.OIVA_MUUT  && (koodiarvo == 3 || koodiarvo == 2 || koodiarvo == 12) && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+      return (
+        <PerusteluWrapper>
+          <PerusteluVaativa
+            muutosperustelut={muutosperustelut}
+            perusteluteksti_vaativa={perusteluteksti_vaativa}
+            fields={fields}
+            muutokset={muutokset}
+            koodiarvo={koodiarvo}
+            muutos={muutos}
+          />
+        </PerusteluWrapper>
+      )
+    }
+
+    // Työvoimakoulutus
+    // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
+    if (koodisto == KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiarvo == 3 || koodiarvo == 1) && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+      return (
+        <PerusteluWrapper>
+          <PerusteluTyovoima
+            muutosperustelut={muutosperustelut}
+            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+            perusteluteksti_tyovoima={perusteluteksti_tyovoima}
+            fields={fields}
+            muutokset={muutokset}
+            koodiarvo={koodiarvo}
+            muutos={muutos}
+          />
+        </PerusteluWrapper>
+      )
+    }
+
+    // Vankilakoulutus
+    // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
+    if (koodisto == KOODISTOT.OIVA_MUUT  && (koodiarvo == 5 || koodiarvo == 13) && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+      return (
+        <PerusteluWrapper>
+          <PerusteluVankila
+            muutosperustelut={muutosperustelut}
+            perusteluteksti_vankila={perusteluteksti_vankila}
+            fields={fields}
+            muutokset={muutokset}
+            koodiarvo={koodiarvo}
+            muutos={muutos}
+          />
+        </PerusteluWrapper>
+      )
+    }
+
+    // Kuljettajakoulutus - perustaso
+    // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
+    if (koodisto == KOODISTOT.KULJETTAJAKOULUTUS  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.REMOVAL )) {
+      return (
+        <PerusteluWrapper>
+          <PerusteluKuljettajaPerus
+            muutosperustelut={muutosperustelut}
+            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+            perusteluteksti_kuljetus_perus={perusteluteksti_kuljetus_perus}
+            fields={fields}
+            muutokset={muutokset}
+            koodiarvo={koodiarvo}
+            muutos={muutos}
+          />
+        </PerusteluWrapper>
+      )
+    }
+
+    // Kuljettajakoulutus - jatko
+    // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
+    if (koodisto == KOODISTOT.KULJETTAJAKOULUTUS  && koodiarvo == 2 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+      return (
+        <PerusteluWrapper>
+          <PerusteluKuljettajaJatko
+            muutosperustelut={muutosperustelut}
+            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+            perusteluteksti_kuljetus_jatko={perusteluteksti_kuljetus_jatko}
+            fields={fields}
+            muutokset={muutokset}
+            koodiarvo={koodiarvo}
+            muutos={muutos}
+          />
+        </PerusteluWrapper>
+      )
+    }
 
     return (
       <PerusteluWrapper>
@@ -66,6 +195,39 @@ class Perustelu extends Component {
             fields.remove(i)
             fields.insert(i, obj)
           }}
+        />
+        <LiiteTopArea>Lisää muutokselle liite:</LiiteTopArea>
+        <div>
+          <input
+            type="file"
+            defaultValue={file !== null ? file : undefined}
+            onBlur={(e) => {
+              const i = getIndex(muutokset, koodiarvo)
+              let obj = fields.get(i)
+              obj.file = e.target
+              fields.remove(i)
+              fields.insert(i, obj)
+            }}/>
+
+        </div>
+        <div>
+          <input type="text"
+                 placeholder="Anna liitteelle nimi (valinnainen)..."
+                 defaultValue={filename !== null ? filename : undefined}
+                 onBlur={(e) => {
+                   const i = getIndex(muutokset, koodiarvo)
+                   let obj = fields.get(i)
+                   obj.filename = e.target.value
+                   fields.remove(i)
+                   fields.insert(i, obj)
+                 }}/>
+        </div>
+        <LiiteKategoriaSelect
+          muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+          muutosperustelut={muutosperustelut.muutosperusteluList}
+          muutos={muutos}
+          muutokset={muutokset}
+          fields={fields}
         />
       </PerusteluWrapper>
     )

@@ -8,6 +8,8 @@ import Loading from "../../../../../../modules/Loading"
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { handleCheckboxChange } from "../modules/koulutusUtil"
 import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS, MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
+import _ from 'lodash'
+import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 
 class MuutospyyntoWizardMuut extends Component {
   componentWillMount() {
@@ -27,6 +29,81 @@ class MuutospyyntoWizardMuut extends Component {
     if (muut.fetched) {
       // Muut, vaativat, vankilat, kokeilut
       const { muutCombined } = kohde
+      const { data } = muut
+      let muutList = data
+      let vaativat = []
+      let vankilat = []
+      let kokeilut = []
+      let yhteistyo = []
+      let laajennettu = []
+      let sisaoppilaitos = []
+      let urheilijat = []
+
+
+      _.forEach(muutList, (maarays) => {
+        const { metadata, koodiArvo, koodisto } = maarays
+
+        if (koodiArvo) {
+
+          switch (koodiArvo){
+
+            case "1": {
+              laajennettu.push(maarays)
+              break
+            }
+            case "4": {
+              sisaoppilaitos.push(maarays)
+              break
+            }
+            case "6": {
+              urheilijat.push(maarays)
+              break
+            }
+            case "7": {
+              kokeilut.push(maarays)
+              break
+            }
+            case "8": {
+              yhteistyo.push(maarays)
+              break
+            }
+            case "9": {
+              muutCombined.push(maarays)
+              break
+            }
+            case "10": {
+              yhteistyo.push(maarays)
+              break
+            }
+            case "11": {
+              yhteistyo.push(maarays)
+              break
+            }
+            case "2": {
+              vaativat.push(maarays)
+              break
+            }
+            case "3": {
+              vaativat.push(maarays)
+              break
+            }
+            case "12": {
+              vaativat.push(maarays)
+              break
+            }
+            case "5": {
+              vankilat.push(maarays)
+              break
+            }
+            case "13": {
+              vankilat.push(maarays)
+              break
+            }
+          }
+
+        }
+
+      })
 
       return (
         <ContentContainer>
@@ -37,9 +114,59 @@ class MuutospyyntoWizardMuut extends Component {
               name={FIELD_ARRAY_NAMES.MUUT}
               muut={muutCombined}
               editValues={muutmuutoksetValue}
-              muutList={muut.data}
+              muutList={laajennettu}
+              otsikko=''
               component={this.renderMuutMuutokset}
             />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={vaativat}
+              otsikko=''
+              component={this.renderMuutMuutokset}
+            />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={sisaoppilaitos}
+              otsikko=''
+              component={this.renderMuutMuutokset}
+            />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={vankilat}
+              otsikko=''
+              component={this.renderMuutMuutokset}
+            />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={urheilijat}
+              otsikko=''
+              component={this.renderMuutMuutokset}
+            />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={kokeilut}
+              otsikko=''
+              component={this.renderMuutMuutokset}
+            />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={yhteistyo}
+              otsikko={MUUTOS_WIZARD_TEKSTIT.MUUTOS_MUUT.YHTEISTYO.FI}
+              component={this.renderMuutMuutokset}
+            />
+
           </Row>
         </ContentContainer>
       )
@@ -53,18 +180,23 @@ class MuutospyyntoWizardMuut extends Component {
   }
 
   renderMuutMuutokset(props) {
-    const { muut, muutList, editValues, fields } = props
+    const { muut, muutList, editValues, fields, otsikko } = props
+
+    let title = parseLocalizedField(muutList[0].metadata)
+    if(otsikko != '') {
+      title = otsikko
+    }
 
     return (
       <div>
         <Row>
-          <h4>Muut määräykset</h4>
+          <h4>{title}</h4>
 
           {muutList.map((muu, i) => {
-            const { koodiArvo, koodisto, metadata } = muu
-            const { koodistoUri } = koodisto
+            const {koodiArvo, koodisto, metadata} = muu
+            const {koodistoUri} = koodisto
             const nimi = parseLocalizedField(metadata)
-            const kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus') || 'Kuvausta ei saatavilla'
+            let kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus') || ''
             const identifier = `input-${koodistoUri}-${koodiArvo}`
 
             let isInLupa = false
@@ -76,6 +208,12 @@ class MuutospyyntoWizardMuut extends Component {
             muut.forEach(m => {
               if (m.koodiarvo === koodiArvo) {
                 isInLupa = true
+              }
+              if (koodiArvo == 7 && m.koodiarvo == 7) {
+                kuvaus = m.kuvaus
+              }
+              if (koodiArvo == 8 && m.koodiarvo == 8) {
+                kuvaus = m.kuvaus
               }
             })
 
@@ -96,29 +234,33 @@ class MuutospyyntoWizardMuut extends Component {
               isChecked = true
             }
 
-            return (
-              <CheckboxRowContainer key={identifier} className={customClassName}>
-                <Checkbox>
-                  <input
-                    type="checkbox"
-                    id={identifier}
-                    checked={isChecked}
-                    onChange={(e) => { handleCheckboxChange(e, editValues, fields, isInLupa, muu) }}
-                  />
-                  <label htmlFor={identifier}></label>
-                </Checkbox>
-                <Div margin="0 10px" flex="2">{nimi}</Div>
-                <Div margin="0 10px" flex="5">{kuvaus}</Div>
-              </CheckboxRowContainer>
-            )
+            if (kuvaus != '') {
+
+              return (
+                <CheckboxRowContainer key={identifier} className={customClassName}>
+                  <Checkbox>
+                    <input
+                      type="checkbox"
+                      id={identifier}
+                      checked={isChecked}
+                      onChange={(e) => {
+                        handleCheckboxChange(e, editValues, fields, isInLupa, muu)
+                      }}
+                    />
+                    <label htmlFor={identifier}></label>
+                  </Checkbox>
+                  <Div margin="0 10px" flex="5">{kuvaus}</Div>
+                </CheckboxRowContainer>
+              )
+            }
           })}
+
 
         </Row>
       </div>
     )
   }
 }
-
 const selector = formValueSelector(FORM_NAME_UUSI_HAKEMUS)
 
 MuutospyyntoWizardMuut = connect(state => {

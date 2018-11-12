@@ -49,6 +49,15 @@ const Text = styled.div`
   color: ${props => props.active ? COLORS.BLACK : 'rgb(96, 96, 96)'};
 `
 
+const HideFooter = styled.div`
+  width:100%;
+  background-color: white;
+  width: 100%;
+  z-index: 1;
+  position: relative;
+`
+
+
 const Phase = ({ number, text, activePage, disabled, handleClick }) => {
   const isActive = Number(number) === Number(activePage)
 
@@ -203,42 +212,44 @@ class MuutospyyntoWizard extends Component {
               </Container>
             </WizardHeader>
 
-            <ContentContainer maxWidth="1085px" margin="50px auto">
-              <WizardContent>
-                {page === 1 && (
-                  <MuutospyyntoWizardMuutokset
-                    previousPage={this.previousPage}
-                    onSubmit={this.nextPage}
-                    onCancel={this.onCancel}
-                    save={this.save}
-                    lupa={lupa}
-                    fetchKoulutusalat={this.props.fetchKoulutusalat}
-                    fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
-                    fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
-                    fetchKoulutus={this.props.fetchKoulutus}
-                  />
-                )}
-                {page === 2 && (
-                  <MuutospyyntoWizardPerustelut
-                    previousPage={this.previousPage}
-                    onSubmit={this.nextPage}
-                    onCancel={this.onCancel}
-                    save={this.save}
-                    muutosperustelut={this.props.muutosperustelut.data}
-                  />
-                )}
-                {page === 3 && (
-                  <MuutospyyntoWizardYhteenveto
-                    previousPage={this.previousPage}
-                    onCancel={this.onCancel}
-                    onSubmit={this.onSubmit}
-                    save={this.save}
-                    preview={this.preview}
-                    createMuutospyynto={this.props.createMuutospyynto}
-                  />
-                )}
-              </WizardContent>
-            </ContentContainer>
+            <HideFooter>
+              <ContentContainer maxWidth="1085px" margin="50px auto">
+                <WizardContent>
+                  {page === 1 && (
+                    <MuutospyyntoWizardMuutokset
+                      previousPage={this.previousPage}
+                      onSubmit={this.nextPage}
+                      onCancel={this.onCancel}
+                      save={this.save}
+                      lupa={lupa}
+                      fetchKoulutusalat={this.props.fetchKoulutusalat}
+                      fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
+                      fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
+                      fetchKoulutus={this.props.fetchKoulutus}
+                    />
+                  )}
+                  {page === 2 && (
+                    <MuutospyyntoWizardPerustelut
+                      previousPage={this.previousPage}
+                      onSubmit={this.nextPage}
+                      onCancel={this.onCancel}
+                      save={this.save}
+                      muutosperustelut={this.props.muutosperustelut.data}
+                    />
+                  )}
+                  {page === 3 && (
+                    <MuutospyyntoWizardYhteenveto
+                      previousPage={this.previousPage}
+                      onCancel={this.onCancel}
+                      onSubmit={this.onSubmit}
+                      save={this.save}
+                      preview={this.preview}
+                      createMuutospyynto={this.props.createMuutospyynto}
+                    />
+                  )}
+                </WizardContent>
+              </ContentContainer>
+            </HideFooter>
           </WizardWrapper>
 
           <Modal

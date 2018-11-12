@@ -70,9 +70,10 @@ class Muutos extends Component {
   render() {
     const { isHidden } = this.state
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, label, arvo } = muutos
-    const { perusteluteksti } = meta
-    const nimi = getTutkintoNimiByKoodiarvo(koodiarvo)
+    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo } = muutos
+    const { perusteluteksti, perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima} = meta
+    const { perusteluteksti_vankila, perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko} = meta
+
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
     const tyyppi =
       type === MUUTOS_TYPES.ADDITION ? MUUTOS_TYPE_TEXTS.ADDITION.FI :
@@ -80,6 +81,9 @@ class Muutos extends Component {
       type === MUUTOS_TYPES.CHANGE ? MUUTOS_TYPE_TEXTS.CHANGE.FI : null
 
     let name = `${koodiarvo} ${nimi}`
+    if(koodisto==='osaamisala') {
+      name = `${koodiarvo} ${nimi} (rajoite)`
+    }
 
     if (kategoria === 'toimialue') {
       name = `${label}`
@@ -116,6 +120,12 @@ class Muutos extends Component {
             helpText={helpText}
             koodiarvo={koodiarvo}
             perusteluteksti={perusteluteksti}
+            perusteluteksti_oppisopimus={perusteluteksti_oppisopimus}
+            perusteluteksti_vaativa={perusteluteksti_vaativa}
+            perusteluteksti_tyovoima={perusteluteksti_tyovoima}
+            perusteluteksti_vankila={perusteluteksti_vankila}
+            perusteluteksti_kuljetus_perus={perusteluteksti_kuljetus_perus}
+            perusteluteksti_kuljetus_jatko={perusteluteksti_kuljetus_jatko}
             muutosperustelukoodiarvo={muutosperustelukoodiarvo}
             muutokset={muutokset}
             muutos={muutos}
