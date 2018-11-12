@@ -57,10 +57,6 @@ class MuutospyynnotList extends Component {
         accessor: 'luontipvm',
         Cell: props => <TableCell><Moment format="DD.MM.YYYY">{props.value}</Moment></TableCell> // Custom cell components!
       }, {
-        Header: props => <TableHeader>Muokkaaja</TableHeader>,
-        accessor: 'paivittaja',
-        Cell: props => <TableCell>{props.value}</TableCell>
-      }, {
         Header: props => <TableHeader>Muokattu</TableHeader>,
         accessor: 'paivityspvm',
         Cell: props => <TableCell><Moment format="DD.MM.YYYY">{props.value}</Moment></TableCell> // Custom cell components!

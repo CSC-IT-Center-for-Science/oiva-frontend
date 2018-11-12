@@ -49,8 +49,8 @@ class Jarjestamislupa extends Component {
         <InnerContentWrapper>
           <TopSectionWrapper>
             <h2>Ajantasainen järjestämislupa</h2>
-            <Row>Ajantasainen järjestämislupa PDF:nä&nbsp;<a href={`${API_BASE_URL}/pdf/esikatsele/${diaarinumero}`} target="_blank"><img src={pdfIcon} alt="Järjestämislupa PDF-muodossa"/><Moment format="DD.MM.YYYY">{paatospvm}</Moment></a></Row>
-            <Row><Moment format="DD.MM.YYYY">{alkupvm}</Moment>&nbsp;lukien</Row>
+            <Row>Viimeisin päätös sisältäen ajantasaisen järjestämisluvan:&nbsp;<a href={`${API_BASE_URL}/pdf/${diaarinumero}`} target="_blank"><img src={pdfIcon} alt="Järjestämislupa PDF-muodossa"/>{diaarinumero}</a></Row>
+            <Row>Luvan voimaantulopäivämäärä:&nbsp;<Moment format="DD.MM.YYYY">{alkupvm}</Moment>&nbsp;lukien</Row>
             <Row>Esittelijä:&nbsp;{esittelija ? esittelija :  '-'}</Row>
           </TopSectionWrapper>
           <LupaDetailsWrapper>

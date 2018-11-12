@@ -63,7 +63,7 @@ class HakemuksetJaPaatokset extends Component {
     if (fetched) {
         return (
             <Wrapper>
-              <h2>Avoimet hakemukset</h2>
+              <h2>Hakemukset</h2>
               <UusiMuutospyynto to={this.getMuutospyyntoUrl()}>Luo uusi</UusiMuutospyynto>
               <MuutospyyntoList muutospyynnot={data}/>
             </Wrapper>
@@ -74,7 +74,7 @@ class HakemuksetJaPaatokset extends Component {
         )
     } else if (hasErrored) {
         return (
-            <h2>Muutoshakemuksia ladattessa tapahtui virhe</h2>
+            <h2>Hakemuksia ladattessa tapahtui virhe</h2>
         )
     } else {
         return null
