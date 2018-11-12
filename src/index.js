@@ -32,8 +32,8 @@ ReactDOM.render(
               />
             </BreadcrumbsContainer>
             <Routes />
+            <Footer maxWidth={`${APP_WIDTH}`}/>
           </AppContainer>
-          <Footer maxWidth={`${APP_WIDTH}`}/>
         </div>
       </BrowserRouter>
     </BreadcrumbsProvider>

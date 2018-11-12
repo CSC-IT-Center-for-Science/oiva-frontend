@@ -71,8 +71,8 @@ injectGlobal`
   body {
     margin: 0;
     font-family: ${FONT_STACK.GOTHAM_NARROW};
-  }
-  
+  } 
+    
   table {
     border: 1px solid #D5D5D5;
   }

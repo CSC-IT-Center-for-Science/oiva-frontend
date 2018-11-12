@@ -138,7 +138,7 @@ class Perustelu extends Component {
 
     // Kuljettajakoulutus - perustaso
     // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
-    if (koodisto == KOODISTOT.KULJETTAJAKOULUTUS  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.REMOVAL )) {
+    if (koodisto == KOODISTOT.KULJETTAJAKOULUTUS  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluKuljettajaPerus

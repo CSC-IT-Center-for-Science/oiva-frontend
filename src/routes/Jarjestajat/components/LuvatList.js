@@ -5,8 +5,14 @@ import Media from 'react-media'
 import LupaItem from './LupaItem'
 import { Table, Thead, Tbody, Th, Tr } from "../../../modules/Table"
 import { MEDIA_QUERIES } from "../../../modules/styles"
+import styled from 'styled-components'
+
+const WrapTable = styled.div`
+   padding-bottom: 200px;
+`
 
 class LuvatList extends Component {
+
   renderPermits() {
     const sorted = _.sortBy(this.props.luvat, (lupa) => {
       return lupa.jarjestaja.nimi.fi || lupa.jarjestaja.nimi.sv
@@ -17,7 +23,7 @@ class LuvatList extends Component {
 
   render() {
     return (
-      <div>
+      <WrapTable>
         <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Table>
             <Thead>
@@ -44,7 +50,7 @@ class LuvatList extends Component {
             </Tbody>
           </Table>
         }/>
-      </div>
+      </WrapTable>
     )
   }
 }

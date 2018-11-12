@@ -1,20 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-
-import LinkItemUpper from 'modules/Header/components/LinkItemUpper'
-import LinkItem from 'modules/Header/components/LinkItem'
 import { ROLE_ESITTELIJA, ROLE_KAYTTAJA } from 'modules/constants'
 import { COLORS, FONT_STACK, Leijona } from 'modules/styles'
 
-const HeaderTitle = styled.div`
-  font-family: 'Arial';
-  font-size: 14px;
-  color: black;
-  text-decoration: none;
-  padding: 14px 20px;
-  margin-left: 0px;
-  line-height: 18px;
-`
 
 const FooterBar = styled.div`
   display: flex;
@@ -24,12 +12,11 @@ const FooterBar = styled.div`
   color: black;
   border-top: 2px solid #70A489;
   padding-top: 20px;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
   padding: 1rem;
   height:100px;
+  position:absolute;
+  bottom:0;
+  width:100%;
 `
 
 const FooterBarUpper = styled.div`

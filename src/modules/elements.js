@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import { APP_WIDTH, COLORS, MEDIA_QUERIES } from "./styles"
 
 export const AppContainer = styled.div`
-  margin-bottom: 170px;
+  position: relative;
+  min-height: 85vh;
+
 `
 
 export const ContentContainer = styled.div`
@@ -26,6 +28,7 @@ export const BreadcrumbsContainer = styled.div`
   margin: 15px auto 0;
   padding: 15px;
   box-sizing: border-box;
+
 `
 
 export const InnerContentContainer = styled.div`
@@ -36,4 +39,6 @@ export const InnerContentContainer = styled.div`
 
 export const InnerContentWrapper = styled.div`
   margin: 30px 28px;
+  margin-bottom: 100px;
+
 `
