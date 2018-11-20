@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import PerusteluSimple from './PerusteluSimple'
+import PerusteluOppisopimusYhteenveto from './PerusteluOppisopimusYhteenveto'
+import PerusteluVankilaYhteenveto from './PerusteluVankilaYhteenveto'
 import Indikaattori from './Indikaattori'
 
 import { COLORS } from "../../../../../../modules/styles"
 import { MUUTOS_TYPES, MUUTOS_TYPE_TEXTS } from "../modules/uusiHakemusFormConstants"
-import { getTutkintoNimiByKoodiarvo } from "../modules/koulutusUtil"
+import { KOODISTOT } from "../../../modules/constants"
 
 const MuutosWrapper = styled.div`
   width: 100%;
@@ -47,8 +49,7 @@ const MuutosTyyppi = styled.div`
 class MuutosYhteenveto extends Component {
   render() {
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo } = muutos
-    //const nimi = getTutkintoNimiByKoodiarvo(koodiarvo)
+    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, nimi, label, arvo } = muutos
 
     const { perusteluteksti } = meta
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
@@ -91,15 +92,38 @@ class MuutosYhteenveto extends Component {
             <Indikaattori status="ok" text="Perusteltu" />
           }
         </MuutosTop>
-        <PerusteluSimple
-          helpText={helpText}
-          koodiarvo={koodiarvo}
-          perusteluteksti={perusteluteksti}
-          muutosperustelukoodiarvo={muutosperustelukoodiarvo}
-          muutokset={muutokset}
-          muutos={muutos}
-          fields={fields}
-        />
+        { koodisto === KOODISTOT.OIVA_MUUT && type === MUUTOS_TYPES.ADDITION && koodiarvo === "1" ? 
+          <PerusteluOppisopimusYhteenveto 
+            helpText={helpText}
+            koodiarvo={koodiarvo}
+            perustelut={meta.perusteluteksti_oppisopimus}
+            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+            muutokset={muutokset}
+            muutos={muutos}
+            fields={fields}
+          />
+         :
+         koodisto === KOODISTOT.OIVA_MUUT && type === MUUTOS_TYPES.ADDITION && (koodiarvo === "5" || koodiarvo === "13") ?
+          <PerusteluVankilaYhteenveto 
+            helpText={helpText}
+            koodiarvo={koodiarvo}
+            perustelut={meta.perusteluteksti_vankila}
+            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+            muutokset={muutokset}
+            muutos={muutos}
+            fields={fields}
+          />
+          :         
+          <PerusteluSimple
+            helpText={helpText}
+            koodiarvo={koodiarvo}
+            perusteluteksti={perusteluteksti}
+            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+            muutokset={muutokset}
+            muutos={muutos}
+            fields={fields}
+          />
+          }
       </MuutosWrapper>
     )
   }

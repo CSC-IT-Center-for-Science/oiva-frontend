@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 
 import { fetchMuutosperustelut } from "../../../../../../modules/reducers/muutosperustelut"
+import { fetchVankilat } from "../../../../../../modules/reducers/vankilat"
 import { fetchLupa } from "../../../modules/lupa"
 import { createMuutospyynto, saveMuutospyynto } from "../modules/muutospyynto"
 import { previewMuutospyynto } from "../modules/muutospyynto"
@@ -15,6 +16,7 @@ import MuutospyyntoWizard from '../components/MuutospyyntoWizard'
 const mapStateToProps = (state) => {
   return {
     muutosperustelut: state.muutosperustelut,
+    vankilat: state.vankilat,
     lupa: state.lupa,
     koulutukset: state.koulutukset,
     paatoskierrokset: state.paatoskierrokset,
@@ -27,6 +29,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     fetchMuutosperustelut: () => dispatch(fetchMuutosperustelut()),
+    fetchVankilat: () => dispatch(fetchVankilat()),
     fetchLupa: (ytunnus, query) => dispatch(fetchLupa(ytunnus, query)),
     createMuutospyynto: (muutospyynto) => dispatch(createMuutospyynto(muutospyynto)),
     saveMuutospyynto: (muutospyynto) => dispatch(saveMuutospyynto(muutospyynto)),

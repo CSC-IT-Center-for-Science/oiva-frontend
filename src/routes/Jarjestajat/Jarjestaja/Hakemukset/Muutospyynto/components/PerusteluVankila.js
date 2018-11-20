@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 import { getIndex } from "../modules/muutosUtil"
 import Select from '../../../../../../modules/Select'
-import { handleMuutosperusteluSelectChange } from "../modules/muutosperusteluUtil"
+import { handleVankilaSelectChange } from "../modules/vankilaUtil"
 
 const PerusteluVankilaWrapper = styled.div`
   margin-bottom: 20px;
@@ -30,34 +31,26 @@ class PerusteluVankila extends Component {
     constructor(props) {
       super(props)
       this.state = {
-        selectedOption: props.muutosperustelukoodiarvo
+        selectedOption: props.vankilakoodiarvo
       }
     }
 
     handleChange(selectedOption) {
       this.setState({ selectedOption })
       const { muutokset, fields, muutos } = this.props
-      handleMuutosperusteluSelectChange(muutokset, fields, muutos, selectedOption)
+      handleVankilaSelectChange(muutokset, fields, muutos, selectedOption)
     }
 
     render() {
       const vuosi = this.props.muutosperustelut.data[0].voimassaAlkuPvm.split("-")[0]
 
-      const { muutokset, fields, koodiarvo, perusteluteksti_vankila, koodisto } = this.props
-      const { tarpeellisuus, henkilosto, osaaminen, pedagogiset, sidosryhma, suunnitelma, vuodet } = perusteluteksti_vankila
+      const { muutokset, fields, koodiarvo, perusteluteksti_vankila, koodisto} = this.props
+      const { tarpeellisuus, henkilosto, osaaminen, pedagogiset, sidosryhma, vuodet } = perusteluteksti_vankila
       const { arvo_1, arvo_2, arvo_3 } = vuodet
 
-      // vankilat hardcode
-      const options = [
-        { value: 'Helsingin vankila', label: 'Helsingin vankila' },
-        { value: 'Helsingin avovankila, Suomenlinnan osasto', label: 'Helsingin avovankila, Suomenlinnan osasto' },
-        { value: 'Helsingin avovankila, Vantaan osasto', label: 'Helsingin avovankila, Vantaan osasto' },
-        { value: 'Jokelan vankila, Tuusula', label: 'Jokelan vankila, Tuusula' },
-        { value: 'Keravan vankila, Kerava', label: 'Keravan vankila, Kerava' },
-        { value: 'Vanajan vankila (Avo-osastot Vanajalla ja Ojoisilla)', label: 'Vanajan vankila (Avo-osastot Vanajalla ja Ojoisilla)' },
-        { value: 'Riihimäen vankila, Riihimäki', label: 'Riihimäen vankila, Riihimäki' },
-        { value: 'Vantaan vankila, Vantaa (t.)', label: 'Vantaan vankila, Vantaa (t.)' },
-      ];
+      let { vankilat } = this.props
+      vankilat = _.sortBy(vankilat, v => { return v.label })
+      console.log(vankilat)
 
       const { selectedOption } = this.state
 
@@ -135,9 +128,9 @@ class PerusteluVankila extends Component {
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.VANKILA.SUUNNITELMA.FI}</Label>
             <Instruction>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.VANKILA.OHJEET.SUUNNITELMA.FI}</Instruction>
             <Select
-              name={`select-muutosperustelu-${koodisto}-${koodiarvo}`}
+              name={`select-vankila-${koodisto}-${koodiarvo}`}
               value={selectedOption}
-              options={options}
+              options={vankilat}
               onChange={this.handleChange.bind(this)}
               placeholder="Valitse vankila..."
 
@@ -162,7 +155,7 @@ class PerusteluVankila extends Component {
               onBlur={(e) => {
                 const i = getIndex(muutokset, koodiarvo)
                 let obj = fields.get(i)
-                obj.meta.perusteluteksti_vankila.vuodet.arvo_2.vuosi = vuosi
+                obj.meta.perusteluteksti_vankila.vuodet.arvo_2.vuosi = parseFloat(vuosi) + 1
                 obj.meta.perusteluteksti_vankila.vuodet.arvo_2.maara = e.target.value
                 fields.remove(i)
                 fields.insert(i, obj)
@@ -174,7 +167,7 @@ class PerusteluVankila extends Component {
               onBlur={(e) => {
                 const i = getIndex(muutokset, koodiarvo)
                 let obj = fields.get(i)
-                obj.meta.perusteluteksti_vankila.vuodet.arvo_3.vuosi = vuosi
+                obj.meta.perusteluteksti_vankila.vuodet.arvo_3.vuosi = parseFloat(vuosi) + 2
                 obj.meta.perusteluteksti_vankila.vuodet.arvo_3.maara = e.target.value
                 fields.remove(i)
                 fields.insert(i, obj)

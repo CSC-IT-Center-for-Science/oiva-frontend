@@ -47,6 +47,10 @@ const Arrow = styled.img`
 const Div = styled.div`
   ${props => props.margin ? props.margin : null}
 `
+const Parent = styled.div`
+  ${props => props.margin ? props.margin : null}
+  padding-right:10px;
+`
 
 const MuutosTyyppi = styled.div`
   width: 80px;
@@ -70,7 +74,7 @@ class Muutos extends Component {
   render() {
     const { isHidden } = this.state
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo } = muutos
+    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo, parentId } = muutos
     const { perusteluteksti, perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima} = meta
     const { perusteluteksti_vankila, perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko} = meta
 
@@ -108,6 +112,10 @@ class Muutos extends Component {
         <MuutosTop>
           <MuutosHeader isActive={!isHidden}  onClick={this.toggleMuutos}>
             <MuutosTyyppi>{tyyppi}</MuutosTyyppi>
+            {parentId != null && parentId != '' ?
+              <Parent>{getTutkintoNimiByKoodiarvo(parentId)}: </Parent>
+              : ''
+            }
             <Div>{name}</Div>
             <Arrow src={arrow} rotated={!isHidden} />
           </MuutosHeader>

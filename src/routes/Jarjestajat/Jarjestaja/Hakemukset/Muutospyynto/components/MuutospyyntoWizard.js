@@ -91,6 +91,7 @@ class MuutospyyntoWizard extends Component {
 
   componentWillMount() {
     this.props.fetchMuutosperustelut()
+    this.props.fetchVankilat()
     const { ytunnus } = this.props.match.params
     this.props.fetchLupa(ytunnus, '?with=all')
     this.props.fetchPaatoskierrokset()
@@ -174,7 +175,7 @@ class MuutospyyntoWizard extends Component {
   }
 
   render() {
-    const { muutosperustelut, lupa, paatoskierrokset } = this.props
+    const { muutosperustelut, vankilat, lupa, paatoskierrokset } = this.props
     const { page, visitedPages } = this.state
 
     if (sessionStorage.getItem('role') !== ROLE_KAYTTAJA) {
@@ -191,7 +192,7 @@ class MuutospyyntoWizard extends Component {
         )
     }
 
-    if (muutosperustelut.fetched && lupa.fetched && paatoskierrokset.fetched) {
+    if (muutosperustelut.fetched && vankilat.fetched && lupa.fetched && paatoskierrokset.fetched) {
       return (
         <div>
           <WizardBackground />
@@ -235,6 +236,7 @@ class MuutospyyntoWizard extends Component {
                       onCancel={this.onCancel}
                       save={this.save}
                       muutosperustelut={this.props.muutosperustelut.data}
+                      vankilat={this.props.vankilat.data}
                     />
                   )}
                   {page === 3 && (
@@ -269,10 +271,12 @@ class MuutospyyntoWizard extends Component {
           </Modal>
         </div>
       )
-    } else if (muutosperustelut.isFetching || lupa.isFetching || paatoskierrokset.isFetching) {
+    } else if (muutosperustelut.isFetching || vankilat.isFetching || lupa.isFetching || paatoskierrokset.isFetching) {
       return <Loading />
     } else if (muutosperustelut.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Muutosperusteluita ladattaessa tapahtui virhe.</div>
+    } else if (vankilat.hasErrored) {
+      return <div>Muutospyyntöä ei voida tehdä. Vankilalistausta ladattaessa tapahtui virhe.</div>
     } else if (paatoskierrokset.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Päätoskierroksia ladattaessa tapahtui virhe.</div>
     } else if (lupa.hasErrored) {

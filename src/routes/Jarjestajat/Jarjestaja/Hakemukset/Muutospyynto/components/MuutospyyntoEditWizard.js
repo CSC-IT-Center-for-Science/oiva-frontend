@@ -83,6 +83,7 @@ class MuutospyyntoEditWizard extends Component {
 
   componentWillMount() {
     this.props.fetchMuutosperustelut()
+    this.props.fetchVankilat()
     const { ytunnus, uuid } = this.props.match.params
     this.props.fetchLupa(ytunnus, '?with=all')
     this.props.fetchPaatoskierrokset()
@@ -176,7 +177,7 @@ class MuutospyyntoEditWizard extends Component {
   }
 
   render() {
-    const { muutosperustelut, lupa, paatoskierrokset, match, muutospyynto, initialValues } = this.props
+    const { muutosperustelut, vankilat, lupa, paatoskierrokset, match, muutospyynto, initialValues } = this.props
     const { page, visitedPages } = this.state
 
     // setTimeout(() => console.log(muutospyynto), 3000)
@@ -195,7 +196,7 @@ class MuutospyyntoEditWizard extends Component {
       )
     }
 
-    if (muutosperustelut.fetched && lupa.fetched && paatoskierrokset.fetched && muutospyynto.fetched) {
+    if (muutosperustelut.fetched && vankilat.fetched && lupa.fetched && paatoskierrokset.fetched && muutospyynto.fetched) {
       return (
         <div>
           <WizardBackground />
@@ -240,6 +241,7 @@ class MuutospyyntoEditWizard extends Component {
                     onCancel={this.onCancel}
                     save={this.save}
                     muutosperustelut={this.props.muutosperustelut.data}
+                    vankilat={this.props.vankilat.data}
                   />
                 )}
                 {page === 3 && (
@@ -272,10 +274,12 @@ class MuutospyyntoEditWizard extends Component {
           </Modal>
         </div>
       )
-    } else if (muutosperustelut.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
+    } else if (muutosperustelut.isFetching || vankilat.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
       return <Loading />
     } else if (muutosperustelut.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Muutosperusteluita ladattaessa tapahtui virhe.</div>
+    } else if (vankilat.hasErrored) {
+      return <div>Muutospyyntöä ei voida tehdä. Vankilalistausta ladattaessa tapahtui virhe.</div>
     } else if (paatoskierrokset.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Päätoskierroksia ladattaessa tapahtui virhe.</div>
     } else if (muutospyynto.hasErrored) {

@@ -212,7 +212,7 @@ class TutkintoList extends Component {
                         type="checkbox"
                         id={identifierOa}
                         checked={isOaChecked}
-                        onChange={(eoa) => { handleOsaamislaCheckboxChange(eoa, editValues, fields, isOaInLupa, osaamisala) }}
+                        onChange={(eoa) => { handleOsaamislaCheckboxChange(eoa, editValues, fields, isOaInLupa, osaamisala, koodiarvo) }}
                       />
                       <label htmlFor={identifierOa}></label>
                     </Checkbox>

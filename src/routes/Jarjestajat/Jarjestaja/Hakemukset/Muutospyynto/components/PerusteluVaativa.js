@@ -157,7 +157,7 @@ class PerusteluVaativa extends Component {
               onBlur={(e) => {
                 const i = getIndex(muutokset, koodiarvo)
                 let obj = fields.get(i)
-                obj.meta.perusteluteksti_vaativa.vuodet.arvo_2.vuosi = vuosi
+                obj.meta.perusteluteksti_vaativa.vuodet.arvo_2.vuosi = parseFloat(vuosi) + 1
                 obj.meta.perusteluteksti_vaativa.vuodet.arvo_2.maara = e.target.value
                 fields.remove(i)
                 fields.insert(i, obj)
@@ -170,7 +170,7 @@ class PerusteluVaativa extends Component {
               onBlur={(e) => {
                 const i = getIndex(muutokset, koodiarvo)
                 let obj = fields.get(i)
-                obj.meta.perusteluteksti_vaativa.vuodet.arvo_3.vuosi = vuosi
+                obj.meta.perusteluteksti_vaativa.vuodet.arvo_3.vuosi = parseFloat(vuosi) + 2
                 obj.meta.perusteluteksti_vaativa.vuodet.arvo_3.maara = e.target.value
                 fields.remove(i)
                 fields.insert(i, obj)

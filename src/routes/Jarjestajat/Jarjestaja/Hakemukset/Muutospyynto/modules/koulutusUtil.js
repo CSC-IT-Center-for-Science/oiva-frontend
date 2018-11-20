@@ -271,6 +271,7 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
             "osaaminen": null,
             "sidosryhma": null,
             "pedagogiset": null,
+            "toteuttaminen": null,
             "vuodet": {
               "arvo_1": {"vuosi": null, "maara": null},
               "arvo_2": {"vuosi": null, "maara": null},
@@ -417,6 +418,7 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
               "osaaminen": null,
               "sidosryhma": null,
               "pedagogiset": null,
+              "toteuttaminen": null,
               "vuodet": {
                 "arvo_1": {"vuosi": null, "maara": null},
                 "arvo_2": {"vuosi": null, "maara": null},
@@ -528,7 +530,7 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
   }
 }
 
-export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa, currentObj) {
+export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa, currentObj, parentId) {
   const { koodiArvo, metadata, koodisto } = currentObj
   const { koodistoUri } = koodisto
   const nimi = parseLocalizedField(metadata, 'FI', 'nimi')
@@ -554,6 +556,7 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
       fields.push({
         koodiarvo: koodiArvo,
         koodisto: koodistoUri,
+        parentId: parentId,  // tutkinnon koodiarvo
         nimi,
         kuvaus,
         isInLupa,
@@ -566,10 +569,11 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
     }
   } else {
     if (isInLupa) {
-      // Tutkinto oli luvassa --> lisätään muutos formiin
+      // osaamisala oli luvassa --> lisätään muutos formiin
       fields.push({
         koodiarvo: koodiArvo,
         koodisto: koodistoUri,
+        parentId: parentId,  // tutkinnon koodiarvo
         nimi,
         kuvaus,
         isInLupa,
@@ -580,7 +584,7 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
         muutosperustelukoodiarvo: null
       })
     } else {
-      // Tutkinto ei ollut luvassa --> poistetaan muutos formista
+      // osaamisala ei ollut luvassa --> poistetaan muutos formista
       const i = getEditIndex(editValue, koodiArvo, koodistoUri)
       if (i !== undefined) {
         fields.remove(i)

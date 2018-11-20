@@ -43,11 +43,10 @@ export function fetchMuutospyynto(uuid) {
 }
 
 export function createMuutospyynto(muutospyynto) {
-  console.log('createMuutospyynto', muutospyynto)
 
   const formatted = formatMuutospyynto(muutospyynto)
 
-  console.log('formatted', formatted)
+  console.log('formatted-create', JSON.stringify(formatted))
 
   return (dispatch) => {
     dispatch({ type: CREATE_MUUTOSPYYNTO_START })
@@ -63,11 +62,10 @@ export function createMuutospyynto(muutospyynto) {
 }
 
 export function saveMuutospyynto(muutospyynto) {
-  console.log('saveMuutospyynto', muutospyynto)
 
   const formatted = formatMuutospyynto(muutospyynto)
 
-  console.log('formatted', formatted)
+  console.log('formatted-save', JSON.stringify(formatted))
 
   return (dispatch) => {
     dispatch({ type: SAVE_MUUTOSPYYNTO_START})
@@ -83,11 +81,10 @@ export function saveMuutospyynto(muutospyynto) {
 }
 
 export function updateMuutospyynto(muutospyynto) {
-  console.log('updateMuutospyynto', muutospyynto)
 
   const formatted = formatMuutospyynto(muutospyynto)
 
-  console.log('formatted', formatted)
+  console.log('formatted-update', JSON.stringify(formatted))
 
   return (dispatch) => {
     dispatch({ type: UPDATE_MUUTOSPYYNTO_START })
@@ -106,7 +103,10 @@ export function previewMuutospyynto(muutospyynto) {
 
     const formatted = formatMuutospyynto(muutospyynto)
 
-    return (dispatch) => {
+  console.log('formatted-preview', JSON.stringify(formatted))
+
+
+  return (dispatch) => {
         dispatch({ type: PREVIEW_MUUTOSPYYNTO_START })
 
         return axios.put(`${API_BASE_URL}/pdf/muutospyyntoObjToPdf`,
