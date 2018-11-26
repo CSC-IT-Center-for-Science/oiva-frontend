@@ -29,7 +29,7 @@ const Area = styled.div`
   margin: 15px 0;
 `
 
-class PerusteluOppisopimusYhteenveto extends Component {
+class PerusteluVaativaYhteenveto extends Component {
   render() {
     const { perustelut } = this.props
     let perusteluText = 'Ei saatavilla'
@@ -42,7 +42,7 @@ class PerusteluOppisopimusYhteenveto extends Component {
             <Content>{perustelut.tarpeellisuus || perusteluText}</Content>
           </Area>
           <Area>
-            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.OPPISOPIMUS.JARJESTAMISEDELLYTYKSET.FI}</Label>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.VAATIVA.JARJESTAMISEDELLYTYKSET.FI}</Label>
             <Content>{perustelut.henkilosto || perusteluText}</Content>
           </Area>
           <Area>
@@ -50,8 +50,16 @@ class PerusteluOppisopimusYhteenveto extends Component {
             <Content>{perustelut.osaaminen || perusteluText}</Content>
           </Area>
           <Area>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.PEDAGOGISET.FI}</Label>
+            <Content>{perustelut.pedagogiset || perusteluText}</Content>
+          </Area>
+          <Area>
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.SIDOSRYHMA.FI}</Label>
             <Content>{perustelut.sidosryhma || perusteluText}</Content>
+          </Area>
+          <Area>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.VAATIVA.SUUNNITELMA.FI}</Label>
+            <Content>{perustelut.suunnitelma || perusteluText}</Content>
           </Area>
           <Area>
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.OPISKELIJAVUOSIARVIO.FI}</Label>
@@ -65,4 +73,4 @@ class PerusteluOppisopimusYhteenveto extends Component {
   }
 }
 
-export default PerusteluOppisopimusYhteenveto
+export default PerusteluVaativaYhteenveto

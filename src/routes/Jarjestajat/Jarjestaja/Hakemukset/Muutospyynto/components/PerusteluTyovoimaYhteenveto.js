@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 import { COLORS } from "../../../../../../modules/styles"
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 
@@ -29,10 +30,22 @@ const Area = styled.div`
   margin: 15px 0;
 `
 
-class PerusteluOppisopimusYhteenveto extends Component {
+class PerusteluTyovoimaYhteenveto extends Component {
+  componentWillMount() {
+    const { muutosperustelut } = this.props
+
+    if (muutosperustelut && !muutosperustelut.fetched) {
+      this.props.fetchMuutosperustelut()
+    }
+  }
+
   render() {
     const { perustelut } = this.props
     let perusteluText = 'Ei saatavilla'
+    let tyovoimaMetaSuomeksi = null
+    if (perustelut.yhteistyo && 'metadata' in perustelut.yhteistyo) {
+      tyovoimaMetaSuomeksi = _.find(perustelut.yhteistyo.metadata, (m) => {return m.kieli === "FI"})
+    }
 
     return (
       <PerusteluWrapper>
@@ -42,7 +55,7 @@ class PerusteluOppisopimusYhteenveto extends Component {
             <Content>{perustelut.tarpeellisuus || perusteluText}</Content>
           </Area>
           <Area>
-            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.OPPISOPIMUS.JARJESTAMISEDELLYTYKSET.FI}</Label>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.TYOVOIMA.JARJESTAMISEDELLYTYKSET.FI}</Label>
             <Content>{perustelut.henkilosto || perusteluText}</Content>
           </Area>
           <Area>
@@ -50,8 +63,20 @@ class PerusteluOppisopimusYhteenveto extends Component {
             <Content>{perustelut.osaaminen || perusteluText}</Content>
           </Area>
           <Area>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.PEDAGOGISET.FI}</Label>
+            <Content>{perustelut.pedagogiset || perusteluText}</Content>
+          </Area>
+          <Area>
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.SIDOSRYHMA.FI}</Label>
             <Content>{perustelut.sidosryhma || perusteluText}</Content>
+          </Area>
+          <Area>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.TYOVOIMA.SUUNNITELMA.FI}</Label>
+            <Content>{perustelut.suunnitelma || perusteluText}</Content>
+          </Area>
+          <Area>
+            <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.TYOVOIMA.YHTEISTYO.FI}</Label>
+            <Content>{(tyovoimaMetaSuomeksi && 'nimi' in tyovoimaMetaSuomeksi && tyovoimaMetaSuomeksi.nimi) || perusteluText}</Content>
           </Area>
           <Area>
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.OPISKELIJAVUOSIARVIO.FI}</Label>
@@ -65,4 +90,4 @@ class PerusteluOppisopimusYhteenveto extends Component {
   }
 }
 
-export default PerusteluOppisopimusYhteenveto
+export default PerusteluTyovoimaYhteenveto

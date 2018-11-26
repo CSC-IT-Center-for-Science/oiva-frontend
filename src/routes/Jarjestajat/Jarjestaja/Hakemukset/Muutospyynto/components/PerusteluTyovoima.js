@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 import { getIndex } from "../modules/muutosUtil"
 import Select from '../../../../../../modules/Select'
-import { handleMuutosperusteluSelectChange } from "../modules/muutosperusteluUtil"
+import { handleELYkeskusSelectChange } from "../modules/ELYkeskusUtil"
 
 const PerusteluTyovoimaWrapper = styled.div`
   margin-bottom: 20px;
@@ -31,45 +32,32 @@ class PerusteluTyovoima extends Component {
     constructor(props) {
       super(props)
       this.state = {
-        selectedOption: props.muutosperustelukoodiarvo
+        selectedOption: props.ELYkeskuskoodiarvo
       }
     }
 
     handleChange(selectedOption) {
       this.setState({ selectedOption })
       const { muutokset, fields, muutos } = this.props
-      handleMuutosperusteluSelectChange(muutokset, fields, muutos, selectedOption)
+      handleELYkeskusSelectChange(muutokset, fields, muutos, selectedOption)
     }
 
     render() {
       const vuosi = this.props.muutosperustelut.data[0].voimassaAlkuPvm.split("-")[0]
 
       const { muutokset, fields, koodiarvo, perusteluteksti_tyovoima, koodisto } = this.props
-
-      console.log("teksti: " + JSON.stringify(perusteluteksti_tyovoima))
       const { tarpeellisuus, henkilosto, osaaminen, pedagogiset, sidosryhma, suunnitelma, vuodet } = perusteluteksti_tyovoima
       const { arvo_1, arvo_2, arvo_3 } = vuodet
 
-      // ELY-keskukset hardcode
-      const options = [
-        { value: 'Etelä-Pohjanmaa', label: 'Etelä-Pohjanmaa' },
-        { value: 'Etelä-Savo', label: 'Etelä-Savo' },
-        { value: 'Häme', label: 'Häme' },
-        { value: 'Kaakkois-Suomi', label: 'Kaakkois-Suomi' },
-        { value: 'Kainuu', label: 'Kainuu' },
-        { value: 'Keski-Suomi', label: 'Keski-Suomi' },
-        { value: 'Lappi', label: 'Lappi' },
-        { value: 'Pirkanmaa', label: 'Pirkanmaa' },
-        { value: 'Pohjanmaa', label: 'Pohjanmaa' },
-        { value: 'Pohjois-Karjala', label: 'Pohjois-Karjala' },
-        { value: 'Pohjois-Pohjanmaa', label: 'Pohjois-Pohjanmaa' },
-        { value: 'Pohjois-Savo', label: 'Pohjois-Savo'},
-        { value: 'Satakunta', label: 'Satakunta' },
-        { value: 'Uusimaa', label: 'Uusimaa' },
-        { value: 'Varsinais-Suomi', label: 'Varsinais-Suomi' }
-      ];
-      const { selectedOption } = this.state
-
+      let { ELYkeskukset } = this.props
+      // järjestä suomenkielisen nimen mukaan
+      ELYkeskukset = _.sortBy(ELYkeskukset, (e) => { 
+        let nimi = ""
+        _.forEach(e.metadata, (m) => {
+          if (m.kieli === "FI") { nimi = m.nimi }
+        })
+        return nimi
+       })
 
       return (
         <PerusteluTyovoimaWrapper>
@@ -157,9 +145,9 @@ class PerusteluTyovoima extends Component {
             <h4>4. {MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.TYOVOIMA.YHTEISTYO.FI}</h4>
             <Instruction>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.TYOVOIMA.OHJEET.YHTEISTYO.FI}</Instruction>
             <Select
-              name={`select-muutosperustelu-${koodisto}-${koodiarvo}`}
-              value={selectedOption}
-              options={options}
+              name={`select-ELYkeskus-${koodisto}-${koodiarvo}`}
+              value={this.state.selectedOption}
+              options={ELYkeskukset}
               onChange={this.handleChange.bind(this)}
               placeholder="Valitse ely-keskus..."
 

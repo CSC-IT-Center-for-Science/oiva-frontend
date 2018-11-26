@@ -44,7 +44,10 @@ class PerusteluVankilaYhteenveto extends Component {
   render() {
     const { perustelut } = this.props
     let perusteluText = 'Ei saatavilla'
-    let vankilanMetaSuomeksi = _.find(perustelut.toteuttaminen.metadata, (m) => {return m.kieli === "FI"})
+    let vankilanMetaSuomeksi = null
+    if (perustelut.toteuttaminen && 'metadata' in perustelut.toteuttaminen) {
+      vankilanMetaSuomeksi = _.find(perustelut.toteuttaminen.metadata, (m) => {return m.kieli === "FI"})
+    }
 
     return (
       <PerusteluWrapper>
@@ -71,7 +74,7 @@ class PerusteluVankilaYhteenveto extends Component {
           </Area>
           <Area>
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.VANKILA.TOTEUTTAMINEN.FI}</Label>
-            <Content>{vankilanMetaSuomeksi.nimi || perusteluText}</Content>
+            <Content>{(vankilanMetaSuomeksi && 'nimi' in vankilanMetaSuomeksi && vankilanMetaSuomeksi.nimi) || perusteluText}</Content>
           </Area>
           <Area>
             <Label>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.YLEINEN.OPISKELIJAVUOSIARVIO.FI}</Label>

@@ -8,6 +8,7 @@ import muutospyynnotReducer from '../routes/Jarjestajat/Jarjestaja/Hakemukset/mo
 import muutospyyntoReducer from '../routes/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/muutospyynto'
 import muutosperustelutReducer from '../modules/reducers/muutosperustelut'
 import vankilatReducer from '../modules/reducers/vankilat'
+import ELYkeskuksetReducer from '../modules/reducers/elykeskukset'
 import koulutusalatReducer from '../modules/reducers/koulutusalat'
 import koulutuksetReducer from '../modules/reducers/koulutukset'
 import paatoskierroksetReducer from '../modules/reducers/paatoskierrokset'
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   muutospyynto: muutospyyntoReducer,
   muutosperustelut: muutosperustelutReducer,
   vankilat: vankilatReducer,
+  ELYkeskukset: ELYkeskuksetReducer,
   koulutusalat: koulutusalatReducer,
   koulutukset: koulutuksetReducer,
   paatoskierrokset: paatoskierroksetReducer,

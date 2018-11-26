@@ -84,6 +84,7 @@ class MuutospyyntoEditWizard extends Component {
   componentWillMount() {
     this.props.fetchMuutosperustelut()
     this.props.fetchVankilat()
+    this.props.fetchELYkeskukset()
     const { ytunnus, uuid } = this.props.match.params
     this.props.fetchLupa(ytunnus, '?with=all')
     this.props.fetchPaatoskierrokset()
@@ -177,7 +178,7 @@ class MuutospyyntoEditWizard extends Component {
   }
 
   render() {
-    const { muutosperustelut, vankilat, lupa, paatoskierrokset, match, muutospyynto, initialValues } = this.props
+    const { muutosperustelut, vankilat, ELYkeskukset, lupa, paatoskierrokset, match, muutospyynto, initialValues } = this.props
     const { page, visitedPages } = this.state
 
     // setTimeout(() => console.log(muutospyynto), 3000)
@@ -196,7 +197,7 @@ class MuutospyyntoEditWizard extends Component {
       )
     }
 
-    if (muutosperustelut.fetched && vankilat.fetched && lupa.fetched && paatoskierrokset.fetched && muutospyynto.fetched) {
+    if (muutosperustelut.fetched && vankilat.fetched && ELYkeskukset.fetched && lupa.fetched && paatoskierrokset.fetched && muutospyynto.fetched) {
       return (
         <div>
           <WizardBackground />
@@ -242,6 +243,7 @@ class MuutospyyntoEditWizard extends Component {
                     save={this.save}
                     muutosperustelut={this.props.muutosperustelut.data}
                     vankilat={this.props.vankilat.data}
+                    ELYkeskukset={this.props.ELYkeskukset.data}
                   />
                 )}
                 {page === 3 && (
@@ -274,12 +276,14 @@ class MuutospyyntoEditWizard extends Component {
           </Modal>
         </div>
       )
-    } else if (muutosperustelut.isFetching || vankilat.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
+    } else if (muutosperustelut.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
       return <Loading />
     } else if (muutosperustelut.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Muutosperusteluita ladattaessa tapahtui virhe.</div>
     } else if (vankilat.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Vankilalistausta ladattaessa tapahtui virhe.</div>
+    } else if (ELYkeskukset.hasErrored) {
+      return <div>Muutospyyntöä ei voida tehdä. ELY-keskuslistausta ladattaessa tapahtui virhe.</div>
     } else if (paatoskierrokset.hasErrored) {
       return <div>Muutospyyntöä ei voida tehdä. Päätoskierroksia ladattaessa tapahtui virhe.</div>
     } else if (muutospyynto.hasErrored) {

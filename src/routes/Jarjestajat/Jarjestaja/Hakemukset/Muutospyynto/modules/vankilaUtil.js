@@ -5,8 +5,6 @@ import store from '../../../../../../store'
 export function getVankilaList(vankilat, locale) {
   let array = []
 
-  console.log("haen vankilalistaa")
-
   vankilat.forEach(vankila => {
     const { koodiArvo, metadata } = vankila
     array.push({ ...vankila, label: parseLocalizedField(metadata, locale), value: koodiArvo })

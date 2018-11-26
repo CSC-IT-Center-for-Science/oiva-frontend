@@ -51,7 +51,7 @@ const LiiteTopArea = styled.div`
 
 class Perustelu extends Component {
   componentWillMount() {
-    const { muutosperustelut, vankilat } = this.props
+    const { muutosperustelut, vankilat, ELYkeskukset } = this.props
 
     if (muutosperustelut && !muutosperustelut.fetched) {
       this.props.fetchMuutosperustelut()
@@ -61,11 +61,15 @@ class Perustelu extends Component {
       this.props.fetchVankilat()
     }
 
+    if (ELYkeskukset && !ELYkeskukset.fetched) {
+      this.props.fetchELYkeskukset()
+    }
+
   }
 
   render() {
 
-    const { helpText, muutos, muutokset, koodiarvo, fields, perusteluteksti, muutosperustelukoodiarvo, muutosperustelut, vankilat } = this.props
+    const { helpText, muutos, muutokset, koodiarvo, fields, perusteluteksti, muutosperustelukoodiarvo, muutosperustelut, vankilat, ELYkeskukset } = this.props
     const { perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima, perusteluteksti_vankila } = this.props
     const { perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko, filename, file} = this.props
     const { koodisto, type } = muutos
@@ -120,6 +124,7 @@ class Perustelu extends Component {
             muutokset={muutokset}
             koodiarvo={koodiarvo}
             muutos={muutos}
+            ELYkeskukset={ELYkeskukset.ELYkeskusList}
           />
         </PerusteluWrapper>
       )
