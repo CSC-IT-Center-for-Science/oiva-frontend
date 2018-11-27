@@ -83,7 +83,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
           if (aliMaaraykset) {
             tutkinto.rajoitteet = []
             _.forEach(aliMaaraykset, (alimaarays) => {
-              const { koodi, kohde, maaraystyyppi } = alimaarays
+              const { koodi, kohde, maaraystyyppi, koodisto } = alimaarays
               const { koodiArvo, metadata } = koodi
               const nimi = parseLocalizedField(metadata)
               tutkinto.rajoitteet.push({
@@ -91,7 +91,8 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
                 nimi,
                 maaraysId: uuid,
                 maaraystyyppi,
-                kohde
+                kohde,
+                koodisto: koodisto
               })
             })
           }
@@ -108,8 +109,15 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
               tutkinto.alakoodi = ylaKoodiKoodiArvo
               tutkinto.alanimi = ylakoodiMetadataArvo
             } else if (ylaKoodi.koodisto.koodistoUri === "koulutustyyppi") {
-              tutkinto.koulutustyyppikoodi = ylaKoodiKoodiArvo
-              tutkinto.koulutustyyppi = ylakoodiMetadataArvo
+
+              if(ylaKoodiKoodiArvo==26){
+                tutkinto.koulutustyyppikoodi = 1
+                tutkinto.koulutustyyppi = 'Ammatillinen perustutkinto'
+              }
+              else {
+                tutkinto.koulutustyyppikoodi = ylaKoodiKoodiArvo
+                tutkinto.koulutustyyppi = ylakoodiMetadataArvo
+              }
             }
           })
 

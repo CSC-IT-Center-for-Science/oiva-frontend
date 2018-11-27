@@ -235,7 +235,8 @@ const ACTION_HANDLERS = {
       save: {
         isSaving: false,
         saved: true,
-        hasErrored: false
+        hasErrored: false,
+        response: action.payload
       }
     }
   },

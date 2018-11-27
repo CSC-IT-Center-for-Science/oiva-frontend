@@ -42,8 +42,8 @@ class Tilastot extends Component {
           <p>
             Linkkejä tilastodataan (beta-versio):
           </p>
-          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiN2M1YWZiYzUtOTEyYS00NTY2LTgzNDctNGZjOTVmOWQ4ZTlkIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9">Ammatillisen koulutuksen järjestämisluvat</a></Linkki>
-          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiNjQ4NGRmNWEtYmRmMC00YWNkLWI4NGEtNDg2NTBmMWFmYTM0IiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9">Väestötiedot</a></Linkki>
+          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiN2M1YWZiYzUtOTEyYS00NTY2LTgzNDctNGZjOTVmOWQ4ZTlkIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9" target="_blank">Ammatillisen koulutuksen järjestämisluvat</a></Linkki>
+          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiNjQ4NGRmNWEtYmRmMC00YWNkLWI4NGEtNDg2NTBmMWFmYTM0IiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9" target="_blank">Väestötiedot</a></Linkki>
 
       </ContentContainer>
     )

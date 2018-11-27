@@ -1,14 +1,6 @@
 const validate = values => {
   const errors = {}
 
-  if (!values.muutosperustelu) {
-    errors.muutosperustelu = 'Muutospyynnölle täytyy valita perustelu'
-  } else if (values.muutosperustelu === '01') {
-    if (!values.muuperustelu) {
-      errors.muuperustelu = 'Kirjoita perustelu'
-    }
-  }
-
   // TODO: Finish validation
   if (values.tutkintomuutokset) {
     errors.tutkintomuutokset = []

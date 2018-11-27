@@ -41,7 +41,7 @@ class Home extends Component {
             Palvelu tulee sisältämään hakemusten laatimisen ja päätöksenteon lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia tilastoja.
             Myöhemmin Oiva laajennetaan koskemaan myös yleissivistävän koulutuksen järjestämisluvat ja ylläpitämisluvat ja lupien hakupalvelut.
           </p>
-          <Palaute><a href="https://link.webropolsurveys.com/S/F156FEC089139BF4">Palautelomake</a></Palaute>
+          <Palaute><a href="https://link.webropolsurveys.com/S/F156FEC089139BF4" target="_blank">Palautelomake</a></Palaute>
         </InfoBox>
       </ContentContainer>
     )

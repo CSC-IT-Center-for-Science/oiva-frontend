@@ -62,7 +62,7 @@ class MuutospyyntoWizardMuutokset extends Component {
           järjestämislupaan haetaan muutosta. Tarkemmat ohjeistukset sekä pykäläviittaukset ammatillisen koulutuksen
           lakiin (531/2017) on esitetty kohdittain.</Otsikko>
 
-        <form onSubmit={onSubmit}>
+        <form onSubmit={this.props.handleSubmit}>
           <MuutospyyntoWizardTutkinnot
             lupa={lupa}
           />

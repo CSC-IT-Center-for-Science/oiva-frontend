@@ -2,9 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const MuuMaaraysWrapper = styled.div`
-  margin: 6px 0 20px 20px;
-  font-size: 15px;
-  
+  margin: 6px 0 20px 20px;  
 `
 
 const Nimi = styled.p`

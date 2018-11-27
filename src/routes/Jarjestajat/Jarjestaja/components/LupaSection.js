@@ -55,7 +55,6 @@ const Bold = styled.span`
 `
 
 const Tietoa = styled.div`
-  font-size: 15px;
   margin-bottom: 30px;
   margin-left:20px;
 `
