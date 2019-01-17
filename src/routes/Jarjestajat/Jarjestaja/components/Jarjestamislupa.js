@@ -8,16 +8,17 @@ import LupaSection from './LupaSection'
 import { LUPA_SECTIONS } from "../modules/constants"
 import { InnerContentContainer, InnerContentWrapper  } from "../../../../modules/elements"
 import { COLORS } from "../../../../modules/styles"
-import { API_BASE_URL, LUPA_EXCEPTION_PATH } from "../../../../modules/constants"
 
-import pdfIcon from 'static/images/icon-pdf-small.png'
 import { LUPA_LISAKOULUTTAJAT } from "../../modules/constants"
 
 const TopSectionWrapper = styled.div`
-  margin: -30px -28px;
-  padding: 15px 60px 30px;
+  padding: 5px 30px;
+  margin: 0 -30px;
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
-  position: relative;
+`
+
+const H2 = styled.h2`
+  margin: 0 30px 24px 30px;
 `
 
 const LupaDetailsWrapper = styled.div`
@@ -37,18 +38,11 @@ const Row = styled.div`
 
 class Jarjestamislupa extends Component {
   render() {
-    const { diaarinumero, alkupvm, meta, jarjestajaYtunnus } = this.props.lupa.data
+    const { jarjestajaYtunnus } = this.props.lupa.data
     const { kohteet } = this.props.lupa
-    const { esittelija } = meta
-
 
     // Luvan poikkeuskäsittely erikoisluville (17kpl)
-    let pdfLink = ''
     const lupaException = LUPA_LISAKOULUTTAJAT[jarjestajaYtunnus]
-    if (lupaException) {
-      const { pdflink } = lupaException
-      pdfLink = pdflink
-    }
 
     return (
       <InnerContentContainer>
@@ -56,15 +50,11 @@ class Jarjestamislupa extends Component {
 
             {lupaException ?
               <TopSectionWrapper>
-                <h2>Ajantasainen järjestämislupa</h2>
-                <Row>Viimeisin päätös sisältäen ajantasaisen järjestämisluvan:&nbsp;<a href={`${LUPA_EXCEPTION_PATH}${pdfLink}`} target="_blank"><img src={pdfIcon} alt="Järjestämislupa PDF-muodossa"/>{diaarinumero}</a></Row>
+                <H2>Ajantasainen järjestämislupa</H2>
               </TopSectionWrapper>
               :
               <TopSectionWrapper>
-                <h2>Ajantasainen järjestämislupa</h2>
-                <Row>Viimeisin päätös sisältäen ajantasaisen järjestämisluvan:&nbsp;<a href={`${API_BASE_URL}/pdf/${diaarinumero}`} target="_blank"><img src={pdfIcon} alt="Järjestämislupa PDF-muodossa"/>{diaarinumero}</a></Row>
-                <Row>Luvan voimaantulopäivämäärä:&nbsp;<Moment format="DD.MM.YYYY">{alkupvm}</Moment>&nbsp;lukien</Row>
-                <Row>Esittelijä:&nbsp;{esittelija ? esittelija :  '-'}</Row>
+                <H2>Ajantasainen järjestämislupa (<Moment format="DD.MM.YYYY"></Moment>)</H2>
               </TopSectionWrapper>
             }
 

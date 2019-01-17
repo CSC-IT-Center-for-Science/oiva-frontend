@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import HeaderBar from 'modules/Header/components/HeaderBar'
@@ -6,6 +7,7 @@ import LinkItemUpper from 'modules/Header/components/LinkItemUpper'
 import LinkItem from 'modules/Header/components/LinkItem'
 import { ROLE_ESITTELIJA, ROLE_KAYTTAJA } from 'modules/constants'
 import { COLORS, FONT_STACK } from 'modules/styles'
+import { getRoles, getOrganisation } from 'routes/Login/modules/user'
 
 const HeaderTitle = styled.div`
   font-family: 'Arial';
@@ -43,7 +45,22 @@ const HeaderUpperRight = styled.div`
 
 class Header extends Component {
 
+  componentDidMount() {
+    // getRoles lataa datan sessionStorageen
+    this.props.getRoles().then(() => {
+       this.props.getOrganisation(sessionStorage.getItem('oid'))
+    })
+  }
+
   render() {
+
+    const { oppilaitos } = this.props.user
+    let ytunnus = undefined
+    if (oppilaitos) {
+        if (oppilaitos.organisaatio) {
+            ytunnus = oppilaitos.organisaatio.ytunnus
+        }
+    }
 
     return (
       <div>
@@ -74,6 +91,10 @@ class Header extends Component {
             <LinkItem to="/vapaa-sivistystyo">Vapaa sivistystyö</LinkItem>
             <LinkItem to="/tilastot">Tilastot</LinkItem>
 
+             { ytunnus ? 
+            <LinkItem ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus + "/jarjestamislupa", ytunnus: ytunnus}} exact>Oma organisaatio</LinkItem>
+            : "" }
+
             { (sessionStorage.getItem('role')===ROLE_ESITTELIJA) ? (<LinkItem to="/asiat" >Asiat</LinkItem>) : null}
           </HeaderBarLower>
         </HeaderBar>
@@ -81,4 +102,17 @@ class Header extends Component {
     )
   }
 }
-export default Header
+
+function mapStateToProps(state) {
+  return { user: state.user }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getRoles: () => dispatch(getRoles()),
+    getOrganisation: (oid) => dispatch(getOrganisation(oid))
+  }
+}
+
+// Aktiivisen linkin päättely feilaa, jos React olettaa komponentin olevan puhdas
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(Header)

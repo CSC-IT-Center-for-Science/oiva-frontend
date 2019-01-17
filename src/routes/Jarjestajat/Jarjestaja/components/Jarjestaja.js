@@ -58,7 +58,7 @@ class Jarjestaja extends Component {
         const tabNavRoutes = [
             {
                 path: `${match.url}/jarjestamislupa`,
-                text: 'Ajantasainen järjestämislupa',
+                text: 'Järjestämislupa',
                 authenticated: true
             },
             {
@@ -84,7 +84,7 @@ class Jarjestaja extends Component {
           <div>
             <ContentContainer>
               <BreadcrumbsItem to='/'>Etusivu</BreadcrumbsItem>
-              <BreadcrumbsItem to='/jarjestajat'>Koulutuksen järjestäjät</BreadcrumbsItem>
+              <BreadcrumbsItem to='/jarjestajat'>Ammatillinen koulutus</BreadcrumbsItem>
               <BreadcrumbsItem to={breadcrumb}>{jarjestajaNimi}</BreadcrumbsItem>
 
               <JarjestajaBasicInfo jarjestaja={jarjestaja} />

@@ -13,10 +13,14 @@ import {
   KoulutusalaListWrapper,
   TutkintoWrapper,
   Koodi,
-  Nimi
+  Nimi,
+  Koulutustyyppi,
+  KoulutustyyppiWrapper,
+  TutkintoBlock
 } from './MuutospyyntoWizardComponents'
-import { handleTutkintoKieliCheckboxChange } from "../modules/koulutusUtil"
+import { handleTutkintoKieliCheckboxChange, getTutkintokieliBy } from "../modules/koulutusUtil"
 import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
+import { parseLocalizedField } from "../../../../../../modules/helpers"
 
 class TutkintoKieliList extends Component {
   constructor(props) {
@@ -82,10 +86,6 @@ class TutkintoKieliList extends Component {
       return 0;
     });
 
-    koulutukset = _.sortBy(koulutukset, k => {
-      return k.koodiArvo
-    })
-
     if (editValues) {
       _.forEach(editValues, value => {
         _.forEach(maaraykset, koulutus => {
@@ -95,6 +95,11 @@ class TutkintoKieliList extends Component {
         })
       })
     }
+
+    let koulutustyypit = []
+    _.forOwn(koulutukset, k => {
+      koulutustyypit.push(k)
+    })
 
     return (
       <Wrapper>
@@ -109,99 +114,121 @@ class TutkintoKieliList extends Component {
         </Heading>
         {!this.state.isHidden &&
         <KoulutusalaListWrapper>
-          {_.map(koulutukset, (koulutus, i) => {
-
-            const identifier = `input-tutkintokieli-2-${koulutus.koodiArvo}`
-            const nimiObjekti = _.filter(koulutus.metadata, (m) => { return m.kieli === "FI" })
-            const koulutuksenNimi = nimiObjekti[0].nimi
-
-            let isInLupa = false
-            let isAdded = false
-            let isRemoved = false
-            let isChanged = false
-            let isChecked = false
-            let valueKoodi = ""
-            let value = ""
-
-            tutkinnotjakielet.forEach(tutkintokieli => {
-              if (tutkintokieli.tutkintokoodi === koulutus.koodiArvo) {
-                isInLupa = true
-                valueKoodi = tutkintokieli.koodi
-              }
-            })
-
-            if (editValues) {
-              editValues.forEach(val => {
-                if (val.koodiarvo === koulutus.koodiArvo) {
-                  switch(val.type) {
-                    case MUUTOS_TYPES.ADDITION:
-                      valueKoodi = val.value
-                      isAdded = true
-                      break
-
-                    case MUUTOS_TYPES.REMOVAL:
-                      isRemoved = true
-                      break
-
-                    case MUUTOS_TYPES.CHANGE:
-                      isChanged = true
-                      break
-
-                    default:
-                      break
-                  }
-                }
-              })
-            }
-
-            let customClassName = isInLupa ? "is-in-lupa" : isAdded ? "is-added" : isRemoved ? "is-removed" : isChanged ? "is-changed" : null
-
-            if ((isInLupa && !isRemoved)) {
-              isChecked = true
-              value = valueKoodi
-            }
-
-            if (isAdded) {
-              isChecked = true
-              value = valueKoodi
-            }
-
-            if (isInLupa && isRemoved) {
-              value = ''
-            }
-
-            // Koulutus näytetään luvassa, jos se on (a) luvassa eikä sitä ole poistettu kohdassa 1 tai (b) lisätty kohdassa 1
-            let tutkinto = _.find(maaraykset, (m) => { return m.koodi === koulutus.koodiArvo })
-            if (!tutkinto) { tutkinto = _.find(tutkinnotJaKoulutuksetValue, (t) => { return t.koodiarvo === koulutus.koodiArvo && t.type === MUUTOS_TYPES.ADDITION}) }
-            if (!tutkinto || _.find(tutkinnotJaKoulutuksetValue, (t) => { return t.koodiarvo === koulutus.koodiArvo && t.type === MUUTOS_TYPES.REMOVAL})) { return false }
-
+          {_.map(koulutustyypit, (koulutustyyppi, i) => {
             return (
-              <TutkintoWrapper key={i} className={customClassName}>
-                <Checkbox>
-                  <input
-                    type="checkbox"
-                    id={identifier}
-                    checked={isChecked}
-                    onChange={(e) => { handleTutkintoKieliCheckboxChange(e, editValues, fields, isInLupa, value, tutkinto) }}
-                  />
-                  <label htmlFor={identifier}></label>
-                </Checkbox>
-                <Koodi>{koulutus.koodiArvo}</Koodi>
-                <Nimi>{koulutuksenNimi}</Nimi>
-                <KieliSelect
-                  identifier={identifier}
-                  value={value}
-                  kielet={kieliListOrdered}
-                  disabled={!isChecked}
-                  editValues={editValues}
-                  fields={fields}
-                  isInLupa={isInLupa}
-                  tutkinto={tutkinto}
-                  customClass={customClassName}
-                />
-              </TutkintoWrapper>
-            )
-          })}
+              <KoulutustyyppiWrapper key={ i }>
+                <Koulutustyyppi>{ parseLocalizedField(koulutustyyppi.metadata) }</Koulutustyyppi>
+                {_.map(koulutustyyppi.koulutukset, (koulutus, i) => {
+                  const identifier = `input-tutkintokieli-2-${koulutus.koodiArvo}`
+                  const nimiObjekti = _.filter(koulutus.metadata, (m) => { return m.kieli === "FI" })
+                  const koulutuksenNimi = nimiObjekti[0].nimi
+
+                  let isInLupa = false
+                  let isAdded = false
+                  let isRemoved = false
+                  let isChanged = false
+                  let isChecked = false
+                  let valueKoodi = ""
+                  let value = ""
+
+                  tutkinnotjakielet.forEach(tutkintokieli => {
+                    if (tutkintokieli.tutkintokoodi === koulutus.koodiArvo) {
+                      isInLupa = true
+                      valueKoodi = tutkintokieli.koodi
+                    }
+                  })
+
+                  if (editValues) {
+                    editValues.forEach(val => {
+                      if (val.koodiarvo === koulutus.koodiArvo) {
+                        switch(val.type) {
+                          case MUUTOS_TYPES.ADDITION:
+                            valueKoodi = val.value
+                            isAdded = true
+                            break
+
+                          case MUUTOS_TYPES.REMOVAL:
+                            isRemoved = true
+                            break
+
+                          case MUUTOS_TYPES.CHANGE:
+                            isChanged = true
+                            break
+
+                          default:
+                            break
+                        }
+                      }
+                    })
+                  }
+
+                  let customClassName = isInLupa ? "is-in-lupa" : isAdded ? "is-added" : isRemoved ? "is-removed" : isChanged ? "is-changed" : null
+
+                  if ((isInLupa && !isRemoved)) {
+                    isChecked = true
+                    value = valueKoodi
+                  }
+
+                  if (isAdded) {
+                    isChecked = true
+                    value = valueKoodi
+                  }
+
+                  if (isInLupa && isRemoved) {
+                    value = ''
+                  }
+
+                  // Koulutus näytetään luvassa, jos se on (a) luvassa eikä sitä ole
+                  // poistettu kohdassa 1 tai (b) lisätty kohdassa 1
+                  var tutkinto = _.find(maaraykset, (m) => {
+                    return m.koodi === koulutus.koodiArvo
+                  })
+                  if (!tutkinto) {
+                    tutkinto = _.find(tutkinnotJaKoulutuksetValue, (t) => {
+                      return (t.koodiarvo === koulutus.koodiArvo
+                        && t.type === MUUTOS_TYPES.ADDITION)
+                    })
+                  }
+                  if (!tutkinto || _.find(tutkinnotJaKoulutuksetValue, (t) => {
+                    return (t.koodiarvo === koulutus.koodiArvo
+                      && t.type === MUUTOS_TYPES.REMOVAL)})) {
+                    return false
+                  }
+
+                  tutkinto['koulutusalaKoodiArvo'] = koulutus.koulutusalaKoodiArvo
+                  tutkinto['koulutustyyppiKoodiArvo'] = koulutus.koulutustyyppiKoodiArvo
+
+                  return (
+                    <TutkintoBlock key={i}>
+                      <TutkintoWrapper key={i} className={customClassName}>
+                        <Checkbox>
+                          <input
+                            type="checkbox"
+                            id={identifier}
+                            checked={isChecked}
+                            onChange={(e) => { handleTutkintoKieliCheckboxChange(e, editValues, fields, isInLupa, value, tutkinto) }}
+                          />
+                          <label htmlFor={identifier}></label>
+                        </Checkbox>
+                        <Koodi>{koulutus.koodiArvo}</Koodi>
+                        <Nimi>{koulutuksenNimi}</Nimi>
+                        <KieliSelect
+                          identifier={identifier}
+                          value={value}
+                          kielet={kieliListOrdered}
+                          disabled={!isChecked}
+                          editValues={editValues}
+                          fields={fields}
+                          isInLupa={isInLupa}
+                          tutkinto={tutkinto}
+                          customClass={customClassName}
+                        />
+                      </TutkintoWrapper>
+                    </TutkintoBlock>
+                  )
+                })}
+              </KoulutustyyppiWrapper>
+            )})}
         </KoulutusalaListWrapper>
         }
       </Wrapper>

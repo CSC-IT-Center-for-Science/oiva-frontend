@@ -25,6 +25,36 @@ export function getKoulutusAlat() {
   }
 }
 
+export function getKoulutusalaByKoodiarvo(koodi) {
+  const state = store.getState()
+  const { koulutusalat } = state
+
+  if (koulutusalat && koulutusalat.data) {
+    return _.find(koulutusalat.data, (a) => { return a.koodiArvo === koodi })
+  } else {
+    return undefined
+  }
+}
+
+export function getKoulutusTyypit() {
+  const state = store.getState()
+
+  if (state.koulutustyypit && state.koulutustyypit.fetched) {
+    return state.koulutustyypit.data
+  }
+}
+
+export function getKoulutustyyppiByKoodiarvo(koodi) {
+  const state = store.getState()
+  const { koulutustyypit } = state
+
+  if (koulutustyypit && koulutustyypit.data) {
+    return _.find(koulutustyypit.data, (t) => { return t.koodiArvo === koodi })
+  } else {
+    return undefined
+  }
+}
+
 export function getTutkintoNimiByKoodiarvo(koodi) {
   const state = store.getState()
 
@@ -34,14 +64,38 @@ export function getTutkintoNimiByKoodiarvo(koodi) {
     let nimi = undefined
 
     _.forEach(koulutusdata, ala => {
-      _.forEach(ala.koulutukset, koulutus => {
-        if (koulutus.koodiArvo === koodi) {
-          nimi = parseLocalizedField(koulutus.metadata)
-        }
+      _.forEach(ala.koulutukset, tyyppi => {
+        _.forEach(tyyppi.koulutukset, koulutus => {
+          if (koulutus.koodiArvo === koodi) {
+            nimi = parseLocalizedField(koulutus.metadata)
+          }
+        })
       })
     })
 
     return nimi
+  }
+}
+
+export function getTutkintoByKoodiarvo(koodi) {
+  const state = store.getState()
+
+  if (state.koulutukset && state.koulutukset.koulutusdata) {
+    const { koulutusdata } = state.koulutukset
+
+    let koulutus = undefined
+
+    _.forEach(koulutusdata, ala => {
+      _.forEach(ala.koulutukset, tyyppi => {
+        _.forEach(tyyppi.koulutukset, k => {
+          if (k.koodiArvo === koodi) {
+            koulutus = k
+          }
+        })
+      })
+    })
+
+    return koulutus
   }
 }
 
@@ -240,6 +294,8 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         maaraystyyppi,
         type: MUUTOS_TYPES.ADDITION,
         meta: {
+          koulutusala: currentObj.koulutusalaKoodiArvo,
+          koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
           perusteluteksti: null,
           perusteluteksti_oppisopimus: {
             "tarpeellisuus": null,
@@ -388,6 +444,8 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         maaraystyyppi,
         type: MUUTOS_TYPES.REMOVAL,
         meta: {
+          koulutusala: currentObj.koulutusalaKoodiArvo,
+          koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
           perusteluteksti: null,
           perusteluteksti_oppisopimus: {
             "tarpeellisuus": null,
@@ -540,6 +598,8 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
 
   const { checked } = event.target
 
+  const parentObj = getTutkintoByKoodiarvo(parentId)
+
   // osaamisala spesific
   let kohde = getKohdeByTunniste(KOHTEET.TUTKINNOT)
   let maaraystyyppi = getMaaraystyyppiByTunniste(MAARAYSTYYPIT.RAJOITE)
@@ -565,7 +625,11 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
         kohde,
         maaraystyyppi,
         type: MUUTOS_TYPES.ADDITION,
-        meta: { perusteluteksti: null },
+        meta: { 
+          perusteluteksti: null,
+          koulutusala: parentObj.koulutusalaKoodiArvo,
+          koulutustyyppi: parentObj.koulutustyyppiKoodiArvo
+         },
         muutosperustelukoodiarvo: null
       })
     }
@@ -582,7 +646,11 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
         kohde,
         maaraystyyppi,
         type: MUUTOS_TYPES.REMOVAL,
-        meta: { perusteluteksti: null },
+        meta: { 
+          perusteluteksti: null,
+          koulutusala: parentObj.koulutusalaKoodiArvo,
+          koulutustyyppi: parentObj.koulutustyyppiKoodiArvo
+         },
         muutosperustelukoodiarvo: null
       })
     } else {
@@ -606,6 +674,8 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
 
   const { checked } = event.target
 
+  console.log(currentObj)
+
   if (checked) {
     if (isInLupa) {
       // Tutkinto oli luvassa --> poistetaan se formista
@@ -625,7 +695,10 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
         kuvaus: null,
         isInLupa,
         type: MUUTOS_TYPES.ADDITION,
-        meta: { perusteluteksti: null },
+        meta: {
+          koulutusala: currentObj.koulutusalaKoodiArvo,
+          koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
+          perusteluteksti: null },
         muutosperustelukoodiarvo: null
       })
     }
@@ -643,7 +716,10 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
         kuvaus: null,
         isInLupa,
         type: MUUTOS_TYPES.REMOVAL,
-        meta: { perusteluteksti: null },
+        meta: {
+          koulutusala: currentObj.koulutusalaKoodiArvo,
+          koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
+          perusteluteksti: null },
         muutosperustelukoodiarvo: null
       })
     } else {

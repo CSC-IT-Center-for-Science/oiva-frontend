@@ -23,7 +23,7 @@ const LinkItem = styled(NavLink)`
 
   &.active {
     color: ${COLORS.WHITE};
-    background: ${COLORS.OIVA_MENU_HOVER_COLOR};
+    background: ${COLORS.OIVA_MENU_SELECTED_COLOR};
   }
 
   &.text-small {

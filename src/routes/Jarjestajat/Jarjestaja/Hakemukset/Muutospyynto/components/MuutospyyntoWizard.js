@@ -151,10 +151,8 @@ class MuutospyyntoWizard extends Component {
           link.href = data;
           link.download="file.pdf";
           link.click();
-          setTimeout(function(){
           // For Firefox it is necessary to delay revoking the ObjectURL
-          window.URL.revokeObjectURL(data)
-              , 100})
+          setTimeout(window.URL.revokeObjectURL(data), 100)
 
       })
   }
@@ -225,6 +223,7 @@ class MuutospyyntoWizard extends Component {
                       save={this.save}
                       lupa={lupa}
                       fetchKoulutusalat={this.props.fetchKoulutusalat}
+                      fetchKoulutustyypit={this.props.fetchKoulutustyypit}
                       fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
                       fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
                       fetchKoulutus={this.props.fetchKoulutus}

@@ -6,16 +6,28 @@ import LupaItem from './LupaItem'
 import { Table, Thead, Tbody, Th, Tr } from "../../../modules/Table"
 import { MEDIA_QUERIES } from "../../../modules/styles"
 import styled from 'styled-components'
+import { parseLocalizedField } from "../../../modules/helpers"
 
 const WrapTable = styled.div`
-   padding-bottom: 200px;
+  padding-bottom: 200px;
+  widht: 100%;
 `
 
 class LuvatList extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortedBy: "jarjestaja"
+    };
+  }
+
   renderPermits() {
     const sorted = _.sortBy(this.props.luvat, (lupa) => {
-      return lupa.jarjestaja.nimi.fi || lupa.jarjestaja.nimi.sv
+      if (this.state.sortedBy === "maakunta")
+          return parseLocalizedField(lupa.jarjestaja.maakuntaKoodi.metadata)
+      else
+          return lupa.jarjestaja.nimi.fi || lupa.jarjestaja.nimi.sv
     })
 
     return _.map(sorted, lupa => <LupaItem lupa={lupa} key={lupa.uuid} />)
@@ -32,7 +44,7 @@ class LuvatList extends Component {
             </Tr>
             </Thead>
             <Tbody>
-            {this.renderPermits()}
+              {this.renderPermits()}
             </Tbody>
           </Table>
         }/>
@@ -40,13 +52,21 @@ class LuvatList extends Component {
           <Table>
             <Thead>
             <Tr>
-              <Th flex="3">Koulutuksen järjestäjä</Th>
-              <Th>Kotipaikan maakunta</Th>
-              <Th>Ajantasainen järjestämislupa</Th>
+              <Th flex="4" 
+                onClick={() => this.setState({sortedBy: 'jarjestaja'})}
+                >
+                Koulutuksen järjestäjä
+                { this.state.sortedBy === "jarjestaja" && " ^" }
+              </Th>
+              <Th onClick={() => this.setState({sortedBy: 'maakunta'})}
+                >
+                Kotipaikan maakunta
+                { this.state.sortedBy === "maakunta" && " ^" }
+              </Th>
             </Tr>
             </Thead>
             <Tbody>
-            {this.renderPermits()}
+              {this.renderPermits()}
             </Tbody>
           </Table>
         }/>

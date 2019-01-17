@@ -30,26 +30,29 @@ class MuutospyyntoWizardMuutokset extends Component {
 
   componentWillMount() {
     // MuutospyyntoWIzardTutkinnot ja MuutospyyntoWizardTutkintokielet tarvitsevat listan tutkinnoista
-    if (!this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) {
+    if ((!this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) 
+      || (!this.props.koulutustyypit.fetched && !this.props.koulutustyypit.hasErrored)) {
       this.props.fetchKoulutusalat()
         .then(() => {
-          if (this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored) {
-            this.props.fetchKoulutuksetAll()
-            this.props.fetchKoulutuksetMuut(MUUT_KEYS.KULJETTAJAKOULUTUS)
-            this.props.fetchKoulutuksetMuut(MUUT_KEYS.OIVA_TYOVOIMAKOULUTUS)
-            this.props.fetchKoulutuksetMuut(MUUT_KEYS.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS)
-            this.props.fetchKoulutus("999901")
-            this.props.fetchKoulutus("999903")
-          }
+          this.props.fetchKoulutustyypit()
+            .then(() => {
+              if (this.props.koulutusalat.fetched && !this.props.koulutusalat.hasErrored && 
+                this.props.koulutustyypit.fetched && !this.props.koulutustyypit.hasErrored) {
+                this.props.fetchKoulutuksetAll()
+                this.props.fetchKoulutuksetMuut(MUUT_KEYS.KULJETTAJAKOULUTUS)
+                this.props.fetchKoulutuksetMuut(MUUT_KEYS.OIVA_TYOVOIMAKOULUTUS)
+                this.props.fetchKoulutuksetMuut(MUUT_KEYS.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS)
+                this.props.fetchKoulutus("999901")
+                this.props.fetchKoulutus("999903")
+                }
+            })
         })
     }
   }
 
   render() {
     const {
-      onSubmit,
       save,
-//      update,
       lupa,
       formValues
     } = this.props
@@ -130,6 +133,7 @@ export default connect(state => {
 
   return {
     formValues: formVals,
-    koulutusalat: state.koulutusalat
+    koulutusalat: state.koulutusalat,
+    koulutustyypit: state.koulutustyypit
   }
 })(MuutospyyntoWizardMuutokset)

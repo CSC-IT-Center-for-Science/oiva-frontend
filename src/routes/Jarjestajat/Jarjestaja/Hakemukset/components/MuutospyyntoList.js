@@ -14,7 +14,7 @@ const TableHeader = styled.div`
     font-weight: normal;
     padding: 8px 18px;
     color: ${COLORS.WHITE};
-    background: ${COLORS.OIVA_GREEN};
+    background: ${COLORS.OIVA_TABLE_BG_COLOR};
     font-family: ${FONT_STACK.GOTHAM_NARROW};
     font-size: 13px;
     position: relative;

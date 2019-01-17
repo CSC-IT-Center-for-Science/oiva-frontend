@@ -26,6 +26,19 @@ export const LUPA_SECTIONS = {
   }
 }
 
+export const TUTKINNOT_SECTIONS = {
+    TUTKINNOT: "Tutkinnot",
+    POIKKEUKSET: "Valmentavat koulutukset",
+    VALMISTAVAT: "Ammatilliseen tehtävään valmistavat koulutukset",
+    TYOVOIMAT: "Työvoimakoulutukset",
+    KULJETTAJAT: "Kuljettajakoulutukset"
+}
+
+export const KIELET_SECTIONS = {
+    OPETUSKIELET: "Opetuskielet",
+    TUTKINTOKIELET: "Tutkintokielet"
+}
+
 export const KOHTEET = {
   TUTKINNOT: 'tutkinnotjakoulutukset',
   KIELI: 'opetusjatutkintokieli',

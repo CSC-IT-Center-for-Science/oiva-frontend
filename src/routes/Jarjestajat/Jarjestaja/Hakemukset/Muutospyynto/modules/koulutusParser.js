@@ -1,19 +1,7 @@
 import _ from 'lodash'
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { getKoulutusAlat } from "./koulutusUtil"
-
-const keys = {
-  KEY_01: '01',
-  KEY_02: '02',
-  KEY_03: '03',
-  KEY_04: '04',
-  KEY_05: '05',
-  KEY_06: '06',
-  KEY_07: '07',
-  KEY_08: '08',
-  KEY_09: '09',
-  KEY_10: '10'
-}
+import { getKoulutusTyypit} from "./koulutusUtil"
 
 export const parseKoulutukset = (koulutusdata, koodiarvo, metadata) => {
 
@@ -29,10 +17,6 @@ export const parseKoulutukset = (koulutusdata, koodiarvo, metadata) => {
 
     _.forEach(koulutusdata, (data) => {
       const { koodiArvo, metadata, versio } = data
-      // TODO: selvitetään mikä on oikea versiokäytäntö
-      // if (versio !== 8 && versio !== 9) {
-      //   console.log(`koulutusalan koodiarvolla: ${koodiarvo} löytyi koulutus: ${koodiArvo} ${parseLocalizedField(metadata)} versiolla: ${versio}`)
-      // }
       // toistaiseksi käytetään vain koulutuksia versiolla 8
       if (versio && versio === 8) {
         koulutusArray.push({
@@ -52,80 +36,57 @@ export const parseKoulutukset = (koulutusdata, koodiarvo, metadata) => {
 export const parseKoulutuksetAll = (koulutusdata) => {
   let koulutukset = {}
   const koulutusalat = getKoulutusAlat()
+  const koulutustyypit = getKoulutusTyypit()
+
+  let tyyppilista = {}
+  koulutustyypit.forEach(tyyppi => {
+    const { koodiArvo, metadata } = tyyppi
+    tyyppilista[koodiArvo] = { koodiArvo, metadata }
+    tyyppilista[koodiArvo]['koulutukset'] = []
+  })
 
   koulutusalat.forEach(ala => {
     const { koodiArvo, metadata } = ala
+    const uusiTyyppi = _.cloneDeep(tyyppilista)
 
     if (koodiArvo !== "00" || koodiArvo !== "99") {
-      koulutukset[koodiArvo] = { koodiArvo, metadata, koulutukset: [] }
+      koulutukset[koodiArvo] = { koodiArvo, metadata }
+      koulutukset[koodiArvo]['koulutukset'] = uusiTyyppi
     }
   })
 
   koulutusdata.forEach(koulutus => {
-    const { koulutusalaKoodiArvo } = koulutus
-    // koulutus.kohde = { id: 1 }
-    // koulutus.maaraystyyppi = { id: 1 }
+    const { koulutusalaKoodiArvo, koulutustyyppiKoodiArvo } = koulutus
 
-    switch (koulutusalaKoodiArvo) {
-      case keys.KEY_01: {
-        koulutukset[keys.KEY_01].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_02: {
-        koulutukset[keys.KEY_02].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_03: {
-        koulutukset[keys.KEY_03].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_04: {
-        koulutukset[keys.KEY_04].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_05: {
-        koulutukset[keys.KEY_05].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_06: {
-        koulutukset[keys.KEY_06].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_07: {
-        koulutukset[keys.KEY_07].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_08: {
-        koulutukset[keys.KEY_08].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_09: {
-        koulutukset[keys.KEY_09].koulutukset.push(koulutus)
-        break
-      }
-
-      case keys.KEY_10: {
-        koulutukset[keys.KEY_10].koulutukset.push(koulutus)
-        break
-      }
-
-      default: {
-        break
-      }
+    if (koulutukset && koulutusalaKoodiArvo in koulutukset && koulutustyyppiKoodiArvo in koulutukset[koulutusalaKoodiArvo].koulutukset) {
+      koulutukset[koulutusalaKoodiArvo].koulutukset[koulutustyyppiKoodiArvo].koulutukset.push(koulutus)
     }
   })
 
-  // remove duplicates
   _.forEach(koulutukset, koulutusala => {
-    koulutusala.koulutukset = _.uniqBy(koulutusala.koulutukset, 'koodiArvo')
+    _.forEach(koulutusala.koulutukset, koulutustyyppi => {
+
+       // poista tyhjät
+      if (!koulutustyyppi.koulutukset.length) {
+        delete koulutukset[koulutusala.koodiArvo].koulutukset[koulutustyyppi.koodiArvo]
+        return
+      }
+
+      // poista duplikaatit
+      koulutustyyppi.koulutukset = _.uniqBy(koulutustyyppi.koulutukset, 'koodiArvo')
+
+      // aakkosta
+      koulutustyyppi.koulutukset = _.sortBy(koulutustyyppi.koulutukset, [k => {
+        let nimi = ""
+        _.forEach(k.metadata, m => {
+          if (m.kieli === "FI") {
+            nimi = m.nimi
+          }
+        })
+        return nimi
+      }])
+
+    })
   })
 
   return koulutukset

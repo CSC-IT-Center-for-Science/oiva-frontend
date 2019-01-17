@@ -75,7 +75,7 @@ class Muutos extends Component {
     const { isHidden } = this.state
     const { muutokset, muutos, fields, kategoria } = this.props
     const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo, parentId } = muutos
-    const { perusteluteksti, perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima} = meta
+    const { perusteluteksti, perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima } = meta
     const { perusteluteksti_vankila, perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko} = meta
 
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"

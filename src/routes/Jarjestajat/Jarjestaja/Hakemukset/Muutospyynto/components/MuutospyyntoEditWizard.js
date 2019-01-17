@@ -18,7 +18,7 @@ import close from 'static/images/close-x.svg'
 import { ROLE_KAYTTAJA } from "../../../../../../modules/constants";
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
 import { FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
-import { getJarjestajaData, loadFormData } from "../modules/muutospyyntoUtil"
+import { loadFormData } from "../modules/muutospyyntoUtil"
 
 Modal.setAppElement('#root')
 
@@ -153,11 +153,8 @@ class MuutospyyntoEditWizard extends Component {
       link.href = data;
       link.download="file.pdf";
       link.click();
-      setTimeout(function(){
-        // For Firefox it is necessary to delay revoking the ObjectURL
-        window.URL.revokeObjectURL(data)
-          , 100})
-
+      // For Firefox it is necessary to delay revoking the ObjectURL
+      setTimeout(window.URL.revokeObjectURL(data), 100)
     })
   }
 
@@ -178,7 +175,7 @@ class MuutospyyntoEditWizard extends Component {
   }
 
   render() {
-    const { muutosperustelut, vankilat, ELYkeskukset, lupa, paatoskierrokset, match, muutospyynto, initialValues } = this.props
+    const { muutosperustelut, vankilat, ELYkeskukset, lupa, paatoskierrokset, muutospyynto, initialValues } = this.props
     const { page, visitedPages } = this.state
 
     // setTimeout(() => console.log(muutospyynto), 3000)
@@ -230,6 +227,7 @@ class MuutospyyntoEditWizard extends Component {
                     lupa={lupa}
                     initialValues={initialValues}
                     fetchKoulutusalat={this.props.fetchKoulutusalat}
+                    fetchKoulutustyypit={this.props.fetchKoulutustyypit}
                     fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
                     fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
                     fetchKoulutus={this.props.fetchKoulutus}

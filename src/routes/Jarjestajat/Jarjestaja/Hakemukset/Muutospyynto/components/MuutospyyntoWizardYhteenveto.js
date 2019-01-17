@@ -8,6 +8,7 @@ import Modal from 'react-modal'
 import OrganisaationTiedot from './OrganisaationTiedot'
 import DatePicker from "../../../../../../modules/DatePicker"
 import MuutosList from './MuutosList'
+import MuutosListTutkinnot from './MuutosListTutkinnot'
 
 import validate from '../modules/validateWizard'
 import { WizardBottom, Container, SubtleButton, Button, FormGroup, Label, FormField, Separator } from "./MuutospyyntoWizardComponents"
@@ -141,21 +142,23 @@ class MuutospyyntoWizardYhteenveto extends Component {
 
           <FieldArray
             name={FIELD_ARRAY_NAMES.TUTKINNOT_JA_KOULUTUKSET}
+            nimi={FIELD_ARRAY_NAMES.TUTKINNOT_JA_KOULUTUKSET}
             muutokset={tutkinnotjakoulutuksetValue}
             kategoria="tutkinto"
             headingNumber="1"
             heading="Tutkinnot ja koulutukset"
-            component={MuutosList}
+            component={MuutosListTutkinnot}
             componentType={COMPONENT_TYPES.MUUTOS_YHTEENVETO}
           />
 
           <FieldArray
             name={FIELD_ARRAY_NAMES.OPETUS_JA_TUTKINTOKIELET}
+            nimi={FIELD_ARRAY_NAMES.OPETUS_JA_TUTKINTOKIELET}
             muutokset={opetusjatutkintokieletValue}
             kategoria="opetuskieli"
             headingNumber="2"
             heading="Opetus- ja tutkintokielet"
-            component={MuutosList}
+            component={MuutosListTutkinnot}
             componentType={COMPONENT_TYPES.MUUTOS_YHTEENVETO}
           />
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import { COLORS, MEDIA_QUERIES, TRANSITIONS } from "../../../../../../modules/styles"
@@ -598,4 +597,12 @@ export const FormField = styled.div`
     max-width: 355px;
     width: 100%;
   }
+`
+export const KoulutustyyppiWrapper = styled.div`
+  margin: 5px 0 20px;
+`
+
+export const Koulutustyyppi = styled.div`
+  font-size: 15px;
+  font-weight: bold;
 `

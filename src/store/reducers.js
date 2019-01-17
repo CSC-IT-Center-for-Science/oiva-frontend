@@ -10,6 +10,7 @@ import muutosperustelutReducer from '../modules/reducers/muutosperustelut'
 import vankilatReducer from '../modules/reducers/vankilat'
 import ELYkeskuksetReducer from '../modules/reducers/elykeskukset'
 import koulutusalatReducer from '../modules/reducers/koulutusalat'
+import koulutustyypitReducer from '../modules/reducers/koulutustyypit'
 import koulutuksetReducer from '../modules/reducers/koulutukset'
 import paatoskierroksetReducer from '../modules/reducers/paatoskierrokset'
 import oppilaitoksenopetuskieletReducer from '../routes/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/oppilaitoksenopetuskielet'
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   vankilat: vankilatReducer,
   ELYkeskukset: ELYkeskuksetReducer,
   koulutusalat: koulutusalatReducer,
+  koulutustyypit: koulutustyypitReducer,
   koulutukset: koulutuksetReducer,
   paatoskierrokset: paatoskierroksetReducer,
   oppilaitoksenopetuskielet: oppilaitoksenopetuskieletReducer,

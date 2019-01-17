@@ -7,6 +7,7 @@ import { fetchLupa } from "../../../modules/lupa"
 import { createMuutospyynto, saveMuutospyynto, fetchMuutospyynto, updateMuutospyynto } from "../modules/muutospyynto"
 import { previewMuutospyynto } from "../modules/muutospyynto"
 import { fetchKoulutusalat } from "../../../../../../modules/reducers/koulutusalat"
+import { fetchKoulutustyypit } from "../../../../../../modules/reducers/koulutustyypit"
 import { fetchKoulutuksetAll, fetchKoulutuksetMuut, fetchKoulutus } from "../../../../../../modules/reducers/koulutukset"
 import { fetchPaatoskierrokset } from "../../../../../../modules/reducers/paatoskierrokset"
 import { fetchMaaraystyypit } from "../../../../../../modules/reducers/maaraystyyppi"
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch, props) => {
     updateMuutospyynto: (muutospyynto) => dispatch(updateMuutospyynto(muutospyynto)),
     fetchMuutospyynto: (uuid) => dispatch(fetchMuutospyynto(uuid)),
     fetchKoulutusalat: () => dispatch(fetchKoulutusalat()),
+    fetchKoulutustyypit: () => dispatch(fetchKoulutustyypit()),
     fetchKoulutuksetAll: () => dispatch(fetchKoulutuksetAll()),
     fetchKoulutuksetMuut: (koodisto) => dispatch(fetchKoulutuksetMuut(koodisto)),
     fetchKoulutus: (koodi) => dispatch(fetchKoulutus(koodi)),

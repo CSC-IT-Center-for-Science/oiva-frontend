@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import validate from '../modules/validateWizard'
-import { TUTKINTO_TEKSTIT } from "../../../modules/constants"
+import { TUTKINTO_TEKSTIT, TUTKINNOT_SECTIONS } from "../../../modules/constants"
 import TutkintoList from './TutkintoList'
 import KoulutusList from './KoulutusList'
 import { parseLocalizedField } from "../../../../../../modules/helpers"
@@ -128,7 +128,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
         <KoulutusList
           key="valmentavat"
           koodisto="koulutus"
-          nimi="Valmentavat koulutukset"
+          nimi={ TUTKINNOT_SECTIONS.POIKKEUKSET }
           koulutukset={poikkeukset}
           muutMaaraykset={muutMaaraykset}
           editValues={editValue}
@@ -139,7 +139,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
           <KoulutusList
             key="ammatilliseentehtavaanvalmistavakoulutus"
             koodisto="ammatilliseentehtavaanvalmistavakoulutus"
-            nimi="Ammatilliseen tehtävään valmistavat koulutukset"
+            nimi={ TUTKINNOT_SECTIONS.VALMISTAVAT }
             koulutukset={muut.ammatilliseentehtavaanvalmistavakoulutus}
             muutMaaraykset={muutMaaraykset}
             editValues={editValue}
@@ -151,7 +151,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
           <KoulutusList
             key="oivatyovoimakoulutus"
             koodisto="oivatyovoimakoulutus"
-            nimi="Työvoimakoulutukset"
+            nimi={ TUTKINNOT_SECTIONS.TYOVOIMAT }
             koulutukset={muut.oivatyovoimakoulutus}
             muutMaaraykset={muutMaaraykset}
             editValues={editValue}
@@ -163,7 +163,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
           <KoulutusList
             key="kuljettajakoulutus"
             koodisto="kuljettajakoulutus"
-            nimi="Kuljettajakoulutukset"
+            nimi={ TUTKINNOT_SECTIONS.KULJETTAJAT }
             koulutukset={muut.kuljettajakoulutus}
             muutMaaraykset={muutMaaraykset}
             editValues={editValue}
