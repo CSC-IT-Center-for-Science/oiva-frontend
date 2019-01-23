@@ -679,8 +679,78 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         }
       }
     }
+  },
+  TALOUDELLISET: {
+    PAAOTSIKKO: {
+      FI: "Taloudelliset edellytykset",
+      SV: "På svenska"
+    },
+    EI_LISATTYJA_TUTKINTOJA: {
+      FI: "Taloudelliset edellytykset ilmoitetaan vain, kun järjestämislupaan haetaan uusia tutkintoja tai koulutuksia. Jatka seuraavalle välilehdelle Seuraava-painikkeella.",
+      SV: "På svenska"
+    },
+    EDELLYTYKSET: {
+      FI: "Taloudelliset edellytykset",
+      SV: "På svenska"
+    },
+    VAIKUTUKSET: {
+      FI: "Vaikutukset taloudellisten resurssien kohdentamiseen",
+      SV: "På svenska"
+    },
+    SOPEUTTAMINEN: {
+      FI: "Toiminnan ja talouden sopeuttaminen",
+      SV: "På svenska"
+    },
+    INVESTOINNIT: {
+      FI: "Tarvittavat investoinnit",
+      SV: "På svenska"
+    },
+    KUSTANNUKSET: {
+      FI: "Investointien kustannukset",
+      SV: "På svenska"
+    },
+    RAHOITUS: {
+      FI: "Investointien rahoitus",
+      SV: "På svenska"
+    },
+    OMAVARAISUUSASTE: {
+      FI: "Omavaraisuusaste",
+      SV: "På svenska"
+    },
+    MAKSUVALMIUS: {
+      FI: "Maksuvalmius",
+      SV: "På svenska"
+    },
+    VELKAANTUNEISUUS: {
+      FI: "Velkaantuneisuus",
+      SV: "På svenska"
+    },
+    KANNATTAVUUS: {
+      FI: "Kannattavuus",
+      SV: "På svenska"
+    },
+    KUMULATIIVINEN: {
+      FI: "Kumulatiivinen yli- tai alijäämä",
+      SV: "På svenska"
+    },
+    TILINPAATOSASIAKIRJAT: {
+      FI: "Tilinpäätösasiakirjat liitteenä",
+      SV: "På svenska"
+    },
+    YLEISET: {
+      FI: "Yleiset tiedot",
+      SV: "På svenska"
+    },
+    INVESTOINNIT_LEGEND: {
+      FI: "Investoinnit",
+      SV: "På svenska"
+    },
+    TILINPAATOSTIEDOT: {
+      FI: "Tilinpäätöstiedot",
+      SV: "På svenska"
+    }
+  },
 
-  }
 }
 
 export const MUUT_KEYS = {

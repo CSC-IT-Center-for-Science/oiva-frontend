@@ -16,6 +16,7 @@ export function formatMuutospyynto(muutospyynto) {
     luontipvm,
     lupaUuid,
     tila,
+    uuid,
     tutkinnotjakoulutukset = [],
     opetusjatutkintokielet = [],
     toimintaalueet = [],
@@ -40,6 +41,7 @@ export function formatMuutospyynto(muutospyynto) {
     luoja,
     luontipvm,
     lupaUuid,
+    uuid,
     paatoskierros: getDefaultPaatoskierros(),
     tila,
     paivittaja: "string",
@@ -73,7 +75,7 @@ function getDefaultPaatoskierros() {
   if (paatoskierrokset && paatoskierrokset.data) {
     const pkierrosObj = _.find(paatoskierrokset.data, pkierros => {
       if (pkierros.meta && pkierros.meta.nimi && pkierros.meta.nimi.fi) {
-        if (pkierros.meta.nimi.fi === "Avoin päätöskierros 2018") {
+        if (pkierros.id === 19) {
           return pkierros
         }
       }
@@ -189,6 +191,7 @@ export function loadFormData(state, muutosdata, formValues) {
     luontipvm,
     meta,
     lupaUuid,
+    uuid,
     paatoskierros,
     muutokset
   } = muutosdata
@@ -211,6 +214,7 @@ export function loadFormData(state, muutosdata, formValues) {
     luontipvm,
     hakija,
     lupaUuid,
+    uuid,
     paatoskierros
   }
 

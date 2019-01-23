@@ -26,8 +26,9 @@ class LuvatList extends Component {
     const sorted = _.sortBy(this.props.luvat, (lupa) => {
       if (this.state.sortedBy === "maakunta")
           return parseLocalizedField(lupa.jarjestaja.maakuntaKoodi.metadata)
-      else
+      else if (lupa.jarjestaja)
           return lupa.jarjestaja.nimi.fi || lupa.jarjestaja.nimi.sv
+      return null
     })
 
     return _.map(sorted, lupa => <LupaItem lupa={lupa} key={lupa.uuid} />)

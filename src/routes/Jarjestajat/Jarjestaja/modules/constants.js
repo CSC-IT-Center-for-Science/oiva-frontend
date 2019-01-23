@@ -1,26 +1,26 @@
 export const LUPA_SECTIONS = {
   1: {
-    heading: "Tutkinnot ja koulutukset (23 §)",
+    heading: "Tutkinnot ja koulutukset",
     tunniste: 'tutkinnotjakoulutukset',
     headingNumber: 1
   },
   2: {
-    heading: "Opetus- ja tutkintokieli (24 §)",
+    heading: "Opetus- ja tutkintokieli",
     tunniste: 'opetusjatutkintokieli',
     headingNumber: 2
   },
   3: {
-    heading: "Toiminta-alue (25 §)",
+    heading: "Toiminta-alue",
     tunniste: 'toimintaalue',
     headingNumber: 3
   },
   4: {
-    heading: "Opiskelijavuodet ja niitä koskevat rajoitukset (26 §)",
+    heading: "Opiskelijavuodet ja niitä koskevat rajoitukset",
     tunniste: 'opiskelijavuodet',
     headingNumber: 4
   },
   5: {
-    heading: "Muut oikeudet, velvollisuudet, ehdot ja tehtävät (27 §)",
+    heading: "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
     tunniste: 'muut',
     headingNumber: 5
   }
@@ -117,12 +117,12 @@ export const LUPA_TEKSTIT = {
     },
     KIELI: {
         VELVOLLISUUS_YKSIKKO: {
-            FI: 'Koulutuksen järjestäjän on annettava opetusta seuraavalla opetuskielellä',
-            SV: 'Utbildningsanordnaren ska meddela undervisningen på följande språk'
+            FI: 'Koulutuksen järjestäjän on annettava opetusta seuraavalla opetuskielellä:',
+            SV: 'Utbildningsanordnaren ska meddela undervisningen på följande språk:'
         },
         VELVOLLISUUS_MONIKKO: {
-            FI: 'Koulutuksen järjestäjän on annettava opetusta seuraavilla opetuskielillä',
-            SV: 'Utbildningsanordnaren ska meddela undervisningen på följande språk'
+            FI: 'Koulutuksen järjestäjän on annettava opetusta seuraavilla opetuskielillä:',
+            SV: 'Utbildningsanordnaren ska meddela undervisningen på följande språk:'
         },
         LISA_RUOTSI_YKSIKKO: {
             FI: 'Tutkintokieli on em. opetuskielen lisäksi ruotsi seuraavassa tutkinnossa',
@@ -216,13 +216,13 @@ export const TUTKINTO_TEKSTIT = {
           ' eller kompletterar yrkeskompetensen som avses i 8 § 1 punkten i lagen om yrkesutbildning (531/2017).'
   },
   valma: {
-    selite: 'Koulutuksen järjestäjällä on oikeus järjestää seuraavaa valmentavaa koulutusta'
+    selite: 'Koulutuksen järjestäjällä on oikeus järjestää seuraavaa valmentavaa koulutusta:'
   },
   telma: {
-    selite: 'Koulutuksen järjestäjällä on oikeus järjestää seuraavaa valmentavaa koulutusta'
+    selite: 'Koulutuksen järjestäjällä on oikeus järjestää seuraavaa valmentavaa koulutusta:'
   },
   ammatilliseentehtavaanvalmistavakoulutus: {
-    selite: 'Koulutuksen järjestäjällä on oikeus järjestää seuraavaa ammatilliseen tehtävään valmistavaa koulutusta',
+    selite: 'Koulutuksen järjestäjällä on oikeus järjestää seuraavaa ammatilliseen tehtävään valmistavaa koulutusta:',
   },
 }
 

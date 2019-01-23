@@ -4,6 +4,8 @@ import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { KOHTEET, KOODISTOT, MAARAYSTYYPIT } from "../../../modules/constants"
 import { getKohdeByTunniste, getMaaraystyyppiByTunniste } from "./muutospyyntoUtil"
 import { MUUTOS_TYPES } from "./uusiHakemusFormConstants"
+import { meta_kuljettaja_jatko, meta_kuljettaja_perus, meta_oppisopimus, meta_tyovoima, meta_vaativa, meta_vankila } from "./lisaperusteluUtil"
+
 
 export function getKieliByKoodi(koodi) {
   const state = store.getState()
@@ -297,138 +299,14 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
           perusteluteksti: null,
-          perusteluteksti_oppisopimus: {
-            "tarpeellisuus": null,
-            "henkilosto": null,
-            "osaaminen": null,
-            "sidosryhma": null,
-            "vuodet": {
-              "arvo_1": {"vuosi": null, "maara": null},
-              "arvo_2": {"vuosi": null, "maara": null},
-              "arvo_3": {"vuosi": null, "maara": null}
-            }
-          },
-          perusteluteksti_vaativa: {
-            "tarpeellisuus": null,
-            "henkilosto": null,
-            "osaaminen": null,
-            "sidosryhma": null,
-            "pedagogiset": null,
-            "suunnitelma": null,
-            "vuodet": {
-              "arvo_1": {"vuosi": null, "maara": null},
-              "arvo_2": {"vuosi": null, "maara": null},
-              "arvo_3": {"vuosi": null, "maara": null}
-            }
-          },
-          perusteluteksti_vankila: {
-            "tarpeellisuus": null,
-            "henkilosto": null,
-            "osaaminen": null,
-            "sidosryhma": null,
-            "pedagogiset": null,
-            "toteuttaminen": null,
-            "vuodet": {
-              "arvo_1": {"vuosi": null, "maara": null},
-              "arvo_2": {"vuosi": null, "maara": null},
-              "arvo_3": {"vuosi": null, "maara": null}
-            }
-          },
-          perusteluteksti_tyovoima: {
-            "tarpeellisuus": null,
-            "henkilosto": null,
-            "osaaminen": null,
-            "sidosryhma": null,
-            "yhteistyo": null,
-            "vuodet": {
-              "arvo_1": {"vuosi": null, "maara": null},
-              "arvo_2": {"vuosi": null, "maara": null},
-              "arvo_3": {"vuosi": null, "maara": null}
-            }
-          },
-          perusteluteksti_kuljetus_perus: {
-            "tarpeellisuus": null,
-            "voimassaoleva": null,
-            "voimassaoleva_pvm": null,
-            "suunnitelma": null,
-            "toimipisteet": {
-              "nimi": null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "henkilot": {
-              "nimi":null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "kanta_linja_auto": null,
-            "kanta_kuorma_auto": null,
-            "kanta_peravaunu": null,
-            "kanta_muut": null,
-            "valineet_asetus": null,
-            "valineet_muut": null
-          },
-          perusteluteksti_kuljetus_jatko: {
-            "tarpeellisuus": null,
-            "voimassaoleva": null,
-            "voimassaoleva_pvm": null,
-            "suunnitelma": null,
-            "osaaminen":null,
-            "toimipisteet": {
-              "nimi": null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "henkilot": {
-              "nimi":null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "kanta_linja_auto": null,
-            "kanta_kuorma_auto": null,
-            "kanta_peravaunu": null,
-            "kanta_muut": null,
-            "valineet_asetus": null,
-            "valineet_muut": null
-          },
-          muutosperustelukoodiarvo: null
-        }
+          ...(koodistoUri == KOODISTOT.KULJETTAJAKOULUTUS  && (koodiArvo == 2 || koodiArvo == 3) &&  {perusteluteksti_kuljetus_jatko: meta_kuljettaja_jatko}),
+          ...(koodistoUri == KOODISTOT.KULJETTAJAKOULUTUS  && koodiArvo == 1 && {perusteluteksti_kuljetus_perus: meta_kuljettaja_perus}),
+          ...(koodistoUri == KOODISTOT.OIVA_MUUT  && koodiArvo == 1 && {perusteluteksti_oppisopimus: meta_oppisopimus}),
+          ...(koodistoUri == KOODISTOT.OIVA_MUUT  && (koodiArvo == 5 || koodiArvo == 13) && {perusteluteksti_vankila: meta_vankila}),
+          ...(koodistoUri == KOODISTOT.OIVA_MUUT  && (koodiArvo == 2 || koodiArvo == 3 || koodiArvo == 12) && {perusteluteksti_vaativa: meta_vaativa}),
+          ...(koodistoUri == KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiArvo == 1 || koodiArvo == 3) && {perusteluteksti_tyovoima: meta_tyovoima})
+        },
+        muutosperustelukoodiarvo: null
       })
     }
   } else {
@@ -442,143 +320,19 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         isInLupa,
         kohde,
         maaraystyyppi,
-        type: MUUTOS_TYPES.REMOVAL,
+        type: MUUTOS_TYPES.ADDITION,
         meta: {
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
           perusteluteksti: null,
-          perusteluteksti_oppisopimus: {
-            "tarpeellisuus": null,
-            "henkilosto": null,
-            "osaaminen": null,
-            "sidosryhma": null,
-            "vuodet": {
-              "arvo_1": {"vuosi": null, "maara": null},
-              "arvo_2": {"vuosi": null, "maara": null},
-              "arvo_3": {"vuosi": null, "maara": null}
-            }
-          },
-          perusteluteksti_vaativa: {
-              "tarpeellisuus": null,
-              "henkilosto": null,
-              "osaaminen": null,
-              "sidosryhma": null,
-              "pedagogiset": null,
-              "suunnitelma": null,
-              "vuodet": {
-                "arvo_1": {"vuosi": null, "maara": null},
-                "arvo_2": {"vuosi": null, "maara": null},
-                "arvo_3": {"vuosi": null, "maara": null}
-              }
-          },
-          perusteluteksti_vankila: {
-              "tarpeellisuus": null,
-              "henkilosto": null,
-              "osaaminen": null,
-              "sidosryhma": null,
-              "pedagogiset": null,
-              "toteuttaminen": null,
-              "vuodet": {
-                "arvo_1": {"vuosi": null, "maara": null},
-                "arvo_2": {"vuosi": null, "maara": null},
-                "arvo_3": {"vuosi": null, "maara": null}
-              }
-          },
-          perusteluteksti_tyovoima: {
-              "tarpeellisuus": null,
-              "henkilosto": null,
-              "osaaminen": null,
-              "sidosryhma": null,
-              "yhteistyo": null,
-              "vuodet": {
-                "arvo_1": {"vuosi": null, "maara": null},
-                "arvo_2": {"vuosi": null, "maara": null},
-                "arvo_3": {"vuosi": null, "maara": null}
-              }
-          },
-          perusteluteksti_kuljetus_perus: {
-            "tarpeellisuus": null,
-            "voimassaoleva": null,
-            "voimassaoleva_pvm": null,
-            "suunnitelma": null,
-            "toimipisteet": {
-              "nimi": null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "henkilot": {
-              "nimi":null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "kanta_linja_auto": null,
-            "kanta_kuorma_auto": null,
-            "kanta_peravaunu": null,
-            "kanta_muut": null,
-            "valineet_asetus": null,
-            "valineet_muut": null
-          },
-          perusteluteksti_kuljetus_jatko: {
-            "tarpeellisuus": null,
-            "voimassaoleva": null,
-            "voimassaoleva_pvm": null,
-            "suunnitelma": null,
-            "osaaminen":null,
-            "toimipisteet": {
-              "nimi": null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "henkilot": {
-              "nimi":null,
-              "lupa": null,
-              "voimassa_kuorma_auto": null,
-              "voimassa_linja_auto": null,
-              "luokka_C" : null,
-              "luokka_CE": null,
-              "luokka_D": null,
-              "tutkinto_linja_auto": null,
-              "tutkinto_yhdistelma": null,
-              "tutkinto_puutavara": null,
-              "tutkinto_kuljetuspalvelu": null,
-              "tutkinto_kuljetusala": null
-            },
-            "kanta_linja_auto": null,
-            "kanta_kuorma_auto": null,
-            "kanta_peravaunu": null,
-            "kanta_muut": null,
-            "valineet_asetus": null,
-            "valineet_muut": null
-          },
-          muutosperustelukoodiarvo: null
-        }
+          ...(koodistoUri == KOODISTOT.KULJETTAJAKOULUTUS  && (koodiArvo == 2 || koodiArvo == 3) &&  {perusteluteksti_kuljetus_jatko: meta_kuljettaja_jatko}),
+          ...(koodistoUri == KOODISTOT.KULJETTAJAKOULUTUS  && koodiArvo == 1 && {perusteluteksti_kuljetus_perus: meta_kuljettaja_perus}),
+          ...(koodistoUri == KOODISTOT.OIVA_MUUT  && koodiArvo == 1 && {perusteluteksti_oppisopimus: meta_oppisopimus}),
+          ...(koodistoUri == KOODISTOT.OIVA_MUUT  && (koodiArvo == 5 || koodiArvo == 13) && {perusteluteksti_vankila: meta_vankila}),
+          ...(koodistoUri == KOODISTOT.OIVA_MUUT  && (koodiArvo == 2 || koodiArvo == 3 || koodiArvo == 12) && {perusteluteksti_vaativa: meta_vaativa}),
+          ...(koodistoUri == KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiArvo == 1 || koodiArvo == 3) && {perusteluteksti_tyovoima: meta_tyovoima})
+        },
+        muutosperustelukoodiarvo: null
       })
     } else {
       // Tutkinto ei ollut luvassa --> poistetaan muutos formista

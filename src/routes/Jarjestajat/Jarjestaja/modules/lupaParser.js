@@ -298,7 +298,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
     })
 
     if (valtakunnalliset && valtakunnalliset.length > 0) {
-      returnobj.kohdeKuvaus = LUPA_TEKSTIT.TOIMINTA_ALUE.VALTAKUNNALLINEN.FI
+      returnobj.kohdeKuvaus = LUPA_TEKSTIT.TOIMINTA_ALUE.VELVOLLISUUS_KOKO_SUOMI.FI
       returnobj.valtakunnallinen = valtakunnalliset[0]
     }
 

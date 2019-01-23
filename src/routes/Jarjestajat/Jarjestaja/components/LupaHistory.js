@@ -1,12 +1,15 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import Media from 'react-media'
 import styled from 'styled-components'
+import { Table, Thead, Tbody, Thn, Tr } from "../../../../modules/Table"
+import { MEDIA_QUERIES } from "../../../../modules/styles"
 
 import LupaHistoryItem from './LupaHistoryItem'
 import Loading from '../../../../modules/Loading'
 
-const LupaHistoryWrapper = styled.div`
-  margin: 20px 0;
+const WrapTable = styled.div`
+   padding-bottom: 200px;
 `
 
 class LupaHistory extends Component {
@@ -22,7 +25,33 @@ class LupaHistory extends Component {
     const { fetched, isFetching, hasErrored, data } = this.props.lupaHistory
 
     if (fetched) {
-      return <LupaHistoryWrapper>{this.renderLupaHistoryList(data)}</LupaHistoryWrapper>
+      return (
+        <WrapTable>
+          <Media query={MEDIA_QUERIES.MOBILE} render={() =>
+            <Table>
+              <Tbody>
+                {this.renderLupaHistoryList(data)}
+              </Tbody>
+            </Table>
+          }/>
+          <Media query={MEDIA_QUERIES.TABLET_MIN} render={() =>
+            <Table>
+              <Thead>
+              <Tr>
+                <Thn>Diaarinumero</Thn>
+                <Thn>Päätöspvm</Thn>
+                <Thn>Voimaantulopvm</Thn>
+                <Thn>Päättymispvm</Thn>
+                <Thn>Kumottu</Thn>
+              </Tr>
+              </Thead>
+              <Tbody>
+                {this.renderLupaHistoryList(data)}
+              </Tbody>
+            </Table>
+          }/>
+        </WrapTable>
+      )
     } else if (isFetching) {
       return <Loading />
     } else if (hasErrored) {

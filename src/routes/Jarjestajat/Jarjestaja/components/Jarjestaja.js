@@ -64,7 +64,7 @@ class Jarjestaja extends Component {
             {
                 path: `${match.url}`,
                 exact: true,
-                text: 'Päätöshistoria',
+                text: 'Päätökset',
                 authenticated: true
             },
             {

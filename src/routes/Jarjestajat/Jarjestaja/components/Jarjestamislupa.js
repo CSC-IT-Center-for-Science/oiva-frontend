@@ -12,7 +12,7 @@ import { COLORS } from "../../../../modules/styles"
 import { LUPA_LISAKOULUTTAJAT } from "../../modules/constants"
 
 const TopSectionWrapper = styled.div`
-  padding: 5px 30px;
+  padding: 5px 20px;
   margin: 0 -30px;
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
 `
@@ -50,11 +50,11 @@ class Jarjestamislupa extends Component {
 
             {lupaException ?
               <TopSectionWrapper>
-                <H2>Ajantasainen järjestämislupa</H2>
+                <H2>Ajantasainen ammatillisten tutkintojen ja koulutuksen järjestämislupa</H2>
               </TopSectionWrapper>
               :
               <TopSectionWrapper>
-                <H2>Ajantasainen järjestämislupa (<Moment format="DD.MM.YYYY"></Moment>)</H2>
+                <H2>Ajantasainen ammatillisten tutkintojen ja koulutuksen järjestämislupa <Moment format="DD.MM.YYYY"></Moment></H2>
               </TopSectionWrapper>
             }
 

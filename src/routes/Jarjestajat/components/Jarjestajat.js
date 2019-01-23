@@ -32,7 +32,7 @@ class Jarjestajat extends Component {
     } else if (isFetching) {
         return <Loading />
     } else if (hasErrored) {
-      return <div>Lupia ladattaessa tapahtui virhe</div>
+      return <div>&nbsp;&nbsp;Lupia ladattaessa tapahtui virhe</div>
     } else {
       return null
     }

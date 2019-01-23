@@ -18,12 +18,17 @@ const CurrentLupaWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  overflow: hidden;
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);
   -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);
   box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.3);
   
   img {
     height: 68px;
+  }
+
+  &:hover {
+    background-color: ${COLORS.OIVA_TABLE_HOVER_COLOR};
   }
   
   @media ${MEDIA_QUERIES.MOBILE} {
@@ -34,18 +39,21 @@ const CurrentLupaWrapper = styled.div`
 const OuterWrapper = styled.div`
   display: inline-block;
   margin-bottom: 40px;
+  max-width: 100%;
 `
 
 const LupaTextWrapper = styled.div`
   margin-left: 20px;
   margin-right: 30px;
-  width: 100%;
   flex: 1 1 auto;
-  
+
   p {
     line-height: 24px;
     margin: 0;
     color: ${COLORS.BLACK};
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
   }
 `
 

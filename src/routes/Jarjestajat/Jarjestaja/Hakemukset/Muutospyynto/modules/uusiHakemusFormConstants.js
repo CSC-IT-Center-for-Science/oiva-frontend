@@ -5,6 +5,7 @@ export const FIELD_ARRAY_NAMES = {
   OPETUS_JA_TUTKINTOKIELET: 'opetusjatutkintokielet',
   TOIMINTA_ALUEET: 'toimintaalueet',
   OPISKELIJAVUODET: 'opiskelijavuodet',
+  TALOUDELLISET: 'taloudelliset',
   MUUT: 'muutmuutokset',
   HAKIJAN_TIEDOT: 'hakijantiedot'
 }

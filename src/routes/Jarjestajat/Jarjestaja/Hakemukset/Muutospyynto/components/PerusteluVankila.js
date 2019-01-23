@@ -50,7 +50,6 @@ class PerusteluVankila extends Component {
 
       let { vankilat } = this.props
       vankilat = _.sortBy(vankilat, v => { return v.label })
-      console.log(vankilat)
 
       const { selectedOption } = this.state
 

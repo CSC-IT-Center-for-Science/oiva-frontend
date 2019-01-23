@@ -7,6 +7,7 @@ import Modal from 'react-modal'
 
 import MuutospyyntoWizardMuutokset from './MuutospyyntoWizardMuutokset'
 import MuutospyyntoWizardPerustelut from './MuutospyyntoWizardPerustelut'
+import MuutospyyntoWizardTaloudelliset from './MuutospyyntoWizardTaloudelliset'
 import MuutospyyntoWizardYhteenveto from './MuutospyyntoWizardYhteenveto'
 
 import Loading from '../../../../../../modules/Loading'
@@ -211,7 +212,8 @@ class MuutospyyntoEditWizard extends Component {
               <Container maxWidth="1085px" color={COLORS.BLACK}>
                 <Phase number="1" text="Muutokset" activePage={page} handleClick={(number) => this.changePhase(number)} />
                 <Phase number="2" text="Perustelut" activePage={page} disabled={visitedPages.indexOf(2) === -1} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="3" text="Yhteenveto" activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="3" text="Taloudelliset edellytykset" activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="4" text="Yhteenveto" activePage={page} disabled={visitedPages.indexOf(4) === -1} handleClick={(number) => this.changePhase(number)} />
               </Container>
             </WizardHeader>
 
@@ -244,15 +246,24 @@ class MuutospyyntoEditWizard extends Component {
                     ELYkeskukset={this.props.ELYkeskukset.data}
                   />
                 )}
-                {page === 3 && (
-                  <MuutospyyntoWizardYhteenveto
-                    previousPage={this.previousPage}
-                    onCancel={this.onCancel}
-                    onSubmit={this.onSubmit}
-                    save={this.save}
-                    preview={this.preview}
+                  {page === 3 && (
+                    <MuutospyyntoWizardTaloudelliset
+                      previousPage={this.previousPage}
+                      onCancel={this.onCancel}
+                      onSubmit={this.nextPage}
+                      save={this.save}
                   />
-                )}
+                  )}
+                  {page === 4 && (
+                    <MuutospyyntoWizardYhteenveto
+                      previousPage={this.previousPage}
+                      onCancel={this.onCancel}
+                      onSubmit={this.onSubmit}
+                      save={this.save}
+                      preview={this.preview}
+                      createMuutospyynto={this.props.createMuutospyynto}
+                    />
+                  )}
               </WizardContent>
             </ContentContainer>
           </WizardWrapper>

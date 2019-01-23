@@ -25,6 +25,7 @@ const HeaderBarUpper = styled.div`
   margin: 0 auto;
   width: 100%;
   background: ${COLORS.WHITE};
+  max-height: 50px;
 
 `
 
@@ -35,6 +36,7 @@ const HeaderBarLower = styled.div`
   padding-left:20px;
   width: 100%;
   background: ${COLORS.OIVA_MENU_BG_COLOR};
+  max-height: 50px;
 `
 
 const HeaderUpperRight = styled.div`

@@ -9,6 +9,7 @@ import OrganisaationTiedot from './OrganisaationTiedot'
 import DatePicker from "../../../../../../modules/DatePicker"
 import MuutosList from './MuutosList'
 import MuutosListTutkinnot from './MuutosListTutkinnot'
+import TaloudellisetYhteenveto from './TaloudellisetYhteenveto'
 
 import validate from '../modules/validateWizard'
 import { WizardBottom, Container, SubtleButton, Button, FormGroup, Label, FormField, Separator } from "./MuutospyyntoWizardComponents"
@@ -102,6 +103,7 @@ class MuutospyyntoWizardYhteenveto extends Component {
       toimialueValue,
       opiskelijavuosiValue,
       muutmuutoksetValue,
+      taloudellisetValue,
       tila
     } = this.props
 
@@ -190,6 +192,14 @@ class MuutospyyntoWizardYhteenveto extends Component {
             heading="Muut oikeudet, velvollisuudet, ehdot ja tehtävät"
             component={MuutosList}
             componentType={COMPONENT_TYPES.MUUTOS_YHTEENVETO}
+          />
+
+          <FieldArray
+            name={FIELD_ARRAY_NAMES.TALOUDELLISET}
+            muutokset={taloudellisetValue}
+            kategoria="taloudelliset"
+            heading="Taloudelliset edellytykset"
+            component={TaloudellisetYhteenveto}
           />
 
           <WizardBottom>
@@ -328,6 +338,7 @@ MuutospyyntoWizardYhteenveto = connect(state => {
   const toimialueValue = selector(state, FIELD_ARRAY_NAMES.TOIMINTA_ALUEET)
   const opiskelijavuosiValue = selector(state, FIELD_ARRAY_NAMES.OPISKELIJAVUODET)
   const muutmuutoksetValue = selector(state, FIELD_ARRAY_NAMES.MUUT)
+  const taloudellisetValue = selector(state, FIELD_ARRAY_NAMES.TALOUDELLISET)
 
   let formVals = undefined
   if (state.form && state.form.uusiHakemus && state.form.uusiHakemus.values) {
@@ -342,6 +353,7 @@ MuutospyyntoWizardYhteenveto = connect(state => {
     toimialueValue,
     opiskelijavuosiValue,
     muutmuutoksetValue,
+    taloudellisetValue,
     lupa: state.lupa,
     muutosperustelut: state.muutosperustelut,
     paatoskierrokset: state.paatoskierrokset,

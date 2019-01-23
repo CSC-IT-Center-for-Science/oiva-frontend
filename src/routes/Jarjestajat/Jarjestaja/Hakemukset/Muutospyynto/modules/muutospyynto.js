@@ -65,12 +65,12 @@ export function saveMuutospyynto(muutospyynto) {
 
   const formatted = formatMuutospyynto(muutospyynto)
 
-  console.log('formatted-save', JSON.stringify(formatted))
+  console.log('formatted-save', JSON.stringify(formatted, null, 3))
 
   return (dispatch) => {
     dispatch({ type: SAVE_MUUTOSPYYNTO_START})
 
-    axios.put(`${API_BASE_URL}/muutospyynnot/create`, formatted, { withCredentials: true })
+    return axios.put(`${API_BASE_URL}/muutospyynnot/tallenna`, formatted, { withCredentials: true })
       .then(response => {
         dispatch({ type: SAVE_MUUTOSPYYNTO_SUCCESS, payload: response })
       })

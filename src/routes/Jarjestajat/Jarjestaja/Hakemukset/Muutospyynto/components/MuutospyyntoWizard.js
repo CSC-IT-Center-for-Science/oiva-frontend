@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 
 import MuutospyyntoWizardMuutokset from './MuutospyyntoWizardMuutokset'
 import MuutospyyntoWizardPerustelut from './MuutospyyntoWizardPerustelut'
+import MuutospyyntoWizardTaloudelliset from './MuutospyyntoWizardTaloudelliset'
 import MuutospyyntoWizardYhteenveto from './MuutospyyntoWizardYhteenveto'
 
 import Loading from '../../../../../../modules/Loading'
@@ -137,6 +138,13 @@ class MuutospyyntoWizard extends Component {
 
     console.log('save', data)
     this.props.saveMuutospyynto(data)
+    const url = `/jarjestajat/${this.props.match.params.ytunnus}`
+    this.props.saveMuutospyynto(data).then(() => {
+       let uuid = this.props.muutospyynto.save.response.data
+       let newurl = url + "/hakemukset-ja-paatokset/" + uuid
+       this.props.history.push(newurl)
+       })
+
   }
 
   preview(event, data) {
@@ -208,7 +216,8 @@ class MuutospyyntoWizard extends Component {
               <Container maxWidth="1085px" color={COLORS.BLACK}>
                 <Phase number="1" text="Muutokset" activePage={page} handleClick={(number) => this.changePhase(number)} />
                 <Phase number="2" text="Perustelut" activePage={page} disabled={visitedPages.indexOf(2) === -1} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="3" text="Yhteenveto" activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="3" text="Taloudelliset edellytykset" activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="4" text="Yhteenveto" activePage={page} disabled={visitedPages.indexOf(4) === -1} handleClick={(number) => this.changePhase(number)} />
               </Container>
             </WizardHeader>
 
@@ -241,6 +250,14 @@ class MuutospyyntoWizard extends Component {
                     />
                   )}
                   {page === 3 && (
+                    <MuutospyyntoWizardTaloudelliset
+                      previousPage={this.previousPage}
+                      onCancel={this.onCancel}
+                      onSubmit={this.nextPage}
+                      save={this.save}
+                  />
+                  )}
+                  {page === 4 && (
                     <MuutospyyntoWizardYhteenveto
                       previousPage={this.previousPage}
                       onCancel={this.onCancel}
