@@ -14,7 +14,7 @@ import Tutkintokieli from "./Tutkintokieli";
 
 
 const SectionWrapper = styled.div`
-  margin: 0 30px 0 30px;
+  margin: 0 20px 0 20px;
   position: relative;
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
   padding: 10px 0 0 0;

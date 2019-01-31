@@ -320,7 +320,7 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         isInLupa,
         kohde,
         maaraystyyppi,
-        type: MUUTOS_TYPES.ADDITION,
+        type: MUUTOS_TYPES.REMOVAL,
         meta: {
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,

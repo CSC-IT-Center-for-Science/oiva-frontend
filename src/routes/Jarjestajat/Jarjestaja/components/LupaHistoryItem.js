@@ -24,8 +24,13 @@ const TextPartial = styled.span`
 const LupaHistoryItem = (props) => {
   const { filename, diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm } = props.lupaHistoria
 
+  let path = '/pebble/resources/liitteet/lupahistoria/'
+  if(voimassaololoppupvm.split("-").join("") > "20181230") {
+    path = '/pdf/';
+  }
+
   return (
-    <a href={`${API_BASE_URL}/pebble/resources/liitteet/lupahistoria/${filename}`} target="_blank">
+    <a href={`${API_BASE_URL}${path}${filename}`} target="_blank">
       <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Tr>
             <LupaText>

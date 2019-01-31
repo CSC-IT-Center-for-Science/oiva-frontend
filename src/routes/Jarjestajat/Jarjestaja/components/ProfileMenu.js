@@ -4,8 +4,6 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
 import { COLORS } from "../../../../modules/styles"
-import {ROLE_KAYTTAJA} from "../../../../modules/constants";
-
 
 const MenuBar = styled.div`
   display: flex;

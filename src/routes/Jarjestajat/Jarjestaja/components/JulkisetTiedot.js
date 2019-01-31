@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 import LupaHistoryContainer from '../containers/LupaHistoryContainer'
 import CurrentLupa from './CurrentLupa'
-
-import { InnerContentContainer, InnerContentWrapper  } from "../../../../modules/elements"
+import { LUPA_TEKSTIT } from "../modules/constants"
+import { InnerContentContainer } from "../../../../modules/elements"
 import { LUPA_LISAKOULUTTAJAT } from "../../modules/constants"
 
 const LargeParagraph = styled.p`
@@ -41,8 +41,8 @@ const JulkisetTiedot = (props) => {
     <InnerContentContainer>
       <LupaInnerContentWrapper>
         <LupaInfoWrapper>
-          <h2>Päätökset</h2>
-          <LargeParagraph>Viimeisin päätös</LargeParagraph>
+          <h2>{LUPA_TEKSTIT.PAATOKSET.OTSIKKO.FI}</h2>
+          <LargeParagraph>{LUPA_TEKSTIT.PAATOKSET.VIIMEISIN.FI}</LargeParagraph>
         </LupaInfoWrapper>
 
         <CurrentLupa
@@ -52,7 +52,7 @@ const JulkisetTiedot = (props) => {
           lupaExceptionUrl={lupaException ? `${LUPA_EXCEPTION_PATH}${lupaException.pdflink}` : null}
         />
 
-        <LargeParagraph>Historiatiedot</LargeParagraph>
+        <LargeParagraph>{LUPA_TEKSTIT.PAATOKSET.HISTORIATIEDOT.FI}</LargeParagraph>
         <br />
 
         <LupaHistoryContainer jarjestajaOid={jarjestajaOid} />

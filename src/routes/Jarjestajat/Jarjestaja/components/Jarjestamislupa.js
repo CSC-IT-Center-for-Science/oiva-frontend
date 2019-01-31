@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 
 import LupaSection from './LupaSection'
 
-import { LUPA_SECTIONS } from "../modules/constants"
+import { LUPA_SECTIONS, LUPA_TEKSTIT } from "../modules/constants"
 import { InnerContentContainer, InnerContentWrapper  } from "../../../../modules/elements"
 import { COLORS } from "../../../../modules/styles"
 
@@ -50,11 +50,11 @@ class Jarjestamislupa extends Component {
 
             {lupaException ?
               <TopSectionWrapper>
-                <H2>Ajantasainen ammatillisten tutkintojen ja koulutuksen järjestämislupa</H2>
+                <H2>{LUPA_TEKSTIT.LUPA.OTSIKKO.FI}</H2>
               </TopSectionWrapper>
               :
               <TopSectionWrapper>
-                <H2>Ajantasainen ammatillisten tutkintojen ja koulutuksen järjestämislupa <Moment format="DD.MM.YYYY"></Moment></H2>
+                <H2>{LUPA_TEKSTIT.LUPA.OTSIKKO.FI} <Moment format="DD.MM.YYYY"></Moment></H2>
               </TopSectionWrapper>
             }
 

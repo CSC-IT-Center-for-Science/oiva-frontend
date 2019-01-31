@@ -6,9 +6,11 @@ import { Route } from 'react-router-dom'
 import JarjestajaBasicInfo from './JarjestajaBasicInfo'
 import ProfileMenu from './ProfileMenu'
 import JulkisetTiedot from './JulkisetTiedot'
+import JarjestamislupaAsiat from './Jarjestamislupa-asiat'
 import JarjestamislupaContainer from '../containers/JarjestamislupaContainer'
 import HakemuksetJaPaatoksetContainer from "../Hakemukset/containers/HakemuksetJaPaatoksetContainer"
 import Loading from '../../../../modules/Loading'
+import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants"
 // import MuutospyyntoContainer from "../Hakemukset/Muutospyynto/containers/MuutospyyntoContainer"
 // import MuutospyyntoWizard from '../Hakemukset/Muutospyynto/components/MuutospyyntoWizard'
 
@@ -57,25 +59,26 @@ class Jarjestaja extends Component {
         // Alanavigaation tabivalikon routet
         const tabNavRoutes = [
             {
-                path: `${match.url}/jarjestamislupa`,
-                text: 'Järjestämislupa',
-                authenticated: true
+              path: `${match.url}/jarjestamislupa`,
+              text: LUPA_TEKSTIT.LUPA.OTSIKKO_LYHYT.FI,
+              authenticated: true
             },
             {
-                path: `${match.url}`,
-                exact: true,
-                text: 'Päätökset',
-                authenticated: true
+              path: `${match.url}`,
+              exact: true,
+              text: 'Päätökset',
+              text: LUPA_TEKSTIT.PAATOKSET.OTSIKKO.FI,
+              authenticated: true
             },
             {
-                path: `${match.url}/hakemukset-ja-paatokset`,
-                text: 'Hakemukset',
-                authenticated: authenticated
+              path: `${match.url}/jarjestamislupa-asia`,
+              text: LUPA_TEKSTIT.ASIAT.OTSIKKO_LYHYT.FI,
+              authenticated: authenticated
             },
             {
-                path: `${match.url}/hakemukset-ja-paatokset/uusi`,
-                text: 'Uusi hakemus',
-                authenticated: authenticated
+              path: `${match.url}/hakemukset-ja-paatokset/uusi`,
+              text: LUPA_TEKSTIT.MUUT.UUSI_HAKEMUS_OTSIKKO.FI,
+              authenticated: authenticated
             }
         ]
 
@@ -98,7 +101,7 @@ class Jarjestaja extends Component {
               <ContentContainer padding={'40px 15px 80px'} margin={'28px auto 0'}>
                 <Route path={`${match.url}/jarjestamislupa`}  render={() => <JarjestamislupaContainer ytunnus={match.params.ytunnus} /> } />
                 <Route path={`${match.url}`} exact render={() => <JulkisetTiedot lupadata={lupadata} />} />
-                {(authenticated) ? (<Route path={`${match.path}/hakemukset-ja-paatokset`} exact render={(props) =>  <HakemuksetJaPaatoksetContainer {...props} />} />) : null }
+                {(authenticated) ? (<Route path={`${match.url}/jarjestamislupa-asia`}  render={() => <JarjestamislupaAsiat lupadata={lupadata} /> } />) : null }
               </ContentContainer>
             </FullWidthWrapper>
           </div>

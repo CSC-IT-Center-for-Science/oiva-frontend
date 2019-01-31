@@ -22,11 +22,11 @@ export const Thead = styled.div`
     &:after {
       content: '';
       width: 1px;
-      height: 22px;
       background-color: rgba(255, 255, 255, 1);
       position: absolute;
       right: 0;
       top: 7px;
+      bottom: 7px;
     }
     
     &:last-child {
@@ -80,13 +80,18 @@ export const Tr = styled.div`
     cursor: pointer;
     background: ${COLORS.OIVA_TABLE_HOVER_COLOR};
   }
+  `
 
+export const Trn = styled(Tr)`
+  &:hover {
+    cursor: default;
+    background: transparent;
+  }
 `
-
 export const Th = styled.div`
   display: flex;
   flex: ${props => props.flex ? props.flex : 1};
-  padding: 10px 20px;
+  padding: 10px 10px;
   align-items: ${props => props.alignItems ? props.alignItems : 'stretch'};
   color: ${COLORS.WHITE};
   
@@ -117,15 +122,14 @@ export const Th = styled.div`
 export const Thn = styled(Th)`
   &:hover {
     cursor: default;
-    background: inherit;
+    background: initial;
   }
 `
 export const Td = styled.div`
   display: flex;
   flex: ${props => props.flex ? props.flex : 1};
-  padding: 10px 20px;
+  padding: 10px 10px;
   align-items: ${props => props.alignItems ? props.alignItems : 'stretch'};
-  
   img {
     margin-right: 5px;
   }
@@ -144,4 +148,20 @@ export const Td = styled.div`
       padding-top: 2px;
     }
   }
+`
+
+export const ThButton = styled(Thn)`
+  padding: 0;
+  margin: 0;
+  min-width: 42px;
+  max-width: 42px;
+  flex: 0;
+`
+
+export const TdButton = styled(Td)`
+  background: white;
+  padding: 0;
+  margin: 0;
+  width: 42px;
+  max-width: 42px;
 `
