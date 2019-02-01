@@ -10,31 +10,31 @@ import Header from 'modules/Header/containers/HeaderContainer'
 import Footer from 'modules/Footer/containers/FooterContainer'
 import Routes from 'routes'
 import { COLORS, APP_WIDTH } from './modules/styles'
-import { AppContainer, BreadcrumbsContainer } from './modules/elements'
+import { AppContainer, BreadcrumbsContainer, RoutesContainer } from './modules/elements'
 
 ReactDOM.render(
   <Provider store={store}>
     <BreadcrumbsProvider>
       <BrowserRouter>
-        <div>
+        <AppContainer>
           <Header maxWidth={`${APP_WIDTH}`}/>
-          <AppContainer>
-            <BreadcrumbsContainer>
-              <Breadcrumbs
-                separator={<b> / </b>}
-                item={NavLink}
-                finalItem={'b'}
-                finalProps={{
-                  style: {
-                    color: COLORS.BLACK
-                  }
-                }}
-              />
-            </BreadcrumbsContainer>
+          <BreadcrumbsContainer>
+            <Breadcrumbs
+              separator={<b> / </b>}
+              item={NavLink}
+              finalItem={'b'}
+              finalProps={{
+                style: {
+                  color: COLORS.BLACK
+                }
+              }}
+            />
+          </BreadcrumbsContainer>
+          <RoutesContainer>
             <Routes />
-            <Footer maxWidth={`${APP_WIDTH}`}/>
-          </AppContainer>
-        </div>
+          </RoutesContainer>
+          <Footer maxWidth={`${APP_WIDTH}`}/>
+        </AppContainer>
       </BrowserRouter>
     </BreadcrumbsProvider>
   </Provider>,

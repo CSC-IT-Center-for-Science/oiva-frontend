@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import { parseLocalizedField } from "../../../modules/helpers"
 
 const WrapTable = styled.div`
-  padding-bottom: 200px;
   widht: 100%;
 `
 

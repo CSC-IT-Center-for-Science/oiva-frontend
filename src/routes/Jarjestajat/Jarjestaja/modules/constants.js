@@ -332,7 +332,40 @@ export const LUPA_TEKSTIT = {
             FI: 'Järjestämislupa-asian asiakirjat',
             SV: 'ASIAKIRJAT_OTSIKKO'
         }
-        
+    },   
+    OMATTIEDOT: {
+        OTSIKKO: {
+            FI: 'Omat tiedot',
+            SV: 'OTSIKKO'
+        },
+        KAYNTIOSOITE: {
+            FI: 'Käyntiosoite',
+            SV: 'KAYNTIOSOITE'
+        },
+        POSTIOSOITE: {
+            FI: 'Postiosoite',
+            SV: 'POSTIOSOITE'
+        },
+        YHTEYSTIEDOT: {
+            FI: 'Yhteystiedot',
+            SV: 'YHTEYSTIEDOT'
+        },
+        PUHELINNUMERO: {
+            FI: 'Puhelinnumero',
+            SV: 'PUHELINNUMERO'
+        },
+        WWWW: {
+            FI: 'Www-osoite',
+            SV: 'WWW'
+        },
+        EMAIL: {
+            FI: 'Sähköpostiosoite',
+            SV: 'EMAIL'
+        },
+        INFO: {
+            FI: 'Tiedot tulevat Opetushallituksen Organisaatiotietopalvelusta, joka päivittää ne Yritys- ja yhteisötietojärjestelmästä. Muutokset tietoihin sitä kautta.',
+            SV: 'INFO'
+        }
     }
 }
 

@@ -93,9 +93,9 @@ class Header extends Component {
             <LinkItem to="/vapaa-sivistystyo">Vapaa sivistystyö</LinkItem>
             <LinkItem to="/tilastot">Tilastot</LinkItem>
 
-             { ytunnus ? 
-            <LinkItem ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus + "/jarjestamislupa", ytunnus: ytunnus}} exact>Oma organisaatio</LinkItem>
-            : "" }
+            { ytunnus &&
+              <LinkItem onClick={this.forceUpdate} ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus + "/omattiedot", ytunnus: ytunnus}} exact>Oma organisaatio</LinkItem>
+            }
 
             { (sessionStorage.getItem('role')===ROLE_ESITTELIJA) ? (<LinkItem to="/asiat" >Asiat</LinkItem>) : null}
           </HeaderBarLower>

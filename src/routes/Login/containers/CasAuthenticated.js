@@ -49,7 +49,7 @@ class CasAuthenticated extends Component {
                   <p>Kirjautumisessa tapahtui virhe</p>
                   :
                   ytunnus ?
-                    <Redirect ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus + "/jarjestamislupa", ytunnus: ytunnus}} />
+                    <Redirect ytunnus={ytunnus} to={{pathname: "/jarjestajat/" + ytunnus + "/omattiedot", ytunnus: ytunnus}} />
                     :
                     <Successful><h2>Tervetuloa Oiva-palveluun {sessionStorage.getItem('username')}</h2>
                     </Successful>

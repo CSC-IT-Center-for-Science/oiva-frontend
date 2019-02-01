@@ -10,7 +10,6 @@ import Loading from '../../../../modules/Loading'
 import { LUPA_EXCEPTIONS } from '../../modules/constants';
 
 const WrapTable = styled.div`
-   padding-bottom: 200px;
 `
 class JarjestamislupaAsiakirjat extends Component {
 

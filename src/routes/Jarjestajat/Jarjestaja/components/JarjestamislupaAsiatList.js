@@ -15,7 +15,7 @@ import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants"
 import { LUPA_EXCEPTIONS } from '../../modules/constants';
 
 const WrapTable = styled.div`
-   padding-bottom: 200px;
+ 
 `
 const Button = styled.div`
   color: ${props => props.textColor ? props.textColor : COLORS.WHITE};

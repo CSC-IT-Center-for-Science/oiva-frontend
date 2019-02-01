@@ -5,7 +5,7 @@ import ValmistelussaAsiatList from "./ValmistelussaAsiatList";
 
 import { InnerContentContainer, InnerContentWrapper  } from "../../../modules/elements"
 import { COLORS, BackgroundImage } from "../../../modules/styles"
-import { ContentContainer, FullWidthWrapper } from '../../../modules/elements'
+import { ContentContainer, FullWidthWrapper, ContentWrapper } from '../../../modules/elements'
 import { ROLE_ESITTELIJA, ESITTELIJA } from '../../../modules/constants'
 import AsiatMenu from './AsiatMenu'
 import { Helmet } from 'react-helmet'
@@ -61,7 +61,7 @@ class ValmistelussaAsiat extends Component {
 
         if (fetched) {
             return (
-                <div>
+                <ContentWrapper>
                     <ContentContainer padding={'20px auto 0px auto'} margin={'38px auto 0px auto'}>
                         <Helmet>
                             <title>Oiva | Asiat</title>
@@ -84,7 +84,7 @@ class ValmistelussaAsiat extends Component {
                             </InnerContentContainer>
                         </ContentContainer>
                     </FullWidthWrapper>
-                </div>
+                </ContentWrapper>
             )
         } else if (isFetching) {
             return (

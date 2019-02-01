@@ -11,12 +11,10 @@ const FooterBar = styled.div`
   background: ${COLORS.WHITE};
   color: black;
   border-top: 2px solid #70A489;
-  padding-top: 20px;
   padding: 1rem;
+  padding-bottom: 40px;
   height:100px;
-  position:absolute;
   bottom:0;
-  width:100%;
 `
 
 const FooterBarUpper = styled.div`

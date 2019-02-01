@@ -12,7 +12,7 @@ import MuutospyyntoWizardYhteenveto from './MuutospyyntoWizardYhteenveto'
 
 import Loading from '../../../../../../modules/Loading'
 
-import { ContentContainer } from "../../../../../../modules/elements"
+import { ContentContainer, ContentWrapper } from "../../../../../../modules/elements"
 import { WizardBackground, WizardTop, WizardWrapper, WizardHeader, WizardContent, Container } from "./MuutospyyntoWizardComponents"
 import { COLORS } from "../../../../../../modules/styles"
 import close from 'static/images/close-x.svg'
@@ -51,13 +51,12 @@ const Text = styled.div`
 `
 
 const HideFooter = styled.div`
-  width:100%;
   background-color: white;
   width: 100%;
-  z-index: 1;
   position: relative;
+  bottom: -100px;
+  height: 100px;
 `
-
 
 const Phase = ({ number, text, activePage, disabled, handleClick }) => {
   const isActive = Number(number) === Number(activePage)
@@ -201,7 +200,7 @@ class MuutospyyntoWizard extends Component {
 
     if (muutosperustelut.fetched && vankilat.fetched && ELYkeskukset.fetched && lupa.fetched && paatoskierrokset.fetched) {
       return (
-        <div>
+        <ContentWrapper>
           <WizardBackground />
 
           <WizardWrapper>
@@ -221,56 +220,57 @@ class MuutospyyntoWizard extends Component {
               </Container>
             </WizardHeader>
 
-            <HideFooter>
-              <ContentContainer maxWidth="1085px" margin="50px auto">
-                <WizardContent>
-                  {page === 1 && (
-                    <MuutospyyntoWizardMuutokset
-                      previousPage={this.previousPage}
-                      onSubmit={this.nextPage}
-                      onCancel={this.onCancel}
-                      save={this.save}
-                      lupa={lupa}
-                      fetchKoulutusalat={this.props.fetchKoulutusalat}
-                      fetchKoulutustyypit={this.props.fetchKoulutustyypit}
-                      fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
-                      fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
-                      fetchKoulutus={this.props.fetchKoulutus}
-                    />
-                  )}
-                  {page === 2 && (
-                    <MuutospyyntoWizardPerustelut
-                      previousPage={this.previousPage}
-                      onSubmit={this.nextPage}
-                      onCancel={this.onCancel}
-                      save={this.save}
-                      muutosperustelut={this.props.muutosperustelut.data}
-                      vankilat={this.props.vankilat.data}
-                      ELYkeskukset={this.props.ELYkeskukset.data}
-                    />
-                  )}
-                  {page === 3 && (
-                    <MuutospyyntoWizardTaloudelliset
-                      previousPage={this.previousPage}
-                      onCancel={this.onCancel}
-                      onSubmit={this.nextPage}
-                      save={this.save}
+
+            <ContentContainer maxWidth="1085px" margin="50px auto">
+              <WizardContent>
+                {page === 1 && (
+                  <MuutospyyntoWizardMuutokset
+                    previousPage={this.previousPage}
+                    onSubmit={this.nextPage}
+                    onCancel={this.onCancel}
+                    save={this.save}
+                    lupa={lupa}
+                    fetchKoulutusalat={this.props.fetchKoulutusalat}
+                    fetchKoulutustyypit={this.props.fetchKoulutustyypit}
+                    fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
+                    fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
+                    fetchKoulutus={this.props.fetchKoulutus}
                   />
-                  )}
-                  {page === 4 && (
-                    <MuutospyyntoWizardYhteenveto
-                      previousPage={this.previousPage}
-                      onCancel={this.onCancel}
-                      onSubmit={this.onSubmit}
-                      save={this.save}
-                      preview={this.preview}
-                      createMuutospyynto={this.props.createMuutospyynto}
-                    />
-                  )}
-                </WizardContent>
-              </ContentContainer>
-            </HideFooter>
+                )}
+                {page === 2 && (
+                  <MuutospyyntoWizardPerustelut
+                    previousPage={this.previousPage}
+                    onSubmit={this.nextPage}
+                    onCancel={this.onCancel}
+                    save={this.save}
+                    muutosperustelut={this.props.muutosperustelut.data}
+                    vankilat={this.props.vankilat.data}
+                    ELYkeskukset={this.props.ELYkeskukset.data}
+                  />
+                )}
+                {page === 3 && (
+                  <MuutospyyntoWizardTaloudelliset
+                    previousPage={this.previousPage}
+                    onCancel={this.onCancel}
+                    onSubmit={this.nextPage}
+                    save={this.save}
+                />
+                )}
+                {page === 4 && (
+                  <MuutospyyntoWizardYhteenveto
+                    previousPage={this.previousPage}
+                    onCancel={this.onCancel}
+                    onSubmit={this.onSubmit}
+                    save={this.save}
+                    preview={this.preview}
+                    createMuutospyynto={this.props.createMuutospyynto}
+                  />
+                )}
+              </WizardContent>
+            </ContentContainer>
           </WizardWrapper>
+
+          <HideFooter />
 
           <Modal
             isOpen={this.state.isCloseModalOpen}
@@ -287,7 +287,7 @@ class MuutospyyntoWizard extends Component {
               <ModalButton onClick={this.closeCancelModal}>Ei</ModalButton>
             </div>
           </Modal>
-        </div>
+        </ContentWrapper>
       )
     } else if (muutosperustelut.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching) {
       return <Loading />

@@ -9,7 +9,7 @@ import LupaHistoryItem from './LupaHistoryItem'
 import Loading from '../../../../modules/Loading'
 
 const WrapTable = styled.div`
-   padding-bottom: 200px;
+ 
 `
 
 class LupaHistory extends Component {

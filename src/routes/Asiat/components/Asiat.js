@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic'
 import { Route } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -10,7 +9,7 @@ import PaatetytAsiatContainer from '../containers/PaatetytAsiatContainer'
 import AsiatMenu from './AsiatMenu'
 
 import { COLORS, BackgroundImage } from "../../../modules/styles"
-import { ContentContainer, FullWidthWrapper } from '../../../modules/elements'
+import { ContentContainer, FullWidthWrapper, ContentWrapper } from '../../../modules/elements'
 import {ROLE_ESITTELIJA} from "../../../modules/constants";
 
 
@@ -21,8 +20,6 @@ class Asiat extends Component {
 
 
         if (match.params) {
-
-            const breadcrumb = `/asiat/${match.params.id}`
 
             // check the rights
             let authenticated = false;
@@ -52,8 +49,8 @@ class Asiat extends Component {
 
 
             return (
-                <div>
-                    <ContentContainer padding={'20px auto 0px auto'} margin={'38px auto 0px auto'}>
+                <ContentWrapper>
+                    <ContentContainer padding={'20px 0 0px 0'} margin={'38px auto 0px auto'}>
                         <Helmet>
                             <title>Oiva | Asiat</title>
                         </Helmet>
@@ -72,7 +69,7 @@ class Asiat extends Component {
 
                         </ContentContainer>
                     </FullWidthWrapper>
-                </div>
+                </ContentWrapper>
             )
         } else {
             return null
