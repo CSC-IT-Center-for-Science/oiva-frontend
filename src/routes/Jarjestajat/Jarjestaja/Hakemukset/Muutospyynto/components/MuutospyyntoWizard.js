@@ -279,7 +279,12 @@ class MuutospyyntoWizard extends Component {
             <WizardTop>
               <Container padding="0 20px">
                 <div>Uusi muutoshakemus</div>
-                <HelpButton onClick={ e => this.showHelp(e) }><MdInfo />Ohje</HelpButton>
+                <HelpButton 
+                  onClick={ e => this.showHelp(e) }
+                  title="Yleinen ohje muutoshakemuksen tekemiseen"
+                  >
+                    <MdInfo />Ohje
+                </HelpButton>
                 <CloseButton src={close} onClick={this.openCancelModal} />
               </Container>
             </WizardTop>
