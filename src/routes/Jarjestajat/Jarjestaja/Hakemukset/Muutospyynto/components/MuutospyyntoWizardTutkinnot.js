@@ -20,8 +20,8 @@ import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemu
 
 class MuutospyyntoWizardTutkinnot extends Component {
 
-  showHelp = e => {
-    this.props.showHelp(e);
+  showHelp = (e, content) => {
+    this.props.showHelp(e,content);
   }
 
   render() {
@@ -53,7 +53,6 @@ class MuutospyyntoWizardTutkinnot extends Component {
     }
 
     if (koulutuksetFetched && muutFetched && muuData !== undefined && poikkeusData !== undefined) {
-      console.log(this.props);
       return (
         <Kohde>
           <ContentContainer>

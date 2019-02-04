@@ -145,7 +145,8 @@ class MuutospyyntoWizard extends Component {
       page: 1,
       visitedPages: [1],
       isCloseModalOpen: false,
-      showHelp: false
+      showHelp: false,
+      helpContent: ""
     }
   }
 
@@ -240,8 +241,13 @@ class MuutospyyntoWizard extends Component {
     this.setState({ isCloseModalOpen: false })
   }
 
-  showHelp = (e) => {
-    this.setState( {showHelp: !this.state.showHelp} );
+  showHelp = (e, content) => {
+    if (content === this.state.helpContent) 
+      this.setState( {showHelp: !this.state.showHelp} );
+    else {
+      this.setState( { helpContent: content} );
+      this.setState( {showHelp: true} );
+    }
     e.preventDefault();
     e.stopPropagation();
   }
@@ -351,9 +357,11 @@ class MuutospyyntoWizard extends Component {
                    &#10005;
                 </CloseHelpButton>
               </h3>
-              <p>Seuraavat kohdat on jaoteltu ammatillisten tutkintojen ja koulutuksen järjestämisluvan rakenteen mukaisesti. Hakijan tulee täyttää alla olevat kohdat vain siltä osin, mihin tutkintojen ja koulutuksen järjestämislupaan haetaan muutosta. Tarkemmat ohjeistukset sekä pykäläviittaukset ammatillisen koulutuksen lakiin (531/2017) on esitetty kohdittain.</p>
-              <p>Seuraavat kohdat on jaoteltu ammatillisten tutkintojen ja koulutuksen järjestämisluvan rakenteen mukaisesti. Hakijan tulee täyttää alla olevat kohdat vain siltä osin, mihin tutkintojen ja koulutuksen järjestämislupaan haetaan muutosta. Tarkemmat ohjeistukset sekä pykäläviittaukset ammatillisen koulutuksen lakiin (531/2017) on esitetty kohdittain.</p>
-              <p>Seuraavat kohdat on jaoteltu ammatillisten tutkintojen ja koulutuksen järjestämisluvan rakenteen mukaisesti. Hakijan tulee täyttää alla olevat kohdat vain siltä osin, mihin tutkintojen ja koulutuksen järjestämislupaan haetaan muutosta. Tarkemmat ohjeistukset sekä pykäläviittaukset ammatillisen koulutuksen lakiin (531/2017) on esitetty kohdittain.</p>            
+              {!this.state.helpContent  ?
+                <p>Seuraavat kohdat on jaoteltu ammatillisten tutkintojen ja koulutuksen järjestämisluvan rakenteen mukaisesti. Hakijan tulee täyttää alla olevat kohdat vain siltä osin, mihin tutkintojen ja koulutuksen järjestämislupaan haetaan muutosta. Tarkemmat ohjeistukset sekä pykäläviittaukset ammatillisen koulutuksen lakiin (531/2017) on esitetty kohdittain.</p>
+              :
+                this.state.helpContent
+              }
             </Help>
 
           </Draggable>
