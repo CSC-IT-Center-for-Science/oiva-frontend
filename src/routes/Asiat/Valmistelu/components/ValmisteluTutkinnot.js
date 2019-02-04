@@ -144,6 +144,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
                                     maaraykset={maaraykset}
                                     editValues={editValue}
                                     fields={fields}
+                                    showHelp={this.props.showHelp}
                                 />
                             )
                         })}

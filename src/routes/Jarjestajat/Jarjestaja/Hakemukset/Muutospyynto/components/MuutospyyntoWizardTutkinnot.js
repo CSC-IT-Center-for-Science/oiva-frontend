@@ -19,6 +19,11 @@ import {
 import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
 
 class MuutospyyntoWizardTutkinnot extends Component {
+
+  showHelp = e => {
+    this.props.showHelp(e);
+  }
+
   render() {
     const { lupa, tutkintomuutoksetValue } = this.props
     const { kohteet } = lupa
@@ -48,6 +53,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
     }
 
     if (koulutuksetFetched && muutFetched && muuData !== undefined && poikkeusData !== undefined) {
+      console.log(this.props);
       return (
         <Kohde>
           <ContentContainer>
@@ -86,7 +92,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
     }
   }
 
-  renderTutkinnot(props) {
+  renderTutkinnot = (props) => {
     let { fields, data } = props
     const { kohde, editValue } = props
     const { maaraykset } = kohde
@@ -110,6 +116,7 @@ class MuutospyyntoWizardTutkinnot extends Component {
               maaraykset={maaraykset}
               editValues={editValue}
               fields={fields}
+              showHelp={this.showHelp}
             />
           )
         })}

@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from "react"
 import { COLORS } from "../../../../../../modules/styles"
 import arrow from 'static/images/koulutusala-arrow.svg'
+import { MdInfo } from 'react-icons/md';
 import {
   Wrapper,
   Heading,
@@ -17,11 +18,13 @@ import {
   Koodi,
   Nimi,
   Koulutustyyppi,
-  KoulutustyyppiWrapper
+  KoulutustyyppiWrapper,
+  HelpButton
 } from './MuutospyyntoWizardComponents'
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { handleCheckboxChange, handleOsaamislaCheckboxChange } from "../modules/koulutusUtil"
 import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
+import styled from 'styled-components'
 
 class TutkintoList extends Component {
   constructor(props) {
@@ -66,6 +69,10 @@ class TutkintoList extends Component {
     return i
   }
 
+  showHelp = e => {
+    this.props.showHelp(e);
+  }
+
   render() {
     const { nimi, maaraykset } = this.props
     const alaKoodiArvo = this.props.koodiarvo
@@ -104,6 +111,7 @@ class TutkintoList extends Component {
             ? <SpanMuutos>Muutokset:&nbsp;<Span color={COLORS.OIVA_PURPLE}>{muutokset.length}</Span><Span onClick={event => {event.stopPropagation();this.removeChanges(muutokset, editValues, fields, alaKoodiArvo);}}>Poista muutokset</Span></SpanMuutos>
             : null
           }
+          <HelpButton onClick={ e => this.showHelp(e) }><MdInfo /></HelpButton>
         </Heading>
 
         {!this.state.isHidden && 

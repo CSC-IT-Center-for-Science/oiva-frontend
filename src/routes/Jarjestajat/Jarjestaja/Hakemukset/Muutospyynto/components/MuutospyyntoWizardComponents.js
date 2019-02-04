@@ -608,3 +608,20 @@ export const Koulutustyyppi = styled.div`
   font-size: 15px;
   font-weight: bold;
 `
+
+export const HelpButton = styled.div`
+  height: 20px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  svg {
+    height: 24px;
+    width: 24px;
+    color: ${COLORS.DARK_GRAY};
+  }
+  &:hover {
+    background: ${COLORS.OIVA_TABLE_HOVER_COLOR};
+  }
+  margin-left: auto;
+`

@@ -56,7 +56,6 @@ class MuutospyyntoWizardMuutokset extends Component {
       lupa,
       formValues
     } = this.props
-
     return (
       <div>
 
@@ -68,6 +67,7 @@ class MuutospyyntoWizardMuutokset extends Component {
         <form onSubmit={this.props.handleSubmit}>
           <MuutospyyntoWizardTutkinnot
             lupa={lupa}
+            showHelp={this.props.showHelp}
           />
 
           <Kohde>

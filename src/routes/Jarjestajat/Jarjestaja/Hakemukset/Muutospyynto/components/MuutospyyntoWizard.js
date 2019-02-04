@@ -13,13 +13,16 @@ import MuutospyyntoWizardYhteenveto from './MuutospyyntoWizardYhteenveto'
 import Loading from '../../../../../../modules/Loading'
 
 import { ContentContainer, ContentWrapper } from "../../../../../../modules/elements"
-import { WizardBackground, WizardTop, WizardWrapper, WizardHeader, WizardContent, Container } from "./MuutospyyntoWizardComponents"
+import { WizardBackground, WizardTop, WizardWrapper, WizardHeader, WizardContent, Container, Button } from "./MuutospyyntoWizardComponents"
 import { COLORS } from "../../../../../../modules/styles"
 import close from 'static/images/close-x.svg'
 import { ROLE_KAYTTAJA } from "../../../../../../modules/constants";
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
 import { FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
 import { getJarjestajaData } from "../modules/muutospyyntoUtil"
+
+import { MdInfo } from 'react-icons/md';
+
 
 import Draggable from 'react-draggable';
 
@@ -29,6 +32,22 @@ const CloseButton = styled.img`
   height: 20px;
   cursor: pointer;
   padding: 4px;
+`
+
+const HelpButton = styled.div`
+  height: 20px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  svg {
+    height: 24px;
+    width: 24px;
+    margin-right: 8px;
+  }
+  &:hover {
+    background: ${COLORS.OIVA_TABLE_HOVER_COLOR};
+  }
 `
 
 const CloseHelpButton = styled.div`
@@ -90,6 +109,11 @@ const Help = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    svg {
+      margin-bottom: -2px;
+      color: ${COLORS.DARK_GRAY};
+    }
   }
 `
 
@@ -121,7 +145,7 @@ class MuutospyyntoWizard extends Component {
       page: 1,
       visitedPages: [1],
       isCloseModalOpen: false,
-      showHelp: true
+      showHelp: false
     }
   }
 
@@ -216,6 +240,12 @@ class MuutospyyntoWizard extends Component {
     this.setState({ isCloseModalOpen: false })
   }
 
+  showHelp = (e) => {
+    this.setState( {showHelp: !this.state.showHelp} );
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
   render() {
     const { muutosperustelut, vankilat, ELYkeskukset, lupa, paatoskierrokset } = this.props
     const { page, visitedPages } = this.state
@@ -243,6 +273,7 @@ class MuutospyyntoWizard extends Component {
             <WizardTop>
               <Container padding="0 20px">
                 <div>Uusi muutoshakemus</div>
+                <HelpButton onClick={ e => this.showHelp(e) }><MdInfo />Ohje</HelpButton>
                 <CloseButton src={close} onClick={this.openCancelModal} />
               </Container>
             </WizardTop>
@@ -256,7 +287,7 @@ class MuutospyyntoWizard extends Component {
               </Container>
             </WizardHeader>
 
-            <ContentContainer maxWidth="1085px" margin={this.state.showHelp ? "50px auto 50px 20vw": "50px auto"}>
+            <ContentContainer maxWidth="1085px" padding={this.state.showHelp ? "0 200px 0 0": "0"}>
               <WizardContent>
                 {page === 1 && (
                   <MuutospyyntoWizardMuutokset
@@ -270,6 +301,7 @@ class MuutospyyntoWizard extends Component {
                     fetchKoulutuksetAll={this.props.fetchKoulutuksetAll}
                     fetchKoulutuksetMuut={this.props.fetchKoulutuksetMuut}
                     fetchKoulutus={this.props.fetchKoulutus}
+                    showHelp={this.showHelp}                    
                   />
                 )}
                 {page === 2 && (
@@ -308,17 +340,13 @@ class MuutospyyntoWizard extends Component {
 
           <Draggable
             handle=".handle"
-            defaultPosition={{x: 0, y: 0}}
             position={null}
             grid={[25, 25]}
-            scale={1}
-            onStart={this.handleStart}
-            onDrag={this.handleDrag}
-            onStop={this.handleStop}>
+            >
 
             <Help className="handle" hidden={!this.state.showHelp}>
-              <h3
-                >Ohje 
+              <h3>
+                <span><MdInfo /> Ohje</span>
                 <CloseHelpButton src={close} onClick={() => this.setState( {showHelp: false })}>
                    &#10005;
                 </CloseHelpButton>
