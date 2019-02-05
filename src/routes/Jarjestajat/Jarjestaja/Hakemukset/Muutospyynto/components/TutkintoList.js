@@ -24,7 +24,6 @@ import {
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { handleCheckboxChange, handleOsaamislaCheckboxChange } from "../modules/koulutusUtil"
 import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
-import styled from 'styled-components'
 
 class TutkintoList extends Component {
   constructor(props) {

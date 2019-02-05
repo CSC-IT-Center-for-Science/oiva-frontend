@@ -93,6 +93,13 @@ export const Heading = styled.div`
   }
 `
 
+export const MainHeading = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+`
+
 export const H3 = styled.h3`
 
 `

@@ -9,12 +9,15 @@ import KoulutusList from './KoulutusList'
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { ContentContainer } from "../../../../../../modules/elements"
 import Loading from '../../../../../../modules/Loading'
+import { MdInfo } from 'react-icons/md'; 
 import {
   Kohdenumero,
   Otsikko,
   Row,
   Kohde,
   Info,
+  HelpButton,
+  MainHeading
 } from './MuutospyyntoWizardComponents'
 import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
 
@@ -56,8 +59,16 @@ class MuutospyyntoWizardTutkinnot extends Component {
       return (
         <Kohde>
           <ContentContainer>
-            <Kohdenumero>{headingNumber}.</Kohdenumero>
-            <Otsikko>{heading}</Otsikko>
+            <MainHeading> 
+              <Kohdenumero>{headingNumber}.</Kohdenumero>
+              <Otsikko>{heading}</Otsikko>
+              <HelpButton 
+                onClick={ (e) => this.showHelp(e, "Lain (531/2017) 23 §:n mukaan järjestämisluvassa määrättävät tutkinnot ja koulutukset") }
+                title={"Lain (531/2017) 23 §:n mukaan järjestämisluvassa määrättävät tutkinnot ja koulutukset"}
+                >
+                <MdInfo />
+              </HelpButton>
+            </MainHeading>
             <Row>
               <FieldArray
                 name={FIELD_ARRAY_NAMES.TUTKINNOT_JA_KOULUTUKSET}
