@@ -110,12 +110,14 @@ class TutkintoList extends Component {
             ? <SpanMuutos>Muutokset:&nbsp;<Span color={COLORS.OIVA_PURPLE}>{muutokset.length}</Span><Span onClick={event => {event.stopPropagation();this.removeChanges(muutokset, editValues, fields, alaKoodiArvo);}}>Poista muutokset</Span></SpanMuutos>
             : null
           }
-          <HelpButton 
-            onClick={ (e) => this.showHelp(e, nimi) }
-            title={"Ohje: "+nimi}
-            >
-              <MdInfo />
-          </HelpButton>
+          {(alaKoodiArvo === "02" || alaKoodiArvo == "04" || alaKoodiArvo == "08") &&
+            <HelpButton 
+              onClick={ (e) => this.showHelp(e, nimi) }
+              title={"Ohje: "+nimi}
+              >
+                <MdInfo />
+            </HelpButton>
+          }
         </Heading>
 
         {!this.state.isHidden && 
