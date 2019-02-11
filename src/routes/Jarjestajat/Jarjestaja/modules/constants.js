@@ -363,7 +363,7 @@ export const LUPA_TEKSTIT = {
             SV: 'EMAIL'
         },
         INFO: {
-            FI: 'Tiedot tulevat Opetushallituksen Organisaatiotietopalvelusta, joka päivittää ne Yritys- ja yhteisötietojärjestelmästä. Muutokset tietoihin sitä kautta.',
+            FI: 'Tiedot tulevat Opetushallituksen organisaatiotietopalvelusta, joka päivittää ne yritys- ja yhteisötietojärjestelmästä (YTJ). Muutokset tietoihin tulee tehdä sitä kautta.',
             SV: 'INFO'
         }
     }
