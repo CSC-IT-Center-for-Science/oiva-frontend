@@ -20,6 +20,7 @@ import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { handleCheckboxChange } from "../modules/koulutusUtil"
 import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
 import { HAKEMUS_TEKSTIT } from "../../../modules/constants"
+import { MUUT_KEYS } from "../modules/constants"
 
 class KoulutusList extends Component {
   constructor(props) {
@@ -82,8 +83,6 @@ class KoulutusList extends Component {
         })
       })
     }
-    console.log(koodisto);
-
 
     return (
       <Wrapper>
@@ -116,8 +115,17 @@ class KoulutusList extends Component {
             let customClassName = ""
 
             muutMaaraykset.forEach(muuMaarays => {
-              if (!isRemoved && (muuMaarays.koodisto === koodistoUri && muuMaarays.koodiarvo === koodiArvo)) {
+              if (!isRemoved && 
+                (
+                  // TODO: tässä kuuluu tarkastella, sisältääkö määräys merkityksen.
+                  // tätä tietoa ei toistaiseksi saada APIsta
+                  (muuMaarays.koodisto === MUUT_KEYS.KULJETTAJAKOULUTUS && false)
+                  ||
+                  (muuMaarays.koodisto !== MUUT_KEYS.KULJETTAJAKOULUTUS && muuMaarays.koodisto === koodistoUri && muuMaarays.koodiarvo === koodiArvo)
+                )
+              ) {
                 isInLupa = true
+                console.log(muuMaarays)
               }
             })
 
