@@ -12,13 +12,13 @@ import MuutospyyntoWizardYhteenveto from './MuutospyyntoWizardYhteenveto'
 
 import Loading from '../../../../../../modules/Loading'
 
-import { ContentContainer, ContentWrapper } from "../../../../../../modules/elements"
+import { ContentContainer, ContentWrapper, MessageWrapper } from "../../../../../../modules/elements"
 import { WizardBackground, WizardTop, WizardWrapper, WizardHeader, WizardContent, Container } from "./MuutospyyntoWizardComponents"
 import { COLORS } from "../../../../../../modules/styles"
 import close from 'static/images/close-x.svg'
 import { ROLE_KAYTTAJA } from "../../../../../../modules/constants";
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
-import { FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
+import { FORM_NAME_UUSI_HAKEMUS, MUUTOS_TYPE_TEXTS, HAKEMUS_VIRHE, HAKEMUS_VIESTI, HAKEMUS_OTSIKOT } from "../modules/uusiHakemusFormConstants"
 import { getJarjestajaData } from "../modules/muutospyyntoUtil"
 
 Modal.setAppElement('#root')
@@ -57,6 +57,29 @@ const HideFooter = styled.div`
   bottom: -100px;
   height: 100px;
 `
+const Help = styled.div`
+  background-color: #fffff0;
+  border: 1px solid #afafa0;
+  width: 20vw;
+  min-width: 300px;
+  position: fixed;
+  top: 120px;
+  min-height: 200px;
+  max-height: 90vh;
+  right: 20px;
+  z-index: 100;
+  opacity: 0.9;
+  cursor: move;
+  padding: 10px 20px;
+  overflow-y: auto;
+  overflow-x: wrap; 
+
+  h3 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+`
 
 const Phase = ({ number, text, activePage, disabled, handleClick }) => {
   const isActive = Number(number) === Number(activePage)
@@ -85,7 +108,8 @@ class MuutospyyntoWizard extends Component {
     this.state = {
       page: 1,
       visitedPages: [1],
-      isCloseModalOpen: false
+      isCloseModalOpen: false,
+      showHelp: true
     }
   }
 
@@ -139,7 +163,8 @@ class MuutospyyntoWizard extends Component {
     this.props.saveMuutospyynto(data)
     const url = `/jarjestajat/${this.props.match.params.ytunnus}`
     this.props.saveMuutospyynto(data).then(() => {
-       let uuid = this.props.muutospyynto.save.response.data
+       let uuid = undefined;
+       if (this.props.muutospyynto.save.response) this.props.muutospyynto.save.response.data;
        let newurl = url + "/hakemukset-ja-paatokset/" + uuid
        this.props.history.push(newurl)
        })
@@ -186,7 +211,7 @@ class MuutospyyntoWizard extends Component {
 
     if (sessionStorage.getItem('role') !== ROLE_KAYTTAJA) {
         return (
-            <h2>Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun.</h2>
+            <MessageWrapper><h3>{HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}</h3></MessageWrapper>
         )
     }
 
@@ -194,7 +219,7 @@ class MuutospyyntoWizard extends Component {
     const { jarjestajaOid } = this.props.lupa.data
     if (sessionStorage.getItem('oid') !== jarjestajaOid) {
         return (
-            <h2>Sinulla ei ole oikeuksia katsoa toisen organisaation hakemuksia.</h2>
+            <MessageWrapper><h3>{HAKEMUS_VIRHE.OIKEUS.FI}</h3></MessageWrapper>
         )
     }
 
@@ -206,22 +231,21 @@ class MuutospyyntoWizard extends Component {
           <WizardWrapper>
             <WizardTop>
               <Container padding="0 20px">
-                <div>Uusi muutoshakemus</div>
+                <div>{HAKEMUS_OTSIKOT.UUSI_MUUTOSHAKEMUS.FI}</div>
                 <CloseButton src={close} onClick={this.openCancelModal} />
               </Container>
             </WizardTop>
 
             <WizardHeader>
               <Container maxWidth="1085px" color={COLORS.BLACK}>
-                <Phase number="1" text="Muutokset" activePage={page} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="2" text="Perustelut" activePage={page} disabled={visitedPages.indexOf(2) === -1} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="3" text="Taloudelliset edellytykset" activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="4" text="Yhteenveto" activePage={page} disabled={visitedPages.indexOf(4) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="1" text={HAKEMUS_OTSIKOT.MUUTOKSET.FI} activePage={page} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="2" text={HAKEMUS_OTSIKOT.PERUSTELUT.FI} activePage={page} disabled={visitedPages.indexOf(2) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="3" text={HAKEMUS_OTSIKOT.EDELLYTYKSET.FI} activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="4" text={HAKEMUS_OTSIKOT.YHTEENVETO.FI} activePage={page} disabled={visitedPages.indexOf(4) === -1} handleClick={(number) => this.changePhase(number)} />
               </Container>
             </WizardHeader>
 
-
-            <ContentContainer maxWidth="1085px" margin="50px auto">
+            <ContentContainer maxWidth="1085px" margin={this.state.showHelp ? "50px auto 50px 20vw": "50px auto"}>
               <WizardContent>
                 {page === 1 && (
                   <MuutospyyntoWizardMuutokset
@@ -276,15 +300,15 @@ class MuutospyyntoWizard extends Component {
             isOpen={this.state.isCloseModalOpen}
             onAfterOpen={this.afterOpenCancelModal}
             onRequestClose={this.closeCancelModal}
-            contentLabel="Poistu muutoshakemuksen teosta"
+            contentLabel={HAKEMUS_VIESTI.VARMISTUS_HEADER.FI}
             style={modalStyles}
           >
             <Content>
-              <ModalText>Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta.</ModalText>
+              <ModalText>{HAKEMUS_VIESTI.VARMISTUS.FI}</ModalText>
             </Content>
             <div>
-              <ModalButton primary onClick={this.onCancel}>Kyllä</ModalButton>
-              <ModalButton onClick={this.closeCancelModal}>Ei</ModalButton>
+              <ModalButton primary onClick={this.onCancel}>{HAKEMUS_VIESTI.KYLLA.FI}</ModalButton>
+              <ModalButton onClick={this.closeCancelModal}>{HAKEMUS_VIESTI.EI.FI}</ModalButton>
             </div>
           </Modal>
         </ContentWrapper>
@@ -292,15 +316,15 @@ class MuutospyyntoWizard extends Component {
     } else if (muutosperustelut.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching) {
       return <Loading />
     } else if (muutosperustelut.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Muutosperusteluita ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.PERUSTELU.FI}</MessageWrapper>
     } else if (vankilat.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Vankilalistausta ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.VANKILA.FI}</MessageWrapper>
     } else if (ELYkeskukset.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. ELY-keskuslistausta ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.ELY.FI}</MessageWrapper>
     } else if (paatoskierrokset.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Päätoskierroksia ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.PAATOSKIERROS.FI}</MessageWrapper>
     } else if (lupa.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Lupaa haettaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.LUVANLATAUS.FI}</MessageWrapper>
     } else {
       return null
     }

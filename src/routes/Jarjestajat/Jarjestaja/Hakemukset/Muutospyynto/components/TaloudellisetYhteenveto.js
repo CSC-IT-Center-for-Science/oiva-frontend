@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { Area } from './MuutospyyntoWizardComponents'
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
-
 import { COLORS } from "../../../../../../modules/styles"
 
 const MuutosListWrapper = styled.div`
@@ -37,10 +37,6 @@ const Label = styled.div`
 const Content = styled.div`
   margin-left: 20px;
   font-style: italic;
-`
-
-const Area = styled.div`
-  margin: 15px 0;
 `
 
 class TaloudellisetYhteenveto extends Component {

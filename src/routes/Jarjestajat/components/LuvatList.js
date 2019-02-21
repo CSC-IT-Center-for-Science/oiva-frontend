@@ -7,9 +7,11 @@ import { Table, Thead, Tbody, Th, Tr } from "../../../modules/Table"
 import { MEDIA_QUERIES } from "../../../modules/styles"
 import styled from 'styled-components'
 import { parseLocalizedField } from "../../../modules/helpers"
+import { MdArrowUpward, MdArrowDownward } from 'react-icons/md';
+
 
 const WrapTable = styled.div`
-  widht: 100%;
+  width: 100%;
 `
 
 class LuvatList extends Component {
@@ -17,7 +19,9 @@ class LuvatList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sortedBy: "jarjestaja"
+      sortedBy: "jarjestaja",
+      desc1: false,
+      desc2: false,
     };
   }
 
@@ -30,7 +34,28 @@ class LuvatList extends Component {
       return null
     })
 
-    return _.map(sorted, lupa => <LupaItem lupa={lupa} key={lupa.uuid} />)
+    if ((this.state.sortedBy === "jarjestaja" && !this.state.desc1) || (this.state.sortedBy === "maakunta" && !this.state.desc2))
+      return _.map(sorted, lupa => <LupaItem lupa={lupa} key={lupa.uuid} />)
+    else
+      return _.map(sorted.reverse(), lupa => <LupaItem lupa={lupa} key={lupa.uuid} />)
+  }
+
+  sort = col => {
+    if (col==="jarjestaja") {
+      if (this.state.sortedBy==="jarjestaja")
+        this.setState( {desc1: !this.state.desc1});
+      else { 
+        this.setState( {sortedBy: "jarjestaja"});
+      }
+
+    } else {
+      if (this.state.sortedBy==="maakunta")
+        this.setState( {desc2: !this.state.desc2});
+      else {
+        this.setState( {sortedBy: "maakunta"});
+      }
+    }
+
   }
 
   render() {
@@ -53,15 +78,18 @@ class LuvatList extends Component {
             <Thead>
             <Tr>
               <Th flex="4" 
-                onClick={() => this.setState({sortedBy: 'jarjestaja'})}
+                onClick={() =>  this.sort("jarjestaja")}
                 >
                 Koulutuksen järjestäjä
-                { this.state.sortedBy === "jarjestaja" && " ^" }
+                { this.state.sortedBy === "jarjestaja" && !this.state.desc1 && <MdArrowUpward /> }
+                { this.state.sortedBy === "jarjestaja" && this.state.desc1 && <MdArrowDownward />}
               </Th>
-              <Th onClick={() => this.setState({sortedBy: 'maakunta'})}
+              <Th 
+                onClick={() =>  this.sort("maakunta")}
                 >
                 Kotipaikan maakunta
-                { this.state.sortedBy === "maakunta" && " ^" }
+                { this.state.sortedBy === "maakunta" && !this.state.desc2 && <MdArrowUpward />  }
+                { this.state.sortedBy === "maakunta" && this.state.desc2 && <MdArrowDownward /> }
               </Th>
             </Tr>
             </Thead>

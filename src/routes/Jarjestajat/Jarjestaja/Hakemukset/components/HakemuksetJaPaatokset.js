@@ -4,11 +4,13 @@ import styled from 'styled-components'
 
 import MuutospyyntoList from './MuutospyyntoList'
 import Loading from '../../../../../modules/Loading'
+import { MessageWrapper } from "../../../../../modules/elements"
 
 import { COLORS } from "../../../../../modules/styles"
 import { slugify } from "../../../../../modules/helpers"
 import {ROLE_KAYTTAJA} from "../../../../../modules/constants";
 import _ from 'lodash'
+import { HAKEMUS_VIESTI, HAKEMUS_VIRHE } from '../Muutospyynto/modules/uusiHakemusFormConstants';
 
 const Wrapper = styled.div`
   position: relative;
@@ -47,7 +49,7 @@ class HakemuksetJaPaatokset extends Component {
 
     if(sessionStorage.getItem('role')!==ROLE_KAYTTAJA) {
         return (
-            <h2>Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun.</h2>
+            <MessageWrapper><h3>{HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}</h3></MessageWrapper>
         )
     }
 
@@ -55,7 +57,7 @@ class HakemuksetJaPaatokset extends Component {
     const { jarjestajaOid } = this.props.lupa.data
     if(sessionStorage.getItem('oid')!==jarjestajaOid) {
         return (
-            <h2>Sinulla ei ole oikeuksia katsoa toisen organisaation hakemuksia.</h2>
+            <MessageWrapper><h3>{HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}</h3></MessageWrapper>
         )
     }
 
@@ -74,7 +76,7 @@ class HakemuksetJaPaatokset extends Component {
         )
     } else if (hasErrored) {
         return (
-            <h2>Hakemuksia ladattessa tapahtui virhe</h2>
+            <MessageWrapper><h3>{HAKEMUS_VIRHE.HAKEMUKSIENNLATAUS.FI}</h3></MessageWrapper>
         )
     } else {
         return null

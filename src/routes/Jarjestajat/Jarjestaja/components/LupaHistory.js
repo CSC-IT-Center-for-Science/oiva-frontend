@@ -38,7 +38,7 @@ class LupaHistory extends Component {
             <Table>
               <Thead>
               <Trn>
-                <Thn>{LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.DIANAARINUMERO.FI}</Thn>
+                <Thn>{LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.DIAARINUMERO.FI}</Thn>
                 <Thn>{LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.PAATOSPVM.FI}</Thn>
                 <Thn>{LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.VOIMAANTULOPVM.FI}</Thn>
                 <Thn>{LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.PAATTAMISPVM.FI}</Thn>

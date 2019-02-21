@@ -214,11 +214,26 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       FI: "Perustele lyhyesti miksi tälle muutokselle olisi tarvetta",
       SV: "På svenska"
     },
+    YHTEISTYOSOPIMUKSET: {
+      FI: "Yhteistyösopimukset",
+      SV: "på svenska"
+    },
     YHTEISTYO: {
       FI: "Yhteistyö",
       SV: "på svenska"
+    },
+    YKSIVALINTA: {
+      FI: "Voit valita vain yhden seuraavista",
+      SV: "YKSIVALINTA"
+    },
+    LISAALINTA: {
+      FI: "Lisäksi voit valita seuraavat",
+      SV: "LISAALINTA"
+    },
+    EI_LUOKKAA: {
+      FI: "Luokka puuttuu",
+      SV: "EI_LUOKKAA"
     }
-
   },
   YHTEENVETO: {
     HEADING: {
@@ -275,6 +290,10 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       KYLLA: {
         FI:"Kyllä",
         SV:"Ja"
+      },
+      EI: {
+        FI:"Ei",
+        SV:"Nej"
       },
       TARPEELLISUUS: {
         FI: "Tehtävän tarpeellisuus",

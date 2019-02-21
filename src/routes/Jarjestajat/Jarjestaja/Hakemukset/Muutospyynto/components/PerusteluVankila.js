@@ -5,14 +5,12 @@ import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 import { getIndex } from "../modules/muutosUtil"
 import Select from '../../../../../../modules/Select'
 import { handleVankilaSelectChange } from "../modules/vankilaUtil"
+import { Area } from './MuutospyyntoWizardComponents'
 
 const PerusteluVankilaWrapper = styled.div`
   margin-bottom: 20px;
 `
 
-const Area = styled.div`
-  margin: 15px 0;
-`
 const Label = styled.label`
   flex: 1;
   font-size: 14px;

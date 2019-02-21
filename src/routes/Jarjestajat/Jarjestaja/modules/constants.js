@@ -233,9 +233,9 @@ export const LUPA_TEKSTIT = {
             SV: 'HISTORIATIEDOT'
         },
         HISTORIA_TAULUKKO: {
-            DIANAARINUMERO: {
-                FI: 'DIanaarinumero',
-                SV: 'DIANAARINUMERO'
+            DIAARINUMERO: {
+                FI: 'Diaarinumero',
+                SV: 'DIAARINUMERO'
             },
             PAATOSPVM: {
                 FI: 'Päätöspvm',
@@ -346,6 +346,10 @@ export const LUPA_TEKSTIT = {
             FI: 'Postiosoite',
             SV: 'POSTIOSOITE'
         },
+        KOTIPAIKKA: {
+            FI: 'Kotipaikka',
+            SV: 'KOTIPAIKKA'
+        },
         YHTEYSTIEDOT: {
             FI: 'Yhteystiedot',
             SV: 'YHTEYSTIEDOT'
@@ -363,7 +367,7 @@ export const LUPA_TEKSTIT = {
             SV: 'EMAIL'
         },
         INFO: {
-            FI: 'Tiedot tulevat Opetushallituksen Organisaatiotietopalvelusta, joka päivittää ne Yritys- ja yhteisötietojärjestelmästä. Muutokset tietoihin sitä kautta.',
+            FI: 'Tiedot tulevat Opetushallituksen organisaatiotietopalvelusta, joka päivittää ne yritys- ja yhteisötietojärjestelmästä (YTJ). Muutokset tietoihin tulee tehdä sitä kautta.',
             SV: 'INFO'
         }
     }
@@ -432,3 +436,11 @@ export const LUPA_VOIMASSAOLO_20190101_LUKIEN =
     "355945","427141","457341","457442","484147","467241","458641","487341","457241","458441",
     "437142","457141","487241","437143","457841","457741","487244","467141","467342","484446",
     "458241","467441"]
+
+export const HAKEMUS_TEKSTIT = {
+
+    VAINYKSIVALINTA: {
+        FI: 'Voit valita vain yhden seuraavista',
+        SV: 'VAINYKSIVALINTA'
+    }
+}

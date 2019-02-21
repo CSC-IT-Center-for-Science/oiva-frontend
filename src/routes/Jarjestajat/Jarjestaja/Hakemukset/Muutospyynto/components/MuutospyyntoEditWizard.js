@@ -12,13 +12,13 @@ import MuutospyyntoWizardYhteenveto from './MuutospyyntoWizardYhteenveto'
 
 import Loading from '../../../../../../modules/Loading'
 
-import { ContentContainer } from "../../../../../../modules/elements"
+import { ContentContainer, MessageWrapper } from "../../../../../../modules/elements"
 import { WizardBackground, WizardTop, WizardWrapper, WizardHeader, WizardContent, Container } from "./MuutospyyntoWizardComponents"
 import { COLORS } from "../../../../../../modules/styles"
 import close from 'static/images/close-x.svg'
 import { ROLE_KAYTTAJA } from "../../../../../../modules/constants";
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
-import { FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
+import { FORM_NAME_UUSI_HAKEMUS, HAKEMUS_VIRHE, HAKEMUS_VIESTI, HAKEMUS_OTSIKOT } from "../modules/uusiHakemusFormConstants"
 import { loadFormData } from "../modules/muutospyyntoUtil"
 
 Modal.setAppElement('#root')
@@ -183,7 +183,7 @@ class MuutospyyntoEditWizard extends Component {
 
     if (sessionStorage.getItem('role') !== ROLE_KAYTTAJA) {
       return (
-        <h2>Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun.</h2>
+        <MessageWrapper><h3>{HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}</h3></MessageWrapper>
       )
     }
 
@@ -191,7 +191,7 @@ class MuutospyyntoEditWizard extends Component {
     const { jarjestajaOid } = this.props.lupa.data
     if (sessionStorage.getItem('oid') !== jarjestajaOid) {
       return (
-        <h2>Sinulla ei ole oikeuksia katsoa toisen organisaation hakemuksia.</h2>
+        <MessageWrapper><h3>{HAKEMUS_VIRHE.OIKEUS.FI}</h3></MessageWrapper>
       )
     }
 
@@ -203,17 +203,17 @@ class MuutospyyntoEditWizard extends Component {
           <WizardWrapper>
             <WizardTop>
               <Container padding="0 20px">
-                <div>Uusi muutoshakemus</div>
+                <div>{HAKEMUS_OTSIKOT.UUSI_MUUTOSHAKEMUS.FI}</div>
                 <CloseButton src={close} onClick={this.openCancelModal} />
               </Container>
             </WizardTop>
 
             <WizardHeader>
               <Container maxWidth="1085px" color={COLORS.BLACK}>
-                <Phase number="1" text="Muutokset" activePage={page} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="2" text="Perustelut" activePage={page} disabled={visitedPages.indexOf(2) === -1} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="3" text="Taloudelliset edellytykset" activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
-                <Phase number="4" text="Yhteenveto" activePage={page} disabled={visitedPages.indexOf(4) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="1" text={HAKEMUS_OTSIKOT.MUUTOKSET.FI} activePage={page} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="2" text={HAKEMUS_OTSIKOT.PERUSTELUT.FI} activePage={page} disabled={visitedPages.indexOf(2) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="3" text={HAKEMUS_OTSIKOT.EDELLYTYKSET.FI} activePage={page} disabled={visitedPages.indexOf(3) === -1} handleClick={(number) => this.changePhase(number)} />
+                <Phase number="4" text={HAKEMUS_OTSIKOT.YHTEENVETO.FI} activePage={page} disabled={visitedPages.indexOf(4) === -1} handleClick={(number) => this.changePhase(number)} />
               </Container>
             </WizardHeader>
 
@@ -272,15 +272,15 @@ class MuutospyyntoEditWizard extends Component {
             isOpen={this.state.isCloseModalOpen}
             onAfterOpen={this.afterOpenCancelModal}
             onRequestClose={this.closeCancelModal}
-            contentLabel="Poistu muutoshakemuksen teosta"
+            contentLabel={HAKEMUS_VIESTI.VARMISTUS_HEADER.FI}
             style={modalStyles}
           >
             <Content>
-              <ModalText>Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta.</ModalText>
+              <ModalText>{HAKEMUS_VIESTI.VARMISTUS.FI}</ModalText>
             </Content>
             <div>
-              <ModalButton primary onClick={this.onCancel}>Kyllä</ModalButton>
-              <ModalButton onClick={this.closeCancelModal}>Ei</ModalButton>
+              <ModalButton primary onClick={this.onCancel}>{HAKEMUS_VIESTI.KYLLA.FI}</ModalButton>
+              <ModalButton onClick={this.closeCancelModal}>{HAKEMUS_VIESTI.EI.FI}</ModalButton>
             </div>
           </Modal>
         </div>
@@ -288,20 +288,22 @@ class MuutospyyntoEditWizard extends Component {
     } else if (muutosperustelut.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
       return <Loading />
     } else if (muutosperustelut.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Muutosperusteluita ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.PERUSTELU.FI}</MessageWrapper>
     } else if (vankilat.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Vankilalistausta ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.VANKILA.FI}</MessageWrapper>
     } else if (ELYkeskukset.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. ELY-keskuslistausta ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.ELY.FI}</MessageWrapper>
     } else if (paatoskierrokset.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Päätoskierroksia ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.PAATOSKIERROS.FI}</MessageWrapper>
     } else if (muutospyynto.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Muutospyyntöä ladattaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.MUUTOSPYYNTO.FI}</MessageWrapper>
     } else if (lupa.hasErrored) {
-      return <div>Muutospyyntöä ei voida tehdä. Lupaa haettaessa tapahtui virhe.</div>
+      return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.LUVANLATAUS.FI}</MessageWrapper>
     } else {
       return null
     }
+
+    
   }
 }
 

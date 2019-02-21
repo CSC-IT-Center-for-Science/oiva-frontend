@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import _ from 'lodash'
 import { COLORS } from "../../../../../../modules/styles"
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
+import { Area } from './MuutospyyntoWizardComponents'
 
 const PerusteluWrapper = styled.div`
   display: flex;
@@ -24,10 +25,6 @@ const Label = styled.div`
 const Content = styled.div`
   margin-left: 20px;
   font-style: italic;
-`
-
-const Area = styled.div`
-  margin: 15px 0;
 `
 
 class PerusteluTyovoimaYhteenveto extends Component {

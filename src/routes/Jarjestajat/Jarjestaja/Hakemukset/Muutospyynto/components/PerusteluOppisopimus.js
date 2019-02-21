@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 import { getIndex } from "../modules/muutosUtil"
+import { Area } from './MuutospyyntoWizardComponents'
 
 const PerusteluOppisopimusWrapper = styled.div`
   margin-bottom: 20px;
 `
 
-const Area = styled.div`
-  margin: 15px 0;
-`
 const Label = styled.label`
   flex: 1;
   font-size: 14px;

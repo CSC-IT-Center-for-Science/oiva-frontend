@@ -1,18 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 
-import HeaderBar from 'modules/Header/components/HeaderBar'
-import LinkItemUpper from 'modules/Header/components/LinkItemUpper'
-import LinkItem from 'modules/Header/components/LinkItem'
-import { ROLE_ESITTELIJA, ROLE_KAYTTAJA } from 'modules/constants'
 import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants"
-import { COLORS, FONT_STACK } from 'modules/styles'
-import { MdEmail } from 'react-icons/md';
 import { getRoles, getOrganisation } from 'routes/Login/modules/user'
 import Loading from '../../../../modules/Loading'
 import { InnerContentContainer, InnerContentWrapper  } from "../../../../modules/elements"
-
+import { getToimialueByKoodiArvo } from "../Hakemukset/Muutospyynto/modules/toimialueUtil"
+import { fetchKunnat } from "../../../../modules/reducers/kunnat"
 class OmatTiedot extends Component {
 
   componentDidMount() {
@@ -20,24 +14,27 @@ class OmatTiedot extends Component {
     this.props.getRoles().then(() => {
        this.props.getOrganisation(sessionStorage.getItem('oid'))
     })
+    if (this.props.kunnat && !this.props.kunnat.fetched) {
+      this.props.fetchKunnat()
+    }
   }
 
   render() {
 
     const { oppilaitos } = this.props.user;
-    let ytunnus = undefined;
     let postinumero = undefined;
     let ppostinumero = undefined;
     let numero = undefined;
     let www = undefined;
     let email = undefined;
+    let kotipaikka = undefined;
     if (oppilaitos) {
         if (oppilaitos.organisaatio) {
-            ytunnus = oppilaitos.organisaatio.ytunnus
             if (oppilaitos.organisaatio.kayntiosoite.postinumeroUri) postinumero = oppilaitos.organisaatio.kayntiosoite.postinumeroUri.substr(6)
             if (oppilaitos.organisaatio.postiosoite.postinumeroUri) ppostinumero = oppilaitos.organisaatio.postiosoite.postinumeroUri.substr(6)
+            if (this.props.kunnat && this.props.kunnat.fetched && oppilaitos.organisaatio.kotipaikkaUri) kotipaikka = getToimialueByKoodiArvo(oppilaitos.organisaatio.kotipaikkaUri.substr(6)).label;
             // jos tietoja enemmän, ottaa jälkimmäisen arvon (yleiset yhteystiedot)
-            oppilaitos.organisaatio.yhteystiedot.map(item => {
+            if (oppilaitos.organisaatio.yhteystiedot) oppilaitos.organisaatio.yhteystiedot.map(item => {
                 if (item.www) www = item.www;
                 if (item.numero) numero = item.numero;
                 if (item.email) email = item.email;
@@ -67,6 +64,12 @@ class OmatTiedot extends Component {
               {oppilaitos.organisaatio.postiosoite.postitoimipaikka && <span>&nbsp;</span> }
               {oppilaitos.organisaatio.postiosoite.postitoimipaikka}
             </p>
+            <h3>{LUPA_TEKSTIT.OMATTIEDOT.KOTIPAIKKA.FI}</h3>
+            { numero &&
+              <p>
+                {kotipaikka}
+              </p>
+            }         
             <h3>{LUPA_TEKSTIT.OMATTIEDOT.YHTEYSTIEDOT.FI}</h3>
             { numero &&
               <p>
@@ -102,13 +105,17 @@ class OmatTiedot extends Component {
 }
 
 function mapStateToProps(state) {
-  return { user: state.user }
+  return { 
+    user: state.user,
+    kunnat: state.kunnat
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getRoles: () => dispatch(getRoles()),
-    getOrganisation: (oid) => dispatch(getOrganisation(oid))
+    getOrganisation: (oid) => dispatch(getOrganisation(oid)),
+    fetchKunnat: () => dispatch(fetchKunnat())
   }
 }
 

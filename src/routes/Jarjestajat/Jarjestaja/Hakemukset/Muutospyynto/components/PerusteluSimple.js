@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { COLORS } from "../../../../../../modules/styles"
 
 import { getMuutosperusteluByKoodiArvo } from "../modules/muutosperusteluUtil"
+import { Area } from './MuutospyyntoWizardComponents'
 
 const PerusteluWrapper = styled.div`
   display: flex;
@@ -24,10 +25,6 @@ const Label = styled.div`
 const Content = styled.div`
   margin-left: 20px;
   font-style: italic;
-`
-
-const Area = styled.div`
-  margin: 15px 0;
 `
 
 class PerusteluSimple extends Component {

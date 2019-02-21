@@ -3,6 +3,10 @@ import styled from 'styled-components'
 import { COLORS, MEDIA_QUERIES, TRANSITIONS } from "../../../../../../modules/styles"
 import arrowDown from 'static/images/arrow-down.svg'
 
+export const Area = styled.div`
+  margin: 15px 0;
+`
+
 export const WizardBackground = styled.div`
   background-color: rgba(255, 255, 255, 0.7);
   position: absolute;
@@ -147,6 +151,10 @@ export const TutkintoWrapper = styled.div`
   
   &.is-in-lupa {
     font-weight: bold;
+  }
+  &.longtext {
+    align-items: flex-start;
+    margin-bottom: 8px;
   }
 `
 
@@ -318,6 +326,9 @@ export const CheckboxRowContainer = styled.div`
   &.is-in-lupa {
     font-weight: bold;
   }
+  &.is-out-of-date {
+    opacity: 0.5;
+  }
 `
 
 export const CheckboxRowContainerSmall = styled.div`
@@ -408,7 +419,168 @@ export const Checkbox = styled.div`
     }
   }
 `
+export const Radiobutton = styled.div`
+  width: 20px;
+  position: relative;
+  margin: 6px 10px;
+  
+  label {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    background: white;
+    border-radius: 0;
+    border: 1px solid ${COLORS.OIVA_GREEN};
+    border-radius: 16px;
+    
+    &:hover {
+      &:after {
+        border-color: ${COLORS.OIVA_GREEN};
+        opacity: 0.5;
+      }
+    }
+    
+    &:after {
+      content: '';
+      width: 9px;
+      height: 5px;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      border: 3px solid #fcfff4;
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
+      border-radius: 0;
+    }
+   
+  }
 
+  input[type=radio] {
+    visibility: hidden;
+    
+    &:checked + label {
+      background: ${COLORS.OIVA_GREEN};
+      border-radius: 16px;
+      
+      &:hover {
+        &:after {
+          background: rgba(90, 138, 112, 0.0);
+        }
+      }
+    }
+    
+    &:hover {
+      background: rgba(90, 138, 112, 0.5);
+      border-radius: 16px;
+    }
+    
+    &:checked + label:after {
+      opacity: 1;
+      background: ${COLORS.OIVA_GREEN};
+      
+      &:hover {
+        background: rgba(90, 138, 112, 0.5);
+      }
+    }
+    
+    &:checked + label:hover {
+      background: rgba(90, 138, 112, 0.5);
+      border-radius: 16px;
+      
+      &:after {
+        border-color: white;
+        opacity: 1;
+      }
+    }
+  }
+`
+export const RadioCheckbox = styled.div`
+  width: 20px;
+  position: relative;
+  margin: 6px 10px;
+  
+  label {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    background: white;
+    border-radius: 0;
+    border: 1px solid ${COLORS.OIVA_GREEN};
+    border-radius: 16px;
+    
+    &:hover {
+      &:after {
+        border-color: ${COLORS.OIVA_GREEN};
+        opacity: 0.5;
+      }
+    }
+    
+    &:after {
+      content: '';
+      width: 9px;
+      height: 5px;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      border: 3px solid #fcfff4;
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      transform: rotate(-45deg);
+      border-radius: 0;
+    }
+   
+  }
+
+  input[type=checkbox] {
+    visibility: hidden;
+    
+    &:checked + label {
+      background: ${COLORS.OIVA_GREEN};
+      border-radius: 16px;
+      
+      &:hover {
+        &:after {
+          background: rgba(90, 138, 112, 0.0);
+        }
+      }
+    }
+    
+    &:hover {
+      background: rgba(90, 138, 112, 0.5);
+      border-radius: 16px;
+    }
+    
+    &:checked + label:after {
+      opacity: 1;
+      background: ${COLORS.OIVA_GREEN};
+      
+      &:hover {
+        background: rgba(90, 138, 112, 0.5);
+      }
+    }
+    
+    &:checked + label:hover {
+      background: rgba(90, 138, 112, 0.5);
+      border-radius: 16px;
+      
+      &:after {
+        border-color: white;
+        opacity: 1;
+      }
+    }
+  }
+`
 export const CheckboxSmall = styled.div`
   width: 14px;
   position: relative;

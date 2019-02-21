@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import _ from 'lodash'
 import { COLORS } from "../../../../../../modules/styles"
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
+import { Area } from './MuutospyyntoWizardComponents'
 
 // import { getMuutosperusteluByKoodiArvo } from "../modules/muutosperusteluUtil"
 
@@ -27,11 +28,6 @@ const Content = styled.div`
   margin-left: 20px;
   font-style: italic;
 `
-
-const Area = styled.div`
-  margin: 15px 0;
-`
-
 class PerusteluVankilaYhteenveto extends Component {
   componentWillMount() {
     const { muutosperustelut } = this.props

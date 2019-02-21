@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { FieldArray, reduxForm, formValueSelector } from 'redux-form'
 
 import { ContentContainer } from "../../../../../../modules/elements"
-import { Kohdenumero, Otsikko, Row, Checkbox, CheckboxRowContainer, Div } from "./MuutospyyntoWizardComponents"
+import { Kohdenumero, Otsikko, Row, Checkbox, CheckboxRowContainer, RadioCheckbox, Div } from "./MuutospyyntoWizardComponents"
 import Loading from "../../../../../../modules/Loading"
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { handleCheckboxChange } from "../modules/koulutusUtil"
@@ -35,72 +35,64 @@ class MuutospyyntoWizardMuut extends Component {
       let vankilat = []
       let kokeilut = []
       let yhteistyo = []
+      let yhteistyosopimukset = []
       let laajennettu = []
       let sisaoppilaitos = []
       let urheilijat = []
-
+      let muumaarays = []
+      let luokattomat = []
 
       _.forEach(muutList, (maarays) => {
-        const { metadata, koodiArvo, koodisto } = maarays
 
-        if (koodiArvo) {
+        const { metadata, koodiArvo, koodisto } = maarays;
+        const kasite = parseLocalizedField(metadata, 'FI', 'kasite');
+        const kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus');
 
-          switch (koodiArvo){
+        if (kuvaus) {
 
-            case "1": {
+          switch (kasite) {
+
+            case "laajennettu": {
               laajennettu.push(maarays)
               break
             }
-            case "4": {
+            case "sisaoppilaitos": {
               sisaoppilaitos.push(maarays)
               break
             }
-            case "6": {
+            case "urheilu": {
               urheilijat.push(maarays)
               break
             }
-            case "7": {
+            case "kokeilu": {
               kokeilut.push(maarays)
               break
             }
-            case "8": {
+            case "yhteistyo": {
               yhteistyo.push(maarays)
               break
             }
-            case "9": {
-              muutCombined.push(maarays)
+            case "yhteistyosopimukset": {
+              yhteistyosopimukset.push(maarays)
               break
             }
-            case "10": {
-              yhteistyo.push(maarays)
-              break
-            }
-            case "11": {
-              yhteistyo.push(maarays)
-              break
-            }
-            case "2": {
+            case "vaativa": {
               vaativat.push(maarays)
               break
             }
-            case "3": {
-              vaativat.push(maarays)
-              break
-            }
-            case "12": {
-              vaativat.push(maarays)
-              break
-            }
-            case "5": {
+            case "vankila": {
               vankilat.push(maarays)
               break
             }
-            case "13": {
-              vankilat.push(maarays)
+            case "muumaarays": {
+              muumaarays.push(maarays)
               break
+            }
+            default: {
+            //   luokattomat.push(maarays)
+            //   break
             }
           }
-
         }
 
       })
@@ -162,10 +154,34 @@ class MuutospyyntoWizardMuut extends Component {
               name={FIELD_ARRAY_NAMES.MUUT}
               muut={muutCombined}
               editValues={muutmuutoksetValue}
+              muutList={yhteistyosopimukset}
+              otsikko={MUUTOS_WIZARD_TEKSTIT.MUUTOS_MUUT.YHTEISTYOSOPIMUKSET.FI}
+              component={this.renderMuutMuutokset}
+            />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
               muutList={yhteistyo}
               otsikko={MUUTOS_WIZARD_TEKSTIT.MUUTOS_MUUT.YHTEISTYO.FI}
               component={this.renderMuutMuutokset}
             />
+            <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={muumaarays}
+              otsikko=''
+              component={this.renderMuutMuutokset}
+            />
+            {/* <FieldArray
+              name={FIELD_ARRAY_NAMES.MUUT}
+              muut={muutCombined}
+              editValues={muutmuutoksetValue}
+              muutList={luokattomat}
+              otsikko={MUUTOS_WIZARD_TEKSTIT.MUUTOS_MUUT.EI_LUOKKAA.FI}
+              component={this.renderMuutMuutokset}
+            /> */}
 
           </Row>
         </ContentContainer>
@@ -179,11 +195,21 @@ class MuutospyyntoWizardMuut extends Component {
     }
   }
 
-  renderMuutMuutokset(props) {
-    const { muut, muutList, editValues, fields, otsikko } = props
+  getHuomioitavaKoodi = (data) => {
+    let { metadata } = data;
+    return parseLocalizedField(metadata, 'FI', 'huomioitavaKoodi');
+  }
 
-    let title = parseLocalizedField(muutList[0].metadata)
-    if(otsikko != '') {
+  renderMuutMuutokset = (props) => {
+    const { muut, editValues, fields, otsikko } = props
+    let { muutList } = props
+    muutList = muutList.sort((a,b) => 
+      this.getHuomioitavaKoodi(a) - this.getHuomioitavaKoodi(b)
+    );
+
+    let title = undefined;
+    if (muutList.length > 0) title = parseLocalizedField(muutList[0].metadata)
+    if(otsikko !== '') {
       title = otsikko
     }
 
@@ -193,10 +219,14 @@ class MuutospyyntoWizardMuut extends Component {
           <h4>{title}</h4>
 
           {muutList.map((muu, i) => {
-            const {koodiArvo, koodisto, metadata} = muu
+            const {koodiArvo, koodisto, metadata, voimassaLoppuPvm} = muu
             const {koodistoUri} = koodisto
             const nimi = parseLocalizedField(metadata)
-            let kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus') || ''
+            // let kuvaus = parseLocalizedField(metadata, 'FI', 'huomioitavaKoodi') + " - " + parseLocalizedField(metadata, 'FI', 'kuvaus') || ''
+            // let kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus') || ''
+
+            let kuvaus = koodiArvo + " - " + parseLocalizedField(metadata, 'FI', 'kuvaus') || ''
+          
             const identifier = `input-${koodistoUri}-${koodiArvo}`
 
             let isInLupa = false
@@ -208,12 +238,6 @@ class MuutospyyntoWizardMuut extends Component {
             muut.forEach(m => {
               if (m.koodiarvo === koodiArvo) {
                 isInLupa = true
-              }
-              if (koodiArvo == 7 && m.koodiarvo == 7) {
-                kuvaus = m.kuvaus
-              }
-              if (koodiArvo == 8 && m.koodiarvo == 8) {
-                kuvaus = m.kuvaus
               }
             })
 
@@ -229,33 +253,58 @@ class MuutospyyntoWizardMuut extends Component {
             isInLupa ? customClassName = "is-in-lupa" : null
             isAdded ? customClassName = "is-added" : null
             isRemoved ? customClassName = "is-removed" : null
+            voimassaLoppuPvm !== undefined ? customClassName = "is-out-of-date" : null
 
             if ((isInLupa && !isRemoved) || isAdded) {
               isChecked = true
             }
 
-            if (kuvaus != '') {
+            if (kuvaus && kuvaus !== '') {
 
               return (
-                <CheckboxRowContainer key={identifier} className={customClassName}>
-                  <Checkbox>
-                    <input
-                      type="checkbox"
-                      id={identifier}
-                      checked={isChecked}
-                      onChange={(e) => {
-                        handleCheckboxChange(e, editValues, fields, isInLupa, muu)
-                      }}
-                    />
-                    <label htmlFor={identifier}></label>
-                  </Checkbox>
-                  <Div margin="0 10px" flex="5">{kuvaus}</Div>
-                </CheckboxRowContainer>
+                <div key={identifier}>
+                  { koodiArvo === "2" && 
+                    <p>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_MUUT.YKSIVALINTA.FI}:</p> 
+                  }
+                  { koodiArvo === "3" && 
+                    <p>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_MUUT.LISAALINTA.FI}:</p> 
+                  }
+                  <CheckboxRowContainer key={identifier} className={customClassName}>
+                    
+                  { koodiArvo === "2" || koodiArvo === "16" || koodiArvo === "17" || koodiArvo === "18"
+                    || koodiArvo === "19" || koodiArvo === "20" || koodiArvo === "21"    ?
+                      <RadioCheckbox>
+                        <input
+                          type="checkbox"
+                          id={identifier}
+                          checked={isChecked}
+                          disabled={voimassaLoppuPvm !== undefined}
+                          onChange={(e) => {
+                            handleCheckboxChange(e, editValues, fields, isInLupa, muu)
+                          }}
+                        />
+                      <label htmlFor={identifier}></label>
+                      </RadioCheckbox>
+                    :
+                      <Checkbox>
+                        <input
+                          type="checkbox"
+                          id={identifier}
+                          checked={isChecked}
+                          disabled={voimassaLoppuPvm !== undefined}
+                          onChange={(e) => {
+                            handleCheckboxChange(e, editValues, fields, isInLupa, muu)
+                          }}
+                        />
+                      <label htmlFor={identifier}></label>
+                    </Checkbox>
+                    }
+                    <Div margin="0 10px" flex="5">{kuvaus}</Div>
+                  </CheckboxRowContainer>
+                  </div>
               )
             }
           })}
-
-
         </Row>
       </div>
     )
