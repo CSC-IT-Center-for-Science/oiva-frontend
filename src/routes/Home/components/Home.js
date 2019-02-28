@@ -37,9 +37,7 @@ class Home extends Component {
         </Hero>
         <InfoBox maxWidth="600px">
           <p>
-            Maaliskuusta 2019 alkaen Oivaa käyttäen voi hakea muutoksia ammatillisen koulutuksen järjestämislupiin. Palvelusta löytyvät kaikki ajantasaiset ammatillisen koulutuksen järjestämisluvat. Myöhemmin vuoden 2019 aikana organisaatio, joilla ei vielä ole järjestämislupaa, voi palvelua käyttäen hakea lupaa järjestää ammatillisia tutkintoja ja koulutusta.
-            Palvelu tulee sisältämään hakemusten laatimisen ja päätöksenteon lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia tilastoja.
-            Myöhemmin Oiva laajennetaan koskemaan myös yleissivistävän koulutuksen järjestämisluvat ja ylläpitämisluvat ja lupien hakupalvelut.
+            Palvelusta löytyvät kaikki ajantasaiset ammatillisen koulutuksen järjestämisluvat. Palvelu tulee sisältämään hakemusten laatimisen ja päätöksenteon lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia tilastoja. Myöhemmin Oiva laajennetaan koskemaan myös yleissivistävän koulutuksen järjestämisluvat ja ylläpitämisluvat ja lupien hakupalvelut.
           </p>
           {/* <Palaute><a href="https://link.webropolsurveys.com/S/F156FEC089139BF4" target="_blank">Palautelomake</a></Palaute> */}
         </InfoBox>

@@ -109,6 +109,7 @@ class KoulutusList extends Component {
             let isRemoved = false
             let isChecked = false
             let customClassName = ""
+            let kulCustomClassName = ""
 
             muutMaaraykset.forEach(muuMaarays => {
               if (!isRemoved && (muuMaarays.koodisto === koodistoUri && muuMaarays.koodiarvo === koodiArvo)) {
@@ -128,6 +129,9 @@ class KoulutusList extends Component {
             customClassName = isInLupa ? "is-in-lupa" : customClassName
             customClassName = isAdded ? "is-added" : customClassName
             customClassName = isRemoved ? "is-removed" : customClassName
+            kulCustomClassName = isRemoved ? "is-in-lupa longtext" : customClassName
+            kulCustomClassName = isRemoved ? "is-added longtext" : customClassName
+            kulCustomClassName = isRemoved ? "is-removed longtext" : customClassName
 
             if ((isInLupa && !isRemoved && fields) || isAdded) {
               isChecked = true
@@ -136,7 +140,7 @@ class KoulutusList extends Component {
             return (
               <div key={i}>
                 { koodistoUri === MUUT_KEYS.OIVA_TYOVOIMAKOULUTUS ||  koodistoUri === MUUT_KEYS.KULJETTAJAKOULUTUS ?
-                  <TutkintoWrapper className={ koodistoUri !== MUUT_KEYS.KULJETTAJAKOULUTUS ? 'customClassName' : 'customClassName longtext'}>
+                  <TutkintoWrapper className={ koodistoUri !== MUUT_KEYS.KULJETTAJAKOULUTUS ? customClassName : kulCustomClassName}>
                     <RadioCheckbox>
                       <input
                         type="checkbox"
@@ -149,7 +153,7 @@ class KoulutusList extends Component {
                     <Kuvaus>{kuvaus}</Kuvaus> 
                   </TutkintoWrapper>
                 :
-                  <TutkintoWrapper key={i} className={customClassName}>
+                  <TutkintoWrapper className={ koodistoUri !== MUUT_KEYS.KULJETTAJAKOULUTUS ? customClassName : kulCustomClassName}>
                     <Checkbox>
                       <input
                         type="checkbox"

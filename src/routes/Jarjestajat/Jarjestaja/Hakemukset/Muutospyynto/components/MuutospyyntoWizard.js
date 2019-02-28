@@ -164,11 +164,10 @@ class MuutospyyntoWizard extends Component {
     const url = `/jarjestajat/${this.props.match.params.ytunnus}`
     this.props.saveMuutospyynto(data).then(() => {
        let uuid = undefined;
-       if (this.props.muutospyynto.save.response) this.props.muutospyynto.save.response.data;
+       if (this.props.muutospyynto.save.response) uuid = this.props.muutospyynto.save.response.data;
        let newurl = url + "/hakemukset-ja-paatokset/" + uuid
        this.props.history.push(newurl)
        })
-
   }
 
   preview(event, data) {

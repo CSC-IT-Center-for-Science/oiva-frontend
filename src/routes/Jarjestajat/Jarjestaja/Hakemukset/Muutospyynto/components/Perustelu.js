@@ -4,7 +4,7 @@ import { getIndex } from "../modules/muutosUtil"
 import { COLORS } from "../../../../../../modules/styles"
 import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
 import { KOODISTOT } from "../../../modules/constants"
-
+import { parseLocalizedField } from "../../../../../../modules/helpers"
 
 import PerusteluSelect from './PerusteluSelect'
 import PerusteluOppisopimus from './PerusteluOppisopimus'
@@ -72,7 +72,8 @@ class Perustelu extends Component {
     const { helpText, muutos, muutokset, koodiarvo, fields, perusteluteksti, muutosperustelukoodiarvo, muutosperustelut, vankilat, ELYkeskukset } = this.props
     const { perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima, perusteluteksti_vankila } = this.props
     const { perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko, filename, file} = this.props
-    const { koodisto, type } = muutos
+    const { koodisto, type, metadata } = muutos
+    const kasite = parseLocalizedField(metadata, 'FI', 'kasite');
 
     // lisälomakkeet
     // tulevat vain lisäyksille tai muutoksille.
@@ -80,7 +81,7 @@ class Perustelu extends Component {
 
     // laajennettu oppisopimus
 
-    if (koodisto == KOODISTOT.OIVA_MUUT  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION )) {
+    if (koodisto == KOODISTOT.OIVA_MUUT && kasite === "laajennettu" && (type === MUUTOS_TYPES.ADDITION )) {
       return (
         <PerusteluWrapper>
           <PerusteluOppisopimus
@@ -95,8 +96,8 @@ class Perustelu extends Component {
    }
 
     // vaativa erityinen tuki
-    // pitääkö tulla vain yksi perustelu-lomake, vaikka kaikki kolme eri vaihtoehtoa on valittu?
-    if (koodisto == KOODISTOT.OIVA_MUUT && ((koodiarvo === "16" || koodiarvo === "17" || koodiarvo === "18" || koodiarvo === "19" || koodiarvo === "20" || koodiarvo === "21") || koodiarvo === "2" || koodiarvo === "1") && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+    // pitääkö tulla vain yksi perustelu-lomake, vaikka kaikki kolme eri vaihtoehtoa on valittu: ohjeistettu valitsemaan vain yksi
+    if (koodisto == KOODISTOT.OIVA_MUUT && (kasite === "vaativa_1" || kasite === "vaativa_2" ) && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluVaativa
