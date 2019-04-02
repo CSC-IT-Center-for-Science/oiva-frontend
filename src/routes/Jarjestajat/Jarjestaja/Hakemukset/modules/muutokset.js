@@ -74,7 +74,7 @@ const ACTION_HANDLERS = {
 // Reducer
 const initialState = {
   isRemoving: false,
-  muutokset: []
+  muutokset: [],
 }
 
 export default function lupasectionReducer(state = initialState, action) {

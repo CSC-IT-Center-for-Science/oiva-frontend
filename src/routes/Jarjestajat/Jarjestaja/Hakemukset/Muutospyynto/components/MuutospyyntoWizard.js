@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import Modal from 'react-modal'
 
@@ -18,7 +18,7 @@ import { COLORS } from "../../../../../../modules/styles"
 import close from 'static/images/close-x.svg'
 import { ROLE_KAYTTAJA } from "../../../../../../modules/constants";
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
-import { FORM_NAME_UUSI_HAKEMUS, MUUTOS_TYPE_TEXTS, HAKEMUS_VIRHE, HAKEMUS_VIESTI, HAKEMUS_OTSIKOT } from "../modules/uusiHakemusFormConstants"
+import { FORM_NAME_UUSI_HAKEMUS, HAKEMUS_VIRHE, HAKEMUS_VIESTI, HAKEMUS_OTSIKOT } from "../modules/uusiHakemusFormConstants"
 import { getJarjestajaData } from "../modules/muutospyyntoUtil"
 
 Modal.setAppElement('#root')
@@ -160,21 +160,22 @@ class MuutospyyntoWizard extends Component {
     }
 
     console.log('save', data)
-    this.props.saveMuutospyynto(data)
     const url = `/jarjestajat/${this.props.match.params.ytunnus}`
     this.props.saveMuutospyynto(data).then(() => {
-       let uuid = undefined;
-       if (this.props.muutospyynto.save.response) uuid = this.props.muutospyynto.save.response.data;
-       let newurl = url + "/hakemukset-ja-paatokset/" + uuid
-       this.props.history.push(newurl)
-       })
+      let uuid = undefined;
+      console.log('load', this.props.muutospyynto.save.data)
+
+      if (this.props.muutospyynto.save.data.data) uuid = this.props.muutospyynto.save.data.data.uuid;
+      let newurl = url + "/hakemukset-ja-paatokset/" + uuid
+      this.props.history.push(newurl)
+    })
   }
 
   preview(event, data) {
       event.preventDefault()
       this.props.previewMuutospyynto(data).then(() => {
 
-          var binaryData = [];
+          var binaryData = [];   
           binaryData.push(this.props.muutospyynto.pdf.data);
           const data =  window.URL.createObjectURL(new Blob(binaryData, {type: "application/pdf"}))
           //const data =  window.URL.createObjectURL(response.data)

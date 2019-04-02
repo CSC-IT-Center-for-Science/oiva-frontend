@@ -248,12 +248,13 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
   const { koodistoUri } = koodisto
   const nimi = parseLocalizedField(metadata, 'FI', 'nimi')
   const kuvaus = parseLocalizedField(metadata, 'FI', 'kuvaus')
-  const kasite = parseLocalizedField(metadata, 'FI', 'kasite');
+  const kasite = parseLocalizedField(metadata, 'FI', 'kasite')
+  const sisaltaa_merkityksen = parseLocalizedField(metadata, 'FI', 'sisaltaaMerkityksen')
 
   const { checked } = event.target
 
   if (!kohde) {
-    if (koodistoUri === KOODISTOT.KOULUTUS) {
+    if (koodistoUri === KOODISTOT.KOULUTUS || koodistoUri === KOODISTOT.KULJETTAJAKOULUTUS || koodistoUri === KOODISTOT.OIVA_TYOVOIMAKOULUTUS || koodistoUri === KOODISTOT.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS) {
       kohde = getKohdeByTunniste(KOHTEET.TUTKINNOT)
     } else if (koodistoUri === KOODISTOT.OPPILAITOKSENOPETUSKIELI) {
       kohde = getKohdeByTunniste(KOHTEET.KIELI)
@@ -261,9 +262,12 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
       kohde = getKohdeByTunniste(KOHTEET.MUUT)
     }
   }
+  console.log("koodistoUri");
+  console.log(koodistoUri);
+  console.log(kohde);
 
   if (!maaraystyyppi) {
-    if (koodistoUri === KOODISTOT.KOULUTUS) {
+    if (koodistoUri === KOODISTOT.KOULUTUS || koodistoUri === KOODISTOT.KULJETTAJAKOULUTUS || koodistoUri === KOODISTOT.OIVA_TYOVOIMAKOULUTUS || koodistoUri === KOODISTOT.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS) {
       maaraystyyppi = getMaaraystyyppiByTunniste(MAARAYSTYYPIT.OIKEUS)
     } else if (koodistoUri === KOODISTOT.OPPILAITOKSENOPETUSKIELI) {
       maaraystyyppi = getMaaraystyyppiByTunniste(MAARAYSTYYPIT.VELVOITE)
@@ -294,12 +298,14 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         kohde,
         maaraystyyppi,
         type: MUUTOS_TYPES.ADDITION,
+        sisaltaa_merkityksen: sisaltaa_merkityksen,
         meta: {
+          nimi,
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
           perusteluteksti: null,
-          ...(koodistoUri === KOODISTOT.KULJETTAJAKOULUTUS && (koodiArvo === "2" || koodiArvo === "3") &&  {perusteluteksti_kuljetus_jatko: meta_kuljettaja_jatko}),
-          ...(koodistoUri === KOODISTOT.KULJETTAJAKOULUTUS && koodiArvo === "1" && {perusteluteksti_kuljetus_perus: meta_kuljettaja_perus}),
+          ...(koodistoUri === KOODISTOT.KULJETTAJAKOULUTUS && sisaltaa_merkityksen === "jatko" &&  {perusteluteksti_kuljetus_jatko: meta_kuljettaja_jatko}),
+          ...(koodistoUri === KOODISTOT.KULJETTAJAKOULUTUS && sisaltaa_merkityksen === "perus" && {perusteluteksti_kuljetus_perus: meta_kuljettaja_perus}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && kasite === "laajennettu" && {perusteluteksti_oppisopimus: meta_oppisopimus}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && kasite === "vankila"  && {perusteluteksti_vankila: meta_vankila}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && (kasite === "vaativa_1" || kasite === "vaativa_2") && {perusteluteksti_vaativa: meta_vaativa}),
@@ -321,6 +327,7 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
         maaraystyyppi,
         type: MUUTOS_TYPES.REMOVAL,
         meta: {
+          nimi,
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
           perusteluteksti: null,

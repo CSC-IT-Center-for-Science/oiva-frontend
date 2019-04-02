@@ -780,3 +780,9 @@ export const Koulutustyyppi = styled.div`
   font-size: 15px;
   font-weight: bold;
 `
+
+export const Textarea = styled.textarea `
+display: block;
+margin-bottom: 10px;
+width: 80%;
+`

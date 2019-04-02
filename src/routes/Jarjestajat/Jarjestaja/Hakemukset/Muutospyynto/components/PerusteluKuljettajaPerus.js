@@ -15,6 +15,8 @@ import { getIndex } from "../modules/muutosUtil"
 import { FORM_NAME_UUSI_HAKEMUS } from "../modules/uusiHakemusFormConstants"
 import validate from '../modules/validateWizard'
 
+import Liitteet from './Liitteet'
+
 import { COLORS } from "../../../../../../modules/styles"
 
 const Label = styled.label`
@@ -176,7 +178,7 @@ class PerusteluKuljettajaPerus extends Component {
 
   render() {
     const { muutokset, fields, koodiarvo, perusteluteksti_kuljetus_perus } = this.props
-    const { tarpeellisuus, voimassaoleva, voimassaoleva_pvm, suunnitelma } = perusteluteksti_kuljetus_perus
+    const { tarpeellisuus, voimassaoleva_pvm, suunnitelma } = perusteluteksti_kuljetus_perus
     const { toimipisteet, kanta_linja_auto, kanta_kuorma_auto } = perusteluteksti_kuljetus_perus
     const { kanta_peravaunu, valineet_asetus, valineet_muut } = perusteluteksti_kuljetus_perus
 
@@ -376,6 +378,9 @@ class PerusteluKuljettajaPerus extends Component {
               <label htmlFor={MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.TUTKINTO_KULJETUSALA.FI}><ChkTitle>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.TUTKINTO_KULJETUSALA.FI}</ChkTitle></label>
             </Checkbox>
           </CheckboxWrapper>
+          <CheckboxWrapper>
+            <Liitteet {...this.props} paikka="kuljetta-perus1"/>
+          </CheckboxWrapper>
 
           <h4>5. {MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.OPETTAJA.FI}</h4>
           <Instruction>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.OHJEET.OPETTAJA_TARKENNUS.FI}</Instruction>
@@ -432,6 +437,9 @@ class PerusteluKuljettajaPerus extends Component {
               )}
             </div>
           } />
+          <CheckboxWrapper>
+            <Liitteet {...this.props} paikka="kuljetta-perus2" />
+          </CheckboxWrapper>
 
           <h4>6. {MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.KANTA.FI}</h4>
           <Instruction>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.OHJEET.KANTA.FI}</Instruction>
@@ -504,6 +512,9 @@ class PerusteluKuljettajaPerus extends Component {
               fields.insert(i, obj)
             }}
           />
+          <CheckboxWrapper>
+            <Liitteet {...this.props} />
+          </CheckboxWrapper>
         </Area>
       </div>
     )

@@ -14,8 +14,6 @@ import PerusteluVankila from './PerusteluVankila'
 import PerusteluKuljettajaPerus from './PerusteluKuljettajaPerus'
 import PerusteluKuljettajaJatko from './PerusteluKuljettajaJatko'
 
-import LiiteKategoriaSelect from './LiiteKategoriaSelect'
-
 const PerusteluWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,15 +39,8 @@ const PerusteluTopArea = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
 `
-
-const LiiteTopArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 10px;
-`
-
 class Perustelu extends Component {
+
   componentWillMount() {
     const { muutosperustelut, vankilat, ELYkeskukset } = this.props
 
@@ -69,11 +60,14 @@ class Perustelu extends Component {
 
   render() {
 
-    const { helpText, muutos, muutokset, koodiarvo, fields, perusteluteksti, muutosperustelukoodiarvo, muutosperustelut, vankilat, ELYkeskukset } = this.props
+    const { helpText, muutos, muutokset, koodiarvo, sisaltaa_merkityksen, fields, perusteluteksti, muutosperustelukoodiarvo, muutosperustelut, vankilat, ELYkeskukset } = this.props
     const { perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima, perusteluteksti_vankila } = this.props
-    const { perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko, filename, file} = this.props
+    const { perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko} = this.props
     const { koodisto, type, metadata } = muutos
     const kasite = parseLocalizedField(metadata, 'FI', 'kasite');
+    const i = getIndex(muutokset, koodiarvo);
+    console.log("metadata " + metadata);
+    console.log("muutos " + JSON.stringify(muutos));
 
     // lisälomakkeet
     // tulevat vain lisäyksille tai muutoksille.
@@ -81,7 +75,7 @@ class Perustelu extends Component {
 
     // laajennettu oppisopimus
 
-    if (koodisto == KOODISTOT.OIVA_MUUT && kasite === "laajennettu" && (type === MUUTOS_TYPES.ADDITION )) {
+    if (koodisto === KOODISTOT.OIVA_MUUT && kasite === "laajennettu" && (type === MUUTOS_TYPES.ADDITION )) {
       return (
         <PerusteluWrapper>
           <PerusteluOppisopimus
@@ -97,7 +91,7 @@ class Perustelu extends Component {
 
     // vaativa erityinen tuki
     // pitääkö tulla vain yksi perustelu-lomake, vaikka kaikki kolme eri vaihtoehtoa on valittu: ohjeistettu valitsemaan vain yksi
-    if (koodisto == KOODISTOT.OIVA_MUUT && (kasite === "vaativa_1" || kasite === "vaativa_2" ) && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+    if (koodisto === KOODISTOT.OIVA_MUUT && (kasite === "vaativa_1" || kasite === "vaativa_2" ) && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluVaativa
@@ -114,7 +108,7 @@ class Perustelu extends Component {
 
     // Työvoimakoulutus
     // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
-    if (koodisto == KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+    if (koodisto === KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluTyovoima
@@ -133,7 +127,7 @@ class Perustelu extends Component {
 
     // Vankilakoulutus
     // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
-    if (koodisto == KOODISTOT.OIVA_MUUT && koodiarvo == 5 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+    if (koodisto === KOODISTOT.OIVA_MUUT && koodiarvo == 5 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluVankila
@@ -148,10 +142,9 @@ class Perustelu extends Component {
         </PerusteluWrapper>
       )
     }
-
     // Kuljettajakoulutus - perustaso
     // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
-    if (koodisto == KOODISTOT.KULJETTAJAKOULUTUS && koodiarvo == 1 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+    if (koodisto === KOODISTOT.KULJETTAJAKOULUTUS && sisaltaa_merkityksen == "perus" && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluKuljettajaPerus
@@ -169,7 +162,7 @@ class Perustelu extends Component {
 
     // Kuljettajakoulutus - jatko
     // lisäykset ja muutokset tässä, mikäli oikeus poistetaan, tulee se normiperusteluilla
-    if (koodisto == KOODISTOT.KULJETTAJAKOULUTUS  && koodiarvo == 2 && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
+    if (koodisto === KOODISTOT.KULJETTAJAKOULUTUS  && sisaltaa_merkityksen == "jatko" && (type === MUUTOS_TYPES.ADDITION || type === MUUTOS_TYPES.CHANGE )) {
       return (
         <PerusteluWrapper>
           <PerusteluKuljettajaJatko
@@ -184,6 +177,7 @@ class Perustelu extends Component {
         </PerusteluWrapper>
       )
     }
+
 
     return (
       <PerusteluWrapper>
@@ -202,45 +196,11 @@ class Perustelu extends Component {
           rows="5"
           defaultValue={perusteluteksti !== null ? perusteluteksti : undefined}
           onBlur={(e) => {
-            const i = getIndex(muutokset, koodiarvo)
             let obj = fields.get(i)
             obj.meta.perusteluteksti = e.target.value
             fields.remove(i)
             fields.insert(i, obj)
           }}
-        />
-        <LiiteTopArea>Lisää muutokselle liite:</LiiteTopArea>
-        <div>
-          <input
-            type="file"
-            defaultValue={file !== null ? file : undefined}
-            onBlur={(e) => {
-              const i = getIndex(muutokset, koodiarvo)
-              let obj = fields.get(i)
-              obj.file = e.target
-              fields.remove(i)
-              fields.insert(i, obj)
-            }}/>
-
-        </div>
-        <div>
-          <input type="text"
-                 placeholder="Anna liitteelle nimi (valinnainen)..."
-                 defaultValue={filename !== null ? filename : undefined}
-                 onBlur={(e) => {
-                   const i = getIndex(muutokset, koodiarvo)
-                   let obj = fields.get(i)
-                   obj.filename = e.target.value
-                   fields.remove(i)
-                   fields.insert(i, obj)
-                 }}/>
-        </div>
-        <LiiteKategoriaSelect
-          muutosperustelukoodiarvo={muutosperustelukoodiarvo}
-          muutosperustelut={muutosperustelut.muutosperusteluList}
-          muutos={muutos}
-          muutokset={muutokset}
-          fields={fields}
         />
       </PerusteluWrapper>
     )

@@ -73,9 +73,9 @@ class Muutos extends Component {
 
   render() {
     const { isHidden } = this.state
-    const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, kuvaus, nimi, label, arvo, parentId } = muutos
-    const { perusteluteksti, perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima } = meta
+    const { muutokset, muutos, sisaltaa_merkityksen, fields, kategoria } = this.props
+    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, label, arvo, parentId } = muutos
+    const { perusteluteksti, perusteluteksti_oppisopimus, perusteluteksti_vaativa, perusteluteksti_tyovoima, nimi } = meta
     const { perusteluteksti_vankila, perusteluteksti_kuljetus_perus, perusteluteksti_kuljetus_jatko} = meta
 
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
@@ -137,6 +137,7 @@ class Muutos extends Component {
             muutosperustelukoodiarvo={muutosperustelukoodiarvo}
             muutokset={muutokset}
             muutos={muutos}
+            sisaltaa_merkityksen={sisaltaa_merkityksen}
             fields={fields}
           />
         }

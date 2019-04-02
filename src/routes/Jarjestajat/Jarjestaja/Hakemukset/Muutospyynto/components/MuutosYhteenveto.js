@@ -51,9 +51,9 @@ const MuutosTyyppi = styled.div`
 class MuutosYhteenveto extends Component {
   render() {
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, nimi, label, arvo } = muutos
+    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, label, arvo } = muutos
 
-    const { perusteluteksti } = meta
+    const { perusteluteksti, nimi } = meta
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
     const tyyppi =
       type === MUUTOS_TYPES.ADDITION ? MUUTOS_TYPE_TEXTS.ADDITION.FI :

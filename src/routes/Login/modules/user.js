@@ -28,18 +28,14 @@ export function getRoles() {
     return axios.get(`${API_BASE_URL}/auth/me`, { withCredentials: true })
       .then((response) => {
 
-          var userObj = JSON.parse(JSON.stringify(response.data))
+          let userObj = JSON.parse(JSON.stringify(response.data))
           sessionStorage.setItem('role', '')
           sessionStorage.setItem('username', userObj.username)
-
-          var roleArr = _.split(userObj.roles, ',')
+          sessionStorage.setItem('oid', userObj.oid)
           if(_.indexOf(userObj.roles, ROLE_ESITTELIJA) > -1) {
               sessionStorage.setItem('role', ROLE_ESITTELIJA)
-              sessionStorage.setItem('oid', _.replace(roleArr[2],ROLE_ESITTELIJA+'_',''))
-          }
-          if(_.indexOf(userObj.roles, ROLE_KAYTTAJA) > -1) {
+          } else if(_.indexOf(userObj.roles, ROLE_KAYTTAJA) > -1) {
               sessionStorage.setItem('role', ROLE_KAYTTAJA)
-              sessionStorage.setItem('oid', _.replace(roleArr[2],ROLE_KAYTTAJA+'_',''))
           }
 
           // TODO: error logging?

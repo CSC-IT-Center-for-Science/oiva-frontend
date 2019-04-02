@@ -265,7 +265,7 @@ class MuutosListTutkinnot extends Component {
             <SubHeading>{ TUTKINNOT_SECTIONS.KULJETTAJAT }</SubHeading>
             {kuljettajat.map((field, index) => {
               const muutos = fields.get(field.indeksi)
-              const { koodiarvo, koodisto } = muutos
+              const { koodiarvo, koodisto, sisaltaa_merkityksen } = muutos
               const identifier = `muutoscomponent-${koodisto}-${koodiarvo}-${index}`
 
               return (
@@ -276,6 +276,7 @@ class MuutosListTutkinnot extends Component {
                     muutokset={muutokset}
                     fields={fields}
                     kategoria={kategoria}
+                    sisaltaa_merkityksen={sisaltaa_merkityksen}
                     componentType={componentType}
                   />
                 </MuutosWrapper>
@@ -290,7 +291,9 @@ class MuutosListTutkinnot extends Component {
 
 const MuutosComponent = (props) => {
   const MuutosSubComponent = components[props.componentType]
-  return <MuutosSubComponent {...props} />
+  return (
+    <MuutosSubComponent {...props} />
+  )
 }
 
 export default MuutosListTutkinnot

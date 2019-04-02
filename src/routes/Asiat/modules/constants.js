@@ -394,8 +394,8 @@ export const FIELD_ARRAY_NAMES = {
     TOIMINTA_ALUEET: 'toimintaalueet',
     OPISKELIJAVUODET: 'opiskelijavuodet',
     MUUT: 'muutmuutokset',
-    HAKIJAN_TIEDOT: 'hakijantiedot'
-
+    HAKIJAN_TIEDOT: 'hakijantiedot',
+    MUUTOSPYYNTO: 'muutospyynto' 
 }
 
 export const MUUTOS_TYPES = {

@@ -46,10 +46,10 @@ class TaloudellisetYhteenveto extends Component {
 
     return (
       <MuutosListWrapper>
-        {length > 0 &&
+        {length !== undefined && length > 0 &&
         <Heading>{ heading }</Heading>
         }
-        {fields.map((field, index) => {
+        {length !== undefined  && fields.map((field, index) => {
           const identifier = "taloudelliset"
 
           return (

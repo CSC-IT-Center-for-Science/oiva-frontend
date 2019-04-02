@@ -74,7 +74,6 @@ class Muutos extends Component {
     const { koodiarvo, type, meta, muutosperusteluId, koodisto, kuvaus, label, arvo } = muutos
     const { perusteluteksti } = meta
     const nimi = getTutkintoNimiByKoodiarvo(koodiarvo)
-    console.log(nimi)
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
     const tyyppi =
       type === MUUTOS_TYPES.ADDITION ? MUUTOS_TYPE_TEXTS.ADDITION.FI :
