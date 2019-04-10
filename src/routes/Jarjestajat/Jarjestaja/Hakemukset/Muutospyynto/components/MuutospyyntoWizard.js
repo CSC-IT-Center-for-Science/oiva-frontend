@@ -171,22 +171,37 @@ class MuutospyyntoWizard extends Component {
     })
   }
 
+  create = (data) => {
+    console.log('create', data)
+    return this.props.saveMuutospyynto(data).then(() => {
+      let uuid = undefined;
+      if (this.props.muutospyynto.save.data.data) {
+        uuid = this.props.muutospyynto.save.data.data.uuid;
+        const url = `/jarjestajat/${this.props.match.params.ytunnus}`
+        this.props.createMuutospyynto(uuid).then(() => {
+          let newurl = url + "/hakemukset-ja-paatokset/"
+          this.props.history.push(newurl);
+        })
+      }
+    })
+  }
+
   preview(event, data) {
-      event.preventDefault()
-      this.props.previewMuutospyynto(data).then(() => {
+    event.preventDefault()
+    this.props.previewMuutospyynto(data).then(() => {
 
-          var binaryData = [];   
-          binaryData.push(this.props.muutospyynto.pdf.data);
-          const data =  window.URL.createObjectURL(new Blob(binaryData, {type: "application/pdf"}))
-          //const data =  window.URL.createObjectURL(response.data)
-          var link = document.createElement('a');
-          link.href = data;
-          link.download="file.pdf";
-          link.click();
-          // For Firefox it is necessary to delay revoking the ObjectURL
-          setTimeout(window.URL.revokeObjectURL(data), 100)
+        var binaryData = [];   
+        binaryData.push(this.props.muutospyynto.pdf.data);
+        const data =  window.URL.createObjectURL(new Blob(binaryData, {type: "application/pdf"}))
+        //const data =  window.URL.createObjectURL(response.data)
+        var link = document.createElement('a');
+        link.href = data;
+        link.download="file.pdf";
+        link.click();
+        // For Firefox it is necessary to delay revoking the ObjectURL
+        setTimeout(window.URL.revokeObjectURL(data), 100)
 
-      })
+    })
   }
 
   changePhase(number) {
@@ -287,7 +302,7 @@ class MuutospyyntoWizard extends Component {
                     onSubmit={this.onSubmit}
                     save={this.save}
                     preview={this.preview}
-                    createMuutospyynto={this.props.createMuutospyynto}
+                    createMuutospyynto={this.create}
                   />
                 )}
               </WizardContent>
@@ -333,7 +348,7 @@ class MuutospyyntoWizard extends Component {
 
 MuutospyyntoWizard = reduxForm({
   form: FORM_NAME_UUSI_HAKEMUS,
-  destroyOnUnmount: false,
+  destroyOnUnmount: true,
   forceUnregisterOnUnmount: true
 })(MuutospyyntoWizard)
 

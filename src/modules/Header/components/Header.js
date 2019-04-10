@@ -71,10 +71,10 @@ class Header extends Component {
               <HeaderTitle>Oiva - Opetushallinnon ohjaus- ja säätelypalvelu</HeaderTitle>
 
               <HeaderUpperRight>
-                {(sessionStorage.getItem('role')!==ROLE_ESITTELIJA && sessionStorage.getItem('role')!==ROLE_KAYTTAJA)
+                {!sessionStorage.getItem('role')
                 ? (<LinkItemUpper to="/cas-auth" className="has-separator pull-right">Kirjaudu sisään</LinkItemUpper>) : null}
 
-                {(sessionStorage.getItem('role')===ROLE_ESITTELIJA || sessionStorage.getItem('role')===ROLE_KAYTTAJA)
+                {sessionStorage.getItem('role')
                 ? (<LinkItemUpper to="/cas-logout" className="has-separator pull-right">Kirjaudu ulos ({sessionStorage.getItem('username')})</LinkItemUpper>) : null}
 
                 <LinkItemUpper to="/fi" className="has-separator pull-right">Suomeksi</LinkItemUpper>

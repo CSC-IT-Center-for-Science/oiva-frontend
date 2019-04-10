@@ -526,9 +526,6 @@ class PerusteluKuljettajaJatko extends Component {
               fields.insert(i, obj)
             }}
           />
-          <CheckboxWrapper>
-            <Liitteet {...this.props} />
-          </CheckboxWrapper>
         </Area>
       </PerusteluKuljettajaJatkoWrapper>
     )

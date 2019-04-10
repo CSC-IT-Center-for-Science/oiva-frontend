@@ -1,8 +1,14 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-import { API_BASE_URL } from 'modules/constants'
-import { ROLE_ESITTELIJA, ROLE_KAYTTAJA } from 'modules/constants'
+import {
+  API_BASE_URL,
+  ROLE_ESITTELIJA,
+  ROLE_KATSELIJA,
+  ROLE_KAYTTAJA,
+  ROLE_NIMENKIRJOITTAJA,
+  ROLE_YLLAPITAJA
+} from 'modules/constants'
 
 // Constants
 export const DUMMY_LOGIN_USER = 'DUMMY_LOGIN_USER'
@@ -24,18 +30,17 @@ export const GET_ORGANISATION_FAILURE = 'GET_ORGANISATION_FAILURE'
 export function getRoles() {
   return (dispatch) => {
     dispatch({ type: LOGIN_GET_ROLES_START })
-    
+
     return axios.get(`${API_BASE_URL}/auth/me`, { withCredentials: true })
       .then((response) => {
 
           let userObj = JSON.parse(JSON.stringify(response.data))
-          sessionStorage.setItem('role', '')
           sessionStorage.setItem('username', userObj.username)
           sessionStorage.setItem('oid', userObj.oid)
-          if(_.indexOf(userObj.roles, ROLE_ESITTELIJA) > -1) {
-              sessionStorage.setItem('role', ROLE_ESITTELIJA)
-          } else if(_.indexOf(userObj.roles, ROLE_KAYTTAJA) > -1) {
-              sessionStorage.setItem('role', ROLE_KAYTTAJA)
+          const role = [ROLE_YLLAPITAJA, ROLE_ESITTELIJA, ROLE_KAYTTAJA, ROLE_NIMENKIRJOITTAJA, ROLE_KATSELIJA]
+            .find(role => _.indexOf(userObj.roles, role) > -1)
+          if (role) {
+            sessionStorage.setItem('role', role)
           }
 
           // TODO: error logging?
@@ -43,13 +48,16 @@ export function getRoles() {
           dispatch({ type: LOGIN_GET_ROLES_SUCCESS, payload: response.data })
       })
       .catch((err) => dispatch({ type: LOGIN_GET_ROLES_FAILURE, payload: err }))
-      
+
   }
 }
 
 export function getOrganisation(oid) {
     return (dispatch) => {
         dispatch({ type: GET_ORGANISATION_START })
+        if (!oid) {
+          return
+        }
         const request = fetch(`${API_BASE_URL}/organisaatiot/${oid}`)
 
         request
@@ -65,20 +73,10 @@ export function getOrganisation(oid) {
 
 export function logoutUser() {
   return (dispatch) => {
-
-      dispatch({ type: LOGOUT_USER_START })
-
-      axios.get(`${API_BASE_URL}/auth/logout`, { withCredentials: true })
-          .then((response) => response.json())
-          .then((data) => {
-              dispatch({ type: LOGOUT_USER_SUCCESS, payload: data })
-          })
-          .catch((err) => dispatch({ type: LOGOUT_USER_FAILURE, payload: err }))
-
-      sessionStorage.removeItem('username')
-      sessionStorage.removeItem('oid')
-      sessionStorage.removeItem('role')
-
+    dispatch({ type: LOGOUT_USER_START })
+    sessionStorage.removeItem('username')
+    sessionStorage.removeItem('oid')
+    sessionStorage.removeItem('role')
   }
 }
 

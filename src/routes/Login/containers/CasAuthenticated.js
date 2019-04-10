@@ -29,8 +29,8 @@ class CasAuthenticated extends Component {
       if(oppilaitos) {
           organisaatio = oppilaitos.organisaatio
           if(oppilaitos.organisaatio) {
-              ytunnus = organisaatio.ytunnus
-              nimi = organisaatio.nimi.fi
+              if (organisaatio.ytunnus) ytunnus = organisaatio.ytunnus
+              if (organisaatio.nimi && organisaatio.nimi.fi) nimi = organisaatio.nimi.fi
           }
       }
 

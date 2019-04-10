@@ -53,7 +53,9 @@ class Liite extends Component {
     return (
       <div>
         <LiiteTopArea>
-          {HAKEMUS_OTSIKOT.LIITE_OHJE.FI}
+          { this.props.helpText && this.props.helpText }
+          { this.props.helpText && " " }
+          { HAKEMUS_OTSIKOT.LIITE_OHJE.FI }
         </LiiteTopArea>
         <FileInput>
           <div><FaPlus /> {HAKEMUS_OTSIKOT.LISAA_LIITE.FI}...</div>

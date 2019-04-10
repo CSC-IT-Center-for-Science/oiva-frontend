@@ -56,7 +56,7 @@ let MuutospyyntoWizardPerustelut = props => {
             />
 
             {tutkinnotjakoulutuksetValue && tutkinnotjakoulutuksetValue.length > 0 && 
-              <Liitteet fields={formValues} paikka="tutkinnot" /> 
+              <Liitteet fields={formValues} paikka="tutkinnot" isIntend={true}/> 
             }
 
             <FieldArray
@@ -98,7 +98,7 @@ let MuutospyyntoWizardPerustelut = props => {
 
             <Separator />
 
-            <Liitteet fields={formValues} paikka="perustelut" header={ HAKEMUS_OTSIKOT.LIITE_YLEISET_HEADER.FI } />
+            <Liitteet fields={formValues} paikka="yleiset" header={ HAKEMUS_OTSIKOT.LIITE_YLEISET_HEADER.FI } />
             
             </div>
           : 

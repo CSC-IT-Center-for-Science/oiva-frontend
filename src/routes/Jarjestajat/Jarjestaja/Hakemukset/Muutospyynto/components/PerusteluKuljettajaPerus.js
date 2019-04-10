@@ -379,7 +379,7 @@ class PerusteluKuljettajaPerus extends Component {
             </Checkbox>
           </CheckboxWrapper>
           <CheckboxWrapper>
-            <Liitteet {...this.props} paikka="kuljetta-perus1"/>
+            <Liitteet {...this.props} paikka="kuljettaja-perus1"/>
           </CheckboxWrapper>
 
           <h4>5. {MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.OPETTAJA.FI}</h4>
@@ -438,7 +438,7 @@ class PerusteluKuljettajaPerus extends Component {
             </div>
           } />
           <CheckboxWrapper>
-            <Liitteet {...this.props} paikka="kuljetta-perus2" />
+            <Liitteet {...this.props} paikka="kuljettaja-perus2" />
           </CheckboxWrapper>
 
           <h4>6. {MUUTOS_WIZARD_TEKSTIT.MUUTOS_PERUSTELULOMAKKEET.KULJETTAJAKOULUTUS.KANTA.FI}</h4>
@@ -512,9 +512,6 @@ class PerusteluKuljettajaPerus extends Component {
               fields.insert(i, obj)
             }}
           />
-          <CheckboxWrapper>
-            <Liitteet {...this.props} />
-          </CheckboxWrapper>
         </Area>
       </div>
     )

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Muutos from './Muutos'
 import MuutosYhteenveto from './MuutosYhteenveto'
 import { COMPONENT_TYPES } from "../modules/uusiHakemusFormConstants"
+import Liitteet from './Liitteet'
 
 const MuutosListWrapper = styled.div`
 `
@@ -55,6 +56,9 @@ class MuutosList extends Component {
             </MuutosWrapper>
           )
         })}
+        {fields && fields.length > 0 && 
+            <Liitteet {...this.props} fields={fields} paikka="kuljettaja" showListOnly={true} isIntend={true}/>
+          }
       </MuutosListWrapper>
     )
   }

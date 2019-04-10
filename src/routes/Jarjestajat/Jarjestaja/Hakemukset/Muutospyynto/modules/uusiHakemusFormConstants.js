@@ -177,15 +177,15 @@ export const HAKEMUS_OTSIKOT = {
     SV: 'På Svenska'
   },
   LIITE_YLEISET_HEADER: {
-    FI: 'Yleiset liitteet',
-    SV: 'På Svenska'
-  },
-  LIITE_YHTEENVETO_HEADER: {
     FI: 'Hakemuksen yleiset liitteet',
     SV: 'På Svenska'
   },
   LIITE_OHJE: {
-    FI: 'Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif.',
+    FI: 'Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muistakaa merkitä salassa pidettävät liitteet.',
+    SV: 'På Svenska'
+  },
+  LIITE_YHTEENVETO_OHJE: {
+    FI: 'Liittäkää asiakirja tai asiakirjat, joista ilmenee hakemuksen hyväksyntä tai hyväksyjän päätösvalta (esim. hyväksyjän allekirjoitusoikeus ja päättävän elimen kokouksen pöytäkirjanote).',
     SV: 'På Svenska'
   },
   LISAA_LIITE: {
