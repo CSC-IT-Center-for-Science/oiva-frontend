@@ -57,6 +57,7 @@ const HideFooter = styled.div`
   bottom: -100px;
   height: 100px;
 `
+// TODO Ohjetta varten
 const Help = styled.div`
   background-color: #fffff0;
   border: 1px solid #afafa0;
@@ -109,12 +110,14 @@ class MuutospyyntoWizard extends Component {
       page: 1,
       visitedPages: [1],
       isCloseModalOpen: false,
+      isErrorModalOpen: false,
       showHelp: true
     }
   }
 
   componentWillMount() {
     this.props.fetchMuutosperustelut()
+    this.props.fetchMuutosperustelutOpiskelijavuodet()
     this.props.fetchVankilat()
     this.props.fetchELYkeskukset()
     const { ytunnus } = this.props.match.params
@@ -162,12 +165,16 @@ class MuutospyyntoWizard extends Component {
     console.log('save', data)
     const url = `/jarjestajat/${this.props.match.params.ytunnus}`
     this.props.saveMuutospyynto(data).then(() => {
-      let uuid = undefined;
-      console.log('load', this.props.muutospyynto.save.data)
-
-      if (this.props.muutospyynto.save.data.data) uuid = this.props.muutospyynto.save.data.data.uuid;
-      let newurl = url + "/hakemukset-ja-paatokset/" + uuid
-      this.props.history.push(newurl)
+      if (this.props.muutospyynto.save && this.props.muutospyynto.save.data && this.props.muutospyynto.save.data.data) {
+        console.log('load', this.props.muutospyynto.save.data)
+        let uuid = this.props.muutospyynto.save.data.data.uuid;
+        let newurl = url + "/hakemukset-ja-paatokset/" + uuid
+        this.props.history.push(newurl)
+      }
+      else
+        return (
+          this.setState({ isErrorModalOpen: true })
+      )
     })
   }
 
@@ -220,8 +227,12 @@ class MuutospyyntoWizard extends Component {
     this.setState({ isCloseModalOpen: false })
   }
 
+  closeErrorModal = () => {
+    this.setState({ isErrorModalOpen: false })
+  }
+
   render() {
-    const { muutosperustelut, vankilat, ELYkeskukset, lupa, paatoskierrokset } = this.props
+    const { muutosperustelut, muutosperustelutOpiskelijavuodet, vankilat, ELYkeskukset, lupa, paatoskierrokset } = this.props
     const { page, visitedPages } = this.state
 
     if (sessionStorage.getItem('role') !== ROLE_KAYTTAJA) {
@@ -238,7 +249,7 @@ class MuutospyyntoWizard extends Component {
         )
     }
 
-    if (muutosperustelut.fetched && vankilat.fetched && ELYkeskukset.fetched && lupa.fetched && paatoskierrokset.fetched) {
+    if (muutosperustelut.fetched && muutosperustelutOpiskelijavuodet.fetched && vankilat.fetched && ELYkeskukset.fetched && lupa.fetched && paatoskierrokset.fetched) {
       return (
         <ContentWrapper>
           <WizardBackground />
@@ -283,6 +294,7 @@ class MuutospyyntoWizard extends Component {
                     onCancel={this.onCancel}
                     save={this.save}
                     muutosperustelut={this.props.muutosperustelut.data}
+                    muutosperustelutOpiskelijavuodet={this.props.muutosperustelutOpiskelijavuodet.data}
                     vankilat={this.props.vankilat.data}
                     ELYkeskukset={this.props.ELYkeskukset.data}
                   />
@@ -326,11 +338,23 @@ class MuutospyyntoWizard extends Component {
               <ModalButton onClick={this.closeCancelModal}>{HAKEMUS_VIESTI.EI.FI}</ModalButton>
             </div>
           </Modal>
+          <Modal
+            isOpen={this.state.isErrorModalOpen}
+            onRequestClose={this.closeErrorlModal}
+            style={modalStyles}
+          >
+            <Content>
+              <ModalText>{HAKEMUS_VIESTI.TALLENNUS_ERROR.FI}</ModalText>
+            </Content>
+            <div>
+              <ModalButton primary onClick={this.closeErrorModal}>{HAKEMUS_VIESTI.OK.FI}</ModalButton>
+            </div>
+          </Modal>
         </ContentWrapper>
       )
-    } else if (muutosperustelut.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching) {
+    } else if (muutosperustelut.isFetching || muutosperustelutOpiskelijavuodet.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching) {
       return <Loading />
-    } else if (muutosperustelut.hasErrored) {
+    } else if (muutosperustelut.hasErrored || muutosperustelutOpiskelijavuodet.hasErrored) {
       return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.PERUSTELU.FI}</MessageWrapper>
     } else if (vankilat.hasErrored) {
       return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.VANKILA.FI}</MessageWrapper>

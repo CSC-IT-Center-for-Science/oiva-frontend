@@ -47,23 +47,7 @@ const Button = styled.div`
 
 const JarjestamislupaAsiaListItem = (props) => {
 
-  const { filename, diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm } = props.lupaHistoria;
-
-  const asia = [
-    "Järjestämisluvan muutos",
-    "Järjestämisluvan peruutus",
-    "Uusi järjestämislupa"
-  ]
-
-  const tila = [
-    "Lähetetty",
-    "Käsittelyssä",
-    "Täydennettävä",
-    "Vastattava",
-    "Peruutettu",
-    "Päätettävänä",
-    "Päätetty"
-  ]
+  const { diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm } = props.lupaHistoria;
 
   const open = (e,nro) => {
     e.stopPropagation();
@@ -81,7 +65,7 @@ const JarjestamislupaAsiaListItem = (props) => {
   }
 
   return (
-    <a onClick={(e) => open(e,diaarinumero)}>
+    <a onClick={(e) => open(e,diaarinumero)} href>
       <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Tr>
             <LupaText>

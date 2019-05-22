@@ -28,7 +28,7 @@ const LinkBox = ({ to, text }) => {
   )
 }
 
-LinkBox.PropTypes = {
+LinkBox.propTypes = {
   to: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired
 }

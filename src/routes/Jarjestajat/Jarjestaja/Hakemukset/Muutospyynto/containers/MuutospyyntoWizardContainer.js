@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 
 import { fetchMuutosperustelut } from "../../../../../../modules/reducers/muutosperustelut"
+import { fetchMuutosperustelutOpiskelijavuodet } from "../../../../../../modules/reducers/muutosperustelutOpiskelijavuodet"
 import { fetchVankilat } from "../../../../../../modules/reducers/vankilat"
 import { fetchELYkeskukset } from "../../../../../../modules/reducers/elykeskukset"
 import { fetchLupa } from "../../../modules/lupa"
@@ -18,6 +19,7 @@ import MuutospyyntoWizard from '../components/MuutospyyntoWizard'
 const mapStateToProps = (state) => {
   return {
     muutosperustelut: state.muutosperustelut,
+    muutosperustelutOpiskelijavuodet: state.muutosperustelutOpiskelijavuodet,
     vankilat: state.vankilat,
     ELYkeskukset: state.ELYkeskukset,
     lupa: state.lupa,
@@ -32,6 +34,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => {
   return {
     fetchMuutosperustelut: () => dispatch(fetchMuutosperustelut()),
+    fetchMuutosperustelutOpiskelijavuodet: () => dispatch(fetchMuutosperustelutOpiskelijavuodet()),
     fetchVankilat: () => dispatch(fetchVankilat()),
     fetchELYkeskukset: () => dispatch(fetchELYkeskukset()),
     fetchLupa: (ytunnus, query) => dispatch(fetchLupa(ytunnus, query)),

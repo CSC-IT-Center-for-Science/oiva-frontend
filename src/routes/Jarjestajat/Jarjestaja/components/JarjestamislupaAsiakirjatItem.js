@@ -92,7 +92,7 @@ const JarjestamislupaAsiakirjatItem = (props) => {
   }
 
   return (
-    <a onClick={(e) => open(e,diaarinumero)}>
+    <a onClick={(e) => open(e,diaarinumero)} href>
       <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Tr>
             <LupaText>

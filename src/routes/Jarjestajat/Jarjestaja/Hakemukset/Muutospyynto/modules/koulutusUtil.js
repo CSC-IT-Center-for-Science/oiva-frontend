@@ -137,6 +137,16 @@ export function getMuutosperusteluObjectById(muutosperustelukoodiarvo) {
   }
 }
 
+export function getMuutosperusteluOpiskelijavuodetObjectById(muutosperustelukoodiarvo) {
+  const state = store.getState()
+
+  if (state.muutosperustelutOpiskelijavuodet && state.muutosperustelutOpiskelijavuodet.data) {
+    return _.find(state.muutosperustelutOpiskelijavuodet.data, mperustelu => {
+      return String(mperustelu.koodiArvo) === String(muutosperustelukoodiarvo)
+    })
+  }
+}
+
 export function getPaatoskierrosByUuid(paatoskierrosUuid) {
   const state = store.getState()
 
@@ -199,7 +209,6 @@ export function handleSimpleCheckboxChange(event, editValues, fields, isInLupa, 
       fields.push({
         type: 'addition',
         meta: { perusteluteksti: null },
-        muutosperustelukoodiarvo: null,
         isValtakunnallinen: true,
         koodiarvo: 'FI1',
         koodisto: 'nuts1',
@@ -219,7 +228,6 @@ export function handleSimpleCheckboxChange(event, editValues, fields, isInLupa, 
       fields.push({
         type: 'addition',
         meta: { perusteluteksti: null },
-        muutosperustelukoodiarvo: null,
         isValtakunnallinen: false,
         koodiarvo: 'FI1',
         koodisto: 'nuts1',
@@ -309,9 +317,9 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && kasite === "laajennettu" && {perusteluteksti_oppisopimus: meta_oppisopimus}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && kasite === "vankila"  && {perusteluteksti_vankila: meta_vankila}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && (kasite === "vaativa_1" || kasite === "vaativa_2") && {perusteluteksti_vaativa: meta_vaativa}),
-          ...(koodistoUri === KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiArvo === "1" || koodiArvo === "3") && {perusteluteksti_tyovoima: meta_tyovoima})
+          ...(koodistoUri === KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiArvo === "1" || koodiArvo === "3") && {perusteluteksti_tyovoima: meta_tyovoima}),
+          muutosperustelukoodiarvo: []
         },
-        muutosperustelukoodiarvo: null
       })
     }
   } else {
@@ -336,9 +344,9 @@ export function handleCheckboxChange(event, editValue, fields, isInLupa, current
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && kasite === "laajennettu" && {perusteluteksti_oppisopimus: meta_oppisopimus}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && kasite === "vankila"  && {perusteluteksti_vankila: meta_vankila}),
           ...(koodistoUri === KOODISTOT.OIVA_MUUT && (kasite === "vaativa_1" || kasite === "vaativa_2") && {perusteluteksti_vaativa: meta_vaativa}),
-          ...(koodistoUri === KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiArvo === "1" || koodiArvo === "3") && {perusteluteksti_tyovoima: meta_tyovoima})
+          ...(koodistoUri === KOODISTOT.OIVA_TYOVOIMAKOULUTUS  && (koodiArvo === "1" || koodiArvo === "3") && {perusteluteksti_tyovoima: meta_tyovoima}),
+          muutosperustelukoodiarvo: []
         },
-        muutosperustelukoodiarvo: null
       })
     } else {
       // Tutkinto ei ollut luvassa --> poistetaan muutos formista
@@ -389,8 +397,7 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
           perusteluteksti: null,
           koulutusala: parentObj.koulutusalaKoodiArvo,
           koulutustyyppi: parentObj.koulutustyyppiKoodiArvo
-         },
-        muutosperustelukoodiarvo: null
+         }
       })
     }
   } else {
@@ -410,8 +417,7 @@ export function handleOsaamislaCheckboxChange(event, editValue, fields, isInLupa
           perusteluteksti: null,
           koulutusala: parentObj.koulutusalaKoodiArvo,
           koulutustyyppi: parentObj.koulutustyyppiKoodiArvo
-         },
-        muutosperustelukoodiarvo: null
+         }
       })
     } else {
       // osaamisala ei ollut luvassa --> poistetaan muutos formista
@@ -456,8 +462,9 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
         meta: {
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
-          perusteluteksti: null },
-        muutosperustelukoodiarvo: null
+          perusteluteksti: null,
+          muutosperustelukoodiarvo: null
+        }
       })
     }
   } else {
@@ -477,8 +484,9 @@ export function handleTutkintoKieliCheckboxChange(event, editValue, fields, isIn
         meta: {
           koulutusala: currentObj.koulutusalaKoodiArvo,
           koulutustyyppi: currentObj.koulutustyyppiKoodiArvo,
-          perusteluteksti: null },
-        muutosperustelukoodiarvo: null
+          perusteluteksti: null,
+          muutosperustelukoodiarvo: null
+       }
       })
     } else {
       // Tutkinto ei ollut luvassa --> poistetaan muutos formista
@@ -530,8 +538,7 @@ export function handleTutkintokieliSelectChange(editValues, fields, isInLupa, tu
           kuvaus: null,
           isInLupa,
           type: MUUTOS_TYPES.CHANGE,
-          meta: { perusteluteksti: null },
-          muutosperustelukoodiarvo: null
+          meta: { perusteluteksti: null }
         })
       }
     } else {
@@ -547,8 +554,7 @@ export function handleTutkintokieliSelectChange(editValues, fields, isInLupa, tu
         kuvaus: null,
         isInLupa,
         type: MUUTOS_TYPES.CHANGE,
-        meta: { perusteluteksti: null },
-        muutosperustelukoodiarvo: null
+        meta: { perusteluteksti: null }
       })
     }
   } else {

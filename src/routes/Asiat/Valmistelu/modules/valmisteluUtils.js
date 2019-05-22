@@ -7,7 +7,6 @@ import {
   MUUTOS_TILAT,
   MUUTOS_TYPES
 } from "../../../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/uusiHakemusFormConstants"
-import { getBaseJarjestajaData } from "../../../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/muutospyyntoUtil"
 
 export function getKoulutusAlat() {
   const state = store.getState()

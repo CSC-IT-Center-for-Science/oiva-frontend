@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getRoles, getOrganisation } from 'routes/Login/modules/user'
 import styled from 'styled-components'
-import { Link, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import { ROLE_ESITTELIJA } from "../../../modules/constants";
 

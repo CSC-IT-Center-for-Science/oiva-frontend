@@ -28,14 +28,6 @@ const Content = styled.div`
 `
 
 class PerusteluTyovoimaYhteenveto extends Component {
-  componentWillMount() {
-    const { muutosperustelut } = this.props
-
-    if (muutosperustelut && !muutosperustelut.fetched) {
-      this.props.fetchMuutosperustelut()
-    }
-  }
-
   render() {
     const { perustelut } = this.props
     let perusteluText = 'Ei saatavilla'

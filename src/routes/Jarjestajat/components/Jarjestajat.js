@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic'
 
 import LuvatList from 'routes/Jarjestajat/components/LuvatList'
-import { P, BackgroundImage} from "../../../modules/styles"
+import { P } from "../../../modules/styles"
 import { ContentContainer } from '../../../modules/elements'
 import Loading from '../../../modules/Loading'
 

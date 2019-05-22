@@ -31,13 +31,11 @@ export const COLORS = {
   ACTIVE_BLUE: '#E9F6FA',
   OIVA_OPAQUE_GREEN: 'rgba(90,138,112,0.4)',
   OIVA_DARK_GREEN: '#517c64',
+  OIVA_MEDIUM_GREEN: '#70A489',
   OIVA_LIGHT_GREEN: '#eef3f0',
   OIVA_MENU_FONT_COLOR: '#EBF4F4',
-  OIVA_MENU_BG_COLOR: '#70A489',
-  OIVA_MENU_HOVER_COLOR: '#98B8A7',
-  OIVA_MENU_HOVER_2_COLOR: '#99C6C6',
+  OIVA_HOVER_COLOR: '#98B8A7',
   OIVA_MENU_SELECTED_COLOR: '#A8C8B7',
-  OIVA_MENU_BG_2_COLOR: '#519D9D',
   OIVA_TABLE_BG_COLOR: '#70A489',
   OIVA_TABLE_HOVER_COLOR: 'rgba(90,138,112,0.2)',
   OIVA_TABLE_HEADER_HOVER_COLOR: '#98B8A7'
@@ -58,7 +56,7 @@ export const APP_WIDTH = 1030
 
 // Media query breakpointit
 export const MEDIA_QUERIES = {
-  MOBILE: 'only screen and (min-width: 360px) and (max-width: 767px)',
+  MOBILE: 'only screen and (max-width: 767px)',
   TABLET: 'only screen and (min-width: 768px) and (max-width: 1023px)',
   TABLET_MIN: 'only screen and (min-width: 768px)',
   DESKTOP_NORMAL: 'only screen and (min-width: 1024px) and (max-width: 1279px)',

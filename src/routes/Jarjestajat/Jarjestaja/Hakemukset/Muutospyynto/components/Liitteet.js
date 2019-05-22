@@ -264,7 +264,7 @@ class Liiteet extends Component {
     }
 
     const setAttachmentName = (e, tiedostoId, uuid) => {
-      e.preventDefaults;
+      e.preventDefaults();
       this.setState({fileError: false});
       this.setState({fileAdded: ""});
       let obj = undefined;
@@ -396,6 +396,7 @@ class Liiteet extends Component {
           if ( (!paikka || liite.paikka.startsWith(paikka)) && !liite.removed) {
             return true
           }
+          return false
         })
         return false
       }

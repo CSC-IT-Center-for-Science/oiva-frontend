@@ -17,17 +17,6 @@ const Title = styled.h1`
   }
 `
 
-const Description = styled.p`
-  font-size: 18px;
-  max-width: 500px;
-  margin: 50px 0 0 20px;
-  position: relative;
-  
-  @media ${MEDIA_QUERIES.MOBILE} {
-    margin: 15px;
-  }
-`
-
 const Linkki = styled.div`
     margin-top:15px;  
 `
@@ -42,8 +31,8 @@ class Tilastot extends Component {
           <p>
             Linkkejä tilastodataan (beta-versio):
           </p>
-          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiN2M1YWZiYzUtOTEyYS00NTY2LTgzNDctNGZjOTVmOWQ4ZTlkIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9" target="_blank">Ammatillisen koulutuksen järjestämisluvat</a></Linkki>
-          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiNjQ4NGRmNWEtYmRmMC00YWNkLWI4NGEtNDg2NTBmMWFmYTM0IiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9" target="_blank">Väestötiedot</a></Linkki>
+          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiN2M1YWZiYzUtOTEyYS00NTY2LTgzNDctNGZjOTVmOWQ4ZTlkIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9" target="_blank" rel="noopener noreferrer">Ammatillisen koulutuksen järjestämisluvat</a></Linkki>
+          <Linkki><a href="https://app.powerbi.com/view?r=eyJrIjoiNjQ4NGRmNWEtYmRmMC00YWNkLWI4NGEtNDg2NTBmMWFmYTM0IiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9" target="_blank" rel="noopener noreferrer">Väestötiedot</a></Linkki>
 
       </ContentContainer>
     )

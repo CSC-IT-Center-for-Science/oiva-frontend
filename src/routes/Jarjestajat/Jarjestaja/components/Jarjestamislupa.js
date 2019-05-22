@@ -25,17 +25,6 @@ const LupaDetailsWrapper = styled.div`
   margin: 45px auto;
 `
 
-const Row = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin: 8px 0;
-  
-  a {
-    display: flex;
-    align-items: flex-end;
-  }
-`
-
 class Jarjestamislupa extends Component {
   render() {
     const { jarjestajaYtunnus } = this.props.lupa.data

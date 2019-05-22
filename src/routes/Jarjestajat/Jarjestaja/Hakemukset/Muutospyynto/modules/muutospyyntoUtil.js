@@ -1,6 +1,4 @@
 import _ from "lodash"
-import { getMuutosperusteluObjectById, getTutkintoKoodiByMaaraysId } from "./koulutusUtil"
-import { parseLocalizedField } from "../../../../../../modules/helpers"
 import dateformat from "dateformat"
 import store from "../../../../../../store"
 import { MUUTOS_TILAT, MUUTOS_TYPES } from "./uusiHakemusFormConstants"
@@ -42,6 +40,7 @@ export function formatMuutospyynto(muutospyynto) {
       item.liitteet.map ( liite =>
         delete(liite.tiedosto)
       )
+    return true;
   });
 
   let metadata = { meta, ...hakija };
@@ -84,8 +83,10 @@ export function createAttachmentArray(muutokset) {
           liite.tiedosto = null;
         }
         liitteet.push(tulosliite);
+        return true;
       })
     }
+    return true;
   })
   console.log(liitteet);
   return liitteet;
@@ -207,13 +208,12 @@ export function getBaseJarjestajaData(state) {
   if (state.lupa && state.lupa.fetched && state.paatoskierrokset && state.paatoskierrokset.fetched) {
     const { data } = state.lupa
     const {
-      uuid,
       diaarinumero,
       jarjestajaYtunnus,
       jarjestajaOid
     } = data
 
-    const now = dateformat(new Date(), "yyyy-mm-dd")
+    // const now = dateformat(new Date(), "yyyy-mm-dd")
 
     return {
       diaarinumero,

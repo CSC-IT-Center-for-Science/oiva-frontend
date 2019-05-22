@@ -34,7 +34,7 @@ const RajoiteStyle = styled.div`
 
 const Rajoite = (props) => {
   const { koodi, nimi, koodisto } = props
-  if(koodisto=='kieli') return ''
+  if(koodisto==='kieli') return ''
   return (
     <RajoiteStyle>lukuun&nbsp;ottamatta:&nbsp;{koodi}&nbsp;{nimi}</RajoiteStyle>
   )

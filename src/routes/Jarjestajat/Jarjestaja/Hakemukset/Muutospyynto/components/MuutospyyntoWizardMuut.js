@@ -217,7 +217,6 @@ class MuutospyyntoWizardMuut extends Component {
   renderMuutMuutokset = (props) => {
     const { muut, editValues, fields, otsikko } = props
     let { muutList } = props
-    let { metadata } = muutList
     muutList = muutList.sort((a,b) => 
       this.getHuomioitavaKoodi(a) - this.getHuomioitavaKoodi(b)
     );
@@ -277,16 +276,16 @@ class MuutospyyntoWizardMuut extends Component {
             if (editValues) {
               editValues.forEach(val => {
                 if (val.koodiarvo === koodiArvo && val.nimi === nimi) {
-                  val.type === MUUTOS_TYPES.ADDITION ? isAdded = true : null
-                  val.type === MUUTOS_TYPES.REMOVAL ? isRemoved = true : null
+                  isAdded = (val.type === MUUTOS_TYPES.ADDITION) ? true : null
+                  isRemoved = (val.type === MUUTOS_TYPES.REMOVAL) ? isRemoved = true : null
                 }
               })
             }
 
-            isInLupa ? customClassName = "is-in-lupa" : null
-            isAdded ? customClassName = "is-added" : null
-            isRemoved ? customClassName = "is-removed" : null
-            voimassaLoppuPvm !== undefined ? customClassName = "is-out-of-date" : null
+            customClassName = isInLupa ? "is-in-lupa" : null
+            customClassName = isAdded ? "is-added" : null
+            customClassName = isRemoved ? "is-removed" : null
+            customClassName = voimassaLoppuPvm !== undefined ? "is-out-of-date" : null
 
             if ((isInLupa && !isRemoved) || isAdded) {
               isChecked = true
@@ -335,6 +334,7 @@ class MuutospyyntoWizardMuut extends Component {
                   </div>
               )
             }
+            return true;
           })}
         </Row>
       </div>

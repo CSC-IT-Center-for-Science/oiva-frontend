@@ -18,8 +18,6 @@ import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants"
 import { COLORS } from "../../../../modules/styles"
 import { ContentContainer, FullWidthWrapper, ContentWrapper } from '../../../../modules/elements'
 import {ROLE_KAYTTAJA} from "../../../../modules/constants";
-import _ from 'lodash'
-
 
 const Separator = styled.div`
   &:after {
@@ -77,7 +75,6 @@ class Jarjestaja extends Component {
             {
               path: `${match.url}`,
               exact: true,
-              text: 'Päätökset',
               text: LUPA_TEKSTIT.PAATOKSET.OTSIKKO.FI,
               authenticated: true
             },
@@ -102,7 +99,6 @@ class Jarjestaja extends Component {
               {
                 path: `${match.url}`,
                 exact: true,
-                text: 'Päätökset',
                 text: LUPA_TEKSTIT.PAATOKSET.OTSIKKO.FI,
                 authenticated: true
               }

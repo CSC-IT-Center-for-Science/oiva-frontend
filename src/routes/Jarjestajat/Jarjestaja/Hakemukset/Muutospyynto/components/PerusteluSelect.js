@@ -1,54 +1,85 @@
-import React, { Component } from 'react'
-import 'styled-components'
-import styled from "styled-components"
-import Select from '../../../../../../modules/Select'
+import _ from "lodash";
+import React, { Component } from "react";
+import styled from "styled-components";
 
-import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
-import { handleMuutosperusteluSelectChange } from "../modules/muutosperusteluUtil"
+import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants";
+import { getMuutosperusteluEditIndex } from "../modules/muutosperusteluUtil";
 
 const PerusteluSelectWrapper = styled.div`
   margin-bottom: 20px;
-`
-
-const SelectWrapper = styled.div`
-  width: 320px;
-`
+`;
 
 class PerusteluSelect extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedOption: props.muutosperustelukoodiarvo
+  handleChange(e, selectedOption) {
+    const { muutokset, fields, muutos } = this.props;
+
+    const i = getMuutosperusteluEditIndex(muutokset, muutos.koodiarvo);
+    if (i !== undefined) {
+      let obj = fields.get(i);
+      fields.remove(i);
+
+      if (obj.meta.muutosperustelukoodiarvo.length === 0) {
+        obj.meta.muutosperustelukoodiarvo.push(selectedOption);
+      } else {
+        let muutosperustelut = obj.meta.muutosperustelukoodiarvo.filter(v => {
+          return v !== selectedOption;
+        });
+        if (muutosperustelut.length === obj.meta.muutosperustelukoodiarvo.length) {
+          // Lisää uusi perustelu
+          obj.meta.muutosperustelukoodiarvo.push(selectedOption);
+        } else {
+          // Poista aiemmin valittu perustelu
+          obj.meta.muutosperustelukoodiarvo = muutosperustelut;
+        }
+      }
+
+      fields.insert(i, obj);
     }
   }
 
-  handleChange(selectedOption) {
-    this.setState({ selectedOption })
-    const { muutokset, fields, muutos } = this.props
-    handleMuutosperusteluSelectChange(muutokset, fields, muutos, selectedOption)
-  }
-
   render() {
-    const { selectedOption } = this.state
-    const { muutosperustelut, muutos } = this.props
-    const { koodiarvo, koodisto } = muutos
+    const { muutosperustelut, muutos } = this.props;
 
     return (
       <PerusteluSelectWrapper>
         <h4>{MUUTOS_WIZARD_TEKSTIT.TAUSTA_SYYT_OTSIKKO.FI}</h4>
         <div>{MUUTOS_WIZARD_TEKSTIT.TAUSTA_SYYT_TARKENNE.FI}</div>
-        <SelectWrapper>
-          <Select
-            name={`select-muutosperustelu-${koodisto}-${koodiarvo}`}
-            value={selectedOption}
-            options={muutosperustelut}
-            onChange={this.handleChange.bind(this)}
-            placeholder="Valitse perustelun tyyppi..."
-          />
-        </SelectWrapper>
+
+        {muutosperustelut.map(m => {
+          const valittu = _.includes(
+            muutos.meta.muutosperustelukoodiarvo,
+            m.koodiArvo
+          );
+
+          return (
+            <div key={m.koodiArvo}>
+              <input
+                name={`muutosperustelu-${muutos.koodiarvo}-${
+                  m.koodisto.koodistoUri
+                }-${m.koodiArvo}`}
+                id={`muutosperustelu-${muutos.koodiarvo}-${
+                  m.koodisto.koodistoUri
+                }-${m.koodiArvo}`}
+                type="checkbox"
+                value={m.koodiArvo}
+                checked={valittu}
+                onChange={e => {
+                  this.handleChange(e, m.koodiArvo);
+                }}
+              />
+              <label
+                htmlFor={`muutosperustelu-${muutos.koodiarvo}-${
+                  m.koodisto.koodistoUri
+                }-${m.koodiArvo}`}
+              >
+                {m.label}
+              </label>
+            </div>
+          );
+        })}
       </PerusteluSelectWrapper>
-    )
+    );
   }
 }
 
-export default PerusteluSelect
+export default PerusteluSelect;

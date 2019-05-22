@@ -70,16 +70,8 @@ export const HAKEMUS_VIRHE = {
     FI: 'Vankilalistausta ladattaessa tapahtui virhe.',
     SV: 'På Svenska'
   },
-  VANKILA: {
-    FI: 'Vankilalistausta ladattaessa tapahtui virhe.',
-    SV: 'På Svenska'
-  },
   ELY: {
     FI: 'ELY-keskuslistausta ladattaessa tapahtui virhe.',
-    SV: 'På Svenska'
-  },
-  PAATOSKIERROS: {
-    FI: 'Päätoskierroksia ladattaessa tapahtui virhe.',
     SV: 'På Svenska'
   },
   PAATOSKIERROS: {
@@ -105,6 +97,10 @@ export const HAKEMUS_VIRHE = {
   LIITE: {
     FI: 'Valitsemaasi liitettä ei voi lisätä hakemukseen, tarkista sen koko ja tyyppi',
     SV: 'På Svenska'
+  },
+  TOIMINTAALUE: {
+    FI: 'Toiminta-aluetta ladattaessa tapahtui virhe',
+    SV: 'Samma på svenska'
   }
 }
 
@@ -133,6 +129,10 @@ export const HAKEMUS_VIESTI = {
     FI: 'Liite lisätty',
     SV: 'LIITE_LISATTY'
   },
+  TOIMINTAALUE_EI_MAARITETTY: {
+    FI: 'Toiminta-aluetta ei määritetty',
+    SV: 'På svenska'
+  },
   TIEDOSTON_NIMI: {
     FI: 'Liitteen nimi *',
     SV: 'TIEDOSTON_NIMI'
@@ -148,6 +148,10 @@ export const HAKEMUS_VIESTI = {
   TIEDOSTO_NIMI_ERROR: {
     FI: 'Nimi on pakkollinen',
     SV: 'TIEDOSTO_NIMI_ERROR'
+  },
+  TALLENNUS_ERROR: {
+    FI: 'Tallennus epäonnistui. Yritä tallennusta uudelleen hetken kuluttua. Virheen toistuessa ota yhteyttä pääkäyttäjään.',
+    SV: 'TALLENNUS_ERROR'
   },
 }
 
@@ -196,6 +200,10 @@ export const HAKEMUS_OTSIKOT = {
     FI: 'Poista liite',
     SV: 'På Svenska'
   },
+  VALTAKUNNALLINEN: {
+    FI: 'Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta Ahvenanmaan maakuntaa lukuunottamatta koko Suomen osaamis- ja koulutustarpeeseen.',
+    SV: 'På svenska',
+  },
   SALAINEN_LIITE: {
     FI: 'Salainen liite',
     SV: 'På Svenska'
@@ -217,4 +225,19 @@ export const HAKEMUS_OTSIKOT = {
 export const COMPONENT_TYPES = {
   MUUTOS: 'muutos',
   MUUTOS_YHTEENVETO: 'muutosYhteenveto'
+}
+
+export const HAKEMUS_OHJEET = {
+  TOIMINTAALUE: {
+    FI: 'Tähän lyhyt ohjeteksti kohteen täyttämisestä',
+    SV: 'På svenska'
+  },
+  TOIMINTAALUE_VALINTA: {
+    FI: 'Tähän lyhyt ohjeteksti toimialueiden valintaan liittyen',
+    SV: 'På svenska'
+  },
+  VALTAKUNNALLINEN: {
+    FI: 'Tähän lyhyt ohjeteksti valtakunnallisen valintaan liittyen',
+    SV: 'På svenska'
+  }
 }

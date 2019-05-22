@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import validate from '../modules/validateValmistelu'
-import { Separator, Button, SubtleButton, Container, WizardBottom } from './ValmisteluComponents'
+import { Button, SubtleButton, Container, WizardBottom } from './ValmisteluComponents'
 import MuutosList from './MuutosList'
 
-import { VALMISTELU_WIZARD_TEKSTIT, FIELD_ARRAY_NAMES } from "../../modules/constants"
+import { FIELD_ARRAY_NAMES } from "../../modules/constants"
 
 class ValmisteluWizardMuutokset extends Component {
   render() {

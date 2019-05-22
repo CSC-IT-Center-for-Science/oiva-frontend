@@ -8,8 +8,6 @@ const HeaderLink = styled(Link)`
   text-decoration: none;
   color: white;
   text-transform: none;
-  margin-left: 0px;
-  font-size: 11.5px;
   line-height: 18px;
 
   a:visited {

@@ -2,17 +2,14 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FieldArray, reduxForm, formValueSelector } from 'redux-form'
-import styled from 'styled-components'
 
 import { ContentContainer} from "../../../../../../modules/elements"
-import { Kohde, Kohdenumero, Otsikko, Row, Div, Checkbox, CheckboxRowContainer } from "./MuutospyyntoWizardComponents"
-import { LUPA_TEKSTIT } from "../../../modules/constants"
+import { Kohdenumero, Otsikko, Row, Checkbox, CheckboxRowContainer } from "./MuutospyyntoWizardComponents"
 import Loading from "../../../../../../modules/Loading"
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import { handleCheckboxChange } from "../modules/koulutusUtil"
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 import { FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS, MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
-
 
 class MuutospyyntoWizardKielet extends Component {
   componentWillMount() {
@@ -65,8 +62,7 @@ class MuutospyyntoWizardKielet extends Component {
           <h4>{MUUTOS_WIZARD_TEKSTIT.MUUTOS_OPETUSKIELET.HEADING.FI}</h4>
 
           {opetuskielet.map((opetuskieli, i) => {
-            const { koodiArvo, koodisto, metadata} = opetuskieli
-            const { koodistoUri } = koodisto
+            const { koodiArvo, metadata} = opetuskieli
             const nimi = parseLocalizedField(metadata)
             const identifier = `input-${koodiArvo}-${i}`
 
@@ -88,15 +84,15 @@ class MuutospyyntoWizardKielet extends Component {
             if (editValues) {
               editValues.forEach(val => {
                 if (val.koodiarvo === koodiArvo && val.nimi === nimi) {
-                  val.type === MUUTOS_TYPES.ADDITION ? isAdded = true : null
-                  val.type === MUUTOS_TYPES.REMOVAL ? isRemoved = true : null
+                  isAdded = (val.type === MUUTOS_TYPES.ADDITION) ? true : null
+                  isRemoved = (val.type === MUUTOS_TYPES.REMOVAL) ? true : null
                 }
               })
             }
 
-            isInLupa ? customClassName = "is-in-lupa" : null
-            isAdded ? customClassName = "is-added" : null
-            isRemoved ? customClassName = "is-removed" : null
+            customClassName = isInLupa ? "is-in-lupa" : null
+            customClassName = isAdded ? "is-added" : null
+            customClassName = isRemoved ? "is-removed" : null
 
             if ((isInLupa && !isRemoved) || isAdded) {
               isChecked = true

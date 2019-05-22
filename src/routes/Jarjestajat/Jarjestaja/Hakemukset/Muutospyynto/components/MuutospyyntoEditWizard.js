@@ -78,12 +78,14 @@ class MuutospyyntoEditWizard extends Component {
     this.state = {
       page: 1,
       visitedPages: [1],
-      isCloseModalOpen: false
+      isCloseModalOpen: false,
+      isErrorModalOpen: false,
     }
   }
 
   componentWillMount() {
     this.props.fetchMuutosperustelut()
+    this.props.fetchMuutosperustelutOpiskelijavuodet()
     this.props.fetchVankilat()
     this.props.fetchELYkeskukset()
     const { ytunnus, uuid } = this.props.match.params
@@ -124,13 +126,19 @@ class MuutospyyntoEditWizard extends Component {
     // this.onCancel() // TODO: tehdään onDone-funktio
   }
 
-  save(event, data) {
+  save = (event, data) => {
     if (event) {
       event.preventDefault()
     }
 
     console.log('save', data)
-    this.props.saveMuutospyynto(data)
+    let result = this.props.saveMuutospyynto(data).then(() => {
+      if (!this.props.muutospyynto.save || this.props.muutospyynto.save.hasErrored)
+        return (
+          this.setState({ isErrorModalOpen: true })
+        )
+      }
+    )
   }
 
   update(event, data) {
@@ -175,8 +183,12 @@ class MuutospyyntoEditWizard extends Component {
     this.setState({ isCloseModalOpen: false })
   }
 
+  closeErrorModal = () => {
+    this.setState({ isErrorModalOpen: false })
+  }
+  
   render() {
-    const { muutosperustelut, vankilat, ELYkeskukset, lupa, paatoskierrokset, muutospyynto, initialValues } = this.props
+    const { muutosperustelut, muutosperustelutOpiskelijavuodet, vankilat, ELYkeskukset, lupa, paatoskierrokset, muutospyynto, initialValues } = this.props
     const { page, visitedPages } = this.state
 
     // setTimeout(() => console.log(muutospyynto), 3000)
@@ -195,7 +207,7 @@ class MuutospyyntoEditWizard extends Component {
       )
     }
 
-    if (muutosperustelut.fetched && vankilat.fetched && ELYkeskukset.fetched && lupa.fetched && paatoskierrokset.fetched && muutospyynto.fetched) {
+    if (muutosperustelut.fetched && muutosperustelutOpiskelijavuodet.fetched && vankilat.fetched && ELYkeskukset.fetched && lupa.fetched && paatoskierrokset.fetched && muutospyynto.fetched) {
       return (
         <div>
           <WizardBackground />
@@ -242,6 +254,7 @@ class MuutospyyntoEditWizard extends Component {
                     onCancel={this.onCancel}
                     save={this.save}
                     muutosperustelut={this.props.muutosperustelut.data}
+                    muutosperustelutOpiskelijavuodet={this.props.muutosperustelutOpiskelijavuodet.data}
                     vankilat={this.props.vankilat.data}
                     ELYkeskukset={this.props.ELYkeskukset.data}
                   />
@@ -284,11 +297,23 @@ class MuutospyyntoEditWizard extends Component {
               <ModalButton onClick={this.closeCancelModal}>{HAKEMUS_VIESTI.EI.FI}</ModalButton>
             </div>
           </Modal>
+          <Modal
+            isOpen={this.state.isErrorModalOpen}
+            onRequestClose={this.closeErrorlModal}
+            style={modalStyles}
+          >
+            <Content>
+              <ModalText>{HAKEMUS_VIESTI.TALLENNUS_ERROR.FI}</ModalText>
+            </Content>
+            <div>
+              <ModalButton primary onClick={this.closeErrorModal}>{HAKEMUS_VIESTI.OK.FI}</ModalButton>
+            </div>
+          </Modal>
         </div>
       )
-    } else if (muutosperustelut.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
+    } else if (muutosperustelut.isFetching || muutosperustelutOpiskelijavuodet.isFetching || vankilat.isFetching || ELYkeskukset.isFetching || lupa.isFetching || paatoskierrokset.isFetching || muutospyynto.isFetching) {
       return <Loading />
-    } else if (muutosperustelut.hasErrored) {
+    } else if (muutosperustelut.hasErrored || muutosperustelutOpiskelijavuodet.hasErrored) {
       return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.PERUSTELU.FI}</MessageWrapper>
     } else if (vankilat.hasErrored) {
       return <MessageWrapper><h3>{HAKEMUS_VIRHE.HEADER.FI}</h3>{HAKEMUS_VIRHE.VANKILA.FI}</MessageWrapper>

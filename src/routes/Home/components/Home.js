@@ -3,9 +3,8 @@ import styled from 'styled-components'
 import { Helmet } from 'react-helmet'
 
 import Hero from './Hero'
-import LinkBox from './LinkBox'
 import InfoBox from './InfoBox'
-import { BackgroundImage, MEDIA_QUERIES } from 'modules/styles'
+import { MEDIA_QUERIES } from 'modules/styles'
 import { ContentContainer } from '../../../modules/elements'
 
 const Title = styled.h2`
@@ -20,6 +19,7 @@ const Title = styled.h2`
   }
 `
 
+// TODO
 const Palaute = styled.div`
     margin-top:25px;  
 `

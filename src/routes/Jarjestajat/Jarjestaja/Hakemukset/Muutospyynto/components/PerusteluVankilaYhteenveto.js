@@ -5,8 +5,6 @@ import { COLORS } from "../../../../../../modules/styles"
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants"
 import { Area } from './MuutospyyntoWizardComponents'
 
-// import { getMuutosperusteluByKoodiArvo } from "../modules/muutosperusteluUtil"
-
 const PerusteluWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,14 +27,6 @@ const Content = styled.div`
   font-style: italic;
 `
 class PerusteluVankilaYhteenveto extends Component {
-  componentWillMount() {
-    const { muutosperustelut } = this.props
-
-    if (muutosperustelut && !muutosperustelut.fetched) {
-      this.props.fetchMuutosperustelut()
-    }
-  }
-
   render() {
     const { perustelut } = this.props
     let perusteluText = 'Ei saatavilla'

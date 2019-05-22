@@ -55,6 +55,7 @@ export const KOODISTOT = {
   KULJETTAJAKOULUTUS: 'kuljettajakoulutus',
   OSAAMISALA: 'osaamisala',
   OPPILAITOKSENOPETUSKIELI : 'oppilaitoksenopetuskieli',
+  KOULUTUSSEKTORI: 'koulutussektori',
   OIVA_MUUT : 'oivamuutoikeudetvelvollisuudetehdotjatehtavat'
 }
 

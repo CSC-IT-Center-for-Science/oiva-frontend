@@ -97,8 +97,6 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
                 }
 
                 case KOODISTOT.AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS: {
-                    const { koodiarvo } = maarays
-
                     const ammatillinenNimi = parseLocalizedField(maarays.koodi.metadata, 'FI', 'nimi', 'kieli')
 
                     muutMaaraykset.push({
@@ -111,8 +109,6 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
                 }
 
                 case KOODISTOT.KULJETTAJAKOULUTUS: {
-                    const { koodiarvo } = maarays
-
                     const kuljettajaSelite = parseLocalizedField(maarays.koodi.metadata, 'FI', 'kuvaus', 'kieli')
 
                     muutMaaraykset.push({
@@ -165,13 +161,13 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
 
         _.forEach(maaraykset, (maarays) => {
             const {koodisto, uuid} = maarays
-            const {koodi, aliMaaraykset} = maarays
+            const {aliMaaraykset} = maarays
 
             // Alimääräykset
             if (aliMaaraykset) {
                 _.forEach(aliMaaraykset, (alimaarays) => {
                     const {koodi} = alimaarays
-                    const {koodiArvo, metadata} = koodi
+                    const {koodiArvo } = koodi
                     const nimi  = parseLocalizedField(maarays.koodi.metadata)
                     const tutkintokoodi = maarays.koodiarvo
                     switch (koodiArvo) {
@@ -185,6 +181,9 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
                             tutkintokieletRu.push({koodi: koodiArvo, maaraysId: uuid, nimi, tutkintokoodi})
                             break
                         case "FI":
+                            tutkintokieletFi.push({koodi: koodiArvo, maaraysId: uuid, nimi, tutkintokoodi})
+                            break
+                        default:
                             tutkintokieletFi.push({koodi: koodiArvo, maaraysId: uuid, nimi, tutkintokoodi})
                             break
                     }
@@ -234,7 +233,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
         if(maakunnat.length < 1 && kunnat.length < 1) { returnobj.kohdeKuvaus = LUPA_TEKSTIT.TOIMINTA_ALUE.EI_VELVOLLISUUTTA.FI}
 
         _.filter(toimintaalueet, alue => {
-            (alue.koodisto === 'nuts1') ? returnobj.kohdeKuvaus = LUPA_TEKSTIT.TOIMINTA_ALUE.VALTAKUNNALLINEN.FI : null
+            returnobj.kohdeKuvaus = (alue.koodisto === 'nuts1') ? LUPA_TEKSTIT.TOIMINTA_ALUE.VALTAKUNNALLINEN.FI : null
         })
 
 
@@ -344,6 +343,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
                         vankilat.push({ tyyppi: type, kuvaus: desc })
                         break
                     }
+                    default: {}
                 }
             }
 
@@ -468,7 +468,7 @@ function parseMaaraykset(maaraykset, kohdeTunniste) {
         return null
     }
 
-    if (kohdeTunniste != KOHTEET.KIELI) {
+    if (kohdeTunniste !== KOHTEET.KIELI) {
         return _.filter(maaraykset, (maarays) => {
             return maarays.kohde.tunniste === kohdeTunniste
         })

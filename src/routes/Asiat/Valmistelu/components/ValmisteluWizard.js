@@ -25,7 +25,7 @@ import close from 'static/images/close-x.svg'
 import { ROLE_ESITTELIJA } from "../../../../modules/constants";
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
 import { VALMISTELU_WIZARD_TEKSTIT } from "../../modules/constants"
-import { getJarjestajaData, loadValmisteluData } from "../modules/valmisteluUtils"
+import { loadValmisteluData } from "../modules/valmisteluUtils"
 import { MUUT_KEYS } from "../../../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/constants"
 
 Modal.setAppElement('#root')
@@ -170,8 +170,7 @@ class ValmisteluWizard extends Component {
       link.click();
       setTimeout(function () {
         // For Firefox it is necessary to delay revoking the ObjectURL
-        window.URL.revokeObjectURL(data)
-          , 100
+        return window.URL.revokeObjectURL(data), 100
       })
 
     })

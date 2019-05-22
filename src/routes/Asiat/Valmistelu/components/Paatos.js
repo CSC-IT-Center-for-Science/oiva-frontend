@@ -52,7 +52,7 @@ class Paatos extends Component {
   }
 
   render() {
-    const { helpText, muutos, muutokset, koodiarvo, fields, perusteluteksti, muutosperusteluId, muutosperustelut } = this.props
+    const { muutokset, koodiarvo, fields, perusteluteksti, muutosperusteluId } = this.props
 
     return (
       <PaatosWrapper>
@@ -123,9 +123,5 @@ class Paatos extends Component {
     )
   }
 }
-
-const selector = formValueSelector('uusiPaatos')
-
-
 
 export default Paatos

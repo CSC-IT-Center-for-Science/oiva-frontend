@@ -30,7 +30,7 @@ const LupaHistoryItem = (props) => {
   }
 
   return (
-    <a href={`${API_BASE_URL}${path}${filename}`} target="_blank">
+    <a href={`${API_BASE_URL}${path}${filename}`} target="_blank" rel="noopener noreferrer">
       <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Tr>
             <LupaText>

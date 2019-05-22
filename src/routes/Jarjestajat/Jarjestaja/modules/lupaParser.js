@@ -32,8 +32,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
     _.forEach(maaraykset, (maarays) => {
       const { koodisto, kohde, maaraystyyppi, uuid } = maarays
 
-      let kohdeUuid, maaraystyyppiUuid = undefined
-
+      // let kohdeUuid, maaraystyyppiUuid = undefined
       // if (kohde) {
       //   kohdeUuid = kohde.uuid
       // }
@@ -110,7 +109,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
               tutkinto.alanimi = ylakoodiMetadataArvo
             } else if (ylaKoodi.koodisto.koodistoUri === "koulutustyyppi") {
 
-              if(ylaKoodiKoodiArvo==26){
+              if(ylaKoodiKoodiArvo==="26"){
                 tutkinto.koulutustyyppikoodi = 1
                 tutkinto.koulutustyyppi = 'Ammatillinen perustutkinto'
               }
@@ -211,7 +210,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
 
       _.forEach(maaraykset, (maarays) => {
           const { koodisto, uuid } = maarays
-          const { koodi, aliMaaraykset } = maarays
+          const { aliMaaraykset } = maarays
 
 
 
@@ -219,7 +218,7 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
           if (aliMaaraykset) {
               _.forEach(aliMaaraykset, (alimaarays) => {
                   const { koodi, kohde, maaraystyyppi } = alimaarays
-                  const { koodiArvo, metadata } = koodi
+                  const { koodiArvo } = koodi
                   const nimi  = parseLocalizedField(maarays.koodi.metadata)
                   const tutkintokoodi = maarays.koodiarvo
                   const obj = {
@@ -235,17 +234,20 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
 
                   switch (koodiArvo) {
                       case "EN":
-                          tutkintokieletEn.push(obj)
-                          break
+                        tutkintokieletEn.push(obj)
+                        break
                       case "SV":
-                          tutkintokieletSv.push(obj)
-                          break
+                        tutkintokieletSv.push(obj)
+                        break
                       case "RU":
-                          tutkintokieletRu.push(obj)
-                          break
+                        tutkintokieletRu.push(obj)
+                        break
                       case "FI":
-                          tutkintokieletFi.push(obj)
-                          break
+                        tutkintokieletFi.push(obj)
+                        break
+                      default:
+                        tutkintokieletFi.push(obj)
+                        break
                   }
 
               })
@@ -361,65 +363,66 @@ const parseSectionData = (heading, target, maaraykset, headingNumber, tyovoimaMa
             switch (koodiarvo){
 
                 case "1": {
-                    muut.push(obj)
-                    break
+                  muut.push(obj)
+                  break
                 }
                 case "4": {
-                    muut.push(obj)
-                    break
+                  muut.push(obj)
+                  break
                 }
                 case "6": {
-                    muut.push(obj)
-                    break
+                  muut.push(obj)
+                  break
                 }
                 case "7": {
-                    // TODO localization
-                    const { kokeilu } = meta
-                    const { fi } = kokeilu
-                    obj.kuvaus = fi
-                    kokeilut.push(obj)
-                    break
+                  // TODO localization
+                  const { kokeilu } = meta
+                  const { fi } = kokeilu
+                  obj.kuvaus = fi
+                  kokeilut.push(obj)
+                  break
                 }
                 case "8": {
-                    // TODO localization
-                    const { yhteistyösopimus } = meta
-                    const { fi } = yhteistyösopimus
-                    obj.kuvaus = fi
-                    kokeilut.push(obj)
-                    break
+                  // TODO localization
+                  const { yhteistyösopimus } = meta
+                  const { fi } = yhteistyösopimus
+                  obj.kuvaus = fi
+                  kokeilut.push(obj)
+                  break
                 }
                 case "9": {
-                    muut.push(obj)
-                    break
+                  muut.push(obj)
+                  break
                 }
                 case "10": {
-                    muut.push(obj)
-                    break
+                  muut.push(obj)
+                  break
                 }
                 case "11": {
-                    muut.push(obj)
-                    break
+                  muut.push(obj)
+                  break
                 }
                 case "2": {
-                    vaativat.push(obj)
-                    break
+                  vaativat.push(obj)
+                  break
                 }
                 case "3": {
-                    vaativat.push(obj)
-                    break
+                  vaativat.push(obj)
+                  break
                 }
                 case "12": {
-                    vaativat.push(obj)
-                    break
+                  vaativat.push(obj)
+                  break
                 }
                 case "5": {
-                    vankilat.push(obj)
-                    break
+                  vankilat.push(obj)
+                  break
                 }
                 case "13": {
-                    vankilat.push(obj)
-                    break
+                  vankilat.push(obj)
+                  break
                 }
+                default: {}
             }
 
             muutCombined.push(obj)
@@ -571,7 +574,7 @@ function parseMaaraykset(maaraykset, kohdeTunniste) {
         return null
     }
 
-    if (kohdeTunniste != KOHTEET.KIELI) {
+    if (kohdeTunniste !== KOHTEET.KIELI) {
         return _.filter(maaraykset, (maarays) => {
             return maarays.kohde.tunniste === kohdeTunniste
         })

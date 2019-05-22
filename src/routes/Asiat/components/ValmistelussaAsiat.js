@@ -6,7 +6,7 @@ import ValmistelussaAsiatList from "./ValmistelussaAsiatList";
 import { InnerContentContainer, InnerContentWrapper  } from "../../../modules/elements"
 import { COLORS, BackgroundImage } from "../../../modules/styles"
 import { ContentContainer, FullWidthWrapper, ContentWrapper } from '../../../modules/elements'
-import { ROLE_ESITTELIJA, ESITTELIJA } from '../../../modules/constants'
+import { ROLE_ESITTELIJA } from '../../../modules/constants'
 import AsiatMenu from './AsiatMenu'
 import { Helmet } from 'react-helmet'
 import { ASIAT } from "../modules/constants"

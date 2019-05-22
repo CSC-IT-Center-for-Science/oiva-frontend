@@ -7,7 +7,8 @@ const HeaderBar = styled.div`
   flex-direction: row;
   justify-content: space-between;
   background: ${COLORS.WHITE};
-  color: white;
+  color: ${COLORS.WHITE};
+  width: 100%;
 `
 
 export default HeaderBar

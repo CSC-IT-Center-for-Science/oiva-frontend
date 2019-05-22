@@ -6,9 +6,8 @@ import Indikaattori from './Indikaattori'
 import arrow from 'static/images/arrow-down.svg'
 
 import { COLORS } from "../../../../modules/styles"
-import { getIndex } from "../modules/muutosUtil"
 import { MUUTOS_TYPES, MUUTOS_TYPE_TEXTS } from "../../modules/constants"
-import { getTutkintoNimiByKoodiarvo, getTutkintoNimiByMaaraysId } from "../modules/valmisteluUtils"
+import { getTutkintoNimiByKoodiarvo } from "../modules/valmisteluUtils"
 
 const MuutosWrapper = styled.div`
   width: 100%;
@@ -71,7 +70,7 @@ class Muutos extends Component {
   render() {
     const { isHidden } = this.state
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperusteluId, koodisto, kuvaus, label, arvo } = muutos
+    const { koodiarvo, type, meta, muutosperusteluId, label, arvo } = muutos
     const { perusteluteksti } = meta
     const nimi = getTutkintoNimiByKoodiarvo(koodiarvo)
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"

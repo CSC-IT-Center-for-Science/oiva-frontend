@@ -1,30 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm, formValueSelector, FieldArray, Field } from 'redux-form'
-import Moment from 'react-moment'
 import Modal from 'react-modal'
 
 import validate from '../modules/validateValmistelu'
 import { WizardBottom, Container, SubtleButton, Button, FormGroup, Label, FormField, SelectStyle, TextareaLabel  } from "./ValmisteluComponents"
-import { VALMISTELU_WIZARD_TEKSTIT, FIELD_ARRAY_NAMES, FORM_NAME_UUSI_HAKEMUS, COMPONENT_TYPES } from "../../modules/constants"
+import { VALMISTELU_WIZARD_TEKSTIT, FIELD_ARRAY_NAMES } from "../../modules/constants"
 import { modalStyles, ModalButton, ModalText, Content } from "./ModalComponents"
-import OrganisaationTiedot from './OrganisaationTiedot'
 import DatePicker from "../../../../modules/DatePicker"
-import MuutosList from './MuutosList'
 
 
 Modal.setAppElement('#root')
-
-const Paatoskierros = ({ paatoskierros }) => (
-    <div>
-        {paatoskierros.meta.nimi.fi}&nbsp;
-        (
-        <Moment format="DD.MM.YYYY">{paatoskierros.alkupvm}</Moment>
-        &nbsp;-&nbsp;
-        <Moment format="DD.MM.YYYY">{paatoskierros.loppupvm}</Moment>
-        )
-    </div>
-)
 
 class ValmisteluWizardTiedot extends Component {
     constructor(props) {
@@ -56,19 +42,9 @@ class ValmisteluWizardTiedot extends Component {
 
     render() {
         const {
-            handleSubmit,
-            onCancel,
             onSubmit,
-            previousPage,
-            paatoskierrokset,
-            preview,
             formValues,
             lupa,
-            tutkinnotjakoulutuksetValue,
-            opetusjatutkintokieletValue,
-            toimialueValue,
-            opiskelijavuosiValue,
-            muutmuutoksetValue
         } = this.props
 
         let jarjestaja = undefined
@@ -215,14 +191,12 @@ class ValmisteluWizardTiedot extends Component {
     }
 
     renderDatePicker(props) {
-        const { input, label, type, meta: { touched, error } } = props
+        const { input, label } = props
         return (
             <FormGroup>
                 <Label>{label}</Label>
                 <FormField>
                     <DatePicker customInput={input} handleChange={input.onChange} />
-                    {/*<input {...input} type={type} />*/}
-                    {/*{touched && error && <span>{error}</span>}*/}
                 </FormField>
             </FormGroup>
         )

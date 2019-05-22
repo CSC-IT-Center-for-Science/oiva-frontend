@@ -9,7 +9,6 @@ import { TUTKINNOT_SECTIONS, KIELET_SECTIONS } from "../../../modules/constants"
 import { FIELD_ARRAY_NAMES} from "../modules/uusiHakemusFormConstants"
 import { getKoulutusalaByKoodiarvo, getKoulutustyyppiByKoodiarvo, getTutkintoNimiByKoodiarvo } from "../modules/koulutusUtil"
 import { parseLocalizedField } from "../../../../../../modules/helpers"
-import Liitteet from './Liitteet'
 
 const MuutosListWrapper = styled.div`
 `

@@ -184,9 +184,9 @@ class TutkintoList extends Component {
                 }
     
                 let customClassName = ""
-                isInLupa ? customClassName = "is-in-lupa" : null
-                isAdded ? customClassName = "is-added" : null
-                isRemoved ? customClassName = "is-removed" : null
+                customClassName = isInLupa ? "is-in-lupa" : null
+                customClassName = isAdded ? "is-added" : null
+                customClassName = isRemoved ? "is-removed" : null
   
                 let isChecked = false
                 if ((isInLupa && !isRemoved) || isAdded) {
@@ -194,9 +194,9 @@ class TutkintoList extends Component {
                 }
     
                 let customClassNameForOa = ""
-                isOaInLupa ? customClassNameForOa = "is-in-lupa" : null
-                isOaAdded ? customClassNameForOa = "is-added" : null
-                isOaRemoved ? customClassNameForOa = "is-removed" : null
+                customClassNameForOa = isOaInLupa ?  "is-in-lupa" : null
+                customClassNameForOa = isOaAdded ? "is-added" : null
+                customClassNameForOa = isOaRemoved ? "is-removed" : null
     
                 let isOaChecked = false
                 if ((isOaInLupa && !isOaRemoved) || isOaAdded) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Media from 'react-media'
 import Moment from 'react-moment'
-import { withRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { MEDIA_QUERIES, COLORS, FONT_STACK } from "../../../../../modules/styles"
 

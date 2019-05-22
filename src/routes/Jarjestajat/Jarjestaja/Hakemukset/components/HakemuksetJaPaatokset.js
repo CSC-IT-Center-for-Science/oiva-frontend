@@ -7,9 +7,7 @@ import Loading from '../../../../../modules/Loading'
 import { MessageWrapper } from "../../../../../modules/elements"
 
 import { COLORS } from "../../../../../modules/styles"
-import { slugify } from "../../../../../modules/helpers"
 import {ROLE_KAYTTAJA} from "../../../../../modules/constants";
-import _ from 'lodash'
 import { HAKEMUS_VIESTI, HAKEMUS_VIRHE } from '../Muutospyynto/modules/uusiHakemusFormConstants';
 
 const Wrapper = styled.div`

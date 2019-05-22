@@ -25,7 +25,6 @@ class MuutospyyntoWizardTaloudelliset extends Component {
       if ( initialValues && initialValues.taloudelliset && initialValues.taloudelliset.taloudelliset ) {
         taloudellisetValue = initialValues.taloudelliset.taloudelliset[0]
       }
-      else taloudellisetValue = taloudellisetValue;
 
       if (!taloudellisetValue || taloudellisetValue.length === 0) {
         taloudellisetValue = [{

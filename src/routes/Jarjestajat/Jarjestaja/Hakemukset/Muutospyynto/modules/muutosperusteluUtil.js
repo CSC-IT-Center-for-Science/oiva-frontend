@@ -1,3 +1,5 @@
+/* Samat utilit käsittelevät sekä tutkintojen että opiskelijavuosien perusteluja */
+
 import _ from 'lodash'
 import { parseLocalizedField } from "../../../../../../modules/helpers"
 import store from '../../../../../../store'
@@ -34,7 +36,7 @@ export function handleMuutosperusteluSelectChange(muutokset, fields, muutos, sel
   }
 }
 
-function getMuutosperusteluEditIndex(muutokset, koodiarvo) {
+export function getMuutosperusteluEditIndex(muutokset, koodiarvo) {
   let i = undefined
 
   _.forEach(muutokset, (muutos, idx) => {
@@ -53,6 +55,18 @@ export function getMuutosperusteluByKoodiArvo(koodiarvo) {
 
   if (muutosperustelut && muutosperustelut.fetched) {
     return _.find(muutosperustelut.muutosperusteluList, (muutosperustelu) => { return muutosperustelu.koodiArvo === koodiarvo })
+  } else {
+    return undefined
+  }
+}
+
+export function getMuutosperusteluOpiskelijavuodetByKoodiArvo(koodiarvo) {
+  const state = store.getState()
+
+  const { muutosperustelutOpiskelijavuodet } = state
+
+  if (muutosperustelutOpiskelijavuodet && muutosperustelutOpiskelijavuodet.fetched) {
+    return _.find(muutosperustelutOpiskelijavuodet.muutosperusteluList, (muutosperustelu) => { return muutosperustelu.koodiArvo === koodiarvo })
   } else {
     return undefined
   }

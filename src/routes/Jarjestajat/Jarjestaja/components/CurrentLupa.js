@@ -66,7 +66,7 @@ const CurrentLupa = (props) => {
   }
 
   return (
-    <a href={url} target="_blank">
+    <a href={url} target="_blank" rel="noopener noreferrer">
       <OuterWrapper>
         <CurrentLupaWrapper>
             <img src={pdf} alt="Voimassa oleva lupa PDF-tiedostona"/>

@@ -5,8 +5,8 @@ import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants"
 import { getRoles, getOrganisation } from 'routes/Login/modules/user'
 import Loading from '../../../../modules/Loading'
 import { InnerContentContainer, InnerContentWrapper  } from "../../../../modules/elements"
-import { getToimialueByKoodiArvo } from "../Hakemukset/Muutospyynto/modules/toimialueUtil"
-import { fetchKunnat } from "../../../../modules/reducers/kunnat"
+import { parseLocalizedField } from "../../../../modules/helpers"
+
 class OmatTiedot extends Component {
 
   componentDidMount() {
@@ -14,9 +14,6 @@ class OmatTiedot extends Component {
     this.props.getRoles().then(() => {
        this.props.getOrganisation(sessionStorage.getItem('oid'))
     })
-    if (this.props.kunnat && !this.props.kunnat.fetched) {
-      this.props.fetchKunnat()
-    }
   }
 
   render() {
@@ -30,16 +27,17 @@ class OmatTiedot extends Component {
     let kotipaikka = undefined;
     if (oppilaitos) {
         if (oppilaitos.organisaatio) {
-            if (oppilaitos.organisaatio.kayntiosoite.postinumeroUri) postinumero = oppilaitos.organisaatio.kayntiosoite.postinumeroUri.substr(6)
+          if (oppilaitos.organisaatio.kayntiosoite.postinumeroUri) postinumero = oppilaitos.organisaatio.kayntiosoite.postinumeroUri.substr(6)
             if (oppilaitos.organisaatio.postiosoite.postinumeroUri) ppostinumero = oppilaitos.organisaatio.postiosoite.postinumeroUri.substr(6)
-            if (this.props.kunnat && this.props.kunnat.fetched && oppilaitos.organisaatio.kotipaikkaUri) kotipaikka = getToimialueByKoodiArvo(oppilaitos.organisaatio.kotipaikkaUri.substr(6)).label;
+            if (oppilaitos.organisaatio.kuntaKoodi.metadata) kotipaikka = parseLocalizedField(oppilaitos.organisaatio.kuntaKoodi.metadata)
             // jos tietoja enemmän, ottaa jälkimmäisen arvon (yleiset yhteystiedot)
             if (oppilaitos.organisaatio.yhteystiedot) oppilaitos.organisaatio.yhteystiedot.map(item => {
-                if (item.www) www = item.www;
-                if (item.numero) numero = item.numero;
-                if (item.email) email = item.email;
-              }
-            )
+              if (item.www) www = item.www;
+              if (item.numero) numero = item.numero;
+              if (item.email) email = item.email;
+              return true;
+            }
+          )
         }
     }
 
@@ -93,21 +91,13 @@ class OmatTiedot extends Component {
       ) 
     else
       return <Loading />
-
-    // Käyntiosoite: Hallilantie 24 , 33820  TAMPERE
-    // Postiosoite: Ahlmanin koulu Hallilantie 24 , 33820  TAMPERE
-    // Puhelinnumero: 03 3399 2500
-    // Www-osoite: http://www.ahlman.fi
-    // Sähköpostiosoite: ahlman@ahlman.fi
-    // Sivulle myös info: Tiedot tulevat Opetushallituksen Organisaatiotietopalvelusta, joka päivittää ne Yritys- ja yhteisötietojärjestelmästä. Muutokset tietoihin sitä kautta.
-    
+   
   }
 }
 
 function mapStateToProps(state) {
   return { 
-    user: state.user,
-    kunnat: state.kunnat
+    user: state.user
   }
 }
 
@@ -115,7 +105,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getRoles: () => dispatch(getRoles()),
     getOrganisation: (oid) => dispatch(getOrganisation(oid)),
-    fetchKunnat: () => dispatch(fetchKunnat())
   }
 }
 

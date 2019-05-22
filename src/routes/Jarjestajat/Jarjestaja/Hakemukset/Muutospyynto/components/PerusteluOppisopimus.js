@@ -24,10 +24,6 @@ const Instruction = styled.div`
 `
 
 class PerusteluOppisopimus extends Component {
-    constructor(props) {
-      super(props)
-    }
-  
     render() {
       const vuosi = this.props.muutosperustelut.data[0].voimassaAlkuPvm.split("-")[0]
 

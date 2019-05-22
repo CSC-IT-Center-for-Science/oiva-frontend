@@ -68,6 +68,7 @@ export function saveMuutospyynto(muutospyynto) {
   
   attachments.map( item => {
     if (item.tiedosto) data.append(item.tiedostoId, item.tiedosto, item.nimi);
+    return true;
   });
 
   return (dispatch) => {

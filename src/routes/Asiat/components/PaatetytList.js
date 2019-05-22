@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Media from 'react-media'
 import { Link } from 'react-router-dom'
 
-import { Table, Thead, Tbody, Th, Tr } from "../../../modules/Table"
 import { MEDIA_QUERIES, COLORS, FONT_STACK } from "../../../modules/styles"
 
 import ReactTable from 'react-table'

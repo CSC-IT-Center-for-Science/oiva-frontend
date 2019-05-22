@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
@@ -19,6 +20,7 @@ import { HAKEMUS_OTSIKOT  } from "../modules/uusiHakemusFormConstants"
 import { COMPONENT_TYPES, FIELD_ARRAY_NAMES, FIELDS, FORM_NAME_UUSI_HAKEMUS } 
   from "../modules/uusiHakemusFormConstants"
 import validate from '../modules/validateWizard'
+import { MUUTOS_TYPES } from "../modules/uusiHakemusFormConstants"
 
 import DatePicker from "../../../../../../modules/DatePicker"
 
@@ -105,6 +107,9 @@ class MuutospyyntoWizardYhteenveto extends Component {
       jarjestaja = lupa.data.jarjestaja
     }
 
+    const tutkintojaLisatty = _.find(tutkinnotjakoulutuksetValue, function(t) { 
+      return t.type === MUUTOS_TYPES.ADDITION })
+
     return (
       <div>
         <h2>{MUUTOS_WIZARD_TEKSTIT.YHTEENVETO.HEADING.FI}</h2>
@@ -183,13 +188,13 @@ class MuutospyyntoWizardYhteenveto extends Component {
             componentType={COMPONENT_TYPES.MUUTOS_YHTEENVETO}
           />
 
-          <FieldArray
+          {tutkintojaLisatty && <FieldArray
             name={FIELD_ARRAY_NAMES.TALOUDELLISET}
             muutokset={taloudellisetValue}
             kategoria="taloudelliset"
             heading="Taloudelliset edellytykset"
             component={TaloudellisetYhteenveto}
-          />
+          /> }
 
           {taloudellisetValue && taloudellisetValue.length > 0 && 
             <Liitteet {...this.props} fields={formValues.taloudelliset[0]} paikka="taloudelliset" showListOnly={true} isIntend={true}/>
@@ -252,7 +257,6 @@ class MuutospyyntoWizardYhteenveto extends Component {
   }
 
   renderHakijanTiedot() {
-    const { meta } = this.props.formValues
     return (
       <div>
         <Field
@@ -384,6 +388,7 @@ MuutospyyntoWizardYhteenveto = connect(state => {
     taloudellisetValue,
     lupa: state.lupa,
     muutosperustelut: state.muutosperustelut,
+    muutosperustelutOpiskelijavuodet: state.muutosperustelutOpiskelijavuodet,
     paatoskierrokset: state.paatoskierrokset,
     muutospyynto: state.muutospyynto
   }

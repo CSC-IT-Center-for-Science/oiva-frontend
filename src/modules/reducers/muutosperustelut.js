@@ -11,7 +11,7 @@ export function fetchMuutosperustelut() {
   return (dispatch) => {
     dispatch({ type: FETCH_MUUTOSPERUSTELUT_START })
 
-    const request = fetch(`${API_BASE_URL}/muutosperustelut`)
+    const request = fetch(`${API_BASE_URL}/koodistot/koodit/oivaperustelut`)
 
     request
       .then(response => response.json())

@@ -51,7 +51,7 @@ const MuutosTyyppi = styled.div`
 class MuutosYhteenveto extends Component {
   render() {
     const { muutokset, muutos, fields, kategoria } = this.props
-    const { koodiarvo, type, meta, muutosperustelukoodiarvo, koodisto, label, arvo } = muutos
+    const { koodiarvo, type, meta, koodisto, label, arvo } = muutos
 
     const { perusteluteksti, nimi } = meta
     const helpText = "Perustele lyhyesti miksi tälle muutokselle on tarvetta"
@@ -90,7 +90,7 @@ class MuutosYhteenveto extends Component {
             <MuutosTyyppi>{tyyppi}</MuutosTyyppi>
             <Div>{name}</Div>
           </MuutosHeader>
-          {perusteluteksti !== null && muutosperustelukoodiarvo !== null &&
+          {perusteluteksti !== null &&
             <Indikaattori status="ok" text="Perusteltu" />
           }
         </MuutosTop>
@@ -99,7 +99,6 @@ class MuutosYhteenveto extends Component {
             helpText={helpText}
             koodiarvo={koodiarvo}
             perustelut={meta.perusteluteksti_oppisopimus}
-            muutosperustelukoodiarvo={muutosperustelukoodiarvo}
             muutokset={muutokset}
             muutos={muutos}
             fields={fields}
@@ -110,7 +109,6 @@ class MuutosYhteenveto extends Component {
               helpText={helpText}
               koodiarvo={koodiarvo}
               perustelut={meta.perusteluteksti_vankila}
-              muutosperustelukoodiarvo={muutosperustelukoodiarvo}
               muutokset={muutokset}
               muutos={muutos}
               fields={fields}
@@ -121,7 +119,6 @@ class MuutosYhteenveto extends Component {
                 helpText={helpText}
                 koodiarvo={koodiarvo}
                 perustelut={meta.perusteluteksti_vaativa}
-                muutosperustelukoodiarvo={muutosperustelukoodiarvo}
                 muutokset={muutokset}
                 muutos={muutos}
                 fields={fields}
@@ -132,7 +129,6 @@ class MuutosYhteenveto extends Component {
                   helpText={helpText}
                   koodiarvo={koodiarvo}
                   perustelut={meta.perusteluteksti_tyovoima}
-                  muutosperustelukoodiarvo={muutosperustelukoodiarvo}
                   muutokset={muutokset}
                   muutos={muutos}
                   fields={fields}
@@ -142,10 +138,11 @@ class MuutosYhteenveto extends Component {
                   helpText={helpText}
                   koodiarvo={koodiarvo}
                   perusteluteksti={perusteluteksti}
-                  muutosperustelukoodiarvo={muutosperustelukoodiarvo}
+                  meta={meta}
                   muutokset={muutokset}
                   muutos={muutos}
                   fields={fields}
+                  kategoria={kategoria}
                 />
           }
       </MuutosWrapper>
