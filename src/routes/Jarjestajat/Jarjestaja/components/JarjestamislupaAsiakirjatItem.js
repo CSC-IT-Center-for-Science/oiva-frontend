@@ -2,8 +2,14 @@ import React from 'react'
 import Moment from 'react-moment'
 import styled from 'styled-components'
 import Media from 'react-media'
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import { MdCancel } from 'react-icons/md';
+// import { FaEdit, FaTrash } from 'react-icons/fa';
+// import { MdCancel } from 'react-icons/md';
+
+import FaEdit from '@material-ui/icons/Edit';
+import FaTrash from '@material-ui/icons/Delete';
+import MdCancel from '@material-ui/icons/Cancel';
+
+
 import { Td, Tr, TdButton } from "../../../../modules/Table"
 import { COLORS, MEDIA_QUERIES } from "../../../../modules/styles"
 import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants"

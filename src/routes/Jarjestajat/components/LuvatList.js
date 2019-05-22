@@ -7,8 +7,9 @@ import { Table, Thead, Tbody, Th, Tr } from "../../../modules/Table"
 import { MEDIA_QUERIES } from "../../../modules/styles"
 import styled from 'styled-components'
 import { parseLocalizedField } from "../../../modules/helpers"
-import { MdArrowUpward, MdArrowDownward } from 'react-icons/md';
-
+// import { MdArrowUpward, MdArrowDownward } from 'react-icons/md';
+import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 const WrapTable = styled.div`
   width: 100%;
@@ -81,15 +82,15 @@ class LuvatList extends Component {
                 onClick={() =>  this.sort("jarjestaja")}
                 >
                 Koulutuksen järjestäjä
-                { this.state.sortedBy === "jarjestaja" && !this.state.desc1 && <MdArrowUpward /> }
-                { this.state.sortedBy === "jarjestaja" && this.state.desc1 && <MdArrowDownward />}
+                { this.state.sortedBy === "jarjestaja" && !this.state.desc1 && <KeyboardArrowUp /> }
+                { this.state.sortedBy === "jarjestaja" && this.state.desc1 && <KeyboardArrowDown />}
               </Th>
               <Th 
                 onClick={() =>  this.sort("maakunta")}
                 >
                 Kotipaikan maakunta
-                { this.state.sortedBy === "maakunta" && !this.state.desc2 && <MdArrowUpward />  }
-                { this.state.sortedBy === "maakunta" && this.state.desc2 && <MdArrowDownward /> }
+                { this.state.sortedBy === "maakunta" && !this.state.desc2 && <KeyboardArrowUp />  }
+                { this.state.sortedBy === "maakunta" && this.state.desc2 && <KeyboardArrowDown /> }
               </Th>
             </Tr>
             </Thead>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { COLORS, TRANSITIONS } from "../../../../../../modules/styles"
-import { FaPlus } from 'react-icons/fa';
+// import { FaPlus } from 'react-icons/fa';
+import FaPlus from '@material-ui/icons/Add';
+
 import { HAKEMUS_OTSIKOT  } from "../modules/uusiHakemusFormConstants"
 
 const LiiteTopArea = styled.div`

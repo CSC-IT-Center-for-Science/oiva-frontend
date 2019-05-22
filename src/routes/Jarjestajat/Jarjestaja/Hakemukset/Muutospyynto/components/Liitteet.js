@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { COLORS } from "../../../../../../modules/styles"
-import { FaRegFile, FaFile, FaTimes, FaLock } from 'react-icons/fa';
+// import { FaRegFile, FaFile, FaTimes, FaLock } from 'react-icons/fa';
+import FaRegFile from '@material-ui/icons/AttachFile';
+import FaFile from '@material-ui/icons/AttachFileOutlined';
+import FaLock from '@material-ui/icons/Lock';
+import FaTimes from '@material-ui/icons/Delete';
+
 import { HAKEMUS_VIRHE, HAKEMUS_OTSIKOT, HAKEMUS_VIESTI } from "../modules/uusiHakemusFormConstants"
 import Liite from './Liite'
 import { getIndex } from "../modules/muutosUtil"

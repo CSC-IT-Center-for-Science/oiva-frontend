@@ -4,8 +4,12 @@ import Media from 'react-media'
 import styled from 'styled-components'
 import { Table, Thead, Tbody, Thn, Trn, ThButton } from "../../../../modules/Table"
 import { COLORS, MEDIA_QUERIES } from "../../../../modules/styles"
-import { FaPlus, FaArrowLeft } from 'react-icons/fa';
-import { MdCancel } from 'react-icons/md';
+// import { FaPlus, FaArrowLeft } from 'react-icons/fa';
+// import { MdCancel } from 'react-icons/md';
+import MdCancel from '@material-ui/icons/Cancel';
+import FaPlus from '@material-ui/icons/Add';
+import FaArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+
 
 import JarjestamislupaAsiatListItem from './JarjestamislupaAsiatListItem'
 import Loading from '../../../../modules/Loading'
