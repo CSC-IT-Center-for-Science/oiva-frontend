@@ -152,6 +152,7 @@ injectGlobal`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    border: 1px solid ${COLORS.BORDER_GRAY};
     
     &:focus {
       outline: none;
@@ -166,6 +167,7 @@ injectGlobal`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    border: 1px solid ${COLORS.BORDER_GRAY};
     
     &:focus {
       outline: none;

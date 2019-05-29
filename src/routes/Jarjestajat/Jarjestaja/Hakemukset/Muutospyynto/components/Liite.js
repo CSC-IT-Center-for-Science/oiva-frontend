@@ -30,7 +30,7 @@ const FileInput = styled.div`
     margin: 0 auto;
     cursor: pointer;
     svg {
-      margin: 0 0 -2px 0;
+      margin: 3px 4px 0 0;
     }
   }
   &:hover {
@@ -58,7 +58,7 @@ class Liite extends Component {
           { HAKEMUS_OTSIKOT.LIITE_OHJE.FI }
         </LiiteTopArea>
         <FileInput>
-          <div><FaPlus /> {HAKEMUS_OTSIKOT.LISAA_LIITE.FI}...</div>
+          <div className="flex"><FaPlus className="center mr-3" /> {HAKEMUS_OTSIKOT.LISAA_LIITE.FI}...</div>
           <input
             type="file"
             defaultValue=""

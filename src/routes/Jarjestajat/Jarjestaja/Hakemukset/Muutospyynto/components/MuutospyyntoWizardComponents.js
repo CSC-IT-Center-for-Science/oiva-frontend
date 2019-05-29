@@ -278,6 +278,7 @@ export const Input = styled.input`
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  border: 1px solid ${COLORS.BORDER_GRAY};
   
   &:focus {
     outline: none;
@@ -354,7 +355,7 @@ export const Checkbox = styled.div`
     height: 20px;
     cursor: pointer;
     position: absolute;
-    top: -3px;
+    top: 0;
     left: 0;
     background: white;
     border-radius: 0;
@@ -372,8 +373,8 @@ export const Checkbox = styled.div`
       width: 9px;
       height: 5px;
       position: absolute;
-      top: 4px;
-      left: 4px;
+      top: 6px;
+      left: 5px;
       border: 3px solid #fcfff4;
       border-top: none;
       border-right: none;
@@ -429,7 +430,7 @@ export const Radiobutton = styled.div`
     height: 20px;
     cursor: pointer;
     position: absolute;
-    top: -3px;
+    top: 0;
     left: 0;
     background: white;
     border-radius: 0;
@@ -448,8 +449,8 @@ export const Radiobutton = styled.div`
       width: 9px;
       height: 5px;
       position: absolute;
-      top: 4px;
-      left: 4px;
+      top: 6px;
+      left: 12px;
       border: 3px solid #fcfff4;
       border-top: none;
       border-right: none;
@@ -510,7 +511,7 @@ export const RadioCheckbox = styled.div`
     height: 20px;
     cursor: pointer;
     position: absolute;
-    top: -3px;
+    top: 0;
     left: 0;
     background: white;
     border-radius: 0;
@@ -529,8 +530,8 @@ export const RadioCheckbox = styled.div`
       width: 9px;
       height: 5px;
       position: absolute;
-      top: 4px;
-      left: 4px;
+      top: 6px;
+      left: 5px;
       border: 3px solid #fcfff4;
       border-top: none;
       border-right: none;
@@ -679,7 +680,7 @@ export const Button = styled.button`
       display: block;
       position: absolute;
       left: 12px;
-      top: 8px;
+      top: 6px;
     }
   }
   
@@ -689,7 +690,7 @@ export const Button = styled.button`
       display: block;
       position: absolute;
       right: 12px;
-      top: 8px;
+      top: 6px;
     }
   }
   
@@ -782,7 +783,8 @@ export const Koulutustyyppi = styled.div`
 `
 
 export const Textarea = styled.textarea `
-display: block;
-margin-bottom: 10px;
-width: 80%;
+  display: block;
+  margin-bottom: 10px;
+  width: 80%;
+  border: 1px solid ${COLORS.BORDER_GRAY};
 `

@@ -20,7 +20,7 @@ const Error = styled.div`
 const Checkbox = styled.div`
   width: 20px;
   position: relative;
-  margin: 6px 10px 0 10px;
+  margin: 14px 10px 0 10px;
   
   label {
     width: 20px;
@@ -94,7 +94,7 @@ const LiiteListItem = styled.div`
     }
   }
   svg {
-    margin: 0 0 -2px 0;
+    margin: 0 auto;
   }
   input {
     min-width: 300px;
@@ -103,6 +103,7 @@ const LiiteListItem = styled.div`
     flex: 1;
     margin: 0 8px 0 4px;
     padding: 0 8px 0 4px;
+    border: 1px solid ${COLORS.BORDER_GRAY};
   }
   .name {
     flex: 1;
@@ -128,6 +129,7 @@ export const Input = styled.input`
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  border: 1px solid ${COLORS.BORDER_GRAY};
   
   &:focus {
     outline: none;
@@ -235,7 +237,6 @@ class Liiteet extends Component {
     }
 
     const removeAttachment = (e, tiedostoId, uuid) => {
-      e.preventDefault();
       this.setState({fileError: false});
       this.setState({fileAdded: ""});
       let obj = undefined;
@@ -264,7 +265,6 @@ class Liiteet extends Component {
     }
 
     const setAttachmentName = (e, tiedostoId, uuid) => {
-      e.preventDefaults();
       this.setState({fileError: false});
       this.setState({fileAdded: ""});
       let obj = undefined;

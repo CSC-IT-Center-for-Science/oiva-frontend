@@ -22,8 +22,7 @@ const Button = styled.div`
   background-color: ${props => props.disabled ? COLORS.LIGHT_GRAY : props.bgColor ? props.bgColor : COLORS.OIVA_GREEN};
   border: 1px solid ${props => props.disabled ? COLORS.LIGHT_GRAY : props.bgColor ? props.bgColor : COLORS.OIVA_GREEN};
   cursor: pointer;
-  display: inline-block;
-  position: relative;
+  display: flex;
   width: auto;
   padding: 0 16px;
   line-height: 36px;
@@ -38,14 +37,21 @@ const Button = styled.div`
     ${props => props.disabled ? 'cursor: not-allowed;' : null}
   }
   svg {
-    margin-bottom: -2px;
+    margin-top: 9px;
+    margin-right: 4px;
   }
 `
 
 const BackButton = styled(Button)`
   margin: 0 10px 10px 0;
+  height: 38px;
 `
-
+const Buttons = styled.div`
+   width: 100%;
+   display: flex;
+   flex-flow: row;
+   align-items: center;
+`
 const Header = styled.div`
    width: 100%;
    display: flex;
@@ -97,8 +103,10 @@ class JarjestamislupaAsiatList extends Component {
       return (
         <WrapTable>
           <h2>{LUPA_TEKSTIT.ASIAT.OTSIKKO.FI}</h2>
-          <Button><FaPlus /> {LUPA_TEKSTIT.ASIAT.UUSI_HAKEMUS.FI}</Button>
-          <Button><MdCancel /> {LUPA_TEKSTIT.ASIAT.JARJESTAMISLUVAN_PERUUTUS.FI}</Button>
+          <Buttons>
+            <Button><FaPlus /> {LUPA_TEKSTIT.ASIAT.UUSI_HAKEMUS.FI}</Button>
+            <Button><MdCancel /> {LUPA_TEKSTIT.ASIAT.JARJESTAMISLUVAN_PERUUTUS.FI}</Button>
+          </Buttons>
           <Media query={MEDIA_QUERIES.MOBILE} render={() =>
             <Table>
               <Tbody>

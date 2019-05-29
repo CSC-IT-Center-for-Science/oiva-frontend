@@ -28,13 +28,12 @@ const Button = styled.div`
   cursor: pointer;
   display: inline-block;
   position: relative;
-  width: 42px;
   line-height: 36px;
   vertical-align: middle;
   text-align: center;
   border-radius: 2px;
-  min-width: 24px;
   margin: 1px;
+  padding: 8px 10px;
   z-index: 10;
   &:hover {
     color: ${props => props.disabled ? COLORS.WHITE : props.bgColor ? props.bgColor : COLORS.OIVA_GREEN};
@@ -42,7 +41,7 @@ const Button = styled.div`
     ${props => props.disabled ? 'cursor: not-allowed;' : null}
   }
   svg {
-    margin-bottom: -2px;
+    margin: 0 auto;
   }
 `
 
