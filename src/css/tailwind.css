@@ -7508,6 +7508,29 @@ video {
   z-index: auto;
 }
 
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.83em;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.83em;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.83em;
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;
