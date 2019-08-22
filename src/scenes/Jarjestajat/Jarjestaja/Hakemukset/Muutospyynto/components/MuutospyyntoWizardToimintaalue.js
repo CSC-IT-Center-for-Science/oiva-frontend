@@ -146,7 +146,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         <Valtakunnallinen
           callback={handleChangeOfValtakunnallinen}
           changes={changesOfValtakunnallinen}
-          isCheckedInitial={!!props.lupakohde.valtakunnallinen}
+          // isCheckedInitial={!!props.lupakohde.valtakunnallinen}
+          initialValues={initialValueOfSelect}
         />
       </div>
     </Section>
