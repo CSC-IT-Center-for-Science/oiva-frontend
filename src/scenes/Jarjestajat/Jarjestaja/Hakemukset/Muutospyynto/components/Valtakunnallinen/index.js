@@ -11,21 +11,22 @@ const Valtakunnallinen = React.memo(props => {
   const [isChecked, setIsChecked] = useState(false);
   const [isInitiallyChecked, setInitial] = useState(false);
 
-  const handleChanges = (payload, { isChecked }) => {
+  const handleChange = (payload, { isChecked }) => {
     return props.callback({ payload, isChecked });
   };
 
   useEffect(() => {
-    setIsChecked(props.isCheckedInitial || props.changes.isChecked);
-  }, [props.changes, props.data, props.isCheckedInitial]);
-  useEffect(() => {
-    console.log(props.initialValues)
-    console.log(props.values)
-    setInitial(
-      !!R.find(R.propEq("koodisto", "nuts1"), props.initialValues)
-    );
-  }, [props.initialValues, props.values]);
-  console.log(isInitiallyChecked)
+    setIsChecked(props.change.tila === "LISAYS" || (props.change.tila !== "POISTO" && props.isCheckedInitial));
+  }, [props.change, props.data, props.isCheckedInitial]);
+
+  // useEffect(() => {
+  //   console.log(props.initialValues)
+  //   console.log(props.values)
+  //   setInitial(
+  //     !!R.find(R.propEq("koodisto", "nuts1"), props.initialValues)
+  //   );
+  // }, [props.initialValues, props.values]);
+  // console.log(isInitiallyChecked)
 
   return (
     <>
@@ -35,9 +36,9 @@ const Valtakunnallinen = React.memo(props => {
       <CheckboxWithLabel
         name={`${name}-checkbox`}
         id={`${name}-checkbox`}
-        isChecked={isChecked || isInitiallyChecked}
+        isChecked={isChecked}
         labelStyles={Object.assign({}, isInLupa, { fontSize: "0.8rem" })}
-        onChanges={handleChanges}
+        onChanges={handleChange}
       >
         {props.intl.formatMessage(wizardMessages.responsibilities)}
       </CheckboxWithLabel>
@@ -46,13 +47,13 @@ const Valtakunnallinen = React.memo(props => {
 });
 
 Valtakunnallinen.defaultProps = {
-  changes: {}
+  change: {}
 };
 
 Valtakunnallinen.propTypes = {
   isCheckedInitial: PropTypes.bool,
   callback: PropTypes.func,
-  changes: PropTypes.object,
+  change: PropTypes.object,
   initialValues: PropTypes.array,
   values: PropTypes.array
 };

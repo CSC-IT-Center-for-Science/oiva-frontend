@@ -42,7 +42,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const heading = props.intl.formatMessage(wizardMessages.header_section3);
   const [initialValueOfSelect, setInitialValueOfSelect] = useState([]);
   const [valueOfSelect, setValueOfSelect] = useState([]);
-  const [changesOfValtakunnallinen, setChangesOfValtakunnallinen] = useState(
+  const [isValtakunnallinenChecked, setIsValtakunnallinenChecked] = useState([]);
+  const [changeOfValtakunnallinen, setChangeOfValtakunnallinen] = useState(
     {}
   );
   const { onUpdate } = props;
@@ -77,19 +78,27 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
 
     setInitialValueOfSelect(initialValueOfSelect);
     setValueOfSelect(R.concat(maakunnatWithoutRemovedOnes, addedItems));
+
+    const tmpChangeOfValtakunnallinen =
+      R.find(R.propEq("koodisto", "nuts1"))(props.changes)|| {};
+
+    setChangeOfValtakunnallinen(tmpChangeOfValtakunnallinen);
+
+    setIsValtakunnallinenChecked(tmpChangeOfValtakunnallinen.tila === "LISAYS")
+
   }, [
-    props.lupakohde,
-    props.kunnat,
-    props.maakunnat,
-    props.maakuntakunnat,
-    props.changes
-  ]);
+      props.lupakohde,
+      props.kunnat,
+      props.maakunnat,
+      props.maakuntakunnat,
+      props.changes
+    ]);
 
   useEffect(() => {
     onUpdate({
       sectionId,
       state: {
-        changesOfValtakunnallinen,
+        changeOfValtakunnallinen,
         initialValueOfSelect,
         kohde: props.kohde,
         maaraystyyppi: props.maaraystyyppi,
@@ -97,36 +106,36 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       }
     });
   }, [
-    props.kohde,
-    props.maaraystyyppi,
-    changesOfValtakunnallinen,
-    initialValueOfSelect,
-    onUpdate,
-    valueOfSelect
-  ]);
+      props.kohde,
+      props.maaraystyyppi,
+      changeOfValtakunnallinen,
+      initialValueOfSelect,
+      onUpdate,
+      valueOfSelect
+    ]);
 
   const handleNewValueOfToimialuevalinta = value => {
     setValueOfSelect(value);
   };
 
   const handleChangeOfValtakunnallinen = ({ isChecked }) => {
-    setChangesOfValtakunnallinen(
-      Object.assign({}, changesOfValtakunnallinen, { isChecked })
+    setChangeOfValtakunnallinen(
+      Object.assign({}, changeOfValtakunnallinen, { isChecked })
     );
   };
 
   return (
     <Section code={props.lupakohde.headingNumber} title={heading}>
-      <p className={ 
-        !!changesOfValtakunnallinen.isChecked ?
-           "hidden" : "pb-4" 
-        }>
+      <p className={
+        isValtakunnallinenChecked ?
+          "hidden" : "pb-4"
+      }>
         {props.intl.formatMessage(wizardMessages.areasInfo1)}
       </p>
-      <div className={ 
-        !!changesOfValtakunnallinen.isChecked ?
-           "hidden pointer-events-none" : "bg-gray-100 p-6"
-        }>
+      <div className={
+        isValtakunnallinenChecked ?
+          "hidden pointer-events-none" : "bg-gray-100 p-6"
+      }>
         <Toimialuevalinta
           maakuntakunnatList={props.maakuntakunnat.maakuntakunnatList}
           value={valueOfSelect}
@@ -139,14 +148,15 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           values={valueOfSelect}
         />
       </div>
-      <div className={ 
-        !!changesOfValtakunnallinen.isChecked ?
-           "" : "pt-4"
-        }>
+      <div className={
+        isValtakunnallinenChecked ?
+          "" : "pt-4"
+      }>
         <Valtakunnallinen
           callback={handleChangeOfValtakunnallinen}
-          changes={changesOfValtakunnallinen}
+          change={changeOfValtakunnallinen}
           // isCheckedInitial={!!props.lupakohde.valtakunnallinen}
+          isCheckedInitial={false}
           initialValues={initialValueOfSelect}
         />
       </div>
