@@ -176,8 +176,7 @@ export const getCategoriesForPerustelut = (
               R.filter(
                 R.compose(
                   R.startsWith(anchorBase),
-                  anchor
-                )
+                  anchor)
               )(changes));
 
             const toStructure = (changeObj) => {
@@ -191,7 +190,7 @@ export const getCategoriesForPerustelut = (
               const nimi = (obj) => _.find(R.prop('metadata', obj), m => m.kieli === locale).nimi;
 
               return {
-                anchor: R.join('.', anchorWOLast),
+                anchor: koulutus.koodiArvo + (osaamisala ? "." + osaamisalakoodi : ""),
                 meta: {
                   kohde,
                   maaraystyyppi,
