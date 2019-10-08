@@ -140,23 +140,28 @@ const PerustelutTutkintokielet = React.memo(props => {
         <div>
           <h2 className="py-4">Tutkintokielet</h2>
           {R.addIndex(R.map)((categories, index) => {
-            const areaCode = categories[0].metadata.areaCode;
-            return (
-              <ExpandableRowRoot
-                anchor={`${sectionId}_${areaCode}`}
-                key={`expandable-row-root-${index}`}
-                categories={categories}
-                changes={R.path(["perustelut", areaCode], props.changeObjects)}
-                disableReverting={props.isReadOnly}
-                onChangesRemove={onChangesRemove}
-                onUpdate={onChangesUpdate}
-                sectionId={sectionId}
-                showCategoryTitles={true}
-                code={areaCode}
-                title={categories[0].metadata.title}
-                isExpanded={true}
-              />
-            );
+            const areaCode = R.path([0, "metadata", "areaCode"], categories);
+            if (areaCode) {
+              return (
+                <ExpandableRowRoot
+                  anchor={`${sectionId}_${areaCode}`}
+                  key={`expandable-row-root-${index}`}
+                  categories={categories}
+                  changes={R.path(
+                    ["perustelut", areaCode],
+                    props.changeObjects
+                  )}
+                  disableReverting={props.isReadOnly}
+                  onChangesRemove={onChangesRemove}
+                  onUpdate={onChangesUpdate}
+                  sectionId={sectionId}
+                  showCategoryTitles={true}
+                  code={areaCode}
+                  title={categories[0].metadata.title}
+                  isExpanded={true}
+                />
+              );
+            }
           }, R.values(R.path(["perustelut", "categories"], props.stateObjects)))}
         </div>
       ) : null}

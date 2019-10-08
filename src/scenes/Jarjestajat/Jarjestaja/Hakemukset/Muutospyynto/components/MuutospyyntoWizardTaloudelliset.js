@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MUUTOS_WIZARD_TEKSTIT } from "../modules/constants";
 import FormSection from "../../../../../../components/03-templates/FormSection";
 import { injectIntl } from "react-intl";
@@ -15,16 +15,41 @@ const MuutospyyntoWizardTaloudelliset = ({
   onChangesUpdate,
   onStateUpdate
 }) => {
+  let isAdditionings = false;
+  useEffect(() => {
+    if (changeObjects && changeObjects.tutkinnot) {
+      isAdditionings = R.map(
+        array => {
+          R.map(
+            item => {
+              console.log(item);
+              if (item.properties)
+                return R.findIndex(
+                  R.propEq("isChecked", true)(item.properties)
+                );
+              else return false;
+            },
+            [array]
+          );
+        },
+        [R.flatten(changeObjects.tutkinnot)]
+      );
+    }
+  }, [changeObjects]);
+
+  console.log(changeObjects);
+  console.log(isAdditionings);
+
   return (
     <React.Fragment>
       <h2 className="my-6">
         {MUUTOS_WIZARD_TEKSTIT.TALOUDELLISET.PAAOTSIKKO.FI}
       </h2>
 
-      {!changeObjects && (
+      {!isAdditionings && (
         <p>{MUUTOS_WIZARD_TEKSTIT.TALOUDELLISET.EI_LISATTYJA_TUTKINTOJA.FI}</p>
       )}
-      {changeObjects && (
+      {isAdditionings && (
         <React.Fragment>
           <FormSection
             className="my-0"
