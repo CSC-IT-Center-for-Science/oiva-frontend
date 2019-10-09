@@ -2,8 +2,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
 import { getDataForOpetuskieletList } from "../../../../../../../services/kielet/opetuskieletUtil";
 import wizardMessages from "../../../../../../../i18n/definitions/wizard";
-import { curriedGetAnchorPartsByIndex } from "../../../../../../../utils/common";
-import { isInLupa, isAdded, isRemoved } from "../../../../../../../css/label";
 import { injectIntl } from "react-intl";
 import PropTypes from "prop-types";
 import * as R from "ramda";
@@ -21,12 +19,12 @@ const PerustelutOpetuskielet = React.memo(props => {
       if (opetuskielet.items)
         return R.map(item => {
           let structure = null;
-          if (
-            R.includes(
-              item.code,
-              curriedGetAnchorPartsByIndex(props.changeObjects.opetuskielet, 1)
-            )
-          ) {
+          const changeObj = R.find(
+            R.propEq("anchor", `kielet_opetuskielet.${item.code}.A`),
+            props.changeObjects.opetuskielet
+          );
+          if (changeObj) {
+            const isAddedBool = changeObj.properties.isChecked;
             structure = {
               anchor: item.code,
               meta: {
@@ -42,11 +40,11 @@ const PerustelutOpetuskielet = React.memo(props => {
                   name: "StatusTextRow",
                   properties: {
                     title: item.title,
-                    labelStyles: {
-                      addition: isAdded,
-                      removal: isRemoved,
-                      custom: Object.assign({}, item.isInLupa ? isInLupa : {})
-                    }
+                    styleClasses: ["flex"],
+                    statusTextStyleClasses: isAddedBool
+                      ? ["text-green-600 pr-4 w-20 font-bold"]
+                      : ["text-red-500 pr-4 w-20 font-bold"],
+                    statusText: isAddedBool ? " LISÄYS:" : " POISTO:"
                   }
                 }
               ],
@@ -60,6 +58,7 @@ const PerustelutOpetuskielet = React.memo(props => {
                       anchor: "A",
                       name: "TextBox",
                       properties: {
+                        isReadOnly: props.isReadOnly,
                         placeholder: "Sana on vapaa..."
                       }
                     }
@@ -71,7 +70,12 @@ const PerustelutOpetuskielet = React.memo(props => {
           return structure;
         }, opetuskielet.items).filter(Boolean);
     };
-  }, [props.changeObjects.opetuskielet, props.kohde, props.maaraystyyppi]);
+  }, [
+    props.changeObjects.opetuskielet,
+    props.isReadOnly,
+    props.kohde,
+    props.maaraystyyppi
+  ]);
 
   useEffect(() => {
     setLocale(R.toUpper(props.intl.locale));
@@ -96,6 +100,7 @@ const PerustelutOpetuskielet = React.memo(props => {
           key={`expandable-row-root`}
           categories={props.stateObject.categories}
           changes={props.changeObjects.perustelut}
+          disableReverting={props.isReadOnly}
           onChangesRemove={onChangesRemove}
           onUpdate={onChangesUpdate}
           sectionId={sectionId}
@@ -118,6 +123,7 @@ PerustelutOpetuskielet.propTypes = {
   onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
   onStateUpdate: PropTypes.func,
+  isReadOnly: PropTypes.bool,
   kohde: PropTypes.object,
   lupa: PropTypes.object,
   stateObject: PropTypes.object

@@ -117,17 +117,40 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                 />
               ) : null}
 
-              <MuutospyyntoWizardToimialue
-                muutokset={props.toimintaalueMuutokset}
-                lupakohde={props.lupa.kohteet[3]}
-                kohde={kohteet.toimintaalue}
-                kunnat={props.kunnat}
-                maakuntakunnat={props.maakuntakunnat}
-                maakunnat={props.maakunnat}
-                maaraystyyppi={maaraystyypit.VELVOITE}
-                onChangesUpdate={props.onChangesUpdate}
-                onStateUpdate={props.onStateUpdate}
-              />
+              {!!R.path(["toimintaalue"], props.muutoshakemus) && (
+                <FormSection
+                  code={3}
+                  id="toimintaalue"
+                  render={_props => (
+                    <MuutospyyntoWizardToimialue
+                      changeObjects={R.prop(
+                        "toimintaalue",
+                        props.changeObjects
+                      )}
+                      muutokset={props.toimintaalueMuutokset}
+                      lupakohde={props.lupa.kohteet[3]}
+                      kohde={kohteet.toimintaalue}
+                      kunnat={props.kunnat}
+                      maakuntakunnat={props.maakuntakunnat}
+                      maakunnat={props.maakunnat}
+                      maaraystyyppi={maaraystyypit.VELVOITE}
+                      stateObjects={{
+                        toimintaalue: R.prop(
+                          "toimintaalue",
+                          props.muutoshakemus
+                        )
+                      }}
+                      {..._props}
+                    />
+                  )}
+                  runOnStateUpdate={props.onStateUpdate}
+                  runOnChanges={props.onChangesUpdate}
+                  title={R.path(
+                    ["meta", "otsikko", props.intl.locale],
+                    kohteet.toimintaalue
+                  )}
+                />
+              )}
 
               {kohteet.opiskelijavuodet &&
                 !!R.path(["muut", "muutdata"], props.muutoshakemus) && (
@@ -214,9 +237,9 @@ MuutospyyntoWizardMuutokset.propTypes = {
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.object,
   koulutustyypit: PropTypes.object,
-  kunnat: PropTypes.object,
+  kunnat: PropTypes.array,
   maakuntakunnat: PropTypes.object,
-  maakunnat: PropTypes.object,
+  maakunnat: PropTypes.array,
   lupa: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.object,

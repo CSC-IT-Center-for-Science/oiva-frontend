@@ -6,43 +6,42 @@
  * 3) Määritetään styled-components komponentteja, joita voidaan käyttää applikaatiossa
  */
 
-import styled, { injectGlobal } from 'styled-components'
+import styled, { injectGlobal } from "styled-components";
 
-import background from 'static/images/palikat.png'
-import leijona from 'static/images/OKM_FiSve_LM_RGB_logot.png'
+import background from "static/images/palikat.png";
+import leijona from "static/images/OKM_FiSve_LM_RGB_logot.png";
 
-import 'static/fonts/OpenSans-Regular.ttf'
-import 'static/fonts/OpenSans-SemiBold.ttf'
-import 'static/fonts/GothamNarrow-Book.otf'
-import 'static/fonts/GothamNarrow-Light.otf'
+import "static/fonts/OpenSans-Regular.ttf";
+import "static/fonts/OpenSans-SemiBold.ttf";
+import "static/fonts/GothamNarrow-Book.otf";
+import "static/fonts/GothamNarrow-Light.otf";
 
 // Colors
 export const COLORS = {
-  OIVA_GREEN: '#5A8A70',
-  OIVA_RED: '#cc3300',
-  OIVA_PURPLE: '#9B26B6',
-  DARK_GRAY: '#525252',
-  BLACK: '#000000',
-  WHITE: '#FFFFFF',
-  LIGHT_GRAY: '#D8D8D8',
-  BORDER_GRAY: '#DFDFDF',
-  BG_GRAY: '#F5F5F5',
-  BG_DARKER_GRAY: '#e6e6e6',
-  ACTIVE_BLUE: '#E9F6FA',
-  OIVA_OPAQUE_GREEN: 'rgba(90,138,112,0.4)',
-  OIVA_DARK_GREEN: '#517c64',
-  OIVA_LIGHT_GREEN: '#eef3f0',
-  OIVA_MENU_FONT_COLOR: '#EBF4F4',
-  OIVA_MENU_BG_COLOR: '#70A489',
-  OIVA_MENU_HOVER_COLOR: '#98B8A7',
-  OIVA_MENU_HOVER_2_COLOR: '#99C6C6',
-  OIVA_MENU_SELECTED_COLOR: '#A8C8B7',
-  OIVA_MENU_BG_2_COLOR: '#519D9D',
-  OIVA_TABLE_BG_COLOR: '#70A489',
-  OIVA_TABLE_HOVER_COLOR: 'rgba(90,138,112,0.2)',
-  OIVA_TABLE_HEADER_HOVER_COLOR: '#98B8A7'
-}
-
+  OIVA_GREEN: "#5A8A70",
+  OIVA_RED: "#cc3300",
+  OIVA_PURPLE: "#9B26B6",
+  DARK_GRAY: "#525252",
+  BLACK: "#000000",
+  WHITE: "#FFFFFF",
+  LIGHT_GRAY: "#D8D8D8",
+  BORDER_GRAY: "#DFDFDF",
+  BG_GRAY: "#F5F5F5",
+  BG_DARKER_GRAY: "#e6e6e6",
+  ACTIVE_BLUE: "#E9F6FA",
+  OIVA_OPAQUE_GREEN: "rgba(90,138,112,0.4)",
+  OIVA_DARK_GREEN: "#517c64",
+  OIVA_LIGHT_GREEN: "#eef3f0",
+  OIVA_MENU_FONT_COLOR: "#EBF4F4",
+  OIVA_MENU_BG_COLOR: "#70A489",
+  OIVA_MENU_HOVER_COLOR: "#98B8A7",
+  OIVA_MENU_HOVER_2_COLOR: "#99C6C6",
+  OIVA_MENU_SELECTED_COLOR: "#A8C8B7",
+  OIVA_MENU_BG_2_COLOR: "#519D9D",
+  OIVA_TABLE_BG_COLOR: "#70A489",
+  OIVA_TABLE_HOVER_COLOR: "rgba(90,138,112,0.2)",
+  OIVA_TABLE_HEADER_HOVER_COLOR: "#98B8A7"
+};
 
 export const FONT_STACK = {
   GOTHAM_NARROW: `"Gotham Narrow", Helvetica, Arial, sans-serif`,
@@ -52,22 +51,22 @@ export const FONT_STACK = {
   PT_SANS_NARROW: `"PT Sans Narrow", "Open Sans", Helvetica, Arial, sans-serif`,
   SOURCE_SANS: `"Source Sans", "Open Sans", Helvetica, Arial, sans-serif`,
   ARIAL: `"Arial", "Open Sans", Helvetica, sans-serif`
-}
+};
 
-export const APP_WIDTH = 1030
+export const APP_WIDTH = 1030;
 
 // Media query breakpointit
 export const MEDIA_QUERIES = {
-  MOBILE: 'only screen and (min-width: 360px) and (max-width: 767px)',
-  TABLET: 'only screen and (min-width: 768px) and (max-width: 1023px)',
-  TABLET_MIN: 'only screen and (min-width: 768px)',
-  DESKTOP_NORMAL: 'only screen and (min-width: 1024px) and (max-width: 1279px)',
-  DESKTOP_LARGE: 'only screen and (min-width: 1280px)'
-}
+  MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
+  TABLET: "only screen and (min-width: 768px) and (max-width: 1023px)",
+  TABLET_MIN: "only screen and (min-width: 768px)",
+  DESKTOP_NORMAL: "only screen and (min-width: 1024px) and (max-width: 1279px)",
+  DESKTOP_LARGE: "only screen and (min-width: 1280px)"
+};
 
 export const TRANSITIONS = {
-  EASE_IN_OUT_QUICK: 'all 0.05s ease-in-out'
-}
+  EASE_IN_OUT_QUICK: "all 0.05s ease-in-out"
+};
 
 // Globaalit tyylit
 injectGlobal`
@@ -139,34 +138,6 @@ injectGlobal`
     
     &.is-in-lupa {
       font-weight: bold;
-    }
-  }
-  
-  input[type="text"] {
-    font-size: 15px;
-    padding: 8px 16px;
-    width: 320px;
-    margin: 10px 10px 10px 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    
-    &:focus {
-      outline: none;
-    }
-  }
-  
-  input[type="number"] {
-    font-size: 15px;
-    padding: 8px 16px;
-    width: 140px;
-    margin: 10px 10px 10px 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    
-    &:focus {
-      outline: none;
     }
   }
   
@@ -246,13 +217,13 @@ injectGlobal`
     }
   }
   
-`
+`;
 
 export const P = styled.p`
   font-weight: 100;
   font-size: 16px;
   line-height: 22px;
-`
+`;
 
 export const BackgroundImage = styled.div`
   height: 800px;
@@ -264,10 +235,10 @@ export const BackgroundImage = styled.div`
   right: 0;
   opacity: 0.3;
   z-index: -1;
-`
+`;
 
 export const Leijona = styled.div`
   height: 110px;
   width: 300px;
   background: url(${leijona});
-`
+`;

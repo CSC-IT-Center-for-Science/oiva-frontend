@@ -56,6 +56,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
                     anchor: "A",
                     name: "TextBox",
                     properties: {
+                      isReadOnly: props.isReadOnly,
                       placeholder: "Perustelut..."
                     }
                   }
@@ -68,7 +69,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
       }, koulutusData.items);
       return categories.filter(Boolean);
     };
-  }, [props.changeObjects.koulutukset.tyovoimakoulutukset]);
+  }, [props.isReadOnly, props.changeObjects.koulutukset.tyovoimakoulutukset]);
 
   useEffect(() => {
     onStateUpdate(
@@ -103,7 +104,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
           changes={
             props.changeObjects.perustelut.koulutukset.tyovoimakoulutukset
           }
-          disableReverting={true}
+          disableReverting={props.isReadOnly}
           hideAmountOfChanges={false}
           isExpanded={true}
           onUpdate={onChangesUpdate}
@@ -117,11 +118,13 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
 
 PerustelutTyovoimakoulutukset.defaultProps = {
   changeObjects: {},
+  isReadOnly: false,
   stateObject: {}
 };
 
 PerustelutTyovoimakoulutukset.propTypes = {
   changeObjects: PropTypes.object,
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
   stateObject: PropTypes.object
 };

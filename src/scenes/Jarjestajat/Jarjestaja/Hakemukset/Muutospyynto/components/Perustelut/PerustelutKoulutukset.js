@@ -34,6 +34,7 @@ const PerustelutKoulutukset = React.memo(props => {
                   }
                 }
               }}
+              isReadOnly={props.isReadOnly}
               kohde={props.kohde}
               koulutukset={props.koulutukset}
               maaraystyyppi={props.maaraystyyppi}
@@ -69,6 +70,7 @@ const PerustelutKoulutukset = React.memo(props => {
                   }
                 }
               }}
+              isReadOnly={props.isReadOnly}
               kohde={props.kohde}
               koulutukset={props.koulutukset}
               maaraystyyppi={props.maaraystyyppi}
@@ -108,6 +110,7 @@ const PerustelutKoulutukset = React.memo(props => {
                   }
                 }
               }}
+              isReadOnly={props.isReadOnly}
               kohde={props.kohde}
               koulutukset={props.koulutukset}
               maaraystyyppi={props.maaraystyyppi}
@@ -139,6 +142,7 @@ const PerustelutKoulutukset = React.memo(props => {
                   "kuljettajakoulutukset"
                 ])(props.changeObjects)
               }}
+              isReadOnly={props.isReadOnly}
               kohde={props.kohde}
               koulutukset={props.koulutukset}
               lomakkeet={props.lomakkeet}
@@ -159,11 +163,13 @@ const PerustelutKoulutukset = React.memo(props => {
 });
 
 PerustelutKoulutukset.defaultProps = {
-  changeObjects: {}
+  changeObjects: {},
+  isReadOnly: false
 };
 
 PerustelutKoulutukset.propTypes = {
   changeObjects: PropTypes.object,
+  isReadOnly: PropTypes.bool,
   kohde: PropTypes.object,
   koulutukset: PropTypes.object,
   lomakkeet: PropTypes.object,

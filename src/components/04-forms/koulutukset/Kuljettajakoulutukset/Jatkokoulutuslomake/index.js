@@ -8,11 +8,13 @@ import CategorizedListRoot from "../../../../02-organisms/CategorizedListRoot";
 import * as R from "ramda";
 
 const defaultProps = {
-  changeObjects: []
+  changeObjects: [],
+  isReadOnly: false
 };
 
 const KuljettajienJatkokoulutuslomake = ({
   changeObjects = defaultProps.changeObjects,
+  isReadOnly = defaultProps.isReadOnly,
   onChangesUpdate
 }) => {
   const sectionId = "perustelut_koulutukset_kuljettajakoulutukset";
@@ -23,12 +25,16 @@ const KuljettajienJatkokoulutuslomake = ({
   useEffect(() => {
     const addPeopleForm = () => {
       setPeopleForms(prevForms => {
-        return R.insert(-1, getAddPeopleForm(prevForms.length + 1))(prevForms);
+        return R.insert(-1, getAddPeopleForm(prevForms.length + 1, isReadOnly))(
+          prevForms
+        );
       });
     };
 
-    setLomake(getKuljettajienJatkokoulutuslomake(addPeopleForm, peopleForms));
-  }, [peopleForms]);
+    setLomake(
+      getKuljettajienJatkokoulutuslomake(addPeopleForm, isReadOnly, peopleForms)
+    );
+  }, [isReadOnly, peopleForms]);
 
   useEffect(() => {
     if (!changes) {
@@ -45,14 +51,11 @@ const KuljettajienJatkokoulutuslomake = ({
         ),
         R.filter(
           R.compose(
-            R.contains(
-              "opettajien-kelpoisuus-ja-tyokokemus-info.lisatyt-henkilot"
-            ),
+            R.contains("opettajien-kelpoisuus-ja-tyokokemus.lisatyt-henkilot"),
             R.prop("anchor")
           )
         )(changeObjects)
       );
-
       if (peopleFormAnchors.length) {
         /**
          * People form count is calculated using the anchors related to the people
@@ -62,7 +65,7 @@ const KuljettajienJatkokoulutuslomake = ({
           ...R.map(
             R.compose(
               Number,
-              R.view(R.lensIndex(5))
+              R.view(R.lensIndex(4))
             ),
             peopleFormAnchors
           )
@@ -74,15 +77,16 @@ const KuljettajienJatkokoulutuslomake = ({
          */
         R.forEach(() => {
           setPeopleForms(prevForms => {
-            return R.insert(-1, getAddPeopleForm(prevForms.length + 1))(
-              prevForms
-            );
+            return R.insert(
+              -1,
+              getAddPeopleForm(prevForms.length + 1, isReadOnly)
+            )(prevForms);
           });
         }, new Array(peopleFormCount));
       }
     }
     setChanges(changeObjects);
-  }, [changes, changeObjects]);
+  }, [changes, changeObjects, isReadOnly]);
 
   return (
     <React.Fragment>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../../../02-organisms/CategorizedListRoot";
 import { getVaativaErityinenTukilomake } from "../../../../services/lomakkeet/perustelut/muut";
@@ -8,7 +8,7 @@ const defaultProps = {
 };
 
 const VaativaErityinenTukiPerusteluLomake = ({ changes = defaultProps.changes }) => {
-  const [lomake] = useState(getVaativaErityinenTukilomake());
+  const lomake = getVaativaErityinenTukilomake();
 
   return (
     <CategorizedListRoot

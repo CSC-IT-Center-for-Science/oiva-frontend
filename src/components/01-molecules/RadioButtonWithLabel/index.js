@@ -26,26 +26,32 @@ const RadioButtonWithLabel = React.memo(props => {
   };
 
   return (
-    <FormGroup row>
-      <FormControlLabel
-        classes={{
-          label: styles.label
-        }}
-        control={
-          <GreenRadio
-            checked={props.isChecked}
-            value={props.value}
-            onChange={handleChanges}
+    <React.Fragment>
+      {!props.isReadOnly || (props.isReadOnly && props.isChecked) ? (
+        <FormGroup row>
+          <FormControlLabel
+            classes={{
+              label: styles.label
+            }}
+            disabled={props.isDisabled || props.isReadOnly}
+            control={
+              <GreenRadio
+                checked={props.isChecked}
+                value={props.value}
+                onChange={handleChanges}
+              />
+            }
+            label={props.children}
           />
-        }
-        label={props.children}
-      />
-    </FormGroup>
+        </FormGroup>
+      ) : null}
+    </React.Fragment>
   );
 });
 
 RadioButtonWithLabel.propTypes = {
   isChecked: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   name: PropTypes.string,
   onChanges: PropTypes.func,
   payload: PropTypes.object,

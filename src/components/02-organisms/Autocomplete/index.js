@@ -3,7 +3,7 @@ import Select from "react-select";
 import PropTypes from "prop-types";
 import { injectIntl } from "react-intl";
 import chroma from "chroma-js";
-import {heights, autocompleteShortStyles} from "../../../css/autocomplete";
+import { heights, autocompleteShortStyles } from "../../../css/autocomplete";
 
 const Autocomplete = React.memo(props => {
   const [options, setOptions] = useState([]);
@@ -19,14 +19,14 @@ const Autocomplete = React.memo(props => {
 
   const optionStyles = {
     ...(props.height === heights.SHORT ? autocompleteShortStyles : null),
-    control: props.height === heights.SHORT ?
-      autocompleteShortStyles.control
-      :
-      (styles) => ({
-        ...styles,
-        backgroundColor: "white",
-      }),
-    option: (styles, {data, isDisabled, isFocused, isSelected}) => {
+    control:
+      props.height === heights.SHORT
+        ? autocompleteShortStyles.control
+        : styles => ({
+            ...styles,
+            backgroundColor: "white"
+          }),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
       const color = chroma("#c3dafe");
       return {
         ...styles,
@@ -88,7 +88,9 @@ const Autocomplete = React.memo(props => {
       default:
         break;
     }
-    props.callback(props.payload, { value: orderOptions(value) });
+    props.callback(props.payload, {
+      value: Array.isArray(value) ? orderOptions(value) : value
+    });
   };
 
   useEffect(() => {
@@ -101,12 +103,14 @@ const Autocomplete = React.memo(props => {
 
   return (
     <React.Fragment>
+      {props.title && <h4 className="py-2">{props.title}</h4>}
       <Select
         autosize={false}
         name={props.name}
-        isMulti
+        isMulti={props.isMulti}
         value={value}
         onChange={handleSelectChange}
+        placeholder={props.placeholder}
         inputProps={{
           id: "select-multiple"
         }}
@@ -123,6 +127,7 @@ const Autocomplete = React.memo(props => {
 
 Autocomplete.defaultProps = {
   isMulti: true,
+  placeholder: "Valitse...",
   value: []
 };
 
@@ -132,8 +137,10 @@ Autocomplete.propTypes = {
   callback: PropTypes.func,
   options: PropTypes.array,
   payload: PropTypes.object,
+  placeholder: PropTypes.string,
   value: PropTypes.array,
-  height: PropTypes.string
+  height: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default injectIntl(Autocomplete);

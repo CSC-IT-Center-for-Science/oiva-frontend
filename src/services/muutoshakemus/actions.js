@@ -27,19 +27,25 @@ export const setSectionData = payload => {
   };
 };
 
-export function saveMuutospyynto(muutospyynto) {
-  // const attachments = getAttachments(muutospyynto);
-  // const formatted = formatMuutospyynto(muutospyynto);
-
+export function saveMuutospyynto(muutospyynto, attachments) {
   let data = new FormData();
   var muutos = new Blob([JSON.stringify(muutospyynto)], {
     type: "application/json"
   });
   data.append("muutospyynto", muutos, "muutospyynnön json-data");
 
-  // attachments.map(item => {
-  //   if (item.tiedosto) data.append(item.tiedostoId, item.tiedosto, item.nimi);
-  // });
+  console.log(attachments);
+  if (attachments) {
+    attachments.map(attach =>
+      attach.map(item => {
+        if (!item.removed && item.tiedosto instanceof Blob) {
+          data.append(item.tiedostoId, item.tiedosto, item.nimi);
+          item.tiedosto = null;
+        }
+        return null;
+      })
+    );
+  }
   return dispatch => {
     dispatch({ type: SAVE_MUUTOSPYYNTO_START });
 

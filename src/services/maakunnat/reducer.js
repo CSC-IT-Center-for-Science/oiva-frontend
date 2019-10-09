@@ -1,4 +1,4 @@
-import { getToimialueList } from "services/toimialueet/toimialueUtil";
+import { getToimialueList } from "../../services/toimialueet/toimialueUtil";
 
 import {
   FETCH_MAAKUNNAT_START,

@@ -95,6 +95,8 @@ export const getChangesToSave = (
       R.split("."),
       R.prop("anchor")
     )(changeObj);
+    const anchorBase =
+      key === "opiskelijavuodet" ? R.replace(".", "_", anchorInit) : anchorInit;
     const backendMuutos = R.find(muutos => {
       return !!R.find(
         R.startsWith(anchorInit),
@@ -110,7 +112,7 @@ export const getChangesToSave = (
       );
     }, backendMuutokset);
     if (backendMuutos) {
-      const perustelutAnchorInitial = `perustelut_${anchorInit}`;
+      const perustelutAnchorInitial = `perustelut_${anchorBase}`;
       const perustelut = R.filter(
         R.compose(
           R.contains(perustelutAnchorInitial),
@@ -297,6 +299,59 @@ export const getChangesToSave = (
         type: type
       };
     }, unhandledChangeObjects).filter(Boolean);
+  } else if (key === "toimintaalue") {
+    uudetMuutokset = R.map(changeObj => {
+      if (R.equals(getAnchorPart(changeObj.anchor, 1), "valtakunnallinen")) {
+        const tilaVal = changeObj.properties.isChecked ? "LISAYS" : "POISTO";
+        const typeVal = changeObj.properties.isChecked ? "addition" : "removal";
+        return {
+          tila: tilaVal,
+          type: typeVal,
+          meta: {
+            changeObjects: [changeObj],
+            perusteluteksti: null
+          },
+          muutosperustelukoodiarvo: null,
+          kohde: stateObject.kohde,
+          maaraystyyppi: stateObject.maaraystyyppi,
+          value: "02",
+          tyyppi: " valtakunnallinen",
+          koodisto: "nuts1",
+          koodiarvo: "FI1"
+        };
+      } else if (
+        R.equals(getAnchorPart(changeObj.anchor, 1), "valintakentat") ||
+        R.includes("lupaan-lisattavat", getAnchorPart(changeObj.anchor, 1))
+      ) {
+        return {
+          koodiarvo: changeObj.properties.meta.koodiarvo,
+          koodisto: changeObj.properties.meta.koodisto.koodistoUri,
+          tila: "LISAYS",
+          type: "addition",
+          meta: {
+            perusteluteksti: null,
+            changeObjects: [changeObj]
+          },
+          muutosperustelukoodiarvo: null,
+          kohde: stateObject.kohde,
+          maaraystyyppi: stateObject.maaraystyyppi
+        };
+      } else {
+        return {
+          koodiarvo: changeObj.properties.meta.koodiarvo,
+          koodisto: changeObj.properties.meta.koodisto.koodistoUri,
+          tila: "POISTO",
+          type: "removal",
+          meta: {
+            perusteluteksti: null,
+            changeObjects: [changeObj]
+          },
+          muutosperustelukoodiarvo: null,
+          kohde: stateObject.kohde,
+          maaraystyyppi: stateObject.maaraystyyppi
+        };
+      }
+    }, unhandledChangeObjects).filter(Boolean);
   } else if (key === "opiskelijavuodet") {
     uudetMuutokset = R.map(changeObj => {
       let koodisto = "koulutussektori";
@@ -316,9 +371,19 @@ export const getChangesToSave = (
         ).meta;
         koodisto = meta.koodisto.koodistoUri;
       }
+      const anchorInit = R.compose(
+        R.join("."),
+        R.init,
+        R.split(".")
+      )(changeObj.anchor);
 
-      // TODO: Define the list of perustelut for opiskelijavuodet
-      const perustelut = [];
+      const perustelut = R.filter(
+        R.compose(
+          R.includes(anchorInit),
+          R.prop("anchor")
+        ),
+        changeObjects.perustelut
+      );
 
       return {
         arvo: changeObj.properties.applyForValue,

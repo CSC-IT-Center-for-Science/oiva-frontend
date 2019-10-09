@@ -1,36 +1,31 @@
+import { HAKEMUS_OTSIKOT } from "../../../locales/uusiHakemusFormConstants";
+
 export const getKuljettajienJatkokoulutuslomake = (
   addPeopleFormCallback,
+  isReadOnly,
   peopleForms
 ) => {
-  const code = 4;
+  const code = 6;
   return [
     {
       anchor: code,
       styleClasses: ["px-10 py-10"],
-      components: [
-        {
-          anchor: "tehtavan-tarpeellisuus-title",
-          name: "StatusTextRow",
-          properties: {
-            title: "Jatkokoulutusta antavan koulutuskeskuksen tehtävä"
-          }
-        }
-      ],
+      title: "Jatkokoulutusta antavan koulutuskeskuksen tehtävä",
       categories: [
-        tehtavanTarpeellisuus(1, 1),
-        voimassaOlo(2, 2),
-        suunnitelma(3, 3),
-        osaaminen(4, 4),
-        johtaja(5, 5),
+        tehtavanTarpeellisuus(1, isReadOnly),
+        voimassaOlo(2, isReadOnly),
+        suunnitelma(3, isReadOnly),
+        osaaminen(4, isReadOnly),
+        johtaja(5, isReadOnly),
         opettajien(
-          6,
           addPeopleFormCallback,
           peopleForms,
           6,
-          "Selvitys jatkokoulutuksen opettajien kelpoisuuksista ja työkokemuksista"
+          "Selvitys jatkokoulutuksen opettajien kelpoisuuksista ja työkokemuksista",
+          isReadOnly
         ),
-        ajoneuvoKanta(7, 7),
-        muutOpetusvalineet(8, 8)
+        ajoneuvoKanta(7, isReadOnly),
+        muutOpetusvalineet(8, isReadOnly)
       ]
     }
   ];
@@ -38,12 +33,13 @@ export const getKuljettajienJatkokoulutuslomake = (
 
 export const getKuljettajienPeruskoulutuslomake = (
   addPeopleFormCallback,
+  isReadOnly,
   peopleForms
 ) => {
-  const code = 3;
+  const code = 5;
   return [
     {
-      anchor: "kuljettajien-peruskoulutuslomake",
+      anchor: code,
       styleClasses: ["px-10 py-10"],
       components: [
         {
@@ -56,49 +52,40 @@ export const getKuljettajienPeruskoulutuslomake = (
         }
       ],
       categories: [
-        tehtavanTarpeellisuus(1, 1),
-        voimassaOlo(2, 2),
-        suunnitelma(3, 3),
-        johtaja(4, 4),
+        tehtavanTarpeellisuus(1, isReadOnly),
+        voimassaOlo(2, isReadOnly),
+        suunnitelma(3, isReadOnly),
+        johtaja(4, isReadOnly),
         opettajien(
-          code,
-          5,
           addPeopleFormCallback,
           peopleForms,
           5,
-          "Selvitys perustason ammattipätevyyskoulutusen opettajien kelpoisuuksista ja työkokemuksista"
+          "Selvitys perustason ammattipätevyyskoulutusen opettajien kelpoisuuksista ja työkokemuksista",
+          isReadOnly
         ),
-        ajoneuvoKanta(code, 6, 6),
-        muutOpetusvalineet(code, 7, 7)
+        ajoneuvoKanta(6, isReadOnly),
+        muutOpetusvalineet(7, isReadOnly)
       ]
     }
   ];
 };
 
-export const getAddPeopleForm = orderNumber => {
+export const getAddPeopleForm = (orderNumber, isReadOnly) => {
   return {
     anchor: orderNumber,
-    styleClasses: ["border-t py-8"],
-    components: [
-      {
-        anchor: "henkilon-nimi-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          labelStyles: {},
-          title: `Henkilö ${orderNumber}`
-        }
-      }
-    ],
+    styleClasses: ["border-t pl-6 py-8"],
     categories: [
       {
-        anchor: "form-title",
-        styleClasses: ["ml-4"],
+        anchor: "henkilon-nimi",
+        name: "StatusTextRow",
+        styleClasses: ["text-base"],
+        title: `Henkilö ${orderNumber}`,
         components: [
           {
             anchor: "A",
             name: "TextBox",
             properties: {
+              isReadOnly,
               labelStyles: {},
               placeholder: "Henkilön nimi"
             }
@@ -106,210 +93,214 @@ export const getAddPeopleForm = orderNumber => {
         ]
       },
       {
-        anchor: "liikenneopettajalupa",
-        styleClasses: ["pl-6"],
-        components: [
+        anchor: "patevyydet",
+        styleClasses: ["pl-0"],
+        categories: [
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-liikenneopettajalupa",
-              title: "Liikenneopettajalupa (pakollinen)",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "kuorma-autonkuljettaja",
-        styleClasses: ["pl-6"],
-        components: [
+            anchor: "liikenneopettajalupa",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-liikenneopettajalupa",
+                  title: "Liikenneopettajalupa (pakollinen)"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-kuorma-autonkuljettaja",
-              title: "Voimassa oleva kuorma-autonkuljettajan ammattipätevyys",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "linja-autonkuljettaja",
-        styleClasses: ["pl-6"],
-        components: [
+            anchor: "kuorma-autonkuljettaja",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-kuorma-autonkuljettaja",
+                  title:
+                    "Voimassa oleva kuorma-autonkuljettajan ammattipätevyys"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-linja-autonkuljettaja",
-              title: "Voimassa oleva linja-autonkuljettajan ammattipätevyys",
-              labelStyles: {},
-              isChecked: false
-            }
+            anchor: "linja-autonkuljettaja",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-linja-autonkuljettaja",
+                  title: "Voimassa oleva linja-autonkuljettajan ammattipätevyys"
+                }
+              }
+            ]
           }
         ]
       },
       {
         anchor: `paatoiminen-kuljettaja-info`,
-        styleClasses: ["pl-6 pt-6"],
-        components: [
+        code: "a)",
+        styleClasses: ["pl-0 pt-6"],
+        title:
+          "Vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvonpäätoimisena kuljettajana:",
+        categories: [
           {
-            anchor: "A",
-            name: "StatusTextRow",
-            styleClasses: ["pb-4 text-base"],
-            properties: {
-              code: "a)",
-              title:
-                "Vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvonpäätoimisena kuljettajana:"
-            }
-          }
-        ]
-      },
-      {
-        anchor: "C-luokka",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "C-luokka",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-c-luokka",
+                  title: "C-luokka"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-c-luokka",
-              title: "C-luokka",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "CE-luokka",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "CE-luokka",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-ce-luokka",
+                  title: "CE-luokka"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-ce-luokka",
-              title: "CE-luokka",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "D-luokka",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-d-luokka",
-              title: "D-luokka",
-              labelStyles: {},
-              isChecked: false
-            }
+            anchor: "D-luokka",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-d-luokka",
+                  title: "D-luokka"
+                }
+              }
+            ]
           }
         ]
       },
       {
         anchor: `jokin-tutkinnoista`,
-        styleClasses: ["pl-6 pt-6"],
-        components: [
+        code: "b)",
+        styleClasses: ["pl-0 pt-6"],
+        title: "Jokin seuraavista tutkinnoista:",
+        categories: [
           {
-            anchor: "A",
-            name: "StatusTextRow",
-            styleClasses: ["pb-4 text-base"],
-            properties: {
-              code: "b)",
-              title: "Jokin seuraavista tutkinnoista:"
-            }
-          }
-        ]
-      },
-      {
-        anchor: "linja-auto-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "linja-auto-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-linja-auto-ammattitutkinto",
+                  title: "Linja-auton kuljettajan ammattitutkinto"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-linja-auto-ammattitutkinto",
-              title: "Linja-auton kuljettajan ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "yhdistelmäajoneuvo-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "yhdistelmäajoneuvo-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-yhdistelmäajoneuvo-ammattitutkinto",
+                  title: "Yhdistelmäajoneuvonkuljettajan ammattitutkinto"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-yhdistelmäajoneuvo-ammattitutkinto",
-              title: "Yhdistelmäajoneuvonkuljettajan ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "puutavara-autokuljetus-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "puutavara-autokuljetus-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-puutavara-autokuljetus-ammattitutkinto",
+                  title: "Puutavaran autonkuljetuksen ammattitutkinto"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-puutavara-autokuljetus-ammattitutkinto",
-              title: "Puutavaran autonkuljetuksen ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "kuljetuspalvelut-logistiikan-perustutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "kuljetuspalvelut-logistiikan-perustutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-kuljetuspalvelut-logistiikan-perustutkinto",
+                  title:
+                    "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-kuljetuspalvelut-logistiikan-perustutkinto",
-              title:
-                "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "kuljetusalan-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-kuljetusalan-ammattitutkinto",
-              title: "Kuljetusalan ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
+            anchor: "kuljetusalan-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-kuljetusalan-ammattitutkinto",
+                  title: "Kuljetusalan ammattitutkinto"
+                }
+              }
+            ]
           }
         ]
       }
@@ -317,30 +308,22 @@ export const getAddPeopleForm = orderNumber => {
   };
 };
 
-const tehtavanTarpeellisuus = (anchorNumber, orderCode) => {
+const tehtavanTarpeellisuus = (orderCode, isReadOnly) => {
   return {
-    anchor: anchorNumber,
+    anchor: "tehtavan-tarpeellisuus",
+    code: orderCode,
+    title: "Tehtävän tarpeellisuus",
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "tehtavan-tarpeellisuus-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          code: orderCode,
-          title: "Tehtävän tarpeellisuus"
-        }
-      }
-    ],
     categories: [
       {
-        anchor: "tehtavan-tarpeellisuus-field",
+        anchor: "textbox",
         styleClasses: ["pl-6"],
         components: [
           {
             anchor: "A",
             name: "TextBox",
             properties: {
+              isReadOnly,
               placeholder:
                 "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne"
             }
@@ -351,22 +334,13 @@ const tehtavanTarpeellisuus = (anchorNumber, orderCode) => {
   };
 };
 
-const voimassaOlo = (anchorNumber, orderCode) => {
+const voimassaOlo = (orderCode, isReadOnly) => {
   return {
-    anchor: anchorNumber,
+    anchor: "voimassaolo",
+    code: orderCode,
+    title:
+      "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?",
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "voimassaolo-label",
-        name: "StatusTextRow",
-        styleClasses: ["pb-4 text-base"],
-        properties: {
-          code: orderCode,
-          title:
-            "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?"
-        }
-      }
-    ],
     categories: [
       {
         anchor: "voimassaolo-field-no",
@@ -376,6 +350,7 @@ const voimassaOlo = (anchorNumber, orderCode) => {
             anchor: "A",
             name: "RadioButtonWithLabel",
             properties: {
+              isReadOnly,
               name: "voimassaolo-field-radio-no",
               code: 1,
               title: "Ei",
@@ -393,6 +368,7 @@ const voimassaOlo = (anchorNumber, orderCode) => {
             anchor: "A",
             name: "RadioButtonWithLabel",
             properties: {
+              isReadOnly,
               name: "voimassaolo-field-radio-yes",
               code: 2,
               title: "Kyllä",
@@ -406,22 +382,12 @@ const voimassaOlo = (anchorNumber, orderCode) => {
   };
 };
 
-const suunnitelma = (anchorNumber, orderCode) => {
+const suunnitelma = (orderCode, isReadOnly) => {
   return {
-    anchor: anchorNumber,
+    anchor: "suunnitelma",
+    code: orderCode,
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "suunnitelma-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          code: orderCode,
-          labelStyles: {},
-          title: "Suunnitelma ammattipätevyyskoulutuksen järjestämiseksi"
-        }
-      }
-    ],
+    title: "Suunnitelma ammattipätevyyskoulutuksen järjestämiseksi",
     categories: [
       {
         anchor: "suunnitelma-field",
@@ -431,6 +397,7 @@ const suunnitelma = (anchorNumber, orderCode) => {
             anchor: "A",
             name: "TextBox",
             properties: {
+              isReadOnly,
               placeholder:
                 "Toimintamalli ammattipätevyyskoulutuksen suunnittelusta ja toteutuksesta."
             }
@@ -441,22 +408,12 @@ const suunnitelma = (anchorNumber, orderCode) => {
   };
 };
 
-const osaaminen = (anchorNumber, orderCode) => {
+const osaaminen = (orderCode, isReadOnly) => {
   return {
-    anchor: anchorNumber,
+    anchor: "osaaminen",
+    code: orderCode,
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "osaaminen-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          code: orderCode,
-          labelStyles: {},
-          title: "Koulutusohjelmien edellyttämä osaaminen"
-        }
-      }
-    ],
+    title: "Koulutusohjelmien edellyttämä osaaminen",
     categories: [
       {
         anchor: "osaaminen-field",
@@ -466,6 +423,7 @@ const osaaminen = (anchorNumber, orderCode) => {
             anchor: "A",
             name: "TextBox",
             properties: {
+              isReadOnly,
               placeholder: "Kerro osaamisesta?"
             }
           }
@@ -475,389 +433,265 @@ const osaaminen = (anchorNumber, orderCode) => {
   };
 };
 
-const johtaja = (anchorNumber, orderCode) => {
+const johtaja = (orderCode, isReadOnly) => {
   return {
-    anchor: anchorNumber,
+    anchor: "johtaja",
+    code: orderCode,
+    title: "Opetuksesta vastaavan johtajan kelpoisuus ja työkokemus",
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "johtaja-label",
-        name: "StatusTextRow",
-        styleClasses: ["py-4 text-base"],
-        properties: {
-          code: orderCode,
-          title: "Opetuksesta vastaavan johtajan kelpoisuus ja työkokemus"
-        }
-      }
-    ],
     categories: [
       {
         anchor: `johtaja-info`,
+        code: "!",
         styleClasses: ["pl-6"],
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              code: "!",
-              labelStyles: {},
-              title:
-                "Valtioneuvoston asetus 434/2018 10 § Selvitys opetuksesta vastaavan johtajan/johtajien kelpoisuudesta ja työkokemuksesta toimipisteittäin."
-            }
-          }
-        ]
-      },
-      {
-        anchor: "johtaja-field",
-        styleClasses: ["pl-6 pb-6"],
+        title:
+          "Valtioneuvoston asetus 434/2018 10 § Selvitys opetuksesta vastaavan johtajan/johtajien kelpoisuudesta ja työkokemuksesta toimipisteittäin.",
         components: [
           {
             anchor: "A",
             name: "TextBox",
             properties: {
+              isReadOnly,
               placeholder: "Sana on vapaa..."
             }
           }
         ]
       },
       {
-        anchor: "liikenneopettajalupa",
+        anchor: "patevyydet",
         styleClasses: ["pl-6"],
-        components: [
+        categories: [
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-liikenneopettajalupa",
-              title: "Liikenneopettajalupa (pakollinen)",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "kuorma-autonkuljettaja",
-        styleClasses: ["pl-6"],
-        components: [
+            anchor: "liikenneopettajalupa",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-liikenneopettajalupa",
+                  title: "Liikenneopettajalupa (pakollinen)"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-kuorma-autonkuljettaja",
-              title: "Voimassa oleva kuorma-autonkuljettajan ammattipätevyys",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "linja-autonkuljettaja",
-        styleClasses: ["pl-6"],
-        components: [
+            anchor: "kuorma-autonkuljettaja",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-kuorma-autonkuljettaja",
+                  title:
+                    "Voimassa oleva kuorma-autonkuljettajan ammattipätevyys"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-linja-autonkuljettaja",
-              title: "Voimassa oleva linja-autonkuljettajan ammattipätevyys",
-              labelStyles: {},
-              isChecked: false
-            }
+            anchor: "linja-autonkuljettaja",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-linja-autonkuljettaja",
+                  title: "Voimassa oleva linja-autonkuljettajan ammattipätevyys"
+                }
+              }
+            ]
           }
         ]
       },
       {
         anchor: `paatoiminen-kuljettaja-info`,
+        code: "a)",
+        title:
+          "Vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvonpäätoimisena kuljettajana:",
         styleClasses: ["pl-6 pt-6"],
-        components: [
+        categories: [
           {
-            anchor: "A",
-            name: "StatusTextRow",
-            styleClasses: ["pb-4 text-base"],
-            properties: {
-              code: "a)",
-              title:
-                "Vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvonpäätoimisena kuljettajana:"
-            }
-          }
-        ]
-      },
-      {
-        anchor: "C-luokka",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "C-luokka",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-c-luokka",
+                  title: "C-luokka"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-c-luokka",
-              title: "C-luokka",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "CE-luokka",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
+            anchor: "CE-luokka",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-ce-luokka",
+                  title: "CE-luokka"
+                }
+              }
+            ]
+          },
           {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-ce-luokka",
-              title: "CE-luokka",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "D-luokka",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-d-luokka",
-              title: "D-luokka",
-              labelStyles: {},
-              isChecked: false
-            }
+            anchor: "D-luokka",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-d-luokka",
+                  title: "D-luokka"
+                }
+              }
+            ]
           }
         ]
       },
       {
         anchor: `jokin-tutkinnoista`,
+        code: "b)",
+        title: "Jokin seuraavista tutkinnoista:",
         styleClasses: ["pl-6 pt-6"],
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            styleClasses: ["pb-4 text-base"],
-            properties: {
-              code: "b)",
-              title: "Jokin seuraavista tutkinnoista:"
-            }
-          }
-        ]
-      },
-      {
-        anchor: "linja-auto-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-linja-auto-ammattitutkinto",
-              title: "Linja-auton kuljettajan ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "yhdistelmäajoneuvo-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-yhdistelmäajoneuvo-ammattitutkinto",
-              title: "Yhdistelmäajoneuvonkuljettajan ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "puutavara-autokuljetus-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-puutavara-autokuljetus-ammattitutkinto",
-              title: "Puutavaran autonkuljetuksen ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "kuljetuspalvelut-logistiikan-perustutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-kuljetuspalvelut-logistiikan-perustutkinto",
-              title:
-                "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      },
-      {
-        anchor: "kuljetusalan-ammattitutkinto",
-        styleClasses: ["ml-4 pl-10"],
-        components: [
-          {
-            anchor: "A",
-            name: "CheckboxWithLabel",
-            properties: {
-              name: "checkbox-kuljetusalan-ammattitutkinto",
-              title: "Kuljetusalan ammattitutkinto",
-              labelStyles: {},
-              isChecked: false
-            }
-          }
-        ]
-      }
-    ]
-  };
-};
-
-const opettajien = (
-  anchorNumber,
-  addPeopleFormCallback,
-  peopleForms,
-  orderCode,
-  helpText
-) => {
-  return {
-    anchor: anchorNumber,
-    styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "opettajien-kelpoisuus-ja-tyokokemus-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          code: orderCode,
-          title: "Opettajien kelpoisuus ja työkokemus"
-        }
-      }
-    ],
-    categories: [
-      {
-        anchor: `opettajien-kelpoisuus-ja-tyokokemus-info`,
-        styleClasses: ["pl-6"],
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            styleClasses: ["py-4"],
-            properties: {
-              withoutMargin: true,
-              title: helpText
-            }
-          },
-          {
-            anchor: "B",
-            name: "StatusTextRow",
-            styleClasses: ["py-4"],
-            properties: {
-              code: "!",
-              title:
-                "Valtioneuvoston asetus 434/2018 10 §. Selvitys perustason ammattipätevyyskoulutusen opettajien kelpoisuuksista ja työkokemuksista."
-            }
-          },
-          {
-            anchor: `lisaa-henkilo-painike`,
-            name: "SimpleButton",
-            onClick: addPeopleFormCallback,
-            styleClasses: "flex justify-end",
-            properties: {
-              text: "Lisää henkilö"
-            }
-          }
-        ],
         categories: [
           {
-            anchor: "lisatyt-henkilot",
-            styleClasses: ["pt-6"],
-            categories: peopleForms
-          }
-        ]
-      }
-    ]
-  };
-};
-
-const ajoneuvoKanta = (anchorNumber, orderCode) => {
-  return {
-    anchor: anchorNumber,
-    styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "ajoneuvokanta-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          code: orderCode,
-          labelStyles: {},
-          title: "Ajoneuvokanta"
-        }
-      }
-    ],
-    categories: [
-      {
-        anchor: `opettajien-kelpoisuus-ja-tyokokemus-info`,
-        styleClasses: ["pl-6"],
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            styleClasses: ["py-4"],
-            properties: {
-              title:
-                "Selvitys opetuksessa käytettävästä ajoneuvokannasta ja opetusvälineistä ja niiden soveltuvuudesta ammattipätevyyskoulutukseen."
-            }
-          }
-        ],
-        categories: [
-          {
-            anchor: `ajoneuvokanta-kentat`,
+            anchor: "linja-auto-ammattitutkinto",
             styleClasses: ["pl-0"],
             components: [
               {
                 anchor: "A",
-                name: "TextBox",
+                name: "CheckboxWithLabel",
                 properties: {
+                  isChecked: false,
+                  isReadOnly,
                   labelStyles: {},
-                  placeholder: "Linja-autojen määrä"
+                  name: "checkbox-linja-auto-ammattitutkinto",
+                  title: "Linja-auton kuljettajan ammattitutkinto"
                 }
-              },
+              }
+            ]
+          },
+          {
+            anchor: "yhdistelmäajoneuvo-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
               {
-                anchor: "B",
-                name: "TextBox",
+                anchor: "A",
+                name: "CheckboxWithLabel",
                 properties: {
+                  isChecked: false,
+                  isReadOnly,
                   labelStyles: {},
-                  placeholder: "Kuorma-autojen määrä"
+                  name: "checkbox-yhdistelmäajoneuvo-ammattitutkinto",
+                  title: "Yhdistelmäajoneuvonkuljettajan ammattitutkinto"
                 }
-              },
+              }
+            ]
+          },
+          {
+            anchor: "puutavara-autokuljetus-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
               {
-                anchor: "C",
-                name: "TextBox",
+                anchor: "A",
+                name: "CheckboxWithLabel",
                 properties: {
+                  isChecked: false,
+                  isReadOnly,
                   labelStyles: {},
-                  placeholder: "Perävaunujen määrä"
+                  name: "checkbox-puutavara-autokuljetus-ammattitutkinto",
+                  title: "Puutavaran autonkuljetuksen ammattitutkinto"
                 }
+              }
+            ]
+          },
+          {
+            anchor: "kuljetuspalvelut-logistiikan-perustutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-kuljetuspalvelut-logistiikan-perustutkinto",
+                  title:
+                    "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto"
+                }
+              }
+            ]
+          },
+          {
+            anchor: "kuljetusalan-ammattitutkinto",
+            styleClasses: ["pl-0"],
+            components: [
+              {
+                anchor: "A",
+                name: "CheckboxWithLabel",
+                properties: {
+                  isChecked: false,
+                  isReadOnly,
+                  labelStyles: {},
+                  name: "checkbox-kuljetusalan-ammattitutkinto",
+                  title: "Kuljetusalan ammattitutkinto"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        anchor: "liitteet",
+        styleClasses: ["pl-6 pt-6"],
+        title: "Liitteet",
+        categories: [
+          {
+            anchor: "info",
+            components: [
+              {
+                anchor: "A",
+                name: "StatusTextRow",
+                properties: {
+                  title: HAKEMUS_OTSIKOT.LIITE_OHJE.FI
+                }
+              }
+            ]
+          },
+          {
+            components: [
+              {
+                anchor: "A",
+                name: "Attachments",
+                properties: {}
               }
             ]
           }
@@ -867,60 +701,149 @@ const ajoneuvoKanta = (anchorNumber, orderCode) => {
   };
 };
 
-const muutOpetusvalineet = (anchorNumber, orderCode) => {
+const opettajien = (
+  addPeopleFormCallback,
+  peopleForms,
+  orderCode,
+  helpText,
+  isReadOnly
+) => {
   return {
-    anchor: anchorNumber,
+    anchor: "opettajien-kelpoisuus-ja-tyokokemus",
+    code: orderCode,
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
-    components: [
-      {
-        anchor: "muut-opetusvalineet-label",
-        name: "StatusTextRow",
-        styleClasses: ["text-base"],
-        properties: {
-          code: orderCode,
-          labelStyles: {},
-          title: "Muut opetusvälineet"
-        }
-      }
-    ],
+    title: "Opettajien kelpoisuus ja työkokemus",
     categories: [
       {
-        anchor: `muut-opetusvalineet-info`,
+        anchor: `opettajien-kelpoisuus-ja-tyokokemus-lakiteksti`,
+        code: "!",
+        title:
+          "Valtioneuvoston asetus 434/2018 10 §. Selvitys perustason ammattipätevyyskoulutusen opettajien kelpoisuuksista ja työkokemuksista.",
+        styleClasses: ["pl-6"]
+      },
+      {
+        anchor: `opettajien-kelpoisuus-ja-tyokokemus-info`,
         styleClasses: ["pl-6"],
+        components: [
+          {
+            anchor: "A",
+            name: "StatusTextRow",
+            styleClasses: ["py-4 text-base"],
+            properties: {
+              title: helpText
+            }
+          },
+          {
+            anchor: `lisaa-henkilo-painike`,
+            name: "SimpleButton",
+            onClick: addPeopleFormCallback,
+            styleClasses: "flex justify-end",
+            properties: {
+              isReadOnly,
+              text: "Lisää henkilö"
+            }
+          }
+        ]
+      },
+      {
+        anchor: "lisatyt-henkilot",
+        styleClasses: ["pt-6"],
+        categories: peopleForms
+      }
+    ]
+  };
+};
+
+const ajoneuvoKanta = (orderCode, isReadOnly) => {
+  return {
+    anchor: "ajoneuvokanta",
+    code: orderCode,
+    styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
+    title: "Ajoneuvokanta",
+    categories: [
+      {
+        anchor: `ajoneuvokanta-kentat`,
+        styleClasses: ["pl-6"],
+        title:
+          "Selvitys opetuksessa käytettävästä ajoneuvokannasta ja opetusvälineistä ja niiden soveltuvuudesta ammattipätevyyskoulutukseen.",
+
+        components: [
+          {
+            anchor: "linja-autoja",
+            name: "Input",
+            styleClasses: ["mt-6"],
+            properties: {
+              fullWidth: true,
+              isReadOnly,
+              label: "Linja-autoja",
+              placeholder: "Linja-autoja",
+              type: "number"
+            }
+          },
+          {
+            anchor: "kuorma-autoja",
+            name: "Input",
+            styleClasses: ["mt-6"],
+            properties: {
+              fullWidth: true,
+              isReadOnly,
+              label: "Kuorma-autoja",
+              placeholder: "Kuorma-autoja",
+              type: "number"
+            }
+          },
+          {
+            anchor: "peravaunuja",
+            name: "Input",
+            styleClasses: ["mt-6"],
+            properties: {
+              fullWidth: true,
+              isReadOnly,
+              label: "Perävaunuja",
+              placeholder: "Perävaunuja",
+              type: "number"
+            }
+          }
+        ]
+      }
+    ]
+  };
+};
+
+const muutOpetusvalineet = (orderCode, isReadOnly) => {
+  return {
+    anchor: "muut-opetusvalineet",
+    code: orderCode,
+    styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
+    title: "Muut opetusvälineet",
+    categories: [
+      {
+        anchor: `asetuksen-mukaiset`,
+        code: "!",
+        styleClasses: ["pl-6"],
+        title:
+          "Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)",
         components: [
           {
             anchor: "A",
             name: "TextBox",
             properties: {
-              labelStyles: {},
-              placeholder:
-                "Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)"
+              isReadOnly
             }
           }
         ]
       },
       {
-        anchor: "muut-opetusvalineet",
-        styleClasses: ["pl-2"],
-        components: [
-          {
-            anchor: "muut-opetusvalineet-label",
-            name: "StatusTextRow",
-            styleClasses: ["pl-4"],
-            properties: {
-              title: "Muut opetus- ja havaintovälineet"
-            }
-          }
-        ]
-      },
-      {
-        anchor: "muut-opetus-ja-havaintovalineet",
+        anchor: "muut",
         styleClasses: ["pl-6"],
+        title: "Muut opetus- ja havaintovälineet",
+
         components: [
           {
             anchor: "B",
             name: "TextBox",
             properties: {
+              isReadOnly,
               labelStyles: {},
               placeholder:
                 "Muut oppilaitoksen oppimisympäristöissä tapahtuvaan osaamisen hankkimiseen liittyvät välineet"

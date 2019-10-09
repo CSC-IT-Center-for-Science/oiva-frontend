@@ -6,13 +6,6 @@ import { COLORS, TRANSITIONS } from "../../../modules/styles";
 import { HAKEMUS_OTSIKOT } from "../../../locales/uusiHakemusFormConstants";
 import { FaPlus } from "react-icons/fa";
 
-const LiiteTopArea = styled.div`
-  font-size: 0.9em;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
 const FileInput = styled.div`
   color: ${props =>
     props.disabled
@@ -79,7 +72,6 @@ const FileInput = styled.div`
 const Attachment = React.memo(props => {
   return (
     <React.Fragment>
-      <LiiteTopArea>{HAKEMUS_OTSIKOT.LIITE_OHJE.FI}</LiiteTopArea>
       <FileInput>
         <div className="flex flex-row uppercase">
           <FaPlus /> {HAKEMUS_OTSIKOT.LISAA_LIITE.FI}...

@@ -54,6 +54,7 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
                     anchor: "A",
                     name: "TextBox",
                     properties: {
+                      isReadOnly: props.isReadOnly,
                       placeholder: "Perustelut..."
                     }
                   }
@@ -66,7 +67,7 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
       }, koulutusData.items);
       return categories.filter(Boolean);
     };
-  }, [props.changeObjects.koulutukset.valmentavatKoulutukset]);
+  }, [props.isReadOnly, props.changeObjects.koulutukset.valmentavatKoulutukset]);
 
   useEffect(() => {
     const categories = getCategories(
@@ -85,7 +86,7 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
     );
   }, [
     getCategories,
-    // onStateUpdate,
+    onStateUpdate,
     props.kohde,
     props.koulutukset.poikkeukset.data,
     props.intl.locale,
@@ -102,7 +103,7 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
           changes={
             props.changeObjects.perustelut.koulutukset.valmentavatKoulutukset
           }
-          disableReverting={false}
+          disableReverting={props.isReadOnly}
           hideAmountOfChanges={false}
           isExpanded={true}
           onChangesRemove={onChangesRemove}
@@ -122,6 +123,7 @@ PerustelutValmentavatKoulutukset.defaultProps = {
 
 PerustelutValmentavatKoulutukset.propTypes = {
   changeObjects: PropTypes.object,
+  isReadOnly: PropTypes.bool,
   kohde: PropTypes.object,
   koulutukset: PropTypes.object,
   maaraystyyppi: PropTypes.object,

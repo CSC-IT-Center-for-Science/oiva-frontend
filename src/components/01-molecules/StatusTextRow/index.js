@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import * as R from "ramda";
 
 const defaultProps = {
-  styleClasses: ["text-base", "py-4"]
+  styleClasses: ["text-base", "py-2"]
 };
 
 const StatusTextRow = React.memo(

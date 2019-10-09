@@ -1,6 +1,5 @@
 import { getChangesToSave } from "./changes-to-save";
 import { getChangesOfOpetuskielet } from "./opetuskieli-saving";
-import getChangesOfToimintaalue from "./toiminta-alue";
 import moment from "moment";
 import * as R from "ramda";
 
@@ -12,6 +11,40 @@ export function createObjectToSave(
   uuid,
   muutospyynto
 ) {
+  // Adds data that has attachements
+  const yhteenvetoYleiset = R.path(
+    ["yhteenveto", "yleisettiedot"],
+    changeObjects
+  );
+  const yhteenvetoLiitteet = R.path(
+    ["yhteenveto", "hakemuksenliitteet"],
+    changeObjects
+  );
+  const taloudellisetLiitteet = R.path(
+    ["taloudelliset", "liitteet"],
+    changeObjects
+  );
+
+  //get actual attachment props
+  const taloudellisetLiitteetList =
+    taloudellisetLiitteet && taloudellisetLiitteet[0].properties
+      ? taloudellisetLiitteet[0].properties.attachments
+      : [];
+
+  const yhteenvetoYleisetLiitteetList =
+    yhteenvetoYleiset && yhteenvetoYleiset[0].properties
+      ? yhteenvetoYleiset[0].properties.attachments
+      : [];
+
+  const yhteenvetoLiitteetList =
+    yhteenvetoLiitteet && yhteenvetoLiitteet[0].properties
+      ? yhteenvetoLiitteet[0].properties.attachments
+      : [];
+
+  const allAttachments = taloudellisetLiitteetList.concat(
+    yhteenvetoYleisetLiitteetList.concat(yhteenvetoLiitteetList)
+  );
+
   return {
     diaarinumero: lupa.data.diaarinumero,
     jarjestajaOid: lupa.data.jarjestajaOid,
@@ -25,11 +58,24 @@ export function createObjectToSave(
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: lupa.data.alkupvm,
-    voimassaloppupvm: "2019-12-31", // TODO: find the correct value somehow
+    voimassaloppupvm: "2019-12-31", // TODO: find the correct value somehow,
+    liitteet: allAttachments,
     meta: {
       meta: {},
+      liitteet: [],
       taloudelliset: {
-        taloudelliset: []
+        changeObjects: R.flatten([
+          R.path(["taloudelliset", "investoinnit"], changeObjects),
+          R.path(["taloudelliset", "tilinpaatostiedot"], changeObjects),
+          R.path(["taloudelliset", "yleisettiedot"], changeObjects),
+          R.path(["taloudelliset", "liitteet"], changeObjects)
+        ]).filter(Boolean)
+      },
+      yhteenveto: {
+        changeObjects: R.flatten([
+          R.path(["yhteenveto", "yleisettiedot"], changeObjects),
+          R.path(["yhteenveto", "hakemuksenliitteet"], changeObjects)
+        ]).filter(Boolean)
       }
     },
     muutokset: R.flatten([
@@ -47,7 +93,6 @@ export function createObjectToSave(
             R.flatten,
             R.values
           )(R.values(R.path(["perustelut", "tutkinnot"], changeObjects)))
-          // TODO: add taloudelliset edellytykset here
         },
         R.filter(R.pathEq(["kohde", "tunniste"], "tutkinnotjakoulutukset"))(
           backendMuutokset
@@ -99,9 +144,16 @@ export function createObjectToSave(
         },
         R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset)
       ),
-      getChangesOfToimintaalue(
-        R.prop("toimintaalue", muutoshakemus),
-        muutospyynto
+      getChangesToSave(
+        "toimintaalue",
+        R.path(["toimintaalue"], muutoshakemus),
+        {
+          muutokset: R.path(["toimintaalue"], changeObjects) || [],
+          perustelut: R.path(["perustelut", "toimintaalue"], changeObjects) || []
+        },
+        R.filter(R.pathEq(["kohde", "tunniste"], "toimintaalue"))(
+          backendMuutokset
+        )
       ),
       getChangesToSave(
         "opiskelijavuodet",
@@ -139,7 +191,6 @@ export function createObjectToSave(
         R.filter(R.pathEq(["kohde", "tunniste"], "muut"))(backendMuutokset)
       )
     ]),
-    liitteet: [],
     uuid
   };
 }

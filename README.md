@@ -15,9 +15,10 @@
 Tervetuloa Oiva-projektin pariin! Tämä on projektin frontend-osuus, joka pohjautuu [Create React App](https://github.com/facebook/create-react-app) -projektipohjaan.
 
 ## Tarvitset nämä
-* NPM
-* NodeJS (8.11.4)
-  * Uudemman NodeJS-version käyttäminen voi myös olla mahdollista, mutta asennusvaihe ei mene läpi varoituksitta. 
+* NPM (6.11.3)
+* NodeJS (10.15.3)
+
+Edellä listatut versiot on toimiviksi todettu. Tämä ei poissulje sitä, etteikö frontend voisi toimia myös listatuista poikkeavilla versioilla.
 
 ## Pakettien asentaminen
 Suorita projektin juurihakemistossa seuraava komento:

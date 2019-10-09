@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { injectIntl } from "react-intl";
 import * as R from "ramda";
 import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
@@ -6,19 +6,80 @@ import { parseLocalizedField } from "../../../../../../../modules/helpers";
 import { isInLupa, isAdded, isRemoved } from "../../../../../../../css/label";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import {
+  getVankilaopetusPerustelulomake,
+  getVaativaErityinenTukilomake
+} from "../../../../../../../services/lomakkeet/perustelut/muut";
 
 const defaultProps = {
   changeObjects: {},
+  isReadOnly: false,
   kohde: {},
   maaraykset: [],
   muut: {},
   stateObject: {}
 };
 
+const getCategoriesByKoodiarvo = (koodiarvo, isReadOnly) => {
+  const koodiArvoInteger = parseInt(koodiarvo, 10);
+  const defaultAdditionForm = [
+    {
+      anchor: "perustelut",
+      layout: {
+        margins: { top: "small" },
+        strategy: {
+          key: "groups"
+        }
+      },
+      components: [
+        {
+          anchor: "A",
+          name: "TextBox",
+          properties: {
+            isReadOnly,
+            placeholder: "Perustele muutokset tähän, kiitos."
+          }
+        }
+      ]
+    }
+  ];
+  const defaultRemovalForm = _.cloneDeep(defaultAdditionForm);
+  const mapping = [
+    {
+      koodiarvot: [5],
+      lomakkeet: {
+        lisays: getVankilaopetusPerustelulomake(),
+        poisto: defaultRemovalForm
+      }
+    },
+    {
+      koodiarvot: [2, 16, 17, 18, 19, 20, 21],
+      lomakkeet: {
+        lisays: getVaativaErityinenTukilomake(),
+        poisto: defaultRemovalForm
+      }
+    }
+  ];
+  const obj = R.find(
+    R.compose(
+      R.includes(koodiArvoInteger),
+      R.prop("koodiarvot")
+    ),
+    mapping
+  );
+  return obj
+    ? obj.lomakkeet
+    : {
+        lisays: defaultAdditionForm,
+        poisto: defaultRemovalForm
+      };
+};
+
 const PerustelutMuut = React.memo(
   ({
     changeObjects = defaultProps.changeObjects,
     intl,
+    isReadOnly = PropTypes.isReadOnly,
     kohde = PropTypes.kohde,
     maaraykset = defaultProps.maaraykset,
     muut = defaultProps.muut,
@@ -30,8 +91,8 @@ const PerustelutMuut = React.memo(
     const sectionId = "perustelut_muut";
     const [locale, setLocale] = useState("FI");
 
-    useEffect(() => {
-      const divideArticles = (articles, relevantCodes) => {
+    const divideArticles = useMemo(() => {
+      return (articles, relevantCodes) => {
         const dividedArticles = {};
         const relevantMaaraykset = R.filter(
           R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
@@ -51,18 +112,23 @@ const PerustelutMuut = React.memo(
               (article.koodiArvo !== "15" && article.koodiArvo !== "22"))
           ) {
             dividedArticles[kasite] = dividedArticles[kasite] || [];
-            dividedArticles[kasite].push(article);
+            dividedArticles[kasite].push({
+              article,
+              lomakkeet: getCategoriesByKoodiarvo(article.koodiArvo)
+            });
           }
         }, articles);
         return dividedArticles;
       };
+    }, [maaraykset]);
 
-      const getCategories = (configObj, locale) => {
+    const getCategories = useMemo(() => {
+      return (configObj, locale) => {
         return R.map(item => {
           return {
             anchor: configObj.key,
             title: item.title,
-            categories: R.map(article => {
+            categories: R.map(({ article, lomakkeet }) => {
               const title =
                 _.find(article.metadata, m => {
                   return m.kieli === locale;
@@ -85,6 +151,10 @@ const PerustelutMuut = React.memo(
                 isInLupa: isInLupaBool
               };
               let structure = {
+                layout: {
+                  indentation: "none",
+                  margins: { top: "large" }
+                },
                 anchor: article.koodiArvo,
                 meta: {
                   isInLupa: isInLupaBool,
@@ -113,30 +183,18 @@ const PerustelutMuut = React.memo(
                       statusText: isAddition ? " LISÄYS:" : " POISTO:"
                     }
                   }
-                ]
+                ],
+                categories: isAddition ? lomakkeet.lisays : lomakkeet.poisto
               };
-              structure.categories = [
-                {
-                  anchor: "perustelut",
-                  title: "Perustelut",
-                  components: [
-                    {
-                      anchor: "A",
-                      name: "TextBox",
-                      properties: {
-                        placeholder: "Perustele muutokset tähän, kiitos."
-                      }
-                    }
-                  ]
-                }
-              ];
               return structure;
             }, item.articles)
           };
         }, configObj.categoryData);
       };
+    }, [changeObjects.muut]);
 
-      const relevantCodes = R.map(
+    const relevantCodes = useMemo(() => {
+      return R.map(
         R.compose(
           R.view(R.lensIndex(2)),
           R.split(".")
@@ -150,9 +208,14 @@ const PerustelutMuut = React.memo(
           )(changeObjects.muut)
         )
       );
-      const dividedArticles = divideArticles(muut.data, relevantCodes);
+    }, [changeObjects.muut]);
 
-      const config = [
+    const dividedArticles = useMemo(() => {
+      return divideArticles(muut.data, relevantCodes);
+    }, [divideArticles, muut.data, relevantCodes]);
+
+    const config = useMemo(() => {
+      return [
         {
           code: "01",
           key: "laajennettu",
@@ -176,11 +239,10 @@ const PerustelutMuut = React.memo(
           title: "Vaativan erityisen tuen tehtävä",
           categoryData: [
             {
-              articles: dividedArticles.vaativa_1 || [],
-              componentName: "StatusTextRow"
-            },
-            {
-              articles: dividedArticles.vaativa_2 || [],
+              articles: R.concat(
+                dividedArticles.vaativa_1 || [],
+                dividedArticles.vaativa_2 || []
+              ),
               componentName: "StatusTextRow"
             }
           ]
@@ -246,28 +308,38 @@ const PerustelutMuut = React.memo(
           ]
         }
       ];
+    }, [changeObjects.muut, dividedArticles]);
 
-      const expandableRows = !!locale.length
+    const expandableRows = useMemo(() => {
+      return !!locale.length
         ? R.addIndex(R.map)((configObj, i) => {
+            const categories = getCategories(configObj, locale, kohde);
             return {
               code: configObj.code,
               key: configObj.key,
               title: configObj.title,
-              categories: getCategories(configObj, locale, kohde),
+              categories,
               data: configObj.categoryData
             };
           }, R.filter(R.propEq("isInUse", true))(config))
         : [];
+    }, [config, getCategories, kohde, locale]);
 
+    useEffect(() => {
       onStateUpdate({ items: expandableRows }, sectionId);
     }, [
+      changeObjects.muut,
+      divideArticles,
+      expandableRows,
+      getCategories,
+      intl,
+      isReadOnly,
       kohde,
       locale,
-      intl,
       maaraykset,
       muut.data,
-      changeObjects.muut,
-      onStateUpdate
+      onStateUpdate,
+      relevantCodes
     ]);
 
     useEffect(() => {
@@ -290,8 +362,9 @@ const PerustelutMuut = React.memo(
                   onChangesRemove={onChangesRemove}
                   onUpdate={onChangesUpdate}
                   sectionId={sectionId}
+                  showCategoryTitles={true}
                   title={row.title}
-                />
+                ></ExpandableRowRoot>
               );
             })(stateObject.items)}
           </React.Fragment>
@@ -305,6 +378,7 @@ PerustelutMuut.propTypes = {
   changeObjects: PropTypes.object,
   handleChanges: PropTypes.func,
   headingNumber: PropTypes.number,
+  isReadOnly: PropTypes.bool,
   kohde: PropTypes.object,
   maaraykset: PropTypes.array,
   muut: PropTypes.object,

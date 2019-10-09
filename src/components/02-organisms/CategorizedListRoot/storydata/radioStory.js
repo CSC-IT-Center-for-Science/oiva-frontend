@@ -210,7 +210,7 @@ export const radioStory = {
           ]
         },
         {
-          anchor: "2",
+          anchor: "C",
           code: "2",
           title: "Categories",
           components: [
@@ -231,11 +231,12 @@ export const radioStory = {
       ]
     },
     {
-      anchor: "1",
+      anchor: "B",
       code: "1",
       title: "Categories",
       components: [
         {
+          anchor: "A",
           name: "RadioButtonWithLabel",
           properties: {
             name: "example-radio-2",
@@ -250,11 +251,12 @@ export const radioStory = {
       ]
     },
     {
-      anchor: "2",
+      anchor: "C",
       code: "2",
       title: "Categories",
       components: [
         {
+          anchor: "A",
           name: "RadioButtonWithLabel",
           properties: {
             name: "example-radio-3",

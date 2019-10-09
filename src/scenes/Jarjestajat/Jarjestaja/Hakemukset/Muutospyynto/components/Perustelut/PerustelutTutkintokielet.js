@@ -10,6 +10,8 @@ const PerustelutTutkintokielet = React.memo(props => {
 
   useEffect(() => {
     const getCategories = () => {
+      const localeUpper = R.toUpper(props.intl.locale);
+      const currentDate = new Date();
       return R.mapObjIndexed((changeObjs, areaCode) => {
         return R.map(changeObj => {
           const anchorParts = R.split(".", changeObj.anchor);
@@ -26,53 +28,98 @@ const PerustelutTutkintokielet = React.memo(props => {
             R.propEq("kieli", R.toUpper(props.intl.locale)),
             item.metadata
           );
+
+          /**
+           * There might be some sub articles (alimääräyksiä) under the current article (määräys).
+           * We are interested of them which are related to tutkintokielet section.
+           * */
+          const maarays = R.find(
+            R.propEq("koodiarvo", anchorParts[2]),
+            props.maaraykset
+          );
+          const alimaaraykset = maarays ? maarays.aliMaaraykset : [];
+
+          /**
+           * selectedByDefault includes all the languages which already are in LUPA.
+           * */
+          const selectedByDefault = R.map(alimaarays => {
+            if (
+              alimaarays.kohde.tunniste === "opetusjatutkintokieli" &&
+              new Date(alimaarays.koodi.voimassaAlkuPvm) < currentDate
+            ) {
+              const metadataObj = R.find(
+                R.propEq("kieli", localeUpper),
+                alimaarays.koodi.metadata
+              );
+              return metadataObj
+                ? {
+                    label: metadataObj.nimi,
+                    value: alimaarays.koodi.koodiArvo
+                  }
+                : null;
+            }
+            return null;
+          }, alimaaraykset || []).filter(Boolean);
           return {
             anchor: anchorParts[1],
             code: item.koodiArvo,
             title: metadata.nimi,
             categories: R.addIndex(R.map)((language, index) => {
-              const isAddition = Math.random() > 0.5;
-              return {
-                anchor: item.koodiArvo,
-                categories: [
-                  {
-                    anchor: "perustelut",
-                    components: [
+              const isSelectedByDefault = !!R.find(
+                R.propEq("value", language.value),
+                selectedByDefault
+              );
+              const isAdded = !isSelectedByDefault;
+              const isRemoved =
+                isSelectedByDefault &&
+                !!!R.find(
+                  R.propEq("value", language.value),
+                  changeObj.properties.value
+                );
+              return isAdded || isRemoved
+                ? {
+                    anchor: item.koodiArvo,
+                    categories: [
                       {
-                        anchor: "A",
-                        name: "StatusTextRow",
-                        properties: {
-                          title: `${language.label} (${language.value})`,
-                          styleClasses: ["flex"],
-                          statusTextStyleClasses: isAddition
-                            ? ["text-green-600 pr-4 w-20 font-bold"]
-                            : ["text-red-500 pr-4 w-20 font-bold"],
-                          statusText: isAddition ? " LISÄYS:" : " POISTO:"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    anchor: "tekstikentta",
-                    components: [
+                        anchor: "perustelut",
+                        components: [
+                          {
+                            anchor: "A",
+                            name: "StatusTextRow",
+                            properties: {
+                              title: `${language.label} (${language.value})`,
+                              styleClasses: ["flex"],
+                              statusTextStyleClasses: isAdded
+                                ? ["text-green-600 pr-4 w-20 font-bold"]
+                                : ["text-red-500 pr-4 w-20 font-bold"],
+                              statusText: isAdded ? " LISÄYS:" : " POISTO:"
+                            }
+                          }
+                        ]
+                      },
                       {
-                        anchor: index,
-                        name: "TextBox",
-                        properties: {
-                          placeholder: "Perustele muutos, kiitos"
-                        }
+                        anchor: "tekstikentta",
+                        components: [
+                          {
+                            anchor: index,
+                            name: "TextBox",
+                            properties: {
+                              isReadOnly: props.isReadOnly,
+                              placeholder: "Perustele muutos, kiitos"
+                            }
+                          }
+                        ]
                       }
                     ]
                   }
-                ]
-              };
-            }, changeObj.properties.value),
+                : [];
+            }, R.flatten([selectedByDefault, changeObj.properties.value])),
             metadata: {
               areaCode,
               title: koulutusalaMetadata.nimi
             }
           };
-        }, changeObjs || []);
+        }, changeObjs || []).filter(Boolean);
       }, props.changeObjects.tutkintokielet);
     };
     const categories = getCategories();
@@ -81,7 +128,9 @@ const PerustelutTutkintokielet = React.memo(props => {
     onStateUpdate,
     props.changeObjects.tutkintokielet,
     props.intl.locale,
+    props.isReadOnly,
     props.koulutukset,
+    props.maaraykset,
     props.stateObjects.tutkintokielet
   ]);
 
@@ -91,13 +140,14 @@ const PerustelutTutkintokielet = React.memo(props => {
         <div>
           <h2 className="py-4">Tutkintokielet</h2>
           {R.addIndex(R.map)((categories, index) => {
-            const areaCode = categories[0].metadata.areaCode;
-            return (
+            const areaCode = R.path([0, "metadata", "areaCode"], categories);
+            return areaCode ? (
               <ExpandableRowRoot
                 anchor={`${sectionId}_${areaCode}`}
                 key={`expandable-row-root-${index}`}
                 categories={categories}
                 changes={R.path(["perustelut", areaCode], props.changeObjects)}
+                disableReverting={props.isReadOnly}
                 onChangesRemove={onChangesRemove}
                 onUpdate={onChangesUpdate}
                 sectionId={sectionId}
@@ -106,7 +156,7 @@ const PerustelutTutkintokielet = React.memo(props => {
                 title={categories[0].metadata.title}
                 isExpanded={true}
               />
-            );
+            ) : null;
           }, R.values(R.path(["perustelut", "categories"], props.stateObjects)))}
         </div>
       ) : null}
@@ -116,12 +166,15 @@ const PerustelutTutkintokielet = React.memo(props => {
 
 PerustelutTutkintokielet.defaultValues = {
   changeObjects: {},
+  isReadOnly: false,
+  maaraykset: [],
   stateObjects: {}
 };
 
 PerustelutTutkintokielet.propTypes = {
   changeObjects: PropTypes.object,
   koulutukset: PropTypes.object,
+  maaraykset: PropTypes.array,
   stateObjects: PropTypes.object,
   onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,

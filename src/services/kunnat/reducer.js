@@ -1,4 +1,4 @@
-import { getToimialueList } from "services/toimialueet/toimialueUtil";
+import { getToimialueList } from "../../services/toimialueet/toimialueUtil";
 import {
   FETCH_KUNNAT_START,
   FETCH_KUNNAT_SUCCESS,

@@ -185,8 +185,16 @@ const HakemusContainer = props => {
         }),
         getChangesOf("opiskelijavuodet", backendMuutokset),
         getChangesOf("toimintaalue", backendMuutokset),
-        getChangesOf("muut", backendMuutokset)
-      ]);
+        getChangesOf("muut", backendMuutokset),
+        R.path(
+          ["meta", "taloudelliset", "changeObjects"],
+          muutospyynnot.muutospyynto
+        ) || [],
+        R.path(
+          ["meta", "yhteenveto", "changeObjects"],
+          muutospyynnot.muutospyynto
+        ) || []
+      ]).filter(Boolean);
 
       let changesBySection = {};
 
@@ -238,9 +246,9 @@ const HakemusContainer = props => {
         koulutukset={koulutukset}
         koulutusalat={koulutusalat}
         koulutustyypit={koulutustyypit}
-        kunnat={kunnat}
+        kunnat={kunnat.data}
         maakuntakunnat={maakuntakunnat}
-        maakunnat={maakunnat}
+        maakunnat={maakunnat.data}
         maaraystyypit={maaraystyypit.data}
         muutospyynnot={muutospyynnot}
         opiskelijavuodet={opiskelijavuodet}

@@ -53,11 +53,9 @@ const ExpandableRowRoot = React.memo(
     const classes = useStyles();
     const [isToggledOpen, setIsToggleOpen] = useState(false);
 
-
     const onToggle = (...props) => {
-      console.info(props[1]);
       setIsToggleOpen(props[1]);
-    }
+    };
 
     return (
       <React.Fragment>
@@ -97,7 +95,7 @@ const ExpandableRowRoot = React.memo(
               data-slot="content"
               className={`w-full ${!children ? "p-8" : ""}`}
             >
-              {!children && (isExpanded || isToggledOpen) ? (
+              {!children && (isExpanded || isToggledOpen) ? (
                 <CategorizedListRoot
                   anchor={anchor}
                   categories={categories}

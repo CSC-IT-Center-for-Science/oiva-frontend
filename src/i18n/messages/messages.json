@@ -45,6 +45,41 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.ok",
+    "defaultMessage": "Ok",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.clear",
+    "defaultMessage": "Tyhjennä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.cancel",
+    "defaultMessage": "Peruuta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.today",
+    "defaultMessage": "Tänään",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.datemax",
+    "defaultMessage": "Päiväys on liian suuri",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.datemin",
+    "defaultMessage": "Päiväys on liian pieni",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.dateinvalid",
+    "defaultMessage": "Päiväys on virheellinen",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"

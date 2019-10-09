@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { injectIntl } from "react-intl";
 import * as R from "ramda";
 import ExpandableRowRoot from "../../../../../../components/02-organisms/ExpandableRowRoot";
@@ -14,34 +14,39 @@ const MuutospyyntoWizardMuut = React.memo(props => {
   const [locale, setLocale] = useState("FI");
   const { onChangesRemove, onChangesUpdate, onStateUpdate } = props;
 
-  useEffect(() => {
-    const divideArticles = articles => {
-      const dividedArticles = {};
-      const relevantMaaraykset = R.filter(
-        R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
-      )(props.maaraykset);
+  const osiota5koskevatMaaraykset = useMemo(() => {
+    return R.filter(
+      R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
+    )(props.maaraykset);
+  }, [props.maaraykset]);
+
+  const divideArticles = useMemo(() => {
+    return () => {
+      const group = {};
       R.forEach(article => {
         const { metadata } = article;
         const kasite = parseLocalizedField(metadata, "FI", "kasite");
         const kuvaus = parseLocalizedField(metadata, "FI", "kuvaus");
-        const isInRelevantMaaraykset = !!R.find(
+        const isInLupa = !!R.find(
           R.propEq("koodiarvo", article.koodiArvo)
-        )(relevantMaaraykset);
+        )(osiota5koskevatMaaraykset);
 
         if (
           (kuvaus || article.koodiArvo === "22") &&
           kasite &&
-          (isInRelevantMaaraykset ||
+          (isInLupa ||
             (article.koodiArvo !== "15" && article.koodiArvo !== "22"))
         ) {
-          dividedArticles[kasite] = dividedArticles[kasite] || [];
-          dividedArticles[kasite].push(article);
+          group[kasite] = group[kasite] || [];
+          group[kasite].push(article);
         }
-      }, articles);
-      return dividedArticles;
+      }, props.muut.data);
+      return group;
     };
+  }, [osiota5koskevatMaaraykset, props.muut.data]);
 
-    const getCategories = (configObj, locale) => {
+  const getCategories = useMemo(() => {
+    return (configObj, locale) => {
       return R.map(item => {
         return {
           anchor: configObj.key,
@@ -51,11 +56,9 @@ const MuutospyyntoWizardMuut = React.memo(props => {
               _.find(article.metadata, m => {
                 return m.kieli === locale;
               }).kuvaus || "Muu";
-            const isInLupaBool = article
-              ? !!_.find(article.voimassaAlkuPvm, koulutusala => {
-                  return article.koodiArvo === koulutusala;
-                })
-              : false;
+            const isInLupaBool = !!R.find(
+              R.propEq("koodiarvo", article.koodiArvo)
+            )(osiota5koskevatMaaraykset);
             const labelClasses = {
               isInLupa: isInLupaBool
             };
@@ -109,14 +112,15 @@ const MuutospyyntoWizardMuut = React.memo(props => {
         };
       }, configObj.categoryData);
     };
+  }, [props.intl, osiota5koskevatMaaraykset]);
 
-    const dividedArticles = divideArticles(props.muut.data);
-
-    const config = [
+  const config = useMemo(() => {
+    const dividedArticles = divideArticles();
+    return [
       {
         code: "01",
         key: "laajennettu",
-        isInUse: !!dividedArticles["laajennettu"],
+        isInUse: !!dividedArticles["laajennettu"].length,
         title: "Laajennettu oppisopimuskoulutuksen järjestämistehtävä",
         categoryData: [
           {
@@ -130,7 +134,8 @@ const MuutospyyntoWizardMuut = React.memo(props => {
         code: "02",
         key: "vaativatuki",
         isInUse:
-          !!dividedArticles["vaativa_1"] || !!dividedArticles["vaativa_2"],
+          !!dividedArticles["vaativa_1"].length ||
+          !!dividedArticles["vaativa_2"].length,
         title: "Vaativan erityisen tuen tehtävä",
         categoryData: [
           {
@@ -148,7 +153,7 @@ const MuutospyyntoWizardMuut = React.memo(props => {
       {
         code: "03",
         key: "sisaoppilaitos",
-        isInUse: !!dividedArticles["sisaoppilaitos"],
+        isInUse: !!dividedArticles["sisaoppilaitos"].length,
         title: "Sisäoppilaitosmuotoinen koulutus",
         categoryData: [
           {
@@ -161,7 +166,7 @@ const MuutospyyntoWizardMuut = React.memo(props => {
       {
         code: "04",
         key: "vankila",
-        isInUse: !!dividedArticles["vankila"],
+        isInUse: !!dividedArticles["vankila"].length,
         title: "Vankilaopetus",
         categoryData: [
           {
@@ -174,7 +179,7 @@ const MuutospyyntoWizardMuut = React.memo(props => {
       {
         code: "05",
         key: "urheilu",
-        isInUse: !!dividedArticles["urheilu"],
+        isInUse: !!dividedArticles["urheilu"].length,
         title: "Urheilijoiden ammatillinen koulutus",
         categoryData: [
           {
@@ -187,7 +192,7 @@ const MuutospyyntoWizardMuut = React.memo(props => {
       {
         code: "06",
         key: "yhteistyo",
-        isInUse: !!dividedArticles["yhteistyo"],
+        isInUse: !!dividedArticles["yhteistyo"].length,
         title: "Yhteistyö",
         categoryData: [
           {
@@ -211,8 +216,10 @@ const MuutospyyntoWizardMuut = React.memo(props => {
         ]
       }
     ];
+  }, [divideArticles, props.intl]);
 
-    const expandableRows = !!locale.length
+  const expandableRows = useMemo(() => {
+    return !!locale.length
       ? R.addIndex(R.map)((configObj, i) => {
           return {
             code: configObj.code,
@@ -223,9 +230,11 @@ const MuutospyyntoWizardMuut = React.memo(props => {
           };
         }, R.filter(R.propEq("isInUse", true))(config))
       : [];
+  }, [config, getCategories, props.kohde, locale]);
 
+  useEffect(() => {
     setMuutdata(expandableRows);
-  }, [props.kohde, props.maaraykset, locale, props.intl, props.muut.data]);
+  }, [expandableRows]);
 
   useEffect(() => {
     setLocale(R.toUpper(props.intl.locale));

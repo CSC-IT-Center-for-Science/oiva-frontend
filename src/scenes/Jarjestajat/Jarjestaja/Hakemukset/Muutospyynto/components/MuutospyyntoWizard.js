@@ -17,10 +17,7 @@ import wizardMessages from "../../../../../../i18n/definitions/wizard";
 import PropTypes from "prop-types";
 import { LomakkeetProvider } from "../../../../../../context/lomakkeetContext";
 import { MuutoshakemusContext } from "../../../../../../context/muutoshakemusContext";
-import {
-  saveMuutospyynto
-  // setSectionData
-} from "../../../../../../services/muutoshakemus/actions";
+import { saveMuutospyynto } from "../../../../../../services/muutoshakemus/actions";
 import { createObjectToSave } from "../../../../../../services/muutoshakemus/utils/saving";
 import { HAKEMUS_VIESTI } from "../modules/uusiHakemusFormConstants";
 import { MuutoshakemusProvider } from "context/muutoshakemusContext";
@@ -33,7 +30,8 @@ import * as R from "ramda";
 
 import "react-toastify/dist/ReactToastify.css";
 import MuutospyyntoWizardPerustelut from "./MuutospyyntoWizardPerustelut";
-// import { getChangeObjects } from "../../../../../../services/muutoshakemus/utils/common";
+import MuutospyyntoWizardTaloudelliset from "./MuutospyyntoWizardTaloudelliset";
+import MuutospyyntoWizardYhteenveto from "./MuutospyyntoWizardYhteenveto";
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -68,7 +66,7 @@ const DialogTitle = withStyles(theme => ({
 
 const FormDialog = withStyles(() => ({
   paper: {
-    background: "#effcec"
+    background: "#f8faf8"
   }
 }))(props => {
   return <Dialog {...props}>{props.children}</Dialog>;
@@ -111,6 +109,10 @@ const MuutospyyntoWizard = props => {
     },
     perustelut: {
       tutkinnot: {}
+    },
+    yhteenveto: {
+      yleisettiedot: [],
+      hakemuksenliitteet: []
     }
   });
 
@@ -129,7 +131,7 @@ const MuutospyyntoWizard = props => {
           "Muutospyyntö tallennettu! Voit jatkaa pian dokumentin muokkaamista.",
           {
             autoClose: 2000,
-            position: toast.POSITION.BOTTOM_RIGHT,
+            position: toast.POSITION.TOP_LEFT,
             type: toast.TYPE.SUCCESS
           }
         );
@@ -143,7 +145,7 @@ const MuutospyyntoWizard = props => {
       } else {
         notify("Muutospyyntö tallennettu!", {
           autoClose: 2000,
-          position: toast.POSITION.BOTTOM_RIGHT,
+          position: toast.POSITION.TOP_LEFT,
           type: toast.TYPE.SUCCESS
         });
       }
@@ -178,20 +180,40 @@ const MuutospyyntoWizard = props => {
     setToimintaalueMuutokset(
       R.filter(
         R.pathEq(["kohde", "tunniste"], "toimintaalue"),
-        props.backendChanges.source || []
+        props.backendChanges.source || []
       )
     );
   }, [props.backendChanges]);
 
-  // useEffect(() => {
-  //   const nextChangeObjects = getChangeObjects(muutoshakemus);
-  //   const isEqual = R.compose(R.equals(changeObjects))(nextChangeObjects);
-  //   if (!isEqual) {
-  //     setChangeObjects(nextChangeObjects);
-  //   }
-  // }, [changeObjects, muutoshakemus]);
+  const getFiles = () => {
+    // Gets all attachment data from changeObjects
+    const allAttachments = (
+      R.path(["yhteenveto", "yleisettiedot"], changeObjects) || []
+    ).concat(
+      (R.path(["yhteenveto", "yleisettiedot"], changeObjects) || []).concat(
+        (
+          R.path(["yhteenveto", "hakemuksenliitteet"], changeObjects) || []
+        ).concat(R.path(["taloudelliset", "liitteet"], changeObjects) || [])
+      )
+    );
+    // Returns only binary files
+    let attachments;
+    if (allAttachments) {
+      attachments = R.map(obj => {
+        if (obj.properties.attachments)
+          return R.map(file => {
+            return file;
+          }, obj.properties.attachments);
+        else return null;
+      }, allAttachments);
+      return attachments;
+    } else {
+      return null;
+    }
+  };
 
   const save = () => {
+    const attachments = getFiles();
     if (props.match.params.uuid) {
       saveMuutospyynto(
         createObjectToSave(
@@ -201,7 +223,8 @@ const MuutospyyntoWizard = props => {
           dataBySection,
           props.match.params.uuid,
           props.muutospyynnot.muutospyynto
-        )
+        ),
+        attachments
       )(muutoshakemusDispatch);
     } else {
       saveMuutospyynto(
@@ -210,7 +233,8 @@ const MuutospyyntoWizard = props => {
           changeObjects,
           props.backendChanges.source,
           dataBySection
-        )
+        ),
+        attachments
       )(muutoshakemusDispatch);
     }
   };
@@ -375,7 +399,22 @@ const MuutospyyntoWizard = props => {
                 onSave={save}
                 lupa={props.lupa}
                 muutoshakemus={dataBySection}
-              />
+                changeObjects={changeObjects}
+              >
+                <MuutospyyntoWizardTaloudelliset
+                  changeObjects={changeObjects}
+                  kohteet={props.kohteet.data}
+                  koulutukset={props.koulutukset}
+                  koulutusalat={props.koulutusalat}
+                  koulutustyypit={props.koulutustyypit}
+                  lupa={props.lupa}
+                  maaraystyypit={props.maaraystyypit}
+                  muut={props.muut}
+                  muutoshakemus={dataBySection}
+                  onChangesUpdate={onSectionChangesUpdate}
+                  onStateUpdate={onSectionStateUpdate}
+                />
+              </WizardPage>
             )}
             {page === 4 && (
               <WizardPage
@@ -384,7 +423,26 @@ const MuutospyyntoWizard = props => {
                 onSave={save}
                 lupa={props.lupa}
                 muutoshakemus={dataBySection}
-              />
+              >
+                <MuutosperustelutProvider>
+                  <LomakkeetProvider>
+                    <MuutospyyntoWizardYhteenveto
+                      changeObjects={changeObjects}
+                      kielet={props.kielet}
+                      kohteet={props.kohteet.data}
+                      koulutukset={props.koulutukset}
+                      koulutusalat={props.koulutusalat}
+                      koulutustyypit={props.koulutustyypit}
+                      lupa={props.lupa}
+                      maaraystyypit={props.maaraystyypit}
+                      muut={props.muut}
+                      muutoshakemus={dataBySection}
+                      onChangesUpdate={onSectionChangesUpdate}
+                      onStateUpdate={onSectionStateUpdate}
+                    />
+                  </LomakkeetProvider>
+                </MuutosperustelutProvider>
+              </WizardPage>
             )}
           </div>
         </DialogContent>
@@ -417,9 +475,9 @@ MuutospyyntoWizard.propTypes = {
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.object,
   koulutustyypit: PropTypes.object,
-  kunnat: PropTypes.object,
+  kunnat: PropTypes.array,
   maakuntakunnat: PropTypes.object,
-  maakunnat: PropTypes.object,
+  maakunnat: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muutospyynnot: PropTypes.object,
   opiskelijavuodet: PropTypes.object,

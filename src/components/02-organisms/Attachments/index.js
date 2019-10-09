@@ -10,13 +10,46 @@ import {
   HAKEMUS_OTSIKOT,
   HAKEMUS_VIESTI
 } from "../../../locales/uusiHakemusFormConstants";
-import Modal from "react-modal";
-import {
-  modalStyles,
-  ModalButton,
-  ModalText,
-  Content
-} from "../../../scenes/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/ModalComponents.js";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+
+const DialogTitle = withStyles(theme => ({
+  root: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    margin: 0,
+    padding: theme.spacing(2),
+    background: "#c7dcc3"
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  }
+}))(props => {
+  const { children, classes, onClose } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton
+          aria-label="Close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
 
 const Error = styled.div`
   color: ${COLORS.OIVA_RED};
@@ -135,17 +168,15 @@ const LiiteListItem = styled.div`
   }
 `;
 export const Input = styled.input`
-  font-size: 0.9em;
+  font-size: 1em;
   padding: 0.2em 0.4em;
-  width: auto;
-  margin: 0.3em 0.3em 0.3em 0;
+  width: 100%;
+  margin: 0.5em 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-  }
+  border: 1px solid #aaa;
+  border-radius: 0.2em;
 `;
 
 const Attachments = React.memo(props => {
@@ -161,8 +192,6 @@ const Attachments = React.memo(props => {
     setIsNameModalOpen(true);
   };
 
-  const afterOpenNamneModal = () => {};
-
   const closeNameModal = () => {
     setIsNameModalOpen(false);
   };
@@ -177,15 +206,22 @@ const Attachments = React.memo(props => {
     if (selectedAttachment.nimi) {
       setNameMissing(false);
       closeNameModal();
-      let item = {};
-      item.nimi = selectedAttachment.nimi;
-      if (props.payload) {
-        let items = JSON.parse(JSON.stringify(props.payload.attachments));
-        items.push(item);
-        props.onUpdate(props.payload, {
-          attachments: items
-        });
-      }
+      // Find correct attachment and set name
+      props.payload.attachments.map((liite, idx) => {
+        if (
+          (selectedAttachment.tiedostoId &&
+            liite.tiedostoId === selectedAttachment.tiedostoId) ||
+          (selectedAttachment.uuid && liite.uuid === selectedAttachment.uuid)
+        ) {
+          let atts = props.payload.attachments;
+          atts[idx].nimi = selectedAttachment.nimi;
+          setAttachments(atts);
+          props.onUpdate(props.payload, {
+            attachments: atts
+          });
+        }
+        return null;
+      });
     } else setNameMissing(true);
   };
 
@@ -194,7 +230,6 @@ const Attachments = React.memo(props => {
     // setFileAdded("");
 
     if (e.target.files.length === 0) return;
-
     console.log("File selected");
 
     const type = e.target.files[0].name
@@ -225,7 +260,7 @@ const Attachments = React.memo(props => {
       liite.kieli = "fi";
       liite.tyyppi = type;
       liite.nimi = e.target.files[0].name.split(".")[0].toLowerCase();
-      liite.tiedosto = e.target.files[0];
+      liite.tiedosto = new Blob([e.target.files[0]]);
       liite.koko = e.target.files[0].size;
       liite.removed = false;
       liite.salainen = false;
@@ -235,13 +270,16 @@ const Attachments = React.memo(props => {
       let atts = props.payload.attachments;
       atts.push(liite);
       setAttachments(atts);
-      props.onUpdate(props.payload, {
-        attachments: atts
-      });
       setSelectedAttachment(liite);
 
       openNameModal();
     } else return setFileError(true);
+  };
+
+  const cancelAttachment = () => {
+    closeNameModal();
+    let atts = attachments.pop(); // take last out
+    setAttachments(atts);
   };
 
   const removeAttachment = (e, tiedostoId, uuid) => {
@@ -320,7 +358,8 @@ const Attachments = React.memo(props => {
 
   // Lists all attachments based on placement parameter given
   const LiiteList = () => {
-    if (attachments)
+    console.log(attachments);
+    if (attachments && attachments.length > 0)
       return attachments.map(liite => {
         if (
           (liite.tiedostoId || liite.uuid) &&
@@ -391,12 +430,13 @@ const Attachments = React.memo(props => {
     else return null;
   };
 
+  console.log(isNameModalOpen);
   return (
     <React.Fragment>
-      {!props.listHidden && (
+      {/* {!props.listHidden && (
         <h4>{props.header ? props.header : HAKEMUS_OTSIKOT.LIITE_HEADER.FI}</h4>
       )}
-      {props.listHidden && <br />}
+      {props.listHidden && <br />} */}
       {!props.showListOnly && (
         <Attachment
           setAttachment={setAttachment}
@@ -410,16 +450,16 @@ const Attachments = React.memo(props => {
       {!props.listHidden && (
         <LiiteList key={props.placement + props.id + Math.random()} />
       )}
-      <Modal
-        isOpen={isNameModalOpen}
-        onRequestClose={closeNameModal}
-        contentLabel={HAKEMUS_VIESTI.VARMISTUS_HEADER.FI}
-        style={modalStyles}
-        appElement={document.getElementById("root")}
-        afterOpenNamneModal={afterOpenNamneModal}
+      <Dialog
+        open={isNameModalOpen}
+        aria-labelledby="name-dialog"
+        fullWidth={true}
+        maxWidth="sm"
       >
-        <Content>
-          <ModalText>{HAKEMUS_VIESTI.TIEDOSTON_NIMI.FI}</ModalText>
+        <DialogTitle id="name-dialog">
+          {HAKEMUS_VIESTI.TIEDOSTON_NIMI.FI}
+        </DialogTitle>
+        <DialogContent>
           <Input
             defaultValue={selectedAttachment.nimi}
             autoFocus
@@ -435,18 +475,32 @@ const Attachments = React.memo(props => {
                 selectedAttachment.uuid
               );
             }}
+            onKeyUp={e => {
+              if (e.keyCode === 13) {
+                setAttachmentName(
+                  e,
+                  selectedAttachment.tiedostoId,
+                  selectedAttachment.uuid
+                );
+                addAttachment(e);
+              }
+            }}
           />
           <Error>{nameMissing && HAKEMUS_VIESTI.TIEDOSTO_NIMI_ERROR.FI}</Error>
-        </Content>
-        <div>
-          <ModalButton primary onClick={addAttachment}>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={addAttachment} color="primary" variant="contained">
             {HAKEMUS_VIESTI.OK.FI}
-          </ModalButton>
-          <ModalButton onClick={closeNameModal} className="mt-1 sm:mt-0">
+          </Button>
+          <Button
+            onClick={cancelAttachment}
+            color="secondary"
+            variant="outlined"
+          >
             {HAKEMUS_VIESTI.PERUUTA.FI}
-          </ModalButton>
-        </div>
-      </Modal>
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 });
