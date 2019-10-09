@@ -2,17 +2,12 @@ import { getMetadata } from "./tutkinnotUtils";
 import { getAnchorPart } from "../../../utils/common";
 import * as R from "ramda";
 
-const getTutkintoMuutos = (tutkintoAnchor, stateItem, changeObjs) => {
-
-  // stateitem: kuvaa staattista tilaa
-  // changeObjs: yhden tutkinnon alle kuuluvat muutokset tutkinto- tai rajaus-tasolla
-  console.log("%c argumentit", "background: yellow;", tutkintoAnchor, stateItem, changeObjs);
-
+const getTutkintoMuutos = (tutkintoAnchor, stateItem, changeObjs, perustelut) => {
   let koulutus = {};
   const anchorParts = R.split(".", tutkintoAnchor);
   const koulutusCode = R.last(anchorParts);
   const meta = getMetadata(R.slice(1, 3)(anchorParts), stateItem.categories);
-  const finnishInfo = R.find(R.propEq("kieli", "FI"), meta.metadata);
+  const finnishInfo = R.find(R.propEq("kieli", "FI"));
   if (stateItem.article) {
     if (stateItem.article.koulutusalat[anchorParts[1]]) {
       koulutus =
@@ -23,47 +18,66 @@ const getTutkintoMuutos = (tutkintoAnchor, stateItem, changeObjs) => {
     }
   }
 
-  const alimaaraykset = R.filter(o =>
+  // Extra data (e.g. osaamisalarajoitukset) related to main change object
+  const subChangeObjs = R.filter(o =>
     R.gt(
       R.compose(R.length, R.split("."), R.prop("anchor"))(o),
       R.length(anchorParts)+1))
   (changeObjs);
+
+  // All possible argument anchors
+  const subArgumentAnchors = R.map(i => "perustelut_" + R.compose(R.join("."), R.init(), R.split("."), R.prop("anchor"))(i), subChangeObjs);
+
+  // Main object changes including causes
+  const mainChangeObjs = R.without(subChangeObjs, changeObjs);
+
+  // Extra data arguments
+  const subArguments = R.filter(perustelu => {
+    return R.any(subArgumentPrefix => R.startsWith(subArgumentPrefix, R.prop("anchor", perustelu)), subArgumentAnchors);
+  }, perustelut);
+
+  const mainArguments = R.without(subArguments, perustelut);
 
   const muutos = {
     isInLupa: meta.isInLupa,
     kohde: koulutus.kohde || meta.kohde,
     koodiarvo: koulutusCode,
     koodisto: meta.koodisto.koodistoUri,
-    kuvaus: finnishInfo.kuvaus,
+    kuvaus: finnishInfo(meta.metadata).kuvaus,
     maaraystyyppi: koulutus.maaraystyyppi || meta.maaraystyyppi,
-  //   meta: {
-  //     changeObjects: R.flatten([[changeObj], perustelut]),
-  //     nimi: koulutus.nimi,
-  //     koulutusala: anchorParts[0],
-  //     koulutustyyppi: anchorParts[1],
-  //     perusteluteksti: null,
-  //     muutosperustelukoodiarvo: []
-  //   },
-    nimi: finnishInfo.nimi,
+    meta: {
+      changeObjects: R.concat(mainChangeObjs, mainArguments),
+      nimi: koulutus.nimi
+    },
+    nimi: finnishInfo(meta.metadata).nimi,
   //   tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO",
   //   type: changeObj.properties.isChecked ? "addition" : "removal",
     aliMaaraykset: R.map(changeObj => {
       const anchorParts = R.split(".", changeObj.anchor);
       const meta = getMetadata(R.slice(1, 4)(anchorParts), stateItem.categories);
 
+      const args = R.filter(arg => {
+        return R.any(subArgumentPrefix => R.startsWith(subArgumentPrefix, R.prop("anchor", arg)), subArgumentAnchors);
+      }, subArguments);
+
       return {
         isInLupa: meta.isInLupa,
         kohde: meta.kohde,
         koodiarvo: R.nth(-2)(anchorParts),
         koodisto: meta.koodisto.koodistoUri,
-        kuvaus: finnishInfo.kuvaus,
+        kuvaus: finnishInfo(meta.metadata).kuvaus,
         maaraystyyppi: meta.maaraystyyppi,
-        nimi: R.find(R.propEq("kieli", "FI"), meta.metadata)
+        nimi: R.find(R.propEq("kieli", "FI"), meta.metadata),
+        tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO",
+        type: changeObj.properties.isChecked ? "addition" : "removal",
+        meta: {
+          changeObjects: R.concat(args, [changeObj])
+        },
       };
-    })(alimaaraykset) || []
+    })(subChangeObjs) || []
   };
 
-  console.log('%c 123muutos', 'background:red', muutos, alimaaraykset);
+  console.debug("%cTutkintomuutos "+koulutusCode, "background:yellow;", muutos);
 
   return muutos;
 };
@@ -122,8 +136,6 @@ export const getChangesToSave = (
     alreadyHandledChangeObjects
   );
 
-  console.log(key + " käsittelemättömät", unhandledChangeObjects, paivitetytBackendMuutokset);
-
   let uudetMuutokset = [];
 
   if (key === "tutkinnot") {
@@ -133,16 +145,19 @@ export const getChangesToSave = (
       R.filter(Boolean))
     (unhandledChangeObjects);
 
-    console.log("%c #####", "background:lightblue;", muuttuneetTutkinnot, stateObject.items);
-
     uudetMuutokset = stateObject.items
       ? R.map(tutkintoPrefix => {
         const areaCode = R.compose(R.nth(1), R.split(/[_\\.]/))(tutkintoPrefix);
 
+        const perustelut = R.filter(
+          R.compose(R.includes(tutkintoPrefix), R.prop("anchor")))
+        (changeObjects.perustelut);
+
         return getTutkintoMuutos(
           tutkintoPrefix,
           R.find(R.propEq("areaCode", areaCode))(stateObject.items),
-          R.filter(R.compose(R.startsWith(tutkintoPrefix), R.prop("anchor")))(unhandledChangeObjects));
+          R.filter(R.compose(R.startsWith(tutkintoPrefix), R.prop("anchor")))(unhandledChangeObjects),
+          perustelut);
       })(muuttuneetTutkinnot)
       : [];
   } else if (key === "koulutukset") {
@@ -318,8 +333,6 @@ export const getChangesToSave = (
       };
     }, unhandledChangeObjects).filter(Boolean);
   }
-
-  console.log('%c ' + key, 'color:green;', changeObjects, paivitetytBackendMuutokset, uudetMuutokset);
 
   return R.flatten([paivitetytBackendMuutokset, uudetMuutokset]);
 };
