@@ -186,6 +186,9 @@ const MuutospyyntoWizard = ({
     perustelut: {
       koulutukset: {},
       tutkinnot: {}
+    },
+    yhteenveto: {
+      hakemuksenliitteet: {}
     }
   });
 
@@ -239,7 +242,7 @@ const MuutospyyntoWizard = ({
             changeObjects.length > 0
               ? R.assocPath(R.split("_", id), changeObjects, prevState)
               : R.dissocPath(R.split("_", id), prevState);
-          console.info("Next changeObjects:", id, nextState);
+          console.info("Next changeObjects:", id, prevState, nextState);
           return nextState;
         });
       }

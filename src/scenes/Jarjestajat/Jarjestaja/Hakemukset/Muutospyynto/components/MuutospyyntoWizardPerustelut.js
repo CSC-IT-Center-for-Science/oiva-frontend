@@ -21,6 +21,9 @@ import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import PerustelutLiitteet from "./Perustelut/PerustelutLiitteet";
 import wizard from "../../../../../../i18n/definitions/wizard";
 
+const whyDidYouRender = require("@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js");
+whyDidYouRender(React, { hotReloadBufferMs: 1500 });
+
 const MuutospyyntoWizardPerustelut = ({
   changeObjects = {},
   elykeskukset = [],
@@ -147,6 +150,17 @@ const MuutospyyntoWizardPerustelut = ({
     isOpiskelijavuodetChanges,
     isMuutChanges
   ]);
+
+  // const _changeObjects = useMemo(() => {
+  //   return {
+  //     yhteenveto: changeObjects.yhteenveto.hakemuksenliitteet
+  //   };
+  // }, [changeObjects]);
+
+  const yhteenvetoLiitteetStateObject = useMemo(() => {
+    console.info(R.path(["yhteenveto", "hakemuksenliitteet"], muutoshakemus));
+    return R.path(["yhteenveto", "hakemuksenliitteet"], muutoshakemus);
+  }, [muutoshakemus.yhteenveto.hakemuksenliitteet]);
 
   return (
     <React.Fragment>
@@ -422,16 +436,8 @@ const MuutospyyntoWizardPerustelut = ({
               render={_props => (
                 <React.Fragment>
                   <YhteenvetoLiitteet
-                    stateObject={R.path(
-                      ["yhteenveto", "hakemuksenliitteet"],
-                      muutoshakemus
-                    )}
-                    changeObjects={{
-                      yhteenveto: R.path(
-                        ["yhteenveto", "hakemuksenliitteet"],
-                        changeObjects
-                      )
-                    }}
+                    stateObject={yhteenvetoLiitteetStateObject}
+                    changeObjects={changeObjects.yhteenveto.hakemuksenliitteet}
                     {..._props}
                   />
                 </React.Fragment>
@@ -462,6 +468,11 @@ MuutospyyntoWizardPerustelut.propTypes = {
   onStateUpdate: PropTypes.func,
   tutkinnot: PropTypes.object,
   vankilat: PropTypes.array
+};
+
+MuutospyyntoWizardPerustelut.whyDidYouRender = {
+  logOnDifferentValues: true,
+  customName: "MuutospyyntoWizardPerustelut"
 };
 
 export default injectIntl(MuutospyyntoWizardPerustelut);

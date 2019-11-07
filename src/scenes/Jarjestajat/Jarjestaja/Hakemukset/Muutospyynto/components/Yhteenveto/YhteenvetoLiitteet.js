@@ -4,54 +4,48 @@ import { injectIntl } from "react-intl";
 import PropTypes from "prop-types";
 import * as R from "ramda";
 
-const YhteenvetoLiitteet = React.memo(props => {
+const whyDidYouRender = require("@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js");
+whyDidYouRender(React, { hotReloadBufferMs: 1500 });
+
+const categories = [
+  {
+    anchor: "hakemuksenliitteet",
+    components: [
+      {
+        name: "StatusTextRow",
+        styleClasses: ["w-full"],
+        properties: {
+          title:
+            "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muistakaa merkitä salassa pidettävät liitteet."
+        }
+      },
+      {
+        anchor: "A",
+        styleClasses: ["w-full"],
+        name: "Attachments"
+      }
+    ]
+  }
+];
+
+const YhteenvetoLiitteet = props => {
   const { onStateUpdate, sectionId } = props;
 
-  const getCategories = useMemo(() => {
-    return () => {
-      let structure = null;
-
-      structure = [
-        {
-          anchor: "hakemuksenliitteet",
-          components: [
-            {
-              name: "StatusTextRow",
-              styleClasses: ["w-full"],
-              properties: {
-                title:
-                  "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muistakaa merkitä salassa pidettävät liitteet."
-              }
-            },
-            {
-              anchor: "A",
-              styleClasses: ["w-full"],
-              name: "Attachments"
-            }
-          ]
-        }
-      ];
-      return structure;
-    };
-  }, []);
-
   useEffect(() => {
-    const array = getCategories();
-
     onStateUpdate(
       {
-        categories: array
+        categories
       },
       sectionId
     );
-  }, [getCategories, onStateUpdate, sectionId]);
+  }, [onStateUpdate, sectionId]);
 
   return (
     <React.Fragment>
       <hr />
       {!!R.path(["categories"], props.stateObject) && (
         <ExpandableRowRoot
-          title={"Hakemuksen yleiset liitteet"}
+          title={"Hakemuksen yleiset liitteet 2"}
           anchor={sectionId}
           key={`yhteenveto-hakemuksenliitteet`}
           categories={props.stateObject.categories}
@@ -67,7 +61,7 @@ const YhteenvetoLiitteet = React.memo(props => {
       )}
     </React.Fragment>
   );
-});
+};
 
 YhteenvetoLiitteet.propTypes = {
   changeObjects: PropTypes.object,
@@ -78,4 +72,10 @@ YhteenvetoLiitteet.propTypes = {
   onStateUpdate: PropTypes.func,
   stateObject: PropTypes.object
 };
+
+YhteenvetoLiitteet.whyDidYouRender = {
+  logOnDifferentValues: true,
+  customName: "YhteenvetoLiitteet"
+};
+
 export default injectIntl(YhteenvetoLiitteet);

@@ -172,426 +172,445 @@ export const Input = styled.input`
   border-radius: 0.2em;
 `;
 
-const Attachments = React.memo(props => {
-  const [selectedAttachment, setSelectedAttachment] = useState([]);
-  const [attachments, setAttachments] = useState([]);
-  // const [fileAdded, setFileAdded] = useState(false);
-  const [fileError, setFileError] = useState(false);
-  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
-  const [nameMissing, setNameMissing] = useState(false);
-  const [isFileDownloaderVisible, setIsFileDownloaderVisible] = useState(false);
+const Attachments = React.memo(
+  props => {
+    const [selectedAttachment, setSelectedAttachment] = useState([]);
+    const [attachments, setAttachments] = useState([]);
+    // const [fileAdded, setFileAdded] = useState(false);
+    const [fileError, setFileError] = useState(false);
+    const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+    const [nameMissing, setNameMissing] = useState(false);
+    const [isFileDownloaderVisible, setIsFileDownloaderVisible] = useState(
+      false
+    );
 
-  const {
-    intl: { formatMessage }
-  } = props;
+    const {
+      intl: { formatMessage }
+    } = props;
 
-  const openNameModal = () => {
-    setNameMissing(false);
-    setIsNameModalOpen(true);
-  };
-
-  const closeNameModal = () => {
-    setIsNameModalOpen(false);
-  };
-
-  if (props.payload && props.payload.attachments) {
-    useEffect(() => {
-      setAttachments(props.payload.attachments);
-    }, [props.payload.attachments]);
-  }
-
-  const addAttachment = () => {
-    if (selectedAttachment.nimi) {
+    const openNameModal = () => {
       setNameMissing(false);
+      setIsNameModalOpen(true);
+    };
+
+    const closeNameModal = () => {
+      setIsNameModalOpen(false);
+    };
+
+    if (props.payload && props.payload.attachments) {
+      useEffect(() => {
+        setAttachments(props.payload.attachments);
+      }, [props.payload.attachments]);
+    }
+
+    const addAttachment = () => {
+      if (selectedAttachment.nimi) {
+        setNameMissing(false);
+        closeNameModal();
+        // Find correct attachment and set name
+        props.payload.attachments.map((liite, idx) => {
+          if (
+            (selectedAttachment.tiedostoId &&
+              liite.tiedostoId === selectedAttachment.tiedostoId) ||
+            (selectedAttachment.uuid && liite.uuid === selectedAttachment.uuid)
+          ) {
+            let atts = props.payload.attachments;
+            atts[idx].nimi = selectedAttachment.nimi;
+            setAttachments(atts);
+            props.onUpdate(props.payload, {
+              attachments: atts
+            });
+          }
+          return null;
+        });
+      } else setNameMissing(true);
+    };
+
+    const setAttachment = e => {
+      setFileError(false);
+      // setFileAdded("");
+
+      if (e.target.files.length === 0) return;
+      console.log("File selected");
+
+      const type = e.target.files[0].name
+        .split(".")
+        .pop()
+        .toLowerCase();
+
+      // Rajoitetaan max kooksi 25MB ja vain pdf, word, excel, jpeg ja gif on sallittuja
+      if (
+        e.target.files[0].size <= 26214400 &&
+        [
+          "pdf",
+          "doc",
+          "txt",
+          "docx",
+          "xls",
+          "xlsx",
+          "xlsm",
+          "jpg",
+          "jpeg",
+          "jpe",
+          "jfif",
+          "gif"
+        ].includes(type)
+      ) {
+        let liite = {};
+        liite.tiedostoId = e.target.files[0].name + "-" + Math.random();
+        liite.kieli = "fi";
+        liite.tyyppi = type;
+        liite.nimi = e.target.files[0].name.split(".")[0].toLowerCase();
+        liite.tiedosto = new Blob([e.target.files[0]]);
+        liite.koko = e.target.files[0].size;
+        liite.removed = false;
+        liite.salainen = false;
+        liite.paikka = props.placement;
+        liite.new = true;
+
+        let atts = props.payload.attachments;
+        atts.push(liite);
+        setAttachments(atts);
+        setSelectedAttachment(liite);
+
+        openNameModal();
+      } else return setFileError(true);
+    };
+
+    const cancelAttachment = () => {
       closeNameModal();
-      // Find correct attachment and set name
-      props.payload.attachments.map((liite, idx) => {
+      let atts = attachments.pop(); // take last out
+      setAttachments(atts);
+    };
+
+    const removeAttachment = (e, tiedostoId, uuid) => {
+      e.preventDefault();
+      setFileError(false);
+
+      attachments.map((liite, idx) => {
         if (
-          (selectedAttachment.tiedostoId &&
-            liite.tiedostoId === selectedAttachment.tiedostoId) ||
-          (selectedAttachment.uuid && liite.uuid === selectedAttachment.uuid)
+          (tiedostoId && liite.tiedostoId === tiedostoId) ||
+          (uuid && liite.uuid === uuid)
         ) {
-          let atts = props.payload.attachments;
-          atts[idx].nimi = selectedAttachment.nimi;
+          let atts = [...props.payload.attachments];
+          atts[idx].removed = true;
           setAttachments(atts);
           props.onUpdate(props.payload, {
             attachments: atts
           });
-        }
-        return null;
+          return true;
+        } else return false;
       });
-    } else setNameMissing(true);
-  };
+    };
 
-  const setAttachment = e => {
-    setFileError(false);
-    // setFileAdded("");
+    const setAttachmentName = (e, tiedostoId, uuid) => {
+      e.preventDefault();
+      setFileError(false);
+      // setFileAdded("");
 
-    if (e.target.files.length === 0) return;
-    console.log("File selected");
-
-    const type = e.target.files[0].name
-      .split(".")
-      .pop()
-      .toLowerCase();
-
-    // Rajoitetaan max kooksi 25MB ja vain pdf, word, excel, jpeg ja gif on sallittuja
-    if (
-      e.target.files[0].size <= 26214400 &&
-      [
-        "pdf",
-        "doc",
-        "txt",
-        "docx",
-        "xls",
-        "xlsx",
-        "xlsm",
-        "jpg",
-        "jpeg",
-        "jpe",
-        "jfif",
-        "gif"
-      ].includes(type)
-    ) {
-      let liite = {};
-      liite.tiedostoId = e.target.files[0].name + "-" + Math.random();
-      liite.kieli = "fi";
-      liite.tyyppi = type;
-      liite.nimi = e.target.files[0].name.split(".")[0].toLowerCase();
-      liite.tiedosto = new Blob([e.target.files[0]]);
-      liite.koko = e.target.files[0].size;
-      liite.removed = false;
-      liite.salainen = false;
-      liite.paikka = props.placement;
-      liite.new = true;
-
-      let atts = props.payload.attachments;
-      atts.push(liite);
-      setAttachments(atts);
-      setSelectedAttachment(liite);
-
-      openNameModal();
-    } else return setFileError(true);
-  };
-
-  const cancelAttachment = () => {
-    closeNameModal();
-    let atts = attachments.pop(); // take last out
-    setAttachments(atts);
-  };
-
-  const removeAttachment = (e, tiedostoId, uuid) => {
-    e.preventDefault();
-    setFileError(false);
-
-    attachments.map((liite, idx) => {
-      if (
-        (tiedostoId && liite.tiedostoId === tiedostoId) ||
-        (uuid && liite.uuid === uuid)
-      ) {
-        let atts = [...props.payload.attachments];
-        atts[idx].removed = true;
-        setAttachments(atts);
-        props.onUpdate(props.payload, {
-          attachments: atts
-        });
-        return true;
-      } else return false;
-    });
-  };
-
-  const setAttachmentName = (e, tiedostoId, uuid) => {
-    e.preventDefault();
-    setFileError(false);
-    // setFileAdded("");
-
-    attachments.map((liite, idx) => {
-      if (
-        (tiedostoId && liite.tiedostoId === tiedostoId) ||
-        (uuid && liite.uuid === uuid)
-      ) {
-        let atts = props.payload.attachments;
-        atts[idx].nimi = e.target.value;
-        setAttachments(atts);
-        props.onUpdate(props.payload, {
-          attachments: atts
-        });
-        return true;
-      } else return false;
-    });
-  };
-
-  const setAttachmentVisibility = (e, tiedostoId, uuid) => {
-    e.preventDefault();
-    setFileError(false);
-    // setFileAdded("");
-
-    attachments.map((liite, idx) => {
-      if (
-        (tiedostoId && liite.tiedostoId === tiedostoId) ||
-        (uuid && liite.uuid === uuid)
-      ) {
-        let atts = [...attachments];
-        atts[idx].salainen = e.target.checked;
-        setAttachments(atts);
-        props.onUpdate(props.payload, {
-          attachments: atts
-        });
-        return true;
-      } else return false;
-    });
-  };
-
-  const bytesToSize = bytes => {
-    if (!bytes || bytes === 0) return "";
-
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-    const i = parseInt(
-      Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024)),
-      10
-    );
-    if (i === 0) return `(${bytes} ${sizes[i]}))`;
-    else return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
-  };
-
-  const showFile = (e, file) => {
-    const reader = new FileReader();
-    if (file.tiedosto && file.tiedosto instanceof Blob) {
-      reader.readAsDataURL(file.tiedosto);
-      reader.onload = function() {
-        const blob = reader.result;
-        let url = blob;
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = file.nimi + "." + file.tyyppi;
-        a.click();
-      };
-    } else {
-      setIsFileDownloaderVisible(true);
-      // props.downloadAttachment(file.uuid).then(response => {
-      //   const blob = reader.result;
-      //   let url = blob;
-      //   let a = document.createElement("a");
-      //   a.href = url;
-      //   a.download = response.nimi + "." + response.tyyppi;
-      //   a.click();
-      // });
-    }
-  };
-
-  // Lists all attachments based on placement parameter given
-  const LiiteList = () => {
-    if (attachments && attachments.length > 0)
-      return attachments.map(liite => {
-        console.info(liite);
+      attachments.map((liite, idx) => {
         if (
-          (liite.tiedostoId || liite.uuid) &&
-          !liite.removed &&
-          (!props.placement || liite.paikka === props.placement)
+          (tiedostoId && liite.tiedostoId === tiedostoId) ||
+          (uuid && liite.uuid === uuid)
         ) {
-          return (
-            <React.Fragment
-              key={props.id + liite.tiedostoId ? liite.tiedostoId : liite.uuid}
-            >
-              <LiiteListItem>
-                {liite.new ? <FaFile /> : <FaRegFile />}
-                <input
-                  onBlur={e => {
-                    setAttachmentName(e, liite.tiedostoId, liite.uuid);
-                  }}
-                  defaultValue={liite.nimi}
-                  onKeyPress={e => {
-                    if (e.key === "Enter") {
-                      setAttachmentName(e, liite.tiedostoId, liite.uuid);
-                    }
-                  }}
-                />
-                <span className="type">{liite.tyyppi}</span>
-                <span className="size">{bytesToSize(liite.koko)}</span>
-                <button
-                  title={formatMessage(common.attachmentDownload)}
-                  onClick={e => showFile(e, liite)}
-                  className="ml-2"
-                >
-                  <FaDownload />
-                </button>
-                <Checkbox
-                  title={
-                    liite.salainen
-                      ? formatMessage(common.attachmentSecretUnselect)
-                      : formatMessage(common.attachmentSecretSelect)
-                  }
-                >
+          let atts = props.payload.attachments;
+          atts[idx].nimi = e.target.value;
+          setAttachments(atts);
+          props.onUpdate(props.payload, {
+            attachments: atts
+          });
+          return true;
+        } else return false;
+      });
+    };
+
+    const setAttachmentVisibility = (e, tiedostoId, uuid) => {
+      e.preventDefault();
+      setFileError(false);
+      // setFileAdded("");
+
+      attachments.map((liite, idx) => {
+        if (
+          (tiedostoId && liite.tiedostoId === tiedostoId) ||
+          (uuid && liite.uuid === uuid)
+        ) {
+          let atts = [...attachments];
+          atts[idx].salainen = e.target.checked;
+          setAttachments(atts);
+          props.onUpdate(props.payload, {
+            attachments: atts
+          });
+          return true;
+        } else return false;
+      });
+    };
+
+    const bytesToSize = bytes => {
+      if (!bytes || bytes === 0) return "";
+
+      const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+      const i = parseInt(
+        Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024)),
+        10
+      );
+      if (i === 0) return `(${bytes} ${sizes[i]}))`;
+      else return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
+    };
+
+    const showFile = (e, file) => {
+      const reader = new FileReader();
+      if (file.tiedosto && file.tiedosto instanceof Blob) {
+        reader.readAsDataURL(file.tiedosto);
+        reader.onload = function() {
+          const blob = reader.result;
+          let url = blob;
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = file.nimi + "." + file.tyyppi;
+          a.click();
+        };
+      } else {
+        setIsFileDownloaderVisible(true);
+        // props.downloadAttachment(file.uuid).then(response => {
+        //   const blob = reader.result;
+        //   let url = blob;
+        //   let a = document.createElement("a");
+        //   a.href = url;
+        //   a.download = response.nimi + "." + response.tyyppi;
+        //   a.click();
+        // });
+      }
+    };
+
+    // Lists all attachments based on placement parameter given
+    const LiiteList = () => {
+      if (attachments && attachments.length > 0)
+        return attachments.map(liite => {
+          console.info(liite);
+          if (
+            (liite.tiedostoId || liite.uuid) &&
+            !liite.removed &&
+            (!props.placement || liite.paikka === props.placement)
+          ) {
+            return (
+              <React.Fragment
+                key={
+                  props.id + liite.tiedostoId ? liite.tiedostoId : liite.uuid
+                }
+              >
+                <LiiteListItem>
+                  {liite.new ? <FaFile /> : <FaRegFile />}
                   <input
-                    type="checkbox"
-                    checked={liite.salainen}
-                    onChange={e =>
-                      setAttachmentVisibility(e, liite.tiedostoId, liite.uuid)
-                    }
-                    id={
-                      liite.tiedostoId
-                        ? "c" + liite.tiedostoId
-                        : "c" + liite.uuid
-                    }
+                    onBlur={e => {
+                      setAttachmentName(e, liite.tiedostoId, liite.uuid);
+                    }}
+                    defaultValue={liite.nimi}
+                    onKeyPress={e => {
+                      if (e.key === "Enter") {
+                        setAttachmentName(e, liite.tiedostoId, liite.uuid);
+                      }
+                    }}
                   />
-                  <label
-                    htmlFor={
-                      liite.tiedostoId
-                        ? "c" + liite.tiedostoId
-                        : "c" + liite.uuid
+                  <span className="type">{liite.tyyppi}</span>
+                  <span className="size">{bytesToSize(liite.koko)}</span>
+                  <button
+                    title={formatMessage(common.attachmentDownload)}
+                    onClick={e => showFile(e, liite)}
+                    className="ml-2"
+                  >
+                    <FaDownload />
+                  </button>
+                  <Checkbox
+                    title={
+                      liite.salainen
+                        ? formatMessage(common.attachmentSecretUnselect)
+                        : formatMessage(common.attachmentSecretSelect)
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      checked={liite.salainen}
+                      onChange={e =>
+                        setAttachmentVisibility(e, liite.tiedostoId, liite.uuid)
+                      }
+                      id={
+                        liite.tiedostoId
+                          ? "c" + liite.tiedostoId
+                          : "c" + liite.uuid
+                      }
+                    />
+                    <label
+                      htmlFor={
+                        liite.tiedostoId
+                          ? "c" + liite.tiedostoId
+                          : "c" + liite.uuid
+                      }
+                    >
+                      {liite.salainen && <FaLock />}
+                    </label>
+                  </Checkbox>
+                  <button
+                    title={formatMessage(common.attachmentRemove)}
+                    onClick={e =>
+                      removeAttachment(e, liite.tiedostoId, liite.uuid)
+                    }
+                  >
+                    <FaTimes />
+                  </button>
+                </LiiteListItem>
+                {isFileDownloaderVisible && (
+                  <FileDownloader uuid={liite.uuid} />
+                )}
+              </React.Fragment>
+            );
+          } else return null;
+        });
+      else return null;
+    };
+
+    // Lists all attachments based on placement parameter given in read only state
+    const LiiteListReadOnly = () => {
+      if (attachments && attachments.length > 0)
+        return attachments.map(liite => {
+          if (
+            (liite.tiedostoId || liite.uuid) &&
+            !liite.removed &&
+            (!props.placement || liite.paikka === props.placement)
+          ) {
+            return (
+              <React.Fragment
+                key={
+                  props.id + liite.tiedostoId ? liite.tiedostoId : liite.uuid
+                }
+              >
+                <LiiteListItem>
+                  {liite.new ? <FaFile /> : <FaRegFile />}
+                  <span className="w-full ml-1">{liite.nimi}</span>
+                  <span className="type">{liite.tyyppi}</span>
+                  <span className="size">{bytesToSize(liite.koko)}</span>
+                  <button
+                    title="Näytä"
+                    onClick={e => showFile(e, liite)}
+                    className="ml-2"
+                  >
+                    <FaDownload />
+                  </button>
+                  <span
+                    title={
+                      liite.salainen
+                        ? formatMessage(common.attachmentSecret)
+                        : ""
                     }
                   >
                     {liite.salainen && <FaLock />}
-                  </label>
-                </Checkbox>
-                <button
-                  title={formatMessage(common.attachmentRemove)}
-                  onClick={e =>
-                    removeAttachment(e, liite.tiedostoId, liite.uuid)
-                  }
-                >
-                  <FaTimes />
-                </button>
-              </LiiteListItem>
-              {isFileDownloaderVisible && <FileDownloader uuid={liite.uuid} />}
-            </React.Fragment>
-          );
-        } else return null;
-      });
-    else return null;
-  };
+                  </span>
+                </LiiteListItem>
+                {isFileDownloaderVisible && (
+                  <FileDownloader uuid={liite.uuid} />
+                )}
+              </React.Fragment>
+            );
+          } else return null;
+        });
+      else {
+        return (
+          <p>
+            <i>{formatMessage(common.attachmentNone)}</i>
+          </p>
+        );
+      }
+    };
 
-  // Lists all attachments based on placement parameter given in read only state
-  const LiiteListReadOnly = () => {
-    if (attachments && attachments.length > 0)
-      return attachments.map(liite => {
-        if (
-          (liite.tiedostoId || liite.uuid) &&
-          !liite.removed &&
-          (!props.placement || liite.paikka === props.placement)
-        ) {
-          return (
-            <React.Fragment
-              key={props.id + liite.tiedostoId ? liite.tiedostoId : liite.uuid}
-            >
-              <LiiteListItem>
-                {liite.new ? <FaFile /> : <FaRegFile />}
-                <span className="w-full ml-1">{liite.nimi}</span>
-                <span className="type">{liite.tyyppi}</span>
-                <span className="size">{bytesToSize(liite.koko)}</span>
-                <button
-                  title="Näytä"
-                  onClick={e => showFile(e, liite)}
-                  className="ml-2"
-                >
-                  <FaDownload />
-                </button>
-                <span
-                  title={
-                    liite.salainen ? formatMessage(common.attachmentSecret) : ""
-                  }
-                >
-                  {liite.salainen && <FaLock />}
-                </span>
-              </LiiteListItem>
-              {isFileDownloaderVisible && <FileDownloader uuid={liite.uuid} />}
-            </React.Fragment>
-          );
-        } else return null;
-      });
-    else {
-      return (
-        <p>
-          <i>{formatMessage(common.attachmentNone)}</i>
-        </p>
-      );
-    }
-  };
-
-  return (
-    <React.Fragment>
-      {!props.showListOnly && !props.isReadOnly && (
-        <Attachment
-          setAttachment={setAttachment}
-          setAttachmentName={setAttachmentName}
-        />
-      )}
-      {fileError && <Error>{formatMessage(common.attachmentError)}</Error>}
-      {!props.listHidden && !props.isReadOnly && (
-        <LiiteList key={props.placement + props.id + Math.random()} />
-      )}
-      {!props.listHidden && props.isReadOnly && (
-        <LiiteListReadOnly key={props.placement + props.id + Math.random()} />
-      )}
-      <Dialog
-        open={isNameModalOpen}
-        aria-labelledby="name-dialog"
-        fullWidth={true}
-        maxWidth="sm"
-      >
-        <DialogTitle id="name-dialog">
-          {formatMessage(common.attachmentName)}
-        </DialogTitle>
-        <DialogContent>
-          <Input
-            defaultValue={selectedAttachment.nimi}
-            autoFocus
-            onFocus={e => {
-              var val = e.target.value;
-              e.target.value = "";
-              e.target.value = val;
-            }}
-            onBlur={e => {
-              setAttachmentName(
-                e,
-                selectedAttachment.tiedostoId,
-                selectedAttachment.uuid
-              );
-            }}
-            onKeyUp={e => {
-              if (e.keyCode === 13) {
+    return (
+      <React.Fragment>
+        {!props.showListOnly && !props.isReadOnly && (
+          <Attachment
+            setAttachment={setAttachment}
+            setAttachmentName={setAttachmentName}
+          />
+        )}
+        {fileError && <Error>{formatMessage(common.attachmentError)}</Error>}
+        {!props.listHidden && !props.isReadOnly && (
+          <LiiteList key={props.placement + props.id + Math.random()} />
+        )}
+        {!props.listHidden && props.isReadOnly && (
+          <LiiteListReadOnly key={props.placement + props.id + Math.random()} />
+        )}
+        <Dialog
+          open={isNameModalOpen}
+          aria-labelledby="name-dialog"
+          fullWidth={true}
+          maxWidth="sm"
+        >
+          <DialogTitle id="name-dialog">
+            {formatMessage(common.attachmentName)}
+          </DialogTitle>
+          <DialogContent>
+            <Input
+              defaultValue={selectedAttachment.nimi}
+              autoFocus
+              onFocus={e => {
+                var val = e.target.value;
+                e.target.value = "";
+                e.target.value = val;
+              }}
+              onBlur={e => {
                 setAttachmentName(
                   e,
                   selectedAttachment.tiedostoId,
                   selectedAttachment.uuid
                 );
-                addAttachment(e);
-              }
-            }}
-          />
-          <Error>
-            {nameMissing && formatMessage(common.attachmentErrorName)}
-          </Error>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={addAttachment} color="primary" variant="contained">
-            {formatMessage(common.ok)}
-          </Button>
-          <Button
-            onClick={cancelAttachment}
-            color="secondary"
-            variant="outlined"
-          >
-            {formatMessage(common.cancel)}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
-  );
-});
+              }}
+              onKeyUp={e => {
+                if (e.keyCode === 13) {
+                  setAttachmentName(
+                    e,
+                    selectedAttachment.tiedostoId,
+                    selectedAttachment.uuid
+                  );
+                }
+              }}
+            />
+            <Error>
+              {nameMissing && formatMessage(common.attachmentErrorName)}
+            </Error>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={addAttachment} color="primary" variant="contained">
+              {formatMessage(common.ok)}
+            </Button>
+            <Button
+              onClick={cancelAttachment}
+              color="secondary"
+              variant="outlined"
+            >
+              {formatMessage(common.cancel)}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
+    );
+  }
+  // ,
+  // (prevState, nextState) => {
+  //   const samat = R.equals(prevState.payload, nextState.payload);
+  //   console.info(samat);
+  //   return samat;
+  //   // console.info(prevState, nextState);
+  //   // return false;
+  // }
+);
 
 Attachments.propTypes = {
-  fileName: PropTypes.string,
+  id: PropTypes.string,
+  isReadOnly: PropTypes.bool,
+  listHidden: PropTypes.bool,
   onUpdate: PropTypes.func,
   payload: PropTypes.object,
   attachments: PropTypes.object,
   id: PropTypes.string,
   placement: PropTypes.string,
-  selectedAttachment: PropTypes.object,
-  showListOnly: PropTypes.bool,
-  isReadOnly: PropTypes.bool,
-  listHidden: PropTypes.bool,
-  downloadAttachment: PropTypes.func
+  showListOnly: PropTypes.bool
 };
 
 export default injectIntl(Attachments);
