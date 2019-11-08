@@ -6,6 +6,9 @@ import {
   SAVE_MUUTOSPYYNTO_START,
   SAVE_MUUTOSPYYNTO_SUCCESS,
   SAVE_MUUTOSPYYNTO_FAILURE,
+  CREATE_MUUTOSPYYNTO_START,
+  CREATE_MUUTOSPYYNTO_SUCCESS,
+  CREATE_MUUTOSPYYNTO_FAILURE,
   SET_SECTION_DATA,
   DOWNLOAD_ATTACHMENT_START,
   DOWNLOAD_ATTACHMENT_SUCCESS,
@@ -58,6 +61,20 @@ export function saveMuutospyynto(muutospyynto, attachments) {
       })
       .catch(err => {
         dispatch({ type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err });
+      });
+  };
+}
+
+export function createMuutospyynto(uuid) {
+  return dispatch => {
+    dispatch({ type: CREATE_MUUTOSPYYNTO_START });
+    return axios
+      .post(`${API_BASE_URL}/muutospyynnot/tila/avoin/${uuid}`)
+      .then(response => {
+        dispatch({ type: CREATE_MUUTOSPYYNTO_SUCCESS, payload: response });
+      })
+      .catch(err => {
+        dispatch({ type: CREATE_MUUTOSPYYNTO_FAILURE, payload: err });
       });
   };
 }
