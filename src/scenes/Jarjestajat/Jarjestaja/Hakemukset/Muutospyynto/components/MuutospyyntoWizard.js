@@ -45,9 +45,55 @@ import { sortLanguages } from "../../../../../../utils/kieliUtil";
 import {
   parseKoulutuksetAll,
   parseKoulutusalat
-} from "../../../../../../utils/koulutusParser";
+} from "../../../../../../services/koulutukset/koulutusParser";
 import { getMaakuntakunnatList } from "../../../../../../utils/toimialueUtil";
 import Loading from "../../../../../../modules/Loading";
+
+import Draggable from "react-draggable";
+import styled from "styled-components";
+import { COLORS } from "../../../../../../modules/styles";
+import { MdInfo } from "react-icons/md";
+import close from "static/images/close-x.svg";
+
+const Help = styled.div`
+  background-color: #fffff0;
+  border: 1px solid #afafa0;
+  width: 20vw;
+  min-width: 300px;
+  position: fixed;
+  top: 120px;
+  min-height: 200px;
+  max-height: 80vh;
+  right: 20px;
+  z-index: 100;
+  opacity: 0.9;
+  cursor: move;
+  padding: 0 20px 5px 20px;
+
+  h3 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    svg {
+      margin-bottom: -2px;
+      color: ${COLORS.DARK_GRAY};
+    }
+    margin-bottom: 4px;
+  }
+`;
+const HelpContent = styled.div`
+  overflow-y: auto;
+  max-height: calc(80vh - 68px);
+`;
+const CloseHelpButton = styled.div`
+  height: 28px;
+  margin-top: 8px;
+  cursor: pointer;
+  &:hover {
+    background: ${COLORS.OIVA_TABLE_HOVER_COLOR};
+  }
+`;
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -196,6 +242,9 @@ const MuutospyyntoWizard = ({
   });
   const [steps, setSteps] = useState([]);
   const [page, setPage] = useState(1);
+
+  const [isHelpVisible, setIsHelpVisible] = useState(false);
+
   /**
    * ChangeObjects contains all changes of the form by section.
    */
@@ -478,7 +527,14 @@ const MuutospyyntoWizard = ({
               {intl.formatMessage(wizardMessages.formTitle_new)}
             </DialogTitle>
             <DialogContent>
-              <div className="lg:px-16 lg:py-4 max-w-6xl m-auto mb-10">
+              {/* className="lg:px-16 lg:py-4 max-w-6xl m-auto mb-10"> */}
+              <div
+                className={
+                  isHelpVisible
+                    ? "lg:pl-0 lg:pr-40 lg:py-4 max-w-6xl m-auto mb-10"
+                    : "lg:px-16 lg:py-4 max-w-6xl m-auto mb-10"
+                }
+              >
                 <Stepper
                   activeStep={page - 1}
                   orientation={
@@ -496,110 +552,206 @@ const MuutospyyntoWizard = ({
                     );
                   })}
                 </Stepper>
-                {page === 1 && (
-                  <WizardPage
-                    pageNumber={1}
-                    onNext={handleNext}
-                    onSave={save}
-                    lupa={lupa}
-                    changeObjects={changeObjects}
-                  >
-                    <MuutospyyntoWizardMuutokset
-                      changeObjects={changeObjects}
-                      kielet={kielet}
-                      kohteet={kohteet}
-                      koulutukset={koulutukset}
-                      kunnat={kunnat}
-                      maakuntakunnatList={maakuntakunnatList}
-                      maakunnat={maakunnat}
+                <div>
+                  <div hidden={isHelpVisible}>
+                    <CloseHelpButton
+                      src={close}
+                      onClick={() => setIsHelpVisible(true)}
+                      className="w-4 float-right"
+                    >
+                      <MdInfo className="mt-1 mr-2" />
+                    </CloseHelpButton>
+                  </div>
+                  {page === 1 && (
+                    <WizardPage
+                      pageNumber={1}
+                      onNext={handleNext}
+                      onSave={save}
                       lupa={lupa}
-                      lupaKohteet={lupaKohteet}
-                      maaraystyypit={maaraystyypit}
-                      muut={muut}
-                      muutoshakemus={dataBySection}
-                      onChangesUpdate={onSectionChangesUpdate}
-                      onStateUpdate={onSectionStateUpdate}
-                      setChangesBySection={setChangesBySection}
-                      toimintaalueMuutokset={toimintaalueMuutokset}
-                      tutkinnot={tutkinnot}
-                    />
-                  </WizardPage>
-                )}
-                {page === 2 && (
-                  <WizardPage
-                    pageNumber={2}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
-                    onSave={save}
-                    lupa={lupa}
-                    changeObjects={changeObjects}
-                  >
-                    <LomakkeetProvider>
-                      <MuutospyyntoWizardPerustelut
-                        changeObjects={changeObjects}
-                        elykeskukset={elykeskukset}
-                        kielet={kielet}
-                        kohteet={kohteet}
-                        koulutukset={koulutukset}
-                        lupa={lupa}
-                        lupaKohteet={lupaKohteet}
-                        maaraystyypit={maaraystyypit}
-                        muut={muut}
-                        muutoshakemus={dataBySection}
-                        muutosperusteluList={muutosperusteluList}
-                        onChangesUpdate={onSectionChangesUpdate}
-                        onStateUpdate={onSectionStateUpdate}
-                        tutkinnot={tutkinnot}
-                        vankilat={vankilat}
-                      />
-                    </LomakkeetProvider>
-                  </WizardPage>
-                )}
-                {page === 3 && (
-                  <WizardPage
-                    pageNumber={3}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
-                    onSave={save}
-                    lupa={lupa}
-                    muutoshakemus={dataBySection}
-                    changeObjects={changeObjects}
-                  >
-                    <MuutospyyntoWizardTaloudelliset
                       changeObjects={changeObjects}
-                      muutoshakemus={dataBySection}
-                      onChangesUpdate={onSectionChangesUpdate}
-                      onStateUpdate={onSectionStateUpdate}
-                    />
-                  </WizardPage>
-                )}
-                {page === 4 && (
-                  <WizardPage
-                    pageNumber={4}
-                    onPrev={handlePrev}
-                    onSave={save}
-                    lupa={lupa}
-                    muutoshakemus={dataBySection}
-                  >
-                    <LomakkeetProvider>
-                      <MuutospyyntoWizardYhteenveto
+                    >
+                      <MuutospyyntoWizardMuutokset
                         changeObjects={changeObjects}
                         kielet={kielet}
                         kohteet={kohteet}
                         koulutukset={koulutukset}
+                        kunnat={kunnat}
+                        maakuntakunnatList={maakuntakunnatList}
+                        maakunnat={maakunnat}
                         lupa={lupa}
                         lupaKohteet={lupaKohteet}
                         maaraystyypit={maaraystyypit}
                         muut={muut}
                         muutoshakemus={dataBySection}
-                        muutosperusteluList={muutosperusteluList}
                         onChangesUpdate={onSectionChangesUpdate}
                         onStateUpdate={onSectionStateUpdate}
+                        setChangesBySection={setChangesBySection}
+                        toimintaalueMuutokset={toimintaalueMuutokset}
                         tutkinnot={tutkinnot}
                       />
-                    </LomakkeetProvider>
-                  </WizardPage>
-                )}
+                    </WizardPage>
+                  )}
+                  {page === 2 && (
+                    <WizardPage
+                      pageNumber={2}
+                      onPrev={handlePrev}
+                      onNext={handleNext}
+                      onSave={save}
+                      lupa={lupa}
+                      changeObjects={changeObjects}
+                    >
+                      <LomakkeetProvider>
+                        <MuutospyyntoWizardPerustelut
+                          changeObjects={changeObjects}
+                          elykeskukset={elykeskukset}
+                          kielet={kielet}
+                          kohteet={kohteet}
+                          koulutukset={koulutukset}
+                          lupa={lupa}
+                          lupaKohteet={lupaKohteet}
+                          maaraystyypit={maaraystyypit}
+                          muut={muut}
+                          muutoshakemus={dataBySection}
+                          muutosperusteluList={muutosperusteluList}
+                          onChangesUpdate={onSectionChangesUpdate}
+                          onStateUpdate={onSectionStateUpdate}
+                          tutkinnot={tutkinnot}
+                          vankilat={vankilat}
+                        />
+                      </LomakkeetProvider>
+                    </WizardPage>
+                  )}
+                  {page === 3 && (
+                    <WizardPage
+                      pageNumber={3}
+                      onPrev={handlePrev}
+                      onNext={handleNext}
+                      onSave={save}
+                      lupa={lupa}
+                      muutoshakemus={dataBySection}
+                      changeObjects={changeObjects}
+                    >
+                      <MuutospyyntoWizardTaloudelliset
+                        changeObjects={changeObjects}
+                        muutoshakemus={dataBySection}
+                        onChangesUpdate={onSectionChangesUpdate}
+                        onStateUpdate={onSectionStateUpdate}
+                      />
+                    </WizardPage>
+                  )}
+                  {page === 4 && (
+                    <WizardPage
+                      pageNumber={4}
+                      onPrev={handlePrev}
+                      onSave={save}
+                      lupa={lupa}
+                      muutoshakemus={dataBySection}
+                    >
+                      <LomakkeetProvider>
+                        <MuutospyyntoWizardYhteenveto
+                          changeObjects={changeObjects}
+                          kielet={kielet}
+                          kohteet={kohteet}
+                          koulutukset={koulutukset}
+                          lupa={lupa}
+                          lupaKohteet={lupaKohteet}
+                          maaraystyypit={maaraystyypit}
+                          muut={muut}
+                          muutoshakemus={dataBySection}
+                          muutosperusteluList={muutosperusteluList}
+                          onChangesUpdate={onSectionChangesUpdate}
+                          onStateUpdate={onSectionStateUpdate}
+                          tutkinnot={tutkinnot}
+                        />
+                      </LomakkeetProvider>
+                    </WizardPage>
+                  )}
+                </div>
+
+                <Draggable handle=".handle" position={null} grid={[25, 25]}>
+                  <Help className="handle" hidden={!isHelpVisible}>
+                    <h3>
+                      <span className="flex row mt-2">
+                        <MdInfo className="mt-1 mr-2" /> Ohje
+                      </span>
+                      <CloseHelpButton
+                        src={close}
+                        onClick={() => setIsHelpVisible(false)}
+                      >
+                        &#10005;
+                      </CloseHelpButton>
+                    </h3>
+                    {/* {!this.state.helpContent ? ( */}
+                    <HelpContent>
+                      <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p>
+                      {/* <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p>
+                      <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p>
+                      <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p>
+                      <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p>
+                      <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p>
+                      <p>
+                        Seuraavat kohdat on jaoteltu ammatillisten tutkintojen
+                        ja koulutuksen järjestämisluvan rakenteen mukaisesti.
+                        Hakijan tulee täyttää alla olevat kohdat vain siltä
+                        osin, mihin tutkintojen ja koulutuksen järjestämislupaan
+                        haetaan muutosta. Tarkemmat ohjeistukset sekä
+                        pykäläviittaukset ammatillisen koulutuksen lakiin
+                        (531/2017) on esitetty kohdittain.
+                      </p> */}
+                    </HelpContent>
+                    {/* ) : (
+                      this.state.helpContent
+                    )} */}
+                  </Help>
+                </Draggable>
               </div>
             </DialogContent>
           </FormDialog>
