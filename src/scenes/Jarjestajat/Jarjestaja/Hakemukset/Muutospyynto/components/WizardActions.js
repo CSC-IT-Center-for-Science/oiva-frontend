@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   WizardBottom,
 } from "./MuutospyyntoWizardComponents";
@@ -6,8 +6,12 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import { injectIntl } from "react-intl";
 import wizardMessages from "../../../../../../i18n/definitions/wizard";
+import {HAKEMUS_VIESTI} from "../modules/uusiHakemusFormConstants";
+import ConfirmDialog from "../../../../../../components/02-organisms/ConfirmDialog";
 
 const WizardActions = props => {
+  const [isConfirmDialogVisible, setConfirmDialogVisible] = useState(false);
+
   const onPrevClick = () => {
     props.onPrev(props.pageNumber);
   };
@@ -20,12 +24,28 @@ const WizardActions = props => {
     props.onSave();
   };
 
+  const handleCancel = () => {
+    setConfirmDialogVisible(false);
+  }
+
+  const handleOk = () => {
+    onSaveClick();
+    setConfirmDialogVisible(false);
+  }
+
   const {
     intl: { formatMessage }
   } = props;
 
   return (
     <WizardBottom>
+      <ConfirmDialog
+        isConfirmDialogVisible={isConfirmDialogVisible}
+        title={HAKEMUS_VIESTI.VARMISTUS_LÄHETÄ_HEADER.FI}
+        content={HAKEMUS_VIESTI.VARMISTUS_LÄHETÄ.FI}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+      />
       <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl p-4 mx-auto">
         <div className="flex flex-col md:w-48">
           <Button
@@ -70,7 +90,7 @@ const WizardActions = props => {
             onClick={props.onNext ?
               onNextClick
               :
-              onSaveClick // todo: Lähetä
+              () => setConfirmDialogVisible(true) // todo: Lähetä
             }
           >
             {props.onNext ?

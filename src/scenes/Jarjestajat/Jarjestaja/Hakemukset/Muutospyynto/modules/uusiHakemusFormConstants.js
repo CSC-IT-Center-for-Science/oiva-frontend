@@ -51,6 +51,14 @@ export const HAKEMUS_VIESTI = {
       "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta.",
     SV: "På Svenska"
   },
+  VARMISTUS_LÄHETÄ_HEADER: {
+    FI: "Lähetyksen varmistus",
+    SV: "På Svenska"
+  },
+  VARMISTUS_LÄHETÄ: {
+    FI: "Oletko varma, että haluat lähettää hakemuksen käsiteltäväksi?",
+    SV: "På Svenska"
+  },
   KIRJAUTUMINEN: {
     FI: "Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun",
     SV: "På Svenska"
