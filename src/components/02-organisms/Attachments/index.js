@@ -15,7 +15,11 @@ import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import common from "../../../i18n/definitions/common";
-import FileDownloader from "./FileDownloader";
+import * as R from "ramda";
+import { API_BASE_URL } from "../../../modules/constants";
+
+const whyDidYouRender = require("@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js");
+whyDidYouRender(React);
 
 const DialogTitle = withStyles(theme => ({
   root: {
@@ -104,7 +108,7 @@ const Checkbox = styled.div`
   }
 `;
 const LiiteListItem = styled.div`
-  font-size: 0.9em;
+  font-size: 1em;
   display: flex;
   justify-content: stretch;
   align-items: center;
@@ -139,10 +143,9 @@ const LiiteListItem = styled.div`
   input {
     width: auto;
     height: 2em;
-    font-size: 0.9em;
     flex: 1;
     margin: 0 0.1em 0 0.1em;
-    padding: 0 0.2em 0 0.1em;
+    padding: 0 0.2em 0 0.5em;
   }
   .name {
     flex: 1;
@@ -180,9 +183,6 @@ const Attachments = React.memo(
     const [fileError, setFileError] = useState(false);
     const [isNameModalOpen, setIsNameModalOpen] = useState(false);
     const [nameMissing, setNameMissing] = useState(false);
-    const [isFileDownloaderVisible, setIsFileDownloaderVisible] = useState(
-      false
-    );
 
     const {
       intl: { formatMessage }
@@ -203,6 +203,7 @@ const Attachments = React.memo(
       }, [props.payload.attachments]);
     }
 
+    // Adds attachment into attachment list
     const addAttachment = () => {
       if (selectedAttachment.nimi) {
         setNameMissing(false);
@@ -257,7 +258,8 @@ const Attachments = React.memo(
         ].includes(type)
       ) {
         let liite = {};
-        liite.tiedostoId = e.target.files[0].name + "-" + Math.random();
+        liite.tiedostoId = Math.random() + "-" + e.target.files[0].name;
+        liite.filename = e.target.files[0].name;
         liite.kieli = "fi";
         liite.tyyppi = type;
         liite.nimi = e.target.files[0].name.split(".")[0].toLowerCase();
@@ -303,6 +305,7 @@ const Attachments = React.memo(
       });
     };
 
+    // Sen name of attachment
     const setAttachmentName = (e, tiedostoId, uuid) => {
       e.preventDefault();
       setFileError(false);
@@ -324,6 +327,7 @@ const Attachments = React.memo(
       });
     };
 
+    // set if attachment is secret
     const setAttachmentVisibility = (e, tiedostoId, uuid) => {
       e.preventDefault();
       setFileError(false);
@@ -345,6 +349,7 @@ const Attachments = React.memo(
       });
     };
 
+    // Checks if file limits are met
     const bytesToSize = bytes => {
       if (!bytes || bytes === 0) return "";
 
@@ -357,32 +362,28 @@ const Attachments = React.memo(
       else return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
     };
 
+    // Creates a link to download file in browser
     const showFile = (e, file) => {
-      const reader = new FileReader();
+      let a = document.createElement("a");
+      a.setAttribute("type", "hidden");
+      document.body.appendChild(a); // Needed for Firefox
       if (file.tiedosto && file.tiedosto instanceof Blob) {
+        const reader = new FileReader();
         reader.readAsDataURL(file.tiedosto);
         reader.onload = function() {
-          const blob = reader.result;
-          let url = blob;
-          let a = document.createElement("a");
-          a.href = url;
-          a.download = file.nimi + "." + file.tyyppi;
+          a.href = reader.result;
+          a.download = file.filename;
           a.click();
+          a.remove();
         };
       } else {
-        setIsFileDownloaderVisible(true);
-        // props.downloadAttachment(file.uuid).then(response => {
-        //   const blob = reader.result;
-        //   let url = blob;
-        //   let a = document.createElement("a");
-        //   a.href = url;
-        //   a.download = response.nimi + "." + response.tyyppi;
-        //   a.click();
-        // });
+        a.href = API_BASE_URL + "/liitteet/" + file.uuid + "/raw";
+        a.click();
+        a.remove();
       }
     };
 
-    // Lists all attachments based on placement parameter given
+    // Lists all attachments
     const LiiteList = () => {
       if (attachments && attachments.length > 0)
         return attachments.map(liite => {
@@ -458,9 +459,6 @@ const Attachments = React.memo(
                     <FaTimes />
                   </button>
                 </LiiteListItem>
-                {isFileDownloaderVisible && (
-                  <FileDownloader uuid={liite.uuid} />
-                )}
               </React.Fragment>
             );
           } else return null;
@@ -468,7 +466,7 @@ const Attachments = React.memo(
       else return null;
     };
 
-    // Lists all attachments based on placement parameter given in read only state
+    // Lists all attachments in read only state
     const LiiteListReadOnly = () => {
       if (attachments && attachments.length > 0)
         return attachments.map(liite => {
@@ -485,11 +483,11 @@ const Attachments = React.memo(
               >
                 <LiiteListItem>
                   {liite.new ? <FaFile /> : <FaRegFile />}
-                  <span className="w-full ml-1">{liite.nimi}</span>
+                  <span className="w-full pl-2">{liite.nimi}</span>
                   <span className="type">{liite.tyyppi}</span>
                   <span className="size">{bytesToSize(liite.koko)}</span>
                   <button
-                    title="Näytä"
+                    title={formatMessage(common.attachmentDownload)}
                     onClick={e => showFile(e, liite)}
                     className="ml-2"
                   >
@@ -505,9 +503,6 @@ const Attachments = React.memo(
                     {liite.salainen && <FaLock />}
                   </span>
                 </LiiteListItem>
-                {isFileDownloaderVisible && (
-                  <FileDownloader uuid={liite.uuid} />
-                )}
               </React.Fragment>
             );
           } else return null;
@@ -520,7 +515,6 @@ const Attachments = React.memo(
         );
       }
     };
-
     return (
       <React.Fragment>
         {!props.showListOnly && !props.isReadOnly && (
@@ -530,12 +524,8 @@ const Attachments = React.memo(
           />
         )}
         {fileError && <Error>{formatMessage(common.attachmentError)}</Error>}
-        {!props.listHidden && !props.isReadOnly && (
-          <LiiteList key={props.placement + props.id + Math.random()} />
-        )}
-        {!props.listHidden && props.isReadOnly && (
-          <LiiteListReadOnly key={props.placement + props.id + Math.random()} />
-        )}
+        {!props.listHidden && !props.isReadOnly && <LiiteList />}
+        {!props.listHidden && props.isReadOnly && <LiiteListReadOnly />}
         <Dialog
           open={isNameModalOpen}
           aria-labelledby="name-dialog"
@@ -568,6 +558,7 @@ const Attachments = React.memo(
                     selectedAttachment.tiedostoId,
                     selectedAttachment.uuid
                   );
+                  addAttachment(e);
                 }
               }}
             />
@@ -590,27 +581,28 @@ const Attachments = React.memo(
         </Dialog>
       </React.Fragment>
     );
+  },
+  (prevState, nextState) => {
+    return R.equals(prevState.payload, nextState.payload);
   }
-  // ,
-  // (prevState, nextState) => {
-  //   const samat = R.equals(prevState.payload, nextState.payload);
-  //   console.info(samat);
-  //   return samat;
-  //   // console.info(prevState, nextState);
-  //   // return false;
-  // }
 );
 
 Attachments.propTypes = {
+  attachments: PropTypes.object,
+  fileName: PropTypes.string,
   id: PropTypes.string,
   isReadOnly: PropTypes.bool,
   listHidden: PropTypes.bool,
   onUpdate: PropTypes.func,
   payload: PropTypes.object,
-  attachments: PropTypes.object,
-  id: PropTypes.string,
   placement: PropTypes.string,
+  selectedAttachment: PropTypes.object,
   showListOnly: PropTypes.bool
+};
+
+Attachments.whyDidYouRender = {
+  logOnDifferentValues: true,
+  customName: "Attachments"
 };
 
 export default injectIntl(Attachments);

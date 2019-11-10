@@ -4,19 +4,21 @@ import { InnerContentContainer } from "../../../../modules/elements";
 import PropTypes from "prop-types";
 
 const JarjestamislupaAsiat = ({
-  lupahistory,
   match,
   muutospyynnot,
-  newApplicationRouteItem
+  newApplicationRouteItem,
+  organisaatio,
+  intl
 }) => {
   return (
     <InnerContentContainer>
       <div className="m-8">
         <JarjestamislupaAsiatList
-          lupahistory={lupahistory}
           match={match}
+          intl={intl}
           muutospyynnot={muutospyynnot}
           newApplicationRouteItem={newApplicationRouteItem}
+          organisaatio={organisaatio}
         />
       </div>
     </InnerContentContainer>
@@ -24,7 +26,6 @@ const JarjestamislupaAsiat = ({
 };
 
 JarjestamislupaAsiat.propTypes = {
-  lupahistory: PropTypes.array,
   match: PropTypes.object,
   muutospyynnot: PropTypes.array,
   newApplicationRouteItem: PropTypes.object

@@ -155,6 +155,36 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.application",
+    "defaultMessage": "Hakemus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachement",
+    "defaultMessage": "Liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.secretAttachement",
+    "defaultMessage": "Salainen liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.document",
+    "defaultMessage": "Asiakirja",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.author",
+    "defaultMessage": "Laatija",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.documentStatus",
+    "defaultMessage": "Asiakirjan tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -375,16 +405,6 @@
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "app.title",
-    "defaultMessage": "Opetus- ja kulttuuriministeriö",
-    "filepath": "src/scenes/Footer/Footer.js"
-  },
-  {
-    "id": "app.valtioneuvosto",
-    "defaultMessage": "Valtioneuvosto",
-    "filepath": "src/scenes/Footer/Footer.js"
-  },
-  {
     "id": "wizard.except",
     "defaultMessage": "lukuun ottamatta:",
     "filepath": "src/i18n/definitions/wizard.js"
@@ -393,5 +413,15 @@
     "id": "wizard.osaamisalarajoitus",
     "defaultMessage": "Rajoitus",
     "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "app.title",
+    "defaultMessage": "Opetus- ja kulttuuriministeriö",
+    "filepath": "src/scenes/Footer/Footer.js"
+  },
+  {
+    "id": "app.valtioneuvosto",
+    "defaultMessage": "Valtioneuvosto",
+    "filepath": "src/scenes/Footer/Footer.js"
   }
 ]

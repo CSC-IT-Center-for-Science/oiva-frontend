@@ -114,5 +114,29 @@ export default defineMessages({
   fetchFailureAuthInfo: {
     id: "common.fetchFailureAuthInfo",
     defaultMessage: "Tämä voi johtua siitä, ettet ole kirjautunut sisään."
+  },
+  application: {
+    id: "common.application",
+    defaultMessage: "Hakemus"
+  },
+  attachment: {
+    id: "common.attachement",
+    defaultMessage: "Liite"
+  },
+  secretAttachment: {
+    id: "common.secretAttachement",
+    defaultMessage: "Salainen liite"
+  },
+  document: {
+    id: "common.document",
+    defaultMessage: "Asiakirja"
+  },
+  author: {
+    id: "common.author",
+    defaultMessage: "Laatija"
+  },
+  documentStatus: {
+    id: "common.documentStatus",
+    defaultMessage: "Asiakirjan tila"
   }
 });

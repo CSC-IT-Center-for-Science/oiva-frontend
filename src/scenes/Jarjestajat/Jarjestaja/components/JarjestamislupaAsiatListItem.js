@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Media from "react-media";
-import { Td, Trn } from "../../../../modules/Table";
+import { Td, Tr } from "../../../../modules/Table";
 import { MEDIA_QUERIES } from "../../../../modules/styles";
 import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import Button from "@material-ui/core/Button";
@@ -30,7 +30,7 @@ const JarjestamislupaAsiaListItem = props => {
       <Media
         query={MEDIA_QUERIES.MOBILE}
         render={() => (
-          <Trn>
+          <Tr onClick={() => props.setOpened()}>
             <Td>
               <LupaText>
                 <TextPartial>{LUPA_TEKSTIT.MUUTOSPYYNTO.MUUTOS.FI}</TextPartial>
@@ -50,14 +50,13 @@ const JarjestamislupaAsiaListItem = props => {
                 </NavLink>
               </LupaText>
             </Td>
-          </Trn>
+          </Tr>
         )}
       />
       <Media
         query={MEDIA_QUERIES.TABLET_MIN}
         render={() => (
-          <Trn>
-            {/*TODO: When asiakirjat table contains real data <Tr onClick={e => open(e, "todo")}>*/}
+          <Tr onClick={() => props.setOpened(uuid)}>
             <Td size="small">
               <Typography component="span">{}</Typography>
             </Td>
@@ -86,7 +85,7 @@ const JarjestamislupaAsiaListItem = props => {
                 </NavLink>
               </div>
             </Td>
-          </Trn>
+          </Tr>
         )}
       />
     </React.Fragment>

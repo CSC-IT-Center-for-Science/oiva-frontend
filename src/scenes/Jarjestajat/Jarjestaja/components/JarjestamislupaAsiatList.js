@@ -15,6 +15,7 @@ import Media from "react-media";
 import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import { Table, Tbody, Thead, Thn, Trn } from "../../../../modules/Table";
+import * as R from "ramda";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,21 +37,25 @@ const columnTitles = [
 ];
 
 const JarjestamislupaAsiatList = ({
-  lupahistory,
   match,
   muutospyynnot,
-  newApplicationRouteItem
+  newApplicationRouteItem,
+  organisaatio,
+  intl
 }) => {
   const { url } = match;
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
   const classes = useStyles();
-  const [state, setState] = useState({
-    opened: 0
-  });
+  const [muutospyynto, setMuutospyynto] = useState(null);
 
-  const setOpened = dnro => {
-    setState({ opened: dnro });
-  };
+  const liitteet = useMemo(() => {
+    // find "attachment" properties recursively
+    const findAttachments = (obj) =>
+      R.prop("attachments", obj) || R.chain(findAttachments, R.values(obj));
+
+    return (muutospyynto && findAttachments(muutospyynto)) || [];
+  }, [muutospyynto]);
+
 
   const renderJarjestamislupaAsiatList = useMemo(() => {
     return muutospyynnot => {
@@ -60,11 +65,11 @@ const JarjestamislupaAsiatList = ({
           url={url}
           muutospyynto={historyData}
           key={historyData.uuid}
-          setOpened={setOpened}
+          setOpened={() => setMuutospyynto(historyData)}
         />
       ));
     };
-  }, [url]);
+  }, [url, muutospyynnot]);
 
   const muutospyynnotTable = (
     <Paper className={classes.root}>
@@ -99,42 +104,48 @@ const JarjestamislupaAsiatList = ({
     </Paper>
   );
 
-  if (state && state.opened !== 0) {
+  if (muutospyynto) {
+    // back button & asiakirjat
     return (
       <React.Fragment>
-        <Button variant="contained" color="primary" onClick={e => setOpened(0)}>
+        <Button variant="contained" color="primary" onClick={() => setMuutospyynto(null)}>
           <ArrowBack />
           <span className="pl-2">{LUPA_TEKSTIT.ASIAT.PALAA.FI}</span>
         </Button>
         <Paper className={classes.root}>
-          <JarjestamislupaAsiakirjat lupaHistory={lupahistory} />
+          <JarjestamislupaAsiakirjat
+            organisaatio={organisaatio}
+            muutospyynto={muutospyynto}
+            asiakirjat={liitteet}
+            intl={intl}
+          />
         </Paper>
       </React.Fragment>
     );
   } else {
+    // new application button & asiat
     return (
-      <div>
+      <React.Fragment>
         <div className="flex">
           <div className="mr-4">
-            <Button variant="contained" color="primary">
-              {breakpointTabletMin && <Add />}
-              <NavLink
-                to={newApplicationRouteItem.path}
-                exact={newApplicationRouteItem.exact}
-                className="pl-2"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                {newApplicationRouteItem.text}
-              </NavLink>
-            </Button>
+            <NavLink
+              to={newApplicationRouteItem.path}
+              exact={newApplicationRouteItem.exact}
+              className="pl-2"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Button variant="contained" color="primary">
+                {breakpointTabletMin && <Add />}
+
+                <span className="pl-2">{newApplicationRouteItem.text}</span>
+              </Button>
+            </NavLink>
           </div>
         </div>
-        {muutospyynnot && muutospyynnot.length > 0 ? (
+        {muutospyynnot && muutospyynnot.length > 0 && (
           muutospyynnotTable
-        ) : (
-          <div></div>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 };

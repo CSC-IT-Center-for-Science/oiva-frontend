@@ -40,7 +40,7 @@ export function saveMuutospyynto(muutospyynto, attachments) {
   if (attachments) {
     attachments.map(item => {
       if (!item.removed && item.new && item.tiedosto instanceof Blob) {
-        data.append(item.tiedostoId, item.tiedosto, item.nimi);
+        data.append(item.tiedostoId, item.tiedosto, item.filename);
         item.tiedosto = null;
       }
       return null;

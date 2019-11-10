@@ -1,38 +1,53 @@
-import _ from "lodash";
-import React, { useState } from "react";
+import * as R from "ramda";
+import React from "react";
 import Media from "react-media";
 import styled from "styled-components";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Thn,
-  Trn,
-  ThButton
-} from "../../../../modules/Table";
+import { Table, Tbody, Thead, Thn, Trn } from "../../../../modules/Table";
 import { MEDIA_QUERIES } from "../../../../modules/styles";
 import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import JarjestamislupaAsiakirjatItem from "./JarjestamislupaAsiakirjatItem";
+import { Typography } from "@material-ui/core";
+import common from "../../../../i18n/definitions/common";
+import PropTypes from "prop-types";
 
 const WrapTable = styled.div``;
-const JarjestamislupaAsiakirjat = ({ lupaHistory }) => {
-  const [state, setState] = useState({
-    opened: 0
-  });
 
-  const setOpened = dnro => {
-    setState({ opened: dnro });
+const titleKeys = [
+  common.document,
+  common.documentStatus,
+  common.author
+];
+
+const JarjestamislupaAsiakirjat = ({muutospyynto, asiakirjat, organisaatio, intl}) => {
+
+  const baseRow = [
+    LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[muutospyynto.tila][R.toUpper(intl.locale)],
+    R.path(["nimi", intl.locale], organisaatio)
+  ];
+
+  const getLiitteetRowItems = R.map((liite) =>
+    ({
+      items: R.prepend(
+        intl.formatMessage(liite.salainen ? common.secretAttachment : common.attachment) + " " + R.prop("nimi", liite),
+        baseRow),
+      tiedostoId: R.prop("tiedostoId", liite)
+    }), asiakirjat);
+
+  const getMuutospyyntoRowItems = {
+    tiedostoId: muutospyynto.uuid,
+    items: R.prepend(
+      intl.formatMessage(common.application),
+      baseRow)
   };
 
-  const renderJarjestamislupaAsiatList = data => {
-    data = _.orderBy(lupaHistory, ["paatospvm", "uuid"], ["desc", "desc"]);
-    return _.map(data, historyData => (
+  const renderJarjestamislupaAsiatList = () => {
+    return R.addIndex(R.map)((row, idx) => (
       <JarjestamislupaAsiakirjatItem
-        lupaHistoria={historyData}
-        key={historyData.diaarinumero}
-        setOpened={setOpened}
+        onClick = {() => {console.log("TODO: Download document " + row.tiedostoId)} }
+        rowItems = { row.items }
+        key = { idx }
       />
-    ));
+    ), R.prepend(getMuutospyyntoRowItems, getLiitteetRowItems));
   };
 
   return (
@@ -41,7 +56,7 @@ const JarjestamislupaAsiakirjat = ({ lupaHistory }) => {
         query={MEDIA_QUERIES.MOBILE}
         render={() => (
           <Table>
-            <Tbody>{this.renderJarjestamislupaAsiatList(lupaHistory)}</Tbody>
+            <Tbody>{renderJarjestamislupaAsiatList()}</Tbody>
           </Table>
         )}
       />
@@ -51,28 +66,28 @@ const JarjestamislupaAsiakirjat = ({ lupaHistory }) => {
           <Table>
             <Thead>
               <Trn>
-                <Thn flex="2">
-                  {LUPA_TEKSTIT.ASIAT.ASIATKIRJAT_TAULUKKO.ASIAKIRJA.FI}
-                </Thn>
-                <Thn flex="2">
-                  {LUPA_TEKSTIT.ASIAT.ASIATKIRJAT_TAULUKKO.TILA.FI}
-                </Thn>
-                <Thn flex="3">
-                  {LUPA_TEKSTIT.ASIAT.ASIATKIRJAT_TAULUKKO.LAATIJA.FI}
-                </Thn>
-                <Thn flex="2">
-                  {LUPA_TEKSTIT.ASIAT.ASIATKIRJAT_TAULUKKO.VALMIS.FI}
-                </Thn>
-                <ThButton></ThButton>
-                <ThButton></ThButton>
+                {
+                  titleKeys.map((title, ind) => (
+                    <Thn key={ind}>
+                      <Typography>{ intl.formatMessage(title) }</Typography>
+                    </Thn>)
+                  )
+                }
               </Trn>
             </Thead>
-            <Tbody>{this.renderJarjestamislupaAsiatList(lupaHistory)}</Tbody>
+            <Tbody>{renderJarjestamislupaAsiatList()}</Tbody>
           </Table>
         )}
       />
     </WrapTable>
   );
+};
+
+JarjestamislupaAsiakirjat.propTypes = {
+  match: PropTypes.object,
+  muutospyynto: PropTypes.object,
+  organisaatio: PropTypes.object,
+  intl: PropTypes.object
 };
 
 export default JarjestamislupaAsiakirjat;

@@ -80,6 +80,7 @@ export function createAttachmentArray(muutokset) {
         tulosliite.salainen = liite.salainen;
         tulosliite.removed = liite.removed;
         tulosliite.paikka = liite.paikka;
+        tulosliite.filename = liite.filename;
         if (liite.tiedosto && !liite.removed) {
           tulosliite.tiedosto = new Blob([liite.tiedosto]);
           liite.tiedosto = null;
@@ -404,8 +405,9 @@ export function setAttachmentUuids(
 export function combineArrays(arrays) {
   if (arrays && arrays.length > 0) {
     const currentArray = arrays.pop();
-    if (currentArray) {
+    if (!currentArray) return combineArrays(arrays);
+    else if (arrays) {
       return currentArray.concat(combineArrays(arrays));
-    } else return [];
+    } else return currentArray;
   } else return [];
 }

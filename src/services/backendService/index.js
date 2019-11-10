@@ -41,7 +41,7 @@ export function abort(abortControllers = []) {
  * Returns true if XHR call has failed for some reason.
  * @param {object} backendData - Format depends on the used reducer.
  */
-export function isErroneous(backendData) {
+export function isErroneous(backendData = {}) {
   return backendData && R.equals(backendData.status, statusMap.erroneous);
 }
 
@@ -50,7 +50,7 @@ export function isErroneous(backendData) {
  * @param {object} backendData - Format depends on the used reducer 222.
  * @return {boolean}
  */
-export function isFetching(backendData) {
+export function isFetching(backendData = {}) {
   return backendData && R.equals(backendData.status, statusMap.fetching);
 }
 
@@ -59,7 +59,7 @@ export function isFetching(backendData) {
  * @param {object} backendData - Format depends on the used reducer.
  * @return {boolean}
  */
-export function isReady(backendData) {
+export function isReady(backendData = {}) {
   return backendData && R.equals(backendData.status, statusMap.ready);
 }
 
@@ -69,62 +69,76 @@ export function isReady(backendData) {
  * Example: { luvat: api/luvat/jarjestajilla, ... }
  */
 const backendRoutes = {
-  elykeskukset: `${API_BASE_URL}/koodistot/koodit/elykeskukset`,
-  kayttaja: `${API_BASE_URL}/auth/me`,
-  kielet: `${API_BASE_URL}/koodistot/kielet`,
-  kohteet: `${API_BASE_URL}/kohteet`,
-  tutkinnot: `${API_BASE_URL}/koodistot/ammatillinen/tutkinnot`,
-  koulutuksetMuut: `${API_BASE_URL}/koodistot/koodit/`,
-  koulutus: `${API_BASE_URL}/koodistot/koodi/koulutus/`,
-  koulutusalat: `${API_BASE_URL}/koodistot/koulutusalat/`,
-  koulutustyypit: `${API_BASE_URL}/koodistot/koulutustyypit/`,
-  kunnat: `${API_BASE_URL}/koodistot/kunnat`,
-  lupa: `${API_BASE_URL}/luvat/jarjestaja/`,
-  lupahistoria: `${API_BASE_URL}/luvat/historia/`,
-  luvat: `${API_BASE_URL}/luvat/jarjestajilla`,
-  maakunnat: `${API_BASE_URL}/koodistot/maakunnat`,
-  maakuntakunnat: `${API_BASE_URL}/koodistot/maakuntakunta`,
-  maaraystyypit: `${API_BASE_URL}/maaraykset/maaraystyypit`,
-  muut: `${API_BASE_URL}/koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`,
-  muutospyynnot: `${API_BASE_URL}/muutospyynnot/`,
-  muutospyynto: `${API_BASE_URL}/muutospyynnot/id/`,
-  oivamuutoikeudetvelvollisuudetehdotjatehtavat: `${API_BASE_URL}/koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`,
-  oivaperustelut: `${API_BASE_URL}/koodistot/koodit/oivaperustelut`,
-  opetuskielet: `${API_BASE_URL}/koodistot/opetuskielet`,
-  organisaatio: `${API_BASE_URL}/organisaatiot/`,
-  paatoskierrokset: `${API_BASE_URL}/paatoskierrokset/open`,
-  vankilat: `${API_BASE_URL}/koodistot/koodit/vankilat`,
-  liitteet: `${API_BASE_URL}/liitteet/`
+  elykeskukset: { path: `koodistot/koodit/elykeskukset` },
+  kayttaja: { path: `auth/me` },
+  kielet: { path: `koodistot/kielet` },
+  kohteet: { path: `kohteet` },
+  tutkinnot: { path: `koodistot/ammatillinen/tutkinnot` },
+  koulutuksetMuut: { path: `koodistot/koodit/` },
+  koulutus: { path: `koodistot/koodi/koulutus/` },
+  koulutusalat: { path: `koodistot/koulutusalat/` },
+  koulutustyypit: { path: `koodistot/koulutustyypit/` },
+  kunnat: { path: `koodistot/kunnat` },
+  lupa: { path: `luvat/jarjestaja/` },
+  lupahistoria: { path: `luvat/historia/` },
+  luvat: { path: `luvat/jarjestajilla` },
+  maakunnat: { path: `koodistot/maakunnat` },
+  maakuntakunnat: { path: `koodistot/maakuntakunta` },
+  maaraystyypit: { path: `maaraykset/maaraystyypit` },
+  muut: {
+    path: `koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`
+  },
+  muutospyynnot: { path: `muutospyynnot/` },
+  muutospyynto: { path: `muutospyynnot/id/` },
+  oivamuutoikeudetvelvollisuudetehdotjatehtavat: {
+    path: `koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`
+  },
+  oivaperustelut: { path: `koodistot/koodit/oivaperustelut` },
+  opetuskielet: { path: `koodistot/opetuskielet` },
+  organisaatio: { path: `organisaatiot/` },
+  paatoskierrokset: { path: `paatoskierrokset/open` },
+  vankilat: { path: `koodistot/koodit/vankilat` },
+  liitteet: { path: `liitteet/`, abortController: false }
 };
 
 /**
  * Runs XHR calls.
  *
  * @param {string} key - A key of backendRoutes object.
- * @param {string} url - XHR call is directed to this url.
+ * @param {string} routeObj - A member of the backendRoutes object.
  * @param {function} dispatchFn - A dispatch function.
  * @param {object} abortController - An instance of AbortController.
  */
 async function run(
   key,
-  url,
+  routeObj,
   options,
   dispatchFn,
   abortController,
   subKey,
-  path
+  path,
+  urlEnding = ""
 ) {
   /**
    * It's time to fetch some data!
    */
   try {
-    const response = await fetch(url, {
-      ...options,
-      signal: abortController.signal
-    });
+    if (abortController) {
+      options.signal = abortController.signal;
+    }
+    const response = await fetch(
+      `${API_BASE_URL}/${R.join("", [routeObj.path, urlEnding])}`,
+      options
+    );
 
     if (response && response.ok) {
-      const data = await response.json();
+      const contentType = response.headers.get("content-type");
+      let data = "";
+      if (R.includes("application/json", contentType)) {
+        data = await response.json();
+      } else if (contentType === "application/octet-stream") {
+        const data = await response.blob();
+      }
 
       /**
        * Data will be saved to the same context as what dispatchFn presents.
@@ -150,6 +164,7 @@ async function run(
     }
     return response;
   } catch (err) {
+    console.info(err);
     /**
      * Fetching failed. So, let's mark it up for later use.
      */
@@ -186,18 +201,21 @@ function recursiveFetchHandler(
     path
   } = R.view(R.lensIndex(index), keysAndDispatchFuncs);
 
-  const url = R.join("", [R.prop(key, backendRoutes), urlEnding]);
+  const routeObj = R.prop(key, backendRoutes);
 
   /**
    * When a user is leaving a page and the following backend call is active we can
    * use an abort controller to gracefully abort the call. So, let's create one.
    */
-  const abortController = new AbortController();
+  const abortController =
+    routeObj.abortController !== false ? new AbortController() : false;
 
   /**
    * This is practically a push operation written with Ramda.
    */
-  const abortControllers = R.append(abortController, _abortControllers);
+  const abortControllers = abortController
+    ? R.append(abortController, _abortControllers)
+    : _abortControllers;
 
   /**
    * Fetching is about to start. So, let's mark it up for later use.
@@ -213,7 +231,16 @@ function recursiveFetchHandler(
    * XHR call is made by the run function.
    */
   const responses = R.append(
-    run(key, url, options, dispatchFn, abortController, subKey, path),
+    run(
+      key,
+      routeObj,
+      options,
+      dispatchFn,
+      abortController,
+      subKey,
+      path,
+      urlEnding
+    ),
     _responses
   );
 

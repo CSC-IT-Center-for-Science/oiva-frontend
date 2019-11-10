@@ -161,14 +161,11 @@ const Jarjestaja = ({
                     exact
                     render={props => (
                       <JarjestamislupaAsiat
-                        lupa={lupa}
-                        lupahistory={R.path(
-                          ["lupahistoria", "raw"],
-                          fromBackend
-                        )}
+                        intl={intl}
                         match={props.match}
                         muutospyynnot={muutospyynnot}
                         newApplicationRouteItem={newApplicationRouteItem}
+                        organisaatio={organisaatio}
                       />
                     )}
                   />
@@ -201,7 +198,7 @@ const Jarjestaja = ({
             </FullWidthWrapper>
           </React.Fragment>
         }
-      ></FetchHandler>
+      />
     </React.Fragment>
   );
 };

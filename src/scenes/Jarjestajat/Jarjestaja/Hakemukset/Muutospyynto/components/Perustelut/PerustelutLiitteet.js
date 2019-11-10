@@ -27,7 +27,10 @@ const PerustelutLiitteet = React.memo(props => {
             {
               anchor: "A",
               styleClasses: ["w-full"],
-              name: "Attachments"
+              name: "Attachments",
+              properties: {
+                isReadOnly: false
+              }
             }
           ]
         }
