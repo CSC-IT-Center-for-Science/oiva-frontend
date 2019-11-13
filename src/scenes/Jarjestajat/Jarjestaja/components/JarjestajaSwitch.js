@@ -85,7 +85,6 @@ const JarjestajaSwitch = ({ history, intl, match, organisaatio, user }) => {
                         lupaKohteet={lupaKohteet}
                         lupa={lupa}
                         match={match}
-                        muutospyynnot={fromBackend.muutospyynnot.raw}
                         organisaatio={organisaatio}
                         user={user}
                       />
@@ -96,7 +95,7 @@ const JarjestajaSwitch = ({ history, intl, match, organisaatio, user }) => {
             </Switch>
           </React.Fragment>
         }
-      ></FetchHandler>
+      />
     </React.Fragment>
   );
 };

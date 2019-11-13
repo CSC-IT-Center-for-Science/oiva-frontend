@@ -138,5 +138,9 @@ export default defineMessages({
   documentStatus: {
     id: "common.documentStatus",
     defaultMessage: "Asiakirjan tila"
+  },
+  sent: {
+    id: "common.sent",
+    defaultMessage: "Lähetetty"
   }
 });

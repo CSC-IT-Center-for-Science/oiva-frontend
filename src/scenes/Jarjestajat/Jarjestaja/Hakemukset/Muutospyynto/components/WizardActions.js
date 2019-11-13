@@ -21,7 +21,11 @@ const WizardActions = props => {
   };
 
   const onSaveClick = () => {
-    props.onSave();
+    props.onSave(false);
+  };
+
+  const onPreviewClick  = () => {
+    props.onSave(true);
   };
 
   const handleCancel = () => {
@@ -69,7 +73,7 @@ const WizardActions = props => {
           </Button>
           <Button
             color="secondary"
-            disabled
+            onClick={onPreviewClick}
           >
             {formatMessage(wizardMessages.preview)}
           </Button>

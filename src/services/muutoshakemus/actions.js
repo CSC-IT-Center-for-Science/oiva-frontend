@@ -30,7 +30,7 @@ export const setSectionData = payload => {
   };
 };
 
-export function saveMuutospyynto(muutospyynto, attachments) {
+export function saveMuutospyynto(muutospyynto, attachments, triggerPreview = false) {
   let data = new FormData();
   var muutos = new Blob([JSON.stringify(muutospyynto)], {
     type: "application/json"
@@ -54,7 +54,7 @@ export function saveMuutospyynto(muutospyynto, attachments) {
         withCredentials: true
       })
       .then(response => {
-        dispatch({ type: SAVE_MUUTOSPYYNTO_SUCCESS, payload: response });
+        dispatch({ type: SAVE_MUUTOSPYYNTO_SUCCESS, payload: { response, triggerPreview }});
       })
       .catch(err => {
         dispatch({ type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err });

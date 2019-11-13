@@ -4,10 +4,12 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 
 const JarjestamislupaAsiakirjatItem = props => {
-  const { rowItems, onClick } = props;
+  const { rowItems, onClick = () => {} } = props;
 
   return (
-    <Tr onClick = { onClick }>
+    <Tr
+    onClick = { onClick }
+    >
       {
         rowItems.map((val, idx) => (
           <Td key={idx}>

@@ -75,7 +75,7 @@ const PerustelutTutkinnot = React.memo(
           return { areaCode, article, categories, title };
         }, _.cloneDeep(koulutusdata));
       };
-    }, [isReadOnly, kohde, locale, lomakkeet, lupaKohteet, maaraystyyppi]);
+    }, [isReadOnly, kohde, intl, locale, lomakkeet, lupaKohteet, maaraystyyppi]);
 
     useEffect(() => {
       if (koulutusdata.length) {

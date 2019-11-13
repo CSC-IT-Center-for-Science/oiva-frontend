@@ -119,10 +119,18 @@ const HakemusContainer = ({ history, intl, lupa, lupaKohteet, match }) => {
    */
   useEffect(() => {
     if (isReady(fromBackend.muutospyynto) && match.params.uuid) {
-      const backendMuutokset = R.path(
-        ["raw", "muutokset"],
+      const attachments = R.path(
+        ["raw", "liitteet"],
         fromBackend.muutospyynto
       );
+
+      fromBackend.muutospyynto.raw =
+        setAttachmentUuids(attachments, fromBackend.muutospyynto.raw);
+
+      const backendMuutokset = R.compose(
+        R.path(["raw", "muutokset"]),
+      )(fromBackend.muutospyynto);
+
       const getChangesOf = (
         key,
         changes,
@@ -186,19 +194,6 @@ const HakemusContainer = ({ history, intl, lupa, lupaKohteet, match }) => {
           ["raw", "meta", "yhteenveto", "changeObjects"],
           fromBackend.muutospyynto
         ) || [];
-      // Gets uuid:s from liitteet-structure coming from backend and sets them to changeObject
-      tutkinnotjakoulutuksetLiitteetChanges = setAttachmentUuids(
-        tutkinnotjakoulutuksetLiitteetChanges,
-        fromBackend.muutospyynto.raw
-      );
-      taloudellisetChanges = setAttachmentUuids(
-        taloudellisetChanges,
-        fromBackend.muutospyynto.raw
-      );
-      yhteenvetoChanges = setAttachmentUuids(
-        yhteenvetoChanges,
-        fromBackend.muutospyynto.raw
-      );
 
       const c = R.flatten([
         getChangesOf("tutkinnotjakoulutukset", backendMuutokset, {

@@ -34,10 +34,8 @@ const Jarjestaja = ({
   lupaKohteet = [],
   lupa = {},
   match,
-  muutospyynnot,
   organisaatio = {},
-  user,
-  ytunnus
+  user
 }) => {
   const { state: fromBackend, dispatch } = useContext(BackendContext);
 
@@ -61,6 +59,11 @@ const Jarjestaja = ({
             key: "lupahistoria",
             dispatchFn: dispatch,
             urlEnding: jarjestaja.oid
+          },
+          {
+            key: "muutospyynnot",
+            dispatchFn: dispatch,
+            urlEnding: jarjestaja.ytunnus
           }
         ]
       : [];
@@ -109,6 +112,8 @@ const Jarjestaja = ({
     };
   }, [match, user]);
 
+  const muutospyynnot = R.path(["muutospyynnot", "raw"], fromBackend);
+
   return (
     <React.Fragment>
       <FetchHandler
@@ -145,7 +150,7 @@ const Jarjestaja = ({
                       <Jarjestamislupa
                         lupaKohteet={lupaKohteet}
                         lupa={lupa}
-                        ytunnus={ytunnus}
+                        ytunnus={jarjestaja.ytunnus}
                       />
                     )}
                   />
@@ -207,10 +212,8 @@ Jarjestaja.propTypes = {
   lupaKohteet: PropTypes.object,
   lupa: PropTypes.object,
   match: PropTypes.object,
-  muutospyynnot: PropTypes.array,
   organisaatio: PropTypes.object,
-  user: PropTypes.object,
-  ytunnus: PropTypes.string
+  user: PropTypes.object
 };
 
 export default injectIntl(Jarjestaja);

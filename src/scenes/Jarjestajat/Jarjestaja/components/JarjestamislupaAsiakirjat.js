@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import Media from "react-media";
 import styled from "styled-components";
 import { Table, Tbody, Thead, Thn, Trn } from "../../../../modules/Table";
@@ -9,77 +9,107 @@ import JarjestamislupaAsiakirjatItem from "./JarjestamislupaAsiakirjatItem";
 import { Typography } from "@material-ui/core";
 import common from "../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
+import FetchHandler from "../../../../FetchHandler";
+import { BackendContext } from "../../../../context/backendContext";
+import Moment from "react-moment";
+import { downloadFileFn } from "../../../../components/02-organisms/Attachments";
 
 const WrapTable = styled.div``;
 
 const titleKeys = [
   common.document,
   common.documentStatus,
-  common.author
+  common.author,
+  common.sent
 ];
 
-const JarjestamislupaAsiakirjat = ({muutospyynto, asiakirjat, organisaatio, intl}) => {
+const JarjestamislupaAsiakirjat = ({muutospyynto, organisaatio, intl}) => {
+
+  const { state: fromBackend, dispatch } = useContext(BackendContext);
+  const fetchSetup = useMemo(() => {
+    return muutospyynto && muutospyynto.uuid
+      ? [{
+          key: "muutospyynnonLiitteet",
+          dispatchFn: dispatch,
+          urlEnding: muutospyynto.uuid
+        }]
+      : [];
+  }, [dispatch, muutospyynto]);
 
   const baseRow = [
     LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[muutospyynto.tila][R.toUpper(intl.locale)],
     R.path(["nimi", intl.locale], organisaatio)
   ];
 
-  const getLiitteetRowItems = R.map((liite) =>
+  const liitteetRowItems = useMemo(() => R.map((liite) =>
     ({
-      items: R.prepend(
-        intl.formatMessage(liite.salainen ? common.secretAttachment : common.attachment) + " " + R.prop("nimi", liite),
-        baseRow),
-      tiedostoId: R.prop("tiedostoId", liite)
-    }), asiakirjat);
+      items:
+        [
+          intl.formatMessage(liite.salainen ? common.secretAttachment : common.attachment) + " " + R.prop("nimi", liite),
+          ...baseRow,
+          liite.luontipvm
+            ? (<Moment format="D.M.YYYY">{liite.luontipvm}</Moment>)
+            : ""
+        ],
+      fileLink: `/liitteet/${liite.uuid}/raw`
+    }), R.sortBy(R.prop("nimi"), R.pathOr([], ['muutospyynnonLiitteet', 'raw'], fromBackend))
+  ), [intl, fromBackend, baseRow]);
 
-  const getMuutospyyntoRowItems = {
-    tiedostoId: muutospyynto.uuid,
-    items: R.prepend(
+  const muutospyyntoRowItem = {
+    fileLink: `/pdf/esikatsele/muutospyynto/${muutospyynto.uuid}`,
+    openInNewWindow: true,
+    items: [
       intl.formatMessage(common.application),
-      baseRow)
+      ...baseRow,
+      ""
+    ]
   };
 
-  const renderJarjestamislupaAsiatList = () => {
+  const jarjestamislupaAsiakirjatList = () => {
     return R.addIndex(R.map)((row, idx) => (
       <JarjestamislupaAsiakirjatItem
-        onClick = {() => {console.log("TODO: Download document " + row.tiedostoId)} }
+        onClick = { downloadFileFn({ url: row.fileLink, openInNewWindow: row.openInNewWindow }) }
         rowItems = { row.items }
         key = { idx }
       />
-    ), R.prepend(getMuutospyyntoRowItems, getLiitteetRowItems));
+    ), [muutospyyntoRowItem, ...liitteetRowItems]);
   };
 
   return (
-    <WrapTable>
-      <Media
-        query={MEDIA_QUERIES.MOBILE}
-        render={() => (
-          <Table>
-            <Tbody>{renderJarjestamislupaAsiatList()}</Tbody>
-          </Table>
-        )}
+    <FetchHandler
+      fetchSetup={fetchSetup}
+      ready={
+        <WrapTable>
+          <Media
+            query={MEDIA_QUERIES.MOBILE}
+            render={() => (
+              <Table>
+                <Tbody>{jarjestamislupaAsiakirjatList()}</Tbody>
+              </Table>
+            )}
+          />
+          <Media
+            query={MEDIA_QUERIES.TABLET_MIN}
+            render={() => (
+              <Table>
+                <Thead>
+                  <Trn>
+                    {
+                      titleKeys.map((title, ind) => (
+                        <Thn key={ind}>
+                          <Typography>{intl.formatMessage(title)}</Typography>
+                        </Thn>)
+                      )
+                    }
+                  </Trn>
+                </Thead>
+                <Tbody>{jarjestamislupaAsiakirjatList()}</Tbody>
+              </Table>
+            )}
+          />
+        </WrapTable>
+      }
       />
-      <Media
-        query={MEDIA_QUERIES.TABLET_MIN}
-        render={() => (
-          <Table>
-            <Thead>
-              <Trn>
-                {
-                  titleKeys.map((title, ind) => (
-                    <Thn key={ind}>
-                      <Typography>{ intl.formatMessage(title) }</Typography>
-                    </Thn>)
-                  )
-                }
-              </Trn>
-            </Thead>
-            <Tbody>{renderJarjestamislupaAsiatList()}</Tbody>
-          </Table>
-        )}
-      />
-    </WrapTable>
   );
 };
 

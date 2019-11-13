@@ -15,6 +15,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 import { MessageWrapper } from "modules/elements";
 import { ROLE_KAYTTAJA } from "modules/constants";
 import wizardMessages from "../../../../../../i18n/definitions/wizard";
@@ -46,9 +48,8 @@ import {
 } from "../../../../../../utils/koulutusParser";
 import { getMaakuntakunnatList } from "../../../../../../utils/toimialueUtil";
 import Loading from "../../../../../../modules/Loading";
-import ConfirmDialog from "../../../../../../components/02-organisms/ConfirmDialog";
 
-export const DialogTitle = withStyles(theme => ({
+const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     margin: 0,
@@ -185,9 +186,6 @@ const MuutospyyntoWizard = ({
     perustelut: {
       koulutukset: {},
       tutkinnot: {}
-    },
-    yhteenveto: {
-      hakemuksenliitteet: {}
     }
   });
 
@@ -241,7 +239,7 @@ const MuutospyyntoWizard = ({
             changeObjects.length > 0
               ? R.assocPath(R.split("_", id), changeObjects, prevState)
               : R.dissocPath(R.split("_", id), prevState);
-          console.info("Next changeObjects:", id, prevState, nextState);
+          console.info("Next changeObjects:", id, nextState);
           return nextState;
         });
       }
@@ -605,13 +603,27 @@ const MuutospyyntoWizard = ({
               </div>
             </DialogContent>
           </FormDialog>
-          <ConfirmDialog
-            isConfirmDialogVisible={isConfirmDialogVisible}
-            title={"Poistutaanko?"}
-            content={HAKEMUS_VIESTI.VARMISTUS.FI}
-            handleOk={handleOk}
-            handleCancel={handleCancel}
-          />
+          <Dialog
+            open={isConfirmDialogVisible}
+            fullWidth={true}
+            aria-labelledby="confirm-dialog"
+            maxWidth="sm"
+          >
+            <DialogTitle id="confirm-dialog">Poistutaanko?</DialogTitle>
+            <DialogContent>{HAKEMUS_VIESTI.VARMISTUS.FI}</DialogContent>
+            <DialogActions>
+              <Button onClick={handleOk} color="primary" variant="contained">
+                {HAKEMUS_VIESTI.KYLLA.FI}
+              </Button>
+              <Button
+                onClick={handleCancel}
+                color="secondary"
+                variant="outlined"
+              >
+                {HAKEMUS_VIESTI.EI.FI}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </React.Fragment>
       );
     } else if (sessionStorage.getItem("role") !== ROLE_KAYTTAJA) {

@@ -40,7 +40,8 @@ export default function(state, action) {
           isSaving: false,
           saved: true,
           hasErrored: false,
-          data: action.payload
+          triggerPreview: action.payload.triggerPreview,
+          data: action.payload.response
         }
       };
     case SAVE_MUUTOSPYYNTO_FAILURE:

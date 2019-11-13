@@ -362,26 +362,9 @@ const Attachments = React.memo(
       else return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
     };
 
-    // Creates a link to download file in browser
-    const showFile = (e, file) => {
-      let a = document.createElement("a");
-      a.setAttribute("type", "hidden");
-      document.body.appendChild(a); // Needed for Firefox
-      if (file.tiedosto && file.tiedosto instanceof Blob) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.tiedosto);
-        reader.onload = function() {
-          a.href = reader.result;
-          a.download = file.filename;
-          a.click();
-          a.remove();
-        };
-      } else {
-        a.href = API_BASE_URL + "/liitteet/" + file.uuid + "/raw";
-        a.click();
-        a.remove();
-      }
-    };
+    const addLiiteUrl = file => file.uuid
+        ? Object.assign({}, file, {url: `/liitteet/${file.uuid}/raw`})
+        : file;
 
     // Lists all attachments
     const LiiteList = () => {
@@ -416,7 +399,7 @@ const Attachments = React.memo(
                   <span className="size">{bytesToSize(liite.koko)}</span>
                   <button
                     title={formatMessage(common.attachmentDownload)}
-                    onClick={e => showFile(e, liite)}
+                    onClick={ downloadFileFn(addLiiteUrl(liite)) }
                     className="ml-2"
                   >
                     <FaDownload />
@@ -488,7 +471,7 @@ const Attachments = React.memo(
                   <span className="size">{bytesToSize(liite.koko)}</span>
                   <button
                     title={formatMessage(common.attachmentDownload)}
-                    onClick={e => showFile(e, liite)}
+                    onClick={ downloadFileFn(addLiiteUrl(liite)) }
                     className="ml-2"
                   >
                     <FaDownload />
@@ -603,6 +586,39 @@ Attachments.propTypes = {
 Attachments.whyDidYouRender = {
   logOnDifferentValues: true,
   customName: "Attachments"
+};
+
+/**
+ * Open file using generated and hidden <a> element
+ * @param obj containing properties filename and tiedosto or property url. Has optional parameter openInNewWindow
+ */
+export const downloadFileFn = ({ filename, tiedosto, url, openInNewWindow }) => {
+  return () => {
+    let a = document.createElement("a");
+    a.setAttribute("type", "hidden");
+    if ( openInNewWindow ) {
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener noreferer");
+    }
+
+    document.body.appendChild(a); // Needed for Firefox
+    if (tiedosto && tiedosto instanceof Blob) {
+      const reader = new FileReader();
+      reader.readAsDataURL(tiedosto);
+      reader.onload = function () {
+        a.href = reader.result;
+        a.download = filename;
+        a.click();
+        a.remove();
+      };
+    } else if (url) {
+      a.href = API_BASE_URL + url;
+      a.click();
+      a.remove();
+    } else {
+      console.warn("Cannot open file: No octet stream nor file url");
+    }
+  }
 };
 
 export default injectIntl(Attachments);
