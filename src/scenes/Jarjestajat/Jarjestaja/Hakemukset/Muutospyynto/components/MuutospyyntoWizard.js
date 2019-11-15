@@ -45,7 +45,7 @@ import { sortLanguages } from "../../../../../../utils/kieliUtil";
 import {
   parseKoulutuksetAll,
   parseKoulutusalat
-} from "../../../../../../services/koulutukset/koulutusParser";
+} from "../../../../../../utils/koulutusParser";
 import { getMaakuntakunnatList } from "../../../../../../utils/toimialueUtil";
 import Loading from "../../../../../../modules/Loading";
 
