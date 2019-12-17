@@ -13,4 +13,4 @@ export const LUPA_EXCEPTION_PATH = `${API_BASE_URL}/pebble/resources/liitteet/li
 export const ROLE_APPLICATION = "OIVA_APP";
 export const ROLE_YLLAPITAJA = "OIVA_APP_YLLAPITAJA";
 export const ROLE_ESITTELIJA = "OIVA_APP_ESITTELIJA";
-export const ROLE_KAYTTAJA = "OIVA_APP_KAYTTAJA";
+export const ROLE_KAYTTAJA = "OIVA_APP_MUOKKAAJA";
