@@ -31,6 +31,16 @@ const columnTitles = [
   common.sent
 ];
 
+// States of hakemus
+const states = [
+  "LUONNOS",
+  "AVOIN",
+  "VALMISTELUSSA",
+  "TAYDENNETTAVA",
+  "PAATETTY",
+  "PASSIVOITU"
+];
+
 const JarjestamislupaAsiakirjat = ({ muutospyynto }) => {
   const intl = useIntl();
 
@@ -47,7 +57,11 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto }) => {
   const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
 
   const baseRow = [
-    LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[muutospyynto.tila][R.toUpper(intl.locale)],
+    muutospyynto.tila && states.includes(muutospyynto.tila)
+      ? LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[muutospyynto.tila][
+          R.toUpper(intl.locale)
+        ]
+      : muutospyynto.tila,
     R.path(["nimi", intl.locale], organisation.data)
   ];
 

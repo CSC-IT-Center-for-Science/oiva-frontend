@@ -132,11 +132,10 @@ const JarjestamislupaAsiatList = ({
       rowGroups: [
         {
           rows: R.addIndex(R.map)((row, i) => {
-            console.log(row);
             const tilaText =
-              row.tila &&
-              states.includes(row.tila) &&
-              LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI;
+              row.tila && states.includes(row.tila)
+                ? LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI
+                : row.tila;
             let cells = R.addIndex(R.map)(
               (col, ii) => {
                 return {
