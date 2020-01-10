@@ -48,6 +48,16 @@ const columnTitles = [
   LUPA_TEKSTIT.ASIAT.ASIAT_TAULUKKO.PAATETTY.FI
 ];
 
+// States of hakemus
+const states = [
+  "LUONNOS",
+  "AVOIN",
+  "VALMISTELUSSA",
+  "TAYDENNETTAVA",
+  "PAATETTY",
+  "PASSIVOITU"
+];
+
 const JarjestamislupaAsiatList = ({
   history,
   match,
@@ -123,7 +133,9 @@ const JarjestamislupaAsiatList = ({
         {
           rows: R.addIndex(R.map)((row, i) => {
             const tilaText =
-              row.tila && LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI;
+              row.tila &&
+              states.includes(row.tila) &&
+              LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI;
             let cells = R.addIndex(R.map)(
               (col, ii) => {
                 return {
