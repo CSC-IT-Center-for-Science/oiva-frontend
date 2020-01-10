@@ -1,1 +1,0 @@
-export const LUVAT_BASE = '/luvat'

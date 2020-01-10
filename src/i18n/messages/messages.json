@@ -1,0 +1,537 @@
+[
+  {
+    "id": "auth.logIn",
+    "defaultMessage": "Kirjaudu sisään",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.logOut",
+    "defaultMessage": "Kirjaudu ulos",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.loggedInInfo",
+    "defaultMessage": "Olet kirjautunut sisään",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "common.statistics",
+    "defaultMessage": "Tilastot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.current",
+    "defaultMessage": "Nykyinen",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.applyFor",
+    "defaultMessage": "Haettava",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.difference",
+    "defaultMessage": "Muutos",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.undo",
+    "defaultMessage": "Peruuta muutokset",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.loading",
+    "defaultMessage": "Ladataan",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.ok",
+    "defaultMessage": "Ok",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.clear",
+    "defaultMessage": "Tyhjennä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.cancel",
+    "defaultMessage": "Peruuta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.today",
+    "defaultMessage": "Tänään",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.datemax",
+    "defaultMessage": "Päiväys on liian suuri",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.datemin",
+    "defaultMessage": "Päiväys on liian pieni",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.dateinvalid",
+    "defaultMessage": "Päiväys on virheellinen",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentInfo",
+    "defaultMessage": "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muista merkitä salassa pidettävät liitteet.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentNone",
+    "defaultMessage": "Ei lisättyjä liitteitä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentError",
+    "defaultMessage": "Valitsemaasi liitettä ei voi lisätä hakemukseen, tarkista sen koko ja tyyppi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentAdd",
+    "defaultMessage": "Lisää liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentRemove",
+    "defaultMessage": "Poista liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentSecret",
+    "defaultMessage": "Salainen liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentSecretSelect",
+    "defaultMessage": "Merkitse liite salaiseksi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentSecretUnselect",
+    "defaultMessage": "Merkitse liite julkiseksi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentName",
+    "defaultMessage": "Liitteen nimi *",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentErrorName",
+    "defaultMessage": "Nimi on pakollinen",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentDownload",
+    "defaultMessage": "Lataa liite tietokoneelle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.loginError",
+    "defaultMessage": "Kirjautumisessa tapahtui virhe",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.welcome",
+    "defaultMessage": "Tervetuloa Oiva-palveluun",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.fetchFailure",
+    "defaultMessage": "Tietoja ei voitu noutaa.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.fetchFailureAuthInfo",
+    "defaultMessage": "Tämä voi johtua siitä, ettet ole kirjautunut sisään.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.application",
+    "defaultMessage": "Hakemus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachement",
+    "defaultMessage": "Liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.secretAttachement",
+    "defaultMessage": "Salainen liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.document",
+    "defaultMessage": "Asiakirja",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.author",
+    "defaultMessage": "Laatija",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.documentStatus",
+    "defaultMessage": "Asiakirjan tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.sent",
+    "defaultMessage": "Lähetetty",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.edit",
+    "defaultMessage": "Täydennä hakemusta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.change",
+    "defaultMessage": "Järjestämisluvan muutos",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.stateAsia",
+    "defaultMessage": "Asian tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.functions",
+    "defaultMessage": "Toiminnot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.hakemusAsiakirjat",
+    "defaultMessage": "Hakemuksen asiakirjat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.backFromAsiakirjat",
+    "defaultMessage": "Takaisin Järjestämislupa asiat -taulukkoon",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.newHakemus",
+    "defaultMessage": "Tee uusi hakemus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.tietoaTulevanJulkaisunAjankohdasta",
+    "defaultMessage": "Tulossa vuoden 2020 aikana",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siteShortDescription",
+    "defaultMessage": "Opetushallinnon ohjaus- ja säätelypalvelu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.sort",
+    "defaultMessage": "Järjestä sarakkeen mukaan",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.toBeAdded",
+    "defaultMessage": "Lisättävä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.toBeRemoved",
+    "defaultMessage": "Poistettava",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "education.highSchoolEducation",
+    "defaultMessage": "Lukiokoulutus",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.preAndBasicEducation",
+    "defaultMessage": "Esi- ja perusopetus",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.vocationalEducation",
+    "defaultMessage": "Ammatillinen koulutus",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "languages.inFinnish",
+    "defaultMessage": "Suomeksi",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
+    "id": "languages.inSwedish",
+    "defaultMessage": "På svenska",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
+    "id": "user.ownOrganisation",
+    "defaultMessage": "Oma organisaatio",
+    "filepath": "src/i18n/definitions/user.js"
+  },
+  {
+    "id": "wizard.info_01",
+    "defaultMessage": "Seuraavat kohdat on jaoteltu ammatillisten tutkintojen ja koulutuksen järjestämisluvan rakenteen mukaisesti. Hakijan tulee täyttää alla olevat kohdat vain siltä osin, mihin tutkintojen ja koulutuksen järjestämislupaan haetaan muutosta. Tarkemmat ohjeistukset sekä pykäläviittaukset ammatillisen koulutuksen lakiin (531/2017) on esitetty kohdittain.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.info_02",
+    "defaultMessage": "Koulutuksen järjestäjä voi järjestää myös em. tutkintoihin liittyvää ammatillisesta koulutuksesta annetun (531/2017) 8 §:n 1 kohdassa tarkoitettua ammatillista osaamista syventävää tai täydentävää koulutusta.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.formTitle_new",
+    "defaultMessage": "Uusi hakemus",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.pageTitle_1",
+    "defaultMessage": "Uusi muutoshakemus",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.pageTitle_2",
+    "defaultMessage": "Perustelut",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.pageTitle_3",
+    "defaultMessage": "Taloudelliset edellytykset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.pageTitle_4",
+    "defaultMessage": "Yhteenveto",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.sectionTitle_1",
+    "defaultMessage": "Tutkinnot ja koulutukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.teachingLanguages",
+    "defaultMessage": "Opetuskielet",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.preparatoryTraining",
+    "defaultMessage": "Valmentavat koulutukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.driverTraining",
+    "defaultMessage": "Kuljettajakoulutukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.workforceTraining",
+    "defaultMessage": "Työvoimakoulutukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.vocationalTraining",
+    "defaultMessage": "Ammatilliseen tehtävään valmistavat koulutukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.chooseOnlyOne",
+    "defaultMessage": "Voit valita vain yhden seuraavista:",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.chooseAdditional",
+    "defaultMessage": "Lisäksi voit valita seuraavat:",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.header_section1",
+    "defaultMessage": "Tutkinnot ja koulutukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.header_section2",
+    "defaultMessage": "Opetus- ja tutkintokieli",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.header_section3",
+    "defaultMessage": "Toiminta-alue",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.header_section4",
+    "defaultMessage": "Opiskelijavuodet ja niitä koskevat rajoitukset",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.header_section5",
+    "defaultMessage": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.other_placeholder",
+    "defaultMessage": "Kerro vapaasti, mitä haluat hakea",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.minimumAmountOfYears",
+    "defaultMessage": "Koulutuksen järjestäjän opiskelijavuosien vähimmäismäärä",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.limitForSpecialSupport",
+    "defaultMessage": "Vähimmäisopiskelijavuosimäärän rajoitus koskien vaativaa erityistä tukea (65 §)",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.limitForBoardingSchool",
+    "defaultMessage": "Vähimmäisopiskelijavuosimäärän rajoitus koskien sisäoppilaitosmuotoista koulutusta (27 §)",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.responsibilities",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta Ahvenanmaan maakuntaa lukuunottamatta koko Suomen osaamis- ja koulutustarpeeseen.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.areasInfo1",
+    "defaultMessage": "Tähän lyhyt ohjeteksti kohteen täyttämisestä",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.areasInfo2",
+    "defaultMessage": "Tähän lyhyt ohjeteksti toimialueiden valintaan liittyen",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.areasInfo3",
+    "defaultMessage": "Tähän lyhyt ohjeteksti valtakunnallisen valintaan liittyen",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.noArea",
+    "defaultMessage": "Toiminta-aluetta ei määritetty",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.municipalities",
+    "defaultMessage": "Kunnat",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.counties",
+    "defaultMessage": "Maakunnat",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.previous",
+    "defaultMessage": "Edellinen",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.next",
+    "defaultMessage": "Seuraava",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.saveDraft",
+    "defaultMessage": "Tallenna luonnos",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.send",
+    "defaultMessage": "Lähetä hakemus",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.preview",
+    "defaultMessage": "Esikatsele",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.noChanges",
+    "defaultMessage": "Ei muutoksia.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.noAddedTutkinnot",
+    "defaultMessage": "Taloudelliset edellytykset ilmoitetaan vain, kun järjestämislupaan haetaan uusia tutkintoja tai koulutuksia. Jatka seuraavalle välilehdelle Seuraava-painikkeella.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.except",
+    "defaultMessage": "lukuun ottamatta:",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.osaamisalarajoitus",
+    "defaultMessage": "Rajoitus",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.kuljettajakoulutusOutOfScope",
+    "defaultMessage": "Ei oikeutta järjestää kuorma- ja linja-autonkuljettajan ammattipätevyyskoulutusta",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.notSignedIn",
+    "defaultMessage": "Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.noRights",
+    "defaultMessage": "Sinulla ei ole oikeuksia tälle sivulle.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.tooltipTaloudellisetYleisetTiedotKentta1",
+    "defaultMessage": "Esittäkää taloudelliset edellytyksenne järjestää haettuja tehtäviä huomioiden, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.tooltipTaloudellisetYleisetTiedotKentta2",
+    "defaultMessage": "Arvioikaa, vaikuttaako haetut tehtävät nykyisten taloudellisten resurssienne uudelleen kohdentamiseen. Jos vaikuttavat, esittäkää millä tavalla.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.tooltipTaloudellisetYleisetTiedotKentta3",
+    "defaultMessage": "Mikäli haette työvoimakoulutuksen tai laajennettua oppisopimuskoulutuksen järjestämistehtävää, arvioikaa, miten kykenette vastaamaan ko. koulutustarpeen muutoksiin nopeasti ja uudelleen kohdentamaan resurssejanne tarpeen mukaisesti.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.tooltipTaloudellisetInvestoinnitKentta1",
+    "defaultMessage": "Esittäkää haetun tehtävän mukaisen toiminnan käynnistämiseksi tarvittavat investoinnit.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.tooltipTaloudellisetInvestoinnitKentta2",
+    "defaultMessage": "Arvioikaa edellä esittämienne investointien kustannukset yhteensä.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.tooltipTaloudellisetInvestoinnitKentta3",
+    "defaultMessage": "Esittäkää, miten rahoitatte edellä esittämänne investoinnit. Huomioikaa, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "app.title",
+    "defaultMessage": "Opetus- ja kulttuuriministeriö",
+    "filepath": "src/scenes/Footer/Footer.js"
+  },
+  {
+    "id": "app.valtioneuvosto",
+    "defaultMessage": "Valtioneuvosto",
+    "filepath": "src/scenes/Footer/Footer.js"
+  }
+]

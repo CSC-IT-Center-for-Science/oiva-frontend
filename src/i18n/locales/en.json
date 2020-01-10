@@ -1,0 +1,14 @@
+{
+  "app.title": "Opetus- ja kulttuuriministeriö",
+  "app.valtioneuvosto": "Valtioneuvosto",
+  "auth.logIn": "Log in",
+  "auth.logOut": "Log out",
+  "auth.loggedInInfo": "You are logged in",
+  "common.statistics": "Statistics",
+  "education.highSchoolEducation": "High School Education",
+  "education.preAndBasicEducation": "Pre and basic education",
+  "education.vocationalEducation": "Vocational education",
+  "languages.inFinnish": "In Finnish",
+  "languages.inSwedish": "In Swedish",
+  "user.ownOrganisation": "Your own organization"
+}

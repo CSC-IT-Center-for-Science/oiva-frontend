@@ -1,0 +1,11 @@
+@lib galen-extras
+
+@objects
+    header              xpath       header
+    sideNavigation      xpath       [data-testid='side-navigatiom']
+
+= Header =
+    | header.logo should be squared with 48px size
+
+    sideNavigation
+        inside header

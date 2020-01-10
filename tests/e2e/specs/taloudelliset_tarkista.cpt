@@ -1,0 +1,15 @@
+# Tarkista taloudelliset
+
+* View textbox "taloudelliset_yleisettiedot.edellytykset-tekstikentta.A"
+* View textbox "taloudelliset_yleisettiedot.Vaikutukset-tekstikentta.A"
+* View textbox "taloudelliset_yleisettiedot.sopeuttaminen-tekstikentta.A"
+
+* View textbox "taloudelliset_investoinnit.investoinnit-tekstikentta.A"
+* View textbox "taloudelliset_investoinnit.kustannukset-Input.A"
+* View textbox "taloudelliset_investoinnit.rahoitus-tekstikentta.A"
+
+* View textbox "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste"
+* View textbox "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius"
+* View textbox "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus"
+* View textbox "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus"
+* View textbox "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama"

@@ -1,0 +1,16 @@
+# Perustele taloudelliset
+
+* Attach file "image-1.jpeg" to "taloudelliset_liitteet.liitteet.A"
+* Set random "10" chars into textarea "taloudelliset_yleisettiedot.edellytykset-tekstikentta.A"
+* Set random "20" chars into textarea "taloudelliset_yleisettiedot.Vaikutukset-tekstikentta.A"
+* Set random "30" chars into textarea "taloudelliset_yleisettiedot.sopeuttaminen-tekstikentta.A"
+
+* Set random "40" chars into textarea "taloudelliset_investoinnit.investoinnit-tekstikentta.A"
+* Set random number with "2" decimals between "0" and "100000" into "taloudelliset_investoinnit.kustannukset-Input.A"
+* Set random "50" chars into textarea "taloudelliset_investoinnit.rahoitus-tekstikentta.A"
+
+* Set random number with "2" decimals between "0" and "100000" into "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste"
+* Set random number with "2" decimals between "0" and "100000" into "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius"
+* Set random number with "2" decimals between "0" and "100000" into "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus"
+* Set random number with "2" decimals between "0" and "100000" into "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus"
+* Set random number with "2" decimals between "0" and "100000" into "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama"

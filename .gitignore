@@ -10,6 +10,7 @@ coverage
 build
 
 # misc
+.cache
 .DS_Store
 .env.local
 .env.development.local
@@ -22,3 +23,10 @@ _old
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+src/css/tailwind.css
+# src/**/*.module.css
+
+docs
+
+src/css/tailwind.src.module.css

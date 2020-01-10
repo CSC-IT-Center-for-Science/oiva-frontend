@@ -1,0 +1,9 @@
+@lib galen-extras
+
+@objects
+    header      header
+    main        main
+    footer      footer
+
+= Homepage =
+    | header, main, footer are aligned vertically above each other with ~0px margin
