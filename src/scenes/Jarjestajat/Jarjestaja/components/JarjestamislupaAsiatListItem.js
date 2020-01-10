@@ -26,7 +26,7 @@ const TextPartial = styled.span`
 
 const JarjestamislupaAsiaListItem = props => {
   const { tila, uuid } = props.muutospyynto;
-  const { intl } = props;
+  const { intl, states } = props;
   return (
     <React.Fragment>
       <Tr className="lg:hidden" role="row" onClick={() => props.setOpened()}>
@@ -35,7 +35,9 @@ const JarjestamislupaAsiaListItem = props => {
             <TextPartial>{intl.formatMessage(common.change)}</TextPartial>
             <TextPartial>
               {intl.formatMessage(common.stateAsia)}:&nbsp;
-              {LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[tila].FI}
+              {tila &&
+                states.includes(tila) &&
+                LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[tila].FI}
             </TextPartial>
           </LupaText>
           {tila === FIELDS.TILA.VALUES.LUONNOS && (

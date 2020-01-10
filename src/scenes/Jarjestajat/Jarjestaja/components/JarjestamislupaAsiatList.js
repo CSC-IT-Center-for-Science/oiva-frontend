@@ -132,6 +132,7 @@ const JarjestamislupaAsiatList = ({
       rowGroups: [
         {
           rows: R.addIndex(R.map)((row, i) => {
+            console.log(row);
             const tilaText =
               row.tila &&
               states.includes(row.tila) &&
@@ -204,6 +205,7 @@ const JarjestamislupaAsiatList = ({
         muutospyynto={historyData}
         key={historyData.uuid}
         setOpened={() => setMuutospyynto(historyData)}
+        states={states}
       />
     ));
   }, [url, muutospyynnot.data]);
