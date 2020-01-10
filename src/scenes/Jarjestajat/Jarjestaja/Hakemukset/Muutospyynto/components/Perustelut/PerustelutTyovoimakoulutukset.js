@@ -70,7 +70,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
           };
         }
         return structure;
-      }, R.values(koulutusData.items));
+      }, koulutusData.items);
       return categories.filter(Boolean);
     };
   }, [props.isReadOnly, props.changeObjects.koulutukset.tyovoimakoulutukset]);

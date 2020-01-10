@@ -1,9 +1,9 @@
-import * as R from "ramda";
 import getTyovoimakoulutuslomake from "./perustelut/tyovoimakoulutus";
 import {
   getKuljettajienJatkokoulutuslomake,
   getKuljettajienPeruskoulutuslomake
 } from "./perustelut/kuljettajakoulutukset";
+import { concat, path } from "ramda";
 
 const lomakkeet = {
   koulutukset: {
@@ -57,10 +57,10 @@ export function getLomake(
   data = {},
   isReadOnly,
   locale,
-  path = [],
+  _path = [],
   prefix
 ) {
-  const fn = R.path(R.concat(path, [action]), lomakkeet);
+  const fn = path(concat(_path, [action]), lomakkeet);
   const lomake = fn ? fn(data, isReadOnly, locale, prefix) : [];
   return lomake;
 }

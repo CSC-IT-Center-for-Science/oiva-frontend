@@ -164,7 +164,6 @@ export const getVankilaopetusPerustelulomake = (
 };
 
 export const getVaativaErityinenTukilomake = isReadOnly => {
-  const code = "TODO-WHAT-IS-THE-CODE";
   return [
     {
       anchor: "vaativa-erityinen-tuki-perustelut-lomake",
@@ -176,7 +175,7 @@ export const getVaativaErityinenTukilomake = isReadOnly => {
       },
       categories: [
         {
-          anchor: `${code}-1`,
+          anchor: `A`,
           code: 1,
           styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
           title: "Tehtävän tarpeellisuus",
@@ -199,7 +198,7 @@ export const getVaativaErityinenTukilomake = isReadOnly => {
           ]
         },
         {
-          anchor: `${code}-2`,
+          anchor: `B`,
           code: 2,
           styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
           title:
@@ -271,7 +270,7 @@ export const getVaativaErityinenTukilomake = isReadOnly => {
           ]
         },
         {
-          anchor: `${code}-3`,
+          anchor: `C`,
           code: 3,
           styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
           title: "Suunnitelma vaativan erityisen tuen tehtävän järjestämiseksi",
@@ -568,6 +567,9 @@ const opiskelijavuodet = (code, anchorNumber, isReadOnly) => {
                 name: "Input",
                 styleClasses: ["mr-8"],
                 properties: {
+                  forChangeObject: {
+                    year: (year + 1).toString()
+                  },
                   isReadOnly,
                   withoutMargin: true,
                   label: (year + 1).toString(),
@@ -580,6 +582,9 @@ const opiskelijavuodet = (code, anchorNumber, isReadOnly) => {
                 name: "Input",
                 styleClasses: ["mr-8"],
                 properties: {
+                  forChangeObject: {
+                    year: (year + 2).toString()
+                  },
                   isReadOnly,
                   withoutMargin: true,
                   label: (year + 2).toString(),
@@ -591,6 +596,9 @@ const opiskelijavuodet = (code, anchorNumber, isReadOnly) => {
                 anchor: "C",
                 name: "Input",
                 properties: {
+                  forChangeObject: {
+                    year: (year + 3).toString()
+                  },
                   isReadOnly,
                   withoutMargin: true,
                   label: (year + 3).toString(),

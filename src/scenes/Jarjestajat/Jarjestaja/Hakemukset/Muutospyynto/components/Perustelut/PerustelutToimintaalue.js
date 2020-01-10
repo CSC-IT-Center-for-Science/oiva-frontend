@@ -56,7 +56,6 @@ const PerustelutToimintaalue = React.memo(
                 layout: { indentation: "none", margins: { top: "none" } },
                 title: intl.formatMessage(common.current),
                 components: (() => {
-                  console.info(lupakohde);
                   const maakunnat = R.map(maakunta => {
                     return {
                       name: "StatusTextRow",

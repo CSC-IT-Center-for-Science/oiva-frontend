@@ -229,6 +229,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
     elykeskukset.fetchedAt &&
     kielet.fetchedAt &&
     kohteet.fetchedAt &&
+    kohteet.data &&
     path(["poikkeukset", "999901", "fetchedAt"], koulutukset) &&
     path(["poikkeukset", "999903", "fetchedAt"], koulutukset) &&
     path(

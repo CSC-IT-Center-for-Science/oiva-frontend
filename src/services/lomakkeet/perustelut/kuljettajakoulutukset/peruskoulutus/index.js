@@ -5,13 +5,13 @@ import {
   ajoneuvoKanta,
   muutOpetusvalineet,
   johtajienKelpoisuusJaTyokokemus
-} from "../lomakeosiot/kuljettajakoulutukset";
-import opiskelijavuodet from "../lomakeosiot/opiskelijavuodet";
+} from "../../lomakeosiot/kuljettajakoulutukset";
+import opiskelijavuodet from "../../lomakeosiot/opiskelijavuodet";
 
 export function getAdditionForm(isReadOnly) {
   return [
     {
-      anchor: 5,
+      anchor: 1,
       styleClasses: ["px-10 py-10"],
       components: [
         {

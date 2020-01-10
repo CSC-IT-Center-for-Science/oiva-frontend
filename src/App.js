@@ -38,6 +38,7 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "./modules/constants";
+import Esittelijat from "./scenes/Esittelijat/Esittelijat";
 import Header from "./components/02-organisms/Header";
 import { setLocale } from "./services/app/actions";
 import { AppContext } from "./context/appContext";
@@ -290,6 +291,16 @@ const App = ({ user }) => {
                     component={EsiJaPerusopetus}
                   />
                   <Route
+                        path="/asiat"
+                        render={props => (
+                          <Esittelijat
+                            history={props.history}
+                            match={props.match}
+                            user={user}
+                          />
+                        )}
+                      />
+                      <Route
                     path="/jarjestajat/:ytunnus"
                     render={props => (
                       <JarjestajaSwitch

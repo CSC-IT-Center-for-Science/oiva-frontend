@@ -1,4 +1,5 @@
 import * as R from "ramda";
+import { removeAnchorPart } from "../../../utils/common";
 
 /**
  * @module CategorizedListRoot/utils
@@ -307,7 +308,7 @@ const getPropertiesObject = (changeObj = {}, requestedChanges) => {
 };
 
 /**
- * Main function. This will be run when a user enables a radio button.
+ * Main function. This will be run when user makes changes.
  *
  * @param {object} nodeWithRequestedChanges
  * @param {object} nodeWithRequestedChanges.requestedChanges - Property object.
@@ -319,21 +320,12 @@ export const handleNodeMain = (
   reducedStructure,
   changes = []
 ) => {
-  // console.info(nodeWithRequestedChanges, rootAnchor, reducedStructure, changes);
   const node = R.prop("original", nodeWithRequestedChanges);
   const requestedChanges = R.prop("requestedChanges", nodeWithRequestedChanges);
   let changesWithoutRootAnchor = rootAnchor
     ? R.map(changeObj => {
-        return R.assoc(
-          "anchor",
-          R.compose(
-            R.join("."),
-            R.tail(),
-            R.split("."),
-            R.prop("anchor")
-          )(changeObj),
-          changeObj
-        );
+        const reducedAnchor = removeAnchorPart(changeObj.anchor, 0);
+        return R.assoc("anchor", reducedAnchor, changeObj);
       }, changes)
     : changes;
 

@@ -106,7 +106,13 @@ const CategorizedList = React.memo(
             R.tail(),
             R.split(".")
           )(payload.anchor)}.${payload.component.anchor}`,
-          properties: changeProps
+          properties: {
+            ...changeProps,
+            metadata: R.path(
+              ["component", "properties", "forChangeObject"],
+              payload
+            )
+          }
         });
       },
       [onChangesUpdate]

@@ -55,7 +55,7 @@ const JarjestajaSwitch = React.memo(({ history, path, user, ytunnus }) => {
         exact
         path={`${path}/hakemukset-ja-paatokset/:uuid/:page`}
         render={props => {
-          if (lupaKohteet && lupa.fetchedAt && lupa.data) {
+          if (lupaKohteet && lupa.fetchedAt) {
             return (
               <HakemusContainer
                 history={history}

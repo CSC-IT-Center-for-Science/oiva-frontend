@@ -34,6 +34,9 @@ export default function opiskelijavuodet(code, anchorNumber, isReadOnly) {
                 name: "Input",
                 styleClasses: ["mr-8"],
                 properties: {
+                  forChangeObject: {
+                    year: (year + 1).toString()
+                  },
                   isReadOnly,
                   withoutMargin: true,
                   label: (year + 1).toString(),
@@ -46,6 +49,9 @@ export default function opiskelijavuodet(code, anchorNumber, isReadOnly) {
                 name: "Input",
                 styleClasses: ["mr-8"],
                 properties: {
+                  forChangeObject: {
+                    year: (year + 2).toString()
+                  },
                   isReadOnly,
                   withoutMargin: true,
                   label: (year + 2).toString(),
@@ -57,6 +63,9 @@ export default function opiskelijavuodet(code, anchorNumber, isReadOnly) {
                 anchor: "C",
                 name: "Input",
                 properties: {
+                  forChangeObject: {
+                    year: (year + 3).toString()
+                  },
                   isReadOnly,
                   withoutMargin: true,
                   label: (year + 3).toString(),

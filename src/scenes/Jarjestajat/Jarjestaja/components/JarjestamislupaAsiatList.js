@@ -79,7 +79,7 @@ const JarjestamislupaAsiatList = ({
   }, [lupa.data, lupa.fetchedAt, muutospyynnotActions]);
 
   const tableData = useMemo(() => {
-    if (muutospyynnot.fetchedAt) {
+    if (muutospyynnot.fetchedAt && muutospyynnot.data) {
       return R.map(muutospyynto => {
         return {
           luontipvm: moment(muutospyynto.luontipvm).format(
@@ -122,6 +122,8 @@ const JarjestamislupaAsiatList = ({
       rowGroups: [
         {
           rows: R.addIndex(R.map)((row, i) => {
+            const tilaText =
+              row.tila && LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI;
             let cells = R.addIndex(R.map)(
               (col, ii) => {
                 return {
@@ -133,7 +135,7 @@ const JarjestamislupaAsiatList = ({
               [
                 { text: "" },
                 { text: intl.formatMessage(common.change) },
-                { text: LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI },
+                { text: tilaText },
                 { text: "" },
                 { text: row.paatetty }
               ]

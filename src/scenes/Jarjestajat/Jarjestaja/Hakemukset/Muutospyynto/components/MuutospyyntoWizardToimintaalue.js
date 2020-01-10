@@ -229,7 +229,11 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       if (isUncheckingTheMostRecentChange) {
         // Then it's time to get rid of the change objects of form page two (reasoning).
         onChangesUpdate({
-          anchor: `perustelut_${props.sectionId}`,
+          anchor: `perustelut_${props.sectionId}_additions`,
+          changes: []
+        });
+        onChangesUpdate({
+          anchor: `perustelut_${props.sectionId}_removals`,
           changes: []
         });
       }
@@ -315,6 +319,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
             2,
             changeObj.properties.value.value
           );
+          console.info(updatedAnchor);
           return [
             {
               anchor: updatedAnchor,
@@ -580,7 +585,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
               forChangeObject: {
                 title: props.intl.formatMessage(wizardMessages.responsibilities)
               }
-              // title: props.intl.formatMessage(wizardMessages.responsibilities)
             }
           }
         ]
