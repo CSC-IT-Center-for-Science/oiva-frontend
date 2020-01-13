@@ -10,10 +10,10 @@
 ### 3. radio button (ei valintaa) Kuljettajakoulutukset-kohdassa
 
 * Avaa ExpandableRow "koulutukset_kuljettajakoulutukset"
-* Assert if "radio" "koulutukset_kuljettajakoulutukset.5" is not checked
-* Assert if "radio" "koulutukset_kuljettajakoulutukset.6" is not checked
-* Assert if "radio" "koulutukset_kuljettajakoulutukset.7" is checked
-* Select radio "koulutukset_kuljettajakoulutukset.5"
+* Assert if "radio" "koulutukset_kuljettajakoulutukset.1" is checked
+* Assert if "radio" "koulutukset_kuljettajakoulutukset.2" is not checked
+* Assert if "radio" "koulutukset_kuljettajakoulutukset.7" is not checked
+* Select radio "koulutukset_kuljettajakoulutukset.2"
 
 * Avaa ExpandableRow "koulutukset_tyovoimakoulutukset"
 * Assert if "radio" "koulutukset_tyovoimakoulutukset.1" is checked
@@ -26,7 +26,7 @@
 
 * Edellinen sivu
 * Avaa ExpandableRow "koulutukset_kuljettajakoulutukset"
-* Assert if "radio" "koulutukset_kuljettajakoulutukset.5" is checked
+* Assert if "radio" "koulutukset_kuljettajakoulutukset.2" is checked
 ___
 * Sulje lomake
 

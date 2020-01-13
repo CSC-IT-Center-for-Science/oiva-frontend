@@ -8,6 +8,7 @@ const {
   focus,
   into,
   scrollTo,
+  scrollDown,
   textBox,
   to,
   write
@@ -44,11 +45,10 @@ async function verifyThatElementUnderAnchorIs(
   anchor,
   statusSelector = ""
 ) {
+  const selector = `[data-anchor="${anchor}"] [type="${type}"]${statusSelector}`;
   try {
-    const element = await $(
-      `[data-anchor="${anchor}"] [type="${type}"]${statusSelector}`
-    );
-    assert.ok(await element.exists());
+    const element = await $(selector);
+    assert.ok(await element.exists(), `Element ${selector} does not exist`);
   } catch (e) {
     console.error(e);
   }
@@ -108,6 +108,10 @@ step(
     await setValueIntoTextBox(anchor, randomNumber);
   }
 );
+
+step("Scroll down <selector> <amountInPx>", async (selector, pixels = 100) => {
+  await scrollDown($(selector), pixels);
+});
 
 step("View textbox <anchor>", async anchor => {
   const storedValue = gauge.dataStore.scenarioStore.get(anchor);

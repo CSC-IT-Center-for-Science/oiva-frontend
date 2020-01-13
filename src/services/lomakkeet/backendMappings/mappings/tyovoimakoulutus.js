@@ -58,9 +58,11 @@ export function getMapping(koodiarvo) {
       ],
       valueFn: changeObjects => {
         const selectionList = path([0, "properties", "value"], changeObjects);
-        const resultList = map(item => {
-          return { "nimi": item.label}
-        }, selectionList);
+        const resultList =
+          selectionList &&
+          map(item => {
+            return { nimi: item.label };
+          }, selectionList);
         return resultList;
       }
     },
@@ -87,24 +89,24 @@ export function getMapping(koodiarvo) {
         return [
           firstYear
             ? {
-              vuosi: firstYear,
-              arvo: path([0, "properties", "value"], changeObjects)
-            }
+                vuosi: firstYear,
+                arvo: path([0, "properties", "value"], changeObjects)
+              }
             : null,
           secondYear
             ? {
-              vuosi: secondYear,
-              arvo: path([1, "properties", "value"], changeObjects)
-            }
+                vuosi: secondYear,
+                arvo: path([1, "properties", "value"], changeObjects)
+              }
             : null,
           thirdYear
             ? {
-              vuosi: thirdYear,
-              arvo: path([2, "properties", "value"], changeObjects)
-            }
+                vuosi: thirdYear,
+                arvo: path([2, "properties", "value"], changeObjects)
+              }
             : null
         ].filter(Boolean);
       }
-    },
+    }
   ];
 }

@@ -207,11 +207,16 @@ const MuutospyyntoWizard = ({
     (id, changeObjects) => {
       if (id && changeObjects) {
         setChangeObjects(prevState => {
-          const nextState =
-            changeObjects.length > 0
-              ? R.assocPath(R.split("_", id), changeObjects, prevState)
-              : R.dissocPath(R.split("_", id), prevState);
-          console.info("Next changeObjects:", id, nextState);
+          let nextState;
+          if (
+            (Array.isArray(changeObjects) && changeObjects.length > 0) ||
+            !R.isEmpty(changeObjects)
+          ) {
+            nextState = R.assocPath(R.split("_", id), changeObjects, prevState);
+          } else {
+            nextState = R.dissocPath(R.split("_", id), prevState);
+          }
+          console.info("Next changeObjects:", id, nextState, changeObjects);
           return nextState;
         });
       }

@@ -10,18 +10,38 @@ import PropTypes from "prop-types";
 import * as R from "ramda";
 
 const MuutospyyntoWizardTaloudelliset = ({
-  changeObjects,
+  changeObjects = {},
   muutoshakemus,
   onChangesUpdate,
   onStateUpdate,
   intl: { formatMessage }
 }) => {
+  const checkIfIsAdditions = changeObjects => {
+    const findIsChecked = obj => {
+      if (obj instanceof Array) {
+        return R.any(findIsChecked, obj);
+      } else if (obj instanceof Object) {
+        const isChecked = R.prop("isChecked", obj);
+        return (
+          isChecked ||
+          R.compose(
+            R.any(([k, v]) => findIsChecked(v)),
+            R.toPairs
+          )(obj)
+        );
+      }
+      return false;
+    };
+
+    return findIsChecked(changeObjects);
+  };
   return (
     <React.Fragment>
       <h2 className="my-6">{formatMessage(wizard.pageTitle_3)}</h2>
 
-      {!changeObjects && <p>{formatMessage(wizard.noAddedTutkinnot)}</p>}
-      {changeObjects && (
+      {!checkIfIsAdditions(R.props(["tutkinnot", "koulutukset"], changeObjects)) ? (
+        <p>{formatMessage(wizard.noAddedTutkinnot)}</p>
+      ) : (
         <React.Fragment>
           <FormSection
             id="taloudelliset_yleisettiedot"

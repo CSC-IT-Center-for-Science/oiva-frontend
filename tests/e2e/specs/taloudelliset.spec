@@ -10,8 +10,8 @@ Tags: muutoshakemus, taloudelliset
 ## Taloudelliset edellytykset
 
 * Tarkista, että ollaan sivulla "1"
-* Avaa ExpandableRow "koulutukset_kuljettajakoulutukset"
-* Lomakeoperaatio "Kuljettajakoulutukset" valitse "Kuljettajakoulutus, perustason ammattipätevyyskoulutus ja jatkokoulutus"
+* Avaa ExpandableRow "tutkinnot_02"
+* Lomakeoperaatio "Ammatillinen perustutkinto" valitse "Sirkusalan perustutkinto"
 * Seuraava sivu
 * Tarkista, että ollaan sivulla "2"
 * Seuraava sivu

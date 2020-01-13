@@ -44,9 +44,10 @@ step("Log in as <username>", async username => {
   await click(link({ href: "/cas-auth" }));
   await write(username);
   await focus(textBox({ type: "password" }));
-  await write(username);
+  await write(process.env[username]);
   await click(button({ type: "submit" }));
   assert.ok(await text("Kirjaudu ulos").exists());
+  assert.ok(await text("Omat tiedot").exists());
 });
 
 step("Log out", async () => {
@@ -71,6 +72,7 @@ step("Avaa uusi muutospyyntolomake", async () => {
     await click(link({ class: "link-to-own-organisation" }));
     await click(link({ id: "jarjestamislupa-asiat" }));
     await click($("button.newHakemus"));
+    await text("Uusi hakemus").exists();
   } catch (e) {
     console.error(e);
   }

@@ -11,7 +11,7 @@ export const getMetadata = (anchorParts, categories, i = 0) => {
   if (anchorParts[i + 1]) {
     return getMetadata(anchorParts, category.categories, i + 1);
   }
-  return category.meta;
+  return category ? category.meta : {};
 };
 
 export const getCategories = (
@@ -43,24 +43,26 @@ export const getCategories = (
               : false;
 
             const osaamisalaTitle = {
-                anchor: "lukuun-ottamatta",
-                components: [{
+              anchor: "lukuun-ottamatta",
+              components: [
+                {
                   name: "StatusTextRow",
                   properties: {
-                    title: intl.formatMessage(wizardMessages.except),
+                    title: intl.formatMessage(wizardMessages.except)
                   }
-                }]
-              };
+                }
+              ]
+            };
 
             const osaamisalat = (koulutus.osaamisalat || []).map(osaamisala => {
               const isInLupaBool = article
                 ? !!_.find(article.koulutusalat, koulutusala => {
-                  return !!_.find(koulutusala.koulutukset, koulutus => {
-                    return !!_.find(koulutus.rajoitteet, {
-                      koodi: osaamisala.koodiArvo
+                    return !!_.find(koulutusala.koulutukset, koulutus => {
+                      return !!_.find(koulutus.rajoitteet, {
+                        koodi: osaamisala.koodiArvo
+                      });
                     });
-                  });
-                })
+                  })
                 : false;
               const isAddedBool = false;
               const isRemovedBool = false;
@@ -89,8 +91,7 @@ export const getCategories = (
                         removal: isRemoved,
                         custom: Object.assign({}, isInLupaBool ? isInLupa : {})
                       },
-                      isChecked:
-                        (isInLupaBool && !isRemovedBool) || isAddedBool
+                      isChecked: (isInLupaBool && !isRemovedBool) || isAddedBool
                     }
                   }
                 ]
@@ -126,9 +127,10 @@ export const getCategories = (
                   }
                 }
               ],
-              categories: R.length(osaamisalat) > 0
-                ? R.prepend(osaamisalaTitle, osaamisalat)
-                : osaamisalat
+              categories:
+                R.length(osaamisalat) > 0
+                  ? R.prepend(osaamisalaTitle, osaamisalat)
+                  : osaamisalat
             };
           }, koulutustyyppi.koulutukset)
         };
@@ -155,11 +157,7 @@ export const getCategoriesForPerustelut = (
   const anchor = R.prop("anchor");
   const relevantAnchors = R.map(anchor)(changes);
   const relevantKoulutustyypit = R.filter(
-    R.compose(
-      R.not,
-      R.isEmpty,
-      R.prop("koulutukset")
-    ),
+    R.compose(R.not, R.isEmpty, R.prop("koulutukset")),
     R.mapObjIndexed(koulutustyyppi => {
       koulutustyyppi.koulutukset = R.filter(koulutus => {
         const anchorStart = `${anchorInitial}.${koulutustyyppi.koodiArvo}.${koulutus.koodiArvo}`;
@@ -190,21 +188,8 @@ export const getCategoriesForPerustelut = (
           const anchorBase = `${anchorInitial}.${koulutustyyppi.koodiArvo}.${koulutus.koodiArvo}`;
 
           const changeObjs = R.sortWith(
-            [
-              R.ascend(
-                R.compose(
-                  R.length,
-                  anchor
-                )
-              ),
-              R.ascend(anchor)
-            ],
-            R.filter(
-              R.compose(
-                R.startsWith(anchorBase),
-                anchor
-              )
-            )(changes)
+            [R.ascend(R.compose(R.length, anchor)), R.ascend(anchor)],
+            R.filter(R.compose(R.startsWith(anchorBase), anchor))(changes)
           );
 
           const toStructure = changeObj => {
@@ -238,20 +223,21 @@ export const getCategoriesForPerustelut = (
               categories: osaamisala
                 ? lomakkeet.osaamisala
                 : isAddition
-                  ? lomakkeet.addition
-                  : lomakkeet.removal,
+                ? lomakkeet.addition
+                : lomakkeet.removal,
               components: [
                 {
                   anchor: "A",
                   name: "StatusTextRow",
                   properties: {
-                    code: osaamisala ? '' : koulutus.koodiArvo,
+                    code: osaamisala ? "" : koulutus.koodiArvo,
                     title: osaamisala
-                      ? R.join(' ',
-                         [intl.formatMessage(wizardMessages.osaamisalarajoitus),
+                      ? R.join(" ", [
+                          intl.formatMessage(wizardMessages.osaamisalarajoitus),
                           osaamisalakoodi,
                           nimi(osaamisala),
-                           '(' + koulutus.koodiArvo + ' ' + nimi(koulutus) + ')'])
+                          "(" + koulutus.koodiArvo + " " + nimi(koulutus) + ")"
+                        ])
                       : nimi(koulutus),
                     labelStyles: {
                       addition: isAdded,

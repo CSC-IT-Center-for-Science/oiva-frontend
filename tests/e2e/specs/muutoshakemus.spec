@@ -33,7 +33,6 @@
 #### Perustelut
 * Seuraava sivu
 * Perustele kielet <table: ./csv-files/opetuskielet.csv>
-* Tarkista muutosten lukumäärä "perustelut_kielet_opetuskielet.number-of-changes" "3"
 
 ## Muutosten tallennus ja uudelleenlataus
 

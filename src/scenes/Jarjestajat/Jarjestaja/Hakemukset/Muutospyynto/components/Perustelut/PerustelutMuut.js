@@ -208,7 +208,11 @@ const PerustelutMuut = React.memo(
               );
               const isAddition = changeObj && changeObj.properties.isChecked;
               const perusteltavaTeksti =
-                article.koodiArvo === "22"
+                article.koodiArvo === "22" &&
+                R.find(
+                  R.propEq("anchor", "muut_07.muumaarays.22.other.A"),
+                  changeObjects.muut["07"]
+                )
                   ? R.find(
                       R.propEq("anchor", "muut_07.muumaarays.22.other.A"),
                       changeObjects.muut["07"]

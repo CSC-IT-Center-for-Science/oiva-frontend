@@ -7,15 +7,15 @@
 
 * Avaa uusi muutospyyntolomake
 
-### Muutokset kuljettajakoulutukset, perus
+### Muutokset kuljettajakoulutukset, ei oikeutta järjestää
 
 * Avaa ExpandableRow "koulutukset_kuljettajakoulutukset"
-* Lomakeoperaatio "Kuljettajakoulutukset" valitse "Kuljettajakoulutus, perustason ammattipätevyyskoulutus ja jatkokoulutus"
+* Lomakeoperaatio "Kuljettajakoulutukset" valitse "Ei oikeutta järjestää kuorma- ja linja-autonkuljettajan ammattipätevyyskoulutusta"
 
-### Perustelut kuljettajakoulutukset, perus
+### Perustelut kuljettajakoulutukset, poisto
 
 * Seuraava sivu
-* Assert if text exists "Perustason ammattipätevyyskoulutusta antavan koulutuskeskuksen tehtävä"
+* Assert if text exists "Perustelut poistolle"
 
 ### Muutokset kuljettajakoulutukset, jatko
 
@@ -32,12 +32,12 @@
 
 * Edellinen sivu
 * Avaa ExpandableRow "koulutukset_tyovoimakoulutukset"
-* Lomakeoperaatio "Työvoimakoulutukset" valitse "Työvoimakoulutus"
+* Lomakeoperaatio "Työvoimakoulutukset" valitse "Vain työvoimakoulutus"
 
 ### Perustelut työvoimakoulutus
 
 * Seuraava sivu
-* Assert if text exists "Työvoimakoulutukset"
+* Assert if text exists "Työvoimakoulutuksen tehtävä"
 
 ___
 * Sulje lomake

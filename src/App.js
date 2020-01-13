@@ -121,8 +121,13 @@ const App = ({ user }) => {
   );
 
   const organisationLink = useMemo(() => {
+    const orgNimi = R.prop("nimi", organisation.data);
     return {
-      text: R.path(["nimi", intl.locale], organisation.data),
+      // Select name by locale or first in nimi object
+      text: R.or(
+          R.prop(intl.locale, orgNimi),
+          R.tail(R.head(R.toPairs(orgNimi)) || [])
+      ),
       path: `/jarjestajat/${R.prop(
         "ytunnus",
         organisation.data

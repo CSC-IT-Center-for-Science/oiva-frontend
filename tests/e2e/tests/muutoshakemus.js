@@ -39,7 +39,7 @@ step("Perustele kielet <kielet>", async kielet => {
   const perusteleKielet = async (rows, index) => {
     await scrollDown($(".MuiDialogContent-root"));
     const kieliId = R.view(R.lensIndex(0), rows[index].cells);
-    const textareaId = `perustelut_kielet_opetuskielet.${kieliId}.vapaa-tekstikentta`;
+    const textareaId = `perustelut_kielet_opetuskielet.${kieliId}.vapaa-tekstikentta.A`;
     await focus(textBox({ id: textareaId }));
     await write(`The robot was here. ${new Date().toUTCString()}`);
     if (index < rows.length - 1) {
@@ -61,7 +61,7 @@ step(
     try {
       await waitFor(500);
       const element = await $(`[id="${id}"]`);
-      assert.ok(await element.exists());
+      assert.ok(await element.exists(), "Element id=" + id + " does not exist");
       const text = await element.text();
       assert.equal(R.head(text), expectedValue);
     } catch (e) {
