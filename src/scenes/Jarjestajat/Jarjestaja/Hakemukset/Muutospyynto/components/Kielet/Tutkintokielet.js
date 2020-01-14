@@ -15,7 +15,6 @@ const Tutkintokielet = React.memo(props => {
     return R.map(stateItem => {
       const categories = R.map(category => {
         const categories = R.map(subCategory => {
-
           /**
            * There might be some sub articles (alimääräyksiä) under the current article (määräys).
            * We are interested of them which are related to tutkintokielet section.
@@ -29,7 +28,8 @@ const Tutkintokielet = React.memo(props => {
           /**
            * selectedByDefault includes all the languages which already are in LUPA.
            * Those languages must be shown on Autocomplete as selected by default.
-           * */ 
+           * */
+
           const selectedByDefault = R.map(alimaarays => {
             if (
               alimaarays.kohde.tunniste === "opetusjatutkintokieli" &&
@@ -128,24 +128,30 @@ const Tutkintokielet = React.memo(props => {
 
   useEffect(() => {
     if (props.unselectedAnchors.length && props.changeObjects.tutkintokielet) {
-      const areaCode = R.compose(
-        R.last,
-        R.split("_"),
-        R.head,
-        R.split(".")
-      )(props.unselectedAnchors[0]);
+      let tutkintokielichangesWithoutRemovedOnes = Object.assign(
+        {},
+        props.changeObjects.tutkintokielet
+      );
+      R.forEach(anchor => {
+        const areaCode = R.compose(
+          R.last,
+          R.split("_"),
+          R.head,
+          R.split(".")
+        )(anchor);
 
-      const commonPart = R.compose(
-        R.join("."),
-        R.concat([areaCode])
-      )(R.slice(1, 3, R.split(".", props.unselectedAnchors[0])));
+        const commonPart = R.compose(
+          R.join("."),
+          R.concat([areaCode])
+        )(R.slice(1, 3, R.split(".", anchor)));
 
-      const tutkintokielichangesWithoutRemovedOnes = {
-        ...props.changeObjects.tutkintokielet,
-        [areaCode]: R.filter(changeObj => {
-          return !R.contains(commonPart, changeObj.anchor);
-        }, props.changeObjects.tutkintokielet[areaCode] || [])
-      };
+        tutkintokielichangesWithoutRemovedOnes = {
+          ...tutkintokielichangesWithoutRemovedOnes,
+          [areaCode]: R.filter(changeObj => {
+            return !R.contains(commonPart, changeObj.anchor);
+          }, tutkintokielichangesWithoutRemovedOnes[areaCode] || [])
+        };
+      }, props.unselectedAnchors);
 
       if (
         !R.equals(
@@ -169,30 +175,6 @@ const Tutkintokielet = React.memo(props => {
     <React.Fragment>
       {R.addIndex(R.map)((_item, i) => {
         const item = _.cloneDeep(_item);
-        // const _changes = changes[item.areaCode] || [];
-        // R.forEach(changeObj => {
-        //   const tailOfAnchor = R.tail(changeObj.anchor.split("."));
-        //   const i = R.findIndex(
-        //     R.propEq("anchor", tailOfAnchor[0]),
-        //     item.categories
-        //   );
-        //   const ii = R.findIndex(
-        //     R.propEq("anchor", tailOfAnchor[1]),
-        //     item.categories[i].categories
-        //   );
-        //   if (item.categories[i].categories[ii].components) {
-        //     const customStyles =
-        //       item.categories[i].categories[ii].components[0].properties
-        //         .labelStyles.custom;
-        //     item.categories[i].categories[
-        //       ii
-        //     ].components[0].properties.labelStyles.custom = Object.assign(
-        //       {},
-        //       customStyles,
-        //       isAdded
-        //     );
-        //   }
-        // }, _changes);
         return (
           <React.Fragment key={i}>
             {item.categories && (
