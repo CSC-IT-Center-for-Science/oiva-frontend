@@ -28,6 +28,20 @@ const getMuutos = (stateItem, changeObj, perustelut) => {
   }
 
   const maaraysUuid = R.prop("maaraysId", koulutus);
+  const perusteluteksti = R.reject(R.equals(null))(
+    R.map(perustelu => {
+      if (R.path(["properties", "value"], perustelu)) {
+        return { value: R.path(["properties", "value"], perustelu) };
+      }
+      const value = R.path(["properties", "metadata", "fieldName"], perustelu);
+      if (value !== "Muut syyt")
+        // Do not send "Muut syyt" to backend
+        return {
+          value: R.path(["properties", "metadata", "fieldName"], perustelu)
+        };
+      return null;
+    }, perustelut)
+  );
   const muutos = {
     generatedId: R.join(".", R.init(anchorParts)),
     isInLupa: meta.isInLupa,
@@ -41,22 +55,7 @@ const getMuutos = (stateItem, changeObj, perustelut) => {
       nimi: koulutus.nimi,
       koulutusala: anchorParts[0],
       koulutustyyppi: anchorParts[1],
-      perusteluteksti: R.map(perustelu => {
-        if (R.path(["properties", "value"], perustelu)) {
-          return { value: R.path(["properties", "value"], perustelu) };
-        }
-        // else if (
-        //   R.filter(
-        //     R.pathEq(["properties", "metadata", "fieldName"], "Muut syyt"),
-        //     perustelu
-        //   ) // Do not send "Muut syyt" to backend
-        // )
-        else
-          return {
-            value: R.path(["properties", "metadata", "fieldName"], perustelu)
-          };
-        // return null;
-      }, perustelut),
+      perusteluteksti,
       muutosperustelukoodiarvo: []
     },
     nimi: finnishInfo.nimi,
@@ -133,22 +132,26 @@ export const getChangesToSave = (
       const perustelut = findPerustelut(anchor, changeObjects.perustelut);
       const perustelutForBackend = fillForBackend(perustelut);
       if (!perustelutForBackend) {
-        const perusteluTexts = R.map(perustelu => {
-          if (R.path(["properties", "value"], perustelu)) {
-            return { value: R.path(["properties", "value"], perustelu) };
-          }
-          // else if (
-          //   R.filter(
-          //     R.pathEq(["properties", "metadata", "fieldName"], "Muut syyt"),
-          //     perustelu
-          //   ) // Do not send "Muut syyt" to backend
-          // )
-          else
-            return {
-              value: R.path(["properties", "metadata", "fieldName"], perustelu)
-            };
-          // return null;
-        }, perustelut);
+        const perusteluTexts = R.reject(R.equals(null))(
+          R.map(perustelu => {
+            if (R.path(["properties", "value"], perustelu)) {
+              return { value: R.path(["properties", "value"], perustelu) };
+            }
+            const value = R.path(
+              ["properties", "metadata", "fieldName"],
+              perustelu
+            );
+            if (value !== "Muut syyt")
+              // Do not send "Muut syyt" to backend
+              return {
+                value: R.path(
+                  ["properties", "metadata", "fieldName"],
+                  perustelu
+                )
+              };
+            return null;
+          }, perustelut)
+        );
         backendMuutosWithPerustelut = R.assocPath(
           ["meta", "perusteluteksti"],
           perusteluTexts,

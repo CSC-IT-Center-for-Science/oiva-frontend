@@ -38,7 +38,7 @@ export const perustelut = {
   },
   perustelut_koulutukset_tyovoimakoulutukset: (changeObjects, koodiarvo) => {
     return {
-      tyovoimakoulutus: calculateValues(
+      perusteluteksti_tyovoimakoulutus: calculateValues(
         getMappingForTyovoimakoulutus(koodiarvo),
         changeObjects
       )
