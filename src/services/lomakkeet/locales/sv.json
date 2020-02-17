@@ -20,5 +20,6 @@
   "taloudelliset.tooltipTaloudellisetInvestoinnitKentta3": "Esittäkää, miten rahoitatte edellä esittämänne investoinnit. Huomioikaa, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä.",
   "current": "SV: Nykyinen",
   "toBeAdded": "SV: Lisättävä",
-  "toBeRemoved": "SV: Poistettava"
+  "toBeRemoved": "SV: Poistettava",
+  "muut.tooltipFor22": "SV: Nimetkää haettava oikeus, velvollisuus tai tehtävä ja perustelkaa sen tarpeellisuus"
 }

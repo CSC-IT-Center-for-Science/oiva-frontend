@@ -83,6 +83,9 @@ function getModificationForm(configObj, osiota5koskevatMaaraykset, locale) {
                       koodiarvo: article.koodiArvo,
                       koodisto: article.koodisto
                     },
+                    tooltip: {
+                      text: __("muut.tooltipFor22")
+                    },
                     placeholder: __("other.placeholder")
                   }
                 }

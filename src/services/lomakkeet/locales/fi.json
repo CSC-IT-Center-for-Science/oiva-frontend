@@ -31,5 +31,6 @@
   "common.date": "Päivämäärä",
   "common.datemax": "Päiväys on liian suuri",
   "common.datemin": "Päiväys on liian pieni",
-  "common.dateinvalid": "Päiväys on virheellinen"
+  "common.dateinvalid": "Päiväys on virheellinen",
+  "muut.tooltipFor22": "Nimetkää haettava oikeus, velvollisuus tai tehtävä ja perustelkaa sen tarpeellisuus"
 }

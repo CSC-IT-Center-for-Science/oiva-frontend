@@ -22,6 +22,9 @@ const theme = createMuiTheme({
       main: COLORS.DARK_GRAY
       // dark: will be calculated from palette.secondary.main,
       // contrastText: will be calculated to contrast with palette.secondary.main
+    },
+    oivablue: {
+      main: "#4299e1"
     }
     // error: will use the default color
   },

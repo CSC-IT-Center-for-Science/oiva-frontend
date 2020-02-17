@@ -10,6 +10,8 @@ import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
 import FormSection from "../../../../../../components/03-templates/FormSection";
+import HelpIcon from "@material-ui/icons/Help";
+import Tooltip from "okm-frontend-components/dist/components/02-organisms/Tooltip";
 
 const MuutospyyntoWizardMuutokset = React.memo(props => {
   const intl = useIntl();
@@ -60,6 +62,26 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                 id="tutkinnot"
                 render={_props => (
                   <React.Fragment>
+                    <div className="flex justify-between">
+                      <p className="mb-4">
+                        Lain (531/2017) 23 §:n mukaan järjestämisluvassa
+                        määrättävät tutkinnot ja koulutukset
+                      </p>
+                      <div>
+                        <Tooltip
+                          tooltip={`Ammatillisesta koulutuksesta annetun lain 23 §:n mukaan
+                    järjestämisluvassa määrätään tutkinnot, joita koulutuksen
+                    järjestäjällä on oikeus myöntää ja joihin se voi järjestää
+                    tutkintokoulutusta sekä muut koulutukset, joita koulutuksen
+                    järjestäjä voi järjestää. Koulutuksen järjestäjällä on
+                    oikeus myöntää järjestämisluvan 1 kohdassa mainittuja
+                    tutkintoja ja antaa niihin tutkintokoulutusta sekä järjestää
+                    järjestämisluvan 1 kohdassa mainittuja koulutuksia.`}
+                          trigger="click">
+                          <HelpIcon color="primary" />
+                        </Tooltip>
+                      </div>
+                    </div>
                     <Tutkinnot
                       tutkinnot={props.tutkinnot}
                       lupaKohteet={props.lupaKohteet}
@@ -81,6 +103,21 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                 id="tutkinnot"
                 render={_props => (
                   <React.Fragment>
+                    <div className="flex justify-between">
+                      <p className="mb-4">
+                        Lain (531/2017) 24 §:n mukaan järjestämisluvassa
+                        määrättävät opetus- ja tutkintokielet
+                      </p>
+                      <div>
+                        <Tooltip
+                          tooltip={`Koulutuksen järjestäjän on em. lain (531/2017) 24 §:n mukaisesti annettava opetusta järjestämisluvan 2 kohdassa mainitulla opetuskielellä, jonka lisäksi koulutuksen järjestäjä voi antaa opetusta toisella kotimaisella kielellä, saamenkielellä, romanikielellä, viittomakielellä tai vieraalla kielellä. Opetuskielen lisäksi tutkinnon tai valmentavan koulutuksen voi suorittaa järjestämisluvassa tutkinnoittain määrätyllä tai valmentavan koulutuksen osalta määrätyllä tutkintokielellä.
+
+                          Muulla kuin opetuskielellä voidaan antaa opetusta esimerkiksi opintojen alkuvaiheessa tai opintojen eri vaiheissa, opiskelijan yksilöllisten ja työelämän tarpeiden perusteella. Tutkintokielellä tarkoitetaan kieltä, jolla tutkinnon tai tutkinnon osan taikka valmentavan koulutuksen voi suorittaa. Käytännössä tutkintokielellä tarkoitetaan kieltä, jolla opiskelija voi antaa näytön tai muutoin osoittaa osaamisensa. Myös tutkintotodistus ja muut todistukset annetaan tutkintokielellä.`}
+                          trigger="click">
+                          <HelpIcon color="primary" />
+                        </Tooltip>
+                      </div>
+                    </div>
                     <MuutospyyntoWizardKielet
                       lupa={props.lupa}
                       lupaKohteet={props.lupaKohteet}
@@ -100,13 +137,29 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                 code={3}
                 id="toimintaalue"
                 render={_props => (
-                  <MuutospyyntoWizardToimintaalue
-                    lupakohde={props.lupaKohteet[3]}
-                    kunnat={props.kunnat}
-                    maakuntakunnatList={props.maakuntakunnatList}
-                    maakunnat={props.maakunnat}
-                    {..._props}
-                  />
+                  <React.Fragment>
+                    <div className="flex justify-between">
+                      <p className="mb-4 pr-4">
+                        Lain (531/2017) 25 §:n mukaan järjestämisluvassa
+                        määrättävä ensisijainen toiminta-alue, jonka
+                        koulutustarpeeseen koulutuksen järjestäjän tulee vastata
+                      </p>
+                      <div>
+                        <Tooltip
+                          tooltip={`Koulutuksen järjestäjän toiminnan tulee ensisijaisesti vastata em. lain (531/2017) 25 §:n mukaisesti järjestämisluvan kohdassa 3 mainitun alueen osaamistarpeisiin. Koulutuksen järjestäjällä on velvollisuus järjestää osaamistarpeen mukaisesti tutkintoja ja koulutusta järjestämisluvassa määrätyllä toiminta-alueella, jonka lisäksi tutkintoja ja koulutusta voi järjestää myös muualla Suomessa, ei kuitenkaan Ahvenanmaan maakunnassa.`}
+                          trigger="click">
+                          <HelpIcon color="primary" />
+                        </Tooltip>
+                      </div>
+                    </div>
+                    <MuutospyyntoWizardToimintaalue
+                      lupakohde={props.lupaKohteet[3]}
+                      kunnat={props.kunnat}
+                      maakuntakunnatList={props.maakuntakunnatList}
+                      maakunnat={props.maakunnat}
+                      {..._props}
+                    />
+                  </React.Fragment>
                 )}
                 runOnChanges={props.onChangesUpdate}
                 title={R.path(
@@ -120,17 +173,33 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                   code={props.lupaKohteet[4].headingNumber}
                   id="opiskelijavuodet"
                   render={_props => (
-                    <MuutospyyntoWizardOpiskelijavuodet
-                      lupaKohteet={props.lupaKohteet}
-                      maaraykset={props.lupa.maaraykset}
-                      muut={props.muut}
-                      opiskelijavuodet={props.opiskelijavuodet}
-                      lomakkeet={{
-                        opiskelijavuodet: props.lomakkeet.opiskelijavuodet,
-                        muut: props.lomakkeet.muut
-                      }}
-                      {..._props}
-                    />
+                    <React.Fragment>
+                      <div className="flex justify-between">
+                        <p className="mb-4 pr-4">
+                          Lain (531/2017) 26 §:n mukaan järjestämisluvassa
+                          määrättävät opiskelijavuodet ja niitä koskevat
+                          rajoitukset
+                        </p>
+                        <div>
+                          <Tooltip
+                            tooltip={`Järjestämisluvan kohdassa 4 on määrätty em. lain (531/2017) 26 §:n mukaisesti opetus- ja kulttuuritoimen rahoituksesta annetun lain (1705/2009) 32 b §:ssä tarkoitettujen opiskelijavuosien vähimmäismäärä.`}
+                            trigger="click">
+                            <HelpIcon color="primary" />
+                          </Tooltip>
+                        </div>
+                      </div>
+                      <MuutospyyntoWizardOpiskelijavuodet
+                        lupaKohteet={props.lupaKohteet}
+                        maaraykset={props.lupa.maaraykset}
+                        muut={props.muut}
+                        opiskelijavuodet={props.opiskelijavuodet}
+                        lomakkeet={{
+                          opiskelijavuodet: props.lomakkeet.opiskelijavuodet,
+                          muut: props.lomakkeet.muut
+                        }}
+                        {..._props}
+                      />
+                    </React.Fragment>
                   )}
                   runOnChanges={props.onChangesUpdate}
                   title={intl.formatMessage(wizardMessages.header_section4)}
@@ -142,12 +211,24 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                   code={props.lupaKohteet[5].headingNumber}
                   id="muut"
                   render={_props => (
-                    <MuutospyyntoWizardMuut
-                      maaraykset={props.lupa.maaraykset}
-                      muut={props.muut}
-                      koulutukset={props.koulutukset}
-                      {..._props}
-                    />
+                    <React.Fragment>
+                      <div className="flex justify-between">
+                        <p className="mb-4 pr-4">
+                          Lain (531/2017) 27 §:n mukaan järjestämisluvassa
+                          määrättävät muut oikeudet, velvollisuudet, ehdot ja
+                          tehtävät
+                        </p>
+                        <div>
+                          {/* Tooltip would be here */}
+                        </div>
+                      </div>
+                      <MuutospyyntoWizardMuut
+                        maaraykset={props.lupa.maaraykset}
+                        muut={props.muut}
+                        koulutukset={props.koulutukset}
+                        {..._props}
+                      />
+                    </React.Fragment>
                   )}
                   runOnChanges={props.onChangesUpdate}
                   title={intl.formatMessage(wizardMessages.header_section5)}
