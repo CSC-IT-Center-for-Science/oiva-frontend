@@ -14,7 +14,8 @@ function getModificationForm(locale) {
           styleClasses: ["sm:pr-2 w-full sm:w-1/2 md:w-1/4"],
           properties: {
             fullWidth: true,
-            label: "Nimi"
+            label: "Nimi",
+            value: ""
           }
         },
         {
@@ -23,7 +24,8 @@ function getModificationForm(locale) {
           styleClasses: ["sm:pl-2 md:px-2 w-full sm:w-1/2 md:w-1/4"],
           properties: {
             fullWidth: true,
-            label: "Nimike"
+            label: "Nimike",
+            value: ""
           }
         },
         {
@@ -32,7 +34,8 @@ function getModificationForm(locale) {
           styleClasses: ["sm:pr-2 w-full sm:w-1/2 md:w-1/4"],
           properties: {
             fullWidth: true,
-            label: "Puhelinnumero"
+            label: "Puhelinnumero",
+            value: ""
           }
         },
         {
@@ -41,7 +44,8 @@ function getModificationForm(locale) {
           styleClasses: ["sm:pl-2 w-full sm:w-1/2 md:w-1/4"],
           properties: {
             fullWidth: true,
-            label: "Sähköposti"
+            label: "Sähköposti",
+            value: ""
           }
         }
       ]
@@ -69,7 +73,9 @@ function getModificationForm(locale) {
               datemax: __("common.datemax"),
               datemin: __("common.datemin"),
               dateinvalid: __("common.dateinvalid")
-            }
+            },
+            title: "Pvm",
+            value: ""
           }
         }
       ]
@@ -84,7 +90,9 @@ function getModificationForm(locale) {
           anchor: "tekstikentta",
           name: "TextBox",
           properties: {
-            placeholder: ""
+            placeholder: "",
+            title: "Pakollinen",
+            value: ""
           }
         }
       ]
@@ -100,7 +108,8 @@ function getModificationForm(locale) {
           name: "Input",
           properties: {
             fullWidth: true,
-            label: "Nimi"
+            label: "Nimi",
+            value: ""
           }
         },
         {
@@ -109,7 +118,8 @@ function getModificationForm(locale) {
           name: "Input",
           properties: {
             fullWidth: true,
-            label: "Nimike"
+            label: "Nimike",
+            value: ""
           }
         }
       ]
@@ -130,7 +140,8 @@ function getModificationForm(locale) {
         {
           styleClasses: ["w-full"],
           anchor: "A",
-          name: "Attachments"
+          name: "Attachments",
+          value: ""
         }
       ]
     }

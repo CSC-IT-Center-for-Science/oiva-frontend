@@ -98,7 +98,10 @@ const MuutospyyntoWizardOpiskelijavuodet = props => {
       const flattenChangesOfMuut = R.flatten(R.values(changeObjects.muut));
 
       // 03 = Sisäoppilaitosmuotoinen koulutus (section 5)
-      const sisaoppilaitosState = props.lomakkeet.muut["03"].categories[0];
+      const sisaoppilaitosState = R.path(
+        ["03", "categories", 0],
+        props.lomakkeet.muut
+      );
 
       const newConstraintFlags = {};
 
@@ -149,7 +152,10 @@ const MuutospyyntoWizardOpiskelijavuodet = props => {
       }
 
       // 02 = Vaativa tuki, 0 includes a list of radio buttons
-      const vaativatukiState = props.lomakkeet.muut["02"].categories[0];
+      const vaativatukiState = R.path(
+        ["02", "categories", 0],
+        props.lomakkeet.muut
+      );
 
       /**
        * Seuraavaksi etsitään ne vaativaa tukea koskevat - osioon 5 tehdyt - muutokset, jotka vaikuttavat

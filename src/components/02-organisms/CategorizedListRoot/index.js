@@ -85,6 +85,9 @@ const CategorizedListRoot = React.memo(
           : null}
       </React.Fragment>
     );
+  },
+  (prevState, nextState) => {
+    return R.equals(prevState, nextState);
   }
 );
 

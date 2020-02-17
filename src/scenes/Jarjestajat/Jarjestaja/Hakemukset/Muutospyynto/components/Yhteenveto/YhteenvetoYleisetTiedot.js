@@ -2,6 +2,7 @@ import React from "react";
 import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import { rules } from "../../../../../../../services/lomakkeet/yhteenveto/yleisetTiedot/rules";
 
 const YhteenvetoYleisettiedot = React.memo(props => {
   return (
@@ -22,7 +23,7 @@ const YhteenvetoYleisettiedot = React.memo(props => {
         changeObjects={props.changeObjects.yhteenveto}
         onChangesUpdate={props.onChangesUpdate}
         path={["yhteenveto", "yleisetTiedot"]}
-        rules={[]}
+        rules={rules}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
   );

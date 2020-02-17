@@ -2,20 +2,21 @@ import React, { useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
-import { forEach, prop, split } from "ramda";
+import { equals, map, split } from "ramda";
 import { cloneDeep } from "lodash";
 import { useIntl } from "react-intl";
 import { useLomakkeet } from "../../../stores/lomakkeet";
 
 function markRequiredFields(lomake, changeObjects = [], rules = []) {
   let modifiedLomake = cloneDeep(lomake);
-  forEach(rule => {
+  const invalidFields = map(rule => {
     const isRequired = rule.isRequired(modifiedLomake, changeObjects);
     modifiedLomake = rule.markRequiredFields(modifiedLomake, isRequired);
     const isValid = rule.isValid(modifiedLomake, changeObjects, isRequired)();
     modifiedLomake = rule.showErrors(modifiedLomake, isValid);
-  }, rules);
-  return modifiedLomake;
+    return !isValid;
+  }, rules).filter(Boolean);
+  return { categories: modifiedLomake, invalidFields, ruleCount: rules.length };
 }
 
 const defaultProps = {
@@ -49,15 +50,18 @@ const Lomake = React.memo(
         path,
         prefix
       );
+      let result = { categories, invalidFields: [], ruleCount: 0 };
       let _rules = cloneDeep(rules);
       if (rulesFn) {
         _rules = rulesFn(categories);
       }
       if (_rules.length) {
-        categories = markRequiredFields(categories, changeObjects, _rules);
+        result = markRequiredFields(categories, changeObjects, _rules);
       }
       return {
-        categories,
+        categories: result.categories,
+        invalidFields: result.invalidFields.length,
+        ruleCount: result.ruleCount,
         metadata
       };
     }, [
@@ -77,21 +81,30 @@ const Lomake = React.memo(
       lomakkeetActions.set(split("_", anchor), lomake);
     }, [anchor, lomake, lomakkeetActions]);
 
-    if (prop("categories", lomake) && onChangesUpdate) {
+    if (
+      lomake.categories &&
+      lomake.invalidFields !== undefined &&
+      onChangesUpdate
+    ) {
       return (
-        <div className="p-8">
-          <CategorizedListRoot
-            anchor={anchor}
-            categories={lomake.categories}
-            changes={changeObjects}
-            onUpdate={onChangesUpdate}
-            showCategoryTitles={showCategoryTitles}
-          />
-        </div>
+        <React.Fragment>
+          <div className="p-8">
+            <CategorizedListRoot
+              anchor={anchor}
+              categories={lomake.categories}
+              changes={changeObjects}
+              onUpdate={onChangesUpdate}
+              showCategoryTitles={showCategoryTitles}
+            />
+          </div>
+        </React.Fragment>
       );
     } else {
       return <div>Nothing to show.</div>;
     }
+  },
+  (prevState, nextState) => {
+    return equals(prevState, nextState);
   }
 );
 

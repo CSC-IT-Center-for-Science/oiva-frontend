@@ -7,8 +7,10 @@ import wizardMessages from "../../../../../../i18n/definitions/wizard";
 import { HAKEMUS_VIESTI } from "../modules/uusiHakemusFormConstants";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import { ROLE_NIMENKIRJOITTAJA } from "../../../../../../modules/constants";
+import { useLomakkeet } from "../../../../../../stores/lomakkeet";
 
 const WizardActions = props => {
+  const [lomakkeet] = useLomakkeet();
   const [isConfirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
   const onPrevClick = () => {
@@ -87,6 +89,7 @@ const WizardActions = props => {
             !props.onNext && (
               <Button
                 color="primary"
+                disabled={!!lomakkeet.yhteenveto.yleisettiedot.invalidFields}
                 variant="contained"
                 className={`next button-right`}
                 onClick={() => setConfirmDialogVisible(true)}>

@@ -48,14 +48,14 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
 
   return (
     <React.Fragment>
-      <div>
-        <h2 className="my-6">
-          {intl.formatMessage(wizardMessages.pageTitle_1)}
-        </h2>
-        <p>{intl.formatMessage(wizardMessages.info_01)}</p>
+      <h2 className="my-6">{intl.formatMessage(wizardMessages.pageTitle_1)}</h2>
+      <p>{intl.formatMessage(wizardMessages.info_01)}</p>
 
-        <form onSubmit={props.handleSubmit}>
-          {R.is(Object, maaraystyypit) ? (
+      <form onSubmit={props.handleSubmit}>
+        <FormSection
+          code={props.lupaKohteet[1].headingNumber}
+          id="tutkinnot"
+          render={_props => (
             <React.Fragment>
               <FormSection
                 code={props.lupaKohteet[1].headingNumber}
@@ -132,6 +132,11 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                 runOnChanges={props.onChangesUpdate}
                 title={intl.formatMessage(wizardMessages.header_section2)}
               />
+            </React.Fragment>
+          )}
+          runOnChanges={props.onChangesUpdate}
+          title={props.lupaKohteet[1].heading}
+        />
 
               <FormSection
                 code={3}
@@ -167,6 +172,11 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                   kohteet.toimintaalue
                 )}
               />
+            </React.Fragment>
+          )}
+          runOnChanges={props.onChangesUpdate}
+          title={intl.formatMessage(wizardMessages.header_section2)}
+        />
 
               {kohteet.opiskelijavuodet && !R.isEmpty(props.lomakkeet.muut) && (
                 <FormSection

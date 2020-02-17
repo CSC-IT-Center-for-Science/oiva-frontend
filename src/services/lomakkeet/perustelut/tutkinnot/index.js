@@ -44,7 +44,7 @@ export const getRemovalForm = isReadOnly => {
   ];
 };
 
-export const getOsaamisalaForm = () => {
+export const getOsaamisalaForm = isReadOnly => {
   return [
     {
       anchor: "osaamisala",
@@ -53,6 +53,7 @@ export const getOsaamisalaForm = () => {
           anchor: "A",
           name: "TextBox",
           properties: {
+            isReadOnly,
             title: "Perustele lyhyesti miksi tälle muutokselle on tarvetta",
             value: ""
           }
@@ -141,7 +142,7 @@ function getCategoriesForPerustelut(
                     isInLupa: isInLupaBool
                   },
                   categories: osaamisala
-                    ? getOsaamisalaForm()
+                    ? getOsaamisalaForm(isReadOnly)
                     : isAddition
                     ? getAdditionForm(muutosperustelut, locale, isReadOnly)
                     : getRemovalForm(isReadOnly),
@@ -230,7 +231,7 @@ export default function getTutkinnotPerustelulomake(
     case "addition":
       return getAdditionForm(data.checkboxItems, locale, isReadOnly);
     case "osaamisala":
-      return getOsaamisalaForm();
+      return getOsaamisalaForm(isReadOnly);
     case "reasoning":
       return getReasoningForm(
         data.koulutusala,

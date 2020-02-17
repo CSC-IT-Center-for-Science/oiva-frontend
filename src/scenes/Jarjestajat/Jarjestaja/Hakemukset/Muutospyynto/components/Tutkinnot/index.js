@@ -4,8 +4,8 @@ import { parseLocalizedField } from "../../../../../../../modules/helpers";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import * as R from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
+import * as R from "ramda";
 
 const getArticle = (areaCode, articles = []) => {
   return R.find(article => {
@@ -34,7 +34,6 @@ const Tutkinnot = props => {
           <ExpandableRowRoot
             anchor={anchorInitial}
             key={`expandable-row-root-${i}`}
-            categories={[]}
             changes={changeObjects.tutkinnot[areaCode]}
             code={areaCode}
             onChangesRemove={props.onChangesRemove}
