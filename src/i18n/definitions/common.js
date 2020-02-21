@@ -294,5 +294,13 @@ export default defineMessages({
   toBeRemoved: {
     id: "common.toBeRemoved",
     defaultMessage: "Poistettava"
+  },
+  ammatillisenKoulutuksenJarjestajat: {
+    id: "common.ammatillisenKoulutuksenJarjestajat",
+    defaultMessage: "Ammatillisen koulutuksen järjestäjät"
+  },
+  voimassaOlevatJarjestamisluvat: {
+    id: "common.voimassaOlevatJarjestamisluvat",
+    defaultMessage: "Voimassa olevat järjestämisluvat ({amount} kpl)"
   }
 });

@@ -1,0 +1,299 @@
+[
+    {
+        "anchor": "3",
+        "title": "Työvoimakoulutuksen tehtävä",
+        "categories": [
+            {
+                "anchor": "tehtavan-tarpeellisuus",
+                "code": 1,
+                "title": "Tehtävän tarpeellisuus",
+                "categories": [
+                    {
+                        "anchor": "ensisijaisella-toiminta-alueella",
+                        "components": [
+                            {
+                                "anchor": "textbox",
+                                "name": "TextBox",
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "placeholder": "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+                                    "title": "Tehtävän tarpeellisuus ensisijaisella toiminta-alueella",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anchor": "toiminnalliset-edellytykset",
+                "code": 2,
+                "title": "Toiminnalliset edellytykset laajennetun oppisopimus järjestämistehtävän järjestämiseksi",
+                "categories": [
+                    {
+                        "anchor": "henkilostoresurssit",
+                        "components": [
+                            {
+                                "anchor": "textbox",
+                                "name": "TextBox",
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "placeholder": "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
+                                    "title": "Henkilöstöresurssit",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "anchor": "osaaminen",
+                        "components": [
+                            {
+                                "anchor": "textbox",
+                                "name": "TextBox",
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "placeholder": "Haetun tehtävän järjestämisen edellyttämä osaaminen (mm. palveluprosessi, hankintaosaaminen, johtaminen ja sopimusten valvonta).",
+                                    "title": "Osaaminen",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "anchor": "jarjestelyt",
+                        "components": [
+                            {
+                                "anchor": "textbox",
+                                "name": "TextBox",
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "placeholder": "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
+                                    "title": "Pedagogiset järjestelyt",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "anchor": "sidosryhmayhteistyo",
+                        "components": [
+                            {
+                                "anchor": "textbox",
+                                "name": "TextBox",
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "placeholder": "Haetun tehtävän edellyttämät toimivat ja kokonaisvaltaiset työelämäyhteydet ja -palvelut ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
+                                    "title": "Sidosryhmäyhteistyö",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anchor": "suunnitelma",
+                "code": 3,
+                "title": "Suunnitelma työvoimakoulutuksen järjestämiseksi",
+                "categories": [
+                    {
+                        "anchor": "suunnitelma-field",
+                        "styleClasses": [
+                            "pl-6"
+                        ],
+                        "components": [
+                            {
+                                "anchor": "textbox",
+                                "name": "TextBox",
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "placeholder": "mm. koulutusalat, joille työvoimakoulutusta aiotaan järjestää",
+                                    "title": "Toimintamalli työvoimakoulutuksen suunnittelusta ja toteutuksesta",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anchor": "yhteistyo",
+                "code": 4,
+                "title": "ELY-keskusten kanssa suunniteltu yhteistyö",
+                "categories": [
+                    {
+                        "anchor": "elykeskukset",
+                        "components": [
+                            {
+                                "anchor": "autocomplete",
+                                "name": "Autocomplete",
+                                "styleClasses": [
+                                    "pb-4 text-base"
+                                ],
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "options": [
+                                        {
+                                            "label": "Etelä-Pohjanmaan ELY-keskus",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "label": "Etelä-Savon ELY-keskus",
+                                            "value": "2"
+                                        },
+                                        {
+                                            "label": "Hämeen ELY-keskus",
+                                            "value": "3"
+                                        },
+                                        {
+                                            "label": "Kaakkois-Suomen ELY-keskus",
+                                            "value": "4"
+                                        },
+                                        {
+                                            "label": "Kainuun ELY-keskus",
+                                            "value": "5"
+                                        },
+                                        {
+                                            "label": "Keski-Suomen ELY-keskus",
+                                            "value": "6"
+                                        },
+                                        {
+                                            "label": "Lapin ELY-keskus",
+                                            "value": "7"
+                                        },
+                                        {
+                                            "label": "Pirkanmaan ELY-keskus",
+                                            "value": "8"
+                                        },
+                                        {
+                                            "label": "Pohjanmaan ELY-keskus",
+                                            "value": "9"
+                                        },
+                                        {
+                                            "label": "Pohjois-Karjalan ELY-keskus",
+                                            "value": "10"
+                                        },
+                                        {
+                                            "label": "Pohjois-Pohjanmaan ELY-keskus",
+                                            "value": "11"
+                                        },
+                                        {
+                                            "label": "Pohjois-Savon ELY-keskus",
+                                            "value": "12"
+                                        },
+                                        {
+                                            "label": "Satakunnan ELY-keskus",
+                                            "value": "13"
+                                        },
+                                        {
+                                            "label": "Uudenmaan ELY-keskus",
+                                            "value": "14"
+                                        },
+                                        {
+                                            "label": "Varsinais-Suomen ELY-keskus",
+                                            "value": "15"
+                                        }
+                                    ],
+                                    "title": "Valitkaa listasta ne ELY-keskukset joiden kanssa suunnittelette tekevänne yhteistyötä työvoimakoulutuksen järjestämisessä.",
+                                    "value": ""
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "anchor": "5-4",
+                "code": 5,
+                "styleClasses": [
+                    "border-t px-4 py-8 hover:bg-gray-100"
+                ],
+                "title": "Arvio koulutukseen suunnattavista opiskelijavuosista",
+                "categories": [
+                    {
+                        "anchor": "5-4",
+                        "components": [
+                            {
+                                "anchor": "opiskelijavuodet-header",
+                                "name": "StatusTextRow",
+                                "styleClasses": [
+                                    "font-semibold"
+                                ],
+                                "properties": {
+                                    "isReadOnly": false,
+                                    "labelStyles": {},
+                                    "title": "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina."
+                                }
+                            }
+                        ],
+                        "categories": [
+                            {
+                                "anchor": "vuodet",
+                                "layout": {
+                                    "indentation": "none"
+                                },
+                                "styleClasses": [
+                                    "flex sm:row"
+                                ],
+                                "components": [
+                                    {
+                                        "anchor": "A",
+                                        "name": "Input",
+                                        "styleClasses": [
+                                            "mr-8"
+                                        ],
+                                        "properties": {
+                                            "forChangeObject": {
+                                                "year": "2021"
+                                            },
+                                            "isReadOnly": false,
+                                            "withoutMargin": true,
+                                            "label": "2021",
+                                            "type": "number",
+                                            "width": "7em",
+                                            "value": ""
+                                        }
+                                    },
+                                    {
+                                        "anchor": "B",
+                                        "name": "Input",
+                                        "styleClasses": [
+                                            "mr-8"
+                                        ],
+                                        "properties": {
+                                            "forChangeObject": {
+                                                "year": "2022"
+                                            },
+                                            "isReadOnly": false,
+                                            "withoutMargin": true,
+                                            "label": "2022",
+                                            "type": "number",
+                                            "width": "7em",
+                                            "value": ""
+                                        }
+                                    },
+                                    {
+                                        "anchor": "C",
+                                        "name": "Input",
+                                        "properties": {
+                                            "forChangeObject": {
+                                                "year": "2023"
+                                            },
+                                            "isReadOnly": false,
+                                            "withoutMargin": true,
+                                            "label": "2023",
+                                            "type": "number",
+                                            "width": "7em",
+                                            "value": ""
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

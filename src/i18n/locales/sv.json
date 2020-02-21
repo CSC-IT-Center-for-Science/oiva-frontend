@@ -25,6 +25,7 @@
   "auth.logIn": "Logga in",
   "auth.logOut": "Logga ut",
   "auth.loggedInInfo": "Du är inloggad",
+  "common.ammatillisenKoulutuksenJarjestajat": "SV: Ammatillisen koulutuksen järjestäjät",
   "common.application": "Hakemus",
   "common.applyFor": "Ansöka om",
   "common.asiat": "Asia",
@@ -75,6 +76,7 @@
   "common.toBeRemoved": "Poistettava",
   "common.today": "Idag",
   "common.undo": "Ångra",
+  "common.voimassaOlevatJarjestamisluvat": "SV: Voimassa olevat järjestämisluvat ({amount} kpl)",
   "common.welcome": "Tervetuloa Oiva-palveluun",
   "education.highSchoolEducation": "Gymnasieutbildning",
   "education.preAndBasicEducation": "För- och grundutbildning",
@@ -112,6 +114,7 @@
   "wizard.noRights": "Sinulla ei ole oikeuksia tälle sivulle.",
   "wizard.notSignedIn": "Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun.",
   "wizard.osaamisalarajoitus": "Rajoitus",
+  "wizard.otherAttachments": "SV: Muut liitteet",
   "wizard.other_placeholder": "Kerro vapaasti, mitä haluat hakea",
   "wizard.pageTitle_1": "Ny ansökan om ändring",
   "wizard.pageTitle_2": "Resonemang",
@@ -127,6 +130,5 @@
   "wizard.teachingLanguages": "Undervisningsspråk",
   "wizard.tutkintokielet": "Tutkintokielet",
   "wizard.vocationalTraining": "Yrkesutbildning",
-  "wizard.workforceTraining": "Arbetsträning",
-  "wizard.otherAttachments": "SV: Muut liitteet"
+  "wizard.workforceTraining": "Arbetsträning"
 }

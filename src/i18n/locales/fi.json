@@ -25,6 +25,7 @@
   "auth.logIn": "Kirjaudu sisään",
   "auth.logOut": "Kirjaudu ulos",
   "auth.loggedInInfo": "Olet kirjautunut sisään",
+  "common.ammatillisenKoulutuksenJarjestajat": "Ammatillisen koulutuksen järjestäjät",
   "common.application": "Hakemus",
   "common.applyFor": "Haettava",
   "common.asiat": "Asia",
@@ -75,6 +76,7 @@
   "common.toBeRemoved": "Poistettava",
   "common.today": "Tänään",
   "common.undo": "Peruuta muutokset",
+  "common.voimassaOlevatJarjestamisluvat": "Voimassa olevat järjestämisluvat ({amount} kpl)",
   "common.welcome": "Tervetuloa Oiva-palveluun",
   "education.highSchoolEducation": "Lukiokoulutus",
   "education.preAndBasicEducation": "Esi- ja perusopetus",
@@ -112,6 +114,7 @@
   "wizard.noRights": "Sinulla ei ole oikeuksia tälle sivulle.",
   "wizard.notSignedIn": "Uuden hakemuksen tekeminen vaatii kirjautumisen palveluun.",
   "wizard.osaamisalarajoitus": "Rajoitus",
+  "wizard.otherAttachments": "Muut liitteet",
   "wizard.other_placeholder": "Kerro vapaasti, mitä haluat hakea",
   "wizard.pageTitle_1": "Muutokset",
   "wizard.pageTitle_2": "Perustelut",
@@ -127,7 +130,5 @@
   "wizard.teachingLanguages": "Opetuskielet",
   "wizard.tutkintokielet": "Tutkintokielet",
   "wizard.vocationalTraining": "Ammatilliseen tehtävään valmistavat koulutukset",
-  "wizard.workforceTraining": "Työvoimakoulutukset",
-  "wizard.tutkintokielet": "Tutkintokielet",
-  "wizard.otherAttachments": "Muut liitteet"
+  "wizard.workforceTraining": "Työvoimakoulutukset"
 }

@@ -375,6 +375,16 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.ammatillisenKoulutuksenJarjestajat",
+    "defaultMessage": "Ammatillisen koulutuksen järjestäjät",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.voimassaOlevatJarjestamisluvat",
+    "defaultMessage": "Voimassa olevat järjestämisluvat ({amount} kpl)",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -632,6 +642,11 @@
   {
     "id": "wizard.allPerustelutRequired",
     "defaultMessage": "Perustele kaikki muutokset.",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.otherAttachments",
+    "defaultMessage": "Muut liitteet",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {

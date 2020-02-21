@@ -5,9 +5,12 @@ import LuvatList from "./components/LuvatList";
 import { PropTypes } from "prop-types";
 import { Helmet } from "react-helmet";
 import * as R from "ramda";
+import common from "../../i18n/definitions/common";
 import Loading from "../../modules/Loading";
+import { useIntl } from "react-intl";
 
 const Jarjestajat = React.memo(({ history }) => {
+  const intl = useIntl();
   const [luvat, luvatActions] = useLuvat();
 
   // Let's fetch LUVAT
@@ -30,11 +33,13 @@ const Jarjestajat = React.memo(({ history }) => {
       <BreadcrumbsItem to="/jarjestajat">Ammatillinen koulutus</BreadcrumbsItem>
 
       <div className="mx-auto w-full sm:w-3/4 mb-16">
-        <h1>Ammatillisen koulutuksen järjestäjät</h1>
+        <h1>{intl.formatMessage(common.ammatillisenKoulutuksenJarjestajat)}</h1>
         {luvat.isLoading === false && !luvat.isErroneous && (
           <React.Fragment>
             <p className="my-4">
-              Voimassa olevat järjestämisluvat ({R.length(luvat.data)} kpl)
+              {intl.formatMessage(common.voimassaOlevatJarjestamisluvat, {
+                amount: R.length(luvat.data)
+              })}
             </p>
 
             <LuvatList history={history} luvat={luvat.data} />
