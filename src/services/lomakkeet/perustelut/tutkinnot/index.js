@@ -19,7 +19,8 @@ export const getAdditionForm = (checkboxItems, locale, isReadOnly = false) => {
         indentation: "none"
       },
       title: __("muutospyynnon.taustalla.olevat.syyt"),
-      categories: checkboxes
+      categories: checkboxes,
+      isReadOnly
     }
   ];
 };
