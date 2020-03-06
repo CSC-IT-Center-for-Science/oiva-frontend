@@ -214,8 +214,8 @@ class ValmisteluWizard extends Component {
 
     if (muutosperustelut.fetched && lupa.fetched && paatoskierrokset.fetched) {
 
-      const {diaarinumero} = this.props.lupa.data
-      let url = `/api/pdf/${diaarinumero}`
+      const {uuid} = this.props.lupa.data
+      let url = `/api/pdf/${uuid}`
 
       return (
         <div>

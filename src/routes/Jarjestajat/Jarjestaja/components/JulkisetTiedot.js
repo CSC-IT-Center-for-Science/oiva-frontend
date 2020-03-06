@@ -28,7 +28,7 @@ const LupaInnerContentWrapper = styled.div`
 const JulkisetTiedot = (props) => {
   const { lupadata } = props
   const { jarjestaja } = lupadata
-  const { diaarinumero, jarjestajaOid } = lupadata
+  const { diaarinumero, jarjestajaOid, uuid } = lupadata
   let { alkupvm } = lupadata
   const jarjestajaNimi = jarjestaja.nimi.fi || jarjestaja.nimi.sv || ''
   const lupaException = LUPA_LISAKOULUTTAJAT[jarjestaja.ytunnus]
@@ -47,6 +47,7 @@ const JulkisetTiedot = (props) => {
 
         <CurrentLupa
           diaarinumero={diaarinumero}
+          uuid={uuid}
           jarjestaja={jarjestajaNimi}
           voimassaolo={alkupvm}
           lupaExceptionUrl={lupaException ? `${LUPA_EXCEPTION_PATH}${lupaException.pdflink}` : null}

@@ -104,7 +104,7 @@ class Muutospyynto extends Component {
       )
     } else if (lupa.fetched) {
       const { diaarinumero } = this.props.match.params
-      const { alkupvm, paatospvm, meta, jarjestajaYtunnus, jarjestaja } = this.props.lupa.data
+      const { alkupvm, paatospvm, meta, jarjestajaYtunnus, jarjestaja, uuid } = this.props.lupa.data
       const { kohteet } = this.props.lupa
       const { esittelija } = meta
       const jarjestajaNimi = jarjestaja.nimi.fi || jarjestaja.nimi.sv || ''
@@ -129,7 +129,7 @@ class Muutospyynto extends Component {
                 <TopSectionWrapper>
                   <h2>Muutospyyntö</h2>
                   <Row>Diaarinumero:&nbsp;{diaarinumero}</Row>
-                  <Row>Päätös:&nbsp;<a href={`${API_BASE_URL}/pdf/${diaarinumero}`} target="_blank"><img src={pdfIcon} alt="Järjestämislupa PDF-muodossa"/><Moment format="MM.DD.YYYY">{paatospvm}</Moment></a></Row>
+                  <Row>Päätös:&nbsp;<a href={`${API_BASE_URL}/pdf/${uuid}`} target="_blank"><img src={pdfIcon} alt="Järjestämislupa PDF-muodossa"/><Moment format="MM.DD.YYYY">{paatospvm}</Moment></a></Row>
                   <Row>Voimassaolo:&nbsp;<Moment format="MM.DD.YYYY">{alkupvm}</Moment>&nbsp;alkaen</Row>
                   <Row>Esittelijä:&nbsp;{esittelija ? esittelija :  '-'}</Row>
                 </TopSectionWrapper>
