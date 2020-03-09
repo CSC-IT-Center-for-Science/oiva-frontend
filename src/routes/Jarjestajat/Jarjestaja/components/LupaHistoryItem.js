@@ -22,11 +22,10 @@ const TextPartial = styled.span`
 `
 
 const LupaHistoryItem = (props) => {
-  const { filename, diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm } = props.lupaHistoria
-
+  const { filename, diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm, uuid } = props.lupaHistoria
   let path = `/pebble/resources/liitteet/lupahistoria/${filename}`;
   if(voimassaololoppupvm.split("-").join("") > "20181230") {
-    path = `/pdf/${diaarinumero}`;
+    path = `/pdf/${uuid}`;
   }
 
   return (

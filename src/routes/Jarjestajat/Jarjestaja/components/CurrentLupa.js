@@ -58,8 +58,8 @@ const LupaTextWrapper = styled.div`
 `
 
 const CurrentLupa = (props) => {
-  const { diaarinumero, jarjestaja, voimassaolo, lupaExceptionUrl } = props
-  let url = `${API_BASE_URL}/pdf/${diaarinumero}`
+  const { diaarinumero, jarjestaja, voimassaolo, lupaExceptionUrl, uuid } = props
+  let url = `${API_BASE_URL}/pdf/${uuid}`
 
   if (lupaExceptionUrl) {
     url = lupaExceptionUrl
