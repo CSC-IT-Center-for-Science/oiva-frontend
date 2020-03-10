@@ -22,62 +22,52 @@ const TextPartial = styled.span`
 `
 
 const LupaHistoryItem = (props) => {
-  const { filename, diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm, uuid } = props.lupaHistoria
+  const { filename, diaarinumero, voimassaoloalkupvm, voimassaololoppupvm, paatospvm, uuid, kumottupvm } = props.lupaHistoria
   let path = `/pebble/resources/liitteet/lupahistoria/${filename}`;
   if(voimassaololoppupvm.split("-").join("") > "20181230") {
     path = `/pdf/${uuid}`;
   }
 
+  const showValidityDates = (!kumottupvm || kumottupvm >= voimassaoloalkupvm);
+
   return (
     <a href={`${API_BASE_URL}${path}`} target="_blank">
       <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Tr>
-            <LupaText>
-              <TextPartial>Diaarinumero: {diaarinumero}</TextPartial>
-              <TextPartial>
-                Päätös tehty:&nbsp;
-                <Moment format="DD.MM.YYYY">{paatospvm}</Moment>
-              </TextPartial>
-              {voimassaoloalkupvm === "2018-01-01" && voimassaololoppupvm === "2018-01-01"
-                ? <TextPartial>Kumottu: <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment></TextPartial>
-                : (
+              <LupaText>
+                  <TextPartial>Diaarinumero: {diaarinumero}</TextPartial>
+                  <TextPartial>
+                      Päätös tehty:&nbsp;
+                      <Moment format="DD.MM.YYYY">{paatospvm}</Moment>
+                  </TextPartial>
+                  {showValidityDates &&
                   <TextPartial>Voimassa:&nbsp;
-                    <Moment format="DD.MM.YYYY">{voimassaoloalkupvm}</Moment>
-                    &nbsp;-&nbsp;
-                    <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment>
-                  </TextPartial>)
-              }
-            </LupaText>
+                      <Moment format="DD.MM.YYYY">{voimassaoloalkupvm}</Moment>
+                      &nbsp;-&nbsp;
+                      <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment>
+                  </TextPartial>
+                  }
+                  { kumottupvm && <TextPartial>Kumottu: <Moment format="DD.MM.YYYY">{kumottupvm}</Moment></TextPartial> }
+              </LupaText>
           </Tr>
         } />
         <Media query={MEDIA_QUERIES.TABLET_MIN} render={() =>
           <div>
-              {voimassaoloalkupvm === voimassaololoppupvm
-              ?
-                <Tr>
-                  <Td>{diaarinumero}</Td>
-                  <Td>
-                    <Moment format="DD.MM.YYYY">{paatospvm}</Moment>
-                  </Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td><Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment></Td>
-                </Tr>
-              :
-                <Tr>
-                  <Td>{diaarinumero}</Td>
-                  <Td>
-                    <Moment format="DD.MM.YYYY">{paatospvm}</Moment>
-                  </Td>
-                  <Td>
-                    <Moment format="DD.MM.YYYY">{voimassaoloalkupvm}</Moment>
-                  </Td>
-                  <Td>
-                    <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment>
-                  </Td>
-                  <Td></Td>
-                </Tr>
-              }
+            <Tr>
+              <Td>{diaarinumero}</Td>
+              <Td>
+                <Moment format="DD.MM.YYYY">{paatospvm}</Moment>
+              </Td>
+              <Td>
+                  { showValidityDates && <Moment format="DD.MM.YYYY">{voimassaoloalkupvm}</Moment> }
+              </Td>
+              <Td>
+                  { showValidityDates && <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment> }
+              </Td>
+              <Td>
+                  { kumottupvm && <Moment format="DD.MM.YYYY">{kumottupvm}</Moment> }
+              </Td>
+            </Tr>
             </div>
         } />
     </a>
