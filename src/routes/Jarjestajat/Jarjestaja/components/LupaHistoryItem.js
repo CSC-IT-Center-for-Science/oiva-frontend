@@ -28,7 +28,7 @@ const LupaHistoryItem = (props) => {
     path = `/pdf/${uuid}`;
   }
 
-  const showValidityDates = (!kumottupvm || kumottupvm >= voimassaoloalkupvm);
+  const showValidityDates = !kumottupvm || kumottupvm >= voimassaoloalkupvm;
 
   return (
     <a href={`${API_BASE_URL}${path}`} target="_blank">
@@ -40,14 +40,13 @@ const LupaHistoryItem = (props) => {
                       Päätös tehty:&nbsp;
                       <Moment format="DD.MM.YYYY">{paatospvm}</Moment>
                   </TextPartial>
-                  {showValidityDates &&
-                  <TextPartial>Voimassa:&nbsp;
-                      <Moment format="DD.MM.YYYY">{voimassaoloalkupvm}</Moment>
-                      &nbsp;-&nbsp;
-                      <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment>
-                  </TextPartial>
-                  }
-                  { kumottupvm && <TextPartial>Kumottu: <Moment format="DD.MM.YYYY">{kumottupvm}</Moment></TextPartial> }
+                  {showValidityDates
+                      ? <TextPartial>Voimassa:&nbsp;
+                            <Moment format="DD.MM.YYYY">{voimassaoloalkupvm}</Moment>
+                            &nbsp;-&nbsp;
+                            <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment>
+                        </TextPartial>
+                      : <TextPartial>Kumottu: <Moment format="DD.MM.YYYY">{kumottupvm}</Moment></TextPartial> }
               </LupaText>
           </Tr>
         } />
@@ -65,7 +64,7 @@ const LupaHistoryItem = (props) => {
                   { showValidityDates && <Moment format="DD.MM.YYYY">{voimassaololoppupvm}</Moment> }
               </Td>
               <Td>
-                  { kumottupvm && <Moment format="DD.MM.YYYY">{kumottupvm}</Moment> }
+                  { !showValidityDates && <Moment format="DD.MM.YYYY">{kumottupvm}</Moment> }
               </Td>
             </Tr>
             </div>
