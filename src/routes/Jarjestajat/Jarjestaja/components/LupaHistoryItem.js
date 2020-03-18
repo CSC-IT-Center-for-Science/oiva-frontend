@@ -27,7 +27,7 @@ const LupaHistoryItem = (props) => {
   const showValidityDates = !kumottupvm || kumottupvm >= voimassaoloalkupvm;
 
   return (
-    <a href={`${API_BASE_URL}/pdf/history/${uuid}`} target="_blank">
+    <a href={`${API_BASE_URL}/pdf/historia/${uuid}`} target="_blank">
       <Media query={MEDIA_QUERIES.MOBILE} render={() =>
           <Tr>
               <LupaText>
