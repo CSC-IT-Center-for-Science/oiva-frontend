@@ -57,7 +57,7 @@ const AppWrapper = () => {
       };
     } else {
     }
-  }, [isBackendTheSourceOfLocalizations, state.locale]);
+  }, [isBackendTheSourceOfLocalizations, kaannoksetActions, state.locale]);
 
   const messages = useMemo(() => {
     return isBackendTheSourceOfLocalizations && kaannokset.length

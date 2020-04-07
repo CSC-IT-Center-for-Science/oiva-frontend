@@ -4,6 +4,7 @@ import Asiat from "./components/Asiat";
 import Asiakirjat from "./components/Asiakirjat";
 import { Route, Switch, useLocation } from "react-router-dom";
 import * as R from "ramda";
+import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
 
 const Esittelijat = ({ match, user, history }) => {
   const location = useLocation();
@@ -28,6 +29,12 @@ const Esittelijat = ({ match, user, history }) => {
           exacts
           path={`${match.url}/asiakirjat`}
           render={() => <Asiakirjat history={history} uuid={uuid} />}
+        />
+        <Route
+          authenticated={!!user}
+          exacts
+          path={`${match.url}/:ytunnus/uusi`}
+          render={() => <UusiAsiaDialogContainer />}
         />
       </Switch>
     </React.Fragment>

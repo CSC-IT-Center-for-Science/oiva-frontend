@@ -215,7 +215,7 @@ const Asiakirjat = ({ uuid }) => {
         background: "#FAFAFA"
       }}>
       <Helmet>
-        <title>{`Oiva | ${t(common.hakemusAsiakirjat)}`}</title> // todo
+        <title>{`Oiva | ${t(common.hakemusAsiakirjat)}`}</title>
       </Helmet>
       <BreadcrumbsItem to="/">{t(common.frontpage)}</BreadcrumbsItem>
       <BreadcrumbsItem to="/asiat">{t(common.asiat)}</BreadcrumbsItem>

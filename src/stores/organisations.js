@@ -4,18 +4,16 @@ import { execute } from "./utils/loadFromBackend";
 const Store = createStore({
   initialState: {},
   actions: {
-    load: oid => ({ getState, setState }) => {
+    load: () => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
-          key: "organisaatio",
-          urlEnding: oid
-        },
-        { oid }
+          key: "organisaatiot"
+        }
       );
     }
   },
-  name: "Organisation"
+  name: "Organisaatiot"
 });
 
-export const useOrganisation = createHook(Store);
+export const useOrganisations = createHook(Store);
