@@ -25,7 +25,7 @@ const MuutospyyntoWizardMuut = props => {
   const osiota5koskevatMaaraykset = useMemo(() => {
     return R.filter(
       R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
-    )(props.maaraykset);
+    )(props.maaraykset || []);
   }, [props.maaraykset]);
 
   const divideArticles = useMemo(() => {

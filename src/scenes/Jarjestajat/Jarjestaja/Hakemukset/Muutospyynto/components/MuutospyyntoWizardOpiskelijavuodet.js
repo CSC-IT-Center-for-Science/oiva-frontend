@@ -77,7 +77,7 @@ const MuutospyyntoWizardOpiskelijavuodet = props => {
 
   useEffect(() => {
     const maarays = R.find(R.propEq("koodisto", "koulutussektori"))(
-      props.maaraykset
+      props.maaraykset || []
     );
     if (maarays) {
       setKoodiarvot(prevState => {

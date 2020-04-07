@@ -1,4 +1,5 @@
 {
+  "asianumero": "Asianumero",
   "attachments.attachmentAdd": "Lisää liite",
   "attachments.attachmentDownload": "Lataa liite tietokoneelle",
   "attachments.attachmentError": "Valitsemaasi liitettä ei voi lisätä hakemukseen, tarkista sen koko ja tyyppi",
@@ -22,6 +23,7 @@
   "limitForSpecialSupport": "Vaativan erityisen tuen tehtävään käytettävien opiskelijavuosien enimmäismäärä",
   "minimumAmountOfYears": "Koulutuksen järjestäjän opiskelijavuosien vähimmäismäärä",
   "other.placeholder": "Kerro vapaasti, mitä haluat hakea",
+  "paatospaiva": "Päätöspäivä",
   "responsibilities": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta Ahvenanmaan maakuntaa lukuunottamatta koko Suomen osaamis- ja koulutustarpeeseen.",
   "reasoning.title.default": "Perustele lyhyesti miksi tälle muutokselle on tarvetta",
   "taloudelliset.yleisettiedot.kentta1.tooltip": "Esittäkää taloudelliset edellytyksenne järjestää haettuja tehtäviä huomioiden, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä.",
@@ -45,5 +47,6 @@
   "common.date": "Päivämäärä",
   "common.datemax": "Päiväys on liian suuri",
   "common.datemin": "Päiväys on liian pieni",
-  "common.dateinvalid": "Päiväys on virheellinen"
+  "common.dateinvalid": "Päiväys on virheellinen",
+  "voimaantulopaiva": "Voimaantulopäivä"
 }

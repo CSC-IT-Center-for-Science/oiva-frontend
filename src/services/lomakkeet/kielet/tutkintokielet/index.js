@@ -4,7 +4,7 @@ function getModificationForm(
   tutkintolomake,
   tutkintomuutokset,
   kielet,
-  maaraykset,
+  maaraykset = [],
   locale
 ) {
   const localeUpper = R.toUpper(locale);

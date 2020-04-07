@@ -195,5 +195,17 @@ export default defineMessages({
   otherAttachments: {
     id: "wizard.otherAttachments",
     defaultMessage: "Muut liitteet"
+  },
+  getOut: {
+    id: "wizard.getOut",
+    defaultMessage: "Poistu"
+  },
+  previewAndPrint: {
+    id: "wizard.previewAndPrint",
+    defaultMessage: "Esikatsele ja tulosta"
+  },
+  esittelijatMuutospyyntoDialogTitle: {
+    id: "wizard.esittelijatMuutospyyntoDialogTitle",
+    defaultMessage: "Päätöksen valmistelu: Järjestämisluvan muutos"
   }
 });

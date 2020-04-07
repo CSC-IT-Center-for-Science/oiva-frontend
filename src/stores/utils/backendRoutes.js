@@ -36,6 +36,7 @@ export const backendRoutes = {
   vankilat: { path: `koodistot/koodit/vankilat` },
   liitteet: { path: `liitteet/`, abortController: false },
   tallennaMuutospyynto: { path: "muutospyynnot/tallenna" },
+  kaannokset: { path: "lokalisaatio"},
   lahetaMuutospyynto: { path: "muutospyynnot/tila/avoin/" },
-  kaannokset: { path: "lokalisaatio"}
+  organisaatiot: { path: "luvat/organisaatiot" }
 };

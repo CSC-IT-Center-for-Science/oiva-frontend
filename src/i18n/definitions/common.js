@@ -33,6 +33,10 @@ export default defineMessages({
     id: "common.cancel",
     defaultMessage: "Peruuta"
   },
+  accept: {
+    id: "common.accept",
+    defaultMessage: "Hyväksy"
+  },
   today: {
     id: "common.today",
     defaultMessage: "Tänään"
@@ -664,5 +668,9 @@ export default defineMessages({
   luoUusiAsia: {
     id: "common.luoUusiAsia",
     defaultMessage: "Luo uusi asia"
+  },
+  luoUusiAsiaInstructions: {
+    id: "common.luoUusiAsiaInstructions",
+    defaultMessage: "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle"
   }
 });

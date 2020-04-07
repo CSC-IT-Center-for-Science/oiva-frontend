@@ -30,6 +30,7 @@ import getSisaoppilaitosOpiskelijavuodetPerustelulomake from "./perustelut/opisk
 import getVahimmaisopiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vahimmais";
 import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vaativa";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
+import getTopThree from "./esittelija";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -267,6 +268,14 @@ const lomakkeet = {
     yleisetTiedot: {
       modification: (data, isReadOnly) =>
         getYhteenvetoYleisetTiedotLomake("modification", data, isReadOnly)
+    }
+  },
+
+  // Esittelija
+  esittelija: {
+    topThree: {
+      addition: (data, isReadOnly, locale) =>
+        getTopThree(data, isReadOnly, locale)
     }
   }
 };
