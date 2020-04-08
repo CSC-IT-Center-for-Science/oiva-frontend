@@ -64,12 +64,12 @@ const App = ({ isDebugModeOn, user }) => {
 
   const [headerHeight, setHeaderHeight] = useState(0);
 
-  const kujaURL = process.env.REACT_APP_KUJA_URL || 'https://localhost:4433';
+  const kujaURL = process.env.REACT_APP_KUJA_URL || "https://localhost:4433";
 
   const pageLinks = [
     {
       url: kujaURL + "/esi-ja-perusopetus",
-      text: intl.formatMessage(educationMessages.preAndBasicEducation),
+      text: intl.formatMessage(educationMessages.preAndBasicEducation)
     },
     {
       url: kujaURL + "/lukiokoulutus",
@@ -122,28 +122,34 @@ const App = ({ isDebugModeOn, user }) => {
   );
 
   const organisationLink = useMemo(() => {
-    const orgNimi = R.prop("nimi", organisation.data);
-    const isEsittelija = user
-      ? R.includes("OIVA_APP_ESITTELIJA", user.roles)
-      : false;
-    const result = {
-      // Select name by locale or first in nimi object
-      text: R.or(
-        R.prop(intl.locale, orgNimi),
-        R.tail(R.head(R.toPairs(orgNimi)) || [])
-      )
-    };
-    return isEsittelija
-      ? result
-      : R.assoc(
-          "path",
-          `/jarjestajat/${R.prop(
-            "ytunnus",
-            organisation.data
-          )}/jarjestamislupa-asia`,
-          result
-        );
-  }, [intl, organisation.data, user]);
+    if (user && user.oid && organisation && organisation[user.oid]) {
+      const orgNimi =
+        user && organisation && organisation[user.oid]
+          ? R.prop("nimi", organisation[user.oid].data)
+          : "";
+      const isEsittelija = user
+        ? R.includes("OIVA_APP_ESITTELIJA", user.roles)
+        : false;
+      const result = {
+        // Select name by locale or first in nimi object
+        text: R.or(
+          R.prop(intl.locale, orgNimi),
+          R.tail(R.head(R.toPairs(orgNimi)) || [])
+        )
+      };
+      return isEsittelija
+        ? result
+        : R.assoc(
+            "path",
+            `/jarjestajat/${R.prop(
+              "ytunnus",
+              organisation[user.oid].data
+            )}/jarjestamislupa-asia`,
+            result
+          );
+    }
+    return {};
+  }, [intl, organisation, user]);
 
   const shortDescription = useMemo(() => {
     return {
@@ -191,8 +197,9 @@ const App = ({ isDebugModeOn, user }) => {
   const getHeader = useCallback(
     template => {
       if (
-        (appDispatch,
-        appState.locale && intl && (!user || !organisation.isLoding))
+        appState.locale &&
+        intl &&
+        (!user || (organisation[user.oid] && !organisation[user.oid].isLoding))
       ) {
         return (
           <Header
@@ -214,7 +221,6 @@ const App = ({ isDebugModeOn, user }) => {
       return null;
     },
     [
-      appDispatch,
       appState.locale,
       authenticationLink,
       intl,

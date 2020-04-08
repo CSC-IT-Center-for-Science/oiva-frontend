@@ -25,11 +25,25 @@ import { useTutkinnot } from "../../stores/tutkinnot";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import { useHistory } from "react-router-dom";
+import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
+const DialogTitleWithStyles = withStyles(() => ({
+  root: {
+    backgroundColor: "#c8dcc3",
+    paddingBottom: "1rem",
+    paddingTop: "1rem",
+    width: "100%"
+  }
+}))(props => {
+  return <DialogTitle {...props}>{props.children}</DialogTitle>;
+});
+
 const DialogContentWithStyles = withStyles(() => ({
   root: {
+    backgroundColor: "#ffffff",
+    padding: 0,
     scrollBehavior: "smooth"
   }
 }))(props => {
@@ -38,7 +52,7 @@ const DialogContentWithStyles = withStyles(() => ({
 
 const FormDialog = withStyles(() => ({
   paper: {
-    background: "#f8faf8",
+    background: "#ffffff",
     marginLeft: isDebugOn ? "33%" : 0,
     width: isDebugOn ? "66%" : "100%"
   }
@@ -46,24 +60,41 @@ const FormDialog = withStyles(() => ({
   return <Dialog {...props}>{props.children}</Dialog>;
 });
 
+const defaultProps = {
+  backendMuutokset: [],
+  elykeskukset: [],
+  kohteet: [],
+  koulutustyypit: [],
+  kunnat: [],
+  lupa: {},
+  lupaKohteet: {},
+  maakunnat: [],
+  maakuntakunnat: [],
+  maaraystyypit: [],
+  muut: [],
+  muutosperusteluList: [],
+  organisation: {},
+  vankilat: []
+};
+
 const UusiAsiaDialog = ({
-  backendMuutokset = [],
-  elykeskukset = [],
-  kohteet = [],
-  koulutustyypit = [],
-  kunnat = [],
-  lupa = {},
-  lupaKohteet = {},
-  maakunnat = [],
-  maakuntakunnat = [],
-  maaraystyypit = [],
-  muut = [],
-  muutosperusteluList = [],
+  backendMuutokset = defaultProps.backendMuutokset,
+  elykeskukset = defaultProps.elykeskukset,
+  kohteet = defaultProps.kohteet,
+  koulutustyypit = defaultProps.koulutustyypit,
+  kunnat = defaultProps.kunnat,
+  lupa = defaultProps.lupa,
+  lupaKohteet = defaultProps.lupaKohteet,
+  maakunnat = defaultProps.maakunnat,
+  maakuntakunnat = defaultProps.maakuntakunnat,
+  maaraystyypit = defaultProps.maaraystyypit,
+  muut = defaultProps.muut,
+  muutosperusteluList = defaultProps.muutosperusteluList,
   onNewDocSave,
-  vankilat = []
+  organisation = defaultProps.organisation,
+  vankilat = defaultProps.vankilat
 }) => {
   const intl = useIntl();
-
   let history = useHistory();
   const [cos, coActions] = useChangeObjects(); // cos means change objects
   const [kielet] = useKielet();
@@ -76,6 +107,18 @@ const UusiAsiaDialog = ({
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
+
+  const organisationPhoneNumber = R.head(
+    R.values(R.find(R.prop("numero"), organisation.yhteystiedot))
+  );
+
+  const organisationEmail = R.head(
+    R.values(R.find(R.prop("email"), organisation.yhteystiedot))
+  );
+
+  const organisationWebsite = R.head(
+    R.values(R.find(R.prop("www"), organisation.yhteystiedot))
+  );
 
   const kieletAndOpetuskielet = useMemo(() => {
     return {
@@ -149,20 +192,67 @@ const UusiAsiaDialog = ({
   }, []);
 
   return (
-    <React.Fragment>
+    <div className="max-w-6xl">
       <FormDialog
         open={isDialogOpen}
         onClose={openCancelModal}
         maxWidth={"lg"}
         fullScreen={true}
         aria-labelledby="simple-dialog-title">
-        <DialogTitle id="customized-dialog-title" onClose={openCancelModal}>
-          {intl.formatMessage(
-            wizardMessages.esittelijatMuutospyyntoDialogTitle
-          )}
-        </DialogTitle>
+        <div className={"w-full xl:w-3/4 max-w-6xl m-auto"}>
+          <DialogTitleWithStyles id="customized-dialog-title">
+            <div className="flex">
+              <div className="flex-1">
+                {intl.formatMessage(
+                  wizardMessages.esittelijatMuutospyyntoDialogTitle
+                )}
+              </div>
+              <div>
+                <SimpleButton
+                  text={`${intl.formatMessage(wizardMessages.getOut)} X`}
+                  onClick={openCancelModal}
+                  variant={"text"}
+                />
+              </div>
+            </div>
+          </DialogTitleWithStyles>
+        </div>
         <DialogContentWithStyles>
-          <div id="wizard-content" className="lg:px-16 max-w-6xl m-auto mb-20">
+          <div className="bg-vaalenharmaa px-16 w-full xl:w-3/4 max-w-6xl m-auto mb-20 border-b border-xs border-harmaa">
+            <div className="py-4">
+              <h1>{organisation.nimi[intl.locale || "fi"]}</h1>
+              <p>
+                {organisation.kayntiosoite.osoite},{" "}
+                {organisation.postiosoite.osoite}{" "}
+                {organisation.kayntiosoite.postitoimipaikka}
+              </p>
+              <p>
+                {organisationPhoneNumber && (
+                  <React.Fragment>
+                    <a href={`tel:${organisationPhoneNumber}`}>
+                      {organisationPhoneNumber}
+                    </a>{" "}
+                    |{" "}
+                  </React.Fragment>
+                )}
+                {organisationPhoneNumber && (
+                  <React.Fragment>
+                    <a href={`mailto:${organisationEmail}`}>
+                      {organisationEmail}
+                    </a>{" "}
+                    |{" "}
+                  </React.Fragment>
+                )}
+                {organisation.ytunnus} |{" "}
+                {organisationWebsite && (
+                  <a href={organisationWebsite}>{organisationWebsite}</a>
+                )}
+              </p>
+            </div>
+          </div>
+          <div
+            id="wizard-content"
+            className="px-16 xl:w-3/4 max-w-6xl m-auto mb-20">
             <EsittelijatMuutospyynto
               kielet={kieletAndOpetuskielet}
               kohteet={kohteet}
@@ -200,7 +290,7 @@ const UusiAsiaDialog = ({
         handleOk={closeWizard}
         handleCancel={handleCancel}
       />
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -218,6 +308,7 @@ UusiAsiaDialog.propTypes = {
   muut: PropTypes.array,
   muutosperusteluList: PropTypes.array,
   onNewDocSave: PropTypes.func,
+  organisation: PropTypes.object,
   vankilat: PropTypes.array
 };
 

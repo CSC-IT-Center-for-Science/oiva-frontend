@@ -9,6 +9,7 @@ const Store = createStore({
         { getState, setState },
         {
           key: "organisaatio",
+          path: [oid],
           urlEnding: oid
         },
         { oid }

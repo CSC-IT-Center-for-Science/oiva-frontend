@@ -20,7 +20,7 @@ const CasAuthenticated = () => {
   const [user] = useUser();
   const [organisation] = useOrganisation();
 
-  const ytunnus = R.path(["data", "ytunnus"], organisation);
+  const ytunnus = R.path([user.data.oid, "data", "ytunnus"], organisation);
 
   if (user.hasErrored) {
     return <p>{intl.formatMessage(commonMessages.loginError)}</p>;
@@ -37,7 +37,7 @@ const CasAuthenticated = () => {
             ytunnus={ytunnus}
             to={{
               pathname: "/jarjestajat/" + ytunnus + "/omattiedot",
-              ytunnus: ytunnus
+              ytunnus
             }}
           />
         );

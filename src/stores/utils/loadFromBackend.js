@@ -1,6 +1,14 @@
 import { API_BASE_URL } from "../../modules/constants";
 import { backendRoutes } from "./backendRoutes";
-import { equals, includes, join, map, mergeDeepLeft } from "ramda";
+import {
+  assocPath,
+  equals,
+  includes,
+  join,
+  map,
+  mergeDeepLeft,
+  path
+} from "ramda";
 
 async function run(abortController, config, callbackFn) {
   // key is used to resolve path parameters from backendRoutes
@@ -63,27 +71,39 @@ export function execute(
   payload
 ) {
   const state = getState();
+  const fetched = config.path ? path(config.path, state) : state;
   if (
-    state.isLoading !== true &&
-    (state.isErroneous ||
-      !equals(propsToState, state.keyParams) ||
-      !state.fetchedAt ||
-      new Date().getTime() - state.fetchedAt >= refreshIntervalInSeconds * 1000)
+    !fetched ||
+    (fetched.isLoading !== true &&
+      (fetched.isErroneous ||
+        !equals(propsToState, fetched.keyParams) ||
+        !fetched.fetchedAt ||
+        new Date().getTime() - fetched.fetchedAt >=
+          refreshIntervalInSeconds * 1000))
   ) {
-    setState({
-      isLoading: true
-    });
+    if (config.path) {
+      setState(assocPath(config.path, { isLoading: true }, state));
+    } else {
+      setState({
+        isLoading: true
+      });
+    }
 
     const abortController = loadFromBackend(
       config,
       (data, isErroneous) => {
-        setState({
+        let result = {
           ...{ keyParams: propsToState },
-          data,
           fetchedAt: new Date().getTime(),
+          data,
           isErroneous,
           isLoading: false
-        });
+        };
+        let nextState = result;
+        if (config.path) {
+          nextState = assocPath(config.path, result, getState());
+        }
+        setState(nextState);
       },
       payload
     );

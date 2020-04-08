@@ -42,6 +42,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useLupa } from "../../stores/lupa";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
+import { useOrganisation } from "../../stores/organisation";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -72,6 +73,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
   const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
   const [oivaperustelut, oivaperustelutActions] = useOivaperustelut();
   const [lupa, lupaActions] = useLupa();
+  const [organisation, organisationActions] = useOrganisation();
 
   let { uuid, ytunnus } = useParams();
   let history = useHistory();
@@ -95,7 +97,8 @@ const UusiAsiaDialogContainer = React.memo(() => {
       tutkinnotActions.load(),
       omovtActions.load(),
       oivaperustelutActions.load(),
-      koulutuksetActions.load()
+      koulutuksetActions.load(),
+      organisationActions.load(ytunnus)
     ]);
 
     // Existing muutospyynto will be fetched if we have the UUID to use.
@@ -127,7 +130,9 @@ const UusiAsiaDialogContainer = React.memo(() => {
     omovtActions,
     muutospyyntoActions,
     oivaperustelutActions,
-    uuid
+    organisationActions,
+    uuid,
+    ytunnus
   ]);
 
   // Let's fetch LUPA
@@ -290,6 +295,8 @@ const UusiAsiaDialogContainer = React.memo(() => {
     koulutusalat.fetchedAt &&
     koulutustyypit.fetchedAt &&
     opetuskielet.fetchedAt &&
+    organisation[ytunnus] &&
+    organisation[ytunnus].fetchedAt &&
     maaraystyypit.fetchedAt &&
     muut.fetchedAt &&
     kunnat.fetchedAt &&
@@ -319,6 +326,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
         muutospyynto={muutospyynto.data}
         vankilat={vankilat.data}
         onNewDocSave={onNewDocSave}
+        organisation={organisation[ytunnus].data}
       />
     );
   } else {
@@ -345,7 +353,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
               koulutukset
             ) && !!lupaKohteet,
             !!elykeskukset.fetchedAt,
-            !!elykeskukset.fetchedAt,
             !!kielet.fetchedAt,
             !!kohteet.fetchedAt,
             !!koulutusalat.fetchedAt,
@@ -356,13 +363,14 @@ const UusiAsiaDialogContainer = React.memo(() => {
             !!kunnat.fetchedAt,
             !!maakunnat.fetchedAt,
             !!maakuntakunnat.fetchedAt,
+            !!organisation.fetchedAt,
             !!vankilat.fetchedAt,
             !!tutkinnot.fetchedAt,
             !!omovt.fetchedAt,
             !!oivaperustelut.fetchedAt,
             !!(!uuid || muutospyynto.fetchedAt)
           ].filter(Boolean).length /
-            22) *
+            23) *
           100
         }
       />
