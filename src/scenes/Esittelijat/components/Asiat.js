@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { PropTypes } from "prop-types";
@@ -12,7 +12,6 @@ import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "./../UusiAsiaEsidialog";
-import * as R from "ramda";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -50,12 +49,6 @@ const Asiat = ({ match, user, history }) => {
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = intl.formatMessage;
   const location = useLocation();
-  let muutospyynto = {};
-
-  useEffect(() => {
-    const uuid = R.split("uuid=", location.search)[1];
-    muutospyynto.uuid = uuid;
-  }, [location.search, muutospyynto.uuid]);
 
   return (
     <React.Fragment>

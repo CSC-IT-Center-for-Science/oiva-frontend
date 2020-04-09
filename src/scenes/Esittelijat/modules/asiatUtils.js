@@ -106,7 +106,7 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history) => {
                   // todo: back end call for Merkitse päätetyksi
                   console.log("Merkitse päätetyksi");
                 } else {
-                  history.push("/asiat/asiakirjat?uuid=" + row.id);
+                  history.push("/asiat/" + row.id);
                 }
               },
               cells: generateAsiaTableRows(row, i, t).concat(

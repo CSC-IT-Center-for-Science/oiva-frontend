@@ -179,6 +179,14 @@ export default defineMessages({
     id: "common.hakemusAsiakirjat",
     defaultMessage: "Hakemuksen asiakirjat"
   },
+  asianAsiakirjat: {
+    id: "common.asianAsiakirjat",
+    defaultMessage: "Järjestämisluvan muutos -asiakirjat"
+  },
+  asiakirjatTakaisin: {
+    id: "common.asiakirjatTakaisin",
+    defaultMessage: "Asiat sivulle"
+  },
   backFromAsiakirjat: {
     id: "common.backFromAsiakirjat",
     defaultMessage: "Takaisin Järjestämislupa asiat -taulukkoon"

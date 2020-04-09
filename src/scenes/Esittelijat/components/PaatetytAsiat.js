@@ -6,6 +6,7 @@ import { PropTypes } from "prop-types";
 import { useMuutospyynnotEsittelijaPaatetty } from "../../../stores/muutospyynnotEsittelijaPaatetty";
 import * as R from "ramda";
 import { useLocation } from "react-router-dom";
+import Loading from "../../../modules/Loading";
 
 const PaatetytAsiat = props => {
   const intl = useIntl();
@@ -36,12 +37,24 @@ const PaatetytAsiat = props => {
       : [];
   }, [props.history, intl.formatMessage, muutospyynnotEsittelijaPaatetty.data]);
 
-  return (
-    <Table
-      structure={tableStructure}
-      sortedBy={{ columnIndex: 5, order: "descending" }}
-    />
-  );
+  if (
+    muutospyynnotEsittelijaPaatetty.isLoading === false &&
+    muutospyynnotEsittelijaPaatetty.fetchedAt
+  ) {
+    return (
+      <div
+        style={{
+          borderBottom: "0.05rem solid #E3E3E3"
+        }}>
+        <Table
+          structure={tableStructure}
+          sortedBy={{ columnIndex: 5, order: "descending" }}
+        />
+      </div>
+    );
+  } else {
+    return <Loading />;
+  }
 };
 PaatetytAsiat.propTypes = {
   intl: PropTypes.object,

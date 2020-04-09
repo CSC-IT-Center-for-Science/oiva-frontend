@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { PropTypes } from "prop-types";
 import Asiat from "./components/Asiat";
 import Asiakirjat from "./components/Asiakirjat";
@@ -8,12 +8,10 @@ import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
 
 const Esittelijat = ({ match, user, history }) => {
   const location = useLocation();
-  const [uuid, setUuid] = useState("");
 
-  useEffect(() => {
-    const uuid = R.split("uuid=", location.search)[1];
-    setUuid(uuid);
-  }, [location.search]);
+  const uuid = useMemo(() => R.split("asiat/", location.pathname)[1], [
+    location.pathname
+  ]);
 
   return (
     <React.Fragment>
@@ -26,8 +24,14 @@ const Esittelijat = ({ match, user, history }) => {
         />
         <Route
           authenticated={!!user}
-          exacts
-          path={`${match.url}/asiakirjat`}
+          exact
+          path={`${match.url}/paatetyt`}
+          render={() => <Asiat history={history} match={match} user={user} />}
+        />
+        <Route
+          authenticated={!!user}
+          exact
+          path={`${match.url}/:uuid`}
           render={() => <Asiakirjat history={history} uuid={uuid} />}
         />
         <Route

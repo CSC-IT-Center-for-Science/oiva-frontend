@@ -16,23 +16,27 @@ import { useMuutospyynnonLiitteet } from "../../../stores/muutospyynnonLiitteet"
 import { useMuutospyynto } from "../../../stores/muutospyynto";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-
+import Loading from "../../../modules/Loading";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "../../Jarjestajat/Jarjestaja/modules/constants";
+import Link from "@material-ui/core/Link";
+import BackIcon from "@material-ui/icons/ArrowBack";
 
 const WrapTable = styled.div``;
 
 const colWidths = {
-  0: "w-4/12",
-  1: "w-3/12",
+  0: "w-2/12",
+  1: "w-2/12",
   2: "w-3/12",
-  3: "w-2/12"
+  3: "w-4/12",
+  4: "w-1/12"
 };
 
 const columnTitles = [
   common.document,
   common.documentStatus,
   common.author,
-  common.sent
+  common.sent,
+  common["asiaTable.headers.actions"]
 ];
 
 // States of hakemus
@@ -45,7 +49,7 @@ const states = [
   "PASSIVOITU"
 ];
 
-const Asiakirjat = ({ uuid }) => {
+const Asiakirjat = ({ uuid, history }) => {
   const intl = useIntl();
   const t = intl.formatMessage;
   const [organisation] = useOrganisation();
@@ -57,7 +61,6 @@ const Asiakirjat = ({ uuid }) => {
 
   // Let's fetch MUUTOSPYYNNÖN LIITTEET
   useEffect(() => {
-    console.log(uuid);
     if (uuid) {
       muutospyynnonLiitteetAction.load(uuid);
     }
@@ -70,13 +73,15 @@ const Asiakirjat = ({ uuid }) => {
     }
   }, [muutospyyntoAction, uuid]);
 
-  useEffect(() => {
-    console.log(muutospyynnonLiitteet);
-  }, [muutospyynnonLiitteet]);
+  const nimi = useMemo(
+    () => muutospyynto.data && muutospyynto.data.jarjestaja.nimi.fi,
+    [muutospyynto.data]
+  );
 
-  useEffect(() => {
-    console.log(muutospyynto);
-  }, [muutospyynto]);
+  const ytunnus = useMemo(
+    () => muutospyynto.data && muutospyynto.data.jarjestaja.ytunnus,
+    [muutospyynto.data]
+  );
 
   const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
 
@@ -153,7 +158,7 @@ const Asiakirjat = ({ uuid }) => {
             {
               cells: R.addIndex(R.map)((title, ii) => {
                 return {
-                  isSortable: true,
+                  isSortable: ii === 4 ? false : true,
                   truncate: false,
                   styleClasses: [colWidths[ii]],
                   text: intl.formatMessage(title),
@@ -170,11 +175,11 @@ const Asiakirjat = ({ uuid }) => {
       rowGroups: [
         {
           rows: R.addIndex(R.map)(
-            row => {
+            (row, i) => {
               return {
                 fileLink: row.fileLink,
                 onClick: (row, action) => {
-                  if (action === "click" && row.fileLink) {
+                  if (action === "lataa" && row.fileLink) {
                     downloadFileFn({
                       url: row.fileLink,
                       openInNewWindow: row.openInNewWindow
@@ -185,7 +190,7 @@ const Asiakirjat = ({ uuid }) => {
                   (col, ii) => {
                     return {
                       truncate: true,
-                      styleClasses: [colWidths[ii]],
+                      styleClasses: [colWidths[ii] + " cursor-default"],
                       text: col.text
                     };
                   },
@@ -195,7 +200,18 @@ const Asiakirjat = ({ uuid }) => {
                     { text: row.items[2] },
                     { text: row.items[3] }
                   ]
-                )
+                ).concat({
+                  menu: {
+                    id: `simple-menu-${i}`,
+                    actions: [
+                      {
+                        id: "lataa",
+                        text: t(common["asiaTable.actions.lataa"])
+                      }
+                    ]
+                  },
+                  styleClasses: ["w-1/12 cursor-default"]
+                })
               };
             },
             [muutospyyntoRowItem, ...liitteetRowItems]
@@ -208,73 +224,96 @@ const Asiakirjat = ({ uuid }) => {
     }
   ];
 
-  return (
-    <div
-      style={{
-        borderTop: "0.05rem solid #E3E3E3",
-        background: "#FAFAFA"
-      }}>
-      <Helmet>
-        <title>{`Oiva | ${t(common.hakemusAsiakirjat)}`}</title>
-      </Helmet>
-      <BreadcrumbsItem to="/">{t(common.frontpage)}</BreadcrumbsItem>
-      <BreadcrumbsItem to="/asiat">{t(common.asiat)}</BreadcrumbsItem>
-      <BreadcrumbsItem to="/asiakirjat">
-        {muutospyynto &&
-          muutospyynto.data &&
-          muutospyynto.data.jarjestaja.nimi.fi}
-      </BreadcrumbsItem>
+  if (
+    muutospyynnonLiitteet.isLoading === false &&
+    muutospyynto.isLoading === false &&
+    muutospyynnonLiitteet.fetchedAt &&
+    muutospyynto.fetchedAt
+  ) {
+    return (
       <div
-        className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8"
+        className="flex flex-col flex-1"
         style={{
-          maxWidth: "90rem"
+          borderTop: "0.05rem solid #E3E3E3",
+          background: "#FAFAFA"
         }}>
-        <div className="flex-1 flex items-center">
-          <div className="w-full flex flex-col">
-            <h1>
-              {muutospyynto &&
-                muutospyynto.data &&
-                muutospyynto.data.jarjestaja.nimi.fi}
-            </h1>
-            <p>
-              {muutospyynto &&
-                muutospyynto.data &&
-                muutospyynto.data.jarjestaja.ytunnus}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="flex-1 flex w-full">
+        <Helmet>
+          <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
+        </Helmet>
+        <BreadcrumbsItem to="/">{t(common.frontpage)}</BreadcrumbsItem>
+        <BreadcrumbsItem to="/asiat">{t(common.asiat)}</BreadcrumbsItem>
+        <BreadcrumbsItem to="/asiakirjat">{nimi}</BreadcrumbsItem>
         <div
-          style={{ maxWidth: "90rem" }}
-          className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 py-12">
-          <h4 className="mb-1">Järjestämisluvan muutos -asiakirjat</h4>
+          className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8"
+          style={{
+            maxWidth: "90rem"
+          }}>
+          <Link
+            className="cursor-pointer"
+            onClick={() => {
+              history.push("/asiat");
+            }}>
+            <BackIcon
+              style={{
+                fontSize: 14,
+                marginBottom: "0.1rem",
+                marginRight: "0.4rem"
+              }}
+            />
+            {t(common.asiakirjatTakaisin)}
+          </Link>
+          <div className="flex-1 flex items-center pt-8 pb-2">
+            <div className="w-full flex flex-col">
+              <h1>{nimi}</h1>
+              <h5 className="text-lg mt-1">{ytunnus}</h5>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 flex w-full">
           <div
-            className="flex-1 bg-white"
-            style={{ border: "0.05rem solid #E3E3E3" }}>
-            <WrapTable>
-              <Media
-                query={MEDIA_QUERIES.MOBILE}
-                render={() => (
-                  <OldTable role="table">
-                    <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
-                  </OldTable>
-                )}
-              />
-              <Media
-                query={MEDIA_QUERIES.TABLET_MIN}
-                render={() => <Table structure={table} />}
-              />
-            </WrapTable>
+            style={{ maxWidth: "90rem" }}
+            className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
+            <h4 className="mb-2">{t(common.asianAsiakirjat)}</h4>
+            <div
+              className="flex-1 bg-white"
+              style={{ border: "0.05rem solid #E3E3E3" }}>
+              <WrapTable>
+                <Media
+                  query={MEDIA_QUERIES.MOBILE}
+                  render={() => (
+                    <OldTable role="table">
+                      <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
+                    </OldTable>
+                  )}
+                />
+                <Media
+                  query={MEDIA_QUERIES.TABLET_MIN}
+                  render={() => (
+                    <div
+                      style={{
+                        borderBottom: "0.05rem solid #E3E3E3"
+                      }}>
+                      <Table
+                        structure={table}
+                        sortedBy={{ columnIndex: 3, order: "descending" }}
+                      />
+                    </div>
+                  )}
+                />
+              </WrapTable>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <Loading />;
+  }
 };
 
 Asiakirjat.propTypes = {
-  muutospyynto: PropTypes.object
+  muutospyynto: PropTypes.object,
+  history: PropTypes.object
 };
 
 export default Asiakirjat;

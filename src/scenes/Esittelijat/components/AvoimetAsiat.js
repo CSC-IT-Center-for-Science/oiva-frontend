@@ -7,6 +7,7 @@ import { useMuutospyynnotEsittelijaAvoimet } from "../../../stores/muutospyynnot
 import { useMuutospyynnotEsittelijaValmistelussa } from "../../../stores/muutospyynnotEsittelijaValmistelussa";
 import * as R from "ramda";
 import { useLocation } from "react-router-dom";
+import Loading from "../../../modules/Loading";
 
 const AvoimetAsiat = props => {
   const intl = useIntl();
@@ -62,12 +63,26 @@ const AvoimetAsiat = props => {
     props.history
   ]);
 
-  return (
-    <Table
-      structure={tableStructure}
-      sortedBy={{ columnIndex: 5, order: "descending" }}
-    />
-  );
+  if (
+    muutospyynnotEsittelijaAvoimet.isLoading === false &&
+    muutospyynnotEsittelijaValmistelussa.isLoading === false &&
+    muutospyynnotEsittelijaAvoimet.fetchedAt &&
+    muutospyynnotEsittelijaValmistelussa.fetchedAt
+  ) {
+    return (
+      <div
+        style={{
+          borderBottom: "0.05rem solid #E3E3E3"
+        }}>
+        <Table
+          structure={tableStructure}
+          sortedBy={{ columnIndex: 5, order: "descending" }}
+        />
+      </div>
+    );
+  } else {
+    return <Loading />;
+  }
 };
 AvoimetAsiat.propTypes = {
   intl: PropTypes.object,
