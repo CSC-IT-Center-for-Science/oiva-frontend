@@ -9,6 +9,7 @@ import { latauspolku as esikatselunLatauspolku } from "./procedures/muutospyynto
 import { onKatsottavissa as esikatseluOnKatsottavissa } from "./procedures/muutospyynto/esikatselu/onKatsottavissa";
 import { listaus as muutospyyntojenListaus } from "./procedures/muutospyynnot/listaus";
 import { poista as poistaWizardinMuutokset } from "./procedures/muutospyynto/muutokset/poista";
+import { tallennaEsittelijanToimesta } from "./procedures/muutospyynto/tallennus/tallennaEsittelijanToimesta";
 
 export const procedures = {
   muutospyynnot: {
@@ -31,7 +32,8 @@ export const procedures = {
     tallennus: {
       epaonnistui: tallennusEpaonnistui,
       onnistui: tallennusOnnistui,
-      tallenna: tallennaMuutospyynto
+      tallenna: tallennaMuutospyynto,
+      tallennaEsittelijanToimesta
     }
   }
 };

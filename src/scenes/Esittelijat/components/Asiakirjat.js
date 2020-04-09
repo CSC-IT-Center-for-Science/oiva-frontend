@@ -20,6 +20,7 @@ import Loading from "../../../modules/Loading";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "../../Jarjestajat/Jarjestaja/modules/constants";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
+import { useHistory, useParams } from "react-router-dom";
 
 const WrapTable = styled.div``;
 
@@ -49,7 +50,9 @@ const states = [
   "PASSIVOITU"
 ];
 
-const Asiakirjat = ({ uuid, history }) => {
+const Asiakirjat = () => {
+  const history = useHistory();
+  const { uuid } = useParams();
   const intl = useIntl();
   const t = intl.formatMessage;
   const [organisation] = useOrganisation();
@@ -59,19 +62,21 @@ const Asiakirjat = ({ uuid, history }) => {
   ] = useMuutospyynnonLiitteet();
   const [muutospyynto, muutospyyntoAction] = useMuutospyynto();
 
-  // Let's fetch MUUTOSPYYNNÖN LIITTEET
+  // Let's fetch MUUTOSPYYNTÖ and MUUTOSPYYNNÖN LIITTEET
   useEffect(() => {
+    let abortControllers = [];
     if (uuid) {
-      muutospyynnonLiitteetAction.load(uuid);
+      abortControllers = [
+        muutospyyntoAction.load(uuid),
+        muutospyynnonLiitteetAction.load(uuid)
+      ];
     }
+    return function cancel() {
+      R.forEach(abortController => {
+        abortController.abort();
+      }, abortControllers);
+    };
   }, [muutospyynnonLiitteetAction, uuid]);
-
-  // Let's fetch MUUTOSPYYNTÖ
-  useEffect(() => {
-    if (uuid) {
-      muutospyyntoAction.load(uuid);
-    }
-  }, [muutospyyntoAction, uuid]);
 
   const nimi = useMemo(
     () => muutospyynto.data && muutospyynto.data.jarjestaja.nimi.fi,
@@ -223,7 +228,7 @@ const Asiakirjat = ({ uuid, history }) => {
       role: "tfoot"
     }
   ];
-
+  console.info(muutospyynnonLiitteet, muutospyynto);
   if (
     muutospyynnonLiitteet.isLoading === false &&
     muutospyynto.isLoading === false &&
@@ -312,8 +317,7 @@ const Asiakirjat = ({ uuid, history }) => {
 };
 
 Asiakirjat.propTypes = {
-  muutospyynto: PropTypes.object,
-  history: PropTypes.object
+  uuid: PropTypes.object
 };
 
 export default Asiakirjat;

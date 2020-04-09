@@ -4,7 +4,12 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { PropTypes } from "prop-types";
 import AvoimetAsiat from "./AvoimetAsiat";
 import PaatetytAsiat from "./PaatetytAsiat";
-import { Route, Switch, useLocation } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useHistory,
+  useRouteMatch
+} from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../../i18n/definitions/common";
 import Tabs from "@material-ui/core/Tabs";
@@ -30,7 +35,7 @@ const OivaTab = withStyles(theme => ({
   }
 }))(props => <Tab {...props} />);
 
-const OivaTabs = withStyles(theme => ({
+const OivaTabs = withStyles(() => ({
   root: {},
   indicator: {
     display: "flex",
@@ -44,11 +49,13 @@ const OivaTabs = withStyles(theme => ({
   }
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
-const Asiat = ({ match, user, history }) => {
+const Asiat = ({ path: parentPath, user }) => {
+  const history = useHistory();
   const intl = useIntl();
+  const { path } = useRouteMatch();
+
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = intl.formatMessage;
-  const location = useLocation();
 
   return (
     <React.Fragment>
@@ -86,23 +93,24 @@ const Asiat = ({ match, user, history }) => {
               </div>
             </div>
             <OivaTabs
-              value={location.pathname}
+              value={path}
               indicatorColor="primary"
               textColor="primary"
               onChange={(e, val) => {
+                console.info(val);
                 history.push(val);
               }}>
               <OivaTab
                 label={t(common.asiatOpen)}
                 aria-label={t(common.asiatReady)}
-                to={`${match.url}/avoimet`}
-                value={`${match.url}` || `${match.url}/avoimet`}
+                to={`${parentPath}/avoimet`}
+                value={`${parentPath}`}
               />
               <OivaTab
                 label={t(common.asiatReady)}
                 aria-label={t(common.asiatReady)}
-                to={`${match.url}/paatetyt`}
-                value={`${match.url}/paatetyt`}
+                to={`${parentPath}/paatetyt`}
+                value={`${parentPath}/paatetyt`}
               />
             </OivaTabs>
           </div>
@@ -122,20 +130,14 @@ const Asiat = ({ match, user, history }) => {
               <Route
                 authenticated={!!user}
                 exact
-                path={`${match.url}`}
-                render={() => <AvoimetAsiat history={history} />}
-              />
-              <Route
-                authenticated={!!user}
-                exacts
-                path={`${match.url}/avoimet`}
-                render={() => <AvoimetAsiat history={history} />}
+                path={`${parentPath}`}
+                render={() => <AvoimetAsiat />}
               />
               <Route
                 authenticated={!!user}
                 exact
-                path={`${match.url}/paatetyt`}
-                render={() => <PaatetytAsiat history={history} />}
+                path={`${parentPath}/paatetyt`}
+                render={() => <PaatetytAsiat />}
               />
             </Switch>
           </div>
@@ -146,9 +148,8 @@ const Asiat = ({ match, user, history }) => {
 };
 
 Asiat.propTypes = {
-  match: PropTypes.object,
-  user: PropTypes.object,
-  history: PropTypes.object
+  path: PropTypes.string,
+  user: PropTypes.object
 };
 
 export default Asiat;

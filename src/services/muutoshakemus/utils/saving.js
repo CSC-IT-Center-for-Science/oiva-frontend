@@ -11,7 +11,8 @@ export function createObjectToSave(
   kohteet,
   maaraystyypit,
   muut,
-  lupaKohteet
+  lupaKohteet,
+  alkupera = "KJ"
 ) {
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
@@ -238,8 +239,9 @@ export function createObjectToSave(
     R.find(R.propEq("tunniste", "muut"), kohteet),
     R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit)
   );
-
-  return {
+  
+  let objectToSave = {
+    alkupera,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: lupa.jarjestajaOid,
     jarjestajaYtunnus: lupa.jarjestajaYtunnus,
@@ -263,114 +265,6 @@ export function createObjectToSave(
         changeObjects: R.flatten([
           R.path(["perustelut", "liitteet"], changeObjects)
         ]).filter(Boolean)
-      },
-      taloudelliset: {
-        edellytykset: getValueByPathAndAnchor(
-          "taloudelliset_yleisettiedot.edellytykset-tekstikentta.A",
-          ["taloudelliset", "yleisettiedot"],
-          changeObjects
-        ),
-        vaikutukset: getValueByPathAndAnchor(
-          "taloudelliset_yleisettiedot.Vaikutukset-tekstikentta.A",
-          ["taloudelliset", "yleisettiedot"],
-          changeObjects
-        ),
-        sopeuttaminen: getValueByPathAndAnchor(
-          "taloudelliset_yleisettiedot.sopeuttaminen-tekstikentta.A",
-          ["taloudelliset", "yleisettiedot"],
-          changeObjects
-        ),
-        investoinnit: getValueByPathAndAnchor(
-          "taloudelliset_investoinnit.investoinnit-tekstikentta.A",
-          ["taloudelliset", "investoinnit"],
-          changeObjects
-        ),
-        kustannukset: getValueByPathAndAnchor(
-          "taloudelliset_investoinnit.kustannukset-Input.A",
-          ["taloudelliset", "investoinnit"],
-          changeObjects
-        ),
-        rahoitus: getValueByPathAndAnchor(
-          "taloudelliset_investoinnit.rahoitus-tekstikentta.A",
-          ["taloudelliset", "investoinnit"],
-          changeObjects
-        ),
-        omavaraisuusaste: getValueByPathAndAnchor(
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste",
-          ["taloudelliset", "tilinpaatostiedot"],
-          changeObjects
-        ),
-        maksuvalmius: getValueByPathAndAnchor(
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius",
-          ["taloudelliset", "tilinpaatostiedot"],
-          changeObjects
-        ),
-        velkaantuneisuus: getValueByPathAndAnchor(
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus",
-          ["taloudelliset", "tilinpaatostiedot"],
-          changeObjects
-        ),
-        kannattavuus: getValueByPathAndAnchor(
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus",
-          ["taloudelliset", "tilinpaatostiedot"],
-          changeObjects
-        ),
-        jaama: getValueByPathAndAnchor(
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama",
-          ["taloudelliset", "tilinpaatostiedot"],
-          changeObjects
-        ),
-        changeObjects: R.flatten([
-          R.path(["taloudelliset", "yleisettiedot"], changeObjects),
-          R.path(["taloudelliset", "investoinnit"], changeObjects),
-          R.path(["taloudelliset", "tilinpaatostiedot"], changeObjects),
-          R.path(["taloudelliset", "liitteet"], changeObjects)
-        ]).filter(Boolean)
-      },
-      yhteenveto: {
-        yhteyshenkilo: {
-          nimi: getValueByPathAndAnchor(
-            "yhteenveto_yleisettiedot.yhteyshenkilo.nimi",
-            ["yhteenveto", "yleisettiedot"],
-            changeObjects
-          ),
-          nimike: getValueByPathAndAnchor(
-            "yhteenveto_yleisettiedot.yhteyshenkilo.nimike",
-            ["yhteenveto", "yleisettiedot"],
-            changeObjects
-          ),
-          puhelin: getValueByPathAndAnchor(
-            "yhteenveto_yleisettiedot.yhteyshenkilo.puhelinnumero",
-            ["yhteenveto", "yleisettiedot"],
-            changeObjects
-          ),
-          email: getValueByPathAndAnchor(
-            "yhteenveto_yleisettiedot.yhteyshenkilo.sahkoposti",
-            ["yhteenveto", "yleisettiedot"],
-            changeObjects
-          )
-        },
-        saate: getValueByPathAndAnchor(
-          "yhteenveto_yleisettiedot.saate.tekstikentta",
-          ["yhteenveto", "yleisettiedot"],
-          changeObjects
-        ),
-        allekirjoittaja: {
-          nimi: getValueByPathAndAnchor(
-            "yhteenveto_yleisettiedot.hyvaksyja.nimi",
-            ["yhteenveto", "yleisettiedot"],
-            changeObjects
-          ),
-          nimike: getValueByPathAndAnchor(
-            "yhteenveto_yleisettiedot.hyvaksyja.nimike",
-            ["yhteenveto", "yleisettiedot"],
-            changeObjects
-          )
-        },
-        changeObjects: R.flatten([
-          R.path(["yhteenveto", "yleisettiedot"], changeObjects),
-          R.path(["yhteenveto", "hakemuksenLiitteet"], changeObjects)
-        ]).filter(Boolean)
       }
     },
     muutokset: R.flatten([
@@ -384,4 +278,120 @@ export function createObjectToSave(
     ]),
     uuid
   };
+
+  if (alkupera === "ESITTELIJA") {
+    objectToSave.asianumero = "VN/1234/5678";
+    objectToSave.paatospvm = "2020-09-28";
+  } else if (alkupera === "KJ") {
+    objectToSave.meta.taloudelliset = {
+      edellytykset: getValueByPathAndAnchor(
+        "taloudelliset_yleisettiedot.edellytykset-tekstikentta.A",
+        ["taloudelliset", "yleisettiedot"],
+        changeObjects
+      ),
+      vaikutukset: getValueByPathAndAnchor(
+        "taloudelliset_yleisettiedot.Vaikutukset-tekstikentta.A",
+        ["taloudelliset", "yleisettiedot"],
+        changeObjects
+      ),
+      sopeuttaminen: getValueByPathAndAnchor(
+        "taloudelliset_yleisettiedot.sopeuttaminen-tekstikentta.A",
+        ["taloudelliset", "yleisettiedot"],
+        changeObjects
+      ),
+      investoinnit: getValueByPathAndAnchor(
+        "taloudelliset_investoinnit.investoinnit-tekstikentta.A",
+        ["taloudelliset", "investoinnit"],
+        changeObjects
+      ),
+      kustannukset: getValueByPathAndAnchor(
+        "taloudelliset_investoinnit.kustannukset-Input.A",
+        ["taloudelliset", "investoinnit"],
+        changeObjects
+      ),
+      rahoitus: getValueByPathAndAnchor(
+        "taloudelliset_investoinnit.rahoitus-tekstikentta.A",
+        ["taloudelliset", "investoinnit"],
+        changeObjects
+      ),
+      omavaraisuusaste: getValueByPathAndAnchor(
+        "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste",
+        ["taloudelliset", "tilinpaatostiedot"],
+        changeObjects
+      ),
+      maksuvalmius: getValueByPathAndAnchor(
+        "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius",
+        ["taloudelliset", "tilinpaatostiedot"],
+        changeObjects
+      ),
+      velkaantuneisuus: getValueByPathAndAnchor(
+        "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus",
+        ["taloudelliset", "tilinpaatostiedot"],
+        changeObjects
+      ),
+      kannattavuus: getValueByPathAndAnchor(
+        "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus",
+        ["taloudelliset", "tilinpaatostiedot"],
+        changeObjects
+      ),
+      jaama: getValueByPathAndAnchor(
+        "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama",
+        ["taloudelliset", "tilinpaatostiedot"],
+        changeObjects
+      ),
+      changeObjects: R.flatten([
+        R.path(["taloudelliset", "yleisettiedot"], changeObjects),
+        R.path(["taloudelliset", "investoinnit"], changeObjects),
+        R.path(["taloudelliset", "tilinpaatostiedot"], changeObjects),
+        R.path(["taloudelliset", "liitteet"], changeObjects)
+      ]).filter(Boolean)
+    };
+    objectToSave.meta.yhteenveto = {
+      yhteyshenkilo: {
+        nimi: getValueByPathAndAnchor(
+          "yhteenveto_yleisettiedot.yhteyshenkilo.nimi",
+          ["yhteenveto", "yleisettiedot"],
+          changeObjects
+        ),
+        nimike: getValueByPathAndAnchor(
+          "yhteenveto_yleisettiedot.yhteyshenkilo.nimike",
+          ["yhteenveto", "yleisettiedot"],
+          changeObjects
+        ),
+        puhelin: getValueByPathAndAnchor(
+          "yhteenveto_yleisettiedot.yhteyshenkilo.puhelinnumero",
+          ["yhteenveto", "yleisettiedot"],
+          changeObjects
+        ),
+        email: getValueByPathAndAnchor(
+          "yhteenveto_yleisettiedot.yhteyshenkilo.sahkoposti",
+          ["yhteenveto", "yleisettiedot"],
+          changeObjects
+        )
+      },
+      saate: getValueByPathAndAnchor(
+        "yhteenveto_yleisettiedot.saate.tekstikentta",
+        ["yhteenveto", "yleisettiedot"],
+        changeObjects
+      ),
+      allekirjoittaja: {
+        nimi: getValueByPathAndAnchor(
+          "yhteenveto_yleisettiedot.hyvaksyja.nimi",
+          ["yhteenveto", "yleisettiedot"],
+          changeObjects
+        ),
+        nimike: getValueByPathAndAnchor(
+          "yhteenveto_yleisettiedot.hyvaksyja.nimike",
+          ["yhteenveto", "yleisettiedot"],
+          changeObjects
+        )
+      },
+      changeObjects: R.flatten([
+        R.path(["yhteenveto", "yleisettiedot"], changeObjects),
+        R.path(["yhteenveto", "hakemuksenLiitteet"], changeObjects)
+      ]).filter(Boolean)
+    };
+  }
+
+  return objectToSave;
 }

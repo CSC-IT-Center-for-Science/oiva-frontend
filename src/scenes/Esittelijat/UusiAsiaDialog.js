@@ -1,4 +1,10 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, {
+  useMemo,
+  useState,
+  useCallback,
+  useRef,
+  useEffect
+} from "react";
 import { useChangeObjects } from "../../stores/changeObjects";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
@@ -24,8 +30,12 @@ import { useKielet } from "../../stores/kielet";
 import { useTutkinnot } from "../../stores/tutkinnot";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
+import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
+import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
+import { findObjectWithKey } from "../../utils/common";
+import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -96,6 +106,7 @@ const UusiAsiaDialog = ({
 }) => {
   const intl = useIntl();
   let history = useHistory();
+  const params = useParams();
   const [cos, coActions] = useChangeObjects(); // cos means change objects
   const [kielet] = useKielet();
   const [opetuskielet] = useOpetuskielet();
@@ -107,6 +118,8 @@ const UusiAsiaDialog = ({
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
+
+  let { uuid } = params;
 
   const organisationPhoneNumber = R.head(
     R.values(R.find(R.prop("numero"), organisation.yhteystiedot))
@@ -183,13 +196,83 @@ const UusiAsiaDialog = ({
     return history.push(`/asiat`);
   }, [history]);
 
-  const onAction = useCallback(async action => {
-    if (action === "save") {
-      // TODO: Saving
-    } else if (action === "preview") {
-      // TODO: Preview
-    }
+  const anchors = useMemo(() => {
+    return findObjectWithKey(cos, "anchor");
+  }, [cos]);
+
+  const prevAnchorsRef = useRef(anchors);
+
+  useEffect(() => {
+    // If user has made changes on the form the save action must be available.
+    setIsSavingEnabled(!R.equals(prevAnchorsRef.current, anchors));
+  }, [anchors]);
+
+  /**
+   * Saves the form.
+   * @param {object} formData
+   * @returns {object} - Muutospyyntö
+   */
+  const onSave = useCallback(async formData => {
+    const procedureHandler = new ProcedureHandler();
+    const outputs = await procedureHandler.run(
+      "muutospyynto.tallennus.tallennaEsittelijanToimesta",
+      [formData]
+    );
+    return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
+      .result;
   }, []);
+
+  const onAction = useCallback(
+    async action => {
+      const formData = createMuutospyyntoOutput(
+        createObjectToSave(
+          lupa,
+          cos,
+          backendMuutokset,
+          uuid,
+          kohteet,
+          maaraystyypit,
+          muut,
+          lupaKohteet,
+          "ESITTELIJA"
+        )
+      );
+
+      let muutospyynto = null;
+
+      if (action === "save") {
+        muutospyynto = await onSave(formData);
+      } else if (action === "preview") {
+      }
+
+      /**
+       * The form is saved and the requested action is run. Let's disable the
+       * save button. It will be enabled after new changes.
+       */
+      setIsSavingEnabled(false);
+      prevAnchorsRef.current = anchors;
+
+      if (!uuid) {
+        if (muutospyynto && muutospyynto.uuid) {
+          // It was the first save...
+          onNewDocSave(muutospyynto);
+        }
+      }
+    },
+    [
+      anchors,
+      backendMuutokset,
+      cos,
+      kohteet,
+      lupa,
+      lupaKohteet,
+      maaraystyypit,
+      muut,
+      onNewDocSave,
+      onSave,
+      uuid
+    ]
+  );
 
   return (
     <div className="max-w-6xl">
@@ -269,7 +352,7 @@ const UusiAsiaDialog = ({
               tutkinnot={parsedTutkinnot}
             />
             <EsittelijatWizardActions
-              isSavingEnabled={true}
+              isSavingEnabled={isSavingEnabled}
               onClose={openCancelModal}
               onPreview={() => {
                 return onAction("preview");

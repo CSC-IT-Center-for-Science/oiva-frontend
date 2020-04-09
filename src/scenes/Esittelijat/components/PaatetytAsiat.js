@@ -2,13 +2,13 @@ import React, { useEffect, useMemo } from "react";
 import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import { generatePaatetytAsiatTableStructure } from "../modules/asiatUtils";
 import { useIntl } from "react-intl";
-import { PropTypes } from "prop-types";
 import { useMuutospyynnotEsittelijaPaatetty } from "../../../stores/muutospyynnotEsittelijaPaatetty";
-import * as R from "ramda";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../../modules/Loading";
+import * as R from "ramda";
 
-const PaatetytAsiat = props => {
+const PaatetytAsiat = () => {
+  const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
   const [
@@ -32,10 +32,10 @@ const PaatetytAsiat = props => {
       ? generatePaatetytAsiatTableStructure(
           muutospyynnotEsittelijaPaatetty.data,
           intl.formatMessage,
-          props.history
+          history
         )
       : [];
-  }, [props.history, intl.formatMessage, muutospyynnotEsittelijaPaatetty.data]);
+  }, [history, intl.formatMessage, muutospyynnotEsittelijaPaatetty.data]);
 
   if (
     muutospyynnotEsittelijaPaatetty.isLoading === false &&
@@ -55,10 +55,6 @@ const PaatetytAsiat = props => {
   } else {
     return <Loading />;
   }
-};
-PaatetytAsiat.propTypes = {
-  intl: PropTypes.object,
-  history: PropTypes.object
 };
 
 export default PaatetytAsiat;

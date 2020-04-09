@@ -262,14 +262,10 @@ const UusiAsiaDialogContainer = React.memo(() => {
 
   const onNewDocSave = useCallback(
     muutospyynto => {
-      const url = `/jarjestajat/${ytunnus}`;
-      const uuid = muutospyynto.uuid;
-      let newurl = url + "/hakemukset-ja-paatokset/" + uuid;
-
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(newurl);
+      history.push(`/asiat/${ytunnus}/${muutospyynto.uuid}`);
     },
     [history, ytunnus]
   );
@@ -316,7 +312,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
         kohteet={kohteet.data}
         koulutustyypit={koulutustyypit.data}
         kunnat={kunnat.data}
-        lupa={lupa}
+        lupa={lupa.data}
         lupaKohteet={lupaKohteet}
         maakunnat={maakunnat.data}
         maakuntakunnat={maakuntakunnat.data}
