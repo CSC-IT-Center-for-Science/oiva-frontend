@@ -26,7 +26,6 @@ const EsittelijatWizardActions = ({
           <div className="inline-flex mr-4">
             <Button
               color="secondary"
-              disabled={!isSavingEnabled}
               className="save"
               onClick={onClose}
               variant="outlined">

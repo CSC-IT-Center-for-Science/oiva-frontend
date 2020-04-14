@@ -4,7 +4,6 @@ import { useIntl } from "react-intl";
 import wizardMessages from "../../i18n/definitions/wizard";
 import common from "../../i18n/definitions/common";
 import FormSection from "../../components/03-templates/FormSection";
-import Lomake from "../../components/02-organisms/Lomake";
 import Tutkinnot from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Tutkinnot";
 import MuutospyyntoWizardKielet from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardKielet";
 import MuutospyyntoWizardKoulutukset from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardKoulutukset";
@@ -51,15 +50,6 @@ const EsittelijatMuutospyynto = React.memo(props => {
       <h1 className="my-6">{intl.formatMessage(wizardMessages.pageTitle_1)}</h1>
 
       <form onSubmit={props.handleSubmit}>
-        <div className="w-2/3">
-          <Lomake
-            anchor="topthree"
-            onChangesUpdate={payload =>
-              props.onChangesUpdate(payload.anchor, payload.changes)
-            }
-            path={["esittelija", "topThree"]}></Lomake>
-        </div>
-
         <FormSection
           code={props.lupaKohteet[1].headingNumber}
           id="tutkinnot"

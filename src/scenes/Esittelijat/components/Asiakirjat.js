@@ -76,7 +76,7 @@ const Asiakirjat = () => {
         abortController.abort();
       }, abortControllers);
     };
-  }, [muutospyynnonLiitteetAction, uuid]);
+  }, [muutospyyntoAction, muutospyynnonLiitteetAction, uuid]);
 
   const nimi = useMemo(
     () => muutospyynto.data && muutospyynto.data.jarjestaja.nimi.fi,
@@ -228,7 +228,7 @@ const Asiakirjat = () => {
       role: "tfoot"
     }
   ];
-  console.info(muutospyynnonLiitteet, muutospyynto);
+
   if (
     muutospyynnonLiitteet.isLoading === false &&
     muutospyynto.isLoading === false &&

@@ -36,6 +36,7 @@ import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import { findObjectWithKey } from "../../utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
+import Lomake from "../../components/02-organisms/Lomake";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -207,6 +208,43 @@ const UusiAsiaDialog = ({
     setIsSavingEnabled(!R.equals(prevAnchorsRef.current, anchors));
   }, [anchors]);
 
+  const showPreviewFile = url => {
+    let a = document.createElement("a");
+    a.setAttribute("type", "hidden");
+    a.href = url;
+    a.download = true;
+    a.click();
+    a.remove();
+  };
+
+  /**
+   * Opens the preview.
+   * @param {object} formData
+   */
+  const onPreview = useCallback(async formData => {
+    const procedureHandler = new ProcedureHandler();
+    /**
+     * Let's save the form without notification. Notification about saving isn't
+     * needed when we're going to show a notification related to the preview.
+     */
+    const outputs = await procedureHandler.run(
+      "muutospyynto.tallennus.tallennaEsittelijanToimesta",
+      [formData, false] // false = Notification of save success won't be shown.
+    );
+    const muutospyynto =
+      outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output.result;
+    // Let's get the url of preview (PDF) document and download the file.
+    const outputs2 = await procedureHandler.run(
+      "muutospyynto.esikatselu.latauspolku",
+      [muutospyynto]
+    );
+    const url = outputs2.muutospyynto.esikatselu.latauspolku.output;
+    if (url) {
+      showPreviewFile(url);
+    }
+    return muutospyynto;
+  }, []);
+
   /**
    * Saves the form.
    * @param {object} formData
@@ -243,6 +281,7 @@ const UusiAsiaDialog = ({
       if (action === "save") {
         muutospyynto = await onSave(formData);
       } else if (action === "preview") {
+        muutospyynto = await onPreview(formData);
       }
 
       /**
@@ -269,6 +308,7 @@ const UusiAsiaDialog = ({
       maaraystyypit,
       muut,
       onNewDocSave,
+      onPreview,
       onSave,
       uuid
     ]
@@ -336,6 +376,15 @@ const UusiAsiaDialog = ({
           <div
             id="wizard-content"
             className="px-16 xl:w-3/4 max-w-6xl m-auto mb-20">
+            <div className="w-2/3">
+              <Lomake
+                anchor="topthree"
+                changeObjects={cos.topthree}
+                onChangesUpdate={payload =>
+                  onSectionChangesUpdate(payload.anchor, payload.changes)
+                }
+                path={["esittelija", "topThree"]}></Lomake>
+            </div>
             <EsittelijatMuutospyynto
               kielet={kieletAndOpetuskielet}
               kohteet={kohteet}

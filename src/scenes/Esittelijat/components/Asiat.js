@@ -97,7 +97,6 @@ const Asiat = ({ path: parentPath, user }) => {
               indicatorColor="primary"
               textColor="primary"
               onChange={(e, val) => {
-                console.info(val);
                 history.push(val);
               }}>
               <OivaTab
