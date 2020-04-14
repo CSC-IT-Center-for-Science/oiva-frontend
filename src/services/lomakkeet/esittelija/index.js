@@ -16,7 +16,9 @@ export default function getTopThree(data, isReadOnly, locale) {
           name: "Input",
           properties: {
             label: __("asianumero"),
-            width: "100%"
+            type: "text",
+            width: "100%",
+            value: "VN/"
           }
         }
       ]
@@ -25,7 +27,7 @@ export default function getTopThree(data, isReadOnly, locale) {
       anchor: "paatospaiva",
       components: [
         {
-          anchor: "paatospaiva",
+          anchor: "A",
           name: "Datepicker",
           styleClasses: [""],
           properties: {
@@ -52,7 +54,7 @@ export default function getTopThree(data, isReadOnly, locale) {
       anchor: "voimaantulopaiva",
       components: [
         {
-          anchor: "paatospaiva",
+          anchor: "A",
           name: "Datepicker",
           styleClasses: [""],
           properties: {
