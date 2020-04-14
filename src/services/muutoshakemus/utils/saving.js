@@ -239,7 +239,7 @@ export function createObjectToSave(
     R.find(R.propEq("tunniste", "muut"), kohteet),
     R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit)
   );
-  
+
   let objectToSave = {
     alkupera,
     diaarinumero: lupa.diaarinumero,
@@ -280,8 +280,29 @@ export function createObjectToSave(
   };
 
   if (alkupera === "ESITTELIJA") {
-    objectToSave.asianumero = "VN/1234/5678";
-    objectToSave.paatospvm = "2020-09-28";
+    const asianumeroObj = R.find(
+      R.propEq("anchor", "topthree.asianumero.A"),
+      changeObjects.topthree
+    );
+    objectToSave.asianumero = asianumeroObj
+      ? asianumeroObj.properties.value
+      : "";
+    const paatospaivaObj = R.find(
+      R.propEq("anchor", "topthree.paatospaiva.A"),
+      changeObjects.topthree
+    );
+    objectToSave.paatospvm = paatospaivaObj
+      ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
+      : "";
+    const voimaantulopaivaObj = R.find(
+      R.propEq("anchor", "topthree.voimaantulopaiva.A"),
+      changeObjects.topthree
+    );
+    objectToSave.voimassaalkupvm = voimaantulopaivaObj
+      ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
+      : "";
+    // This helps the frontend to initialize the first three fields on form load.
+    objectToSave.meta.topthree = changeObjects.topthree;
   } else if (alkupera === "KJ") {
     objectToSave.meta.taloudelliset = {
       edellytykset: getValueByPathAndAnchor(

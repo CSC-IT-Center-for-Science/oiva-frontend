@@ -235,8 +235,10 @@ const UusiAsiaDialogContainer = React.memo(() => {
         );
       }
 
+      changesBySection.topthree = muutospyynto.data.meta.topthree || [];
+
       /**
-       * At this point the backend data is handled and change objects are formed.
+       * At this point the backend data is handled and change objects have been formed.
        */
       coActions.initialize(changesBySection);
 
