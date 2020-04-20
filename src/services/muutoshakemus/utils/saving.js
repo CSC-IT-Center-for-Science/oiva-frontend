@@ -250,7 +250,7 @@ export function createObjectToSave(
     luontipvm: moment().format("YYYY-MM-DD"),
     lupaUuid: lupa.uuid,
     // uuid: lupa.asiatyyppi.uuid,
-    tila: "LUONNOS",
+    tila: alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS",
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: getValueByPathAndAnchor(
