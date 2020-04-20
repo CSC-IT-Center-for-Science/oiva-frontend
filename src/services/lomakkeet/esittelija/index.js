@@ -14,10 +14,10 @@ export default function getTopThree(data, isReadOnly, locale) {
         {
           anchor: "A",
           name: "Input",
+          styleClasses: ["w-full"],
           properties: {
             label: __("asianumero"),
             type: "text",
-            width: "100%",
             value: "VN/"
           }
         }
