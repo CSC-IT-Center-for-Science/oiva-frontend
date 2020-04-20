@@ -45,7 +45,9 @@ const initialState = {
   yhteenveto: {
     yleisettiedot: [],
     hakemuksenLiitteet: []
-  }
+  },
+  // Top three fields of muutospyyntö form of esittelijä role
+  topthree: []
 };
 
 const Store = createStore({
