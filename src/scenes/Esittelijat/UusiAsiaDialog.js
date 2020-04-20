@@ -37,6 +37,7 @@ import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/com
 import { findObjectWithKey } from "../../utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
+import { getRules } from "../../services/lomakkeet/esittelija/rules";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -376,14 +377,15 @@ const UusiAsiaDialog = ({
           <div
             id="wizard-content"
             className="px-16 xl:w-3/4 max-w-6xl m-auto mb-20">
-            <div className="w-2/3">
+            <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
               <Lomake
                 anchor="topthree"
                 changeObjects={cos.topthree}
                 onChangesUpdate={payload =>
                   onSectionChangesUpdate(payload.anchor, payload.changes)
                 }
-                path={["esittelija", "topThree"]}></Lomake>
+                path={["esittelija", "topThree"]}
+                rules={getRules()}></Lomake>
             </div>
             <EsittelijatMuutospyynto
               kielet={kieletAndOpetuskielet}
