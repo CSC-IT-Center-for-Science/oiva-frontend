@@ -238,6 +238,7 @@ export function getChangesToSave(
         changeObjects.perustelut
       );
       const meta = R.path(["properties", "metadata"], changeObj) || {};
+
       return {
         koodiarvo: code,
         koodisto: "oppilaitoksenopetuskieli",
@@ -246,6 +247,7 @@ export function getChangesToSave(
         isInLupa: meta.isInLupa,
         kohde, //: meta.kohde.kohdeArvot[0].kohde,
         maaraystyyppi, // : meta.maaraystyyppi,
+        maaraysUuid: meta.maaraysUuid,
         meta: {
           tunniste: "opetuskieli",
           changeObjects: R.flatten([[changeObj], perustelut]),
@@ -397,6 +399,7 @@ export function getChangesToSave(
               }
             ]
           },
+          maaraysUuid: changeObj.properties.metadata.maaraysUuid,
           muutosperustelukoodiarvo: null,
           kohde,
           maaraystyyppi,

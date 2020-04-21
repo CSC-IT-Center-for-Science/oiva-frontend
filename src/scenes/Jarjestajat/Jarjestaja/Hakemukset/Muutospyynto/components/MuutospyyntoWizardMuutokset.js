@@ -45,6 +45,16 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
     );
   }, [props.maaraystyypit]);
 
+  const kuntamaaraykset = R.filter(
+    R.propEq("koodisto", "kunta"),
+    props.lupa.maaraykset || []
+  );
+
+  const valtakunnallinenMaarays = R.find(
+    R.propEq("koodisto", "nuts1"),
+    props.lupa.maaraykset || []
+  );
+
   return (
     <React.Fragment>
       <h2 className="my-6">{intl.formatMessage(wizardMessages.pageTitle_1)}</h2>
@@ -105,6 +115,8 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
               kunnat={props.kunnat}
               maakuntakunnatList={props.maakuntakunnatList}
               maakunnat={props.maakunnat}
+              kuntamaaraykset={kuntamaaraykset}
+              valtakunnallinenMaarays={valtakunnallinenMaarays}
               {..._props}
             />
           )}

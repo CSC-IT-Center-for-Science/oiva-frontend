@@ -12,7 +12,8 @@ function getModificationForm(
   lisattavatKunnat,
   lisattavatMaakunnat,
   valittavissaOlevatKunnat,
-  valittavissaOlevatMaakunnat
+  valittavissaOlevatMaakunnat,
+  valtakunnallinenMaarays
 ) {
   return [
     {
@@ -89,6 +90,7 @@ function getModificationForm(
                 forChangeObject: {
                   koodiarvo: maakunta.metadata.koodiarvo,
                   koodisto: { koodistoUri: maakunta.metadata.koodisto },
+                  maaraysUuid: maakunta.metadata.kohde.uuid,
                   title: maakunta.title
                 },
                 title: maakunta.title
@@ -184,6 +186,7 @@ function getModificationForm(
                 forChangeObject: {
                   koodiarvo: kunta.metadata.koodiarvo,
                   koodisto: { koodistoUri: kunta.metadata.koodisto },
+                  maaraysUuid: kunta.maaraysUuid,
                   title: kunta.title
                 },
                 title: kunta.title
@@ -247,6 +250,7 @@ function getModificationForm(
               removal: isRemoved
             },
             forChangeObject: {
+              maaraysUuid: valtakunnallinenMaarays.uuid,
               title: __("responsibilities")
             }
           }
@@ -288,7 +292,8 @@ export default function getToimintaaluelomake(action, data) {
         data.lisattavatKunnat,
         data.lisattavatMaakunnat,
         data.valittavissaOlevatKunnat,
-        data.valittavissaOlevatMaakunnat
+        data.valittavissaOlevatMaakunnat,
+        data.valtakunnallinenMaarays
       );
     default:
       return [];

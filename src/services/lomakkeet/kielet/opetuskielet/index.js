@@ -17,6 +17,7 @@ function getModificationForm(opetuskieletData) {
           properties: {
             forChangeObject: {
               isInLupa: item.isInLupa,
+              maaraysUuid: item.maaraysUuid,
               kuvaus: item.title,
               meta: item.meta
             },

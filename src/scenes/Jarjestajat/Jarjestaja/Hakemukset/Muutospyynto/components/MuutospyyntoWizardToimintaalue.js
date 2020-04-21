@@ -49,13 +49,18 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     return R.sortBy(
       R.path(["metadata", "arvo"]),
       R.map(kunta => {
+        const maarays = R.find(
+          R.propEq("koodiarvo", kunta.koodiarvo),
+          props.kuntamaaraykset
+        );
         return {
+          maaraysUuid: maarays ? maarays.uuid : null,
           title: kunta.arvo,
           metadata: kunta
         };
       }, props.lupakohde.kunnat)
     );
-  }, [props.lupakohde.kunnat]);
+  }, [props.kuntamaaraykset, props.lupakohde.kunnat]);
 
   const maakunnatInLupa = useMemo(() => {
     return R.sortBy(
@@ -317,7 +322,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           lisattavatKunnat,
           lisattavatMaakunnat,
           valittavissaOlevatKunnat,
-          valittavissaOlevatMaakunnat
+          valittavissaOlevatMaakunnat,
+          valtakunnallinenMaarays: props.valtakunnallinenMaarays
         }}
         onChangesUpdate={handleChanges}
         path={["toimintaalue"]}
@@ -339,6 +345,8 @@ MuutospyyntoWizardToimintaalue.propTypes = {
   lupakohde: PropTypes.object,
   maakunnat: PropTypes.array,
   maakuntakunnatList: PropTypes.array,
+  kuntamaaraykset: PropTypes.array,
+  valtakunnallinenMaarays: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func
 };
