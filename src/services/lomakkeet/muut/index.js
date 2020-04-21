@@ -24,9 +24,10 @@ function getModificationForm(configObj, osiota5koskevatMaaraykset, locale) {
           _.find(article.metadata, m => {
             return m.kieli === locale;
           }).kuvaus || "Muu";
-        const isInLupaBool = !!R.find(R.propEq("koodiarvo", article.koodiArvo))(
+        const maarays = R.find(R.propEq("koodiarvo", article.koodiArvo))(
           osiota5koskevatMaaraykset
         );
+        const isInLupaBool = !!maarays;
         if (isInLupaBool) {
           noItemsInLupa = false;
         }
@@ -49,7 +50,8 @@ function getModificationForm(configObj, osiota5koskevatMaaraykset, locale) {
                   title: configObj.title,
                   isInLupa: isInLupaBool,
                   koodiarvo: article.koodiArvo,
-                  koodisto: article.koodisto
+                  koodisto: article.koodisto,
+                  maaraysUuid: maarays ? maarays.uuid : null
                 },
                 name: item.componentName,
                 isChecked:

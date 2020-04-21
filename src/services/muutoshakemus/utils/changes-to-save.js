@@ -357,6 +357,7 @@ export function getChangesToSave(
         isInLupa: R.path(["properties", "metadata", "isInLupa"], changeObj),
         kohde,
         maaraystyyppi,
+        maaraysUuid: changeObj.properties.metadata.maaraysUuid,
         meta,
         tila,
         type
