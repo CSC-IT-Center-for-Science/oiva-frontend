@@ -55,7 +55,7 @@ function getModificationForm(
                     name: "CheckboxWithLabel",
                     properties: {
                       forChangeObject: {
-                        maaraysId: maaraysOsaamisalalle.maaraysId,
+                        maaraysUuid: maaraysOsaamisalalle.maaraysId,
                         koodisto: osaamisala.koodisto,
                         metadata: osaamisala.metadata,
                         isInLupa: isInLupaBool
@@ -87,7 +87,7 @@ function getModificationForm(
                   name: "CheckboxWithLabel",
                   properties: {
                     forChangeObject: {
-                      maaraysId: maaraysKoulutukselle.maaraysId,
+                      maaraysUuid: maaraysKoulutukselle.maaraysId,
                       koodisto: koulutus.koodisto,
                       metadata: koulutus.metadata,
                       isInLupa: isInLupaBool
