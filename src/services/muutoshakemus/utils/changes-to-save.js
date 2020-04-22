@@ -216,6 +216,7 @@ export function getChangesToSave(
         koodiarvo: code,
         koodisto: metadata.koodisto.koodistoUri,
         maaraystyyppi,
+        maaraysUuid: metadata.maaraysUuid,
         meta,
         nimi: finnishInfo.nimi,
         tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO",

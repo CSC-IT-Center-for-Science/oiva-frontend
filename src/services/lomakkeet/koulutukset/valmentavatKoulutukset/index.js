@@ -13,7 +13,8 @@ function getModificationForm(koulutusdata) {
             forChangeObject: {
               isInLupa: item.isInLupa,
               koodisto: item.koodisto,
-              metadata: item.metadata
+              metadata: item.metadata,
+              maaraysUuid: item.maaraysUuid
             },
             name: "CheckboxWithLabel",
             code: item.code,

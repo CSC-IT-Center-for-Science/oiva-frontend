@@ -7,11 +7,16 @@ export function getDataForKoulutusList(
   maaraykset = [],
   koodisto
 ) {
-  const luvassaOlevatKoodiarvot = koodisto
+  const relevantitMaaraykset = koodisto
     ? R.map(maarays => {
-        return maarays.koodisto === koodisto ? maarays.koodiarvo : null;
+        return maarays.koodisto === koodisto ? maarays : null;
       }, maaraykset).filter(Boolean)
     : [];
+
+  const luvassaOlevatKoodiarvot = R.map(
+    R.prop("koodiarvo"),
+    relevantitMaaraykset
+  );
 
   let isInLupaTrueFound = false;
   const sortedKoulutukset = sortArticlesByHuomioitavaKoodi(koulutukset, locale);
@@ -19,6 +24,10 @@ export function getDataForKoulutusList(
   return {
     items: R.addIndex(R.map)(
       (koulutus, index) => {
+        const maarays = R.find(
+          R.propEq("koodiarvo", koulutus.koodiArvo),
+          relevantitMaaraykset
+        );
         const isInLupa = !!(
           koodisto && R.includes(koulutus.koodiArvo, luvassaOlevatKoodiarvot)
         );
@@ -36,6 +45,7 @@ export function getDataForKoulutusList(
               !isInLupaTrueFound &&
               index === koulutukset.length - 1),
           koodisto: koulutus.koodisto,
+          maaraysUuid: maarays ? maarays.uuid : null,
           metadata: koulutus.metadata,
           title:
             R.prop(

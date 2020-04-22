@@ -14,7 +14,8 @@ function getModificationForm(koulutusdata) {
               isReasoningRequired: item.isReasoningRequired,
               isInLupa: item.isInLupa,
               koodisto: item.koodisto,
-              metadata: item.metadata
+              metadata: item.metadata,
+              maaraysUuid: item.maaraysUuid
             },
             name: "RadioButtonWithLabel",
             title: item.title,
