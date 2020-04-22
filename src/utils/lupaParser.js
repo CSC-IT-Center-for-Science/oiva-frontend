@@ -102,7 +102,7 @@ const parseSectionData = (
               tutkinto.rajoitteet.push({
                 koodi: koodiArvo,
                 nimi,
-                maaraysId: uuid,
+                maaraysId: alimaarays.uuid,
                 maaraystyyppi: 2,
                 kohde,
                 koodisto: koodisto
@@ -149,8 +149,7 @@ const parseSectionData = (
           );
 
           muutMaaraykset.push({
-            selite:
-              t(common.lupaSectionTutkinnotAmmatillinenTitle),
+            selite: t(common.lupaSectionTutkinnotAmmatillinenTitle),
             nimi: ammatillinenNimi,
             indeksi: muutMaaraykset.length + 1,
             maaraysId: uuid,
@@ -311,38 +310,46 @@ const parseSectionData = (
     returnobj.kunnat = kunnat;
 
     if (maakunnat.length > 1 && kunnat.length > 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaPluralKuntaPlural)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaPluralKuntaPlural
+      );
     }
     if (maakunnat.length === 1 && kunnat.length > 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaSingularKuntaPlural)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaSingularKuntaPlural
+      );
     }
     if (maakunnat.length < 1 && kunnat.length > 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaNoneKuntaPlural)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaNoneKuntaPlural
+      );
     }
 
     if (maakunnat.length > 1 && kunnat.length === 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaPluralKuntaSingular)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaPluralKuntaSingular
+      );
     }
     if (maakunnat.length === 1 && kunnat.length === 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaSingularKuntaSingular)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaSingularKuntaSingular
+      );
     }
     if (maakunnat.length < 1 && kunnat.length === 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaNoneKuntaSingular)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaNoneKuntaSingular
+      );
     }
 
     if (maakunnat.length > 1 && kunnat.length < 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaPluralKuntaNone)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaPluralKuntaNone
+      );
     }
     if (maakunnat.length === 1 && kunnat.length < 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueMaakuntaSingularKuntaNone)
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueMaakuntaSingularKuntaNone
+      );
     }
     if (maakunnat.length < 1 && kunnat.length < 1) {
       returnobj.kohdeKuvaus = t(common.lupaSectionToimintaAlueNone);
@@ -353,8 +360,9 @@ const parseSectionData = (
     });
 
     if (valtakunnalliset && valtakunnalliset.length > 0) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionToimintaAlueNationalAlternative);
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionToimintaAlueNationalAlternative
+      );
       returnobj.valtakunnallinen = valtakunnalliset[0];
     }
 
@@ -389,16 +397,19 @@ const parseSectionData = (
     });
 
     if (rajoitukset.length === 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionOpiskelijavuodetLimitationSingular);
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionOpiskelijavuodetLimitationSingular
+      );
     }
     if (rajoitukset.length > 1) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionOpiskelijavuodetLimitationPlural);
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionOpiskelijavuodetLimitationPlural
+      );
     }
     if (tyovoimaMaarays.length > 0) {
-      returnobj.kohdeKuvaus =
-        t(common.lupaSectionOpiskelijavuodetLimitationNone);
+      returnobj.kohdeKuvaus = t(
+        common.lupaSectionOpiskelijavuodetLimitationNone
+      );
     }
 
     returnobj.opiskelijavuodet = opiskelijavuodet;
@@ -406,7 +417,7 @@ const parseSectionData = (
 
     // kohde 5: Muut
   } else if (target === KOHTEET.MUUT) {
-    returnobj.heading = t(common.lupaSectionMuutMainTitle)
+    returnobj.heading = t(common.lupaSectionMuutMainTitle);
     let muut = [];
     let vaativat = [];
     let vankilat = [];
