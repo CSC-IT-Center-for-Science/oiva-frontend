@@ -250,7 +250,7 @@ function getModificationForm(
               removal: isRemoved
             },
             forChangeObject: {
-              maaraysUuid: valtakunnallinenMaarays.uuid,
+              maaraysUuid: valtakunnallinenMaarays ? valtakunnallinenMaarays.uuid: null,
               title: __("responsibilities")
             }
           }
