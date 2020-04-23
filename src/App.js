@@ -1,13 +1,7 @@
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback
-} from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { Route, Router, Switch } from "react-router-dom";
+import { PropTypes } from "prop-types";
 import Login from "scenes/Login/Login";
-import PropTypes from "prop-types";
 import Logout from "scenes/Logout/Logout";
 import Footer from "scenes/Footer/Footer";
 import Jarjestajat from "./scenes/Jarjestajat/Jarjestajat";
@@ -27,7 +21,6 @@ import commonMessages from "./i18n/definitions/common";
 import educationMessages from "./i18n/definitions/education";
 import langMessages from "./i18n/definitions/languages";
 import { ToastContainer } from "react-toastify";
-import ReactResizeDetector from "react-resize-detector";
 import {
   ROLE_ESITTELIJA,
   ROLE_KATSELIJA,
@@ -37,11 +30,11 @@ import {
 } from "./modules/constants";
 import Esittelijat from "./scenes/Esittelijat/Esittelijat";
 import Header from "okm-frontend-components/dist/components/02-organisms/Header";
-import { setLocale } from "./services/app/actions";
-import { AppContext } from "./context/appContext";
 import Navigation from "okm-frontend-components/dist/components/02-organisms/Navigation";
 import SideNavigation from "okm-frontend-components/dist/components/02-organisms/SideNavigation";
 import { useOrganisation } from "./stores/organisation";
+import { useGlobalSettings } from "./stores/appStore";
+import { useUser } from "./stores/user";
 import * as R from "ramda";
 
 const history = createBrowserHistory();
@@ -53,16 +46,18 @@ const logo = { text: "Oiva", path: "/" };
  *
  * @param {props} - Properties object.
  */
-const App = ({ isDebugModeOn, user }) => {
+const App = React.memo(({ isDebugModeOn }) => {
   const intl = useIntl();
+
+  const [userState] = useUser();
+
+  const { data: user } = userState;
 
   const [organisation, organisationActions] = useOrganisation();
 
   const [isSideMenuVisible, setSideMenuVisibility] = useState(false);
 
-  const { state: appState, dispatch: appDispatch } = useContext(AppContext);
-
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const [appState, appActions] = useGlobalSettings();
 
   const kujaURL = process.env.REACT_APP_KUJA_URL || "https://localhost:4433";
 
@@ -104,14 +99,14 @@ const App = ({ isDebugModeOn, user }) => {
 
   const onLocaleChange = useCallback(
     (...props) => {
-      setLocale(props[1])(appDispatch);
+      appActions.setLocale(props[1]);
       if (props[1]) {
         sessionStorage.setItem("locale", props[1]);
       } else {
         sessionStorage.removeItem("locale");
       }
     },
-    [appDispatch]
+    [appActions]
   );
 
   const onLoginButtonClick = useCallback(() => history.push("/cas-auth"), []);
@@ -170,10 +165,6 @@ const App = ({ isDebugModeOn, user }) => {
       }
     };
   }, [organisationActions, user]);
-
-  const onHeaderResize = (width, height) => {
-    setHeaderHeight(height);
-  };
 
   /**
    * If user has authenticated save some of his/her information into the
@@ -242,7 +233,6 @@ const App = ({ isDebugModeOn, user }) => {
             className={`fixed z-50 ${
               appState.isDebugModeOn ? "w-2/3" : "w-full"
             }`}>
-            <ReactResizeDetector handleHeight onResize={onHeaderResize} />
             {getHeader()}
 
             <div className="hidden md:block">
@@ -270,8 +260,7 @@ const App = ({ isDebugModeOn, user }) => {
           </SideNavigation>
 
           <main
-            className="flex flex-1 flex-col justify-between"
-            style={{ marginTop: headerHeight }}>
+            className="flex flex-1 flex-col justify-between mt-16 sm:mt-48 md:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <div
                 style={{ maxWidth: "90rem" }}
@@ -299,23 +288,18 @@ const App = ({ isDebugModeOn, user }) => {
                   <Route
                     exact
                     path="/jarjestajat"
-                    render={props => <Jarjestajat history={props.history} />}
+                    render={props => <Jarjestajat />}
                   />
                   <Route
                     path="/asiat"
-                    render={props => (
-                      <Esittelijat
-                        history={props.history}
-                        match={props.match}
-                        user={user}
-                      />
-                    )}
+                    render={() => {
+                      return user ? <Esittelijat /> : null;
+                    }}
                   />
                   <Route
                     path="/jarjestajat/:ytunnus"
                     render={props => (
                       <JarjestajaSwitch
-                        history={props.history}
                         path={props.match.path}
                         ytunnus={props.match.params.ytunnus}
                         user={user}
@@ -336,10 +320,12 @@ const App = ({ isDebugModeOn, user }) => {
       </Router>
     </React.Fragment>
   );
-};
+});
 
 App.propTypes = {
-  user: PropTypes.object
+  isDebugModeOn: PropTypes.bool
 };
+
+App.whyDidYouRender = false;
 
 export default App;

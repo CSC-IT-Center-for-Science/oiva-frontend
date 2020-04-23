@@ -9,11 +9,27 @@ import { latauspolku as esikatselunLatauspolku } from "./procedures/muutospyynto
 import { onKatsottavissa as esikatseluOnKatsottavissa } from "./procedures/muutospyynto/esikatselu/onKatsottavissa";
 import { listaus as muutospyyntojenListaus } from "./procedures/muutospyynnot/listaus";
 import { poista as poistaWizardinMuutokset } from "./procedures/muutospyynto/muutokset/poista";
+import { poista as poistaMuutospyynto } from "./procedures/muutospyynnot/poisto/poista";
+import { epaonnistui as muutospyynnonPoistoEpaonnistui } from "./procedures/muutospyynnot/poisto/epaonnistui";
+import { onnistui as muutospyynnonPoistoOnnistui } from "./procedures/muutospyynnot/poisto/onnistui";
+import { epaonnistui as muutospyynnonVieminenEsittelyssaTilaanEpaonnistui } from "./procedures/muutospyynnot/tilanmuutos/epaonnistui";
+import { onnistui as muutospyynnonVieminenEsittelyssaTilaanOnnistui } from "./procedures/muutospyynnot/tilanmuutos/onnistui";
+import { esittelyyn as muutaMuutospyynnonTilaksiEsittelyssa } from "./procedures/muutospyynnot/tilanmuutos/esittelyyn";
 import { tallennaEsittelijanToimesta } from "./procedures/muutospyynto/tallennus/tallennaEsittelijanToimesta";
 
 export const procedures = {
   muutospyynnot: {
-    listaus: muutospyyntojenListaus
+    listaus: muutospyyntojenListaus,
+    poisto: {
+      epaonnistui: muutospyynnonPoistoEpaonnistui,
+      onnistui: muutospyynnonPoistoOnnistui,
+      poista: poistaMuutospyynto
+    },
+    tilanmuutos: {
+      epaonnistui: muutospyynnonVieminenEsittelyssaTilaanEpaonnistui,
+      esittelyyn: muutaMuutospyynnonTilaksiEsittelyssa,
+      onnistui: muutospyynnonVieminenEsittelyssaTilaanOnnistui
+    }
   },
   muutospyynto: {
     esikatselu: {

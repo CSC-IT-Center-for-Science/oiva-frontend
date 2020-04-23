@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import Jarjestaja from "../components/Jarjestaja";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
@@ -10,9 +10,9 @@ import { isEmpty } from "ramda";
 import Loading from "../../../../modules/Loading";
 import { prop } from "ramda";
 
-const JarjestajaSwitch = React.memo(({ history, path, user, ytunnus }) => {
+const JarjestajaSwitch = React.memo(({ path, user, ytunnus }) => {
   const intl = useIntl();
-
+  const history = useHistory();
 
   const [lupa, lupaActions] = useLupa();
 
@@ -30,7 +30,13 @@ const JarjestajaSwitch = React.memo(({ history, path, user, ytunnus }) => {
   }, [lupaActions, ytunnus, user]);
 
   const lupaKohteet = useMemo(() => {
-    return !lupa.data ? {} : parseLupa({ ...lupa.data }, intl.formatMessage, intl.locale.toUpperCase());
+    return !lupa.data
+      ? {}
+      : parseLupa(
+          { ...lupa.data },
+          intl.formatMessage,
+          intl.locale.toUpperCase()
+        );
   }, [lupa.data, intl]);
 
   return (
@@ -95,7 +101,6 @@ const JarjestajaSwitch = React.memo(({ history, path, user, ytunnus }) => {
 });
 
 JarjestajaSwitch.propTypes = {
-  history: PropTypes.object,
   path: PropTypes.string,
   ytunnus: PropTypes.string,
   user: PropTypes.object

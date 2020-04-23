@@ -22,7 +22,7 @@ const AvoimetAsiat = () => {
   ] = useMuutospyynnotEsittelijaValmistelussa();
 
   useEffect(() => {
-    const isForced = R.includes("force=", location.search);
+    const isForced = R.includes("force=true", location.search);
     let abortController = muutospyynnotEsittelijaAvoimetActions.load(isForced);
 
     return function cancel() {
@@ -33,7 +33,7 @@ const AvoimetAsiat = () => {
   }, [location.search, muutospyynnotEsittelijaAvoimetActions]);
 
   useEffect(() => {
-    const isForced = R.includes("force=", location.search);
+    const isForced = R.includes("force=true", location.search);
     let abortController = muutospyynnotEsittelijaValmistelussaActions.load(
       isForced
     );

@@ -41,5 +41,7 @@ export const backendRoutes = {
   },
   kaannokset: { path: "lokalisaatio" },
   lahetaMuutospyynto: { path: "muutospyynnot/tila/avoin/" },
-  organisaatiot: { path: "luvat/organisaatiot" }
+  organisaatiot: { path: "luvat/organisaatiot" },
+  poistaMuutospyynto: { path: "muutospyynnot/" },
+  muutospyyntoEsittelyyn: { path: "muutospyynnot/tila/valmistelussa/" }
 };

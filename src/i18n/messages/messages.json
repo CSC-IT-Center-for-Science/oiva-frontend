@@ -370,6 +370,16 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "asiaTable.actions.muokkaa",
+    "defaultMessage": "Muokkaa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.lataaPDFJaMuutaTila",
+    "defaultMessage": "Lataa PDF ja muuta tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "asiaStates.kj.LUONNOS",
     "defaultMessage": "Luonnos",
     "filepath": "src/i18n/definitions/common.js"
@@ -812,6 +822,51 @@
   {
     "id": "common.luoUusiAsiaInstructions",
     "defaultMessage": "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.poista",
+    "defaultMessage": "Poista",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.titleOfPoistetaankoKokoAsia",
+    "defaultMessage": "Tämän asiakirjan poisto poistaa koko asian",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.poistetaankoKokoAsia",
+    "defaultMessage": "Haluatko varmasti poistaa asiakirjan ja asian? Poiston jälkeen siirrytään Asiat-sivulle, jossa kyseinen asia ei ole enää näkyvillä.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.titleOfPoistetaankoAsiakirja",
+    "defaultMessage": "Asiakirjan poisto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.poistetaankoAsiakirja",
+    "defaultMessage": "Haluatko varmasti poistaa asiakirjan? Poiston jälkeen et voi enää muokata tätä asiakirjaa.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.doNotRemove",
+    "defaultMessage": "Älä poista",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.titleOfPDFAndStateDialog",
+    "defaultMessage": "Muutetaanko asian tila latauksen yhteydessä?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.textOfPDFAndStateDialog",
+    "defaultMessage": "Mikäli järjestämislupaa ollaan viemässä allekirjoitettavaksi, asian tila tulee muuttaa \"Esittelyssä\" tilaan. Muutetaanko tila?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.downloadPDFAndChangeState",
+    "defaultMessage": "Lataa PDF ja muuta tila",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

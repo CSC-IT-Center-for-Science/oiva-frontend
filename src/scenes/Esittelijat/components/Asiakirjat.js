@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import Media from "react-media";
 import styled from "styled-components";
 import { Table as OldTable, Tbody } from "../../../modules/Table";
@@ -21,6 +21,9 @@ import { asiaEsittelijaStateToLocalizationKeyMap } from "../../Jarjestajat/Jarje
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
+import RemovalDialogOfAsiakirja from "../RemovalDialogOfAsiakirja";
+import { useMuutospyynnot } from "../../../stores/muutospyynnot";
+import PDFAndStateDialog from "../PDFAndStateDialog";
 
 const WrapTable = styled.div``;
 
@@ -50,7 +53,7 @@ const states = [
   "PASSIVOITU"
 ];
 
-const Asiakirjat = () => {
+const Asiakirjat = React.memo(() => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
@@ -61,6 +64,13 @@ const Asiakirjat = () => {
     muutospyynnonLiitteetAction
   ] = useMuutospyynnonLiitteet();
   const [muutospyynto, muutospyyntoAction] = useMuutospyynto();
+  const [isRemovalDialogVisible, setIsRemovalDialogVisible] = useState(false);
+  const [
+    isDownloadPDFAndChangeStateDialogVisible,
+    setIsDownloadPDFAndChangeStateDialogVisible
+  ] = useState(false);
+  const [documentIdForAction, setDocumentIdForAction] = useState();
+  const [, muutospyynnotActions] = useMuutospyynnot();
 
   // Let's fetch MUUTOSPYYNTÖ and MUUTOSPYYNNÖN LIITTEET
   useEffect(() => {
@@ -73,7 +83,9 @@ const Asiakirjat = () => {
     }
     return function cancel() {
       R.forEach(abortController => {
-        abortController.abort();
+        if (abortController) {
+          abortController.abort();
+        }
       }, abortControllers);
     };
   }, [muutospyyntoAction, muutospyynnonLiitteetAction, uuid]);
@@ -87,6 +99,16 @@ const Asiakirjat = () => {
     () => muutospyynto.data && muutospyynto.data.jarjestaja.ytunnus,
     [muutospyynto.data]
   );
+
+  const removeAsiakirja = () => {
+    muutospyynnotActions.remove(documentIdForAction);
+    history.push("/asiat?force=true");
+  };
+
+  const setStateOfMuutospyyntoAsEsittelyssa = () => {
+    console.info(documentIdForAction);
+    muutospyynnotActions.esittelyyn(documentIdForAction);
+  };
 
   const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
 
@@ -132,11 +154,16 @@ const Asiakirjat = () => {
     attachmentRow
   ]);
 
-  const muutospyyntoRowItem = {
-    fileLink: `/pdf/esikatsele/muutospyynto/${uuid}`,
-    openInNewWindow: true,
-    items: [intl.formatMessage(common.application), ...baseRow, ""]
-  };
+  const muutospyyntoRowItem = useMemo(() => {
+    return {
+      uuid,
+      fileLink: `/pdf/esikatsele/muutospyynto/${uuid}`,
+      openInNewWindow: true,
+      items: [intl.formatMessage(common.application), ...baseRow, ""]
+    };
+  }, [baseRow, intl, uuid]);
+
+  const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
   const asiakirjatList = () => {
     return R.addIndex(R.map)(
@@ -150,7 +177,7 @@ const Asiakirjat = () => {
           key={idx}
         />
       ),
-      [muutospyyntoRowItem, ...liitteetRowItems]
+      rows
     );
   };
 
@@ -179,48 +206,66 @@ const Asiakirjat = () => {
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)(
-            (row, i) => {
-              return {
-                fileLink: row.fileLink,
-                onClick: (row, action) => {
-                  if (action === "lataa" && row.fileLink) {
-                    downloadFileFn({
-                      url: row.fileLink,
-                      openInNewWindow: row.openInNewWindow
-                    })();
-                  }
+          rows: R.addIndex(R.map)((row, i) => {
+            return {
+              uuid: rows.length === 1 ? row.uuid : null,
+              fileLink: row.fileLink,
+              onClick: (row, action) => {
+                if (action === "lataa" && row.fileLink) {
+                  downloadFileFn({
+                    url: row.fileLink,
+                    openInNewWindow: row.openInNewWindow
+                  })();
+                } else if (action === "download-pdf-and-change-state") {
+                  setIsDownloadPDFAndChangeStateDialogVisible(true);
+                  setDocumentIdForAction(row.uuid);
+                } else if (action === "edit") {
+                  history.push(`${ytunnus}/${row.uuid}`);
+                } else if (action === "remove") {
+                  setIsRemovalDialogVisible(true);
+                  setDocumentIdForAction(row.uuid);
+                }
+              },
+              cells: R.addIndex(R.map)(
+                (col, ii) => {
+                  return {
+                    truncate: true,
+                    styleClasses: [colWidths[ii] + " cursor-default"],
+                    text: col.text
+                  };
                 },
-                cells: R.addIndex(R.map)(
-                  (col, ii) => {
-                    return {
-                      truncate: true,
-                      styleClasses: [colWidths[ii] + " cursor-default"],
-                      text: col.text
-                    };
-                  },
-                  [
-                    { text: row.items[0] },
-                    { text: row.items[1] },
-                    { text: row.items[2] },
-                    { text: row.items[3] }
+                [
+                  { text: row.items[0] },
+                  { text: row.items[1] },
+                  { text: row.items[2] },
+                  { text: row.items[3] }
+                ]
+              ).concat({
+                menu: {
+                  id: `simple-menu-${i}`,
+                  actions: [
+                    {
+                      id: "edit",
+                      text: t(common["asiaTable.actions.muokkaa"])
+                    },
+                    {
+                      id: "lataa",
+                      text: t(common["asiaTable.actions.lataa"])
+                    },
+                    {
+                      id: "download-pdf-and-change-state",
+                      text: t(common["asiaTable.actions.lataaPDFJaMuutaTila"])
+                    },
+                    {
+                      id: "remove",
+                      text: t(common.poista)
+                    }
                   ]
-                ).concat({
-                  menu: {
-                    id: `simple-menu-${i}`,
-                    actions: [
-                      {
-                        id: "lataa",
-                        text: t(common["asiaTable.actions.lataa"])
-                      }
-                    ]
-                  },
-                  styleClasses: ["w-1/12 cursor-default"]
-                })
-              };
-            },
-            [muutospyyntoRowItem, ...liitteetRowItems]
-          )
+                },
+                styleClasses: ["w-1/12 cursor-default"]
+              })
+            };
+          }, rows)
         }
       ]
     },
@@ -279,6 +324,21 @@ const Asiakirjat = () => {
             style={{ maxWidth: "90rem" }}
             className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
             <h4 className="mb-2">{t(common.asianAsiakirjat)}</h4>
+            {isRemovalDialogVisible && (
+              <RemovalDialogOfAsiakirja
+                isVisible={isRemovalDialogVisible}
+                removeAsia={rows.length === 1}
+                onClose={() => setIsRemovalDialogVisible(false)}
+                onOK={removeAsiakirja}></RemovalDialogOfAsiakirja>
+            )}
+            {isDownloadPDFAndChangeStateDialogVisible && (
+              <PDFAndStateDialog
+                isVisible={isDownloadPDFAndChangeStateDialogVisible}
+                onClose={() =>
+                  setIsDownloadPDFAndChangeStateDialogVisible(false)
+                }
+                onOK={setStateOfMuutospyyntoAsEsittelyssa}></PDFAndStateDialog>
+            )}
             <div
               className="flex-1 bg-white"
               style={{ border: "0.05rem solid #E3E3E3" }}>
@@ -314,10 +374,12 @@ const Asiakirjat = () => {
   } else {
     return <Loading />;
   }
-};
+});
 
 Asiakirjat.propTypes = {
   uuid: PropTypes.object
 };
+
+Asiakirjat.whyDidYouRender = false;
 
 export default Asiakirjat;

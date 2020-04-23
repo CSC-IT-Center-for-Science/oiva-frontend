@@ -5,10 +5,9 @@ import { join } from "ramda";
 /**
  * You can send data to backend with this function.
  * @param {*} urlKey - Key of the backend routes mapping (backendRoutes.js)
- * @param {*} formData - Data to be sent.
- * @param {*} options  - Options.
+ * @param {*} options  - Options
  */
-export async function postData(urlKey, formData, options = {}) {
+export async function deleteDocument(urlKey, options = {}) {
   const abortController = new AbortController();
   const routeObj = backendRoutes[urlKey];
   const { urlEnding } = options;
@@ -18,12 +17,10 @@ export async function postData(urlKey, formData, options = {}) {
     routeObj.postfix
   ])}`;
   if (!url) throw new Error("No url found!");
-  console.info(options);
   const response = await fetch(url, {
-    credentials: "include",
+    ...options,
     signal: abortController.signal,
-    method: "POST",
-    body: formData
+    method: "DELETE"
   }).catch(err => {
     console.info(err);
   });

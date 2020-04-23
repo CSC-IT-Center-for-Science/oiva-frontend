@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { useLuvat } from "../../stores/luvat";
 import LuvatList from "./components/LuvatList";
-import { PropTypes } from "prop-types";
 import { Helmet } from "react-helmet";
-import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import Loading from "../../modules/Loading";
 import { useIntl } from "react-intl";
+import * as R from "ramda";
 
-const Jarjestajat = React.memo(({ history }) => {
+const Jarjestajat = React.memo(() => {
   const intl = useIntl();
   const [luvat, luvatActions] = useLuvat();
 
@@ -42,7 +41,7 @@ const Jarjestajat = React.memo(({ history }) => {
               })}
             </p>
 
-            <LuvatList history={history} luvat={luvat.data} />
+            <LuvatList luvat={luvat.data} />
           </React.Fragment>
         )}
         {luvat.isLoading && <Loading />}
@@ -50,9 +49,5 @@ const Jarjestajat = React.memo(({ history }) => {
     </React.Fragment>
   );
 });
-
-Jarjestajat.propTypes = {
-  history: PropTypes.object
-};
 
 export default Jarjestajat;

@@ -291,6 +291,14 @@ export default defineMessages({
     id: "asiaTable.actions.lataa",
     defaultMessage: "Lataa PDF"
   },
+  "asiaTable.actions.muokkaa": {
+    id: "asiaTable.actions.muokkaa",
+    defaultMessage: "Muokkaa"
+  },
+  "asiaTable.actions.lataaPDFJaMuutaTila": {
+    id: "asiaTable.actions.lataaPDFJaMuutaTila",
+    defaultMessage: "Lataa PDF ja muuta tila"
+  },
   "asiaStates.kj.LUONNOS": {
     id: "asiaStates.kj.LUONNOS",
     defaultMessage: "Luonnos"
@@ -679,6 +687,46 @@ export default defineMessages({
   },
   luoUusiAsiaInstructions: {
     id: "common.luoUusiAsiaInstructions",
-    defaultMessage: "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle"
+    defaultMessage:
+      "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle"
+  },
+  poista: {
+    id: "common.poista",
+    defaultMessage: "Poista"
+  },
+  titleOfPoistetaankoKokoAsia: {
+    id: "common.titleOfPoistetaankoKokoAsia",
+    defaultMessage: "Tämän asiakirjan poisto poistaa koko asian"
+  },
+  poistetaankoKokoAsia: {
+    id: "common.poistetaankoKokoAsia",
+    defaultMessage:
+      "Haluatko varmasti poistaa asiakirjan ja asian? Poiston jälkeen siirrytään Asiat-sivulle, jossa kyseinen asia ei ole enää näkyvillä."
+  },
+  titleOfPoistetaankoAsiakirja: {
+    id: "common.titleOfPoistetaankoAsiakirja",
+    defaultMessage: "Asiakirjan poisto"
+  },
+  poistetaankoAsiakirja: {
+    id: "common.poistetaankoAsiakirja",
+    defaultMessage:
+      "Haluatko varmasti poistaa asiakirjan? Poiston jälkeen et voi enää muokata tätä asiakirjaa."
+  },
+  doNotRemove: {
+    id: "common.doNotRemove",
+    defaultMessage: "Älä poista"
+  },
+  titleOfPDFAndStateDialog: {
+    id: "common.titleOfPDFAndStateDialog",
+    defaultMessage: "Muutetaanko asian tila latauksen yhteydessä?"
+  },
+  textOfPDFAndStateDialog: {
+    id: "common.textOfPDFAndStateDialog",
+    defaultMessage:
+      'Mikäli järjestämislupaa ollaan viemässä allekirjoitettavaksi, asian tila tulee muuttaa "Esittelyssä" tilaan. Muutetaanko tila?'
+  },
+  downloadPDFAndChangeState: {
+    id: "common.downloadPDFAndChangeState",
+    defaultMessage: "Lataa PDF ja muuta tila"
   }
 });

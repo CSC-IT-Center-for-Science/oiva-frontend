@@ -135,8 +135,8 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history) => {
                         id: `simple-menu-${i}`,
                         actions: [
                           {
-                            id: "paata",
-                            text: t(common["asiaTable.actions.paatetty"])
+                            id: "esittelyyn",
+                            text: t(common["asiaTable.actions.esittelyssa"])
                           }
                         ]
                       },

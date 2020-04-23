@@ -8,7 +8,7 @@ import {
   Route,
   Switch,
   useHistory,
-  useRouteMatch
+  useRouteMatch,
 } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../../i18n/definitions/common";

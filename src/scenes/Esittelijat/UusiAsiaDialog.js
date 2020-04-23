@@ -195,7 +195,7 @@ const UusiAsiaDialog = ({
   const closeWizard = useCallback(() => {
     setIsDialogOpen(false);
     setIsConfirmDialogVisible(false);
-    return history.push(`/asiat`);
+    return history.push(`/asiat?force=true`);
   }, [history]);
 
   const anchors = useMemo(() => {

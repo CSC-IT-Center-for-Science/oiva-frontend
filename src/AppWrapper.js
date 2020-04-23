@@ -1,7 +1,6 @@
-import React, { useContext, useMemo, useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import { IntlProvider } from "react-intl";
 import translations from "./i18n/locales";
-import { AppContext } from "./context/appContext";
 import { defaults } from "react-sweet-state";
 import { loadProgressBar } from "axios-progress-bar";
 import { useUser } from "./stores/user";
@@ -9,8 +8,16 @@ import App from "./App";
 
 import "axios-progress-bar/dist/nprogress.css";
 import { useKaannokset } from "./stores/localizations";
+import { useGlobalSettings } from "./stores/appStore";
 
 defaults.devtools = true;
+
+if (process.env.NODE_ENV === "development") {
+  const whyDidYouRender = require("@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js");
+  whyDidYouRender(React, {
+    trackAllPureComponents: true
+  });
+}
 
 loadProgressBar();
 
@@ -36,8 +43,7 @@ const AppWrapper = () => {
     process.env.REACT_APP_FETCH_LOCALICATIONS_FROM_BACKEND === "true";
 
   const [user, actions] = useUser();
-
-  const { state } = useContext(AppContext);
+  const [state] = useGlobalSettings();
 
   useEffect(() => {
     // Let's fetch the current user from backend
@@ -66,24 +72,22 @@ const AppWrapper = () => {
   }, [isBackendTheSourceOfLocalizations, kaannokset, state]);
 
   return (
-    <IntlProvider locale={state.locale} key={state.locale} messages={messages}>
+    <IntlProvider locale={state.locale} messages={messages}>
       {state.isDebugModeOn ? (
         <div className="flex">
           <div
             id="cy"
             className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
             style={{ zIndex: 9000 }}></div>
-          <div className="w-2/3 relative">
-            {user.fetchedAt && <App user={user.data} />}
-          </div>
+          <div className="w-2/3 relative">{user.fetchedAt && <App />}</div>
         </div>
       ) : (
-        <React.Fragment>
-          {user.fetchedAt && <App user={user.data} />}
-        </React.Fragment>
+        <React.Fragment>{user.fetchedAt && <App />}</React.Fragment>
       )}
     </IntlProvider>
   );
 };
+
+AppWrapper.whyDidYouRender = false;
 
 export default AppWrapper;

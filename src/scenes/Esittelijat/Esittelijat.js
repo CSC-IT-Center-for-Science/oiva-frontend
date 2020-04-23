@@ -5,7 +5,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
 import { useUser } from "../../stores/user";
 
-const Esittelijat = () => {
+const Esittelijat = React.memo(() => {
   const { path } = useRouteMatch();
   const { user } = useUser();
 
@@ -21,7 +21,7 @@ const Esittelijat = () => {
         authenticated={!!user}
         exact
         path={`${path}/paatetyt`}
-        render={props => <Asiat path={path} user={user} />}
+        render={() => <Asiat path={path} user={user} />}
       />
       <Route
         authenticated={!!user}
@@ -43,6 +43,8 @@ const Esittelijat = () => {
       />
     </Switch>
   );
-};
+});
+
+Esittelijat.whyDidYouRender = false;
 
 export default Esittelijat;
