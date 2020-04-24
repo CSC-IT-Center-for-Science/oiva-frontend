@@ -51,7 +51,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       R.map(kunta => {
         const maarays = R.find(
           R.propEq("koodiarvo", kunta.koodiarvo),
-          props.kuntamaaraykset
+          props.kuntamaaraykset || []
         );
         return {
           maaraysUuid: maarays ? maarays.uuid : null,
