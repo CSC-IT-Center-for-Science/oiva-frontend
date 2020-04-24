@@ -93,7 +93,7 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history) => {
                   const timestamp = new Date().getTime();
                   return axios
                     .post(
-                      `${API_BASE_URL}/muutospyynnot/tila/valmistelussa/${row.id}`,
+                      `${API_BASE_URL}/muutospyynnot/tila/esittelyssa/${row.id}`,
                       {},
                       {
                         withCredentials: true
