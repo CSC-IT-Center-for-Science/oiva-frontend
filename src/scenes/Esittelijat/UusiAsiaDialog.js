@@ -212,25 +212,29 @@ const UusiAsiaDialog = ({
    * Opens the preview.
    * @param {object} formData
    */
-  const onPreview = useCallback(async formData => {
-    const procedureHandler = new ProcedureHandler();
-    /**
-     * Let's save the form without notification. Notification about saving isn't
-     * needed when we're going to show a notification related to the preview.
-     */
-    const outputs = await procedureHandler.run(
-      "muutospyynto.tallennus.tallennaEsittelijanToimesta",
-      [formData, false] // false = Notification of save success won't be shown.
-    );
-    const muutospyynto =
-      outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output.result;
-    // Let's get the path of preview (PDF) document and download the file.
-    const path = await muutospyyntoActions.getDownloadPath(muutospyynto.uuid);
-    if (path) {
-      muutospyyntoActions.download(path);
-    }
-    return muutospyynto;
-  }, []);
+  const onPreview = useCallback(
+    async formData => {
+      const procedureHandler = new ProcedureHandler();
+      /**
+       * Let's save the form without notification. Notification about saving isn't
+       * needed when we're going to show a notification related to the preview.
+       */
+      const outputs = await procedureHandler.run(
+        "muutospyynto.tallennus.tallennaEsittelijanToimesta",
+        [formData, false] // false = Notification of save success won't be shown.
+      );
+      const muutospyynto =
+        outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
+          .result;
+      // Let's get the path of preview (PDF) document and download the file.
+      const path = await muutospyyntoActions.getDownloadPath(muutospyynto.uuid);
+      if (path) {
+        muutospyyntoActions.download(path);
+      }
+      return muutospyynto;
+    },
+    [muutospyyntoActions]
+  );
 
   /**
    * Saves the form.
