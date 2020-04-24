@@ -4,9 +4,9 @@ import { tallenna as tallennaMuutospyynto } from "./procedures/muutospyynto/tall
 import { epaonnistui as lahetysEpaonnistui } from "./procedures/muutospyynto/lahetys/epaonnistui";
 import { onnistui as lahetysOnnistui } from "./procedures/muutospyynto/lahetys/onnistui";
 import { laheta as lahetaMuutospyynto } from "./procedures/muutospyynto/lahetys/laheta";
-import { eiAvaudu as esikatseluEiAvaudu } from "./procedures/muutospyynto/esikatselu/eiAvaudu";
+import { polkuvirhe as eiEsikatselupolkua } from "./procedures/muutospyynto/esikatselu/polkuvirhe";
 import { latauspolku as esikatselunLatauspolku } from "./procedures/muutospyynto/esikatselu/latauspolku";
-import { onKatsottavissa as esikatseluOnKatsottavissa } from "./procedures/muutospyynto/esikatselu/onKatsottavissa";
+import { polkuOK as esikatselupolkuOK } from "./procedures/muutospyynto/esikatselu/polkuOK";
 import { listaus as muutospyyntojenListaus } from "./procedures/muutospyynnot/listaus";
 import { poista as poistaWizardinMuutokset } from "./procedures/muutospyynto/muutokset/poista";
 import { poista as poistaMuutospyynto } from "./procedures/muutospyynnot/poisto/poista";
@@ -16,6 +16,11 @@ import { epaonnistui as muutospyynnonVieminenEsittelyssaTilaanEpaonnistui } from
 import { onnistui as muutospyynnonVieminenEsittelyssaTilaanOnnistui } from "./procedures/muutospyynnot/tilanmuutos/onnistui";
 import { esittelyyn as muutaMuutospyynnonTilaksiEsittelyssa } from "./procedures/muutospyynnot/tilanmuutos/esittelyyn";
 import { tallennaEsittelijanToimesta } from "./procedures/muutospyynto/tallennus/tallennaEsittelijanToimesta";
+import { download as lataaMuutospyynto } from "./procedures/muutospyynto/lataaminen/download";
+import { downloadAndShow as lataaJaNaytaMuutospyynto } from "./procedures/muutospyynto/lataaminen/downloadAndShow";
+import { epaonnistui as muutospyynnonLataaminenEpaonnistui } from "./procedures/muutospyynto/lataaminen/epaonnistui";
+import { onnistui as muutospyynnonLataaminenOnnistui } from "./procedures/muutospyynto/lataaminen/onnistui";
+import { onnistuiNew as muutospyynnonLataaminenOnnistuiNew } from "./procedures/muutospyynto/lataaminen/onnistuiNew";
 
 export const procedures = {
   muutospyynnot: {
@@ -33,14 +38,21 @@ export const procedures = {
   },
   muutospyynto: {
     esikatselu: {
-      eiAvaudu: esikatseluEiAvaudu,
       latauspolku: esikatselunLatauspolku,
-      onKatsottavissa: esikatseluOnKatsottavissa
+      polkuOK: esikatselupolkuOK,
+      polkuvirhe: eiEsikatselupolkua
     },
     lahetys: {
       epaonnistui: lahetysEpaonnistui,
       laheta: lahetaMuutospyynto,
-      onnistui: lahetysOnnistui
+      onnistui: lahetysOnnistui,
+      onnistuiNew: muutospyynnonLataaminenOnnistuiNew
+    },
+    lataaminen: {
+      download: lataaMuutospyynto,
+      downloadAndShow: lataaJaNaytaMuutospyynto,
+      epaonnistui: muutospyynnonLataaminenEpaonnistui,
+      onnistui: muutospyynnonLataaminenOnnistui
     },
     muutokset: {
       poista: poistaWizardinMuutokset

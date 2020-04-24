@@ -63,7 +63,7 @@ const Asiakirjat = React.memo(() => {
     muutospyynnonLiitteet,
     muutospyynnonLiitteetAction
   ] = useMuutospyynnonLiitteet();
-  const [muutospyynto, muutospyyntoAction] = useMuutospyynto();
+  const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
   const [isRemovalDialogVisible, setIsRemovalDialogVisible] = useState(false);
   const [
     isDownloadPDFAndChangeStateDialogVisible,
@@ -77,7 +77,7 @@ const Asiakirjat = React.memo(() => {
     let abortControllers = [];
     if (uuid) {
       abortControllers = [
-        muutospyyntoAction.load(uuid),
+        muutospyyntoActions.load(uuid),
         muutospyynnonLiitteetAction.load(uuid)
       ];
     }
@@ -88,7 +88,7 @@ const Asiakirjat = React.memo(() => {
         }
       }, abortControllers);
     };
-  }, [muutospyyntoAction, muutospyynnonLiitteetAction, uuid]);
+  }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const nimi = useMemo(
     () => muutospyynto.data && muutospyynto.data.jarjestaja.nimi.fi,
@@ -105,9 +105,18 @@ const Asiakirjat = React.memo(() => {
     history.push("/asiat?force=true");
   };
 
-  const setStateOfMuutospyyntoAsEsittelyssa = () => {
-    console.info(documentIdForAction);
+  const setStateOfMuutospyyntoAsEsittelyssa = async () => {
+    /**
+     * After calling esittelyyn function the state of muutospyyntö should be as
+     * Esittelyssä.
+     **/
     muutospyynnotActions.esittelyyn(documentIdForAction);
+    // To download the path of the document must be known.
+    const path = await muutospyyntoActions.getDownloadPath(documentIdForAction);
+    if (path) {
+      // If path is defined we download the document.
+      muutospyyntoActions.downloadAndShowInAnotherWindow(path);
+    }
   };
 
   const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
@@ -212,10 +221,7 @@ const Asiakirjat = React.memo(() => {
               fileLink: row.fileLink,
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLink) {
-                  downloadFileFn({
-                    url: row.fileLink,
-                    openInNewWindow: row.openInNewWindow
-                  })();
+                  muutospyyntoActions.download(row.fileLink);
                 } else if (action === "download-pdf-and-change-state") {
                   setIsDownloadPDFAndChangeStateDialogVisible(true);
                   setDocumentIdForAction(row.uuid);

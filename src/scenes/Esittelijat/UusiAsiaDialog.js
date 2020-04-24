@@ -38,6 +38,7 @@ import { findObjectWithKey } from "../../utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
 import { getRules } from "../../services/lomakkeet/esittelija/rules";
+import { useMuutospyynto } from "../../stores/muutospyynto";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -91,7 +92,6 @@ const defaultProps = {
 
 const UusiAsiaDialog = ({
   backendMuutokset = defaultProps.backendMuutokset,
-  elykeskukset = defaultProps.elykeskukset,
   kohteet = defaultProps.kohteet,
   koulutustyypit = defaultProps.koulutustyypit,
   kunnat = defaultProps.kunnat,
@@ -101,10 +101,8 @@ const UusiAsiaDialog = ({
   maakuntakunnat = defaultProps.maakuntakunnat,
   maaraystyypit = defaultProps.maaraystyypit,
   muut = defaultProps.muut,
-  muutosperusteluList = defaultProps.muutosperusteluList,
   onNewDocSave,
-  organisation = defaultProps.organisation,
-  vankilat = defaultProps.vankilat
+  organisation = defaultProps.organisation
 }) => {
   const intl = useIntl();
   let history = useHistory();
@@ -116,6 +114,7 @@ const UusiAsiaDialog = ({
   const [tutkinnot] = useTutkinnot();
   const [koulutukset] = useKoulutukset();
   const [lomakkeet] = useLomakkeet();
+  const [, muutospyyntoActions] = useMuutospyynto();
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
@@ -209,15 +208,6 @@ const UusiAsiaDialog = ({
     setIsSavingEnabled(!R.equals(prevAnchorsRef.current, anchors));
   }, [anchors]);
 
-  const showPreviewFile = url => {
-    let a = document.createElement("a");
-    a.setAttribute("type", "hidden");
-    a.href = url;
-    a.download = true;
-    a.click();
-    a.remove();
-  };
-
   /**
    * Opens the preview.
    * @param {object} formData
@@ -234,14 +224,10 @@ const UusiAsiaDialog = ({
     );
     const muutospyynto =
       outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output.result;
-    // Let's get the url of preview (PDF) document and download the file.
-    const outputs2 = await procedureHandler.run(
-      "muutospyynto.esikatselu.latauspolku",
-      [muutospyynto]
-    );
-    const url = outputs2.muutospyynto.esikatselu.latauspolku.output;
-    if (url) {
-      showPreviewFile(url);
+    // Let's get the path of preview (PDF) document and download the file.
+    const path = await muutospyyntoActions.getDownloadPath(muutospyynto.uuid);
+    if (path) {
+      muutospyyntoActions.download(path);
     }
     return muutospyynto;
   }, []);

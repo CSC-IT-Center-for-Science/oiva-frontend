@@ -43,5 +43,5 @@ export const backendRoutes = {
   lahetaMuutospyynto: { path: "muutospyynnot/tila/avoin/" },
   organisaatiot: { path: "luvat/organisaatiot" },
   poistaMuutospyynto: { path: "muutospyynnot/" },
-  muutospyyntoEsittelyyn: { path: "muutospyynnot/tila/valmistelussa/" }
+  muutospyyntoEsittelyyn: { path: "muutospyynnot/tila/esittelyssa/" }
 };

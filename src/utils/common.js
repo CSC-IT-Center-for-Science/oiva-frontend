@@ -169,13 +169,28 @@ export const downloadFileFn = ({
         a.remove();
       };
     } else if (url) {
-      a.href = API_BASE_URL + url;
+      a.href = R.startsWith("/api", url) ? url : API_BASE_URL + url;
       a.click();
       a.remove();
     } else {
       console.warn("Cannot open file: No octet stream nor file url");
+      return false;
     }
+    return true;
   };
+};
+
+export const downloadFile = url => {
+  if (url) {
+    let a = document.createElement("a");
+    a.setAttribute("type", "hidden");
+    a.href = url;
+    a.download = true;
+    a.click();
+    a.remove();
+    return true;
+  }
+  return false;
 };
 
 /**

@@ -206,15 +206,6 @@ const MuutospyyntoWizard = ({
     [history]
   );
 
-  const showPreviewFile = url => {
-    let a = document.createElement("a");
-    a.setAttribute("type", "hidden");
-    a.href = url;
-    a.download = true;
-    a.click();
-    a.remove();
-  };
-
   useEffect(() => {
     // TODO: add isCompleted, isFailed for validation
     setSteps([
@@ -292,14 +283,10 @@ const MuutospyyntoWizard = ({
       [formData, false] // false = Notification of save success won't be shown.
     );
     const muutospyynto = outputs.muutospyynto.tallennus.tallenna.output.result;
-    // Let's get the url of preview (PDF) document and download the file.
-    const outputs2 = await procedureHandler.run(
-      "muutospyynto.esikatselu.latauspolku",
-      [muutospyynto]
-    );
-    const url = outputs2.muutospyynto.esikatselu.latauspolku.output;
-    if (url) {
-      showPreviewFile(url);
+    // Let's get the path of preview (PDF) document and download the file.
+    const path = await muutospyyntoActions.getDownloadPath(muutospyynto.uuid);
+    if (path) {
+      muutospyyntoActions.download(path);
     }
     return muutospyynto;
   }, []);
@@ -507,7 +494,9 @@ const MuutospyyntoWizard = ({
           <DialogTitle id="customized-dialog-title" onClose={openCancelModal}>
             {intl.formatMessage(wizardMessages.formTitle_new)}
           </DialogTitle>
-          <div aria-labelledby="navigate-between-pages" className="lg:px-16 max-w-6xl mx-auto w-full">
+          <div
+            aria-labelledby="navigate-between-pages"
+            className="lg:px-16 max-w-6xl mx-auto w-full">
             <StepperNavigation
               activeStep={page - 1}
               stepProps={steps}
