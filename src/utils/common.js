@@ -184,7 +184,7 @@ export const downloadFile = url => {
   if (url) {
     let a = document.createElement("a");
     a.setAttribute("type", "hidden");
-    a.href = url;
+    a.href = R.startsWith("/api", url) ? url : API_BASE_URL + url;
     a.download = true;
     a.click();
     a.remove();
