@@ -2,44 +2,47 @@ import React, { useEffect, useMemo } from "react";
 import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import { generatePaatetytAsiatTableStructure } from "../modules/asiatUtils";
 import { useIntl } from "react-intl";
-import { useMuutospyynnotEsittelijaPaatetty } from "../../../stores/muutospyynnotEsittelijaPaatetty";
 import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../../modules/Loading";
+import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import * as R from "ramda";
 
 const PaatetytAsiat = () => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
-  const [
-    muutospyynnotEsittelijaPaatetty,
-    muutospyynnotEsittelijaPaatettyActions
-  ] = useMuutospyynnotEsittelijaPaatetty();
+  const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();
 
   useEffect(() => {
     const isForced = R.includes("force=", location.search);
-    let abortController = muutospyynnotEsittelijaPaatettyActions.load(isForced);
+    let abortController = muutospyynnotActions.loadByStates(
+      ["PAATETTY"],
+      ["paatetyt"],
+      false,
+      isForced
+    );
 
     return function cancel() {
       if (abortController) {
         abortController.abort();
       }
     };
-  }, [location.search, muutospyynnotEsittelijaPaatettyActions]);
+  }, [location.search, muutospyynnotActions]);
 
   const tableStructure = useMemo(() => {
-    return !!muutospyynnotEsittelijaPaatetty.data
+    return !!muutospyynnot.paatetyt && muutospyynnot.paatetyt.fetchedAt
       ? generatePaatetytAsiatTableStructure(
-          muutospyynnotEsittelijaPaatetty.data,
+          muutospyynnot.paatetyt.data,
           intl.formatMessage,
           history
         )
       : [];
-  }, [history, intl.formatMessage, muutospyynnotEsittelijaPaatetty.data]);
+  }, [history, intl.formatMessage, muutospyynnot.paatetyt]);
 
   if (
-    muutospyynnotEsittelijaPaatetty.isLoading === false &&
-    muutospyynnotEsittelijaPaatetty.fetchedAt
+    muutospyynnot.paatetyt &&
+    muutospyynnot.paatetyt.isLoading === false &&
+    muutospyynnot.paatetyt.fetchedAt
   ) {
     return (
       <div

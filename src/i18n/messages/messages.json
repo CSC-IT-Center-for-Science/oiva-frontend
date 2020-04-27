@@ -355,6 +355,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "asiaTable.actions.valmistelussa",
+    "defaultMessage": "Merkitse valmistelussa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "asiaTable.actions.esittelyssa",
     "defaultMessage": "Merkitse esittelyssä",
     "filepath": "src/i18n/definitions/common.js"
@@ -421,6 +426,11 @@
   },
   {
     "id": "asiaStates.esittelija.VALMISTELUSSA",
+    "defaultMessage": "Valmistelussa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.ESITTELYSSA",
     "defaultMessage": "Esittelyssä",
     "filepath": "src/i18n/definitions/common.js"
   },

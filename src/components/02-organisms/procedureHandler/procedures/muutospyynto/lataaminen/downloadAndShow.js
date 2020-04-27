@@ -6,7 +6,7 @@ export const downloadAndShow = {
   input: ["url", "openInNewWindow"],
   run: ({ url, openInNewWindow = true }) => {
     return {
-      wasDownLoadSuccessful: downloadFileFn({ url, openInNewWindow })(),
+      wasDownloadSuccessful: downloadFileFn({ url, openInNewWindow })(),
       openInNewWindow
     };
   },

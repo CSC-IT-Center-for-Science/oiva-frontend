@@ -279,6 +279,10 @@ export default defineMessages({
     id: "asiaTable.headers.actions",
     defaultMessage: "Toiminnot"
   },
+  "asiaTable.actions.valmistelussa": {
+    id: "asiaTable.actions.valmistelussa",
+    defaultMessage: "Merkitse valmistelussa"
+  },
   "asiaTable.actions.esittelyssa": {
     id: "asiaTable.actions.esittelyssa",
     defaultMessage: "Merkitse esittelyssä"
@@ -333,6 +337,10 @@ export default defineMessages({
   },
   "asiaStates.esittelija.VALMISTELUSSA": {
     id: "asiaStates.esittelija.VALMISTELUSSA",
+    defaultMessage: "Valmistelussa"
+  },
+  "asiaStates.esittelija.ESITTELYSSA": {
+    id: "asiaStates.esittelija.ESITTELYSSA",
     defaultMessage: "Esittelyssä"
   },
   "asiaStates.esittelija.TAYDENNETTAVA": {

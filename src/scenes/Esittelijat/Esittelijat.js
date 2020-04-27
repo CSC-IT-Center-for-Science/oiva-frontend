@@ -45,6 +45,4 @@ const Esittelijat = React.memo(() => {
   );
 });
 
-Esittelijat.whyDidYouRender = false;
-
 export default Esittelijat;

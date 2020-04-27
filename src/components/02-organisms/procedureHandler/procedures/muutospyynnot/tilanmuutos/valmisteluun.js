@@ -1,13 +1,13 @@
 import { postData } from "../../../fetch";
 
-// muutospyynnot.tilanmuutos.esittelyyn
-export const esittelyyn = {
-  label: "Muutospyynnön saattaminen esiteltäväksi",
+// muutospyynnot.tilanmuutos.valmisteluun
+export const valmisteluun = {
+  label: "Muutospyynnön saattaminen valmisteluun",
   input: ["id"],
   run: async ({ id }) => {
     console.info(id);
     const response = await postData(
-      "muutospyyntoEsittelyyn",
+      "muutospyyntoValmisteluun",
       {},
       {
         urlEnding: id,

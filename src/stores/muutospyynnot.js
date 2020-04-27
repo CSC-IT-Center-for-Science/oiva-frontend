@@ -22,6 +22,23 @@ const Store = createStore({
         isForceReloadRequested ? 0 : undefined
       );
     },
+    loadByStates: (tilat = [], path, vainOmat = false, isForceReloadRequested) => ({
+      getState,
+      setState
+    }) => {
+      return execute(
+        { getState, setState },
+        {
+          key: "muutospyynnot",
+          urlEnding: `?tilat=${tilat.map(tila =>
+            tila.toUpperCase()
+          )}&vainOmat=${vainOmat}`,
+          path
+        },
+        {},
+        isForceReloadRequested ? 0 : undefined
+      );
+    },
     remove: uuid => () => {
       return new ProcedureHandler().run("muutospyynnot.poisto.poista", [uuid]);
     }

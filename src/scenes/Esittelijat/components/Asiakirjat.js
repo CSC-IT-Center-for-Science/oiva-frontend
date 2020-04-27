@@ -106,6 +106,7 @@ const Asiakirjat = React.memo(() => {
   };
 
   const setStateOfMuutospyyntoAsEsittelyssa = async () => {
+    setIsDownloadPDFAndChangeStateDialogVisible(false);
     /**
      * After calling esittelyyn function the state of muutospyyntö should be as
      * Esittelyssä.
@@ -117,6 +118,8 @@ const Asiakirjat = React.memo(() => {
       // If path is defined we download the document.
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
+    // Let's move to Asiat view.
+    history.push(`/asiat?force=${new Date().getTime()}`);
   };
 
   const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
@@ -168,9 +171,10 @@ const Asiakirjat = React.memo(() => {
       uuid,
       fileLink: `/pdf/esikatsele/muutospyynto/${uuid}`,
       openInNewWindow: true,
-      items: [intl.formatMessage(common.application), ...baseRow, ""]
+      items: [intl.formatMessage(common.application), ...baseRow, ""],
+      tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
-  }, [baseRow, intl, uuid]);
+  }, [baseRow, intl, muutospyynto.data, uuid]);
 
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
@@ -250,23 +254,31 @@ const Asiakirjat = React.memo(() => {
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
-                    {
-                      id: "edit",
-                      text: t(common["asiaTable.actions.muokkaa"])
-                    },
+                    row.tila !== "ESITTELYSSA"
+                      ? {
+                          id: "edit",
+                          text: t(common["asiaTable.actions.muokkaa"])
+                        }
+                      : null,
                     {
                       id: "lataa",
                       text: t(common["asiaTable.actions.lataa"])
                     },
-                    {
-                      id: "download-pdf-and-change-state",
-                      text: t(common["asiaTable.actions.lataaPDFJaMuutaTila"])
-                    },
-                    {
-                      id: "remove",
-                      text: t(common.poista)
-                    }
-                  ]
+                    row.tila !== "ESITTELYSSA"
+                      ? {
+                          id: "download-pdf-and-change-state",
+                          text: t(
+                            common["asiaTable.actions.lataaPDFJaMuutaTila"]
+                          )
+                        }
+                      : null,
+                    row.tila !== "ESITTELYSSA"
+                      ? {
+                          id: "remove",
+                          text: t(common.poista)
+                        }
+                      : null
+                  ].filter(Boolean)
                 },
                 styleClasses: ["w-1/12 cursor-default"]
               })
@@ -385,7 +397,5 @@ const Asiakirjat = React.memo(() => {
 Asiakirjat.propTypes = {
   uuid: PropTypes.object
 };
-
-Asiakirjat.whyDidYouRender = false;
 
 export default Asiakirjat;

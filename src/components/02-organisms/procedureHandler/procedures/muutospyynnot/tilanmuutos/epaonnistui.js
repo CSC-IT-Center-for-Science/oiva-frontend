@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-// muutospyynnot.poisto.epaonnistui
+// muutospyynnot.tilanmuutos.epaonnistui
 export const epaonnistui = {
   label: "Ilmoitus epäonnistumisesta",
   run: async () => {

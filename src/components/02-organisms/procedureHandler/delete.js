@@ -19,6 +19,7 @@ export async function deleteDocument(urlKey, options = {}) {
   if (!url) throw new Error("No url found!");
   const response = await fetch(url, {
     ...options,
+    withCredentials: true,
     signal: abortController.signal,
     method: "DELETE"
   }).catch(err => {

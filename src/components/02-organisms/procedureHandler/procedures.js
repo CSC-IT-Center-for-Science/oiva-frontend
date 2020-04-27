@@ -15,6 +15,8 @@ import { onnistui as muutospyynnonPoistoOnnistui } from "./procedures/muutospyyn
 import { epaonnistui as muutospyynnonVieminenEsittelyssaTilaanEpaonnistui } from "./procedures/muutospyynnot/tilanmuutos/epaonnistui";
 import { onnistui as muutospyynnonVieminenEsittelyssaTilaanOnnistui } from "./procedures/muutospyynnot/tilanmuutos/onnistui";
 import { esittelyyn as muutaMuutospyynnonTilaksiEsittelyssa } from "./procedures/muutospyynnot/tilanmuutos/esittelyyn";
+import { paatetyksi as muutaMuutospyynnonTilaksiPaatetty } from "./procedures/muutospyynnot/tilanmuutos/paatetyksi";
+import { valmisteluun as muutaMuutospyynnonTilaksiValmistelussa } from "./procedures/muutospyynnot/tilanmuutos/valmisteluun";
 import { tallennaEsittelijanToimesta } from "./procedures/muutospyynto/tallennus/tallennaEsittelijanToimesta";
 import { download as lataaMuutospyynto } from "./procedures/muutospyynto/lataaminen/download";
 import { downloadAndShow as lataaJaNaytaMuutospyynto } from "./procedures/muutospyynto/lataaminen/downloadAndShow";
@@ -33,7 +35,9 @@ export const procedures = {
     tilanmuutos: {
       epaonnistui: muutospyynnonVieminenEsittelyssaTilaanEpaonnistui,
       esittelyyn: muutaMuutospyynnonTilaksiEsittelyssa,
-      onnistui: muutospyynnonVieminenEsittelyssaTilaanOnnistui
+      onnistui: muutospyynnonVieminenEsittelyssaTilaanOnnistui,
+      paatetyksi: muutaMuutospyynnonTilaksiPaatetty,
+      valmisteluun: muutaMuutospyynnonTilaksiValmistelussa
     }
   },
   muutospyynto: {
@@ -45,14 +49,14 @@ export const procedures = {
     lahetys: {
       epaonnistui: lahetysEpaonnistui,
       laheta: lahetaMuutospyynto,
-      onnistui: lahetysOnnistui,
-      onnistuiNew: muutospyynnonLataaminenOnnistuiNew
+      onnistui: lahetysOnnistui
     },
     lataaminen: {
       download: lataaMuutospyynto,
       downloadAndShow: lataaJaNaytaMuutospyynto,
       epaonnistui: muutospyynnonLataaminenEpaonnistui,
-      onnistui: muutospyynnonLataaminenOnnistui
+      onnistui: muutospyynnonLataaminenOnnistui,
+      onnistuiNew: muutospyynnonLataaminenOnnistuiNew
     },
     muutokset: {
       poista: poistaWizardinMuutokset
