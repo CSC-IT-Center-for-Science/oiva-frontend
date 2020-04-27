@@ -259,8 +259,7 @@ const App = React.memo(({ isDebugModeOn }) => {
             </div>
           </SideNavigation>
 
-          <main
-            className="flex flex-1 flex-col justify-between mt-16 sm:mt-48 md:mt-32">
+          <main className="flex flex-1 flex-col justify-between mt-16 sm:mt-48 md:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <div
                 style={{ maxWidth: "90rem" }}
@@ -325,7 +324,5 @@ const App = React.memo(({ isDebugModeOn }) => {
 App.propTypes = {
   isDebugModeOn: PropTypes.bool
 };
-
-App.whyDidYouRender = false;
 
 export default App;

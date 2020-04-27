@@ -12,13 +12,6 @@ import { useGlobalSettings } from "./stores/appStore";
 
 defaults.devtools = true;
 
-if (process.env.NODE_ENV === "development") {
-  const whyDidYouRender = require("@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js");
-  whyDidYouRender(React, {
-    trackAllPureComponents: true
-  });
-}
-
 loadProgressBar();
 
 if (!Intl.PluralRules) {
@@ -71,23 +64,35 @@ const AppWrapper = () => {
       : translations[state.locale];
   }, [isBackendTheSourceOfLocalizations, kaannokset, state]);
 
-  return (
-    <IntlProvider locale={state.locale} messages={messages}>
-      {state.isDebugModeOn ? (
+  const appStructure = useMemo(() => {
+    return state.isDebugModeOn ? (
+      user.fetchedAt ? (
         <div className="flex">
           <div
             id="cy"
             className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
             style={{ zIndex: 9000 }}></div>
-          <div className="w-2/3 relative">{user.fetchedAt && <App />}</div>
+          <div className="w-2/3 relative">{<App />}</div>
         </div>
-      ) : (
-        <React.Fragment>{user.fetchedAt && <App />}</React.Fragment>
-      )}
-    </IntlProvider>
-  );
-};
+      ) : null
+    ) : (
+      user.fetchedAt && <App />
+    );
+  }, [state.isDebugModeOn, user.fetchedAt]);
 
-AppWrapper.whyDidYouRender = false;
+  if (appStructure && state.locale && messages) {
+    return (
+      // Key has been set to ensure the providers's refresh when locale changes.
+      <IntlProvider
+        key={state.locale}
+        locale={state.locale}
+        messages={messages}>
+        {appStructure}
+      </IntlProvider>
+    );
+  } else {
+    return null;
+  }
+};
 
 export default AppWrapper;
