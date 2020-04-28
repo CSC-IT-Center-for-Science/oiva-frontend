@@ -30,6 +30,15 @@ const FormSection = React.memo(
         {children}
       </Section>
     );
+  },
+  (currentProps, nextProps) => {
+    const isSameOld =
+      "" + currentProps.runOnChanges === "" + nextProps.runOnChanges &&
+      currentProps.code === nextProps.code &&
+      currentProps.title === nextProps.title &&
+      "" + currentProps.render === "" + nextProps.render &&
+      currentProps.id === nextProps.id;
+    return isSameOld;
   }
 );
 

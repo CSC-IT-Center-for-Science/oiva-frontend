@@ -9,7 +9,7 @@ import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import * as R from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
-const Opetuskielet = props => {
+const Opetuskielet = React.memo(props => {
   const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "kielet_opetuskielet";
@@ -53,7 +53,7 @@ const Opetuskielet = props => {
       </ExpandableRowRoot>
     </React.Fragment>
   );
-};
+});
 
 Opetuskielet.propTypes = {
   lupakohde: PropTypes.object,

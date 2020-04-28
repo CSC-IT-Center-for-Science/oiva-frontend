@@ -18,7 +18,6 @@ export async function postData(urlKey, formData, options = {}) {
     routeObj.postfix
   ])}`;
   if (!url) throw new Error("No url found!");
-  console.info(options);
   const response = await fetch(url, {
     credentials: "include",
     signal: abortController.signal,

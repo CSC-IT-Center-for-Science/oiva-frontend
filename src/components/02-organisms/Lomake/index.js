@@ -117,8 +117,9 @@ const Lomake = React.memo(
   },
   (prevState, nextState) => {
     const isSameOld =
-      equals("" + prevState.onChangesUpdate, "" + nextState.onChangesUpdate) &&
-      equals(prevState.changeObjects, nextState.changeObjects);
+      "" + prevState.onChangesUpdate === "" + nextState.onChangesUpdate &&
+      equals(prevState.changeObjects, nextState.changeObjects) &&
+      equals(prevState.data, nextState.data);
     return isSameOld;
   }
 );

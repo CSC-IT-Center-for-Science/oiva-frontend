@@ -14,7 +14,7 @@ const getArticle = (areaCode, articles = []) => {
   }, articles);
 };
 
-const Tutkinnot = props => {
+const Tutkinnot = React.memo(props => {
   const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "tutkinnot";
@@ -63,9 +63,10 @@ const Tutkinnot = props => {
       }, koulutusdata)}
     </React.Fragment>
   );
-};
+});
 
 Tutkinnot.propTypes = {
+  changeObjects: PropTypes.array,
   lupaKohteet: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   tutkinnot: PropTypes.object

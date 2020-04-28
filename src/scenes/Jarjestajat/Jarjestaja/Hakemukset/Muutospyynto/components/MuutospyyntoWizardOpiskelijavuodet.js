@@ -32,7 +32,7 @@ const defaultConstraintFlags = {
   isSisaoppilaitosValueRequired: false
 };
 
-const MuutospyyntoWizardOpiskelijavuodet = props => {
+const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
   const intl = useIntl();
   const [changeObjects] = useChangeObjects();
   const { onChangesRemove, onChangesUpdate } = props;
@@ -77,7 +77,7 @@ const MuutospyyntoWizardOpiskelijavuodet = props => {
 
   useEffect(() => {
     const maarays = R.find(R.propEq("koodisto", "koulutussektori"))(
-      props.maaraykset || []
+      props.maaraykset
     );
     if (maarays) {
       setKoodiarvot(prevState => {
@@ -301,6 +301,10 @@ const MuutospyyntoWizardOpiskelijavuodet = props => {
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
   );
+});
+
+MuutospyyntoWizardOpiskelijavuodet.defaultProps = {
+  maaraykset: []
 };
 
 MuutospyyntoWizardOpiskelijavuodet.propTypes = {
