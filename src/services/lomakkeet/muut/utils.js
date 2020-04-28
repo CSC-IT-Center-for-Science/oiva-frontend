@@ -33,13 +33,15 @@ export function scrollToOpiskelijavuodet() {
   );
 
   // If all three elements exist the scrolling will be run.
-  if (muiDialogTitle && wizardContent && wizardNavigation) {
+  if (muiDialogTitle && wizardContent) {
     /**
      * This is why we fetched the muiDialogTitle and the wizardNavigation.
      * Without them we can't calculate the height of the whole header section.
      */
     const headerHeight =
-      muiDialogTitle.offsetHeight + wizardNavigation.offsetHeight;
+      muiDialogTitle.offsetHeight + wizardNavigation
+        ? wizardNavigation.offsetHeight
+        : 0;
 
     /**
      * The last thing before scrolling is to fetch the target HTMLElement
@@ -58,7 +60,7 @@ export function scrollToOpiskelijavuodet() {
        **/
       wizardContent.scrollTo(
         0,
-        targetElement.offsetParent.offsetTop - headerHeight - 90
+        targetElement.offsetParent.offsetTop - headerHeight - 190
       );
     }
   }
