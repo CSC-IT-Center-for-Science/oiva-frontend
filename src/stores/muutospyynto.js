@@ -2,6 +2,7 @@ import { createStore, createHook } from "react-sweet-state";
 import { execute } from "./utils/loadFromBackend";
 import ProcedureHandler from "../components/02-organisms/procedureHandler";
 
+const refreshIntervalInSeconds = 60;
 const initialState = {};
 
 const Store = createStore({
@@ -33,14 +34,15 @@ const Store = createStore({
       );
       return outputs.muutospyynto.esikatselu.latauspolku.output;
     },
-    load: uuid => ({ getState, setState }) => {
+    load: (uuid, isForceReloadRequested) => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
           key: "muutospyynto",
           urlEnding: uuid
         },
-        { uuid }
+        { uuid },
+        isForceReloadRequested ? 0 : refreshIntervalInSeconds
       );
     },
     reset: () => ({ setState }) => {

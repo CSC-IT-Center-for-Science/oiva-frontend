@@ -77,8 +77,8 @@ const Asiakirjat = React.memo(() => {
     let abortControllers = [];
     if (uuid) {
       abortControllers = [
-        muutospyyntoActions.load(uuid),
-        muutospyynnonLiitteetAction.load(uuid)
+        muutospyyntoActions.load(uuid, true),
+        muutospyynnonLiitteetAction.load(uuid, true)
       ];
     }
     return function cancel() {
