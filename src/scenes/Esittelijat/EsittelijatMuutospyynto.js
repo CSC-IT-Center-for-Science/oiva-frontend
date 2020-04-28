@@ -18,31 +18,29 @@ const EsittelijatMuutospyynto = React.memo(props => {
   const [maaraystyypit, setMaaraystyypit] = useState(null);
 
   useEffect(() => {
-    setKohteet(
-      R.mergeAll(
-        R.flatten(
-          R.map(item => {
-            return {
-              [R.props(["tunniste"], item)]: item
-            };
-          }, props.kohteet)
-        )
+    const _kohteet = R.mergeAll(
+      R.flatten(
+        R.map(item => {
+          return {
+            [R.props(["tunniste"], item)]: item
+          };
+        }, props.kohteet)
       )
     );
+    setKohteet(_kohteet);
   }, [props.kohteet]);
 
   useEffect(() => {
-    setMaaraystyypit(
-      R.mergeAll(
-        R.flatten(
-          R.map(item => {
-            return {
-              [R.props(["tunniste"], item)]: item
-            };
-          }, props.maaraystyypit)
-        )
+    const _maaraystyypit = R.mergeAll(
+      R.flatten(
+        R.map(item => {
+          return {
+            [R.props(["tunniste"], item)]: item
+          };
+        }, props.maaraystyypit)
       )
     );
+    setMaaraystyypit(_maaraystyypit);
   }, [props.maaraystyypit]);
 
   return (
@@ -154,6 +152,10 @@ const EsittelijatMuutospyynto = React.memo(props => {
   );
 });
 
+EsittelijatMuutospyynto.defaultProps = {
+  maaraystyypit: []
+}
+
 EsittelijatMuutospyynto.propTypes = {
   kielet: PropTypes.object,
   kohteet: PropTypes.array,
@@ -169,5 +171,7 @@ EsittelijatMuutospyynto.propTypes = {
   onChangesUpdate: PropTypes.func,
   tutkinnot: PropTypes.object
 };
+
+EsittelijatMuutospyynto.whyDidYouRender = true;
 
 export default EsittelijatMuutospyynto;

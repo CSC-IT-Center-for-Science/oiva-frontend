@@ -116,7 +116,10 @@ const Lomake = React.memo(
     }
   },
   (prevState, nextState) => {
-    return equals(prevState, nextState);
+    const isSameOld =
+      equals("" + prevState.onChangesUpdate, "" + nextState.onChangesUpdate) &&
+      equals(prevState.changeObjects, nextState.changeObjects);
+    return isSameOld;
   }
 );
 
@@ -134,10 +137,5 @@ Lomake.propTypes = {
   // This is useful for dynamic forms.
   rulesFn: PropTypes.func
 };
-
-// Lomake.whyDidYouRender = {
-//   logOnDifferentValues: false,
-//   customName: "Lomake"
-// }
 
 export default Lomake;
