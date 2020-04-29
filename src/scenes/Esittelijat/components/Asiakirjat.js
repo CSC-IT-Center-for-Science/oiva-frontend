@@ -102,7 +102,7 @@ const Asiakirjat = React.memo(() => {
 
   const removeAsiakirja = () => {
     muutospyynnotActions.remove(documentIdForAction);
-    history.push("/asiat?force=true");
+    history.push(`/asiat?force=${new Date().getTime()}`);
   };
 
   const setStateOfMuutospyyntoAsEsittelyssa = async () => {
