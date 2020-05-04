@@ -64,7 +64,7 @@ export const generateAsiaTableRows = (row, i, t) => {
       };
     },
     [
-      { text: row.asianumero }, //TODO: Fill when mechanism for Asianumero assignment exists. Currently no source.
+      { text: row.asianumero },
       { text: t(common["asiaTypes.lupaChange"]) }, // Only one type known in system at this juncture
       { text: getJarjestajaNimiFromHakemus(row) },
       { text: getMaakuntaNimiFromHakemus(row) },
