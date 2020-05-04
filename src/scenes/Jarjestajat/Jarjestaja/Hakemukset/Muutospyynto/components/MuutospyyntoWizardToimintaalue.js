@@ -154,8 +154,12 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         "ei-maariteltya-toiminta-aluetta"
       );
     }, changeObjects.toimintaalue || []);
-    return changeObject && changeObject.properties.isChecked;
-  }, [changeObjects.toimintaalue]);
+    const ficode = R.path(["valtakunnallinen", "arvo"], props.lupakohde);
+    return (
+      (ficode === "FI2" && !changeObject) ||
+      (changeObject && changeObject.properties.isChecked)
+    );
+  }, [changeObjects.toimintaalue, props.lupakohde]);
 
   /**
    * There are three radio buttons in Toiminta-alue section: 1) Maakunnat and kunnat
@@ -200,6 +204,20 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     changesByAnchor => {
       const updatedChanges = R.map(changeObj => {
         let changeObjectsForKunnatInLupa = [];
+
+        if (
+          R.equals(
+            getAnchorPart(changeObj.anchor, 1),
+            "ei-maariteltya-toiminta-aluetta"
+          ) &&
+          changeObj.properties.isChecked
+        ) {
+          const ficode = R.path(["valtakunnallinen", "arvo"], props.lupakohde);
+          if (ficode === "FI2") {
+            return null;
+          }
+        }
+
         const metadata =
           R.path(["properties", "value", "metadata"], changeObj) ||
           R.path(["properties", "metadata"], changeObj);
@@ -292,6 +310,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       onChangesUpdate,
       kunnatInLupa,
       changeObjects.toimintaalue,
+      props.lupakohde,
       props.maakuntakunnatList
     ]
   );
