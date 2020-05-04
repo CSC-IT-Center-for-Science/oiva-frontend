@@ -11,6 +11,12 @@ import {
 import Lomake from "../../../../../../components/02-organisms/Lomake";
 import * as R from "ramda";
 import { useChangeObjects } from "../../../../../../stores/changeObjects";
+import { isAdded, isRemoved, isInLupa } from "../../../../../../css/label";
+
+const labelStyles = {
+  addition: isAdded,
+  removal: isRemoved
+};
 
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const [changeObjects] = useChangeObjects();
@@ -198,6 +204,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
    */
   const handleChanges = useCallback(
     changesByAnchor => {
+      console.info(changesByAnchor);
       const updatedChanges = R.map(changeObj => {
         let changeObjectsForKunnatInLupa = [];
         const metadata =
@@ -296,7 +303,57 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     ]
   );
 
-  return (
+  const options = useMemo(() => {
+    const localeUpper = intl.locale.toUpperCase();
+    return R.addIndex(R.map)((maakunta, index) => {
+      return {
+        anchor: maakunta.koodiArvo,
+        formId: `vaihtoehdot-${index}`,
+        components: [
+          {
+            anchor: "A",
+            name: "CheckboxWithLabel",
+            properties: {
+              code: maakunta.koodiArvo,
+              isChecked: false,
+              labelStyles: Object.assign({}, labelStyles, {
+                custom: isInLupa
+              }),
+              name: maakunta.koodiArvo,
+              title: maakunta.label
+            }
+          }
+        ],
+        categories: [
+          {
+            anchor: "kunnat",
+            formId: `vaihtoehdot-${index}`,
+            components: R.map(kunta => {
+              const kunnanNimi = (
+                R.find(R.propEq("kieli", localeUpper), kunta.metadata) || {}
+              ).nimi;
+              return {
+                anchor: kunta.koodiArvo,
+                name: "CheckboxWithLabel",
+                styleClasses: ["w-1/2 sm:w-1/3"],
+                properties: {
+                  code: kunta.koodiArvo,
+                  isChecked: false,
+                  labelStyles: Object.assign({}, labelStyles, {
+                    custom: isInLupa
+                  }),
+                  name: kunta.koodiArvo,
+                  title: kunnanNimi
+                }
+              };
+            }, maakunta.kunta)
+          }
+        ]
+      };
+    }, props.maakuntakunnatList);
+  }, [intl.locale, props.maakuntakunnatList]);
+
+  return options.length ? (
     <ExpandableRowRoot
       anchor={props.sectionId}
       key={`expandable-row-root`}
@@ -317,10 +374,12 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           isEiMaariteltyaToimintaaluettaChecked,
           isValtakunnallinenChecked,
           kunnatInLupa,
+          maakuntakunnatList: props.maakuntakunnatList,
           lupakohde: props.lupakohde,
           maakunnatInLupa,
           lisattavatKunnat,
           lisattavatMaakunnat,
+          options,
           valittavissaOlevatKunnat,
           valittavissaOlevatMaakunnat,
           valtakunnallinenMaarays: props.valtakunnallinenMaarays
@@ -330,7 +389,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         rules={[]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
-  );
+  ) : null;
 });
 
 MuutospyyntoWizardToimintaalue.defaultProps = {
