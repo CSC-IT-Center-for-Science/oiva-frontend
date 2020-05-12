@@ -33,26 +33,29 @@ function getModificationForm(
         }
       ],
       categories: [
-        // {
-        //   anchor: "valintakentta",
-        //   isVisible:
-        //     !isValtakunnallinenChecked &&
-        //     !isEiMaariteltyaToimintaaluettaChecked,
-        //   layout: { indentation: "none" },
-        //   components: [
-        //     {
-        //       anchor: "maakunnatjakunnat",
-        //       name: "Input",
-        //       styleClasses: ["ml-10 mt-4"],
-        //       properties: {
-        //         isMulti: false,
-        //         placeholder: "Valitse...",
-        //         value: ""
-        //       }
-        //     }
-        //   ]
-        // },
-        ...options
+        {
+          anchor: "valintakentta",
+          isVisible:
+            !isValtakunnallinenChecked &&
+            !isEiMaariteltyaToimintaaluettaChecked,
+          layout: { indentation: "none" },
+          components: [
+            {
+              anchor: "maakunnatjakunnat",
+              name: "CategoryFilter",
+              styleClasses: ["ml-10 mt-4"],
+              properties: {
+                anchor: "maakuntakunnat",
+                categories: options,
+                changeObjects: [],
+                showCategoryTitles: false,
+                onChanges: payload => {
+                  console.info("hello", payload);
+                }
+              }
+            }
+          ]
+        }
       ]
     },
     {

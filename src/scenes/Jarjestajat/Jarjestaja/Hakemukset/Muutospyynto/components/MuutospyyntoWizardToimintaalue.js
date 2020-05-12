@@ -18,6 +18,28 @@ const labelStyles = {
   removal: isRemoved
 };
 
+const mapping = {
+  "01": "FI-18",
+  "02": "FI-19",
+  "04": "FI-17",
+  "05": "FI-06",
+  "06": "FI-11",
+  "07": "FI-16",
+  "08": "FI-09",
+  "09": "FI-02",
+  "10": "FI-04",
+  "11": "FI-15",
+  "12": "FI-13",
+  "14": "FI-03",
+  "16": "FI-07",
+  "13": "FI-08",
+  "15": "FI-12",
+  "17": "FI-14",
+  "18": "FI-05",
+  "19": "FI-10",
+  "21": "FI-01"
+};
+
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const [changeObjects] = useChangeObjects();
   const intl = useIntl();
@@ -303,18 +325,37 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     ]
   );
 
+  const kuntaMaakuntaMapping = useMemo(() => {
+    const result = R.flatten(
+      R.map(maakunta => {
+        return R.map(kunta => {
+          return {
+            kuntaKoodiarvo: kunta.koodiArvo,
+            maakuntaKey: mapping[maakunta.koodiArvo]
+          };
+        }, maakunta.kunta);
+      }, props.maakuntakunnatList)
+    );
+    return result;
+  }, [props.maakuntakunnatList]);
+
   const options = useMemo(() => {
     const localeUpper = intl.locale.toUpperCase();
     return R.addIndex(R.map)((maakunta, index) => {
       return {
-        anchor: maakunta.koodiArvo,
-        formId: `vaihtoehdot-${index}`,
+        anchor: mapping[maakunta.koodiArvo],
+        formId: mapping[maakunta.koodiArvo],
         components: [
           {
             anchor: "A",
             name: "CheckboxWithLabel",
             properties: {
               code: maakunta.koodiArvo,
+              forChangeObject: {
+                koodiarvo: maakunta.koodiArvo,
+                maakuntaKey: mapping[maakunta.koodiArvo],
+                title: maakunta.label
+              },
               isChecked: false,
               labelStyles: Object.assign({}, labelStyles, {
                 custom: isInLupa
@@ -327,7 +368,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         categories: [
           {
             anchor: "kunnat",
-            formId: `vaihtoehdot-${index}`,
+            formId: mapping[maakunta.koodiArvo],
             components: R.map(kunta => {
               const kunnanNimi = (
                 R.find(R.propEq("kieli", localeUpper), kunta.metadata) || {}
@@ -335,9 +376,14 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
               return {
                 anchor: kunta.koodiArvo,
                 name: "CheckboxWithLabel",
-                styleClasses: ["w-1/2 sm:w-1/3"],
+                styleClasses: ["w-1/2"],
                 properties: {
                   code: kunta.koodiArvo,
+                  forChangeObject: {
+                    koodiarvo: kunta.koodiArvo,
+                    title: kunnanNimi,
+                    maakuntaKey: mapping[maakunta.koodiArvo]
+                  },
                   isChecked: false,
                   labelStyles: Object.assign({}, labelStyles, {
                     custom: isInLupa
