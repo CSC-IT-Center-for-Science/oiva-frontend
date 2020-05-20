@@ -28,7 +28,6 @@ const Opetuskielet = React.memo(props => {
       <ExpandableRowRoot
         anchor={sectionId}
         key={`expandable-row-root`}
-        categories={[]}
         changes={changeObjects.kielet.opetuskielet}
         hideAmountOfChanges={true}
         messages={{ undo: intl.formatMessage(common.undo) }}

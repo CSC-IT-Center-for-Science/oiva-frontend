@@ -365,7 +365,7 @@ export function getChangesToSave(
       };
     }, unhandledChangeObjects).filter(Boolean);
   } else if (key === "toimintaalue") {
-    uudetMuutokset = R.map(changeObj => {
+    const radioButtonMuutokset = R.map(changeObj => {
       const perustelut = R.filter(
         R.compose(R.contains(changeObj.anchor), R.prop("anchor")),
         changeObjects.perustelut
@@ -406,46 +406,97 @@ export function getChangesToSave(
           koodisto: "nuts1",
           koodiarvo
         };
-      } else if (
-        R.equals(anchorPart1, "valintakentat") ||
-        R.includes("lupaan-lisattavat", anchorPart1)
-      ) {
-        return {
-          koodiarvo: changeObj.properties.metadata.koodiarvo,
-          koodisto: changeObj.properties.metadata.koodisto.koodistoUri,
-          tila: "LISAYS",
-          type: "addition",
-          meta: {
-            perusteluteksti: [
-              { value: perustelut ? perustelut[0].properties.value : "" }
-            ],
-            changeObjects: R.flatten([[changeObj], perustelut])
-          },
-          muutosperustelukoodiarvo: null,
-          kohde,
-          maaraystyyppi
-        };
-      } else {
-        return {
-          koodiarvo: R.path(["properties", "metadata", "koodiarvo"], changeObj),
-          koodisto: R.path(
-            ["properties", "metadata", "koodisto", "koodistoUri"],
-            changeObj
-          ),
-          tila: "POISTO",
-          type: "removal",
-          meta: {
-            perusteluteksti: [
-              { value: perustelut ? perustelut[0].properties.value : "" }
-            ],
-            changeObjects: R.flatten([[changeObj], perustelut])
-          },
-          muutosperustelukoodiarvo: null,
-          kohde,
-          maaraystyyppi
-        };
       }
+      return null;
     }, unhandledChangeObjects).filter(Boolean);
+
+    // All changes related to provinces and municipalities must be handled too.
+    const categoryFilterChangeObj = R.find(
+      R.propEq("anchor", "categoryFilter"),
+      unhandledChangeObjects
+    );
+
+    let categoryFilterMuutokset;
+
+    if (categoryFilterChangeObj) {
+      categoryFilterMuutokset = R.mapObjIndexed(
+        (changeObjects, maakuntaKey) => {
+          const provinceChangeObj = R.find(
+            R.compose(R.endsWith(`${maakuntaKey}.A`), R.prop("anchor")),
+            changeObjects
+          );
+          // const perustelut = R.filter(
+          //   R.compose(R.contains(changeObj.anchor), R.prop("anchor")),
+          //   changeObjects.perustelut
+          // );
+          if (provinceChangeObj) {
+            const isTheWholeProvinceActive =
+              provinceChangeObj.properties.isChecked &&
+              !provinceChangeObj.properties.isIndeterminate;
+            if (isTheWholeProvinceActive) {
+              // Let's create only one change which is the one for the province.
+              console.info(provinceChangeObj);
+              return {
+                kohde,
+                koodiarvo: provinceChangeObj.properties.metadata.koodiarvo,
+                koodisto: "maakunta",
+                maaraystyyppi,
+                meta: {
+                  perusteluteksti: [
+                    // { value: perustelut ? perustelut[0].properties.value : "" }
+                  ],
+                  changeObjects: R.flatten([changeObjects /*perustelut*/])
+                },
+                muutosperustelukoodiarvo: null,
+                tila: provinceChangeObj.properties.isChecked
+                  ? "LISAYS"
+                  : "POISTO",
+                type: provinceChangeObj.properties.isChecked
+                  ? "addition"
+                  : "removal"
+              };
+            } else {
+              // Let's create a change for every municipality.
+              console.info(changeObjects);
+              return R.map(changeObj => {
+                return changeObj.anchor !== provinceChangeObj.anchor
+                  ? {
+                      kohde,
+                      koodiarvo: changeObj.properties.metadata.koodiarvo,
+                      koodisto: "kunta",
+                      maaraystyyppi,
+                      meta: {
+                        perusteluteksti: [
+                          // { value: perustelut ? perustelut[0].properties.value : "" }
+                        ],
+                        changeObjects: R.flatten([
+                          changeObj,
+                          provinceChangeObj /*perustelut*/
+                        ])
+                      },
+                      muutosperustelukoodiarvo: null,
+                      tila: changeObj.properties.isChecked
+                        ? "LISAYS"
+                        : "POISTO",
+                      type: changeObj.properties.isChecked
+                        ? "addition"
+                        : "removal"
+                    }
+                  : null;
+              }, changeObjects).filter(Boolean);
+            }
+          }
+        },
+        categoryFilterChangeObj.properties.changeObjects
+      );
+    }
+    uudetMuutokset = R.flatten(
+      R.concat(
+        radioButtonMuutokset,
+        R.uniq(R.flatten(R.values(categoryFilterMuutokset)))
+      )
+    );
+    console.info(uudetMuutokset);
   } else if (key === "opiskelijavuodet") {
     uudetMuutokset = R.map(changeObj => {
       const anchorParts = R.split(".", changeObj.anchor);

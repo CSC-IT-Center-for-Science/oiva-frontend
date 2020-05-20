@@ -47,6 +47,7 @@ const logo = { text: "Oiva", path: "/" };
  * @param {props} - Properties object.
  */
 const App = React.memo(({ isDebugModeOn }) => {
+
   const intl = useIntl();
 
   const [userState] = useUser();
@@ -324,5 +325,7 @@ const App = React.memo(({ isDebugModeOn }) => {
 App.propTypes = {
   isDebugModeOn: PropTypes.bool
 };
+
+App.displayName = "App";
 
 export default App;

@@ -3,13 +3,17 @@ import "../i18n-config";
 import { __ } from "i18n-for-browser";
 
 function getModificationForm(
+  fiCode,
+  maaraysUuid,
+  changeObjectsByProvince = {},
   isEiMaariteltyaToimintaaluettaChecked,
+  isMaakunnatJaKunnatChecked,
   isValtakunnallinenChecked,
-  lupakohde,
-  valtakunnallinenMaarays,
-  options = []
+  options = [],
+  onChanges,
+  kunnat,
+  maakunnat
 ) {
-  console.info("Options: ", options);
   return [
     {
       anchor: "maakunnat-ja-kunnat",
@@ -18,9 +22,7 @@ function getModificationForm(
           anchor: "radio",
           name: "RadioButtonWithLabel",
           properties: {
-            isChecked:
-              !isEiMaariteltyaToimintaaluettaChecked &&
-              !isValtakunnallinenChecked,
+            isChecked: isMaakunnatJaKunnatChecked,
             labelStyles: {
               addition: isAdded,
               removal: isRemoved
@@ -46,11 +48,13 @@ function getModificationForm(
               styleClasses: ["ml-10 mt-4"],
               properties: {
                 anchor: "maakuntakunnat",
-                categories: options,
-                changeObjects: [],
+                changeObjectsByProvince,
+                provinces: options,
+                municipalities: kunnat,
+                provincesWithoutMunicipalities: maakunnat,
                 showCategoryTitles: false,
                 onChanges: payload => {
-                  console.info("hello", payload);
+                  onChanges(payload);
                 }
               }
             }
@@ -69,17 +73,11 @@ function getModificationForm(
             isChecked: isValtakunnallinenChecked,
             labelStyles: {
               addition: isAdded,
-              custom:
-                lupakohde.valtakunnallinen &&
-                lupakohde.valtakunnallinen.arvo === "FI1"
-                  ? isInLupa
-                  : {},
+              custom: fiCode === "FI1" ? isInLupa : {},
               removal: isRemoved
             },
             forChangeObject: {
-              maaraysUuid: valtakunnallinenMaarays
-                ? valtakunnallinenMaarays.uuid
-                : null,
+              maaraysUuid,
               title: __("responsibilities")
             }
           }
@@ -113,11 +111,16 @@ export default function getToimintaaluelomake(action, data) {
   switch (action) {
     case "modification":
       return getModificationForm(
+        data.fiCode,
+        data.maaraysUuid,
+        data.changeObjectsByProvince,
         data.isEiMaariteltyaToimintaaluettaChecked,
+        data.isMaakunnatJaKunnatChecked,
         data.isValtakunnallinenChecked,
-        data.lupakohde,
-        data.valtakunnallinenMaarays,
-        data.options
+        data.options,
+        data.onChanges,
+        data.kunnat,
+        data.maakunnat
       );
     default:
       return [];

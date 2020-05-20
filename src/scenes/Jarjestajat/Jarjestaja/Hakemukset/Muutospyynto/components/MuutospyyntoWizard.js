@@ -500,7 +500,7 @@ const MuutospyyntoWizard = ({
           </DialogTitle>
           <div
             aria-labelledby="navigate-between-pages"
-            className="lg:px-16 max-w-6xl mx-auto w-full">
+            className="lg:px-16 max-w-7xl mx-auto w-full">
             <StepperNavigation
               activeStep={page - 1}
               stepProps={steps}
@@ -511,7 +511,7 @@ const MuutospyyntoWizard = ({
           <DialogContentWithStyles>
             <div
               id="wizard-content"
-              className="lg:px-16 max-w-6xl m-auto mb-20">
+              className="lg:px-16 max-w-7xl m-auto mb-20">
               {page === 1 && (
                 <WizardPage
                   pageNumber={1}
