@@ -5,7 +5,6 @@ import { defaults } from "react-sweet-state";
 import { loadProgressBar } from "axios-progress-bar";
 import { useUser } from "./stores/user";
 import App from "./App";
-import moment from "moment";
 import "axios-progress-bar/dist/nprogress.css";
 import { useKaannokset } from "./stores/localizations";
 import { useGlobalSettings } from "./stores/appStore";
@@ -66,7 +65,6 @@ const AppWrapper = () => {
 
   const appStructure = useMemo(() => {
     if (user.fetchedAt) {
-      console.info("noudettu", moment(user.fetchedAt).format("DD.MM.YYYY  HH:mm:ss"));
       return state.isDebugModeOn ? (
         user.fetchedAt ? (
           <div className="flex">
@@ -85,7 +83,6 @@ const AppWrapper = () => {
   }, [state.isDebugModeOn, user.fetchedAt]);
 
   if (appStructure && state.locale && messages) {
-    console.info("app structure ok");
     return (
       // Key has been set to ensure the providers's refresh when locale changes.
       <IntlProvider

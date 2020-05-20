@@ -37,9 +37,7 @@ function getModificationForm(
       categories: [
         {
           anchor: "valintakentta",
-          isVisible:
-            !isValtakunnallinenChecked &&
-            !isEiMaariteltyaToimintaaluettaChecked,
+          isVisible: isMaakunnatJaKunnatChecked,
           layout: { indentation: "none" },
           components: [
             {

@@ -9,9 +9,8 @@ import wizardMessages from "../../../../../../i18n/definitions/wizard";
 import common from "../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import FormSection from "../../../../../../components/03-templates/FormSection";
-import * as R from "ramda";
 import Section from "../../../../../../components/03-templates/Section";
+import * as R from "ramda";
 
 const MuutospyyntoWizardMuutokset = React.memo(
   props => {
@@ -127,11 +126,13 @@ const MuutospyyntoWizardMuutokset = React.memo(
             <MuutospyyntoWizardToimintaalue
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
+              kuntamaaraykset={kuntamaaraykset}
               maakuntakunnatList={props.maakuntakunnatList}
               maakunnat={props.maakunnat}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
               sectionId={"toimintaalue"}
+              valtakunnallinenMaarays={valtakunnallinenMaarays}
             />
           </Section>
 

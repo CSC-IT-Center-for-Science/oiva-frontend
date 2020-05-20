@@ -120,17 +120,11 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       };
       onChangesUpdate(sectionChanges);
     },
-    [
-      onChangesUpdate,
-      kunnatInLupa,
-      changeObjects.toimintaalue,
-      props.maakuntakunnatList
-    ]
+    [onChangesUpdate]
   );
 
   const whenChanges = useCallback(
     changesByMaakunta => {
-      console.info(changesByMaakunta);
       const withoutCategoryFilterChangeObj = R.filter(
         R.compose(R.not, R.propEq("anchor", "categoryFilter")),
         changeObjects.toimintaalue

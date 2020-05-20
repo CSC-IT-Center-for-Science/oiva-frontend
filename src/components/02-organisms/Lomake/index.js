@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
-import { equals, join, map, path, split, mapObjIndexed } from "ramda";
+import { join, map, path, split } from "ramda";
 import { cloneDeep } from "lodash";
 import { useIntl } from "react-intl";
 import { useLomakkeet } from "../../../stores/lomakkeet";
@@ -117,10 +117,6 @@ const Lomake = React.memo(
     }
   },
   (prevState, nextState) => {
-    const dataEquality = mapObjIndexed((value, key) => {
-      return isEqual(prevState.data[key], nextState.data[key]);
-    }, nextState.data);
-    // console.info(dataEquality);
     const isSameOld =
       isEqual(prevState.changeObjects, nextState.changeObjects) &&
       isEqual(prevState.data, nextState.data);
