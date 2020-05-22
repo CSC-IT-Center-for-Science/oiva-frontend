@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import Moment from 'react-moment'
-
+import moment from 'moment'
 import { COLORS, MEDIA_QUERIES } from "../../../../modules/styles"
 import { API_BASE_URL } from "../../../../modules/constants"
-import pdf from 'static/images/icon-pdf-large.png'
+import pdf from '../../../../static/images/icon-pdf-large.png'
+import {useIntl} from "react-intl";
+import common from "../../../../i18n/definitions/common";
 
 const CurrentLupaWrapper = styled.div`
   border-top: 1px solid ${COLORS.BORDER_GRAY};
@@ -58,8 +59,10 @@ const LupaTextWrapper = styled.div`
 `
 
 const CurrentLupa = (props) => {
-  const { diaarinumero, jarjestaja, voimassaolo, lupaExceptionUrl } = props
-  let url = `${API_BASE_URL}/pdf/${diaarinumero}`
+  const { diaarinumero, jarjestaja, voimassaolo, lupaExceptionUrl, uuid } = props
+  let url = `${API_BASE_URL}/pdf/${uuid}`
+  const sinceDate = new moment(voimassaolo, 'YYYY-MM-DD');
+  const intl = useIntl();
 
   if (lupaExceptionUrl) {
     url = lupaExceptionUrl
@@ -73,7 +76,7 @@ const CurrentLupa = (props) => {
             <LupaTextWrapper>
               <p>{diaarinumero}</p>
               <p>{jarjestaja}</p>
-              <p><Moment format="D.M.YYYY">{voimassaolo}</Moment> lukien</p>
+              <p>{intl.formatMessage(common.since, {date: sinceDate.format('D.M.YYYY')})}</p>
             </LupaTextWrapper>
         </CurrentLupaWrapper>
       </OuterWrapper>

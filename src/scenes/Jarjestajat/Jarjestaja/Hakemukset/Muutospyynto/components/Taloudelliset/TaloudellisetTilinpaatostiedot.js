@@ -1,121 +1,63 @@
-import React, { useEffect, useMemo } from "react";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
-import { injectIntl } from "react-intl";
+import React from "react";
 import PropTypes from "prop-types";
-import * as R from "ramda";
+import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
+import { tilinpaatostiedot } from "../../../../../../../services/lomakkeet/taloudelliset/rules";
+import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import common from "../../../../../../../i18n/definitions/common";
+import { useIntl } from "react-intl";
 
-const TaloudellisetTilinpaatostiedot = React.memo(props => {
-  const { sectionId, onStateUpdate } = props;
-  const getCategories = useMemo(() => {
-    return () => {
-      let structure = null;
+const TaloudellisetTilinpaatostiedot = React.memo(
+  ({
+    changeObjects,
+    isReadOnly,
+    onChangesRemove,
+    onChangesUpdate,
+    sectionId
+  }) => {
+    const intl = useIntl();
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    }
 
-      structure = [
-        {
-          anchor: "tilinpaatostiedot",
-          styleClasses: ["mb-2"],
-          components: [
-            {
-              anchor: "omavaraisuusaste",
-              name: "Input",
-              styleClasses: ["px-2 w-full sm:w-1/2 md:w-1/3"],
-              properties: {
-                fullWidth: true,
-                isReadOnly: props.isReadOnly,
-                label: "Omavaraisuusaste",
-                type: "number"
-              }
-            },
-            {
-              anchor: "maksuvalmius",
-              name: "Input",
-              styleClasses: ["px-2 w-full sm:w-1/2 md:w-1/3"],
-              properties: {
-                fullWidth: true,
-                isReadOnly: props.isReadOnly,
-                label: "Maksuvalmius",
-                type: "number"
-              }
-            },
-            {
-              anchor: "velkaantuneisuus",
-              name: "Input",
-              styleClasses: ["px-2 w-full sm:w-1/2 md:w-1/3"],
-              properties: {
-                fullWidth: true,
-                isReadOnly: props.isReadOnly,
-                label: "Velkaantuneisuus",
-                type: "number"
-              }
-            },
-            {
-              anchor: "kannattavuus",
-              name: "Input",
-              styleClasses: ["px-2 w-full sm:w-1/2 md:w-1/3"],
-              properties: {
-                fullWidth: true,
-                isReadOnly: props.isReadOnly,
-                label: "Kannattavuus",
-                type: "number"
-              }
-            },
-            {
-              anchor: "jaama",
-              name: "Input",
-              styleClasses: ["px-2 w-full sm:w-1/2 md:w-2/3"],
-              properties: {
-                fullWidth: true,
-                isReadOnly: props.isReadOnly,
-                label: "Kumulatiivinen yli- tai alijäämä",
-                type: "number"
-              }
-            }
-          ]
-        }
-      ];
-      return structure;
-    };
-  }, [props.isReadOnly]);
-
-  useEffect(() => {
-    onStateUpdate(
-      {
-        categories: getCategories()
-      },
-      sectionId
+    return (
+      <ExpandableRowRoot
+        title={"Tilinpäätöstiedot"}
+        anchor={sectionId}
+        key={`taloudelliset-tilinpaatos`}
+        categories={[]}
+        changes={changeObjects}
+        disableReverting={isReadOnly}
+        hideAmountOfChanges={true}
+        messages={changesMessages}
+        showCategoryTitles={true}
+        isExpanded={true}
+        sectionId={sectionId}
+        onChangesRemove={onChangesRemove}
+        onUpdate={onChangesUpdate}>
+        <Lomake
+          action="tilinpaatostiedot"
+          anchor={sectionId}
+          changeObjects={changeObjects}
+          isReadOnly={isReadOnly}
+          onChangesUpdate={onChangesUpdate}
+          path={["taloudelliset"]}
+          rules={tilinpaatostiedot}
+          showCategoryTitles={true}></Lomake>
+      </ExpandableRowRoot>
     );
-  }, [getCategories, onStateUpdate, sectionId]);
-  return (
-    <React.Fragment>
-      {!!R.path(["categories"], props.stateObject) && (
-        <ExpandableRowRoot
-          title={"Tilinpäätöstiedot"}
-          anchor={"taloudelliset_tilinpaatostiedot"}
-          key={`taloudelliset-tilinpaatos`}
-          categories={props.stateObject.categories}
-          changes={R.path(["taloudelliset"], props.changeObjects)}
-          disableReverting={props.isReadOnly}
-          hideAmountOfChanges={true}
-          showCategoryTitles={true}
-          isExpanded={true}
-          sectionId={sectionId}
-          onUpdate={props.onChangesUpdate}
-          {...props}
-        />
-      )}
-    </React.Fragment>
-  );
-});
+  }
+);
 
 TaloudellisetTilinpaatostiedot.defaultProps = {
   isReadOnly: false
 };
 
 TaloudellisetTilinpaatostiedot.propTypes = {
-  changeObjects: PropTypes.object,
-  handleChanges: PropTypes.func,
-  lupa: PropTypes.object,
-  onStateUpdate: PropTypes.func,
-  stateObject: PropTypes.object
+  changeObjects: PropTypes.array,
+  isReadOnly: PropTypes.bool,
+  onChangesRemove: PropTypes.func,
+  onChangesUpdate: PropTypes.func,
+  sectionId: PropTypes.string
 };
-export default injectIntl(TaloudellisetTilinpaatostiedot);
+export default TaloudellisetTilinpaatostiedot;

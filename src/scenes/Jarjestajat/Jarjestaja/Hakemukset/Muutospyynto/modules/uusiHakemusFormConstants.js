@@ -88,7 +88,7 @@ export const HAKEMUS_VIESTI = {
     SV: "PERUUTA"
   },
   TIEDOSTO_NIMI_ERROR: {
-    FI: "Nimi on pakkollinen",
+    FI: "Nimi on pakollinen",
     SV: "TIEDOSTO_NIMI_ERROR"
   }
 };
@@ -119,7 +119,7 @@ export const HAKEMUS_OTSIKOT = {
     SV: "På Svenska"
   },
   LIITE_YLEISET_HEADER: {
-    FI: "Hakemuksen yleiset liitteet",
+    FI: "Muut liitteet",
     SV: "På Svenska"
   },
   LIITE_OHJE: {

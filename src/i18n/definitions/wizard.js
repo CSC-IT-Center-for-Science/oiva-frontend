@@ -180,34 +180,32 @@ export default defineMessages({
     id: "wizard.noRights",
     defaultMessage: "Sinulla ei ole oikeuksia tälle sivulle."
   },
-  tooltipTaloudellisetYleisetTiedotKentta1: {
-    id: "wizard.tooltipTaloudellisetYleisetTiedotKentta1",
-    defaultMessage:
-      "Esittäkää taloudelliset edellytyksenne järjestää haettuja tehtäviä huomioiden, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä."
+  tutkintokielet: {
+    id: "wizard.tutkintokielet",
+    defaultMessage: "Tutkintokielet"
   },
-  tooltipTaloudellisetYleisetTiedotKentta2: {
-    id: "wizard.tooltipTaloudellisetYleisetTiedotKentta2",
-    defaultMessage:
-      "Arvioikaa, vaikuttaako haetut tehtävät nykyisten taloudellisten resurssienne uudelleen kohdentamiseen. Jos vaikuttavat, esittäkää millä tavalla."
+  allFieldsRequired: {
+    id: "wizard.allFieldsRequired",
+    defaultMessage: "Täydennä kaikki tämän sivun kentät."
   },
-  tooltipTaloudellisetYleisetTiedotKentta3: {
-    id: "wizard.tooltipTaloudellisetYleisetTiedotKentta3",
-    defaultMessage:
-      "Mikäli haette työvoimakoulutuksen tai laajennettua oppisopimuskoulutuksen järjestämistehtävää, arvioikaa, miten kykenette vastaamaan ko. koulutustarpeen muutoksiin nopeasti ja uudelleen kohdentamaan resurssejanne tarpeen mukaisesti."
+  allPerustelutRequired: {
+    id: "wizard.allPerustelutRequired",
+    defaultMessage: "Perustele kaikki muutokset."
   },
-  tooltipTaloudellisetInvestoinnitKentta1: {
-    id: "wizard.tooltipTaloudellisetInvestoinnitKentta1",
-    defaultMessage:
-      "Esittäkää haetun tehtävän mukaisen toiminnan käynnistämiseksi tarvittavat investoinnit."
+  otherAttachments: {
+    id: "wizard.otherAttachments",
+    defaultMessage: "Muut liitteet"
   },
-  tooltipTaloudellisetInvestoinnitKentta2: {
-    id: "wizard.tooltipTaloudellisetInvestoinnitKentta2",
-    defaultMessage:
-      "Arvioikaa edellä esittämienne investointien kustannukset yhteensä."
+  getOut: {
+    id: "wizard.getOut",
+    defaultMessage: "Poistu"
   },
-  tooltipTaloudellisetInvestoinnitKentta3: {
-    id: "wizard.tooltipTaloudellisetInvestoinnitKentta3",
-    defaultMessage:
-      "Esittäkää, miten rahoitatte edellä esittämänne investoinnit. Huomioikaa, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä."
+  previewAndPrint: {
+    id: "wizard.previewAndPrint",
+    defaultMessage: "Esikatsele ja tulosta"
+  },
+  esittelijatMuutospyyntoDialogTitle: {
+    id: "wizard.esittelijatMuutospyyntoDialogTitle",
+    defaultMessage: "Päätöksen valmistelu: Järjestämisluvan muutos"
   }
 });

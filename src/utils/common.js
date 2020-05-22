@@ -46,7 +46,7 @@ const findAnchoredCategoryOrComponentFromElement = (anchor, elementObject) => {
 
 /**
  * Returns the element found from given anchor in a category hierarchy. We expect that the anchor is
- * a . delimited path with elementes being categories and optionally the last element being a component
+ * a . delimited path with elements being categories and optionally the last element being a component
  *
  * @param anchor The path for scanning the component from stateObject (e.g. vahimmaisopiskelijavuodet.A)
  * @param stateObject
@@ -92,7 +92,7 @@ export const replaceAnchorPartWith = (anchor, index, replaceWith) => {
 export const curriedGetAnchorPartsByIndex = R.curry((objects, index) => {
   return R.map(obj => {
     return getAnchorPart(R.prop("anchor", obj), index);
-  })(objects);
+  }, objects);
 });
 
 export const getAnchorsStartingWith = (prefix, objects) => {
@@ -115,7 +115,7 @@ export const flattenObj = obj => {
 };
 
 /**
- * Function finds all the objects with given key from the given object.
+ * Function finds all objects with given key from the given object.
  * @param {object} object - JavaScript object, can be deeply nested
  * @param {string} targetKey - Key to search for
  */
@@ -134,7 +134,10 @@ export function findObjectWithKey(object, targetKey) {
     }
     return false;
   }
-  return R.flatten(find(object, targetKey)).filter(Boolean);
+  return R.filter(
+    R.compose(R.not, R.isEmpty),
+    R.flatten(find(object, targetKey)).filter(Boolean)
+  );
 }
 
 /**
@@ -166,13 +169,28 @@ export const downloadFileFn = ({
         a.remove();
       };
     } else if (url) {
-      a.href = API_BASE_URL + url;
+      a.href = R.startsWith("/api", url) ? url : API_BASE_URL + url;
       a.click();
       a.remove();
     } else {
       console.warn("Cannot open file: No octet stream nor file url");
+      return false;
     }
+    return true;
   };
+};
+
+export const downloadFile = url => {
+  if (url) {
+    let a = document.createElement("a");
+    a.setAttribute("type", "hidden");
+    a.href = R.startsWith("/api", url) ? url : API_BASE_URL + url;
+    a.download = true;
+    a.click();
+    a.remove();
+    return true;
+  }
+  return false;
 };
 
 /**

@@ -1,181 +1,44 @@
-import React, { useEffect, useMemo } from "react";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
-import { injectIntl } from "react-intl";
+import React from "react";
+import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
-import * as R from "ramda";
+import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import { rules } from "../../../../../../../services/lomakkeet/yhteenveto/yleisetTiedot/rules";
+import common from "../../../../../../../i18n/definitions/common";
+import { useIntl } from "react-intl";
 
 const YhteenvetoYleisettiedot = React.memo(props => {
-  const { sectionId, onStateUpdate } = props;
-  const getCategories = useMemo(() => {
-    return () => {
-      const structure = [
-        {
-          anchor: "yhteyshenkilo",
-          title: "Yhteyshenkilön tiedot",
-          styleClasses: ["pl-0"],
-          components: [
-            {
-              anchor: "nimi",
-              name: "Input",
-              styleClasses: ["sm:pr-2 w-full sm:w-1/2 md:w-1/4"],
-              properties: {
-                fullWidth: true,
-                label: "Nimi"
-              }
-            },
-            {
-              anchor: "nimike",
-              name: "Input",
-              styleClasses: ["sm:pl-2 md:px-2 w-full sm:w-1/2 md:w-1/4"],
-              properties: {
-                fullWidth: true,
-                label: "Nimike"
-              }
-            },
-            {
-              anchor: "puhelinnumero",
-              name: "Input",
-              styleClasses: ["sm:pr-2 w-full sm:w-1/2 md:w-1/4"],
-              properties: {
-                fullWidth: true,
-                label: "Puhelinnumero"
-              }
-            },
-            {
-              anchor: "sahkoposti",
-              name: "Input",
-              styleClasses: ["sm:pl-2 w-full sm:w-1/2 md:w-1/4"],
-              properties: {
-                fullWidth: true,
-                label: "Sähköposti"
-              }
-            }
-          ]
-        },
-        {
-          anchor: "muutoksien-voimaantulo",
-          title: "Muutoksien voimaantulo",
-          styleClasses: ["mt-6 pl-0"],
-          components: [
-            {
-              anchor: "ajankohta",
-              name: "Datepicker",
-              styleClasses: ["w-full sm:pr-2 sm:w-1/2 md:w-1/4"],
-              properties: {
-                fullWidth: true,
-                label: "Päivämäärä",
-                placeholder: "Päivämäärä",
-                disablePast: true
-              }
-            }
-          ]
-        },
-        {
-          anchor: "saate",
-          title: "Saate",
-          styleClasses: ["mt-6 px-0"],
-          components: [
-            {
-              styleClasses: ["mt-2 w-full"],
-              anchor: "tekstikentta",
-              name: "TextBox",
-              properties: {
-                placeholder: ""
-              }
-            }
-          ]
-        },
-        {
-          anchor: "hyvaksyja",
-          title: "Hakemuksen hyväksyjän / allekirjoittaja",
-          styleClasses: ["mt-6 px-0"],
-          components: [
-            {
-              styleClasses: ["w-full sm:pr-2 sm:w-1/2"],
-              anchor: "nimi",
-              name: "Input",
-              properties: {
-                fullWidth: true,
-                label: "Nimi"
-              }
-            },
-            {
-              styleClasses: ["w-full sm:pl-2 sm:w-1/2"],
-              anchor: "nimike",
-              name: "Input",
-              properties: {
-                fullWidth: true,
-                label: "Nimike"
-              }
-            }
-          ]
-        },
-        {
-          anchor: "liitteet",
-          title: "Liitteet",
-          styleClasses: ["mt-6 w-full"],
-          components: [
-            {
-              name: "StatusTextRow",
-              styleClasses: ["w-full"],
-              properties: {
-                title:
-                  "Liittäkää asiakirja tai asiakirjat, joista ilmenee hakemuksen hyväksyntä tai hyväksyjän päätösvalta (esim. hyväksyjän allekirjoitusoikeus ja päättävän elimen kokouksen pöytäkirjanote). Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muistakaa merkitä salassa pidettävät liitteet."
-              }
-            },
-            {
-              styleClasses: ["w-full"],
-              anchor: "A",
-              name: "Attachments"
-            }
-          ]
-        }
-      ];
-      return structure;
-    };
-  }, []);
-
-  useEffect(() => {
-    onStateUpdate(
-      {
-        categories: getCategories()
-      },
-      sectionId
-    );
-  }, [getCategories, onStateUpdate, sectionId]);
+  const intl = useIntl();
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
 
   return (
-    <React.Fragment>
-      <p></p>
-      {!!R.path(["categories"], props.stateObject) && (
-        <ExpandableRowRoot
-          title={"Hakemuksen yleiset tiedot"}
-          anchor={sectionId}
-          categories={props.stateObject.categories}
-          changes={R.path(["yhteenveto"], props.changeObjects)}
-          disableReverting={false}
-          hideAmountOfChanges={false}
-          showCategoryTitles={true}
-          isExpanded={true}
-          sectionId={sectionId}
-          onUpdate={props.onChangesUpdate}
-          {...props}
-        />
-      )}
-    </React.Fragment>
+    <ExpandableRowRoot
+      title={"Hakemuksen yleiset tiedot"}
+      anchor={props.sectionId}
+      changes={props.changeObjects.yhteenveto}
+      disableReverting={false}
+      hideAmountOfChanges={true}
+      messages={changesMessages}
+      showCategoryTitles={true}
+      isExpanded={true}
+      sectionId={props.sectionId}
+      onChangesRemove={props.onChangesRemove}
+      onUpdate={props.onChangesUpdate}>
+      <Lomake
+        action="modification"
+        anchor={props.sectionId}
+        changeObjects={props.changeObjects.yhteenveto}
+        onChangesUpdate={props.onChangesUpdate}
+        path={["yhteenveto", "yleisetTiedot"]}
+        rules={rules}
+        showCategoryTitles={true}></Lomake>
+    </ExpandableRowRoot>
   );
 });
 
-YhteenvetoYleisettiedot.defaultProps = {
-  changeObjects: {
-    yhteenveto: []
-  }
-};
-
 YhteenvetoYleisettiedot.propTypes = {
-  changeObjects: PropTypes.object,
-  handleChanges: PropTypes.func,
-  onStateUpdate: PropTypes.func,
-  stateObject: PropTypes.object
+  changeObjects: PropTypes.object
 };
-export default injectIntl(YhteenvetoYleisettiedot);
+export default YhteenvetoYleisettiedot;

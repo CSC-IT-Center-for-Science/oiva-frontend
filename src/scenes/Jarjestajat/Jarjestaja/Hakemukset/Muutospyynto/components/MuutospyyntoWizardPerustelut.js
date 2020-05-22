@@ -1,31 +1,23 @@
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PerustelutKoulutukset from "./Perustelut/PerustelutKoulutukset";
 import PerustelutMuut from "./Perustelut/PerustelutMuut";
 import PerustelutOpetuskielet from "./Perustelut/PerustelutOpetuskielet";
 import PerustelutTutkintokielet from "./Perustelut/PerustelutTutkintokielet";
 import PerustelutTutkinnot from "./Perustelut/PerustelutTutkinnot";
-import { LomakkeetContext } from "../../../../../../context/lomakkeetContext";
 import PropTypes from "prop-types";
-import { injectIntl } from "react-intl";
-import * as R from "ramda";
+import { useIntl } from "react-intl";
 import PerustelutToimintaalue from "./Perustelut/PerustelutToimintaalue";
-import { updateFormStructure } from "../../../../../../services/lomakkeet/actions";
-import {
-  getAdditionFormStructure,
-  getOsaamisalaFormStructure
-} from "../../../../../../services/lomakkeet/perustelut/tutkinnot";
-import { getRemovalFormStructure } from "../../../../../../services/lomakkeet/perustelut/tutkinnot";
 import FormSection from "../../../../../../components/03-templates/FormSection";
 import PerustelutOpiskelijavuodet from "./Perustelut/PerustelutOpiskelijavuodet";
 import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import PerustelutLiitteet from "./Perustelut/PerustelutLiitteet";
 import wizard from "../../../../../../i18n/definitions/wizard";
+import * as R from "ramda";
 
 const MuutospyyntoWizardPerustelut = ({
   changeObjects = {},
   elykeskukset = [],
-  intl,
-  intl: { formatMessage },
+  visits,
   kielet,
   kohteet = [],
   koulutukset,
@@ -33,50 +25,24 @@ const MuutospyyntoWizardPerustelut = ({
   muut,
   lupa,
   lupaKohteet,
-  muutoshakemus,
+  lomakkeet,
   muutosperusteluList = [],
   onChangesUpdate,
-  onStateUpdate,
   tutkinnot,
   vankilat = []
 }) => {
+  const intl = useIntl();
   const [kohdetiedot, setKohdetiedot] = useState(null);
   const [maaraystyypitState, setMaaraystyypitState] = useState({});
 
-  const { state: lomakkeet, dispatch: lomakkeetDispatch } = useContext(
-    LomakkeetContext
-  );
-
-  useEffect(() => {
-    /**
-     * Let's get the structures of different tutkinto based reasoning forms and update the context.
-     * These will be needed later.
-     */
-    const additionFormStructure = getAdditionFormStructure(
-      R.sortBy(R.prop("koodiArvo"))(muutosperusteluList),
-      R.toUpper(intl.locale)
-    );
-    updateFormStructure(
-      ["perustelut", "tutkinnot", "addition"],
-      additionFormStructure
-    )(lomakkeetDispatch);
-    const removalFormStructure = getRemovalFormStructure();
-    updateFormStructure(
-      ["perustelut", "tutkinnot", "removal"],
-      removalFormStructure
-    )(lomakkeetDispatch);
-    const osaamisalaFormStructure = getOsaamisalaFormStructure();
-    updateFormStructure(
-      ["perustelut", "tutkinnot", "osaamisala"],
-      osaamisalaFormStructure
-    )(lomakkeetDispatch);
-  }, [lomakkeetDispatch, muutosperusteluList, intl.locale]);
+  const muutosperusteluListSorted = useMemo(() => {
+    return R.sortBy(R.prop("koodiArvo"))(muutosperusteluList);
+  }, [muutosperusteluList]);
 
   useEffect(() => {
     const kohdeTiedot = R.map(kohde => {
       return {
         title: R.path(["meta", "otsikko", [intl.locale]], kohde),
-
         code: R.find(R.propEq("tunniste", kohde.tunniste))(lupaKohteet)
       };
     }, kohteet);
@@ -102,7 +68,7 @@ const MuutospyyntoWizardPerustelut = ({
   }, [changeObjects.tutkinnot]);
 
   const isKoulutuksetChanges = useMemo(() => {
-    return R.not(R.isEmpty(changeObjects.koulutukset || {}));
+    return R.not(R.isEmpty(R.flatten(R.values(changeObjects.koulutukset))));
   }, [changeObjects.koulutukset]);
 
   const isToimintaalueChanges = useMemo(() => {
@@ -150,17 +116,19 @@ const MuutospyyntoWizardPerustelut = ({
 
   return (
     <React.Fragment>
-      <h2 className="my-6">{formatMessage(wizard.pageTitle_2)}</h2>
+      <h2 className="my-6">{intl.formatMessage(wizard.pageTitle_2)}</h2>
 
-      {!isAnyChanges && <p>{formatMessage(wizard.noChanges)}</p>}
+      {!isAnyChanges && <p>{intl.formatMessage(wizard.noChanges)}</p>}
+      {isAnyChanges && (
+        <p>{intl.formatMessage(wizard.allPerustelutRequired)}</p>
+      )}
 
-      {isAnyChanges && muutosperusteluList && muutoshakemus && kohdetiedot ? (
+      {isAnyChanges && muutosperusteluList && kohdetiedot ? (
         <React.Fragment>
           {(isTutkinnotChanges || isKoulutuksetChanges) && (
             <FormSection
               code={1}
               id="perustelut_tutkinnot"
-              muutoshakemus={muutoshakemus}
               render={_props => (
                 <React.Fragment>
                   {isTutkinnotChanges && (
@@ -175,29 +143,24 @@ const MuutospyyntoWizardPerustelut = ({
                             ) || {}
                         }
                       }}
+                      isFirstVisit={visits === 1}
                       kohde={R.find(
                         R.propEq("tunniste", "tutkinnotjakoulutukset")
                       )(kohteet)}
                       lupa={lupa}
                       lupaKohteet={lupaKohteet}
                       maaraystyyppi={maaraystyypitState.OIKEUS}
-                      lomakkeet={lomakkeet.perustelut.tutkinnot}
-                      stateObject={R.path(["perustelut", "tutkinnot"])(
-                        muutoshakemus
-                      )}
+                      muutosperustelut={muutosperusteluListSorted}
                       tutkinnot={tutkinnot}
                       {..._props}
                     />
                   )}
-                  {isKoulutuksetChanges ? (
+                  {isKoulutuksetChanges && (
                     <PerustelutKoulutukset
                       changeObjects={{
-                        koulutukset: R.prop("koulutukset", changeObjects),
+                        koulutukset: changeObjects.koulutukset,
                         perustelut: {
-                          koulutukset: R.path(
-                            ["perustelut", "koulutukset"],
-                            changeObjects
-                          )
+                          koulutukset: changeObjects.perustelut.koulutukset
                         }
                       }}
                       elykeskukset={elykeskukset}
@@ -207,15 +170,9 @@ const MuutospyyntoWizardPerustelut = ({
                       koulutukset={koulutukset}
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       maaraykset={lupa.maaraykset}
-                      lomakkeet={lomakkeet.perustelut.koulutukset}
-                      stateObject={R.path([
-                        "perustelut",
-                        "koulutukset",
-                        "valmentavatKoulutukset"
-                      ])(muutoshakemus)}
                       {..._props}
                     />
-                  ) : null}
+                  )}
                   {/* Attachments for Tutkinnot ja koulutukset */}
                   <FormSection
                     id="perustelut_liitteet"
@@ -223,26 +180,17 @@ const MuutospyyntoWizardPerustelut = ({
                     render={_props => (
                       <React.Fragment>
                         <PerustelutLiitteet
-                          stateObject={R.path(
-                            ["perustelut", "liitteet"],
-                            muutoshakemus
-                          )}
                           changeObjects={{
-                            perustelut: R.path(
-                              ["perustelut", "liitteet"],
-                              changeObjects
-                            )
+                            perustelut: changeObjects.perustelut.liitteet
                           }}
                           {..._props}
                         />
                       </React.Fragment>
                     )}
-                    runOnStateUpdate={onStateUpdate}
                     runOnChanges={onChangesUpdate}
                   />
                 </React.Fragment>
               )}
-              runOnStateUpdate={onStateUpdate}
               runOnChanges={onChangesUpdate}
               title={kohdetiedot[0].title}
             />
@@ -251,7 +199,7 @@ const MuutospyyntoWizardPerustelut = ({
             <FormSection
               code={2}
               id="perustelut_kielet"
-              muutoshakemus={muutoshakemus}
+              lomakkeet={lomakkeet}
               render={_props => (
                 <React.Fragment>
                   {isOpetuskieletChanges ? (
@@ -272,11 +220,6 @@ const MuutospyyntoWizardPerustelut = ({
                       lupa={lupa}
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       opetuskielet={kielet.opetuskielet}
-                      stateObject={R.path([
-                        "perustelut",
-                        "kielet",
-                        "opetuskielet"
-                      ])(muutoshakemus)}
                       {..._props}
                     />
                   ) : null}
@@ -284,14 +227,13 @@ const MuutospyyntoWizardPerustelut = ({
                   {isTutkintokieletChanges ? (
                     <PerustelutTutkintokielet
                       changeObjects={{
-                        tutkintokielet:
-                          R.path(["kielet", "tutkintokielet"], changeObjects) ||
-                          [],
-                        perustelut:
-                          R.path(
+                        tutkintokielet: changeObjects.kielet.tutkintokielet,
+                        perustelut: {
+                          tutkintokielet: R.path(
                             ["perustelut", "kielet", "tutkintokielet"],
                             changeObjects
-                          ) || []
+                          )
+                        }
                       }}
                       kohde={R.find(
                         R.propEq("tunniste", "opetusjatutkintokieli")
@@ -300,35 +242,34 @@ const MuutospyyntoWizardPerustelut = ({
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       maaraykset={lupa.maaraykset}
                       opetuskielet={kielet.opetuskielet}
-                      stateObjects={{
-                        tutkintokielet: R.path(["kielet", "tutkintokielet"])(
-                          muutoshakemus
-                        ),
-                        perustelut: R.path([
-                          "perustelut",
-                          "kielet",
-                          "tutkintokielet"
-                        ])(muutoshakemus)
+                      lomakkeet={{
+                        tutkintokielet: lomakkeet.kielet.tutkintokielet,
+                        perustelut: lomakkeet.perustelut.kielet.tutkintokielet
                       }}
                       {..._props}
                     />
                   ) : null}
                 </React.Fragment>
               )}
-              runOnStateUpdate={onStateUpdate}
               runOnChanges={onChangesUpdate}
               title={kohdetiedot[1].title}
             />
           )}
+
+          {/* TOIMINTA-ALUE */}
           {isToimintaalueChanges ? (
             <FormSection
               code={3}
               id="perustelut_toimintaalue"
-              muutoshakemus={muutoshakemus}
+              lomakkeet={lomakkeet}
               render={_props => (
                 <React.Fragment>
                   <PerustelutToimintaalue
+                    kohde={R.find(R.propEq("tunniste", "toimintaalue"))(
+                      kohteet
+                    )}
                     lupakohde={lupaKohteet[3]}
+                    maaraystyyppi={maaraystyypitState.VELVOITE}
                     changeObjects={{
                       toimintaalue: R.path(["toimintaalue"], changeObjects),
                       perustelut: R.path(
@@ -336,82 +277,60 @@ const MuutospyyntoWizardPerustelut = ({
                         changeObjects
                       )
                     }}
-                    stateObjects={{
-                      toimintaalue: muutoshakemus.toimintaalue,
-                      perustelut: R.path(["perustelut", "toimintaalue"])(
-                        muutoshakemus
-                      )
+                    lomakkeet={{
+                      toimintaalue: lomakkeet.toimintaalue,
+                      perustelut: lomakkeet.perustelut.toimintaalue
                     }}
                     {..._props}
                   />
                 </React.Fragment>
               )}
-              runOnStateUpdate={onStateUpdate}
               runOnChanges={onChangesUpdate}
               title={kohdetiedot[2].title}
             />
           ) : null}
+
+          {/* OPISKELIJAVUODET */}
           {isOpiskelijavuodetChanges ? (
             <FormSection
               code={4}
               id="perustelut_opiskelijavuodet"
-              muutoshakemus={muutoshakemus}
               render={_props => (
                 <React.Fragment>
                   <PerustelutOpiskelijavuodet
-                    changeObjects={{
-                      opiskelijavuodet: R.path(
-                        ["opiskelijavuodet"],
-                        changeObjects
-                      ),
-                      perustelut: R.path(
-                        ["perustelut", "opiskelijavuodet"],
-                        changeObjects
-                      )
-                    }}
-                    kohde={R.find(R.propEq("tunniste", "opiskelijavuodet"))(
-                      kohteet
-                    )}
                     muutosperustelut={R.sortBy(R.prop("koodiArvo"))(
                       muutosperusteluList
                     )}
-                    stateObject={{
-                      opiskelijavuodet: R.path(
-                        ["opiskelijavuodet"],
-                        muutoshakemus
-                      )
-                    }}
                     {..._props}
                   />
                 </React.Fragment>
               )}
-              runOnStateUpdate={onStateUpdate}
               runOnChanges={onChangesUpdate}
               title={kohdetiedot[3].title}
             />
           ) : null}
+
+          {/* MUUT */}
           {isMuutChanges ? (
             <FormSection
               code={5}
               id="perustelut_muut"
-              muutoshakemus={muutoshakemus}
+              lomakkeet={lomakkeet}
               render={_props => (
                 <React.Fragment>
                   <PerustelutMuut
                     changeObjects={{
-                      muut: R.path(["muut"], changeObjects),
-                      perustelut: R.path(["perustelut", "muut"], changeObjects)
+                      muut: changeObjects.muut,
+                      perustelut: changeObjects.perustelut.muut
                     }}
-                    kohde={R.find(R.propEq("tunniste", "muut"))(kohteet)}
                     maaraykset={lupa.maaraykset}
                     muut={muut}
-                    stateObject={R.path(["perustelut", "muut"])(muutoshakemus)}
+                    lomakkeet={{ muut: lomakkeet.perustelut.muut }}
                     vankilat={vankilat}
                     {..._props}
                   />
                 </React.Fragment>
               )}
-              runOnStateUpdate={onStateUpdate}
               runOnChanges={onChangesUpdate}
               title={kohdetiedot[4].title}
             />
@@ -419,26 +338,19 @@ const MuutospyyntoWizardPerustelut = ({
           {/* Common attachments, the same also in Yhteenveto */}
           {isAnyChanges && (
             <FormSection
-              id="yhteenveto_hakemuksenliitteet"
+              id="yhteenveto_hakemuksenLiitteet"
               className="my-0"
               render={_props => (
                 <React.Fragment>
                   <YhteenvetoLiitteet
-                    stateObject={R.path(
-                      ["yhteenveto", "hakemuksenliitteet"],
-                      muutoshakemus
-                    )}
                     changeObjects={{
-                      yhteenveto: R.path(
-                        ["yhteenveto", "hakemuksenliitteet"],
-                        changeObjects
-                      )
+                      hakemuksenLiitteet:
+                        changeObjects.yhteenveto.hakemuksenLiitteet
                     }}
                     {..._props}
                   />
                 </React.Fragment>
               )}
-              runOnStateUpdate={onStateUpdate}
               runOnChanges={onChangesUpdate}
             />
           )}
@@ -451,6 +363,7 @@ const MuutospyyntoWizardPerustelut = ({
 MuutospyyntoWizardPerustelut.propTypes = {
   changeObjects: PropTypes.object,
   elykeskukset: PropTypes.array,
+  visits: PropTypes.number,
   kielet: PropTypes.object,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
@@ -458,12 +371,11 @@ MuutospyyntoWizardPerustelut.propTypes = {
   muut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
-  muutoshakemus: PropTypes.object,
+  lomakkeet: PropTypes.object,
   muutosperusteluList: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  onStateUpdate: PropTypes.func,
   tutkinnot: PropTypes.object,
   vankilat: PropTypes.array
 };
 
-export default injectIntl(MuutospyyntoWizardPerustelut);
+export default MuutospyyntoWizardPerustelut;

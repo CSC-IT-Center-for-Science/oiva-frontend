@@ -1,70 +1,45 @@
-import React, { useEffect, useMemo } from "react";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
-import { injectIntl } from "react-intl";
+import React from "react";
+import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
-import * as R from "ramda";
+import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import wizardMessages from "../../../../../../../i18n/definitions/wizard";
+import { useIntl } from "react-intl";
+import common from "../../../../../../../i18n/definitions/common";
 
 const YhteenvetoLiitteet = React.memo(props => {
-  const { onStateUpdate, sectionId } = props;
-
-  const getCategories = useMemo(() => {
-    return () => {
-      let structure = null;
-
-      structure = [
-        {
-          anchor: "hakemuksenliitteet",
-          components: [
-            {
-              name: "StatusTextRow",
-              styleClasses: ["w-full"],
-              properties: {
-                title:
-                  "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muistakaa merkitä salassa pidettävät liitteet."
-              }
-            },
-            {
-              anchor: "A",
-              styleClasses: ["w-full"],
-              name: "Attachments"
-            }
-          ]
-        }
-      ];
-      return structure;
-    };
-  }, []);
-
-  useEffect(() => {
-    const array = getCategories();
-
-    onStateUpdate(
-      {
-        categories: array
-      },
-      sectionId
-    );
-  }, [getCategories, onStateUpdate, sectionId]);
+  const intl = useIntl();
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
 
   return (
     <React.Fragment>
       <hr />
-      {!!R.path(["categories"], props.stateObject) && (
-        <ExpandableRowRoot
-          title={"Hakemuksen yleiset liitteet"}
-          anchor={sectionId}
-          key={`yhteenveto-hakemuksenliitteet`}
-          categories={props.stateObject.categories}
-          changes={R.path(["yhteenveto"], props.changeObjects)}
-          disableReverting={true}
-          showCategoryTitles={true}
-          isExpanded={true}
-          sectionId={sectionId}
-          onUpdate={props.onChangesUpdate}
-          hideAmountOfChanges={true}
-          {...props}
-        />
-      )}
+      <ExpandableRowRoot
+        title={intl.formatMessage(wizardMessages.otherAttachments)}
+        anchor={props.sectionId}
+        key={`yhteenveto-hakemuksenLiitteet`}
+        categories={[]}
+        changes={props.changeObjects.hakemuksenLiitteet}
+        disableReverting={true}
+        showCategoryTitles={true}
+        isExpanded={true}
+        sectionId={props.sectionId}
+        onUpdate={props.onChangesUpdate}
+        hideAmountOfChanges={true}>
+        <Lomake
+          action="modification"
+          anchor={props.sectionId}
+          changeObjects={props.changeObjects.hakemuksenLiitteet}
+          metadata={{
+            kohde: props.kohde
+          }}
+          onChangesUpdate={props.onChangesUpdate}
+          path={["yhteenveto", "liitteet"]}
+          rules={[]}
+          showCategoryTitles={true}></Lomake>
+      </ExpandableRowRoot>
     </React.Fragment>
   );
 });
@@ -74,8 +49,6 @@ YhteenvetoLiitteet.propTypes = {
   handleChanges: PropTypes.func,
   headingNumber: PropTypes.number,
   kohde: PropTypes.object,
-  lupa: PropTypes.object,
-  onStateUpdate: PropTypes.func,
-  stateObject: PropTypes.object
+  lupa: PropTypes.object
 };
-export default injectIntl(YhteenvetoLiitteet);
+export default YhteenvetoLiitteet;

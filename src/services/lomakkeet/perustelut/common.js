@@ -5,9 +5,9 @@ export const getMuutostarveCheckboxes = (
   locale,
   isReadOnly = false
 ) => {
-  return R.map(checkboxItem => {
+  return R.addIndex(R.map)((checkboxItem, i) => {
     const metadata = R.find(R.propEq("kieli", locale))(checkboxItem.metadata);
-    return {
+    const checkboxCategory = {
       anchor: checkboxItem.koodiArvo,
       layout: {
         margins: { top: "none" },
@@ -28,5 +28,26 @@ export const getMuutostarveCheckboxes = (
         }
       ]
     };
+    if (i === checkboxItems.length - 1) {
+      checkboxCategory.categories = [
+        {
+          anchor: "muu-perustelu",
+          components: [
+            {
+              anchor: "A",
+              name: "TextBox",
+              properties: {
+                isReadOnly,
+                title:
+                  "Perustele lyhyesti miksi tutkintoon johtavaa koulutusta halutaan järjestää",
+                value: "",
+                requiredMessage: "Pakollinen tieto puuttuu"
+              }
+            }
+          ]
+        }
+      ];
+    }
+    return checkboxCategory;
   }, checkboxItems);
 };

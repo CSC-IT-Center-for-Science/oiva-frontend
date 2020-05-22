@@ -8,9 +8,10 @@ import VT from "./VT";
 
 import { KOHTEET } from "../modules/constants";
 import { FONT_STACK } from "../../../../modules/styles";
-import { TUTKINTO_TEKSTIT, LUPA_TEKSTIT } from "../modules/constants";
 import Tutkintokieli from "./Tutkintokieli";
-import Section from "components/03-templates/Section";
+import Section from "../../../../components/03-templates/Section";
+import common from "../../../../i18n/definitions/common";
+import {useIntl} from "react-intl";
 
 const Otsikko = styled.div`
   font-size: 16px;
@@ -70,6 +71,7 @@ const KohdeKuvaus = styled.div`
 
 const LupaSection = props => {
   const { kohde, ytunnus } = props;
+  const intl = useIntl();
 
   // const { isRemoving } = this.state
 
@@ -89,7 +91,7 @@ const LupaSection = props => {
 
         return (
           <div className="border-b border-b-gray">
-            <Otsikko>{TUTKINTO_TEKSTIT.otsikkoKaikkiLuvat.FI}</Otsikko>
+            <Otsikko>{intl.formatMessage(common.lupaSectionTitleAllLupas)}</Otsikko>
 
             <Section code={headingNumber} title={heading}>
               <Tutkinnot>
@@ -97,7 +99,7 @@ const LupaSection = props => {
                   <Koulutusala key={i} {...ala} />
                 ))}
               </Tutkinnot>
-              <Tietoa>{TUTKINTO_TEKSTIT.otsikkoTaydentava.FI}</Tietoa>
+              <Tietoa>{intl.formatMessage(common.lupaSectionTitleSupplementary)}</Tietoa>
 
               <Koulutukset>
                 {vt && vt[0] && (
@@ -164,40 +166,40 @@ const LupaSection = props => {
               </List>
               <Tutkinnot>
                 {tutkinnotjakieletEn.length > 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_ENGLANTI_MONIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageEnglishPlural)
                   : null}
                 {tutkinnotjakieletEn.length === 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_ENGLANTI_YKSIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageEnglishSingular)
                   : null}
                 {_.map(tutkinnotjakieletEn, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
                 ))}
 
                 {tutkinnotjakieletSv.length > 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_RUOTSI_MONIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageSwedishPlural)
                   : null}
                 {tutkinnotjakieletSv.length === 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_RUOTSI_YKSIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageSwedishSingular)
                   : null}
                 {_.map(tutkinnotjakieletSv, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
                 ))}
 
                 {tutkinnotjakieletFi.length > 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_SUOMI_MONIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageFinnishPlural)
                   : null}
                 {tutkinnotjakieletFi.length === 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_SUOMI_YKSIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageFinnishSingular)
                   : null}
                 {_.map(tutkinnotjakieletFi, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
                 ))}
 
                 {tutkinnotjakieletRu.length > 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_VENAJA_MONIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageRussianPlural)
                   : null}
                 {tutkinnotjakieletRu.length === 1
-                  ? LUPA_TEKSTIT.KIELI.LISA_VENAJA_YKSIKKO.FI
+                  ? intl.formatMessage(common.lupaSectionExtraLanguageRussianSingular)
                   : null}
                 {_.map(tutkinnotjakieletRu, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
@@ -228,7 +230,7 @@ const LupaSection = props => {
               </List>
               {maakunnat.length > 0 || kunnat.length > 0 ? (
                 <MuutToimialueet>
-                  {LUPA_TEKSTIT.TOIMINTA_ALUE.VALTAKUNNALLINEN.FI}
+                  {intl.formatMessage(common.lupaSectionToimintaAlueNational)}
                 </MuutToimialueet>
               ) : null}
             </Section>
@@ -246,22 +248,20 @@ const LupaSection = props => {
                 const { arvo } = obj;
                 return (
                   <span key={i}>
-                    {LUPA_TEKSTIT.OPISKELIJAVUODET.VAHIMMAISMAARA.FI}&nbsp;
-                    {arvo}.
+                    {intl.formatMessage(common.lupaSectionOpiskelijavuodetMinimum, {arvo})}
                   </span>
                 );
               })}
               <KohdeKuvaus>
                 {ytunnus === "0244767-4"
-                  ? LUPA_TEKSTIT.OPISKELIJAVUODET.VALTIO.FI
+                  ? intl.formatMessage(common.lupaSectionOpiskelijavuodetValtio)
                   : kohdeKuvaus}
               </KohdeKuvaus>
               {_.map(rajoitukset, (obj, i) => {
                 const { tyyppi, arvo } = obj;
                 return (
                   <OpiskelijavuosiRajoitukset key={i}>
-                    {tyyppi}&nbsp;{LUPA_TEKSTIT.OPISKELIJAVUODET.ENINTAAN.FI}{" "}
-                    {arvo} {LUPA_TEKSTIT.OPISKELIJAVUODET.OPISKELIJAVUOTTA.FI}
+                    {intl.formatMessage(common.lupaSectionOpiskelijavuodetMaximum, {tyyppi, arvo})}
                   </OpiskelijavuosiRajoitukset>
                 );
               })}
@@ -334,7 +334,7 @@ const LupaSection = props => {
               vankilat.length === 0 &&
               vaativat.length === 0 &&
               muut.length === 0 ? (
-                <p>{LUPA_TEKSTIT.MUUT.EI_MAARAYKSIA.FI}</p>
+                <p>{intl.formatMessage(common.lupaSectionMuutEiMaarayksia)}</p>
               ) : null}
             </Section>
           </div>
@@ -352,7 +352,7 @@ const LupaSection = props => {
   } else {
     return (
       <div className="border-b border-b-gray">
-        <H3>Ei kohdetietoja</H3>
+        <H3>{intl.formatMessage(common.lupaSectionNoInfo)}</H3>
       </div>
     );
   }

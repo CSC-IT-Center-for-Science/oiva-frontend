@@ -20,11 +20,6 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.current",
-    "defaultMessage": "Nykyinen",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
     "id": "common.applyFor",
     "defaultMessage": "Haettava",
     "filepath": "src/i18n/definitions/common.js"
@@ -36,7 +31,7 @@
   },
   {
     "id": "common.undo",
-    "defaultMessage": "Peruuta muutokset",
+    "defaultMessage": "Kumoa muutokset",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -60,8 +55,18 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.accept",
+    "defaultMessage": "Hyväksy",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.today",
     "defaultMessage": "Tänään",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.date",
+    "defaultMessage": "Päivämäärä",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -170,6 +175,21 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.asiat",
+    "defaultMessage": "Asiat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asiatOpen",
+    "defaultMessage": "Avoimet",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asiatReady",
+    "defaultMessage": "Päätetyt",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.document",
     "defaultMessage": "Asiakirja",
     "filepath": "src/i18n/definitions/common.js"
@@ -215,6 +235,16 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.asianAsiakirjat",
+    "defaultMessage": "Järjestämisluvan muutos -asiakirjat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asiakirjatTakaisin",
+    "defaultMessage": "Asiat sivulle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.backFromAsiakirjat",
     "defaultMessage": "Takaisin Järjestämislupa asiat -taulukkoon",
     "filepath": "src/i18n/definitions/common.js"
@@ -240,6 +270,196 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.frontpage",
+    "defaultMessage": "Etusivu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.since",
+    "defaultMessage": "{date} lukien",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.jarjestaja",
+    "defaultMessage": "Koulutuksen järjestäjä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.homeCounty",
+    "defaultMessage": "Kotipaikan maakunta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kjAsiaTableDnro",
+    "defaultMessage": "OKM:n Dnro",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kjAsiaTableAsia",
+    "defaultMessage": "Asia",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kjAsiaTableState",
+    "defaultMessage": "Tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kjAsiaTableDueDate",
+    "defaultMessage": "Määräaika",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kjAsiaTablePaatetty",
+    "defaultMessage": "Päätetty",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.asianumero",
+    "defaultMessage": "Asianumero",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.tila",
+    "defaultMessage": "Tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.asia",
+    "defaultMessage": "Asia",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.asiakas",
+    "defaultMessage": "Koulutuksen järjestäjä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.maakunta",
+    "defaultMessage": "Maakunta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.saapunut",
+    "defaultMessage": "Saapunut/luotu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.hakupvm",
+    "defaultMessage": "Haettu voimaantulo",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.actions",
+    "defaultMessage": "Toiminnot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.valmistelussa",
+    "defaultMessage": "Merkitse valmistelussa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.esittelyssa",
+    "defaultMessage": "Merkitse esittelyssä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.paatetty",
+    "defaultMessage": "Merkitse päätetyksi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.lataa",
+    "defaultMessage": "Lataa PDF",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.muokkaa",
+    "defaultMessage": "Muokkaa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.lataaPDFJaMuutaTila",
+    "defaultMessage": "Lataa PDF ja muuta tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.kj.LUONNOS",
+    "defaultMessage": "Luonnos",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.kj.AVOIN",
+    "defaultMessage": "Lähetetty",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.kj.VALMISTELUSSA",
+    "defaultMessage": "Lähetetty",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.kj.TAYDENNETTAVA",
+    "defaultMessage": "Täydennettävä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.kj.PAATETTY",
+    "defaultMessage": "Päätetty",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.kj.PASSIVOITU",
+    "defaultMessage": "Poistettu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.LUONNOS",
+    "defaultMessage": "Luonnos",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.AVOIN",
+    "defaultMessage": "Saapunut",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.VALMISTELUSSA",
+    "defaultMessage": "Valmistelussa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.ESITTELYSSA",
+    "defaultMessage": "Esittelyssä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.TAYDENNETTAVA",
+    "defaultMessage": "Täydennettävä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.PAATETTY",
+    "defaultMessage": "Päätetty",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaStates.esittelija.PASSIVOITU",
+    "defaultMessage": "Poistettu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTypes.lupaChange",
+    "defaultMessage": "Järjestämisluvan muutos",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.current",
+    "defaultMessage": "Nykyinen",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.toBeAdded",
     "defaultMessage": "Lisättävä",
     "filepath": "src/i18n/definitions/common.js"
@@ -247,6 +467,416 @@
   {
     "id": "common.toBeRemoved",
     "defaultMessage": "Poistettava",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.ammatillisenKoulutuksenJarjestajat",
+    "defaultMessage": "Ammatillisen koulutuksen järjestäjät",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.voimassaOlevatJarjestamisluvat",
+    "defaultMessage": "Voimassa olevat järjestämisluvat ({amount} kpl)",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaLatest",
+    "defaultMessage": "Viimeisin päätös",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaPaatokset",
+    "defaultMessage": "Päätökset",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoria",
+    "defaultMessage": "Historiatiedot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.errorFetchingRow",
+    "defaultMessage": "Virhe haettaessa valitun rivin tietoja.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.errorOpeningPDF",
+    "defaultMessage": "PDF:n avaaminen ei onnistunut.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.errorLoadingLupaHistory",
+    "defaultMessage": "Lupahistoriaa ladattaessa tapahtui virhe.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.errorLoadingLupa",
+    "defaultMessage": "Järjestämislupatietojen näyttäminen epäonnistui.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.diaarinumero",
+    "defaultMessage": "Diaarinumero",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaDiaarinumeroHeading",
+    "defaultMessage": "Diaarinumero",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaPaatosDateHeading",
+    "defaultMessage": "Päätöspvm",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaStartDateHeading",
+    "defaultMessage": "Voimaantulopvm",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaEndDateHeading",
+    "defaultMessage": "Päättämispvm",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaKumottuDateHeading",
+    "defaultMessage": "Kumottu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaPaatosDateMobile",
+    "defaultMessage": "Päätös tehty: {date}",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaValidDateRangeMobile",
+    "defaultMessage": "Voimassa: {date1} - {date2}",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaHistoriaKumottuDateMobile",
+    "defaultMessage": "Kumottu: {date}",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotTitle",
+    "defaultMessage": "Omat tiedot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotVisitAddress",
+    "defaultMessage": "Käyntiosoite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotMailAddress",
+    "defaultMessage": "Postiosoite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotMunicipality",
+    "defaultMessage": "Kotipaikka",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotContactInfo",
+    "defaultMessage": "Yhteystiedot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotPhoneNumber",
+    "defaultMessage": "Puhelinnumero",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotWwwAddress",
+    "defaultMessage": "Www-osoite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotEmailAddress",
+    "defaultMessage": "Sähköpostiosoite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omatTiedotInfo",
+    "defaultMessage": "Tiedot tulevat Opetushallituksen organisaatiotietopalvelusta, joka päivittää ne yritys- ja yhteisötietojärjestelmästä (YTJ). Muutokset tietoihin tulee tehdä sitä kautta.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asiatTitle",
+    "defaultMessage": "Järjestämislupa-asiat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaPageTitleAmmatillinen",
+    "defaultMessage": "Ajantasainen ammatillisten tutkintojen ja koulutuksen järjestämislupa {date}",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaTitle",
+    "defaultMessage": "Järjestämislupa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionTitleAllLupas",
+    "defaultMessage": "Koulutuksen järjestäjällä on oikeus myöntää seuraavia tutkintoja ja antaa niihin tutkintokoulutusta:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionTitleSupplementary",
+    "defaultMessage": "Koulutuksen järjestäjä voi järjestää myös em. tutkintoihin liittyvää ammatillisesta koulutuksesta annetun lain\n (531/2017) 8 §:n 1 kohdassa tarkoitettua ammatillista osaamista syventävää tai täydentävää koulutusta.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionTutkinnotMainTitle",
+    "defaultMessage": "Tutkinnot ja koulutukset",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionTutkinnotValmaTitle",
+    "defaultMessage": "Koulutuksen järjestäjällä on oikeus järjestää seuraavaa valmentavaa koulutusta:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionTutkinnotTelmaTitle",
+    "defaultMessage": "Koulutuksen järjestäjällä on oikeus järjestää seuraavaa valmentavaa koulutusta:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionTutkinnotAmmatillinenTitle",
+    "defaultMessage": "Koulutuksen järjestäjällä on oikeus järjestää seuraavaa ammatilliseen tehtävään valmistavaa koulutusta:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpetuskieliMainTitle",
+    "defaultMessage": "Opetus- ja tutkintokieli",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpetuskieliSingular",
+    "defaultMessage": "Koulutuksen järjestäjän on annettava opetusta seuraavalla opetuskielellä:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpetuskieliPlural",
+    "defaultMessage": "Koulutuksen järjestäjän on annettava opetusta seuraavilla opetuskielillä:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageEnglishSingular",
+    "defaultMessage": "Tutkintokieli on em. opetuskielen lisäksi englanti seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageEnglishPlural",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi englanti seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageSwedishSingular",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageSwedishPlural",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageFinnishSingular",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageFinnishPlural",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageRussianSingular",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionExtraLanguageRussianPlural",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMainTitle",
+    "defaultMessage": "Toiminta-alue",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueNational",
+    "defaultMessage": "Tutkintoja ja koulutusta saa lisäksi järjestää Ahvenanmaan maakuntaa lukuun ottamatta myös muualla Suomessa.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueNationalAlternative",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta Ahvenanmaan maakuntaa lukuun ottamatta koko Suomen osaamis- ja koulutustarpeeseen.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaPluralKuntaPlural",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavien maakuntien ja kuntien alueen osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaSingularKuntaPlural",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavan maakunnan ja seuraavien kuntien osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaNoneKuntaPlural",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavien kuntien osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaPluralKuntaSingular",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavien maakuntien ja seuraavan kunnan osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaSingularKuntaSingular",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavan maakunnan ja kunnan osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaNoneKuntaSingular",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavan kunnan osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaPluralKuntaNone",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavien maakuntien osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueMaakuntaSingularKuntaNone",
+    "defaultMessage": "Koulutuksen järjestäjällä on velvollisuus järjestää tutkintoja ja koulutusta ensisijaisesti seuraavan maakunnan osaamis- ja koulutustarpeeseen:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionToimintaAlueNone",
+    "defaultMessage": "Koulutuksen järjestäjällä ei ole alueellista velvoitetta järjestää tutkintoja ja koulutusta. Koulutuksen järjestäjä saa järjestää tutkintoja ja koulutusta koko Suomessa Ahvenanmaan maakuntaa lukuun ottamatta.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetMainTitle",
+    "defaultMessage": "Opiskelijavuodet ja niitä koskevat rajoitukset",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetMinimum",
+    "defaultMessage": "Koulutuksen järjestäjän opiskelijavuosien vähimmäismäärä on {arvo}",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetMaximum",
+    "defaultMessage": "{tyyppi} enintään {arvo} opiskelijavuotta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetValtio",
+    "defaultMessage": "Valtion oppilaitokselle ei määritetä opiskelijavuosien määrää.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetLimitationSingular",
+    "defaultMessage": "Opiskelijavuosien vähimmäismäärää koskee seuraava rajoitus:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetLimitationPlural",
+    "defaultMessage": "Opiskelijavuosien vähimmäismäärää koskevat seuraavat velvollisuudet:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionOpiskelijavuodetLimitationNone",
+    "defaultMessage": "Koulutuksen järjestäjälle ei määritetä opiskelijavuosien vähimmäismäärää.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionMuutMainTitle",
+    "defaultMessage": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionMuutEiMaarayksia",
+    "defaultMessage": "Koulutuksen järjestäjälle ei tässä järjestämisluvassa määrätä muita oikeuksia, velvollisuuksia, ehtoja tai tehtäviä.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupaSectionNoInfo",
+    "defaultMessage": "Ei kohdetietoja",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.tutkinnot",
+    "defaultMessage": "Tutkinnot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.koulutukset",
+    "defaultMessage": "Koulutukset",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.luoUusiAsia",
+    "defaultMessage": "Luo uusi asia",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.luoUusiAsiaInstructions",
+    "defaultMessage": "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.poista",
+    "defaultMessage": "Poista",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.titleOfPoistetaankoKokoAsia",
+    "defaultMessage": "Tämän asiakirjan poisto poistaa koko asian",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.poistetaankoKokoAsia",
+    "defaultMessage": "Haluatko varmasti poistaa asiakirjan ja asian? Poiston jälkeen siirrytään Asiat-sivulle, jossa kyseinen asia ei ole enää näkyvillä.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.titleOfPoistetaankoAsiakirja",
+    "defaultMessage": "Asiakirjan poisto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.poistetaankoAsiakirja",
+    "defaultMessage": "Haluatko varmasti poistaa asiakirjan? Poiston jälkeen et voi enää muokata tätä asiakirjaa.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.doNotRemove",
+    "defaultMessage": "Älä poista",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.titleOfPDFAndStateDialog",
+    "defaultMessage": "Muutetaanko asian tila latauksen yhteydessä?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.textOfPDFAndStateDialog",
+    "defaultMessage": "Mikäli järjestämislupaa ollaan viemässä allekirjoitettavaksi, asian tila tulee muuttaa \"Esittelyssä\" tilaan. Muutetaanko tila?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.downloadPDFAndChangeState",
+    "defaultMessage": "Lataa PDF ja muuta tila",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -495,33 +1125,38 @@
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "wizard.tooltipTaloudellisetYleisetTiedotKentta1",
-    "defaultMessage": "Esittäkää taloudelliset edellytyksenne järjestää haettuja tehtäviä huomioiden, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä.",
+    "id": "wizard.tutkintokielet",
+    "defaultMessage": "Tutkintokielet",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "wizard.tooltipTaloudellisetYleisetTiedotKentta2",
-    "defaultMessage": "Arvioikaa, vaikuttaako haetut tehtävät nykyisten taloudellisten resurssienne uudelleen kohdentamiseen. Jos vaikuttavat, esittäkää millä tavalla.",
+    "id": "wizard.allFieldsRequired",
+    "defaultMessage": "Täydennä kaikki tämän sivun kentät.",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "wizard.tooltipTaloudellisetYleisetTiedotKentta3",
-    "defaultMessage": "Mikäli haette työvoimakoulutuksen tai laajennettua oppisopimuskoulutuksen järjestämistehtävää, arvioikaa, miten kykenette vastaamaan ko. koulutustarpeen muutoksiin nopeasti ja uudelleen kohdentamaan resurssejanne tarpeen mukaisesti.",
+    "id": "wizard.allPerustelutRequired",
+    "defaultMessage": "Perustele kaikki muutokset.",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "wizard.tooltipTaloudellisetInvestoinnitKentta1",
-    "defaultMessage": "Esittäkää haetun tehtävän mukaisen toiminnan käynnistämiseksi tarvittavat investoinnit.",
+    "id": "wizard.otherAttachments",
+    "defaultMessage": "Muut liitteet",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "wizard.tooltipTaloudellisetInvestoinnitKentta2",
-    "defaultMessage": "Arvioikaa edellä esittämienne investointien kustannukset yhteensä.",
+    "id": "wizard.getOut",
+    "defaultMessage": "Poistu",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
-    "id": "wizard.tooltipTaloudellisetInvestoinnitKentta3",
-    "defaultMessage": "Esittäkää, miten rahoitatte edellä esittämänne investoinnit. Huomioikaa, että muutokset toiminnassa vaikuttavat rahoitukseen viiveellä.",
+    "id": "wizard.previewAndPrint",
+    "defaultMessage": "Esikatsele ja tulosta",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.esittelijatMuutospyyntoDialogTitle",
+    "defaultMessage": "Päätöksen valmistelu: Järjestämisluvan muutos",
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {

@@ -1,30 +1,14 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-
 import Section from "../Section";
+
 const FormSection = React.memo(
-  ({
-    children,
-    code,
-    id,
-    muutoshakemus,
-    render,
-    runOnChanges,
-    runOnStateUpdate,
-    title
-  }) => {
+  ({ children, code, id, render, runOnChanges, title }) => {
     const updateChanges = useCallback(
       payload => {
         runOnChanges(payload.anchor, payload.changes);
       },
       [runOnChanges]
-    );
-
-    const updateState = useCallback(
-      (data, sectionId) => {
-        runOnStateUpdate(sectionId || id, data);
-      },
-      [id, runOnStateUpdate]
     );
 
     const removeChanges = useCallback(
@@ -38,25 +22,30 @@ const FormSection = React.memo(
       <Section code={code} title={title}>
         {!!render
           ? render({
-              muutoshakemus,
               onChangesRemove: removeChanges,
               onChangesUpdate: updateChanges,
-              onStateUpdate: updateState,
               sectionId: id
             })
           : null}
         {children}
       </Section>
     );
+  },
+  (currentProps, nextProps) => {
+    const isSameOld =
+      "" + currentProps.runOnChanges === "" + nextProps.runOnChanges &&
+      currentProps.code === nextProps.code &&
+      currentProps.title === nextProps.title &&
+      "" + currentProps.render === "" + nextProps.render &&
+      currentProps.id === nextProps.id;
+    return isSameOld;
   }
 );
 
 FormSection.propTypes = {
   id: PropTypes.string,
   code: PropTypes.number,
-  muutoshakemus: PropTypes.object,
   runOnChanges: PropTypes.func,
-  runOnStateUpdate: PropTypes.func,
   title: PropTypes.string
 };
 

@@ -1,103 +1,65 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { getDataForKoulutusList } from "../../../../../../../utils/koulutusUtil";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import wizardMessages from "../../../../../../../i18n/definitions/wizard";
-import { isInLupa, isAdded, isRemoved } from "../../../../../../../css/label";
-import { injectIntl } from "react-intl";
+import common from "../../../../../../../i18n/definitions/common";
+import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import * as R from "ramda";
+import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import { toUpper, values } from "ramda";
+import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
-const ValmentavatKoulutukset = React.memo(props => {
-  const sectionId = "koulutukset_valmentavatKoulutukset";
-  const { onChangesRemove, onChangesUpdate, onStateUpdate } = props;
+const ValmentavatKoulutukset = React.memo(
+  ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
+    const [changeObjects] = useChangeObjects();
+    const intl = useIntl();
+    const sectionId = "koulutukset_valmentavatKoulutukset";
 
-  const getCategories = useMemo(() => {
-    return (koulutusData, kohde, maaraystyyppi) => {
-      const categories = R.map(item => {
-        return {
-          anchor: item.code,
-          components: [
-            {
-              anchor: "A",
-              name: "CheckboxWithLabel",
-              properties: {
-                name: "CheckboxWithLabel",
-                code: item.code,
-                title: item.title,
-                isChecked: item.shouldBeChecked,
-                labelStyles: {
-                  addition: isAdded,
-                  removal: isRemoved,
-                  custom: Object({}, item.isInLupa ? isInLupa : {})
-                }
-              }
-            }
-          ],
-          meta: {
-            kohde,
-            maaraystyyppi,
-            isInLupa: item.isInLupa,
-            koodisto: item.koodisto,
-            metadata: item.metadata
-          }
-        };
-      }, koulutusData.items);
-      return categories;
-    };
-  }, []);
+    const koulutusdata = useMemo(() => {
+      return getDataForKoulutusList(
+        values(koulutukset.poikkeukset),
+        toUpper(intl.locale)
+      );
+    }, [intl.locale, koulutukset]);
 
-  useEffect(() => {
-    onStateUpdate(
-      {
-        categories: getCategories(
-          getDataForKoulutusList(
-            R.values(props.koulutukset.poikkeukset),
-            R.toUpper(props.intl.locale)
-          ),
-          props.kohde,
-          props.maaraystyyppi
-        )
-      },
-      sectionId
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    }
+
+    return (
+      <ExpandableRowRoot
+        anchor={sectionId}
+        key={`expandable-row-root`}
+        categories={[]}
+        changes={changeObjects.koulutukset.valmentavatKoulutukset}
+        hideAmountOfChanges={true}
+        messages={changesMessages}
+        title={intl.formatMessage(wizardMessages.preparatoryTraining)}
+        index={0}
+        onChangesRemove={onChangesRemove}
+        onUpdate={onChangesUpdate}
+        sectionId={sectionId}>
+        {koulutusdata && (
+          <Lomake
+            action="modification"
+            anchor={sectionId}
+            changeObjects={changeObjects.koulutukset.valmentavatKoulutukset}
+            data={{
+              koulutusdata
+            }}
+            onChangesUpdate={onChangesUpdate}
+            path={["koulutukset", "valmentavatKoulutukset"]}
+            rules={[]}
+            showCategoryTitles={true}></Lomake>
+        )}
+      </ExpandableRowRoot>
     );
-  }, [
-    getCategories,
-    onStateUpdate,
-    props.kohde,
-    props.koulutukset.poikkeukset,
-    props.intl.locale,
-    props.maaraystyyppi
-  ]);
-
-  return (
-    <React.Fragment>
-      {props.stateObject.categories ? (
-        <ExpandableRowRoot
-          anchor={sectionId}
-          key={`expandable-row-root`}
-          categories={props.stateObject.categories}
-          changes={props.changeObjects}
-          title={props.intl.formatMessage(wizardMessages.preparatoryTraining)}
-          index={0}
-          onChangesRemove={onChangesRemove}
-          onUpdate={onChangesUpdate}
-          sectionId={sectionId}
-        />
-      ) : null}
-    </React.Fragment>
-  );
-});
-
-ValmentavatKoulutukset.defaultProps = {
-  stateObject: {}
-};
+  }
+);
 
 ValmentavatKoulutukset.propTypes = {
-  changeObjects: PropTypes.array,
-  kohde: PropTypes.object,
-  koulutukset: PropTypes.object,
-  maaraystyyppi: PropTypes.object,
-  stateObject: PropTypes.object
+  koulutukset: PropTypes.object
 };
 
-export default injectIntl(ValmentavatKoulutukset);
+export default ValmentavatKoulutukset;

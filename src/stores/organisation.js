@@ -4,14 +4,15 @@ import { execute } from "./utils/loadFromBackend";
 const Store = createStore({
   initialState: {},
   actions: {
-    load: userOid => ({ getState, setState }) => {
+    load: oid => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
           key: "organisaatio",
-          urlEnding: userOid
+          path: [oid],
+          urlEnding: oid
         },
-        { userOid }
+        { oid }
       );
     }
   },

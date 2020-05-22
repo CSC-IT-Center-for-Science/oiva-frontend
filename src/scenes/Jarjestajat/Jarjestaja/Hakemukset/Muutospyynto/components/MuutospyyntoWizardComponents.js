@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { COLORS, MEDIA_QUERIES, TRANSITIONS } from "../../../../../../modules/styles"
 import arrowDown from 'static/images/arrow-down.svg'
 
+const isDebugOn = process.env.REACT_APP_DEBUG === "true";
+
 export const Area = styled.div`
   margin: 15px 0;
 `
@@ -29,11 +31,11 @@ export const WizardTop = styled.div`
 
 export const WizardBottom = styled.div`
   background-color: ${COLORS.BG_GRAY};
-  left: 0;
+  left: ${isDebugOn ? "33.333%" : "0"};
   bottom: 0;
   z-index: 2;
   display: flex;
-  width: 100vw;
+  width: ${isDebugOn ? "66.666%" : "100vw"};
   position: fixed;
   border-top: 1px solid #ddd;
 `

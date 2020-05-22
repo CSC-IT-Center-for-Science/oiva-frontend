@@ -1,5 +1,5 @@
 import { HAKEMUS_OTSIKOT } from "../../../locales/uusiHakemusFormConstants";
-// import { injectIntl } from "react-intl";
+import { messages } from "../utils";
 
 export const getKuljettajienJatkokoulutuslomake = (
   addPeopleFormCallback,
@@ -326,6 +326,7 @@ const johtaja = (orderCode, isReadOnly) => {
                   title: "C-luokka",
                   forChangeObject: {
                     fieldName: "C-luokka"
+                  }
                 }
               }
             ]
@@ -453,7 +454,8 @@ const johtaja = (orderCode, isReadOnly) => {
                   title:
                     "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto",
                   forChangeObject: {
-                    fieldName: "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto"
+                    fieldName:
+                      "Kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto"
                   }
                 }
               }
@@ -499,6 +501,7 @@ const johtaja = (orderCode, isReadOnly) => {
             anchor: "A",
             styleClasses: ["w-full"],
             name: "Attachments",
+            messages: messages.attachments,
             properties: {
               isReadOnly
             }
@@ -632,6 +635,7 @@ const ajoneuvoKanta = (orderCode, isReadOnly) => {
             anchor: "A",
             styleClasses: ["w-full"],
             name: "Attachments",
+            messages: messages.attachments,
             properties: {
               isReadOnly
             }

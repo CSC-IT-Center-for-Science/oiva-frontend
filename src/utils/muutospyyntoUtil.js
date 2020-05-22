@@ -414,7 +414,7 @@ export function combineArrays(arrays) {
     const currentArray = arrays.pop();
     if (!currentArray) return combineArrays(arrays);
     else if (arrays) {
-      return currentArray.concat(combineArrays(arrays));
+      return R.concat(currentArray, combineArrays(arrays));
     } else return currentArray;
   } else return [];
 }

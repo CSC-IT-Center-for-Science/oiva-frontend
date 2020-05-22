@@ -1,10 +1,10 @@
+import "./wdyr";
 import React from "react";
 import { render } from "react-dom";
 import { ThroughProvider } from "react-through";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { COLORS } from "./modules/styles";
 import AppWrapper from "./AppWrapper";
-import { AppProvider } from "./context/appContext";
 // import * as serviceWorker from "./registerServiceWorker";
 
 import "./css/tailwind.css";
@@ -33,9 +33,7 @@ const theme = createMuiTheme({
 render(
   <ThroughProvider>
     <MuiThemeProvider theme={theme}>
-      <AppProvider>
-        <AppWrapper />
-      </AppProvider>
+      <AppWrapper />
     </MuiThemeProvider>
   </ThroughProvider>,
   document.getElementById("root")

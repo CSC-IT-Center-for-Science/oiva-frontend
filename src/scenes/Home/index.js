@@ -16,19 +16,18 @@ const Home = () => {
       </Typography>
       <Card className="p-4">
         <Typography paragraph={true}>
-          Palvelusta löytyvät kaikki ajantasaiset ammatillisen koulutuksen
-          järjestämisluvat. Palvelu tulee sisältämään hakemusten laatimisen ja
-          päätöksenteon lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia
-          tilastoja. Myöhemmin Oiva laajennetaan koskemaan myös yleissivistävän
-          koulutuksen järjestämisluvat ja ylläpitämisluvat ja lupien
-          hakupalvelut.
+          Palvelusta löytyvät tällä hetkellä kaikki ajantasaiset ammatillisen
+          koulutuksen järjestämisluvat sekä vapaan sivistystyön oppilaitosten
+          ylläpitämisluvat. Myöhemmin Oiva laajennetaan koskemaan myös esi- ja
+          perusopetuksen sekä lukiokoulutuksen järjestämisluvat. Palvelusta
+          löytyy lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia
+          tilastoja ammatillisen koulutuksen osalta.
         </Typography>
         <Typography paragraph={true} variant="body2" className="py-4">
           <Link
             href="https://link.webropolsurveys.com/S/F156FEC089139BF4"
             color="inherit"
-            target="_blank"
-          >
+            target="_blank">
             Palautelomake
           </Link>
         </Typography>

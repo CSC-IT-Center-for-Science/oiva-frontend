@@ -3,16 +3,16 @@ import Media from "react-media";
 import styled from "styled-components";
 import { Table as OldTable, Tbody } from "../../../../modules/Table";
 import { MEDIA_QUERIES } from "../../../../modules/styles";
-import { LUPA_TEKSTIT } from "../modules/constants";
 import LupaHistoryItem from "./LupaHistoryItem";
-import Table from "../../../../components/02-organisms/Table";
+import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import moment from "moment";
-import { API_BASE_URL } from "../../../../modules/constants";
 import PropTypes from "prop-types";
 import { downloadFileFn } from "../../../../utils/common";
 import { useLupahistoria } from "../../../../stores/lupahistoria";
 import _ from "lodash";
 import * as R from "ramda";
+import {useIntl} from "react-intl";
+import common from "../../../../i18n/definitions/common";
 
 const WrapTable = styled.div``;
 
@@ -25,6 +25,7 @@ const colWidths = {
 };
 
 const LupaHistory = ({ history, jarjestajaOid }) => {
+  const intl = useIntl();
   const [lupahistoria, actions] = useLupahistoria();
 
   // Let's fetch LUPAHISTORIA
@@ -48,15 +49,15 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
                     truncate: false,
                     styleClasses: [colWidths[ii]],
                     text: title,
-                    sortingTooltip: "Järjestä sarakkeen mukaan"
+                    sortingTooltip: intl.formatMessage(common.sort)
                   };
                 },
                 [
-                  LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.DIAARINUMERO.FI,
-                  LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.PAATOSPVM.FI,
-                  LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.VOIMAANTULOPVM.FI,
-                  LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.PAATTAMISPVM.FI,
-                  LUPA_TEKSTIT.PAATOKSET.HISTORIA_TAULUKKO.KUMOTTU.FI
+                  intl.formatMessage(common.lupaHistoriaDiaarinumeroHeading),
+                  intl.formatMessage(common.lupaHistoriaPaatosDateHeading),
+                  intl.formatMessage(common.lupaHistoriaStartDateHeading),
+                  intl.formatMessage(common.lupaHistoriaEndDateHeading),
+                  intl.formatMessage(common.lupaHistoriaKumottuDateHeading)
                 ]
               )
             }
@@ -69,8 +70,7 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
       rowGroups: [
         {
           rows: R.addIndex(R.map)((row, i) => {
-            const isKumottu =
-              row.voimassaoloalkupvm === row.voimassaololoppupvm;
+            const isKumottu = row.kumottupvm && row.kumottupvm < row.voimassaoloalkupvm;
             const voimassaoloalkupvm = moment(row.voimassaoloalkupvm).format(
               "DD.MM.YYYY"
             );
@@ -78,29 +78,20 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
               "DD.MM.YYYY"
             );
             return {
-              id: row.diaarinumero,
+              id: row.uuid,
               onClick: row => {
                 const lupaHistoryObject = R.find(
-                  R.propEq("diaarinumero", row.id),
+                  R.propEq("uuid", row.id),
                   lupahistoria.data
                 );
                 if (lupaHistoryObject) {
-                  const pathToPDF =
-                    moment(lupaHistoryObject.voimassaololoppupvm) >
-                    moment("2018-12-30") // Yeah, hard coded value. Not sure if it's valid anymore.
-                      ? "/pdf/"
-                      : "/pebble/resources/liitteet/lupahistoria/";
-                  if (history) {
-                    downloadFileFn({
-                      filename: lupaHistoryObject.filename,
-                      openInNewWindow: true,
-                      url: `${API_BASE_URL}${pathToPDF}`
-                    })();
-                  } else {
-                    console.error("PDF:n avaaminen ei onnistunut.");
-                  }
+                  downloadFileFn({
+                    filename: lupaHistoryObject.filename,
+                    openInNewWindow: true,
+                    url: `/pdf/historia/${lupaHistoryObject.uuid}`
+                  })();
                 } else {
-                  console.error("Virhe haettaessa valitun rivin tietoja.");
+                  console.error(intl.formatMessage(common.errorFetchingRow));
                 }
               },
               cells: R.addIndex(R.map)(
@@ -134,7 +125,7 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
     return _.map(data, (historyData, index) => (
       <LupaHistoryItem
         lupaHistoria={historyData}
-        key={`${historyData.diaarinumero}-${index}`}
+        key={`${historyData.uuid}-${index}`}
       />
     ));
   };
@@ -164,7 +155,7 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
         </WrapTable>
       )}
       {lupahistoria.fetchedAt && !lupahistoria.data && (
-        <h2>{LUPA_TEKSTIT.PAATOKSET.VIRHE.FI}</h2>
+        <h2>{intl.formatMessage(common.errorLoadingLupaHistory)}</h2>
       )}
     </React.Fragment>
   );

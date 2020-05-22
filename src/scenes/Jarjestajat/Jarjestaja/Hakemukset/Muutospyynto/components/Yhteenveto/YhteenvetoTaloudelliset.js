@@ -1,7 +1,6 @@
 import React from "react";
 import { MUUTOS_WIZARD_TEKSTIT } from "../../modules/constants";
 import FormSection from "../../../../../../../components/03-templates/FormSection";
-import { injectIntl } from "react-intl";
 import TaloudellisetYleisettiedot from "../Taloudelliset/TaloudellisetYleisettiedot";
 import TaloudellisetInvestoinnit from "../Taloudelliset/TaloudellisetInvestoinnit";
 import TaloudellisetTilinpaatostiedot from "../Taloudelliset/TaloudellisetTilinpaatostiedot";
@@ -12,8 +11,7 @@ import * as R from "ramda";
 const YhteenvetoTaloudelliset = ({
   changeObjects,
   muutoshakemus,
-  onChangesUpdate,
-  onStateUpdate
+  onChangesUpdate
 }) => {
   return (
     <React.Fragment>
@@ -28,95 +26,60 @@ const YhteenvetoTaloudelliset = ({
         <React.Fragment>
           <FormSection
             className="my-0"
-            id="yhteenveto_taloudelliset_yleisettiedot"
+            id="taloudelliset_yleisettiedot"
             render={_props => (
               <React.Fragment>
                 <TaloudellisetYleisettiedot
-                  stateObject={R.path(
-                    ["yhteenveto", "taloudelliset", "yleisettiedot"],
-                    muutoshakemus
+                  changeObjects={R.path(
+                    ["taloudelliset", "yleisettiedot"],
+                    changeObjects
                   )}
-                  changeObjects={{
-                    taloudelliset: R.path(
-                      ["taloudelliset", "yleisettiedot"],
-                      changeObjects
-                    )
-                  }}
                   isReadOnly={true}
                   {..._props}
                 />
               </React.Fragment>
             )}
-            runOnStateUpdate={onStateUpdate}
             runOnChanges={onChangesUpdate}
           />
           <FormSection
-            id="yhteenveto_taloudelliset_investoinnit"
+            id="taloudelliset_investoinnit"
             render={_props => (
               <React.Fragment>
                 <TaloudellisetInvestoinnit
-                  stateObject={R.path(
-                    ["yhteenveto", "taloudelliset", "investoinnit"],
-                    muutoshakemus
+                  changeObjects={R.path(
+                    ["taloudelliset", "investoinnit"],
+                    changeObjects
                   )}
-                  changeObjects={{
-                    taloudelliset: R.path(
-                      ["taloudelliset", "investoinnit"],
-                      changeObjects
-                    )
-                  }}
                   isReadOnly={true}
                   {..._props}
                 />
               </React.Fragment>
             )}
-            runOnStateUpdate={onStateUpdate}
             runOnChanges={onChangesUpdate}
           />
           <FormSection
-            id="yhteenveto_taloudelliset_tilinpaatostiedot"
+            id="taloudelliset_tilinpaatostiedot"
             render={_props => (
               <React.Fragment>
                 <TaloudellisetTilinpaatostiedot
-                  stateObject={R.path(
-                    ["yhteenveto", "taloudelliset", "tilinpaatostiedot"],
-                    muutoshakemus
+                  changeObjects={R.path(
+                    ["taloudelliset", "tilinpaatostiedot"],
+                    changeObjects
                   )}
-                  changeObjects={{
-                    taloudelliset: R.path(
-                      ["taloudelliset", "tilinpaatostiedot"],
-                      changeObjects
-                    )
-                  }}
                   isReadOnly={true}
                   {..._props}
                 />
               </React.Fragment>
             )}
-            runOnStateUpdate={onStateUpdate}
             runOnChanges={onChangesUpdate}
           />
           <FormSection
             id="taloudelliset_liitteet"
             render={_props => (
               <React.Fragment>
-                <TaloudellisetLiitteet
-                  stateObject={R.path(
-                    ["taloudelliset", "liitteet"],
-                    muutoshakemus
-                  )}
-                  changeObjects={{
-                    taloudelliset: R.path(
-                      ["taloudelliset", "liitteet"],
-                      changeObjects
-                    )
-                  }}
-                  {..._props}
-                  isReadOnly={true}
-                />
+                <TaloudellisetLiitteet {..._props} isReadOnly={true} />
               </React.Fragment>
             )}
-            runOnStateUpdate={onStateUpdate}
             runOnChanges={onChangesUpdate}
           />
         </React.Fragment>
@@ -128,8 +91,7 @@ const YhteenvetoTaloudelliset = ({
 YhteenvetoTaloudelliset.propTypes = {
   changeObjects: PropTypes.object,
   muutoshakemus: PropTypes.object,
-  onChangesUpdate: PropTypes.func,
-  onStateUpdate: PropTypes.func
+  onChangesUpdate: PropTypes.func
 };
 
-export default injectIntl(YhteenvetoTaloudelliset);
+export default YhteenvetoTaloudelliset;

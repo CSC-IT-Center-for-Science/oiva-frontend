@@ -64,6 +64,7 @@ const submitMuutospyynto = (uuid) => {
 
 export const saveMuutospyynto = (muutospyynto, attachments, triggerPreview = false) => async (dispatch) => {
   const data = createMuutospyyntoOutput(muutospyynto, attachments);
+  console.info(data);
   dispatch({ type: SAVE_MUUTOSPYYNTO_START });
 
   try {

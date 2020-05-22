@@ -1,15 +1,18 @@
 import React from "react";
 import * as R from "ramda";
-import Table from "../../../components/02-organisms/Table";
+import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
+import common from "../../../i18n/definitions/common";
+import { useHistory } from "react-router-dom";
 
 const colWidths = {
   0: "w-4/6",
   1: "w-2/6"
 };
 
-function LuvatList({ history, luvat = [] }) {
+function LuvatList({ luvat = [] }) {
+  const history = useHistory();
   const intl = useIntl();
   const tableStructure = [
     {
@@ -28,8 +31,8 @@ function LuvatList({ history, luvat = [] }) {
                   };
                 },
                 [
-                  { text: "Koulutuksen järjestäjä" },
-                  { text: "Kotipaikan maakunta" }
+                  { text: intl.formatMessage(common.jarjestaja) },
+                  { text: intl.formatMessage(common.homeCounty) }
                 ]
               )
             }
@@ -44,7 +47,7 @@ function LuvatList({ history, luvat = [] }) {
           rows: R.addIndex(R.map)(row => {
             const jarjestajanNimi =
               row.jarjestaja.nimi[intl.locale] ||
-              row.jarjestaja.nimi.fi ||
+              R.head(R.values(row.jarjestaja.nimi)) ||
               "[nimi puuttuu]";
             const maakunta = R.find(
               R.propEq("kieli", R.toUpper(intl.locale)),
@@ -89,7 +92,6 @@ function LuvatList({ history, luvat = [] }) {
 }
 
 LuvatList.propTypes = {
-  history: PropTypes.object,
   luvat: PropTypes.array
 };
 

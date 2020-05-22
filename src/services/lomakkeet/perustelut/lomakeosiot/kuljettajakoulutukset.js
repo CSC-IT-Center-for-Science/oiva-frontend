@@ -1,4 +1,5 @@
 import { HAKEMUS_OTSIKOT } from "../../../../locales/uusiHakemusFormConstants";
+import { getMessages } from "../../utils";
 
 function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
   return [
@@ -45,7 +46,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                 fullWidth: true,
                 isReadOnly,
                 placeholder: "Lukumäärä",
-                type: "number"
+                type: "number",
+                value: ""
               }
             }
           ]
@@ -69,7 +71,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                 fullWidth: true,
                 isReadOnly,
                 placeholder: "Lukumäärä",
-                type: "number"
+                type: "number",
+                value: ""
               }
             }
           ]
@@ -93,13 +96,14 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                 fullWidth: true,
                 isReadOnly,
                 placeholder: "Lukumäärä",
-                type: "number"
+                type: "number",
+                value: ""
               }
             }
           ]
         },
         {
-          anchor: "vahintaan-1-vuoden-kokemus",
+          anchor: "vahintaan-1-vuoden-kokemus-a",
           title:
             "a) vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvon päätoimisena kuljettajana:",
           categories: [
@@ -122,7 +126,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -146,7 +151,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -170,7 +176,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -178,7 +185,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
           ]
         },
         {
-          anchor: "vahintaan-1-vuoden-kokemus",
+          anchor: "vahintaan-1-vuoden-kokemus-b",
           title: "b) jokin seuraavista tutkinnoista:",
           categories: [
             {
@@ -200,7 +207,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -224,7 +232,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -248,7 +257,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -272,7 +282,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -298,7 +309,8 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                     fullWidth: true,
                     isReadOnly,
                     placeholder: "Lukumäärä",
-                    type: "number"
+                    type: "number",
+                    value: ""
                   }
                 }
               ]
@@ -334,6 +346,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
               anchor: "A",
               styleClasses: ["w-full"],
               name: "Attachments",
+              messages: getMessages("attachments"),
               properties: {
                 isReadOnly
               }
@@ -362,7 +375,8 @@ export function tehtavanTarpeellisuus(orderCode, isReadOnly) {
             properties: {
               isReadOnly,
               title:
-                "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne"
+                "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+              value: ""
             }
           }
         ]
@@ -375,9 +389,18 @@ export function voimassaOlo(orderCode, isReadOnly) {
   return {
     anchor: "voimassaolo",
     code: orderCode,
-    title:
-      "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?",
+    title: "Lupa",
     styleClasses: ["border-t px-4 py-8 hover:bg-gray-100"],
+    components: [
+      {
+        anchor: "title",
+        name: "StatusTextRow",
+        properties: {
+          title:
+            "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?"
+        }
+      }
+    ],
     categories: [
       {
         anchor: "voimassaolo-field-no",
@@ -442,7 +465,8 @@ export function suunnitelma(orderCode, isReadOnly) {
             properties: {
               isReadOnly,
               title:
-                "Esittäkää toimintamalli ammattipätevyyskoulutuksen tiloista ja toteutuksesta"
+                "Esittäkää toimintamalli ammattipätevyyskoulutuksen tiloista ja toteutuksesta",
+              value: ""
             }
           }
         ]
@@ -468,7 +492,8 @@ export function osaaminen(orderCode, isReadOnly) {
             properties: {
               isReadOnly,
               title:
-                "Selvitys henkilöstön osaamisesta koulutusohjelman järjestämiseksi"
+                "Selvitys henkilöstön osaamisesta koulutusohjelman järjestämiseksi",
+              value: ""
             }
           }
         ]
@@ -487,16 +512,16 @@ export function johtaja(orderCode, isReadOnly) {
     categories: [
       {
         anchor: `johtaja-info`,
-        code: "!",
-        title:
-          "Valtioneuvoston asetuksen 434/2018 10 §:ssä on säädetty opettajien ja opetuksesta vastaavan johtajan pätevyydestä.",
         components: [
           {
             anchor: "A",
             name: "TextBox",
             properties: {
               isReadOnly,
-              placeholder: "Sana on vapaa..."
+              placeholder: "Sana on vapaa...",
+              title:
+                "! Valtioneuvoston asetuksen 434/2018 10 §:ssä on säädetty opettajien ja opetuksesta vastaavan johtajan pätevyydestä.",
+              value: ""
             }
           }
         ]
@@ -531,6 +556,7 @@ export function johtaja(orderCode, isReadOnly) {
                 anchor: "A",
                 styleClasses: ["w-full"],
                 name: "Attachments",
+                messages: getMessages("attachments"),
                 properties: {
                   isReadOnly
                 }
@@ -591,7 +617,8 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
               isReadOnly,
               label: "Linja-autoja",
               placeholder: "Linja-autoja",
-              type: "number"
+              type: "number",
+              value: ""
             }
           },
           {
@@ -603,7 +630,8 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
               isReadOnly,
               label: "Kuorma-autoja",
               placeholder: "Kuorma-autoja",
-              type: "number"
+              type: "number",
+              value: ""
             }
           },
           {
@@ -615,7 +643,8 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
               isReadOnly,
               label: "Perävaunuja",
               placeholder: "Perävaunuja",
-              type: "number"
+              type: "number",
+              value: ""
             }
           },
           {
@@ -627,7 +656,8 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
               isReadOnly,
               label: "Muut ajoneuvot",
               placeholder: "Muut ajoneuvot",
-              type: "number"
+              type: "number",
+              value: ""
             }
           }
         ]
@@ -659,6 +689,7 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
                 anchor: "A",
                 styleClasses: ["w-full"],
                 name: "Attachments",
+                messages: getMessages("attachments"),
                 properties: {
                   isReadOnly
                 }
@@ -680,16 +711,16 @@ export function muutOpetusvalineet(orderCode, isReadOnly) {
     categories: [
       {
         anchor: `asetuksen-mukaiset`,
-        code: "!",
         styleClasses: ["pl-6"],
-        title:
-          "Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)",
         components: [
           {
             anchor: "A",
             name: "TextBox",
             properties: {
-              isReadOnly
+              isReadOnly,
+              title:
+                "! Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)",
+              value: ""
             }
           }
         ]
@@ -697,8 +728,6 @@ export function muutOpetusvalineet(orderCode, isReadOnly) {
       {
         anchor: "muut",
         styleClasses: ["pl-6"],
-        title: "Muut opetus- ja havaintovälineet",
-
         components: [
           {
             anchor: "B",
@@ -707,7 +736,9 @@ export function muutOpetusvalineet(orderCode, isReadOnly) {
               isReadOnly,
               labelStyles: {},
               placeholder:
-                "Muut oppilaitoksen oppimisympäristöissä tapahtuvaan osaamisen hankkimiseen liittyvät välineet"
+                "Muut oppilaitoksen oppimisympäristöissä tapahtuvaan osaamisen hankkimiseen liittyvät välineet",
+              title: "Muut opetus- ja havaintovälineet",
+              value: ""
             }
           }
         ]

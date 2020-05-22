@@ -3,17 +3,17 @@ import Media from "react-media";
 import styled from "styled-components";
 import { Table as OldTable, Tbody } from "../../../../modules/Table";
 import { MEDIA_QUERIES } from "../../../../modules/styles";
-import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import JarjestamislupaAsiakirjatItem from "./JarjestamislupaAsiakirjatItem";
 import common from "../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { downloadFileFn } from "../../../../utils/common";
-import Table from "../../../../components/02-organisms/Table";
+import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import { useOrganisation } from "../../../../stores/organisation";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
 import { useMuutospyynnonLiitteet } from "../../../../stores/muutospyynnonLiitteet";
+import {asiaStateToLocalizationKeyMap} from "../modules/constants";
 
 const WrapTable = styled.div``;
 
@@ -58,9 +58,7 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto }) => {
 
   const baseRow = [
     muutospyynto.tila && states.includes(muutospyynto.tila)
-      ? LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[muutospyynto.tila][
-          R.toUpper(intl.locale)
-        ]
+      ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[muutospyynto.tila]])
       : muutospyynto.tila,
     R.path(["nimi", intl.locale], organisation.data)
   ];

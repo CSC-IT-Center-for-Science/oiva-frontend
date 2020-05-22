@@ -263,7 +263,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   isChecked: false,
                   forChangeObject: {
                     fieldName:
-                      "Voimassa oleva linja-autonkuljettajan ammattipätevyys
+                      "Voimassa oleva linja-autonkuljettajan ammattipätevyys"
                   }
                 }
               }

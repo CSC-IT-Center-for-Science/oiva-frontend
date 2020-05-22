@@ -1,19 +1,18 @@
 import getDefaultRemovalForm from "./lomakeosiot/poistolomake";
-import { getAdditionForm as getAdditionFormJatkokoulutus } from "./kuljettajakoulutukset/jatkokoulutus";
-import { getAdditionForm as getAdditionFormPeruskoulutus } from "./kuljettajakoulutukset/peruskoulutus/";
+import { getAdditionForm as getAdditionFormJatkokoulutus } from "./koulutukset/kuljettajakoulutukset/jatkokoulutus/";
+import { getAdditionForm as getAdditionFormPeruskoulutus } from "./koulutukset/kuljettajakoulutukset/peruskoulutus/";
 
 export function getKuljettajienJatkokoulutuslomake(
   action,
   data,
   isReadOnly,
-  locale,
   prefix
 ) {
   switch (action) {
     case "addition":
-      return getAdditionFormJatkokoulutus(isReadOnly, locale, data);
+      return getAdditionFormJatkokoulutus(isReadOnly, data);
     case "removal":
-      return getDefaultRemovalForm(prefix);
+      return getDefaultRemovalForm(isReadOnly, prefix);
     default:
       return [];
   }
@@ -23,14 +22,13 @@ export function getKuljettajienPeruskoulutuslomake(
   action,
   data,
   isReadOnly,
-  locale,
   prefix
 ) {
   switch (action) {
     case "addition":
-      return getAdditionFormPeruskoulutus(isReadOnly, locale, data);
+      return getAdditionFormPeruskoulutus(isReadOnly, data);
     case "removal":
-      return getDefaultRemovalForm(prefix);
+      return getDefaultRemovalForm(isReadOnly, prefix);
     default:
       return [];
   }

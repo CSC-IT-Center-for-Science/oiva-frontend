@@ -1,13 +1,7 @@
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useCallback
-} from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { Route, Router, Switch } from "react-router-dom";
+import { PropTypes } from "prop-types";
 import Login from "scenes/Login/Login";
-import PropTypes from "prop-types";
 import Logout from "scenes/Logout/Logout";
 import Footer from "scenes/Footer/Footer";
 import Jarjestajat from "./scenes/Jarjestajat/Jarjestajat";
@@ -17,10 +11,7 @@ import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
 import Tilastot from "./scenes/Tilastot/components/Tilastot";
 import RequireCasAuth from "./scenes/Login/services/RequireCasAuth";
 import DestroyCasAuth from "./scenes/Logout/services/DestroyCasAuth";
-import Lukiokoulutus from "./scenes/Lukiokoulutus/components/Lukiokoulutus";
 import { Breadcrumbs } from "react-breadcrumbs-dynamic";
-import EsiJaPerusopetus from "./scenes/EsiJaPerusopetus/components/EsiJaPerusopetus";
-import VapaaSivistystyo from "./scenes/VapaaSivistystyo/components/VapaaSivistystyo";
 import JarjestajaSwitch from "./scenes/Jarjestajat/Jarjestaja/components/JarjestajaSwitch";
 import { NavLink } from "react-dom";
 import { createBrowserHistory } from "history";
@@ -30,7 +21,6 @@ import commonMessages from "./i18n/definitions/common";
 import educationMessages from "./i18n/definitions/education";
 import langMessages from "./i18n/definitions/languages";
 import { ToastContainer } from "react-toastify";
-import ReactResizeDetector from "react-resize-detector";
 import {
   ROLE_ESITTELIJA,
   ROLE_KATSELIJA,
@@ -39,12 +29,12 @@ import {
   ROLE_YLLAPITAJA
 } from "./modules/constants";
 import Esittelijat from "./scenes/Esittelijat/Esittelijat";
-import Header from "./components/02-organisms/Header";
-import { setLocale } from "./services/app/actions";
-import { AppContext } from "./context/appContext";
-import Navigation from "./components/02-organisms/Navigation";
-import SideNavigation from "./components/02-organisms/SideNavigation";
+import Header from "okm-frontend-components/dist/components/02-organisms/Header";
+import Navigation from "okm-frontend-components/dist/components/02-organisms/Navigation";
+import SideNavigation from "okm-frontend-components/dist/components/02-organisms/SideNavigation";
 import { useOrganisation } from "./stores/organisation";
+import { useGlobalSettings } from "./stores/appStore";
+import { useUser } from "./stores/user";
 import * as R from "ramda";
 
 const history = createBrowserHistory();
@@ -56,32 +46,38 @@ const logo = { text: "Oiva", path: "/" };
  *
  * @param {props} - Properties object.
  */
-const App = ({ user }) => {
+const App = React.memo(({ isDebugModeOn }) => {
   const intl = useIntl();
+
+  const [userState] = useUser();
+
+  const { data: user } = userState;
 
   const [organisation, organisationActions] = useOrganisation();
 
   const [isSideMenuVisible, setSideMenuVisibility] = useState(false);
 
-  const { state: appState, dispatch: appDispatch } = useContext(AppContext);
+  const [appState, appActions] = useGlobalSettings();
 
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const kujaURL = process.env.REACT_APP_KUJA_URL || "https://localhost:4433";
 
   const pageLinks = [
     {
-      path: "/esi-ja-perusopetus",
-      text: intl.formatMessage(educationMessages.preAndBasicEducation),
-      isExact: false
+      url: kujaURL + "/esi-ja-perusopetus",
+      text: intl.formatMessage(educationMessages.preAndBasicEducation)
     },
     {
-      path: "/lukiokoulutus",
+      url: kujaURL + "/lukiokoulutus",
       text: intl.formatMessage(educationMessages.highSchoolEducation)
     },
     {
       path: "/jarjestajat",
       text: intl.formatMessage(educationMessages.vocationalEducation)
     },
-    { path: "/vapaa-sivistystyo", text: "Vapaa sivistystyö" },
+    {
+      url: kujaURL + "/vapaa-sivistystyo",
+      text: "Vapaa sivistystyö"
+    },
     { path: "/tilastot", text: intl.formatMessage(commonMessages.statistics) }
   ];
 
@@ -103,14 +99,14 @@ const App = ({ user }) => {
 
   const onLocaleChange = useCallback(
     (...props) => {
-      setLocale(props[1])(appDispatch);
+      appActions.setLocale(props[1]);
       if (props[1]) {
         sessionStorage.setItem("locale", props[1]);
       } else {
         sessionStorage.removeItem("locale");
       }
     },
-    [appDispatch]
+    [appActions]
   );
 
   const onLoginButtonClick = useCallback(() => history.push("/cas-auth"), []);
@@ -121,19 +117,34 @@ const App = ({ user }) => {
   );
 
   const organisationLink = useMemo(() => {
-    const orgNimi = R.prop("nimi", organisation.data);
-    return {
-      // Select name by locale or first in nimi object
-      text: R.or(
+    if (user && user.oid && organisation && organisation[user.oid]) {
+      const orgNimi =
+        user && organisation && organisation[user.oid]
+          ? R.prop("nimi", organisation[user.oid].data)
+          : "";
+      const isEsittelija = user
+        ? R.includes("OIVA_APP_ESITTELIJA", user.roles)
+        : false;
+      const result = {
+        // Select name by locale or first in nimi object
+        text: R.or(
           R.prop(intl.locale, orgNimi),
           R.tail(R.head(R.toPairs(orgNimi)) || [])
-      ),
-      path: `/jarjestajat/${R.prop(
-        "ytunnus",
-        organisation.data
-      )}/jarjestamislupa-asia`
-    };
-  }, [intl, organisation.data]);
+        )
+      };
+      return isEsittelija
+        ? result
+        : R.assoc(
+            "path",
+            `/jarjestajat/${R.prop(
+              "ytunnus",
+              organisation[user.oid].data
+            )}/jarjestamislupa-asia`,
+            result
+          );
+    }
+    return {};
+  }, [intl, organisation, user]);
 
   const shortDescription = useMemo(() => {
     return {
@@ -154,10 +165,6 @@ const App = ({ user }) => {
       }
     };
   }, [organisationActions, user]);
-
-  const onHeaderResize = (width, height) => {
-    setHeaderHeight(height);
-  };
 
   /**
    * If user has authenticated save some of his/her information into the
@@ -181,8 +188,9 @@ const App = ({ user }) => {
   const getHeader = useCallback(
     template => {
       if (
-        (appDispatch,
-        appState.locale && intl && (!user || !organisation.isLoding))
+        appState.locale &&
+        intl &&
+        (!user || (organisation[user.oid] && !organisation[user.oid].isLoding))
       ) {
         return (
           <Header
@@ -204,7 +212,6 @@ const App = ({ user }) => {
       return null;
     },
     [
-      appDispatch,
       appState.locale,
       authenticationLink,
       intl,
@@ -222,8 +229,10 @@ const App = ({ user }) => {
     <React.Fragment>
       <Router history={history}>
         <div className="flex flex-col min-h-screen">
-          <div className="fixed z-50 w-full">
-            <ReactResizeDetector handleHeight onResize={onHeaderResize} />
+          <div
+            className={`fixed z-50 ${
+              appState.isDebugModeOn ? "w-2/3" : "w-full"
+            }`}>
             {getHeader()}
 
             <div className="hidden md:block">
@@ -250,11 +259,11 @@ const App = ({ user }) => {
             </div>
           </SideNavigation>
 
-          <main
-            className="flex flex-1 flex-col justify-between"
-            style={{ marginTop: headerHeight }}>
+          <main className="flex flex-1 flex-col justify-between mt-16 sm:mt-48 md:mt-32">
             <div className="flex flex-col flex-1 bg-white">
-              <div className="pb-16 pt-8 mx-auto w-11/12 lg:w-3/4">
+              <div
+                style={{ maxWidth: "90rem" }}
+                className="w-full mx-auto px-3 lg:px-8 py-8">
                 <Breadcrumbs
                   separator={<b> / </b>}
                   item={NavLink}
@@ -278,38 +287,18 @@ const App = ({ user }) => {
                   <Route
                     exact
                     path="/jarjestajat"
-                    render={props => <Jarjestajat history={props.history} />}
+                    render={props => <Jarjestajat />}
                   />
                   <Route
-                    exact
-                    path="/lukiokoulutus"
-                    component={Lukiokoulutus}
+                    path="/asiat"
+                    render={() => {
+                      return user ? <Esittelijat /> : null;
+                    }}
                   />
                   <Route
-                    exact
-                    path="/vapaa-sivistystyo"
-                    component={VapaaSivistystyo}
-                  />
-                  <Route
-                    exact
-                    path="/esi-ja-perusopetus"
-                    component={EsiJaPerusopetus}
-                  />
-                  <Route
-                        path="/asiat"
-                        render={props => (
-                          <Esittelijat
-                            history={props.history}
-                            match={props.match}
-                            user={user}
-                          />
-                        )}
-                      />
-                      <Route
                     path="/jarjestajat/:ytunnus"
                     render={props => (
                       <JarjestajaSwitch
-                        history={props.history}
                         path={props.match.path}
                         ytunnus={props.match.params.ytunnus}
                         user={user}
@@ -328,13 +317,12 @@ const App = ({ user }) => {
           </footer>
         </div>
       </Router>
-      }
     </React.Fragment>
   );
-};
+});
 
 App.propTypes = {
-  user: PropTypes.object
+  isDebugModeOn: PropTypes.bool
 };
 
 export default App;

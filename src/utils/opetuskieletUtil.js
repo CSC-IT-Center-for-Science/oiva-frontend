@@ -1,6 +1,5 @@
-import _ from "lodash";
 import { parseLocalizedField } from "../modules/helpers";
-import * as R from "ramda";
+import { find, map, propEq, toUpper } from "ramda";
 
 export function sortOpetuskielet(kielet) {
   return kielet.sort((a, b) => {
@@ -10,15 +9,17 @@ export function sortOpetuskielet(kielet) {
 
 export function getDataForOpetuskieletList(opetuskielet, kohde, locale) {
   return {
-    items: _.map(opetuskielet, opetuskieli => {
+    items: map(opetuskieli => {
       const { koodiArvo, metadata } = opetuskieli;
-      const isInLupa = !!_.find(kohde.kohdeArvot, { koodiarvo: koodiArvo });
+      const kohdearvo = find(propEq("koodiarvo", koodiArvo), kohde.kohdeArvot);
+      const isInLupa = !!kohdearvo;
       return {
         code: opetuskieli.koodiArvo,
-        isInLupa,
+        isInLupa: isInLupa,
         shouldBeSelected: isInLupa,
-        title: parseLocalizedField(metadata, R.toUpper(locale))
+        title: parseLocalizedField(metadata, toUpper(locale)),
+        maaraysUuid: kohdearvo ? kohdearvo.uuid : null
       };
-    })
+    }, opetuskielet)
   };
 }

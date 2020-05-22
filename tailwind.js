@@ -7,24 +7,37 @@ module.exports = {
       sm: "640px",
       md: "768px",
       lg: "1024px",
-      xl: "1280px"
+      xl: "1440px"
     },
     colors: {
+      // custom
+      vihrea: "#4c7a61",
+      vaalenvihrea: "#c8dcc3",
+      tummanvihrea: "#3b604c",
+      mustanharmaa: "#333333",
+      tummanharmaa: "#666666",
+      harmaa: "#e3e3e3",
+      vaalenharmaa: "#fafafa",
+      valkoinen: "#ffffff",
+      linkkihover: "#294637",
+      linkkivisited: "#2355b47",
+      bordervari: "#e2e8f0",
+
       transparent: "transparent",
 
       black: "#000",
       white: "#fff",
 
       gray: {
-        100: "#f7fafc",
-        200: "#edf2f7",
-        300: "#e2e8f0",
-        400: "#cbd5e0",
-        500: "#a0aec0",
-        600: "#718096",
-        700: "#4a5568",
-        800: "#2d3748",
-        900: "#1a202c"
+        100: "#fafafa", // #f7fafc
+        200: "#e3e3e3", // #edf2f7
+        300: "#d1d1d1", // #e2e8f0 border
+        400: "#cbcbcb", // #cbd5e0
+        500: "#a0a0a0", // #a0aec0 x
+        600: "#666666", // #718096
+        700: "#484848", // #4a5568 x
+        800: "#333333", // #2d3748
+        900: "#181818" // #1a202c x
       },
       red: {
         100: "#fff5f5",
@@ -60,15 +73,15 @@ module.exports = {
         900: "#744210"
       },
       green: {
-        100: "#f0fff4",
-        200: "#c6f6d5",
-        300: "#9ae6b4",
-        400: "#6d9f84",
-        500: "#4f8166",
-        600: "#316348",
-        700: "#2f855a",
-        800: "#276749",
-        900: "#22543d"
+        100: "#d2ffe8", //#f0fff4 x
+        200: "#c8dcc3", //#c6f6d5 form header
+        300: "#a7ecc5", //#9ae6b4
+        400: "#65A884", //#68d391
+        500: "#4C7A61", //#48bb78 main green
+        600: "#3B604C", //#38a169
+        700: "#355b47", //#2f855a
+        800: "#294637", //#276749
+        900: "#2355b47" //#22543d x
       },
       teal: {
         100: "#e6fffa",
@@ -224,11 +237,12 @@ module.exports = {
       default: "1"
     },
     fontFamily: {
+      body: ["Roboto", "Segoe UI", "sans-serif"],
       sans: [
+        "Roboto",
         "-apple-system",
         "BlinkMacSystemFont",
         '"Segoe UI"',
-        "Roboto",
         '"Helvetica Neue"',
         "Arial",
         '"Noto Sans"',
@@ -253,9 +267,9 @@ module.exports = {
       xs: "0.75rem",
       sm: "0.875rem",
       base: "1rem",
-      lg: "1.125rem",
-      xl: "1.25rem",
-      "2xl": "1.5rem",
+      lg: "1.2rem",
+      xl: "1.5rem",
+      "2xl": "2rem",
       "3xl": "1.875rem",
       "4xl": "2.25rem",
       "5xl": "3rem",
@@ -313,7 +327,6 @@ module.exports = {
       screen: "100vh"
     },
     maxWidth: {
-      xxs: "16rem",
       xs: "20rem",
       sm: "24rem",
       md: "28rem",
@@ -333,11 +346,8 @@ module.exports = {
     },
     minWidth: {
       "0": "0",
-      "1/4": "25%",
       "3/4": "75%",
-      "200": "200px",
-      full: "100%",
-      initial: "initial"
+      full: "100%"
     },
     objectPosition: {
       bottom: "bottom",
@@ -476,7 +486,7 @@ module.exports = {
     stroke: ["responsive"],
     tableLayout: ["responsive"],
     textAlign: ["responsive"],
-    textColor: ["responsive", "hover", "focus"],
+    textColor: ["responsive", "hover", "focus", "visited"],
     textDecoration: ["responsive", "hover", "focus"],
     textTransform: ["responsive"],
     userSelect: ["responsive"],

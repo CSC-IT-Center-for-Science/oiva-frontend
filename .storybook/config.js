@@ -1,13 +1,17 @@
 import { addDecorator, configure } from "@storybook/react";
 import { setIntlConfig, withIntl } from "storybook-addon-intl";
-import { addLocaleData } from "react-intl";
-import fiLocaleData from "react-intl/locale-data/fi";
-import svLocaleData from "react-intl/locale-data/sv";
 
 import "../src/css/tailwind.css";
 
-addLocaleData(fiLocaleData);
-addLocaleData(svLocaleData);
+if (!Intl.PluralRules) {
+  require("@formatjs/intl-pluralrules/polyfill");
+  require("@formatjs/intl-pluralrules/dist/locale-data/fi"); // Add locale data for fi
+}
+
+if (!Intl.RelativeTimeFormat) {
+  require("@formatjs/intl-relativetimeformat/polyfill");
+  require("@formatjs/intl-relativetimeformat/dist/locale-data/sv"); // Add locale data for sv
+}
 
 // Provide your messages
 const messages = {

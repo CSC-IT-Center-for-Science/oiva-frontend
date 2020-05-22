@@ -1,5 +1,4 @@
 import React, { useMemo, useEffect } from "react";
-import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import {
   InnerContentContainer,
   InnerContentWrapper
@@ -10,6 +9,8 @@ import { useKunnat } from "../../../../stores/kunnat";
 import { useMaakunnat } from "../../../../stores/maakunnat";
 import { useOrganisation } from "../../../../stores/organisation";
 import * as R from "ramda";
+import common from "../../../../i18n/definitions/common";
+import { useUser } from "../../../../stores/user";
 
 const OmatTiedot = () => {
   const intl = useIntl();
@@ -17,6 +18,8 @@ const OmatTiedot = () => {
   const [organisation] = useOrganisation();
   const [kunnat, kunnatActions] = useKunnat();
   const [maakunnat, maakunnatActions] = useMaakunnat();
+  const [user] = useUser();
+  const userOrganisation = organisation[user.data.oid];
 
   // Let's fetch KUNNAT
   useEffect(() => {
@@ -30,27 +33,27 @@ const OmatTiedot = () => {
 
   const yhteystiedot = useMemo(() => {
     let values =
-      organisation.fetchedAt && organisation.data
+      userOrganisation.fetchedAt && userOrganisation.data
         ? {
-            postinumero: organisation.data.kayntiosoite.postinumeroUri
-              ? organisation.data.kayntiosoite.postinumeroUri.substr(6)
+            postinumero: userOrganisation.data.kayntiosoite.postinumeroUri
+              ? userOrganisation.data.kayntiosoite.postinumeroUri.substr(6)
               : null,
-            ppostinumero: organisation.data.postiosoite.postinumeroUri
-              ? organisation.data.postiosoite.postinumeroUri.substr(6)
+            ppostinumero: userOrganisation.data.postiosoite.postinumeroUri
+              ? userOrganisation.data.postiosoite.postinumeroUri.substr(6)
               : null,
             email: (
-              R.find(R.prop("email"), organisation.data.yhteystiedot) || {}
+              R.find(R.prop("email"), userOrganisation.data.yhteystiedot) || {}
             ).email,
             numero: (
-              R.find(R.prop("numero"), organisation.data.yhteystiedot) || {}
+              R.find(R.prop("numero"), userOrganisation.data.yhteystiedot) || {}
             ).numero,
-            www: (R.find(R.prop("www"), organisation.data.yhteystiedot) || {})
+            www: (R.find(R.prop("www"), userOrganisation.data.yhteystiedot) || {})
               .www
           }
         : {};
 
     if (kunnat.fetchedAt && maakunnat.fetchedAt) {
-      const koodiarvo = organisation.data.kotipaikkaUri.substr(6);
+      const koodiarvo = userOrganisation.data.kotipaikkaUri.substr(6);
       const source = koodiarvo.length === 3 ? kunnat.data : maakunnat.data;
       const kotipaikkaObj = R.find(R.propEq("koodiArvo", koodiarvo), source);
       values.kotipaikka = (kotipaikkaObj
@@ -64,15 +67,15 @@ const OmatTiedot = () => {
     return values;
   }, [
     intl.locale,
-    organisation.fetchedAt,
-    organisation.data,
+    userOrganisation.fetchedAt,
+    userOrganisation.data,
     kunnat.data,
     kunnat.fetchedAt,
     maakunnat.data,
     maakunnat.fetchedAt
   ]);
 
-  if (organisation.fetchedAt && !organisation.isErroneous) {
+  if (userOrganisation.fetchedAt && !userOrganisation.isErroneous) {
     return (
       <React.Fragment>
         {(() => {
@@ -88,46 +91,46 @@ const OmatTiedot = () => {
             <InnerContentContainer>
               <InnerContentWrapper>
                 <Typography component="h2" variant="h5" className="pb-4">
-                  {LUPA_TEKSTIT.OMATTIEDOT.OTSIKKO.FI}
+                  {intl.formatMessage(common.omatTiedotTitle)}
                 </Typography>
                 <Typography component="h3" variant="h6">
-                  {LUPA_TEKSTIT.OMATTIEDOT.KAYNTIOSOITE.FI}
+                  {intl.formatMessage(common.omatTiedotVisitAddress)}
                 </Typography>
                 <p className="pb-4">
-                  {organisation.data.kayntiosoite.osoite}
+                  {userOrganisation.data.kayntiosoite.osoite}
                   {postinumero && <span>,&nbsp;</span>}
                   {postinumero}
-                  {organisation.data.kayntiosoite.postitoimipaikka && (
+                  {userOrganisation.data.kayntiosoite.postitoimipaikka && (
                     <span>&nbsp;</span>
                   )}
-                  {organisation.data.kayntiosoite.postitoimipaikka}
+                  {userOrganisation.data.kayntiosoite.postitoimipaikka}
                 </p>
                 <Typography component="h3" variant="h6">
-                  {LUPA_TEKSTIT.OMATTIEDOT.POSTIOSOITE.FI}
+                  {intl.formatMessage(common.omatTiedotMailAddress)}
                 </Typography>
                 <p className="pb-4">
-                  {organisation.data.postiosoite.osoite &&
-                    organisation.data.postiosoite.osoite}
+                  {userOrganisation.data.postiosoite.osoite &&
+                    userOrganisation.data.postiosoite.osoite}
                   {ppostinumero && <span>,&nbsp;</span>}
                   {ppostinumero && ppostinumero}&nbsp;
-                  {organisation.data.postiosoite.postitoimipaikka && (
+                  {userOrganisation.data.postiosoite.postitoimipaikka && (
                     <span>&nbsp;</span>
                   )}
-                  {organisation.data.postiosoite.postitoimipaikka}
+                  {userOrganisation.data.postiosoite.postitoimipaikka}
                 </p>
                 <Typography component="h3" variant="h6">
-                  {LUPA_TEKSTIT.OMATTIEDOT.KOTIPAIKKA.FI}
+                  {intl.formatMessage(common.omatTiedotMunicipality)}
                 </Typography>
                 <p className="pb-4">
                   {kotipaikka && <span>{kotipaikka}</span>}
                 </p>
                 <Typography component="h3" variant="h6">
-                  {LUPA_TEKSTIT.OMATTIEDOT.YHTEYSTIEDOT.FI}
+                  {intl.formatMessage(common.omatTiedotContactInfo)}
                 </Typography>
                 {numero && (
                   <div className="flex border-b">
                     <div className="w-1/2 sm:w-auto md:w-1/4 bg-gray-200 p-2 h-10">
-                      <p>{LUPA_TEKSTIT.OMATTIEDOT.PUHELINNUMERO.FI}</p>
+                      <p>{intl.formatMessage(common.omatTiedotPhoneNumber)}</p>
                     </div>
                     <div className="w-1/2 sm:w-auto md:w-3/4 bg-gray-100 p-2 h-10">
                       <p>
@@ -143,7 +146,7 @@ const OmatTiedot = () => {
                 {www && (
                   <div className="flex border-b">
                     <div className="w-1/2 sm:w-auto md:w-1/4  bg-gray-200 p-2 h-10">
-                      <p>{LUPA_TEKSTIT.OMATTIEDOT.WWWW.FI}</p>
+                      <p>{intl.formatMessage(common.omatTiedotWwwAddress)}</p>
                     </div>
                     <div className="w-1/2 sm:w-auto md:w-3/4 bg-gray-100 p-2 h-10">
                       <p>
@@ -157,7 +160,7 @@ const OmatTiedot = () => {
                 {email && (
                   <div className="flex border-b">
                     <div className="w-1/2 sm:w-auto md:w-1/4 bg-gray-200 p-2 h-10">
-                      <p>{LUPA_TEKSTIT.OMATTIEDOT.EMAIL.FI}</p>
+                      <p>{intl.formatMessage(common.omatTiedotEmailAddress)}</p>
                     </div>
                     <div className="w-1/2 sm:w-auto md:w-3/4 bg-gray-100 p-2 h-10">
                       <p>
@@ -169,7 +172,7 @@ const OmatTiedot = () => {
                   </div>
                 )}
                 <br />
-                <p>{LUPA_TEKSTIT.OMATTIEDOT.INFO.FI}</p>
+                <p>{intl.formatMessage(common.omatTiedotInfo)}</p>
               </InnerContentWrapper>
             </InnerContentContainer>
           );

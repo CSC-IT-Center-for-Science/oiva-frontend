@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import JarjestamislupaAsiatListItem from "./JarjestamislupaAsiatListItem";
-import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants";
+import {asiaStateToLocalizationKeyMap} from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import Button from "@material-ui/core/Button";
 import Add from "@material-ui/icons/AddCircleOutline";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
-import Table from "../../../../components/02-organisms/Table";
+import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import moment from "moment";
 import { ROLE_KATSELIJA } from "../../../../modules/constants";
 import { FIELDS } from "../../../../locales/uusiHakemusFormConstants";
@@ -40,14 +40,6 @@ const colWidths = {
   5: "w-2/12 justify-center"
 };
 
-const columnTitles = [
-  LUPA_TEKSTIT.ASIAT.ASIAT_TAULUKKO.DNRO.FI,
-  LUPA_TEKSTIT.ASIAT.ASIAT_TAULUKKO.ASIA.FI,
-  LUPA_TEKSTIT.ASIAT.ASIAT_TAULUKKO.TILA.FI,
-  LUPA_TEKSTIT.ASIAT.ASIAT_TAULUKKO.MAARAAIKA.FI,
-  LUPA_TEKSTIT.ASIAT.ASIAT_TAULUKKO.PAATETTY.FI
-];
-
 // States of hakemus
 const states = [
   "LUONNOS",
@@ -60,6 +52,7 @@ const states = [
 
 const JarjestamislupaAsiatList = ({
   history,
+  isForceReloadRequested,
   match,
   newApplicationRouteItem
 }) => {
@@ -78,7 +71,10 @@ const JarjestamislupaAsiatList = ({
     if (lupa.fetchedAt) {
       const ytunnus = R.path(["jarjestaja", "ytunnus"], lupa.data);
       if (ytunnus) {
-        abortController = muutospyynnotActions.load(ytunnus);
+        abortController = muutospyynnotActions.load(
+          ytunnus,
+          isForceReloadRequested
+        );
       }
     }
     return function cancel() {
@@ -86,7 +82,13 @@ const JarjestamislupaAsiatList = ({
         abortController.abort();
       }
     };
-  }, [lupa.data, lupa.fetchedAt, muutospyynnotActions]);
+  }, [
+    isForceReloadRequested,
+    lupa.data,
+    lupa.fetchedAt,
+    muutospyynnotActions,
+    match
+  ]);
 
   const tableData = useMemo(() => {
     if (muutospyynnot.fetchedAt && muutospyynnot.data) {
@@ -103,6 +105,14 @@ const JarjestamislupaAsiatList = ({
     }
     return [];
   }, [muutospyynnot.fetchedAt, muutospyynnot.data]);
+
+  const columnTitles = [
+    intl.formatMessage(common.kjAsiaTableDnro),
+    intl.formatMessage(common.kjAsiaTableAsia),
+    intl.formatMessage(common.kjAsiaTableState),
+    intl.formatMessage(common.kjAsiaTableDueDate),
+    intl.formatMessage(common.kjAsiaTablePaatetty)
+  ];
 
   const mainTable = [
     {
@@ -134,7 +144,7 @@ const JarjestamislupaAsiatList = ({
           rows: R.addIndex(R.map)((row, i) => {
             const tilaText =
               row.tila && states.includes(row.tila)
-                ? LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[row.tila].FI
+                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[row.tila]])
                 : row.tila;
             let cells = R.addIndex(R.map)(
               (col, ii) => {
@@ -149,7 +159,7 @@ const JarjestamislupaAsiatList = ({
                 { text: intl.formatMessage(common.change) },
                 { text: tilaText },
                 { text: "" },
-                { text: row.paatetty }
+                { text: row.tila === "LUONNOS" ? "" : row.paatetty }
               ]
             );
             if (

@@ -6,7 +6,7 @@ const refreshIntervalInSeconds = 60;
 const Store = createStore({
   initialState: {},
   actions: {
-    load: uuid => ({ getState, setState }) => {
+    load: (uuid, isForceReloadRequested) => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
@@ -14,7 +14,7 @@ const Store = createStore({
           urlEnding: uuid
         },
         { uuid },
-        refreshIntervalInSeconds
+        isForceReloadRequested ? 0 : refreshIntervalInSeconds
       );
     }
   },

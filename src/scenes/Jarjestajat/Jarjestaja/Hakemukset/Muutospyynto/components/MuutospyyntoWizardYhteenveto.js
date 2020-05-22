@@ -1,17 +1,15 @@
 import React, { useMemo } from "react";
 import FormSection from "../../../../../../components/03-templates/FormSection";
-import { injectIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import * as R from "ramda";
 import YhteenvetoYleisetTiedot from "./Yhteenveto/YhteenvetoYleisetTiedot";
 import YhteenvetoKooste from "./Yhteenveto/YhteenvetoKooste";
 import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import wizard from "../../../../../../i18n/definitions/wizard";
+import * as R from "ramda";
 
 const MuutospyyntoWizardYhteenveto = ({
   changeObjects,
-  intl,
-  intl: { formatMessage },
   kielet,
   kohteet,
   koulutukset,
@@ -22,9 +20,9 @@ const MuutospyyntoWizardYhteenveto = ({
   muutoshakemus,
   muutosperusteluList,
   onChangesUpdate,
-  onStateUpdate,
   tutkinnot
 }) => {
+  const intl = useIntl();
   const jarjestaja = useMemo(() => {
     const nimi = {
       label: "Nimi",
@@ -44,22 +42,21 @@ const MuutospyyntoWizardYhteenveto = ({
     const sahkopostiosoite = {
       label: "Sähköpostiosoite",
       value:
-        (R.find(R.prop("email"))(lupa.jarjestaja.yhteystiedot) || {})
-          .email || "-"
+        (R.find(R.prop("email"))(lupa.jarjestaja.yhteystiedot) || {}).email ||
+        "-"
     };
 
     const www = {
       label: "WWW-osoite",
       value:
-        (R.find(R.prop("www"))(lupa.jarjestaja.yhteystiedot) || {}).www ||
-        "-"
+        (R.find(R.prop("www"))(lupa.jarjestaja.yhteystiedot) || {}).www || "-"
     };
 
     const puhelinnumero = {
       label: "Puhelinnumero",
       value:
-        (R.find(R.prop("numero"))(lupa.jarjestaja.yhteystiedot) || {})
-          .numero || "-"
+        (R.find(R.prop("numero"))(lupa.jarjestaja.yhteystiedot) || {}).numero ||
+        "-"
     };
 
     return {
@@ -87,7 +84,7 @@ const MuutospyyntoWizardYhteenveto = ({
 
   return (
     <React.Fragment>
-      <h2 className="my-6">{formatMessage(wizard.pageTitle_4)}</h2>
+      <h2 className="my-6">{intl.formatMessage(wizard.pageTitle_4)}</h2>
 
       <h4 className="my-6">Organisaation tiedot</h4>
 
@@ -99,15 +96,8 @@ const MuutospyyntoWizardYhteenveto = ({
         render={_props => (
           <React.Fragment>
             <YhteenvetoYleisetTiedot
-              stateObject={R.path(
-                ["yhteenveto", "yleisettiedot"],
-                muutoshakemus
-              )}
               changeObjects={{
-                yhteenveto: R.path(
-                  ["yhteenveto", "yleisettiedot"],
-                  changeObjects
-                )
+                yhteenveto: changeObjects.yhteenveto.yleisettiedot
               }}
               {..._props}
             />
@@ -123,35 +113,24 @@ const MuutospyyntoWizardYhteenveto = ({
               muut={muut}
               muutoshakemus={muutoshakemus}
               onChangesUpdate={onChangesUpdate}
-              onStateUpdate={onStateUpdate}
-              tutkinnot={tutkinnot}
-            ></YhteenvetoKooste>
+              tutkinnot={tutkinnot}></YhteenvetoKooste>
           </React.Fragment>
         )}
-        runOnStateUpdate={onStateUpdate}
         runOnChanges={onChangesUpdate}
       />
       <FormSection
-        id="yhteenveto_hakemuksenliitteet"
+        id="yhteenveto_hakemuksenLiitteet"
         className="my-0"
         render={_props => (
           <React.Fragment>
             <YhteenvetoLiitteet
-              stateObject={R.path(
-                ["yhteenveto", "hakemuksenliitteet"],
-                muutoshakemus
-              )}
               changeObjects={{
-                yhteenveto: R.path(
-                  ["yhteenveto", "hakemuksenliitteet"],
-                  changeObjects
-                )
+                hakemuksenLiitteet: changeObjects.yhteenveto.hakemuksenLiitteet
               }}
               {..._props}
             />
           </React.Fragment>
         )}
-        runOnStateUpdate={onStateUpdate}
         runOnChanges={onChangesUpdate}
       />
     </React.Fragment>
@@ -169,8 +148,7 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   muutoshakemus: PropTypes.object,
   muutosperusteluList: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  onStateUpdate: PropTypes.func,
   tutkinnot: PropTypes.object
 };
 
-export default injectIntl(MuutospyyntoWizardYhteenveto);
+export default MuutospyyntoWizardYhteenveto;

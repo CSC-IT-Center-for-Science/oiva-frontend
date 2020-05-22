@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import WizardActions from "./WizardActions";
 import PropTypes from "prop-types";
 
+/**
+ * WizardPage renders the given content and passes the related actions forward
+ * for proper handling.
+ *
+ * @param {*} props 
+ */
 const WizardPage = props => {
-  const [isSavingEnabled, setIsSavingEnabled] = useState(false);
-  const { onSave } = props;
+  function preview() {
+    props.onAction("preview");
+  }
 
-  const save = (options) => {
-    // setIsSavingEnabled(false); // todo: fix by enabling again when changes
-    onSave(options);
-  };
+  function save() {
+    props.onAction("save");
+  }
 
-  useEffect(() => {
-    setIsSavingEnabled(true);
-  }, [props.changeObjects]);
+  function send() {
+    props.onAction("send");
+  }
 
   return (
     <div>
@@ -22,23 +28,20 @@ const WizardPage = props => {
         pageNumber={props.pageNumber}
         onPrev={props.onPrev}
         onNext={props.onNext}
+        onPreview={preview}
+        onSend={send}
         onSave={save}
-        isSavingEnabled={isSavingEnabled}
+        isSavingEnabled={props.isSavingEnabled}
       />
     </div>
   );
 };
 
-WizardPage.defaultProps = {
-  changes: []
-};
-
 WizardPage.propTypes = {
-  lupa: PropTypes.object,
-  changeObjects: PropTypes.object,
+  isSavingEnabled: PropTypes.bool,
   onNext: PropTypes.func,
   onPrev: PropTypes.func,
-  onSave: PropTypes.func,
+  onAction: PropTypes.func,
   pageNumber: PropTypes.number
 };
 

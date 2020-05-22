@@ -1,34 +1,39 @@
 import React from "react";
+import {useIntl} from "react-intl";
 import styled from "styled-components";
-import Moment from "react-moment";
 import LupaSection from "./LupaSection";
 import Typography from "@material-ui/core/Typography";
-import { LUPA_SECTIONS, LUPA_TEKSTIT } from "../modules/constants";
+import { LUPA_SECTIONS } from "../modules/constants";
 import { InnerContentContainer } from "../../../../modules/elements";
 import { COLORS } from "../../../../modules/styles";
 import { LUPA_LISAKOULUTTAJAT } from "../../constants";
 import PropTypes from "prop-types";
+import common from "../../../../i18n/definitions/common";
+import moment from "moment";
 
 const TopSectionWrapper = styled.div`
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
 `;
 
 const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
+  const intl = useIntl();
   // Luvan poikkeuskäsittely erikoisluville (17kpl)
+  const titleMessageKey = common.lupaPageTitleAmmatillinen;
   const lupaException = LUPA_LISAKOULUTTAJAT[lupa.jarjestajaYtunnus];
+  const dateString = new moment().format('D.M.YYYY');
   return (
     <InnerContentContainer>
       <div>
         {lupaException ? (
           <TopSectionWrapper className="p-8">
             <Typography component="h1" variant="h5">
-              {LUPA_TEKSTIT.LUPA.OTSIKKO.FI}
+              {intl.formatMessage(titleMessageKey, {date: ''})}
             </Typography>
           </TopSectionWrapper>
         ) : (
           <TopSectionWrapper className="p-8">
             <Typography component="h1" variant="h5">
-              {LUPA_TEKSTIT.LUPA.OTSIKKO.FI} <Moment format="DD.MM.YYYY" />
+              {intl.formatMessage(titleMessageKey, {date: dateString})}
             </Typography>
           </TopSectionWrapper>
         )}

@@ -1,139 +1,104 @@
-import React, { useEffect, useMemo, useState } from "react";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
+import React, { useMemo } from "react";
+import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import { parseLocalizedField } from "../../../../../../../modules/helpers";
-import { getCategoriesForPerustelut } from "../../../../../../../services/muutoshakemus/utils/tutkinnotUtils";
-import { injectIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import * as R from "ramda";
 import _ from "lodash";
+import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import { getRules } from "../../../../../../../services/lomakkeet/perustelut/tutkinnot/rules";
+import common from "../../../../../../../i18n/definitions/common";
 
 const defaultProps = {
   changeObjects: {},
   isReadOnly: false,
   kohde: {},
-  lomakkeet: {},
   lupaKohteet: {},
   maaraystyyppi: {},
-  stateObject: {},
+  muutosperustelut: [],
   tutkinnot: {}
 };
 
 const PerustelutTutkinnot = React.memo(
   ({
     changeObjects = defaultProps.changeObjects,
-    intl,
     isReadOnly = defaultProps.isReadOnly,
+    isFirstVisit,
     kohde = defaultProps.kohde,
     tutkinnot = defaultProps.tutkinnot,
-    lomakkeet = defaultProps.lomakkeet,
     lupaKohteet = defaultProps.lupaKohteet,
     maaraystyyppi = defaultProps.maaraystyyppi,
+    muutosperustelut = defaultProps.muutosperustelut,
     onChangesRemove,
     onChangesUpdate,
-    onStateUpdate,
-    stateObject = defaultProps.stateObject
+    sectionId
   }) => {
-    const sectionId = "perustelut_tutkinnot";
-    const [koulutusdata, setKoulutusdata] = useState([]);
-    const [locale, setLocale] = useState([]);
+    const intl = useIntl();
 
-    useEffect(() => {
-      const sortedKoulutusData = R.sortBy(
-        R.prop("koodiArvo"),
-        R.values(tutkinnot)
-      );
-      setKoulutusdata(sortedKoulutusData);
+    const koulutusdata = useMemo(() => {
+      return R.sortBy(R.prop("koodiArvo"), R.values(tutkinnot));
     }, [tutkinnot]);
 
-    const getItems = useMemo(() => {
-      const getArticle = (areaCode, articles = []) => {
-        return R.find(article => {
-          return article.koodi === areaCode;
-        }, articles);
-      };
-
-      return (koulutusdata, _changes) => {
-        return R.addIndex(R.map)((koulutusala, i) => {
-          const areaCode = koulutusala.koodiarvo || koulutusala.koodiArvo;
-          const anchorInitial = `tutkinnot_${areaCode}`;
-          const article = getArticle(areaCode, lupaKohteet[1].maaraykset);
-          const areaChanges = R.prop(areaCode, _changes);
-          const categories = areaChanges
-            ? getCategoriesForPerustelut(
-                article,
-                koulutusala.koulutukset,
-                kohde,
-                maaraystyyppi,
-                intl,
-                areaChanges,
-                anchorInitial,
-                lomakkeet,
-                isReadOnly
-              )
-            : [];
-          const title = parseLocalizedField(koulutusala.metadata, locale);
-          return { areaCode, article, categories, title };
-        }, _.cloneDeep(koulutusdata));
-      };
-    }, [
-      isReadOnly,
-      kohde,
-      intl,
-      locale,
-      lomakkeet,
-      lupaKohteet,
-      maaraystyyppi
-    ]);
-
-    useEffect(() => {
-      if (koulutusdata.length) {
-        const items = getItems(koulutusdata, changeObjects.tutkinnot);
-        onStateUpdate(
-          {
-            items
-          },
-          sectionId
-        );
-      }
-    }, [getItems, onStateUpdate, changeObjects.tutkinnot, koulutusdata]);
-
-    useEffect(() => {
-      setLocale(R.toUpper(intl.locale));
-    }, [intl.locale]);
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    }
 
     return (
       <React.Fragment>
-        {stateObject.items &&
-          R.addIndex(R.map)((stateItem, i) => {
-            const changes = R.path(
-              ["tutkinnot", stateItem.areaCode],
+        {koulutusdata &&
+          koulutusdata.length > 0 &&
+          R.addIndex(R.map)((koulutusala, i) => {
+            const anchorInitial = `${sectionId}_${koulutusala.koodiArvo}`;
+            const changeObjectsPage1 = R.path(
+              ["tutkinnot", koulutusala.koodiArvo],
               changeObjects
             );
-            if (changes && !R.isEmpty(changes)) {
-              const anchorInitial = `${sectionId}_${stateItem.areaCode}`;
-              return (
-                <ExpandableRowRoot
-                  anchor={anchorInitial}
-                  key={`expandable-row-root-${i}`}
-                  categories={stateItem.categories}
-                  changes={R.path(
-                    ["perustelut", "tutkinnot", stateItem.areaCode],
-                    changeObjects
-                  )}
-                  code={stateItem.areaCode}
-                  disableReverting={isReadOnly}
-                  hideAmountOfChanges={true}
-                  index={i}
-                  isExpanded={true}
-                  onChangesRemove={onChangesRemove}
-                  onUpdate={onChangesUpdate}
-                  sectionId={sectionId}
-                  showCategoryTitles={true}
-                  title={stateItem.title}
-                />
-              );
-            }
-          }, stateObject.items)}
+            return changeObjectsPage1 && changeObjectsPage1.length ? (
+              <ExpandableRowRoot
+                anchor={anchorInitial}
+                key={`expandable-row-root-${i}`}
+                categories={[]}
+                changes={R.path(
+                  ["perustelut", "tutkinnot", koulutusala.koodiArvo],
+                  changeObjects
+                )}
+                disableReverting={isReadOnly}
+                hideAmountOfChanges={true}
+                index={i}
+                isExpanded={true}
+                messages={changesMessages}
+                onChangesRemove={onChangesRemove}
+                onUpdate={onChangesUpdate}
+                sectionId={sectionId}
+                showCategoryTitles={true}
+                title={parseLocalizedField(
+                  koulutusala.metadata,
+                  R.toUpper(intl.locale)
+                )}>
+                <Lomake
+                  action="reasoning"
+                  anchor={`${sectionId}_${koulutusala.koodiArvo}`}
+                  changeObjects={
+                    changeObjects.perustelut.tutkinnot[koulutusala.koodiArvo]
+                  }
+                  data={{
+                    changeObjectsPage1,
+                    kohde,
+                    koulutusala,
+                    lupakohde: lupaKohteet[1],
+                    maaraystyyppi,
+                    muutosperustelut
+                  }}
+                  key={`form-${koulutusala.koodiArvo}`}
+                  showValidationErrors={!isFirstVisit}
+                  isReadOnly={isReadOnly}
+                  onChangesUpdate={onChangesUpdate}
+                  path={["perustelut", "tutkinnot"]}
+                  rulesFn={getRules}></Lomake>
+              </ExpandableRowRoot>
+            ) : null;
+          }, _.cloneDeep(koulutusdata))}
       </React.Fragment>
     );
   }
@@ -142,16 +107,15 @@ const PerustelutTutkinnot = React.memo(
 PerustelutTutkinnot.propTypes = {
   changeObjects: PropTypes.object,
   isReadOnly: PropTypes.bool,
+  isFirstVisit: PropTypes.bool,
   kohde: PropTypes.object,
-  lomakkeet: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maaraystyyppi: PropTypes.object,
+  muutosperustelut: PropTypes.array,
   onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
-  onStateUpdate: PropTypes.func,
   sectionId: PropTypes.string,
-  stateObject: PropTypes.object,
   tutkinnot: PropTypes.object
 };
 
-export default injectIntl(PerustelutTutkinnot);
+export default PerustelutTutkinnot;

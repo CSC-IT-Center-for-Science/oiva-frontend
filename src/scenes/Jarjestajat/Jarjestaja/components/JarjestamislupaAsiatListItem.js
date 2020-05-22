@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Td, Tr, TdButton, Td2 } from "../../../../modules/Table";
 import { MEDIA_QUERIES } from "../../../../modules/styles";
-import { LUPA_TEKSTIT } from "../../../Jarjestajat/Jarjestaja/modules/constants";
+import {asiaStateToLocalizationKeyMap} from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import Button from "@material-ui/core/Button";
 import Edit from "@material-ui/icons/Edit";
 import { Typography } from "@material-ui/core";
@@ -36,7 +36,7 @@ const JarjestamislupaAsiaListItem = props => {
             <TextPartial>
               {intl.formatMessage(common.stateAsia)}:&nbsp;
               {tila && states.includes(tila)
-                ? LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[tila].FI
+                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[tila]])
                 : tila}
             </TextPartial>
           </LupaText>
@@ -66,7 +66,7 @@ const JarjestamislupaAsiaListItem = props => {
         <Td role="cell" size="small">
           <Typography component="span">
             {tila && states.includes(tila)
-              ? LUPA_TEKSTIT.MUUTOSPYYNTO.TILA[tila].FI
+              ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[tila]])
               : tila}
           </Typography>
         </Td>

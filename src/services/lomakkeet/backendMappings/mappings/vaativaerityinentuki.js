@@ -8,47 +8,47 @@ import { path } from "ramda";
  * @param {number} koodiarvo
  */
 
-export function getMapping() {
+export function getMapping(koodiarvo) {
   return [
     {
       path: ["tarpeellisuus"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.A.tehtavan-tarpeellisuus-field.A`
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.A.tehtavan-tarpeellisuus-field.A`
       ],
       valueFn: changeObjects => path([0, "properties", "value"], changeObjects)
     },
     {
       path: ["henkilosto"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.B.henkilostoresurssit-field.A`
+        `perustelut_{koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.B.henkilostoresurssit-field.A`
       ],
       valueFn: changeObjects => path([0, "properties", "value"], changeObjects)
     },
     {
       path: ["osaaminen"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.B.osaaminen-field.A`
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.B.osaaminen-field.A`
       ],
       valueFn: changeObjects => path([0, "properties", "value"], changeObjects)
     },
     {
       path: ["pedagogiset"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.B.jarjestelyt-field.A`
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.B.jarjestelyt-field.A`
       ],
       valueFn: changeObjects => path([0, "properties", "value"], changeObjects)
     },
     {
       path: ["sidosryhma"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.B.sidosryhmayhteistyo-field.A`
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.B.sidosryhmayhteistyo-field.A`
       ],
       valueFn: changeObjects => path([0, "properties", "value"], changeObjects)
     },
     {
       path: ["suunnitelma"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.C.suunnitelma-field.A`
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.C.suunnitelma-field.A`
       ],
       valueFn: changeObjects => path([0, "properties", "value"], changeObjects)
     },
@@ -56,9 +56,9 @@ export function getMapping() {
     {
       path: ["opiskelija_vuodet"],
       anchors: [
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.A`,
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.B`,
-        `perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.C`
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.A`,
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.B`,
+        `perustelut_${koodiarvo}.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.C`
       ],
       valueFn: changeObjects => {
         const firstYear = path(
