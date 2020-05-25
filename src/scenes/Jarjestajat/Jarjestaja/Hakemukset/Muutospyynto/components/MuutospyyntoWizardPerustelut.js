@@ -21,6 +21,7 @@ const MuutospyyntoWizardPerustelut = ({
   kielet,
   kohteet = [],
   koulutukset,
+  maakuntakunnatList,
   maaraystyypit,
   muut,
   lupa,
@@ -269,6 +270,7 @@ const MuutospyyntoWizardPerustelut = ({
                       kohteet
                     )}
                     lupakohde={lupaKohteet[3]}
+                    maakuntakunnatList={maakuntakunnatList}
                     maaraystyyppi={maaraystyypitState.VELVOITE}
                     changeObjects={{
                       toimintaalue: R.path(["toimintaalue"], changeObjects),
@@ -367,6 +369,7 @@ MuutospyyntoWizardPerustelut.propTypes = {
   kielet: PropTypes.object,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
+  maakuntakunnatList: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   lupa: PropTypes.object,

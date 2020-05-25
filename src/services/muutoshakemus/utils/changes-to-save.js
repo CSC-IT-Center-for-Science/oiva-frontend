@@ -420,20 +420,22 @@ export function getChangesToSave(
 
     if (categoryFilterChangeObj) {
       categoryFilterMuutokset = R.mapObjIndexed(
-        (changeObjects, maakuntaKey) => {
+        (_changeObjects, maakuntaKey) => {
           const provinceChangeObj = R.find(
             R.compose(R.endsWith(`${maakuntaKey}.A`), R.prop("anchor")),
-            changeObjects
+            _changeObjects
           );
-          // const perustelut = R.filter(
-          //   R.compose(R.contains(changeObj.anchor), R.prop("anchor")),
-          //   changeObjects.perustelut
-          // );
+          const perustelut = R.filter(
+            R.compose(R.contains("categoryFilter"), R.prop("anchor")),
+            changeObjects.perustelut
+          );
           if (provinceChangeObj) {
             const isTheWholeProvinceActive =
               provinceChangeObj.properties.isChecked &&
               !provinceChangeObj.properties.isIndeterminate;
-            if (isTheWholeProvinceActive) {
+            const isTheWholeProvinceDisabled = !provinceChangeObj.properties
+              .isChecked;
+            if (isTheWholeProvinceActive || isTheWholeProvinceDisabled) {
               // Let's create only one change which is the one for the province.
               console.info(provinceChangeObj);
               return {
@@ -443,9 +445,14 @@ export function getChangesToSave(
                 maaraystyyppi,
                 meta: {
                   perusteluteksti: [
-                    // { value: perustelut ? perustelut[0].properties.value : "" }
+                    {
+                      value:
+                        perustelut && perustelut.length > 0
+                          ? perustelut[0].properties.value
+                          : ""
+                    }
                   ],
-                  changeObjects: R.flatten([changeObjects /*perustelut*/])
+                  changeObjects: R.flatten([_changeObjects, perustelut])
                 },
                 muutosperustelukoodiarvo: null,
                 tila: provinceChangeObj.properties.isChecked
@@ -457,7 +464,6 @@ export function getChangesToSave(
               };
             } else {
               // Let's create a change for every municipality.
-              console.info(changeObjects);
               return R.map(changeObj => {
                 return changeObj.anchor !== provinceChangeObj.anchor
                   ? {
@@ -467,11 +473,17 @@ export function getChangesToSave(
                       maaraystyyppi,
                       meta: {
                         perusteluteksti: [
-                          // { value: perustelut ? perustelut[0].properties.value : "" }
+                          {
+                            value:
+                              perustelut && perustelut.length > 0
+                                ? perustelut[0].properties.value
+                                : ""
+                          }
                         ],
                         changeObjects: R.flatten([
                           changeObj,
-                          provinceChangeObj /*perustelut*/
+                          provinceChangeObj,
+                          perustelut
                         ])
                       },
                       muutosperustelukoodiarvo: null,
@@ -483,7 +495,7 @@ export function getChangesToSave(
                         : "removal"
                     }
                   : null;
-              }, changeObjects).filter(Boolean);
+              }, _changeObjects).filter(Boolean);
             }
           }
         },

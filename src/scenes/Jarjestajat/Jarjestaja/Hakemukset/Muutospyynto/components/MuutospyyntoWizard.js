@@ -554,6 +554,7 @@ const MuutospyyntoWizard = ({
                     koulutukset={parsedKoulutukset}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
+                    maakuntakunnatList={maakuntakunnatList}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
                     lomakkeet={lomakkeet}
