@@ -35,7 +35,8 @@ import {
   prop,
   propEq,
   split,
-  toUpper
+  toUpper,
+  uniq
 } from "ramda";
 import { MUUT_KEYS } from "./Muutospyynto/modules/constants";
 import { useChangeObjects } from "../../../../stores/changeObjects";
@@ -144,19 +145,21 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
   }, [match.params.uuid, muutospyynto.data, muutospyynto.fetchedAt]);
 
   const updatedC = useMemo(() => {
-    return map(changeObj => {
-      const files = path(["properties", "attachments"], changeObj)
-        ? map(file => {
-            const fileFromBackend =
-              find(
-                propEq("tiedostoId", file.tiedostoId),
-                filesFromMuutokset || {}
-              ) || {};
-            return Object.assign({}, file, fileFromBackend);
-          }, changeObj.properties.attachments || [])
-        : null;
-      return assocPath(["properties", "attachments"], files, changeObj);
-    }, findObjectWithKey({ ...muutospyynto.data }, "changeObjects"));
+    return uniq(
+      map(changeObj => {
+        const files = path(["properties", "attachments"], changeObj)
+          ? map(file => {
+              const fileFromBackend =
+                find(
+                  propEq("tiedostoId", file.tiedostoId),
+                  filesFromMuutokset || {}
+                ) || {};
+              return Object.assign({}, file, fileFromBackend);
+            }, changeObj.properties.attachments || [])
+          : null;
+        return assocPath(["properties", "attachments"], files, changeObj);
+      }, findObjectWithKey({ ...muutospyynto.data }, "changeObjects"))
+    );
   }, [filesFromMuutokset, muutospyynto.data]);
 
   /**
@@ -167,6 +170,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
       let changesBySection = {};
 
       if (updatedC) {
+        console.info(updatedC, muutospyynto.data);
         forEach(changeObj => {
           const anchorInitialSplitted = split(
             "_",
@@ -181,6 +185,43 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
             changesBySection
           );
         }, updatedC);
+      }
+
+      if (changesBySection.maakuntakunnat) {
+        changesBySection.toimintaalue = changesBySection.toimintaalue || [];
+
+        let byProvince = {};
+
+        forEach(changeObj => {
+          const provinceKey = getAnchorPart(changeObj.anchor, 1);
+          byProvince[provinceKey] = byProvince[provinceKey] || [];
+          byProvince[provinceKey].push(changeObj);
+        }, changesBySection.maakuntakunnat);
+
+        changesBySection.toimintaalue.push({
+          anchor: "categoryFilter",
+          properties: {
+            changeObjects: byProvince
+          }
+        });
+
+        const toimintaAluePerusteluChangeObject = path(
+          ["perustelut", "categoryFilter", "0"],
+          changesBySection
+        );
+
+        changesBySection = assocPath(
+          ["perustelut", "toimintaalue"],
+          [
+            {
+              anchor: "perustelut_toimintaalue.reasoning.A",
+              properties: toimintaAluePerusteluChangeObject.properties
+            }
+          ],
+          changesBySection
+        );
+
+        delete changesBySection.maakuntakunnat;
       }
 
       // Special case: Toiminta-alueen perustelut
@@ -208,7 +249,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
        * At this point the backend data is handled and change objects are formed.
        */
       coActions.initialize(changesBySection);
-
       setBackendMuutokset(backendMuutokset);
 
       setAsHandled(true);
