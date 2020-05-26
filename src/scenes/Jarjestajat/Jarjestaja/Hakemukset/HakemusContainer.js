@@ -170,7 +170,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
       let changesBySection = {};
 
       if (updatedC) {
-        console.info(updatedC, muutospyynto.data);
         forEach(changeObj => {
           const anchorInitialSplitted = split(
             "_",
@@ -210,17 +209,18 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
           changesBySection
         );
 
-        changesBySection = assocPath(
-          ["perustelut", "toimintaalue"],
-          [
-            {
-              anchor: "perustelut_toimintaalue.reasoning.A",
-              properties: toimintaAluePerusteluChangeObject.properties
-            }
-          ],
-          changesBySection
-        );
-
+        if (toimintaAluePerusteluChangeObject) {
+          changesBySection = assocPath(
+            ["perustelut", "toimintaalue"],
+            [
+              {
+                anchor: "perustelut_toimintaalue.reasoning.A",
+                properties: toimintaAluePerusteluChangeObject.properties
+              }
+            ],
+            changesBySection
+          );
+        }
         delete changesBySection.maakuntakunnat;
       }
 
