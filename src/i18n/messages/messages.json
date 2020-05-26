@@ -1160,6 +1160,21 @@
     "filepath": "src/i18n/definitions/wizard.js"
   },
   {
+    "id": "wizard.singularMunicipalitiesOrTheWholeCountry",
+    "defaultMessage": "Yksittäiset maakunnat ja kunnat tai koko maa",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.ofMunicipalities",
+    "defaultMessage": "kunnista",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.sameAsTheCurrentAreaOfAction",
+    "defaultMessage": "Sama kuin nykyinen toiminta-alue",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
     "id": "app.title",
     "defaultMessage": "Opetus- ja kulttuuriministeriö",
     "filepath": "src/scenes/Footer/Footer.js"
