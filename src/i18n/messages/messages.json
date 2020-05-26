@@ -35,6 +35,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.changesText",
+    "defaultMessage": "Muutokset:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.loading",
     "defaultMessage": "Ladataan",
     "filepath": "src/i18n/definitions/common.js"
@@ -42,6 +47,16 @@
   {
     "id": "common.ok",
     "defaultMessage": "Ok",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.yes",
+    "defaultMessage": "Kyllä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.no",
+    "defaultMessage": "Ei",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -57,6 +72,16 @@
   {
     "id": "common.accept",
     "defaultMessage": "Hyväksy",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.save",
+    "defaultMessage": "Tallenna",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.noSave",
+    "defaultMessage": "Älä tallenna",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -880,6 +905,71 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.asiaPaatettyConfirmationDialogTitle",
+    "defaultMessage": "Merkitäänkö asia päätetyksi?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asiaPaatettyConfirmationDialogContent",
+    "defaultMessage": "Haluatko varmasti merkitä asian päätetyksi? Päätetyksi merkitsemisen jälkeen asiaa ei voi enää muokata.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asiaPaatettyConfirmationDialogOk",
+    "defaultMessage": "Merkitse päätetyksi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.confirmExitMuutoshakemus",
+    "defaultMessage": "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.confirmExitMuutoshakemusWizardTitle",
+    "defaultMessage": "Poistutaanko?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.confirmSendMuutoshakemus",
+    "defaultMessage": "Oletko varma, että haluat lähettää hakemuksen käsiteltäväksi?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.confirmSendMuutoshakemusTitle",
+    "defaultMessage": "Lähetyksen varmistus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.confirmExitEsittelijaMuutoshakemusWizard",
+    "defaultMessage": "Haluatko tallentaa järjestämislupaan tekemäsi muutokset? Voit myöhemmin palata tekemiisi muutoksiin tallennettuasi muutokset.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.confirmExitEsittelijaMuutoshakemusWizardTitle",
+    "defaultMessage": "Tallennetaanko muutokset ennen poistumista?",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.tietosuojailmoitus",
+    "defaultMessage": "Tietosuojailmoitus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.yhteydenotto",
+    "defaultMessage": "Yhteydenotto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.saavutettavuusseloste",
+    "defaultMessage": "Saavutettavuusseloste",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.valtioneuvosto",
+    "defaultMessage": "Valtioneuvosto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1158,15 +1248,5 @@
     "id": "wizard.esittelijatMuutospyyntoDialogTitle",
     "defaultMessage": "Päätöksen valmistelu: Järjestämisluvan muutos",
     "filepath": "src/i18n/definitions/wizard.js"
-  },
-  {
-    "id": "app.title",
-    "defaultMessage": "Opetus- ja kulttuuriministeriö",
-    "filepath": "src/scenes/Footer/Footer.js"
-  },
-  {
-    "id": "app.valtioneuvosto",
-    "defaultMessage": "Valtioneuvosto",
-    "filepath": "src/scenes/Footer/Footer.js"
   }
 ]
