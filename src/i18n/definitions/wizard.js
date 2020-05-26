@@ -207,5 +207,17 @@ export default defineMessages({
   esittelijatMuutospyyntoDialogTitle: {
     id: "wizard.esittelijatMuutospyyntoDialogTitle",
     defaultMessage: "Päätöksen valmistelu: Järjestämisluvan muutos"
+  },
+  singularMunicipalitiesOrTheWholeCountry: {
+    id: "wizard.singularMunicipalitiesOrTheWholeCountry",
+    defaultMessage: "Yksittäiset maakunnat ja kunnat tai koko maa"
+  },
+  ofMunicipalities: {
+    id: "wizard.ofMunicipalities",
+    defaultMessage: "kunnista"
+  },
+  sameAsTheCurrentAreaOfAction: {
+    id: "wizard.sameAsTheCurrentAreaOfAction",
+    defaultMessage: "Sama kuin nykyinen toiminta-alue"
   }
 });
