@@ -59,6 +59,11 @@ const Tutkintokielet = props => {
     props.unselectedAnchors
   ]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <React.Fragment>
       {R.map(areaCode => {
@@ -76,7 +81,7 @@ const Tutkintokielet = props => {
               changeObjects
             )}
             hideAmountOfChanges={true}
-            messages={{ undo: intl.formatMessage(common.undo) }}
+            messages={changesMessages}
             key={`expandable-row-root-${areaCode}`}
             onChangesRemove={onChangesRemove}
             onUpdate={onChangesUpdate}

@@ -73,6 +73,11 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
     props.changeObjects.perustelut.koulutukset.tyovoimakoulutukset
   ]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <React.Fragment>
       {lomakkeet && (
@@ -85,7 +90,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
           disableReverting={props.isReadOnly}
           hideAmountOfChanges={true}
           isExpanded={true}
-          messages={{ undo: intl.formatMessage(common.undo) }}
+          messages={changesMessages}
           onChangesRemove={onChangesRemove}
           title={intl.formatMessage(wizardMessages.workforceTraining)}>
           {lomakkeet}

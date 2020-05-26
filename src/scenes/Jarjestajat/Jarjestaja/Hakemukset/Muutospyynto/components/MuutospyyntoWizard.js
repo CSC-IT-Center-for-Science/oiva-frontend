@@ -48,6 +48,7 @@ import { useLomakkeet } from "../../../../../../stores/lomakkeet";
 import ProcedureHandler from "../../../../../../components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
+import common from "../../../../../../i18n/definitions/common";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -612,10 +613,12 @@ const MuutospyyntoWizard = ({
         </FormDialog>
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}
-          title={"Poistutaanko?"}
-          content={HAKEMUS_VIESTI.VARMISTUS.FI}
-          yesMessage={HAKEMUS_VIESTI.KYLLA.FI}
-          noMessage={HAKEMUS_VIESTI.EI.FI}
+          messages={{
+            content: intl.formatMessage(common.confirmExitMuutoshakemusWizard),
+            ok: intl.formatMessage(common.yes),
+            cancel: intl.formatMessage(common.no),
+            title: intl.formatMessage(common.confirmExitMuutoshakemusWizardTitle)
+          }}
           handleOk={closeWizard}
           handleCancel={handleCancel}
         />

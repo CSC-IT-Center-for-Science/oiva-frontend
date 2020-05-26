@@ -3,7 +3,7 @@ import { fillForBackend } from "../../lomakkeet/backendMappings";
 import * as R from "ramda";
 
 // Return changes of Tutkinnot
-const getMuutos = (changeObj, perustelut, kohde, maaraystyyppi) => {
+const getMuutos = (changeObj, perustelut, kohde, maaraystyyppit) => {
   const metadata = R.path(["properties", "metadata"], changeObj);
   const anchorParts = changeObj.anchor.split(".");
   const koulutusCode = R.nth(2, anchorParts);
@@ -16,6 +16,8 @@ const getMuutos = (changeObj, perustelut, kohde, maaraystyyppi) => {
   const perusteluteksti = perustelutForBackend
     ? perustelutForBackend.perusteluteksti
     : null;
+  const tyyppi = subcode ? R.find(R.propEq("tunniste", "RAJOITE"), maaraystyyppit)
+    : R.find(R.propEq("tunniste", "OIKEUS"), maaraystyyppit);
   const muutos = {
     generatedId: R.join(".", R.init(anchorParts)),
     isInLupa: metadata.isInLupa,
@@ -23,7 +25,7 @@ const getMuutos = (changeObj, perustelut, kohde, maaraystyyppi) => {
     koodiarvo: subcode || koulutusCode,
     koodisto: metadata.koodisto.koodistoUri,
     kuvaus: finnishInfo.kuvaus,
-    maaraystyyppi,
+    maaraystyyppi: tyyppi,
     maaraysUuid,
     meta: {
       changeObjects: R.flatten([[changeObj], perustelut]),
@@ -91,7 +93,7 @@ export function getChangesToSave(
   changeObjects = {},
   backendMuutokset = [],
   kohde,
-  maaraystyyppi,
+  maaraystyypit,
   muut
 ) {
   // Update changes if already exits with perustelut and attachements
@@ -167,7 +169,7 @@ export function getChangesToSave(
         R.compose(R.contains(anchorInit), R.prop("anchor")),
         changeObjects.perustelut
       );
-      return getMuutos(changeObj, perustelut, kohde, maaraystyyppi);
+      return getMuutos(changeObj, perustelut, kohde, maaraystyypit);
     }, unhandledChangeObjects).filter(Boolean);
   } else if (key === "koulutukset") {
     uudetMuutokset = R.map(changeObj => {
@@ -215,7 +217,7 @@ export function getChangesToSave(
         kohde,
         koodiarvo: code,
         koodisto: metadata.koodisto.koodistoUri,
-        maaraystyyppi,
+        maaraystyyppi: R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit),
         maaraysUuid: metadata.maaraysUuid,
         meta,
         nimi: finnishInfo.nimi,
@@ -245,7 +247,7 @@ export function getChangesToSave(
         kuvaus: meta.kuvaus, // TODO: Tähän oikea arvo, jos tarvitaan, muuten poistetaan
         isInLupa: meta.isInLupa,
         kohde, //: meta.kohde.kohdeArvot[0].kohde,
-        maaraystyyppi, // : meta.maaraystyyppi,
+        maaraystyyppi: R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit), // : meta.maaraystyyppi,
         maaraysUuid: meta.maaraysUuid,
         meta: {
           tunniste: "opetuskieli",
@@ -285,7 +287,7 @@ export function getChangesToSave(
         kuvaus: meta.kuvaus, // TODO: Tähän oikea arvo, jos tarvitaan, muuten poistetaan
         isInLupa: meta.isInLupa,
         kohde,
-        maaraystyyppi,
+        maaraystyyppi: R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit),
         meta: {
           tunniste: "tutkintokieli",
           changeObjects: R.flatten([[changeObj], perustelut]),
@@ -357,7 +359,7 @@ export function getChangesToSave(
         ),
         isInLupa: R.path(["properties", "metadata", "isInLupa"], changeObj),
         kohde,
-        maaraystyyppi,
+        maaraystyyppi: R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit),
         maaraysUuid: changeObj.properties.metadata.maaraysUuid,
         meta,
         tila,
@@ -402,7 +404,7 @@ export function getChangesToSave(
           maaraysUuid: changeObj.properties.metadata.maaraysUuid,
           muutosperustelukoodiarvo: null,
           kohde,
-          maaraystyyppi,
+          maaraystyyppi: R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit),
           koodisto: "nuts1",
           koodiarvo
         };
@@ -567,7 +569,7 @@ export function getChangesToSave(
         koodiarvo,
         koodisto: koodisto.koodistoUri,
         kohde,
-        maaraystyyppi,
+        maaraystyyppi: R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta,
         tila: "MUUTOS",
         type: "change"

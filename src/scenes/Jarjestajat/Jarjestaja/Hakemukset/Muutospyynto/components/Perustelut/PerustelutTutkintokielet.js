@@ -22,6 +22,11 @@ const PerustelutTutkintokielet = React.memo(props => {
     }, props.changeObjects.tutkintokielet || []);
   });
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   if (isChanges) {
     return (
       <React.Fragment>
@@ -46,7 +51,7 @@ const PerustelutTutkintokielet = React.memo(props => {
                 )}
                 disableReverting={props.isReadOnly}
                 hideAmountOfChanges={true}
-                messages={{ undo: intl.formatMessage(common.undo) }}
+                messages={changesMessages}
                 onChangesRemove={onChangesRemove}
                 onUpdate={onChangesUpdate}
                 sectionId={sectionId}

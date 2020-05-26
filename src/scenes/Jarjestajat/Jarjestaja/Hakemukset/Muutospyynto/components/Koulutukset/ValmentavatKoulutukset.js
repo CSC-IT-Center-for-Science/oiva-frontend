@@ -22,6 +22,11 @@ const ValmentavatKoulutukset = React.memo(
       );
     }, [intl.locale, koulutukset]);
 
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    }
+
     return (
       <ExpandableRowRoot
         anchor={sectionId}
@@ -29,7 +34,7 @@ const ValmentavatKoulutukset = React.memo(
         categories={[]}
         changes={changeObjects.koulutukset.valmentavatKoulutukset}
         hideAmountOfChanges={true}
-        messages={{ undo: intl.formatMessage(common.undo) }}
+        messages={changesMessages}
         title={intl.formatMessage(wizardMessages.preparatoryTraining)}
         index={0}
         onChangesRemove={onChangesRemove}

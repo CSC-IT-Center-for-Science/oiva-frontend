@@ -34,7 +34,6 @@ export default function getTopThree(data, isReadOnly, locale) {
             fullWidth: true,
             label: __("paatospaiva"),
             placeholder: __("common.date"),
-            disablePast: true,
             locale: locale,
             localizations: {
               ok: __("common.ok"),
@@ -61,7 +60,6 @@ export default function getTopThree(data, isReadOnly, locale) {
             fullWidth: true,
             label: __("voimaantulopaiva"),
             placeholder: __("common.date"),
-            disablePast: true,
             locale: locale,
             localizations: {
               ok: __("common.ok"),

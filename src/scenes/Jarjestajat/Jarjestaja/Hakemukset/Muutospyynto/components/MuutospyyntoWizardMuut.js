@@ -180,6 +180,11 @@ const MuutospyyntoWizardMuut = props => {
     ];
   }, [divideArticles, intl]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <React.Fragment>
       {R.addIndex(R.map)((configObj, i) => {
@@ -190,7 +195,7 @@ const MuutospyyntoWizardMuut = props => {
             categories={[]}
             changes={R.prop(configObj.code, changeObjects.muut)}
             hideAmountOfChanges={true}
-            messages={{ undo: intl.formatMessage(common.undo) }}
+            messages={changesMessages}
             code={configObj.code}
             index={i}
             onUpdate={onChangesUpdate}

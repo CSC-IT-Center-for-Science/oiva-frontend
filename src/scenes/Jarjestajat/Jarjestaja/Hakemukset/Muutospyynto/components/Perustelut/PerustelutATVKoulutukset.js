@@ -24,6 +24,11 @@ const PerustelutATVKoulutukset = props => {
     props.koulutukset.muut.ammatilliseentehtavaanvalmistavakoulutus
   ]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <ExpandableRowRoot
       anchor={sectionId}
@@ -33,7 +38,7 @@ const PerustelutATVKoulutukset = props => {
       disableReverting={props.isReadOnly}
       hideAmountOfChanges={true}
       isExpanded={true}
-      messages={{ undo: intl.formatMessage(common.undo) }}
+      messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
       title={intl.formatMessage(wizardMessages.vocationalTraining)}>

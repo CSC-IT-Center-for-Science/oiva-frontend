@@ -1,0 +1,5532 @@
+[
+  {
+    "lupaId": 215,
+    "hakupvm": "2019-11-19",
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1574121600000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1574174217804,
+    "uuid": "efa40016-0460-11ea-a592-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "hakupvm": "2019-11-19",
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1574121600000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1574173183434,
+    "uuid": "21e14b64-0458-11ea-9947-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": [
+          {
+            "anchor": "perustelut_liitteet.liitteet.A",
+            "properties": {
+              "attachments": [
+                {
+                  "new": false,
+                  "koko": 300124,
+                  "nimi": "stm varasivustot - projektin kuvaus ja arkkitehtuuri - 1",
+                  "uuid": "d30b39ac-0ad6-11ea-91fb-02420a141703",
+                  "kieli": "fi",
+                  "tyyppi": "pdf",
+                  "removed": false,
+                  "filename": "STM Varasivustot - Projektin kuvaus ja arkkitehtuuri - 1.0.pdf",
+                  "salainen": false,
+                  "tiedosto": {},
+                  "tiedostoId": "0.1537401422257192-STM Varasivustot - Projektin kuvaus ja arkkitehtuuri - 1.0.pdf"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 19,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "417101",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "nimi": "Liikenneopettajan erikoisammattitutkinto",
+          "liitteet": [],
+          "koulutusala": "tutkinnot_01",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_01.12.417101.A",
+              "properties": {
+                "isChecked": false
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_01.12.417101.vapaa-tekstikentta.A",
+              "properties": {
+                "value": "asdad"
+              }
+            }
+          ],
+          "koulutustyyppi": "12",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1574172836837,
+        "paivityspvm": 1574173183498,
+        "tila": "POISTO",
+        "uuid": "d30ff3f2-0ad6-11ea-91fb-02420a141703",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "417101",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 7,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Specialyrkesexamen för trafiklärare",
+              "kuvaus": "Specialyrkesexamen för trafiklärare\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Specialist vocational qualification for Driving Instructors",
+              "kuvaus": "Specialist vocational qualification for Driving Instructors",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Liikenneopettajan erikoisammattitutkinto",
+              "kuvaus": "Liikenneopettajan erikoisammattitutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2009-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "12",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "SV",
+                "nimi": "Specialyrkesexamen",
+                "kuvaus": "Specialyrkesexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Erikoisammattitutkinto",
+                "kuvaus": "Erikoisammattitutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-02-01"
+          },
+          {
+            "koodiArvo": "01",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Education"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De pedagogiska områdena"
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Kasvatusalat"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [
+      {
+        "nimi": "stm varasivustot - projektin kuvaus ja arkkitehtuuri - 1",
+        "polku": "2019/11/19/0703497c-4683-44a3-a5c5-7afb8b513335/STM Varasivustot - Projektin kuvaus ja arkkitehtuuri - 1.0.pdf",
+        "tila": false,
+        "luontipvm": 1574172836776,
+        "koko": 300124,
+        "meta": {},
+        "tyyppi": "pdf",
+        "kieli": "fi",
+        "uuid": "d30b39ac-0ad6-11ea-91fb-02420a141703",
+        "salainen": false,
+        "tiedostoId": "0.1537401422257192-STM Varasivustot - Projektin kuvaus ja arkkitehtuuri - 1.0.pdf",
+        "removed": false
+      }
+    ],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573516800000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573554549824,
+    "uuid": "9b25d9b8-efe5-11e9-b5b0-02420a141702",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": [
+          {
+            "anchor": "yhteenveto_yleisettiedot.muutoksien-voimaantulo.ajankohta",
+            "properties": {
+              "value": null
+            }
+          }
+        ]
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 2,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "321902",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "koulutusala": "tutkinnot_02",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_02.1.321902.A",
+              "properties": {
+                "isChecked": true
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321902.perustelut.2.A",
+              "properties": {
+                "isChecked": true
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321902.vapaa-tekstikentta.A",
+              "properties": {
+                "value": "asdf"
+              }
+            }
+          ],
+          "koulutustyyppi": "1",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571645402536,
+        "paivityspvm": 1573554549861,
+        "tila": "LISAYS",
+        "uuid": "2ed3c6aa-f3da-11e9-8cf3-02420a141702",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "321902",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 12,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sirkusalan perustutkinto",
+              "kuvaus": "Sirkusalan perustutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Vocational qualification in Circus Arts",
+              "kuvaus": "Vocational qualification in Circus Arts",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Grundexamen inom cirkusbranschen",
+              "kuvaus": "Grundexamen inom cirkusbranschen\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2006-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "13",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som fristående examen",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "ammatillinen perustutkinto näyttötutkintona",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-04-01",
+            "voimassaLoppuPvm": "2018-09-24"
+          },
+          {
+            "koodiArvo": "4",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto erityisopetuksena",
+                "kuvaus": "Ammatillinen perustutkinto erityisopetuksena",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "1",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Vocational upper secondary qualification",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen",
+                "kuvaus": "Yrkesinriktad grundexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto",
+                "kuvaus": "Ammatillinen perustutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "26",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto (reformin mukainen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen (enligt reformen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2017-08-07"
+          },
+          {
+            "koodiArvo": "02",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Humanistiset ja taidealat"
+              },
+              {
+                "kieli": "EN",
+                "nimi": "Arts and humanities"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De humanistiska och konstnärliga områdena"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 2,
+        "kohdeId": 1,
+        "koodisto": "kuljettajakoulutus",
+        "koodiarvo": "6",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "koulutukset_kuljettajakoulutukset.6.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ],
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1572852791501,
+        "paivityspvm": 1573554549865,
+        "tila": "LISAYS",
+        "uuid": "5abb9d00-fed5-11e9-99b8-02420a141703",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "6",
+          "koodisto": {
+            "koodistoUri": "kuljettajakoulutus"
+          },
+          "versio": 3,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Förarutbildning, fortbildning",
+              "kuvaus": "Utbildningsanordnaren har med stöd av 23 § 2 mom. i lagen om yrkesutbildning (531/2017) rätt att vara ett utbildningscentrum som ger yrkeskompetens fortbildning för lastbils- och bussförare. Utbildningsanordnaren ska ha ett gällande utbildningsprogram som används i fortbildningen och godkänts av Transport- och kommunikationsverket (Traficom).",
+              "sisaltaaMerkityksen": "jatko"
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Kuljettajakoulutus, jatkokoulutus",
+              "kuvaus": "Koulutuksen järjestäjällä on oikeus ammatillisesta koulutuksesta annetun lain (531/2017) 23 §:n 2 momentin nojalla toimia kuorma- ja linja-auton kuljettajan ammattipätevyyden jatkokoulutusta antavana koulutuskeskuksena. Koulutuksen järjestäjällä tulee olla voimassa oleva Liikenne- ja viestintäviraston (Traficom) hyväksymä jatkokoulutuksessa käytettävä koulutusohjelma.",
+              "sisaltaaMerkityksen": "jatko"
+            }
+          ],
+          "voimassaAlkuPvm": "2019-09-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 2,
+        "kohdeId": 2,
+        "koodisto": "oppilaitoksenopetuskieli",
+        "koodiarvo": "2",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "key": "opetuskieli",
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "perustelut_kielet_opetuskielet.2.vapaa-tekstikentta.A",
+              "properties": {
+                "value": "gfdhh"
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571645402551,
+        "paivityspvm": 1573554549869,
+        "tila": "LISAYS",
+        "uuid": "2ed5aa56-f3da-11e9-8cf3-02420a141702",
+        "kohde": {
+          "tunniste": "opetusjatutkintokieli",
+          "meta": {
+            "otsikko": {
+              "fi": "Opetus- ja tutkintokieli",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fd12-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "2",
+          "koodisto": {
+            "koodistoUri": "oppilaitoksenopetuskieli"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "svenska",
+              "kuvaus": "svenska"
+            },
+            {
+              "kieli": "FI",
+              "nimi": "ruotsi",
+              "kuvaus": "ruotsi"
+            }
+          ],
+          "voimassaAlkuPvm": "1990-01-02"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 2,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "4",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_03.sisaoppilaitos.4.A",
+              "properties": {
+                "name": "CheckboxWithLabel",
+                "title": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+                "isChecked": true,
+                "labelStyles": {
+                  "custom": {},
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            },
+            {
+              "anchor": "perustelut_muut_03.sisaoppilaitos.4.perustelut.A",
+              "properties": {
+                "value": "лошад"
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571210504108,
+        "paivityspvm": 1573554549872,
+        "tila": "LISAYS",
+        "uuid": "9b2b9db2-efe5-11e9-b5b0-02420a141702",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "4",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sisäoppilaitosmuotoinen koulutus",
+              "kuvaus": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Utbildning vid internatskola",
+              "kuvaus": "Utbildningsanordnaren har rätt att ordna sådan examensutbildning och handledande utbildning som avses i 1 punkten vid en internatskola.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-04-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 2,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "16",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_02.vaativatuki.16.A",
+              "properties": {
+                "name": "RadioButtonWithLabel",
+                "title": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+                "isChecked": true,
+                "labelStyles": {
+                  "custom": {},
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.TODO-WHAT-IS-THE-CODE-1.tehtavan-tarpeellisuus-field.A",
+              "properties": {
+                "value": "34wdfsg"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.TODO-WHAT-IS-THE-CODE-2.henkilostoresurssit-field.A",
+              "properties": {
+                "value": "w4et23g"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.TODO-WHAT-IS-THE-CODE-2.osaaminen-field.A",
+              "properties": {
+                "value": "fg"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.TODO-WHAT-IS-THE-CODE-2.jarjestelyt-field.A",
+              "properties": {
+                "value": "asfgh"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.TODO-WHAT-IS-THE-CODE-2.sidosryhmayhteistyo-field.A",
+              "properties": {
+                "value": "eerh"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.TODO-WHAT-IS-THE-CODE-3.suunnitelma-field.A",
+              "properties": {
+                "value": "adfghh"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.A",
+              "properties": {
+                "value": "1"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.B",
+              "properties": {
+                "value": "1"
+              }
+            },
+            {
+              "anchor": "perustelut_muut_02.vaativatuki.16.vaativa-erityinen-tuki-perustelut-lomake.4-4.4-4.vuodet.C",
+              "properties": {
+                "value": "1"
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571210504114,
+        "paivityspvm": 1573554549875,
+        "tila": "LISAYS",
+        "uuid": "9b2c7d54-efe5-11e9-b5b0-02420a141702",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "16",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2019-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573544114854,
+    "paivittaja": "string",
+    "uuid": "f78d42ce-051e-11ea-bcd5-02420a141703",
+    "meta": {
+      "liitteet": [],
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573544133573,
+    "paivittaja": "string",
+    "uuid": "02b887d0-051f-11ea-bcd5-02420a141703",
+    "meta": {
+      "liitteet": [],
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573544271655,
+    "paivittaja": "string",
+    "uuid": "5505f95a-051f-11ea-a572-02420a141703",
+    "meta": {
+      "liitteet": [],
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573516800000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573553880163,
+    "uuid": "56ea8ce2-f0a5-11e9-86c0-02420a141704",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 4,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "12",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_02.vaativatuki.12.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571731682819,
+        "paivityspvm": 1573553880213,
+        "tila": "LISAYS",
+        "uuid": "11e20740-f4a3-11e9-8d0a-02420a141703",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "12",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjän tulee toimia yhteistyössä koulutuksen järjestäjien kanssa, joiden tehtävänä on vaativan erityisen tuen järjestäminen.",
+              "kasite": "vaativa_2",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "Utbildningsanordnaren ska samarbeta med andra utbildningsanordnare vars uppgift är att ordna krävande särskilt stöd.",
+              "kasite": "vaativa_2",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-08-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 4,
+        "kohdeId": 4,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "16",
+        "arvo": "123",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.vaativatuki.A",
+              "properties": {
+                "isValid": true,
+                "initialValue": 0,
+                "applyForValue": 12
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571728164843,
+        "paivityspvm": 1573553880207,
+        "tila": "MUUTOS",
+        "uuid": "e0ffef3c-f49a-11e9-952c-02420a141703",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "16",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2019-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 4,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "321902",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "koulutusala": "tutkinnot_02",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_02.1.321902.A",
+              "properties": {
+                "code": "321902",
+                "name": "CheckboxWithLabel",
+                "title": "Sirkusalan perustutkinto",
+                "isChecked": true,
+                "labelStyles": {
+                  "custom": {},
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321902.vapaa-tekstikentta.A",
+              "properties": {
+                "value": "abc"
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321902.perustelut.2.A",
+              "properties": {
+                "title": "Alueen väestön koulutustarve",
+                "isChecked": true
+              }
+            }
+          ],
+          "koulutustyyppi": "1",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571292853007,
+        "paivityspvm": 1573553880204,
+        "tila": "LISAYS",
+        "uuid": "56f05492-f0a5-11e9-86c0-02420a141704",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "321902",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 12,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sirkusalan perustutkinto",
+              "kuvaus": "Sirkusalan perustutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Vocational qualification in Circus Arts",
+              "kuvaus": "Vocational qualification in Circus Arts",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Grundexamen inom cirkusbranschen",
+              "kuvaus": "Grundexamen inom cirkusbranschen\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2006-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "13",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som fristående examen",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "ammatillinen perustutkinto näyttötutkintona",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-04-01",
+            "voimassaLoppuPvm": "2018-09-24"
+          },
+          {
+            "koodiArvo": "4",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto erityisopetuksena",
+                "kuvaus": "Ammatillinen perustutkinto erityisopetuksena",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "1",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Vocational upper secondary qualification",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen",
+                "kuvaus": "Yrkesinriktad grundexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto",
+                "kuvaus": "Ammatillinen perustutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "26",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto (reformin mukainen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen (enligt reformen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2017-08-07"
+          },
+          {
+            "koodiArvo": "02",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Humanistiset ja taidealat"
+              },
+              {
+                "kieli": "EN",
+                "nimi": "Arts and humanities"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De humanistiska och konstnärliga områdena"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 4,
+        "kohdeId": 4,
+        "koodisto": "koulutussektori",
+        "koodiarvo": "3",
+        "arvo": "1",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.vahimmaisopiskelijavuodet.A",
+              "properties": {
+                "isValid": true,
+                "initialValue": 0,
+                "applyForValue": 11
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571731682802,
+        "paivityspvm": 1573553880210,
+        "tila": "MUUTOS",
+        "uuid": "11dfac48-f4a3-11e9-8d0a-02420a141703",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "3",
+          "koodisto": {
+            "koodistoUri": "koulutussektori"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Ammatillinen koulutus"
+            }
+          ],
+          "voimassaAlkuPvm": "2010-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 4,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "21",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_02.vaativatuki.21.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571731682810,
+        "paivityspvm": 1573553880219,
+        "tila": "LISAYS",
+        "uuid": "11e0d460-f4a3-11e9-8d0a-02420a141703",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "21",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus velvollisuuden järjestää ammatilliseen koulutukseen valmentavaa koulutusta ja työhön ja itsenäiseen elämään valmentavaa koulutusta vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "7",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "7",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2019-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 4,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "3",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_02.vaativatuki.3.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571731682814,
+        "paivityspvm": 1573553880222,
+        "tila": "LISAYS",
+        "uuid": "11e18c3e-f4a3-11e9-8d0a-02420a141703",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "3",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "Utbildningsanordnaren är skyldig att handha utvecklings-, handlednings- och stöduppgifter som gäller det särskilda stödet.",
+              "kasite": "vaativa_2",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus huolehtia erityisen tuen kehittämis-, ohjaus- ja tukitehtävistä.",
+              "kasite": "vaativa_2",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-04-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573603200000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573643003050,
+    "uuid": "ce77e0b8-0462-11ea-a592-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573544064224,
+    "paivittaja": "string",
+    "uuid": "d9617f36-051e-11ea-bcd5-02420a141703",
+    "meta": {
+      "liitteet": [],
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573516800000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573553938787,
+    "uuid": "15ecd2a2-f16a-11e9-ace9-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 4,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "16",
+        "arvo": "1",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.vaativatuki.A",
+              "properties": {
+                "isValid": false,
+                "initialValue": 0,
+                "applyForValue": 1
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571809808602,
+        "paivityspvm": 1573553938849,
+        "tila": "MUUTOS",
+        "uuid": "f87e9d70-f558-11e9-8d16-02420a141703",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "16",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2019-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 4,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "4",
+        "arvo": "1",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.sisaoppilaitos.A",
+              "properties": {
+                "isValid": false,
+                "initialValue": 0,
+                "applyForValue": 1
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571809808616,
+        "paivityspvm": 1573553938852,
+        "tila": "MUUTOS",
+        "uuid": "f8800318-f558-11e9-8d16-02420a141703",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "4",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sisäoppilaitosmuotoinen koulutus",
+              "kuvaus": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Utbildning vid internatskola",
+              "kuvaus": "Utbildningsanordnaren har rätt att ordna sådan examensutbildning och handledande utbildning som avses i 1 punkten vid en internatskola.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-04-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 4,
+        "koodisto": "koulutussektori",
+        "koodiarvo": "3",
+        "arvo": "1",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.vahimmaisopiskelijavuodet.A",
+              "properties": {
+                "isValid": true,
+                "initialValue": 0,
+                "applyForValue": 1
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571809808624,
+        "paivityspvm": 1573553938854,
+        "tila": "MUUTOS",
+        "uuid": "f8814bd8-f558-11e9-8d16-02420a141703",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "3",
+          "koodisto": {
+            "koodistoUri": "koulutussektori"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Ammatillinen koulutus"
+            }
+          ],
+          "voimassaAlkuPvm": "2010-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "4",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_03.sisaoppilaitos.4.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571809808632,
+        "paivityspvm": 1573553938857,
+        "tila": "LISAYS",
+        "uuid": "f8826108-f558-11e9-8d16-02420a141703",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "4",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sisäoppilaitosmuotoinen koulutus",
+              "kuvaus": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Utbildning vid internatskola",
+              "kuvaus": "Utbildningsanordnaren har rätt att ordna sådan examensutbildning och handledande utbildning som avses i 1 punkten vid en internatskola.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-04-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "16",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_02.vaativatuki.16.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571809808639,
+        "paivityspvm": 1573553938860,
+        "tila": "LISAYS",
+        "uuid": "f883ad74-f558-11e9-8d16-02420a141703",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "16",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2019-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "321902",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "koulutusala": "tutkinnot_02",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_02.1.321902.A",
+              "properties": {
+                "code": "321902",
+                "name": "CheckboxWithLabel",
+                "title": "Sirkusalan perustutkinto",
+                "isChecked": true,
+                "labelStyles": {
+                  "custom": {},
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321902.perustelut.2.A",
+              "properties": {
+                "title": "Alueen väestön koulutustarve",
+                "isChecked": true
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321902.vapaa-tekstikentta.A",
+              "properties": {
+                "value": "abc"
+              }
+            }
+          ],
+          "koulutustyyppi": "1",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571377354825,
+        "paivityspvm": 1573553938843,
+        "tila": "LISAYS",
+        "uuid": "15f083a2-f16a-11e9-ace9-02420a141703",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "321902",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 12,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sirkusalan perustutkinto",
+              "kuvaus": "Sirkusalan perustutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Vocational qualification in Circus Arts",
+              "kuvaus": "Vocational qualification in Circus Arts",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Grundexamen inom cirkusbranschen",
+              "kuvaus": "Grundexamen inom cirkusbranschen\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2006-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "13",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som fristående examen",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "ammatillinen perustutkinto näyttötutkintona",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-04-01",
+            "voimassaLoppuPvm": "2018-09-24"
+          },
+          {
+            "koodiArvo": "4",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto erityisopetuksena",
+                "kuvaus": "Ammatillinen perustutkinto erityisopetuksena",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "1",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Vocational upper secondary qualification",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen",
+                "kuvaus": "Yrkesinriktad grundexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto",
+                "kuvaus": "Ammatillinen perustutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "26",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto (reformin mukainen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen (enligt reformen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2017-08-07"
+          },
+          {
+            "koodiArvo": "02",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Humanistiset ja taidealat"
+              },
+              {
+                "kieli": "EN",
+                "nimi": "Arts and humanities"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De humanistiska och konstnärliga områdena"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 5,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "321204",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "koulutusala": "tutkinnot_02",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_02.1.321204.A",
+              "properties": {
+                "code": "321204",
+                "name": "CheckboxWithLabel",
+                "title": "Musiikkialan perustutkinto",
+                "isChecked": false,
+                "labelStyles": {
+                  "custom": {
+                    "fontWeight": 600
+                  },
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            },
+            {
+              "anchor": "perustelut_tutkinnot_02.1.321204.vapaa-tekstikentta.A",
+              "properties": {
+                "value": "avc"
+              }
+            }
+          ],
+          "koulutustyyppi": "1",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571377354841,
+        "paivityspvm": 1573553938846,
+        "tila": "POISTO",
+        "uuid": "15f28ada-f16a-11e9-ace9-02420a141703",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "321204",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 12,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Musiikkialan perustutkinto",
+              "kuvaus": "Musiikkialan perustutkinto: musiikin perustutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Grundexamen i musik",
+              "kuvaus": "Grundexamen i musik\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Vocational qualification in Music",
+              "kuvaus": "Vocational qualification in Music",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "1998-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "13",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som fristående examen",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "ammatillinen perustutkinto näyttötutkintona",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-04-01",
+            "voimassaLoppuPvm": "2018-09-24"
+          },
+          {
+            "koodiArvo": "4",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto erityisopetuksena",
+                "kuvaus": "Ammatillinen perustutkinto erityisopetuksena",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "1",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Vocational upper secondary qualification",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen",
+                "kuvaus": "Yrkesinriktad grundexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto",
+                "kuvaus": "Ammatillinen perustutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "26",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto (reformin mukainen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen (enligt reformen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2017-08-07"
+          },
+          {
+            "koodiArvo": "02",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Humanistiset ja taidealat"
+              },
+              {
+                "kieli": "EN",
+                "nimi": "Arts and humanities"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De humanistiska och konstnärliga områdena"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573603200000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573633860752,
+    "uuid": "d4c45ff2-051e-11ea-bcd5-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573603200000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573633883950,
+    "uuid": "e85758fe-051d-11ea-bcd5-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 28,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "321902",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "koulutusala": "tutkinnot_02",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_02.1.321902.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ],
+          "koulutustyyppi": "1",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1573543643550,
+        "paivityspvm": 1573633883972,
+        "tila": "LISAYS",
+        "uuid": "dea36adc-051d-11ea-bcd5-02420a141703",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "321902",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 12,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sirkusalan perustutkinto",
+              "kuvaus": "Sirkusalan perustutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Vocational qualification in Circus Arts",
+              "kuvaus": "Vocational qualification in Circus Arts",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Grundexamen inom cirkusbranschen",
+              "kuvaus": "Grundexamen inom cirkusbranschen\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2006-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "13",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som fristående examen",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "ammatillinen perustutkinto näyttötutkintona",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-04-01",
+            "voimassaLoppuPvm": "2018-09-24"
+          },
+          {
+            "koodiArvo": "4",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto erityisopetuksena",
+                "kuvaus": "Ammatillinen perustutkinto erityisopetuksena",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "1",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Vocational upper secondary qualification",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen",
+                "kuvaus": "Yrkesinriktad grundexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto",
+                "kuvaus": "Ammatillinen perustutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "26",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto (reformin mukainen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen (enligt reformen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2017-08-07"
+          },
+          {
+            "koodiArvo": "02",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Humanistiset ja taidealat"
+              },
+              {
+                "kieli": "EN",
+                "nimi": "Arts and humanities"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De humanistiska och konstnärliga områdena"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573603200000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573633911679,
+    "uuid": "dea26538-051d-11ea-bcd5-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573603200000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573634488911,
+    "uuid": "6fe10204-051c-11ea-bcd5-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 26,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "417101",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "nimi": "Liikenneopettajan erikoisammattitutkinto",
+          "liitteet": [],
+          "koulutusala": "tutkinnot_01",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_01.12.417101.A",
+              "properties": {
+                "isChecked": false
+              }
+            }
+          ],
+          "koulutustyyppi": "12",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1573543028230,
+        "paivityspvm": 1573634488929,
+        "tila": "POISTO",
+        "uuid": "6fe3eb7c-051c-11ea-bcd5-02420a141703",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "417101",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 7,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Specialyrkesexamen för trafiklärare",
+              "kuvaus": "Specialyrkesexamen för trafiklärare\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Specialist vocational qualification for Driving Instructors",
+              "kuvaus": "Specialist vocational qualification for Driving Instructors",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Liikenneopettajan erikoisammattitutkinto",
+              "kuvaus": "Liikenneopettajan erikoisammattitutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2009-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "12",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "SV",
+                "nimi": "Specialyrkesexamen",
+                "kuvaus": "Specialyrkesexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Erikoisammattitutkinto",
+                "kuvaus": "Erikoisammattitutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-02-01"
+          },
+          {
+            "koodiArvo": "01",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Education"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De pedagogiska områdena"
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Kasvatusalat"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573689600000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573713255327,
+    "uuid": "b266efd6-0453-11ea-9e71-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": [
+          {
+            "anchor": "yhteenveto_yleisettiedot.muutoksien-voimaantulo.ajankohta",
+            "properties": {
+              "value": "2019-11-16T06:34:00.000Z"
+            }
+          }
+        ]
+      },
+      "taloudelliset": {
+        "changeObjects": [
+          {
+            "anchor": "taloudelliset_yleisettiedot.sopeuttaminen-tekstikentta.A",
+            "properties": {
+              "value": "asdasdasd"
+            }
+          }
+        ]
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 18,
+        "kohdeId": 4,
+        "koodisto": "koulutussektori",
+        "koodiarvo": "3",
+        "arvo": "123",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.vahimmaisopiskelijavuodet.A",
+              "properties": {
+                "isValid": true,
+                "initialValue": 0,
+                "applyForValue": 123
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1573713157196,
+        "paivityspvm": 1573713255340,
+        "tila": "MUUTOS",
+        "uuid": "8ca914a2-06a8-11ea-bca6-02420a141702",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "3",
+          "koodisto": {
+            "koodistoUri": "koulutussektori"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Ammatillinen koulutus"
+            }
+          ],
+          "voimassaAlkuPvm": "2010-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573516800000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573562680670,
+    "uuid": "b3d0e548-efe5-11e9-b5b0-02420a141702",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": [
+          {
+            "anchor": "taloudelliset_liitteet.liitteet.A",
+            "properties": {
+              "attachments": [
+                {
+                  "new": false,
+                  "koko": 211577,
+                  "nimi": "turvallisuusarviointiin",
+                  "uuid": null,
+                  "kieli": "fi",
+                  "tyyppi": "pdf",
+                  "removed": false,
+                  "salainen": true,
+                  "tiedosto": {},
+                  "tiedostoId": "turvallisuusarviointiin.pdf-0.29689787159422476"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": [
+          {
+            "anchor": "perustelut_liitteet.liitteet.A",
+            "properties": {
+              "attachments": [
+                {
+                  "new": false,
+                  "koko": 211446,
+                  "nimi": "stm varasivuston arkkitehtuuritiivistelmä turvallisuuden kannalta",
+                  "uuid": null,
+                  "kieli": "fi",
+                  "tyyppi": "pdf",
+                  "removed": false,
+                  "salainen": false,
+                  "tiedosto": {},
+                  "tiedostoId": "STM Varasivuston arkkitehtuuritiivistelmä turvallisuuden kannalta.pdf-0.5468458158607565"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "muutokset": [
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "321902",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "koulutusala": "tutkinnot_02",
+          "changeObjects": [
+            {
+              "anchor": "tutkinnot_02.1.321902.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ],
+          "koulutustyyppi": "1",
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571645635450,
+        "paivityspvm": 1573562680715,
+        "tila": "LISAYS",
+        "uuid": "b9a5777e-f3da-11e9-8cf3-02420a141702",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "321902",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 12,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sirkusalan perustutkinto",
+              "kuvaus": "Sirkusalan perustutkinto",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "EN",
+              "nimi": "Vocational qualification in Circus Arts",
+              "kuvaus": "Vocational qualification in Circus Arts",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Grundexamen inom cirkusbranschen",
+              "kuvaus": "Grundexamen inom cirkusbranschen\n",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2006-01-01"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "13",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som fristående examen",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto näyttötutkintona",
+                "kuvaus": "ammatillinen perustutkinto näyttötutkintona",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2014-04-01",
+            "voimassaLoppuPvm": "2018-09-24"
+          },
+          {
+            "koodiArvo": "4",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto erityisopetuksena",
+                "kuvaus": "Ammatillinen perustutkinto erityisopetuksena",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "1",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "EN",
+                "nimi": "Vocational upper secondary qualification",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen",
+                "kuvaus": "Yrkesinriktad grundexamen",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto",
+                "kuvaus": "Ammatillinen perustutkinto",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          },
+          {
+            "koodiArvo": "26",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Ammatillinen perustutkinto (reformin mukainen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "SV",
+                "nimi": "Yrkesinriktad grundexamen (enligt reformen)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2017-08-07"
+          },
+          {
+            "koodiArvo": "02",
+            "koodisto": {
+              "koodistoUri": "isced2011koulutusalataso1"
+            },
+            "versio": 1,
+            "metadata": [
+              {
+                "kieli": "FI",
+                "nimi": "Humanistiset ja taidealat"
+              },
+              {
+                "kieli": "EN",
+                "nimi": "Arts and humanities"
+              },
+              {
+                "kieli": "SV",
+                "nimi": "De humanistiska och konstnärliga områdena"
+              }
+            ],
+            "voimassaAlkuPvm": "2016-03-17"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 1,
+        "koodisto": "koulutus",
+        "koodiarvo": "999903",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "koulutukset_valmentavatKoulutukset.999903.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ],
+          "perusteluteksti": null,
+          "muutosperustelukoodiarvo": []
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571645635453,
+        "paivityspvm": 1573562680718,
+        "tila": "LISAYS",
+        "uuid": "b9a5f3ac-f3da-11e9-8cf3-02420a141702",
+        "kohde": {
+          "tunniste": "tutkinnotjakoulutukset",
+          "meta": {
+            "otsikko": {
+              "fi": "Tutkinnot ja koulutukset",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35f9d4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "999903",
+          "koodisto": {
+            "koodistoUri": "koulutus"
+          },
+          "versio": 9,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Utbildning som handleder för arbete och ett självständigt liv",
+              "kuvaus": "",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+              "kuvaus": "",
+              "kasite": "",
+              "huomioitavaKoodi": "",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2015-12-17"
+        },
+        "ylaKoodit": [
+          {
+            "koodiArvo": "5",
+            "koodisto": {
+              "koodistoUri": "koulutustyyppi"
+            },
+            "versio": 2,
+            "metadata": [
+              {
+                "kieli": "SV",
+                "nimi": "Utbildning som förbereder för arbete och ett självständigt liv",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              },
+              {
+                "kieli": "FI",
+                "nimi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+                "kuvaus": "",
+                "kasite": "",
+                "huomioitavaKoodi": "",
+                "sisaltaaMerkityksen": ""
+              }
+            ],
+            "voimassaAlkuPvm": "2013-10-28"
+          }
+        ],
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 2,
+        "koodisto": "oppilaitoksenopetuskieli",
+        "koodiarvo": "2",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "key": "opetuskieli",
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "kielet_opetuskielet.2.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571645635456,
+        "paivityspvm": 1573562680720,
+        "tila": "LISAYS",
+        "uuid": "b9a666fc-f3da-11e9-8cf3-02420a141702",
+        "kohde": {
+          "tunniste": "opetusjatutkintokieli",
+          "meta": {
+            "otsikko": {
+              "fi": "Opetus- ja tutkintokieli",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fd12-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "2",
+          "koodisto": {
+            "koodistoUri": "oppilaitoksenopetuskieli"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "svenska",
+              "kuvaus": "svenska"
+            },
+            {
+              "kieli": "FI",
+              "nimi": "ruotsi",
+              "kuvaus": "ruotsi"
+            }
+          ],
+          "voimassaAlkuPvm": "1990-01-02"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "4",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_03.sisaoppilaitos.4.A",
+              "properties": {
+                "name": "CheckboxWithLabel",
+                "title": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+                "isChecked": true,
+                "labelStyles": {
+                  "custom": {},
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571210545485,
+        "paivityspvm": 1573562680728,
+        "tila": "LISAYS",
+        "uuid": "b3d22b24-efe5-11e9-b5b0-02420a141702",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "4",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sisäoppilaitosmuotoinen koulutus",
+              "kuvaus": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Utbildning vid internatskola",
+              "kuvaus": "Utbildningsanordnaren har rätt att ordna sådan examensutbildning och handledande utbildning som avses i 1 punkten vid en internatskola.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-04-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 4,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "4",
+        "arvo": "12",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.sisaoppilaitos.A",
+              "properties": {
+                "isValid": false,
+                "initialValue": 0,
+                "applyForValue": 1
+              }
+            },
+            {
+              "anchor": "perustelut_opiskelijavuodet_sisaoppilaitos.sisaoppilaitos.A",
+              "properties": {
+                "value": "sdfasd"
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571210592002,
+        "paivityspvm": 1573562680723,
+        "tila": "MUUTOS",
+        "uuid": "cf8ec070-efe5-11e9-a61e-02420a141702",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "4",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Sisäoppilaitosmuotoinen koulutus",
+              "kuvaus": "Koulutuksen järjestäjällä on oikeus järjestää kohdassa 1 mainittuja tutkinto- ja valmentavaa koulutusta sisäoppilaitosmuotoisena koulutuksena.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "SV",
+              "nimi": "Utbildning vid internatskola",
+              "kuvaus": "Utbildningsanordnaren har rätt att ordna sådan examensutbildning och handledande utbildning som avses i 1 punkten vid en internatskola.",
+              "kasite": "sisaoppilaitos",
+              "huomioitavaKoodi": "1",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2017-04-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 4,
+        "koodisto": "koulutussektori",
+        "koodiarvo": "3",
+        "arvo": "1",
+        "maaraystyyppiId": 1,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "opiskelijavuodet.vahimmaisopiskelijavuodet.A",
+              "properties": {
+                "isValid": true,
+                "initialValue": 0,
+                "applyForValue": 1
+              }
+            },
+            {
+              "anchor": "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet.2.tehtavan-tarpeellisuus-field.A",
+              "properties": {
+                "value": "asdfgg"
+              }
+            },
+            {
+              "anchor": "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet.perustelut.2.A",
+              "properties": {
+                "isChecked": true
+              }
+            },
+            {
+              "anchor": "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet.perustelut.3.A",
+              "properties": {
+                "isChecked": true
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571210832095,
+        "paivityspvm": 1573562680726,
+        "tila": "MUUTOS",
+        "uuid": "5eaa18cc-efe6-11e9-a1aa-02420a141702",
+        "kohde": {
+          "tunniste": "opiskelijavuodet",
+          "meta": {
+            "otsikko": {
+              "fi": "Opiskelijavuodet",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35fed4-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "3",
+          "koodisto": {
+            "koodistoUri": "koulutussektori"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "FI",
+              "nimi": "Ammatillinen koulutus"
+            }
+          ],
+          "voimassaAlkuPvm": "2010-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "OIKEUS",
+          "selite": {
+            "fi": "Oikeus"
+          },
+          "uuid": "cc6522b8-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      },
+      {
+        "muutospyyntoId": 3,
+        "kohdeId": 5,
+        "koodisto": "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        "koodiarvo": "16",
+        "maaraystyyppiId": 3,
+        "meta": {
+          "liitteet": [],
+          "changeObjects": [
+            {
+              "anchor": "muut_02.vaativatuki.16.A",
+              "properties": {
+                "name": "RadioButtonWithLabel",
+                "title": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+                "isChecked": true,
+                "labelStyles": {
+                  "custom": {},
+                  "removal": {
+                    "color": "purple",
+                    "textDecoration": "line-through"
+                  },
+                  "addition": {
+                    "color": "purple"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "luoja": "oiva-sanni",
+        "luontipvm": 1571210832107,
+        "paivityspvm": 1573562680730,
+        "tila": "LISAYS",
+        "uuid": "5eabf516-efe6-11e9-a1aa-02420a141702",
+        "kohde": {
+          "tunniste": "muut",
+          "meta": {
+            "otsikko": {
+              "fi": "Muut oikeudet, velvollisuudet, ehdot ja tehtävät",
+              "sv": "på svenska"
+            }
+          },
+          "uuid": "cc35ffa6-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "koodi": {
+          "koodiArvo": "16",
+          "koodisto": {
+            "koodistoUri": "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+          },
+          "versio": 1,
+          "metadata": [
+            {
+              "kieli": "SV",
+              "nimi": "Uppgift att ordna krävande särkskilt stöd",
+              "kuvaus": "",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            },
+            {
+              "kieli": "FI",
+              "nimi": "Vaativan erityisen tuen tehtävä",
+              "kuvaus": "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille.",
+              "kasite": "vaativa_1",
+              "huomioitavaKoodi": "2",
+              "sisaltaaMerkityksen": ""
+            }
+          ],
+          "voimassaAlkuPvm": "2019-01-01"
+        },
+        "maaraystyyppi": {
+          "tunniste": "VELVOITE",
+          "selite": {
+            "fi": "Velvoite"
+          },
+          "uuid": "cc652722-43b6-11e8-b2ef-005056aa0e66"
+        },
+        "aliMaaraykset": [],
+        "liitteet": []
+      }
+    ],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1574121600000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1574156164517,
+    "uuid": "e252bb9c-05ef-11ea-b71f-02420a141702",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573516800000,
+    "paivittaja": "oiva-sanni",
+    "paivityspvm": 1573564963561,
+    "uuid": "613ecc34-051e-11ea-bcd5-02420a141703",
+    "meta": {
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  },
+  {
+    "lupaId": 215,
+    "voimassaalkupvm": "2019-01-01",
+    "voimassaloppupvm": "2019-12-31",
+    "paatoskierrosId": 19,
+    "tila": "AVOIN",
+    "jarjestajaYtunnus": "0208201-1",
+    "luoja": "oiva-sanni",
+    "luontipvm": 1573544071358,
+    "paivittaja": "string",
+    "uuid": "dda327fc-051e-11ea-bcd5-02420a141703",
+    "meta": {
+      "liitteet": [],
+      "yhteenveto": {
+        "changeObjects": []
+      },
+      "taloudelliset": {
+        "changeObjects": []
+      },
+      "tutkinnotjakoulutuksetLiitteet": {
+        "changeObjects": []
+      }
+    },
+    "muutokset": [],
+    "liitteet": [],
+    "paatoskierros": {
+      "alkupvm": "2017-08-01",
+      "loppupvm": "2017-12-31",
+      "meta": {
+        "fi": "1.1.2018 voimaan tulevat päätökset"
+      },
+      "uuid": "cc6ac1fa-43b6-11e8-b2ef-005056aa0e66"
+    },
+    "jarjestaja": {
+      "oid": "1.2.246.562.10.48442622063",
+      "ytunnus": "0208201-1",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "|1.2.246.562.10.00000000001|",
+      "kotipaikkaUri": "kunta_179",
+      "nimi": {
+        "fi": "Jyväskylän Koulutuskuntayhtymä"
+      },
+      "postiosoite": {
+        "osoiteTyyppi": "posti",
+        "osoite": "PL 472",
+        "postitoimipaikka": "JYVÄSKYLÄ",
+        "postinumeroUri": "posti_40101"
+      },
+      "kayntiosoite": {
+        "osoiteTyyppi": "kaynti",
+        "osoite": "Viitaniementie 1 A",
+        "postitoimipaikka": ""
+      },
+      "yhteystiedot": [
+        {},
+        {},
+        {
+          "email": "info@gradia.fi"
+        },
+        {
+          "www": "http://www.gradia.fi"
+        },
+        {
+          "numero": "040 341 5111"
+        }
+      ],
+      "kuntaKoodi": {
+        "koodiArvo": "179",
+        "koodisto": {
+          "koodistoUri": "kunta"
+        },
+        "versio": 2,
+        "metadata": [
+          {
+            "kieli": "SV",
+            "nimi": "Jyväskylä"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Jyväskylä"
+          }
+        ],
+        "voimassaAlkuPvm": "1990-01-01"
+      },
+      "maakuntaKoodi": {
+        "koodiArvo": "13",
+        "koodisto": {
+          "koodistoUri": "maakunta"
+        },
+        "versio": 1,
+        "metadata": [
+          {
+            "kieli": "EN",
+            "nimi": "Central Finland",
+            "kuvaus": "Central Finland"
+          },
+          {
+            "kieli": "SV",
+            "nimi": "Mellersta Finland",
+            "kuvaus": "Mellersta Finland"
+          },
+          {
+            "kieli": "FI",
+            "nimi": "Keski-Suomi",
+            "kuvaus": "Keski-Suomi"
+          }
+        ],
+        "voimassaAlkuPvm": "1993-01-01"
+      },
+      "muutKotipaikatUris": []
+    },
+    "asiatilamuutokset": [],
+    "lupaUuid": "281900a2-fd34-11e8-8d76-005056aa0e66"
+  }
+]

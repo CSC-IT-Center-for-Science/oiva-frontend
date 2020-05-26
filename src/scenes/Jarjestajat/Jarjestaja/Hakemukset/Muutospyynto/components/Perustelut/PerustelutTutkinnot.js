@@ -39,6 +39,11 @@ const PerustelutTutkinnot = React.memo(
       return R.sortBy(R.prop("koodiArvo"), R.values(tutkinnot));
     }, [tutkinnot]);
 
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    }
+
     return (
       <React.Fragment>
         {koulutusdata &&
@@ -62,7 +67,7 @@ const PerustelutTutkinnot = React.memo(
                 hideAmountOfChanges={true}
                 index={i}
                 isExpanded={true}
-                messages={{ undo: intl.formatMessage(common.undo) }}
+                messages={changesMessages}
                 onChangesRemove={onChangesRemove}
                 onUpdate={onChangesUpdate}
                 sectionId={sectionId}

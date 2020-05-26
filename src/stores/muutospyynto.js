@@ -34,6 +34,15 @@ const Store = createStore({
       );
       return outputs.muutospyynto.esikatselu.latauspolku.output;
     },
+    getLupaPreviewDownloadPath: uuid => async () => {
+      const procedureHandler = new ProcedureHandler();
+      const outputs = await procedureHandler.run(
+          "muutospyynto.esittelijanEsikatselu.latauspolku",
+          [uuid]
+      );
+
+      return outputs.muutospyynto.esittelijanEsikatselu.latauspolku.output;
+    },
     load: (uuid, isForceReloadRequested) => ({ getState, setState }) => {
       return execute(
         { getState, setState },

@@ -23,6 +23,12 @@ const Tutkinnot = React.memo(props => {
     return R.sortBy(R.prop("koodiArvo"), R.values(props.tutkinnot));
   }, [props.tutkinnot]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
+
   return (
     <React.Fragment>
       {R.addIndex(R.map)((koulutusala, i) => {
@@ -37,7 +43,7 @@ const Tutkinnot = React.memo(props => {
             key={`expandable-row-root-${i}`}
             changes={changeObjects.tutkinnot[areaCode]}
             hideAmountOfChanges={true}
-            messages={{ undo: intl.formatMessage(common.undo) }}
+            messages={changesMessages}
             onChangesRemove={props.onChangesRemove}
             onUpdate={props.onChangesUpdate}
             sectionId={sectionId}

@@ -23,6 +23,11 @@ const Opetuskielet = React.memo(props => {
     );
   }, [intl.locale, props.lupakohde, props.opetuskielet]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <React.Fragment>
       <ExpandableRowRoot
@@ -30,7 +35,7 @@ const Opetuskielet = React.memo(props => {
         key={`expandable-row-root`}
         changes={changeObjects.kielet.opetuskielet}
         hideAmountOfChanges={true}
-        messages={{ undo: intl.formatMessage(common.undo) }}
+        messages={changesMessages}
         onChangesRemove={onChangesRemove}
         onUpdate={onChangesUpdate}
         sectionId={sectionId}

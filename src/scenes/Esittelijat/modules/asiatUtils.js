@@ -76,7 +76,7 @@ export const generateAsiaTableRows = (row, i, t) => {
   );
 };
 
-export const generateAvoimetAsiatTableStructure = (hakemusList, t, history) => {
+export const generateAvoimetAsiatTableStructure = (hakemusList, t, history, onPaatettyActionClicked) => {
   return [
     generateAsiatTableHeaderStructure(t),
     {
@@ -120,12 +120,7 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history) => {
                   );
                   history.push("?force=" + timestamp);
                 } else if (action === "paata") {
-                  const timestamp = new Date().getTime();
-                  await new ProcedureHandler().run(
-                    "muutospyynnot.tilanmuutos.paatetyksi",
-                    [row.id]
-                  );
-                  history.push("?force=" + timestamp);
+                  await onPaatettyActionClicked(row);
                 } else {
                   history.push("/asiat/" + row.id);
                 }

@@ -8,6 +8,11 @@ import { useIntl } from "react-intl";
 
 const YhteenvetoYleisettiedot = React.memo(props => {
   const intl = useIntl();
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <ExpandableRowRoot
       title={"Hakemuksen yleiset tiedot"}
@@ -15,7 +20,7 @@ const YhteenvetoYleisettiedot = React.memo(props => {
       changes={props.changeObjects.yhteenveto}
       disableReverting={false}
       hideAmountOfChanges={true}
-      messages={{ undo: intl.formatMessage(common.undo) }}
+      messages={changesMessages}
       showCategoryTitles={true}
       isExpanded={true}
       sectionId={props.sectionId}

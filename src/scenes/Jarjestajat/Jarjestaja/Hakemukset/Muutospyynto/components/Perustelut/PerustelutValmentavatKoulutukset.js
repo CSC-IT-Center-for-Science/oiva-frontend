@@ -26,6 +26,11 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
     props.changeObjects
   );
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   if (changes && !R.isEmpty(changes)) {
     return (
       <ExpandableRowRoot
@@ -38,7 +43,7 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
         disableReverting={props.isReadOnly}
         hideAmountOfChanges={true}
         isExpanded={true}
-        messages={{ undo: intl.formatMessage(common.undo) }}
+        messages={changesMessages}
         onChangesRemove={onChangesRemove}
         onUpdate={onChangesUpdate}
         title={intl.formatMessage(wizardMessages.preparatoryTraining)}>

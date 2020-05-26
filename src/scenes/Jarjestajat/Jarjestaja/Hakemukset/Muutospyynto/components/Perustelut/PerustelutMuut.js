@@ -29,6 +29,11 @@ const PerustelutMuut = React.memo(
     const intl = useIntl();
     const sectionId = "perustelut_muut";
 
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    }
+
     return (
       <React.Fragment>
         {addIndex(map)((areaCode, i) => {
@@ -41,7 +46,7 @@ const PerustelutMuut = React.memo(
               hideAmountOfChanges={true}
               isExpanded={true}
               key={`expandable-row-root-${i}`}
-              messages={{ undo: intl.formatMessage(common.undo) }}
+              messages={changesMessages}
               onChangesRemove={onChangesRemove}
               onUpdate={onChangesUpdate}
               sectionId={sectionId}

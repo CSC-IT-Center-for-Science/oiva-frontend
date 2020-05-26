@@ -22,12 +22,17 @@ const PerustelutOpetuskielet = React.memo(props => {
     );
   }, [props.kohde, props.opetuskielet, intl.locale]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <ExpandableRowRoot
       anchor={sectionId}
       changes={props.changeObjects.perustelut}
       disableReverting={props.isReadOnly}
-      messages={{ undo: intl.formatMessage(common.undo) }}
+      messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
       sectionId={sectionId}

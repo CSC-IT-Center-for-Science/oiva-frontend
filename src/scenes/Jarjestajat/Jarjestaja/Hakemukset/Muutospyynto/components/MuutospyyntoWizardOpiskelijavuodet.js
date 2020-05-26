@@ -262,6 +262,11 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
     props.sectionId
   ]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <ExpandableRowRoot
       anchor={props.sectionId}
@@ -269,7 +274,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
       categories={[]}
       changes={changeObjects.opiskelijavuodet}
       hideAmountOfChanges={true}
-      messages={{ undo: intl.formatMessage(common.undo) }}
+      messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
       sectionId={props.sectionId}

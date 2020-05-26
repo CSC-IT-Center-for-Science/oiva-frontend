@@ -280,6 +280,11 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     changeObjects.toimintaalue
   );
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   const isMaakunnatJaKunnatActive =
     (fiCode === "FI0" && !maakunnatJaKunnatChangeObj) ||
     (maakunnatJaKunnatChangeObj &&
@@ -291,7 +296,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       key={`expandable-row-root`}
       changes={changeObjects.toimintaalue}
       hideAmountOfChanges={true}
-      messages={{ undo: intl.formatMessage(common.undo) }}
+      messages={changesMessages}
       isExpanded={true}
       sectionId={props.sectionId}
       showCategoryTitles={true}

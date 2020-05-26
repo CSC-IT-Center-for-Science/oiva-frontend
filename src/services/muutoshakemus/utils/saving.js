@@ -100,7 +100,7 @@ export function createObjectToSave(
       backendMuutokset
     ),
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
-    R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit),
+    maaraystyypit,
     null,
     lupaKohteet[1].maaraykset
   );
@@ -123,7 +123,7 @@ export function createObjectToSave(
       backendMuutokset
     ),
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
-    R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit)
+    maaraystyypit
   );
 
   // OPETUSKIELET
@@ -145,7 +145,7 @@ export function createObjectToSave(
     },
     R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset),
     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-    R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit)
+    maaraystyypit
   );
 
   // TUTKINTOKIELET
@@ -167,7 +167,7 @@ export function createObjectToSave(
     },
     R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset),
     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-    R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit)
+    maaraystyypit
   );
 
   // TOIMINTA-ALUE
@@ -198,7 +198,7 @@ export function createObjectToSave(
     },
     R.filter(R.pathEq(["kohde", "tunniste"], "toimintaalue"))(backendMuutokset),
     R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
-    R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit)
+    maaraystyypit
   );
 
   // OPISKELIJAVUODET
@@ -218,7 +218,7 @@ export function createObjectToSave(
       backendMuutokset
     ),
     R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
-    R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit),
+    maaraystyypit,
     muut
   );
 
@@ -237,7 +237,7 @@ export function createObjectToSave(
     },
     R.filter(R.pathEq(["kohde", "tunniste"], "muut"))(backendMuutokset),
     R.find(R.propEq("tunniste", "muut"), kohteet),
-    R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit)
+    maaraystyypit
   );
 
   let objectToSave = {

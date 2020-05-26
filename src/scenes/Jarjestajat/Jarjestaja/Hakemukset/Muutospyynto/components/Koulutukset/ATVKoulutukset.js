@@ -21,6 +21,11 @@ const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
     );
   }, [intl.locale, koulutukset]);
 
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <ExpandableRowRoot
       anchor={sectionId}
@@ -28,7 +33,7 @@ const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
       categories={[]}
       changes={changeObjects.koulutukset.atvKoulutukset}
       hideAmountOfChanges={true}
-      messages={{ undo: intl.formatMessage(common.undo) }}
+      messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
       title={intl.formatMessage(wizardMessages.vocationalTraining)}>

@@ -3,13 +3,13 @@ import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organi
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import { findAnchoredElement } from "../../../../../../../utils/common";
-import commonMessages from "../../../../../../../i18n/definitions/common";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getRules as getVahimmaisRules } from "../../../../../../../services/lomakkeet/perustelut/opiskelijavuodet/vahimmais/rules";
 import { getRules as getSisaoppilaitosRules } from "../../../../../../../services/lomakkeet/perustelut/opiskelijavuodet/sisaoppilaitos/rules";
 import { getRules as getVaativaTukiRules } from "../../../../../../../services/lomakkeet/perustelut/opiskelijavuodet/vaativa/rules";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 import { path } from "ramda";
+import common from "../../../../../../../i18n/definitions/common";
 
 const PerustelutOpiskelijavuodet = props => {
   const intl = useIntl();
@@ -35,10 +35,15 @@ const PerustelutOpiskelijavuodet = props => {
   }, [changeObjects.opiskelijavuodet]);
 
   const differenceTitles = [
-    intl.formatMessage(commonMessages.current),
-    intl.formatMessage(commonMessages.applyFor),
-    intl.formatMessage(commonMessages.difference)
+    intl.formatMessage(common.current),
+    intl.formatMessage(common.applyFor),
+    intl.formatMessage(common.difference)
   ];
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <React.Fragment>
       {valueChanges.vahimmaisopiskelijavuosimaara && (
@@ -51,7 +56,7 @@ const PerustelutOpiskelijavuodet = props => {
           )}
           hideAmountOfChanges={true}
           isExpanded={true}
-          messages={{ undo: intl.formatMessage(commonMessages.undo) }}
+          messages={changesMessages}
           onChangesRemove={onChangesRemove}
           onUpdate={onChangesUpdate}
           title={"Vähimmäisopiskelijavuosimäärä"}>
@@ -84,7 +89,7 @@ const PerustelutOpiskelijavuodet = props => {
           )}
           hideAmountOfChanges={true}
           isExpanded={true}
-          messages={{ undo: intl.formatMessage(commonMessages.undo) }}
+          messages={changesMessages}
           onChangesRemove={onChangesRemove}
           onUpdate={onChangesUpdate}
           title={"Sisäoppilaitosmuotoinen opetus"}>
@@ -115,7 +120,7 @@ const PerustelutOpiskelijavuodet = props => {
           )}
           hideAmountOfChanges={true}
           isExpanded={true}
-          messages={{ undo: intl.formatMessage(commonMessages.undo) }}
+          messages={changesMessages}
           onChangesRemove={onChangesRemove}
           onUpdate={onChangesUpdate}
           title={"Vaativa koulutus"}>

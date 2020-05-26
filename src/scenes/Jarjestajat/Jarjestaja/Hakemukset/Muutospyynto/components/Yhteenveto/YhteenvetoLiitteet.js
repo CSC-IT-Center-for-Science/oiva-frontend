@@ -4,9 +4,15 @@ import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import wizardMessages from "../../../../../../../i18n/definitions/wizard";
 import { useIntl } from "react-intl";
+import common from "../../../../../../../i18n/definitions/common";
 
 const YhteenvetoLiitteet = React.memo(props => {
   const intl = useIntl();
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  }
+
   return (
     <React.Fragment>
       <hr />

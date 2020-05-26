@@ -25,7 +25,7 @@ export function getRules(_lomake) {
                 anchor: "asianumero.A",
                 properties: {
                   value: value => {
-                    const isValid = /^VN\/[0-9]{4,6}\/[0-9]{4}$/.test(value);
+                    const isValid = /^VN\/[0-9]{1,6}\/[0-9]{4}$/.test(value);
                     return isValid;
                   }
                 }
