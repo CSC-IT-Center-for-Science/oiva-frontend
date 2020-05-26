@@ -12,7 +12,9 @@ function getModificationForm(
   options = [],
   onChanges,
   kunnat,
-  maakunnat
+  maakunnat,
+  localizations,
+  isMaakunnatJaKunnatActive
 ) {
   return [
     {
@@ -37,7 +39,7 @@ function getModificationForm(
       categories: [
         {
           anchor: "valintakentta",
-          isVisible: isMaakunnatJaKunnatChecked,
+          isVisible: isMaakunnatJaKunnatActive,
           layout: { indentation: "none" },
           components: [
             {
@@ -47,13 +49,14 @@ function getModificationForm(
               properties: {
                 anchor: "maakuntakunnat",
                 changeObjectsByProvince,
-                provinces: options,
+                localizations,
                 municipalities: kunnat,
-                provincesWithoutMunicipalities: maakunnat,
-                showCategoryTitles: false,
                 onChanges: payload => {
                   onChanges(payload);
-                }
+                },
+                provinces: options,
+                provincesWithoutMunicipalities: maakunnat,
+                showCategoryTitles: false
               }
             }
           ]
@@ -118,7 +121,9 @@ export default function getToimintaaluelomake(action, data) {
         data.options,
         data.onChanges,
         data.kunnat,
-        data.maakunnat
+        data.maakunnat,
+        data.localizations,
+        data.isMaakunnatJaKunnatActive
       );
     default:
       return [];
