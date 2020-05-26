@@ -175,7 +175,6 @@ const UusiAsiaDialog = React.memo(
      */
     const onSectionChangesUpdate = useCallback(
       (id, changeObjects) => {
-        console.info(id, changeObjects);
         if (id && changeObjects) {
           coActions.set(id, changeObjects);
         }

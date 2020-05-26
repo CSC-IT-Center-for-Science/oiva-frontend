@@ -16,7 +16,8 @@ const getMuutos = (changeObj, perustelut, kohde, maaraystyyppit) => {
   const perusteluteksti = perustelutForBackend
     ? perustelutForBackend.perusteluteksti
     : null;
-  const tyyppi = subcode ? R.find(R.propEq("tunniste", "RAJOITE"), maaraystyyppit)
+  const tyyppi = subcode
+    ? R.find(R.propEq("tunniste", "RAJOITE"), maaraystyyppit)
     : R.find(R.propEq("tunniste", "OIKEUS"), maaraystyyppit);
   const muutos = {
     generatedId: R.join(".", R.init(anchorParts)),
@@ -367,6 +368,10 @@ export function getChangesToSave(
       };
     }, unhandledChangeObjects).filter(Boolean);
   } else if (key === "toimintaalue") {
+    const maaraystyyppi = R.find(
+      R.propEq("tunniste", "VELVOITE"),
+      maaraystyypit
+    );
     const radioButtonMuutokset = R.map(changeObj => {
       const perustelut = R.filter(
         R.compose(R.contains(changeObj.anchor), R.prop("anchor")),
@@ -404,7 +409,7 @@ export function getChangesToSave(
           maaraysUuid: changeObj.properties.metadata.maaraysUuid,
           muutosperustelukoodiarvo: null,
           kohde,
-          maaraystyyppi: R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit),
+          maaraystyyppi,
           koodisto: "nuts1",
           koodiarvo
         };

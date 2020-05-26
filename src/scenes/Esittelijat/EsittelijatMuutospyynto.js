@@ -48,7 +48,6 @@ const EsittelijatMuutospyynto = React.memo(
 
     const onChangesRemove = useCallback(
       sectionId => {
-        console.info(sectionId, onChangesUpdate);
         return onChangesUpdate(sectionId, []);
       },
       [onChangesUpdate]
@@ -56,7 +55,6 @@ const EsittelijatMuutospyynto = React.memo(
 
     const updateChanges = useCallback(
       payload => {
-        console.info("payload, ", payload);
         onChangesUpdate(payload.anchor, payload.changes);
       },
       [onChangesUpdate]
