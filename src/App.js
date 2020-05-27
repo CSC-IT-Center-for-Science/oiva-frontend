@@ -37,6 +37,8 @@ import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
 import * as R from "ramda";
 import YleinenSisaltosivu from "./scenes/YleinenSisaltosivu";
+import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
+import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 
 const history = createBrowserHistory();
 
@@ -306,6 +308,8 @@ const App = React.memo(({ isDebugModeOn }) => {
                       />
                     )}
                   />
+                  <Route path="/saavutettavuusseloste" component={Saavutettavuusseloste} />
+                  <Route path="/tietosuojailmoitus" component={Tietosuojailmoitus} />
                   <Route path="/yleinen-sisaltosivu" component={YleinenSisaltosivu} />
                 </Switch>
               </div>
