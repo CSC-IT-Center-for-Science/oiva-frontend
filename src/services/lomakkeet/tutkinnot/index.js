@@ -34,7 +34,7 @@ function getModificationForm(
                 ) || {}
               : {};
 
-            const isInLupaBool = !R.isEmpty(maaraysKoulutukselle);
+            const isTutkintoInLupaBool = !R.isEmpty(maaraysKoulutukselle);
 
             const osaamisalat = (koulutus.osaamisalat || []).map(osaamisala => {
               const maaraysOsaamisalalle = article
@@ -43,9 +43,7 @@ function getModificationForm(
                     findObjectWithKey(article.koulutusalat, "rajoitteet")
                   ) || {}
                 : {};
-              const isInLupaBool = !R.isEmpty(maaraysOsaamisalalle);
-              const isAddedBool = false;
-              const isRemovedBool = false;
+              const osaamisalamaaraysFound = !R.isEmpty(maaraysOsaamisalalle);
               return {
                 anchor: osaamisala.koodiArvo,
                 components: [
@@ -58,7 +56,7 @@ function getModificationForm(
                         maaraysUuid: maaraysOsaamisalalle.maaraysId,
                         koodisto: osaamisala.koodisto,
                         metadata: osaamisala.metadata,
-                        isInLupa: isInLupaBool
+                        isInLupa: isTutkintoInLupaBool
                       },
                       name: "CheckboxWithLabel",
                       code: osaamisala.koodiArvo,
@@ -69,9 +67,9 @@ function getModificationForm(
                       labelStyles: {
                         addition: isAdded,
                         removal: isRemoved,
-                        custom: Object.assign({}, isInLupaBool ? isInLupa : {})
+                        custom: Object.assign({}, isTutkintoInLupaBool ? isInLupa : {})
                       },
-                      isChecked: (isInLupaBool && !isRemovedBool) || isAddedBool
+                      isChecked: isTutkintoInLupaBool && !osaamisalamaaraysFound
                     }
                   }
                 ]
@@ -90,7 +88,7 @@ function getModificationForm(
                       maaraysUuid: maaraysKoulutukselle.maaraysId,
                       koodisto: koulutus.koodisto,
                       metadata: koulutus.metadata,
-                      isInLupa: isInLupaBool
+                      isInLupa: isTutkintoInLupaBool
                     },
                     name: "CheckboxWithLabel",
                     code: koulutus.koodiArvo,
@@ -101,9 +99,9 @@ function getModificationForm(
                     labelStyles: {
                       addition: isAdded,
                       removal: isRemoved,
-                      custom: Object.assign({}, isInLupaBool ? isInLupa : {})
+                      custom: Object.assign({}, isTutkintoInLupaBool ? isInLupa : {})
                     },
-                    isChecked: isInLupaBool
+                    isChecked: isTutkintoInLupaBool
                   }
                 }
               ],
