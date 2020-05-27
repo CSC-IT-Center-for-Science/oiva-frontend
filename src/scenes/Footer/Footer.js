@@ -2,6 +2,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import logo from "../../static/images/okm-logo.svg";
 import common from "../../i18n/definitions/common";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const intl = useIntl();
@@ -9,19 +10,19 @@ const Footer = () => {
   const links = (
     <div className="mt-8 md:flex justify-between lg:justify-start">
       <p className="lg:mr-10">
-        <a href="#" className="text-green-500">
+        <Link to="tietosuojailmoitus" className="text-green-500">
           {intl.formatMessage(common.tietosuojailmoitus)}
-        </a>
+        </Link>
       </p>
       <p className="lg:mr-10">
-        <a href="#" className="text-green-500">
+        <Link to="yleinen-sisaltosivu" className="text-green-500">
           {intl.formatMessage(common.yhteydenotto)}
-        </a>
+        </Link>
       </p>
       <p>
-        <a href="#" className="text-green-500">
+        <Link to="saavutettavuusseloste" className="text-green-500">
           {intl.formatMessage(common.saavutettavuusseloste)}
-        </a>
+        </Link>
       </p>
     </div>
   );
