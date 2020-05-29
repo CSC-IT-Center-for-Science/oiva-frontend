@@ -2,8 +2,10 @@ import { getChangesToSave } from "./changes-to-save";
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
+import { createChangeObjects } from "./muutosobjektien-luonti/tutkinnot-ja-osaamisalat";
 
-export function createObjectToSave(
+export async function createObjectToSave(
+  locale,
   lupa,
   changeObjects,
   backendMuutokset = [],
@@ -12,7 +14,8 @@ export function createObjectToSave(
   maaraystyypit,
   muut,
   lupaKohteet,
-  alkupera = "KJ"
+  alkupera = "KJ",
+  parsedTutkinnot
 ) {
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
@@ -82,8 +85,7 @@ export function createObjectToSave(
   };
 
   // TUTKINNOT
-  const tutkinnot = getChangesToSave(
-    "tutkinnot",
+  const tutkinnot = await createChangeObjects(
     {
       // Page 1 changes
       muutokset: R.compose(
@@ -101,10 +103,11 @@ export function createObjectToSave(
     ),
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
     maaraystyypit,
-    null,
-    lupaKohteet[1].maaraykset
+    lupaKohteet,
+    parsedTutkinnot,
+    locale
   );
-
+  console.info(tutkinnot);
   // KOULUTUKSET
   const koulutukset = getChangesToSave(
     "koulutukset",
@@ -413,6 +416,6 @@ export function createObjectToSave(
       ]).filter(Boolean)
     };
   }
-
+  console.info("Object to save: ", objectToSave);
   return objectToSave;
 }

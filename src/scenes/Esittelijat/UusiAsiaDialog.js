@@ -262,7 +262,8 @@ const UusiAsiaDialog = React.memo(
     const onAction = useCallback(
       async action => {
         const formData = createMuutospyyntoOutput(
-          createObjectToSave(
+          await createObjectToSave(
+            R.toUpper(intl.locale),
             lupa,
             cos,
             backendMuutokset,
@@ -271,7 +272,8 @@ const UusiAsiaDialog = React.memo(
             maaraystyypit,
             muut,
             lupaKohteet,
-            "ESITTELIJA"
+            "ESITTELIJA",
+            parsedTutkinnot
           )
         );
 
@@ -309,6 +311,7 @@ const UusiAsiaDialog = React.memo(
         onNewDocSave,
         onPreview,
         onSave,
+        parsedTutkinnot,
         uuid
       ]
     );
@@ -416,11 +419,15 @@ const UusiAsiaDialog = React.memo(
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}
           messages={{
-            content: intl.formatMessage(common.confirmExitEsittelijaMuutoshakemusWizard),
+            content: intl.formatMessage(
+              common.confirmExitEsittelijaMuutoshakemusWizard
+            ),
             ok: intl.formatMessage(common.save),
             noSave: intl.formatMessage(common.noSave),
             cancel: intl.formatMessage(common.cancel),
-            title: intl.formatMessage(common.confirmExitEsittelijaMuutoshakemusWizardTitle)
+            title: intl.formatMessage(
+              common.confirmExitEsittelijaMuutoshakemusWizardTitle
+            )
           }}
           handleOk={() => {
             onAction("save");

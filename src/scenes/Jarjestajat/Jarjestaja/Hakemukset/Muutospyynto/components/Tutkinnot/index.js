@@ -26,8 +26,7 @@ const Tutkinnot = React.memo(props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
-
+  };
 
   return (
     <React.Fragment>
