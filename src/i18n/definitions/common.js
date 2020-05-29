@@ -763,7 +763,8 @@ export default defineMessages({
   },
   asiaPaatettyConfirmationDialogContent: {
     id: "common.asiaPaatettyConfirmationDialogContent",
-    defaultMessage: "Haluatko varmasti merkitä asian päätetyksi? Päätetyksi merkitsemisen jälkeen asiaa ei voi enää muokata."
+    defaultMessage:
+      "Haluatko varmasti merkitä asian päätetyksi? Päätetyksi merkitsemisen jälkeen asiaa ei voi enää muokata."
   },
   asiaPaatettyConfirmationDialogOk: {
     id: "common.asiaPaatettyConfirmationDialogOk",
@@ -771,7 +772,8 @@ export default defineMessages({
   },
   confirmExitMuutoshakemusWizard: {
     id: "common.confirmExitMuutoshakemus",
-    defaultMessage: "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta."
+    defaultMessage:
+      "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta."
   },
   confirmExitMuutoshakemusWizardTitle: {
     id: "common.confirmExitMuutoshakemusWizardTitle",
@@ -779,7 +781,8 @@ export default defineMessages({
   },
   confirmSendMuutoshakemus: {
     id: "common.confirmSendMuutoshakemus",
-    defaultMessage: "Oletko varma, että haluat lähettää hakemuksen käsiteltäväksi?"
+    defaultMessage:
+      "Oletko varma, että haluat lähettää hakemuksen käsiteltäväksi?"
   },
   confirmSendMuutoshakemusTitle: {
     id: "common.confirmSendMuutoshakemusTitle",
@@ -787,10 +790,27 @@ export default defineMessages({
   },
   confirmExitEsittelijaMuutoshakemusWizard: {
     id: "common.confirmExitEsittelijaMuutoshakemusWizard",
-    defaultMessage: "Haluatko tallentaa järjestämislupaan tekemäsi muutokset? Voit myöhemmin palata tekemiisi muutoksiin tallennettuasi muutokset."
+    defaultMessage:
+      "Haluatko tallentaa järjestämislupaan tekemäsi muutokset? Voit myöhemmin palata tekemiisi muutoksiin tallennettuasi muutokset."
   },
   confirmExitEsittelijaMuutoshakemusWizardTitle: {
     id: "common.confirmExitEsittelijaMuutoshakemusWizardTitle",
     defaultMessage: "Tallennetaanko muutokset ennen poistumista?"
+  },
+  tietosuojailmoitus: {
+    id: "common.tietosuojailmoitus",
+    defaultMessage: "Tietosuojailmoitus"
+  },
+  yhteydenotto: {
+    id: "common.yhteydenotto",
+    defaultMessage: "Yhteydenotto"
+  },
+  saavutettavuusseloste: {
+    id: "common.saavutettavuusseloste",
+    defaultMessage: "Saavutettavuusseloste"
+  },
+  valtioneuvosto: {
+    id: "common.valtioneuvosto",
+    defaultMessage: "Valtioneuvosto"
   }
 });
