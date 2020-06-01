@@ -219,5 +219,25 @@ export default defineMessages({
   sameAsTheCurrentAreaOfAction: {
     id: "wizard.sameAsTheCurrentAreaOfAction",
     defaultMessage: "Sama kuin nykyinen toiminta-alue"
+  },
+  newAreaOfAction: {
+    id: "wizard.newAreaOfAction",
+    defaultMessage: "Uusi toiminta-alue"
+  },
+  currentAreaOfAction: {
+    id: "wizard.currentAreaOfAction",
+    defaultMessage: "Nykyinen toiminta-alue"
+  },
+  wholeCountryWithoutAhvenanmaa: {
+    id: "wizard.wholeCountryWithoutAhvenanmaa",
+    defaultMessage: "Koko Suomi - pois lukien Ahvenanmaan maakunta"
+  },
+  areaOfActionIsUndefined: {
+    id: "wizard.areaOfActionIsUndefined",
+    defaultMessage: "Ei määriteltyä toiminta-aluetta"
+  },
+  quickFilter: {
+    id: "wizard.quickFilter",
+    defaultMessage: "Pikavalinnat"
   }
 });
