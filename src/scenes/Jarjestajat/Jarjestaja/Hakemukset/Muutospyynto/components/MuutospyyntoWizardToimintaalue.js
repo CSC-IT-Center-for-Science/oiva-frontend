@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
@@ -41,6 +41,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const { onChangesUpdate } = props;
+
+  const [isEditViewActive, toggleEditView] = useState(false);
 
   const kunnatInLupa = useMemo(() => {
     return R.sortBy(
@@ -92,10 +94,10 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
       if (!R.equals(radioButtonChangeObjects, changeObjects.toimintaalue)) {
         // Fist we are going to update the change objects of Toiminta-alue section
         // on form page one.
-        onChangesUpdate({
-          anchor: props.sectionId,
-          changes: radioButtonChangeObjects
-        });
+        // onChangesUpdate({
+        //   anchor: props.sectionId,
+        //   changes: radioButtonChangeObjects
+        // });
         // Then it's time to get rid of the change objects of form page two (reasoning).
         onChangesUpdate({
           anchor: `perustelut_${props.sectionId}`,
@@ -115,10 +117,14 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         R.compose(R.not, R.propEq("anchor", "toimintaalue.")),
         changesByAnchor.changes
       );
+      const categoryFilterChanges = R.uniq(R.flatten(updatedChanges)).filter(
+        Boolean
+      );
       const sectionChanges = {
         anchor: changesByAnchor.anchor,
-        changes: R.uniq(R.flatten(updatedChanges)).filter(Boolean)
+        changes: categoryFilterChanges
       };
+      console.info(sectionChanges, categoryFilterChanges);
       onChangesUpdate(sectionChanges);
     },
     [onChangesUpdate]
@@ -130,16 +136,26 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         R.compose(R.not, R.propEq("anchor", "categoryFilter")),
         changeObjects.toimintaalue
       );
+
+      const amountOfChanges = R.flatten(R.values(changesByMaakunta)).length;
+
+      const changesToSet = R.concat(
+        withoutCategoryFilterChangeObj,
+        amountOfChanges
+          ? [
+              {
+                anchor: "categoryFilter",
+                properties: {
+                  changeObjects: changesByMaakunta
+                }
+              }
+            ]
+          : []
+      );
+
       return onChangesUpdate({
         anchor: props.sectionId,
-        changes: R.concat(withoutCategoryFilterChangeObj, [
-          {
-            anchor: "categoryFilter",
-            properties: {
-              changeObjects: changesByMaakunta
-            }
-          }
-        ])
+        changes: changesToSet
       });
     },
     [changeObjects.toimintaalue, onChangesUpdate, props.sectionId]
@@ -150,6 +166,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
    */
   const options = useMemo(() => {
     const localeUpper = intl.locale.toUpperCase();
+
+    console.info(changeObjects.toimintaalue);
 
     return R.map(maakunta => {
       // 21 = Ahvenanmaa
@@ -188,7 +206,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
               title: kunnanNimi,
               maakuntaKey: mapping[maakunta.koodiArvo]
             },
-            isChecked: isKuntaInLupa || isMaakuntaInLupa,
+            isChecked: isKuntaInLupa || isMaakuntaInLupa || fiCode === "FI1",
             labelStyles: Object.assign({}, labelStyles, {
               custom: isInLupa
             }),
@@ -227,7 +245,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
                 maakuntaKey: mapping[maakunta.koodiArvo],
                 title: maakunta.label
               },
-              isChecked: isMaakuntaInLupa || isKuntaOfMaakuntaInLupa,
+              isChecked:
+                isMaakuntaInLupa || isKuntaOfMaakuntaInLupa || fiCode === "FI1",
               isIndeterminate:
                 numberOfMunicipalitiesInLupa > 0 &&
                 numberOfMunicipalitiesInLupa < maakunta.kunta.length,
@@ -275,20 +294,10 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     return changeObj ? changeObj.properties.changeObjects : {};
   }, [changeObjects.toimintaalue]);
 
-  const maakunnatJaKunnatChangeObj = R.find(
-    R.propEq("anchor", "toimintaalue.maakunnat-ja-kunnat.radio"),
-    changeObjects.toimintaalue
-  );
-
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
-
-  const isMaakunnatJaKunnatActive =
-    (fiCode === "FI0" && !maakunnatJaKunnatChangeObj) ||
-    (maakunnatJaKunnatChangeObj &&
-      maakunnatJaKunnatChangeObj.properties.isChecked);
+  };
 
   return (
     <ExpandableRowRoot
@@ -311,21 +320,30 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         changeObjects={changeObjects.toimintaalue}
         data={{
           fiCode,
+          isEditViewActive,
           isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
           isValtakunnallinenChecked: fiCode === "FI1",
-          isMaakunnatJaKunnatActive,
-          isMaakunnatJaKunnatChecked: fiCode === "FI0",
           kunnat: kunnatWithoutAhvenanmaan,
           localizations: {
             accept: intl.formatMessage(common.accept),
+            areaOfActionIsUndefined: intl.formatMessage(
+              wizard.areaOfActionIsUndefined
+            ),
             cancel: intl.formatMessage(common.cancel),
+            currentAreaOfAction: intl.formatMessage(wizard.currentAreaOfAction),
+            newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
             ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
+            quickFilter: intl.formatMessage(wizard.quickFilter),
             sameAsTheCurrentAreaOfAction: intl.formatMessage(
               wizard.sameAsTheCurrentAreaOfAction
+            ),
+            wholeCountryWithoutAhvenanmaa: intl.formatMessage(
+              wizard.wholeCountryWithoutAhvenanmaa
             )
           },
           maakunnat: provincesWithoutAhvenanmaa,
           onChanges: whenChanges,
+          toggleEditView,
           options,
           changeObjectsByProvince: categoryFilterChanges,
           maaraysUuid: props.valtakunnallinenMaarays
