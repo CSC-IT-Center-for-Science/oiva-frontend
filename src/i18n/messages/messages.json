@@ -950,6 +950,26 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.tietosuojailmoitus",
+    "defaultMessage": "Tietosuojailmoitus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.yhteydenotto",
+    "defaultMessage": "Yhteydenotto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.saavutettavuusseloste",
+    "defaultMessage": "Saavutettavuusseloste",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.valtioneuvosto",
+    "defaultMessage": "Valtioneuvosto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
