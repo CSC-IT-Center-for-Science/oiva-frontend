@@ -416,11 +416,15 @@ const UusiAsiaDialog = React.memo(
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}
           messages={{
-            content: intl.formatMessage(common.confirmExitEsittelijaMuutoshakemusWizard),
+            content: intl.formatMessage(
+              common.confirmExitEsittelijaMuutoshakemusWizard
+            ),
             ok: intl.formatMessage(common.save),
             noSave: intl.formatMessage(common.noSave),
             cancel: intl.formatMessage(common.cancel),
-            title: intl.formatMessage(common.confirmExitEsittelijaMuutoshakemusWizardTitle)
+            title: intl.formatMessage(
+              common.confirmExitEsittelijaMuutoshakemusWizardTitle
+            )
           }}
           handleOk={() => {
             onAction("save");
