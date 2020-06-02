@@ -22,7 +22,8 @@ function markRequiredFields(lomake, changeObjects = [], rules = []) {
 }
 
 const defaultProps = {
-  changeObjects: []
+  changeObjects: [],
+  uncheckParentWithoutActiveChildNodes: false
 };
 
 const Lomake = React.memo(
@@ -38,7 +39,8 @@ const Lomake = React.memo(
     prefix = "",
     rules = [],
     rulesFn,
-    showCategoryTitles = true
+    showCategoryTitles = true,
+    uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes
   }) => {
     const intl = useIntl();
     const [meta, metadataActions] = useMetadata();
@@ -108,6 +110,9 @@ const Lomake = React.memo(
               onUpdate={onChangesUpdate}
               showCategoryTitles={showCategoryTitles}
               showValidationErrors={showValidationErrors}
+              uncheckParentWithoutActiveChildNodes={
+                uncheckParentWithoutActiveChildNodes
+              }
             />
           </div>
         </React.Fragment>
@@ -136,7 +141,8 @@ Lomake.propTypes = {
   prefix: PropTypes.string,
   rules: PropTypes.array,
   // This is useful for dynamic forms.
-  rulesFn: PropTypes.func
+  rulesFn: PropTypes.func,
+  uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
 
 export default Lomake;
