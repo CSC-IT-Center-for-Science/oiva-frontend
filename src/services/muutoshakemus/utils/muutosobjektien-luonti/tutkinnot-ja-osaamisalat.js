@@ -173,8 +173,6 @@ export async function createChangeObjects(
   if (!tutkintoChangeObjects.length) {
     uudetMuutokset = [];
   } else {
-    console.info(tutkintoChangeObjects, changeObjects);
-
     function calculateNewChanges() {
       return R.flatten(
         R.map(tutkintoChangeObj => {
@@ -195,7 +193,6 @@ export async function createChangeObjects(
             koulutustyypinKoodiarvo &&
             koulutuksenKoodiarvo
           ) {
-            console.info(parsedTutkinnot);
             const tutkinto = R.find(
               R.propEq("koodiArvo", koulutuksenKoodiarvo),
               parsedTutkinnot[koulutusalanKoodiarvo].koulutukset[
@@ -204,8 +201,6 @@ export async function createChangeObjects(
             );
 
             if (tutkinto) {
-              console.info(tutkinto, lupakohteet);
-
               const anchorInit = R.compose(
                 R.join("."),
                 R.init,
@@ -224,13 +219,10 @@ export async function createChangeObjects(
                 maaraystyypit
               );
 
-              console.info(tutkintoMuutos);
-
               const maarays = R.find(maarays => {
                 return maarays.koodi === koulutusalanKoodiarvo;
               }, lupakohteet[1].maaraykset);
 
-              console.info(maarays);
               // Let's create backend changes for tutkinto and its unchecked osaamisalat
               const isTutkintoChecked = tutkintoChangeObj.properties.isChecked;
               const osaamisalamuutokset = R.map(osaamisala => {
@@ -241,13 +233,10 @@ export async function createChangeObjects(
                   );
                 }, changeObjects.muutokset);
                 if (!osaamisalaChangeObj) {
-                  console.info("Luodaan muutos käyttäen lomakkeen tietoja.");
-                  console.info(koulutusalat);
                   const metadata = R.find(
                     R.propEq("kieli", locale),
                     osaamisala.metadata
                   );
-                  console.info(metadata);
                   return {
                     generatedId: `osaamisala-${Math.random()}`,
                     isInLupa: false,
@@ -273,10 +262,6 @@ export async function createChangeObjects(
                 } else {
                   tutkintoMuutos.meta.changeObjects.push(osaamisalaChangeObj);
                   if (!osaamisalaChangeObj.properties.isChecked) {
-                    console.info(
-                      "Luodaan rajoitus osaamisalalle käyttäen muutosobjektia",
-                      osaamisala.koodiArvo
-                    );
                     const anchorInit = R.compose(
                       R.join("."),
                       R.init,
@@ -307,13 +292,10 @@ export async function createChangeObjects(
     uudetMuutokset = calculateNewChanges();
   }
 
-  console.info("Uudet muutokset: ", uudetMuutokset);
-  console.info(uudetMuutokset);
-
   const muutosobjektit = R.flatten([
     paivitetytBackendMuutokset,
     uudetMuutokset
   ]);
-  console.info(muutosobjektit);
+
   return muutosobjektit;
 }
