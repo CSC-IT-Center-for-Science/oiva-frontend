@@ -1,6 +1,5 @@
 import { getAnchorPart, findObjectWithKey } from "../../../utils/common";
 import { fillForBackend } from "../../lomakkeet/backendMappings";
-import { getKoulutusalat } from "./cache";
 import * as R from "ramda";
 
 function findBackendMuutos(anchor, backendMuutokset) {
