@@ -4,10 +4,5 @@ export const luvanLatauspolku = {
   input: ["uuid"],
   run: ({ uuid }) => {
     return uuid ? `/api/muutospyynnot/pdf/esikatsele/${uuid}` : null;
-  },
-  next: url => {
-    return url
-      ? ["muutospyynto.esikatselu.polkuOK"]
-      : ["muutospyynto.esikatselu.polkuvirhe"];
   }
 };
