@@ -124,7 +124,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         anchor: changesByAnchor.anchor,
         changes: categoryFilterChanges
       };
-      console.info(sectionChanges, categoryFilterChanges);
       onChangesUpdate(sectionChanges);
     },
     [onChangesUpdate]
@@ -166,8 +165,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
    */
   const options = useMemo(() => {
     const localeUpper = intl.locale.toUpperCase();
-
-    console.info(changeObjects.toimintaalue);
 
     return R.map(maakunta => {
       // 21 = Ahvenanmaa
@@ -267,7 +264,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         ]
       };
     }, props.maakuntakunnatList).filter(Boolean);
-  }, [intl.locale, kunnatInLupa, maakunnatInLupa, props.maakuntakunnatList]);
+  }, [intl.locale, fiCode, kunnatInLupa, maakunnatInLupa, props.maakuntakunnatList]);
 
   const kunnatWithoutAhvenanmaan = useMemo(() => {
     return R.filter(kunta => {

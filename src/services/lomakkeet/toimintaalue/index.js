@@ -20,7 +20,7 @@ function getModificationForm(
           name: "CategoryFilter",
           styleClasses: ["mt-4"],
           properties: {
-            anchor: "maakuntakunnat",
+            anchor: "areaofaction",
             changeObjectsByProvince,
             isEditViewActive,
             localizations,

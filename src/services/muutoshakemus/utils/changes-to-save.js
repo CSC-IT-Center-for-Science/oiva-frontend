@@ -444,7 +444,6 @@ export function getChangesToSave(
               .isChecked;
             if (isTheWholeProvinceActive || isTheWholeProvinceDisabled) {
               // Let's create only one change which is the one for the province.
-              console.info(provinceChangeObj);
               return {
                 kohde,
                 koodiarvo: provinceChangeObj.properties.metadata.koodiarvo,
@@ -515,7 +514,6 @@ export function getChangesToSave(
         R.uniq(R.flatten(R.values(categoryFilterMuutokset)))
       )
     );
-    console.info(uudetMuutokset);
   } else if (key === "opiskelijavuodet") {
     uudetMuutokset = R.map(changeObj => {
       const anchorParts = R.split(".", changeObj.anchor);

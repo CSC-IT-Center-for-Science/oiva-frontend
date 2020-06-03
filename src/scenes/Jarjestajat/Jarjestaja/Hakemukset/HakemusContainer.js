@@ -186,7 +186,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
         }, updatedC);
       }
 
-      if (changesBySection.maakuntakunnat) {
+      if (changesBySection.areaofaction) {
         changesBySection.toimintaalue = changesBySection.toimintaalue || [];
 
         let byProvince = {};
@@ -195,7 +195,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
           const provinceKey = getAnchorPart(changeObj.anchor, 1);
           byProvince[provinceKey] = byProvince[provinceKey] || [];
           byProvince[provinceKey].push(changeObj);
-        }, changesBySection.maakuntakunnat);
+        }, changesBySection.areaofaction);
 
         changesBySection.toimintaalue.push({
           anchor: "categoryFilter",
@@ -221,7 +221,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
             changesBySection
           );
         }
-        delete changesBySection.maakuntakunnat;
+        delete changesBySection.areaofaction;
       }
 
       // Special case: Toiminta-alueen perustelut
