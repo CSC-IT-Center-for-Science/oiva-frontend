@@ -60,6 +60,11 @@ const EsittelijatMuutospyynto = React.memo(
       [onChangesUpdate]
     );
 
+    const valtakunnallinenMaarays = R.find(
+      R.propEq("koodisto", "nuts1"),
+      props.lupa.maaraykset || []
+    );
+
     return (
       <React.Fragment>
         <h1 className="my-6">
@@ -115,6 +120,7 @@ const EsittelijatMuutospyynto = React.memo(
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
               sectionId={"toimintaalue"}
+              valtakunnallinenMaarays={valtakunnallinenMaarays}
             />
           </Section>
 

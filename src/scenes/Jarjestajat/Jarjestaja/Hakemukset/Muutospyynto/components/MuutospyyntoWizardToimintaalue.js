@@ -165,7 +165,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
    */
   const options = useMemo(() => {
     const localeUpper = intl.locale.toUpperCase();
-
+    const maaraysUuid = props.valtakunnallinenMaarays.uuid;
     return R.map(maakunta => {
       // 21 = Ahvenanmaa
       if (maakunta.koodiarvo === "21") {
@@ -201,7 +201,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
             forChangeObject: {
               koodiarvo: kunta.koodiArvo,
               title: kunnanNimi,
-              maakuntaKey: mapping[maakunta.koodiArvo]
+              maakuntaKey: mapping[maakunta.koodiArvo],
+              maaraysUuid
             },
             isChecked: isKuntaInLupa || isMaakuntaInLupa || fiCode === "FI1",
             labelStyles: Object.assign({}, labelStyles, {
@@ -240,7 +241,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
               forChangeObject: {
                 koodiarvo: maakunta.koodiArvo,
                 maakuntaKey: mapping[maakunta.koodiArvo],
-                title: maakunta.label
+                title: maakunta.label,
+                maaraysUuid
               },
               isChecked:
                 isMaakuntaInLupa || isKuntaOfMaakuntaInLupa || fiCode === "FI1",
@@ -264,7 +266,14 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         ]
       };
     }, props.maakuntakunnatList).filter(Boolean);
-  }, [intl.locale, fiCode, kunnatInLupa, maakunnatInLupa, props.maakuntakunnatList]);
+  }, [
+    intl.locale,
+    fiCode,
+    kunnatInLupa,
+    maakunnatInLupa,
+    props.maakuntakunnatList,
+    props.valtakunnallinenMaarays
+  ]);
 
   const kunnatWithoutAhvenanmaan = useMemo(() => {
     return R.filter(kunta => {
@@ -342,10 +351,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           onChanges: whenChanges,
           toggleEditView,
           options,
-          changeObjectsByProvince: categoryFilterChanges,
-          maaraysUuid: props.valtakunnallinenMaarays
-            ? props.valtakunnallinenMaarays.uuid
-            : null
+          changeObjectsByProvince: categoryFilterChanges
         }}
         onChangesUpdate={handleChanges}
         path={["toimintaalue"]}
@@ -360,7 +366,8 @@ MuutospyyntoWizardToimintaalue.defaultProps = {
   kuntamaaraykset: [],
   lupakohde: {},
   maakunnat: [],
-  maakuntakunnatList: []
+  maakuntakunnatList: [],
+  valtakunnallinenMaarays: {}
 };
 
 MuutospyyntoWizardToimintaalue.propTypes = {

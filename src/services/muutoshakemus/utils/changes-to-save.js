@@ -428,6 +428,11 @@ export function getChangesToSave(
     if (categoryFilterChangeObj) {
       categoryFilterMuutokset = R.mapObjIndexed(
         (_changeObjects, maakuntaKey) => {
+          // maaraysUuid can be fetched using any of change objects.
+          const maaraysUuid = R.path(
+            ["0", "properties", "metadata", "maaraysUuid"],
+            _changeObjects
+          );
           const provinceChangeObj = R.find(
             R.compose(R.endsWith(`${maakuntaKey}.A`), R.prop("anchor")),
             _changeObjects
@@ -449,6 +454,7 @@ export function getChangesToSave(
                 koodiarvo: provinceChangeObj.properties.metadata.koodiarvo,
                 koodisto: "maakunta",
                 maaraystyyppi,
+                maaraysUuid,
                 meta: {
                   perusteluteksti: [
                     {
@@ -477,6 +483,7 @@ export function getChangesToSave(
                       koodiarvo: changeObj.properties.metadata.koodiarvo,
                       koodisto: "kunta",
                       maaraystyyppi,
+                      maaraysUuid,
                       meta: {
                         perusteluteksti: [
                           {
