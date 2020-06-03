@@ -1,6 +1,5 @@
 import { getAnchorPart, findObjectWithKey } from "../../../../utils/common";
 import { fillForBackend } from "../../../lomakkeet/backendMappings";
-import { getKoulutusalat } from "../cache";
 import * as R from "ramda";
 
 // Return changes of Tutkinnot
@@ -99,9 +98,6 @@ export async function createChangeObjects(
   parsedTutkinnot,
   locale
 ) {
-  const cache = await caches.open("backend-cache");
-  const koulutusalat = await getKoulutusalat(cache);
-
   // Update changes if already exits with perustelut and attachements
   const paivitetytBackendMuutokset = R.map(changeObj => {
     let { anchor, backendMuutos } = findBackendMuutos(
