@@ -22,10 +22,9 @@ function getModificationForm(
             areaCode,
             title
           },
-          title:
-            _.find(koulutustyyppi.metadata, m => {
-              return m.kieli === locale;
-            }).nimi || "[Koulutustyypin otsikko tähän]",
+          title: _.find(koulutustyyppi.metadata, m => {
+            return m.kieli === locale;
+          }).nimi,
           categories: R.addIndex(R.map)((koulutus, ii) => {
             const maaraysKoulutukselle = article
               ? R.find(
@@ -66,10 +65,9 @@ function getModificationForm(
                       },
                       name: "CheckboxWithLabel",
                       code: osaamisala.koodiArvo,
-                      title:
-                        _.find(osaamisala.metadata, m => {
-                          return m.kieli === "FI";
-                        }).nimi || "[Osaamisalan otsikko tähän]",
+                      title: _.find(osaamisala.metadata, m => {
+                        return m.kieli === locale;
+                      }).nimi,
                       labelStyles: {
                         addition: isAdded,
                         removal: isRemoved,
