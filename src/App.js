@@ -36,6 +36,9 @@ import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
 import * as R from "ramda";
+import YleinenSisaltosivu from "./scenes/YleinenSisaltosivu";
+import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
+import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 
 const history = createBrowserHistory();
 
@@ -47,6 +50,7 @@ const logo = { text: "Oiva", path: "/" };
  * @param {props} - Properties object.
  */
 const App = React.memo(({ isDebugModeOn }) => {
+
   const intl = useIntl();
 
   const [userState] = useUser();
@@ -305,6 +309,9 @@ const App = React.memo(({ isDebugModeOn }) => {
                       />
                     )}
                   />
+                  <Route path="/saavutettavuusseloste" component={Saavutettavuusseloste} />
+                  <Route path="/tietosuojailmoitus" component={Tietosuojailmoitus} />
+                  <Route path="/yleinen-sisaltosivu" component={YleinenSisaltosivu} />
                 </Switch>
               </div>
             </div>
@@ -324,5 +331,7 @@ const App = React.memo(({ isDebugModeOn }) => {
 App.propTypes = {
   isDebugModeOn: PropTypes.bool
 };
+
+App.displayName = "App";
 
 export default App;

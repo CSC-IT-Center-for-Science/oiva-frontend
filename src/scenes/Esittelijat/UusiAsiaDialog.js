@@ -317,7 +317,7 @@ const UusiAsiaDialog = React.memo(
     );
 
     return (
-      <div className="max-w-6xl">
+      <div className="max-w-7xl">
         <FormDialog
           open={isDialogOpen}
           onClose={openCancelModal}
@@ -377,7 +377,7 @@ const UusiAsiaDialog = React.memo(
             </div>
             <div
               id="wizard-content"
-              className="px-16 xl:w-3/4 max-w-6xl m-auto mb-20">
+              className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
               <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
                 <Lomake
                   anchor="topthree"

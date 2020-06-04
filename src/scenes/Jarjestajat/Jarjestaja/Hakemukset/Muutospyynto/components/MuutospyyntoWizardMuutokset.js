@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Tutkinnot from "./Tutkinnot";
 import MuutospyyntoWizardKoulutukset from "./MuutospyyntoWizardKoulutukset";
 import MuutospyyntoWizardKielet from "./MuutospyyntoWizardKielet";
@@ -9,126 +9,136 @@ import wizardMessages from "../../../../../../i18n/definitions/wizard";
 import common from "../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import FormSection from "../../../../../../components/03-templates/FormSection";
+import Section from "../../../../../../components/03-templates/Section";
 import * as R from "ramda";
 
-const MuutospyyntoWizardMuutokset = React.memo(props => {
-  const intl = useIntl();
-  const [kohteet, setKohteet] = useState({});
-  const [maaraystyypit, setMaaraystyypit] = useState(null);
+const MuutospyyntoWizardMuutokset = React.memo(
+  props => {
+    const intl = useIntl();
+    const [kohteet, setKohteet] = useState({});
+    const [maaraystyypit, setMaaraystyypit] = useState(null);
 
-  useEffect(() => {
-    setKohteet(
-      R.mergeAll(
-        R.flatten(
-          R.map(item => {
-            return {
-              [R.props(["tunniste"], item)]: item
-            };
-          }, props.kohteet)
+    const { onChangesUpdate } = props;
+
+    useEffect(() => {
+      setKohteet(
+        R.mergeAll(
+          R.flatten(
+            R.map(item => {
+              return {
+                [R.props(["tunniste"], item)]: item
+              };
+            }, props.kohteet)
+          )
         )
-      )
-    );
-  }, [props.kohteet]);
+      );
+    }, [props.kohteet]);
 
-  useEffect(() => {
-    setMaaraystyypit(
-      R.mergeAll(
-        R.flatten(
-          R.map(item => {
-            return {
-              [R.props(["tunniste"], item)]: item
-            };
-          }, props.maaraystyypit)
+    useEffect(() => {
+      setMaaraystyypit(
+        R.mergeAll(
+          R.flatten(
+            R.map(item => {
+              return {
+                [R.props(["tunniste"], item)]: item
+              };
+            }, props.maaraystyypit)
+          )
         )
-      )
+      );
+    }, [props.maaraystyypit]);
+
+    const kuntamaaraykset = R.filter(
+      R.propEq("koodisto", "kunta"),
+      props.lupa.maaraykset || []
     );
-  }, [props.maaraystyypit]);
 
-  const kuntamaaraykset = R.filter(
-    R.propEq("koodisto", "kunta"),
-    props.lupa.maaraykset || []
-  );
+    const valtakunnallinenMaarays = R.find(
+      R.propEq("koodisto", "nuts1"),
+      props.lupa.maaraykset || []
+    );
 
-  const valtakunnallinenMaarays = R.find(
-    R.propEq("koodisto", "nuts1"),
-    props.lupa.maaraykset || []
-  );
+    const onChangesRemove = useCallback(
+      sectionId => {
+        return onChangesUpdate(sectionId, []);
+      },
+      [onChangesUpdate]
+    );
 
-  return (
-    <React.Fragment>
-      <h2 className="my-6">{intl.formatMessage(wizardMessages.pageTitle_1)}</h2>
-      <p>{intl.formatMessage(wizardMessages.info_01)}</p>
+    const updateChanges = useCallback(
+      payload => {
+        onChangesUpdate(payload.anchor, payload.changes);
+      },
+      [onChangesUpdate]
+    );
 
-      <form onSubmit={props.handleSubmit}>
-        <FormSection
-          code={props.lupaKohteet[1].headingNumber}
-          id="tutkinnot"
-          render={_props => (
-            <React.Fragment>
-              <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
-              <Tutkinnot
-                tutkinnot={props.tutkinnot}
-                lupaKohteet={props.lupaKohteet}
-                {..._props}
-              />
-              <h4 className="pt-8 pb-4">
-                {intl.formatMessage(common.koulutukset)}
-              </h4>
-              <MuutospyyntoWizardKoulutukset
-                koulutukset={props.koulutukset}
-                maaraykset={props.lupa.maaraykset}
-                {..._props}
-              />
-            </React.Fragment>
-          )}
-          runOnChanges={props.onChangesUpdate}
-          title={props.lupaKohteet[1].heading}
-        />
+    return (
+      <React.Fragment>
+        <h2 className="my-6">
+          {intl.formatMessage(wizardMessages.pageTitle_1)}
+        </h2>
+        <p>{intl.formatMessage(wizardMessages.info_01)}</p>
 
-        <FormSection
-          code={props.lupaKohteet[2].headingNumber}
-          id="tutkinnot"
-          render={_props => (
-            <React.Fragment>
-              <MuutospyyntoWizardKielet
-                lupa={props.lupa}
-                lupaKohteet={props.lupaKohteet}
-                kielet={props.kielet}
-                koulutukset={props.koulutukset}
-                tutkintolomakkeet={props.lomakkeet.tutkinnot}
-                onUpdate={props.onUpdate}
-                {..._props}
-              />
-            </React.Fragment>
-          )}
-          runOnChanges={props.onChangesUpdate}
-          title={intl.formatMessage(wizardMessages.header_section2)}
-        />
+        <form onSubmit={props.handleSubmit}>
+          <Section
+            code={props.lupaKohteet[1].headingNumber}
+            title={props.lupaKohteet[1].heading}>
+            <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
+            <Tutkinnot
+              tutkinnot={props.tutkinnot}
+              lupaKohteet={props.lupaKohteet}
+              onChangesRemove={onChangesRemove}
+              onChangesUpdate={updateChanges}
+              sectionId={"tutkinnot"}
+            />
+            <h4 className="pt-8 pb-4">
+              {intl.formatMessage(common.koulutukset)}
+            </h4>
+            <MuutospyyntoWizardKoulutukset
+              key="koulutukset"
+              koulutukset={props.koulutukset}
+              maaraykset={props.lupa.maaraykset}
+              onChangesRemove={onChangesRemove}
+              onChangesUpdate={updateChanges}
+            />
+          </Section>
 
-        <FormSection
-          code={3}
-          id="toimintaalue"
-          render={_props => (
+          <Section
+            code={props.lupaKohteet[2].headingNumber}
+            title={props.lupaKohteet[2].heading}>
+            <MuutospyyntoWizardKielet
+              lupa={props.lupa}
+              lupaKohteet={props.lupaKohteet}
+              kielet={props.kielet}
+              koulutukset={props.koulutukset}
+              tutkintolomakkeet={props.lomakkeet.tutkinnot}
+              onUpdate={props.onUpdate}
+              onChangesRemove={onChangesRemove}
+              onChangesUpdate={updateChanges}
+              sectionId={"tutkinnot"}
+            />
+          </Section>
+
+          <Section
+            code={props.lupaKohteet[3].headingNumber}
+            title={props.lupaKohteet[3].heading}>
             <MuutospyyntoWizardToimintaalue
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
+              kuntamaaraykset={kuntamaaraykset}
               maakuntakunnatList={props.maakuntakunnatList}
               maakunnat={props.maakunnat}
-              kuntamaaraykset={kuntamaaraykset}
+              onChangesRemove={onChangesRemove}
+              onChangesUpdate={updateChanges}
+              sectionId={"toimintaalue"}
               valtakunnallinenMaarays={valtakunnallinenMaarays}
-              {..._props}
             />
-          )}
-          runOnChanges={props.onChangesUpdate}
-          title={R.path(["meta", "otsikko", intl.locale], kohteet.toimintaalue)}
-        />
+          </Section>
 
-        {kohteet.opiskelijavuodet && !R.isEmpty(props.lomakkeet.muut) && (
-          <FormSection
-            code={props.lupaKohteet[4].headingNumber}
-            id="opiskelijavuodet"
-            render={_props => (
+          {kohteet.opiskelijavuodet && !R.isEmpty(props.lomakkeet.muut) && (
+            <Section
+              code={props.lupaKohteet[4].headingNumber}
+              title={props.lupaKohteet[4].heading}>
               <MuutospyyntoWizardOpiskelijavuodet
                 lupaKohteet={props.lupaKohteet}
                 maaraykset={props.lupa.maaraykset}
@@ -138,34 +148,44 @@ const MuutospyyntoWizardMuutokset = React.memo(props => {
                   opiskelijavuodet: props.lomakkeet.opiskelijavuodet,
                   muut: props.lomakkeet.muut
                 }}
-                {..._props}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={updateChanges}
+                sectionId={"opiskelijavuodet"}
               />
-            )}
-            runOnChanges={props.onChangesUpdate}
-            title={intl.formatMessage(wizardMessages.header_section4)}
-          />
-        )}
+            </Section>
+          )}
 
-        {kohteet.muut && props.muut && maaraystyypit && (
-          <FormSection
-            code={props.lupaKohteet[5].headingNumber}
-            id="muut"
-            render={_props => (
+          {kohteet.muut && props.muut && maaraystyypit && (
+            <Section
+              code={props.lupaKohteet[5].headingNumber}
+              title={props.lupaKohteet[5].heading}>
               <MuutospyyntoWizardMuut
                 maaraykset={props.lupa.maaraykset}
                 muut={props.muut}
                 koulutukset={props.koulutukset}
-                {..._props}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={updateChanges}
+                sectionId={"muut"}
               />
-            )}
-            runOnChanges={props.onChangesUpdate}
-            title={intl.formatMessage(wizardMessages.header_section5)}
-          />
-        )}
-      </form>
-    </React.Fragment>
-  );
-});
+            </Section>
+          )}
+        </form>
+      </React.Fragment>
+    );
+  },
+  (currentProps, nextProps) => {
+    return (
+      R.equals(currentProps.kielet, nextProps.kielet) &&
+      JSON.stringify(currentProps.lomakkeet) ===
+        JSON.stringify(nextProps.lomakkeet) &&
+      JSON.stringify(currentProps.lupa) === JSON.stringify(nextProps.lupa) &&
+      JSON.stringify(currentProps.lupaKohteet) ===
+        JSON.stringify(nextProps.lupaKohteet) &&
+      JSON.stringify(currentProps.maaraystyypit) ===
+        JSON.stringify(nextProps.maaraystyypit)
+    );
+  }
+);
 
 MuutospyyntoWizardMuutokset.propTypes = {
   kielet: PropTypes.object,

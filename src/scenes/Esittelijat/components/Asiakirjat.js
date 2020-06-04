@@ -113,7 +113,7 @@ const Asiakirjat = React.memo(() => {
      **/
     muutospyynnotActions.esittelyyn(documentIdForAction);
     // To download the path of the document must be known.
-    const path = await muutospyyntoActions.getDownloadPath(documentIdForAction);
+    const path = await muutospyyntoActions.getLupaPreviewDownloadPath(documentIdForAction);
     if (path) {
       // If path is defined we download the document.
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
@@ -153,7 +153,9 @@ const Asiakirjat = React.memo(() => {
               ""
             )
           ],
-          fileLink: `/liitteet/${liite.uuid}/raw`
+          fileLinkFn: () => {
+            muutospyyntoActions.download(`/liitteet/${liite.uuid}/raw`);
+          }
         }),
         R.sortBy(R.prop("nimi"), muutospyynnonLiitteet.data || [])
       );
@@ -169,7 +171,12 @@ const Asiakirjat = React.memo(() => {
   const muutospyyntoRowItem = useMemo(() => {
     return {
       uuid,
-      fileLink: `/pdf/esikatsele/muutospyynto/${uuid}`,
+      fileLinkFn: async () => {
+        const path = await muutospyyntoActions.getLupaPreviewDownloadPath(uuid);
+        if (path) {
+          muutospyyntoActions.download(path);
+        }
+      },
       openInNewWindow: true,
       items: [intl.formatMessage(common.application), ...baseRow, ""],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
@@ -222,10 +229,10 @@ const Asiakirjat = React.memo(() => {
           rows: R.addIndex(R.map)((row, i) => {
             return {
               uuid: rows.length === 1 ? row.uuid : null,
-              fileLink: row.fileLink,
+              fileLinkFn: row.fileLinkFn,
               onClick: (row, action) => {
-                if (action === "lataa" && row.fileLink) {
-                  muutospyyntoActions.download(row.fileLink);
+                if (action === "lataa" && row.fileLinkFn) {
+                  row.fileLinkFn();
                 } else if (action === "download-pdf-and-change-state") {
                   setIsDownloadPDFAndChangeStateDialogVisible(true);
                   setDocumentIdForAction(row.uuid);

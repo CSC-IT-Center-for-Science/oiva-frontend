@@ -2,11 +2,12 @@ import React, { useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
-import { equals, join, map, path, split } from "ramda";
+import { join, map, path, split } from "ramda";
 import { cloneDeep } from "lodash";
 import { useIntl } from "react-intl";
 import { useLomakkeet } from "../../../stores/lomakkeet";
 import { useMetadata } from "../../../stores/metadata";
+import { isEqual } from "lodash";
 
 function markRequiredFields(lomake, changeObjects = [], rules = []) {
   let modifiedLomake = cloneDeep(lomake);
@@ -21,7 +22,8 @@ function markRequiredFields(lomake, changeObjects = [], rules = []) {
 }
 
 const defaultProps = {
-  changeObjects: []
+  changeObjects: [],
+  uncheckParentWithoutActiveChildNodes: false
 };
 
 const Lomake = React.memo(
@@ -37,7 +39,8 @@ const Lomake = React.memo(
     prefix = "",
     rules = [],
     rulesFn,
-    showCategoryTitles = true
+    showCategoryTitles = true,
+    uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes
   }) => {
     const intl = useIntl();
     const [meta, metadataActions] = useMetadata();
@@ -107,6 +110,9 @@ const Lomake = React.memo(
               onUpdate={onChangesUpdate}
               showCategoryTitles={showCategoryTitles}
               showValidationErrors={showValidationErrors}
+              uncheckParentWithoutActiveChildNodes={
+                uncheckParentWithoutActiveChildNodes
+              }
             />
           </div>
         </React.Fragment>
@@ -117,9 +123,8 @@ const Lomake = React.memo(
   },
   (prevState, nextState) => {
     const isSameOld =
-      "" + prevState.onChangesUpdate === "" + nextState.onChangesUpdate &&
-      equals(prevState.changeObjects, nextState.changeObjects) &&
-      equals(prevState.data, nextState.data);
+      isEqual(prevState.changeObjects, nextState.changeObjects) &&
+      isEqual(prevState.data, nextState.data);
     return isSameOld;
   }
 );
@@ -136,7 +141,8 @@ Lomake.propTypes = {
   prefix: PropTypes.string,
   rules: PropTypes.array,
   // This is useful for dynamic forms.
-  rulesFn: PropTypes.func
+  rulesFn: PropTypes.func,
+  uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
 
 export default Lomake;

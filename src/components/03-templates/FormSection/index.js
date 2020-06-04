@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import Section from "../Section";
+import { equals } from "ramda";
 
 const FormSection = React.memo(
   ({ children, code, id, render, runOnChanges, title }) => {
@@ -31,14 +32,9 @@ const FormSection = React.memo(
       </Section>
     );
   },
-  (currentProps, nextProps) => {
-    const isSameOld =
-      "" + currentProps.runOnChanges === "" + nextProps.runOnChanges &&
-      currentProps.code === nextProps.code &&
-      currentProps.title === nextProps.title &&
-      "" + currentProps.render === "" + nextProps.render &&
-      currentProps.id === nextProps.id;
-    return isSameOld;
+  (cp, np) => {
+    console.info(cp, np, equals(cp, np));
+    return false;
   }
 );
 
@@ -48,5 +44,7 @@ FormSection.propTypes = {
   runOnChanges: PropTypes.func,
   title: PropTypes.string
 };
+
+FormSection.customName = "FormSection";
 
 export default FormSection;

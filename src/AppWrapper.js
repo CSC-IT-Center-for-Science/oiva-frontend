@@ -5,7 +5,6 @@ import { defaults } from "react-sweet-state";
 import { loadProgressBar } from "axios-progress-bar";
 import { useUser } from "./stores/user";
 import App from "./App";
-
 import "axios-progress-bar/dist/nprogress.css";
 import { useKaannokset } from "./stores/localizations";
 import { useGlobalSettings } from "./stores/appStore";
@@ -65,19 +64,22 @@ const AppWrapper = () => {
   }, [isBackendTheSourceOfLocalizations, kaannokset, state]);
 
   const appStructure = useMemo(() => {
-    return state.isDebugModeOn ? (
-      user.fetchedAt ? (
-        <div className="flex">
-          <div
-            id="cy"
-            className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
-            style={{ zIndex: 9000 }}></div>
-          <div className="w-2/3 relative">{<App />}</div>
-        </div>
-      ) : null
-    ) : (
-      user.fetchedAt && <App />
-    );
+    if (user.fetchedAt) {
+      return state.isDebugModeOn ? (
+        user.fetchedAt ? (
+          <div className="flex">
+            <div
+              id="cy"
+              className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
+              style={{ zIndex: 9000 }}></div>
+            <div className="w-2/3 relative">{<App />}</div>
+          </div>
+        ) : null
+      ) : (
+        user.fetchedAt && <App />
+      );
+    }
+    return null;
   }, [state.isDebugModeOn, user.fetchedAt]);
 
   if (appStructure && state.locale && messages) {
