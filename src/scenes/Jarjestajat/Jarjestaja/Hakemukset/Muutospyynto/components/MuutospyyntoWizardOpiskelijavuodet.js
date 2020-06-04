@@ -27,9 +27,7 @@ const filterOpiskelijavuodet = (opiskelijavuodet, categoryKey) => {
 
 const defaultConstraintFlags = {
   isVaativaTukiVisible: true,
-  isSisaoppilaitosVisible: true,
-  isVaativaTukiValueRequired: false,
-  isSisaoppilaitosValueRequired: false
+  isSisaoppilaitosVisible: true
 };
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
@@ -151,7 +149,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
           isCheckedByDefault || isCheckedByChange;
 
         newConstraintFlags.isSisaoppilaitosVisible = shouldSisaoppilaitosBeVisible;
-        newConstraintFlags.isSisaoppilaitosValueRequired = isCheckedByChange;
       }
 
       // 02 = Vaativa tuki, 0 includes a list of radio buttons
@@ -209,7 +206,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
           isVaativatukiCheckedByDefault || isCheckedByChange;
 
         newConstraintFlags.isVaativaTukiVisible = shouldVaativatBeVisible;
-        newConstraintFlags.isVaativaTukiValueRequired = isCheckedByChange;
       }
 
       setConstraintFlags(previousConstraintFlags => {
@@ -265,7 +261,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <ExpandableRowRoot
@@ -293,10 +289,8 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
           initialValueVaativa,
           isVaativaTukiVisible: constraintFlags.isVaativaTukiVisible,
           isSisaoppilaitosVisible: constraintFlags.isSisaoppilaitosVisible,
-          isSisaoppilaitosValueRequired:
-            constraintFlags.isSisaoppilaitosValueRequired,
-          isVaativaTukiValueRequired:
-            constraintFlags.isVaativaTukiValueRequired,
+          isSisaoppilaitosValueRequired: false,
+          isVaativaTukiValueRequired: false,
           koodiarvot,
           sectionId: props.sectionId
         }}
