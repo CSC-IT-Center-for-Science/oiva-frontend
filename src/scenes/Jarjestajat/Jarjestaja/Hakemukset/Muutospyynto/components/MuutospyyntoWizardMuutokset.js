@@ -89,7 +89,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
               lupaKohteet={props.lupaKohteet}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              sectionId={"tutkinnot"}
             />
             <h4 className="pt-8 pb-4">
               {intl.formatMessage(common.koulutukset)}
@@ -115,7 +114,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
               onUpdate={props.onUpdate}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              sectionId={"tutkinnot"}
             />
           </Section>
 
@@ -165,7 +163,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
                 koulutukset={props.koulutukset}
                 onChangesRemove={onChangesRemove}
                 onChangesUpdate={updateChanges}
-                sectionId={"muut"}
               />
             </Section>
           )}

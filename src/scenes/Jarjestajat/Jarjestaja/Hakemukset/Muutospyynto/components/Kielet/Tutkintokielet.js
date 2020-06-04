@@ -62,7 +62,7 @@ const Tutkintokielet = props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <React.Fragment>
@@ -72,9 +72,10 @@ const Tutkintokielet = props => {
           tutkintolomake,
           changeObjects.tutkinnot[areaCode]
         );
+        const fullSectionId = `${sectionId}_${areaCode}`;
         return actives.length > 0 ? (
           <ExpandableRowRoot
-            anchor={`${sectionId}_${areaCode}`}
+            anchor={fullSectionId}
             categories={[]}
             changes={R.path(
               ["kielet", "tutkintokielet", areaCode],
@@ -85,12 +86,12 @@ const Tutkintokielet = props => {
             key={`expandable-row-root-${areaCode}`}
             onChangesRemove={onChangesRemove}
             onUpdate={onChangesUpdate}
-            sectionId={sectionId}
+            sectionId={fullSectionId}
             showCategoryTitles={true}
             title={`${tutkintolomake[0].meta.title}`}>
             <Lomake
               action="modification"
-              anchor={`${sectionId}_${areaCode}`}
+              anchor={fullSectionId}
               changeObjects={R.path(
                 ["kielet", "tutkintokielet", areaCode],
                 changeObjects

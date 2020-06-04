@@ -378,7 +378,8 @@ MuutospyyntoWizardToimintaalue.propTypes = {
   kuntamaaraykset: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object,
   onChangesUpdate: PropTypes.func,
-  onChangesRemove: PropTypes.func
+  onChangesRemove: PropTypes.func,
+  sectionId: PropTypes.string
 };
 
 export default MuutospyyntoWizardToimintaalue;

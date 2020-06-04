@@ -24,7 +24,7 @@ const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <ExpandableRowRoot
@@ -36,6 +36,7 @@ const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
+      sectionId={sectionId}
       title={intl.formatMessage(wizardMessages.vocationalTraining)}>
       {koulutukset && (
         <Lomake
