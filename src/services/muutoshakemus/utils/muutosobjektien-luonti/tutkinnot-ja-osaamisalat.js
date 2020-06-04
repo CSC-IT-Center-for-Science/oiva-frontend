@@ -323,6 +323,5 @@ export async function createChangeObjects(
     paivitetytBackendMuutokset,
     uudetMuutokset
   ]);
-  console.info(muutosobjektit);
   return muutosobjektit;
 }
