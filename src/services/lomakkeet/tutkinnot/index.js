@@ -61,7 +61,8 @@ function getModificationForm(
                         maaraysUuid: maaraysOsaamisalalle.maaraysId,
                         koodisto: osaamisala.koodisto,
                         metadata: osaamisala.metadata,
-                        isInLupa: isTutkintoInLupaBool
+                        isInLupa: isOsaamisalaInLupaBool,
+                        isTutkintoInLupa: isTutkintoInLupaBool
                       },
                       name: "CheckboxWithLabel",
                       code: osaamisala.koodiArvo,

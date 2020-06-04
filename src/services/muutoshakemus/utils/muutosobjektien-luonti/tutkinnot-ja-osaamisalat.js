@@ -4,6 +4,14 @@ import * as R from "ramda";
 
 // Return changes of Tutkinnot
 const getMuutos = (changeObj, perustelut, kohde, maaraystyypit) => {
+  let tila;
+
+  if (R.endsWith("osaamisala", changeObj.anchor)) {
+    tila = changeObj.properties.isChecked ? "POISTO" : "LISAYS";
+  } else {
+    tila = changeObj.properties.isChecked ? "LISAYS" : "POISTO";
+  }
+
   const metadata = R.path(["properties", "metadata"], changeObj);
   const anchorParts = changeObj.anchor.split(".");
   const koulutusCode = R.nth(2, anchorParts);
@@ -37,8 +45,7 @@ const getMuutos = (changeObj, perustelut, kohde, maaraystyypit) => {
       muutosperustelukoodiarvo: []
     },
     nimi: finnishInfo.nimi,
-    tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO",
-    type: changeObj.properties.isChecked ? "addition" : "removal"
+    tila
   };
 
   if (subcode) {
@@ -208,19 +215,18 @@ export async function createChangeObjects(
                 changeObjects.perustelut
               );
 
-              let tutkintoMuutos = getMuutos(
-                tutkintoChangeObj,
-                perustelut,
-                kohde,
-                maaraystyypit
-              );
-
-              const maarays = R.find(maarays => {
-                return maarays.koodi === koulutusalanKoodiarvo;
-              }, lupakohteet[1].maaraykset);
+              let tutkintoMuutos =
+                tutkintoChangeObj.properties.isChecked !==
+                tutkintoChangeObj.properties.metadata.isInLupa
+                  ? getMuutos(
+                      tutkintoChangeObj,
+                      perustelut,
+                      kohde,
+                      maaraystyypit
+                    )
+                  : null;
 
               // Let's create backend changes for tutkinto and its unchecked osaamisalat
-              const isTutkintoChecked = tutkintoChangeObj.properties.isChecked;
               const osaamisalamuutokset = R.map(osaamisala => {
                 const osaamisalaChangeObj = R.find(changeObj => {
                   return R.equals(
@@ -244,7 +250,7 @@ export async function createChangeObjects(
                       R.propEq("tunniste", "RAJOITE"),
                       maaraystyypit
                     ),
-                    maaraysUuid: undefined, //Math.round(Math.random() * 1000),
+                    maaraysUuid: undefined,
                     meta: {
                       nimi: metadata.nimi,
                       koulutusala: koulutusalanKoodiarvo,
@@ -256,27 +262,52 @@ export async function createChangeObjects(
                     type: "addition"
                   };
                 } else {
-                  tutkintoMuutos.meta.changeObjects.push(osaamisalaChangeObj);
+                  const anchorInit = R.compose(
+                    R.join("."),
+                    R.init,
+                    R.split(".")
+                  )(osaamisalaChangeObj.anchor);
+                  const perustelut = R.filter(
+                    R.compose(R.contains(anchorInit), R.prop("anchor")),
+                    changeObjects.perustelut
+                  );
+                  let osaamisalamuutos = null;
                   if (!osaamisalaChangeObj.properties.isChecked) {
-                    const anchorInit = R.compose(
-                      R.join("."),
-                      R.init,
-                      R.split(".")
-                    )(osaamisalaChangeObj.anchor);
-                    const perustelut = R.filter(
-                      R.compose(R.contains(anchorInit), R.prop("anchor")),
-                      changeObjects.perustelut
-                    );
-                    return getMuutos(
+                    // Osaamisalan rajoituksen lisääminen
+                    osaamisalamuutos = getMuutos(
                       osaamisalaChangeObj,
                       perustelut,
                       kohde,
                       maaraystyypit
                     );
+                  } else if (
+                    osaamisalaChangeObj.properties.metadata.isTutkintoInLupa
+                  ) {
+                    /**
+                     * Removal of osaamisalan rajoitus. This is needed when
+                     * lupa includes the current degree (tutkinto).
+                     **/
+                    osaamisalamuutos = getMuutos(
+                      osaamisalaChangeObj,
+                      perustelut,
+                      kohde,
+                      maaraystyypit
+                    );
+                    if (!tutkintoMuutos) {
+                      delete osaamisalamuutos.parent;
+                    }
                   }
+                  if (tutkintoMuutos) {
+                    tutkintoMuutos.meta.changeObjects.push(osaamisalaChangeObj);
+                  } else if (tutkintoChangeObj) {
+                    osaamisalamuutos.meta.changeObjects.push(tutkintoChangeObj);
+                  }
+                  return osaamisalamuutos;
                 }
               }, tutkinto.osaamisalat).filter(Boolean);
-              return R.concat(osaamisalamuutokset, [tutkintoMuutos]);
+              return R.concat(osaamisalamuutokset, [tutkintoMuutos]).filter(
+                Boolean
+              );
             } else {
               console.warn("Tutkinto wasn't found!");
             }
@@ -292,6 +323,6 @@ export async function createChangeObjects(
     paivitetytBackendMuutokset,
     uudetMuutokset
   ]);
-
+  console.info(muutosobjektit);
   return muutosobjektit;
 }
