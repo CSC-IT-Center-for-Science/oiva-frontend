@@ -272,6 +272,7 @@ export function getChangesToSave(
     }, unhandledChangeObjects).filter(Boolean);
   } else if (key === "opiskelijavuodet") {
     uudetMuutokset = R.map(changeObj => {
+      console.log("saving", changeObj);
       const anchorParts = R.split(".", changeObj.anchor);
       const koodiarvo = changeObj.properties.metadata.koodiarvo;
       let koodisto = { koodistoUri: "koulutussektori" };
