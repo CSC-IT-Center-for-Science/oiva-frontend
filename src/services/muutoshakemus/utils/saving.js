@@ -107,7 +107,7 @@ export async function createObjectToSave(
     parsedTutkinnot,
     locale
   );
-  console.info(tutkinnot);
+
   // KOULUTUKSET
   const koulutukset = getChangesToSave(
     "koulutukset",
@@ -416,6 +416,6 @@ export async function createObjectToSave(
       ]).filter(Boolean)
     };
   }
-  console.info("Object to save: ", objectToSave);
+
   return objectToSave;
 }
