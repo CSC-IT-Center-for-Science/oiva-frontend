@@ -12,7 +12,10 @@ import {
   prop,
   propEq,
   split,
-  toUpper
+  toUpper,
+  groupBy,
+  head,
+  mapObjIndexed
 } from "ramda";
 import { MUUT_KEYS } from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/constants";
 import Loading from "../../modules/Loading";
@@ -43,6 +46,12 @@ import { useLupa } from "../../stores/lupa";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
 import { useOrganisation } from "../../stores/organisation";
+import {
+  Tutkinto,
+  initializeTutkintokielet,
+  initializeMaarays
+} from "../../services/change-management/tutkinnot/Tutkinto";
+import localforage from "localforage";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -134,6 +143,51 @@ const UusiAsiaDialogContainer = React.memo(() => {
     uuid,
     ytunnus
   ]);
+
+  /**
+   * In the useEffect below we store the degrees with their language
+   * regulations (tutkinnot ja tutkintokielet) into a storage for
+   * later use. They will be needed on saving phase.
+   */
+  useEffect(() => {
+    async function initializeTutkinnot(tutkinnotData) {
+      let tutkinnot = null;
+
+      const maaraykset = prop("maaraykset", lupa.data) || [];
+
+      const maarayksetByTutkinto = groupBy(prop("koodiarvo"), maaraykset);
+
+      tutkinnot = mapObjIndexed(
+        head,
+        groupBy(
+          prop("koodiarvo"),
+          map(tutkintodata => {
+            // Tutkinto
+            let tutkinto = new Tutkinto(tutkintodata);
+
+            // Tutkinnon määräyksen asettaminen ilman alimääräyksiä
+            tutkinto = initializeMaarays(
+              tutkinto,
+              maarayksetByTutkinto[tutkinto.koodiarvo]
+            );
+
+            // Tutkintokielimääräysten asettaminen
+            tutkinto = initializeTutkintokielet(
+              tutkinto,
+              maarayksetByTutkinto[tutkinto.koodiarvo]
+            );
+
+            return tutkinto;
+          }, tutkinnotData)
+        ) || {}
+      );
+
+      await localforage.setItem("tutkinnot", tutkinnot);
+    }
+    if (lupa.fetchedAt) {
+      initializeTutkinnot(tutkinnot.data);
+    }
+  }, [lupa, tutkinnot.data, tutkinnotActions]);
 
   // Let's fetch LUPA
   useEffect(() => {
