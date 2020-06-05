@@ -74,8 +74,10 @@ function getModificationForm(
             anchor: "B",
             name: "Autocomplete",
             properties: {
-              forChangeObject:
-                subCategory.components[0].properties.forChangeObject,
+              forChangeObject: {
+                tutkinto: subCategory.components[0].properties.forChangeObject,
+                kieli: { koodisto: kielet[0].koodisto }
+              },
               options: R.map(language => {
                 return {
                   label:
