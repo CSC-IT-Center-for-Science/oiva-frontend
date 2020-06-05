@@ -1,8 +1,10 @@
 import { getChangesToSave } from "./changes-to-save";
+import { getChangesToSave as getTutkintokielimuutokset } from "./muutosobjektien-luonti/tutkintokielet";
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
 import { createChangeObjects } from "./muutosobjektien-luonti/tutkinnot-ja-osaamisalat";
+import localforage from "localforage";
 
 export async function createObjectToSave(
   locale,
@@ -152,7 +154,7 @@ export async function createObjectToSave(
   );
 
   // TUTKINTOKIELET
-  const tutkintokielet = getChangesToSave(
+  const tutkintokielet = getTutkintokielimuutokset(
     "tutkintokielet",
     {
       muutokset: R.compose(
@@ -170,7 +172,8 @@ export async function createObjectToSave(
     },
     R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset),
     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-    maaraystyypit
+    maaraystyypit,
+    await localforage.getItem("tutkinnot")
   );
 
   // TOIMINTA-ALUE
