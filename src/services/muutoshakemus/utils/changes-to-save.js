@@ -208,45 +208,6 @@ export function getChangesToSave(
         type: changeObj.properties.isChecked ? "addition" : "removal"
       };
     }, unhandledChangeObjects).filter(Boolean);
-  } else if (key === "tutkintokielet") {
-    uudetMuutokset = R.map(changeObj => {
-      const anchorInit = R.compose(
-        R.join("."),
-        R.init,
-        R.split(".")
-      )(changeObj.anchor);
-      const perustelut = R.filter(perustelu => {
-        // Let's remove chars between | | marks
-        const simplifiedAnchor = R.replace(/\|.*\|/, "", perustelu.anchor);
-        return R.contains(anchorInit, simplifiedAnchor);
-      }, changeObjects.perustelut);
-      const code = getAnchorPart(changeObj.anchor, 1);
-      const meta = changeObj.properties.metadata;
-
-      return {
-        koodiarvo: code,
-        koodisto: "kieli",
-        nimi: meta.nimi, // TODO: Tähän oikea arvo, jos tarvitaan, muuten poistetaan
-        kuvaus: meta.kuvaus, // TODO: Tähän oikea arvo, jos tarvitaan, muuten poistetaan
-        isInLupa: meta.isInLupa,
-        kohde,
-        maaraystyyppi: R.find(R.propEq("tunniste", "VELVOITE"), maaraystyypit),
-        meta: {
-          tunniste: "tutkintokieli",
-          changeObjects: R.flatten([[changeObj], perustelut]),
-          perusteluteksti: R.map(perustelu => {
-            if (R.path(["properties", "value"], perustelu)) {
-              return { value: R.path(["properties", "value"], perustelu) };
-            }
-            return {
-              value: R.path(["properties", "metadata", "fieldName"], perustelu)
-            };
-          }, perustelut)
-        },
-        tila: "LISAYS",
-        type: "addition"
-      };
-    }, unhandledChangeObjects).filter(Boolean);
   } else if (key === "muut") {
     uudetMuutokset = R.map(changeObj => {
       const anchorInit = R.compose(
@@ -528,6 +489,8 @@ export function getChangesToSave(
       };
     }, unhandledChangeObjects).filter(Boolean);
   }
+
+  console.info("Uudet muutokset: ", uudetMuutokset);
 
   return R.flatten([paivitetytBackendMuutokset, uudetMuutokset]);
 }
