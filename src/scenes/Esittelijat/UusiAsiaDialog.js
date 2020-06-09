@@ -304,6 +304,7 @@ const UusiAsiaDialog = React.memo(
         backendMuutokset,
         cos,
         kohteet,
+        intl.locale,
         lupa,
         lupaKohteet,
         maaraystyypit,
