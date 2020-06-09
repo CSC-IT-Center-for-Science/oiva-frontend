@@ -13,9 +13,7 @@ import {
   propEq,
   split,
   toUpper,
-  groupBy,
-  head,
-  mapObjIndexed
+  groupBy
 } from "ramda";
 import { MUUT_KEYS } from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/constants";
 import Loading from "../../modules/Loading";
@@ -47,10 +45,11 @@ import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
 import { useOrganisation } from "../../stores/organisation";
 import {
-  Tutkinto,
   initializeTutkintokielet,
-  initializeMaarays
-} from "../../services/change-management/tutkinnot/Tutkinto";
+  initializeMaarays,
+  initializeTutkinto,
+  initializeOsaamisalat
+} from "../../helpers/tutkinnot/";
 import localforage from "localforage";
 
 /**
@@ -157,30 +156,27 @@ const UusiAsiaDialogContainer = React.memo(() => {
 
       const maarayksetByTutkinto = groupBy(prop("koodiarvo"), maaraykset);
 
-      tutkinnot = mapObjIndexed(
-        head,
-        groupBy(
-          prop("koodiarvo"),
-          map(tutkintodata => {
-            // Tutkinto
-            let tutkinto = new Tutkinto(tutkintodata);
+      tutkinnot = map(tutkintodata => {
+        // Luodaan tutkinto
+        let tutkinto = initializeTutkinto(tutkintodata);
 
-            // Tutkinnon määräyksen asettaminen ilman alimääräyksiä
-            tutkinto = initializeMaarays(
-              tutkinto,
-              maarayksetByTutkinto[tutkinto.koodiarvo]
-            );
+        // Asetetaan tutkinnolle määräys
+        tutkinto = initializeMaarays(
+          tutkinto,
+          maarayksetByTutkinto[tutkinto.koodiarvo]
+        );
 
-            // Tutkintokielimääräysten asettaminen
-            tutkinto = initializeTutkintokielet(
-              tutkinto,
-              maarayksetByTutkinto[tutkinto.koodiarvo]
-            );
+        // Asetetaan tutkinnolle tutkintokieliä koskevat määräykset
+        tutkinto = initializeTutkintokielet(
+          tutkinto,
+          maarayksetByTutkinto[tutkinto.koodiarvo]
+        );
 
-            return tutkinto;
-          }, tutkinnotData)
-        ) || {}
-      );
+        // Asetetaan tutkinnon osaamisalat ja niiden määräykset
+        tutkinto = initializeOsaamisalat(tutkinto, tutkintodata.osaamisalat);
+
+        return tutkinto;
+      }, tutkinnotData);
 
       await localforage.setItem("tutkinnot", tutkinnot);
     }
@@ -214,7 +210,8 @@ const UusiAsiaDialogContainer = React.memo(() => {
 
   const [isHandled, setAsHandled] = useState(false);
 
-  const [backendMuutokset, setBackendMuutokset] = useState([]);
+  const backendMuutokset =
+    muutospyynto.fetchedAt && uuid ? muutospyynto.data.muutokset : [];
 
   const filesFromMuutokset = useMemo(() => {
     if (muutospyynto.fetchedAt && uuid) {
@@ -317,8 +314,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
        * At this point the backend data is handled and change objects have been formed.
        */
       coActions.initialize(changesBySection);
-
-      setBackendMuutokset(backendMuutokset);
 
       setAsHandled(true);
     }
