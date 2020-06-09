@@ -9,7 +9,7 @@ import { useIntl } from "react-intl";
 import {
   getTutkinnotGroupedByKey,
   isAnyOfTutkinnotActive
-} from "../../../../../../../helpers/tutkinnot";
+} from "../../../../../../../helpers/tutkinnot/";
 
 const Tutkintokielet = props => {
   const intl = useIntl();
