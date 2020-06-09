@@ -105,7 +105,7 @@ export async function createChangeObjects(
   parsedTutkinnot,
   locale
 ) {
-  // Update changes if already exits with perustelut and attachements
+  // Update changes if already exits with perustelut and attachments
   const paivitetytBackendMuutokset = R.map(changeObj => {
     let { anchor, backendMuutos } = findBackendMuutos(
       changeObj.anchor,
