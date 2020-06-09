@@ -1,18 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { getActiveCheckboxes } from "../../../../../../../services/lomakkeet/utils";
 import common from "../../../../../../../i18n/definitions/common";
 import * as R from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
+import {
+  getTutkinnotGroupedByKey,
+  isAnyOfTutkinnotActive
+} from "../../../../../../../helpers/tutkinnot";
 
 const Tutkintokielet = props => {
   const intl = useIntl();
   const [changeObjects] = useChangeObjects();
   const sectionId = "kielet_tutkintokielet";
   const { onChangesRemove, onChangesUpdate } = props;
+  const [tutkinnot, setTutkinnot] = useState();
+
+  useEffect(() => {
+    (async () => {
+      const tutkinnot = await getTutkinnotGroupedByKey("koulutusalaKoodiarvo");
+      setTutkinnot(tutkinnot);
+    })();
+  }, []);
 
   useEffect(() => {
     if (props.unselectedAnchors.length && changeObjects.kielet.tutkintokielet) {
@@ -64,19 +75,17 @@ const Tutkintokielet = props => {
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  return (
+  return tutkinnot ? (
     <React.Fragment>
       {R.map(areaCode => {
         const tutkintolomake = props.tutkintolomakkeet[areaCode].categories;
-        const actives = getActiveCheckboxes(
-          tutkintolomake,
-          changeObjects.tutkinnot[areaCode]
-        );
         const fullSectionId = `${sectionId}_${areaCode}`;
-        return actives.length > 0 ? (
+        return isAnyOfTutkinnotActive(
+          tutkinnot[areaCode],
+          changeObjects.tutkinnot[areaCode]
+        ) ? (
           <ExpandableRowRoot
             anchor={fullSectionId}
-            categories={[]}
             changes={R.path(
               ["kielet", "tutkintokielet", areaCode],
               changeObjects
@@ -104,13 +113,12 @@ const Tutkintokielet = props => {
               }}
               onChangesUpdate={onChangesUpdate}
               path={["kielet", "tutkintokielet"]}
-              rules={[]}
               showCategoryTitles={true}></Lomake>
           </ExpandableRowRoot>
         ) : null;
       }, R.keys(props.tutkintolomakkeet).sort())}
     </React.Fragment>
-  );
+  ) : null;
 };
 
 Tutkintokielet.defaultProps = {
