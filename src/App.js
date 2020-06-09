@@ -50,7 +50,6 @@ const logo = { text: "Oiva", path: "/" };
  * @param {props} - Properties object.
  */
 const App = React.memo(({ isDebugModeOn }) => {
-
   const intl = useIntl();
 
   const [userState] = useUser();
@@ -150,12 +149,10 @@ const App = React.memo(({ isDebugModeOn }) => {
     return {};
   }, [intl, organisation, user]);
 
-  const shortDescription = useMemo(() => {
-    return {
-      text: intl.formatMessage(commonMessages.siteShortDescription),
-      path: "/"
-    };
-  }, [intl]);
+  const shortDescription = {
+    text: intl.formatMessage(commonMessages.siteShortDescription),
+    path: "/"
+  };
 
   // Let's fetch ORGANISAATIO
   useEffect(() => {
@@ -296,7 +293,12 @@ const App = React.memo(({ isDebugModeOn }) => {
                   <Route
                     path="/asiat"
                     render={() => {
-                      return user ? <Esittelijat /> : null;
+                      return user &&
+                        !user.isLoading &&
+                        organisation[user.oid] &&
+                        !!organisation[user.oid].fetchedAt ? (
+                        <Esittelijat />
+                      ) : null;
                     }}
                   />
                   <Route
@@ -309,9 +311,18 @@ const App = React.memo(({ isDebugModeOn }) => {
                       />
                     )}
                   />
-                  <Route path="/saavutettavuusseloste" component={Saavutettavuusseloste} />
-                  <Route path="/tietosuojailmoitus" component={Tietosuojailmoitus} />
-                  <Route path="/yleinen-sisaltosivu" component={YleinenSisaltosivu} />
+                  <Route
+                    path="/saavutettavuusseloste"
+                    component={Saavutettavuusseloste}
+                  />
+                  <Route
+                    path="/tietosuojailmoitus"
+                    component={Tietosuojailmoitus}
+                  />
+                  <Route
+                    path="/yleinen-sisaltosivu"
+                    component={YleinenSisaltosivu}
+                  />
                 </Switch>
               </div>
             </div>
