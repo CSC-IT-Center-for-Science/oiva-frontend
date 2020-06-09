@@ -34,16 +34,16 @@ const AppWrapper = () => {
   const isBackendTheSourceOfLocalizations =
     process.env.REACT_APP_FETCH_LOCALICATIONS_FROM_BACKEND === "true";
 
-  const [user, actions] = useUser();
+  const [user, userActions] = useUser();
   const [state] = useGlobalSettings();
 
   useEffect(() => {
     // Let's fetch the current user from backend
-    const abortController = actions.load();
+    const abortController = userActions.load();
     return function cancel() {
       abortController.abort();
     };
-  }, [actions]);
+  }, [userActions]);
 
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
