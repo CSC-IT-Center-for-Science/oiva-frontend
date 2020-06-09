@@ -1,10 +1,8 @@
 import { getChangesToSave } from "./changes-to-save";
-import { getChangesToSave as getTutkintokielimuutokset } from "./muutosobjektien-luonti/tutkintokielet";
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
-import { createChangeObjects } from "./muutosobjektien-luonti/tutkinnot-ja-osaamisalat";
-import localforage from "localforage";
+import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 
 export async function createObjectToSave(
   locale,
@@ -86,27 +84,22 @@ export async function createObjectToSave(
     );
   };
 
-  // TUTKINNOT
-  const tutkinnot = await createChangeObjects(
+  // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
+  const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
     {
-      // Page 1 changes
-      muutokset: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["tutkinnot"], changeObjects))),
-      // Page 2 changes
-      perustelut: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["perustelut", "tutkinnot"], changeObjects)))
+      tutkinnotJaOsaamisalat: {
+        muutokset: R.flatten(R.values(changeObjects.tutkinnot)),
+        perustelut: R.flatten(R.values(changeObjects.perustelut.tutkinnot))
+      },
+      tutkintokielet: {
+        muutokset: R.flatten(R.values(changeObjects.kielet.tutkintokielet)),
+        perustelut: R.flatten(
+          R.values(changeObjects.perustelut.kielet.tutkintokielet)
+        )
+      }
     },
-    R.filter(R.pathEq(["kohde", "tunniste"], "tutkinnotjakoulutukset"))(
-      backendMuutokset
-    ),
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
     maaraystyypit,
-    lupaKohteet,
-    parsedTutkinnot,
     locale
   );
 
@@ -151,29 +144,6 @@ export async function createObjectToSave(
     R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset),
     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
     maaraystyypit
-  );
-
-  // TUTKINTOKIELET
-  const tutkintokielet = getTutkintokielimuutokset(
-    "tutkintokielet",
-    {
-      muutokset: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["kielet", "tutkintokielet"], changeObjects))),
-      perustelut: R.compose(
-        R.flatten,
-        R.values
-      )(
-        R.values(
-          R.path(["perustelut", "kielet", "tutkintokielet"], changeObjects)
-        )
-      )
-    },
-    R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset),
-    R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-    maaraystyypit,
-    await localforage.getItem("tutkinnot")
   );
 
   // TOIMINTA-ALUE
@@ -277,7 +247,6 @@ export async function createObjectToSave(
       tutkinnot,
       koulutukset,
       opetuskielet,
-      tutkintokielet,
       toimintaalue,
       opiskelijavuodet,
       muutMuutokset
@@ -419,6 +388,8 @@ export async function createObjectToSave(
       ]).filter(Boolean)
     };
   }
+
+  console.info("Object to save: ", objectToSave);
 
   return objectToSave;
 }
