@@ -81,6 +81,8 @@ export const removeAnchorPart = (anchor, index, separator = ".") => {
   )(anchor);
 };
 
+export const getAnchorInit = anchor => removeAnchorPart(anchor, -1);
+
 export const replaceAnchorPartWith = (anchor, index, replaceWith) => {
   return R.compose(
     R.join("."),
