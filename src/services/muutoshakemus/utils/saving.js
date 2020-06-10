@@ -391,7 +391,5 @@ export async function createObjectToSave(
     };
   }
 
-  console.info("Object to save: ", objectToSave);
-
   return objectToSave;
 }
