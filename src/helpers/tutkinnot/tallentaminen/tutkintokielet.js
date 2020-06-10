@@ -13,13 +13,16 @@ export function createBEOofTutkintakielet(
   changeObjects,
   kohde,
   maaraystyypit,
-  tutkintomuutokset
+  beoOfTutkinnotJaOsaamisalat
 ) {
   let additions = [];
   let removals = [];
-  const tutkintoRelatedAnchorString = `${tutkinto.koulutusalaKoodiarvo}.${tutkinto.koulutustyyppiKoodiarvo}.${tutkinto.koodiarvo}`;
+  const tutkintoRelatedAnchorString = `${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}`;
   const changeObj = find(
-    propEq("anchor", `kielet_tutkintokielet_${tutkintoRelatedAnchorString}.B`),
+    propEq(
+      "anchor",
+      `kielet_tutkintokielet_${tutkintoRelatedAnchorString}.kielet`
+    ),
     changeObjects.tutkintokielet.muutokset
   );
 
@@ -28,8 +31,8 @@ export function createBEOofTutkintakielet(
    * niistä backendin tarvitsemat muutosobjektit.
    **/
   if (changeObj) {
-    const { metadata, value: listOfActiveLanguages } = changeObj.properties;
-    const perustelut = "";
+    const { value: listOfActiveLanguages } = changeObj.properties;
+    const perustelut = [];
 
     /**
      * TUTKINTAKIELIEN POISTAMINEN
@@ -49,7 +52,7 @@ export function createBEOofTutkintakielet(
             return {
               generatedId: `${changeObj.anchor}-${koodiarvoUpper}`,
               koodiarvo: koodiarvoUpper,
-              koodisto: metadata.kieli.koodisto.koodistoUri,
+              koodisto: tutkintokielimaarays.koodisto,
               kohde,
               maaraystyyppi: find(
                 propEq("tunniste", "VELVOITE"),
@@ -58,7 +61,9 @@ export function createBEOofTutkintakielet(
               maaraysUuid: tutkintokielimaarays.uuid,
               meta: {
                 tunniste: "tutkintokieli",
-                changeObjects: flatten([[changeObj], perustelut]),
+                changeObjects: flatten([[changeObj], perustelut]).filter(
+                  Boolean
+                ),
                 perusteluteksti: map(perustelu => {
                   if (path(["properties", "value"], perustelu)) {
                     return {
@@ -91,12 +96,12 @@ export function createBEOofTutkintakielet(
       let backendChangeObject = {
         generatedId: `${changeObj.anchor}-${language.value}`,
         koodiarvo: language.value,
-        koodisto: metadata.kieli.koodisto.koodistoUri,
+        koodisto: "kieli",
         kohde,
         maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
         meta: {
           tunniste: "tutkintokieli",
-          changeObjects: flatten([[changeObj], perustelut]),
+          changeObjects: flatten([[changeObj], perustelut]).filter(Boolean),
           perusteluteksti: map(perustelu => {
             if (path(["properties", "value"], perustelu)) {
               return {
@@ -119,7 +124,7 @@ export function createBEOofTutkintakielet(
       if (!tutkinto.maarays) {
         const tutkintomuutos = find(
           propEq("koodiarvo", tutkinto.koodiarvo),
-          tutkintomuutokset
+          beoOfTutkinnotJaOsaamisalat || []
         );
         if (tutkintomuutos) {
           backendChangeObject.parent = tutkintomuutos.generatedId;
