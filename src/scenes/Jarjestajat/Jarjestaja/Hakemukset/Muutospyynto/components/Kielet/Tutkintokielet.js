@@ -7,21 +7,31 @@ import * as R from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 import {
-  getTutkinnotGroupedByKey,
-  isAnyOfTutkinnotActive
+  getTutkinnotGroupedBy,
+  getActiveOnes
 } from "../../../../../../../helpers/tutkinnot/";
+import { getKoulutusalatSortedByKey } from "../../../../../../../helpers/koulutusalat";
+import { getKoulutustyypitGroupedBy } from "../../../../../../../helpers/koulutustyypit";
+import { getKieletFromStorage } from "../../../../../../../helpers/kielet";
 
 const Tutkintokielet = props => {
   const intl = useIntl();
   const [changeObjects] = useChangeObjects();
   const sectionId = "kielet_tutkintokielet";
   const { onChangesRemove, onChangesUpdate } = props;
-  const [tutkinnot, setTutkinnot] = useState();
+  const [koulutusalat, setKoulutusalat] = useState();
+  const [koulutustyypit, setKoulutustyypit] = useState();
+  const [tutkinnotByKoulutusala, setTutkinnotByKoulutusala] = useState();
+  const [kielet, setKielet] = useState();
 
   useEffect(() => {
     (async () => {
-      const tutkinnot = await getTutkinnotGroupedByKey("koulutusalaKoodiarvo");
-      setTutkinnot(tutkinnot);
+      setTutkinnotByKoulutusala(
+        await getTutkinnotGroupedBy("koulutusalakoodiarvo")
+      );
+      setKoulutusalat(await getKoulutusalatSortedByKey("koodiarvo"));
+      setKoulutustyypit(await getKoulutustyypitGroupedBy("koodiarvo"));
+      setKielet(await getKieletFromStorage());
     })();
   }, []);
 
@@ -75,48 +85,52 @@ const Tutkintokielet = props => {
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  return tutkinnot ? (
+  return kielet && koulutusalat && koulutustyypit && tutkinnotByKoulutusala ? (
     <React.Fragment>
-      {R.map(areaCode => {
-        const tutkintolomake = props.tutkintolomakkeet[areaCode].categories;
-        const fullSectionId = `${sectionId}_${areaCode}`;
-        return isAnyOfTutkinnotActive(
-          tutkinnot[areaCode],
-          changeObjects.tutkinnot[areaCode]
-        ) ? (
+      {R.map(koulutusala => {
+        const fullSectionId = `${sectionId}_${koulutusala.koodiarvo}`;
+        const activeDegrees = getActiveOnes(
+          tutkinnotByKoulutusala[koulutusala.koodiarvo],
+          changeObjects.tutkinnot[koulutusala.koodiarvo]
+        );
+        const tutkinnotByKoulutustyyppi = R.groupBy(
+          R.prop("koulutustyyppikoodiarvo"),
+          activeDegrees
+        );
+        return activeDegrees.length > 0 ? (
           <ExpandableRowRoot
             anchor={fullSectionId}
             changes={R.path(
-              ["kielet", "tutkintokielet", areaCode],
+              ["kielet", "tutkintokielet", koulutusala.koodiarvo],
               changeObjects
             )}
             hideAmountOfChanges={true}
             messages={changesMessages}
-            key={`expandable-row-root-${areaCode}`}
+            key={`expandable-row-root-${koulutusala.koodiarvo}`}
             onChangesRemove={onChangesRemove}
             onUpdate={onChangesUpdate}
             sectionId={fullSectionId}
             showCategoryTitles={true}
-            title={`${tutkintolomake[0].meta.title}`}>
+            title={`${koulutusala.metadata[R.toUpper(intl.locale)].nimi}`}>
             <Lomake
               action="modification"
               anchor={fullSectionId}
               changeObjects={R.path(
-                ["kielet", "tutkintokielet", areaCode],
+                ["kielet", "tutkintokielet", koulutusala.koodiarvo],
                 changeObjects
               )}
               data={{
-                kielet: props.kielet,
-                maaraykset: props.lupa.maaraykset,
-                tutkintolomake,
-                tutkintomuutokset: changeObjects.tutkinnot[areaCode]
+                koulutusala,
+                koulutustyypit,
+                tutkinnotByKoulutustyyppi,
+                kielet
               }}
               onChangesUpdate={onChangesUpdate}
               path={["kielet", "tutkintokielet"]}
               showCategoryTitles={true}></Lomake>
           </ExpandableRowRoot>
         ) : null;
-      }, R.keys(props.tutkintolomakkeet).sort())}
+      }, koulutusalat)}
     </React.Fragment>
   ) : null;
 };
@@ -126,13 +140,11 @@ Tutkintokielet.defaultProps = {
     tutkinnot: [],
     tutkintokielet: {}
   },
-  kielet: [],
   unselectedAnchors: []
 };
 
 Tutkintokielet.propTypes = {
   changeObjects: PropTypes.object,
-  kielet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.object,
   koulutustyypit: PropTypes.array,
