@@ -223,11 +223,12 @@ const UusiAsiaDialogContainer = React.memo(() => {
    */
   useEffect(() => {
     async function initializeKielet(kieletData) {
-      const kielet = map(kieli => {
-        return initializeKieli(kieli);
-      }, kieletData);
-      console.info(kielet);
-      return await localforage.setItem("kielet", kielet);
+      return await localforage.setItem(
+        "kielet",
+        map(kieli => {
+          return initializeKieli(kieli);
+        }, kieletData)
+      );
     }
     if (kielet.data) {
       initializeKielet(kielet.data);
