@@ -109,6 +109,7 @@ const EsittelijatMuutospyynto = React.memo(
               sectionId={"tutkinnot"}
             />
           </Section>
+
           <Section
             code={props.lupaKohteet[3].headingNumber}
             title={props.lupaKohteet[3].heading}>

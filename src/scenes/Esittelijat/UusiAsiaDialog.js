@@ -75,7 +75,6 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
-  backendMuutokset: [],
   elykeskukset: [],
   kohteet: [],
   koulutustyypit: [],
@@ -93,7 +92,6 @@ const defaultProps = {
 
 const UusiAsiaDialog = React.memo(
   ({
-    backendMuutokset = defaultProps.backendMuutokset,
     kohteet = defaultProps.kohteet,
     koulutustyypit = defaultProps.koulutustyypit,
     kunnat = defaultProps.kunnat,
@@ -266,7 +264,6 @@ const UusiAsiaDialog = React.memo(
             R.toUpper(intl.locale),
             lupa,
             cos,
-            backendMuutokset,
             uuid,
             kohteet,
             maaraystyypit,
@@ -301,7 +298,6 @@ const UusiAsiaDialog = React.memo(
       },
       [
         anchors,
-        backendMuutokset,
         cos,
         kohteet,
         intl.locale,
@@ -443,7 +439,6 @@ const UusiAsiaDialog = React.memo(
 );
 
 UusiAsiaDialog.propTypes = {
-  backendMuutokset: PropTypes.array,
   elykeskukset: PropTypes.array,
   history: PropTypes.object,
   koulutustyypit: PropTypes.array,

@@ -296,6 +296,8 @@ const UusiAsiaDialogContainer = React.memo(() => {
    */
   useEffect(() => {
     if (muutospyynto.fetchedAt && uuid) {
+      localforage.setItem("backendMuutokset", muutospyynto.data.muutokset);
+
       let changesBySection = {};
 
       if (updatedC) {
@@ -429,7 +431,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
   ) {
     return (
       <UusiAsiaDialog
-        backendMuutokset={backendMuutokset}
         elykeskukset={elykeskukset.data}
         history={history}
         kohteet={kohteet.data}

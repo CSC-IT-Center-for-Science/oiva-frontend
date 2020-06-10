@@ -3,12 +3,12 @@ import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
 import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
+import localforage from "localforage";
 
 export async function createObjectToSave(
   locale,
   lupa,
   changeObjects,
-  backendMuutokset = [],
   uuid,
   kohteet,
   maaraystyypit,
@@ -17,6 +17,8 @@ export async function createObjectToSave(
   alkupera = "KJ",
   parsedTutkinnot
 ) {
+  const backendMuutokset = await localforage.getItem("backendMuutokset");
+
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
     ["yhteenveto", "yleisettiedot"],
