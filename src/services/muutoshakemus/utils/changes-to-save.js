@@ -352,7 +352,5 @@ export function getChangesToSave(
     }, unhandledChangeObjects).filter(Boolean);
   }
 
-  console.info("Uudet muutokset: ", uudetMuutokset);
-
   return R.flatten([paivitetytBackendMuutokset, uudetMuutokset]);
 }
