@@ -100,12 +100,12 @@ const EsittelijatMuutospyynto = React.memo(
             <MuutospyyntoWizardKielet
               lupa={props.lupa}
               lupaKohteet={props.lupaKohteet}
-              kielet={props.kielet}
               koulutukset={props.koulutukset}
               tutkintolomakkeet={props.lomakkeet.tutkinnot}
               onUpdate={props.onUpdate}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
+              opetuskielet={props.kielet.opetuskielet}
               sectionId={"tutkinnot"}
             />
           </Section>

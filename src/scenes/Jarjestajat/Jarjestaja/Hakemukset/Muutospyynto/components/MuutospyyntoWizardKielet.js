@@ -67,7 +67,7 @@ const MuutospyyntoWizardKielet = props => {
   return (
     <React.Fragment>
       <Opetuskielet
-        opetuskielet={props.kielet.opetuskielet}
+        opetuskielet={props.opetuskielet}
         lupakohde={props.lupaKohteet[2]}
         maaraystyyppi={props.maaraystyyppi}
         onChangesRemove={props.onChangesRemove}
@@ -78,7 +78,6 @@ const MuutospyyntoWizardKielet = props => {
       {/* Language options for degrees can't be shown without degrees.  */}
       {!R.isEmpty(props.tutkintolomakkeet) && (
         <Tutkintokielet
-          kielet={props.kielet.kielet}
           lupa={lupa}
           onChangesRemove={props.onChangesRemove}
           onChangesUpdate={props.onChangesUpdate}
@@ -91,10 +90,10 @@ const MuutospyyntoWizardKielet = props => {
 };
 
 MuutospyyntoWizardKielet.propTypes = {
-  kielet: PropTypes.object,
   koulutukset: PropTypes.object,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
+  opetuskielet: PropTypes.array,
   tutkintolomakkeet: PropTypes.object
 };
 
