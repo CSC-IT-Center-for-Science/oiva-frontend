@@ -53,7 +53,7 @@ function getModificationForm(
                           label:
                             tutkintokielimaarays.koodi.metadata[localeUpper]
                               .nimi,
-                          value: tutkintokielimaarays.koodi.koodiArvo
+                          value: tutkintokielimaarays.koodi.koodiarvo
                         };
                       }
                       return null;
