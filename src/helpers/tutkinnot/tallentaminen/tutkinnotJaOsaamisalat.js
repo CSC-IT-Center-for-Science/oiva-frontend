@@ -37,7 +37,7 @@ export function createBEOofTutkinnotJaOsaamisalat(
    * Jos tutkintoon on kohdistunut muutos, on fronttipuolen muutosobjekti
    * olemassa. Yritetään etsiä se.
    */
-  const anchor = `tutkinnot_${tutkinto.koulutusalaKoodiarvo}.${tutkinto.koulutustyyppiKoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
+  const anchor = `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
   const changeObj = find(
     propEq("anchor", anchor),
     changeObjects.tutkinnotJaOsaamisalat.muutokset
