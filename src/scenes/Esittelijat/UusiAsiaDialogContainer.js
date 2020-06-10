@@ -51,6 +51,9 @@ import {
   initializeOsaamisalat
 } from "../../helpers/tutkinnot/";
 import localforage from "localforage";
+import { initializeKoulutusala } from "../../helpers/koulutusalat";
+import { initializeKoulutustyyppi } from "../../helpers/koulutustyypit";
+import { initializeKieli } from "../../helpers/kielet";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -150,13 +153,11 @@ const UusiAsiaDialogContainer = React.memo(() => {
    */
   useEffect(() => {
     async function initializeTutkinnot(tutkinnotData) {
-      let tutkinnot = null;
-
       const maaraykset = prop("maaraykset", lupa.data) || [];
 
       const maarayksetByTutkinto = groupBy(prop("koodiarvo"), maaraykset);
 
-      tutkinnot = map(tutkintodata => {
+      const tutkinnot = map(tutkintodata => {
         // Luodaan tutkinto
         let tutkinto = initializeTutkinto(tutkintodata);
 
@@ -178,12 +179,60 @@ const UusiAsiaDialogContainer = React.memo(() => {
         return tutkinto;
       }, tutkinnotData);
 
-      await localforage.setItem("tutkinnot", tutkinnot);
+      return await localforage.setItem("tutkinnot", tutkinnot);
     }
     if (lupa.fetchedAt) {
       initializeTutkinnot(tutkinnot.data);
     }
   }, [lupa, tutkinnot.data, tutkinnotActions]);
+
+  /**
+   * Koulutusalat
+   */
+  useEffect(() => {
+    async function initializeKoulutusalat(koulutusalatData) {
+      const koulutusalat = map(koulutusala => {
+        return initializeKoulutusala(koulutusala);
+      }, koulutusalatData);
+
+      return await localforage.setItem("koulutusalat", koulutusalat);
+    }
+
+    if (koulutusalat.data) {
+      initializeKoulutusalat(koulutusalat.data);
+    }
+  }, [koulutusalat.data]);
+
+  /**
+   * Koulutustyypit
+   */
+  useEffect(() => {
+    async function initializeKoulutustyypit(koulutustyypitData) {
+      const koulutustyypit = map(koulutustyyppi => {
+        return initializeKoulutustyyppi(koulutustyyppi);
+      }, koulutustyypitData);
+      return await localforage.setItem("koulutustyypit", koulutustyypit);
+    }
+    if (koulutustyypit.data) {
+      initializeKoulutustyypit(koulutustyypit.data);
+    }
+  }, [koulutustyypit.data]);
+
+  /**
+   * Kielet (yleinen kieliluettelo)
+   */
+  useEffect(() => {
+    async function initializeKielet(kieletData) {
+      const kielet = map(kieli => {
+        return initializeKieli(kieli);
+      }, kieletData);
+      console.info(kielet);
+      return await localforage.setItem("kielet", kielet);
+    }
+    if (kielet.data) {
+      initializeKielet(kielet.data);
+    }
+  }, [kielet.data]);
 
   // Let's fetch LUPA
   useEffect(() => {
