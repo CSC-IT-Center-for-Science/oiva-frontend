@@ -17,7 +17,8 @@ import {
   filter,
   find,
   propEq,
-  path
+  path,
+  dissocPath
 } from "ramda";
 import localforage from "localforage";
 import { createBEOofTutkintakielet } from "./tallentaminen/tutkintokielet";
@@ -31,9 +32,10 @@ export function getTutkintoByKoodiarvo(koodiarvo, tutkinnot = []) {
   return find(propEq("koodiarvo", koodiarvo), tutkinnot);
 }
 
-export async function getTutkinnotGroupedByKey(key) {
-  const tutkinnot = await getTutkinnotFromStorage();
-  return groupBy(prop(key), tutkinnot);
+export async function getTutkinnotGroupedBy(key, tutkinnot) {
+  return tutkinnot
+    ? Promise.resolve(groupBy(prop(key), tutkinnot))
+    : groupBy(prop(key), await getTutkinnotFromStorage());
 }
 
 /**
@@ -41,16 +43,16 @@ export async function getTutkinnotGroupedByKey(key) {
  * @param {array} tutkinnot
  * @param {array} changeObjects
  */
-export function isAnyOfTutkinnotActive(tutkinnot = [], changeObjects = []) {
+export function getActiveOnes(tutkinnot = [], changeObjects = []) {
   const activeOnes = filter(tutkinto => {
-    const anchor = `tutkinnot_${tutkinto.koulutusalaKoodiarvo}.${tutkinto.koulutustyyppiKoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
+    const anchor = `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
     const changeObj = find(propEq("anchor", anchor), changeObjects);
     return (
-      (!!tutkinto.maarays && !changeObj) ||
+      (tutkinto.maarays && !changeObj) ||
       (changeObj && changeObj.properties.isChecked)
     );
   }, tutkinnot);
-  return activeOnes.length > 0;
+  return activeOnes;
 }
 
 export const initializeTutkinto = ({
@@ -59,8 +61,8 @@ export const initializeTutkinto = ({
   metadata,
   versio,
   voimassaAlkuPvm,
-  koulutustyyppiKoodiArvo: koulutustyyppiKoodiarvo,
-  koulutusalaKoodiArvo: koulutusalaKoodiarvo
+  koulutustyyppiKoodiArvo: koulutustyyppikoodiarvo,
+  koulutusalaKoodiArvo: koulutusalakoodiarvo
 }) => {
   return {
     koodiarvo,
@@ -68,8 +70,8 @@ export const initializeTutkinto = ({
     metadata: mapObjIndexed(head, groupBy(prop("kieli"), metadata)),
     versio,
     voimassaAlkuPvm,
-    koulutustyyppiKoodiarvo,
-    koulutusalaKoodiarvo
+    koulutustyyppikoodiarvo,
+    koulutusalakoodiarvo
   };
 };
 
@@ -80,20 +82,23 @@ export const initializeMaarays = (tutkinto, maarays) => {
 export const initializeTutkintokielet = (tutkinto, maaraykset = []) => {
   const tutkintokielet = flatten(
     map(maarays => {
-      return map(alimaarays => {
-        if (alimaarays.koodisto === "kieli") {
-          return {
-            ...alimaarays,
+      return map(_alimaarays => {
+        let alimaarays = null;
+        if (_alimaarays.koodisto === "kieli") {
+          alimaarays = {
+            ..._alimaarays,
             koodi: {
-              ...alimaarays.koodi,
+              ..._alimaarays.koodi,
+              koodiarvo: _alimaarays.koodi.koodiArvo,
               metadata: mapObjIndexed(
                 head,
-                groupBy(prop("kieli"), alimaarays.koodi.metadata)
+                groupBy(prop("kieli"), _alimaarays.koodi.metadata)
               )
             }
           };
+          alimaarays = dissocPath(["koodi", "koodiArvo"], alimaarays);
         }
-        return null;
+        return alimaarays;
       }, maarays.aliMaaraykset || []).filter(Boolean);
     }, maaraykset).filter(Boolean)
   );
