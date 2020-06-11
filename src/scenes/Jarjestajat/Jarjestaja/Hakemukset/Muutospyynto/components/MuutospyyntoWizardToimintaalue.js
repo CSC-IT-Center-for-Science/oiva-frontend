@@ -130,22 +130,27 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   );
 
   const whenChanges = useCallback(
-    changesByMaakunta => {
+    changes => {
       const withoutCategoryFilterChangeObj = R.filter(
         R.compose(R.not, R.propEq("anchor", "categoryFilter")),
         changeObjects.toimintaalue
       );
 
-      const amountOfChanges = R.flatten(R.values(changesByMaakunta)).length;
+      const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
+        .length;
+      const amountOfQuickFilterChanges = R.flatten(
+        R.values(changes.quickFilterChanges)
+      ).length;
 
       const changesToSet = R.concat(
         withoutCategoryFilterChangeObj,
-        amountOfChanges
+        amountOfChanges || amountOfQuickFilterChanges
           ? [
               {
                 anchor: "categoryFilter",
                 properties: {
-                  changeObjects: changesByMaakunta
+                  changesByProvince: changes.changesByProvince,
+                  quickFilterChanges: changes.quickFilterChanges
                 }
               }
             ]
@@ -292,12 +297,20 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     }, props.maakunnat);
   }, [props.maakunnat]);
 
-  const categoryFilterChanges = useMemo(() => {
+  const provinceChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", "categoryFilter"),
       changeObjects.toimintaalue
     );
-    return changeObj ? changeObj.properties.changeObjects : {};
+    return changeObj ? changeObj.properties.changesByProvince : {};
+  }, [changeObjects.toimintaalue]);
+
+  const quickFilterChanges = useMemo(() => {
+    const changeObj = R.find(
+      R.propEq("anchor", "categoryFilter"),
+      changeObjects.toimintaalue
+    );
+    return changeObj ? changeObj.properties.quickFilterChanges : {};
   }, [changeObjects.toimintaalue]);
 
   const changesMessages = {
@@ -351,7 +364,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           onChanges: whenChanges,
           toggleEditView,
           options,
-          changeObjectsByProvince: categoryFilterChanges
+          changeObjectsByProvince: provinceChanges,
+          quickFilterChanges
         }}
         onChangesUpdate={handleChanges}
         path={["toimintaalue"]}

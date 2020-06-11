@@ -54,6 +54,7 @@ import localforage from "localforage";
 import { initializeKoulutusala } from "../../helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "../../helpers/koulutustyypit";
 import { initializeKieli } from "../../helpers/kielet";
+import { storeLupa } from "../../helpers/lupa";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -248,6 +249,12 @@ const UusiAsiaDialogContainer = React.memo(() => {
     };
   }, [lupaActions, ytunnus]);
 
+  useEffect(() => {
+    if (lupa.fetchedAt) {
+      storeLupa(lupa);
+    }
+  }, [lupa]);
+
   const lupaKohteet = useMemo(() => {
     return lupa.fetchedAt && lupa.data
       ? parseLupa(
@@ -340,27 +347,11 @@ const UusiAsiaDialogContainer = React.memo(() => {
 
       changesBySection.topthree = muutospyynto.data.meta.topthree || [];
 
-      /**
-       * We need to generate a change object that includes all the changes of
-       * CategoryFilter component that has been used on toiminta-alue section.
-       */
-      const toimintaAlueenMuutokset = {};
-      forEach(changeObj => {
-        const provinceId = getAnchorPart(changeObj.anchor, 1);
-        toimintaAlueenMuutokset[provinceId] =
-          toimintaAlueenMuutokset[provinceId] || [];
-        toimintaAlueenMuutokset[provinceId].push(changeObj);
-      }, changesBySection.areaofaction || []);
-      if (!isEmpty(toimintaAlueenMuutokset)) {
-        changesBySection.toimintaalue = [
-          {
-            anchor: "categoryFilter",
-            properties: {
-              changeObjects: toimintaAlueenMuutokset
-            }
-          }
-        ];
-      }
+      changesBySection.toimintaalue = [
+        Object.assign({}, changesBySection.categoryFilter[0])
+      ];
+
+      delete changesBySection.categoryFilter;
 
       /**
        * At this point the backend data is handled and change objects have been formed.

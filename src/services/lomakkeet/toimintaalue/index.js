@@ -4,6 +4,7 @@ import { __ } from "i18n-for-browser";
 function getModificationForm(
   isEditViewActive,
   changeObjectsByProvince = {},
+  quickFilterChanges = [],
   options = [],
   onChanges,
   kunnat,
@@ -25,12 +26,11 @@ function getModificationForm(
             isEditViewActive,
             localizations,
             municipalities: kunnat,
-            onChanges: payload => {
-              onChanges(payload);
-            },
+            onChanges,
             toggleEditView,
             provinces: options,
             provincesWithoutMunicipalities: maakunnat,
+            quickFilterChanges,
             showCategoryTitles: false
           }
         }
@@ -45,6 +45,7 @@ export default function getToimintaaluelomake(action, data) {
       return getModificationForm(
         data.isEditViewActive,
         data.changeObjectsByProvince,
+        data.quickFilterChanges,
         data.options,
         data.onChanges,
         data.kunnat,
