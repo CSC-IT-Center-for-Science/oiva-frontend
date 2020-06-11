@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import { useIntl } from "react-intl";
 import wizardMessages from "../../../../../../i18n/definitions/wizard";
-import { HAKEMUS_VIESTI } from "../modules/uusiHakemusFormConstants";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import { ROLE_NIMENKIRJOITTAJA } from "../../../../../../modules/constants";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";

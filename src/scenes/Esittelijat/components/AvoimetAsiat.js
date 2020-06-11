@@ -9,7 +9,6 @@ import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import * as R from "ramda";
 import common from "../../../i18n/definitions/common";
 import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
-import {HAKEMUS_VIESTI} from "../../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/uusiHakemusFormConstants";
 
 const AvoimetAsiat = () => {
   const history = useHistory();
@@ -50,7 +49,7 @@ const AvoimetAsiat = () => {
     setPaatettyConfirmationDialogVisible(false);
     setRowActionTargetId(null);
     history.push("?force=" + timestamp);
-  },[rowActionTargetId]);
+  },[rowActionTargetId, history]);
 
   const tableStructure = useMemo(() => {
     return muutospyynnot.avoimet && muutospyynnot.avoimet.fetchedAt

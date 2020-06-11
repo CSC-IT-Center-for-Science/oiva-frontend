@@ -5,7 +5,7 @@ import AvoimetAsiatList from './AvoimetAsiatList'
 import { InnerContentContainer, InnerContentWrapper  } from "../../../modules/elements"
 import { COLORS } from "../../../modules/styles"
 import { ContentContainer, FullWidthWrapper } from '../../../modules/elements'
-import { ROLE_ESITTELIJA, ESITTELIJA } from '../../../modules/constants'
+import { ROLE_ESITTELIJA } from '../../../modules/constants'
 import { ASIAT } from "../modules/constants"
 
 

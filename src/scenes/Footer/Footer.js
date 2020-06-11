@@ -31,7 +31,7 @@ const Footer = () => {
     <div className="flex justify-center lg:justify-start bg-white border-green-600 border-t-2 pt-12 pl-12 pr-12 pb-16">
       <div className="flex flex-col items-baseline lg:flex-1 lg:flex-row">
         <div className="flex flex-1 flex-col justify-center text-center lg:text-left lg:pr-8">
-          <img src={logo} className="lg:w-fit-content" />
+          <img alt="logo" src={logo} className="lg:w-fit-content" />
           {/* Visible on mobile screen size */}
           <div className="sm:hidden">
             <p>PL 29, 00023 {intl.formatMessage(common.valtioneuvosto)} | </p>

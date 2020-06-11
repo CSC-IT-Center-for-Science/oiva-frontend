@@ -165,7 +165,8 @@ const Asiakirjat = React.memo(() => {
     intl,
     muutospyynnonLiitteet.fetchedAt,
     muutospyynnonLiitteet.data,
-    attachmentRow
+    attachmentRow,
+    muutospyyntoActions
   ]);
 
   const muutospyyntoRowItem = useMemo(() => {
@@ -181,7 +182,7 @@ const Asiakirjat = React.memo(() => {
       items: [intl.formatMessage(common.application), ...baseRow, ""],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
-  }, [baseRow, intl, muutospyynto.data, uuid]);
+  }, [baseRow, intl, muutospyynto.data, uuid, muutospyyntoActions]);
 
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
