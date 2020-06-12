@@ -26,7 +26,7 @@
     "localforage": "^1.7.3",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
-    "okm-frontend-components": "github:CSCfi/okm-frontend-components#v0.5.5",
+    "okm-frontend-components": "github:CSCfi/okm-frontend-components#v0.5.7",
     "postcss-import": "^12.0.1",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
