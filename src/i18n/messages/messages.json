@@ -81,7 +81,7 @@
   },
   {
     "id": "common.noSave",
-    "defaultMessage": "Älä tallenna",
+    "defaultMessage": "Poistu tallentamatta",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

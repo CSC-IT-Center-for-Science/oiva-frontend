@@ -55,7 +55,7 @@ export default defineMessages({
   },
   noSave: {
     id: "common.noSave",
-    defaultMessage: "Älä tallenna"
+    defaultMessage: "Poistu tallentamatta"
   },
   today: {
     id: "common.today",
