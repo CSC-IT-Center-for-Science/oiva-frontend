@@ -9,7 +9,8 @@ import {
   not,
   pathEq,
   assocPath,
-  append
+  append,
+  path
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 
@@ -25,7 +26,11 @@ export async function defineBackendChangeObjects(
   kohde,
   maaraystyypit
 ) {
-  const { quickFilterChanges, changesByProvince, perustelut } = changeObjects;
+  const {
+    quickFilterChanges = [],
+    changesByProvince,
+    perustelut
+  } = changeObjects;
 
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);
 
@@ -42,50 +47,51 @@ export async function defineBackendChangeObjects(
    * vastaavat muutosobjektit muodostaen niistä backend-muotoiset muutos-
    * objektit.
    */
-  let quickFilterBEchangeObjects = map(changeObj => {
-    /**
-     * Jos kaikki maakunnat ja kunnat on valittuna, on backendille lähetettävä
-     * muutosobjekti nuts1-koodiston arvolla FI1. Mikäli yksikään maakunnista
-     * ei ole valittuna eli toiminta-aluetta ei ole määritelty, on backendille
-     * lähetettävä muutosobjekti nuts1-koodiston arvolla FI2.
-     */
-    const { isChecked } = changeObj.properties;
-    const { koodiarvo } = changeObj.properties.metadata;
-
-    let muutos = {
-      tila: isChecked ? "LISAYS" : "POISTO",
-      meta: {
-        changeObjects: perustelut,
-        perusteluteksti: [
-          {
-            value:
-              perustelut && perustelut.length > 0
-                ? perustelut[0].properties.value
-                : ""
-          }
-        ]
-      },
-      kohde,
-      maaraystyyppi,
-      koodisto: "nuts1",
-      koodiarvo
-    };
-
-    if (!isChecked) {
+  let quickFilterBEchangeObjects =
+    map(changeObj => {
       /**
-       * Mikäli kyseessä on poisto, lisätään muutosobjektiin määräyksen uuid.
+       * Jos kaikki maakunnat ja kunnat on valittuna, on backendille lähetettävä
+       * muutosobjekti nuts1-koodiston arvolla FI1. Mikäli yksikään maakunnista
+       * ei ole valittuna eli toiminta-aluetta ei ole määritelty, on backendille
+       * lähetettävä muutosobjekti nuts1-koodiston arvolla FI2.
        */
-      const maarays = find(propEq("koodiarvo", koodiarvo), maaraykset);
-      // Varmistetaan vielä, että määräys on olemassa.
-      if (maarays) {
-        muutos.maaraysUuid = maarays.uuid;
-      } else {
-        console.warn("Unable to find maaraysUuid for ", koodiarvo);
-      }
-    }
+      const { isChecked } = changeObj.properties;
+      const { koodiarvo } = changeObj.properties.metadata;
 
-    return muutos;
-  }, quickFilterChanges);
+      let muutos = {
+        tila: isChecked ? "LISAYS" : "POISTO",
+        meta: {
+          changeObjects: perustelut,
+          perusteluteksti: [
+            {
+              value:
+                perustelut && perustelut.length > 0
+                  ? perustelut[0].properties.value
+                  : ""
+            }
+          ]
+        },
+        kohde,
+        maaraystyyppi,
+        koodisto: "nuts1",
+        koodiarvo
+      };
+
+      if (!isChecked) {
+        /**
+         * Mikäli kyseessä on poisto, lisätään muutosobjektiin määräyksen uuid.
+         */
+        const maarays = find(propEq("koodiarvo", koodiarvo), maaraykset);
+        // Varmistetaan vielä, että määräys on olemassa.
+        if (maarays) {
+          muutos.maaraysUuid = maarays.uuid;
+        } else {
+          console.warn("Unable to find maaraysUuid for ", koodiarvo);
+        }
+      }
+
+      return muutos;
+    }, quickFilterChanges) || [];
 
   /**
    * YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN LÄPIKÄYNTI
@@ -182,25 +188,30 @@ export async function defineBackendChangeObjects(
 
   let allBEobjects = flatten([
     [quickFilterBEchangeObjects],
-    [provinceBEchangeObjects.lisaykset],
+    [provinceBEchangeObjects.lisaykset] || [],
     [provinceBEchangeObjects.poistot]
   ]).filter(Boolean);
 
-  // Lisätään vielä frontin muutokset ensimmäiselle backend-muutosobjektille.
-  allBEobjects = assocPath(
-    [0, "meta", "changeObjects"],
-    append(
-      {
-        anchor: "categoryFilter",
-        properties: {
-          quickFilterChanges,
-          changesByProvince
-        }
-      },
-      allBEobjects[0].meta.changeObjects
-    ),
-    allBEobjects
-  );
+  /**
+   * Lisätään vielä frontin muutokset ensimmäiselle backend-muutosobjektille,
+   * jos muutosobjekteja on olemassa vähintään yksi kappale.
+   **/
+  if (allBEobjects.length > 0) {
+    allBEobjects = assocPath(
+      [0, "meta", "changeObjects"],
+      append(
+        {
+          anchor: "categoryFilter",
+          properties: {
+            quickFilterChanges,
+            changesByProvince
+          }
+        },
+        path([0, "meta", "changeObjects"], allBEobjects)
+      ),
+      allBEobjects
+    );
+  }
 
   return allBEobjects;
 }

@@ -347,9 +347,14 @@ const UusiAsiaDialogContainer = React.memo(() => {
 
       changesBySection.topthree = muutospyynto.data.meta.topthree || [];
 
-      changesBySection.toimintaalue = [
-        Object.assign({}, changesBySection.categoryFilter[0])
-      ];
+      if (
+        changesBySection.categoryFilter &&
+        changesBySection.categoryFilter.length > 0
+      ) {
+        changesBySection.toimintaalue = [
+          Object.assign({}, changesBySection.categoryFilter[0])
+        ];
+      }
 
       delete changesBySection.categoryFilter;
 
