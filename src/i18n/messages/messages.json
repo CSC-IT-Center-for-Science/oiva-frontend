@@ -1288,15 +1288,5 @@
     "id": "wizard.quickFilter",
     "defaultMessage": "Pikavalinnat",
     "filepath": "src/i18n/definitions/wizard.js"
-  },
-  {
-    "id": "app.title",
-    "defaultMessage": "Opetus- ja kulttuuriministeriö",
-    "filepath": "src/scenes/Footer/Footer.js"
-  },
-  {
-    "id": "app.valtioneuvosto",
-    "defaultMessage": "Valtioneuvosto",
-    "filepath": "src/scenes/Footer/Footer.js"
   }
 ]
