@@ -12,12 +12,10 @@ import {
   prop,
   propEq,
   split,
-  toUpper,
   groupBy
 } from "ramda";
 import { MUUT_KEYS } from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/constants";
 import Loading from "../../modules/Loading";
-import { useElykeskukset } from "../../stores/elykeskukset";
 import { useKohteet } from "../../stores/kohteet";
 import { useKoulutukset } from "../../stores/koulutukset";
 import { useKoulutusalat } from "../../stores/koulutusalat";
@@ -29,14 +27,11 @@ import { useMuut } from "../../stores/muut";
 import { useKunnat } from "../../stores/kunnat";
 import { useMaakunnat } from "../../stores/maakunnat";
 import { useMaakuntakunnat } from "../../stores/maakuntakunnat";
-import { useVankilat } from "../../stores/vankilat";
 import { useTutkinnot } from "../../stores/tutkinnot";
 import { useOmovt } from "../../stores/omovt";
 import { useMuutospyynto } from "../../stores/muutospyynto";
-import { useOivaperustelut } from "../../stores/oivaperustelut";
 import { useChangeObjects } from "../../stores/changeObjects";
 import { getAnchorPart, findObjectWithKey } from "../../utils/common";
-import { getMuutosperusteluList } from "../../utils/muutosperusteluUtil";
 import { setAttachmentUuids } from "../../utils/muutospyyntoUtil";
 import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";
@@ -55,6 +50,7 @@ import { initializeKoulutusala } from "../../helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "../../helpers/koulutustyypit";
 import { initializeKieli } from "../../helpers/kielet";
 import { storeLupa } from "../../helpers/lupa";
+import { initializeMaakunta } from "../../helpers/maakunnat";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -67,7 +63,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
   const intl = useIntl();
 
   const [, coActions] = useChangeObjects();
-  const [elykeskukset, elykeskuksetActions] = useElykeskukset();
   const [kohteet, kohteetActions] = useKohteet();
   const [koulutukset, koulutuksetActions] = useKoulutukset();
   const [koulutusalat, koulutusalatActions] = useKoulutusalat();
@@ -79,11 +74,9 @@ const UusiAsiaDialogContainer = React.memo(() => {
   const [kunnat, kunnatActions] = useKunnat();
   const [maakunnat, maakunnatActions] = useMaakunnat();
   const [maakuntakunnat, maakuntakunnatActions] = useMaakuntakunnat();
-  const [vankilat, vankilatActions] = useVankilat();
   const [tutkinnot, tutkinnotActions] = useTutkinnot();
   const [omovt, omovtActions] = useOmovt();
   const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
-  const [oivaperustelut, oivaperustelutActions] = useOivaperustelut();
   const [lupa, lupaActions] = useLupa();
   const [organisation, organisationActions] = useOrganisation();
 
@@ -93,7 +86,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
   // Let's fetch data for the form
   useEffect(() => {
     const abortControllers = flatten([
-      elykeskuksetActions.load(),
       kieletActions.load(),
       kohteetActions.load(),
       koulutusalatActions.load(),
@@ -105,10 +97,8 @@ const UusiAsiaDialogContainer = React.memo(() => {
       kunnatActions.load(),
       maakunnatActions.load(),
       maakuntakunnatActions.load(),
-      vankilatActions.load(),
       tutkinnotActions.load(),
       omovtActions.load(),
-      oivaperustelutActions.load(),
       koulutuksetActions.load(),
       organisationActions.load(ytunnus)
     ]);
@@ -125,7 +115,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
       );
     };
   }, [
-    elykeskuksetActions,
     kieletActions,
     kohteetActions,
     koulutuksetActions,
@@ -137,11 +126,9 @@ const UusiAsiaDialogContainer = React.memo(() => {
     kunnatActions,
     maakunnatActions,
     maakuntakunnatActions,
-    vankilatActions,
     tutkinnotActions,
     omovtActions,
     muutospyyntoActions,
-    oivaperustelutActions,
     organisationActions,
     uuid,
     ytunnus
@@ -235,6 +222,23 @@ const UusiAsiaDialogContainer = React.memo(() => {
       initializeKielet(kielet.data);
     }
   }, [kielet.data]);
+
+  /**
+   * Maakunnat ja niiden kunnat (maakuntakunnat)
+   */
+  useEffect(() => {
+    async function initializeMaakunnat(maakuntadata) {
+      return await localforage.setItem(
+        "maakunnat",
+        map(maakunta => {
+          return initializeMaakunta(maakunta);
+        }, maakuntadata)
+      );
+    }
+    if (maakuntakunnat.data) {
+      initializeMaakunnat(maakuntakunnat.data);
+    }
+  }, [maakuntakunnat.data]);
 
   // Let's fetch LUPA
   useEffect(() => {
@@ -375,12 +379,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
     updatedC
   ]);
 
-  const muutosperusteluList = useMemo(() => {
-    return oivaperustelut.fetchedAt
-      ? getMuutosperusteluList(oivaperustelut.data, toUpper(intl.locale))
-      : [];
-  }, [oivaperustelut.fetchedAt, oivaperustelut.data, intl.locale]);
-
   const onNewDocSave = useCallback(
     muutospyynto => {
       /**
@@ -393,7 +391,6 @@ const UusiAsiaDialogContainer = React.memo(() => {
 
   if (
     !isEmpty(lupaKohteet) &&
-    elykeskukset.fetchedAt &&
     kielet.fetchedAt &&
     kohteet.fetchedAt &&
     kohteet.data &&
@@ -419,15 +416,12 @@ const UusiAsiaDialogContainer = React.memo(() => {
     kunnat.fetchedAt &&
     maakunnat.fetchedAt &&
     maakuntakunnat.fetchedAt &&
-    vankilat.fetchedAt &&
     tutkinnot.fetchedAt &&
     omovt.fetchedAt &&
-    oivaperustelut.fetchedAt &&
     (!uuid || (muutospyynto.fetchedAt && isHandled))
   ) {
     return (
       <UusiAsiaDialog
-        elykeskukset={elykeskukset.data}
         history={history}
         kohteet={kohteet.data}
         koulutustyypit={koulutustyypit.data}
@@ -438,9 +432,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
         maakuntakunnat={maakuntakunnat.data}
         maaraystyypit={maaraystyypit.data}
         muut={muut.data}
-        muutosperusteluList={muutosperusteluList}
         muutospyynto={muutospyynto.data}
-        vankilat={vankilat.data}
         onNewDocSave={onNewDocSave}
         organisation={organisation[ytunnus].data}
       />
@@ -467,8 +459,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
             !!path(
               ["muut", MUUT_KEYS.KULJETTAJAKOULUTUS, "fetchedAt"],
               koulutukset
-            ) && !!lupaKohteet,
-            !!elykeskukset.fetchedAt,
+            ),
             !!kielet.fetchedAt,
             !!kohteet.fetchedAt,
             !!koulutusalat.fetchedAt,
@@ -480,13 +471,11 @@ const UusiAsiaDialogContainer = React.memo(() => {
             !!maakunnat.fetchedAt,
             !!maakuntakunnat.fetchedAt,
             !!organisation.fetchedAt,
-            !!vankilat.fetchedAt,
             !!tutkinnot.fetchedAt,
             !!omovt.fetchedAt,
-            !!oivaperustelut.fetchedAt,
             !!(!uuid || muutospyynto.fetchedAt)
           ].filter(Boolean).length /
-            23) *
+            (!uuid ? 18 : 19)) *
           100
         }
       />

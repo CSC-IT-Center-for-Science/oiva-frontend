@@ -13,13 +13,13 @@ import {
   path
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
+import { getMaakunnat } from "../maakunnat";
 
 /**
  * Palauttaa taulukollisen backend-muotoisia muutosobjekteja.
- * @param {*} changeObjects
- * @param {*} kohde
- * @param {*} maaraystyypit
- * @param {*} locale
+ * @param {object} changeObjects
+ * @param {object} kohde
+ * @param {array} maaraystyypit
  */
 export async function defineBackendChangeObjects(
   changeObjects = {},
@@ -39,6 +39,7 @@ export async function defineBackendChangeObjects(
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
   const maaraykset = await getMaarayksetByTunniste("toimintaalue");
+  const maakunnat = await getMaakunnat("maakunnat");
 
   /**
    * PIKAVALINTOJEN LÄPIKÄYNTI
@@ -118,9 +119,12 @@ export async function defineBackendChangeObjects(
     );
     const isGoingToBeRemoved =
       (changeObj &&
-        ((isMaakunta && changeObj.properties.isIndeterminate) ||
+        ((isMaakunta &&
+          (changeObj.properties.isIndeterminate ||
+            !changeObj.properties.isChecked)) ||
           (!isMaakunta && !changeObj.properties.isChecked))) ||
       (muutosFI1 && muutosFI1.tila === "LISAYS");
+
     if (isGoingToBeRemoved) {
       // Alue täytyy poistaa. Luodaan backend-muotoinen muutosobjekti.
       return {
@@ -159,34 +163,98 @@ export async function defineBackendChangeObjects(
    * kuntalisäykset ole tarpeellisia.
    **/
   if (!muutosFI1 || (muutosFI1 && muutosFI1.tila !== "LISAYS")) {
-    provinceBEchangeObjects.lisaykset = map(changeObj => {
-      const maarays = find(
-        propEq("koodiarvo", changeObj.properties.metadata.koodiarvo),
-        maaraykset
+    /**
+     * Etsitään ne maakunnat, joihin on kohdistunut muutos.
+     */
+    const provinces = filter(maakunta => {
+      return !!find(
+        pathEq(["properties", "metadata", "koodiarvo"], maakunta.koodiarvo),
+        provinceChangeObjects
       );
-      if (changeObj.properties.isChecked && !maarays) {
-        // Alue täytyy lisätä luvan piiriin. Luodaan tarvittava muutosobjekti.
-        const { koodiarvo } = changeObj.properties.metadata;
-        return {
-          tila: "LISAYS",
-          meta: {
-            changeObjects: perustelut,
-            perusteluteksti: [
-              {
-                value:
-                  perustelut && perustelut.length > 0
-                    ? perustelut[0].properties.value
-                    : ""
-              }
-            ]
-          },
-          kohde,
-          koodisto: koodiarvo.length === 2 ? "maakunta" : "kunta",
-          koodiarvo,
-          maaraystyyppi
-        };
-      }
-    }, provinceChangeObjects).filter(Boolean);
+    }, maakunnat);
+
+    /**
+     * Käydään muutoksia sisältävät maakunnat ja niiden maakunnat läpi
+     * takroituksena löytää kunnat, jotka on lisättävä lupaan.
+     */
+    provinceBEchangeObjects.lisaykset = flatten(
+      map(maakunta => {
+        const maakuntaChangeObj = find(
+          pathEq(["properties", "metadata", "koodiarvo"], maakunta.koodiarvo),
+          provinceChangeObjects
+        );
+        let muutosobjektit = map(kunta => {
+          const kuntaChangeObj = find(
+            pathEq(["properties", "metadata", "koodiarvo"], kunta.koodiarvo),
+            provinceChangeObjects
+          );
+          const kuntaMaarays = find(
+            maarays =>
+              maarays.koodisto === "kunta" &&
+              maarays.koodiarvo === kunta.koodiarvo,
+            maaraykset
+          );
+          if (
+            (!kuntaChangeObj || kuntaChangeObj.properties.isChecked) &&
+            !kuntaMaarays
+          ) {
+            return {
+              tila: "LISAYS",
+              meta: {
+                changeObjects: perustelut,
+                perusteluteksti: [
+                  {
+                    value:
+                      perustelut && perustelut.length > 0
+                        ? perustelut[0].properties.value
+                        : ""
+                  }
+                ]
+              },
+              kohde,
+              koodisto: "kunta",
+              koodiarvo: kunta.koodiarvo,
+              maaraystyyppi
+            };
+          }
+          return null;
+        }, maakunta.kunnat).filter(Boolean);
+
+        /**
+         * Ei unohdeta maakuntamuutosta. Siitäkin täytyy generoida backend-
+         * tyyppinen muutosobjekti, jos maakunta on aktiivinen.
+         */
+        if (
+          maakuntaChangeObj &&
+          maakuntaChangeObj.properties.isChecked &&
+          !maakuntaChangeObj.properties.isIndeterminate
+        ) {
+          muutosobjektit = append(
+            {
+              tila: "LISAYS",
+              meta: {
+                changeObjects: perustelut,
+                perusteluteksti: [
+                  {
+                    value:
+                      perustelut && perustelut.length > 0
+                        ? perustelut[0].properties.value
+                        : ""
+                  }
+                ]
+              },
+              kohde,
+              koodisto: "maakunta",
+              koodiarvo: maakunta.koodiarvo,
+              maaraystyyppi
+            },
+            muutosobjektit
+          );
+        }
+
+        return muutosobjektit;
+      }, provinces)
+    ).filter(Boolean);
   }
 
   let allBEobjects = flatten([
