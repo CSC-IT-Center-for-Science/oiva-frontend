@@ -111,12 +111,15 @@ export async function defineBackendChangeObjects(
   // YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN POISTAMINEN
   provinceBEchangeObjects.poistot = map(maarays => {
     // Selvitetään, ollaanko alue aikeissa poistaa luvan piiristä.
+    const isMaakunta = maarays.koodiarvo.length === 2;
     const changeObj = find(
       pathEq(["properties", "metadata", "koodiarvo"], maarays.koodiarvo),
       provinceChangeObjects
     );
     const isGoingToBeRemoved =
-      (changeObj && !changeObj.properties.isChecked) ||
+      (changeObj &&
+        ((isMaakunta && changeObj.properties.isIndeterminate) ||
+          (!isMaakunta && !changeObj.properties.isChecked))) ||
       (muutosFI1 && muutosFI1.tila === "LISAYS");
     if (isGoingToBeRemoved) {
       // Alue täytyy poistaa. Luodaan backend-muotoinen muutosobjekti.
