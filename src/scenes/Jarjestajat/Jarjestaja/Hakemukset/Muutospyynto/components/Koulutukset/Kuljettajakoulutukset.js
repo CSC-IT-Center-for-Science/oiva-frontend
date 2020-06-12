@@ -25,7 +25,8 @@ const Kuljettajakoulutukset = ({
       koulutukset.muut[koodisto],
       toUpper(intl.locale),
       maaraykset,
-      "kuljettajakoulutus"
+      "kuljettajakoulutus",
+      true
     );
   }, [intl.locale, koulutukset, maaraykset]);
 

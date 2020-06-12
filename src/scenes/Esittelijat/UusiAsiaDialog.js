@@ -342,7 +342,7 @@ const UusiAsiaDialog = React.memo(
           <DialogContentWithStyles>
             <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
               <div className="py-4">
-                <h1>{organisation.nimi[intl.locale || "fi"]}</h1>
+                <h1>{organisation.nimi[intl.locale] || R.last(R.values(organisation.nimi))}</h1>
                 <p>
                   {organisation.kayntiosoite.osoite},{" "}
                   {organisation.postiosoite.osoite}{" "}

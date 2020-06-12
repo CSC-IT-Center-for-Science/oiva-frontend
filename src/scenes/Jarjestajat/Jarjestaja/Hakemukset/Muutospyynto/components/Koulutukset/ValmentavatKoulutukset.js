@@ -10,7 +10,7 @@ import { toUpper, values } from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
 const ValmentavatKoulutukset = React.memo(
-  ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
+  ({ koulutukset, maaraykset, onChangesRemove, onChangesUpdate }) => {
     const [changeObjects] = useChangeObjects();
     const intl = useIntl();
     const sectionId = "koulutukset_valmentavatKoulutukset";
@@ -18,9 +18,11 @@ const ValmentavatKoulutukset = React.memo(
     const koulutusdata = useMemo(() => {
       return getDataForKoulutusList(
         values(koulutukset.poikkeukset),
-        toUpper(intl.locale)
+        toUpper(intl.locale),
+        maaraykset,
+        "koulutus"
       );
-    }, [intl.locale, koulutukset]);
+    }, [intl.locale, koulutukset, maaraykset]);
 
     const changesMessages = {
       undo: intl.formatMessage(common.undo),

@@ -56,12 +56,12 @@ const AvoimetAsiat = () => {
     return muutospyynnot.avoimet && muutospyynnot.avoimet.fetchedAt
       ? generateAvoimetAsiatTableStructure(
           muutospyynnot.avoimet.data,
-          intl.formatMessage,
+          intl,
           history,
           onPaatettyActionClicked
         )
       : [];
-  }, [intl.formatMessage, muutospyynnot.avoimet, history]);
+  }, [intl, muutospyynnot.avoimet, history]);
 
   if (
     muutospyynnot.avoimet &&

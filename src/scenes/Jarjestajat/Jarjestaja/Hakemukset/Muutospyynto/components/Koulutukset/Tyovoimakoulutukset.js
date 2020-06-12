@@ -25,7 +25,8 @@ const Tyovoimakoulutukset = ({
       koulutukset.muut[koodisto],
       toUpper(intl.locale),
       maaraykset,
-      "oivatyovoimakoulutus"
+      "oivatyovoimakoulutus",
+      true
     );
   }, [intl.locale, koulutukset, maaraykset]);
 

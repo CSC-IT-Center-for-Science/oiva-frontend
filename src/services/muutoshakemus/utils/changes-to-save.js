@@ -275,7 +275,8 @@ export function getChangesToSave(
       const anchorParts = R.split(".", changeObj.anchor);
       const koodiarvo = changeObj.properties.metadata.koodiarvo;
       let koodisto = { koodistoUri: "koulutussektori" };
-      if (!R.equals("vahimmaisopiskelijavuodet", R.nth(1, anchorParts))) {
+      const isVahimmaismaara = R.equals("vahimmaisopiskelijavuodet", R.nth(1, anchorParts));
+      if (!isVahimmaismaara) {
         koodisto = (R.find(R.propEq("koodiArvo", koodiarvo), muut) || {})
           .koodisto;
       }
@@ -322,17 +323,32 @@ export function getChangesToSave(
         perustelutForBackend,
         perusteluteksti ? { perusteluteksti } : null
       );
-      return {
+
+      let muutokset = [{
         arvo: changeObj.properties.applyForValue,
         kategoria: R.head(anchorParts),
         koodiarvo,
         koodisto: koodisto.koodistoUri,
         kohde,
-        maaraystyyppi: R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit),
+        maaraystyyppi: isVahimmaismaara
+            ? R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit)
+            : R.find(R.propEq("tunniste", "RAJOITE"), maaraystyypit),
         meta,
-        tila: "MUUTOS",
-        type: "change"
-      };
+        tila: "LISAYS"
+      }];
+
+      // Add removal change if old maarays exists
+      const maaraysUuid = R.path(["properties", "metadata", "maaraysUuid"], changeObj);
+      if (maaraysUuid) {
+        muutokset = R.append({
+          ...muutokset[0],
+          meta: {},
+          maaraysUuid: maaraysUuid,
+          tila: "POISTO"
+        })(muutokset);
+      }
+
+      return muutokset;
     }, unhandledChangeObjects).filter(Boolean);
   }
 

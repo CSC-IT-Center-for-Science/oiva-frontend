@@ -1,5 +1,6 @@
 import "../i18n-config";
 import { __ } from "i18n-for-browser";
+import { path } from "ramda";
 
 function getModificationForm(
   applyFor,
@@ -31,7 +32,8 @@ function getModificationForm(
           name: "Difference",
           properties: {
             forChangeObject: {
-              koodiarvo: koodiarvot.vahimmaisopiskelijavuodet
+              koodiarvo: path(["vahimmaisopiskelijavuodet", "koodiarvo"], koodiarvot),
+              maaraysUuid: path(["vahimmaisopiskelijavuodet", "maaraysUuid"], koodiarvot)
             },
             initialValue: initialValue,
             applyForValue: applyFor,
@@ -51,7 +53,8 @@ function getModificationForm(
               name: "Difference",
               properties: {
                 forChangeObject: {
-                  koodiarvo: koodiarvot.vaativatuki
+                  koodiarvo: path(["vaativatuki", "koodiarvo"], koodiarvot),
+                  maaraysUuid: path(["vaativatuki", "maaraysUuid"], koodiarvot)
                 },
                 isRequired: isVaativaTukiValueRequired,
                 initialValue: initialValueVaativa,
@@ -73,7 +76,8 @@ function getModificationForm(
               name: "Difference",
               properties: {
                 forChangeObject: {
-                  koodiarvo: koodiarvot.sisaoppilaitos
+                  koodiarvo: path(["sisaoppilaitos", "koodiarvo"], koodiarvot),
+                  maaraysUuid: path(["sisaoppilaitos", "maaraysUuid"], koodiarvot)
                 },
                 isRequired: isSisaoppilaitosValueRequired,
                 initialValue: initialValueSisaoppilaitos,

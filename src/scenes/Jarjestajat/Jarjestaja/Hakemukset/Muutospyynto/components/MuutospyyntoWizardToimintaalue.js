@@ -364,7 +364,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           onChanges: whenChanges,
           toggleEditView,
           options,
-          changeObjectsByProvince: provinceChanges,
+          changeObjectsByProvince: Objects.assign({}, provinceChanges),
           quickFilterChanges
         }}
         onChangesUpdate={handleChanges}

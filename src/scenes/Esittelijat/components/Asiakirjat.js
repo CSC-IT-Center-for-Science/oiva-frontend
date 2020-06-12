@@ -100,8 +100,8 @@ const Asiakirjat = React.memo(() => {
     [muutospyynto.data]
   );
 
-  const removeAsiakirja = () => {
-    muutospyynnotActions.remove(documentIdForAction);
+  const removeAsiakirja = async () => {
+    await muutospyynnotActions.remove(documentIdForAction);
     history.push(`/asiat?force=${new Date().getTime()}`);
   };
 

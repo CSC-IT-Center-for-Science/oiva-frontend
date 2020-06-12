@@ -7,23 +7,15 @@ import Lomake from "../../../../../../components/02-organisms/Lomake";
 import { useChangeObjects } from "../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 
-const getArvoFromKohdeArray = (tyyppi, kohde) => {
-  return parseInt(
-    (
-      R.find(obj => {
-        return obj.tyyppi === tyyppi;
-      }, kohde || []) || {}
-    ).arvo || "0",
-    10
-  );
-};
-
 const filterOpiskelijavuodet = (opiskelijavuodet, categoryKey) => {
   const filteredChanges = R.filter(
     R.compose(R.not, R.includes(categoryKey), R.prop("anchor"))
   )(opiskelijavuodet);
   return filteredChanges;
 };
+
+// Mikäli jokin näistä koodeista on valittuna osiossa 5, näytetään vaativaa tukea koskevat kentät osiossa 4.
+const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
 
 const defaultConstraintFlags = {
   isVaativaTukiVisible: true,
@@ -35,6 +27,8 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
   const [changeObjects] = useChangeObjects();
   const { onChangesRemove, onChangesUpdate } = props;
   const { opiskelijavuodet, rajoitukset } = props.lupaKohteet[4];
+  const vaativatukiRajoitus = R.find(R.propSatisfies(x => R.includes(x, vaativatCodes), "koodiarvo"), rajoitukset);
+  const sisaoppilaitosRajoitus = R.find(R.propSatisfies(x => R.not(R.includes(x, vaativatCodes)), "koodiarvo"), rajoitukset);
 
   const [constraintFlags, setConstraintFlags] = useState(
     defaultConstraintFlags
@@ -50,51 +44,40 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
   const [koodiarvot, setKoodiarvot] = useState({});
 
   useEffect(() => {
-    const vuodetValue = getArvoFromKohdeArray(
-      "Ammatillinen koulutus",
-      opiskelijavuodet
-    );
+    const vuodetValue = R.path([0, "arvo"], opiskelijavuodet) || 0;
     setInitialValue(vuodetValue);
     setApplyFor(vuodetValue);
   }, [opiskelijavuodet]);
 
   useEffect(() => {
-    const sisaoppilaitosValue = getArvoFromKohdeArray(
-      "Sisäoppilaitosmuotoinen koulutus",
-      rajoitukset
-    );
-    const vaativaValue = getArvoFromKohdeArray(
-      "Vaativan erityisen tuen tehtävä",
-      rajoitukset
-    );
+    const sisaoppilaitosValue = R.prop("arvo", sisaoppilaitosRajoitus) || 0;
+    const vaativaValue = R.prop("arvo", vaativatukiRajoitus) || 0;
     setInitialValueSisaoppilaitos(sisaoppilaitosValue);
     setApplyForSisaoppilaitos(sisaoppilaitosValue);
     setInitialValueVaativa(vaativaValue);
     setApplyForVaativa(vaativaValue);
-  }, [rajoitukset]);
+  }, [vaativatukiRajoitus, sisaoppilaitosRajoitus]);
 
   useEffect(() => {
     const maarays = R.find(R.propEq("koodisto", "koulutussektori"))(
       props.maaraykset
     );
-    if (maarays) {
-      setKoodiarvot(prevState => {
-        return {
-          ...prevState,
-          vahimmaisopiskelijavuodet: maarays.koodiarvo
-        };
-      });
-    }
-  }, [props.maaraykset]);
+    setKoodiarvot(prevState => {
+      return {
+        ...prevState,
+        vahimmaisopiskelijavuodet: {
+          koodiarvo: R.prop("koodiarvo", maarays) || "3", // 3 = Ammatillinen koulutus
+          maaraysUuid: R.prop("uuid", maarays)
+        },
+      };
+    });
+  }, [props.maaraykset, opiskelijavuodet]);
 
   // This effect is run depending on changes in section 5
   useEffect(() => {
     if (props.muut && props.lomakkeet.muut) {
       let sisaoppilaitosKoodiarvo = null;
       let vaativatKoodiarvo = null;
-
-      // Mikäli jokin alla olevista koodeista on valittuna osiossa 5, näytetään vaativaa tukea koskevat kentät osiossa 4.
-      const vaativatCodes = [2, 16, 17, 18, 19, 20, 21];
 
       const flattenChangesOfMuut = R.flatten(R.values(changeObjects.muut));
 
@@ -165,7 +148,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
         const anchorParts = R.split(".", item.anchor);
         return (
           R.contains("vaativatuki", item.anchor) &&
-          R.contains(parseInt(R.slice(2, 3)(anchorParts), 10), vaativatCodes)
+          R.contains(""+parseInt(R.slice(2, 3)(anchorParts), 10), vaativatCodes)
         );
       })(flattenChangesOfMuut);
 
@@ -219,12 +202,18 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(props => {
       setKoodiarvot(prevState => {
         return {
           ...prevState,
-          sisaoppilaitos: sisaoppilaitosKoodiarvo,
-          vaativatuki: vaativatKoodiarvo
+          sisaoppilaitos: {
+            koodiarvo: sisaoppilaitosKoodiarvo,
+            maaraysUuid: R.prop("maaraysUuid", sisaoppilaitosRajoitus)
+          },
+          vaativatuki: {
+            koodiarvo: vaativatKoodiarvo,
+            maaraysUuid: R.prop("maaraysUuid", vaativatukiRajoitus)
+          }
         };
       });
     }
-  }, [changeObjects.muut, props.muut, props.lomakkeet.muut]);
+  }, [changeObjects.muut, props.muut, props.lomakkeet.muut, sisaoppilaitosRajoitus, vaativatukiRajoitus]);
 
   // When sisaoppilaitos or vaativatuki are not visible, exclude them from the collection of changes updates
   useEffect(() => {

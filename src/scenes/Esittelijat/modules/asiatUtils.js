@@ -2,6 +2,7 @@ import * as R from "ramda";
 import common from "../../../i18n/definitions/common";
 import moment from "moment";
 import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
+import { resolveLocalizedOrganizationName } from "../../../modules/helpers";
 
 const asiatTableColumnSetup = [
   { titleKey: common["asiaTable.headers.asianumero"], widthClass: "w-2/12" },
@@ -39,19 +40,15 @@ const generateAsiatTableHeaderStructure = t => {
   };
 };
 
-const getMaakuntaNimiFromHakemus = hakemus => {
-  const maakuntaObject = R.find(R.propEq("kieli", "FI"))(
+const getMaakuntaNimiFromHakemus = (hakemus, locale) => {
+  const maakuntaObject = R.find(R.propEq("kieli", locale.toUpperCase()))(
     R.path(["jarjestaja", "maakuntaKoodi", "metadata"], hakemus) || []
   );
   return maakuntaObject ? maakuntaObject.nimi : "";
 };
 
-const getJarjestajaNimiFromHakemus = hakemus => {
-  return R.path(["jarjestaja", "nimi", "fi"], hakemus) || "";
-};
-
 // Generates common row data for all Asiat-tables
-export const generateAsiaTableRows = (row, i, t) => {
+export const generateAsiaTableRows = (row, {formatMessage, locale}) => {
   const paivityspvm = row.paivityspvm
     ? moment(row.paivityspvm).format("D.M.YYYY")
     : "";
@@ -65,20 +62,21 @@ export const generateAsiaTableRows = (row, i, t) => {
     },
     [
       { text: row.asianumero },
-      { text: t(common["asiaTypes.lupaChange"]) }, // Only one type known in system at this juncture
-      { text: getJarjestajaNimiFromHakemus(row) },
-      { text: getMaakuntaNimiFromHakemus(row) },
+      { text: formatMessage(common["asiaTypes.lupaChange"]) }, // Only one type known in system at this juncture
+      { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
+      { text: getMaakuntaNimiFromHakemus(row, locale) },
       {
-        text: t(common[`asiaStates.esittelija.${row.tila}`]) || ""
+        text: formatMessage(common[`asiaStates.esittelija.${row.tila}`]) || ""
       },
       { text: paivityspvm }
     ]
   );
 };
 
-export const generateAvoimetAsiatTableStructure = (hakemusList, t, history, onPaatettyActionClicked) => {
+export const generateAvoimetAsiatTableStructure = (hakemusList, intl, history, onPaatettyActionClicked) => {
+  const formatMessage = intl.formatMessage;
   return [
-    generateAsiatTableHeaderStructure(t),
+    generateAsiatTableHeaderStructure(formatMessage),
     {
       role: "tbody",
       rowGroups: [
@@ -88,17 +86,17 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history, onPa
             if (row.tila === "VALMISTELUSSA") {
               actions.push({
                 id: "esittelyyn",
-                text: t(common["asiaTable.actions.esittelyssa"])
+                text: formatMessage(common["asiaTable.actions.esittelyssa"])
               });
             } else if (row.tila === "ESITTELYSSA") {
               actions.push(
                 {
                   id: "valmisteluun",
-                  text: t(common["asiaTable.actions.valmistelussa"])
+                  text: formatMessage(common["asiaTable.actions.valmistelussa"])
                 },
                 {
                   id: "paata",
-                  text: t(common["asiaTable.actions.paatetty"])
+                  text: formatMessage(common["asiaTable.actions.paatetty"])
                 }
               );
             }
@@ -125,7 +123,7 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history, onPa
                   history.push("/asiat/" + row.id);
                 }
               },
-              cells: generateAsiaTableRows(row, i, t).concat([
+              cells: generateAsiaTableRows(row, intl).concat([
                 {
                   menu: {
                     id: `simple-menu-${i}`,
@@ -148,9 +146,9 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, t, history, onPa
   ];
 };
 
-export const generatePaatetytAsiatTableStructure = (hakemusList, t) => {
+export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
   return [
-    generateAsiatTableHeaderStructure(t),
+    generateAsiatTableHeaderStructure(intl.formatMessage),
     {
       role: "tbody",
       rowGroups: [
@@ -175,13 +173,13 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, t) => {
                   console.log("Avaa asian asiakirjat", row);
                 }
               },
-              cells: generateAsiaTableRows(row, i, t).concat({
+              cells: generateAsiaTableRows(row, intl).concat({
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
                     {
                       id: "lataa",
-                      text: t(common["asiaTable.actions.lataa"])
+                      text: intl.formatMessage(common["asiaTable.actions.lataa"])
                     }
                   ]
                 },
