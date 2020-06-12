@@ -151,7 +151,6 @@ Tutkintokielet.propTypes = {
   lupa: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func,
-  tutkintolomakkeet: PropTypes.object,
   unselectedAnchors: PropTypes.array
 };
 

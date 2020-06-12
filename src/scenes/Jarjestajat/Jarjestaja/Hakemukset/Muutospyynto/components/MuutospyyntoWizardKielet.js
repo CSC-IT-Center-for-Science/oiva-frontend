@@ -75,16 +75,13 @@ const MuutospyyntoWizardKielet = props => {
       />
 
       <h4 className="py-4">{KIELET_SECTIONS.TUTKINTOKIELET}</h4>
-      {/* Language options for degrees can't be shown without degrees.  */}
-      {!R.isEmpty(props.tutkintolomakkeet) && (
-        <Tutkintokielet
-          lupa={lupa}
-          onChangesRemove={props.onChangesRemove}
-          onChangesUpdate={props.onChangesUpdate}
-          tutkintolomakkeet={props.tutkintolomakkeet}
-          unselectedAnchors={unselectedAnchors}
-        />
-      )}
+
+      <Tutkintokielet
+        lupa={lupa}
+        onChangesRemove={props.onChangesRemove}
+        onChangesUpdate={props.onChangesUpdate}
+        unselectedAnchors={unselectedAnchors}
+      />
     </React.Fragment>
   );
 };
