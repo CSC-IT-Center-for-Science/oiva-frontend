@@ -143,33 +143,6 @@ export function getCategoriesByProps(
   }, categories);
 }
 
-export function getActiveCheckboxes(lomake, changeObjects = []) {
-  const components = R.filter(
-    R.propEq("name", "CheckboxWithLabel"),
-    findObjectWithKey(lomake, "components")
-  );
-  const changeObjectsWithTailAnchors = R.map(changeObj => {
-    const tailAnchor = R.compose(
-      R.join("."),
-      R.tail(),
-      R.split("."),
-      R.prop("anchor")
-    )(changeObj);
-    return R.assoc("anchor", tailAnchor, changeObj);
-  }, changeObjects);
-
-  return R.filter(component => {
-    const changeObj = R.find(
-      R.propEq("anchor", component.fullAnchor),
-      changeObjectsWithTailAnchors
-    );
-    return (
-      (component.properties.isChecked && !changeObj) ||
-      (changeObj && changeObj.properties.isChecked)
-    );
-  }, components);
-}
-
 export function sortArticlesByHuomioitavaKoodi(articles, locale) {
   const sortedArticles = R.sort((a, b) => {
     const metadataA = R.find(R.propEq("kieli", locale), a.metadata);

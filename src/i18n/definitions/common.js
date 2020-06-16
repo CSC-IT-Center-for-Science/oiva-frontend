@@ -29,6 +29,14 @@ export default defineMessages({
     id: "common.ok",
     defaultMessage: "Ok"
   },
+  yes: {
+    id: "common.yes",
+    defaultMessage: "Kyllä"
+  },
+  no: {
+    id: "common.no",
+    defaultMessage: "Ei"
+  },
   clear: {
     id: "common.clear",
     defaultMessage: "Tyhjennä"
@@ -40,6 +48,14 @@ export default defineMessages({
   accept: {
     id: "common.accept",
     defaultMessage: "Hyväksy"
+  },
+  save: {
+    id: "common.save",
+    defaultMessage: "Tallenna"
+  },
+  noSave: {
+    id: "common.noSave",
+    defaultMessage: "Poistu tallentamatta"
   },
   today: {
     id: "common.today",
@@ -740,5 +756,61 @@ export default defineMessages({
   downloadPDFAndChangeState: {
     id: "common.downloadPDFAndChangeState",
     defaultMessage: "Lataa PDF ja muuta tila"
+  },
+  asiaPaatettyConfirmationDialogTitle: {
+    id: "common.asiaPaatettyConfirmationDialogTitle",
+    defaultMessage: "Merkitäänkö asia päätetyksi?"
+  },
+  asiaPaatettyConfirmationDialogContent: {
+    id: "common.asiaPaatettyConfirmationDialogContent",
+    defaultMessage:
+      "Haluatko varmasti merkitä asian päätetyksi? Päätetyksi merkitsemisen jälkeen asiaa ei voi enää muokata."
+  },
+  asiaPaatettyConfirmationDialogOk: {
+    id: "common.asiaPaatettyConfirmationDialogOk",
+    defaultMessage: "Merkitse päätetyksi"
+  },
+  confirmExitMuutoshakemusWizard: {
+    id: "common.confirmExitMuutoshakemus",
+    defaultMessage:
+      "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta."
+  },
+  confirmExitMuutoshakemusWizardTitle: {
+    id: "common.confirmExitMuutoshakemusWizardTitle",
+    defaultMessage: "Poistutaanko?"
+  },
+  confirmSendMuutoshakemus: {
+    id: "common.confirmSendMuutoshakemus",
+    defaultMessage:
+      "Oletko varma, että haluat lähettää hakemuksen käsiteltäväksi?"
+  },
+  confirmSendMuutoshakemusTitle: {
+    id: "common.confirmSendMuutoshakemusTitle",
+    defaultMessage: "Lähetyksen varmistus"
+  },
+  confirmExitEsittelijaMuutoshakemusWizard: {
+    id: "common.confirmExitEsittelijaMuutoshakemusWizard",
+    defaultMessage:
+      "Haluatko tallentaa järjestämislupaan tekemäsi muutokset? Voit myöhemmin palata tekemiisi muutoksiin tallennettuasi muutokset."
+  },
+  confirmExitEsittelijaMuutoshakemusWizardTitle: {
+    id: "common.confirmExitEsittelijaMuutoshakemusWizardTitle",
+    defaultMessage: "Tallennetaanko muutokset ennen poistumista?"
+  },
+  tietosuojailmoitus: {
+    id: "common.tietosuojailmoitus",
+    defaultMessage: "Tietosuojailmoitus"
+  },
+  yhteydenotto: {
+    id: "common.yhteydenotto",
+    defaultMessage: "Yhteydenotto"
+  },
+  saavutettavuusseloste: {
+    id: "common.saavutettavuusseloste",
+    defaultMessage: "Saavutettavuusseloste"
+  },
+  valtioneuvosto: {
+    id: "common.valtioneuvosto",
+    defaultMessage: "Valtioneuvosto"
   }
 });

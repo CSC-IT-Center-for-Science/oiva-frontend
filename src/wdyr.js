@@ -5,5 +5,26 @@ if (process.env.NODE_ENV === "development") {
   whyDidYouRender(React, {
     trackAllPureComponents: true,
     trackHooks: false
+    // notifier: ({
+    //   Component,
+    //   displayName,
+    //   prevProps,
+    //   prevState,
+    //   nextProps,
+    //   nextState,
+    //   reason,
+    //   options
+    // }) => {
+    //   console.group();
+    //   console.info("Component", Component);
+    //   console.info("displayName", displayName);
+    //   console.info("prevProps", prevProps);
+    //   console.info("nextProps", nextProps);
+    //   console.info("prevState", prevState);
+    //   console.info("nextState", nextState);
+    //   console.info("reason", reason);
+    //   console.info("options", options);
+    //   console.groupEnd();
+    // }
   });
 }

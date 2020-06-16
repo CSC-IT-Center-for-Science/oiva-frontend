@@ -1,18 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { getActiveCheckboxes } from "../../../../../../../services/lomakkeet/utils";
 import common from "../../../../../../../i18n/definitions/common";
 import * as R from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
+import {
+  getTutkinnotGroupedBy,
+  getActiveOnes
+} from "../../../../../../../helpers/tutkinnot/";
+import { getKoulutusalatSortedByKey } from "../../../../../../../helpers/koulutusalat";
+import { getKoulutustyypitGroupedBy } from "../../../../../../../helpers/koulutustyypit";
+import { getKieletFromStorage } from "../../../../../../../helpers/kielet";
 
 const Tutkintokielet = props => {
   const intl = useIntl();
   const [changeObjects] = useChangeObjects();
   const sectionId = "kielet_tutkintokielet";
   const { onChangesRemove, onChangesUpdate } = props;
+  const [koulutusalat, setKoulutusalat] = useState();
+  const [koulutustyypit, setKoulutustyypit] = useState();
+  const [tutkinnotByKoulutusala, setTutkinnotByKoulutusala] = useState();
+  const [kielet, setKielet] = useState();
+
+  useEffect(() => {
+    (async () => {
+      setTutkinnotByKoulutusala(
+        await getTutkinnotGroupedBy("koulutusalakoodiarvo")
+      );
+      setKoulutusalat(await getKoulutusalatSortedByKey("koodiarvo"));
+      setKoulutustyypit(await getKoulutustyypitGroupedBy("koodiarvo"));
+      setKielet(await getKieletFromStorage());
+    })();
+  }, []);
 
   useEffect(() => {
     if (props.unselectedAnchors.length && changeObjects.kielet.tutkintokielet) {
@@ -62,54 +83,56 @@ const Tutkintokielet = props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
-  return (
+  return kielet && koulutusalat && koulutustyypit && tutkinnotByKoulutusala ? (
     <React.Fragment>
-      {R.map(areaCode => {
-        const tutkintolomake = props.tutkintolomakkeet[areaCode].categories;
-        const actives = getActiveCheckboxes(
-          tutkintolomake,
-          changeObjects.tutkinnot[areaCode]
+      {R.map(koulutusala => {
+        const fullSectionId = `${sectionId}_${koulutusala.koodiarvo}`;
+        const activeDegrees = getActiveOnes(
+          tutkinnotByKoulutusala[koulutusala.koodiarvo],
+          changeObjects.tutkinnot[koulutusala.koodiarvo]
         );
-        return actives.length > 0 ? (
+        const tutkinnotByKoulutustyyppi = R.groupBy(
+          R.prop("koulutustyyppikoodiarvo"),
+          activeDegrees
+        );
+        return activeDegrees.length > 0 ? (
           <ExpandableRowRoot
-            anchor={`${sectionId}_${areaCode}`}
-            categories={[]}
+            anchor={fullSectionId}
             changes={R.path(
-              ["kielet", "tutkintokielet", areaCode],
+              ["kielet", "tutkintokielet", koulutusala.koodiarvo],
               changeObjects
             )}
             hideAmountOfChanges={true}
             messages={changesMessages}
-            key={`expandable-row-root-${areaCode}`}
+            key={`expandable-row-root-${koulutusala.koodiarvo}`}
             onChangesRemove={onChangesRemove}
             onUpdate={onChangesUpdate}
-            sectionId={sectionId}
+            sectionId={fullSectionId}
             showCategoryTitles={true}
-            title={`${tutkintolomake[0].meta.title}`}>
+            title={`${koulutusala.metadata[R.toUpper(intl.locale)].nimi}`}>
             <Lomake
               action="modification"
-              anchor={`${sectionId}_${areaCode}`}
+              anchor={fullSectionId}
               changeObjects={R.path(
-                ["kielet", "tutkintokielet", areaCode],
+                ["kielet", "tutkintokielet", koulutusala.koodiarvo],
                 changeObjects
               )}
               data={{
-                kielet: props.kielet,
-                maaraykset: props.lupa.maaraykset,
-                tutkintolomake,
-                tutkintomuutokset: changeObjects.tutkinnot[areaCode]
+                koulutusala,
+                koulutustyypit,
+                tutkinnotByKoulutustyyppi,
+                kielet
               }}
               onChangesUpdate={onChangesUpdate}
               path={["kielet", "tutkintokielet"]}
-              rules={[]}
               showCategoryTitles={true}></Lomake>
           </ExpandableRowRoot>
         ) : null;
-      }, R.keys(props.tutkintolomakkeet).sort())}
+      }, koulutusalat)}
     </React.Fragment>
-  );
+  ) : null;
 };
 
 Tutkintokielet.defaultProps = {
@@ -117,20 +140,17 @@ Tutkintokielet.defaultProps = {
     tutkinnot: [],
     tutkintokielet: {}
   },
-  kielet: [],
   unselectedAnchors: []
 };
 
 Tutkintokielet.propTypes = {
   changeObjects: PropTypes.object,
-  kielet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.object,
   koulutustyypit: PropTypes.array,
   lupa: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func,
-  tutkintolomakkeet: PropTypes.object,
   unselectedAnchors: PropTypes.array
 };
 

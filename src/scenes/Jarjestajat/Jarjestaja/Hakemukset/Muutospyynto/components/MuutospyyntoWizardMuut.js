@@ -25,7 +25,7 @@ const MuutospyyntoWizardMuut = props => {
   const osiota5koskevatMaaraykset = useMemo(() => {
     return R.filter(
       R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
-    )(props.maaraykset || []);
+    )(props.maaraykset || []);
   }, [props.maaraykset]);
 
   const divideArticles = useMemo(() => {
@@ -183,29 +183,29 @@ const MuutospyyntoWizardMuut = props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <React.Fragment>
       {R.addIndex(R.map)((configObj, i) => {
+        const fullSectionId = `${sectionId}_${configObj.code}`;
         return (
           <ExpandableRowRoot
-            anchor={`${sectionId}_${configObj.code}`}
+            anchor={fullSectionId}
             key={`expandable-row-root-${i}`}
-            categories={[]}
             changes={R.prop(configObj.code, changeObjects.muut)}
             hideAmountOfChanges={true}
             messages={changesMessages}
             code={configObj.code}
             index={i}
             onUpdate={onChangesUpdate}
-            sectionId={sectionId}
+            sectionId={fullSectionId}
             showCategoryTitles={true}
             title={configObj.title}
             onChangesRemove={onChangesRemove}>
             <Lomake
               action="modification"
-              anchor={`${sectionId}_${configObj.code}`}
+              anchor={fullSectionId}
               changeObjects={R.prop(configObj.code, changeObjects.muut)}
               data={{
                 configObj,

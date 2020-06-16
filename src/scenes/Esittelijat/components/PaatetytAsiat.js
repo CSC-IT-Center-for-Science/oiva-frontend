@@ -33,11 +33,11 @@ const PaatetytAsiat = () => {
     return !!muutospyynnot.paatetyt && muutospyynnot.paatetyt.fetchedAt
       ? generatePaatetytAsiatTableStructure(
           muutospyynnot.paatetyt.data,
-          intl.formatMessage,
+          intl,
           history
         )
       : [];
-  }, [history, intl.formatMessage, muutospyynnot.paatetyt]);
+  }, [history, intl, muutospyynnot.paatetyt]);
 
   if (
     muutospyynnot.paatetyt &&

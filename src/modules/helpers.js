@@ -3,6 +3,7 @@
  */
 
 import _ from "lodash";
+import { path } from "ramda";
 
 export const parseLocalizedField = (
   obj,
@@ -54,4 +55,20 @@ export const parsePostalCode = str => {
   } else {
     return "";
   }
+};
+
+/**
+ * Resolve name of the organizer from lupa based on given locale. If it doesn't exist,
+ * resolve into other locale. We assume that only 'fi' and 'sv' locales exist.
+ * @param organization
+ * @param primaryLocale
+ * @return {any}
+ */
+export const resolveLocalizedOrganizationName = (organization, primaryLocale) => {
+  const altLocale = primaryLocale === 'fi' ? 'sv' : 'fi';
+  let retval = path(["nimi", primaryLocale])(organization);
+  if(!retval) {
+    retval = path(["nimi", altLocale])(organization);
+  }
+  return retval;
 };

@@ -1,106 +1,73 @@
-import * as R from "ramda";
+import { map, toUpper, mapObjIndexed, values } from "ramda";
 
 function getModificationForm(
-  tutkintolomake,
-  tutkintomuutokset,
+  koulutustyypit,
+  tutkinnotByKoulutustyyppi,
   kielet,
-  maaraykset = [],
   locale
 ) {
-  const localeUpper = R.toUpper(locale);
+  const localeUpper = toUpper(locale);
   const currentDate = new Date();
-  return R.map(category => {
-    const areaCode = category.meta.areaCode;
-    const categories = R.map(subCategory => {
-      /**
-       * There might be some sub articles (alimääräyksiä) under the current article (määräys).
-       * We are interested of them which are related to tutkintokielet section.
-       * */
-      const maarays = R.find(
-        R.propEq("koodiarvo", subCategory.anchor),
-        maaraykset
-      );
-      const alimaaraykset = maarays ? maarays.aliMaaraykset : [];
-
-      /**
-       * selectedByDefault includes all the languages which already are in LUPA.
-       * Those languages must be shown on Autocomplete as selected by default.
-       * */
-      const selectedByDefault = R.map(alimaarays => {
-        if (
-          alimaarays.kohde.tunniste === "opetusjatutkintokieli" &&
-          new Date(alimaarays.koodi.voimassaAlkuPvm) < currentDate
-        ) {
-          const metadataObj = R.find(
-            R.propEq("kieli", localeUpper),
-            alimaarays.koodi.metadata
-          );
-          return metadataObj
-            ? { label: metadataObj.nimi, value: alimaarays.koodi.koodiArvo }
-            : null;
-        }
-        return null;
-      }, alimaaraykset || []).filter(Boolean);
-
-      // Let's create the updatedSubCategory variable without categories key
-      let { categories, ...updatedSubCategory } = subCategory;
-      let changeObj = null;
-      if (tutkintomuutokset) {
-        const anchor = `tutkinnot_${R.join(".", [
-          areaCode,
-          category.anchor,
-          subCategory.anchor,
-          subCategory.components[0].anchor
-        ])}`;
-        changeObj = R.find(R.propEq("anchor", anchor), tutkintomuutokset || []);
+  return values(
+    mapObjIndexed(koulutustyyppi => {
+      const tutkinnot = tutkinnotByKoulutustyyppi[koulutustyyppi.koodiarvo];
+      if (tutkinnot) {
+        return {
+          anchor: koulutustyyppi.koodiarvo,
+          title: koulutustyyppi.metadata[localeUpper].nimi,
+          categories: map(tutkinto => {
+            return {
+              anchor: tutkinto.koodiarvo,
+              components: [
+                {
+                  anchor: "nimi",
+                  name: "StatusTextRow",
+                  properties: {
+                    code: tutkinto.koodiarvo,
+                    title: tutkinto.metadata[localeUpper].nimi,
+                    statusTextStyleClasses: [],
+                    styleClasses: []
+                  }
+                },
+                {
+                  anchor: "kielet",
+                  name: "Autocomplete",
+                  properties: {
+                    options: map(kieli => {
+                      return {
+                        label: kieli.metadata[localeUpper].nimi,
+                        value: kieli.koodiarvo
+                      };
+                    }, kielet),
+                    value: map(tutkintokielimaarays => {
+                      if (
+                        tutkintokielimaarays &&
+                        new Date(tutkintokielimaarays.koodi.voimassaAlkuPvm) <=
+                          currentDate
+                      ) {
+                        /**
+                         * Jos tutkintokielelle löytyy voimassa oleva määräys,
+                         * näytetään tutkintokieli autocomplete-kentässä.
+                         **/
+                        return {
+                          label:
+                            tutkintokielimaarays.koodi.metadata[localeUpper]
+                              .nimi,
+                          value: tutkintokielimaarays.koodi.koodiarvo
+                        };
+                      }
+                      return null;
+                    }, tutkinto.tutkintokielet).filter(Boolean)
+                  }
+                }
+              ]
+            };
+          }, tutkinnot).filter(Boolean)
+        };
       }
-      if (
-        (subCategory.components[0].properties.isChecked && !changeObj) ||
-        (changeObj && changeObj.properties.isChecked)
-      ) {
-        updatedSubCategory.components = [
-          {
-            ...subCategory.components[0],
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              name: "StatusTextRow",
-              code: subCategory.components[0].properties.code,
-              title: subCategory.components[0].properties.title,
-              labelStyles: {}
-            }
-          },
-          {
-            anchor: "B",
-            name: "Autocomplete",
-            properties: {
-              forChangeObject:
-                subCategory.components[0].properties.forChangeObject,
-              options: R.map(language => {
-                return {
-                  label:
-                    R.find(m => {
-                      return m.kieli === localeUpper;
-                    }, language.metadata).nimi || "[Kielen nimi tähän]",
-                  value: language.koodiArvo
-                };
-              }, kielet),
-              value: selectedByDefault
-            }
-          }
-        ];
-      } else {
-        updatedSubCategory = null;
-      }
-      return updatedSubCategory;
-    }, category.categories).filter(Boolean);
-    return categories.length
-      ? {
-          ...category,
-          categories
-        }
-      : null;
-  }, tutkintolomake).filter(Boolean);
+      return null;
+    }, koulutustyypit)
+  ).filter(Boolean);
 }
 
 export default function getTutkintokieletLomake(
@@ -111,13 +78,13 @@ export default function getTutkintokieletLomake(
 ) {
   switch (action) {
     case "modification":
-      return getModificationForm(
-        data.tutkintolomake,
-        data.tutkintomuutokset,
+      const result = getModificationForm(
+        data.koulutustyypit,
+        data.tutkinnotByKoulutustyyppi,
         data.kielet,
-        data.maaraykset,
         locale
       );
+      return result;
     default:
       return [];
   }

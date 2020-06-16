@@ -36,6 +36,9 @@ import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
 import * as R from "ramda";
+import YleinenSisaltosivu from "./scenes/YleinenSisaltosivu";
+import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
+import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 
 const history = createBrowserHistory();
 
@@ -146,12 +149,10 @@ const App = React.memo(({ isDebugModeOn }) => {
     return {};
   }, [intl, organisation, user]);
 
-  const shortDescription = useMemo(() => {
-    return {
-      text: intl.formatMessage(commonMessages.siteShortDescription),
-      path: "/"
-    };
-  }, [intl]);
+  const shortDescription = {
+    text: intl.formatMessage(commonMessages.siteShortDescription),
+    path: "/"
+  };
 
   // Let's fetch ORGANISAATIO
   useEffect(() => {
@@ -292,7 +293,12 @@ const App = React.memo(({ isDebugModeOn }) => {
                   <Route
                     path="/asiat"
                     render={() => {
-                      return user ? <Esittelijat /> : null;
+                      return user &&
+                        !user.isLoading &&
+                        organisation[user.oid] &&
+                        !!organisation[user.oid].fetchedAt ? (
+                        <Esittelijat />
+                      ) : null;
                     }}
                   />
                   <Route
@@ -304,6 +310,18 @@ const App = React.memo(({ isDebugModeOn }) => {
                         user={user}
                       />
                     )}
+                  />
+                  <Route
+                    path="/saavutettavuusseloste"
+                    component={Saavutettavuusseloste}
+                  />
+                  <Route
+                    path="/tietosuojailmoitus"
+                    component={Tietosuojailmoitus}
+                  />
+                  <Route
+                    path="/yleinen-sisaltosivu"
+                    component={YleinenSisaltosivu}
                   />
                 </Switch>
               </div>
@@ -324,5 +342,7 @@ const App = React.memo(({ isDebugModeOn }) => {
 App.propTypes = {
   isDebugModeOn: PropTypes.bool
 };
+
+App.displayName = "App";
 
 export default App;

@@ -9,7 +9,7 @@ import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { toUpper } from "ramda";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
-const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
+const ATVKoulutukset = ({ koulutukset, maaraykset, onChangesRemove, onChangesUpdate }) => {
   const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "koulutukset_atvKoulutukset";
@@ -17,14 +17,16 @@ const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
   const koulutusdata = useMemo(() => {
     return getDataForKoulutusList(
       koulutukset.muut.ammatilliseentehtavaanvalmistavakoulutus,
-      toUpper(intl.locale)
+      toUpper(intl.locale),
+      maaraykset,
+      "ammatilliseentehtavaanvalmistavakoulutus"
     );
-  }, [intl.locale, koulutukset]);
+  }, [intl.locale, koulutukset, maaraykset]);
 
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <ExpandableRowRoot
@@ -36,6 +38,7 @@ const ATVKoulutukset = ({ koulutukset, onChangesRemove, onChangesUpdate }) => {
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
+      sectionId={sectionId}
       title={intl.formatMessage(wizardMessages.vocationalTraining)}>
       {koulutukset && (
         <Lomake

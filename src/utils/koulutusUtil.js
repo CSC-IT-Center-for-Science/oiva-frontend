@@ -5,7 +5,8 @@ export function getDataForKoulutusList(
   koulutukset,
   locale,
   maaraykset = [],
-  koodisto
+  koodisto,
+  useDefaultSelection = false
 ) {
   const relevantitMaaraykset = koodisto
     ? R.map(maarays => {
@@ -18,7 +19,7 @@ export function getDataForKoulutusList(
     relevantitMaaraykset
   );
 
-  let isInLupaTrueFound = false;
+  let isSomethingSelectedInLupa = false;
   const sortedKoulutukset = sortArticlesByHuomioitavaKoodi(koulutukset, locale);
 
   return {
@@ -33,7 +34,7 @@ export function getDataForKoulutusList(
         );
 
         if (isInLupa) {
-          isInLupaTrueFound = true;
+          isSomethingSelectedInLupa = true;
         }
         return {
           code: koulutus.koodiArvo,
@@ -41,8 +42,7 @@ export function getDataForKoulutusList(
           isReasoningRequired: index !== koulutukset.length - 1,
           shouldBeChecked:
             isInLupa ||
-            (koodisto &&
-              !isInLupaTrueFound &&
+            (!isSomethingSelectedInLupa && useDefaultSelection &&
               index === koulutukset.length - 1),
           koodisto: koulutus.koodisto,
           maaraysUuid: maarays ? maarays.uuid : null,

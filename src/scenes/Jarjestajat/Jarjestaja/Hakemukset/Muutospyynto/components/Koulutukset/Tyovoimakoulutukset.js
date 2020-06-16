@@ -25,14 +25,15 @@ const Tyovoimakoulutukset = ({
       koulutukset.muut[koodisto],
       toUpper(intl.locale),
       maaraykset,
-      "oivatyovoimakoulutus"
+      "oivatyovoimakoulutus",
+      true
     );
   }, [intl.locale, koulutukset, maaraykset]);
 
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <ExpandableRowRoot
@@ -44,6 +45,7 @@ const Tyovoimakoulutukset = ({
       messages={changesMessages}
       onUpdate={onChangesUpdate}
       onChangesRemove={onChangesRemove}
+      sectionId={sectionId}
       title={intl.formatMessage(wizardMessages.workforceTraining)}>
       {koulutusdata && (
         <Lomake

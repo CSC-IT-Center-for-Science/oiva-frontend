@@ -48,6 +48,7 @@ import { useLomakkeet } from "../../../../../../stores/lomakkeet";
 import ProcedureHandler from "../../../../../../components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
+import common from "../../../../../../i18n/definitions/common";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -500,7 +501,7 @@ const MuutospyyntoWizard = ({
           </DialogTitle>
           <div
             aria-labelledby="navigate-between-pages"
-            className="lg:px-16 max-w-6xl mx-auto w-full">
+            className="lg:px-16 max-w-7xl mx-auto w-full">
             <StepperNavigation
               activeStep={page - 1}
               stepProps={steps}
@@ -511,7 +512,7 @@ const MuutospyyntoWizard = ({
           <DialogContentWithStyles>
             <div
               id="wizard-content"
-              className="lg:px-16 max-w-6xl m-auto mb-20">
+              className="lg:px-16 max-w-7xl m-auto mb-20">
               {page === 1 && (
                 <WizardPage
                   pageNumber={1}
@@ -554,6 +555,7 @@ const MuutospyyntoWizard = ({
                     koulutukset={parsedKoulutukset}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
+                    maakuntakunnatList={maakuntakunnatList}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
                     lomakkeet={lomakkeet}
@@ -611,10 +613,12 @@ const MuutospyyntoWizard = ({
         </FormDialog>
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}
-          title={"Poistutaanko?"}
-          content={HAKEMUS_VIESTI.VARMISTUS.FI}
-          yesMessage={HAKEMUS_VIESTI.KYLLA.FI}
-          noMessage={HAKEMUS_VIESTI.EI.FI}
+          messages={{
+            content: intl.formatMessage(common.confirmExitMuutoshakemusWizard),
+            ok: intl.formatMessage(common.yes),
+            cancel: intl.formatMessage(common.no),
+            title: intl.formatMessage(common.confirmExitMuutoshakemusWizardTitle)
+          }}
           handleOk={closeWizard}
           handleCancel={handleCancel}
         />

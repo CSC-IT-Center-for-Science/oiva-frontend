@@ -39,6 +39,7 @@ import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
 import { getRules } from "../../services/lomakkeet/esittelija/rules";
 import { useMuutospyynto } from "../../stores/muutospyynto";
+import common from "../../i18n/definitions/common";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -74,8 +75,6 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
-  backendMuutokset: [],
-  elykeskukset: [],
   kohteet: [],
   koulutustyypit: [],
   kunnat: [],
@@ -85,14 +84,11 @@ const defaultProps = {
   maakuntakunnat: [],
   maaraystyypit: [],
   muut: [],
-  muutosperusteluList: [],
-  organisation: {},
-  vankilat: []
+  organisation: {}
 };
 
 const UusiAsiaDialog = React.memo(
   ({
-    backendMuutokset = defaultProps.backendMuutokset,
     kohteet = defaultProps.kohteet,
     koulutustyypit = defaultProps.koulutustyypit,
     kunnat = defaultProps.kunnat,
@@ -261,16 +257,17 @@ const UusiAsiaDialog = React.memo(
     const onAction = useCallback(
       async action => {
         const formData = createMuutospyyntoOutput(
-          createObjectToSave(
+          await createObjectToSave(
+            R.toUpper(intl.locale),
             lupa,
             cos,
-            backendMuutokset,
             uuid,
             kohteet,
             maaraystyypit,
             muut,
             lupaKohteet,
-            "ESITTELIJA"
+            "ESITTELIJA",
+            parsedTutkinnot
           )
         );
 
@@ -298,9 +295,9 @@ const UusiAsiaDialog = React.memo(
       },
       [
         anchors,
-        backendMuutokset,
         cos,
         kohteet,
+        intl.locale,
         lupa,
         lupaKohteet,
         maaraystyypit,
@@ -308,12 +305,13 @@ const UusiAsiaDialog = React.memo(
         onNewDocSave,
         onPreview,
         onSave,
+        parsedTutkinnot,
         uuid
       ]
     );
 
     return (
-      <div className="max-w-6xl">
+      <div className="max-w-7xl">
         <FormDialog
           open={isDialogOpen}
           onClose={openCancelModal}
@@ -341,7 +339,10 @@ const UusiAsiaDialog = React.memo(
           <DialogContentWithStyles>
             <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
               <div className="py-4">
-                <h1>{organisation.nimi[intl.locale || "fi"]}</h1>
+                <h1>
+                  {organisation.nimi[intl.locale] ||
+                    R.last(R.values(organisation.nimi))}
+                </h1>
                 <p>
                   {organisation.kayntiosoite.osoite},{" "}
                   {organisation.postiosoite.osoite}{" "}
@@ -373,7 +374,7 @@ const UusiAsiaDialog = React.memo(
             </div>
             <div
               id="wizard-content"
-              className="px-16 xl:w-3/4 max-w-6xl m-auto mb-20">
+              className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
               <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
                 <Lomake
                   anchor="topthree"
@@ -414,12 +415,23 @@ const UusiAsiaDialog = React.memo(
         </FormDialog>
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}
-          title={"Poistutaanko?"}
-          content={HAKEMUS_VIESTI.VARMISTUS.FI}
-          yesMessage={HAKEMUS_VIESTI.KYLLA.FI}
-          noMessage={HAKEMUS_VIESTI.EI.FI}
-          handleOk={closeWizard}
+          messages={{
+            content: intl.formatMessage(
+              common.confirmExitEsittelijaMuutoshakemusWizard
+            ),
+            ok: intl.formatMessage(common.save),
+            noSave: intl.formatMessage(common.noSave),
+            cancel: intl.formatMessage(common.cancel),
+            title: intl.formatMessage(
+              common.confirmExitEsittelijaMuutoshakemusWizardTitle
+            )
+          }}
+          handleOk={() => {
+            onAction("save");
+            closeWizard();
+          }}
           handleCancel={handleCancel}
+          handleExitAndAbandonChanges={closeWizard}
         />
       </div>
     );
@@ -427,8 +439,6 @@ const UusiAsiaDialog = React.memo(
 );
 
 UusiAsiaDialog.propTypes = {
-  backendMuutokset: PropTypes.array,
-  elykeskukset: PropTypes.array,
   history: PropTypes.object,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
@@ -438,10 +448,8 @@ UusiAsiaDialog.propTypes = {
   maakuntakunnat: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
-  muutosperusteluList: PropTypes.array,
   onNewDocSave: PropTypes.func,
-  organisation: PropTypes.object,
-  vankilat: PropTypes.array
+  organisation: PropTypes.object
 };
 
 export default UusiAsiaDialog;

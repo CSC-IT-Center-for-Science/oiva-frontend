@@ -5,10 +5,27 @@ import { ThroughProvider } from "react-through";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { COLORS } from "./modules/styles";
 import AppWrapper from "./AppWrapper";
+import localforage from "localforage";
 // import * as serviceWorker from "./registerServiceWorker";
 
 import "./css/tailwind.css";
 import "./css/common.css";
+
+/**
+ * By default, localForage selects backend drivers for the datastore in this
+ * order:
+ * 
+ * 1. IndexedDB
+ * 2. WebSQL
+ * 3. localStorage
+ * 
+ * The storage created below will be used to store data from backend so that
+ * it can be easily accessed later. One example is saving the degrees
+ * (tutkinnot) with related languages (tutkintokielet).  
+ */
+localforage.config({
+  name: "Oiva App"
+});
 
 const theme = createMuiTheme({
   palette: {
