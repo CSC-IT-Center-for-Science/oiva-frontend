@@ -174,8 +174,8 @@ export async function defineBackendChangeObjects(
     }, maakunnat);
 
     /**
-     * Käydään muutoksia sisältävät maakunnat ja niiden maakunnat läpi
-     * takroituksena löytää kunnat, jotka on lisättävä lupaan.
+     * Käydään muutoksia sisältävät maakunnat ja niiden kunnat läpi
+     * tarkoituksena löytää kunnat, jotka on lisättävä lupaan.
      */
     provinceBEchangeObjects.lisaykset = flatten(
       map(maakunta => {
@@ -195,8 +195,9 @@ export async function defineBackendChangeObjects(
             maaraykset
           );
           if (
-            (!kuntaChangeObj || kuntaChangeObj.properties.isChecked) &&
-            !kuntaMaarays
+            !kuntaMaarays &&
+            kuntaChangeObj &&
+            kuntaChangeObj.properties.isChecked
           ) {
             return {
               tila: "LISAYS",
