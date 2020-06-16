@@ -18,7 +18,7 @@ export async function createObjectToSave(
   alkupera = "KJ",
   parsedTutkinnot
 ) {
-  const backendMuutokset = await localforage.getItem("backendMuutokset");
+  const backendMuutokset = await localforage.getItem("backendMuutokset") || [];
 
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(

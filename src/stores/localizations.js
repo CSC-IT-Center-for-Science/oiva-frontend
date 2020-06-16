@@ -4,12 +4,11 @@ import { execute } from "./utils/loadFromBackend";
 const Store = createStore({
   initialState: [],
   actions: {
-    load: lang => ({ getState, setState }) => {
+    load: () => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
-          key: "kaannokset",
-          urlEnding: `?lang=${lang}`
+          key: "kaannokset"
         }
       );
     }
