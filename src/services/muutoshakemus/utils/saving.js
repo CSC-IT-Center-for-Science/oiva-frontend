@@ -3,6 +3,8 @@ import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
 import localforage from "localforage";
+import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
+import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import { createChangeObjects as createOpiskelijavuodetChangeObjects } from "./muutosobjektien-luonti/opiskelijavuodet"
 
 export async function createObjectToSave(
