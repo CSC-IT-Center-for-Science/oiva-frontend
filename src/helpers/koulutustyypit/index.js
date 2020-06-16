@@ -5,8 +5,7 @@ import {
   head,
   find,
   propEq,
-  sortBy,
-  map
+  sortBy
 } from "ramda";
 import localforage from "localforage";
 

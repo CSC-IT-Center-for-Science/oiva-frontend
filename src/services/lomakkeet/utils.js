@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import "./i18n-config";
 import { __ } from "i18n-for-browser";
-import { findObjectWithKey, removeAnchorPart } from "../../utils/common";
+import { removeAnchorPart } from "../../utils/common";
 
 export function getMessages(key) {
   const messages = {

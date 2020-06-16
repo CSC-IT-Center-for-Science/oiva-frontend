@@ -1,7 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import Opetuskielet from "./Kielet/Opetuskielet";
 import PropTypes from "prop-types";
-import { KIELET_SECTIONS } from "../../../modules/constants";
 import Tutkintokielet from "./Kielet/Tutkintokielet";
 import * as R from "ramda";
 import _ from "lodash";
@@ -74,12 +73,13 @@ const MuutospyyntoWizardKielet = props => {
         onChangesUpdate={props.onChangesUpdate}
       />
 
-      <h4 className="py-4">{KIELET_SECTIONS.TUTKINTOKIELET}</h4>
-
       <Tutkintokielet
+        koulutusalat={props.koulutusalat}
+        koulutustyypit={props.koulutustyypit}
         lupa={lupa}
         onChangesRemove={props.onChangesRemove}
         onChangesUpdate={props.onChangesUpdate}
+        tutkinnot={props.tutkinnot}
         unselectedAnchors={unselectedAnchors}
       />
     </React.Fragment>
@@ -88,9 +88,12 @@ const MuutospyyntoWizardKielet = props => {
 
 MuutospyyntoWizardKielet.propTypes = {
   koulutukset: PropTypes.object,
+  koulutusalat: PropTypes.array,
+  koulutustyypit: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
-  opetuskielet: PropTypes.array
+  opetuskielet: PropTypes.array,
+  tutkinnot: PropTypes.array
 };
 
 export default MuutospyyntoWizardKielet;
