@@ -132,17 +132,19 @@ export const initializeOsaamisalat = (tutkinto, osaamisalat = []) => {
  * Muodostaa backendin tarvitsemat muutosobjektit tutkintojen, osaamisalojen ja
  * tutkintokielien osalta.
  * @param {array} changeObjects
- * @param {object} kohde
+ * @param {object} tutkinnotKohde
+ * @param {object} kieletKohde
  * @param {array} maaraystyypit
  * @param {string} locale
  */
 export const defineBackendChangeObjects = async (
   changeObjects = {},
-  kohde,
+  tutkinnotKohde,
+  kieletKohde,
   maaraystyypit,
   locale = "FI"
 ) => {
-  if (!kohde) {
+  if (!tutkinnotKohde || !kieletKohde) {
     console.warn("Kohde is missing!");
     return null;
   } else if (!maaraystyypit) {
@@ -171,7 +173,7 @@ export const defineBackendChangeObjects = async (
     const beoOfTutkinnotJaOsaamisalat = createBEOofTutkinnotJaOsaamisalat(
       tutkinto,
       changeObjects,
-      kohde,
+      tutkinnotKohde,
       maaraystyypit,
       locale
     );
@@ -182,7 +184,7 @@ export const defineBackendChangeObjects = async (
     const beoOfTutkintokielet = createBEOofTutkintakielet(
       tutkinto,
       changeObjects,
-      kohde,
+      kieletKohde,
       maaraystyypit,
       beoOfTutkinnotJaOsaamisalat
     );

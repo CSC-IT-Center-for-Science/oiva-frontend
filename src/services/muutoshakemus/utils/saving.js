@@ -86,7 +86,7 @@ export async function createObjectToSave(
         {}
     );
   };
-
+  
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
     {
@@ -102,6 +102,7 @@ export async function createObjectToSave(
       }
     },
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
+    R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
     maaraystyypit,
     locale
   );
