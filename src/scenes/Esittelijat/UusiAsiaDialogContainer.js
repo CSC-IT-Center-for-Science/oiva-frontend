@@ -146,7 +146,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
    * later use. They will be needed on saving phase.
    */
   useEffect(() => {
-    async function initializeTutkinnot(tutkinnotData) {
+    function initializeTutkinnot(tutkinnotData) {
       const maaraykset = prop("maaraykset", lupa.data) || [];
 
       const maarayksetByTutkinto = groupBy(prop("koodiarvo"), maaraykset);
@@ -173,7 +173,7 @@ const UusiAsiaDialogContainer = React.memo(() => {
         return tutkinto;
       }, tutkinnotData);
 
-      return await localforage.setItem("tutkinnot", tutkinnot);
+      return localforage.setItem("tutkinnot", tutkinnot);
     }
     if (lupa.fetchedAt) {
       initializeTutkinnot(tutkinnotRaw.data).then(tutkinnot => {
@@ -186,12 +186,12 @@ const UusiAsiaDialogContainer = React.memo(() => {
    * Koulutusalat
    */
   useEffect(() => {
-    async function initializeKoulutusalat(koulutusalatData) {
+    function initializeKoulutusalat(koulutusalatData) {
       const koulutusalat = map(koulutusala => {
         return initializeKoulutusala(koulutusala);
       }, koulutusalatData);
 
-      return await localforage.setItem("koulutusalat", koulutusalat);
+      return localforage.setItem("koulutusalat", koulutusalat);
     }
 
     if (koulutusalatRaw.data) {
@@ -205,11 +205,11 @@ const UusiAsiaDialogContainer = React.memo(() => {
    * Koulutustyypit
    */
   useEffect(() => {
-    async function initializeKoulutustyypit(koulutustyypitData) {
+    function initializeKoulutustyypit(koulutustyypitData) {
       const koulutustyypit = map(koulutustyyppi => {
         return initializeKoulutustyyppi(koulutustyyppi);
       }, koulutustyypitData);
-      return await localforage.setItem("koulutustyypit", koulutustyypit);
+      return localforage.setItem("koulutustyypit", koulutustyypit);
     }
     if (koulutustyypitRaw.data) {
       initializeKoulutustyypit(koulutustyypitRaw.data).then(koulutustyypit => {
