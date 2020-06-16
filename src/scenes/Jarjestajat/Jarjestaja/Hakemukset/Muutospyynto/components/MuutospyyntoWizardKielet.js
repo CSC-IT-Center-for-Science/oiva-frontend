@@ -90,8 +90,7 @@ MuutospyyntoWizardKielet.propTypes = {
   koulutukset: PropTypes.object,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
-  opetuskielet: PropTypes.array,
-  tutkintolomakkeet: PropTypes.object
+  opetuskielet: PropTypes.array
 };
 
 export default MuutospyyntoWizardKielet;

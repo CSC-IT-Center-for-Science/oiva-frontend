@@ -16,7 +16,6 @@ import * as R from "ramda";
 import { sortLanguages } from "../../utils/kieliUtil";
 import { mapObjIndexed, prop, sortBy } from "ramda";
 import { getMaakuntakunnatList } from "../../utils/toimialueUtil";
-import { useLomakkeet } from "../../stores/lomakkeet";
 import { useKoulutukset } from "../../stores/koulutukset";
 import { useKoulutusalat } from "../../stores/koulutusalat";
 import { useOpetuskielet } from "../../stores/opetuskielet";
@@ -110,7 +109,6 @@ const UusiAsiaDialog = React.memo(
     const [koulutusalat] = useKoulutusalat();
     const [tutkinnot] = useTutkinnot();
     const [koulutukset] = useKoulutukset();
-    const [lomakkeet] = useLomakkeet();
     const [, muutospyyntoActions] = useMuutospyynto();
 
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
@@ -396,7 +394,6 @@ const UusiAsiaDialog = React.memo(
                 lupaKohteet={lupaKohteet}
                 maaraystyypit={maaraystyypit}
                 muut={muut}
-                lomakkeet={lomakkeet}
                 onChangesUpdate={onSectionChangesUpdate}
                 tutkinnot={parsedTutkinnot}
               />

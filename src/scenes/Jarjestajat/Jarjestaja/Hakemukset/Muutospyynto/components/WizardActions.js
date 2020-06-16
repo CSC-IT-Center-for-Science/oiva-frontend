@@ -7,7 +7,6 @@ import wizardMessages from "../../../../../../i18n/definitions/wizard";
 import { HAKEMUS_VIESTI } from "../modules/uusiHakemusFormConstants";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import { ROLE_NIMENKIRJOITTAJA } from "../../../../../../modules/constants";
-import { useLomakkeet } from "../../../../../../stores/lomakkeet";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
 import { path } from "ramda";
 import common from "../../../../../../i18n/definitions/common";
@@ -16,7 +15,6 @@ const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
 const WizardActions = props => {
   const intl = useIntl();
-  const [lomakkeet] = useLomakkeet();
   const [muutospyynto] = useMuutospyynto();
   const [isConfirmDialogVisible, setConfirmDialogVisible] = useState(false);
 
@@ -89,10 +87,7 @@ const WizardActions = props => {
             !props.onNext && (
               <Button
                 color="primary"
-                disabled={
-                  !!lomakkeet.yhteenveto.yleisettiedot.invalidFields ||
-                  path(["data", "tila"], muutospyynto) === "AVOIN"
-                }
+                disabled={path(["data", "tila"], muutospyynto) === "AVOIN"}
                 variant="contained"
                 className={`next button-right`}
                 onClick={() => setConfirmDialogVisible(true)}>

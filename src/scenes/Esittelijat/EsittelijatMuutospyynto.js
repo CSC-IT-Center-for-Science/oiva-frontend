@@ -124,7 +124,7 @@ const EsittelijatMuutospyynto = React.memo(
             />
           </Section>
 
-          {kohteet.opiskelijavuodet && !R.isEmpty(props.lomakkeet.muut) && (
+          {kohteet.opiskelijavuodet && (
             <Section
               code={props.lupaKohteet[4].headingNumber}
               title={props.lupaKohteet[4].heading}>
@@ -133,10 +133,6 @@ const EsittelijatMuutospyynto = React.memo(
                 maaraykset={props.lupa.maaraykset}
                 muut={props.muut}
                 opiskelijavuodet={props.opiskelijavuodet}
-                lomakkeet={{
-                  opiskelijavuodet: props.lomakkeet.opiskelijavuodet,
-                  muut: props.lomakkeet.muut
-                }}
                 onChangesRemove={onChangesRemove}
                 onChangesUpdate={updateChanges}
                 sectionId={"opiskelijavuodet"}
@@ -165,7 +161,6 @@ const EsittelijatMuutospyynto = React.memo(
   (currentProps, nextProps) => {
     return (
       R.equals(currentProps.kielet, nextProps.kielet) &&
-      R.equals(currentProps.lomakkeet, nextProps.lomakkeet) &&
       R.equals(currentProps.lupa, nextProps.lupa) &&
       R.equals(currentProps.lupaKohteet, nextProps.lupaKohteet) &&
       R.equals(currentProps.maaraystyypit, nextProps.maaraystyypit)
@@ -184,7 +179,6 @@ EsittelijatMuutospyynto.propTypes = {
   kunnat: PropTypes.array,
   maakuntakunnatList: PropTypes.array,
   maakunnat: PropTypes.array,
-  lomakkeet: PropTypes.object,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,

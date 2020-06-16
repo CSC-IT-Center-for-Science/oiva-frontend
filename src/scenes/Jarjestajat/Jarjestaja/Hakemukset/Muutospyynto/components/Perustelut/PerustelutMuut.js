@@ -12,7 +12,6 @@ const defaultProps = {
   isReadOnly: false,
   maaraykset: [],
   muut: [],
-  lomakkeet: {},
   vankilat: []
 };
 
@@ -32,7 +31,7 @@ const PerustelutMuut = React.memo(
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
       changesTest: intl.formatMessage(common.changesText)
-    }
+    };
 
     return (
       <React.Fragment>

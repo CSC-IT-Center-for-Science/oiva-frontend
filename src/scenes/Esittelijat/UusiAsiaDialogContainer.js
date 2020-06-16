@@ -51,6 +51,7 @@ import { initializeKoulutustyyppi } from "../../helpers/koulutustyypit";
 import { initializeKieli } from "../../helpers/kielet";
 import { storeLupa } from "../../helpers/lupa";
 import { initializeMaakunta } from "../../helpers/maakunnat";
+import { initializeMuu } from "../../helpers/muut";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -239,6 +240,23 @@ const UusiAsiaDialogContainer = React.memo(() => {
       initializeMaakunnat(maakuntakunnat.data);
     }
   }, [maakuntakunnat.data]);
+
+  /**
+   * Muut oikeudet, velvollisuudet ja tehtävät
+   */
+  useEffect(() => {
+    async function initializeMuut(muutData) {
+      return await localforage.setItem(
+        "muut",
+        map(muudata => {
+          return initializeMuu(muudata);
+        }, muutData)
+      );
+    }
+    if (muut.data) {
+      initializeMuut(muut.data);
+    }
+  }, [muut.data]);
 
   // Let's fetch LUPA
   useEffect(() => {

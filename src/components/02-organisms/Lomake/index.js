@@ -2,10 +2,9 @@ import React, { useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
-import { join, map, path, split } from "ramda";
+import { join, map, path } from "ramda";
 import { cloneDeep } from "lodash";
 import { useIntl } from "react-intl";
-import { useLomakkeet } from "../../../stores/lomakkeet";
 import { useMetadata } from "../../../stores/metadata";
 import { isEqual } from "lodash";
 
@@ -44,7 +43,6 @@ const Lomake = React.memo(
   }) => {
     const intl = useIntl();
     const [meta, metadataActions] = useMetadata();
-    const [, lomakkeetActions] = useLomakkeet();
 
     const lomakeId = `${anchor}.${prefix}.${join(".", _path || [])}.${action}`;
 
@@ -90,10 +88,6 @@ const Lomake = React.memo(
       rules,
       rulesFn
     ]);
-
-    useEffect(() => {
-      lomakkeetActions.set(split("_", anchor), lomake);
-    }, [anchor, lomake, lomakkeetActions]);
 
     if (
       lomake.categories &&

@@ -44,7 +44,6 @@ import { useTutkinnot } from "../../../../../../stores/tutkinnot";
 import { useKoulutukset } from "../../../../../../stores/koulutukset";
 import { mapObjIndexed, prop, sortBy } from "ramda";
 import { useChangeObjects } from "../../../../../../stores/changeObjects";
-import { useLomakkeet } from "../../../../../../stores/lomakkeet";
 import ProcedureHandler from "../../../../../../components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
@@ -160,9 +159,6 @@ const MuutospyyntoWizard = ({
   const maakuntakunnatList = useMemo(() => {
     return getMaakuntakunnatList(maakuntakunnat, R.toUpper(intl.locale));
   }, [intl.locale, maakuntakunnat]);
-
-  // All forms of KJ Wizard
-  const [lomakkeet] = useLomakkeet();
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [state] = useState({
@@ -532,7 +528,6 @@ const MuutospyyntoWizard = ({
                     lupaKohteet={lupaKohteet}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
-                    lomakkeet={lomakkeet}
                     onChangesUpdate={onSectionChangesUpdate}
                     tutkinnot={parsedTutkinnot}
                   />
@@ -558,7 +553,6 @@ const MuutospyyntoWizard = ({
                     maakuntakunnatList={maakuntakunnatList}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
-                    lomakkeet={lomakkeet}
                     muutosperusteluList={muutosperusteluList}
                     onChangesUpdate={onSectionChangesUpdate}
                     tutkinnot={parsedTutkinnot}
@@ -578,7 +572,6 @@ const MuutospyyntoWizard = ({
                   isSavingEnabled={isSavingEnabled}>
                   <MuutospyyntoWizardTaloudelliset
                     changeObjects={cos}
-                    lomakkeet={lomakkeet}
                     onChangesUpdate={onSectionChangesUpdate}
                     isFirstVisit={visitsPerPage[3] === 1}
                   />
@@ -600,7 +593,6 @@ const MuutospyyntoWizard = ({
                     lupaKohteet={lupaKohteet}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
-                    lomakkeet={lomakkeet}
                     muutosperusteluList={muutosperusteluList}
                     onChangesUpdate={onSectionChangesUpdate}
                     tutkinnot={parsedTutkinnot}
