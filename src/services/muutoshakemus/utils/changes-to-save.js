@@ -49,8 +49,7 @@ export function getChangesToSave(
   changeObjects = {},
   backendMuutokset = [],
   kohde,
-  maaraystyypit,
-  muut
+  maaraystyypit
 ) {
   // Update changes if already exits with perustelut and attachements
   const paivitetytBackendMuutokset = R.map(changeObj => {
@@ -269,86 +268,6 @@ export function getChangesToSave(
         tila,
         type
       };
-    }, unhandledChangeObjects).filter(Boolean);
-  } else if (key === "opiskelijavuodet") {
-    uudetMuutokset = R.map(changeObj => {
-      const anchorParts = R.split(".", changeObj.anchor);
-      const koodiarvo = changeObj.properties.metadata.koodiarvo;
-      let koodisto = { koodistoUri: "koulutussektori" };
-      const isVahimmaismaara = R.equals("vahimmaisopiskelijavuodet", R.nth(1, anchorParts));
-      if (!isVahimmaismaara) {
-        koodisto = (R.find(R.propEq("koodiArvo", koodiarvo), muut) || {})
-          .koodisto;
-      }
-      const anchorInit = R.compose(
-        R.join("."),
-        R.init,
-        R.split(".")
-      )(changeObj.anchor);
-
-      let anchor = "";
-
-      if (anchorInit === "opiskelijavuodet.vahimmaisopiskelijavuodet")
-        anchor = "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet";
-      else if (anchorInit === "opiskelijavuodet.vaativatuki")
-        anchor = "perustelut_opiskelijavuodet_vaativatuki";
-      else if (anchorInit === "opiskelijavuodet.sisaoppilaitos")
-        anchor = "perustelut_opiskelijavuodet_sisaoppilaitos";
-
-      const perustelut = R.filter(
-        R.compose(R.includes(anchor), R.prop("anchor")),
-        changeObjects.perustelut
-      );
-
-      const perustelutForBackend = fillForBackend(perustelut, changeObj.anchor);
-
-      const perusteluteksti = perustelutForBackend
-        ? null
-        : R.map(perustelu => {
-            if (R.path(["properties", "value"], perustelu)) {
-              return { value: R.path(["properties", "value"], perustelu) };
-            }
-            return {
-              value: R.path(["properties", "metadata", "fieldName"], perustelu)
-            };
-          }, perustelut);
-
-      let meta = Object.assign(
-        {},
-        {
-          tunniste: "tutkintokieli",
-          changeObjects: R.flatten([[changeObj], perustelut]),
-          muutosperustelukoodiarvo: []
-        },
-        perustelutForBackend,
-        perusteluteksti ? { perusteluteksti } : null
-      );
-
-      let muutokset = [{
-        arvo: changeObj.properties.applyForValue,
-        kategoria: R.head(anchorParts),
-        koodiarvo,
-        koodisto: koodisto.koodistoUri,
-        kohde,
-        maaraystyyppi: isVahimmaismaara
-            ? R.find(R.propEq("tunniste", "OIKEUS"), maaraystyypit)
-            : R.find(R.propEq("tunniste", "RAJOITE"), maaraystyypit),
-        meta,
-        tila: "LISAYS"
-      }];
-
-      // Add removal change if old maarays exists
-      const maaraysUuid = R.path(["properties", "metadata", "maaraysUuid"], changeObj);
-      if (maaraysUuid) {
-        muutokset = R.append({
-          ...muutokset[0],
-          meta: {},
-          maaraysUuid: maaraysUuid,
-          tila: "POISTO"
-        })(muutokset);
-      }
-
-      return muutokset;
     }, unhandledChangeObjects).filter(Boolean);
   }
 

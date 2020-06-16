@@ -45,6 +45,15 @@ const findAnchoredCategoryOrComponentFromElement = (anchor, elementObject) => {
 };
 
 /**
+ * Find first element that matches anchor prefix.
+ * @param anchorStart Anchor prefix to match
+ * @param changeObjects List of change objects
+ * @returns Found element or undefined
+ */
+export const findChange = (anchorStart, changeObjects) =>
+  R.find(R.compose(R.startsWith(anchorStart), R.prop("anchor")), changeObjects);
+
+/**
  * Returns the element found from given anchor in a category hierarchy. We expect that the anchor is
  * a . delimited path with elements being categories and optionally the last element being a component
  *

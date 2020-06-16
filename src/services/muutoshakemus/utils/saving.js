@@ -2,9 +2,8 @@ import { getChangesToSave } from "./changes-to-save";
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
-import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
-import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import localforage from "localforage";
+import { createChangeObjects as createOpiskelijavuodetChangeObjects } from "./muutosobjektien-luonti/opiskelijavuodet"
 
 export async function createObjectToSave(
   locale,
@@ -15,8 +14,7 @@ export async function createObjectToSave(
   maaraystyypit,
   muut,
   lupaKohteet,
-  alkupera = "KJ",
-  parsedTutkinnot
+  alkupera = "KJ"
 ) {
   const backendMuutokset = await localforage.getItem("backendMuutokset") || [];
 
@@ -86,7 +84,7 @@ export async function createObjectToSave(
         {}
     );
   };
-  
+
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
     {
@@ -190,24 +188,28 @@ export async function createObjectToSave(
   );
 
   // OPISKELIJAVUODET
-  const opiskelijavuodet = getChangesToSave(
-    "opiskelijavuodet",
-    {
-      muutokset: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["opiskelijavuodet"], changeObjects))),
-      perustelut: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["perustelut", "opiskelijavuodet"], changeObjects)))
-    },
-    R.filter(R.pathEq(["kohde", "tunniste"], "opiskelijavuodet"))(
-      backendMuutokset
-    ),
-    R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
-    maaraystyypit,
-    muut
+  const opiskelijavuodet = createOpiskelijavuodetChangeObjects(
+      {
+        muutokset: R.compose(
+            R.flatten,
+            R.values
+        )(R.values(R.path(["opiskelijavuodet"], changeObjects))),
+        perustelut: R.compose(
+            R.flatten,
+            R.values
+        )(R.values(R.path(["perustelut", "opiskelijavuodet"], changeObjects)))
+      },
+      R.filter(R.pathEq(["kohde", "tunniste"], "opiskelijavuodet"))(
+          backendMuutokset
+      ),
+      R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
+      maaraystyypit,
+      muut,
+      lupaKohteet,
+      R.compose(
+          R.flatten,
+          R.values
+      )(R.values(R.path(["muut"], changeObjects)))
   );
 
   // MUUT
