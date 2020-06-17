@@ -242,10 +242,9 @@ export async function defineBackendChangeObjects(
               );
 
               if (
-                (kuntaChangeObj &&
-                  kuntaChangeObj.properties.isChecked &&
-                  !kuntaMaarays) ||
-                (!!maakuntaMaarays && !kuntaChangeObj)
+                !kuntaMaarays &&
+                ((kuntaChangeObj && kuntaChangeObj.properties.isChecked) ||
+                  (!!maakuntaMaarays && !kuntaChangeObj))
               ) {
                 return {
                   tila: "LISAYS",
