@@ -31,9 +31,7 @@ if (!Intl.RelativeTimeFormat) {
 const AppWrapper = () => {
   const [kaannokset, kaannoksetActions] = useKaannokset();
   // See the file: .env.development.local
-  const isBackendTheSourceOfLocalizations =
-    process.env.REACT_APP_FETCH_LOCALICATIONS_FROM_BACKEND === "true";
-
+  const isBackendTheSourceOfLocalizations = !process.env.USE_LOCAL_TRANSLATIONS;
   const [user, userActions] = useUser();
   const [state] = useGlobalSettings();
 
@@ -47,21 +45,27 @@ const AppWrapper = () => {
 
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
-      const abortController = kaannoksetActions.load(state.locale);
+      const abortController = kaannoksetActions.load();
       return function cancel() {
         if (abortController) {
           abortController.abort();
         }
       };
-    } else {
     }
-  }, [isBackendTheSourceOfLocalizations, kaannoksetActions, state.locale]);
+  }, [isBackendTheSourceOfLocalizations, kaannoksetActions]);
 
   const messages = useMemo(() => {
-    return isBackendTheSourceOfLocalizations && kaannokset.length
-      ? kaannokset
-      : translations[state.locale];
-  }, [isBackendTheSourceOfLocalizations, kaannokset, state]);
+    if (!!kaannokset.data) {
+      //Using backend data as source
+      return kaannokset.data;
+    } else if (!isBackendTheSourceOfLocalizations) {
+      //Using local files as source
+      return translations;
+    } else {
+      //Falling back to default localization messages
+      return {};
+    }
+  }, [kaannokset.fetchedAt, isBackendTheSourceOfLocalizations]);
 
   const appStructure = useMemo(() => {
     if (user.fetchedAt) {
@@ -82,13 +86,15 @@ const AppWrapper = () => {
     return null;
   }, [state.isDebugModeOn, user.fetchedAt]);
 
-  if (appStructure && state.locale && messages) {
+  if(!kaannokset.fetchedAt && !kaannokset.isErroneous && isBackendTheSourceOfLocalizations) {
+    return <React.Fragment />
+  } else if (appStructure && state.locale && messages) {
     return (
       // Key has been set to ensure the providers's refresh when locale changes.
       <IntlProvider
         key={state.locale}
         locale={state.locale}
-        messages={messages}>
+        messages={messages[state.locale]}>
         {appStructure}
       </IntlProvider>
     );
