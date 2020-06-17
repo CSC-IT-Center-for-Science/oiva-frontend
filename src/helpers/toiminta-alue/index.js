@@ -226,7 +226,6 @@ export async function defineBackendChangeObjects(
              * käydään kunnat läpi ja muodostetaan lisättävistä backend-
              * muotoiset muutosobjektit.
              */
-            console.info(maakunta);
             muutosobjektit = map(kunta => {
               const kuntaChangeObj = find(
                 pathEq(
