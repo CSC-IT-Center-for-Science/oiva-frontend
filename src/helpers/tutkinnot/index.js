@@ -129,6 +129,40 @@ export const initializeOsaamisalat = (tutkinto, osaamisalat = []) => {
 };
 
 /**
+ * Käsittelee backendiltä saadut tutkinnot muodostaen objekteja, jotka
+ * sisältävät tutkintoihin liittyvät osaamisalat, tutkintokielet ja
+ * määräykset.
+ * @param {object} tutkinnotData - Raw data from backend.
+ */
+export const initializeTutkinnot = (tutkinnotData, maaraykset = []) => {
+  const maarayksetByTutkinto = groupBy(prop("koodiarvo"), maaraykset);
+
+  return tutkinnotData
+    ? map(tutkintodata => {
+        // Luodaan tutkinto
+        let tutkinto = initializeTutkinto(tutkintodata);
+
+        // Asetetaan tutkinnolle määräys
+        tutkinto = initializeMaarays(
+          tutkinto,
+          maarayksetByTutkinto[tutkinto.koodiarvo]
+        );
+
+        // Asetetaan tutkinnolle tutkintokieliä koskevat määräykset
+        tutkinto = initializeTutkintokielet(
+          tutkinto,
+          maarayksetByTutkinto[tutkinto.koodiarvo]
+        );
+
+        // Asetetaan tutkinnon osaamisalat ja niiden määräykset
+        tutkinto = initializeOsaamisalat(tutkinto, tutkintodata.osaamisalat);
+
+        return tutkinto;
+      }, tutkinnotData)
+    : [];
+};
+
+/**
  * Muodostaa backendin tarvitsemat muutosobjektit tutkintojen, osaamisalojen ja
  * tutkintokielien osalta.
  * @param {array} changeObjects

@@ -74,6 +74,7 @@ const MuutospyyntoWizardKielet = props => {
       />
 
       <Tutkintokielet
+        kielet={props.kielet}
         koulutusalat={props.koulutusalat}
         koulutustyypit={props.koulutustyypit}
         lupa={lupa}
@@ -87,6 +88,7 @@ const MuutospyyntoWizardKielet = props => {
 };
 
 MuutospyyntoWizardKielet.propTypes = {
+  kielet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,

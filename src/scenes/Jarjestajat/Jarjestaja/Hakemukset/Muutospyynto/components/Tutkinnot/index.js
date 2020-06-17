@@ -56,7 +56,6 @@ const Tutkinnot = React.memo(props => {
                 }}
                 onChangesUpdate={props.onChangesUpdate}
                 path={["tutkinnot"]}
-                rules={[]}
                 showCategoryTitles={true}></Lomake>
             </ExpandableRowRoot>
           );
@@ -71,7 +70,6 @@ Tutkinnot.propTypes = {
   changeObjects: PropTypes.array,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  lupaKohteet: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   tutkinnot: PropTypes.array
 };

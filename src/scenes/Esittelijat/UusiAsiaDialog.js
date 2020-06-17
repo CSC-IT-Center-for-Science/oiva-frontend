@@ -19,7 +19,6 @@ import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/
 import wizardMessages from "../../i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
-import { useKielet } from "../../stores/kielet";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import { useHistory, useParams } from "react-router-dom";
@@ -67,6 +66,7 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
+  kielet: [],
   kohteet: [],
   koulutusalat: {},
   koulutustyypit: {},
@@ -77,12 +77,14 @@ const defaultProps = {
   maakuntakunnat: [],
   maaraystyypit: [],
   muut: [],
+  opetuskielet: [],
   organisation: {},
   tutkinnot: {}
 };
 
 const UusiAsiaDialog = React.memo(
   ({
+    kielet = defaultProps.kielet,
     kohteet = defaultProps.kohteet,
     koulutusalat = defaultProps.koulutusalat,
     koulutustyypit = defaultProps.koulutustyypit,
@@ -94,6 +96,7 @@ const UusiAsiaDialog = React.memo(
     maaraystyypit = defaultProps.maaraystyypit,
     muut = defaultProps.muut,
     onNewDocSave,
+    opetuskielet = defaultProps.opetuskielet,
     organisation = defaultProps.organisation,
     tutkinnot = defaultProps.tutkinnot
   }) => {
@@ -101,8 +104,6 @@ const UusiAsiaDialog = React.memo(
     let history = useHistory();
     const params = useParams();
     const [cos, coActions] = useChangeObjects(); // cos means change objects
-    const [kielet] = useKielet();
-    const [opetuskielet] = useOpetuskielet();
     const [koulutukset] = useKoulutukset();
     const [, muutospyyntoActions] = useMuutospyynto();
 
@@ -123,13 +124,6 @@ const UusiAsiaDialog = React.memo(
     const organisationWebsite = R.head(
       R.values(R.find(R.prop("www"), organisation.yhteystiedot))
     );
-
-    const kieletAndOpetuskielet = useMemo(() => {
-      return {
-        kielet: sortLanguages(kielet.data, R.toUpper(intl.locale)),
-        opetuskielet: opetuskielet.data
-      };
-    }, [kielet.data, opetuskielet.data, intl.locale]);
 
     const parsedKoulutukset = useMemo(() => {
       return {
@@ -365,7 +359,7 @@ const UusiAsiaDialog = React.memo(
                   rules={getRules()}></Lomake>
               </div>
               <EsittelijatMuutospyynto
-                kielet={kieletAndOpetuskielet}
+                kielet={kielet}
                 kohteet={kohteet}
                 koulutukset={parsedKoulutukset}
                 koulutusalat={koulutusalat}
@@ -378,6 +372,7 @@ const UusiAsiaDialog = React.memo(
                 maaraystyypit={maaraystyypit}
                 muut={muut}
                 onChangesUpdate={onSectionChangesUpdate}
+                opetuskielet={opetuskielet}
                 tutkinnot={tutkinnot}
               />
               <EsittelijatWizardActions
@@ -429,6 +424,7 @@ const UusiAsiaDialog = React.memo(
 
 UusiAsiaDialog.propTypes = {
   history: PropTypes.object,
+  kielet: PropTypes.array,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
@@ -439,6 +435,7 @@ UusiAsiaDialog.propTypes = {
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onNewDocSave: PropTypes.func,
+  opetuskielet: PropTypes.array,
   organisation: PropTypes.object,
   tutkinnot: PropTypes.array
 };

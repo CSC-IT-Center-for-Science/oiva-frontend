@@ -20,6 +20,7 @@ const MuutospyyntoWizardYhteenveto = ({
   muutoshakemus,
   muutosperusteluList,
   onChangesUpdate,
+  opetuskielet,
   tutkinnot
 }) => {
   const intl = useIntl();
@@ -113,6 +114,7 @@ const MuutospyyntoWizardYhteenveto = ({
               muut={muut}
               muutoshakemus={muutoshakemus}
               onChangesUpdate={onChangesUpdate}
+              opetuskielet={opetuskielet}
               tutkinnot={tutkinnot}></YhteenvetoKooste>
           </React.Fragment>
         )}
@@ -139,6 +141,7 @@ const MuutospyyntoWizardYhteenveto = ({
 
 MuutospyyntoWizardYhteenveto.propTypes = {
   changeObjects: PropTypes.object,
+  kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   maaraystyypit: PropTypes.array,
@@ -148,6 +151,7 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   muutoshakemus: PropTypes.object,
   muutosperusteluList: PropTypes.array,
   onChangesUpdate: PropTypes.func,
+  opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.object
 };
 

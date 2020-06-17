@@ -78,10 +78,8 @@ const EsittelijatMuutospyynto = React.memo(
             <Tutkinnot
               koulutusalat={props.koulutusalat}
               koulutustyypit={props.koulutustyypit}
-              lupaKohteet={props.lupaKohteet}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              sectionId={"tutkinnot"}
               tutkinnot={props.tutkinnot}
             />
             <h4 className="pt-8 pb-4">
@@ -100,6 +98,7 @@ const EsittelijatMuutospyynto = React.memo(
             code={props.lupaKohteet[2].headingNumber}
             title={props.lupaKohteet[2].heading}>
             <MuutospyyntoWizardKielet
+              kielet={props.kielet}
               koulutusalat={props.koulutusalat}
               koulutustyypit={props.koulutustyypit}
               lupa={props.lupa}
@@ -108,7 +107,7 @@ const EsittelijatMuutospyynto = React.memo(
               onUpdate={props.onUpdate}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              opetuskielet={props.kielet.opetuskielet}
+              opetuskielet={props.opetuskielet}
               sectionId={"tutkinnot"}
               tutkinnot={props.tutkinnot}
             />
@@ -181,7 +180,7 @@ EsittelijatMuutospyynto.defaultProps = {
 };
 
 EsittelijatMuutospyynto.propTypes = {
-  kielet: PropTypes.object,
+  kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
@@ -194,6 +193,7 @@ EsittelijatMuutospyynto.propTypes = {
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onChangesUpdate: PropTypes.func,
+  opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

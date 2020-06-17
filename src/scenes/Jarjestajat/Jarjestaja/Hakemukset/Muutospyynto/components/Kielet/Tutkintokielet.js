@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
@@ -6,7 +6,6 @@ import common from "../../../../../../../i18n/definitions/common";
 import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 import { getActiveOnes } from "../../../../../../../helpers/tutkinnot/";
-import { getKieletFromStorage } from "../../../../../../../helpers/kielet";
 import wizard from "../../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
 
@@ -15,18 +14,10 @@ const Tutkintokielet = React.memo(props => {
   const [changeObjects] = useChangeObjects();
   const sectionId = "kielet_tutkintokielet";
   const { onChangesRemove, onChangesUpdate } = props;
-  const [kielet, setKielet] = useState();
   const tutkinnotByKoulutusala = R.groupBy(
     R.prop("koulutusalakoodiarvo"),
     props.tutkinnot
   );
-
-  useEffect(() => {
-    async function getData() {
-      setKielet(await getKieletFromStorage());
-    }
-    getData();
-  }, []);
 
   useEffect(() => {
     if (props.unselectedAnchors.length && changeObjects.kielet.tutkintokielet) {
@@ -79,7 +70,7 @@ const Tutkintokielet = React.memo(props => {
   };
 
   const expandableRows = useMemo(() => {
-    return kielet
+    return props.kielet
       ? R.map(koulutusala => {
           const fullSectionId = `${sectionId}_${koulutusala.koodiarvo}`;
           const activeDegrees = getActiveOnes(
@@ -116,7 +107,7 @@ const Tutkintokielet = React.memo(props => {
                   koulutusala,
                   koulutustyypit: props.koulutustyypit,
                   tutkinnotByKoulutustyyppi,
-                  kielet
+                  kielet: props.kielet
                 }}
                 onChangesUpdate={onChangesUpdate}
                 path={["kielet", "tutkintokielet"]}
@@ -129,9 +120,9 @@ const Tutkintokielet = React.memo(props => {
     changeObjects,
     changesMessages,
     intl.locale,
-    kielet,
     onChangesRemove,
     onChangesUpdate,
+    props.kielet,
     props.koulutusalat,
     props.koulutustyypit,
     tutkinnotByKoulutusala
@@ -155,6 +146,7 @@ Tutkintokielet.defaultProps = {
 
 Tutkintokielet.propTypes = {
   changeObjects: PropTypes.object,
+  kielet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,

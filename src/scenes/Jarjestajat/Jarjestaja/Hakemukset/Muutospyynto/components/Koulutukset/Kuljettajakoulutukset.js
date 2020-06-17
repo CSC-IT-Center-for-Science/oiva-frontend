@@ -39,7 +39,6 @@ const Kuljettajakoulutukset = ({
     <ExpandableRowRoot
       anchor={sectionId}
       key={`expandable-row-root`}
-      categories={[]}
       changes={changeObjects.koulutukset.kuljettajakoulutukset}
       hideAmountOfChanges={true}
       messages={changesMessages}

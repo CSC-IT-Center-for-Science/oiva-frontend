@@ -24,6 +24,7 @@ const YhteenvetoKooste = ({
   lupa,
   lupaKohteet,
   onChangesUpdate,
+  opetuskielet,
   tutkinnot
 }) => {
   const intl = useIntl();
@@ -165,7 +166,7 @@ const YhteenvetoKooste = ({
                       )(kohteet)}
                       lupa={lupa}
                       maaraystyyppi={maaraystyypitState.OIKEUS}
-                      opetuskielet={kielet.opetuskielet}
+                      opetuskielet={opetuskielet}
                       isReadOnly={true}
                       {..._props}
                     />
@@ -190,7 +191,7 @@ const YhteenvetoKooste = ({
                       koulutukset={koulutukset}
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       maaraykset={lupa.maaraykset}
-                      opetuskielet={kielet.opetuskielet}
+                      opetuskielet={opetuskielet}
                       tutkinnot={tutkinnot}
                       isReadOnly={true}
                       {..._props}
@@ -302,6 +303,7 @@ YhteenvetoKooste.propTypes = {
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   onChangesUpdate: PropTypes.func,
+  opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.object
 };
 
