@@ -26,8 +26,6 @@ import {
   setAttachmentUuids,
   combineArrays
 } from "../../../../../../utils/muutospyyntoUtil";
-import { parseKoulutusalat } from "../../../../../../utils/koulutusParser";
-import { getMaakuntakunnatList } from "../../../../../../utils/toimialueUtil";
 import Loading from "../../../../../../modules/Loading";
 import { findObjectWithKey } from "../../../../../../utils/common";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
@@ -128,10 +126,6 @@ const MuutospyyntoWizard = ({
       }, koulutukset.poikkeukset)
     };
   }, [koulutukset]);
-
-  const maakuntakunnatList = useMemo(() => {
-    return getMaakuntakunnatList(maakuntakunnat, R.toUpper(intl.locale));
-  }, [intl.locale, maakuntakunnat]);
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [state] = useState({
@@ -451,12 +445,7 @@ const MuutospyyntoWizard = ({
         <h3>{intl.formatMessage(wizardMessages.noRights)}</h3>
       </MessageWrapper>
     );
-  } else if (
-    kielet &&
-    opetuskielet &&
-    parsedKoulutukset &&
-    maakuntakunnatList
-  ) {
+  } else if (kielet && opetuskielet && parsedKoulutukset) {
     return (
       <React.Fragment>
         <FormDialog
@@ -494,9 +483,10 @@ const MuutospyyntoWizard = ({
                     kielet={kielet}
                     kohteet={kohteet}
                     koulutukset={parsedKoulutukset}
+                    koulutusalat={koulutusalat}
                     koulutustyypit={koulutustyypit}
                     kunnat={kunnat}
-                    maakuntakunnatList={maakuntakunnatList}
+                    maakuntakunnat={maakuntakunnat}
                     maakunnat={maakunnat}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
@@ -525,7 +515,7 @@ const MuutospyyntoWizard = ({
                     koulutukset={parsedKoulutukset}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
-                    maakuntakunnatList={maakuntakunnatList}
+                    maakuntakunnat={maakuntakunnat}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
                     muutosperusteluList={muutosperusteluList}

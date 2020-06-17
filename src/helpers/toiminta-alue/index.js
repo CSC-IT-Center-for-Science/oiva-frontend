@@ -13,7 +13,7 @@ import {
   path
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
-import { getMaakunnat } from "../maakunnat";
+import { getMaakuntakunnat } from "../maakunnat";
 
 /**
  * Palauttaa taulukollisen backend-muotoisia muutosobjekteja.
@@ -39,7 +39,7 @@ export async function defineBackendChangeObjects(
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
   const maaraykset = await getMaarayksetByTunniste("toimintaalue");
-  const maakunnat = await getMaakunnat("maakunnat");
+  const maakuntakunnat = await getMaakuntakunnat();
 
   /**
    * PIKAVALINTOJEN LÄPIKÄYNTI
@@ -171,7 +171,7 @@ export async function defineBackendChangeObjects(
         pathEq(["properties", "metadata", "koodiarvo"], maakunta.koodiarvo),
         provinceChangeObjects
       );
-    }, maakunnat);
+    }, maakuntakunnat);
 
     /**
      * Käydään muutoksia sisältävät maakunnat ja niiden maakunnat läpi

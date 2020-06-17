@@ -13,7 +13,6 @@ import { useMaaraystyypit } from "../../../../stores/maaraystyypit";
 import { useMuut } from "../../../../stores/muut";
 import { useKunnat } from "../../../../stores/kunnat";
 import { useMaakunnat } from "../../../../stores/maakunnat";
-import { useMaakuntakunnat } from "../../../../stores/maakuntakunnat";
 import { useVankilat } from "../../../../stores/vankilat";
 import { useOmovt } from "../../../../stores/omovt";
 import { useMuutospyynto } from "../../../../stores/muutospyynto";
@@ -43,6 +42,7 @@ import localforage from "localforage";
 import { initializeKoulutustyyppi } from "../../../../helpers/koulutustyypit";
 import { initializeTutkinnot } from "../../../../helpers/tutkinnot";
 import { initializeKieli } from "../../../../helpers/kielet";
+import { initializeMaakunta } from "../../../../helpers/maakunnat";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -61,6 +61,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
   const [kielet, setKielet] = useState();
   const [koulutusalat, setKoulutusalat] = useState();
   const [koulutustyypit, setKoulutustyypit] = useState();
+  const [maakuntakunnat, setMaakuntakunnat] = useState();
   const [tutkinnot, setTutkinnot] = useState();
 
   const [, coActions] = useChangeObjects();
@@ -72,7 +73,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
   const [muut, muutActions] = useMuut();
   const [kunnat, kunnatActions] = useKunnat();
   const [maakunnat, maakunnatActions] = useMaakunnat();
-  const [maakuntakunnat, maakuntakunnatActions] = useMaakuntakunnat();
   const [vankilat, vankilatActions] = useVankilat();
   const [omovt, omovtActions] = useOmovt();
   const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
@@ -89,7 +89,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
       koulutuksetActions.load(),
       kunnatActions.load(),
       maakunnatActions.load(),
-      maakuntakunnatActions.load(),
       vankilatActions.load(),
       omovtActions.load(),
       oivaperustelutActions.load(),
@@ -116,7 +115,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
     muutActions,
     kunnatActions,
     maakunnatActions,
-    maakuntakunnatActions,
     vankilatActions,
     omovtActions,
     muutospyyntoActions,
@@ -233,6 +231,32 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
             "kielet",
             map(kieli => {
               return initializeKieli(kieli);
+            }, fromBackend)
+          )
+        );
+      }
+    );
+
+    return function cancel() {
+      abortController.abort();
+    };
+  }, []);
+
+  /**
+   * Maakuntakunnat: datan noutaminen backendistä ja sen tallentaminen
+   * paikalliseen tietovarastoon jäsenneltynä.
+   */
+  useEffect(() => {
+    const abortController = loadFromBackend(
+      {
+        key: "maakuntakunnat"
+      },
+      async fromBackend => {
+        setMaakuntakunnat(
+          await localforage.setItem(
+            "maakuntakunnat",
+            map(maakunta => {
+              return initializeMaakunta(maakunta);
             }, fromBackend)
           )
         );
@@ -425,7 +449,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
     muut.fetchedAt &&
     kunnat.fetchedAt &&
     maakunnat.fetchedAt &&
-    maakuntakunnat.fetchedAt &&
+    maakuntakunnat &&
     vankilat.fetchedAt &&
     tutkinnot &&
     omovt.fetchedAt &&
@@ -445,7 +469,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
         lupa={lupa}
         lupaKohteet={lupaKohteet}
         maakunnat={maakunnat.data}
-        maakuntakunnat={maakuntakunnat.data}
+        maakuntakunnat={maakuntakunnat}
         maaraystyypit={maaraystyypit.data}
         match={match}
         muut={muut.data}
@@ -490,7 +514,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
             !!muut.fetchedAt,
             !!kunnat.fetchedAt,
             !!maakunnat.fetchedAt,
-            !!maakuntakunnat.fetchedAt,
+            !!maakuntakunnat,
             !!vankilat.fetchedAt,
             !!tutkinnot.fetchedAt,
             !!omovt.fetchedAt,

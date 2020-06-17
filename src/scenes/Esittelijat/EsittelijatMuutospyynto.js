@@ -119,7 +119,7 @@ const EsittelijatMuutospyynto = React.memo(
             <MuutospyyntoWizardToimintaalue
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
-              maakuntakunnatList={props.maakuntakunnatList}
+              maakuntakunnat={props.maakuntakunnat}
               maakunnat={props.maakunnat}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
@@ -186,7 +186,7 @@ EsittelijatMuutospyynto.propTypes = {
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
-  maakuntakunnatList: PropTypes.array,
+  maakuntakunnat: PropTypes.array,
   maakunnat: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,

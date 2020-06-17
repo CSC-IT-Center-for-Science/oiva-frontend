@@ -85,10 +85,11 @@ const MuutospyyntoWizardMuutokset = React.memo(
             title={props.lupaKohteet[1].heading}>
             <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
             <Tutkinnot
-              tutkinnot={props.tutkinnot}
-              lupaKohteet={props.lupaKohteet}
+              koulutusalat={props.koulutusalat}
+              koulutustyypit={props.koulutustyypit}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
+              tutkinnot={props.tutkinnot}
             />
             <h4 className="pt-8 pb-4">
               {intl.formatMessage(common.koulutukset)}
@@ -123,7 +124,7 @@ const MuutospyyntoWizardMuutokset = React.memo(
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
               kuntamaaraykset={kuntamaaraykset}
-              maakuntakunnatList={props.maakuntakunnatList}
+              maakuntakunnat={props.maakuntakunnat}
               maakunnat={props.maakunnat}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
@@ -182,7 +183,7 @@ MuutospyyntoWizardMuutokset.propTypes = {
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   kunnat: PropTypes.array,
-  maakuntakunnatList: PropTypes.array,
+  maakuntakunnat: PropTypes.array,
   maakunnat: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,

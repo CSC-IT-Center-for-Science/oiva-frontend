@@ -172,21 +172,19 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     const localeUpper = intl.locale.toUpperCase();
     const maaraysUuid = props.valtakunnallinenMaarays.uuid;
     return R.map(maakunta => {
-      // 21 = Ahvenanmaa
-      if (maakunta.koodiarvo === "21") {
+      // 21 = Ahvenanmaa, 99 = Ei tiedossa
+      if (maakunta.koodiarvo === "21" || maakunta.koodiarvo === "99") {
         return null;
       }
 
       const isMaakuntaInLupa = !!R.find(province => {
-        return province.metadata.koodiarvo === maakunta.koodiArvo;
+        return province.metadata.koodiarvo === maakunta.koodiarvo;
       }, maakunnatInLupa);
 
       let numberOfMunicipalitiesInLupa = 0;
 
       const municipalitiesOfProvince = R.map(kunta => {
-        const kunnanNimi = (
-          R.find(R.propEq("kieli", localeUpper), kunta.metadata) || {}
-        ).nimi;
+        const kunnanNimi = kunta.metadata[localeUpper].nimi;
 
         const isKuntaInLupa = !!R.find(
           R.pathEq(["metadata", "koodiarvo"], kunta.koodiarvo),
@@ -198,26 +196,26 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         }
 
         return {
-          anchor: kunta.koodiArvo,
+          anchor: kunta.koodiarvo,
           name: "CheckboxWithLabel",
           styleClasses: ["w-1/2"],
           properties: {
-            code: kunta.koodiArvo,
+            code: kunta.koodiarvo,
             forChangeObject: {
-              koodiarvo: kunta.koodiArvo,
+              koodiarvo: kunta.koodiarvo,
               title: kunnanNimi,
-              maakuntaKey: mapping[maakunta.koodiArvo],
+              maakuntaKey: mapping[maakunta.koodiarvo],
               maaraysUuid
             },
             isChecked: isKuntaInLupa || isMaakuntaInLupa || fiCode === "FI1",
             labelStyles: Object.assign({}, labelStyles, {
               custom: isInLupa
             }),
-            name: kunta.koodiArvo,
+            name: kunta.koodiarvo,
             title: kunnanNimi
           }
         };
-      }, maakunta.kunta);
+      }, maakunta.kunnat);
 
       const isKuntaOfMaakuntaInLupa = !!R.find(kunta => {
         let maakuntaCode;
@@ -232,20 +230,20 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
             }
           }, mapping);
         }
-        return maakuntaCode === maakunta.koodiArvo;
+        return maakuntaCode === maakunta.koodiarvo;
       }, kunnatInLupa);
       return {
-        anchor: mapping[maakunta.koodiArvo],
-        formId: mapping[maakunta.koodiArvo],
+        anchor: mapping[maakunta.koodiarvo],
+        formId: mapping[maakunta.koodiarvo],
         components: [
           {
             anchor: "A",
             name: "CheckboxWithLabel",
             properties: {
-              code: maakunta.koodiArvo,
+              code: maakunta.koodiarvo,
               forChangeObject: {
-                koodiarvo: maakunta.koodiArvo,
-                maakuntaKey: mapping[maakunta.koodiArvo],
+                koodiarvo: maakunta.koodiarvo,
+                maakuntaKey: mapping[maakunta.koodiarvo],
                 title: maakunta.label,
                 maaraysUuid
               },
@@ -257,33 +255,33 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
               labelStyles: Object.assign({}, labelStyles, {
                 custom: isInLupa
               }),
-              name: maakunta.koodiArvo,
-              title: maakunta.label
+              name: maakunta.koodiarvo,
+              title: maakunta.metadata[localeUpper].nimi
             }
           }
         ],
         categories: [
           {
             anchor: "kunnat",
-            formId: mapping[maakunta.koodiArvo],
+            formId: mapping[maakunta.koodiarvo],
             components: municipalitiesOfProvince
           }
         ]
       };
-    }, props.maakuntakunnatList).filter(Boolean);
+    }, props.maakuntakunnat).filter(Boolean);
   }, [
     intl.locale,
     fiCode,
     kunnatInLupa,
     maakunnatInLupa,
-    props.maakuntakunnatList,
+    props.maakuntakunnat,
     props.valtakunnallinenMaarays
   ]);
 
   const kunnatWithoutAhvenanmaan = useMemo(() => {
     return R.filter(kunta => {
       const result = R.find(
-        R.propEq("kuntaKoodiarvo", kunta.koodiArvo),
+        R.propEq("kuntaKoodiarvo", kunta.koodiarvo),
         kuntaProvinceMapping
       );
       return result && result.maakuntaKey !== "FI-01";
@@ -293,7 +291,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const provincesWithoutAhvenanmaa = useMemo(() => {
     return R.filter(maakunta => {
       // 21 = Ahvenanmaa
-      return maakunta.koodiArvo !== "21";
+      return maakunta.koodiarvo !== "21";
     }, props.maakunnat);
   }, [props.maakunnat]);
 
@@ -380,7 +378,7 @@ MuutospyyntoWizardToimintaalue.defaultProps = {
   kuntamaaraykset: [],
   lupakohde: {},
   maakunnat: [],
-  maakuntakunnatList: [],
+  maakuntakunnat: [],
   valtakunnallinenMaarays: {}
 };
 
@@ -388,7 +386,7 @@ MuutospyyntoWizardToimintaalue.propTypes = {
   kunnat: PropTypes.array,
   lupakohde: PropTypes.object,
   maakunnat: PropTypes.array,
-  maakuntakunnatList: PropTypes.array,
+  maakuntakunnat: PropTypes.array,
   kuntamaaraykset: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object,
   onChangesUpdate: PropTypes.func,

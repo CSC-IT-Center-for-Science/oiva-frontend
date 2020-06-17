@@ -9,11 +9,8 @@ import { useChangeObjects } from "../../stores/changeObjects";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
-import { sortLanguages } from "../../utils/kieliUtil";
 import { mapObjIndexed, prop, sortBy } from "ramda";
-import { getMaakuntakunnatList } from "../../utils/toimialueUtil";
 import { useKoulutukset } from "../../stores/koulutukset";
-import { useOpetuskielet } from "../../stores/opetuskielet";
 import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import wizardMessages from "../../i18n/definitions/wizard";
@@ -135,10 +132,6 @@ const UusiAsiaDialog = React.memo(
         }, koulutukset.poikkeukset)
       };
     }, [koulutukset]);
-
-    const maakuntakunnatList = useMemo(() => {
-      return getMaakuntakunnatList(maakuntakunnat, R.toUpper(intl.locale));
-    }, [intl.locale, maakuntakunnat]);
 
     /**
      * The function is mainly called by FormSection.
@@ -365,7 +358,7 @@ const UusiAsiaDialog = React.memo(
                 koulutusalat={koulutusalat}
                 koulutustyypit={koulutustyypit}
                 kunnat={kunnat}
-                maakuntakunnatList={maakuntakunnatList}
+                maakuntakunnat={maakuntakunnat}
                 maakunnat={maakunnat}
                 lupa={lupa}
                 lupaKohteet={lupaKohteet}
