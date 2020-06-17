@@ -281,7 +281,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const kunnatWithoutAhvenanmaan = useMemo(() => {
     return R.filter(kunta => {
       const result = R.find(
-        R.propEq("kuntaKoodiarvo", kunta.koodiarvo),
+        R.propEq("kuntaKoodiarvo", kunta.koodiArvo),
         kuntaProvinceMapping
       );
       return result && result.maakuntaKey !== "FI-01";
@@ -291,7 +291,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const provincesWithoutAhvenanmaa = useMemo(() => {
     return R.filter(maakunta => {
       // 21 = Ahvenanmaa
-      return maakunta.koodiarvo !== "21";
+      return maakunta.koodiArvo !== "21";
     }, props.maakunnat);
   }, [props.maakunnat]);
 
