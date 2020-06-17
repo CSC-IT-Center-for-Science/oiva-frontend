@@ -226,6 +226,7 @@ export async function defineBackendChangeObjects(
              * käydään kunnat läpi ja muodostetaan lisättävistä backend-
              * muotoiset muutosobjektit.
              */
+            console.info(maakunta);
             muutosobjektit = map(kunta => {
               const kuntaChangeObj = find(
                 pathEq(
@@ -242,10 +243,10 @@ export async function defineBackendChangeObjects(
               );
 
               if (
-                !!maakuntaMaarays &&
-                !kuntaMaarays &&
-                (!kuntaChangeObj ||
-                  (kuntaChangeObj && kuntaChangeObj.properties.isChecked))
+                (kuntaChangeObj &&
+                  kuntaChangeObj.properties.isChecked &&
+                  !kuntaMaarays) ||
+                (!!maakuntaMaarays && !kuntaChangeObj)
               ) {
                 return {
                   tila: "LISAYS",
