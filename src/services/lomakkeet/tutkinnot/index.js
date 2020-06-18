@@ -22,8 +22,8 @@ function getModificationForm(
         code: koulutustyyppi.koodiarvo,
         title: koulutustyyppi.metadata[localeUpper].nimi,
         categories: map(tutkinto => {
-          const osaamisalatWithMaarays = filter(
-            osaamisala => !!osaamisala.maarays,
+          const osaamisalatWithoutMaarays = filter(
+            osaamisala => !osaamisala.maarays,
             tutkinto.osaamisalat
           );
           return new Date(tutkinto.voimassaAlkuPvm) < currentDate
@@ -46,7 +46,7 @@ function getModificationForm(
                       },
                       isChecked: !!tutkinto.maarays,
                       isIndeterminate:
-                        osaamisalatWithMaarays.length !==
+                        osaamisalatWithoutMaarays.length !==
                         tutkinto.osaamisalat.length
                     }
                   }
@@ -66,10 +66,10 @@ function getModificationForm(
                             removal: isRemoved,
                             custom: Object.assign(
                               {},
-                              !!osaamisala.maarays ? isInLupa : {}
+                              !osaamisala.maarays ? isInLupa : {}
                             )
                           },
-                          isChecked: !!osaamisala.maarays
+                          isChecked: !!tutkinto.maarays && !osaamisala.maarays
                         }
                       }
                     ]
