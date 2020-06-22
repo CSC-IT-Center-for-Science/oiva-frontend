@@ -1,4 +1,5 @@
 import "../i18n-config";
+import * as helper from "../../../helpers/opiskelijavuodet";
 import { __ } from "i18n-for-browser";
 import {
   values,
@@ -6,12 +7,15 @@ import {
   find,
   toUpper,
   pathEq,
-  filter,
+  path,
   prop,
-  map,
   includes,
   propEq
 } from "ramda";
+import {
+  findSisaoppilaitosRajoitus,
+  findVaativatukiRajoitus
+} from "../../../helpers/opiskelijavuodet";
 
 function getModificationForm(
   locale,
@@ -50,12 +54,6 @@ function getModificationForm(
     );
   }, muutMaaraykset);
 
-  // Etsitään sisäoppilaitosvalintaan kohdistunut muutos.
-  const sisaoppilaitosChangeObj = find(changeObj => {
-    const { key, koodiarvo } = changeObj.properties.metadata;
-    return key === "sisaoppilaitos" && koodiarvo === sisaoppilaitos.koodiarvo;
-  }, muutChangesFlatten);
-
   /**
    * Muodostetaan boolean-tyyppinen muuttuja sille, pitääkö sisäoppilaitosta
    * koskeva tietue näyttää lomakkeella. Jos sisäoppilaitosta koskeva määräys
@@ -63,9 +61,10 @@ function getModificationForm(
    * lisäämässä, näytetään sisäoppilaitoksen tietue käyttäjälle, jotta hän
    * voi täyttää sen tiedot.
    **/
-  const isSisaoppilaitosVisible =
-    (sisaoppilaitosmaarays && !sisaoppilaitosChangeObj) ||
-    (sisaoppilaitosChangeObj && sisaoppilaitosChangeObj.properties.isChecked);
+  const isSisaoppilaitosVisible = helper.isSisaoppilaitosRajoitusVisible(
+    muutMaaraykset,
+    muutChangesFlatten
+  );
 
   const opiskelijavuosimaaraysSisaoppilaitos = sisaoppilaitosmaarays
     ? find(propEq("koodiarvo", sisaoppilaitosmaarays.koodiarvo), maaraykset)
@@ -79,19 +78,10 @@ function getModificationForm(
    * että koulutuksen järjestäjällä ei ole velvollisuutta järjestää koulutusta.
    * Se jätetään muutoksia tarkasteltaessa huomioimatta.
    **/
-  const vaativaTuki = filter(obj => {
-    return (
-      obj.metadata[toUpper(locale)].kasite === "vaativa_1" &&
-      obj.koodiarvo !== "23"
-    );
-  }, muut);
-
-  const vaativaTukiKoodiarvot = map(prop("koodiarvo"), vaativaTuki);
-
   // Etsitään vaativaa erityistä tukea koskevat ja voimassa olevat määräykset.
   const vaativaTukiMaarays = find(maarays => {
     return (
-      includes(maarays.koodiarvo, vaativaTukiKoodiarvot) &&
+      includes(maarays.koodiarvo, helper.vaativatCodes) &&
       new Date(maarays.koodi.voimassaAlkuPvm) < currentDate
     );
   }, muutMaaraykset);
@@ -99,7 +89,7 @@ function getModificationForm(
   // Etsitään sisäoppilaitosvalintaan kohdistunut muutos.
   const vaativaTukiChangeObj = find(changeObj => {
     const { key, koodiarvo } = changeObj.properties.metadata;
-    return key === "vaativatuki" && includes(koodiarvo, vaativaTukiKoodiarvot);
+    return key === "vaativatuki" && includes(koodiarvo, helper.vaativatCodes);
   }, muutChangesFlatten);
 
   /**
@@ -109,9 +99,10 @@ function getModificationForm(
    * lisäämässä, näytetään sisäoppilaitoksen tietue käyttäjälle, jotta hän
    * voi täyttää sen tiedot.
    **/
-  const isVaativaTukiVisible =
-    (vaativaTukiMaarays && !vaativaTukiChangeObj) ||
-    (vaativaTukiChangeObj && vaativaTukiChangeObj.properties.isChecked);
+  const isVaativaTukiVisible = helper.isVaativatukiRajoitusVisible(
+    muutMaaraykset,
+    muutChangesFlatten
+  );
 
   const opiskelijavuosimaaraysVaativaTuki = vaativaTukiMaarays
     ? find(propEq("koodiarvo", vaativaTukiMaarays.koodiarvo), maaraykset)
@@ -160,8 +151,13 @@ function getModificationForm(
               name: "Difference",
               properties: {
                 forChangeObject: {
-                  koodiarvo: (vaativaTukiMaarays || {}).koodiarvo,
-                  maaraysUuid: (vaativaTukiMaarays || {}).uuid
+                  koodiarvo:
+                    prop("koodiarvo", vaativaTukiMaarays) ||
+                    path(
+                      ["properties", "metadata", "koodiarvo"],
+                      vaativaTukiChangeObj
+                    ),
+                  maaraysUuid: (findVaativatukiRajoitus(maaraykset) || {}).uuid
                 },
                 isRequired: isVaativaTukiValueRequired,
                 initialValue: opiskelijavuosimaaraysVaativaTuki
@@ -187,10 +183,9 @@ function getModificationForm(
               name: "Difference",
               properties: {
                 forChangeObject: {
-                  koodiarvo: sisaoppilaitosmaarays
-                    ? sisaoppilaitosmaarays.koodiarvo
-                    : "3",
-                  maaraysUuid: (sisaoppilaitosmaarays || {}).uuid
+                  koodiarvo: helper.sisaoppilaitosOpiskelijamaaraKoodiarvo,
+                  maaraysUuid: (findSisaoppilaitosRajoitus(maaraykset) || {})
+                    .uuid
                 },
                 isRequired: isSisaoppilaitosValueRequired,
                 initialValue: opiskelijavuosimaaraysSisaoppilaitos

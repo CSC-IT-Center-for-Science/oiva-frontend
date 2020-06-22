@@ -8,6 +8,7 @@ import { useChangeObjects } from "../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 import { getMaarayksetByTunniste } from "../../../../../../helpers/lupa";
 import { getMuutFromStorage } from "../../../../../../helpers/muut";
+import * as helper from "../../../../../../helpers/opiskelijavuodet";
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
   ({ onChangesRemove, onChangesUpdate, sectionId }) => {
@@ -27,15 +28,40 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
 
     // When sisaoppilaitos or vaativatuki are not visible, exclude them from the collection of changes updates
     useEffect(() => {
-      let filteredChanges = changeObjects.opiskelijavuodet;
+      const flattenMuutChanges = R.flatten(R.values(changeObjects.muut));
+      const vaativatukiIsVisible = helper.isVaativatukiRajoitusVisible(
+        muutMaaraykset,
+        flattenMuutChanges
+      );
+      const sisaoppilaitosVisible = helper.isSisaoppilaitosRajoitusVisible(
+        muutMaaraykset,
+        flattenMuutChanges
+      );
 
-      if (!R.equals(filteredChanges, changeObjects.opiskelijavuodet)) {
+      // Filter out vaativa tuki and sisaoppilaitos changes values are not visible
+      const filtered = R.filter(change => {
+        const type = R.nth(1, R.split(".", R.prop("anchor", change)));
+        if (type === "vaativatuki") {
+          return vaativatukiIsVisible;
+        } else if (type === "sisaoppilaitos") {
+          return sisaoppilaitosVisible;
+        }
+        return true;
+      }, changeObjects.opiskelijavuodet);
+
+      if (!R.equals(filtered, changeObjects.opiskelijavuodet)) {
         onChangesUpdate({
           anchor: sectionId,
-          changes: filteredChanges
+          changes: filtered
         });
       }
-    }, [onChangesUpdate, changeObjects.opiskelijavuodet, sectionId]);
+    }, [
+      onChangesUpdate,
+      changeObjects.muut,
+      sectionId,
+      muutMaaraykset,
+      changeObjects.opiskelijavuodet
+    ]);
 
     const changesMessages = {
       undo: intl.formatMessage(common.undo),

@@ -5,7 +5,7 @@ import * as R from "ramda";
 import localforage from "localforage";
 import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
-import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet"
+import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
 
 export async function createObjectToSave(
   locale,
@@ -191,27 +191,24 @@ export async function createObjectToSave(
 
   // OPISKELIJAVUODET
   const opiskelijavuodet = opiskelijavuodetHelper.createChangeObjects(
-      {
-        muutokset: R.compose(
-            R.flatten,
-            R.values
-        )(R.values(R.path(["opiskelijavuodet"], changeObjects))),
-        perustelut: R.compose(
-            R.flatten,
-            R.values
-        )(R.values(R.path(["perustelut", "opiskelijavuodet"], changeObjects)))
-      },
-      R.filter(R.pathEq(["kohde", "tunniste"], "opiskelijavuodet"))(
-          backendMuutokset
-      ),
-      R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
-      maaraystyypit,
-      muut,
-      lupaKohteet,
-      R.compose(
-          R.flatten,
-          R.values
-      )(R.values(R.path(["muut"], changeObjects)))
+    {
+      muutokset: R.compose(
+        R.flatten,
+        R.values
+      )(R.values(R.path(["opiskelijavuodet"], changeObjects))),
+      perustelut: R.compose(
+        R.flatten,
+        R.values
+      )(R.values(R.path(["perustelut", "opiskelijavuodet"], changeObjects)))
+    },
+    R.filter(R.pathEq(["kohde", "tunniste"], "opiskelijavuodet"))(
+      backendMuutokset
+    ),
+    R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
+    maaraystyypit,
+    muut,
+    lupaKohteet,
+    R.compose(R.flatten, R.values)(R.values(R.path(["muut"], changeObjects)))
   );
 
   // MUUT
