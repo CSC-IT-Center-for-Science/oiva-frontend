@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import common from "../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
-import * as R from "ramda";
 import Lomake from "../../../../../../components/02-organisms/Lomake";
 import { useChangeObjects } from "../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 import { getMaarayksetByTunniste } from "../../../../../../helpers/lupa";
 import { getMuutFromStorage } from "../../../../../../helpers/muut";
-import * as helper from "../../../../../../helpers/opiskelijavuodet";
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
   ({ onChangesRemove, onChangesUpdate, sectionId }) => {
@@ -25,43 +23,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         setMuutMaaraykset(await getMaarayksetByTunniste("muut"));
       })();
     }, []);
-
-    // When sisaoppilaitos or vaativatuki are not visible, exclude them from the collection of changes updates
-    useEffect(() => {
-      const flattenMuutChanges = R.flatten(R.values(changeObjects.muut));
-      const vaativatukiIsVisible = helper.isVaativatukiRajoitusVisible(
-        muutMaaraykset,
-        flattenMuutChanges
-      );
-      const sisaoppilaitosVisible = helper.isSisaoppilaitosRajoitusVisible(
-        muutMaaraykset,
-        flattenMuutChanges
-      );
-
-      // Filter out vaativa tuki and sisaoppilaitos changes values are not visible
-      const filtered = R.filter(change => {
-        const type = R.nth(1, R.split(".", R.prop("anchor", change)));
-        if (type === "vaativatuki") {
-          return vaativatukiIsVisible;
-        } else if (type === "sisaoppilaitos") {
-          return sisaoppilaitosVisible;
-        }
-        return true;
-      }, changeObjects.opiskelijavuodet);
-
-      if (!R.equals(filtered, changeObjects.opiskelijavuodet)) {
-        onChangesUpdate({
-          anchor: sectionId,
-          changes: filtered
-        });
-      }
-    }, [
-      onChangesUpdate,
-      changeObjects.muut,
-      sectionId,
-      muutMaaraykset,
-      changeObjects.opiskelijavuodet
-    ]);
 
     const changesMessages = {
       undo: intl.formatMessage(common.undo),

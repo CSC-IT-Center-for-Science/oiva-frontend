@@ -126,7 +126,7 @@ function getModificationForm(
           name: "Difference",
           properties: {
             forChangeObject: {
-              koodiarvo: (vahimmaisopiskelijavuodetMaarays || {}).koodiarvo,
+              koodiarvo: helper.vahimmaisopiskelijamaaraKoodiarvo,
               maaraysUuid: (vahimmaisopiskelijavuodetMaarays || {}).uuid
             },
             initialValue: vahimmaisopiskelijavuodetMaarays

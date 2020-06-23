@@ -9,7 +9,10 @@ const vaativatukiNotSelectedKoodiarvo = "23";
 // Mikäli jokin näistä koodeista on valittuna osiossa 5, näytetään vaativaa tukea koskevat kentät osiossa 4.
 export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
 
+// Default code value for sisaoopilaitoksen opiskelijamaaran rajoitus
 export const sisaoppilaitosOpiskelijamaaraKoodiarvo = "4";
+// Default code value for ylienen opiskelijamaaran rajoitus
+export const vahimmaisopiskelijamaaraKoodiarvo = "3";
 
 const vaativatukiSelectionAnchor =
   "muut_02.vaativatuki." + vaativatukiNotSelectedKoodiarvo;
@@ -57,7 +60,6 @@ export const isSisaoppilaitosRajoitusVisible = (
 ) => {
   const maarays = findSisaoppilaitosRajoitus(maaraykset);
   const isChecked = findIsChecked(sisaoppilaitosSelectionAnchor, changeObjects);
-  console.log(maaraykset, maarays, isChecked);
   return (maarays && isChecked !== false) || (!maarays && !!isChecked);
 };
 
@@ -98,7 +100,37 @@ export function createChangeObjects(
 ) {
   // TODO: Fill perustelut and liitteet
 
-  const unhandledChangeObjects = changeObjects.muutokset;
+  const muutMaaraykset = R.compose(
+    R.prop("muutCombined"),
+    R.head,
+    R.values,
+    R.filter(R.propEq("tunniste", "muut"))
+  )(lupamuutokset);
+
+  const unhandledChangeObjects = R.compose(
+    // Filter out opiskelijamaararajoitukset if they are not visible
+    R.filter(({ anchorInit }) => {
+      if (anchorInit === "opiskelijavuodet.vaativatuki") {
+        return isVaativatukiRajoitusVisible(muutMaaraykset, muutMuutokset);
+      } else if (anchorInit === "opiskelijavuodet.sisaoppilaitos") {
+        return isSisaoppilaitosRajoitusVisible(muutMaaraykset, muutMuutokset);
+      }
+      return true;
+    }),
+
+    // Set anchorInit property
+    R.map(changeObj => {
+      const anchorInit = R.compose(
+        R.join("."),
+        R.init,
+        R.split(".")
+      )(changeObj.anchor);
+      return {
+        ...changeObj,
+        anchorInit
+      };
+    })
+  )(changeObjects.muutokset);
 
   const uudetMuutokset = R.map(changeObj => {
     const anchorParts = R.split(".", changeObj.anchor);
@@ -112,14 +144,8 @@ export function createChangeObjects(
       koodisto = (R.find(R.propEq("koodiArvo", koodiarvo), muut) || {})
         .koodisto;
     }
-    const anchorInit = R.compose(
-      R.join("."),
-      R.init,
-      R.split(".")
-    )(changeObj.anchor);
-
+    const anchorInit = changeObj.anchorInit;
     let anchor = "";
-
     if (anchorInit === "opiskelijavuodet.vahimmaisopiskelijavuodet")
       anchor = "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet";
     else if (anchorInit === "opiskelijavuodet.vaativatuki")
@@ -207,25 +233,19 @@ export function createChangeObjects(
   });
 
   // If last radio selection (23) is selected, vuosimaara should be removed
-  if (
-    findIsChecked(
-      "muut_02.vaativatuki." + vaativatukiNotSelectedKoodiarvo,
-      muutMuutokset
-    )
-  ) {
+  if (findIsChecked(vaativatukiSelectionAnchor, muutMuutokset)) {
     const vaativatukiMaarays = findVaativatukiRajoitus(rajoitukset);
-    uudetMuutokset.push(generateMuutosFromMaarays(vaativatukiMaarays));
+    if (vaativatukiMaarays) {
+      uudetMuutokset.push(generateMuutosFromMaarays(vaativatukiMaarays));
+    }
   }
 
   // If sisaoppilaitos is changed to false, vuosimaara should be removed
-  if (
-    findIsChecked(
-      sisaoppilaitosSelectionAnchor,
-      muutMuutokset
-    ) === false
-  ) {
+  if (findIsChecked(sisaoppilaitosSelectionAnchor, muutMuutokset) === false) {
     const sisaoppilaitosMaarays = findSisaoppilaitosRajoitus(rajoitukset);
-    uudetMuutokset.push(generateMuutosFromMaarays(sisaoppilaitosMaarays));
+    if (sisaoppilaitosMaarays) {
+      uudetMuutokset.push(generateMuutosFromMaarays(sisaoppilaitosMaarays));
+    }
   }
 
   return R.flatten([uudetMuutokset]);
