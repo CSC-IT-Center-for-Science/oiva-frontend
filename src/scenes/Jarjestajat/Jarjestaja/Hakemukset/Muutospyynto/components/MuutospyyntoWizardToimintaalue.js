@@ -251,7 +251,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
                 isMaakuntaInLupa || isKuntaOfMaakuntaInLupa || fiCode === "FI1",
               isIndeterminate:
                 numberOfMunicipalitiesInLupa > 0 &&
-                numberOfMunicipalitiesInLupa < maakunta.kunta.length,
+                numberOfMunicipalitiesInLupa < (R.path(["kunta", "length"], maakunta) || 0),
               labelStyles: Object.assign({}, labelStyles, {
                 custom: isInLupa
               }),

@@ -65,7 +65,7 @@ const AppWrapper = () => {
       //Falling back to default localization messages
       return {};
     }
-  }, [kaannokset.fetchedAt, isBackendTheSourceOfLocalizations]);
+  }, [kaannokset.data, isBackendTheSourceOfLocalizations]);
 
   const appStructure = useMemo(() => {
     if (user.fetchedAt) {
