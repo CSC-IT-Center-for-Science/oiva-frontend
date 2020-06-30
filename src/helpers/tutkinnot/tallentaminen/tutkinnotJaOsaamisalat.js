@@ -9,8 +9,7 @@ import {
   propEq,
   equals,
   append,
-  assocPath,
-  addIndex
+  assocPath
 } from "ramda";
 import { getAnchorInit, getAnchorPart } from "../../../utils/common";
 
@@ -112,9 +111,8 @@ export function createBEOofTutkinnotJaOsaamisalat(
      * Seuraavaksi on käytävä läpi tarkasteltavan tutkinnon osaamisalat
      * ja tarkistettava, onko niihin kohdistettu muutoksia.
      */
-    const osaamisalamuutokset = addIndex(map)((osaamisala, index) => {
+    const osaamisalamuutokset = map(osaamisala => {
       const isOsaamisalaRajoiteInLupa = !!osaamisala.maarays;
-
       let osaamisalamuutos = null;
 
       const osaamisalaChangeObj = find(changeObj => {

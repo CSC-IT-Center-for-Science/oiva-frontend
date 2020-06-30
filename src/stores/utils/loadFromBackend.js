@@ -53,13 +53,13 @@ async function run(abortController, config, callbackFn) {
   }
 }
 
-export default function loadFromBackend(config, callbackFn, payload) {
+export default function loadFromBackend(config, callbackFn) {
   if (!callbackFn) {
     console.info("Callback function is missing", config);
     return;
   }
   const abortController = new AbortController();
-  run(abortController, config, callbackFn, payload);
+  run(abortController, config, callbackFn);
   return abortController;
 }
 
@@ -67,8 +67,7 @@ export function execute(
   { getState, setState },
   config,
   propsToState = {},
-  refreshIntervalInSeconds = 120,
-  payload
+  refreshIntervalInSeconds = 120
 ) {
   const state = getState();
   const fetched = config.path ? path(config.path, state) : state;
@@ -89,24 +88,20 @@ export function execute(
       });
     }
 
-    const abortController = loadFromBackend(
-      config,
-      (data, isErroneous) => {
-        let result = {
-          ...{ keyParams: propsToState },
-          fetchedAt: new Date().getTime(),
-          data,
-          isErroneous,
-          isLoading: false
-        };
-        let nextState = result;
-        if (config.path) {
-          nextState = assocPath(config.path, result, getState());
-        }
-        setState(nextState);
-      },
-      payload
-    );
+    const abortController = loadFromBackend(config, (data, isErroneous) => {
+      let result = {
+        ...{ keyParams: propsToState },
+        fetchedAt: new Date().getTime(),
+        data,
+        isErroneous,
+        isLoading: false
+      };
+      let nextState = result;
+      if (config.path) {
+        nextState = assocPath(config.path, result, getState());
+      }
+      setState(nextState);
+    });
 
     return abortController;
   }

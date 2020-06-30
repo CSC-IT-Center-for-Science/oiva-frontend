@@ -1,6 +1,6 @@
 import { createRules, ifOneTerm, getPathByAnchor } from "../utils";
 import { requiredFields } from "./requiredFields";
-import { assocPath, compose, concat, not, isEmpty } from "ramda";
+import { assocPath, concat } from "ramda";
 
 export function getRules(_lomake) {
   // Rules for top three fields of muutospyyntö

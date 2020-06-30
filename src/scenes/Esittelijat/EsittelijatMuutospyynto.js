@@ -76,11 +76,11 @@ const EsittelijatMuutospyynto = React.memo(
             title={props.lupaKohteet[1].heading}>
             <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
             <Tutkinnot
-              tutkinnot={props.tutkinnot}
-              lupaKohteet={props.lupaKohteet}
+              koulutusalat={props.koulutusalat}
+              koulutustyypit={props.koulutustyypit}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              sectionId={"tutkinnot"}
+              tutkinnot={props.tutkinnot}
             />
             <h4 className="pt-8 pb-4">
               {intl.formatMessage(common.koulutukset)}
@@ -98,14 +98,18 @@ const EsittelijatMuutospyynto = React.memo(
             code={props.lupaKohteet[2].headingNumber}
             title={props.lupaKohteet[2].heading}>
             <MuutospyyntoWizardKielet
+              kielet={props.kielet}
+              koulutusalat={props.koulutusalat}
+              koulutustyypit={props.koulutustyypit}
               lupa={props.lupa}
               lupaKohteet={props.lupaKohteet}
               koulutukset={props.koulutukset}
               onUpdate={props.onUpdate}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              opetuskielet={props.kielet.opetuskielet}
+              opetuskielet={props.opetuskielet}
               sectionId={"tutkinnot"}
+              tutkinnot={props.tutkinnot}
             />
           </Section>
 
@@ -115,7 +119,7 @@ const EsittelijatMuutospyynto = React.memo(
             <MuutospyyntoWizardToimintaalue
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
-              maakuntakunnatList={props.maakuntakunnatList}
+              maakuntakunnat={props.maakuntakunnat}
               maakunnat={props.maakunnat}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
@@ -124,7 +128,7 @@ const EsittelijatMuutospyynto = React.memo(
             />
           </Section>
 
-          {kohteet.opiskelijavuodet && !R.isEmpty(props.lomakkeet.muut) && (
+          {kohteet.opiskelijavuodet && (
             <Section
               code={props.lupaKohteet[4].headingNumber}
               title={props.lupaKohteet[4].heading}>
@@ -133,10 +137,6 @@ const EsittelijatMuutospyynto = React.memo(
                 maaraykset={props.lupa.maaraykset}
                 muut={props.muut}
                 opiskelijavuodet={props.opiskelijavuodet}
-                lomakkeet={{
-                  opiskelijavuodet: props.lomakkeet.opiskelijavuodet,
-                  muut: props.lomakkeet.muut
-                }}
                 onChangesRemove={onChangesRemove}
                 onChangesUpdate={updateChanges}
                 sectionId={"opiskelijavuodet"}
@@ -165,8 +165,10 @@ const EsittelijatMuutospyynto = React.memo(
   (currentProps, nextProps) => {
     return (
       R.equals(currentProps.kielet, nextProps.kielet) &&
-      R.equals(currentProps.lomakkeet, nextProps.lomakkeet) &&
       R.equals(currentProps.lupa, nextProps.lupa) &&
+      R.equals(currentProps.koulutusalat, nextProps.koulutusalat) &&
+      R.equals(currentProps.koulutustyypit, nextProps.koulutustyypit) &&
+      R.equals(currentProps.tutkinnot, nextProps.tutkinnot) &&
       R.equals(currentProps.lupaKohteet, nextProps.lupaKohteet) &&
       R.equals(currentProps.maaraystyypit, nextProps.maaraystyypit)
     );
@@ -178,19 +180,21 @@ EsittelijatMuutospyynto.defaultProps = {
 };
 
 EsittelijatMuutospyynto.propTypes = {
-  kielet: PropTypes.object,
+  kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
+  koulutusalat: PropTypes.array,
+  koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
-  maakuntakunnatList: PropTypes.array,
+  maakuntakunnat: PropTypes.array,
   maakunnat: PropTypes.array,
-  lomakkeet: PropTypes.object,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  tutkinnot: PropTypes.object
+  opetuskielet: PropTypes.array,
+  tutkinnot: PropTypes.array
 };
 
 export default EsittelijatMuutospyynto;

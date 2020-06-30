@@ -256,5 +256,11 @@
   "wizard.tutkintokielet": "Tutkintokielet",
   "wizard.vocationalTraining": "Ammatilliseen tehtävään valmistavat koulutukset",
   "wizard.wholeCountryWithoutAhvenanmaa": "Koko Suomi - pois lukien Ahvenanmaan maakunta",
-  "wizard.workforceTraining": "Työvoimakoulutukset"
+  "wizard.workforceTraining": "Työvoimakoulutukset",
+  "common.phoneNumber": "Puh. 029 533 0004",
+  "common.okmAddress": "PL 29, 00023 Valtioneuvosto",
+  "homepage.header": "Oiva - Opetushallinnon ohjaus- ja säätelypalvelu",
+  "homepage.infotext": "Palvelusta löytyvät tällä hetkellä kaikki ajantasaiset ammatillisen koulutuksen järjestämisluvat sekä vapaan sivistystyön oppilaitosten ylläpitämisluvat. Myöhemmin Oiva laajennetaan koskemaan myös esi- ja perusopetuksen sekä lukiokoulutuksen järjestämisluvat. Palvelusta löytyy lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia tilastoja ammatillisen koulutuksen osalta.",
+  "common.okmLinkText": "www.minedu.fi",
+  "common.okmLinkUrl": "http://www.minedu.fi"
 }

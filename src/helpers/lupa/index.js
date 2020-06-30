@@ -1,10 +1,6 @@
 import localforage from "localforage";
 import { filter, pathEq } from "ramda";
 
-export async function storeLupa(lupadata) {
-  return await localforage.setItem("lupa", lupadata);
-}
-
 export function getLupaFromStorage() {
   return localforage.getItem("lupa");
 }
@@ -20,7 +16,7 @@ export async function getMaarayksetByTunniste(tunniste) {
   if (lupa) {
     maaraykset = filter(
       pathEq(["kohde", "tunniste"], tunniste),
-      lupa.data.maaraykset
+      lupa.maaraykset
     );
   } else {
     console.warn(

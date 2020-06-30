@@ -970,6 +970,26 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.phoneNumber",
+    "defaultMessage": "Puh. 029 533 0004",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.okmAddress",
+    "defaultMessage": "PL 29, 00023 Valtioneuvosto",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.okmLinkText",
+    "defaultMessage": "www.minedu.fi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.okmLinkUrl",
+    "defaultMessage": "http://www.minedu.fi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -983,6 +1003,21 @@
     "id": "education.vocationalEducation",
     "defaultMessage": "Ammatillinen koulutus",
     "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.vstEducation",
+    "defaultMessage": "Vapaa sivistystyö",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "homepage.header",
+    "defaultMessage": "Oiva - Opetushallinnon ohjaus- ja säätelypalvelu",
+    "filepath": "src/i18n/definitions/homepage.js"
+  },
+  {
+    "id": "homepage.infotext",
+    "defaultMessage": "Palvelusta löytyvät tällä hetkellä kaikki ajantasaiset ammatillisen \nkoulutuksen järjestämisluvat sekä vapaan sivistystyön oppilaitosten \nylläpitämisluvat. Myöhemmin Oiva laajennetaan koskemaan myös esi- ja \nperusopetuksen sekä lukiokoulutuksen järjestämisluvat. Palvelusta \nlöytyy lisäksi väestö-, koulutus- ja lupatietoja ja erilaisia \ntilastoja ammatillisen koulutuksen osalta.",
+    "filepath": "src/i18n/definitions/homepage.js"
   },
   {
     "id": "languages.inFinnish",

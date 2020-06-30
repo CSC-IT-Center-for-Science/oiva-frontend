@@ -356,7 +356,7 @@ const parseSectionData = (
     }
 
     let valtakunnalliset = _.filter(toimintaalueet, alue => {
-      return alue.koodisto === "nuts1";
+      return alue.koodisto === "nuts1" && alue.koodiarvo === 'FI1';
     });
 
     if (valtakunnalliset && valtakunnalliset.length > 0) {

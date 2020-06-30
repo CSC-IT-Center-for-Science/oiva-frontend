@@ -812,5 +812,21 @@ export default defineMessages({
   valtioneuvosto: {
     id: "common.valtioneuvosto",
     defaultMessage: "Valtioneuvosto"
+  },
+  phoneNumber: {
+    id: "common.phoneNumber",
+    defaultMessage: "Puh. 029 533 0004"
+  },
+  okmAddress: {
+    id: "common.okmAddress",
+    defaultMessage: "PL 29, 00023 Valtioneuvosto"
+  },
+  okmLinkText: {
+    id: "common.okmLinkText",
+    defaultMessage: "www.minedu.fi"
+  },
+  okmLinkUrl: {
+    id: "common.okmLinkUrl",
+    defaultMessage: "http://www.minedu.fi"
   }
 });

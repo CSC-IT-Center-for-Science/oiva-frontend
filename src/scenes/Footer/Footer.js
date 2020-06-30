@@ -1,6 +1,7 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import logo from "../../static/images/okm-logo.svg";
+import logo_fi from "../../static/images/okm-logo.svg";
+import logo_sv from "../../static/images/OKM_Sve_1rivi_logot_ISO.jpg";
 import common from "../../i18n/definitions/common";
 import { Link } from "react-router-dom";
 
@@ -31,13 +32,17 @@ const Footer = () => {
     <div className="flex justify-center lg:justify-start bg-white border-green-600 border-t-2 pt-12 pl-12 pr-12 pb-16">
       <div className="flex flex-col items-baseline lg:flex-1 lg:flex-row">
         <div className="flex flex-1 flex-col justify-center text-center lg:text-left lg:pr-8">
-          <img src={logo} className="lg:w-fit-content" />
+          <img
+            alt="logo"
+            src={intl.locale === "sv" ? logo_sv : logo_fi}
+            className="lg:w-fit-content max-w-sm"
+          />
           {/* Visible on mobile screen size */}
           <div className="sm:hidden">
-            <p>PL 29, 00023 {intl.formatMessage(common.valtioneuvosto)} | </p>
+            <p>{intl.formatMessage(common.okmAddress)} | </p>
             <p className="mt-1">
-              Puh. 029 533 0004 |{" "}
-              <a href="http://www.minedu.fi" className="text-green-500">
+              {intl.formatMessage(common.phoneNumber)} |{" "}
+              <a href={intl.formatMessage(common.okmLinkUrl)} className="text-green-500">
                 www.minedu.fi
               </a>
             </p>
@@ -45,10 +50,10 @@ const Footer = () => {
           {/* Visible on breakpoint sm and bigger */}
           <div className="hidden sm:block">
             <p>
-              PL 29, 00023 {intl.formatMessage(common.valtioneuvosto)} | Puh.
-              029 533 0004 |{" "}
-              <a href="http://www.minedu.fi" className="text-green-500">
-                www.minedu.fi
+              {intl.formatMessage(common.okmAddress)} |{" "}
+              {intl.formatMessage(common.phoneNumber)} |{" "}
+              <a href={intl.formatMessage(common.okmLinkUrl)} className="text-green-500">
+                {intl.formatMessage(common.okmLinkText)}
               </a>
             </p>
           </div>

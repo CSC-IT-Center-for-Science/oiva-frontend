@@ -2,9 +2,10 @@ import { getChangesToSave } from "./changes-to-save";
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
+import localforage from "localforage";
 import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
-import localforage from "localforage";
+import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
 
 export async function createObjectToSave(
   locale,
@@ -15,8 +16,7 @@ export async function createObjectToSave(
   maaraystyypit,
   muut,
   lupaKohteet,
-  alkupera = "KJ",
-  parsedTutkinnot
+  alkupera = "KJ"
 ) {
   const backendMuutokset = await localforage.getItem("backendMuutokset") || [];
 
@@ -86,7 +86,7 @@ export async function createObjectToSave(
         {}
     );
   };
-  
+
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
     {
@@ -190,8 +190,7 @@ export async function createObjectToSave(
   );
 
   // OPISKELIJAVUODET
-  const opiskelijavuodet = getChangesToSave(
-    "opiskelijavuodet",
+  const opiskelijavuodet = opiskelijavuodetHelper.createChangeObjects(
     {
       muutokset: R.compose(
         R.flatten,
@@ -207,7 +206,9 @@ export async function createObjectToSave(
     ),
     R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
     maaraystyypit,
-    muut
+    muut,
+    lupaKohteet,
+    R.compose(R.flatten, R.values)(R.values(R.path(["muut"], changeObjects)))
   );
 
   // MUUT

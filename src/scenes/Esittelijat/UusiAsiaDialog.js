@@ -8,26 +8,14 @@ import React, {
 import { useChangeObjects } from "../../stores/changeObjects";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import {
-  parseKoulutusalat,
-  parseKoulutuksetAll
-} from "../../utils/koulutusParser";
 import * as R from "ramda";
-import { sortLanguages } from "../../utils/kieliUtil";
 import { mapObjIndexed, prop, sortBy } from "ramda";
-import { getMaakuntakunnatList } from "../../utils/toimialueUtil";
-import { useLomakkeet } from "../../stores/lomakkeet";
 import { useKoulutukset } from "../../stores/koulutukset";
-import { useKoulutusalat } from "../../stores/koulutusalat";
-import { useOpetuskielet } from "../../stores/opetuskielet";
 import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import wizardMessages from "../../i18n/definitions/wizard";
-import { HAKEMUS_VIESTI } from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/uusiHakemusFormConstants";
 import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
-import { useKielet } from "../../stores/kielet";
-import { useTutkinnot } from "../../stores/tutkinnot";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import { useHistory, useParams } from "react-router-dom";
@@ -75,8 +63,10 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
+  kielet: [],
   kohteet: [],
-  koulutustyypit: [],
+  koulutusalat: {},
+  koulutustyypit: {},
   kunnat: [],
   lupa: {},
   lupaKohteet: {},
@@ -84,12 +74,16 @@ const defaultProps = {
   maakuntakunnat: [],
   maaraystyypit: [],
   muut: [],
-  organisation: {}
+  opetuskielet: [],
+  organisation: {},
+  tutkinnot: {}
 };
 
 const UusiAsiaDialog = React.memo(
   ({
+    kielet = defaultProps.kielet,
     kohteet = defaultProps.kohteet,
+    koulutusalat = defaultProps.koulutusalat,
     koulutustyypit = defaultProps.koulutustyypit,
     kunnat = defaultProps.kunnat,
     lupa = defaultProps.lupa,
@@ -99,18 +93,15 @@ const UusiAsiaDialog = React.memo(
     maaraystyypit = defaultProps.maaraystyypit,
     muut = defaultProps.muut,
     onNewDocSave,
-    organisation = defaultProps.organisation
+    opetuskielet = defaultProps.opetuskielet,
+    organisation = defaultProps.organisation,
+    tutkinnot = defaultProps.tutkinnot
   }) => {
     const intl = useIntl();
     let history = useHistory();
     const params = useParams();
     const [cos, coActions] = useChangeObjects(); // cos means change objects
-    const [kielet] = useKielet();
-    const [opetuskielet] = useOpetuskielet();
-    const [koulutusalat] = useKoulutusalat();
-    const [tutkinnot] = useTutkinnot();
     const [koulutukset] = useKoulutukset();
-    const [lomakkeet] = useLomakkeet();
     const [, muutospyyntoActions] = useMuutospyynto();
 
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
@@ -131,25 +122,6 @@ const UusiAsiaDialog = React.memo(
       R.values(R.find(R.prop("www"), organisation.yhteystiedot))
     );
 
-    const kieletAndOpetuskielet = useMemo(() => {
-      return {
-        kielet: sortLanguages(kielet.data, R.toUpper(intl.locale)),
-        opetuskielet: opetuskielet.data
-      };
-    }, [kielet.data, opetuskielet.data, intl.locale]);
-
-    const parsedKoulutusalat = useMemo(() => {
-      return parseKoulutusalat(koulutusalat.data);
-    }, [koulutusalat.data]);
-
-    const parsedTutkinnot = useMemo(() => {
-      return parseKoulutuksetAll(
-        tutkinnot.data || [],
-        parsedKoulutusalat || [],
-        koulutustyypit || []
-      );
-    }, [tutkinnot.data, parsedKoulutusalat, koulutustyypit]);
-
     const parsedKoulutukset = useMemo(() => {
       return {
         muut: mapObjIndexed((num, key, obj) => {
@@ -160,10 +132,6 @@ const UusiAsiaDialog = React.memo(
         }, koulutukset.poikkeukset)
       };
     }, [koulutukset]);
-
-    const maakuntakunnatList = useMemo(() => {
-      return getMaakuntakunnatList(maakuntakunnat, R.toUpper(intl.locale));
-    }, [intl.locale, maakuntakunnat]);
 
     /**
      * The function is mainly called by FormSection.
@@ -266,8 +234,7 @@ const UusiAsiaDialog = React.memo(
             maaraystyypit,
             muut,
             lupaKohteet,
-            "ESITTELIJA",
-            parsedTutkinnot
+            "ESITTELIJA"
           )
         );
 
@@ -305,7 +272,6 @@ const UusiAsiaDialog = React.memo(
         onNewDocSave,
         onPreview,
         onSave,
-        parsedTutkinnot,
         uuid
       ]
     );
@@ -386,19 +352,21 @@ const UusiAsiaDialog = React.memo(
                   rules={getRules()}></Lomake>
               </div>
               <EsittelijatMuutospyynto
-                kielet={kieletAndOpetuskielet}
+                kielet={kielet}
                 kohteet={kohteet}
                 koulutukset={parsedKoulutukset}
+                koulutusalat={koulutusalat}
+                koulutustyypit={koulutustyypit}
                 kunnat={kunnat}
-                maakuntakunnatList={maakuntakunnatList}
+                maakuntakunnat={maakuntakunnat}
                 maakunnat={maakunnat}
                 lupa={lupa}
                 lupaKohteet={lupaKohteet}
                 maaraystyypit={maaraystyypit}
                 muut={muut}
-                lomakkeet={lomakkeet}
                 onChangesUpdate={onSectionChangesUpdate}
-                tutkinnot={parsedTutkinnot}
+                opetuskielet={opetuskielet}
+                tutkinnot={tutkinnot}
               />
               <EsittelijatWizardActions
                 isSavingEnabled={isSavingEnabled}
@@ -435,11 +403,22 @@ const UusiAsiaDialog = React.memo(
         />
       </div>
     );
+  },
+  (cp, np) => {
+    return (
+      R.equals(cp.koulutusalat, np.koulutusalat) &&
+      R.equals(cp.koulutustyypit, np.koulutustyypit) &&
+      R.equals(cp.lupa, np.lupa) &&
+      R.equals(cp.muut, np.muut) &&
+      R.equals(cp.tutkinnot, np.tutkinnot)
+    );
   }
 );
 
 UusiAsiaDialog.propTypes = {
   history: PropTypes.object,
+  kielet: PropTypes.array,
+  koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
   lupa: PropTypes.object,
@@ -449,7 +428,9 @@ UusiAsiaDialog.propTypes = {
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onNewDocSave: PropTypes.func,
-  organisation: PropTypes.object
+  opetuskielet: PropTypes.array,
+  organisation: PropTypes.object,
+  tutkinnot: PropTypes.array
 };
 
 export default UusiAsiaDialog;

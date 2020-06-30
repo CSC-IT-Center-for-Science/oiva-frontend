@@ -79,7 +79,7 @@ const App = React.memo(({ isDebugModeOn }) => {
     },
     {
       url: kujaURL + "/vapaa-sivistystyo",
-      text: "Vapaa sivistystyö"
+      text: intl.formatMessage(educationMessages.vstEducation)
     },
     { path: "/tilastot", text: intl.formatMessage(commonMessages.statistics) }
   ];

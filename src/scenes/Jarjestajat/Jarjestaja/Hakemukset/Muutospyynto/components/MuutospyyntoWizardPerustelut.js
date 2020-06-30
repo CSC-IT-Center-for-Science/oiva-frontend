@@ -26,7 +26,6 @@ const MuutospyyntoWizardPerustelut = ({
   muut,
   lupa,
   lupaKohteet,
-  lomakkeet,
   muutosperusteluList = [],
   onChangesUpdate,
   tutkinnot,
@@ -200,7 +199,6 @@ const MuutospyyntoWizardPerustelut = ({
             <FormSection
               code={2}
               id="perustelut_kielet"
-              lomakkeet={lomakkeet}
               render={_props => (
                 <React.Fragment>
                   {isOpetuskieletChanges ? (
@@ -243,10 +241,6 @@ const MuutospyyntoWizardPerustelut = ({
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       maaraykset={lupa.maaraykset}
                       opetuskielet={kielet.opetuskielet}
-                      lomakkeet={{
-                        tutkintokielet: lomakkeet.kielet.tutkintokielet,
-                        perustelut: lomakkeet.perustelut.kielet.tutkintokielet
-                      }}
                       {..._props}
                     />
                   ) : null}
@@ -262,7 +256,6 @@ const MuutospyyntoWizardPerustelut = ({
             <FormSection
               code={3}
               id="perustelut_toimintaalue"
-              lomakkeet={lomakkeet}
               render={_props => (
                 <React.Fragment>
                   <PerustelutToimintaalue
@@ -278,10 +271,6 @@ const MuutospyyntoWizardPerustelut = ({
                         ["perustelut", "toimintaalue"],
                         changeObjects
                       )
-                    }}
-                    lomakkeet={{
-                      toimintaalue: lomakkeet.toimintaalue,
-                      perustelut: lomakkeet.perustelut.toimintaalue
                     }}
                     {..._props}
                   />
@@ -317,7 +306,6 @@ const MuutospyyntoWizardPerustelut = ({
             <FormSection
               code={5}
               id="perustelut_muut"
-              lomakkeet={lomakkeet}
               render={_props => (
                 <React.Fragment>
                   <PerustelutMuut
@@ -327,7 +315,6 @@ const MuutospyyntoWizardPerustelut = ({
                     }}
                     maaraykset={lupa.maaraykset}
                     muut={muut}
-                    lomakkeet={{ muut: lomakkeet.perustelut.muut }}
                     vankilat={vankilat}
                     {..._props}
                   />
@@ -374,7 +361,6 @@ MuutospyyntoWizardPerustelut.propTypes = {
   muut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
-  lomakkeet: PropTypes.object,
   muutosperusteluList: PropTypes.array,
   onChangesUpdate: PropTypes.func,
   tutkinnot: PropTypes.object,

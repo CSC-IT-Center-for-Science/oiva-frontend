@@ -1,6 +1,3 @@
-import "../i18n-config";
-import { __ } from "i18n-for-browser";
-
 function getModificationForm(
   isEditViewActive,
   changeObjectsByProvince = {},

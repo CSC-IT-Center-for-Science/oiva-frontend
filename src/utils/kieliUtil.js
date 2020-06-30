@@ -28,18 +28,19 @@ export function getKieliList(kielet, locale) {
 }
 
 // Sort languages: promote some common languages, sort others alphabetically
-export function sortLanguages(languages = [], locale) {
+export function sortLanguages(languages = [], localeUpper = "FI") {
   return R.sort((a, b) => {
-    const aLabel = parseLocalizedField(a.metadata, locale);
-    const bLabel = parseLocalizedField(b.metadata, locale);
-    if (a.koodiArvo === "FI") return -1;
-    if (b.koodiArvo === "FI") return 1;
-    if (a.koodiArvo === "SV") return -1;
-    if (b.koodiArvo === "SV") return 1;
-    if (a.koodiArvo === "EN") return -1;
-    if (b.koodiArvo === "EN") return 1;
-    if (a.koodiArvo === "RU") return -1;
-    if (b.koodiArvo === "RU") return 1;
+    const { nimi: aLabel } = a.metadata[localeUpper];
+    const { nimi: bLabel } = b.metadata[localeUpper];
+
+    if (a.koodiarvo === "FI") return -1;
+    if (b.koodiarvo === "FI") return 1;
+    if (a.koodiarvo === "SV") return -1;
+    if (b.koodiarvo === "SV") return 1;
+    if (a.koodiarvo === "EN") return -1;
+    if (b.koodiarvo === "EN") return 1;
+    if (a.koodiarvo === "RU") return -1;
+    if (b.koodiarvo === "RU") return 1;
     if (aLabel < bLabel) return -1;
     if (aLabel > bLabel) return 1;
     return 0;

@@ -1,13 +1,4 @@
-import {
-  mapObjIndexed,
-  groupBy,
-  prop,
-  head,
-  find,
-  propEq,
-  sortBy,
-  map
-} from "ramda";
+import { mapObjIndexed, groupBy, prop, head } from "ramda";
 import localforage from "localforage";
 
 export const initializeKieli = ({

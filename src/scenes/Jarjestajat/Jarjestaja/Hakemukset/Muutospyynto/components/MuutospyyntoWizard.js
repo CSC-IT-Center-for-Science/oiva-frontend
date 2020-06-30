@@ -14,7 +14,6 @@ import { MessageWrapper } from "modules/elements";
 import { ROLE_MUOKKAAJA, ROLE_NIMENKIRJOITTAJA } from "modules/constants";
 import wizardMessages from "../../../../../../i18n/definitions/wizard";
 import { createObjectToSave } from "../../../../../../services/muutoshakemus/utils/saving";
-import { HAKEMUS_VIESTI } from "../modules/uusiHakemusFormConstants";
 import Dialog from "@material-ui/core/Dialog";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
@@ -27,24 +26,14 @@ import {
   setAttachmentUuids,
   combineArrays
 } from "../../../../../../utils/muutospyyntoUtil";
-import { sortLanguages } from "../../../../../../utils/kieliUtil";
-import {
-  parseKoulutuksetAll,
-  parseKoulutusalat
-} from "../../../../../../utils/koulutusParser";
-import { getMaakuntakunnatList } from "../../../../../../utils/toimialueUtil";
 import Loading from "../../../../../../modules/Loading";
 import { findObjectWithKey } from "../../../../../../utils/common";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
-import { useKielet } from "../../../../../../stores/kielet";
 import { useOpetuskielet } from "../../../../../../stores/opetuskielet";
-import { useKoulutusalat } from "../../../../../../stores/koulutusalat";
-import { useTutkinnot } from "../../../../../../stores/tutkinnot";
 import { useKoulutukset } from "../../../../../../stores/koulutukset";
 import { mapObjIndexed, prop, sortBy } from "ramda";
 import { useChangeObjects } from "../../../../../../stores/changeObjects";
-import { useLomakkeet } from "../../../../../../stores/lomakkeet";
 import ProcedureHandler from "../../../../../../components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
@@ -79,7 +68,9 @@ const MuutospyyntoWizard = ({
   backendMuutokset = [],
   elykeskukset = [],
   history = {},
+  kielet = [],
   kohteet = [],
+  koulutusalat = [],
   koulutustyypit = [],
   kunnat = [],
   lupa = {},
@@ -91,6 +82,7 @@ const MuutospyyntoWizard = ({
   muut = [],
   muutosperusteluList = [],
   onNewDocSave,
+  tutkinnot = [],
   vankilat = []
 }) => {
   const intl = useIntl();
@@ -112,10 +104,7 @@ const MuutospyyntoWizard = ({
    * We are going to create new objects based on these definitions.
    */
   const [cos, coActions] = useChangeObjects(); // cos means change objects
-  const [kielet] = useKielet();
   const [opetuskielet] = useOpetuskielet();
-  const [koulutusalat] = useKoulutusalat();
-  const [tutkinnot] = useTutkinnot();
   const [koulutukset] = useKoulutukset();
   const [, muutospyyntoActions] = useMuutospyynto();
 
@@ -127,25 +116,6 @@ const MuutospyyntoWizard = ({
    * Some wizard related data is fine as it is and doesn't need to be modified.
    * That kind of data is passed to this wizard using properties.
    */
-  const kieletAndOpetuskielet = useMemo(() => {
-    return {
-      kielet: sortLanguages(kielet.data, R.toUpper(intl.locale)),
-      opetuskielet: opetuskielet.data
-    };
-  }, [kielet.data, opetuskielet.data, intl.locale]);
-
-  const parsedKoulutusalat = useMemo(() => {
-    return parseKoulutusalat(koulutusalat.data);
-  }, [koulutusalat.data]);
-
-  const parsedTutkinnot = useMemo(() => {
-    return parseKoulutuksetAll(
-      tutkinnot.data || [],
-      parsedKoulutusalat || [],
-      koulutustyypit || []
-    );
-  }, [tutkinnot.data, parsedKoulutusalat, koulutustyypit]);
-
   const parsedKoulutukset = useMemo(() => {
     return {
       muut: mapObjIndexed((num, key, obj) => {
@@ -156,13 +126,6 @@ const MuutospyyntoWizard = ({
       }, koulutukset.poikkeukset)
     };
   }, [koulutukset]);
-
-  const maakuntakunnatList = useMemo(() => {
-    return getMaakuntakunnatList(maakuntakunnat, R.toUpper(intl.locale));
-  }, [intl.locale, maakuntakunnat]);
-
-  // All forms of KJ Wizard
-  const [lomakkeet] = useLomakkeet();
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [state] = useState({
@@ -482,12 +445,7 @@ const MuutospyyntoWizard = ({
         <h3>{intl.formatMessage(wizardMessages.noRights)}</h3>
       </MessageWrapper>
     );
-  } else if (
-    parsedKoulutukset &&
-    kieletAndOpetuskielet &&
-    parsedTutkinnot &&
-    maakuntakunnatList
-  ) {
+  } else if (kielet && opetuskielet && parsedKoulutukset) {
     return (
       <React.Fragment>
         <FormDialog
@@ -522,19 +480,21 @@ const MuutospyyntoWizard = ({
                   changeObjects={cos}
                   isSavingEnabled={isSavingEnabled}>
                   <MuutospyyntoWizardMuutokset
-                    kielet={kieletAndOpetuskielet}
+                    kielet={kielet}
                     kohteet={kohteet}
                     koulutukset={parsedKoulutukset}
+                    koulutusalat={koulutusalat}
+                    koulutustyypit={koulutustyypit}
                     kunnat={kunnat}
-                    maakuntakunnatList={maakuntakunnatList}
+                    maakuntakunnat={maakuntakunnat}
                     maakunnat={maakunnat}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
-                    lomakkeet={lomakkeet}
                     onChangesUpdate={onSectionChangesUpdate}
-                    tutkinnot={parsedTutkinnot}
+                    opetuskielet={opetuskielet}
+                    tutkinnot={tutkinnot}
                   />
                 </WizardPage>
               )}
@@ -550,18 +510,18 @@ const MuutospyyntoWizard = ({
                   <MuutospyyntoWizardPerustelut
                     changeObjects={cos}
                     elykeskukset={elykeskukset}
-                    kielet={kieletAndOpetuskielet}
+                    kielet={kielet}
                     kohteet={kohteet}
                     koulutukset={parsedKoulutukset}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
-                    maakuntakunnatList={maakuntakunnatList}
+                    maakuntakunnat={maakuntakunnat}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
-                    lomakkeet={lomakkeet}
                     muutosperusteluList={muutosperusteluList}
                     onChangesUpdate={onSectionChangesUpdate}
-                    tutkinnot={parsedTutkinnot}
+                    opetuskielet={opetuskielet}
+                    tutkinnot={tutkinnot}
                     vankilat={vankilat}
                     visits={visitsPerPage[2]}
                   />
@@ -578,7 +538,6 @@ const MuutospyyntoWizard = ({
                   isSavingEnabled={isSavingEnabled}>
                   <MuutospyyntoWizardTaloudelliset
                     changeObjects={cos}
-                    lomakkeet={lomakkeet}
                     onChangesUpdate={onSectionChangesUpdate}
                     isFirstVisit={visitsPerPage[3] === 1}
                   />
@@ -593,17 +552,17 @@ const MuutospyyntoWizard = ({
                   isSavingEnabled={isSavingEnabled}>
                   <MuutospyyntoWizardYhteenveto
                     changeObjects={cos}
-                    kielet={kieletAndOpetuskielet}
+                    kielet={kielet}
                     kohteet={kohteet}
                     koulutukset={parsedKoulutukset}
                     lupa={lupa}
                     lupaKohteet={lupaKohteet}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
-                    lomakkeet={lomakkeet}
                     muutosperusteluList={muutosperusteluList}
                     onChangesUpdate={onSectionChangesUpdate}
-                    tutkinnot={parsedTutkinnot}
+                    opetuskielet={opetuskielet}
+                    tutkinnot={tutkinnot}
                     isFirstVisit={visitsPerPage[4] === 1}
                   />
                 </WizardPage>
@@ -617,7 +576,9 @@ const MuutospyyntoWizard = ({
             content: intl.formatMessage(common.confirmExitMuutoshakemusWizard),
             ok: intl.formatMessage(common.yes),
             cancel: intl.formatMessage(common.no),
-            title: intl.formatMessage(common.confirmExitMuutoshakemusWizardTitle)
+            title: intl.formatMessage(
+              common.confirmExitMuutoshakemusWizardTitle
+            )
           }}
           handleOk={closeWizard}
           handleCancel={handleCancel}
@@ -633,6 +594,8 @@ MuutospyyntoWizard.propTypes = {
   backendMuutokset: PropTypes.array,
   elykeskukset: PropTypes.array,
   history: PropTypes.object,
+  kielet: PropTypes.array,
+  koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
   lupa: PropTypes.object,
@@ -644,6 +607,8 @@ MuutospyyntoWizard.propTypes = {
   muut: PropTypes.array,
   muutosperusteluList: PropTypes.array,
   onNewDocSave: PropTypes.func,
+  opetuskielet: PropTypes.array,
+  tutkinnot: PropTypes.array,
   vankilat: PropTypes.array
 };
 

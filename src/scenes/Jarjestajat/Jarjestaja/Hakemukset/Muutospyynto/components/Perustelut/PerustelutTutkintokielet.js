@@ -94,7 +94,6 @@ PerustelutTutkintokielet.defaultValues = {
 
 PerustelutTutkintokielet.propTypes = {
   changeObjects: PropTypes.object,
-  lomakkeet: PropTypes.object,
   maaraykset: PropTypes.array,
   onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,

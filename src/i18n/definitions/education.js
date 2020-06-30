@@ -13,5 +13,9 @@ export default defineMessages({
   vocationalEducation: {
     id: "education.vocationalEducation",
     defaultMessage: "Ammatillinen koulutus"
+  },
+  vstEducation: {
+    id: "education.vstEducation",
+    defaultMessage: "Vapaa sivistystyö"
   }
 });
