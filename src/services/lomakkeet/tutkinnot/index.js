@@ -66,7 +66,8 @@ function getModificationForm(
                             removal: isRemoved,
                             custom: Object.assign(
                               {},
-                              !osaamisala.maarays ? isInLupa : {}
+                                // bold text if tutkinto is in lupa, but osaamisalarajoitus is not
+                                !!tutkinto.maarays && !osaamisala.maarays ? isInLupa : {}
                             )
                           },
                           isChecked: !!tutkinto.maarays && !osaamisala.maarays

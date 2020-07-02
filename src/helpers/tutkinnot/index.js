@@ -117,7 +117,7 @@ export const initializeOsaamisalat = (tutkinto, osaamisalat = []) => {
     osaamisalat: map(osaamisala => {
       return {
         ...dissoc("koodiArvo", osaamisala),
-        maarays: find(propEq(osaamisala.koodiArvo), alimaaraykset),
+        maarays: find(propEq("koodiarvo", osaamisala.koodiArvo), alimaaraykset),
         koodiarvo: osaamisala.koodiArvo,
         metadata: mapObjIndexed(
           head,
