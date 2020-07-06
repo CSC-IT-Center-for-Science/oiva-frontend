@@ -11,7 +11,7 @@ import { FONT_STACK } from "../../../../modules/styles";
 import Tutkintokieli from "./Tutkintokieli";
 import Section from "../../../../components/03-templates/Section";
 import common from "../../../../i18n/definitions/common";
-import {useIntl} from "react-intl";
+import { useIntl } from "react-intl";
 
 const Otsikko = styled.div`
   font-size: 16px;
@@ -69,6 +69,14 @@ const KohdeKuvaus = styled.div`
   margin-bottom: 20px;
 `;
 
+const Kuvaus = styled.div`
+  margin: 5px 0 7px 0;
+`;
+
+const MuutSection = styled.div`
+  margin: 0 0 20px 0;
+`;
+
 const LupaSection = props => {
   const { kohde, ytunnus } = props;
   const intl = useIntl();
@@ -77,6 +85,23 @@ const LupaSection = props => {
 
   if (kohde) {
     const { tunniste, heading, headingNumber } = kohde;
+
+    const section = list =>
+      list.length > 0 ? (
+        <MuutSection>
+          <h4>
+            <Bold>{list[0].tyyppi}</Bold>
+          </h4>
+          {_.map(list, (item, i) => {
+            const { kuvaus } = item;
+            return (
+              <div key={i}>
+                <Kuvaus>{kuvaus}</Kuvaus>
+              </div>
+            );
+          })}
+        </MuutSection>
+      ) : null;
 
     // Logiikka eri kohteille
     switch (tunniste) {
@@ -91,7 +116,9 @@ const LupaSection = props => {
 
         return (
           <div className="border-b border-b-gray">
-            <Otsikko>{intl.formatMessage(common.lupaSectionTitleAllLupas)}</Otsikko>
+            <Otsikko>
+              {intl.formatMessage(common.lupaSectionTitleAllLupas)}
+            </Otsikko>
 
             <Section code={headingNumber} title={heading}>
               <Tutkinnot>
@@ -99,7 +126,9 @@ const LupaSection = props => {
                   <Koulutusala key={i} {...ala} />
                 ))}
               </Tutkinnot>
-              <Tietoa>{intl.formatMessage(common.lupaSectionTitleSupplementary)}</Tietoa>
+              <Tietoa>
+                {intl.formatMessage(common.lupaSectionTitleSupplementary)}
+              </Tietoa>
 
               <Koulutukset>
                 {vt && vt[0] && (
@@ -166,40 +195,56 @@ const LupaSection = props => {
               </List>
               <Tutkinnot>
                 {tutkinnotjakieletEn.length > 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageEnglishPlural)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageEnglishPlural
+                    )
                   : null}
                 {tutkinnotjakieletEn.length === 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageEnglishSingular)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageEnglishSingular
+                    )
                   : null}
                 {_.map(tutkinnotjakieletEn, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
                 ))}
 
                 {tutkinnotjakieletSv.length > 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageSwedishPlural)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageSwedishPlural
+                    )
                   : null}
                 {tutkinnotjakieletSv.length === 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageSwedishSingular)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageSwedishSingular
+                    )
                   : null}
                 {_.map(tutkinnotjakieletSv, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
                 ))}
 
                 {tutkinnotjakieletFi.length > 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageFinnishPlural)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageFinnishPlural
+                    )
                   : null}
                 {tutkinnotjakieletFi.length === 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageFinnishSingular)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageFinnishSingular
+                    )
                   : null}
                 {_.map(tutkinnotjakieletFi, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
                 ))}
 
                 {tutkinnotjakieletRu.length > 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageRussianPlural)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageRussianPlural
+                    )
                   : null}
                 {tutkinnotjakieletRu.length === 1
-                  ? intl.formatMessage(common.lupaSectionExtraLanguageRussianSingular)
+                  ? intl.formatMessage(
+                      common.lupaSectionExtraLanguageRussianSingular
+                    )
                   : null}
                 {_.map(tutkinnotjakieletRu, (obj, i) => (
                   <Tutkintokieli key={i} {...obj} />
@@ -248,7 +293,10 @@ const LupaSection = props => {
                 const { arvo } = obj;
                 return (
                   <span key={i}>
-                    {intl.formatMessage(common.lupaSectionOpiskelijavuodetMinimum, {arvo})}
+                    {intl.formatMessage(
+                      common.lupaSectionOpiskelijavuodetMinimum,
+                      { arvo }
+                    )}
                   </span>
                 );
               })}
@@ -261,7 +309,10 @@ const LupaSection = props => {
                 const { tyyppi, arvo } = obj;
                 return (
                   <OpiskelijavuosiRajoitukset key={i}>
-                    {intl.formatMessage(common.lupaSectionOpiskelijavuodetMaximum, {tyyppi, arvo})}
+                    {intl.formatMessage(
+                      common.lupaSectionOpiskelijavuodetMaximum,
+                      { tyyppi, arvo }
+                    )}
                   </OpiskelijavuosiRajoitukset>
                 );
               })}
@@ -272,7 +323,15 @@ const LupaSection = props => {
 
       // Kohde 5: Muut määräykset
       case KOHTEET.MUUT: {
-        const { muut, vaativat, vankilat, kokeilut } = kohde;
+        const {
+          muut,
+          vaativat,
+          vankilat,
+          kokeilut,
+          yhteistyosopimukset,
+          toimintaedellytykset,
+          muutCombined
+        } = kohde;
 
         return (
           <div>
@@ -280,60 +339,22 @@ const LupaSection = props => {
               {_.map(muut, (muu, i) => {
                 const { tyyppi, kuvaus } = muu;
                 return (
-                  <div key={i}>
+                  <MuutSection key={i}>
                     <h4>
                       <Bold>{tyyppi}</Bold>
                     </h4>
-                    <p>{kuvaus}</p>
-                    <br/>
-                  </div>
+                    <Kuvaus>{kuvaus}</Kuvaus>
+                  </MuutSection>
                 );
               })}
+              
+              {section(vaativat)}
+              {section(kokeilut)}
+              {section(vankilat)}
+              {section(yhteistyosopimukset)}
+              {section(toimintaedellytykset)}
 
-              {vaativat.length > 0 ? (
-                <h4>
-                  <Bold>{vaativat[0].tyyppi}</Bold>
-                </h4>
-              ) : null}
-              {_.map(vaativat, (vaativa, i) => {
-                const { kuvaus } = vaativa;
-                return (
-                  <div key={i}>
-                    <p>{kuvaus}</p>
-                  </div>
-                );
-              })}
-              {kokeilut.length > 0 ? (
-                <h4>
-                  <Bold>{kokeilut[0].tyyppi}</Bold>
-                </h4>
-              ) : null}
-              {_.map(kokeilut, (kokeilu, i) => {
-                const { kuvaus } = kokeilu;
-                return (
-                  <div key={i}>
-                    <p>{kuvaus}</p>
-                  </div>
-                );
-              })}
-              {vankilat.length > 0 ? (
-                <h4>
-                  <Bold>{vankilat[0].tyyppi}</Bold>
-                </h4>
-              ) : null}
-              {_.map(vankilat, (vankila, i) => {
-                const { kuvaus } = vankila;
-                return (
-                  <div key={i}>
-                    <p>{kuvaus}</p>
-                  </div>
-                );
-              })}
-
-              {kokeilut.length === 0 &&
-              vankilat.length === 0 &&
-              vaativat.length === 0 &&
-              muut.length === 0 ? (
+              {muutCombined.length === 0 ? (
                 <p>{intl.formatMessage(common.lupaSectionMuutEiMaarayksia)}</p>
               ) : null}
             </Section>

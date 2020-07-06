@@ -36,7 +36,10 @@ const MuutospyyntoWizardMuut = props => {
       );
       R.forEach(article => {
         const { metadata } = article;
-        const kasite = parseLocalizedField(metadata, "FI", "kasite");
+        const kasite =
+          article.koodiArvo === "9"
+            ? "selvitykset"
+            : parseLocalizedField(metadata, "FI", "kasite");
         const kuvaus = parseLocalizedField(metadata, "FI", "kuvaus");
         const isInLupa = !!R.find(R.propEq("koodiarvo", article.koodiArvo))(
           osiota5koskevatMaaraykset
@@ -59,7 +62,7 @@ const MuutospyyntoWizardMuut = props => {
           return false;
         }, flattenArrayOfChangeObjects);
         if (
-          (kuvaus || article.koodiArvo === "22") &&
+          (kuvaus || R.includes(article.koodiArvo, ["22", "7"])) &&
           kasite &&
           (isInLupa || article.koodiArvo !== "15")
         ) {
@@ -176,6 +179,32 @@ const MuutospyyntoWizardMuut = props => {
             title: ""
           }
         ]
+      },
+      {
+        code: "08",
+        key: "laajennettu",
+        isInUse: !!dividedArticles["laajennettu"],
+        title: "Laajennettu oppisopimuskoulutuksen järjestämistehtävä",
+        categoryData: [
+          {
+            articles: dividedArticles.laajennettu || [],
+            componentName: "CheckboxWithLabel",
+            title: ""
+          }
+        ]
+      },
+      {
+        code: "09",
+        key: "selvitykset",
+        isInUse: !!dividedArticles["selvitykset"],
+        title: "Selvitys toimintaedellytyksistä",
+        categoryData: [
+          {
+            articles: dividedArticles.selvitykset || [],
+            componentName: "CheckboxWithLabel",
+            title: ""
+          }
+        ]
       }
     ];
   }, [divideArticles, intl]);
@@ -214,7 +243,8 @@ const MuutospyyntoWizardMuut = props => {
               onChangesUpdate={onChangesUpdate}
               path={["muut"]}
               rules={[]}
-              showCategoryTitles={true}></Lomake>
+              showCategoryTitles={true}
+            />
           </ExpandableRowRoot>
         );
       }, R.filter(R.propEq("isInUse", true))(config))}
