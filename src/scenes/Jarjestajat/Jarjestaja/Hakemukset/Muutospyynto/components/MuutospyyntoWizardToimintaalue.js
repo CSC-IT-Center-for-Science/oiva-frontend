@@ -227,6 +227,28 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         };
       }, presentKunnat);
 
+      const isKuntaOfMaakuntaInLupa = !!R.find(kunta => {
+        let maakuntaCode;
+        const result = R.find(
+          k =>
+            R.propEq("kuntaKoodiarvo", kunta.metadata.koodiarvo, k) &&
+            R.includes(
+              k.kuntaKoodiarvo,
+              R.map(R.prop("koodiarvo"), presentKunnat)
+            ),
+          kuntaProvinceMapping
+        );
+
+        if (result) {
+          R.mapObjIndexed((value, key) => {
+            if (value === result.maakuntaKey) {
+              maakuntaCode = key;
+            }
+          }, mapping);
+        }
+        return maakuntaCode === maakunta.koodiarvo;
+      }, kunnatInLupa);
+
       return {
         anchor: mapping[maakunta.koodiarvo],
         formId: mapping[maakunta.koodiarvo],
@@ -243,11 +265,11 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
                 maaraysUuid
               },
               isChecked:
-                fiCode === "FI1" ||
-                isMaakuntaInLupa ||
-                someMunicipalitiesInLupa,
+                fiCode === "FI1" || isMaakuntaInLupa || isKuntaOfMaakuntaInLupa,
               isIndeterminate:
-                someMunicipalitiesInLupa && someMunicipalitiesNotInLupa,
+                !isMaakuntaInLupa &&
+                someMunicipalitiesInLupa &&
+                someMunicipalitiesNotInLupa,
               labelStyles: Object.assign({}, labelStyles, {
                 custom: isInLupa
               }),
@@ -280,7 +302,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         R.propEq("kuntaKoodiarvo", kunta.koodiArvo),
         kuntaProvinceMapping
       );
-      return result && result.maakuntaKey !== "FI-01";
+      return (
+        result && result.maakuntaKey !== "FI-01" && kunta.koodiArvo !== "200" // 200 Ulkomaa
+      );
     }, props.kunnat);
   }, [props.kunnat]);
 
