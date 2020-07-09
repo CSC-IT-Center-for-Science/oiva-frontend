@@ -223,7 +223,7 @@ const UusiAsiaDialog = React.memo(
     }, []);
 
     const onAction = useCallback(
-      async action => {
+      async (action, fromDialog = false) => {
         const formData = createMuutospyyntoOutput(
           await createObjectToSave(
             R.toUpper(intl.locale),
@@ -253,7 +253,7 @@ const UusiAsiaDialog = React.memo(
         setIsSavingEnabled(false);
         prevAnchorsRef.current = anchors;
 
-        if (!uuid) {
+        if (!uuid && !fromDialog) {
           if (muutospyynto && muutospyynto.uuid) {
             // It was the first save...
             onNewDocSave(muutospyynto);
@@ -394,8 +394,8 @@ const UusiAsiaDialog = React.memo(
               common.confirmExitEsittelijaMuutoshakemusWizardTitle
             )
           }}
-          handleOk={() => {
-            onAction("save");
+          handleOk={async () => {
+            await onAction("save", true);
             closeWizard();
           }}
           handleCancel={handleCancel}

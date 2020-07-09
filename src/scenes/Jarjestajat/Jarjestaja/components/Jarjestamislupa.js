@@ -47,6 +47,7 @@ const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
                 key={i}
                 kohde={lupaKohteet[k]}
                 ytunnus={lupa.jarjestajaYtunnus}
+                lupaAlkuPvm={lupa.alkupvm}
               />
             ))}
           </div>

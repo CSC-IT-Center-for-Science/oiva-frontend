@@ -5,6 +5,7 @@ import { LUPA_VOIMASSAOLO_20181231_ASTI } from "../modules/constants";
 import { LUPA_VOIMASSAOLO_20180731_ASTI } from "../modules/constants";
 import { LUPA_VOIMASSAOLO_20180801_LUKIEN } from "../modules/constants";
 import { LUPA_VOIMASSAOLO_20190101_LUKIEN } from "../modules/constants";
+import moment from "moment";
 
 const TutkintoWrapper = styled.div`
   margin: 6px 0 6px 30px;
@@ -46,7 +47,7 @@ class Tutkinto extends Component {
   // }
 
   render() {
-    const { koodi, nimi, rajoitteet, renderCheckbox } = this.props;
+    const { koodi, nimi, rajoitteet, renderCheckbox, lupaAlkuPvm } = this.props;
 
     return (
       <div>
@@ -61,7 +62,7 @@ class Tutkinto extends Component {
           ) : null}
           <Koodi>{koodi}</Koodi>
           <Nimi>{nimi}</Nimi>
-          <Pvm>{this.checkDateString(koodi)}</Pvm>
+          <Pvm>{this.checkDateString(koodi, lupaAlkuPvm)}</Pvm>
         </TutkintoWrapper>
         {rajoitteet
           ? _.map(rajoitteet, (rajoite, i) => <Rajoite {...rajoite} key={i} />)
@@ -85,7 +86,11 @@ class Tutkinto extends Component {
     }
   }
 
-  checkDateString(koodi) {
+  checkDateString(koodi, lupaAlkuPvm) {
+    if (moment(lupaAlkuPvm).isAfter("2018-12-31")) {
+      return;
+    }
+
     if (_.includes(LUPA_VOIMASSAOLO_20181231_ASTI, koodi)) {
       return "31.12.2018 asti";
     }

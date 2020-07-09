@@ -181,7 +181,15 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         return province.metadata.koodiarvo === maakunta.koodiarvo;
       }, maakunnatInLupa);
 
-      let numberOfMunicipalitiesInLupa = 0;
+      let someMunicipalitiesInLupa = false;
+      let someMunicipalitiesNotInLupa = false;
+
+      const today = new Date();
+      const presentKunnat = R.filter(
+        ({ voimassaLoppuPvm }) =>
+          !voimassaLoppuPvm || new Date(voimassaLoppuPvm) >= today,
+        maakunta.kunnat
+      );
 
       const municipalitiesOfProvince = R.map(kunta => {
         const kunnanNimi = kunta.metadata[localeUpper].nimi;
@@ -192,7 +200,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         );
 
         if (isKuntaInLupa) {
-          numberOfMunicipalitiesInLupa += 1;
+          someMunicipalitiesInLupa = true;
+        } else {
+          someMunicipalitiesNotInLupa = true;
         }
 
         return {
@@ -215,14 +225,20 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
             title: kunnanNimi
           }
         };
-      }, maakunta.kunnat);
+      }, presentKunnat);
 
       const isKuntaOfMaakuntaInLupa = !!R.find(kunta => {
         let maakuntaCode;
         const result = R.find(
-          R.propEq("kuntaKoodiarvo", kunta.metadata.koodiarvo),
+          k =>
+            R.propEq("kuntaKoodiarvo", kunta.metadata.koodiarvo, k) &&
+            R.includes(
+              k.kuntaKoodiarvo,
+              R.map(R.prop("koodiarvo"), presentKunnat)
+            ),
           kuntaProvinceMapping
         );
+
         if (result) {
           R.mapObjIndexed((value, key) => {
             if (value === result.maakuntaKey) {
@@ -232,6 +248,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         }
         return maakuntaCode === maakunta.koodiarvo;
       }, kunnatInLupa);
+
       return {
         anchor: mapping[maakunta.koodiarvo],
         formId: mapping[maakunta.koodiarvo],
@@ -248,10 +265,11 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
                 maaraysUuid
               },
               isChecked:
-                isMaakuntaInLupa || isKuntaOfMaakuntaInLupa || fiCode === "FI1",
+                fiCode === "FI1" || isMaakuntaInLupa || isKuntaOfMaakuntaInLupa,
               isIndeterminate:
-                numberOfMunicipalitiesInLupa > 0 &&
-                numberOfMunicipalitiesInLupa < (R.path(["kunta", "length"], maakunta) || 0),
+                !isMaakuntaInLupa &&
+                someMunicipalitiesInLupa &&
+                someMunicipalitiesNotInLupa,
               labelStyles: Object.assign({}, labelStyles, {
                 custom: isInLupa
               }),
@@ -284,7 +302,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         R.propEq("kuntaKoodiarvo", kunta.koodiArvo),
         kuntaProvinceMapping
       );
-      return result && result.maakuntaKey !== "FI-01";
+      return (
+        result && result.maakuntaKey !== "FI-01" && kunta.koodiArvo !== "200" // 200 Ulkomaa
+      );
     }, props.kunnat);
   }, [props.kunnat]);
 
@@ -368,7 +388,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         onChangesUpdate={handleChanges}
         path={["toimintaalue"]}
         rules={[]}
-        showCategoryTitles={true}></Lomake>
+        showCategoryTitles={true}
+      />
     </ExpandableRowRoot>
   );
 });

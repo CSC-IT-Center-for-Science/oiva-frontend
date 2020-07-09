@@ -43,12 +43,12 @@ const SubAlaWrapper = styled.div`
 `
 
 const SubAla = (props) => {
-  const { nimi, koulutukset, renderCheckbox } = props
+  const { nimi, koulutukset, renderCheckbox, lupaAlkuPvm } = props
   return (
     <SubAlaWrapper>
       <div>{nimi}</div>
       {_.map(koulutukset, (tutkinto, i) => {
-        return <Tutkinto {...tutkinto} key={i} renderCheckbox={renderCheckbox} />
+        return <Tutkinto {...tutkinto} key={i} renderCheckbox={renderCheckbox} lupaAlkuPvm={lupaAlkuPvm}/>
       })}
     </SubAlaWrapper>
   )
@@ -79,7 +79,7 @@ class Koulutusala extends Component {
   }
 
   render() {
-    const { koodi, nimi, koulutusalat, renderCheckbox } = this.props
+    const { koodi, nimi, koulutusalat, renderCheckbox, lupaAlkuPvm } = this.props
 
     return (
       <Wrapper>
@@ -91,7 +91,7 @@ class Koulutusala extends Component {
         </Heading>
         {!this.state.isHidden &&
           <KoulutusalaList>
-            {_.map(koulutusalat, (ala, i) => <SubAla {...ala} key={i} renderCheckbox={renderCheckbox} /> )}
+            {_.map(koulutusalat, (ala, i) => <SubAla {...ala} key={i} renderCheckbox={renderCheckbox} lupaAlkuPvm={lupaAlkuPvm}/> )}
           </KoulutusalaList>
         }
       </Wrapper>

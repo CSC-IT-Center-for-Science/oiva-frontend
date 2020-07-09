@@ -1,4 +1,4 @@
-import { mapObjIndexed, map, head, groupBy, prop, omit } from "ramda";
+import { mapObjIndexed, map, head, groupBy, prop, omit, filter } from "ramda";
 import localforage from "localforage";
 
 export function initializeMaakunta(maakuntadata) {
@@ -7,21 +7,26 @@ export function initializeMaakunta(maakuntadata) {
     currentDate >= new Date(maakuntadata.voimassaAlkuPvm) &&
     currentDate <= new Date(maakuntadata.voimassaLoppuPvm || currentDate)
   ) {
+    // Filter out ulkomaat
+    const kunnat = filter(
+      kunta => kunta.koodiArvo !== "200",
+      maakuntadata.kunta
+    );
     return omit(["kunta", "koodiArvo"], {
       ...maakuntadata,
       koodiarvo: maakuntadata.koodiArvo,
-      kunnat: map(kunta => {
-        return kunta.tila === "HYVAKSYTTY"
-          ? omit(["koodiArvo"], {
-              ...kunta,
-              koodiarvo: kunta.koodiArvo,
-              metadata: mapObjIndexed(
-                head,
-                groupBy(prop("kieli"), kunta.metadata)
-              )
-            })
-          : null;
-      }, maakuntadata.kunta).filter(Boolean),
+      kunnat: map(
+        kunta =>
+          omit(["koodiArvo"], {
+            ...kunta,
+            koodiarvo: kunta.koodiArvo,
+            metadata: mapObjIndexed(
+              head,
+              groupBy(prop("kieli"), kunta.metadata)
+            )
+          }),
+        kunnat
+      ),
       metadata: mapObjIndexed(
         head,
         groupBy(prop("kieli"), maakuntadata.metadata)

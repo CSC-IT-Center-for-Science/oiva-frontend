@@ -356,7 +356,7 @@ const parseSectionData = (
     }
 
     let valtakunnalliset = _.filter(toimintaalueet, alue => {
-      return alue.koodisto === "nuts1" && alue.koodiarvo === 'FI1';
+      return alue.koodisto === "nuts1" && alue.koodiarvo === "FI1";
     });
 
     if (valtakunnalliset && valtakunnalliset.length > 0) {
@@ -422,6 +422,8 @@ const parseSectionData = (
     let vaativat = [];
     let vankilat = [];
     let kokeilut = [];
+    let yhteistyosopimukset = [];
+    let toimintaedellytykset = [];
     let muutCombined = [];
 
     _.forEach(maaraykset, maarays => {
@@ -478,11 +480,11 @@ const parseSectionData = (
             const { yhteistyösopimus } = meta;
             const { fi } = yhteistyösopimus;
             obj.kuvaus = fi;
-            kokeilut.push(obj);
+            yhteistyosopimukset.push(obj);
             break;
           }
           case "9": {
-            muut.push(obj);
+            toimintaedellytykset.push(obj);
             break;
           }
           case "10": {
@@ -514,7 +516,7 @@ const parseSectionData = (
             break;
           }
           default:
-            return null;
+            console.warn(`Unknown koodiarvo ${koodiarvo} in section 5. Muut`);
         }
 
         muutCombined.push(obj);
@@ -526,6 +528,8 @@ const parseSectionData = (
     returnobj.vankilat = vankilat;
     returnobj.kokeilut = kokeilut;
     returnobj.muutCombined = muutCombined;
+    returnobj.toimintaedellytykset = toimintaedellytykset;
+    returnobj.yhteistyosopimukset = yhteistyosopimukset;
   }
 
   returnobj.tunniste = target;
