@@ -82,19 +82,6 @@ const MuutospyyntoWizardMuut = props => {
     const dividedArticles = divideArticles();
     return [
       {
-        code: "01",
-        key: "laajennettu",
-        isInUse: !!dividedArticles["laajennettu"].length,
-        title: "Laajennettu oppisopimuskoulutuksen järjestämistehtävä",
-        categoryData: [
-          {
-            articles: dividedArticles.laajennettu || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
-          }
-        ]
-      },
-      {
         code: "02",
         key: "vaativatuki",
         isInUse:

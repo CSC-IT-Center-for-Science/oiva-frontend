@@ -9,7 +9,7 @@ const Store = createStore({
         { getState, setState },
         {
           key: "lupa",
-          urlEnding: `${ytunnus}?with=all`
+          urlEnding: `${ytunnus}?with=all&useKoodistoVersions=false`
         },
         { ytunnus }
       );

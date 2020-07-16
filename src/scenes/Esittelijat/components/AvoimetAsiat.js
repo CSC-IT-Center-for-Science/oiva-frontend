@@ -18,6 +18,7 @@ const AvoimetAsiat = () => {
   const [isPaatettyConfirmationDialogVisible, setPaatettyConfirmationDialogVisible] =
     useState(false);
   const [rowActionTargetId, setRowActionTargetId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const isForced = R.includes("force=", location.search);
@@ -42,10 +43,12 @@ const AvoimetAsiat = () => {
 
   const triggerPaatettyActionProcedure = useCallback( async () => {
     const timestamp = new Date().getTime();
+    setIsLoading(true);
     await new ProcedureHandler().run(
       "muutospyynnot.tilanmuutos.paatetyksi",
       [rowActionTargetId]
     );
+    setIsLoading(false);
     setPaatettyConfirmationDialogVisible(false);
     setRowActionTargetId(null);
     history.push("?force=" + timestamp);
@@ -87,7 +90,7 @@ const AvoimetAsiat = () => {
             cancel: intl.formatMessage(common.cancel),
             title: intl.formatMessage(common.asiaPaatettyConfirmationDialogTitle)
           }}
-
+          loadingSpinner={isLoading}
         />
       </div>
     );
