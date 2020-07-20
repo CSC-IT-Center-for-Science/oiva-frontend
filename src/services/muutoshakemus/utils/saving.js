@@ -1,4 +1,3 @@
-import { getChangesToSave } from "./changes-to-save";
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
@@ -6,6 +5,9 @@ import localforage from "localforage";
 import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
+import * as muutHelper from "../../../helpers/muut";
+import * as kieletHelper from "../../../helpers/kielet";
+import * as koulutuksetHelper from "../../../helpers/koulutukset";
 
 export async function createObjectToSave(
   locale,
@@ -18,7 +20,8 @@ export async function createObjectToSave(
   lupaKohteet,
   alkupera = "KJ"
 ) {
-  const backendMuutokset = await localforage.getItem("backendMuutokset") || [];
+  const backendMuutokset =
+    (await localforage.getItem("backendMuutokset")) || [];
 
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
@@ -147,8 +150,7 @@ export async function createObjectToSave(
   );
 
   // KOULUTUKSET
-  const koulutukset = getChangesToSave(
-    "koulutukset",
+  const koulutukset = koulutuksetHelper.getChangesToSave(
     {
       muutokset: R.compose(
         R.flatten,
@@ -160,16 +162,12 @@ export async function createObjectToSave(
         R.values
       )(R.values(R.path(["perustelut", "koulutukset"], changeObjects)))
     },
-    R.filter(R.pathEq(["kohde", "tunniste"], "tutkinnotjakoulutukset"))(
-      backendMuutokset
-    ),
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
     maaraystyypit
   );
 
   // OPETUSKIELET
-  const opetuskielet = getChangesToSave(
-    "opetuskielet",
+  const opetuskielet = kieletHelper.getChangesToSave(
     {
       muutokset: R.compose(
         R.flatten,
@@ -184,7 +182,6 @@ export async function createObjectToSave(
         )
       )
     },
-    R.filter(R.pathEq(["koodisto"], "kieli"))(backendMuutokset),
     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
     maaraystyypit
   );
@@ -212,8 +209,7 @@ export async function createObjectToSave(
   );
 
   // MUUT
-  const muutMuutokset = getChangesToSave(
-    "muut",
+  const muutMuutokset = muutHelper.getChangesToSave(
     {
       muutokset: R.compose(
         R.flatten,
@@ -224,7 +220,6 @@ export async function createObjectToSave(
         R.values
       )(R.values(R.path(["perustelut", "muut"], changeObjects)))
     },
-    R.filter(R.pathEq(["kohde", "tunniste"], "muut"))(backendMuutokset),
     R.find(R.propEq("tunniste", "muut"), kohteet),
     maaraystyypit
   );
