@@ -190,7 +190,7 @@ export async function createObjectToSave(
   );
 
   // OPISKELIJAVUODET
-  const opiskelijavuodet = opiskelijavuodetHelper.createChangeObjects(
+  const opiskelijavuodet = opiskelijavuodetHelper.createBackendChangeObjects(
     {
       muutokset: R.compose(
         R.flatten,
@@ -201,9 +201,6 @@ export async function createObjectToSave(
         R.values
       )(R.values(R.path(["perustelut", "opiskelijavuodet"], changeObjects)))
     },
-    R.filter(R.pathEq(["kohde", "tunniste"], "opiskelijavuodet"))(
-      backendMuutokset
-    ),
     R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
     maaraystyypit,
     muut,

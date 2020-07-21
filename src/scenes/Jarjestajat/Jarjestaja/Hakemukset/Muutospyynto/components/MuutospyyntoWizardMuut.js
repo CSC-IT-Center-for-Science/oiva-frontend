@@ -50,16 +50,13 @@ const MuutospyyntoWizardMuut = props => {
          * whose code value is one of the values in koodiarvot array. The array
          * has been defined before this (MuutospyyntoWizardMuut) component.
          */
-        article.showAlert = !!R.find(changeObj => {
+        article.showAlertBecauseOfSection5 = !!R.find(changeObj => {
           const koodiarvo = R.nth(-2, R.split(".", changeObj.anchor));
-          if (
+          return (
             R.equals(koodiarvo, article.koodiArvo) &&
             changeObj.properties.isChecked &&
             R.includes(parseInt(koodiarvo, 10), koodiarvot)
-          ) {
-            return true;
-          }
-          return false;
+          );
         }, flattenArrayOfChangeObjects);
         if (
           (kuvaus || R.includes(article.koodiArvo, ["22", "7"])) &&
@@ -110,8 +107,7 @@ const MuutospyyntoWizardMuut = props => {
           {
             articles: dividedArticles.sisaoppilaitos || [],
             componentName: "CheckboxWithLabel",
-            title: "",
-            showAlert: true
+            title: ""
           }
         ]
       },
@@ -225,6 +221,7 @@ const MuutospyyntoWizardMuut = props => {
               changeObjects={R.prop(configObj.code, changeObjects.muut)}
               data={{
                 configObj,
+                opiskelijavuodetChangeObjects: changeObjects.opiskelijavuodet,
                 osiota5koskevatMaaraykset
               }}
               onChangesUpdate={onChangesUpdate}

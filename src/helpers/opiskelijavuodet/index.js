@@ -89,9 +89,8 @@ const findChange = (anchorStart, changeObjects) =>
 export const findIsChecked = (anchorStart, muutokset) =>
   R.path(["properties", "isChecked"], findChange(anchorStart, muutokset));
 
-export function createChangeObjects(
+export function createBackendChangeObjects(
   changeObjects = {},
-  backendMuutokset = [],
   kohde,
   maaraystyypit,
   muut,
@@ -146,13 +145,14 @@ export function createChangeObjects(
     }
     const anchorInit = changeObj.anchorInit;
     let anchor = "";
-    if (anchorInit === "opiskelijavuodet.vahimmaisopiskelijavuodet")
+    if (anchorInit === "opiskelijavuodet.vahimmaisopiskelijavuodet") {
       anchor = "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet";
-    else if (anchorInit === "opiskelijavuodet.vaativatuki")
+    } else if (anchorInit === "opiskelijavuodet.vaativatuki") {
       anchor = "perustelut_opiskelijavuodet_vaativatuki";
-    else if (anchorInit === "opiskelijavuodet.sisaoppilaitos")
+    } else if (anchorInit === "opiskelijavuodet.sisaoppilaitos") {
       anchor = "perustelut_opiskelijavuodet_sisaoppilaitos";
-
+    }
+    
     const perustelut = R.filter(
       R.compose(R.includes(anchor), R.prop("anchor")),
       changeObjects.perustelut
