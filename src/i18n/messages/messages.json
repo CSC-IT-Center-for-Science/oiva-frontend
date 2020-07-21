@@ -816,7 +816,7 @@
   },
   {
     "id": "common.lupaSectionOpiskelijavuodetLimitationPlural",
-    "defaultMessage": "Opiskelijavuosien vähimmäismäärää koskevat seuraavat velvollisuudet:",
+    "defaultMessage": "Opiskelijavuosien vähimmäismäärää koskevat seuraavat rajoitukset:",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

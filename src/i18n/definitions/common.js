@@ -681,7 +681,7 @@ export default defineMessages({
   lupaSectionOpiskelijavuodetLimitationPlural: {
     id: "common.lupaSectionOpiskelijavuodetLimitationPlural",
     defaultMessage:
-      "Opiskelijavuosien vähimmäismäärää koskevat seuraavat velvollisuudet:"
+      "Opiskelijavuosien vähimmäismäärää koskevat seuraavat rajoitukset:"
   },
   lupaSectionOpiskelijavuodetLimitationNone: {
     id: "common.lupaSectionOpiskelijavuodetLimitationNone",

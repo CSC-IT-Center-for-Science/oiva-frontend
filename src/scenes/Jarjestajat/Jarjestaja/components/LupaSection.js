@@ -12,6 +12,7 @@ import Tutkintokieli from "./Tutkintokieli";
 import Section from "../../../../components/03-templates/Section";
 import common from "../../../../i18n/definitions/common";
 import { useIntl } from "react-intl";
+import { parseLocalizedField } from "../../../../modules/helpers";
 
 const Otsikko = styled.div`
   font-size: 16px;
@@ -311,6 +312,11 @@ const LupaSection = props => {
                 const { tyyppi, arvo } = obj;
                 return (
                   <OpiskelijavuosiRajoitukset key={i}>
+                    {parseLocalizedField(
+                      obj.koodi.metadata,
+                      intl.locale.toUpperCase(),
+                      "nimi"
+                    )}
                     {intl.formatMessage(
                       common.lupaSectionOpiskelijavuodetMaximum,
                       { tyyppi, arvo }

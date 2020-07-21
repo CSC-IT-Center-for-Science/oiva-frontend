@@ -128,7 +128,7 @@
   "common.lupaSectionOpetuskieliPlural": "Koulutuksen järjestäjän on annettava opetusta seuraavilla opetuskielillä:",
   "common.lupaSectionOpetuskieliSingular": "Koulutuksen järjestäjän on annettava opetusta seuraavalla opetuskielellä:",
   "common.lupaSectionOpiskelijavuodetLimitationNone": "Koulutuksen järjestäjälle ei määritetä opiskelijavuosien vähimmäismäärää.",
-  "common.lupaSectionOpiskelijavuodetLimitationPlural": "Opiskelijavuosien vähimmäismäärää koskevat seuraavat velvollisuudet:",
+  "common.lupaSectionOpiskelijavuodetLimitationPlural": "Opiskelijavuosien vähimmäismäärää koskevat seuraavat rajoitukset:",
   "common.lupaSectionOpiskelijavuodetLimitationSingular": "Opiskelijavuosien vähimmäismäärää koskee seuraava rajoitus:",
   "common.lupaSectionOpiskelijavuodetMainTitle": "Opiskelijavuodet ja niitä koskevat rajoitukset",
   "common.lupaSectionOpiskelijavuodetMaximum": "{tyyppi} enintään {arvo} opiskelijavuotta",
