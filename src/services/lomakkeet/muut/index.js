@@ -43,7 +43,6 @@ function getModificationForm(
           R.pathEq(["properties", "metadata", "koodiarvo"], article.koodiArvo),
           opiskelijavuodetChangeObjects
         );
-        console.info(section4changeObj, article.koodiArvo);
         const showAlertBecauseOfSection4 =
           !section4changeObj ||
           !section4changeObj.properties.applyForValue.length;
