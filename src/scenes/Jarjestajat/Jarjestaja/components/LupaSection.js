@@ -66,6 +66,11 @@ const OpiskelijavuosiRajoitukset = styled.div`
   margin-bottom: 20px;
 `;
 
+const RajoitusTitle = styled.span`
+  display: inline-block;
+  width: 20em;
+`;
+
 const KohdeKuvaus = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -312,11 +317,13 @@ const LupaSection = props => {
                 const { tyyppi, arvo } = obj;
                 return (
                   <OpiskelijavuosiRajoitukset key={i}>
-                    {parseLocalizedField(
-                      obj.koodi.metadata,
-                      intl.locale.toUpperCase(),
-                      "nimi"
-                    )}
+                    <RajoitusTitle>
+                      {parseLocalizedField(
+                        obj.koodi.metadata,
+                        intl.locale.toUpperCase(),
+                        "nimi"
+                      )}
+                    </RajoitusTitle>
                     {intl.formatMessage(
                       common.lupaSectionOpiskelijavuodetMaximum,
                       { tyyppi, arvo }
