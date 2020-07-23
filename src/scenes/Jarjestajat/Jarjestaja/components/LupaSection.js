@@ -118,19 +118,21 @@ const LupaSection = props => {
         return (
           <div className="border-b border-b-gray">
             <Section code={headingNumber} title={heading}>
-              <Otsikko>
-                {intl.formatMessage(common.lupaSectionTitleAllLupas)}
-              </Otsikko>
+              {maaraykset && maaraykset.length > 0 && (
+                <Otsikko>
+                  {intl.formatMessage(common.lupaSectionTitleAllLupas)}
+                </Otsikko>
+              )}
               <Tutkinnot>
                 {_.map(maaraykset, (ala, i) => (
-                  <Koulutusala key={i} {...ala} lupaAlkuPvm={lupaAlkuPvm}/>
+                  <Koulutusala key={i} {...ala} lupaAlkuPvm={lupaAlkuPvm} />
                 ))}
               </Tutkinnot>
-              {
-                maaraykset && maaraykset.length > 0
-                  ? <Tietoa>{intl.formatMessage(common.lupaSectionTitleSupplementary)}</Tietoa>
-                  : null
-              }
+              {maaraykset && maaraykset.length > 0 ? (
+                <Tietoa>
+                  {intl.formatMessage(common.lupaSectionTitleSupplementary)}
+                </Tietoa>
+              ) : null}
 
               <Koulutukset>
                 {vt && vt[0] && (
