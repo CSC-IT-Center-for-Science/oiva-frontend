@@ -27,7 +27,7 @@ export const backendRoutes = {
   // Muutospyynnöt
   lahetaMuutospyynto: { path: "muutospyynnot/tila/avoin/" },
   muutospyynnonLiitteet: { path: "muutospyynnot/", postfix: "/liitteet/" },
-  muutospyynnot: { path: "muutospyynnot" },
+  muutospyynnot: { path: "muutospyynnot/" },
   muutospyynto: { path: "muutospyynnot/id/" },
   muutospyyntoPaatetyksi: { path: "muutospyynnot/tila/paatetty/" },
   muutospyyntoEsittelyyn: { path: "muutospyynnot/tila/esittelyssa/" },
