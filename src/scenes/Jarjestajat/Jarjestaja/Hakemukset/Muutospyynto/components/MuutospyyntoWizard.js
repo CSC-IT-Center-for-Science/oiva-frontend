@@ -348,7 +348,7 @@ const MuutospyyntoWizard = ({
           maaraystyypit,
           muut,
           lupaKohteet,
-          "ESITTELIJA"
+          "KJ"
         ),
         getFiles()
       );
