@@ -18,7 +18,8 @@ export async function createObjectToSave(
   lupaKohteet,
   alkupera = "KJ"
 ) {
-  const backendMuutokset = await localforage.getItem("backendMuutokset") || [];
+  const backendMuutokset =
+    (await localforage.getItem("backendMuutokset")) || [];
 
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
