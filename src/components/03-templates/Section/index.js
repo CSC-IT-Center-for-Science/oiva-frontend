@@ -29,21 +29,11 @@ const simplify = children => {
 
 const Section = React.memo(
   props => {
+    const fullTitle = `${props.code}${props.code ? ". " : ""}${props.title}`;
     return (
-      <div className="flex">
-        {props.code && (
-          <div className="w-8 sm:w-16">
-            <h2 className="py-8">{props.code}.</h2>
-          </div>
-        )}
-        <div className="w-full">
-          {props.title && (
-            <h2 className="py-8">
-              <span>{props.title}</span>
-            </h2>
-          )}
-          <div className="pb-4">{props.children}</div>
-        </div>
+      <div>
+        <h2 className="py-8">{fullTitle}</h2>
+        <div className="pb-4">{props.children}</div>
       </div>
     );
   },
