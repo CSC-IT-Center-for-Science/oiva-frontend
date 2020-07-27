@@ -1,7 +1,6 @@
 import { combineArrays } from "../../../utils/muutospyyntoUtil";
 import moment from "moment";
 import * as R from "ramda";
-import localforage from "localforage";
 import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
@@ -20,9 +19,6 @@ export async function createObjectToSave(
   lupaKohteet,
   alkupera = "KJ"
 ) {
-  const backendMuutokset =
-    (await localforage.getItem("backendMuutokset")) || [];
-
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
     ["yhteenveto", "yleisettiedot"],
