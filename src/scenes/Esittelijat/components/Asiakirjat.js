@@ -313,7 +313,7 @@ const Asiakirjat = React.memo(() => {
           borderTop: "0.05rem solid #E3E3E3",
           background: "#FAFAFA"
         }}>
-        <Helmet>
+        <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
         <BreadcrumbsItem to="/">{t(common.frontpage)}</BreadcrumbsItem>

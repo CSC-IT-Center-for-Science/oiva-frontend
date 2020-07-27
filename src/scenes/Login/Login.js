@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+import { useIntl } from "react-intl";
 
 // import LoginForm from 'routes/Login/components/LoginForm'
 
@@ -23,19 +24,21 @@ const FakeButton = styled.div`
   }
 `;
 
-const Login = () => (
-  <div>
-    <Helmet>
-      <title>Oiva | Kirjaudu sisään</title>
-    </Helmet>
-    <BreadcrumbsItem to="/">Etusivu</BreadcrumbsItem>
-    <BreadcrumbsItem to="/kirjaudu">Kirjaudu sisään</BreadcrumbsItem>
-    <h1>Kirjautuminen</h1>
-    <FakeButton>
-      <Link to="/cas-auth">CAS-Kirjautuminen</Link>
-    </FakeButton>
-    {/* <LoginForm /> */}
-  </div>
-);
+const Login = () => {
+  const intl = useIntl();
+  return (
+    <div>
+      <Helmet htmlAttributes={{ lang: intl.locale }}>
+        <title>Oiva | Kirjaudu sisään</title>
+      </Helmet>
+      <BreadcrumbsItem to="/">Etusivu</BreadcrumbsItem>
+      <BreadcrumbsItem to="/kirjaudu">Kirjaudu sisään</BreadcrumbsItem>
+      <h1>Kirjautuminen</h1>
+      <FakeButton>
+        <Link to="/cas-auth">CAS-Kirjautuminen</Link>
+      </FakeButton>
+    </div>
+  );
+};
 
 export default Login;
