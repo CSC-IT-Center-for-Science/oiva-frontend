@@ -88,8 +88,6 @@ const LupaSection = props => {
   const { kohde, ytunnus, lupaAlkuPvm } = props;
   const intl = useIntl();
 
-  // const { isRemoving } = this.state
-
   if (kohde) {
     const { tunniste, heading, headingNumber } = kohde;
 
