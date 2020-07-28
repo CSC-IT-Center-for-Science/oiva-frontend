@@ -832,5 +832,13 @@ export default defineMessages({
   decisionDetails: {
     id: "common.decisionDetails",
     defaultMessage: "Päätöksen tiedot"
+  },
+  ytunnus: {
+    id: "common.ytunnus",
+    defaultMessage: "Y-tunnus"
+  },
+  viiva: {
+    id: "common.viiva",
+    defaultMessage: "Viiva"
   }
 });
