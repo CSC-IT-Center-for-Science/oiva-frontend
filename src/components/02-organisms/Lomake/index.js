@@ -90,7 +90,7 @@ const Lomake = React.memo(
         let result = { categories: lomake, invalidFields: [], ruleCount: 0 };
         let _rules = cloneDeep(rules);
         if (rulesFn) {
-          _rules = rulesFn(lomake);
+          _rules = rulesFn(lomake, intl.formatMessage);
         }
         if (_rules.length) {
           result = await markRequiredFields(

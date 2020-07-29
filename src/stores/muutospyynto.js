@@ -8,37 +8,37 @@ const initialState = {};
 const Store = createStore({
   initialState,
   actions: {
-    download: path => () => {
-      const procedureHandler = new ProcedureHandler();
+    download: (path, formatMessage) => () => {
+      const procedureHandler = new ProcedureHandler(formatMessage);
       procedureHandler.run("muutospyynto.lataaminen.download", [path]);
     },
-    downloadAndShowInAnotherWindow: path => () => {
-      const procedureHandler = new ProcedureHandler();
+    downloadAndShowInAnotherWindow: (path, formatMessage) => () => {
+      const procedureHandler = new ProcedureHandler(formatMessage);
       procedureHandler.run("muutospyynto.lataaminen.downloadAndShow", [
         path,
         true
       ]);
     },
-    downloadAndShowInSameWindow: path => () => {
-      const procedureHandler = new ProcedureHandler();
+    downloadAndShowInSameWindow: (path, formatMessage) => () => {
+      const procedureHandler = new ProcedureHandler(formatMessage);
       procedureHandler.run("muutospyynto.lataaminen.downloadAndShow", [
         path,
         false
       ]);
     },
-    getDownloadPath: uuid => async () => {
-      const procedureHandler = new ProcedureHandler();
+    getDownloadPath: (uuid, formatMessage) => async () => {
+      const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.esikatselu.latauspolku",
         [uuid]
       );
       return outputs.muutospyynto.esikatselu.latauspolku.output;
     },
-    getLupaPreviewDownloadPath: uuid => async () => {
-      const procedureHandler = new ProcedureHandler();
+    getLupaPreviewDownloadPath: (uuid, formatMessage) => async () => {
+      const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
-          "muutospyynto.esittelijanEsikatselu.latauspolku",
-          [uuid]
+        "muutospyynto.esittelijanEsikatselu.latauspolku",
+        [uuid]
       );
 
       return outputs.muutospyynto.esittelijanEsikatselu.latauspolku.output;

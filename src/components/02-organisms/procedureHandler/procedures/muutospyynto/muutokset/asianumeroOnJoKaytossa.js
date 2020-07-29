@@ -1,14 +1,14 @@
 import { toast } from "react-toastify";
+import informUser from "../../../../../../i18n/definitions/informUser";
 
 // muutospyynto.muutokset.asianumeroOnJoKaytossa
-export const asianumeroOnJoKaytossa = {
+export const asianumeroOnJoKaytossa = formatMessage => ({
   label: "Ilmoitus siitä että asianumero on jo käytössä",
   run: async () => {
-    //TODO: Lokalisointi käyttöön (error.duplicateAsianumero)
-    toast.error("Asianumero on jo käytössä toisella muutospyynnöllä", {
+    toast.error(formatMessage(informUser.asianumeroOnJoKaytossa), {
       autoClose: 5000,
       position: toast.POSITION.TOP_CENTER
     });
     return true;
   }
-};
+});

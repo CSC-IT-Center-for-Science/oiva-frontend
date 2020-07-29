@@ -1045,6 +1045,76 @@
     "filepath": "src/i18n/definitions/homepage.js"
   },
   {
+    "id": "informUser.tallennusEpaonnistui",
+    "defaultMessage": "Tallennus epäonnistui",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.muutospyyntoTallennettu",
+    "defaultMessage": "Muutospyyntö tallennettu!",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.asianumeroOnJoKaytossa",
+    "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.latausOnnistuiPDFUudessaIkkunassa",
+    "defaultMessage": "Muutospyynnön lataaminen onnistui. PDF-muotoinen dokumentti avattiin uuteen selainikkunaan.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.lataaminenOnnistuiJaPDFTarkasteltavana",
+    "defaultMessage": "Muutospyynnön lataaminen onnistui. PDF-muotoinen dokumentti on valmis tarkasteltavaksi.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.virheDokumentinLataamisessa",
+    "defaultMessage": "Virhe dokumentin lataamisessa",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.muutospyyntoLahetetty",
+    "defaultMessage": "Muutospyyntö lähetetty!",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.lahettaminenEpaonnistui",
+    "defaultMessage": "Lähettäminen epäonnistui.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.dokumenttiaEiLoytynyt",
+    "defaultMessage": "Dokumenttia ei syystä tai toisesta löytynyt",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.pdfDokumenttiLoytyi",
+    "defaultMessage": "PDF-dokumentti löytyi.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.muutospyynnonPoistaminenEpaonnistui",
+    "defaultMessage": "Muutospyynnön eli asian poistaminen epäonnistui.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.muutospyyntoPoistettu",
+    "defaultMessage": "Muutospyyntö (Asia) poistettu!",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.muutospyynnonTilaMuutettu",
+    "defaultMessage": "Muutospyynnön eli asian tila muutettu!",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.muutospyynonTilanMuuttaminenEpaonnistui",
+    "defaultMessage": "Muutospyynnön eli asian tilaa ei voitu muuttaa.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
     "id": "languages.inFinnish",
     "defaultMessage": "Suomeksi",
     "filepath": "src/i18n/definitions/languages.js"

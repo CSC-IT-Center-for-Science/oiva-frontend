@@ -101,7 +101,7 @@ const Asiakirjat = React.memo(() => {
   );
 
   const removeAsiakirja = async () => {
-    await muutospyynnotActions.remove(documentIdForAction);
+    await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(`/asiat?force=${new Date().getTime()}`);
   };
 
@@ -111,9 +111,11 @@ const Asiakirjat = React.memo(() => {
      * After calling esittelyyn function the state of muutospyyntö should be as
      * Esittelyssä.
      **/
-    muutospyynnotActions.esittelyyn(documentIdForAction);
+    muutospyynnotActions.esittelyyn(documentIdForAction, intl.formatMessage);
     // To download the path of the document must be known.
-    const path = await muutospyyntoActions.getLupaPreviewDownloadPath(documentIdForAction);
+    const path = await muutospyyntoActions.getLupaPreviewDownloadPath(
+      documentIdForAction
+    );
     if (path) {
       // If path is defined we download the document.
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
@@ -154,7 +156,10 @@ const Asiakirjat = React.memo(() => {
             )
           ],
           fileLinkFn: () => {
-            muutospyyntoActions.download(`/liitteet/${liite.uuid}/raw`);
+            muutospyyntoActions.download(
+              `/liitteet/${liite.uuid}/raw`,
+              intl.formatMessage
+            );
           }
         }),
         R.sortBy(R.prop("nimi"), muutospyynnonLiitteet.data || [])
@@ -175,7 +180,7 @@ const Asiakirjat = React.memo(() => {
       fileLinkFn: async () => {
         const path = await muutospyyntoActions.getLupaPreviewDownloadPath(uuid);
         if (path) {
-          muutospyyntoActions.download(path);
+          muutospyyntoActions.download(path, intl.formatMessage);
         }
       },
       openInNewWindow: true,

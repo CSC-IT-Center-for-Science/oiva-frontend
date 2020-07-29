@@ -210,7 +210,7 @@ const MuutospyyntoWizard = ({
     ]);
     return function cancel() {
       // Let's empty some store content on close.
-      const procedureHandler = new ProcedureHandler();
+      const procedureHandler = new ProcedureHandler(intl.formatMessage);
       procedureHandler.run("muutospyynto.muutokset.poista", [coActions]);
       muutospyyntoActions.reset();
     };
@@ -260,7 +260,7 @@ const MuutospyyntoWizard = ({
    */
   const onPreview = useCallback(
     async formData => {
-      const procedureHandler = new ProcedureHandler();
+      const procedureHandler = new ProcedureHandler(intl.formatMessage);
       /**
        * Let's save the form without notification. Notification about saving isn't
        * needed when we're going to show a notification related to the preview.
@@ -274,11 +274,11 @@ const MuutospyyntoWizard = ({
       // Let's get the path of preview (PDF) document and download the file.
       const path = await muutospyyntoActions.getDownloadPath(muutospyynto.uuid);
       if (path) {
-        muutospyyntoActions.download(path);
+        muutospyyntoActions.download(path, intl.formatMessage);
       }
       return muutospyynto;
     },
-    [muutospyyntoActions]
+    [intl.formatMessage, muutospyyntoActions]
   );
 
   /**
@@ -286,14 +286,17 @@ const MuutospyyntoWizard = ({
    * @param {object} formData
    * @returns {object} - Muutospyyntö
    */
-  const onSave = useCallback(async formData => {
-    const procedureHandler = new ProcedureHandler();
-    const outputs = await procedureHandler.run(
-      "muutospyynto.tallennus.tallenna",
-      [formData]
-    );
-    return outputs.muutospyynto.tallennus.tallenna.output.result;
-  }, []);
+  const onSave = useCallback(
+    async formData => {
+      const procedureHandler = new ProcedureHandler(intl.formatMessage);
+      const outputs = await procedureHandler.run(
+        "muutospyynto.tallennus.tallenna",
+        [formData]
+      );
+      return outputs.muutospyynto.tallennus.tallenna.output.result;
+    },
+    [intl.formatMessage]
+  );
 
   /**
    * Sends the form.
@@ -301,7 +304,7 @@ const MuutospyyntoWizard = ({
    */
   const onSend = useCallback(
     async formData => {
-      const procedureHandler = new ProcedureHandler();
+      const procedureHandler = new ProcedureHandler(intl.formatMessage);
       // Let's save the form without notification.
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallenna",
@@ -332,7 +335,7 @@ const MuutospyyntoWizard = ({
       }
       return false;
     },
-    [history]
+    [history, intl.formatMessage]
   );
 
   const onAction = useCallback(

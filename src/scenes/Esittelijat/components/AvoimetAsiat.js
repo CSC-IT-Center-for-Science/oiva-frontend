@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import { generateAvoimetAsiatTableStructure } from "../modules/asiatUtils";
@@ -15,8 +15,10 @@ const AvoimetAsiat = () => {
   const intl = useIntl();
   const location = useLocation();
   const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();
-  const [isPaatettyConfirmationDialogVisible, setPaatettyConfirmationDialogVisible] =
-    useState(false);
+  const [
+    isPaatettyConfirmationDialogVisible,
+    setPaatettyConfirmationDialogVisible
+  ] = useState(false);
   const [rowActionTargetId, setRowActionTargetId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,23 +38,22 @@ const AvoimetAsiat = () => {
     };
   }, [location.search, muutospyynnotActions]);
 
-  const onPaatettyActionClicked = (row) => {
+  const onPaatettyActionClicked = row => {
     setRowActionTargetId(row.id);
     setPaatettyConfirmationDialogVisible(true);
-  }
+  };
 
-  const triggerPaatettyActionProcedure = useCallback( async () => {
+  const triggerPaatettyActionProcedure = useCallback(async () => {
     const timestamp = new Date().getTime();
     setIsLoading(true);
-    await new ProcedureHandler().run(
-      "muutospyynnot.tilanmuutos.paatetyksi",
-      [rowActionTargetId]
-    );
+    await new ProcedureHandler(
+      intl.formatMessage
+    ).run("muutospyynnot.tilanmuutos.paatetyksi", [rowActionTargetId]);
     setIsLoading(false);
     setPaatettyConfirmationDialogVisible(false);
     setRowActionTargetId(null);
     history.push("?force=" + timestamp);
-  },[rowActionTargetId, history]);
+  }, [rowActionTargetId, history, intl.formatMessage]);
 
   const tableStructure = useMemo(() => {
     return muutospyynnot.avoimet && muutospyynnot.avoimet.fetchedAt
@@ -85,10 +86,14 @@ const AvoimetAsiat = () => {
           handleOk={triggerPaatettyActionProcedure}
           onClose={() => setPaatettyConfirmationDialogVisible(false)}
           messages={{
-            content: intl.formatMessage(common.asiaPaatettyConfirmationDialogContent),
+            content: intl.formatMessage(
+              common.asiaPaatettyConfirmationDialogContent
+            ),
             ok: intl.formatMessage(common.asiaPaatettyConfirmationDialogOk),
             cancel: intl.formatMessage(common.cancel),
-            title: intl.formatMessage(common.asiaPaatettyConfirmationDialogTitle)
+            title: intl.formatMessage(
+              common.asiaPaatettyConfirmationDialogTitle
+            )
           }}
           loadingSpinner={isLoading}
         />

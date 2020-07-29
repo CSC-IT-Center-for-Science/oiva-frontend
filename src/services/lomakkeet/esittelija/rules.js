@@ -3,7 +3,7 @@ import { requiredFields } from "./requiredFields";
 import { assocPath, concat, find, propEq, path } from "ramda";
 import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
 
-export function getRules() {
+export function getRules(lomake, formatMessage) {
   // Rules for top three fields of muutospyyntö
   const simpleRules = createRules(requiredFields);
 
@@ -44,7 +44,9 @@ export function getRules() {
                      * onko kyseinen asianumero jo käytössä.
                      */
                     if (isValueInValidFormat) {
-                      const procedureHandler = new ProcedureHandler();
+                      const procedureHandler = new ProcedureHandler(
+                        formatMessage
+                      );
                       const outputs = await procedureHandler.run(
                         "muutospyynto.muutokset.tarkistaDuplikaattiAsianumero",
                         [uuid, value]

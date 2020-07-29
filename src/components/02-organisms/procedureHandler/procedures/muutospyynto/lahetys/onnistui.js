@@ -1,11 +1,12 @@
 import { toast } from "react-toastify";
+import informUser from "../../../../../../i18n/definitions/informUser";
 
 // muutospyynto.lahetys.onnistui
-export const onnistui = {
+export const onnistui = formatMessage => ({
   label: "Lähettäminen onnistui",
   input: ["muutospyynto"],
   run: async ({ muutospyynto }) => {
-    toast.success("Muutospyyntö lähetetty!", {
+    toast.success(formatMessage(informUser.muutospyyntoLahetetty), {
       autoClose: 2000,
       position: toast.POSITION.TOP_LEFT
     });
@@ -14,4 +15,4 @@ export const onnistui = {
   next: () => {
     return ["muutospyynnot.listaus"];
   }
-};
+});

@@ -160,11 +160,11 @@ const UusiAsiaDialog = React.memo(
       setIsDialogOpen(false);
       setIsConfirmDialogVisible(false);
       // Let's empty some store content on close.
-      const procedureHandler = new ProcedureHandler();
+      const procedureHandler = new ProcedureHandler(intl.formatMessage);
       procedureHandler.run("muutospyynto.muutokset.poista", [coActions]);
       muutospyyntoActions.reset();
       return history.push(`/asiat?force=true`);
-    }, [coActions, history, muutospyyntoActions]);
+    }, [coActions, history, intl.formatMessage, muutospyyntoActions]);
 
     const anchors = useMemo(() => {
       return findObjectWithKey(cos, "anchor");
@@ -183,7 +183,7 @@ const UusiAsiaDialog = React.memo(
      */
     const onPreview = useCallback(
       async formData => {
-        const procedureHandler = new ProcedureHandler();
+        const procedureHandler = new ProcedureHandler(intl.formatMessage);
         /**
          * Let's save the form without notification. Notification about saving isn't
          * needed when we're going to show a notification related to the preview.
@@ -200,11 +200,11 @@ const UusiAsiaDialog = React.memo(
           muutospyynto.uuid
         );
         if (path) {
-          muutospyyntoActions.download(path);
+          muutospyyntoActions.download(path, intl.formatMessage);
         }
         return muutospyynto;
       },
-      [muutospyyntoActions]
+      [intl.formatMessage, muutospyyntoActions]
     );
 
     /**
@@ -212,15 +212,18 @@ const UusiAsiaDialog = React.memo(
      * @param {object} formData
      * @returns {object} - Muutospyyntö
      */
-    const onSave = useCallback(async formData => {
-      const procedureHandler = new ProcedureHandler();
-      const outputs = await procedureHandler.run(
-        "muutospyynto.tallennus.tallennaEsittelijanToimesta",
-        [formData]
-      );
-      return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
-        .result;
-    }, []);
+    const onSave = useCallback(
+      async formData => {
+        const procedureHandler = new ProcedureHandler(intl.formatMessage);
+        const outputs = await procedureHandler.run(
+          "muutospyynto.tallennus.tallennaEsittelijanToimesta",
+          [formData]
+        );
+        return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
+          .result;
+      },
+      [intl.formatMessage]
+    );
 
     const onAction = useCallback(
       async (action, fromDialog = false) => {

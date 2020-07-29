@@ -48,7 +48,7 @@ const getMaakuntaNimiFromHakemus = (hakemus, locale) => {
 };
 
 // Generates common row data for all Asiat-tables
-export const generateAsiaTableRows = (row, {formatMessage, locale}) => {
+export const generateAsiaTableRows = (row, { formatMessage, locale }) => {
   const paivityspvm = row.paivityspvm
     ? moment(row.paivityspvm).format("D.M.YYYY")
     : "";
@@ -73,7 +73,12 @@ export const generateAsiaTableRows = (row, {formatMessage, locale}) => {
   );
 };
 
-export const generateAvoimetAsiatTableStructure = (hakemusList, intl, history, onPaatettyActionClicked) => {
+export const generateAvoimetAsiatTableStructure = (
+  hakemusList,
+  intl,
+  history,
+  onPaatettyActionClicked
+) => {
   const formatMessage = intl.formatMessage;
   return [
     generateAsiatTableHeaderStructure(formatMessage),
@@ -105,17 +110,15 @@ export const generateAvoimetAsiatTableStructure = (hakemusList, intl, history, o
               onClick: async (row, action) => {
                 if (action === "esittelyyn") {
                   const timestamp = new Date().getTime();
-                  await new ProcedureHandler().run(
-                    "muutospyynnot.tilanmuutos.esittelyyn",
-                    [row.id]
-                  );
+                  await new ProcedureHandler(
+                    formatMessage
+                  ).run("muutospyynnot.tilanmuutos.esittelyyn", [row.id]);
                   history.push("?force=" + timestamp);
                 } else if (action === "valmisteluun") {
                   const timestamp = new Date().getTime();
-                  await new ProcedureHandler().run(
-                    "muutospyynnot.tilanmuutos.valmisteluun",
-                    [row.id]
-                  );
+                  await new ProcedureHandler(
+                    formatMessage
+                  ).run("muutospyynnot.tilanmuutos.valmisteluun", [row.id]);
                   history.push("?force=" + timestamp);
                 } else if (action === "paata") {
                   await onPaatettyActionClicked(row);
@@ -158,7 +161,9 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
               id: row.uuid,
               onClick: async (row, action) => {
                 if (action === "lataa") {
-                  const procedureHandler = new ProcedureHandler();
+                  const procedureHandler = new ProcedureHandler(
+                    intl.formatMessage
+                  );
                   const output = await procedureHandler.run(
                     "muutospyynto.esikatselu.latauspolku",
                     [row.id]
@@ -179,7 +184,9 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
                   actions: [
                     {
                       id: "lataa",
-                      text: intl.formatMessage(common["asiaTable.actions.lataa"])
+                      text: intl.formatMessage(
+                        common["asiaTable.actions.lataa"]
+                      )
                     }
                   ]
                 },

@@ -1,11 +1,14 @@
 import { postData } from "../../../fetch";
 
 // muutospyynto.tallennus.tallennaEsittelijanToimesta
-export const tallennaEsittelijanToimesta = {
+export const tallennaEsittelijanToimesta = formatMessage => ({
   label: "Muutospyynnön tallennus (by Esittelijä)",
   input: ["formData", "inform"],
   run: async ({ formData, inform }) => {
-    const response = await postData("tallennaMuutospyyntoEsittelijanToimesta", formData);
+    const response = await postData(
+      "tallennaMuutospyyntoEsittelijanToimesta",
+      formData
+    );
     const json = await response.json();
     return {
       inform,
@@ -22,4 +25,4 @@ export const tallennaEsittelijanToimesta = {
       }
     }
   }
-};
+});
