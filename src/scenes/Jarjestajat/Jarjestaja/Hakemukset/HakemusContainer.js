@@ -5,7 +5,6 @@ import MuutospyyntoWizard from "./Muutospyynto/components/MuutospyyntoWizard";
 import { getAnchorPart, findObjectWithKey } from "../../../../utils/common";
 import { getMuutosperusteluList } from "../../../../utils/muutosperusteluUtil";
 import { setAttachmentUuids } from "../../../../utils/muutospyyntoUtil";
-import { useElykeskukset } from "../../../../stores/elykeskukset";
 import { useKoulutukset } from "../../../../stores/koulutukset";
 import { useKohteet } from "../../../../stores/kohteet";
 import { useOpetuskielet } from "../../../../stores/opetuskielet";
@@ -13,7 +12,6 @@ import { useMaaraystyypit } from "../../../../stores/maaraystyypit";
 import { useMuut } from "../../../../stores/muut";
 import { useKunnat } from "../../../../stores/kunnat";
 import { useMaakunnat } from "../../../../stores/maakunnat";
-import { useVankilat } from "../../../../stores/vankilat";
 import { useOmovt } from "../../../../stores/omovt";
 import { useMuutospyynto } from "../../../../stores/muutospyynto";
 import { useOivaperustelut } from "../../../../stores/oivaperustelut";
@@ -43,6 +41,8 @@ import { initializeKoulutustyyppi } from "../../../../helpers/koulutustyypit";
 import { initializeTutkinnot } from "../../../../helpers/tutkinnot";
 import { initializeKieli } from "../../../../helpers/kielet";
 import { initializeMaakunta } from "../../../../helpers/maakunnat";
+import { initializeElykeskus } from "helpers/elykeskukset";
+import { initializeVankilat } from "helpers/vankilat";
 
 /**
  * HakemusContainer gathers all the required data for the MuutospyyntoWizard by
@@ -58,14 +58,15 @@ import { initializeMaakunta } from "../../../../helpers/maakunnat";
 const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
   const intl = useIntl();
 
+  const [elykeskukset, setElykeskukset] = useState();
   const [kielet, setKielet] = useState();
   const [koulutusalat, setKoulutusalat] = useState();
   const [koulutustyypit, setKoulutustyypit] = useState();
   const [maakuntakunnat, setMaakuntakunnat] = useState();
   const [tutkinnot, setTutkinnot] = useState();
+  const [vankilat, setVankilat] = useState();
 
   const [, coActions] = useChangeObjects();
-  const [elykeskukset, elykeskuksetActions] = useElykeskukset();
   const [kohteet, kohteetActions] = useKohteet();
   const [koulutukset, koulutuksetActions] = useKoulutukset();
   const [opetuskielet, opetuskieletActions] = useOpetuskielet();
@@ -73,7 +74,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
   const [muut, muutActions] = useMuut();
   const [kunnat, kunnatActions] = useKunnat();
   const [maakunnat, maakunnatActions] = useMaakunnat();
-  const [vankilat, vankilatActions] = useVankilat();
   const [omovt, omovtActions] = useOmovt();
   const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
   const [oivaperustelut, oivaperustelutActions] = useOivaperustelut();
@@ -81,7 +81,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
   // Let's fetch data for the form
   useEffect(() => {
     const abortControllers = flatten([
-      elykeskuksetActions.load(),
       kohteetActions.load(),
       opetuskieletActions.load(),
       maaraystyypitActions.load(),
@@ -89,7 +88,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
       koulutuksetActions.load(),
       kunnatActions.load(),
       maakunnatActions.load(),
-      vankilatActions.load(),
       omovtActions.load(),
       oivaperustelutActions.load(),
       koulutuksetActions.load()
@@ -107,7 +105,6 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
       );
     };
   }, [
-    elykeskuksetActions,
     kohteetActions,
     koulutuksetActions,
     opetuskieletActions,
@@ -115,12 +112,37 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
     muutActions,
     kunnatActions,
     maakunnatActions,
-    vankilatActions,
     omovtActions,
     muutospyyntoActions,
     oivaperustelutActions,
     match.params.uuid
   ]);
+
+  /**
+   * Ely-keskukset: datan noutaminen backendistä ja sen tallentaminen
+   * paikalliseen tietovarastoon jäsenneltynä.
+   */
+  useEffect(() => {
+    const abortController = loadFromBackend(
+      {
+        key: "elykeskukset"
+      },
+      async fromBackend => {
+        setElykeskukset(
+          await localforage.setItem(
+            "elykeskukset",
+            map(elykeskus => {
+              return initializeElykeskus(elykeskus);
+            }, fromBackend)
+          )
+        );
+      }
+    );
+
+    return function cancel() {
+      abortController.abort();
+    };
+  }, []);
 
   /**
    * In the useEffect below we store the degrees with their language
@@ -129,7 +151,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
    */
   useEffect(() => {
     let abortController = null;
-    if (lupa.fetchedAt) {
+    if (lupa) {
       abortController = loadFromBackend(
         {
           key: "tutkinnot"
@@ -140,10 +162,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
               prop("koodiarvo"),
               await localforage.setItem(
                 "tutkinnot",
-                initializeTutkinnot(
-                  fromBackend,
-                  prop("maaraykset", lupa.data) || []
-                )
+                initializeTutkinnot(fromBackend, prop("maaraykset", lupa) || [])
               )
             )
           );
@@ -257,6 +276,32 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
             "maakuntakunnat",
             map(maakunta => {
               return initializeMaakunta(maakunta);
+            }, fromBackend).filter(Boolean)
+          )
+        );
+      }
+    );
+
+    return function cancel() {
+      abortController.abort();
+    };
+  }, []);
+
+  /**
+   * Vankilat: datan noutaminen backendistä ja sen tallentaminen
+   * paikalliseen tietovarastoon jäsenneltynä.
+   */
+  useEffect(() => {
+    const abortController = loadFromBackend(
+      {
+        key: "vankilat"
+      },
+      async fromBackend => {
+        setVankilat(
+          await localforage.setItem(
+            "vankilat",
+            map(vankila => {
+              return initializeVankilat(vankila);
             }, fromBackend)
           )
         );
@@ -426,7 +471,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
 
   if (
     lupaKohteet &&
-    elykeskukset.fetchedAt &&
+    elykeskukset &&
     kielet &&
     kohteet.fetchedAt &&
     kohteet.data &&
@@ -450,7 +495,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
     kunnat.fetchedAt &&
     maakunnat.fetchedAt &&
     maakuntakunnat &&
-    vankilat.fetchedAt &&
+    vankilat &&
     tutkinnot &&
     omovt.fetchedAt &&
     oivaperustelut.fetchedAt &&
@@ -459,12 +504,12 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
     return (
       <MuutospyyntoWizard
         backendMuutokset={backendMuutokset}
-        elykeskukset={elykeskukset.data}
+        elykeskukset={elykeskukset}
         history={history}
         kielet={kielet}
         kohteet={kohteet.data}
         koulutusalat={koulutusalat}
-        koulutustyypit={koulutustyypit.data}
+        koulutustyypit={koulutustyypit}
         kunnat={kunnat.data}
         lupa={lupa}
         lupaKohteet={lupaKohteet}
@@ -477,6 +522,7 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
         muutospyynto={muutospyynto.data}
         vankilat={vankilat.data}
         onNewDocSave={onNewDocSave}
+        opetuskielet={opetuskielet.data}
         tutkinnot={tutkinnot}
       />
     );
@@ -503,25 +549,24 @@ const HakemusContainer = React.memo(({ history, lupa, lupaKohteet, match }) => {
               ["muut", MUUT_KEYS.KULJETTAJAKOULUTUS, "fetchedAt"],
               koulutukset
             ) && !!lupaKohteet,
-            !!elykeskukset.fetchedAt,
-            !!elykeskukset.fetchedAt,
+            !!elykeskukset,
             !!kielet,
             !!kohteet.fetchedAt,
-            !!koulutusalat.fetchedAt,
-            !!koulutustyypit.fetchedAt,
+            !!koulutusalat,
+            !!koulutustyypit,
             !!opetuskielet.fetchedAt,
             !!maaraystyypit.fetchedAt,
             !!muut.fetchedAt,
             !!kunnat.fetchedAt,
             !!maakunnat.fetchedAt,
             !!maakuntakunnat,
-            !!vankilat.fetchedAt,
-            !!tutkinnot.fetchedAt,
+            !!vankilat,
+            !!tutkinnot,
             !!omovt.fetchedAt,
             !!oivaperustelut.fetchedAt,
             !!(!match.params.uuid || muutospyynto.fetchedAt)
           ].filter(Boolean).length /
-            22) *
+            20) *
           100
         }
       />

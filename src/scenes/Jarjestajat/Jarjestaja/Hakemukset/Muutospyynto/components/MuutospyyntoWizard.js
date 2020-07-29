@@ -30,7 +30,6 @@ import Loading from "../../../../../../modules/Loading";
 import { findObjectWithKey } from "../../../../../../utils/common";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
-import { useOpetuskielet } from "../../../../../../stores/opetuskielet";
 import { useKoulutukset } from "../../../../../../stores/koulutukset";
 import { mapObjIndexed, prop, sortBy } from "ramda";
 import { useChangeObjects } from "../../../../../../stores/changeObjects";
@@ -38,6 +37,7 @@ import ProcedureHandler from "../../../../../../components/02-organisms/procedur
 import { createMuutospyyntoOutput } from "../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
 import common from "../../../../../../i18n/definitions/common";
+import { useParams } from "react-router-dom";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -59,35 +59,58 @@ const FormDialog = withStyles(() => ({
   return <Dialog {...props}>{props.children}</Dialog>;
 });
 
+const defaultProps = {
+  backendMuutokset: [],
+  elykeskukset: [],
+  kielet: [],
+  kohteet: [],
+  koulutusalat: [],
+  koulutustyypit: [],
+  kunnat: [],
+  lupa: {},
+  lupaKohteet: {},
+  maakunnat: [],
+  maakuntakunnat: [],
+  maaraystyypit: [],
+  muut: [],
+  muutosperusteluList: [],
+  opetuskielet: [],
+  tutkinnot: [],
+  vankilat: []
+};
+
 /**
  * MuutospyyntoWizard is the tool to create a new application. It provides all
  * the needed fields and information for a user for filling out the form.
  * @param {Object} backendChanges - Backend known changes of the current application
  */
 const MuutospyyntoWizard = ({
-  backendMuutokset = [],
-  elykeskukset = [],
-  history = {},
-  kielet = [],
-  kohteet = [],
-  koulutusalat = [],
-  koulutustyypit = [],
-  kunnat = [],
-  lupa = {},
-  lupaKohteet = {},
-  maakunnat = [],
-  maakuntakunnat = [],
-  maaraystyypit = [],
+  backendMuutokset = defaultProps.backendMuutokset,
+  elykeskukset = defaultProps.elykeskukset,
+  history,
+  kielet = defaultProps.kielet,
+  kohteet = defaultProps.kohteet,
+  koulutusalat = defaultProps.koulutusalat,
+  koulutustyypit = defaultProps.koulutustyypit,
+  kunnat = defaultProps.kunnat,
+  lupa = defaultProps.lupa,
+  lupaKohteet = defaultProps.lupaKohteet,
+  maakunnat = defaultProps.maakunnat,
+  maakuntakunnat = defaultProps.maakuntakunnat,
+  maaraystyypit = defaultProps.maaraystyypit,
   match,
-  muut = [],
-  muutosperusteluList = [],
+  muut = defaultProps.muut,
+  muutosperusteluList = defaultProps.muutosperusteluList,
   onNewDocSave,
-  tutkinnot = [],
-  vankilat = []
+  opetuskielet = defaultProps.opetuskielet,
+  tutkinnot = defaultProps.tutkinnot,
+  vankilat = defaultProps.vankilat
 }) => {
   const intl = useIntl();
-
+  const params = useParams();
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
+
+  let { uuid } = params;
 
   /**
    * Visits per page is used for showing or hiding validation errors of the
@@ -104,7 +127,6 @@ const MuutospyyntoWizard = ({
    * We are going to create new objects based on these definitions.
    */
   const [cos, coActions] = useChangeObjects(); // cos means change objects
-  const [opetuskielet] = useOpetuskielet();
   const [koulutukset] = useKoulutukset();
   const [, muutospyyntoActions] = useMuutospyynto();
 
@@ -317,15 +339,16 @@ const MuutospyyntoWizard = ({
     async action => {
       // There must be something to save.
       const formData = createMuutospyyntoOutput(
-        createObjectToSave(
+        await createObjectToSave(
+          R.toUpper(intl.locale),
           lupa,
           cos,
-          backendMuutokset,
-          match.params.uuid,
+          uuid,
           kohteet,
           maaraystyypit,
           muut,
-          lupaKohteet
+          lupaKohteet,
+          "KJ"
         ),
         getFiles()
       );
@@ -387,8 +410,8 @@ const MuutospyyntoWizard = ({
     [
       anchors,
       cos,
-      backendMuutokset,
       getFiles,
+      intl.locale,
       kohteet,
       lupa,
       lupaKohteet,
@@ -399,7 +422,8 @@ const MuutospyyntoWizard = ({
       onPreview,
       onSave,
       onSectionChangesUpdate,
-      onSend
+      onSend,
+      uuid
     ]
   );
 
@@ -445,7 +469,7 @@ const MuutospyyntoWizard = ({
         <h3>{intl.formatMessage(wizardMessages.noRights)}</h3>
       </MessageWrapper>
     );
-  } else if (kielet && opetuskielet && parsedKoulutukset) {
+  } else if (kielet && parsedKoulutukset) {
     return (
       <React.Fragment>
         <FormDialog

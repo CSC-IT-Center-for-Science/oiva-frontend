@@ -27,9 +27,9 @@ it("Values of the constants should be correct", () => {
     "http://localhost/api/pebble/resources/liitteet/lisakoulutusluvat/"
   );
   expect(ROLE_APPLICATION).toBe("OIVA_APP");
-  expect(ROLE_YLLAPITAJA).toBe("OIVA_APP_YLLAPITAJA");
-  expect(ROLE_ESITTELIJA).toBe("OIVA_APP_AMMATILLINEN_ESITTELIJA");
-  expect(ROLE_MUOKKAAJA).toBe("OIVA_APP_AMMATILLINEN_MUOKKAAJA");
-  expect(ROLE_NIMENKIRJOITTAJA).toBe("OIVA_APP_AMMATILLINEN_NIMENKIRJOITTAJA");
-  expect(ROLE_KATSELIJA).toBe("OIVA_APP_AMMATILLINEN_KATSELIJA");
+  expect(ROLE_YLLAPITAJA).toBe("OIVA_APP_ADMIN");
+  expect(ROLE_ESITTELIJA).toBe("OIVA_APP_ESITTELIJA");
+  expect(ROLE_MUOKKAAJA).toBe("OIVA_APP_MUOKKAAJA");
+  expect(ROLE_NIMENKIRJOITTAJA).toBe("OIVA_APP_NIMENKIRJOITTAJA");
+  expect(ROLE_KATSELIJA).toBe("OIVA_APP_KATSELIJA");
 });

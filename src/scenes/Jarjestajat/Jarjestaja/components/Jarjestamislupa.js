@@ -1,5 +1,5 @@
 import React from "react";
-import {useIntl} from "react-intl";
+import { useIntl } from "react-intl";
 import styled from "styled-components";
 import LupaSection from "./LupaSection";
 import Typography from "@material-ui/core/Typography";
@@ -20,20 +20,20 @@ const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
   // Luvan poikkeuskäsittely erikoisluville (17kpl)
   const titleMessageKey = common.lupaPageTitleAmmatillinen;
   const lupaException = LUPA_LISAKOULUTTAJAT[lupa.jarjestajaYtunnus];
-  const dateString = new moment().format('D.M.YYYY');
+  const dateString = new moment().format("D.M.YYYY");
   return (
     <InnerContentContainer>
       <div>
         {lupaException ? (
           <TopSectionWrapper className="p-8">
             <Typography component="h1" variant="h5">
-              {intl.formatMessage(titleMessageKey, {date: ''})}
+              {intl.formatMessage(titleMessageKey, { date: "" })}
             </Typography>
           </TopSectionWrapper>
         ) : (
           <TopSectionWrapper className="p-8">
             <Typography component="h1" variant="h5">
-              {intl.formatMessage(titleMessageKey, {date: dateString})}
+              {intl.formatMessage(titleMessageKey, { date: dateString })}
             </Typography>
           </TopSectionWrapper>
         )}

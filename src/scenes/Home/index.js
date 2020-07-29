@@ -7,10 +7,11 @@ import { useIntl } from "react-intl";
 import homepage from "../../i18n/definitions/homepage";
 
 const Home = () => {
+  const intl = useIntl();
   const { formatMessage } = useIntl();
   return (
     <ContentContainer>
-      <Helmet>
+      <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>Oiva | Etusivu</title>
       </Helmet>
       <Typography component="h2" variant="h4" className="p-4">

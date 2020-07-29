@@ -1,49 +1,27 @@
+import { findObjectWithKey, getAnchorPart } from "../../utils/common";
 import {
-  compose,
-  includes,
-  flatten,
-  path,
-  omit,
-  prop,
-  groupBy,
-  head,
-  mapObjIndexed,
-  map,
   find,
+  map,
   propEq,
   join,
   init,
   split,
-  filter
+  compose,
+  filter,
+  includes,
+  prop,
+  path,
+  flatten,
+  dissoc
 } from "ramda";
-import localforage from "localforage";
 import { fillForBackend } from "../../services/lomakkeet/backendMappings";
-
-export const initializeMuu = muuData => {
-  return omit(["koodiArvo"], {
-    ...muuData,
-    koodiarvo: muuData.koodiArvo,
-    metadata: mapObjIndexed(head, groupBy(prop("kieli"), muuData.metadata))
-  });
-};
-
-export function getMuutFromStorage() {
-  return localforage.getItem("muut");
-}
 
 export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
   map(changeObj => {
     const anchorInit = compose(join("."), init, split("."))(changeObj.anchor);
-
-    let tila = changeObj.properties.isChecked ? "LISAYS" : "POISTO";
-    if (
-      (changeObj.properties.isChecked === undefined ||
-        changeObj.properties.isChecked === null) &&
-      changeObj.properties.value
-    ) {
-      tila = "MUUTOS";
-    }
-
+    const code = getAnchorPart(changeObj.anchor, 1);
+    const metadata = path(["properties", "metadata"], changeObj);
+    const finnishInfo = find(propEq("kieli", "FI"), metadata.metadata);
     const perustelut = filter(
       compose(includes(anchorInit), prop("anchor")),
       changeObjects.perustelut
@@ -65,24 +43,25 @@ export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
     let meta = Object.assign(
       {},
       {
-        tunniste: "tutkintokieli",
         changeObjects: flatten([[changeObj], perustelut]),
         muutosperustelukoodiarvo: []
       },
       perustelutForBackend,
       perusteluteksti ? { perusteluteksti } : null
     );
+
     return {
-      koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
-      koodisto: path(
-        ["properties", "metadata", "koodisto", "koodistoUri"],
-        changeObj
-      ),
-      isInLupa: path(["properties", "metadata", "isInLupa"], changeObj),
+      isInLupa: metadata.isInLupa,
+      liitteet: map(file => {
+        return dissoc("tiedosto", file);
+      }, findObjectWithKey(changeObjects, "attachments")),
       kohde,
-      maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
-      maaraysUuid: changeObj.properties.metadata.maaraysUuid,
+      koodiarvo: code,
+      koodisto: metadata.koodisto.koodistoUri,
+      maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+      maaraysUuid: metadata.maaraysUuid,
       meta,
-      tila
+      nimi: finnishInfo.nimi,
+      tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
     };
   }, changeObjects.muutokset).filter(Boolean);

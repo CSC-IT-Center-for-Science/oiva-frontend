@@ -265,16 +265,18 @@ const App = React.memo(({ isDebugModeOn }) => {
               <div
                 style={{ maxWidth: "90rem" }}
                 className="w-full mx-auto px-3 lg:px-8 py-8">
-                <Breadcrumbs
-                  separator={<b> / </b>}
-                  item={NavLink}
-                  finalItem={"b"}
-                  finalProps={{
-                    style: {
-                      color: COLORS.BLACK
-                    }
-                  }}
-                />
+                <nav tabIndex="0" aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
+                  <Breadcrumbs
+                    separator={<b> / </b>}
+                    item={NavLink}
+                    finalItem={"b"}
+                    finalProps={{
+                      style: {
+                        color: COLORS.BLACK
+                      }
+                    }}
+                  />
+                </nav>
               </div>
               <div className="flex-1 flex flex-col">
                 <Switch>

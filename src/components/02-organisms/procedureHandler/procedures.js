@@ -23,7 +23,9 @@ import { downloadAndShow as lataaJaNaytaMuutospyynto } from "./procedures/muutos
 import { epaonnistui as muutospyynnonLataaminenEpaonnistui } from "./procedures/muutospyynto/lataaminen/epaonnistui";
 import { onnistui as muutospyynnonLataaminenOnnistui } from "./procedures/muutospyynto/lataaminen/onnistui";
 import { onnistuiNew as muutospyynnonLataaminenOnnistuiNew } from "./procedures/muutospyynto/lataaminen/onnistuiNew";
-import {luvanLatauspolku} from "./procedures/muutospyynto/esikatselu/luvanLatauspolku";
+import { luvanLatauspolku } from "./procedures/muutospyynto/esikatselu/luvanLatauspolku";
+import { tarkistaDuplikaattiAsianumero } from "./procedures/muutospyynto/muutokset/tarkistaDuplikaattiAsianumero"
+import {asianumeroOnJoKaytossa} from "./procedures/muutospyynto/muutokset/asianumeroOnJoKaytossa";
 
 export const procedures = {
   muutospyynnot: {
@@ -65,7 +67,9 @@ export const procedures = {
       onnistuiNew: muutospyynnonLataaminenOnnistuiNew
     },
     muutokset: {
-      poista: poistaWizardinMuutokset
+      tarkistaDuplikaattiAsianumero: tarkistaDuplikaattiAsianumero,
+      poista: poistaWizardinMuutokset,
+      asianumeroOnJoKaytossa: asianumeroOnJoKaytossa,
     },
     tallennus: {
       epaonnistui: tallennusEpaonnistui,

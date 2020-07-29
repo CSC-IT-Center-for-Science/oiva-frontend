@@ -12,6 +12,7 @@ import Tutkintokieli from "./Tutkintokieli";
 import Section from "../../../../components/03-templates/Section";
 import common from "../../../../i18n/definitions/common";
 import { useIntl } from "react-intl";
+import { parseLocalizedField } from "../../../../modules/helpers";
 
 const Otsikko = styled.div`
   font-size: 16px;
@@ -65,6 +66,11 @@ const OpiskelijavuosiRajoitukset = styled.div`
   margin-bottom: 20px;
 `;
 
+const RajoitusTitle = styled.span`
+  display: inline-block;
+  width: 20em;
+`;
+
 const KohdeKuvaus = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -81,8 +87,6 @@ const MuutSection = styled.div`
 const LupaSection = props => {
   const { kohde, ytunnus, lupaAlkuPvm } = props;
   const intl = useIntl();
-
-  // const { isRemoving } = this.state
 
   if (kohde) {
     const { tunniste, heading, headingNumber } = kohde;
@@ -118,19 +122,21 @@ const LupaSection = props => {
         return (
           <div className="border-b border-b-gray">
             <Section code={headingNumber} title={heading}>
-              <Otsikko>
-                {intl.formatMessage(common.lupaSectionTitleAllLupas)}
-              </Otsikko>
+              {maaraykset && maaraykset.length > 0 && (
+                <Otsikko>
+                  {intl.formatMessage(common.lupaSectionTitleAllLupas)}
+                </Otsikko>
+              )}
               <Tutkinnot>
                 {_.map(maaraykset, (ala, i) => (
-                  <Koulutusala key={i} {...ala} lupaAlkuPvm={lupaAlkuPvm}/>
+                  <Koulutusala key={i} {...ala} lupaAlkuPvm={lupaAlkuPvm} />
                 ))}
               </Tutkinnot>
-              {
-                maaraykset && maaraykset.length > 0
-                  ? <Tietoa>{intl.formatMessage(common.lupaSectionTitleSupplementary)}</Tietoa>
-                  : null
-              }
+              {maaraykset && maaraykset.length > 0 ? (
+                <Tietoa>
+                  {intl.formatMessage(common.lupaSectionTitleSupplementary)}
+                </Tietoa>
+              ) : null}
 
               <Koulutukset>
                 {vt && vt[0] && (
@@ -311,6 +317,13 @@ const LupaSection = props => {
                 const { tyyppi, arvo } = obj;
                 return (
                   <OpiskelijavuosiRajoitukset key={i}>
+                    <RajoitusTitle>
+                      {parseLocalizedField(
+                        obj.koodi.metadata,
+                        intl.locale.toUpperCase(),
+                        "nimi"
+                      )}
+                    </RajoitusTitle>
                     {intl.formatMessage(
                       common.lupaSectionOpiskelijavuodetMaximum,
                       { tyyppi, arvo }

@@ -59,7 +59,7 @@ const Asiat = ({ path: parentPath, user }) => {
 
   return (
     <React.Fragment>
-      <Helmet>
+      <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>{`Oiva | ${t(common.asiat)}`}</title>
       </Helmet>
 

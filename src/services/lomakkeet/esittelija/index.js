@@ -18,7 +18,10 @@ export default function getTopThree(data, isReadOnly, locale) {
           properties: {
             label: __("asianumero"),
             type: "text",
-            value: "VN/"
+            value: "VN/",
+            forChangeObject: {
+              uuid: data.uuid
+            }
           }
         }
       ]

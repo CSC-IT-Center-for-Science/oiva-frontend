@@ -135,7 +135,7 @@ export function createBEOofTutkintakielet(
         backendChangeObject.parentMaaraysUuid = tutkinto.maarays.uuid;
       }
       return backendChangeObject;
-    }, listOfActiveLanguages);
+    }, listOfActiveLanguages || []);
   }
 
   return concat(additions, removals);

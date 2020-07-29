@@ -1,28 +1,54 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
-import { join, map, path } from "ramda";
-import { cloneDeep } from "lodash";
+import { join, path } from "ramda";
+import { cloneDeep, isEqual } from "lodash";
 import { useIntl } from "react-intl";
 import { useMetadata } from "../../../stores/metadata";
-import { isEqual } from "lodash";
 
-function markRequiredFields(lomake, changeObjects = [], rules = []) {
+function isFunction(functionToCheck) {
+  return (
+    functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
+  );
+}
+
+async function markRequiredFields(
+  lomake,
+  changeObjects = [],
+  rules = [],
+  invalidFields = [],
+  index = 0
+) {
   let modifiedLomake = cloneDeep(lomake);
-  const invalidFields = map(rule => {
+  if (rules[index]) {
+    const rule = rules[index];
     const isRequired = rule.isRequired(modifiedLomake, changeObjects);
     modifiedLomake = rule.markRequiredFields(modifiedLomake, isRequired);
-    const isValid = rule.isValid(modifiedLomake, changeObjects, isRequired)();
+    const isValid = isFunction(rule.isValid)
+      ? await rule.isValid(modifiedLomake, changeObjects, isRequired)
+      : true;
     modifiedLomake = rule.showErrors(modifiedLomake, isValid);
-    return !isValid;
-  }, rules).filter(Boolean);
+    if (!isValid) {
+      invalidFields.push(false);
+    }
+    if (rules[index + 1]) {
+      return await markRequiredFields(
+        modifiedLomake,
+        changeObjects,
+        rules,
+        invalidFields,
+        index + 1
+      );
+    }
+  }
   return { categories: modifiedLomake, invalidFields, ruleCount: rules.length };
 }
 
 const defaultProps = {
   changeObjects: [],
-  uncheckParentWithoutActiveChildNodes: false
+  uncheckParentWithoutActiveChildNodes: false,
+  rules: []
 };
 
 const Lomake = React.memo(
@@ -36,7 +62,7 @@ const Lomake = React.memo(
     onChangesUpdate,
     path: _path,
     prefix = "",
-    rules = [],
+    rules = defaultProps.rules,
     rulesFn,
     showCategoryTitles = true,
     uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes
@@ -53,45 +79,51 @@ const Lomake = React.memo(
       metadataActions.registerLomakeLoad(lomakeId);
     }, [lomakeId, metadataActions]);
 
+    const [lomakeWithRules, setLomakeWithRules] = useState([]);
+
     const lomake = useMemo(() => {
-      let categories = getLomake(
-        action,
-        data,
-        isReadOnly,
-        intl.locale,
-        _path,
-        prefix
-      );
-      let result = { categories, invalidFields: [], ruleCount: 0 };
-      let _rules = cloneDeep(rules);
-      if (rulesFn) {
-        _rules = rulesFn(categories);
+      return getLomake(action, data, isReadOnly, intl.locale, _path, prefix);
+    }, [action, data, intl.locale, isReadOnly, _path, prefix]);
+
+    useEffect(() => {
+      async function defineRules() {
+        let result = { categories: lomake, invalidFields: [], ruleCount: 0 };
+        let _rules = cloneDeep(rules);
+        if (rulesFn) {
+          _rules = rulesFn(lomake);
+        }
+        if (_rules.length) {
+          result = await markRequiredFields(
+            lomake,
+            changeObjects,
+            _rules.filter(Boolean)
+          );
+        }
+        return {
+          categories: result.categories,
+          invalidFields: result.invalidFields.length,
+          ruleCount: result.ruleCount,
+          metadata
+        };
       }
-      if (_rules.length) {
-        result = markRequiredFields(categories, changeObjects, _rules);
-      }
-      return {
-        categories: result.categories,
-        invalidFields: result.invalidFields.length,
-        ruleCount: result.ruleCount,
-        metadata
-      };
+      defineRules().then(definedRules => {
+        if (!isEqual(definedRules, lomakeWithRules)) {
+          setLomakeWithRules(definedRules);
+        }
+      });
     }, [
-      action,
+      lomake,
+      anchor,
       changeObjects,
-      data,
-      intl.locale,
-      isReadOnly,
+      lomakeWithRules,
       metadata,
-      _path,
-      prefix,
       rules,
       rulesFn
     ]);
 
     if (
-      lomake.categories &&
-      lomake.invalidFields !== undefined &&
+      lomakeWithRules.categories &&
+      lomakeWithRules.invalidFields !== undefined &&
       onChangesUpdate
     ) {
       return (
@@ -99,7 +131,7 @@ const Lomake = React.memo(
           <div className="p-8">
             <CategorizedListRoot
               anchor={anchor}
-              categories={lomake.categories}
+              categories={lomakeWithRules.categories}
               changes={changeObjects}
               onUpdate={onChangesUpdate}
               showCategoryTitles={showCategoryTitles}
