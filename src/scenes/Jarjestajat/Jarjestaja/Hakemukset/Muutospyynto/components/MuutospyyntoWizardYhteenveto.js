@@ -152,7 +152,7 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   muutosperusteluList: PropTypes.array,
   onChangesUpdate: PropTypes.func,
   opetuskielet: PropTypes.array,
-  tutkinnot: PropTypes.object
+  tutkinnot: PropTypes.array
 };
 
 export default MuutospyyntoWizardYhteenveto;

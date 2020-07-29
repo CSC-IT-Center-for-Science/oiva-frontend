@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import wizardMessages from "../../i18n/definitions/wizard";
 import common from "../../i18n/definitions/common";
 import Tutkinnot from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Tutkinnot";
 import MuutospyyntoWizardKielet from "../Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardKielet";
@@ -67,9 +66,9 @@ const EsittelijatMuutospyynto = React.memo(
 
     return (
       <React.Fragment>
-        <h1 className="my-6">
-          {intl.formatMessage(wizardMessages.pageTitle_1)}
-        </h1>
+        <h2 className="my-6">
+          {intl.formatMessage(common.changesText)}
+        </h2>
         <form onSubmit={props.handleSubmit}>
           <Section
             code={props.lupaKohteet[1].headingNumber}

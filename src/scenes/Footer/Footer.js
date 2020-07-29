@@ -16,7 +16,7 @@ const Footer = () => {
         </Link>
       </p>
       <p className="lg:mr-10">
-        <Link to="yleinen-sisaltosivu" className="text-green-500">
+        <Link to="yhteydenotto" className="text-green-500">
           {intl.formatMessage(common.yhteydenotto)}
         </Link>
       </p>

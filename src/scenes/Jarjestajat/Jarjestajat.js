@@ -22,9 +22,10 @@ const Jarjestajat = React.memo(() => {
     };
   }, [luvatActions]);
 
+
   return (
     <React.Fragment>
-      <Helmet>
+      <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>Oiva | Ammatillinen koulutus</title>
       </Helmet>
 

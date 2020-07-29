@@ -36,7 +36,7 @@ import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
 import * as R from "ramda";
-import YleinenSisaltosivu from "./scenes/YleinenSisaltosivu";
+import Yhteydenotto from "./scenes/Yhteydenotto";
 import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
 import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 
@@ -231,7 +231,7 @@ const App = React.memo(({ isDebugModeOn }) => {
       <Router history={history}>
         <div className="flex flex-col min-h-screen">
           <div
-            className={`fixed z-50 ${
+            className={`relative lg:fixed z-50 ${
               appState.isDebugModeOn ? "w-2/3" : "w-full"
             }`}>
             {getHeader()}
@@ -260,21 +260,23 @@ const App = React.memo(({ isDebugModeOn }) => {
             </div>
           </SideNavigation>
 
-          <main className="flex flex-1 flex-col justify-between mt-16 sm:mt-48 md:mt-32">
+          <main className="flex flex-1 flex-col justify-between mt-16 md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <div
                 style={{ maxWidth: "90rem" }}
                 className="w-full mx-auto px-3 lg:px-8 py-8">
-                <Breadcrumbs
-                  separator={<b> / </b>}
-                  item={NavLink}
-                  finalItem={"b"}
-                  finalProps={{
-                    style: {
-                      color: COLORS.BLACK
-                    }
-                  }}
-                />
+                <nav tabIndex="0" aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
+                  <Breadcrumbs
+                    separator={<b> / </b>}
+                    item={NavLink}
+                    finalItem={"b"}
+                    finalProps={{
+                      style: {
+                        color: COLORS.BLACK
+                      }
+                    }}
+                  />
+                </nav>
               </div>
               <div className="flex-1 flex flex-col">
                 <Switch>
@@ -317,11 +319,15 @@ const App = React.memo(({ isDebugModeOn }) => {
                   />
                   <Route
                     path="/tietosuojailmoitus"
-                    component={Tietosuojailmoitus}
+                    render={() => (
+                      <Tietosuojailmoitus locale={intl.locale} />
+                    )}
                   />
                   <Route
-                    path="/yleinen-sisaltosivu"
-                    component={YleinenSisaltosivu}
+                    path="/yhteydenotto"
+                    render={() => (
+                      <Yhteydenotto locale={intl.locale} />
+                    )}
                   />
                 </Switch>
               </div>

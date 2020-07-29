@@ -284,102 +284,107 @@ const UusiAsiaDialog = React.memo(
           maxWidth={"lg"}
           fullScreen={true}
           aria-labelledby="simple-dialog-title">
-          <div className={"w-full m-auto"}>
-            <DialogTitleWithStyles id="customized-dialog-title">
-              <div className="flex">
-                <div className="flex-1">
-                  {intl.formatMessage(
-                    wizardMessages.esittelijatMuutospyyntoDialogTitle
-                  )}
+          <div>
+            <div className={"w-full m-auto"}>
+              <DialogTitleWithStyles id="customized-dialog-title">
+                <div className="flex">
+                  <div className="flex-1">
+                    {intl.formatMessage(
+                      wizardMessages.esittelijatMuutospyyntoDialogTitle
+                    )}
+                  </div>
+                  <div>
+                    <SimpleButton
+                      text={`${intl.formatMessage(wizardMessages.getOut)} X`}
+                      onClick={openCancelModal}
+                      variant={"text"}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <SimpleButton
-                    text={`${intl.formatMessage(wizardMessages.getOut)} X`}
-                    onClick={openCancelModal}
-                    variant={"text"}
-                  />
+              </DialogTitleWithStyles>
+            </div>
+            <DialogContentWithStyles>
+              <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
+                <div className="py-4">
+                  <h1>
+                    {organisation.nimi[intl.locale] ||
+                      R.last(R.values(organisation.nimi))}
+                  </h1>
+                  <p>
+                    {organisation.kayntiosoite.osoite},{" "}
+                    {organisation.postiosoite.osoite}{" "}
+                    {organisation.kayntiosoite.postitoimipaikka}
+                  </p>
+                  <p>
+                    {organisationPhoneNumber && (
+                      <React.Fragment>
+                        <a href={`tel:${organisationPhoneNumber}`}>
+                          {organisationPhoneNumber}
+                        </a>{" "}
+                        |{" "}
+                      </React.Fragment>
+                    )}
+                    {organisationPhoneNumber && (
+                      <React.Fragment>
+                        <a href={`mailto:${organisationEmail}`}>
+                          {organisationEmail}
+                        </a>{" "}
+                        |{" "}
+                      </React.Fragment>
+                    )}
+                    {organisation.ytunnus} |{" "}
+                    {organisationWebsite && (
+                      <a href={organisationWebsite}>{organisationWebsite}</a>
+                    )}
+                  </p>
                 </div>
               </div>
-            </DialogTitleWithStyles>
+              <div
+                id="wizard-content"
+                className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
+                <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
+                  <h2 className="p-8">
+                    {intl.formatMessage(common.decisionDetails)}
+                  </h2>
+                  <Lomake
+                    anchor="topthree"
+                    changeObjects={cos.topthree}
+                    onChangesUpdate={payload =>
+                      onSectionChangesUpdate(payload.anchor, payload.changes)
+                    }
+                    path={["esittelija", "topThree"]}
+                    rules={getRules()}></Lomake>
+                </div>
+                <EsittelijatMuutospyynto
+                  kielet={kielet}
+                  kohteet={kohteet}
+                  koulutukset={parsedKoulutukset}
+                  koulutusalat={koulutusalat}
+                  koulutustyypit={koulutustyypit}
+                  kunnat={kunnat}
+                  maakuntakunnat={maakuntakunnat}
+                  maakunnat={maakunnat}
+                  lupa={lupa}
+                  lupaKohteet={lupaKohteet}
+                  maaraystyypit={maaraystyypit}
+                  muut={muut}
+                  onChangesUpdate={onSectionChangesUpdate}
+                  opetuskielet={opetuskielet}
+                  tutkinnot={tutkinnot}
+                />
+                <EsittelijatWizardActions
+                  isSavingEnabled={isSavingEnabled}
+                  onClose={openCancelModal}
+                  onPreview={() => {
+                    return onAction("preview");
+                  }}
+                  onSave={() => {
+                    return onAction("save");
+                  }}
+                />
+              </div>
+            </DialogContentWithStyles>
           </div>
-          <DialogContentWithStyles>
-            <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
-              <div className="py-4">
-                <h1>
-                  {organisation.nimi[intl.locale] ||
-                    R.last(R.values(organisation.nimi))}
-                </h1>
-                <p>
-                  {organisation.kayntiosoite.osoite},{" "}
-                  {organisation.postiosoite.osoite}{" "}
-                  {organisation.kayntiosoite.postitoimipaikka}
-                </p>
-                <p>
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a href={`tel:${organisationPhoneNumber}`}>
-                        {organisationPhoneNumber}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a href={`mailto:${organisationEmail}`}>
-                        {organisationEmail}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisation.ytunnus} |{" "}
-                  {organisationWebsite && (
-                    <a href={organisationWebsite}>{organisationWebsite}</a>
-                  )}
-                </p>
-              </div>
-            </div>
-            <div
-              id="wizard-content"
-              className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
-              <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-                <Lomake
-                  anchor="topthree"
-                  changeObjects={cos.topthree}
-                  onChangesUpdate={payload =>
-                    onSectionChangesUpdate(payload.anchor, payload.changes)
-                  }
-                  path={["esittelija", "topThree"]}
-                  rules={getRules()}></Lomake>
-              </div>
-              <EsittelijatMuutospyynto
-                kielet={kielet}
-                kohteet={kohteet}
-                koulutukset={parsedKoulutukset}
-                koulutusalat={koulutusalat}
-                koulutustyypit={koulutustyypit}
-                kunnat={kunnat}
-                maakuntakunnat={maakuntakunnat}
-                maakunnat={maakunnat}
-                lupa={lupa}
-                lupaKohteet={lupaKohteet}
-                maaraystyypit={maaraystyypit}
-                muut={muut}
-                onChangesUpdate={onSectionChangesUpdate}
-                opetuskielet={opetuskielet}
-                tutkinnot={tutkinnot}
-              />
-              <EsittelijatWizardActions
-                isSavingEnabled={isSavingEnabled}
-                onClose={openCancelModal}
-                onPreview={() => {
-                  return onAction("preview");
-                }}
-                onSave={() => {
-                  return onAction("save");
-                }}
-              />
-            </div>
-          </DialogContentWithStyles>
         </FormDialog>
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}

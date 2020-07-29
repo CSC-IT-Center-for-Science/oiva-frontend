@@ -681,7 +681,7 @@ export default defineMessages({
   lupaSectionOpiskelijavuodetLimitationPlural: {
     id: "common.lupaSectionOpiskelijavuodetLimitationPlural",
     defaultMessage:
-      "Opiskelijavuosien vähimmäismäärää koskevat seuraavat velvollisuudet:"
+      "Opiskelijavuosien vähimmäismäärää koskevat seuraavat rajoitukset:"
   },
   lupaSectionOpiskelijavuodetLimitationNone: {
     id: "common.lupaSectionOpiskelijavuodetLimitationNone",
@@ -828,5 +828,21 @@ export default defineMessages({
   okmLinkUrl: {
     id: "common.okmLinkUrl",
     defaultMessage: "http://www.minedu.fi"
+  },
+  decisionDetails: {
+    id: "common.decisionDetails",
+    defaultMessage: "Päätöksen tiedot"
+  },
+  ytunnus: {
+    id: "common.ytunnus",
+    defaultMessage: "Y-tunnus"
+  },
+  viiva: {
+    id: "common.viiva",
+    defaultMessage: "Viiva"
+  },
+  breadCrumbs: {
+    id: "common.breadCrumbs",
+    defaultMessage: "Murupolku"
   }
 });

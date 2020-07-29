@@ -373,13 +373,22 @@ const parseSectionData = (
     let rajoitukset = [];
 
     _.forEach(maaraykset, maarays => {
-      const { arvo, koodisto, kohde, maaraystyyppi, uuid, koodiarvo } = maarays;
+      const {
+        arvo,
+        koodisto,
+        kohde,
+        maaraystyyppi,
+        uuid,
+        koodiarvo,
+        koodi
+      } = maarays;
 
       if (koodisto === KOODISTOT.OIVA_MUUT) {
         rajoitukset.push({
           arvo: arvo,
           maaraysUuid: uuid,
           koodiarvo: koodiarvo,
+          koodi,
           kohde,
           maaraystyyppi,
           koodisto
@@ -513,6 +522,10 @@ const parseSectionData = (
           }
           case "13": {
             vankilat.push(obj);
+            break;
+          }
+          case "15": {
+            muut.push(obj);
             break;
           }
           default:

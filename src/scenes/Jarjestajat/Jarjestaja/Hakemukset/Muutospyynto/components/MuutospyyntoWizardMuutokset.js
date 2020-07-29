@@ -48,11 +48,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
       );
     }, [props.maaraystyypit]);
 
-    const kuntamaaraykset = R.filter(
-      R.propEq("koodisto", "kunta"),
-      props.lupa.maaraykset || []
-    );
-
     const valtakunnallinenMaarays = R.find(
       R.propEq("koodisto", "nuts1"),
       props.lupa.maaraykset || []
@@ -107,13 +102,18 @@ const MuutospyyntoWizardMuutokset = React.memo(
             code={props.lupaKohteet[2].headingNumber}
             title={props.lupaKohteet[2].heading}>
             <MuutospyyntoWizardKielet
+              kielet={props.kielet}
+              koulutusalat={props.koulutusalat}
+              koulutustyypit={props.koulutustyypit}
               lupa={props.lupa}
               lupaKohteet={props.lupaKohteet}
               koulutukset={props.koulutukset}
               onUpdate={props.onUpdate}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              opetuskielet={props.kielet.opetuskielet}
+              opetuskielet={props.opetuskielet}
+              sectionId={"tutkinnot"}
+              tutkinnot={props.tutkinnot}
             />
           </Section>
 
@@ -123,7 +123,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
             <MuutospyyntoWizardToimintaalue
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
-              kuntamaaraykset={kuntamaaraykset}
               maakuntakunnat={props.maakuntakunnat}
               maakunnat={props.maakunnat}
               onChangesRemove={onChangesRemove}
@@ -179,7 +178,7 @@ const MuutospyyntoWizardMuutokset = React.memo(
 );
 
 MuutospyyntoWizardMuutokset.propTypes = {
-  kielet: PropTypes.object,
+  kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   kunnat: PropTypes.array,
@@ -190,7 +189,8 @@ MuutospyyntoWizardMuutokset.propTypes = {
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  tutkinnot: PropTypes.object
+  opetuskielet: PropTypes.array,
+  tutkinnot: PropTypes.array
 };
 
 export default MuutospyyntoWizardMuutokset;

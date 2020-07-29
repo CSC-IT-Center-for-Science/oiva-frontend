@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../../../../../../modules/constants";
 import axios from "axios/index";
-import { formatMuutospyynto, getAttachments } from "./muutospyyntoUtil";
+import { formatMuutospyynto, getAttachments } from "../../../../../../utils/muutospyyntoUtil";
 
 // Constants
 export const FETCH_MUUTOSPYYNTO_START = "FETCH_MUUTOSPYYNTO_START";

@@ -6,7 +6,12 @@ import _ from "lodash";
 import { sortArticlesByHuomioitavaKoodi } from "../utils";
 import { scrollToOpiskelijavuodet } from "./utils";
 
-function getModificationForm(configObj, osiota5koskevatMaaraykset, locale) {
+function getModificationForm(
+  configObj,
+  opiskelijavuodetChangeObjects,
+  osiota5koskevatMaaraykset,
+  locale
+) {
   return R.map(item => {
     let noItemsInLupa = true;
     const isVaativatukiRadios =
@@ -34,6 +39,13 @@ function getModificationForm(configObj, osiota5koskevatMaaraykset, locale) {
         const labelClasses = {
           isInLupa: isInLupaBool
         };
+        const section4changeObj = R.find(
+          R.pathEq(["properties", "metadata", "koodiarvo"], article.koodiArvo),
+          opiskelijavuodetChangeObjects
+        );
+        const showAlertBecauseOfSection4 =
+          !section4changeObj ||
+          !section4changeObj.properties.applyForValue.length;
         let result = {
           anchor: article.koodiArvo,
           components: [
@@ -73,8 +85,7 @@ function getModificationForm(configObj, osiota5koskevatMaaraykset, locale) {
             }
           ]
         };
-
-        if (article.showAlert) {
+        if (article.showAlertBecauseOfSection5 && showAlertBecauseOfSection4) {
           result.categories = [
             {
               anchor: "notification",
@@ -132,6 +143,7 @@ export default function getMuutLomake(action, data, isReadOnly, locale) {
     case "modification":
       return getModificationForm(
         data.configObj,
+        data.opiskelijavuodetChangeObjects,
         data.osiota5koskevatMaaraykset,
         R.toUpper(locale)
       );

@@ -237,36 +237,64 @@ export function getPathByAnchor(
   return _path;
 }
 
-const checkTerms = (terms, lomake, changeObjects) => {
-  return R.map(term => {
-    const _path = getPathByAnchor(R.split(".", term.anchor), lomake);
-    const component = R.path(_path, lomake);
-    let isValid = true;
-    if (component) {
-      const changeObject = R.find(changeObj => {
-        const anchor = removeAnchorPart(changeObj.anchor, 0);
-        return R.equals(anchor, term.anchor);
-      }, changeObjects);
-      /**
-       * Let's loop through the properties of the component.
-       **/
-      R.mapObjIndexed((value, key) => {
-        const source = changeObject || component;
-        if (
-          (value instanceof Function && !value(source.properties[key])) ||
-          (!(value instanceof Function) &&
-            !R.equals(value, component.properties[key]) &&
-            (!changeObject || !R.equals(changeObject.properties[key], value)))
-        ) {
-          isValid = false;
-        }
-      }, term.properties);
-    } else {
-      isValid = false;
-    }
+const checkIfPropertyIsValid = async (
+  properties,
+  keysArray,
+  component,
+  changeObj,
+  source,
+  index = 0
+) => {
+  const key = keysArray[index];
+  const value = properties[keysArray[index]];
+  let isValid;
+  if (value instanceof Function) {
+    isValid = await value(source.properties[key]);
+  } else {
+    isValid =
+      !R.equals(value, component.properties[key]) &&
+      (!changeObj || !R.equals(changeObj.properties[key], value));
+  }
+  if (isValid && keysArray[index + 1]) {
+    return await checkIfPropertyIsValid(
+      properties,
+      keysArray,
+      component,
+      changeObj,
+      source,
+      index + 1
+    );
+  }
+  return isValid;
+};
 
-    return isValid;
-  }, terms);
+const checkTerms = async (terms, lomake, changeObjects, index = 0) => {
+  const term = terms[index];
+  const _path = getPathByAnchor(R.split(".", term.anchor), lomake);
+  const component = R.path(_path, lomake);
+  let isValid;
+  if (component) {
+    const changeObj = R.find(changeObj => {
+      const anchor = removeAnchorPart(changeObj.anchor, 0);
+      return R.equals(anchor, term.anchor);
+    }, changeObjects);
+    /**
+     * Let's loop through the properties of the component.
+     **/
+    isValid = await checkIfPropertyIsValid(
+      term.properties,
+      R.keys(term.properties),
+      component,
+      changeObj,
+      changeObj || component
+    );
+  } else {
+    isValid = false;
+  }
+  if (isValid && terms[index + 1]) {
+    return await checkTerms(terms, lomake, changeObjects, index + 1);
+  }
+  return isValid;
 };
 
 const checkTerm = (term, lomake, changeObjects) => {
@@ -276,5 +304,8 @@ const checkTerm = (term, lomake, changeObjects) => {
 export const ifOne = R.includes(true);
 export const ifAll = R.all(R.equals(true));
 export const ifAllTerms = R.compose(ifAll, checkTerms);
-export const ifOneTerm = R.compose(R.includes(true), checkTerms);
+export const ifOneTerm = async function(terms, lomake, changeObjects) {
+  const validationResult = await checkTerms(terms, lomake, changeObjects);
+  return validationResult;
+};
 export const ifTerm = R.compose(R.includes(true), checkTerm);
