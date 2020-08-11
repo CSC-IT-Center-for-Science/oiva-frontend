@@ -4,16 +4,17 @@ import { toUpper } from "ramda";
 
 function getReasoningForm(
   changeObject,
-  checkboxItems,
+  oivaperustelut,
   differenceComponentTitles,
   isReadOnly = false,
   locale
 ) {
   const checkboxes = getMuutostarveCheckboxes(
-    checkboxItems,
+    oivaperustelut,
     toUpper(locale),
     isReadOnly
   );
+
   return [
     {
       anchor: "vahimmaisopiskelijavuodet",
@@ -44,7 +45,7 @@ export default function getVahimmaisopiskelijavuodetPerustelulomake(
     case "reasoning":
       return getReasoningForm(
         data.changeObject,
-        data.checkboxItems,
+        data.oivaperustelut,
         data.differenceTitles,
         isReadOnly,
         locale

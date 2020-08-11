@@ -13,6 +13,7 @@ function getYleisetTiedotForm(isReadOnly) {
           name: "TextBox",
           properties: {
             isReadOnly: isReadOnly,
+            isRequired: true,
             placeholder: "",
             title: "Taloudelliset edellytykset",
             tooltip: {
@@ -24,7 +25,7 @@ function getYleisetTiedotForm(isReadOnly) {
       ]
     },
     {
-      anchor: "Vaikutukset-tekstikentta",
+      anchor: "vaikutukset-tekstikentta",
       styleClasses: ["mb-6"],
       components: [
         {
@@ -32,6 +33,7 @@ function getYleisetTiedotForm(isReadOnly) {
           name: "TextBox",
           properties: {
             isReadOnly: isReadOnly,
+            isRequired: true,
             placeholder: "",
             title: "Vaikutukset taloudellisten resurssien kohdentamiseen",
             tooltip: {
@@ -51,6 +53,7 @@ function getYleisetTiedotForm(isReadOnly) {
           name: "TextBox",
           properties: {
             isReadOnly: isReadOnly,
+            isRequired: true,
             placeholder: "",
             title: "Toiminnan ja talouden sopeuttaminen",
             tooltip: {
@@ -75,6 +78,7 @@ export function getInvestoinnitForm(isReadOnly) {
           name: "TextBox",
           properties: {
             isReadOnly: isReadOnly,
+            isRequired: true,
             placeholder: "",
             tooltip: {
               text: __("taloudelliset.tooltipTaloudellisetInvestoinnitKentta1")
@@ -95,6 +99,7 @@ export function getInvestoinnitForm(isReadOnly) {
           styleClasses: ["w-full sm:w-1/2 md:w-1/3"],
           properties: {
             isReadOnly: isReadOnly,
+            isRequired: true,
             fullWidth: true,
             type: "number",
             tooltip: {
@@ -115,6 +120,7 @@ export function getInvestoinnitForm(isReadOnly) {
           name: "TextBox",
           properties: {
             isReadOnly: isReadOnly,
+            isRequired: true,
             placeholder: "",
             tooltip: {
               text: __("taloudelliset.tooltipTaloudellisetInvestoinnitKentta3")
@@ -141,6 +147,7 @@ function getTilinpaatostiedotForm(isReadOnly) {
           properties: {
             fullWidth: true,
             isReadOnly: isReadOnly,
+            isRequired: true,
             label: __("taloudelliset.omavaraisuusaste"),
             type: "number",
             value: ""
@@ -153,6 +160,7 @@ function getTilinpaatostiedotForm(isReadOnly) {
           properties: {
             fullWidth: true,
             isReadOnly: isReadOnly,
+            isRequired: true,
             label: __("taloudelliset.maksuvalmius"),
             type: "number",
             value: ""
@@ -165,6 +173,7 @@ function getTilinpaatostiedotForm(isReadOnly) {
           properties: {
             fullWidth: true,
             isReadOnly: isReadOnly,
+            isRequired: true,
             label: __("taloudelliset.velkaantuneisuus"),
             type: "number",
             value: ""
@@ -177,6 +186,7 @@ function getTilinpaatostiedotForm(isReadOnly) {
           properties: {
             fullWidth: true,
             isReadOnly: isReadOnly,
+            isRequired: true,
             label: __("taloudelliset.kannattavuus"),
             type: "number",
             value: ""
@@ -189,6 +199,7 @@ function getTilinpaatostiedotForm(isReadOnly) {
           properties: {
             fullWidth: true,
             isReadOnly: isReadOnly,
+            isRequired: true,
             label: __("taloudelliset.kumulatiivinen"),
             type: "number",
             value: ""

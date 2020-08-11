@@ -140,7 +140,7 @@ export function createBackendChangeObjects(
       R.nth(1, anchorParts)
     );
     if (!isVahimmaismaara) {
-      koodisto = (R.find(R.propEq("koodiArvo", koodiarvo), muut) || {})
+      koodisto = (R.find(R.propEq("koodiarvo", koodiarvo), muut) || {})
         .koodisto;
     }
     const anchorInit = changeObj.anchorInit;
@@ -152,7 +152,7 @@ export function createBackendChangeObjects(
     } else if (anchorInit === "opiskelijavuodet.sisaoppilaitos") {
       anchor = "perustelut_opiskelijavuodet_sisaoppilaitos";
     }
-    
+
     const perustelut = R.filter(
       R.compose(R.includes(anchor), R.prop("anchor")),
       changeObjects.perustelut

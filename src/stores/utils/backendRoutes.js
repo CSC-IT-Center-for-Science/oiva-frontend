@@ -37,9 +37,10 @@ export const backendRoutes = {
   tallennaMuutospyyntoEsittelijanToimesta: {
     path: "muutospyynnot/esittelija/tallenna"
   },
-  tarkistaDuplikaattiAsianumero: { path: "muutospyynnot/duplikaattiasianumero" },
-
-  oivamuutoikeudetvelvollisuudetehdotjatehtavat: {
+  tarkistaDuplikaattiAsianumero: {
+    path: "muutospyynnot/duplikaattiasianumero"
+  },
+  omovet: {
     path: `koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`
   },
   oivaperustelut: { path: `koodistot/koodit/oivaperustelut` },

@@ -1,43 +1,24 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import Jarjestaja from "../components/Jarjestaja";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import { parseLupa } from "../../../../utils/lupaParser";
 import HakemusContainer from "../Hakemukset/HakemusContainer";
-import { useLupa } from "../../../../stores/lupa";
 import { isEmpty } from "ramda";
 import Loading from "../../../../modules/Loading";
 import { prop } from "ramda";
+import BaseData from "scenes/BaseData";
 
-const JarjestajaSwitch = React.memo(({ path, user, ytunnus }) => {
+const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus }) => {
   const intl = useIntl();
   const history = useHistory();
 
-  const [lupa, lupaActions] = useLupa();
-
-  // Let's fetch LUPA
-  useEffect(() => {
-    let abortController;
-    if (ytunnus) {
-      abortController = lupaActions.load(ytunnus);
-    }
-    return function cancel() {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [lupaActions, ytunnus, user]);
-
   const lupaKohteet = useMemo(() => {
-    return !lupa.data
+    return !lupa
       ? {}
-      : parseLupa(
-          { ...lupa.data },
-          intl.formatMessage,
-          intl.locale.toUpperCase()
-        );
-  }, [lupa.data, intl]);
+      : parseLupa({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
+  }, [lupa, intl]);
 
   return (
     <Switch>
@@ -45,13 +26,19 @@ const JarjestajaSwitch = React.memo(({ path, user, ytunnus }) => {
         exact
         path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
         render={props => {
-          if (!isEmpty(lupaKohteet) && lupa.fetchedAt) {
+          if (!isEmpty(lupaKohteet) && lupa) {
             return (
-              <HakemusContainer
-                history={history}
-                lupaKohteet={lupaKohteet}
-                lupa={lupa.data}
-                match={props.match}
+              <BaseData
+                locale={intl.locale}
+                render={_props => (
+                  <HakemusContainer
+                    history={history}
+                    lupaKohteet={lupaKohteet}
+                    lupa={lupa}
+                    match={props.match}
+                    {..._props}
+                  />
+                )}
               />
             );
           }
@@ -62,13 +49,19 @@ const JarjestajaSwitch = React.memo(({ path, user, ytunnus }) => {
         exact
         path={`${path}/hakemukset-ja-paatokset/:uuid/:page`}
         render={props => {
-          if (lupaKohteet && lupa.fetchedAt) {
+          if (lupaKohteet && lupa) {
             return (
-              <HakemusContainer
-                history={history}
-                lupaKohteet={lupaKohteet}
-                lupa={lupa.data}
-                match={props.match}
+              <BaseData
+                locale={intl.locale}
+                render={_props => (
+                  <HakemusContainer
+                    history={history}
+                    lupaKohteet={lupaKohteet}
+                    lupa={lupa}
+                    match={props.match}
+                    {..._props}
+                  />
+                )}
               />
             );
           }
@@ -79,14 +72,14 @@ const JarjestajaSwitch = React.memo(({ path, user, ytunnus }) => {
         path={`${path}`}
         render={props => {
           if (
-            lupa.isLoading !== true &&
+            lupa &&
             ytunnus === prop("ytunnus", lupa.keyParams) &&
             !isEmpty(lupaKohteet)
           ) {
             return (
               <Jarjestaja
                 lupaKohteet={lupaKohteet}
-                lupa={lupa.data}
+                lupa={lupa}
                 path={path}
                 url={props.match.url}
                 user={user}

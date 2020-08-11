@@ -32,7 +32,7 @@ export function createBEOofTutkintakielet(
    **/
   if (changeObj) {
     const { value: listOfActiveLanguages } = changeObj.properties;
-    const perustelut = [];
+    const perustelut = changeObjects.tutkintokielet.perustelut;
 
     /**
      * TUTKINTAKIELIEN POISTAMINEN
@@ -44,7 +44,7 @@ export function createBEOofTutkintakielet(
     removals = tutkinto.tutkintokielet
       ? map(tutkintokielimaarays => {
           const koodiarvoUpper = toUpper(tutkintokielimaarays.koodiarvo);
-          const hasLanguageBeenRemoved = !!!find(
+          const hasLanguageBeenRemoved = !listOfActiveLanguages || !!!find(
             propEq("value", koodiarvoUpper),
             listOfActiveLanguages
           );

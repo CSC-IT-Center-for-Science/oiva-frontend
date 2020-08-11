@@ -20,40 +20,36 @@ export function getDataForKoulutusList(
   );
 
   let isSomethingSelectedInLupa = false;
+
   const sortedKoulutukset = sortArticlesByHuomioitavaKoodi(koulutukset, locale);
 
   return {
     items: R.addIndex(R.map)(
       (koulutus, index) => {
         const maarays = R.find(
-          R.propEq("koodiarvo", koulutus.koodiArvo),
+          R.propEq("koodiarvo", koulutus.koodiarvo),
           relevantitMaaraykset
         );
         const isInLupa = !!(
-          koodisto && R.includes(koulutus.koodiArvo, luvassaOlevatKoodiarvot)
+          koodisto && R.includes(koulutus.koodiarvo, luvassaOlevatKoodiarvot)
         );
 
         if (isInLupa) {
           isSomethingSelectedInLupa = true;
         }
         return {
-          code: koulutus.koodiArvo,
+          code: koulutus.koodiarvo,
           isInLupa,
           isReasoningRequired: index !== koulutukset.length - 1,
           shouldBeChecked:
             isInLupa ||
-            (!isSomethingSelectedInLupa && useDefaultSelection &&
+            (!isSomethingSelectedInLupa &&
+              useDefaultSelection &&
               index === koulutukset.length - 1),
           koodisto: koulutus.koodisto,
           maaraysUuid: maarays ? maarays.uuid : null,
           metadata: koulutus.metadata,
-          title:
-            R.prop(
-              "nimi",
-              R.find(m => {
-                return m.kieli === locale;
-              }, koulutus.metadata)
-            ) || "[Koulutuksen otsikko tähän]"
+          title: koulutus.metadata[locale].nimi
         };
       },
       sortedKoulutukset.length ? sortedKoulutukset : koulutukset

@@ -48,7 +48,7 @@ const PerustelutMuut = React.memo(
               messages={changesMessages}
               onChangesRemove={onChangesRemove}
               onUpdate={onChangesUpdate}
-              sectionId={sectionId}
+              sectionId={`${sectionId}_${areaCode}`}
               showCategoryTitles={true}
               title={path(
                 [areaCode, 0, "properties", "metadata", "title"],

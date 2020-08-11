@@ -5,7 +5,6 @@ export const paatetyksi = {
   label: "Muutospyynnön saattaminen päätetyksi",
   input: ["id"],
   run: async ({ id }) => {
-    console.info(id);
     const response = await postData(
       "muutospyyntoPaatetyksi",
       {},

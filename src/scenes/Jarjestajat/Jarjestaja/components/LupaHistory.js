@@ -103,7 +103,7 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
                   };
                 },
                 [
-                  { text: row.diaarinumero },
+                  { text: row.asianumero ? row.asianumero : row.diaarinumero },
                   { text: moment(row.paatospvm).format("DD.MM.YYYY") },
                   { text: !isKumottu ? voimassaoloalkupvm : "" },
                   { text: !isKumottu ? voimassaololoppupvm : "" },

@@ -3,7 +3,6 @@ import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organi
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import common from "../../../../../../../i18n/definitions/common";
-import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 import { getActiveOnes } from "../../../../../../../helpers/tutkinnot/";
 import wizard from "../../../../../../../i18n/definitions/wizard";
@@ -11,7 +10,7 @@ import * as R from "ramda";
 
 const Tutkintokielet = React.memo(props => {
   const intl = useIntl();
-  const [changeObjects] = useChangeObjects();
+  const { changeObjects } = props;
   const sectionId = "kielet_tutkintokielet";
   const { onChangesRemove, onChangesUpdate } = props;
   const tutkinnotByKoulutusala = R.groupBy(
@@ -45,6 +44,11 @@ const Tutkintokielet = React.memo(props => {
           }, tutkintokielichangesWithoutRemovedOnes[areaCode] || [])
         };
       }, props.unselectedAnchors);
+
+      tutkintokielichangesWithoutRemovedOnes = R.filter(
+        R.compose(R.not, R.isEmpty),
+        tutkintokielichangesWithoutRemovedOnes
+      );
 
       if (
         !R.equals(

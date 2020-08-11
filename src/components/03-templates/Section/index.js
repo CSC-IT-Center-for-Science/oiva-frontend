@@ -8,7 +8,7 @@ import { isEqual } from "lodash";
 const flatten = (children, flat = []) => {
   flat = [...flat, ...React.Children.toArray(children)];
 
-  if (children.props && children.props.children) {
+  if (children && children.props && children.props.children) {
     return flatten(children.props.children, flat);
   }
 
@@ -27,21 +27,23 @@ const simplify = children => {
   }));
 };
 
+const defaultProps = {
+  code: "",
+  title: ""
+};
+
 const Section = React.memo(
-  props => {
-    const fullTitle = `${props.code}${props.code ? ". " : ""}${props.title}`;
+  ({ children, code = defaultProps.code, title = defaultProps.title }) => {
+    const fullTitle = `${code ? `${code}. ` : ""}${title}`;
     return (
       <div>
-        <h2 className="py-8">{fullTitle}</h2>
-        <div className="pb-4">{props.children}</div>
+        {fullTitle && <h2 className="py-8">{fullTitle}</h2>}
+        <div className="pb-4">{children}</div>
       </div>
     );
   },
   (cp, np) => {
-    // console.info(simplify(cp.children));
-    // console.info(simplify(np.children));
     return isEqual(simplify(cp.children), simplify(np.children));
-    // return isEqual(cp.children, np.children);
   }
 );
 

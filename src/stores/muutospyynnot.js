@@ -5,11 +5,10 @@ import ProcedureHandler from "../components/02-organisms/procedureHandler";
 const Store = createStore({
   initialState: {},
   actions: {
-    esittelyyn: uuid => () => {
-      return new ProcedureHandler().run(
-        "muutospyynnot.tilanmuutos.esittelyyn",
-        [uuid]
-      );
+    esittelyyn: (uuid, formatMessage) => () => {
+      return new ProcedureHandler(
+        formatMessage
+      ).run("muutospyynnot.tilanmuutos.esittelyyn", [uuid]);
     },
     load: (ytunnus, isForceReloadRequested) => ({ getState, setState }) => {
       return execute(
@@ -22,10 +21,12 @@ const Store = createStore({
         isForceReloadRequested ? 0 : undefined
       );
     },
-    loadByStates: (tilat = [], path, vainOmat = false, isForceReloadRequested) => ({
-      getState,
-      setState
-    }) => {
+    loadByStates: (
+      tilat = [],
+      path,
+      vainOmat = false,
+      isForceReloadRequested
+    ) => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
@@ -39,8 +40,10 @@ const Store = createStore({
         isForceReloadRequested ? 0 : undefined
       );
     },
-    remove: uuid => () => {
-      return new ProcedureHandler().run("muutospyynnot.poisto.poista", [uuid]);
+    remove: (uuid, formatMessage) => () => {
+      return new ProcedureHandler(
+        formatMessage
+      ).run("muutospyynnot.poisto.poista", [uuid]);
     }
   },
   name: "Muutospyynnöt"

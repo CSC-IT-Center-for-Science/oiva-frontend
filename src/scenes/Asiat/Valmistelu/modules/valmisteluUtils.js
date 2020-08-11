@@ -16,26 +16,6 @@ export function getKoulutusAlat() {
   }
 }
 
-export function getTutkintoNimiByKoodiarvo(koodi) {
-  const state = store.getState();
-
-  if (state.koulutukset && state.koulutukset.koulutusdata) {
-    const { koulutusdata } = state.koulutukset;
-
-    let nimi = undefined;
-
-    _.forEach(koulutusdata, ala => {
-      _.forEach(ala.koulutukset, koulutus => {
-        if (koulutus.koodiArvo === koodi) {
-          nimi = parseLocalizedField(koulutus.metadata);
-        }
-      });
-    });
-
-    return nimi;
-  }
-}
-
 export function getTutkintoKoodiByMaaraysId(maaraysId) {
   const state = store.getState();
 
@@ -59,16 +39,6 @@ export function getTutkintoNimiByMaaraysId(maaraysId) {
     if (obj && obj.koodi && obj.koodi.metadata) {
       return parseLocalizedField(obj.koodi.metadata);
     }
-  }
-}
-
-export function getMuutosperusteluObjectById(muutosperustelukoodiarvo) {
-  const state = store.getState();
-
-  if (state.muutosperustelut && state.muutosperustelut.data) {
-    return _.find(state.muutosperustelut.data, mperustelu => {
-      return String(mperustelu.koodiArvo) === String(muutosperustelukoodiarvo);
-    });
   }
 }
 
@@ -115,104 +85,6 @@ export function getJarjestajaData(state) {
       }
     };
   }
-}
-
-export function formatMuutospyynto(muutospyynto) {
-  const {
-    diaarinumero,
-    jarjestajaOid,
-    jarjestajaYtunnus,
-    luoja,
-    luontipvm,
-    lupaId,
-    tila,
-    lisattavat,
-    poistettavat,
-    paatoskierros,
-    muutosperustelu,
-    muuperustelu
-  } = muutospyynto;
-
-  return {
-    diaarinumero,
-    jarjestajaOid,
-    jarjestajaYtunnus,
-    luoja,
-    luontipvm,
-    lupaId,
-    paatoskierrosUuid: paatoskierros,
-    tila,
-    paivittaja: "string",
-    paivityspvm: null,
-    voimassaalkupvm: "2018-01-01",
-    voimassaloppupvm: "2018-12-31",
-    muutosperustelu: formatMuutosperustelu(muutosperustelu, muuperustelu),
-    muutokset: formatMuutokset(lisattavat, poistettavat)
-  };
-}
-
-function formatMuutosperustelu(muutosperustelukoodiarvo, muuperustelu) {
-  const perustelu = getMuutosperusteluObjectById(muutosperustelukoodiarvo);
-  const { koodiArvo, koodisto, metadata } = perustelu;
-  const nimi = parseLocalizedField(metadata, "FI", nimi);
-  const kuvaus = parseLocalizedField(metadata, "FI", kuvaus);
-
-  return {
-    arvo: "",
-    koodiarvo: koodiArvo,
-    koodisto: koodisto.koodistoUri,
-    luoja: "asd",
-    luontipvm: dateformat(new Date(), "yyyy-mm-dd"),
-    meta: {
-      perusteluteksti: nimi,
-      kuvaus: kuvaus
-    }
-  };
-}
-
-function formatMuutokset(lisattavat, poistettavat) {
-  let muutokset = [];
-
-  if (lisattavat) {
-    _.forEach(lisattavat, koodiarvo => {
-      let obj = getBaseObject();
-      obj.koodiarvo = koodiarvo;
-      obj.tila = "LISAYS";
-      muutokset.push(obj);
-    });
-  }
-
-  if (poistettavat) {
-    _.forEach(poistettavat, maaraysId => {
-      let obj = getBaseObject();
-      obj.koodiarvo = getTutkintoKoodiByMaaraysId(maaraysId);
-      obj.maaraysId = maaraysId;
-      obj.tila = "POISTO";
-      muutokset.push(obj);
-    });
-  }
-
-  return muutokset;
-}
-
-function getBaseObject() {
-  return {
-    kohdeId: 1, // koulutukset
-    koodisto: "koulutus",
-    luoja: "string",
-    luontipvm: 0,
-    maaraystyyppiId: 1, // oikeus
-    meta: {
-      perusteluteksti: [
-        {
-          fi: "Suomeksi"
-        },
-        {
-          sv: "På Svenska"
-        }
-      ]
-    }
-  };
 }
 
 export function loadValmisteluData(state, muutosdata) {

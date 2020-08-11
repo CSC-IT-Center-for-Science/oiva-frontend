@@ -1,18 +1,17 @@
 import React from "react";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
 const TaloudellisetLiitteet = React.memo(props => {
-  const [changeObjects] = useChangeObjects();
+  const { changeObjects } = props;
 
   return (
     <ExpandableRowRoot
       title={"Liitteet"}
       anchor={props.sectionId}
       key={`taloudelliset-liitteet`}
-      changes={changeObjects.taloudelliset.liitteet}
+      changes={changeObjects}
       disableReverting={props.isReadOnly}
       hideAmountOfChanges={true}
       showCategoryTitles={true}
@@ -22,11 +21,10 @@ const TaloudellisetLiitteet = React.memo(props => {
       <Lomake
         action="liitteet"
         anchor={props.sectionId}
-        changeObjects={changeObjects.taloudelliset.liitteet}
+        changeObjects={changeObjects}
         isReadOnly={props.isReadOnly}
         onChangesUpdate={props.onChangesUpdate}
         path={["taloudelliset"]}
-        rules={[]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
   );

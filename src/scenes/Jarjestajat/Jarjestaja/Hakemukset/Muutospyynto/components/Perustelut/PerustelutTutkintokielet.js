@@ -35,14 +35,13 @@ const PerustelutTutkintokielet = React.memo(props => {
         </h2>
         {R.addIndex(R.map)((areaCode, index) => {
           const changeObjects = props.changeObjects.tutkintokielet[areaCode];
-          const title = R.find(
-            R.propEq("kieli", R.toUpper(intl.locale)),
-            props.tutkinnot[areaCode].metadata
-          ).nimi;
+          const title = R.find(R.propEq("koodiarvo", areaCode), props.koulutusalat)
+            .metadata[R.toUpper(intl.locale)].nimi;
           if (changeObjects.length > 0) {
+            const fullSectionId = `${sectionId}_${areaCode}`;
             return (
               <ExpandableRowRoot
-                anchor={`${sectionId}_${areaCode}`}
+                anchor={fullSectionId}
                 key={`expandable-row-root-${index}`}
                 categories={[]}
                 changes={R.path(
@@ -54,7 +53,7 @@ const PerustelutTutkintokielet = React.memo(props => {
                 messages={changesMessages}
                 onChangesRemove={onChangesRemove}
                 onUpdate={onChangesUpdate}
-                sectionId={sectionId}
+                sectionId={fullSectionId}
                 showCategoryTitles={true}
                 title={title}
                 isExpanded={true}>
@@ -69,7 +68,8 @@ const PerustelutTutkintokielet = React.memo(props => {
                     areaCode,
                     changeObjectsPage1: changeObjects,
                     maaraykset: props.maaraykset,
-                    tutkinnot: props.tutkinnot
+                    tutkinnot: props.tutkinnot,
+                    koulutusalat: props.koulutusalat
                   }}
                   isReadOnly={props.isReadOnly}
                   onChangesUpdate={onChangesUpdate}
@@ -97,7 +97,8 @@ PerustelutTutkintokielet.propTypes = {
   maaraykset: PropTypes.array,
   onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
-  tutkinnot: PropTypes.object
+  tutkinnot: PropTypes.array,
+  koulutusalat: PropTypes.array
 };
 
 export default PerustelutTutkintokielet;

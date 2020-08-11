@@ -4,6 +4,7 @@ import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organi
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 
 const PerustelutLiitteet = React.memo(props => {
+  const sectionId = 'perustelut_liitteet';
   return (
     <React.Fragment>
       <div className="mt-4">
@@ -11,7 +12,6 @@ const PerustelutLiitteet = React.memo(props => {
           title={"Liitteet"}
           anchor={props.sectionId}
           key={`perustelut-liitteet`}
-          categories={[]}
           changes={props.changeObjects.perustelut}
           disableReverting={true}
           showCategoryTitles={true}
@@ -23,11 +23,10 @@ const PerustelutLiitteet = React.memo(props => {
           {...props}>
           <Lomake
             action="reasoning"
-            anchor={props.sectionId}
+            anchor={sectionId}
             changeObjects={props.changeObjects.perustelut}
             onChangesUpdate={props.onChangesUpdate}
             path={["perustelut", "liitteet"]}
-            rules={[]}
             showCategoryTitles={true}></Lomake>
         </ExpandableRowRoot>
       </div>

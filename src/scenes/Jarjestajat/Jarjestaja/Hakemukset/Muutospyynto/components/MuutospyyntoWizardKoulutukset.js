@@ -9,6 +9,7 @@ const MuutospyyntoWizardKoulutukset = props => {
   return (
     <div>
       <ValmentavatKoulutukset
+        changeObjects={props.changeObjects}
         koulutukset={props.koulutukset}
         maaraykset={props.maaraykset}
         onChangesRemove={props.onChangesRemove}
@@ -16,6 +17,7 @@ const MuutospyyntoWizardKoulutukset = props => {
       />
 
       <ATVKoulutukset
+        changeObjects={props.changeObjects}
         koulutukset={props.koulutukset}
         maaraykset={props.maaraykset}
         onChangesRemove={props.onChangesRemove}
@@ -23,6 +25,7 @@ const MuutospyyntoWizardKoulutukset = props => {
       />
 
       <Tyovoimakoulutukset
+        changeObjects={props.changeObjects}
         koulutukset={props.koulutukset}
         maaraykset={props.maaraykset}
         onChangesRemove={props.onChangesRemove}
@@ -30,6 +33,7 @@ const MuutospyyntoWizardKoulutukset = props => {
       />
 
       <Kuljettajakoulutukset
+        changeObjects={props.changeObjects}
         koulutukset={props.koulutukset}
         maaraykset={props.maaraykset}
         onChangesRemove={props.onChangesRemove}
@@ -40,6 +44,7 @@ const MuutospyyntoWizardKoulutukset = props => {
 };
 
 MuutospyyntoWizardKoulutukset.propTypes = {
+  changeObjects: PropTypes.object,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array
 };

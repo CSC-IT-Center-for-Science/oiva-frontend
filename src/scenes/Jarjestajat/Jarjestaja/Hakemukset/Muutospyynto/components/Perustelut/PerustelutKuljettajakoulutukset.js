@@ -7,11 +7,6 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import * as R from "ramda";
-import {
-  additionRules as jatkokoulutusRules,
-  removalRules
-} from "../../../../../../../services/lomakkeet/perustelut/koulutukset/kuljettajakoulutukset/jatkokoulutus/rules";
-import { rules as peruskoulutusRules } from "../../../../../../../services/lomakkeet/perustelut/koulutukset/kuljettajakoulutukset/peruskoulutus/rules";
 
 const PerustelutKuljettajakoulutukset = props => {
   const intl = useIntl();
@@ -39,10 +34,6 @@ const PerustelutKuljettajakoulutukset = props => {
           let lomake = null;
 
           if (isReasoningRequired) {
-            const rules =
-              mapping[code] === "peruskoulutus"
-                ? peruskoulutusRules
-                : jatkokoulutusRules;
             if (changeObj.properties.isChecked) {
               lomake = (
                 <Lomake
@@ -57,7 +48,6 @@ const PerustelutKuljettajakoulutukset = props => {
                     "kuljettajakoulutukset",
                     mapping[code]
                   ]}
-                  rules={rules}
                   showCategoryTitles={true}></Lomake>
               );
             } else {
@@ -75,8 +65,7 @@ const PerustelutKuljettajakoulutukset = props => {
                     "koulutukset",
                     "kuljettajakoulutukset",
                     mapping[code]
-                  ]}
-                  rules={removalRules}></Lomake>
+                  ]}></Lomake>
               );
             }
           }
@@ -96,13 +85,12 @@ const PerustelutKuljettajakoulutukset = props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <ExpandableRowRoot
       anchor={sectionId}
       key={`expandable-row-root`}
-      categories={[]}
       changes={R.path(["perustelut"], props.changeObjects)}
       disableReverting={props.isReadOnly}
       hideAmountOfChanges={false}
@@ -110,6 +98,7 @@ const PerustelutKuljettajakoulutukset = props => {
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
+      sectionId={sectionId}
       title={intl.formatMessage(wizardMessages.driverTraining)}>
       {lomakkeet}
     </ExpandableRowRoot>

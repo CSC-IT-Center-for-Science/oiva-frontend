@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import common from "../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../components/02-organisms/Lomake";
-import { useChangeObjects } from "../../../../../../stores/changeObjects";
 import { useIntl } from "react-intl";
 import { getMaarayksetByTunniste } from "../../../../../../helpers/lupa";
-import { getMuutFromStorage } from "../../../../../../helpers/muut";
 import { values, filter, flatten, includes, find, path } from "ramda";
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({ onChangesRemove, onChangesUpdate, sectionId }) => {
+  ({
+    changeObjects,
+    maaraykset,
+    muut,
+    onChangesRemove,
+    onChangesUpdate,
+    sectionId
+  }) => {
     const intl = useIntl();
-    const [maaraykset, setMaaraykset] = useState();
-    const [muut, setMuut] = useState();
-    const [muutMaaraykset, setMuutMaaraykset] = useState();
-    const [changeObjects] = useChangeObjects();
-
-    useEffect(() => {
-      (async () => {
-        setMuut(await getMuutFromStorage());
-        setMaaraykset(await getMaarayksetByTunniste("opiskelijavuodet"));
-        setMuutMaaraykset(await getMaarayksetByTunniste("muut"));
-      })();
-    }, []);
-
+    const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
+      "opiskelijavuodet",
+      maaraykset
+    );
+    const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
       changesTest: intl.formatMessage(common.changesText)
@@ -89,7 +86,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       sectionId
     ]);
 
-    return muut && muutMaaraykset ? (
+    return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <ExpandableRowRoot
         anchor={sectionId}
         key={`expandable-row-root`}
@@ -109,7 +106,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           data={{
             isSisaoppilaitosValueRequired: false,
             isVaativaTukiValueRequired: false,
-            maaraykset,
+            maaraykset: opiskelijavuosiMaaraykset,
             muut,
             muutChanges: changeObjects.muut,
             muutMaaraykset,
@@ -117,7 +114,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           }}
           onChangesUpdate={onChangesUpdate}
           path={["opiskelijavuodet"]}
-          rules={[]}
           showCategoryTitles={true}></Lomake>
       </ExpandableRowRoot>
     ) : null;

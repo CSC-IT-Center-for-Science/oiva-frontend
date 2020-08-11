@@ -1,7 +1,17 @@
-import { mapObjIndexed, map, head, groupBy, prop, omit, filter } from "ramda";
+import {
+  mapObjIndexed,
+  map,
+  head,
+  groupBy,
+  prop,
+  omit,
+  filter,
+  sortBy,
+  path
+} from "ramda";
 import localforage from "localforage";
 
-export function initializeMaakunta(maakuntadata) {
+export function initializeMaakunta(maakuntadata, localeUpper) {
   const currentDate = new Date();
   if (
     currentDate >= new Date(maakuntadata.voimassaAlkuPvm) &&
@@ -15,17 +25,20 @@ export function initializeMaakunta(maakuntadata) {
     return omit(["kunta", "koodiArvo"], {
       ...maakuntadata,
       koodiarvo: maakuntadata.koodiArvo,
-      kunnat: map(
-        kunta =>
-          omit(["koodiArvo"], {
-            ...kunta,
-            koodiarvo: kunta.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), kunta.metadata)
-            )
-          }),
-        kunnat
+      kunnat: sortBy(
+        path(["metadata", localeUpper, "nimi"]),
+        map(
+          kunta =>
+            omit(["koodiArvo"], {
+              ...kunta,
+              koodiarvo: kunta.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), kunta.metadata)
+              )
+            }),
+          kunnat
+        )
       ),
       metadata: mapObjIndexed(
         head,

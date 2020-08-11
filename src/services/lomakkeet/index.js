@@ -75,8 +75,8 @@ const lomakkeet = {
   },
   kielet: {
     opetuskielet: {
-      modification: (data, isReadOnly) =>
-        getOpetuskieletLomake("modification", data, isReadOnly)
+      modification: (data, isReadOnly, locale) =>
+        getOpetuskieletLomake("modification", data, isReadOnly, locale)
     },
     tutkintokielet: {
       modification: (data, isReadOnly, locale) =>
@@ -100,8 +100,8 @@ const lomakkeet = {
   perustelut: {
     kielet: {
       opetuskielet: {
-        reasoning: (data, isReadOnly) =>
-          getOpetuskieletPerustelulomake("reasoning", data, isReadOnly)
+        reasoning: (data, isReadOnly, locale) =>
+          getOpetuskieletPerustelulomake("reasoning", data, isReadOnly, locale)
       },
       tutkintokielet: {
         reasoning: (data, isReadOnly, locale) =>
@@ -115,7 +115,7 @@ const lomakkeet = {
     },
     koulutukset: {
       atvKoulutukset: {
-        addition: (data, isReadOnly, locale, prefix) =>
+        addition: (data, isReadOnly, locale, changeObjects, prefix) =>
           getATVKoulutuksetPerustelulomake(
             "addition",
             data,
@@ -123,7 +123,7 @@ const lomakkeet = {
             locale,
             prefix
           ),
-        removal: (data, isReadOnly, locale, prefix) =>
+        removal: (data, isReadOnly, locale, changeObjects, prefix) =>
           getATVKoulutuksetPerustelulomake(
             "removal",
             data,
@@ -136,7 +136,7 @@ const lomakkeet = {
         jatkokoulutus: {
           addition: (data, isReadOnly) =>
             getKuljettajienJatkokoulutuslomake("addition", data, isReadOnly),
-          removal: (data, isReadOnly, locale, prefix) =>
+          removal: (data, isReadOnly, locale, changeObjects, prefix) =>
             getKuljettajienJatkokoulutuslomake(
               "removal",
               data,
@@ -147,7 +147,7 @@ const lomakkeet = {
         peruskoulutus: {
           addition: (data, isReadOnly) =>
             getKuljettajienPeruskoulutuslomake("addition", data, isReadOnly),
-          removal: (data, isReadOnly, locale, prefix) =>
+          removal: (data, isReadOnly, locale, changeObjects, prefix) =>
             getKuljettajienPeruskoulutuslomake(
               "removal",
               data,
@@ -164,7 +164,7 @@ const lomakkeet = {
             isReadOnly,
             locale
           ),
-        removal: (data, isReadOnly, locale, prefix) =>
+        removal: (data, isReadOnly, locale, changeObjects, prefix) =>
           getTyovoimakoulutuksetPerustelulomake(
             "removal",
             data,
@@ -174,14 +174,14 @@ const lomakkeet = {
           )
       },
       valmentavat: {
-        addition: (data, isReadOnly, locale, prefix) =>
+        addition: (data, isReadOnly, locale, changeObjects, prefix) =>
           getValmentavatKoulutuksetPerustelulomake(
             "addition",
             data,
             isReadOnly,
             prefix
           ),
-        removal: (data, isReadOnly, locale, prefix) =>
+        removal: (data, isReadOnly, locale, changeObjects, prefix) =>
           getValmentavatKoulutuksetPerustelulomake(
             "removal",
             data,
@@ -199,7 +199,7 @@ const lomakkeet = {
         getCheckboxes(data.checkboxItems, locale, isReadOnly)
     },
     toimintaalue: {
-      reasoning: (data, isReadOnly, locale, prefix) =>
+      reasoning: (data, isReadOnly, locale, changeObjects, prefix) =>
         getToimintaaluePerustelulomake(
           "reasoning",
           data,
@@ -209,12 +209,13 @@ const lomakkeet = {
         )
     },
     tutkinnot: {
-      reasoning: (data, isReadOnly, locale, prefix) =>
+      reasoning: (data, isReadOnly, locale, changeObjects, prefix) =>
         getTutkinnotPerustelulomake(
           "reasoning",
           data,
           isReadOnly,
           locale,
+          changeObjects,
           prefix
         )
     },
@@ -273,14 +274,15 @@ const lomakkeet = {
   // Esittelija
   esittelija: {
     topThree: {
-      addition: (data, isReadOnly, locale) =>
-        getTopThree(data, isReadOnly, locale)
+      addition: (data, isReadOnly, locale, changeObjects) =>
+        getTopThree(data, isReadOnly, locale, changeObjects)
     }
   }
 };
 
-export function getLomake(
+export async function getLomake(
   action = "addition",
+  changeObjects = [],
   data = {},
   isReadOnly,
   locale,
@@ -290,7 +292,9 @@ export function getLomake(
   // This defines the language of the requested form.
   setLocale(locale);
   const fn = path(concat(_path, [action]), lomakkeet);
-  const lomake = fn ? fn(data, isReadOnly, locale, prefix) : [];
+  const lomake = fn
+    ? await fn(data, isReadOnly, locale, changeObjects, prefix)
+    : [];
 
   return lomake;
 }

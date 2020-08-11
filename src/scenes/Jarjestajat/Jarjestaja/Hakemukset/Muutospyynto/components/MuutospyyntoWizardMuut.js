@@ -7,7 +7,6 @@ import Lomake from "../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import * as R from "ramda";
-import { useChangeObjects } from "../../../../../../stores/changeObjects";
 
 /**
  * If anyone of the following codes is active a notification (Alert comp.)
@@ -17,31 +16,29 @@ import { useChangeObjects } from "../../../../../../stores/changeObjects";
 const koodiarvot = [2, 16, 17, 18, 19, 20, 21].concat(4);
 
 const MuutospyyntoWizardMuut = props => {
-  const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "muut";
   const { onChangesRemove, onChangesUpdate } = props;
 
-  const osiota5koskevatMaaraykset = useMemo(() => {
-    return R.filter(
-      R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
-    )(props.maaraykset || []);
-  }, [props.maaraykset]);
+  const osiota5koskevatMaaraykset = R.filter(
+    R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
+    props.maaraykset || []
+  );
 
   const divideArticles = useMemo(() => {
     return () => {
       const group = {};
       const flattenArrayOfChangeObjects = R.flatten(
-        R.values(changeObjects.muut)
+        R.values(props.changeObjects.muut)
       );
       R.forEach(article => {
         const { metadata } = article;
         const kasite =
-          article.koodiArvo === "9"
+          article.koodiarvo === "9"
             ? "selvitykset"
             : parseLocalizedField(metadata, "FI", "kasite");
         const kuvaus = parseLocalizedField(metadata, "FI", "kuvaus");
-        const isInLupa = !!R.find(R.propEq("koodiarvo", article.koodiArvo))(
+        const isInLupa = !!R.find(R.propEq("koodiarvo", article.koodiarvo))(
           osiota5koskevatMaaraykset
         );
         /**
@@ -50,18 +47,20 @@ const MuutospyyntoWizardMuut = props => {
          * whose code value is one of the values in koodiarvot array. The array
          * has been defined before this (MuutospyyntoWizardMuut) component.
          */
-        article.showAlertBecauseOfSection5 = !!R.find(changeObj => {
-          const koodiarvo = R.nth(-2, R.split(".", changeObj.anchor));
-          return (
-            R.equals(koodiarvo, article.koodiArvo) &&
-            changeObj.properties.isChecked &&
-            R.includes(parseInt(koodiarvo, 10), koodiarvot)
-          );
-        }, flattenArrayOfChangeObjects);
+        article.showAlertBecauseOfSection5 =
+          (isInLupa && R.includes(article.koodiarvo, koodiarvot)) ||
+          !!R.find(changeObj => {
+            const koodiarvo = R.nth(-2, R.split(".", changeObj.anchor));
+            return (
+              R.equals(koodiarvo, article.koodiarvo) &&
+              changeObj.properties.isChecked &&
+              R.includes(parseInt(koodiarvo, 10), koodiarvot)
+            );
+          }, flattenArrayOfChangeObjects);
         if (
-          (kuvaus || R.includes(article.koodiArvo, ["22", "7"])) &&
+          (kuvaus || R.includes(article.koodiarvo, ["22", "7"])) &&
           kasite &&
-          (isInLupa || article.koodiArvo !== "15")
+          (isInLupa || article.koodiarvo !== "15")
         ) {
           group[kasite] = group[kasite] || [];
           group[kasite].push(article);
@@ -69,7 +68,7 @@ const MuutospyyntoWizardMuut = props => {
       }, props.muut);
       return group;
     };
-  }, [changeObjects, osiota5koskevatMaaraykset, props.muut]);
+  }, [props.changeObjects, osiota5koskevatMaaraykset, props.muut]);
 
   /**
    * The config will be looped through and the forms of section 5
@@ -205,7 +204,7 @@ const MuutospyyntoWizardMuut = props => {
           <ExpandableRowRoot
             anchor={fullSectionId}
             key={`expandable-row-root-${i}`}
-            changes={R.prop(configObj.code, changeObjects.muut)}
+            changes={R.prop(configObj.code, props.changeObjects.muut)}
             hideAmountOfChanges={true}
             messages={changesMessages}
             index={i}
@@ -217,15 +216,15 @@ const MuutospyyntoWizardMuut = props => {
             <Lomake
               action="modification"
               anchor={fullSectionId}
-              changeObjects={R.prop(configObj.code, changeObjects.muut)}
+              changeObjects={R.prop(configObj.code, props.changeObjects.muut)}
               data={{
                 configObj,
-                opiskelijavuodetChangeObjects: changeObjects.opiskelijavuodet,
+                opiskelijavuodetChangeObjects:
+                  props.changeObjects.opiskelijavuodet,
                 osiota5koskevatMaaraykset
               }}
               onChangesUpdate={onChangesUpdate}
               path={["muut"]}
-              rules={[]}
               showCategoryTitles={true}
             />
           </ExpandableRowRoot>

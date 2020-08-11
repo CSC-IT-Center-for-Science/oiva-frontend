@@ -3,7 +3,6 @@ import { API_BASE_URL } from "../../modules/constants";
 
 import {
   SET_BACKEND_CHANGES,
-  SAVE_MUUTOSPYYNTO_START,
   SAVE_MUUTOSPYYNTO_SUCCESS,
   SAVE_MUUTOSPYYNTO_FAILURE,
   SET_SECTION_DATA,
@@ -60,20 +59,6 @@ const submitMuutospyynto = (uuid) => {
     .post(`${API_BASE_URL}/muutospyynnot/tila/avoin/${uuid}`,{}, {
       withCredentials: true
     })
-}
-
-export const saveMuutospyynto = (muutospyynto, attachments, triggerPreview = false) => async (dispatch) => {
-  const data = createMuutospyyntoOutput(muutospyynto, attachments);
-  console.info(data);
-  dispatch({ type: SAVE_MUUTOSPYYNTO_START });
-
-  try {
-    const response = await save(data);
-    dispatch({ type: SAVE_MUUTOSPYYNTO_SUCCESS, payload: { response, triggerPreview }});
-  }
-  catch(err) {
-    dispatch({ type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err });
-  }
 }
 
 export const saveAndSubmitMuutospyynto = (muutospyynto, attachments) => async (dispatch) => {

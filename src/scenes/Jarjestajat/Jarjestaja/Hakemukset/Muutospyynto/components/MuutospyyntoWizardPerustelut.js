@@ -7,37 +7,45 @@ import PerustelutTutkinnot from "./Perustelut/PerustelutTutkinnot";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import PerustelutToimintaalue from "./Perustelut/PerustelutToimintaalue";
-import FormSection from "../../../../../../components/03-templates/FormSection";
 import PerustelutOpiskelijavuodet from "./Perustelut/PerustelutOpiskelijavuodet";
 import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import PerustelutLiitteet from "./Perustelut/PerustelutLiitteet";
 import wizard from "../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
+import Section from "components/03-templates/Section";
+
+const defaultProps = {
+  changeObjects: {},
+  elykeskukset: [],
+  kohteet: [],
+  oivaperustelut: [],
+  vankilat: []
+};
 
 const MuutospyyntoWizardPerustelut = ({
-  changeObjects = {},
-  elykeskukset = [],
+  changeObjects = defaultProps.changeObjects,
+  elykeskukset = defaultProps.elykeskukset,
   visits,
   kielet,
-  kohteet = [],
+  kohteet = defaultProps.kohteet,
   koulutukset,
-  maakuntakunnatList,
+  koulutusalat,
+  koulutustyypit,
+  maakuntakunnat,
   maaraystyypit,
   muut,
   lupa,
   lupaKohteet,
-  muutosperusteluList = [],
+  oivaperustelut = defaultProps.oivaperustelut,
+  onChangesRemove,
   onChangesUpdate,
+  opetuskielet,
   tutkinnot,
-  vankilat = []
+  vankilat = defaultProps.vankilat
 }) => {
   const intl = useIntl();
   const [kohdetiedot, setKohdetiedot] = useState(null);
   const [maaraystyypitState, setMaaraystyypitState] = useState({});
-
-  const muutosperusteluListSorted = useMemo(() => {
-    return R.sortBy(R.prop("koodiArvo"))(muutosperusteluList);
-  }, [muutosperusteluList]);
 
   useEffect(() => {
     const kohdeTiedot = R.map(kohde => {
@@ -113,7 +121,7 @@ const MuutospyyntoWizardPerustelut = ({
     isOpiskelijavuodetChanges,
     isMuutChanges
   ]);
-
+  console.info(changeObjects);
   return (
     <React.Fragment>
       <h2 className="my-6">{intl.formatMessage(wizard.pageTitle_2)}</h2>
@@ -123,107 +131,91 @@ const MuutospyyntoWizardPerustelut = ({
         <p>{intl.formatMessage(wizard.allPerustelutRequired)}</p>
       )}
 
-      {isAnyChanges && muutosperusteluList && kohdetiedot ? (
+      {isAnyChanges && kohdetiedot ? (
         <React.Fragment>
           {(isTutkinnotChanges || isKoulutuksetChanges) && (
-            <FormSection
-              code={1}
-              id="perustelut_tutkinnot"
-              render={_props => (
-                <React.Fragment>
-                  {isTutkinnotChanges && (
-                    <PerustelutTutkinnot
-                      changeObjects={{
-                        tutkinnot: R.prop("tutkinnot", changeObjects) || {},
-                        perustelut: {
-                          tutkinnot:
-                            R.path(
-                              ["perustelut", "tutkinnot"],
-                              changeObjects
-                            ) || {}
-                        }
-                      }}
-                      isFirstVisit={visits === 1}
-                      kohde={R.find(
-                        R.propEq("tunniste", "tutkinnotjakoulutukset")
-                      )(kohteet)}
-                      lupa={lupa}
-                      lupaKohteet={lupaKohteet}
-                      maaraystyyppi={maaraystyypitState.OIKEUS}
-                      muutosperustelut={muutosperusteluListSorted}
-                      tutkinnot={tutkinnot}
-                      {..._props}
-                    />
+            <Section
+              code={lupaKohteet[1].headingNumber}
+              title={lupaKohteet[1].heading}>
+              {isTutkinnotChanges && (
+                <PerustelutTutkinnot
+                  changeObjects={{
+                    tutkinnot: R.prop("tutkinnot", changeObjects) || {},
+                    perustelut: {
+                      tutkinnot:
+                        R.path(["perustelut", "tutkinnot"], changeObjects) || {}
+                    }
+                  }}
+                  isFirstVisit={visits === 1}
+                  kohde={R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"))(
+                    kohteet
                   )}
-                  {isKoulutuksetChanges && (
-                    <PerustelutKoulutukset
-                      changeObjects={{
-                        koulutukset: changeObjects.koulutukset,
-                        perustelut: {
-                          koulutukset: changeObjects.perustelut.koulutukset
-                        }
-                      }}
-                      elykeskukset={elykeskukset}
-                      kohde={R.find(
-                        R.propEq("tunniste", "tutkinnotjakoulutukset")
-                      )(kohteet)}
-                      koulutukset={koulutukset}
-                      maaraystyyppi={maaraystyypitState.OIKEUS}
-                      maaraykset={lupa.maaraykset}
-                      {..._props}
-                    />
-                  )}
-                  {/* Attachments for Tutkinnot ja koulutukset */}
-                  <FormSection
-                    id="perustelut_liitteet"
-                    className="my-0"
-                    render={_props => (
-                      <React.Fragment>
-                        <PerustelutLiitteet
-                          changeObjects={{
-                            perustelut: changeObjects.perustelut.liitteet
-                          }}
-                          {..._props}
-                        />
-                      </React.Fragment>
-                    )}
-                    runOnChanges={onChangesUpdate}
-                  />
-                </React.Fragment>
+                  koulutusalat={koulutusalat}
+                  koulutustyypit={koulutustyypit}
+                  lupa={lupa}
+                  lupaKohteet={lupaKohteet}
+                  maaraystyyppi={maaraystyypitState.OIKEUS}
+                  oivaperustelut={oivaperustelut}
+                  tutkinnot={tutkinnot}
+                  onChangesRemove={onChangesRemove}
+                  onChangesUpdate={onChangesUpdate}
+                />
               )}
-              runOnChanges={onChangesUpdate}
-              title={kohdetiedot[0].title}
-            />
+              {isKoulutuksetChanges && (
+                <PerustelutKoulutukset
+                  changeObjects={{
+                    koulutukset: changeObjects.koulutukset,
+                    perustelut: {
+                      koulutukset: changeObjects.perustelut.koulutukset
+                    }
+                  }}
+                  elykeskukset={elykeskukset}
+                  kohde={R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"))(
+                    kohteet
+                  )}
+                  koulutukset={koulutukset}
+                  maaraystyyppi={maaraystyypitState.OIKEUS}
+                  maaraykset={lupa.maaraykset}
+                  onChangesRemove={onChangesRemove}
+                  onChangesUpdate={onChangesUpdate}
+                />
+              )}
+              {/* Attachments for Tutkinnot ja koulutukset */}
+              <Section className="my-0">
+                <PerustelutLiitteet
+                  changeObjects={{
+                    perustelut: changeObjects.perustelut.liitteet
+                  }}
+                  onChangesRemove={onChangesRemove}
+                  onChangesUpdate={onChangesUpdate}
+                />
+              </Section>
+            </Section>
           )}
           {(isTutkintokieletChanges || isOpetuskieletChanges) && (
-            <FormSection
-              code={2}
-              id="perustelut_kielet"
-              render={_props => (
-                <React.Fragment>
-                  {isOpetuskieletChanges ? (
-                    <PerustelutOpetuskielet
-                      changeObjects={{
-                        opetuskielet:
-                          R.path(["kielet", "opetuskielet"], changeObjects) ||
-                          [],
-                        perustelut:
-                          R.path(
-                            ["perustelut", "kielet", "opetuskielet"],
-                            changeObjects
-                          ) || []
-                      }}
-                      kohde={R.find(
-                        R.propEq("tunniste", "opetusjatutkintokieli")
-                      )(kohteet)}
-                      lupa={lupa}
-                      maaraystyyppi={maaraystyypitState.OIKEUS}
-                      opetuskielet={kielet.opetuskielet}
-                      {..._props}
-                    />
-                  ) : null}
-
-                  {isTutkintokieletChanges ? (
+            <Section code={2} title={kohdetiedot[1].title}>
+              {isOpetuskieletChanges ? (
+                <PerustelutOpetuskielet
+                  changeObjects={{
+                    opetuskielet:
+                      R.path(["kielet", "opetuskielet"], changeObjects) || [],
+                    perustelut:
+                      R.path(
+                        ["perustelut", "kielet", "opetuskielet"],
+                        changeObjects
+                      ) || []
+                  }}
+                  kohde={R.find(R.propEq("tunniste", "opetusjatutkintokieli"))(
+                    kohteet
+                  )}
+                  lupa={lupa}
+                  maaraystyyppi={maaraystyypitState.OIKEUS}
+                  opetuskielet={opetuskielet}
+                  onChangesRemove={onChangesRemove}
+                  onChangesUpdate={onChangesUpdate}
+                />
+              ) : null}
+               {isTutkintokieletChanges ? (
                     <PerustelutTutkintokielet
                       changeObjects={{
                         tutkintokielet: changeObjects.kielet.tutkintokielet,
@@ -241,107 +233,75 @@ const MuutospyyntoWizardPerustelut = ({
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       maaraykset={lupa.maaraykset}
                       opetuskielet={kielet.opetuskielet}
-                      {..._props}
+                      koulutusalat={koulutusalat}
+                      onChangesRemove={onChangesRemove}
+                      onChangesUpdate={onChangesUpdate}
                     />
                   ) : null}
-                </React.Fragment>
-              )}
-              runOnChanges={onChangesUpdate}
-              title={kohdetiedot[1].title}
-            />
+            </Section>
           )}
 
           {/* TOIMINTA-ALUE */}
           {isToimintaalueChanges ? (
-            <FormSection
-              code={3}
-              id="perustelut_toimintaalue"
-              render={_props => (
-                <React.Fragment>
-                  <PerustelutToimintaalue
-                    kohde={R.find(R.propEq("tunniste", "toimintaalue"))(
-                      kohteet
-                    )}
-                    lupakohde={lupaKohteet[3]}
-                    maakuntakunnatList={maakuntakunnatList}
-                    maaraystyyppi={maaraystyypitState.VELVOITE}
-                    changeObjects={{
-                      toimintaalue: R.path(["toimintaalue"], changeObjects),
-                      perustelut: R.path(
-                        ["perustelut", "toimintaalue"],
-                        changeObjects
-                      )
-                    }}
-                    {..._props}
-                  />
-                </React.Fragment>
-              )}
-              runOnChanges={onChangesUpdate}
-              title={kohdetiedot[2].title}
-            />
+            <Section code={3} title={kohdetiedot[2].title}>
+              <PerustelutToimintaalue
+                kohde={R.find(R.propEq("tunniste", "toimintaalue"))(kohteet)}
+                lupakohde={lupaKohteet[3]}
+                maakuntakunnat={maakuntakunnat}
+                maaraystyyppi={maaraystyypitState.VELVOITE}
+                changeObjects={{
+                  toimintaalue: R.path(["toimintaalue"], changeObjects),
+                  perustelut: R.path(
+                    ["perustelut", "toimintaalue"],
+                    changeObjects
+                  )
+                }}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+              />
+            </Section>
           ) : null}
 
           {/* OPISKELIJAVUODET */}
           {isOpiskelijavuodetChanges ? (
-            <FormSection
-              code={4}
-              id="perustelut_opiskelijavuodet"
-              render={_props => (
-                <React.Fragment>
-                  <PerustelutOpiskelijavuodet
-                    muutosperustelut={R.sortBy(R.prop("koodiArvo"))(
-                      muutosperusteluList
-                    )}
-                    {..._props}
-                  />
-                </React.Fragment>
-              )}
-              runOnChanges={onChangesUpdate}
-              title={kohdetiedot[3].title}
-            />
+            <Section code={4} title={kohdetiedot[3].title}>
+              <PerustelutOpiskelijavuodet
+                changeObjects={changeObjects}
+                oivaperustelut={oivaperustelut}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+              />
+            </Section>
           ) : null}
 
           {/* MUUT */}
           {isMuutChanges ? (
-            <FormSection
-              code={5}
-              id="perustelut_muut"
-              render={_props => (
-                <React.Fragment>
-                  <PerustelutMuut
-                    changeObjects={{
-                      muut: changeObjects.muut,
-                      perustelut: changeObjects.perustelut.muut
-                    }}
-                    maaraykset={lupa.maaraykset}
-                    muut={muut}
-                    vankilat={vankilat}
-                    {..._props}
-                  />
-                </React.Fragment>
-              )}
-              runOnChanges={onChangesUpdate}
-              title={kohdetiedot[4].title}
-            />
+            <Section code={5} title={kohdetiedot[4].title}>
+              <PerustelutMuut
+                changeObjects={{
+                  muut: changeObjects.muut,
+                  perustelut: changeObjects.perustelut.muut
+                }}
+                maaraykset={lupa.maaraykset}
+                muut={muut}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+                vankilat={vankilat}
+              />
+            </Section>
           ) : null}
           {/* Common attachments, the same also in Yhteenveto */}
           {isAnyChanges && (
-            <FormSection
-              id="yhteenveto_hakemuksenLiitteet"
-              className="my-0"
-              render={_props => (
-                <React.Fragment>
-                  <YhteenvetoLiitteet
-                    changeObjects={{
-                      hakemuksenLiitteet:
-                        changeObjects.yhteenveto.hakemuksenLiitteet
-                    }}
-                    {..._props}
-                  />
-                </React.Fragment>
-              )}
-              runOnChanges={onChangesUpdate}
-            />
+            <Section className="my-0">
+              <YhteenvetoLiitteet
+                changeObjects={{
+                  hakemuksenLiitteet:
+                    changeObjects.yhteenveto.hakemuksenLiitteet
+                }}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+              />
+            </Section>
           )}
         </React.Fragment>
       ) : null}
@@ -353,17 +313,21 @@ MuutospyyntoWizardPerustelut.propTypes = {
   changeObjects: PropTypes.object,
   elykeskukset: PropTypes.array,
   visits: PropTypes.number,
-  kielet: PropTypes.object,
+  kielet: PropTypes.array,
   kohteet: PropTypes.array,
+  koulutusalat: PropTypes.array,
+  koulutustyypit: PropTypes.array,
   koulutukset: PropTypes.object,
-  maakuntakunnatList: PropTypes.array,
+  maakuntakunnat: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
-  muutosperusteluList: PropTypes.array,
+  oivaperustelut: PropTypes.array,
+  onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
-  tutkinnot: PropTypes.object,
+  opetuskielet: PropTypes.array,
+  tutkinnot: PropTypes.array,
   vankilat: PropTypes.array
 };
 

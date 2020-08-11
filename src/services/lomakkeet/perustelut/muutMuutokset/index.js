@@ -5,7 +5,6 @@ import {
   getVaativaErityinenTukilomake,
   getOppisopimusPerusteluLomake
 } from "../muut";
-import { parseLocalizedField } from "../../../../modules/helpers";
 import { sortArticlesByHuomioitavaKoodi } from "../../utils";
 
 function getStructureByKoodiarvo(
@@ -126,23 +125,23 @@ function divideArticles(
   const sortedArticles = sortArticlesByHuomioitavaKoodi(articles, locale);
   R.forEach(article => {
     const { metadata } = article;
-    const kasite = parseLocalizedField(metadata, localeUpper, "kasite");
-    const kuvaus = parseLocalizedField(metadata, localeUpper, "kuvaus");
-    const isInLupa = !!R.find(R.propEq("koodiarvo", article.koodiArvo))(
+    const kasite = metadata[localeUpper].kasite;
+    const kuvaus = metadata[localeUpper].kuvaus;
+    const isInLupa = !!R.find(R.propEq("koodiarvo", article.koodiarvo))(
       relevantMaaraykset
     );
     if (
       // Relevant codes includes only the koodiarvot that are selected on page 1
-      R.includes(article.koodiArvo, relevantCodes) &&
-      (kuvaus || article.koodiArvo === "22") &&
+      R.includes(article.koodiarvo, relevantCodes) &&
+      (kuvaus || article.koodiarvo === "22") &&
       kasite &&
-      (isInLupa || article.koodiArvo !== "15")
+      (isInLupa || article.koodiarvo !== "15")
     ) {
       dividedArticles[kasite] = dividedArticles[kasite] || [];
       dividedArticles[kasite].push({
         article,
         lomakkeet: getCategoriesByKoodiarvo(
-          article.koodiArvo,
+          article.koodiarvo,
           mapping,
           defaultAdditionForm,
           defaultRemovalForm
@@ -154,6 +153,7 @@ function divideArticles(
 }
 
 function getCategoryData(dividedArticles, areaCode) {
+  console.info(areaCode, dividedArticles);
   switch (areaCode) {
     case "01":
       return {
@@ -232,91 +232,96 @@ function getReasoningForm(
     locale
   );
   const item = getCategoryData(dividedArticles, areaCode);
-  return [
-    {
-      anchor: item.key,
-      categories: R.map(({ article, lomakkeet }) => {
-        const metadata = R.find(R.propEq("kieli", locale), article.metadata);
-        const title = metadata.kuvaus || metadata.nimi;
-        const isInLupaBool = article
-          ? !!R.find(koulutusala => {
-              return article.koodiArvo === koulutusala;
-            }, article.voimassaAlkuPvm)
-          : false;
-        const anchorInit = `muut_${areaCode}.${item.key}.${article.koodiArvo}`;
-        const changeObj = R.find(
-          R.compose(R.startsWith(anchorInit), R.prop("anchor")),
-          changeObjects
-        );
-        const isAddition = changeObj && changeObj.properties.isChecked;
-        const perusteltavaTeksti =
-          article.koodiArvo === "22" &&
-          R.find(
-            R.propEq("anchor", "muut_07.muumaarays.22.other.A"),
-            changeObjects
-          )
-            ? R.find(
+  const localeUpper = R.toUpper(locale);
+
+  return item
+    ? [
+        {
+          anchor: item.key,
+          categories: R.map(({ article, lomakkeet }) => {
+            const title =
+              article.metadata[localeUpper].kuvaus ||
+              article.metadata[localeUpper].nimi;
+            const isInLupaBool = article
+              ? !!R.find(koulutusala => {
+                  return article.koodiarvo === koulutusala;
+                }, article.voimassaAlkuPvm)
+              : false;
+            const anchorInit = `muut_${areaCode}.${item.key}.${article.koodiarvo}`;
+            const changeObj = R.find(
+              R.compose(R.startsWith(anchorInit), R.prop("anchor")),
+              changeObjects
+            );
+            const isAddition = changeObj && changeObj.properties.isChecked;
+            const perusteltavaTeksti =
+              article.koodiarvo === "22" &&
+              R.find(
                 R.propEq("anchor", "muut_07.muumaarays.22.other.A"),
                 changeObjects
-              ).properties.value
-            : "";
-        const isReasoningRequired =
-          R.path(
-            ["properties", "metadata", "isReasoningRequired"],
-            changeObj
-          ) !== false;
-        const labelClasses = {
-          isInLupa: isInLupaBool
-        };
-        let structure = null;
-        if (isReasoningRequired) {
-          structure = {
-            layout: {
-              indentation: "none",
-              margins: { top: "large" }
-            },
-            anchor: article.koodiArvo,
-            meta: {
-              isInLupa: isInLupaBool,
-              koodiarvo: article.koodiArvo,
-              koodisto: article.koodisto
-            },
-            components: [
-              {
-                anchor: "A",
-                name: item.componentName,
-                properties: {
+              )
+                ? R.find(
+                    R.propEq("anchor", "muut_07.muumaarays.22.other.A"),
+                    changeObjects
+                  ).properties.value
+                : "";
+            const isReasoningRequired =
+              R.path(
+                ["properties", "metadata", "isReasoningRequired"],
+                changeObj
+              ) !== false;
+            const labelClasses = {
+              isInLupa: isInLupaBool
+            };
+            let structure = null;
+            if (isReasoningRequired) {
+              structure = {
+                layout: {
+                  indentation: "none",
+                  margins: { top: "large" }
+                },
+                anchor: article.koodiarvo,
+                meta: {
+                  isInLupa: isInLupaBool,
+                  koodiarvo: article.koodiarvo,
+                  koodisto: article.koodisto
+                },
+                components: [
+                  {
+                    anchor: "A",
+                    name: item.componentName,
+                    properties: {
+                      isReadOnly,
+                      name: item.componentName,
+                      title: title,
+                      labelStyles: {
+                        addition: isAdded,
+                        removal: isRemoved,
+                        custom: Object.assign(
+                          {},
+                          labelClasses.isInLupa ? isInLupa : {}
+                        )
+                      },
+                      styleClasses: ["flex"],
+                      statusTextStyleClasses: isAddition
+                        ? ["text-green-600 pr-4 w-20 font-bold"]
+                        : ["text-red-500 pr-4 w-20 font-bold"],
+                      statusText: isAddition ? " LISÄYS:" : " POISTO:"
+                    }
+                  }
+                ],
+                categories: getStructureByKoodiarvo(
+                  perusteltavaTeksti,
+                  isAddition,
                   isReadOnly,
-                  name: item.componentName,
-                  title: title,
-                  labelStyles: {
-                    addition: isAdded,
-                    removal: isRemoved,
-                    custom: Object.assign(
-                      {},
-                      labelClasses.isInLupa ? isInLupa : {}
-                    )
-                  },
-                  styleClasses: ["flex"],
-                  statusTextStyleClasses: isAddition
-                    ? ["text-green-600 pr-4 w-20 font-bold"]
-                    : ["text-red-500 pr-4 w-20 font-bold"],
-                  statusText: isAddition ? " LISÄYS:" : " POISTO:"
-                }
-              }
-            ],
-            categories: getStructureByKoodiarvo(
-              perusteltavaTeksti,
-              isAddition,
-              isReadOnly,
-              lomakkeet
-            )
-          };
+                  lomakkeet
+                )
+              };
+            }
+            return structure;
+          }, item.articles).filter(Boolean)
         }
-        return structure;
-      }, item.articles).filter(Boolean)
-    }
-  ];
+      ]
+    : [];
 }
 
 export default function getMuutPerustelulomake(
@@ -325,6 +330,7 @@ export default function getMuutPerustelulomake(
   isReadOnly,
   locale
 ) {
+  console.info(locale);
   switch (action) {
     case "reasoning":
       const defaultAdditionForm = getDefaultAdditionForm(isReadOnly);
@@ -332,9 +338,10 @@ export default function getMuutPerustelulomake(
       const mapping = getMapping(
         data.vankilat,
         isReadOnly,
-        data.locale,
+        locale,
         defaultRemovalForm
       );
+      console.info(data);
       return getReasoningForm(
         data.areaCode,
         defaultAdditionForm,

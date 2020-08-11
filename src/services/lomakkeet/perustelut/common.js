@@ -1,14 +1,14 @@
 import * as R from "ramda";
 
 export const getMuutostarveCheckboxes = (
-  checkboxItems,
+  oivaperustelut,
   locale,
   isReadOnly = false
 ) => {
-  return R.addIndex(R.map)((checkboxItem, i) => {
-    const metadata = R.find(R.propEq("kieli", locale))(checkboxItem.metadata);
+  const localeUpper = R.toUpper(locale);
+  const structure = R.addIndex(R.map)((perustelu, i) => {
     const checkboxCategory = {
-      anchor: checkboxItem.koodiArvo,
+      anchor: perustelu.koodiarvo,
       layout: {
         margins: { top: "none" },
         indentation: "none"
@@ -20,15 +20,15 @@ export const getMuutostarveCheckboxes = (
           properties: {
             isChecked: false,
             isReadOnly,
-            title: metadata.nimi,
+            title: perustelu.metadata[localeUpper].nimi,
             forChangeObject: {
-              fieldName: metadata.nimi
+              fieldName: perustelu.metadata[localeUpper].nimi
             }
           }
         }
       ]
     };
-    if (i === checkboxItems.length - 1) {
+    if (i === oivaperustelut.length - 1) {
       checkboxCategory.categories = [
         {
           anchor: "muu-perustelu",
@@ -49,5 +49,7 @@ export const getMuutostarveCheckboxes = (
       ];
     }
     return checkboxCategory;
-  }, checkboxItems);
+  }, oivaperustelut);
+
+  return structure;
 };

@@ -8,5 +8,9 @@ export default defineMessages({
   inSwedish: {
     id: "languages.inSwedish",
     defaultMessage: "På svenska"
+  },
+  selection: {
+    id: "languages.selection",
+    defaultMessage: "Kielivalinta"
   }
 });

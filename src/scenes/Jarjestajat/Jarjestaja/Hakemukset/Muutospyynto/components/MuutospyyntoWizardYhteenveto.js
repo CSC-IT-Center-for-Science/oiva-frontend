@@ -1,24 +1,28 @@
 import React, { useMemo } from "react";
-import FormSection from "../../../../../../components/03-templates/FormSection";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import YhteenvetoYleisetTiedot from "./Yhteenveto/YhteenvetoYleisetTiedot";
 import YhteenvetoKooste from "./Yhteenveto/YhteenvetoKooste";
 import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import wizard from "../../../../../../i18n/definitions/wizard";
+import Section from "components/03-templates/Section";
 import * as R from "ramda";
 
 const MuutospyyntoWizardYhteenveto = ({
   changeObjects,
+  elykeskukset,
   kielet,
   kohteet,
   koulutukset,
+  koulutusalat,
+  koulutustyypit,
   lupa,
   lupaKohteet,
   maaraystyypit,
   muut,
   muutoshakemus,
   muutosperusteluList,
+  onChangesRemove,
   onChangesUpdate,
   opetuskielet,
   tutkinnot
@@ -91,65 +95,61 @@ const MuutospyyntoWizardYhteenveto = ({
 
       <div className="mb-12">{jarjestajaLayout}</div>
 
-      <FormSection
-        id="yhteenveto_yleisettiedot"
-        className="my-0"
-        render={_props => (
-          <React.Fragment>
-            <YhteenvetoYleisetTiedot
-              changeObjects={{
-                yhteenveto: changeObjects.yhteenveto.yleisettiedot
-              }}
-              {..._props}
-            />
-            <YhteenvetoKooste
-              changeObjects={changeObjects}
-              kielet={kielet}
-              kohteet={kohteet}
-              koulutukset={koulutukset}
-              lupa={lupa}
-              lupaKohteet={lupaKohteet}
-              maaraystyypit={maaraystyypit}
-              muutosperusteluList={muutosperusteluList}
-              muut={muut}
-              muutoshakemus={muutoshakemus}
-              onChangesUpdate={onChangesUpdate}
-              opetuskielet={opetuskielet}
-              tutkinnot={tutkinnot}></YhteenvetoKooste>
-          </React.Fragment>
-        )}
-        runOnChanges={onChangesUpdate}
-      />
-      <FormSection
-        id="yhteenveto_hakemuksenLiitteet"
-        className="my-0"
-        render={_props => (
-          <React.Fragment>
-            <YhteenvetoLiitteet
-              changeObjects={{
-                hakemuksenLiitteet: changeObjects.yhteenveto.hakemuksenLiitteet
-              }}
-              {..._props}
-            />
-          </React.Fragment>
-        )}
-        runOnChanges={onChangesUpdate}
-      />
+      <Section title={"Hakemuksen yleiset tiedot"} className="my-0">
+        <YhteenvetoYleisetTiedot
+          changeObjects={{
+            yhteenveto: changeObjects.yhteenveto.yleisettiedot
+          }}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={onChangesUpdate}
+        />
+        <YhteenvetoKooste
+          changeObjects={changeObjects}
+          elykeskukset={elykeskukset}
+          kielet={kielet}
+          kohteet={kohteet}
+          koulutukset={koulutukset}
+          koulutusalat={koulutusalat}
+          koulutustyypit={koulutustyypit}
+          lupa={lupa}
+          lupaKohteet={lupaKohteet}
+          maaraystyypit={maaraystyypit}
+          muutosperusteluList={muutosperusteluList}
+          muut={muut}
+          muutoshakemus={muutoshakemus}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={onChangesUpdate}
+          opetuskielet={opetuskielet}
+          tutkinnot={tutkinnot}></YhteenvetoKooste>
+      </Section>
+
+      <Section className="my-0">
+        <YhteenvetoLiitteet
+          changeObjects={{
+            hakemuksenLiitteet: changeObjects.yhteenveto.hakemuksenLiitteet
+          }}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={onChangesUpdate}
+        />
+      </Section>
     </React.Fragment>
   );
 };
 
 MuutospyyntoWizardYhteenveto.propTypes = {
   changeObjects: PropTypes.object,
+  elykeskukset: PropTypes.array,
   kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
+  koulutusalat: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   muutoshakemus: PropTypes.object,
   muutosperusteluList: PropTypes.array,
+  onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
   opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.array
