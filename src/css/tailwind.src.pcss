@@ -24,18 +24,25 @@ h4 {
   @apply font-sans;
 }
 a {
-  @apply text-vihrea;
+  @apply text-green-500;
+}
+a:hover {
+  @apply text-green-800;
+}
+a:visited {
+  @apply text-green-700;
 }
 
 /* User research indicates that number input controls need to go (CSCOIVA-1315) */
 /* Chrome and others */
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
