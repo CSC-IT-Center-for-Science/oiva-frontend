@@ -5,6 +5,7 @@ const getReasoningForm = (
   changeObjects,
   maaraykset,
   tutkinnot,
+  koulutusalat,
   isReadOnly,
   locale
 ) => {
@@ -13,17 +14,14 @@ const getReasoningForm = (
   return R.addIndex(R.map)((changeObj, i) => {
     const anchorParts = R.split(".", changeObj.anchor);
     const item = R.find(
-      R.propEq("koodiArvo", anchorParts[2]),
-      tutkinnot[areaCode].koulutukset[anchorParts[1]].koulutukset
+      R.propEq("koodiarvo", anchorParts[2]),
+      tutkinnot
     );
-    const koulutusalaMetadata = R.find(
-      R.propEq("kieli", R.toUpper(locale)),
-      tutkinnot[areaCode].metadata
-    );
-    const metadata = R.find(
-      R.propEq("kieli", R.toUpper(locale)),
-      item.metadata
-    );
+
+    const koulutusalaMetadata = R.find(R.propEq("koodiarvo", item.koulutusalakoodiarvo),
+      koulutusalat).metadata[R.toUpper(locale)];
+
+    const metadata = item.metadata[R.toUpper(locale)];
 
     /**
      * There might be some sub articles (alimääräyksiä) under the current article (määräys).
@@ -71,7 +69,7 @@ const getReasoningForm = (
           );
         return isAdded || isRemoved
           ? {
-              anchor: `${item.koodiArvo}${index > 0 ? index : ""}`,
+              anchor: `${item.koodiarvo}${index > 0 ? index : ""}`,
               categories: [
                 {
                   anchor: "title",
@@ -129,6 +127,7 @@ export default function getTutkintokieletPerustelulomake(
         data.changeObjectsPage1,
         data.maaraykset,
         data.tutkinnot,
+        data.koulutusalat,
         isReadOnly,
         locale
       );

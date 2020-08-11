@@ -38,6 +38,7 @@ export default function opiskelijavuodet(code, anchorNumber, isReadOnly) {
                     year: (year + 1).toString()
                   },
                   isReadOnly,
+                  isRequired: true,
                   withoutMargin: true,
                   label: (year + 1).toString(),
                   type: "number",
@@ -54,6 +55,7 @@ export default function opiskelijavuodet(code, anchorNumber, isReadOnly) {
                     year: (year + 2).toString()
                   },
                   isReadOnly,
+                  isRequired: true,
                   withoutMargin: true,
                   label: (year + 2).toString(),
                   type: "number",
@@ -69,6 +71,7 @@ export default function opiskelijavuodet(code, anchorNumber, isReadOnly) {
                     year: (year + 3).toString()
                   },
                   isReadOnly,
+                  isRequired: true,
                   withoutMargin: true,
                   label: (year + 3).toString(),
                   type: "number",

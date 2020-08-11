@@ -145,20 +145,30 @@ export function getCategoriesByProps(
 
 export function sortArticlesByHuomioitavaKoodi(articles, locale) {
   const sortedArticles = R.sort((a, b) => {
-    const metadataA = R.find(R.propEq("kieli", locale), a.metadata);
-    const metadataB = R.find(R.propEq("kieli", locale), b.metadata);
     /**
      * List items will be arranged by huomioitava koodi. If it isn't
      * available we use value 0 instead of it. That's why undefined
      * ones go on top of the list.
      */
-    const numberValueA = parseInt(metadataA.huomioitavaKoodi, 10) || 0;
-    const numberValueB = parseInt(metadataB.huomioitavaKoodi, 10) || 0;
-    if (numberValueA > numberValueB) {
-      return 1;
-    } else if (numberValueA < numberValueB) {
-      return -1;
+    const valueA = R.path(["metadata", locale, "huomioitavaKoodi"], a);
+    const valueB = R.path(["metadata", locale, "huomioitavaKoodi"], b);
+    if (!R.isNil(valueA) && !R.isNil(valueB)) {
+      const numberValueA = parseInt(valueA, 10);
+      const numberValueB = parseInt(valueB, 10);
+      if (numberValueA > numberValueB) {
+        return 1;
+      } else if (numberValueA < numberValueB) {
+        return -1;
+      } else {
+        return 0;
+      }
     } else {
+      console.info(
+        "Huomioitavan koodin mukaan järjestäminen epäonnistui!",
+        a,
+        b,
+        locale
+      );
       return 0;
     }
   }, articles);

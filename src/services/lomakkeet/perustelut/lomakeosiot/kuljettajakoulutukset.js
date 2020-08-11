@@ -45,6 +45,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
               properties: {
                 fullWidth: true,
                 isReadOnly,
+                isRequired: true,
                 placeholder: "Lukumäärä",
                 type: "number",
                 value: ""
@@ -70,6 +71,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
               properties: {
                 fullWidth: true,
                 isReadOnly,
+                isRequired: true,
                 placeholder: "Lukumäärä",
                 type: "number",
                 value: ""
@@ -95,6 +97,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
               properties: {
                 fullWidth: true,
                 isReadOnly,
+                isRequired: true,
                 placeholder: "Lukumäärä",
                 type: "number",
                 value: ""
@@ -125,6 +128,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -150,6 +154,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -175,6 +180,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -206,6 +212,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -231,6 +238,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -256,6 +264,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -281,6 +290,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -308,6 +318,7 @@ function kelpoisuusJaTyokokemusCategories(helpText, isReadOnly) {
                   properties: {
                     fullWidth: true,
                     isReadOnly,
+                    isRequired: true,
                     placeholder: "Lukumäärä",
                     type: "number",
                     value: ""
@@ -374,6 +385,7 @@ export function tehtavanTarpeellisuus(orderCode, isReadOnly) {
             name: "TextBox",
             properties: {
               isReadOnly,
+              isRequired: true,
               title:
                 "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
               value: ""
@@ -396,6 +408,7 @@ export function voimassaOlo(orderCode, isReadOnly) {
         anchor: "title",
         name: "StatusTextRow",
         properties: {
+          isRequired: true,
           title:
             "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?"
         }
@@ -464,6 +477,7 @@ export function suunnitelma(orderCode, isReadOnly) {
             name: "TextBox",
             properties: {
               isReadOnly,
+              isRequired: true,
               title:
                 "Esittäkää toimintamalli ammattipätevyyskoulutuksen tiloista ja toteutuksesta",
               value: ""
@@ -491,6 +505,7 @@ export function osaaminen(orderCode, isReadOnly) {
             name: "TextBox",
             properties: {
               isReadOnly,
+              isRequired: true,
               title:
                 "Selvitys henkilöstön osaamisesta koulutusohjelman järjestämiseksi",
               value: ""
@@ -518,6 +533,7 @@ export function johtaja(orderCode, isReadOnly) {
             name: "TextBox",
             properties: {
               isReadOnly,
+              isRequired: true,
               placeholder: "Sana on vapaa...",
               title:
                 "! Valtioneuvoston asetuksen 434/2018 10 §:ssä on säädetty opettajien ja opetuksesta vastaavan johtajan pätevyydestä.",
@@ -615,6 +631,7 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
             properties: {
               fullWidth: true,
               isReadOnly,
+              isRequired: true,
               label: "Linja-autoja",
               placeholder: "Linja-autoja",
               type: "number",
@@ -628,6 +645,7 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
             properties: {
               fullWidth: true,
               isReadOnly,
+              isRequired: true,
               label: "Kuorma-autoja",
               placeholder: "Kuorma-autoja",
               type: "number",
@@ -641,6 +659,7 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
             properties: {
               fullWidth: true,
               isReadOnly,
+              isRequired: true,
               label: "Perävaunuja",
               placeholder: "Perävaunuja",
               type: "number",
@@ -654,6 +673,7 @@ export function ajoneuvoKanta(orderCode, isReadOnly) {
             properties: {
               fullWidth: true,
               isReadOnly,
+              isRequired: true,
               label: "Muut ajoneuvot",
               placeholder: "Muut ajoneuvot",
               type: "number",
@@ -718,6 +738,7 @@ export function muutOpetusvalineet(orderCode, isReadOnly) {
             name: "TextBox",
             properties: {
               isReadOnly,
+              isRequired: true,
               title:
                 "! Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)",
               value: ""
@@ -734,6 +755,7 @@ export function muutOpetusvalineet(orderCode, isReadOnly) {
             name: "TextBox",
             properties: {
               isReadOnly,
+              isRequired: true,
               labelStyles: {},
               placeholder:
                 "Muut oppilaitoksen oppimisympäristöissä tapahtuvaan osaamisen hankkimiseen liittyvät välineet",

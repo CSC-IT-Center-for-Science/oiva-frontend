@@ -29,14 +29,13 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   if (changes && !R.isEmpty(changes)) {
     return (
       <ExpandableRowRoot
         anchor={sectionId}
         key={`expandable-row-root`}
-        categories={[]}
         changes={
           props.changeObjects.perustelut.koulutukset.valmentavatKoulutukset
         }
@@ -46,6 +45,7 @@ const PerustelutValmentavatKoulutukset = React.memo(props => {
         messages={changesMessages}
         onChangesRemove={onChangesRemove}
         onUpdate={onChangesUpdate}
+        sectionId={sectionId}
         title={intl.formatMessage(wizardMessages.preparatoryTraining)}>
         <Lomake
           anchor={sectionId}

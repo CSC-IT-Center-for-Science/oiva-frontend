@@ -7,10 +7,14 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { toUpper } from "ramda";
-import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
-const ATVKoulutukset = ({ koulutukset, maaraykset, onChangesRemove, onChangesUpdate }) => {
-  const [changeObjects] = useChangeObjects();
+const ATVKoulutukset = ({
+  changeObjects,
+  koulutukset,
+  maaraykset,
+  onChangesRemove,
+  onChangesUpdate
+}) => {
   const intl = useIntl();
   const sectionId = "koulutukset_atvKoulutukset";
 
@@ -50,7 +54,6 @@ const ATVKoulutukset = ({ koulutukset, maaraykset, onChangesRemove, onChangesUpd
           }}
           onChangesUpdate={onChangesUpdate}
           path={["koulutukset", "atvKoulutukset"]}
-          rules={[]}
           showCategoryTitles={true}></Lomake>
       )}
     </ExpandableRowRoot>
@@ -58,7 +61,7 @@ const ATVKoulutukset = ({ koulutukset, maaraykset, onChangesRemove, onChangesUpd
 };
 
 ATVKoulutukset.propTypes = {
-  changeObjects: PropTypes.array,
+  changeObjects: PropTypes.object,
   koulutukset: PropTypes.object
 };
 

@@ -10,18 +10,6 @@ export function getLupaFromStorage() {
  * esimerkiksi "toimintaalue".
  * @param {string} tunniste
  */
-export async function getMaarayksetByTunniste(tunniste) {
-  const lupa = await getLupaFromStorage();
-  let maaraykset = [];
-  if (lupa) {
-    maaraykset = filter(
-      pathEq(["kohde", "tunniste"], tunniste),
-      lupa.maaraykset
-    );
-  } else {
-    console.warn(
-      "Unable to find lupa from local storage (IndexedDB, WebSQL or localstorage)!"
-    );
-  }
-  return maaraykset;
+export function getMaarayksetByTunniste(tunniste, maaraykset = []) {
+  return filter(pathEq(["kohde", "tunniste"], tunniste), maaraykset);
 }

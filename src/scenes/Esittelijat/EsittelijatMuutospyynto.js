@@ -66,15 +66,14 @@ const EsittelijatMuutospyynto = React.memo(
 
     return (
       <React.Fragment>
-        <h2 className="my-6">
-          {intl.formatMessage(common.changesText)}
-        </h2>
+        <h2 className="my-6">{intl.formatMessage(common.changesText)}</h2>
         <form onSubmit={props.handleSubmit}>
           <Section
             code={props.lupaKohteet[1].headingNumber}
             title={props.lupaKohteet[1].heading}>
             <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
             <Tutkinnot
+              changeObjects={props.changeObjects.tutkinnot}
               koulutusalat={props.koulutusalat}
               koulutustyypit={props.koulutustyypit}
               onChangesRemove={onChangesRemove}
@@ -85,6 +84,7 @@ const EsittelijatMuutospyynto = React.memo(
               {intl.formatMessage(common.koulutukset)}
             </h4>
             <MuutospyyntoWizardKoulutukset
+              changeObjects={props.changeObjects}
               key="koulutukset"
               koulutukset={props.koulutukset}
               maaraykset={props.lupa.maaraykset}
@@ -97,6 +97,7 @@ const EsittelijatMuutospyynto = React.memo(
             code={props.lupaKohteet[2].headingNumber}
             title={props.lupaKohteet[2].heading}>
             <MuutospyyntoWizardKielet
+              changeObjects={props.changeObjects}
               kielet={props.kielet}
               koulutusalat={props.koulutusalat}
               koulutustyypit={props.koulutustyypit}
@@ -116,6 +117,7 @@ const EsittelijatMuutospyynto = React.memo(
             code={props.lupaKohteet[3].headingNumber}
             title={props.lupaKohteet[3].heading}>
             <MuutospyyntoWizardToimintaalue
+              changeObjects={props.changeObjects}
               lupakohde={props.lupaKohteet[3]}
               kunnat={props.kunnat}
               maakuntakunnat={props.maakuntakunnat}
@@ -132,6 +134,7 @@ const EsittelijatMuutospyynto = React.memo(
               code={props.lupaKohteet[4].headingNumber}
               title={props.lupaKohteet[4].heading}>
               <MuutospyyntoWizardOpiskelijavuodet
+                changeObjects={props.changeObjects}
                 lupaKohteet={props.lupaKohteet}
                 maaraykset={props.lupa.maaraykset}
                 muut={props.muut}
@@ -148,6 +151,7 @@ const EsittelijatMuutospyynto = React.memo(
               code={props.lupaKohteet[5].headingNumber}
               title={props.lupaKohteet[5].heading}>
               <MuutospyyntoWizardMuut
+                changeObjects={props.changeObjects}
                 maaraykset={props.lupa.maaraykset}
                 muut={props.muut}
                 koulutukset={props.koulutukset}
@@ -163,6 +167,7 @@ const EsittelijatMuutospyynto = React.memo(
   },
   (currentProps, nextProps) => {
     return (
+      R.equals(currentProps.changeObjects, nextProps.changeObjects) &&
       R.equals(currentProps.kielet, nextProps.kielet) &&
       R.equals(currentProps.lupa, nextProps.lupa) &&
       R.equals(currentProps.koulutusalat, nextProps.koulutusalat) &&

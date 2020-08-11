@@ -33,12 +33,12 @@ const PerustelutATVKoulutukset = props => {
     <ExpandableRowRoot
       anchor={sectionId}
       key={`expandable-row-root`}
-      categories={[]}
       changes={props.changeObjects.perustelut.koulutukset.atvKoulutukset}
       disableReverting={props.isReadOnly}
       hideAmountOfChanges={true}
       isExpanded={true}
       messages={changesMessages}
+      sectionId={sectionId}
       onChangesRemove={onChangesRemove}
       onUpdate={onChangesUpdate}
       title={intl.formatMessage(wizardMessages.vocationalTraining)}>

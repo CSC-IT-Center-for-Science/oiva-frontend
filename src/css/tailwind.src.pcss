@@ -26,5 +26,18 @@ h4 {
 a {
   @apply text-vihrea;
 }
+
+/* User research indicates that number input controls need to go (CSCOIVA-1315) */
+/* Chrome and others */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 @tailwind components;
 @tailwind utilities;

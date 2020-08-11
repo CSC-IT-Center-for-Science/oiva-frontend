@@ -16,6 +16,7 @@ function getModificationForm(locale) {
           properties: {
             fullWidth: true,
             label: "Nimi",
+            isRequired: true,
             value: ""
           }
         },
@@ -26,6 +27,7 @@ function getModificationForm(locale) {
           properties: {
             fullWidth: true,
             label: "Nimike",
+            isRequired: true,
             value: ""
           }
         },
@@ -36,6 +38,7 @@ function getModificationForm(locale) {
           properties: {
             fullWidth: true,
             label: "Puhelinnumero",
+            isRequired: true,
             value: ""
           }
         },
@@ -46,6 +49,7 @@ function getModificationForm(locale) {
           properties: {
             fullWidth: true,
             label: "Sähköposti",
+            isRequired: true,
             value: ""
           }
         }
@@ -60,12 +64,10 @@ function getModificationForm(locale) {
           anchor: "ajankohta",
           name: "Datepicker",
           properties: {
-            isrequired: true,
-            fullWidth: false,
-            width: "8rem",
-            label: __("common.date"),
-            placeholder: __("common.date"),
             disablePast: true,
+            fullWidth: false,
+            isrequired: true,
+            label: __("common.date"),
             locale: locale,
             localizations: {
               ok: __("common.ok"),
@@ -76,7 +78,9 @@ function getModificationForm(locale) {
               datemin: __("common.datemin"),
               dateinvalid: __("common.dateinvalid")
             },
-            value: ""
+            placeholder: __("common.date"),
+            value: "",
+            width: "8rem"
           }
         }
       ]
@@ -91,6 +95,7 @@ function getModificationForm(locale) {
           anchor: "tekstikentta",
           name: "TextBox",
           properties: {
+            isRequired: true,
             placeholder: "",
             title: "Pakollinen",
             value: ""
@@ -109,6 +114,7 @@ function getModificationForm(locale) {
           name: "Input",
           properties: {
             fullWidth: true,
+            isRequired: true,
             label: "Nimi",
             value: ""
           }
@@ -119,6 +125,7 @@ function getModificationForm(locale) {
           name: "Input",
           properties: {
             fullWidth: true,
+            isRequired: true,
             label: "Nimike",
             value: ""
           }
@@ -143,7 +150,10 @@ function getModificationForm(locale) {
           anchor: "A",
           name: "Attachments",
           messages: getMessages("attachments"),
-          value: ""
+          properties: {
+            isRequired: true,
+            value: ""
+          }
         }
       ]
     }

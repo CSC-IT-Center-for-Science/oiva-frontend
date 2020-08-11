@@ -7,32 +7,31 @@ import { useIntl } from "react-intl";
 
 const YhteenvetoLiitteet = React.memo(props => {
   const intl = useIntl();
+  const sectionId = "yhteenveto_hakemuksenLiitteet";
 
   return (
     <React.Fragment>
       <hr />
       <ExpandableRowRoot
         title={intl.formatMessage(wizardMessages.otherAttachments)}
-        anchor={props.sectionId}
+        anchor={sectionId}
         key={`yhteenveto-hakemuksenLiitteet`}
-        categories={[]}
         changes={props.changeObjects.hakemuksenLiitteet}
         disableReverting={true}
         showCategoryTitles={true}
         isExpanded={true}
-        sectionId={props.sectionId}
+        sectionId={sectionId}
         onUpdate={props.onChangesUpdate}
         hideAmountOfChanges={true}>
         <Lomake
           action="modification"
-          anchor={props.sectionId}
+          anchor={sectionId}
           changeObjects={props.changeObjects.hakemuksenLiitteet}
           metadata={{
             kohde: props.kohde
           }}
           onChangesUpdate={props.onChangesUpdate}
           path={["yhteenveto", "liitteet"]}
-          rules={[]}
           showCategoryTitles={true}></Lomake>
       </ExpandableRowRoot>
     </React.Fragment>

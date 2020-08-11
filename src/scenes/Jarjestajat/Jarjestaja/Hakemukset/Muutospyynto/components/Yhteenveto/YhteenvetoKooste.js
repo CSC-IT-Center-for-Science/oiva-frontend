@@ -12,17 +12,22 @@ import PerustelutToimintaalue from "../Perustelut/PerustelutToimintaalue";
 import FormSection from "../../../../../../../components/03-templates/FormSection";
 import YhteenvetoTaloudelliset from "./YhteenvetoTaloudelliset";
 import * as R from "ramda";
+import Section from "components/03-templates/Section";
 
 const YhteenvetoKooste = ({
   changeObjects,
+  elykeskukset,
   kielet,
-  kohteet = [],
+  kohteet,
   koulutukset,
-  maaraystyypit = [],
+  koulutusalat,
+  koulutustyypit,
+  maaraystyypit,
   muut,
-  muutosperusteluList = [],
+  oivaperustelut,
   lupa,
   lupaKohteet,
+  onChangesRemove,
   onChangesUpdate,
   opetuskielet,
   tutkinnot
@@ -30,10 +35,6 @@ const YhteenvetoKooste = ({
   const intl = useIntl();
   const [kohdetiedot, setKohdetiedot] = useState(null);
   const [maaraystyypitState, setMaaraystyypitState] = useState({});
-
-  const muutosperusteluListSorted = useMemo(() => {
-    return R.sortBy(R.prop("koodiArvo"))(muutosperusteluList);
-  }, [muutosperusteluList]);
 
   useEffect(() => {
     const kohdeTiedot = R.map(kohde => {
@@ -67,81 +68,66 @@ const YhteenvetoKooste = ({
     <React.Fragment>
       {kohdetiedot && kohdetiedot.length ? (
         <React.Fragment>
-          {muutosperusteluList &&
-            (!R.isEmpty(changeObjects.tutkinnot) || isKoulutuksetChanges) && (
-              <FormSection
-                code={1}
-                id="perustelut_tutkinnot"
-                render={_props => (
-                  <React.Fragment>
-                    {!!R.prop("tutkinnot", changeObjects) && (
-                      <PerustelutTutkinnot
-                        changeObjects={{
-                          tutkinnot: R.prop("tutkinnot", changeObjects),
-                          perustelut: {
-                            tutkinnot:
-                              R.path(
-                                ["perustelut", "tutkinnot"],
-                                changeObjects
-                              ) || {}
-                          }
-                        }}
-                        kohde={R.find(
-                          R.propEq("tunniste", "tutkinnotjakoulutukset")
-                        )(kohteet)}
-                        lupa={lupa}
-                        lupaKohteet={lupaKohteet}
-                        maaraystyyppi={maaraystyypitState.OIKEUS}
-                        muutosperustelut={muutosperusteluListSorted}
-                        tutkinnot={tutkinnot}
-                        isReadOnly={true}
-                        {..._props}
-                      />
-                    )}
-                    {!!R.path(["perustelut", "koulutukset"], changeObjects) ? (
-                      <PerustelutKoulutukset
-                        changeObjects={{
-                          koulutukset: R.prop("koulutukset", changeObjects),
-                          perustelut: {
-                            koulutukset: R.path(
-                              ["perustelut", "koulutukset"],
-                              changeObjects
-                            )
-                          }
-                        }}
-                        kohde={R.find(
-                          R.propEq("tunniste", "tutkinnotjakoulutukset")
-                        )(kohteet)}
-                        koulutukset={koulutukset}
-                        maaraystyyppi={maaraystyypitState.OIKEUS}
-                        isReadOnly={true}
-                        {..._props}
-                      />
-                    ) : null}
-                    {/* Attachments for Tutkinnot ja koulutukset */}
-                    <FormSection
-                      id="perustelut_liitteet"
-                      className="my-0"
-                      render={_props => (
-                        <PerustelutLiitteet
-                          changeObjects={{
-                            perustelut: R.path(
-                              ["perustelut", "liitteet"],
-                              changeObjects
-                            )
-                          }}
-                          isReadOnly={true}
-                          {..._props}
-                        />
-                      )}
-                      runOnChanges={onChangesUpdate}
-                    />
-                  </React.Fragment>
+          <Section
+            code={lupaKohteet[1].headingNumber}
+            title={lupaKohteet[1].heading}>
+            {!R.isEmpty(changeObjects.tutkinnot) && (
+              <PerustelutTutkinnot
+                changeObjects={{
+                  tutkinnot: R.prop("tutkinnot", changeObjects) || {},
+                  perustelut: {
+                    tutkinnot:
+                      R.path(["perustelut", "tutkinnot"], changeObjects) || {}
+                  }
+                }}
+                isFirstVisit={false}
+                isReadOnly={true}
+                kohde={R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"))(
+                  kohteet
                 )}
-                runOnChanges={onChangesUpdate}
-                title={kohdetiedot[0].title}
+                koulutusalat={koulutusalat}
+                koulutustyypit={koulutustyypit}
+                lupa={lupa}
+                lupaKohteet={lupaKohteet}
+                maaraystyyppi={maaraystyypitState.OIKEUS}
+                oivaperustelut={oivaperustelut}
+                tutkinnot={tutkinnot}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
               />
             )}
+            {isKoulutuksetChanges && (
+              <PerustelutKoulutukset
+                changeObjects={{
+                  koulutukset: changeObjects.koulutukset,
+                  perustelut: {
+                    koulutukset: changeObjects.perustelut.koulutukset
+                  }
+                }}
+                elykeskukset={elykeskukset}
+                isReadOnly={true}
+                kohde={R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"))(
+                  kohteet
+                )}
+                koulutukset={koulutukset}
+                maaraystyyppi={maaraystyypitState.OIKEUS}
+                maaraykset={lupa.maaraykset}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+              />
+            )}
+            {/* Attachments for Tutkinnot ja koulutukset */}
+            <Section className="my-0">
+              <PerustelutLiitteet
+                changeObjects={{
+                  perustelut: changeObjects.perustelut.liitteet
+                }}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+              />
+            </Section>
+          </Section>
+
           {!R.isEmpty(changeObjects.kielet.opetuskielet) ||
           !R.isEmpty(changeObjects.kielet.tutkintokielet) ? (
             <FormSection
@@ -161,14 +147,15 @@ const YhteenvetoKooste = ({
                             changeObjects
                           ) || []
                       }}
+                      isReadOnly={true}
                       kohde={R.find(
                         R.propEq("tunniste", "opetusjatutkintokieli")
                       )(kohteet)}
                       lupa={lupa}
                       maaraystyyppi={maaraystyypitState.OIKEUS}
                       opetuskielet={opetuskielet}
-                      isReadOnly={true}
-                      {..._props}
+                      onChangesRemove={onChangesRemove}
+                      onChangesUpdate={onChangesUpdate}
                     />
                   ) : null}
 
@@ -233,22 +220,16 @@ const YhteenvetoKooste = ({
           ) : null}
 
           {/* OPISKELIJAVUODET */}
-          {!R.isEmpty(changeObjects.opiskelijavuodet) && muutosperusteluList ? (
-            <FormSection
-              code={4}
-              id="perustelut_opiskelijavuodet"
-              render={_props => (
-                <PerustelutOpiskelijavuodet
-                  muutosperustelut={R.sortBy(R.prop("koodiArvo"))(
-                    muutosperusteluList
-                  )}
-                  {..._props}
-                  isReadOnly={true}
-                />
-              )}
-              runOnChanges={onChangesUpdate}
-              title={kohdetiedot[3].title}
-            />
+          {!R.isEmpty(changeObjects.opiskelijavuodet) ? (
+            <Section code={4} title={kohdetiedot[3].title}>
+              <PerustelutOpiskelijavuodet
+                changeObjects={changeObjects}
+                isReadOnly={true}
+                oivaperustelut={oivaperustelut}
+                onChangesRemove={onChangesRemove}
+                onChangesUpdate={onChangesUpdate}
+              />
+            </Section>
           ) : null}
 
           {/* MUUT */}
@@ -295,13 +276,15 @@ const YhteenvetoKooste = ({
 
 YhteenvetoKooste.propTypes = {
   changeObjects: PropTypes.object,
+  elykeskukset: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
-  muutosperusteluList: PropTypes.array,
+  oivaperustelut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
+  onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
   opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.array

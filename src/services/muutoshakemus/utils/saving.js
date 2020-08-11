@@ -96,7 +96,9 @@ export async function createObjectToSave(
       tutkintokielet: {
         muutokset: R.flatten(R.values(changeObjects.kielet.tutkintokielet)),
         perustelut: R.flatten(
-          R.values(changeObjects.perustelut.kielet.tutkintokielet)
+          R.values(
+            R.path(["perustelut", "kielet", "tutkintokielet"], changeObjects)
+          )
         )
       }
     },
@@ -134,7 +136,7 @@ export async function createObjectToSave(
         return !!sourceObject
           ? R.map(changeObject => {
               return {
-                anchor: `perustelut_${changeObject.anchor}`,
+                anchor: `perustelut_toimintaalue`,
                 properties: sourceObject.properties
               };
             }, R.path(["toimintaalue"], changeObjects) || [])
@@ -159,7 +161,8 @@ export async function createObjectToSave(
       )(R.values(R.path(["perustelut", "koulutukset"], changeObjects)))
     },
     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
-    maaraystyypit
+    maaraystyypit,
+    locale
   );
 
   // OPETUSKIELET

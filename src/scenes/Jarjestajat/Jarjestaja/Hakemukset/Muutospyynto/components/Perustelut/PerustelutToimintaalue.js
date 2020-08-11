@@ -4,7 +4,6 @@ import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organi
 import common from "../../../../../../../i18n/definitions/common";
 import "./perustelut-toiminta-alue.module.css";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { rules } from "../../../../../../../services/lomakkeet/perustelut/toiminta-alue/rules";
 import { useIntl } from "react-intl";
 
 const defaultProps = {
@@ -12,7 +11,7 @@ const defaultProps = {
   isReadOnly: false,
   kohde: {},
   lupakohde: {},
-  maakuntakunnatList: [],
+  maakuntakunnat: [],
   maaraystyyppi: {},
   stateObjects: {}
 };
@@ -23,18 +22,18 @@ const PerustelutToimintaalue = React.memo(
     isReadOnly = defaultProps.isReadOnly,
     kohde = defaultProps.kohde,
     lupakohde = {},
-    maakuntakunnatList = defaultProps.maakuntakunnatList,
+    maakuntakunnat = defaultProps.maakuntakunnat,
     maaraystyyppi = defaultProps.maaraystyyppi,
     onChangesRemove,
-    onChangesUpdate,
-    sectionId
+    onChangesUpdate
   }) => {
     const intl = useIntl();
+    const sectionId = "perustelut_toimintaalue";
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
       changesTest: intl.formatMessage(common.changesText)
-    }
-    
+    };
+
     return (
       <React.Fragment>
         {lupakohde && lupakohde.kunnat && lupakohde.maakunnat && kohde && (
@@ -57,12 +56,11 @@ const PerustelutToimintaalue = React.memo(
               data={{
                 changeObjectsPage1: changeObjects.toimintaalue,
                 lupakohde,
-                maakuntakunnatList
+                maakuntakunnat
               }}
               metadata={{ kohde, maaraystyyppi }}
               onChangesUpdate={onChangesUpdate}
               path={["perustelut", "toimintaalue"]}
-              rules={rules}
               showCategoryTitles={true}></Lomake>
           </ExpandableRowRoot>
         )}
@@ -77,7 +75,7 @@ PerustelutToimintaalue.propTypes = {
   isReadOnly: PropTypes.bool,
   kohde: PropTypes.object,
   lupakohde: PropTypes.object,
-  maakuntakunnatList: PropTypes.array,
+  maakuntakunnat: PropTypes.array,
   maaraystyyppi: PropTypes.object,
   onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func

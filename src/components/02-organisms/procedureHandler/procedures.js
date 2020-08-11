@@ -8,7 +8,6 @@ import { polkuvirhe as eiEsikatselupolkua } from "./procedures/muutospyynto/esik
 import { latauspolku as esikatselunLatauspolku } from "./procedures/muutospyynto/esikatselu/latauspolku";
 import { polkuOK as esikatselupolkuOK } from "./procedures/muutospyynto/esikatselu/polkuOK";
 import { listaus as muutospyyntojenListaus } from "./procedures/muutospyynnot/listaus";
-import { poista as poistaWizardinMuutokset } from "./procedures/muutospyynto/muutokset/poista";
 import { poista as poistaMuutospyynto } from "./procedures/muutospyynnot/poisto/poista";
 import { epaonnistui as muutospyynnonPoistoEpaonnistui } from "./procedures/muutospyynnot/poisto/epaonnistui";
 import { onnistui as muutospyynnonPoistoOnnistui } from "./procedures/muutospyynnot/poisto/onnistui";
@@ -24,8 +23,8 @@ import { epaonnistui as muutospyynnonLataaminenEpaonnistui } from "./procedures/
 import { onnistui as muutospyynnonLataaminenOnnistui } from "./procedures/muutospyynto/lataaminen/onnistui";
 import { onnistuiNew as muutospyynnonLataaminenOnnistuiNew } from "./procedures/muutospyynto/lataaminen/onnistuiNew";
 import { luvanLatauspolku } from "./procedures/muutospyynto/esikatselu/luvanLatauspolku";
-import { tarkistaDuplikaattiAsianumero } from "./procedures/muutospyynto/muutokset/tarkistaDuplikaattiAsianumero"
-import {asianumeroOnJoKaytossa} from "./procedures/muutospyynto/muutokset/asianumeroOnJoKaytossa";
+import { tarkistaDuplikaattiAsianumero } from "./procedures/muutospyynto/muutokset/tarkistaDuplikaattiAsianumero";
+import { asianumeroOnJoKaytossa } from "./procedures/muutospyynto/muutokset/asianumeroOnJoKaytossa";
 
 export const procedures = {
   muutospyynnot: {
@@ -68,8 +67,7 @@ export const procedures = {
     },
     muutokset: {
       tarkistaDuplikaattiAsianumero: tarkistaDuplikaattiAsianumero,
-      poista: poistaWizardinMuutokset,
-      asianumeroOnJoKaytossa: asianumeroOnJoKaytossa,
+      asianumeroOnJoKaytossa
     },
     tallennus: {
       epaonnistui: tallennusEpaonnistui,

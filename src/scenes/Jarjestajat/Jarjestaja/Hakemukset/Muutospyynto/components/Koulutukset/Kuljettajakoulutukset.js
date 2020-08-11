@@ -7,15 +7,14 @@ import { getDataForKoulutusList } from "../../../../../../../utils/koulutusUtil"
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import { toUpper } from "ramda";
-import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
 const Kuljettajakoulutukset = ({
+  changeObjects,
   koulutukset,
   maaraykset,
   onChangesRemove,
   onChangesUpdate
 }) => {
-  const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "koulutukset_kuljettajakoulutukset";
   const koodisto = "kuljettajakoulutus";
@@ -55,13 +54,13 @@ const Kuljettajakoulutukset = ({
         }}
         onChangesUpdate={onChangesUpdate}
         path={["koulutukset", "kuljettajakoulutukset"]}
-        rules={[]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
   );
 };
 
 Kuljettajakoulutukset.propTypes = {
+  changeObjects: PropTypes.object,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array,
   onChangesRemove: PropTypes.func,

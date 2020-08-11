@@ -7,15 +7,14 @@ import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import { toUpper } from "ramda";
-import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
 const Tyovoimakoulutukset = ({
+  changeObjects,
   koulutukset,
   maaraykset,
   onChangesRemove,
   onChangesUpdate
 }) => {
-  const [changeObjects] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "koulutukset_tyovoimakoulutukset";
   const koodisto = "oivatyovoimakoulutus";
@@ -57,7 +56,6 @@ const Tyovoimakoulutukset = ({
           }}
           onChangesUpdate={onChangesUpdate}
           path={["koulutukset", "tyovoimakoulutukset"]}
-          rules={[]}
           showCategoryTitles={true}></Lomake>
       )}
     </ExpandableRowRoot>
@@ -65,6 +63,7 @@ const Tyovoimakoulutukset = ({
 };
 
 Tyovoimakoulutukset.propTypes = {
+  changeObjects: PropTypes.object,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array,
   onChangesRemove: PropTypes.func,

@@ -239,5 +239,21 @@ export default defineMessages({
   quickFilter: {
     id: "wizard.quickFilter",
     defaultMessage: "Pikavalinnat"
+  },
+  yleisetTiedot: {
+    id: "wizard.yleisetTiedot",
+    defaultMessage: "Yleiset tiedot"
+  },
+  taloudellisetInvestoinnit: {
+    id: "wizard.taloudellisetInvestoinnit",
+    defaultMessage: "Taloudelliset investoinnit"
+  },
+  taloudellisetTilinpaatostiedot: {
+    id: "wizard.taloudellisetTilinpaatostiedot",
+    defaultMessage: "Taloudelliset tilinpäätöstiedot"
+  },
+  liitteet: {
+    id: "wizard.liitteet",
+    defaultMessage: "Liitteet"
   }
 });

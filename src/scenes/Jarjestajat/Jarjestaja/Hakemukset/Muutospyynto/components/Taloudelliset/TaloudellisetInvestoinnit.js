@@ -2,7 +2,6 @@ import React from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { investoinnit } from "../../../../../../../services/lomakkeet/taloudelliset/rules";
 import common from "../../../../../../../i18n/definitions/common";
 import { useIntl } from "react-intl";
 
@@ -11,10 +10,10 @@ const TaloudellisetInvestoinnit = React.memo(
     changeObjects,
     isReadOnly,
     onChangesRemove,
-    onChangesUpdate,
-    sectionId
+    onChangesUpdate
   }) => {
     const intl = useIntl();
+    const sectionId = "taloudelliset_investoinnit";
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
       changesTest: intl.formatMessage(common.changesText)
@@ -42,7 +41,6 @@ const TaloudellisetInvestoinnit = React.memo(
           isReadOnly={isReadOnly}
           onChangesUpdate={onChangesUpdate}
           path={["taloudelliset"]}
-          rules={investoinnit}
           showCategoryTitles={true}></Lomake>
       </ExpandableRowRoot>
     );

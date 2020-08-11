@@ -6,7 +6,7 @@ function getReasoningForm(
   isReadOnly,
   lupakohde,
   _changeObjects,
-  maakuntakunnatList
+  maakuntakunnat
 ) {
   const mapping = {
     "FI-18": "01",
@@ -33,14 +33,15 @@ function getReasoningForm(
     return R.mapObjIndexed((changeObjects, provinceKey) => {
       const province = R.find(
         R.propEq("koodiarvo", mapping[provinceKey]),
-        maakuntakunnatList
+        maakuntakunnat
       );
+
       const relevantChangeObjects = R.filter(
         R.pathEq(["properties", "isChecked"], isCheckedVal),
         changeObjects
       );
       if (province) {
-        if (relevantChangeObjects.length - 1 === province.kunta.length) {
+        if (relevantChangeObjects.length - 1 === province.kunnat.length) {
           return R.filter(
             R.compose(R.not, R.includes(".kunnat."), R.prop("anchor")),
             relevantChangeObjects
@@ -66,7 +67,7 @@ function getReasoningForm(
   );
 
   const byProvince = categoryFilterChangeObj
-    ? categoryFilterChangeObj.properties.changeObjects
+    ? categoryFilterChangeObj.properties.changesByProvince
     : {};
 
   const removalsByProvince = getChangeObjects(false);
@@ -160,6 +161,7 @@ function getReasoningForm(
           name: "TextBox",
           properties: {
             isReadOnly,
+            isRequired: true,
             title: "Perustelut",
             value: ""
           }
@@ -180,7 +182,7 @@ export default function getToimintaaluePerustelulomake(
         isReadOnly,
         data.lupakohde,
         data.changeObjectsPage1,
-        data.maakuntakunnatList
+        data.maakuntakunnat
       );
     default:
       return [];

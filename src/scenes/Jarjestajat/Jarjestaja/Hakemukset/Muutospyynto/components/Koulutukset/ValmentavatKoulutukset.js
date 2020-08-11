@@ -7,11 +7,15 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { toUpper, values } from "ramda";
-import { useChangeObjects } from "../../../../../../../stores/changeObjects";
 
 const ValmentavatKoulutukset = React.memo(
-  ({ koulutukset, maaraykset, onChangesRemove, onChangesUpdate }) => {
-    const [changeObjects] = useChangeObjects();
+  ({
+    changeObjects,
+    koulutukset,
+    maaraykset,
+    onChangesRemove,
+    onChangesUpdate
+  }) => {
     const intl = useIntl();
     const sectionId = "koulutukset_valmentavatKoulutukset";
 
@@ -27,13 +31,12 @@ const ValmentavatKoulutukset = React.memo(
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
       changesTest: intl.formatMessage(common.changesText)
-    }
+    };
 
     return (
       <ExpandableRowRoot
         anchor={sectionId}
         key={`expandable-row-root`}
-        categories={[]}
         changes={changeObjects.koulutukset.valmentavatKoulutukset}
         hideAmountOfChanges={true}
         messages={changesMessages}
@@ -52,7 +55,6 @@ const ValmentavatKoulutukset = React.memo(
             }}
             onChangesUpdate={onChangesUpdate}
             path={["koulutukset", "valmentavatKoulutukset"]}
-            rules={[]}
             showCategoryTitles={true}></Lomake>
         )}
       </ExpandableRowRoot>

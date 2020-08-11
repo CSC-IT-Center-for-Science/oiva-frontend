@@ -7,7 +7,6 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import * as R from "ramda";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { rules } from "../../../../../../../services/lomakkeet/perustelut/koulutukset/tyovoimakoulutukset/rules";
 
 const PerustelutTyovoimakoulutukset = React.memo(props => {
   const intl = useIntl();
@@ -39,8 +38,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
                 key={code}
                 isReadOnly={props.isReadOnly}
                 onChangesUpdate={onChangesUpdate}
-                path={["perustelut", "koulutukset", "tyovoimakoulutukset"]}
-                rules={rules}></Lomake>
+                path={["perustelut", "koulutukset", "tyovoimakoulutukset"]}></Lomake>
             ) : (
               <Lomake
                 action="removal"
@@ -76,7 +74,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <React.Fragment>
@@ -92,6 +90,7 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
           isExpanded={true}
           messages={changesMessages}
           onChangesRemove={onChangesRemove}
+          sectionId={sectionId}
           title={intl.formatMessage(wizardMessages.workforceTraining)}>
           {lomakkeet}
         </ExpandableRowRoot>

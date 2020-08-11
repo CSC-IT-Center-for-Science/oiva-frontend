@@ -25,7 +25,7 @@ const arrayToObject = (array, keyField) =>
 /**
  * Instance of ProcedureHandler can be used to run procedures.
  * A procedure can be linked with other procedures forming a tree. The
- * tree will parsed by a procedure handler.
+ * tree will be parsed by a procedure handler.
  *
  *  Example of a procedure tree:
  *
@@ -44,7 +44,7 @@ const arrayToObject = (array, keyField) =>
  *  For more details see the procedures folder of this project.
  **/
 
-function ProcedureHandler() {
+function ProcedureHandler(formatMessage) {
   let results = [];
   function draw(_results) {
     const elements = _results || results;
@@ -156,7 +156,11 @@ function ProcedureHandler() {
     nodes = [],
     results = []
   ) {
-    const procedure = path(split(".", name), procedures);
+    const procedureTmp = path(split(".", name), procedures);
+    const procedure =
+      procedureTmp instanceof Function
+        ? procedureTmp(formatMessage)
+        : procedureTmp;
     if (procedure) {
       const _nodes = append({ data: { id: name } }, nodes);
       const zipd =
@@ -195,7 +199,7 @@ function ProcedureHandler() {
                  * performance. The current procedure tree is branching here.
                  **/
 
-                const procedureHandler = new ProcedureHandler();
+                const procedureHandler = new ProcedureHandler(formatMessage);
                 try {
                   return await procedureHandler.parseTree(
                     procedureName,

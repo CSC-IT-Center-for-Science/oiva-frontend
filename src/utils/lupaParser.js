@@ -97,16 +97,18 @@ const parseSectionData = (
             tutkinto.rajoitteet = [];
             _.forEach(aliMaaraykset, alimaarays => {
               const { koodi, kohde, koodisto } = alimaarays;
-              const { koodiArvo, metadata } = koodi;
-              const nimi = parseLocalizedField(metadata);
-              tutkinto.rajoitteet.push({
-                koodi: koodiArvo,
-                nimi,
-                maaraysId: alimaarays.uuid,
-                maaraystyyppi: 2,
-                kohde,
-                koodisto: koodisto
-              });
+              if (koodi) {
+                const { koodiArvo, metadata } = koodi;
+                const nimi = parseLocalizedField(metadata);
+                tutkinto.rajoitteet.push({
+                  koodi: koodiArvo,
+                  nimi,
+                  maaraysId: alimaarays.uuid,
+                  maaraystyyppi: 2,
+                  kohde,
+                  koodisto: koodisto
+                });
+              }
             });
           }
 
@@ -244,35 +246,37 @@ const parseSectionData = (
       if (aliMaaraykset) {
         _.forEach(aliMaaraykset, alimaarays => {
           const { koodi, kohde, maaraystyyppi } = alimaarays;
-          const { koodiArvo } = koodi;
-          const nimi = parseLocalizedField(maarays.koodi.metadata, locale);
-          const tutkintokoodi = maarays.koodiarvo;
-          const obj = {
-            koodi: koodiArvo,
-            maaraysId: uuid,
-            nimi,
-            tutkintokoodi,
-            kohde,
-            maaraystyyppi
-          };
+          if (koodi) {
+            const { koodiArvo } = koodi;
+            const nimi = parseLocalizedField(maarays.koodi.metadata, locale);
+            const tutkintokoodi = maarays.koodiarvo;
+            const obj = {
+              koodi: koodiArvo,
+              maaraysId: uuid,
+              nimi,
+              tutkintokoodi,
+              kohde,
+              maaraystyyppi
+            };
 
-          tutkintokielet.push(obj);
+            tutkintokielet.push(obj);
 
-          switch (koodiArvo) {
-            case "EN":
-              tutkintokieletEn.push(obj);
-              break;
-            case "SV":
-              tutkintokieletSv.push(obj);
-              break;
-            case "RU":
-              tutkintokieletRu.push(obj);
-              break;
-            case "FI":
-              tutkintokieletFi.push(obj);
-              break;
-            default:
-              return null;
+            switch (koodiArvo) {
+              case "EN":
+                tutkintokieletEn.push(obj);
+                break;
+              case "SV":
+                tutkintokieletSv.push(obj);
+                break;
+              case "RU":
+                tutkintokieletRu.push(obj);
+                break;
+              case "FI":
+                tutkintokieletFi.push(obj);
+                break;
+              default:
+                return null;
+            }
           }
         });
       }

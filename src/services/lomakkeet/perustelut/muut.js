@@ -6,6 +6,7 @@ export const getVankilaopetusPerustelulomake = (
   isReadOnly,
   locale = "FI"
 ) => {
+  const localeUpper = R.toUpper(locale);
   return [
     {
       anchor: "vankilaopetus",
@@ -146,11 +147,8 @@ export const getVankilaopetusPerustelulomake = (
                       R.prop("label"),
                       R.map(vankila => {
                         return {
-                          label: R.find(
-                            R.propEq("kieli", locale),
-                            vankila.metadata
-                          ).nimi,
-                          value: vankila.koodiArvo
+                          label: vankila.metadata[localeUpper].nimi,
+                          value: vankila.koodiarvo
                         };
                       }, vankilat)
                     ),
@@ -434,6 +432,7 @@ export const getOpiskelijavuodetVahimmaisopiskelijavuosimaaraPerustelulomake = (
     locale,
     isReadOnly
   );
+  console.info(checkboxes);
   return [
     {
       anchor: "vahimmaisopiskelijavuodet",

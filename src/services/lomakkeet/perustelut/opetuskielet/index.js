@@ -1,35 +1,37 @@
-import { find, map, propEq } from "ramda";
+import { find, map, propEq, toUpper } from "ramda";
 
 function getReasoningForm(
+  locale,
   changeObjects,
   isReadOnly,
   kohde,
   maaraystyyppi,
   opetuskielet
 ) {
-  return map(item => {
+  const localeUpper = toUpper(locale);
+  return map(opetuskieli => {
     let structure = null;
     const changeObj = find(
-      propEq("anchor", `kielet_opetuskielet.${item.code}.A`),
+      propEq("anchor", `kielet_opetuskielet.${opetuskieli.koodiarvo}.A`),
       changeObjects
     );
     if (changeObj) {
       const isAddedBool = changeObj.properties.isChecked;
       structure = {
-        anchor: item.code,
+        anchor: opetuskieli.koodiarvo,
         meta: {
-          isInLupa: item.isInLupa,
-          kuvaus: item.title,
+          isInLupa: !!opetuskieli.maarays,
+          kuvaus: opetuskieli.metadata[localeUpper].nimi,
           kohde: kohde,
           maaraystyyppi,
-          meta: item.meta
+          meta: opetuskieli.meta
         },
         components: [
           {
             anchor: "A",
             name: "StatusTextRow",
             properties: {
-              title: item.title,
+              title: opetuskieli.metadata[localeUpper].nimi,
               styleClasses: ["flex"],
               statusTextStyleClasses: isAddedBool
                 ? ["text-green-600 pr-4 w-20 font-bold"]
@@ -58,17 +60,19 @@ function getReasoningForm(
       };
     }
     return structure;
-  }, opetuskielet.items).filter(Boolean);
+  }, opetuskielet).filter(Boolean);
 }
 
 export default function getOpetuskieletPerustelulomake(
   action,
   data,
-  isReadOnly
+  isReadOnly,
+  locale
 ) {
   switch (action) {
     case "reasoning":
       return getReasoningForm(
+        locale,
         data.changeObjectsPage1,
         isReadOnly,
         data.kohde,

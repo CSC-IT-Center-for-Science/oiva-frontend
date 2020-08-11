@@ -1,35 +1,21 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
 import {
   InnerContentContainer,
   InnerContentWrapper
 } from "../../../../modules/elements";
 import { Typography } from "@material-ui/core";
 import { useIntl } from "react-intl";
-import { useKunnat } from "../../../../stores/kunnat";
-import { useMaakunnat } from "../../../../stores/maakunnat";
 import { useOrganisation } from "../../../../stores/organisation";
-import * as R from "ramda";
 import common from "../../../../i18n/definitions/common";
 import { useUser } from "../../../../stores/user";
+import * as R from "ramda";
 
-const OmatTiedot = () => {
+const OmatTiedot = ({ kunnat, maakunnat }) => {
   const intl = useIntl();
 
   const [organisation] = useOrganisation();
-  const [kunnat, kunnatActions] = useKunnat();
-  const [maakunnat, maakunnatActions] = useMaakunnat();
   const [user] = useUser();
   const userOrganisation = organisation[user.data.oid];
-
-  // Let's fetch KUNNAT
-  useEffect(() => {
-    kunnatActions.load();
-  }, [kunnatActions]);
-
-  // Let's fetch MAAKUNNAT
-  useEffect(() => {
-    maakunnatActions.load();
-  }, [maakunnatActions]);
 
   const yhteystiedot = useMemo(() => {
     let values =
@@ -47,8 +33,9 @@ const OmatTiedot = () => {
             numero: (
               R.find(R.prop("numero"), userOrganisation.data.yhteystiedot) || {}
             ).numero,
-            www: (R.find(R.prop("www"), userOrganisation.data.yhteystiedot) || {})
-              .www
+            www: (
+              R.find(R.prop("www"), userOrganisation.data.yhteystiedot) || {}
+            ).www
           }
         : {};
 

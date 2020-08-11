@@ -4,7 +4,7 @@ import JarjestamislupaAsiatList from "./JarjestamislupaAsiatList";
 import { InnerContentContainer } from "../../../../modules/elements";
 
 const JarjestamislupaAsiat = React.memo(
-  ({ history, isForceReloadRequested, match, newApplicationRouteItem }) => {
+  ({ history, isForceReloadRequested, match, newApplicationRouteItem, lupa }) => {
     return (
       <InnerContentContainer>
         <div className="m-8">
@@ -13,6 +13,7 @@ const JarjestamislupaAsiat = React.memo(
             isForceReloadRequested={isForceReloadRequested}
             match={match}
             newApplicationRouteItem={newApplicationRouteItem}
+            lupa={lupa}
           />
         </div>
       </InnerContentContainer>

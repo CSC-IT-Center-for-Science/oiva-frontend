@@ -4,6 +4,7 @@ import { useLuvat } from "../../stores/luvat";
 import LuvatList from "./components/LuvatList";
 import { Helmet } from "react-helmet";
 import common from "../../i18n/definitions/common";
+import education from "../../i18n/definitions/education";
 import Loading from "../../modules/Loading";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
@@ -22,15 +23,16 @@ const Jarjestajat = React.memo(() => {
     };
   }, [luvatActions]);
 
-
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>Oiva | Ammatillinen koulutus</title>
       </Helmet>
 
-      <BreadcrumbsItem to="/">Etusivu</BreadcrumbsItem>
-      <BreadcrumbsItem to="/jarjestajat">Ammatillinen koulutus</BreadcrumbsItem>
+      <BreadcrumbsItem to="/">
+        {intl.formatMessage(common.frontpage)}
+      </BreadcrumbsItem>
+      <BreadcrumbsItem to="/jarjestajat">{intl.formatMessage(education.vocationalEducation)}</BreadcrumbsItem>
 
       <div className="mx-auto w-full sm:w-3/4 mb-16">
         <h1>{intl.formatMessage(common.ammatillisenKoulutuksenJarjestajat)}</h1>

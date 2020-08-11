@@ -8,6 +8,7 @@ export default function getDefaultRemovalForm(isReadOnly, prefix) {
           name: "TextBox",
           properties: {
             isReadOnly,
+            isRequired: true,
             placeholder: "Syitä voi olla monia. Sana on vapaa...",
             title: "Perustelut poistolle",
             value: ""

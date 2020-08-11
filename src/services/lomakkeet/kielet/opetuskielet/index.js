@@ -1,45 +1,46 @@
 import { isAdded, isRemoved, isInLupa } from "../../../../css/label";
-import { map } from "ramda";
+import { map, toUpper } from "ramda";
 
 /**
  * For: Koulutuksen järjestäjä
  * Used on: Wizard page 1
  * Section: kielet, opetuskielet
  */
-function getModificationForm(opetuskieletData) {
-  return map(item => {
+function getModificationForm(locale, opetuskielet) {
+  const localeUpper = toUpper(locale);
+  return map(opetuskieli => {
     return {
-      anchor: item.code,
+      anchor: opetuskieli.koodiarvo,
       components: [
         {
           anchor: "A",
           name: "CheckboxWithLabel",
           properties: {
             forChangeObject: {
-              isInLupa: item.isInLupa,
-              maaraysUuid: item.maaraysUuid,
-              kuvaus: item.title,
-              meta: item.meta
+              isInLupa: !!opetuskieli.maarays,
+              maaraysUuid: opetuskieli.maaraysUuid,
+              kuvaus: opetuskieli.metadata[localeUpper].kuvaus,
+              meta: opetuskieli.meta
             },
             name: "CheckboxWithLabel",
-            isChecked: item.shouldBeSelected,
-            title: item.title,
+            isChecked: !!opetuskieli.maarays,
+            title: opetuskieli.metadata[localeUpper].nimi,
             labelStyles: {
               addition: isAdded,
               removal: isRemoved,
-              custom: Object.assign({}, item.isInLupa ? isInLupa : {})
+              custom: Object.assign({}, !!opetuskieli.maarays ? isInLupa : {})
             }
           }
         }
       ]
     };
-  }, opetuskieletData.items);
+  }, opetuskielet);
 }
 
-export default function getOpetuskieletLomake(action, data) {
+export default function getOpetuskieletLomake(action, data, isReadOnly, locale) {
   switch (action) {
     case "modification":
-      return getModificationForm(data.opetuskieletData);
+      return getModificationForm(locale, data.opetuskielet);
     default:
       return [];
   }

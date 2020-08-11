@@ -32,7 +32,7 @@ const JulkisetTiedot = ({ history, jarjestaja = {}, lupa = {} }) => {
       </div>
 
       <CurrentLupa
-        diaarinumero={lupa.diaarinumero}
+        diaarinumero={lupa.asianumero ? lupa.asianumero : lupa.diaarinumero}
         uuid={lupa.uuid}
         jarjestaja={jarjestaja.nimi}
         voimassaolo={alkupvm}

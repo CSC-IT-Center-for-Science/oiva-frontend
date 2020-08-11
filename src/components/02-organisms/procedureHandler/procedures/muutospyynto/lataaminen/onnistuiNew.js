@@ -1,16 +1,14 @@
 import { toast } from "react-toastify";
+import informUser from "../../../../../../i18n/definitions/informUser";
 
 // muutospyynto.lataaminen.onnistuiNew
-export const onnistuiNew = {
+export const onnistuiNew = formatMessage => ({
   label: "Muutospyynnön lataaminen onnistui (uusi ikkuna)",
   run: async () => {
-    toast.success(
-      "Muutospyynnön lataaminen onnistui. PDF-muotoinen dokumentti avattiin uuteen selainikkunaan.",
-      {
-        autoClose: 8000,
-        position: toast.POSITION.BOTTOM_LEFT
-      }
-    );
+    toast.success(formatMessage(informUser.latausOnnistuiPDFUudessaIkkunassa), {
+      autoClose: 8000,
+      position: toast.POSITION.BOTTOM_LEFT
+    });
     return true;
   }
-};
+});

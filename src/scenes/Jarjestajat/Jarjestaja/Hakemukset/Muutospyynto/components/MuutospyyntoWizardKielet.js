@@ -4,10 +4,8 @@ import PropTypes from "prop-types";
 import Tutkintokielet from "./Kielet/Tutkintokielet";
 import * as R from "ramda";
 import _ from "lodash";
-import { useChangeObjects } from "../../../../../../stores/changeObjects";
 
 const MuutospyyntoWizardKielet = props => {
-  const [changeObjects] = useChangeObjects();
   const prevTutkinnotItemsRef = useRef();
 
   const { lupa } = props;
@@ -39,7 +37,7 @@ const MuutospyyntoWizardKielet = props => {
             return R.filter(changeObj => {
               const isInCurrentChanges = !!R.find(
                 R.propEq("anchor", changeObj.anchor),
-                changeObjects.tutkinnot[key] || []
+                props.changeObjects.tutkinnot[key] || []
               );
               return changeObj.properties.isChecked && !isInCurrentChanges;
             }, value);
@@ -53,27 +51,27 @@ const MuutospyyntoWizardKielet = props => {
       R.prop("anchor"),
       R.filter(
         R.compose(R.equals(false), R.path(["properties", "isChecked"])),
-        R.flatten(R.values(changeObjects.tutkinnot))
+        R.flatten(R.values(props.changeObjects.tutkinnot))
       )
     );
 
-    prevTutkinnotItemsRef.current = changeObjects.tutkinnot;
+    prevTutkinnotItemsRef.current = props.changeObjects.tutkinnot;
 
     // Here we combine the arrays 1 and 2
     return R.concat(wereSelected, wereSelectedByDefault);
-  }, [changeObjects.tutkinnot]);
+  }, [props.changeObjects.tutkinnot]);
 
   return (
     <React.Fragment>
       <Opetuskielet
+        changeObjects={props.changeObjects}
         opetuskielet={props.opetuskielet}
-        lupakohde={props.lupaKohteet[2]}
-        maaraystyyppi={props.maaraystyyppi}
         onChangesRemove={props.onChangesRemove}
         onChangesUpdate={props.onChangesUpdate}
       />
 
       <Tutkintokielet
+        changeObjects={props.changeObjects}
         kielet={props.kielet}
         koulutusalat={props.koulutusalat}
         koulutustyypit={props.koulutustyypit}

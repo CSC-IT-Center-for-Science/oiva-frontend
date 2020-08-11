@@ -14,7 +14,9 @@ import HakemuksetJaPaatokset from "../Hakemukset/components/HakemuksetJaPaatokse
 import { COLORS } from "../../../../modules/styles";
 import { FullWidthWrapper } from "../../../../modules/elements";
 import common from "../../../../i18n/definitions/common";
+import education from "../../../../i18n/definitions/education";
 import * as R from "ramda";
+import BaseData from "scenes/BaseData";
 
 const Separator = styled.div`
   &:after {
@@ -35,8 +37,9 @@ const Jarjestaja = React.memo(
       return lupa && lupa.jarjestaja
         ? {
             ...lupa.jarjestaja,
-            nimi: R.prop(intl.locale, lupa.jarjestaja.nimi)
-              || R.head(R.values(lupa.jarjestaja.nimi))
+            nimi:
+              R.prop(intl.locale, lupa.jarjestaja.nimi) ||
+              R.head(R.values(lupa.jarjestaja.nimi))
           }
         : {};
     }, [intl.locale, lupa]);
@@ -92,9 +95,11 @@ const Jarjestaja = React.memo(
     return (
       <React.Fragment>
         <div className="mx-auto px-4 sm:px-0 w-11/12 lg:w-3/4">
-          <BreadcrumbsItem to="/">Etusivu</BreadcrumbsItem>
+          <BreadcrumbsItem to="/">
+            {intl.formatMessage(common.frontpage)}
+          </BreadcrumbsItem>
           <BreadcrumbsItem to="/jarjestajat">
-            Ammatillinen koulutus
+            {intl.formatMessage(education.vocationalEducation)}
           </BreadcrumbsItem>
           <BreadcrumbsItem to={breadcrumb}>{jarjestaja.nimi}</BreadcrumbsItem>
 
@@ -110,7 +115,13 @@ const Jarjestaja = React.memo(
               <Route
                 path={`${path}/omattiedot`}
                 exact
-                render={() => <OmatTiedot />}
+                render={() => (
+                  <BaseData
+                    keys={["kunnat", "lupa", "maakunnat"]}
+                    locale={intl.locale}
+                    render={_props => <OmatTiedot {..._props} />}
+                  />
+                )}
               />
               <Route
                 path={`${url}/jarjestamislupa`}
@@ -147,6 +158,7 @@ const Jarjestaja = React.memo(
                       props.location.search
                     )}
                     newApplicationRouteItem={newApplicationRouteItem}
+                    lupa={lupa}
                   />
                 )}
               />

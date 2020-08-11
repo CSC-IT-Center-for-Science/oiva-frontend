@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import common from "../../../../../../i18n/definitions/common";
 import wizard from "../../../../../../i18n/definitions/wizard";
 import Lomake from "../../../../../../components/02-organisms/Lomake";
-import { useChangeObjects } from "../../../../../../stores/changeObjects";
 import { isAdded, isRemoved, isInLupa } from "../../../../../../css/label";
 import kuntaProvinceMapping from "./kuntaProvinceMapping";
 import * as R from "ramda";
@@ -38,7 +37,7 @@ const mapping = {
 };
 
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
-  const [changeObjects] = useChangeObjects();
+  const { changeObjects } = props;
   const intl = useIntl();
   const { onChangesUpdate } = props;
 
@@ -77,35 +76,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     R.lensPath(["valtakunnallinen", "arvo"]),
     props.lupakohde
   );
-
-  /**
-   * There are three radio buttons in Toiminta-alue section: 1) Maakunnat and kunnat
-   * 2) Koko Suomi - pois lukien Ahvenanmaan maakunta 3) Ei määriteltyä toiminta-aluetta.
-   * When one of them is selected the change objects under other ones have to be deleted.
-   * This function deletes them.
-   */
-  useEffect(() => {
-    if (fiCode !== "FI0") {
-      // Let's check if updating is necessary.
-      const radioButtonChangeObjects = R.filter(
-        R.compose(R.includes("radio"), R.prop("anchor")),
-        changeObjects.toimintaalue || []
-      );
-      if (!R.equals(radioButtonChangeObjects, changeObjects.toimintaalue)) {
-        // Fist we are going to update the change objects of Toiminta-alue section
-        // on form page one.
-        // onChangesUpdate({
-        //   anchor: props.sectionId,
-        //   changes: radioButtonChangeObjects
-        // });
-        // Then it's time to get rid of the change objects of form page two (reasoning).
-        onChangesUpdate({
-          anchor: `perustelut_${props.sectionId}`,
-          changes: []
-        });
-      }
-    }
-  }, [fiCode, onChangesUpdate, changeObjects.toimintaalue, props.sectionId]);
 
   /**
    * Changes are handled here. Changes objects will be formed and callback
@@ -387,7 +357,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         }}
         onChangesUpdate={handleChanges}
         path={["toimintaalue"]}
-        rules={[]}
         showCategoryTitles={true}
       />
     </ExpandableRowRoot>
