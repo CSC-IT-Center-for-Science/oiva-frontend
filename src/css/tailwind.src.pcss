@@ -1,5 +1,7 @@
 @tailwind base;
 
+@import "./fontface.css";
+
 p {
   @apply font-sans;
 }
@@ -29,13 +31,14 @@ a {
 
 /* User research indicates that number input controls need to go (CSCOIVA-1315) */
 /* Chrome and others */
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
