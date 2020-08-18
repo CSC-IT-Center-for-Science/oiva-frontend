@@ -11,17 +11,17 @@ const Footer = () => {
   const links = (
     <div className="mt-8 md:flex justify-between lg:justify-start">
       <p className="lg:mr-10">
-        <Link to="tietosuojailmoitus" className="underline">
+        <Link to="/tietosuojailmoitus" className="underline text-green-500">
           {intl.formatMessage(common.tietosuojailmoitus)}
         </Link>
       </p>
       <p className="lg:mr-10">
-        <Link to="yhteydenotto" className="underline">
+        <Link to="/yhteydenotto" className="underline text-green-500">
           {intl.formatMessage(common.yhteydenotto)}
         </Link>
       </p>
       <p>
-        <Link to="saavutettavuusseloste" className="underline">
+        <Link to="/saavutettavuusseloste" className="underline text-green-500">
           {intl.formatMessage(common.saavutettavuusseloste)}
         </Link>
       </p>

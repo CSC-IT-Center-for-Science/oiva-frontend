@@ -39,7 +39,8 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
         {intl.formatMessage(common.luoUusiAsia)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <div className="py-4 relative">
+        <div className="px-2 py-4 relative">
+          <p className="mb-6">{intl.formatMessage(common.luoUusiAsiaInstructions)}</p>
           <Autocomplete
             isMulti={false}
             name="koulutuksen-jarjestaja"
@@ -48,7 +49,10 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
               map(organisation => {
                 return organisation
                   ? {
-                      label: resolveLocalizedOrganizationName(organisation, intl.locale),
+                      label: resolveLocalizedOrganizationName(
+                        organisation,
+                        intl.locale
+                      ),
                       value: organisation.ytunnus
                     }
                   : null;
@@ -57,7 +61,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
             callback={(payload, values) => {
               setSelectedKJ(values.value);
             }}
-            title={intl.formatMessage(common.luoUusiAsiaInstructions)}
+            title={""}
             value={selectedKJ}
           />
         </div>

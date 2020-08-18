@@ -9,6 +9,8 @@ import "axios-progress-bar/dist/nprogress.css";
 import { useKaannokset } from "./stores/localizations";
 import { useGlobalSettings } from "./stores/appStore";
 import { CircularProgress } from "@material-ui/core";
+import { setLocalizations } from "services/lomakkeet/i18n-config";
+import { isEmpty } from "ramda";
 
 defaults.devtools = true;
 
@@ -67,6 +69,12 @@ const AppWrapper = () => {
       return {};
     }
   }, [kaannokset.data, isBackendTheSourceOfLocalizations]);
+
+  useEffect(() => {
+    if (!isEmpty(messages)) {
+      setLocalizations(messages);
+    }
+  }, [messages]);
 
   const appStructure = useMemo(() => {
     if (user.fetchedAt) {

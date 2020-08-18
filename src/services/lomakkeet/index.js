@@ -48,7 +48,6 @@ import getTopThree from "./esittelija";
     ];
 * 
 */
-
 const lomakkeet = {
   // Wizard page 1 forms
   tutkinnot: {

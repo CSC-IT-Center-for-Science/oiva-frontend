@@ -9,7 +9,6 @@ function getModificationForm(
   locale
 ) {
   const localeUpper = toUpper(locale);
-  const currentDate = new Date();
   return map(koulutustyyppi => {
     const tutkinnot = tutkinnotByKoulutustyyppi[koulutustyyppi.koodiarvo];
     if (tutkinnot) {
@@ -26,58 +25,56 @@ function getModificationForm(
             osaamisala => !osaamisala.maarays,
             tutkinto.osaamisalat
           );
-          return new Date(tutkinto.voimassaAlkuPvm) < currentDate
-            ? {
-                anchor: tutkinto.koodiarvo,
+          return {
+            anchor: tutkinto.koodiarvo,
+            components: [
+              {
+                anchor: "tutkinto",
+                name: "CheckboxWithLabel",
+                properties: {
+                  code: tutkinto.koodiarvo,
+                  title: tutkinto.metadata[localeUpper].nimi,
+                  labelStyles: {
+                    addition: isAdded,
+                    removal: isRemoved,
+                    custom: Object.assign(
+                      {},
+                      !!tutkinto.maarays ? isInLupa : {}
+                    )
+                  },
+                  isChecked: !!tutkinto.maarays,
+                  isIndeterminate:
+                    osaamisalatWithoutMaarays.length !==
+                    tutkinto.osaamisalat.length
+                }
+              }
+            ],
+            categories: map(osaamisala => {
+              return {
+                anchor: osaamisala.koodiarvo,
                 components: [
                   {
-                    anchor: "tutkinto",
+                    anchor: "osaamisala",
                     name: "CheckboxWithLabel",
                     properties: {
-                      code: tutkinto.koodiarvo,
-                      title: tutkinto.metadata[localeUpper].nimi,
+                      code: osaamisala.koodiarvo,
+                      title: osaamisala.metadata[localeUpper].nimi,
                       labelStyles: {
                         addition: isAdded,
                         removal: isRemoved,
                         custom: Object.assign(
                           {},
-                          !!tutkinto.maarays ? isInLupa : {}
+                            // bold text if tutkinto is in lupa, but osaamisalarajoitus is not
+                            !!tutkinto.maarays && !osaamisala.maarays ? isInLupa : {}
                         )
                       },
-                      isChecked: !!tutkinto.maarays,
-                      isIndeterminate:
-                        osaamisalatWithoutMaarays.length !==
-                        tutkinto.osaamisalat.length
+                      isChecked: !!tutkinto.maarays && !osaamisala.maarays
                     }
                   }
-                ],
-                categories: map(osaamisala => {
-                  return {
-                    anchor: osaamisala.koodiarvo,
-                    components: [
-                      {
-                        anchor: "osaamisala",
-                        name: "CheckboxWithLabel",
-                        properties: {
-                          code: osaamisala.koodiarvo,
-                          title: osaamisala.metadata[localeUpper].nimi,
-                          labelStyles: {
-                            addition: isAdded,
-                            removal: isRemoved,
-                            custom: Object.assign(
-                              {},
-                                // bold text if tutkinto is in lupa, but osaamisalarajoitus is not
-                                !!tutkinto.maarays && !osaamisala.maarays ? isInLupa : {}
-                            )
-                          },
-                          isChecked: !!tutkinto.maarays && !osaamisala.maarays
-                        }
-                      }
-                    ]
-                  };
-                }, tutkinto.osaamisalat)
-              }
-            : null;
+                ]
+              };
+            }, tutkinto.osaamisalat)
+          };
         }, tutkinnot).filter(Boolean)
       };
     }
