@@ -56,7 +56,7 @@ const Footer = () => {
               {intl.formatMessage(common.phoneNumber)} |{" "}
               <a
                 href={intl.formatMessage(common.okmLinkUrl)}
-                className="text-green-500">
+                className="text-green-500 underline">
                 {intl.formatMessage(common.okmLinkText)}
               </a>
             </p>

@@ -306,8 +306,11 @@ const Asiakirjat = React.memo(() => {
     }
   ];
 
-  const muutospyyntoLoaded = muutospyynnonLiitteet.isLoading === false && muutospyynto.isLoading === false &&
-    muutospyynnonLiitteet.fetchedAt && muutospyynto.fetchedAt;
+  const muutospyyntoLoaded =
+    muutospyynnonLiitteet.isLoading === false &&
+    muutospyynto.isLoading === false &&
+    muutospyynnonLiitteet.fetchedAt &&
+    muutospyynto.fetchedAt;
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
@@ -330,6 +333,7 @@ const Asiakirjat = React.memo(() => {
           }}>
           <Link
             className="cursor-pointer"
+            style={{ textDecoration: "underline" }}
             onClick={() => {
               history.push("/asiat");
             }}>
@@ -402,7 +406,11 @@ const Asiakirjat = React.memo(() => {
       </div>
     );
   } else if (muutospyyntoLoaded && !muutospyynto.data) {
-    return <div className="flex-1 flex justify-center">{intl.formatMessage(error.muutospyyntoNotFound)}</div>
+    return (
+      <div className="flex-1 flex justify-center">
+        {intl.formatMessage(error.muutospyyntoNotFound)}
+      </div>
+    );
   } else {
     return <Loading />;
   }

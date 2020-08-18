@@ -31,7 +31,7 @@ a {
 a:hover {
   @apply text-green-800;
 }
-a:visited {
+a.normal:visited {
   @apply text-green-700;
 }
 
@@ -46,6 +46,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.breadcumbs-nav a {
+  @apply underline;
 }
 
 @tailwind components;

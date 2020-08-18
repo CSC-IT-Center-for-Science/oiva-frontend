@@ -155,7 +155,9 @@ const UusiAsiaDialog = React.memo(
     const prevCosRef = useRef(initialChangeObjects);
 
     useEffect(() => {
-      setIsSavingEnabled(!R.equals(prevCosRef.current, changeObjects) && !hasInvalidFields);
+      setIsSavingEnabled(
+        !R.equals(prevCosRef.current, changeObjects) && !hasInvalidFields
+      );
     }, [hasInvalidFields, changeObjects]);
 
     /**
@@ -304,7 +306,9 @@ const UusiAsiaDialog = React.memo(
                     <p>
                       {organisationPhoneNumber && (
                         <React.Fragment>
-                          <a href={`tel:${organisationPhoneNumber}`}>
+                          <a
+                            href={`tel:${organisationPhoneNumber}`}
+                            className="underline">
                             {organisationPhoneNumber}
                           </a>{" "}
                           |{" "}
@@ -312,7 +316,9 @@ const UusiAsiaDialog = React.memo(
                       )}
                       {organisationPhoneNumber && (
                         <React.Fragment>
-                          <a href={`mailto:${organisationEmail}`}>
+                          <a
+                            href={`mailto:${organisationEmail}`}
+                            className="underline">
                             {organisationEmail}
                           </a>{" "}
                           |{" "}
@@ -320,7 +326,9 @@ const UusiAsiaDialog = React.memo(
                       )}
                       {organisation.ytunnus} |{" "}
                       {organisationWebsite && (
-                        <a href={organisationWebsite}>{organisationWebsite}</a>
+                        <a href={organisationWebsite} className="underline">
+                          {organisationWebsite}
+                        </a>
                       )}
                     </p>
                   </div>
@@ -341,7 +349,7 @@ const UusiAsiaDialog = React.memo(
                       }
                       path={["esittelija", "topThree"]}
                       hasInvalidFieldsFn={invalidFields => {
-                        setHasInvalidFields(invalidFields)
+                        setHasInvalidFields(invalidFields);
                       }}></Lomake>
                   </div>
                   <EsittelijatMuutospyynto

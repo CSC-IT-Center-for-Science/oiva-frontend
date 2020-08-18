@@ -16,6 +16,7 @@ const Tilastot = () => {
       <p>Linkkejä tilastodataan (beta-versio):</p>
       <Linkki>
         <a
+          className="underline"
           href="https://app.powerbi.com/view?r=eyJrIjoiN2M1YWZiYzUtOTEyYS00NTY2LTgzNDctNGZjOTVmOWQ4ZTlkIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9"
           target="_blank"
           rel="noopener noreferrer">
@@ -24,6 +25,7 @@ const Tilastot = () => {
       </Linkki>
       <Linkki>
         <a
+          className="underline"
           href="https://app.powerbi.com/view?r=eyJrIjoiNWNmNTU0MzgtOTljYS00ZjNlLTljOGQtMWQ0YWZjMGU2MDliIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9"
           target="_blank"
           rel="noopener noreferrer">
@@ -32,6 +34,7 @@ const Tilastot = () => {
       </Linkki>
       <Linkki>
         <a
+          className="underline"
           href="https://app.powerbi.com/view?r=eyJrIjoiN2Q2M2EwMjctMDU5Mi00YjFiLWE5MjItN2ExMDE1YjFlYTQyIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9"
           target="_blank"
           rel="noopener noreferrer">
@@ -40,6 +43,7 @@ const Tilastot = () => {
       </Linkki>
       <Linkki>
         <a
+          className="underline"
           href="https://app.powerbi.com/view?r=eyJrIjoiMDI5MjMzZTAtZjVkYy00NTZkLTk1NDUtZDAxMDFkNjUwODJlIiwidCI6IjkxMDczODlkLTQ0YjgtNDcxNi05ZGEyLWM0ZTNhY2YwMzBkYiIsImMiOjh9"
           target="_blank"
           rel="noopener noreferrer">
