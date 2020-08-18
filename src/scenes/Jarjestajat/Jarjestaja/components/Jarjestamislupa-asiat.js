@@ -3,28 +3,23 @@ import PropTypes from "prop-types";
 import JarjestamislupaAsiatList from "./JarjestamislupaAsiatList";
 import { InnerContentContainer } from "../../../../modules/elements";
 
-const JarjestamislupaAsiat = React.memo(
-  ({ history, isForceReloadRequested, match, newApplicationRouteItem, lupa }) => {
-    return (
-      <InnerContentContainer>
-        <div className="m-8">
-          <JarjestamislupaAsiatList
-            history={history}
-            isForceReloadRequested={isForceReloadRequested}
-            match={match}
-            newApplicationRouteItem={newApplicationRouteItem}
-            lupa={lupa}
-          />
-        </div>
-      </InnerContentContainer>
-    );
-  }
-);
+const JarjestamislupaAsiat = props => {
+  console.info(props);
+  return (
+    <InnerContentContainer>
+      <div className="m-8">
+        <JarjestamislupaAsiatList
+          isForceReloadRequested={props.isForceReloadRequested}
+          newApplicationRouteItem={props.newApplicationRouteItem}
+          lupa={props.lupa}
+        />
+      </div>
+    </InnerContentContainer>
+  );
+};
 
 JarjestamislupaAsiat.propTypes = {
-  history: PropTypes.object,
   isForceReloadRequested: PropTypes.bool,
-  match: PropTypes.object,
   newApplicationRouteItem: PropTypes.object
 };
 

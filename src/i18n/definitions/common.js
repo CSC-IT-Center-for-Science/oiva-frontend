@@ -403,8 +403,8 @@ export default defineMessages({
     id: "common.lupaLatest",
     defaultMessage: "Viimeisin päätös"
   },
-  lupaPaatokset: {
-    id: "common.lupaPaatokset",
+  lupapaatokset: {
+    id: "common.lupapaatokset",
     defaultMessage: "Lupapäätökset"
   },
   lupaHistoria: {
@@ -463,8 +463,8 @@ export default defineMessages({
     id: "common.lupaHistoriaKumottuDateMobile",
     defaultMessage: "Kumottu: {date}"
   },
-  omatTiedotTitle: {
-    id: "common.omatTiedotTitle",
+  omattiedot: {
+    id: "common.omattiedot",
     defaultMessage: "Omat tiedot"
   },
   omatTiedotVisitAddress: {
@@ -509,8 +509,8 @@ export default defineMessages({
     defaultMessage:
       "Ajantasainen ammatillisten tutkintojen ja koulutuksen järjestämislupa {date}"
   },
-  lupaTitle: {
-    id: "common.lupaTitle",
+  jarjestamislupa: {
+    id: "common.jarjestamislupa",
     defaultMessage: "Järjestämislupa"
   },
   lupaSectionTitleAllLupas: {
@@ -864,5 +864,13 @@ export default defineMessages({
   lupapaatoksetTaulukko: {
     id: "common.lupapaatoksetTaulukko",
     defaultMessage: "Lupapäätökset-taulukko"
+  },
+  jarjestajaluettelo: {
+    id: "common.jarjestajaluettelo",
+    defaultMessage: "Luettelo järjestäjistä"
+  },
+  jarjestajat: {
+    id: "common.jarjestajat",
+    defaultMessage: "Järjestäjät"
   }
 });

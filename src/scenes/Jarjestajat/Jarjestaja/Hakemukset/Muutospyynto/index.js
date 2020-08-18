@@ -4,7 +4,6 @@ import MuutospyyntoWizard from './components/MuutospyyntoWizard'
 const routes = [
   {
     path: '/jarjestajat/:ytunnus/hakemukset/uusi',
-    exact: true,
     component: MuutospyyntoWizard
   },
   {

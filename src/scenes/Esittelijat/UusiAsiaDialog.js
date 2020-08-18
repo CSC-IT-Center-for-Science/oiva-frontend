@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
 import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
@@ -96,7 +96,7 @@ const UusiAsiaDialog = React.memo(
   }) => {
     const intl = useIntl();
     const params = useParams();
-    let history = useHistory();
+    let history = useNavigate();
 
     let { uuid } = params;
 

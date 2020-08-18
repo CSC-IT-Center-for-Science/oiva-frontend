@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from "react";
 import { useIntl } from "react-intl";
 import UusiAsiaDialog from "./UusiAsiaDialog";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 
 const changeObjects = {
@@ -77,7 +77,7 @@ const UusiAsiaDialogContainer = ({
   const intl = useIntl();
 
   let { ytunnus } = useParams();
-  let history = useHistory();
+  let history = useNavigate();
 
   const lupaKohteet = useMemo(() => {
     const result = lupa

@@ -13,13 +13,14 @@ const Lupapaatokset = ({ jarjestajaOid }) => {
     }
   }, [actions, jarjestajaOid]);
 
+  console.info(lupahistoria);
+
   return lupahistoria.data ? (
     <LupapaatoksetTable data={lupahistoria.data}></LupapaatoksetTable>
   ) : null;
 };
 
 Lupapaatokset.propTypes = {
-  history: PropTypes.object,
   jarjestajaOid: PropTypes.string
 };
 

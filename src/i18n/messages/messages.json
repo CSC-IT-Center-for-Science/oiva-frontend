@@ -510,7 +510,7 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.lupaPaatokset",
+    "id": "common.lupapaatokset",
     "defaultMessage": "Lupapäätökset",
     "filepath": "src/i18n/definitions/common.js"
   },
@@ -585,7 +585,7 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.omatTiedotTitle",
+    "id": "common.omattiedot",
     "defaultMessage": "Omat tiedot",
     "filepath": "src/i18n/definitions/common.js"
   },
@@ -640,7 +640,7 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.lupaTitle",
+    "id": "common.jarjestamislupa",
     "defaultMessage": "Järjestämislupa",
     "filepath": "src/i18n/definitions/common.js"
   },
@@ -1032,6 +1032,16 @@
   {
     "id": "common.lupapaatoksetTaulukko",
     "defaultMessage": "Lupapäätökset-taulukko",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.jarjestajaluettelo",
+    "defaultMessage": "Luettelo järjestäjistä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.jarjestajat",
+    "defaultMessage": "Järjestäjät",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

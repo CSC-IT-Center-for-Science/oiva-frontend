@@ -13,7 +13,7 @@ import {
   split,
   equals
 } from "ramda";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { isEmpty, toUpper } from "ramda";
 import localforage from "localforage";
 import MuutospyyntoWizard from "./Muutospyynto/components/MuutospyyntoWizard";
@@ -54,7 +54,7 @@ const HakemusContainer = React.memo(
     const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
 
     let { uuid } = useParams();
-    let history = useHistory();
+    let navigate = useNavigate();
 
     const [changeObjects, setChangeObjects] = useState({
       tutkinnot: {},
@@ -148,7 +148,9 @@ const HakemusContainer = React.memo(
               return Object.assign({}, file, fileFromBackend);
             }, changeObj.properties.attachments || [])
           : null;
-        return files ? assocPath(["properties", "attachments"], files, changeObj) : changeObj;
+        return files
+          ? assocPath(["properties", "attachments"], files, changeObj)
+          : changeObj;
       }, findObjectWithKey({ ...muutospyynto.data }, "changeObjects"));
     }, [filesFromMuutokset, muutospyynto.data]);
 
@@ -239,17 +241,17 @@ const HakemusContainer = React.memo(
 
     const onNewDocSave = useCallback(
       muutospyynto => {
-        const page = parseInt(match.params.page, 10);
-        const url = `/jarjestajat/${match.params.ytunnus}`;
-        const uuid = muutospyynto.uuid;
-        let newurl = url + "/hakemukset-ja-paatokset/" + uuid + "/" + page;
-
+        // const page = parseInt(match.params.page, 10);
+        // const url = `/jarjestajat/${match.params.ytunnus}`;
+        // const uuid = muutospyynto.uuid;
+        // let newurl = url + "/hakemukset-ja-paatokset/" + uuid + "/" + page;
+        let newurl = "/";
         /**
          * User is redirected to the url of the saved document.
          */
-        history.push(newurl);
+        navigate(newurl);
       },
-      [history, match.params.page, match.params.ytunnus]
+      [navigate]
     );
 
     if (
@@ -259,7 +261,6 @@ const HakemusContainer = React.memo(
       return (
         <MuutospyyntoWizard
           elykeskukset={elykeskukset}
-          history={history}
           initialChangeObjects={changeObjects}
           kielet={kielet}
           kohteet={kohteet}

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { Route, Router, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import Login from "scenes/Login/Login";
 import Logout from "scenes/Logout/Logout";
@@ -11,10 +11,8 @@ import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
 import Tilastot from "./scenes/Tilastot/components/Tilastot";
 import RequireCasAuth from "./scenes/Login/services/RequireCasAuth";
 import DestroyCasAuth from "./scenes/Logout/services/DestroyCasAuth";
-import { Breadcrumbs } from "react-breadcrumbs-dynamic";
 import JarjestajaSwitch from "./scenes/Jarjestajat/Jarjestaja/components/JarjestajaSwitch";
 import { NavLink } from "react-dom";
-import { createBrowserHistory } from "history";
 import authMessages from "./i18n/definitions/auth";
 import { useIntl } from "react-intl";
 import commonMessages from "./i18n/definitions/common";
@@ -28,7 +26,6 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "./modules/constants";
-import Esittelijat from "./scenes/Esittelijat/Esittelijat";
 import Header from "okm-frontend-components/dist/components/02-organisms/Header";
 import Navigation from "okm-frontend-components/dist/components/02-organisms/Navigation";
 import SideNavigation from "okm-frontend-components/dist/components/02-organisms/SideNavigation";
@@ -42,12 +39,12 @@ import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import "@reach/skip-nav/styles.css";
 import BaseData from "scenes/BaseData";
-
-const history = createBrowserHistory();
+import Asianhallinta from "./scenes/Esittelijat/Asianhallinta";
+import Loading from "modules/Loading";
+import common from "i18n/definitions/common";
+import AppBreadcrumbs from "AppBreadcrumbs";
 
 const logo = { text: "Oiva", path: "/" };
-
-const keys = ["lupa"];
 
 /**
  * App component forms the basic structure of the application and its routing.
@@ -116,7 +113,10 @@ const App = ({ isDebugModeOn }) => {
     [appActions]
   );
 
-  const onLoginButtonClick = useCallback(() => history.push("/cas-auth"), []);
+  const onLoginButtonClick = useCallback(() => {
+    console.info("onLoginButtonClick");
+    // history.push("/cas-auth"), [];
+  }, []);
 
   const onMenuClick = useCallback(
     () => setSideMenuVisibility(isVisible => !isVisible),
@@ -146,7 +146,7 @@ const App = ({ isDebugModeOn }) => {
             `/jarjestajat/${R.prop(
               "ytunnus",
               organisation[user.oid].data
-            )}/jarjestamislupa-asia`,
+            )}/jarjestamislupa`,
             result
           );
     }
@@ -212,7 +212,9 @@ const App = ({ isDebugModeOn }) => {
             organisation={organisationLink}
             shortDescription={shortDescription}
             template={template}
-            languageSelectionAriaLabel={intl.formatMessage(langMessages.selection)}></Header>
+            languageSelectionAriaLabel={intl.formatMessage(
+              langMessages.selection
+            )}></Header>
         );
       }
       return null;
@@ -232,134 +234,92 @@ const App = ({ isDebugModeOn }) => {
   );
 
   return (
-    <React.Fragment>
-      <Router history={history}>
-        <div className="flex flex-col min-h-screen">
-          <SkipNavLink>
-            {intl.formatMessage(commonMessages.jumpToContent)}
-          </SkipNavLink>
-          <div
-            className={`relative lg:fixed z-50 ${
-              appState.isDebugModeOn ? "w-2/3" : "w-full"
-            }`}>
-            {getHeader()}
+    <BrowserRouter>
+      <div className="flex flex-col min-h-screen">
+        <SkipNavLink>
+          {intl.formatMessage(commonMessages.jumpToContent)}
+        </SkipNavLink>
+        <div
+          className={`relative lg:fixed z-50 ${
+            appState.isDebugModeOn ? "w-2/3" : "w-full"
+          }`}>
+          {getHeader()}
 
-            <div className="hidden md:block">
-              <Navigation links={pageLinks}></Navigation>
-            </div>
+          <div className="hidden md:block">
+            <Navigation links={pageLinks}></Navigation>
           </div>
-
-          <SideNavigation
-            isVisible={isSideMenuVisible}
-            handleDrawerToggle={isVisible => {
-              setSideMenuVisibility(isVisible);
-            }}>
-            {getHeader("C")}
-
-            <div className="p-4 max-w-xl">
-              <Navigation
-                direction="vertical"
-                links={pageLinks}
-                theme={{
-                  backgroundColor: "white",
-                  color: "black",
-                  hoverColor: "white"
-                }}></Navigation>
-            </div>
-          </SideNavigation>
-
-          <div className="flex flex-1 flex-col justify-between mt-16 md:mt-0 lg:mt-32">
-            <div className="flex flex-col flex-1 bg-white">
-              <div
-                style={{ maxWidth: "90rem" }}
-                className="w-full mx-auto px-3 lg:px-8 py-8">
-                <nav
-                  tabIndex="0"
-                  aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
-                  <Breadcrumbs
-                    separator={<b> / </b>}
-                    item={NavLink}
-                    finalItem={"b"}
-                    finalProps={{
-                      style: {
-                        color: COLORS.BLACK
-                      }
-                    }}
-                  />
-                </nav>
-              </div>
-              <SkipNavContent />
-              <main className="flex-1 flex flex-col">
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route path="/logout" component={Logout} />
-                  <Route path="/kirjaudu" component={Login} />
-                  <Route exact path="/tilastot" component={Tilastot} />
-                  <Route path="/cas-auth" component={RequireCasAuth} />
-                  <Route path="/cas-logout" component={DestroyCasAuth} />
-                  <Route path="/cas-ready" component={CasAuthenticated} />
-                  <Route
-                    exact
-                    path="/jarjestajat"
-                    render={props => <Jarjestajat />}
-                  />
-                  <Route
-                    path="/asiat"
-                    render={() => {
-                      return user &&
-                        !user.isLoading &&
-                        organisation[user.oid] &&
-                        !!organisation[user.oid].fetchedAt ? (
-                        <Esittelijat />
-                      ) : null;
-                    }}
-                  />
-                  <Route
-                    path="/jarjestajat/:ytunnus"
-                    render={props => {
-                      return (
-                        <BaseData
-                          keys={keys}
-                          locale={intl.locale}
-                          render={_props => {
-                            return (
-                              <JarjestajaSwitch
-                                lupa={_props.lupa}
-                                path={props.match.path}
-                                ytunnus={_props.ytunnus}
-                                user={user}
-                              />
-                            );
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                  <Route
-                    path="/saavutettavuusseloste"
-                    component={Saavutettavuusseloste}
-                  />
-                  <Route
-                    path="/tietosuojailmoitus"
-                    render={() => <Tietosuojailmoitus locale={intl.locale} />}
-                  />
-                  <Route
-                    path="/yhteydenotto"
-                    render={() => <Yhteydenotto locale={intl.locale} />}
-                  />
-                </Switch>
-              </main>
-            </div>
-          </div>
-          <footer>
-            <Footer
-            // props={props}
-            />
-            <ToastContainer />
-          </footer>
         </div>
-      </Router>
-    </React.Fragment>
+
+        <SideNavigation
+          isVisible={isSideMenuVisible}
+          handleDrawerToggle={isVisible => {
+            setSideMenuVisibility(isVisible);
+          }}>
+          {getHeader("C")}
+
+          <div className="p-4 max-w-xl">
+            <Navigation
+              direction="vertical"
+              links={pageLinks}
+              theme={{
+                backgroundColor: "white",
+                color: "black",
+                hoverColor: "white"
+              }}></Navigation>
+          </div>
+        </SideNavigation>
+
+        <div className="flex flex-1 flex-col justify-between mt-16 md:mt-0 lg:mt-32">
+          <div className="flex flex-col flex-1 bg-white">
+            <div
+              style={{ maxWidth: "90rem" }}
+              className="w-full mx-auto px-3 lg:px-8 py-8">
+              <nav
+                tabIndex="0"
+                aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
+                <AppBreadcrumbs />
+              </nav>
+            </div>
+            <SkipNavContent />
+
+            <main className="flex-1 flex flex-col">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/kirjaudu" element={<Login />} />
+                <Route path="/tilastot" element={<Tilastot />} />
+                <Route path="/cas-auth" element={<RequireCasAuth />} />
+                <Route path="/cas-logout" element={<DestroyCasAuth />} />
+                <Route path="/cas-ready" element={<CasAuthenticated />} />
+                <Route
+                  path="/jarjestajat/*"
+                  element={<Jarjestajat user={user} />}
+                />
+                <Route path="/asiat/*" element={<Asianhallinta />} />
+                <Route
+                  path="/saavutettavuusseloste"
+                  element={<Saavutettavuusseloste />}
+                />
+                <Route
+                  path="/tietosuojailmoitus"
+                  element={<Tietosuojailmoitus locale={intl.locale} />}
+                />
+                <Route
+                  path="/yhteydenotto"
+                  element={<Yhteydenotto locale={intl.locale} />}
+                />
+              </Routes>
+            </main>
+          </div>
+        </div>
+        <footer>
+          <Footer
+          // props={props}
+          />
+          <ToastContainer />
+        </footer>
+      </div>
+    </BrowserRouter>
   );
 };
 

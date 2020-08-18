@@ -3,7 +3,7 @@ import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import { generateAvoimetAsiatTableStructure } from "../modules/asiatUtils";
 import { useIntl } from "react-intl";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../../modules/Loading";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import * as R from "ramda";
@@ -11,9 +11,9 @@ import common from "../../../i18n/definitions/common";
 import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
 
 const AvoimetAsiat = () => {
-  const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
+  const navigate = useNavigate();
   const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();
   const [
     isPaatettyConfirmationDialogVisible,
@@ -52,19 +52,19 @@ const AvoimetAsiat = () => {
     setIsLoading(false);
     setPaatettyConfirmationDialogVisible(false);
     setRowActionTargetId(null);
-    history.push("?force=" + timestamp);
-  }, [rowActionTargetId, history, intl.formatMessage]);
+    navigate(`?force=${timestamp}`);
+  }, [rowActionTargetId, navigate, intl.formatMessage]);
 
   const tableStructure = useMemo(() => {
     return muutospyynnot.avoimet && muutospyynnot.avoimet.fetchedAt
       ? generateAvoimetAsiatTableStructure(
           muutospyynnot.avoimet.data,
           intl,
-          history,
+          navigate,
           onPaatettyActionClicked
         )
       : [];
-  }, [intl, muutospyynnot.avoimet, history]);
+  }, [intl, muutospyynnot.avoimet, navigate]);
 
   if (
     muutospyynnot.avoimet &&

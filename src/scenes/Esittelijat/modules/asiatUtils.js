@@ -74,9 +74,9 @@ export const generateAsiaTableRows = (row, { formatMessage, locale }) => {
 };
 
 export const generateAvoimetAsiatTableStructure = (
-  hakemusList,
+  hakemusList = [],
   intl,
-  history,
+  navigate,
   onPaatettyActionClicked
 ) => {
   const formatMessage = intl.formatMessage;
@@ -113,17 +113,17 @@ export const generateAvoimetAsiatTableStructure = (
                   await new ProcedureHandler(
                     formatMessage
                   ).run("muutospyynnot.tilanmuutos.esittelyyn", [row.id]);
-                  history.push("?force=" + timestamp);
+                  navigate(`?force=${timestamp}`);
                 } else if (action === "valmisteluun") {
                   const timestamp = new Date().getTime();
                   await new ProcedureHandler(
                     formatMessage
                   ).run("muutospyynnot.tilanmuutos.valmisteluun", [row.id]);
-                  history.push("?force=" + timestamp);
+                  navigate(`?force=${timestamp}`);
                 } else if (action === "paata") {
                   await onPaatettyActionClicked(row);
                 } else {
-                  history.push("/asiat/" + row.id);
+                  navigate(`/asiat/luettelo/${row.id}`);
                 }
               },
               cells: generateAsiaTableRows(row, intl).concat([
@@ -149,7 +149,7 @@ export const generateAvoimetAsiatTableStructure = (
   ];
 };
 
-export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
+export const generatePaatetytAsiatTableStructure = (hakemusList, intl, navigate) => {
   return [
     generateAsiatTableHeaderStructure(intl.formatMessage),
     {
@@ -175,7 +175,7 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
                     [filePath, true]
                   );
                 } else {
-                  console.log("Avaa asian asiakirjat", row);
+                  navigate(`/asiat/luettelo/${row.id}`);
                 }
               },
               cells: generateAsiaTableRows(row, intl).concat({

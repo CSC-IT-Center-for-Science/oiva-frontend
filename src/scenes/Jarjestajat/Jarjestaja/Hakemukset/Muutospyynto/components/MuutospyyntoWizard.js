@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useCallback,
-  useMemo,
-  useState,
-  useRef
-} from "react";
+import React, { useEffect, useCallback, useState, useRef } from "react";
 import StepperNavigation from "okm-frontend-components/dist/components/01-molecules/Stepper";
 import WizardPage from "./WizardPage";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -33,7 +27,7 @@ import ProcedureHandler from "../../../../../../components/02-organisms/procedur
 import { createMuutospyyntoOutput } from "../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../stores/muutospyynto";
 import common from "../../../../../../i18n/definitions/common";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -82,7 +76,6 @@ const defaultProps = {
 const MuutospyyntoWizard = ({
   initialChangeObjects = defaultProps.initialChangeObjects,
   elykeskukset = defaultProps.elykeskukset,
-  history,
   kielet = defaultProps.kielet,
   kohteet = defaultProps.kohteet,
   koulutukset = defaultProps.koulutukset,
@@ -94,7 +87,6 @@ const MuutospyyntoWizard = ({
   maakunnat = defaultProps.maakunnat,
   maakuntakunnat = defaultProps.maakuntakunnat,
   maaraystyypit = defaultProps.maaraystyypit,
-  match,
   muut = defaultProps.muut,
   oivaperustelut,
   onNewDocSave,
@@ -104,6 +96,8 @@ const MuutospyyntoWizard = ({
 }) => {
   const intl = useIntl();
   const params = useParams();
+  const navigate = useNavigate();
+
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
 
   let { uuid } = params;
@@ -130,26 +124,26 @@ const MuutospyyntoWizard = ({
   const handlePrev = useCallback(
     pageNumber => {
       if (pageNumber !== 1) {
-        history.push(String(pageNumber - 1));
+        navigate(`../${String(pageNumber - 1)}`);
       }
     },
-    [history]
+    [navigate]
   );
 
   const handleNext = useCallback(
     pageNumber => {
       if (pageNumber !== 4) {
-        history.push(String(pageNumber + 1));
+        navigate(`../${String(pageNumber + 1)}`);
       }
     },
-    [history]
+    [navigate]
   );
 
   const handleStep = useCallback(
     pageNumber => {
-      history.push(String(pageNumber));
+      navigate(`../${String(pageNumber)}`);
     },
-    [history]
+    [navigate]
   );
 
   const onChangeObjectsUpdate = useCallback(
@@ -297,7 +291,7 @@ const MuutospyyntoWizard = ({
         if (nextUrl) {
           // Forcing means that the list will be reloaded when landing on the page.
           setTimeout(() => {
-            history.push(`${nextUrl}?force=true`);
+            navigate(`${nextUrl}?force=true`);
           });
         }
         return muutospyynto;
@@ -306,7 +300,7 @@ const MuutospyyntoWizard = ({
       }
       return false;
     },
-    [history, intl.formatMessage]
+    [navigate, intl.formatMessage]
   );
 
   const onAction = useCallback(
@@ -349,7 +343,7 @@ const MuutospyyntoWizard = ({
        * to update the url so that the user can get the unique url of the
        * freshly saved document and come back to the form later.
        **/
-      if (!match.params.uuid && action !== "send") {
+      if (!params.uuid && action !== "send") {
         if (muutospyynto && muutospyynto.uuid) {
           // It was the first save...
           onNewDocSave(muutospyynto);
@@ -389,7 +383,7 @@ const MuutospyyntoWizard = ({
       lupa,
       lupaKohteet,
       maaraystyypit,
-      match.params.uuid,
+      params.uuid,
       muut,
       onNewDocSave,
       onPreview,
@@ -412,14 +406,10 @@ const MuutospyyntoWizard = ({
    * User is redirected to the following path when the form is closed.
    */
   const closeWizard = useCallback(() => {
-    return history.push(
-      `/jarjestajat/${match.params.ytunnus}/jarjestamislupa-asia`
-    );
-  }, [history, match.params.ytunnus]);
+    return navigate(`/jarjestajat/${params.ytunnus}/asiat`);
+  }, [navigate]);
 
-  const page = useMemo(() => {
-    return parseInt(match.params.page, 10);
-  }, [match.params.page]);
+  const page = parseInt(params.page, 10);
 
   useEffect(() => {
     setVisitsPerPage(prevVisits => {

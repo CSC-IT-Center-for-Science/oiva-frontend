@@ -2,14 +2,14 @@ import React, { useState, useMemo, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import JarjestamislupaAsiatListItem from "./JarjestamislupaAsiatListItem";
-import {asiaStateToLocalizationKeyMap} from "../../../Jarjestajat/Jarjestaja/modules/constants";
+import { asiaStateToLocalizationKeyMap } from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import Button from "@material-ui/core/Button";
 import Add from "@material-ui/icons/AddCircleOutline";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import _ from "lodash";
 import JarjestamislupaAsiakirjat from "./JarjestamislupaAsiakirjat";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
 import Table from "okm-frontend-components/dist/components/02-organisms/Table";
@@ -50,18 +50,15 @@ const states = [
 ];
 
 const JarjestamislupaAsiatList = ({
-  history,
   isForceReloadRequested,
-  match,
   newApplicationRouteItem,
   lupa
 }) => {
   const intl = useIntl();
-
   const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();
-  const { url } = match;
   const classes = useStyles();
   const [muutospyynto, setMuutospyynto] = useState(null);
+  const navigate = useNavigate();
 
   // Let's fetch MUUTOSPYYNNÖT
   useEffect(() => {
@@ -80,12 +77,7 @@ const JarjestamislupaAsiatList = ({
         abortController.abort();
       }
     };
-  }, [
-    isForceReloadRequested,
-    lupa,
-    muutospyynnotActions,
-    match
-  ]);
+  }, [isForceReloadRequested, lupa, muutospyynnotActions]);
 
   const tableData = useMemo(() => {
     if (muutospyynnot.fetchedAt && muutospyynnot.data) {
@@ -141,7 +133,9 @@ const JarjestamislupaAsiatList = ({
           rows: R.addIndex(R.map)((row, i) => {
             const tilaText =
               row.tila && states.includes(row.tila)
-                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[row.tila]])
+                ? intl.formatMessage(
+                    common[asiaStateToLocalizationKeyMap[row.tila]]
+                  )
                 : row.tila;
             let cells = R.addIndex(R.map)(
               (col, ii) => {
@@ -189,7 +183,7 @@ const JarjestamislupaAsiatList = ({
                     R.find(R.propEq("uuid", row.id), muutospyynnot.data)
                   );
                 } else if (action === "edit") {
-                  history.push(`hakemukset-ja-paatokset/${row.id}/1`);
+                  navigate(`hakemukset-ja-paatokset/${row.id}/1`);
                 }
               },
               cells: cells
@@ -207,14 +201,13 @@ const JarjestamislupaAsiatList = ({
     const data = _.orderBy(muutospyynnot.data, ["voimassaalkupvm"], ["desc"]);
     return _.map(data, historyData => (
       <JarjestamislupaAsiatListItem
-        url={url}
         muutospyynto={historyData}
         key={historyData.uuid}
         setOpened={() => setMuutospyynto(historyData)}
         states={states}
       />
     ));
-  }, [url, muutospyynnot.data]);
+  }, [muutospyynnot.data]);
 
   let hasRights = sessionStorage.getItem("role") !== ROLE_KATSELIJA;
   return (
@@ -232,7 +225,6 @@ const JarjestamislupaAsiatList = ({
           <NavLink
             className="mb-2"
             to={newApplicationRouteItem.path}
-            exact={newApplicationRouteItem.exact}
             style={{ textDecoration: "none", color: "inherit" }}>
             <Button color="primary" className="newHakemus">
               <Add />
@@ -268,9 +260,8 @@ const JarjestamislupaAsiatList = ({
 };
 
 JarjestamislupaAsiatList.propTypes = {
-  history: PropTypes.object,
+  lupa: PropTypes.object,
   lupahistory: PropTypes.array,
-  match: PropTypes.object,
   muutospyynnot: PropTypes.array,
   newApplicationRouteItem: PropTypes.object
 };

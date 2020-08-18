@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { Td, Tr, TdButton, Td2 } from "../../../../modules/Table";
 import { MEDIA_QUERIES } from "../../../../modules/styles";
-import {asiaStateToLocalizationKeyMap} from "../../../Jarjestajat/Jarjestaja/modules/constants";
+import { asiaStateToLocalizationKeyMap } from "../../../Jarjestajat/Jarjestaja/modules/constants";
 import Button from "@material-ui/core/Button";
 import Edit from "@material-ui/icons/Edit";
 import { Typography } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { FIELDS } from "../../../../locales/uusiHakemusFormConstants";
-import { injectIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
 
 const LupaText = styled.span`
@@ -25,8 +25,9 @@ const TextPartial = styled.span`
 `;
 
 const JarjestamislupaAsiaListItem = props => {
+  const intl = useIntl();
   const { tila, uuid } = props.muutospyynto;
-  const { intl, states } = props;
+  const { states } = props;
   return (
     <React.Fragment>
       <Tr className="lg:hidden" role="row" onClick={() => props.setOpened()}>
@@ -36,13 +37,15 @@ const JarjestamislupaAsiaListItem = props => {
             <TextPartial>
               {intl.formatMessage(common.stateAsia)}:&nbsp;
               {tila && states.includes(tila)
-                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[tila]])
+                ? intl.formatMessage(
+                    common[asiaStateToLocalizationKeyMap[tila]]
+                  )
                 : tila}
             </TextPartial>
           </LupaText>
           {tila === FIELDS.TILA.VALUES.LUONNOS && (
             <LupaText>
-              <NavLink to={`hakemukset-ja-paatokset/${uuid}/1`} exact={true}>
+              <NavLink to={`hakemukset-ja-paatokset/${uuid}/1`}>
                 <Button title={intl.formatMessage(common.edit)}>
                   <Edit />
                 </Button>
@@ -79,7 +82,7 @@ const JarjestamislupaAsiaListItem = props => {
         <TdButton role="cell" className="bg-transparent">
           {tila === FIELDS.TILA.VALUES.LUONNOS && (
             <div className="flex ml-auto">
-              <NavLink to={`hakemukset-ja-paatokset/${uuid}/1`} exact={true}>
+              <NavLink to={`hakemukset-ja-paatokset/${uuid}/1`}>
                 <Button title={intl.formatMessage(common.edit)}>
                   <Edit />
                 </Button>
@@ -94,4 +97,4 @@ const JarjestamislupaAsiaListItem = props => {
   );
 };
 
-export default injectIntl(JarjestamislupaAsiaListItem);
+export default JarjestamislupaAsiaListItem;

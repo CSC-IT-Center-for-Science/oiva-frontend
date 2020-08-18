@@ -1,56 +1,65 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { useLuvat } from "../../stores/luvat";
-import LuvatList from "./components/LuvatList";
 import { Helmet } from "react-helmet";
 import common from "../../i18n/definitions/common";
 import education from "../../i18n/definitions/education";
-import Loading from "../../modules/Loading";
 import { useIntl } from "react-intl";
-import * as R from "ramda";
+import { Routes, Route } from "react-router-dom";
+import BaseData from "scenes/BaseData";
+import Jarjestajaluettelo from "./Jarjestajaluettelo";
+import Jarjestaja from "./Jarjestaja/components/Jarjestaja";
+import Loading from "modules/Loading";
 
-const Jarjestajat = React.memo(() => {
+/**
+ * Järjestäjät-osion pääsivu.
+ */
+const Jarjestajat = ({ user }) => {
   const intl = useIntl();
-  const [luvat, luvatActions] = useLuvat();
-
-  // Let's fetch LUVAT
-  useEffect(() => {
-    const abortController = luvatActions.load();
-    return function cancel() {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [luvatActions]);
-
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>Oiva | Ammatillinen koulutus</title>
+        <title>Ammatillisen koulutuksen järjestäjät</title>
       </Helmet>
 
-      <BreadcrumbsItem to="/">
-        {intl.formatMessage(common.frontpage)}
-      </BreadcrumbsItem>
-      <BreadcrumbsItem to="/jarjestajat">{intl.formatMessage(education.vocationalEducation)}</BreadcrumbsItem>
+      <Routes>
+        <Route
+          path="/*"
+          element={
+            <BaseData
+              keys={["luvat"]}
+              locale={intl.locale}
+              render={_props => {
+                return _props.luvat ? (
+                  <Jarjestajaluettelo luvat={_props.luvat} />
+                ) : (
+                  <Loading />
+                );
+              }}
+            />
+          }
+        />
 
-      <div className="mx-auto w-full sm:w-3/4 mb-16">
-        <h1>{intl.formatMessage(common.ammatillisenKoulutuksenJarjestajat)}</h1>
-        {luvat.isLoading === false && !luvat.isErroneous && (
-          <React.Fragment>
-            <p className="my-4">
-              {intl.formatMessage(common.voimassaOlevatJarjestamisluvat, {
-                amount: R.length(luvat.data)
-              })}
-            </p>
-
-            <LuvatList luvat={luvat.data} />
-          </React.Fragment>
-        )}
-        {luvat.isLoading && <Loading />}
-      </div>
+        <Route
+          path={":ytunnus/*"}
+          element={
+            <BaseData
+              keys={["lupa"]}
+              locale={intl.locale}
+              render={_props => {
+                return _props.lupa ? (
+                  <div>
+                    <Jarjestaja lupa={_props.lupa} user={user} />
+                  </div>
+                ) : (
+                  <Loading />
+                );
+              }}
+            />
+          }
+        />
+      </Routes>
     </React.Fragment>
   );
-});
+};
 
 export default Jarjestajat;

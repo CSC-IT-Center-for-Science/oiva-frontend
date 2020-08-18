@@ -9,6 +9,7 @@ import { useOrganisation } from "../../../../stores/organisation";
 import common from "../../../../i18n/definitions/common";
 import { useUser } from "../../../../stores/user";
 import * as R from "ramda";
+import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 
 const OmatTiedot = ({ kunnat, maakunnat }) => {
   const intl = useIntl();
@@ -16,7 +17,6 @@ const OmatTiedot = ({ kunnat, maakunnat }) => {
   const [organisation] = useOrganisation();
   const [user] = useUser();
   const userOrganisation = organisation[user.data.oid];
-
   const yhteystiedot = useMemo(() => {
     let values =
       userOrganisation.fetchedAt && userOrganisation.data
@@ -39,32 +39,31 @@ const OmatTiedot = ({ kunnat, maakunnat }) => {
           }
         : {};
 
-    if (kunnat.fetchedAt && maakunnat.fetchedAt) {
+    if (kunnat && maakunnat) {
       const koodiarvo = userOrganisation.data.kotipaikkaUri.substr(6);
-      const source = koodiarvo.length === 3 ? kunnat.data : maakunnat.data;
-      const kotipaikkaObj = R.find(R.propEq("koodiArvo", koodiarvo), source);
-      values.kotipaikka = (kotipaikkaObj
-        ? R.find(
-            R.propEq("kieli", R.toUpper(intl.locale)),
-            kotipaikkaObj.metadata
-          )
-        : {}
-      ).nimi;
+      const source = koodiarvo.length === 3 ? kunnat : maakunnat;
+      const kotipaikkaObj = R.find(R.propEq("koodiarvo", koodiarvo), source);
+      values.kotipaikka = kotipaikkaObj
+        ? kotipaikkaObj.metadata[R.toUpper(intl.locale)].nimi
+        : "";
+      console.info(source, koodiarvo, kotipaikkaObj, values.kotipaikka);
     }
     return values;
   }, [
     intl.locale,
     userOrganisation.fetchedAt,
     userOrganisation.data,
-    kunnat.data,
-    kunnat.fetchedAt,
-    maakunnat.data,
-    maakunnat.fetchedAt
+    kunnat,
+    maakunnat
   ]);
 
   if (userOrganisation.fetchedAt && !userOrganisation.isErroneous) {
     return (
       <React.Fragment>
+        <BreadcrumbsItem to={userOrganisation.data.ytunnus}>
+          Omat tiedot
+        </BreadcrumbsItem>
+
         {(() => {
           const {
             email,
@@ -78,7 +77,7 @@ const OmatTiedot = ({ kunnat, maakunnat }) => {
             <InnerContentContainer>
               <InnerContentWrapper>
                 <Typography component="h2" variant="h5" className="pb-4">
-                  {intl.formatMessage(common.omatTiedotTitle)}
+                  {intl.formatMessage(common.omattiedot)}
                 </Typography>
                 <Typography component="h3" variant="h6">
                   {intl.formatMessage(common.omatTiedotVisitAddress)}

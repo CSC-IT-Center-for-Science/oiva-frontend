@@ -1,17 +1,31 @@
 import React, { useState } from "react";
+import Asiat from "./components/Asiat";
+import Asiakirjat from "./components/Asiakirjat";
+import {
+  Route,
+  Routes,
+  useNavigate,
+  Navigate,
+  useLocation
+} from "react-router-dom";
+import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
+import { useUser } from "../../stores/user";
+import BaseData from "scenes/BaseData";
+import { useIntl } from "react-intl";
+import AsiaDialogContainer from "./AsiaDialogContainer";
+import AvoimetAsiat from "./components/AvoimetAsiat";
+import PaatetytAsiat from "./components/PaatetytAsiat";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { PropTypes } from "prop-types";
-import AvoimetAsiat from "./AvoimetAsiat";
-import PaatetytAsiat from "./PaatetytAsiat";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { useIntl } from "react-intl";
-import common from "../../../i18n/definitions/common";
+import common from "../../i18n/definitions/common";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
-import UusiAsiaEsidialog from "./../UusiAsiaEsidialog";
+import UusiAsiaEsidialog from "./UusiAsiaEsidialog";
+import Asialuettelo from "./Asialuettelo";
+// import UusiAsiaEsidialog from "./../UusiAsiaEsidialog";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -44,18 +58,18 @@ const OivaTabs = withStyles(() => ({
   }
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
-const Asiat = ({ path: parentPath, user }) => {
-  const { pathname } = useLocation();
+const Asianhallinta = () => {
   const intl = useIntl();
+  const [user] = useUser();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
-  console.info(pathname);
+
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
-  const t = intl.formatMessage;
 
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>{`Oiva | ${t(common.asiat)}`}</title>
+        <title>{`Oiva | ${intl.formatMessage(common.asiat)}`}</title>
       </Helmet>
 
       {isEsidialogVisible && (
@@ -75,77 +89,62 @@ const Asiat = ({ path: parentPath, user }) => {
         style={{ maxWidth: "90rem", borderTop: "0.05rem solid #E3E3E3" }}>
         <div className="flex items-center">
           <div className="flex-1">
-            <BreadcrumbsItem to="/">{t(common.frontpage)}</BreadcrumbsItem>
-            <BreadcrumbsItem to="/asiat">{t(common.asiat)}</BreadcrumbsItem>
+            <BreadcrumbsItem to="/">
+              {intl.formatMessage(common.frontpage)}
+            </BreadcrumbsItem>
+            <BreadcrumbsItem to="/asiat">
+              {intl.formatMessage(common.asiat)}
+            </BreadcrumbsItem>
             <div className="w-full flex flex-row justify-between">
-              <h1 className="mb-5">{t(common.asiat)}</h1>
+              <h1 className="mb-5">{intl.formatMessage(common.asiat)}</h1>
               <div className="pt-3 my-auto">
                 <SimpleButton
-                  aria-label={t(common.luoUusiAsia)}
+                  aria-label={intl.formatMessage(common.luoUusiAsia)}
                   color="primary"
                   variant="contained"
-                  text={t(common.luoUusiAsia)}
+                  text={intl.formatMessage(common.luoUusiAsia)}
                   size="large"
                   onClick={() => setIsEsidialogVisible(true)}
                 />
               </div>
             </div>
-            <OivaTabs
-              value={pathname}
-              indicatorColor="primary"
-              textColor="primary"
-              onChange={(e, path) => {
-                console.info(path);
-                navigate(path);
-              }}>
-              <OivaTab
-                label={t(common.asiatOpen)}
-                aria-label={t(common.asiatReady)}
-                to={"avoimet"}
-                value={"avoimet"}
-              />
-              <OivaTab
-                label={t(common.asiatReady)}
-                aria-label={t(common.asiatReady)}
-                to={"paatetyt"}
-                value={"paatetyt"}
-              />
-            </OivaTabs>
           </div>
         </div>
       </div>
 
-      <div
-        className="flex-1 flex w-full"
-        style={{ borderTop: "0.05rem solid #E3E3E3", background: "#FAFAFA" }}>
-        <div
-          style={{ maxWidth: "90rem" }}
-          className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 py-12">
-          <div
-            className="flex-1 bg-white"
-            style={{ border: "0.05rem solid #E3E3E3" }}>
-            <Routes>
-              <Route
-                authenticated={!!user}
-                path={"avoimet"}
-                element={<AvoimetAsiat />}
-              />
-              <Route
-                authenticated={!!user}
-                path={"paatetyt"}
-                element={<PaatetytAsiat />}
-              />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route
+          authenticated={!!user}
+          path="luettelo/*"
+          element={<Asialuettelo user={user} />}
+        />
+        <Route path="/" element={<Navigate to={"luettelo"} />} />
+      </Routes>
+
+      {/* <Route
+        authenticated={!!user}
+        // path={`${path}/:ytunnus/uusi`}
+        render={() => (
+          <BaseData
+            locale={intl.locale}
+            render={_props => <UusiAsiaDialogContainer {..._props} />}
+          />
+        )}
+      />
+      <Route
+        authenticated={!!user}
+        // path={`${path}/:ytunnus/:uuid`}
+        render={() => {
+          return (
+            <BaseData
+              locale={intl.locale}
+              render={_props => <AsiaDialogContainer {..._props} />}
+            />
+          );
+        }}
+      /> */}
     </React.Fragment>
   );
 };
 
-Asiat.propTypes = {
-  path: PropTypes.string,
-  user: PropTypes.object
-};
-
-export default Asiat;
+export default Asianhallinta;

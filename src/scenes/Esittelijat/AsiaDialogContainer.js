@@ -16,7 +16,7 @@ import Loading from "../../modules/Loading";
 import { getAnchorPart, findObjectWithKey } from "../../utils/common";
 import { setAttachmentUuids } from "../../utils/muutospyyntoUtil";
 import UusiAsiaDialog from "./UusiAsiaDialog";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 import localforage from "localforage";
 import { API_BASE_URL } from "modules/constants";
@@ -93,7 +93,7 @@ const AsiaDialogContainer = ({
   tutkinnot
 }) => {
   const intl = useIntl();
-  let history = useHistory();
+  let history = useNavigate();
 
   const { uuid } = useParams();
 

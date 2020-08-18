@@ -29,14 +29,10 @@ const UusiMuutospyynto = styled(Link)`
   }
 `;
 
-const HakemuksetJaPaatokset = ({ match }) => {
+const HakemuksetJaPaatokset = () => {
   const [muutospyynnot] = useMuutospyynnot();
   const [user] = useUser();
   const [organisation] = useOrganisation();
-
-  const getMuutospyyntoUrl = () => {
-    return `${match.url}/uusi`;
-  };
 
   if (sessionStorage.getItem("role") !== ROLE_MUOKKAAJA) {
     return (
@@ -53,7 +49,7 @@ const HakemuksetJaPaatokset = ({ match }) => {
     return (
       <Wrapper>
         <h2>Hakemukset</h2>
-        <UusiMuutospyynto to={getMuutospyyntoUrl()}>Luo uusi</UusiMuutospyynto>
+        <UusiMuutospyynto to="uusi">Luo uusi</UusiMuutospyynto>
         <MuutospyyntoList muutospyynnot={muutospyynnot.data} />
       </Wrapper>
     );

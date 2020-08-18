@@ -4,7 +4,7 @@ import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import common from "../../../i18n/definitions/common";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const colWidths = {
   0: "w-4/6",
@@ -12,7 +12,7 @@ const colWidths = {
 };
 
 function LuvatList({ luvat = [] }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const intl = useIntl();
   const tableStructure = [
     {
@@ -56,8 +56,8 @@ function LuvatList({ luvat = [] }) {
             return {
               id: row.jarjestajaYtunnus,
               onClick: row => {
-                if (history) {
-                  history.push(`jarjestajat/${row.id}/jarjestamislupa`);
+                if (navigate) {
+                  navigate(`/jarjestajat/${row.id}`);
                 } else {
                   console.error(
                     "Järjestämislupatietojen näyttäminen epäonnistui."

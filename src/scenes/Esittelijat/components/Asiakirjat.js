@@ -20,7 +20,7 @@ import Loading from "../../../modules/Loading";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "../../Jarjestajat/Jarjestaja/modules/constants";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "../RemovalDialogOfAsiakirja";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import PDFAndStateDialog from "../PDFAndStateDialog";
@@ -55,7 +55,7 @@ const states = [
 ];
 
 const Asiakirjat = React.memo(() => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { uuid } = useParams();
   const intl = useIntl();
   const t = intl.formatMessage;
@@ -103,7 +103,7 @@ const Asiakirjat = React.memo(() => {
 
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
-    history.push(`/asiat?force=${new Date().getTime()}`);
+    navigate(`/asiat?force=${new Date().getTime()}`);
   };
 
   const setStateOfMuutospyyntoAsEsittelyssa = async () => {
@@ -122,7 +122,7 @@ const Asiakirjat = React.memo(() => {
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
     // Let's move to Asiat view.
-    history.push(`/asiat?force=${new Date().getTime()}`);
+    navigate(`/asiat?force=${new Date().getTime()}`);
   };
 
   const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
@@ -244,7 +244,7 @@ const Asiakirjat = React.memo(() => {
                   setIsDownloadPDFAndChangeStateDialogVisible(true);
                   setDocumentIdForAction(row.uuid);
                 } else if (action === "edit") {
-                  history.push(`${ytunnus}/${row.uuid}`);
+                  navigate(`${ytunnus}/${row.uuid}`);
                 } else if (action === "remove") {
                   setIsRemovalDialogVisible(true);
                   setDocumentIdForAction(row.uuid);
@@ -306,16 +306,18 @@ const Asiakirjat = React.memo(() => {
     }
   ];
 
-  const muutospyyntoLoaded = muutospyynnonLiitteet.isLoading === false && muutospyynto.isLoading === false &&
-    muutospyynnonLiitteet.fetchedAt && muutospyynto.fetchedAt;
+  const muutospyyntoLoaded =
+    muutospyynnonLiitteet.isLoading === false &&
+    muutospyynto.isLoading === false &&
+    muutospyynnonLiitteet.fetchedAt &&
+    muutospyynto.fetchedAt;
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
       <div
         className="flex flex-col flex-1"
         style={{
-          borderTop: "0.05rem solid #E3E3E3",
-          background: "#FAFAFA"
+          borderTop: "0.05rem solid #E3E3E3"
         }}>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
@@ -331,7 +333,7 @@ const Asiakirjat = React.memo(() => {
           <Link
             className="cursor-pointer"
             onClick={() => {
-              history.push("/asiat");
+              navigate("/asiat");
             }}>
             <BackIcon
               style={{
@@ -402,7 +404,11 @@ const Asiakirjat = React.memo(() => {
       </div>
     );
   } else if (muutospyyntoLoaded && !muutospyynto.data) {
-    return <div className="flex-1 flex justify-center">{intl.formatMessage(error.muutospyyntoNotFound)}</div>
+    return (
+      <div className="flex-1 flex justify-center">
+        {intl.formatMessage(error.muutospyyntoNotFound)}
+      </div>
+    );
   } else {
     return <Loading />;
   }

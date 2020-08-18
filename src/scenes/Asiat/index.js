@@ -5,7 +5,6 @@ import PaatetytAsiatContainer from "./containers/PaatetytAsiatContainer";
 const routes = [
     {
         path: '/asiat',
-        exact: true,
         component: AsiatContainer
     },
     {

@@ -2,13 +2,13 @@ import React, { useEffect, useMemo } from "react";
 import Table from "okm-frontend-components/dist/components/02-organisms/Table";
 import { generatePaatetytAsiatTableStructure } from "../modules/asiatUtils";
 import { useIntl } from "react-intl";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../../modules/Loading";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import * as R from "ramda";
 
 const PaatetytAsiat = () => {
-  const history = useHistory();
+  const history = useNavigate();
   const intl = useIntl();
   const location = useLocation();
   const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();

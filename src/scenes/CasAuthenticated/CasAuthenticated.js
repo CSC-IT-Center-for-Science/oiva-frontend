@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useIntl } from "react-intl";
 import { ROLE_ESITTELIJA } from "modules/constants";
 import commonMessages from "../../i18n/definitions/common";
@@ -29,11 +29,11 @@ const CasAuthenticated = () => {
     // TODO: Different roles routing here when applicable
     switch (role) {
       case ROLE_ESITTELIJA: {
-        return <Redirect to="/asiat" />;
+        return <Navigate to="/asiat" />;
       }
       default: {
         return (
-          <Redirect
+          <Navigate
             ytunnus={ytunnus}
             to={{
               pathname: "/jarjestajat/" + ytunnus + "/omattiedot",

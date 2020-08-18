@@ -178,7 +178,7 @@ export default function LupapaatoksetTable({ data }) {
     },
     {
       id: "jarjestamislupa",
-      label: intl.formatMessage(common.lupaTitle)
+      label: intl.formatMessage(common.jarjestamislupa)
     },
     {
       id: "kumottu",

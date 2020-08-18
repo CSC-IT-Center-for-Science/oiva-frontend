@@ -20,6 +20,7 @@ import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useParams } from "react-router-dom";
+import { initializeKunta } from "helpers/kunnat";
 import { initializeMaakunta } from "helpers/maakunnat";
 import { initializeKieli } from "helpers/kielet";
 import { sortLanguages } from "utils/kieliUtil";
@@ -90,6 +91,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       `${backendRoutes.lupa.path}${ytunnus}?with=all&useKoodistoVersions=false`,
       keys
     ),
+    luvat: await getRaw("luvat", backendRoutes.luvat.path, keys),
     // Koulutukset (muut)
     ammatilliseentehtavaanvalmistavakoulutus: await getRaw(
       "ammatilliseentehtavaanvalmistavakoulutus",
@@ -246,9 +248,30 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
-    kunnat: raw.kunnat,
+    kunnat: raw.kunnat
+      ? await localforage.setItem(
+          "kunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(kunta => {
+              return initializeKunta(kunta, localeUpper);
+            }, raw.kunnat).filter(Boolean)
+          )
+        )
+      : undefined,
     lupa: raw.lupa,
-    maakunnat: raw.maakunnat,
+    luvat: raw.luvat,
+    maakunnat: raw.maakunnat
+      ? await localforage.setItem(
+          "maakunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(maakunta => {
+              return initializeMaakunta(maakunta, localeUpper);
+            }, raw.maakunnat).filter(Boolean)
+          )
+        )
+      : undefined,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
           "maakuntakunnat",

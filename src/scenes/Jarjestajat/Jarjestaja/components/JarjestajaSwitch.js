@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Jarjestaja from "../components/Jarjestaja";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
@@ -12,7 +12,7 @@ import BaseData from "scenes/BaseData";
 
 const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus }) => {
   const intl = useIntl();
-  const history = useHistory();
+  const history = useNavigate();
 
   const lupaKohteet = useMemo(() => {
     return !lupa
@@ -21,7 +21,7 @@ const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus }) => {
   }, [lupa, intl]);
 
   return (
-    <Switch>
+    <Routes>
       <Route
         exact
         path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
@@ -89,7 +89,7 @@ const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus }) => {
           return <Loading />;
         }}
       />
-    </Switch>
+    </Routes>
   );
 });
 

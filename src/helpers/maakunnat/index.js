@@ -7,7 +7,9 @@ import {
   omit,
   filter,
   sortBy,
-  path
+  path,
+  reject,
+  isNil
 } from "ramda";
 import localforage from "localforage";
 
@@ -20,31 +22,35 @@ export function initializeMaakunta(maakuntadata, localeUpper) {
     // Filter out ulkomaat
     const kunnat = filter(
       kunta => kunta.koodiArvo !== "200",
-      maakuntadata.kunta
+      maakuntadata.kunta || []
     );
-    return omit(["kunta", "koodiArvo"], {
-      ...maakuntadata,
-      koodiarvo: maakuntadata.koodiArvo,
-      kunnat: sortBy(
-        path(["metadata", localeUpper, "nimi"]),
-        map(
-          kunta =>
-            omit(["koodiArvo"], {
-              ...kunta,
-              koodiarvo: kunta.koodiArvo,
-              metadata: mapObjIndexed(
-                head,
-                groupBy(prop("kieli"), kunta.metadata)
+    return reject(isNil)(
+      omit(["kunta", "koodiArvo"], {
+        ...maakuntadata,
+        koodiarvo: maakuntadata.koodiArvo,
+        kunnat: kunnat.length
+          ? sortBy(
+              path(["metadata", localeUpper, "nimi"]),
+              map(
+                kunta =>
+                  omit(["koodiArvo"], {
+                    ...kunta,
+                    koodiarvo: kunta.koodiArvo,
+                    metadata: mapObjIndexed(
+                      head,
+                      groupBy(prop("kieli"), kunta.metadata)
+                    )
+                  }),
+                kunnat
               )
-            }),
-          kunnat
+            )
+          : null,
+        metadata: mapObjIndexed(
+          head,
+          groupBy(prop("kieli"), maakuntadata.metadata)
         )
-      ),
-      metadata: mapObjIndexed(
-        head,
-        groupBy(prop("kieli"), maakuntadata.metadata)
-      )
-    });
+      })
+    );
   }
   return null;
 }

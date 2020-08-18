@@ -40,7 +40,6 @@ const ProfileMenu = props => {
               <MenuItem
                 id={item.id}
                 to={item.path}
-                exact={item.exact}
                 className="inline-block border border-blue-500 rounded py-2 px-4 text-white no-underline">
                 {item.text}
               </MenuItem>
