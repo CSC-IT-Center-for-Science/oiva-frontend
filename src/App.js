@@ -285,6 +285,7 @@ const App = ({ isDebugModeOn }) => {
                     finalItem={"b"}
                     finalProps={{
                       style: {
+                        fontWeight: 400,
                         color: COLORS.BLACK
                       }
                     }}
