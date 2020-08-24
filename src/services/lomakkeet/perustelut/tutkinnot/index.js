@@ -1,18 +1,9 @@
-import { isAdded, isInLupa, isRemoved } from "../../../../css/label";
-import { getMuutostarveCheckboxes } from "../common";
+import {isAdded, isInLupa, isRemoved} from "../../../../css/label";
+import {getMuutostarveCheckboxes} from "../common";
 import "../../i18n-config";
-import { __ } from "i18n-for-browser";
-import {
-  map,
-  toUpper,
-  filter,
-  find,
-  propEq,
-  compose,
-  isEmpty,
-  not,
-  prop
-} from "ramda";
+import {__} from "i18n-for-browser";
+import {compose, filter, find, isEmpty, map, not, prop, propEq, toUpper, reject, isNil, concat} from "ramda";
+import {getAnchorPart} from "../../../../utils/common";
 
 export const getAdditionForm = (checkboxItems, locale, isReadOnly = false) => {
   const checkboxes = getMuutostarveCheckboxes(
@@ -53,10 +44,11 @@ export const getRemovalForm = isReadOnly => {
   ];
 };
 
-export const getOsaamisalaForm = isReadOnly => {
+export const getOsaamisalaForm = (isReadOnly, osaamisalaTitle, koodiarvo) => {
   return [
     {
-      anchor: "osaamisala",
+      anchor: `osaamisala.${koodiarvo}`,
+      title: osaamisalaTitle,
       components: [
         {
           anchor: "A",
@@ -102,14 +94,34 @@ function getCategoriesForPerustelut(
             propEq("anchor", anchor),
             tutkinnotChangeObjects
           );
-          if (!changeObj) {
+
+         const osaamisalaChangeObjsForTutkinto = reject(isNil)(map(osaamisala => {
+           const anchorOsaamisala =
+             `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.${osaamisala.koodiarvo}.osaamisala`;
+           return find(changeObject => {
+             return changeObject.anchor === anchorOsaamisala
+           }, tutkinnotChangeObjects);
+          } , tutkinto.osaamisalat))
+
+          if (!changeObj && !osaamisalaChangeObjsForTutkinto.length) {
             return null;
           }
+
           const isAddition = changeObj.properties.isChecked;
-          const osaamisalatWithoutMaarays = filter(
-            osaamisala => !osaamisala.maarays,
-            tutkinto.osaamisalat
-          );
+
+          const tutkintoCategory = isAddition
+            ? getAdditionForm(oivaperustelut, locale, isReadOnly)
+            : getRemovalForm(isReadOnly);
+
+          const osaamisalaCategories = map(osaamisalaChangeObj => {
+            const osaamisalaKoodiarvo = getAnchorPart(osaamisalaChangeObj.anchor, 3);
+            const osaamisalaTitle = osaamisalaKoodiarvo + ' ' +
+              find(osaamisala => osaamisalaKoodiarvo === osaamisala.koodiarvo, tutkinto.osaamisalat).metadata[localeUpper].nimi;
+            return getOsaamisalaForm(isReadOnly, osaamisalaTitle, osaamisalaKoodiarvo)[0]
+          }, osaamisalaChangeObjsForTutkinto);
+
+          const categories = concat(tutkintoCategory, osaamisalaCategories);
+
           return new Date(tutkinto.voimassaAlkuPvm) < currentDate
             ? {
                 anchor: tutkinto.koodiarvo,
@@ -131,35 +143,7 @@ function getCategoriesForPerustelut(
                     }
                   }
                 ],
-                categories: isAddition
-                  ? getAdditionForm(oivaperustelut, locale, isReadOnly)
-                  : getRemovalForm(isReadOnly)
-                // categories: map(osaamisala => {
-                //   return {
-                //     anchor: osaamisala.koodiarvo,
-                //     components: [
-                //       {
-                //         anchor: "osaamisala",
-                //         name: "StatusTextRow",
-                //         properties: {
-                //           code: osaamisala.koodiarvo,
-                //           title: osaamisala.metadata[localeUpper].nimi,
-                //           labelStyles: {
-                //             addition: isAdded,
-                //             removal: isRemoved,
-                //             custom: Object.assign(
-                //               {},
-                //               // bold text if tutkinto is in lupa, but osaamisalarajoitus is not
-                //               !!tutkinto.maarays && !osaamisala.maarays
-                //                 ? isInLupa
-                //                 : {}
-                //             )
-                //           }
-                //         }
-                //       }
-                //     ]
-                //   };
-                // }, tutkinto.osaamisalat)
+              categories: categories
               }
             : null;
         }, tutkinnot).filter(Boolean)
@@ -170,164 +154,6 @@ function getCategoriesForPerustelut(
 
   return filter(compose(not, isEmpty, prop("categories")), structure);
 }
-
-// function getCategoriesForPerustelut(
-//   article,
-//   koulutustyypit,
-//   kohde,
-//   maaraystyyppi,
-//   changes,
-//   anchorInitial,
-//   muutosperustelut,
-//   locale,
-//   isReadOnly = false
-// ) {
-//   if (!muutosperustelut) {
-//     return false;
-//   }
-//   const anchor = prop("anchor");
-//   const relevantAnchors = map(anchor)(changes);
-//   const relevantKoulutustyypit = filter(
-//     compose(not, isEmpty, prop("koulutukset")),
-//     mapObjIndexed(koulutustyyppi => {
-//       koulutustyyppi.koulutukset = filter(koulutus => {
-//         const anchorStart = `${anchorInitial}.${koulutustyyppi.koodiarvo}.${koulutus.koodiarvo}`;
-//         return !!find(startsWith(anchorStart))(relevantAnchors);
-//       }, koulutustyyppi.koulutukset);
-//       return koulutustyyppi;
-//     })(koulutustyypit)
-//   );
-
-//   return values(
-//     map(koulutustyyppi => {
-//       return {
-//         anchor: koulutustyyppi.koodiArvo,
-//         code: koulutustyyppi.koodiArvo,
-//         title:
-//           _.find(koulutustyyppi.metadata, m => {
-//             return m.kieli === locale;
-//           }).nimi || "[Koulutustyypin otsikko tähän]",
-//         categories: chain(koulutus => {
-//           const isInLupaBool = article
-//             ? !!_.find(article.koulutusalat, koulutusala => {
-//                 return !!_.find(koulutusala.koulutukset, {
-//                   koodi: koulutus.koodiarvo
-//                 });
-//               })
-//             : false;
-
-//           const anchorBase = `${anchorInitial}.${koulutustyyppi.koodiArvo}.${koulutus.koodiarvo}`;
-
-//           const changeObjs = sortWith(
-//             [ascend(compose(length, anchor)), ascend(anchor)],
-//             filter(compose(startsWith(anchorBase), anchor))(changes)
-//           );
-//           return addIndex(map)((changeObj, i) => {
-//             const anchorWOLast = init(split(".")(anchor(changeObj)));
-//             const osaamisalakoodi = last(anchorWOLast);
-
-//             const osaamisala = find(
-//               i => i.koodiArvo === osaamisalakoodi,
-//               koulutus.osaamisalat
-//             );
-//             const isAddition = changeObj.properties.isChecked;
-
-//             const nimi = obj =>
-//               _.find(prop("metadata", obj), m => m.kieli === locale).nimi;
-
-//             return {
-//               anchor: `${koulutus.koodiarvo}|${i}`,
-//               categories: [
-//                 {
-//                   anchor: osaamisala
-//                     ? osaamisala.koodiArvo
-//                     : getAnchorPart(changeObj.anchor, 2),
-//                   meta: {
-//                     kohde,
-//                     maaraystyyppi,
-//                     koodisto: koulutus.koodisto,
-//                     metadata: koulutus.metadata,
-//                     isInLupa: isInLupaBool
-//                   },
-// categories: osaamisala
-//   ? getOsaamisalaForm(isReadOnly)
-//   : isAddition
-//   ? getAdditionForm(muutosperustelut, locale, isReadOnly)
-//   : getRemovalForm(isReadOnly),
-//                   components: [
-//                     {
-//                       anchor: "A",
-//                       name: "StatusTextRow",
-//                       properties: {
-//                         code: osaamisala ? "" : koulutus.koodiarvo,
-//                         title: osaamisala
-//                           ? join(" ", [
-//                               __("osaamisalarajoitus"),
-//                               osaamisalakoodi,
-//                               nimi(osaamisala),
-//                               "(" +
-//                                 koulutus.koodiarvo +
-//                                 " " +
-//                                 nimi(koulutus) +
-//                                 ")"
-//                             ])
-//                           : nimi(koulutus),
-//                         labelStyles: {
-//                           addition: isAdded,
-//                           removal: isRemoved
-//                         },
-//                         styleClasses: ["flex"],
-//                         statusTextStyleClasses: isAddition
-//                           ? ["text-green-600 pr-4 w-20 font-bold"]
-//                           : ["text-red-500 pr-4 w-20 font-bold"],
-//                         statusText: isAddition ? " LISÄYS:" : " POISTO:"
-//                       }
-//                     }
-//                   ]
-//                 }
-//               ]
-//             };
-//           }, changeObjs);
-//         }, koulutustyyppi.koulutukset)
-//       };
-//     }, _.cloneDeep(relevantKoulutustyypit))
-//   );
-// }
-
-// function getArticle(areaCode, articles = []) {
-//   return find(article => {
-//     return article.koodi === areaCode;
-//   }, articles);
-// }
-
-// const getReasoningForm = (
-//   koulutusala,
-//   kohde,
-//   lupakohde,
-//   maaraystyyppi,
-//   muutosperustelut,
-//   _changes = [],
-//   locale,
-//   isReadOnly = false
-// ) => {
-//   const areaCode = koulutusala.koodiarvo || koulutusala.koodiArvo;
-//   const anchorInitial = `tutkinnot_${areaCode}`;
-//   const article = getArticle(areaCode, lupakohde.maaraykset);
-//   const categories = _changes.length
-//     ? getCategoriesForPerustelut(
-//         article,
-//         koulutusala.koulutukset,
-//         kohde,
-//         maaraystyyppi,
-//         _changes,
-//         anchorInitial,
-//         muutosperustelut,
-//         locale,
-//         isReadOnly
-//       )
-//     : [];
-//   return categories;
-// };
 
 export default function getTutkinnotPerustelulomake(
   action,

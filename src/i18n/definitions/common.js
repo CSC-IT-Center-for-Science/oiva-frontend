@@ -205,7 +205,7 @@ export default defineMessages({
   },
   asiakirjatTakaisin: {
     id: "common.asiakirjatTakaisin",
-    defaultMessage: "Asiat sivulle"
+    defaultMessage: "Asiat-sivulle"
   },
   backFromAsiakirjat: {
     id: "common.backFromAsiakirjat",
@@ -405,7 +405,7 @@ export default defineMessages({
   },
   lupaPaatokset: {
     id: "common.lupaPaatokset",
-    defaultMessage: "Päätökset"
+    defaultMessage: "Lupapäätökset"
   },
   lupaHistoria: {
     id: "common.lupaHistoria",
@@ -433,7 +433,7 @@ export default defineMessages({
   },
   lupaHistoriaDiaarinumeroHeading: {
     id: "common.lupaHistoriaDiaarinumeroHeading",
-    defaultMessage: "Diaarinumero"
+    defaultMessage: "Asia-/Diaarinumero"
   },
   lupaHistoriaPaatosDateHeading: {
     id: "common.lupaHistoriaPaatosDateHeading",
@@ -848,5 +848,21 @@ export default defineMessages({
   jumpToContent: {
     id: "common.jumpToContent",
     defaultMessage: "Hyppää sisältöön"
+  },
+  paatoskirje: {
+    id: "common.paatoskirje",
+    defaultMessage: "Päätöskirje"
+  },
+  rowsPerPage: {
+    id: "common.rowsPerPage",
+    defaultMessage: "Rivejä per sivu:"
+  },
+  rows: {
+    id: "common.rows",
+    defaultMessage: "Rivit:"
+  },
+  lupapaatoksetTaulukko: {
+    id: "common.lupapaatoksetTaulukko",
+    defaultMessage: "Lupapäätökset-taulukko"
   }
 });

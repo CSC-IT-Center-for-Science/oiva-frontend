@@ -47,83 +47,87 @@ export default async function getTopThree(
   const asianumero =
     path(["properties", "value"], changeObjAsianumero) || defaultAsianumero;
 
-  return [
-    {
-      anchor: "asianumero",
-      components: [
-        {
-          anchor: "A",
-          name: "Input",
-          styleClasses: ["w-full"],
-          properties: {
-            isReadOnly,
-            isRequired: true,
-            isValid: await isAsianumeroValid(
-              asianumero,
-              data.uuid,
-              data.formatMessage
-            ),
-            label: __("asianumero"),
-            type: "text",
-            value: defaultAsianumero,
-            forChangeObject: {
-              uuid: data.uuid
+  const validAsianumero = await isAsianumeroValid(
+    asianumero,
+    data.uuid,
+    data.formatMessage);
+
+  return {
+    isValid: validAsianumero,
+    structure: [
+      {
+        anchor: "asianumero",
+        components: [
+          {
+            anchor: "A",
+            name: "Input",
+            styleClasses: ["w-full"],
+            properties: {
+              isReadOnly,
+              isRequired: true,
+              isValid: validAsianumero,
+              label: __("asianumero"),
+              type: "text",
+              value: defaultAsianumero,
+              forChangeObject: {
+                uuid: data.uuid
+              }
             }
           }
-        }
-      ]
-    },
-    {
-      anchor: "paatospaiva",
-      components: [
-        {
-          anchor: "A",
-          name: "Datepicker",
-          styleClasses: [""],
-          properties: {
-            fullWidth: true,
-            label: __("paatospaiva"),
-            placeholder: __("common.date"),
-            locale: locale,
-            localizations: {
-              ok: __("common.ok"),
-              clear: __("common.clear"),
-              cancel: __("common.cancel"),
-              today: __("common.today"),
-              datemax: __("common.datemax"),
-              datemin: __("common.datemin"),
-              dateinvalid: __("common.dateinvalid")
-            },
-            value: ""
+        ]
+      },
+      {
+        anchor: "paatospaiva",
+        components: [
+          {
+            anchor: "A",
+            name: "Datepicker",
+            styleClasses: [""],
+            properties: {
+              fullWidth: true,
+              label: __("paatospaiva"),
+              placeholder: __("common.date"),
+              locale: locale,
+              localizations: {
+                ok: __("common.ok"),
+                clear: __("common.clear"),
+                cancel: __("common.cancel"),
+                today: __("common.today"),
+                datemax: __("common.datemax"),
+                datemin: __("common.datemin"),
+                dateinvalid: __("common.dateinvalid")
+              },
+              value: ""
+            }
           }
-        }
-      ]
-    },
-    {
-      anchor: "voimaantulopaiva",
-      components: [
-        {
-          anchor: "A",
-          name: "Datepicker",
-          styleClasses: [""],
-          properties: {
-            fullWidth: true,
-            label: __("voimaantulopaiva"),
-            placeholder: __("common.date"),
-            locale: locale,
-            localizations: {
-              ok: __("common.ok"),
-              clear: __("common.clear"),
-              cancel: __("common.cancel"),
-              today: __("common.today"),
-              datemax: __("common.datemax"),
-              datemin: __("common.datemin"),
-              dateinvalid: __("common.dateinvalid")
-            },
-            value: ""
+        ]
+      },
+      {
+        anchor: "voimaantulopaiva",
+        components: [
+          {
+            anchor: "A",
+            name: "Datepicker",
+            styleClasses: [""],
+            properties: {
+              fullWidth: true,
+              label: __("voimaantulopaiva"),
+              placeholder: __("common.date"),
+              locale: locale,
+              localizations: {
+                ok: __("common.ok"),
+                clear: __("common.clear"),
+                cancel: __("common.cancel"),
+                today: __("common.today"),
+                datemax: __("common.datemax"),
+                datemin: __("common.datemin"),
+                dateinvalid: __("common.dateinvalid")
+              },
+              value: ""
+            }
           }
-        }
-      ]
-    }
-  ];
+        ]
+      }
+    ]
+  };
 }

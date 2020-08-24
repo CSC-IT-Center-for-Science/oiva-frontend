@@ -63,15 +63,6 @@ export function createBEOofTutkinnotJaOsaamisalat(
     tutkintoChangeObj &&
     !tutkintoChangeObj.properties.isChecked;
 
-  /**
-   * Ainoa asia, jonka vuoksi on tarpeen luoda tai päivittää muutosobjekti,
-   * on se, että tutkinto on joko aktivoitu tai deaktivoitu eli se ollaan
-   * joko lisäämässä lupaan tai poistamassa luvasta.
-   */
-  const isTutkinnonMuutosobjektiNeeded =
-    tutkintoChangeObj &&
-    tutkintoChangeObj.properties.isChecked !== isTutkintoInLupa;
-
   const anchorInit = tutkintoChangeObj
     ? getAnchorInit(tutkintoChangeObj.anchor)
     : "";
@@ -88,6 +79,18 @@ export function createBEOofTutkinnotJaOsaamisalat(
   );
 
   /**
+   * On tarpeen luoda tai päivittää muutosobjekti, jos tutkinto on joko aktivoitu
+   * tai deaktivoitu eli se ollaan joko lisäämässä lupaan tai poistamassa luvasta
+   * tai jos tutkinnon perusteluita on muutettu.
+   */
+
+ const perustelutForTutkinto = filter(perustelu => getAnchorPart(tutkintoChangeObj.anchor, 2) ===
+   getAnchorPart(perustelu.anchor, 2) && !includes('osaamisala', perustelu.anchor), perustelut);
+  const isTutkinnonMuutosobjektiNeeded =
+    tutkintoChangeObj &&
+    tutkintoChangeObj.properties.isChecked !== isTutkintoInLupa || perustelutForTutkinto.length;
+
+  /**
    * Mahdollinen tutkintomuutos on paikallaan määritellä muokattavana
    * objektina, koska siihen on myöhemmässä vaiheessa tarkoitus liittää
    * osaamisaloja koskevat käyttöliittymäpuolen muutosobjektit.
@@ -100,7 +103,7 @@ export function createBEOofTutkinnotJaOsaamisalat(
         kuvaus: tutkinto.metadata[locale].kuvaus,
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
-          changeObjects: flatten([[tutkintoChangeObj], perustelut]),
+          changeObjects: flatten([[tutkintoChangeObj], perustelutForTutkinto]),
           nimi: tutkinto.metadata[locale].nimi,
           koulutusala: tutkinto.koulutusalaKoodiarvo,
           koulutustyyppi: tutkinto.koulutustyyppiKoodiarvo,
@@ -130,6 +133,9 @@ export function createBEOofTutkinnotJaOsaamisalat(
    * ja tarkistettava, onko niihin kohdistettu muutoksia.
    */
   const osaamisalamuutokset = map(osaamisala => {
+    const osaamisalaPerustelut = filter(perustelu =>
+      getAnchorPart(perustelu.anchor, 4) === osaamisala.koodiarvo && includes('osaamisala', perustelu.anchor), perustelut);
+
     const isOsaamisalaRajoiteInLupa = !!osaamisala.maarays;
     let osaamisalamuutos = null;
 
@@ -164,7 +170,7 @@ export function createBEOofTutkinnotJaOsaamisalat(
           maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
           // maaraysUuid,
           meta: {
-            changeObjects: flatten([[osaamisalaChangeObj], perustelut]).filter(
+            changeObjects: flatten([[osaamisalaChangeObj], osaamisalaPerustelut]).filter(
               Boolean
             ),
             nimi: osaamisala.metadata[locale].nimi,
@@ -212,7 +218,7 @@ export function createBEOofTutkinnotJaOsaamisalat(
           maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
           maaraysUuid: osaamisala.maarays.uuid,
           meta: {
-            changeObjects: flatten([[osaamisalaChangeObj], perustelut]).filter(
+            changeObjects: flatten([[osaamisalaChangeObj], osaamisalaPerustelut]).filter(
               Boolean
             ),
             nimi: osaamisala.metadata[locale].nimi,

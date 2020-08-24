@@ -212,7 +212,9 @@ const App = ({ isDebugModeOn }) => {
             organisation={organisationLink}
             shortDescription={shortDescription}
             template={template}
-            languageSelectionAriaLabel={intl.formatMessage(langMessages.selection)}></Header>
+            languageSelectionAriaLabel={intl.formatMessage(
+              langMessages.selection
+            )}></Header>
         );
       }
       return null;
@@ -275,6 +277,7 @@ const App = ({ isDebugModeOn }) => {
                 className="w-full mx-auto px-3 lg:px-8 py-8">
                 <nav
                   tabIndex="0"
+                  className="breadcumbs-nav"
                   aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
                   <Breadcrumbs
                     separator={<b> / </b>}
@@ -282,6 +285,7 @@ const App = ({ isDebugModeOn }) => {
                     finalItem={"b"}
                     finalProps={{
                       style: {
+                        fontWeight: 400,
                         color: COLORS.BLACK
                       }
                     }}

@@ -110,8 +110,10 @@ const AsiaDialogContainer = ({
       return muutospyynto;
     }
 
-    fetchMuutospyynto();
-  }, [uuid]);
+    if (!muutospyynto) {
+      fetchMuutospyynto();
+    }
+  }, [muutospyynto, uuid]);
 
   const lupaKohteet = useMemo(() => {
     const result = lupa
@@ -128,7 +130,7 @@ const AsiaDialogContainer = ({
       return findObjectWithKey(backendMuutokset, "liitteet");
     }
     return null;
-  }, [uuid, muutospyynto]);
+  }, [muutospyynto]);
 
   const updatedC = useMemo(() => {
     return map(changeObj => {
@@ -196,6 +198,9 @@ const AsiaDialogContainer = ({
     }
 
     changesBySection.topthree = path(["meta", "topthree"], muutospyynto) || [];
+    // Set uuid for asianumero
+    find(topthree => getAnchorPart(topthree.anchor, 1) === 'asianumero', changesBySection.topthree)
+      .properties.metadata = {uuid: muutospyynto.uuid};
 
     if (
       changesBySection.categoryFilter &&
@@ -218,7 +223,7 @@ const AsiaDialogContainer = ({
     );
 
     return nextChangeObjects;
-  }, [muutospyynto]);
+  }, [muutospyynto, updatedC]);
 
   return muutospyynto && changeObjects ? (
     <UusiAsiaDialog

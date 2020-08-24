@@ -511,7 +511,7 @@
   },
   {
     "id": "common.lupaPaatokset",
-    "defaultMessage": "Päätökset",
+    "defaultMessage": "Lupapäätökset",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -546,7 +546,7 @@
   },
   {
     "id": "common.lupaHistoriaDiaarinumeroHeading",
-    "defaultMessage": "Diaarinumero",
+    "defaultMessage": "Asia-/Diaarinumero",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1012,6 +1012,26 @@
   {
     "id": "common.jumpToContent",
     "defaultMessage": "Hyppää sisältöön",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.paatoskirje",
+    "defaultMessage": "Päätöskirje",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.rowsPerPage",
+    "defaultMessage": "Rivejä per sivu:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.rows",
+    "defaultMessage": "Rivit:",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lupapaatoksetTaulukko",
+    "defaultMessage": "Lupapäätökset-taulukko",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
