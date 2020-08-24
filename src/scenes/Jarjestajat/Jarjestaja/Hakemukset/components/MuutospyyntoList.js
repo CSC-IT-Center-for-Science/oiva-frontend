@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { MEDIA_QUERIES, COLORS, FONT_STACK } from "modules/styles"
 
 import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+// import 'react-table/react-table.css'
 // import 'modules/Header/react-table-overrides.css'
 import styled from 'styled-components'
 

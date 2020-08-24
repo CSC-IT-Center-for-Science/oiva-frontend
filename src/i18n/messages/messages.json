@@ -1035,6 +1035,81 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.jarjestajaluettelo",
+    "defaultMessage": "Luettelo koulutuksen järjestäjistä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.www",
+    "defaultMessage": "WWW",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.filterRows",
+    "defaultMessage": "Suodata rivejä...",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.navigationBetweenTablePages",
+    "defaultMessage": "Navigointi taulukon sivujen välillä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siirryTaulukonEnsimmaiselleSivulleOhje",
+    "defaultMessage": "Olet taulukon sivulla {pageIndex}. Siirry taulukon ensimmäiselle sivulle.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siirryTaulukonEdelliselleSivulleOhje",
+    "defaultMessage": "Olet taulukon sivulla {pageIndex}. Siirry edelliselle sivulle.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siirryTaulukonSeuraavalleSivulleOhje",
+    "defaultMessage": "Olet taulukon sivulla {pageIndex}. Siirry seuraavalle sivulle.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siirryTaulukonViimeiselleSivulleOhje",
+    "defaultMessage": "Olet taulukon sivulla {pageIndex}. Siirry taulukon viimeiselle sivulle.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.ensimmainenSivu",
+    "defaultMessage": "Ensimmäinen sivu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.edellinen",
+    "defaultMessage": "Edellinen",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.seuraava",
+    "defaultMessage": "Seuraava",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.viimeinenSivu",
+    "defaultMessage": "Viimeinen sivu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siirrySivulle",
+    "defaultMessage": "Siirry sivulle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.siirryKJnTarkempiinTietoihin",
+    "defaultMessage": "Siirry koulutuksen järjestäjän {nimi} tarkempiin tietoihin.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kjSivuinfo",
+    "defaultMessage": "Tämä sivu sisältää taulukon voimassa olevista järjestämisluvista, joita on {kpl} kappaletta. Kukin lupa kuuluu jollekin koulutuksen järjestäjälle, jonka nimen kautta pääset tarkastelemaan tarkempia tietoja. Voit liikkua taulukon sivujen välillä käyttämällä taulukon alapuolella olevaa sivutustoiminnallisuutta.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"

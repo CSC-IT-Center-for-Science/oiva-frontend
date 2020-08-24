@@ -864,5 +864,71 @@ export default defineMessages({
   lupapaatoksetTaulukko: {
     id: "common.lupapaatoksetTaulukko",
     defaultMessage: "Lupapäätökset-taulukko"
+  },
+  jarjestajaluettelo: {
+    id: "common.jarjestajaluettelo",
+    defaultMessage: "Luettelo koulutuksen järjestäjistä"
+  },
+  www: {
+    id: "common.www",
+    defaultMessage: "WWW"
+  },
+  filterRows: {
+    id: "common.filterRows",
+    defaultMessage: "Suodata rivejä..."
+  },
+  navigationBetweenTablePages: {
+    id: "common.navigationBetweenTablePages",
+    defaultMessage: "Navigointi taulukon sivujen välillä"
+  },
+  siirryTaulukonEnsimmaiselleSivulleOhje: {
+    id: "common.siirryTaulukonEnsimmaiselleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry taulukon ensimmäiselle sivulle."
+  },
+  siirryTaulukonEdelliselleSivulleOhje: {
+    id: "common.siirryTaulukonEdelliselleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry edelliselle sivulle."
+  },
+  siirryTaulukonSeuraavalleSivulleOhje: {
+    id: "common.siirryTaulukonSeuraavalleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry seuraavalle sivulle."
+  },
+  siirryTaulukonViimeiselleSivulleOhje: {
+    id: "common.siirryTaulukonViimeiselleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry taulukon viimeiselle sivulle."
+  },
+  ensimmainenSivu: {
+    id: "common.ensimmainenSivu",
+    defaultMessage: "Ensimmäinen sivu"
+  },
+  edellinen: {
+    id: "common.edellinen",
+    defaultMessage: "Edellinen"
+  },
+  seuraava: {
+    id: "common.seuraava",
+    defaultMessage: "Seuraava"
+  },
+  viimeinenSivu: {
+    id: "common.viimeinenSivu",
+    defaultMessage: "Viimeinen sivu"
+  },
+  siirrySivulle: {
+    id: "common.siirrySivulle",
+    defaultMessage: "Siirry sivulle"
+  },
+  siirryKJnTarkempiinTietoihin: {
+    id: "common.siirryKJnTarkempiinTietoihin",
+    defaultMessage:
+      "Siirry koulutuksen järjestäjän {nimi} tarkempiin tietoihin."
+  },
+  kjSivuinfo: {
+    id: "common.kjSivuinfo",
+    defaultMessage:
+      "Tämä sivu sisältää taulukon voimassa olevista järjestämisluvista, joita on {kpl} kappaletta. Kukin lupa kuuluu jollekin koulutuksen järjestäjälle, jonka nimen kautta pääset tarkastelemaan tarkempia tietoja. Voit liikkua taulukon sivujen välillä käyttämällä taulukon alapuolella olevaa sivutustoiminnallisuutta."
   }
 });
