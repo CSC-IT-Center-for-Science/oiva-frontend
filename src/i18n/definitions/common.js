@@ -205,7 +205,7 @@ export default defineMessages({
   },
   asiakirjatTakaisin: {
     id: "common.asiakirjatTakaisin",
-    defaultMessage: "Asiat sivulle"
+    defaultMessage: "Asiat-sivulle"
   },
   backFromAsiakirjat: {
     id: "common.backFromAsiakirjat",

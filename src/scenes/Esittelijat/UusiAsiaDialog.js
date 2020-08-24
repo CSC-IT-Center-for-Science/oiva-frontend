@@ -305,15 +305,16 @@ const UusiAsiaDialog = React.memo(
                   <p>
                     {organisationPhoneNumber && (
                       <React.Fragment>
-                        <a href={`tel:${organisationPhoneNumber}`}>
-                          {organisationPhoneNumber}
+                        <a href={`tel:${organisationPhoneNumber}`}
+                           className="underline">
+                           {organisationPhoneNumber}
                         </a>{" "}
                         |{" "}
                       </React.Fragment>
                     )}
                     {organisationPhoneNumber && (
                       <React.Fragment>
-                        <a href={`mailto:${organisationEmail}`}>
+                        <a href={`mailto:${organisationEmail}`} className="underline">
                           {organisationEmail}
                         </a>{" "}
                         |{" "}
@@ -321,7 +322,7 @@ const UusiAsiaDialog = React.memo(
                     )}
                     {organisation.ytunnus} |{" "}
                     {organisationWebsite && (
-                      <a href={organisationWebsite}>{organisationWebsite}</a>
+                      <a href={organisationWebsite} className="underline">{organisationWebsite}</a>
                     )}
                   </p>
                 </div>
