@@ -12,7 +12,11 @@ import {
   append,
   path,
   head,
-  uniq
+  uniq,
+  reject,
+  isNil,
+  includes,
+  concat
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";
@@ -22,11 +26,13 @@ import { getMaakuntakunnat } from "../maakunnat";
  * @param {object} changeObjects
  * @param {object} kohde
  * @param {array} maaraystyypit
+ * @param {array} lupaMaaraykset
  */
 export async function defineBackendChangeObjects(
   changeObjects = {},
   kohde,
-  maaraystyypit
+  maaraystyypit,
+  lupaMaaraykset
 ) {
   const {
     quickFilterChanges = [],
@@ -40,7 +46,7 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = await getMaarayksetByTunniste("toimintaalue");
+  const maaraykset = getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**
@@ -193,13 +199,51 @@ export async function defineBackendChangeObjects(
    * YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN LISÄÄMINEN
    *
    * Yksittäiset maakunnat lisätään vain siinä tapauksessa, jos nust1-koodiston
-   * koodiarvon FI1-mukaista muutosobjektia ei olla lisäämässä. FI1 kattaa
+   * koodiarvon FI1-mukaista muutosobjektia ei olla lisäämässä tai poistamassa. FI1 kattaa
    * koko maan kaikki maakunnat - pois lukien Ahvenanmaan maakunta - ja niinpä
    * kyseisen koodiarvon mukaisen muutosobjektin ollessa backendille
    * lähetettävien muutosobjektien joukossa eivät yksittäiset maakunta- ja
    * kuntalisäykset ole tarpeellisia.
    **/
-  if (!muutosFI1 || (muutosFI1 && muutosFI1.tila !== "LISAYS")) {
+
+  // Jos nuts-1 koodiston koodiarvon FI1-mukainen muutosobjekti ollaan poistamassa
+  // luodaan lisäysobjektit kaikista maakunnista ja kunnista joita ei ole poistettu
+  if (muutosFI1 && muutosFI1.tila === "POISTO") {
+    const filteredMaakuntaKunnat = filter(m => m.koodiarvo !== "99" && m.koodiarvo !== "21", maakuntakunnat);
+    // MAAKUNTIEN LISÄYSOBJEKTIEN LUOMINEN
+   const addedProvinceChangeObjects = reject(isNil)(map(maakunta => {
+      return includes(maakunta.koodiarvo, map(province => province.koodiarvo, provinces)) ? null :
+        {
+          tila: "LISAYS",
+          kohde,
+          koodisto: "maakunta",
+          koodiarvo: maakunta.koodiarvo,
+          maaraystyyppi
+        }
+    },
+      filteredMaakuntaKunnat));
+
+    // KUNTIEN LISÄYSOBJEKTIEN LUOMINEN
+    const provincesNotAdded = filter(maakuntakunta =>
+      !includes(maakuntakunta.koodiarvo, map(province => province.koodiarvo, addedProvinceChangeObjects)), filteredMaakuntaKunnat);
+
+    const addedMunicipalityChangeObjects = flatten(map(province => {
+      return reject(isNil)(map(kunta => {
+        return includes(kunta.koodiarvo, map(co => path(['properties', 'metadata', 'koodiarvo'], co), provinceChangeObjects)) ?
+          null : {
+            tila: "LISAYS",
+            kohde,
+            koodisto: "kunta",
+            koodiarvo: kunta.koodiarvo,
+            maaraystyyppi
+          };
+      }, province.kunnat))
+    }, provincesNotAdded));
+    provinceBEchangeObjects.lisaykset =
+      append(concat(addedProvinceChangeObjects, addedMunicipalityChangeObjects), provinceBEchangeObjects.lisaykset);
+  }
+
+  else if (!muutosFI1 || (muutosFI1 && muutosFI1.tila !== "LISAYS")) {
     /**
      * Käydään muutoksia sisältävät maakunnat ja niiden kunnat läpi
      * tarkoituksena löytää kunnat, jotka on lisättävä lupaan.
