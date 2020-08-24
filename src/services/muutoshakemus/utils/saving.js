@@ -144,7 +144,8 @@ export async function createObjectToSave(
       })()
     },
     R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
-    maaraystyypit
+    maaraystyypit,
+    lupa.maaraykset
   );
 
   // KOULUTUKSET
