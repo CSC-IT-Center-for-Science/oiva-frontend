@@ -130,6 +130,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.attachmentAddPaatoskirje",
+    "defaultMessage": "Lisää päätöskirje",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.attachmentRemove",
     "defaultMessage": "Poista liite",
     "filepath": "src/i18n/definitions/common.js"

@@ -45,6 +45,7 @@
   "common.asiatTitle": "Järjestämislupa-asiat",
   "common.attachement": "Liite",
   "common.attachmentAdd": "Lisää liite",
+  "common.attachmentAddPaatoskirje": "Lisää päätöskirje",
   "common.attachmentDownload": "Lataa liite tietokoneelle",
   "common.attachmentError": "Valitsemaasi liitettä ei voi lisätä hakemukseen, tarkista sen koko ja tyyppi",
   "common.attachmentErrorName": "Nimi on pakollinen",

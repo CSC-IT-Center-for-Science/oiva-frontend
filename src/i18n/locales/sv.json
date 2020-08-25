@@ -45,6 +45,7 @@
   "common.asiatTitle": "SV: Järjestämislupa-asiat",
   "common.attachement": "SV: Liite",
   "common.attachmentAdd": "SV: Lisää liite",
+  "common.attachmentAddPaatoskirje": "SV: Lisää päätöskirje",
   "common.attachmentDownload": "SV: Lataa liite tietokoneelle",
   "common.attachmentError": "SV: Valitsemaasi liitettä ei voi lisätä hakemukseen, tarkista sen koko ja tyyppi",
   "common.attachmentErrorName": "SV: Nimi on pakollinen",

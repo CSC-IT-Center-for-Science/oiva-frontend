@@ -95,6 +95,10 @@ export default defineMessages({
     id: "common.attachmentAdd",
     defaultMessage: "Lisää liite"
   },
+  attachmentAddPaatoskirje: {
+    id: "common.attachmentAddPaatoskirje",
+    defaultMessage: "Lisää päätöskirje"
+  },
   attachmentRemove: {
     id: "common.attachmentRemove",
     defaultMessage: "Poista liite"

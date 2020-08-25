@@ -1,8 +1,8 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, {useMemo, useEffect, useState} from "react";
 import Media from "react-media";
 import styled from "styled-components";
 import { Table as OldTable, Tbody } from "../../../modules/Table";
-import { MEDIA_QUERIES } from "../../../modules/styles";
+import {COLORS, MEDIA_QUERIES} from "../../../modules/styles";
 import AsiakirjatItem from "./AsiakirjatItem";
 import common from "../../../i18n/definitions/common";
 import PropTypes from "prop-types";
@@ -25,6 +25,8 @@ import RemovalDialogOfAsiakirja from "../RemovalDialogOfAsiakirja";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import PDFAndStateDialog from "../PDFAndStateDialog";
 import error from "../../../i18n/definitions/error";
+import SelectAttachment from "okm-frontend-components/dist/components/02-organisms/SelectAttachment";
+import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
 
 const WrapTable = styled.div``;
 
@@ -312,6 +314,31 @@ const Asiakirjat = React.memo(() => {
     muutospyynnonLiitteet.fetchedAt &&
     muutospyynto.fetchedAt;
 
+  const handleAddPaatoskirje = async (attachment) => {
+    // Search for existing paatoskirje in muutospyynto
+    let paatoskirje = muutospyynto.data.liitteet ? muutospyynto.data.liitteet.find(liite =>
+      liite.tyyppi === 'paatosKirje') : null;
+
+    // If paatoskirje exists, replace the existing file, otherwise append to liitteet array
+    if (paatoskirje) {
+      paatoskirje.nimi = attachment.nimi;
+      paatoskirje.koko = attachment.koko;
+      paatoskirje.tiedosto = attachment.tiedosto;
+      paatoskirje.filename = attachment.filename;
+    }
+    else {
+     muutospyynto.data.liitteet = R.append(attachment, muutospyynto.liitteet);
+     paatoskirje = attachment;
+    }
+
+    const procedureHandler = new ProcedureHandler(intl.formatMessage);
+    await procedureHandler.run(
+      "muutospyynto.tallennus.tallennaPaatoskirje",
+      [paatoskirje, muutospyynto.data, true]
+    );
+    muutospyynnonLiitteetAction.load(muutospyynto.data.uuid, true);
+  }
+
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
       <div
@@ -357,7 +384,31 @@ const Asiakirjat = React.memo(() => {
           <div
             style={{ maxWidth: "90rem" }}
             className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
-            <h4 className="mb-2">{t(common.asianAsiakirjat)}</h4>
+            <span><h4 className="mb-2 float-left">{t(common.asianAsiakirjat)}</h4>
+              <h4 className="float-right">
+                <SelectAttachment
+              attachmentAdded={handleAddPaatoskirje}
+              messages={{
+                attachmentAdd: t(common.attachmentAddPaatoskirje),
+                attachmentName: t(common.attachmentName),
+                attachmentErrorName: t(common.attachmentErrorName),
+                attachmentError: t(common.attachmentError),
+                ok: t(common.ok),
+                cancel: t(common.cancel)
+              }}
+              styles={{
+                fontSize: '1em',
+                backgroundColor: COLORS.BG_GRAY,
+                border: 'none',
+                iconSize: '18',
+                svgMargin: '0.1em 0.1em 0.2em 0',
+                circleIcon: true,
+                disableHover: true,
+                normalCase: true,
+              }}
+              fileType={"paatosKirje"}/>
+              </h4>
+            </span>
             {isRemovalDialogVisible && (
               <RemovalDialogOfAsiakirja
                 isVisible={isRemovalDialogVisible}
