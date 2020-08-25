@@ -14,7 +14,7 @@ export const backendRoutes = {
   koulutusalat: { path: `koodistot/koulutusalat/` },
   koulutustyypit: { path: `koodistot/koulutustyypit/` },
   kunnat: { path: `koodistot/kunnat` },
-  lupa: { path: `luvat/jarjestaja/` },
+  lupa: { path: `luvat/jarjestaja/`, minimumTimeBetweenFetchingInMinutes: 0 },
   lupahistoria: { path: `luvat/historia/` },
   luvat: { path: `luvat/jarjestajilla` },
   maakunnat: { path: `koodistot/maakunnat` },
