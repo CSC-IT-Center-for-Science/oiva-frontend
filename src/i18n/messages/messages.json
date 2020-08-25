@@ -266,7 +266,7 @@
   },
   {
     "id": "common.asiakirjatTakaisin",
-    "defaultMessage": "Asiat sivulle",
+    "defaultMessage": "Asiat-sivulle",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1032,6 +1032,31 @@
   {
     "id": "common.lupapaatoksetTaulukko",
     "defaultMessage": "Lupapäätökset-taulukko",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.tilastosivunOhje",
+    "defaultMessage": "Linkkejä tilastodataan (beta-versio):",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.ammatillisenKoulutuksenJarjestamisluvat",
+    "defaultMessage": "Ammatillisen koulutuksen järjestämisluvat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.vaestoennuste",
+    "defaultMessage": "Väestöennuste",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.vaestoAidinkielenMukaan",
+    "defaultMessage": "Väestö äidinkielen mukaan",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.koulutusJaPaaasiallinenToiminta",
+    "defaultMessage": "Koulutus ja pääasiallinen toiminta",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
