@@ -405,6 +405,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "asiaTable.actions.lataaLiite",
+    "defaultMessage": "Lataa liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "asiaTable.actions.muokkaa",
     "defaultMessage": "Muokkaa",
     "filepath": "src/i18n/definitions/common.js"

@@ -319,6 +319,10 @@ export default defineMessages({
     id: "asiaTable.actions.lataa",
     defaultMessage: "Lataa PDF"
   },
+  "asiaTable.actions.lataaLiite": {
+    id: "asiaTable.actions.lataaLiite",
+    defaultMessage: "Lataa liite"
+  },
   "asiaTable.actions.muokkaa": {
     id: "asiaTable.actions.muokkaa",
     defaultMessage: "Muokkaa"

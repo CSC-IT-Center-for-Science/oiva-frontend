@@ -14,6 +14,7 @@
   "asiaStates.kj.VALMISTELUSSA": "Lähetetty",
   "asiaTable.actions.esittelyssa": "Merkitse esittelyssä",
   "asiaTable.actions.lataa": "Lataa PDF",
+  "asiaTable.actions.lataaLiite": "Lataa liite",
   "asiaTable.actions.lataaPDFJaMuutaTila": "Lataa PDF ja muuta tila",
   "asiaTable.actions.muokkaa": "Muokkaa",
   "asiaTable.actions.paatetty": "Merkitse päätetyksi",

@@ -145,6 +145,7 @@ const Asiakirjat = React.memo(() => {
       return R.map(
         liite => ({
           uuid: liite.uuid,
+          type: 'liite',
           items: [
             intl.formatMessage(
               liite.salainen ? common.secretAttachment : common.attachment
@@ -237,7 +238,7 @@ const Asiakirjat = React.memo(() => {
         {
           rows: R.addIndex(R.map)((row, i) => {
             return {
-              uuid: rows.length === 1 ? row.uuid : null,
+              uuid: row.uuid,
               fileLinkFn: row.fileLinkFn,
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLinkFn) {
@@ -270,7 +271,7 @@ const Asiakirjat = React.memo(() => {
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
-                    row.tila !== "ESITTELYSSA"
+                    row.type !== 'liite' && row.tila !== "ESITTELYSSA"
                       ? {
                           id: "edit",
                           text: t(common["asiaTable.actions.muokkaa"])
@@ -278,9 +279,10 @@ const Asiakirjat = React.memo(() => {
                       : null,
                     {
                       id: "lataa",
-                      text: t(common["asiaTable.actions.lataa"])
+                      text: row.type === 'liite' ? t(common["asiaTable.actions.lataaLiite"]) :
+                        t(common["asiaTable.actions.lataa"])
                     },
-                    row.tila !== "ESITTELYSSA"
+                    row.type !== 'liite' && row.tila !== "ESITTELYSSA"
                       ? {
                           id: "download-pdf-and-change-state",
                           text: t(
@@ -288,7 +290,7 @@ const Asiakirjat = React.memo(() => {
                           )
                         }
                       : null,
-                    row.tila !== "ESITTELYSSA"
+                    row.type !== 'liite' &&  row.tila !== "ESITTELYSSA"
                       ? {
                           id: "remove",
                           text: t(common.poista)
