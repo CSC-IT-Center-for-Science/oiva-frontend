@@ -872,5 +872,25 @@ export default defineMessages({
   lupapaatoksetTaulukko: {
     id: "common.lupapaatoksetTaulukko",
     defaultMessage: "Lupapäätökset-taulukko"
+  },
+  tilastosivunOhje: {
+    id: "common.tilastosivunOhje",
+    defaultMessage: "Linkkejä tilastodataan (beta-versio):"
+  },
+  ammatillisenKoulutuksenJarjestamisluvat: {
+    id: "common.ammatillisenKoulutuksenJarjestamisluvat",
+    defaultMessage: "Ammatillisen koulutuksen järjestämisluvat"
+  },
+  vaestoennuste: {
+    id: "common.vaestoennuste",
+    defaultMessage: "Väestöennuste"
+  },
+  vaestoAidinkielenMukaan: {
+    id: "common.vaestoAidinkielenMukaan",
+    defaultMessage: "Väestö äidinkielen mukaan"
+  },
+  koulutusJaPaaasiallinenToiminta: {
+    id: "common.koulutusJaPaaasiallinenToiminta",
+    defaultMessage: "Koulutus ja pääasiallinen toiminta"
   }
 });
