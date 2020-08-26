@@ -12,7 +12,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import common from "../../../../../i18n/definitions/common";
 import Attachment from "@material-ui/icons/Attachment";
-import { map, addIndex } from "ramda";
+import { map, addIndex, prepend } from "ramda";
 import { useIntl } from "react-intl";
 import moment from "moment";
 import { API_BASE_URL } from "modules/constants";
@@ -149,12 +149,11 @@ const useStyles = makeStyles(() => ({
 
 /**
  * Main component: LupapaatoksetTable
- * 
+ *
  * @param {array} param0 - Base data for table construction.
  */
-export default function LupapaatoksetTable({ data }) {
+export default function LupapaatoksetTable({ data, lupa }) {
   const intl = useIntl();
-
   const headCells = [
     {
       id: "diaarinumero",
@@ -186,7 +185,7 @@ export default function LupapaatoksetTable({ data }) {
     }
   ];
 
-  const rows = map(
+  const historicalRows = map(
     ({
       diaarinumero,
       filename,
@@ -205,18 +204,33 @@ export default function LupapaatoksetTable({ data }) {
           jarjestamislupa: `${API_BASE_URL}/pdf/historia/${uuid}`
         },
         paatoskirje: "[linkki tähän, kun tieto saatavilla]",
-        jarjestamislupa: `${filename} (PDF ${Math.round(
-          Math.random() * 100
-        )} KB)`,
+        jarjestamislupa: filename,
         kumottu
       };
     },
     data
   );
 
+  const rows = prepend(
+    {
+      diaarinumero: lupa.diaarinumero,
+      paatospvm: lupa.paatospvm,
+      jarjestamislupa: lupa.diaarinumero,
+      kumottu: "",
+      paatoskirje: "",
+      urls: {
+        jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`
+      },
+      paatoskirje: "[linkki tähän, kun tieto saatavilla]", // /api/liitteet/{uuid}/raw
+      voimassaoloalkupvm: lupa.alkupvm,
+      voimassaololoppupvm: ""
+    },
+    historicalRows
+  );
+
   const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("diaarinumero");
+  const [order, setOrder] = React.useState("desc");
+  const [orderBy, setOrderBy] = React.useState("paatospvm");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense] = React.useState(false);
@@ -298,13 +312,19 @@ export default function LupapaatoksetTable({ data }) {
                         {row.diaarinumero}
                       </TableCell>
                       <TableCell align="left">
-                        {moment(row.paatospvm).format("DD.MM.YYYY")}
+                        {row.paatospvm
+                          ? moment(row.paatospvm).format("DD.MM.YYYY")
+                          : null}
                       </TableCell>
                       <TableCell align="left">
-                        {moment(row.voimassaoloalkupvm).format("DD.MM.YYYY")}
+                        {row.voimassaoloalkupvm
+                          ? moment(row.voimassaoloalkupvm).format("DD.MM.YYYY")
+                          : null}
                       </TableCell>
                       <TableCell align="left">
-                        {moment(row.voimassaololoppupvm).format("DD.MM.YYYY")}
+                        {row.voimassaololoppupvm
+                          ? moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
+                          : null}
                       </TableCell>
                       <TableCell align="left">
                         <Attachment />
