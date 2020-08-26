@@ -149,7 +149,7 @@ const useStyles = makeStyles(() => ({
 
 /**
  * Main component: LupapaatoksetTable
- * 
+ *
  * @param {array} param0 - Base data for table construction.
  */
 export default function LupapaatoksetTable({ data }) {
@@ -190,7 +190,7 @@ export default function LupapaatoksetTable({ data }) {
     ({
       diaarinumero,
       filename,
-      kumottu,
+      kumottupvm,
       paatospvm,
       uuid,
       voimassaoloalkupvm,
@@ -208,7 +208,7 @@ export default function LupapaatoksetTable({ data }) {
         jarjestamislupa: `${filename} (PDF ${Math.round(
           Math.random() * 100
         )} KB)`,
-        kumottu
+        kumottupvm
       };
     },
     data
@@ -318,7 +318,7 @@ export default function LupapaatoksetTable({ data }) {
                           {row.jarjestamislupa}
                         </a>
                       </TableCell>
-                      <TableCell align="left">{row.kumottu}</TableCell>
+                      <TableCell align="left">{row.kumottupvm}</TableCell>
                     </TableRow>
                   );
                 })}
