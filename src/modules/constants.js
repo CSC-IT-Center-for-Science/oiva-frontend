@@ -16,3 +16,6 @@ export const ROLE_ESITTELIJA = "OIVA_APP_ESITTELIJA";
 export const ROLE_MUOKKAAJA = "OIVA_APP_MUOKKAAJA";
 export const ROLE_NIMENKIRJOITTAJA = "OIVA_APP_NIMENKIRJOITTAJA";
 export const ROLE_KATSELIJA = "OIVA_APP_KATSELIJA";
+
+// SESSION
+export const sessionTimeoutInMinutes = 20;

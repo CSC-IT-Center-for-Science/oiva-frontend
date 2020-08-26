@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState, useCallback } from "react";
 import { IntlProvider } from "react-intl";
 import translations from "./i18n/locales";
 import { defaults } from "react-sweet-state";
@@ -10,7 +10,9 @@ import { useKaannokset } from "./stores/localizations";
 import { useGlobalSettings } from "./stores/appStore";
 import { CircularProgress } from "@material-ui/core";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
+import { useIdleTimer } from "react-idle-timer";
 import { isEmpty } from "ramda";
+import { sessionTimeoutInMinutes } from "modules/constants";
 
 defaults.devtools = true;
 
@@ -37,6 +39,17 @@ const AppWrapper = () => {
   const isBackendTheSourceOfLocalizations = !process.env.USE_LOCAL_TRANSLATIONS;
   const [user, userActions] = useUser();
   const [state] = useGlobalSettings();
+  const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
+
+  const handleOnIdle = event => {
+    setSessionDialogVisible(true);
+  };
+
+  useIdleTimer({
+    timeout: (sessionTimeoutInMinutes / 2) * 60 * 1000, // unit: ms
+    onIdle: handleOnIdle,
+    debounce: 500
+  });
 
   useEffect(() => {
     // Let's fetch the current user from backend
@@ -76,6 +89,10 @@ const AppWrapper = () => {
     }
   }, [messages]);
 
+  const onSessionDialogOK = useCallback(() => {
+    setSessionDialogVisible(false);
+  }, []);
+
   const appStructure = useMemo(() => {
     if (user.fetchedAt) {
       return state.isDebugModeOn ? (
@@ -85,15 +102,32 @@ const AppWrapper = () => {
               id="cy"
               className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
               style={{ zIndex: 9000 }}></div>
-            <div className="w-2/3 relative">{<App />}</div>
+            <div className="w-2/3 relative">
+              {
+                <App
+                  isSessionDialogVisible={isSessionDialogVisible}
+                  onLogout={onSessionDialogOK}
+                  onSessionDialogOK={onSessionDialogOK}
+                />
+              }
+            </div>
           </div>
         ) : null
       ) : !!user.fetchedAt ? (
-        <App />
+        <App
+          isSessionDialogVisible={isSessionDialogVisible}
+          onLogout={onSessionDialogOK}
+          onSessionDialogOK={onSessionDialogOK}
+        />
       ) : null;
     }
     return null;
-  }, [state.isDebugModeOn, user.fetchedAt]);
+  }, [
+    isSessionDialogVisible,
+    onSessionDialogOK,
+    state.isDebugModeOn,
+    user.fetchedAt
+  ]);
 
   if (
     !kaannokset.fetchedAt &&
