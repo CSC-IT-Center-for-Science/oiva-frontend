@@ -4,7 +4,6 @@ import { API_BASE_URL } from "modules/constants";
 import Loading from "modules/Loading";
 import {
   isEmpty,
-  isNil,
   sortBy,
   prop,
   map,

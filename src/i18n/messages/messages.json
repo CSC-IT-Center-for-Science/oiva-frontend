@@ -15,6 +15,21 @@
     "filepath": "src/i18n/definitions/auth.js"
   },
   {
+    "id": "auth.sessionDialogTitle",
+    "defaultMessage": "Kirjautumisesi on vanhentumassa",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.sessionDialogCountdown",
+    "defaultMessage": "Kirjautumisesi vanhenee {time} jälkeen. Jatketaanko kirjautuneena?",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.jatkaKirjautuneena",
+    "defaultMessage": "Jatka kirjautuneena",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
     "id": "common.statistics",
     "defaultMessage": "Tilastot",
     "filepath": "src/i18n/definitions/common.js"
