@@ -318,7 +318,9 @@ export default function LupapaatoksetTable({ data }) {
                           {row.jarjestamislupa}
                         </a>
                       </TableCell>
-                      <TableCell align="left">{row.kumottupvm}</TableCell>
+                      <TableCell align="left">
+                        {row.kumottupvm ? moment(row.kumottupvm).format("DD.MM.YYYY") : ''}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
