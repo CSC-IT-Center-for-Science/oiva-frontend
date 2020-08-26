@@ -38,6 +38,7 @@
     "react-dom": "^16.10.2",
     "react-helmet": "^6.0.0-beta",
     "react-icons": "^3.3.0",
+    "react-idle-timer": "^4.3.6",
     "react-intl": "^3.9.3",
     "react-media": "^1.10.0",
     "react-modal": "^3.10.1",
