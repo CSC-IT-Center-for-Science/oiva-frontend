@@ -152,7 +152,8 @@ const Asiakirjat = React.memo(() => {
             ) +
               " " +
               R.prop("nimi", liite),
-            ...attachmentRow,
+            intl.formatMessage(common.tilaValmis),
+            intl.formatMessage(common.opetusJaKulttuuriministerio),
             liite.luontipvm ? (
               <Moment format="D.M.YYYY">{liite.luontipvm}</Moment>
             ) : (

@@ -892,5 +892,13 @@ export default defineMessages({
   koulutusJaPaaasiallinenToiminta: {
     id: "common.koulutusJaPaaasiallinenToiminta",
     defaultMessage: "Koulutus ja pääasiallinen toiminta"
+  },
+  tilaValmis: {
+    id: "common.tilaValmis",
+    defaultMessage: "Valmis"
+  },
+  opetusJaKulttuuriministerio: {
+    id: "common.opetusJaKulttuuriministerio",
+    defaultMessage: "Opetus- ja kulttuuriministeriö",
   }
 });
