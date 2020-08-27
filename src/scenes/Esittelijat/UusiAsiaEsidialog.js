@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
@@ -8,16 +8,47 @@ import {
   DialogContent,
   Dialog,
   DialogActions,
-  Button
+  Button,
+  FormControl,
+  IconButton,
+  TextField,
+  CircularProgress
 } from "@material-ui/core";
 import { useOrganisations } from "../../stores/organisations";
-import { sortBy, prop, map } from "ramda";
+import { sortBy, prop, map, find, propEq } from "ramda";
 import { resolveLocalizedOrganizationName } from "../../modules/helpers";
+import SearchIcon from "@material-ui/icons/Search";
+import { withStyles } from "@material-ui/styles";
+import { fetchJSON } from "../BaseData/index";
+import { backendRoutes } from "stores/utils/backendRoutes";
+import CheckIcon from "@material-ui/icons/Check";
+import ErrorIcon from "@material-ui/icons/Error";
+
+const StyledButton = withStyles({
+  root: {
+    color: "#4C7A61",
+    fontWeight: 400,
+    fontSize: "0.9375rem",
+    textTransform: "none"
+  }
+})(Button);
+
+const StyledErrorIcon = withStyles({
+  root: {
+    color: "#E5C418"
+  }
+})(ErrorIcon);
 
 const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
   const intl = useIntl();
   const [selectedKJ, setSelectedKJ] = useState();
   const [organisations, organisationsActions] = useOrganisations({});
+  const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(false);
+  const [organisation, setOrganisation] = useState(null);
+  const [organisationStatus, setOrganisationStatus] = useState();
+  const inputEl = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isKJMissing, setIsKJMissing] = useState(false);
 
   useEffect(() => {
     const abortController = organisationsActions.load();
@@ -27,6 +58,30 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
       }
     };
   }, [organisationsActions]);
+
+  const searchByYtunnus = useCallback(async () => {
+    const { value: ytunnus } = inputEl.current;
+    setIsLoading(true);
+    const result = await fetchJSON(
+      `${backendRoutes.ytunnushaku.path}/${ytunnus}`
+    );
+    setIsLoading(false);
+    setOrganisation(result);
+    setIsKJMissing(false);
+    if (result) {
+      const isLupaExisting = !!find(
+        propEq("oid", result.oid),
+        organisations.data
+      );
+      if (isLupaExisting) {
+        setOrganisationStatus("duplicate");
+      } else {
+        setOrganisationStatus("ok");
+      }
+    } else {
+      setOrganisationStatus("notfound");
+    }
+  }, [organisations]);
 
   return organisations.data &&
     organisations.fetchedAt &&
@@ -40,30 +95,141 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
         <div className="px-2 py-4 relative">
-          <p className="mb-6">{intl.formatMessage(common.luoUusiAsiaInstructions)}</p>
-          <Autocomplete
-            isMulti={false}
-            name="koulutuksen-jarjestaja"
-            options={sortBy(
-              prop("label"),
-              map(organisation => {
-                return organisation
-                  ? {
-                      label: resolveLocalizedOrganizationName(
-                        organisation,
-                        intl.locale
+          {isSearchFieldVisible ? (
+            <React.Fragment>
+              <p className="mb-6">
+                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
+              </p>
+              <div className="flex items-center">
+                <FormControl>
+                  <TextField
+                    label={intl.formatMessage(common.syotaYtunnus)}
+                    InputProps={{
+                      endAdornment: isLoading ? (
+                        <CircularProgress style={{ height: "auto" }} />
+                      ) : (
+                        <IconButton
+                          type="button"
+                          aria-label={intl.formatMessage(
+                            common.suoritaYtunnushaku
+                          )}
+                          onClick={searchByYtunnus}>
+                          <SearchIcon />
+                        </IconButton>
                       ),
-                      value: organisation.ytunnus
-                    }
-                  : null;
-              }, organisations.data)
-            ).filter(Boolean)}
-            callback={(payload, values) => {
-              setSelectedKJ(values.value);
-            }}
-            title={""}
-            value={selectedKJ}
-          />
+                      inputRef: inputEl,
+                      onKeyUp: e => {
+                        // 13 = Enter
+                        return e.keyCode === 13 ? searchByYtunnus() : null;
+                      }
+                    }}
+                    variant="outlined"
+                  />
+                </FormControl>
+                <StyledButton
+                  onClick={() => {
+                    setOrganisation(null);
+                    setIsSearchFieldVisible(false);
+                  }}
+                  style={{ marginLeft: "1rem" }}>
+                  {intl.formatMessage(common.suljeHaku)}
+                </StyledButton>
+              </div>
+              {organisation && organisationStatus === "ok" ? (
+                <div>
+                  <p className="my-4 text-gray-500 text-xs">
+                    {intl.formatMessage(common.haullaLoytyiKJ)}
+                  </p>
+                  <p className="mb-2">
+                    <CheckIcon color="primary" />{" "}
+                    {organisation.nimi.fi || organisation.nimi.sv}
+                  </p>
+                </div>
+              ) : null}
+              {organisationStatus === "notfound" ? (
+                <div>
+                  <p className="my-4 text-gray-500 text-xs">
+                    {intl.formatMessage(common.KJHakuEpaonnistui)}
+                  </p>
+                  <p className="mb-2">
+                    {intl.formatMessage(common.KJHakuEpaonnistuiLisainfo)}{" "}
+                    <a
+                      href={`mailto:${intl.formatMessage(
+                        common.yhteisetpalvelutEmailAddress
+                      )}`}>
+                      {intl.formatMessage(common.yhteisetpalvelutEmailAddress)}
+                    </a>
+                  </p>
+                </div>
+              ) : null}
+              {organisation && organisationStatus === "duplicate" ? (
+                <div>
+                  <p className="my-4 text-gray-500 text-xs">
+                    {intl.formatMessage(common.haullaLoytyiKJ)}
+                  </p>
+                  <p className="mb-2 text-xl">
+                    <StyledErrorIcon />{" "}
+                    {organisation.nimi.fi || organisation.nimi.sv}
+                  </p>
+                  <p className="mb-2">
+                    {intl.formatMessage(common.loytyyjoVoimassaOlevaLupa)}{" "}
+                  </p>
+                </div>
+              ) : null}
+              {isKJMissing && !organisation ? (
+                <p className="mt-2">
+                  <StyledErrorIcon />{" "}
+                  {intl.formatMessage(common.oneKJMustBeSelected)}
+                </p>
+              ) : null}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <p className="mb-6">
+                {intl.formatMessage(common.luoUusiAsiaInstructions)}
+              </p>
+              <Autocomplete
+                isMulti={false}
+                name="koulutuksen-jarjestaja"
+                options={sortBy(
+                  prop("label"),
+                  map(organisation => {
+                    return organisation
+                      ? {
+                          label: resolveLocalizedOrganizationName(
+                            organisation,
+                            intl.locale
+                          ),
+                          value: organisation.ytunnus
+                        }
+                      : null;
+                  }, organisations.data)
+                ).filter(Boolean)}
+                callback={(payload, values) => {
+                  setSelectedKJ(values.value);
+                }}
+                title={""}
+                value={selectedKJ}
+              />
+              <p className="my-4">
+                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
+              </p>
+              <StyledButton
+                onClick={() => {
+                  setSelectedKJ(null);
+                  setIsSearchFieldVisible(true);
+                }}
+                startIcon={<SearchIcon />}>
+                {intl.formatMessage(common.haeKJYtunnuksella)}
+              </StyledButton>
+              {isKJMissing && !selectedKJ ? (
+                <p className="mt-2">
+                  <StyledErrorIcon />{" "}
+                  {intl.formatMessage(common.oneKJMustBeSelected)}
+                </p>
+              ) : null}
+            </React.Fragment>
+          )}
         </div>
       </DialogContent>
       <DialogActions>
@@ -75,7 +241,22 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
           </div>
           <Button
             onClick={() => {
-              return onSelect(selectedKJ);
+              const kj =
+                isSearchFieldVisible && organisation
+                  ? { value: organisation.ytunnus }
+                  : selectedKJ;
+              if (
+                isSearchFieldVisible &&
+                organisation &&
+                organisationStatus !== "duplicate"
+              ) {
+                alert("Uuden luvan lisäämistä ei ole vielä toteutettu.");
+              } else if (kj) {
+                return onSelect(kj);
+              } else {
+                setIsKJMissing(true);
+              }
+              return false;
             }}
             color="primary"
             variant="contained">

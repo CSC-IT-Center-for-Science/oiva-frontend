@@ -30,6 +30,26 @@
     "filepath": "src/i18n/definitions/auth.js"
   },
   {
+    "id": "auth.sessionTimeoutTitle",
+    "defaultMessage": "Kirjautumisesi on vanhentunut",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.sessionTimeoutInfo",
+    "defaultMessage": "Sinut on kirjattu turvallisuussyistä automaattisesti ulos {time} minuutin toimettomuuden vuoksi.",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.endOfSessionTitle",
+    "defaultMessage": "Olet kirjautunut ulos",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.endOfSessionInfo",
+    "defaultMessage": "Sinut on kirjattu ulos sovelluksesta.",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
     "id": "common.statistics",
     "defaultMessage": "Tilastot",
     "filepath": "src/i18n/definitions/common.js"
@@ -1072,6 +1092,61 @@
   {
     "id": "common.koulutusJaPaaasiallinenToiminta",
     "defaultMessage": "Koulutus ja pääasiallinen toiminta",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.haeKJYtunnuksella",
+    "defaultMessage": "Hae koulutuksen järjestäjää Y-tunnuksella",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.luoUusiAsiaEsidialogiInfo2",
+    "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.suoritaYtunnushaku",
+    "defaultMessage": "Hae",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.haullaLoytyiKJ",
+    "defaultMessage": "Haulla löytyi koulutuksenjärjestäjä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.KJHakuEpaonnistui",
+    "defaultMessage": "Haulla ei löytynyt yhtään koulutuksenjärjestäjää",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.KJHakuEpaonnistuiLisainfo",
+    "defaultMessage": "Tarkista syöttämäsi Y-tunnus. Mikäli koulutuksen järjestäjää ei löydy, ota yhteyttä Opetushallituksen organisaatiopalveluun",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.yhteisetPalvelutEmailAddress",
+    "defaultMessage": "yhteisetpalvelut@opintopolku.fi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.syotaYtunnus",
+    "defaultMessage": "Syötä Y-tunnus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.suljeHaku",
+    "defaultMessage": "Sulje haku",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.loytyyjoVoimassaOlevaLupa",
+    "defaultMessage": "Tällä koulutuksen järjestäjällä on jo voimassa oleva järjestämislupa. Hyväksymällä siirrytään luvan muokkaussivulle.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.oneKJMustBeSelected",
+    "defaultMessage": "Sinun tulee valita yksi koulutuksen järjestäjä, ennen kuin voit jatkaa eteenpäin",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

@@ -51,5 +51,6 @@ export const backendRoutes = {
   liitteet: { path: `liitteet/`, abortController: false },
   kaannokset: { path: "lokalisaatio" },
 
-  organisaatiot: { path: "luvat/organisaatiot" }
+  organisaatiot: { path: "luvat/organisaatiot" },
+  ytunnushaku: { path: "organisaatiot/" }
 };
