@@ -165,6 +165,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.attachmentAddPaatoskirje",
+    "defaultMessage": "Lisää päätöskirje",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.attachmentRemove",
     "defaultMessage": "Poista liite",
     "filepath": "src/i18n/definitions/common.js"
@@ -282,6 +287,11 @@
   {
     "id": "common.stateAsia",
     "defaultMessage": "Asian tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.tilaValmis",
+    "defaultMessage":  "Valmis",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -432,6 +442,11 @@
   {
     "id": "asiaTable.actions.lataa",
     "defaultMessage": "Lataa PDF",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.lataaLiite",
+    "defaultMessage": "Lataa liite",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -892,6 +907,11 @@
   {
     "id": "common.luoUusiAsiaInstructions",
     "defaultMessage": "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.opetusJaKulttuuriministerio",
+    "defaultMessage": "Opetus- ja kulttuuriministeriö",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
