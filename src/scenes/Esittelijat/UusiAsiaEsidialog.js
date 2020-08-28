@@ -18,7 +18,7 @@ import { useOrganisations } from "../../stores/organisations";
 import { sortBy, prop, map, find, propEq } from "ramda";
 import { resolveLocalizedOrganizationName } from "../../modules/helpers";
 import SearchIcon from "@material-ui/icons/Search";
-import { withStyles } from "@material-ui/styles";
+import { withStyles, makeStyles } from "@material-ui/styles";
 import { fetchJSON } from "../BaseData/index";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import CheckIcon from "@material-ui/icons/Check";
@@ -39,6 +39,15 @@ const StyledErrorIcon = withStyles({
   }
 })(ErrorIcon);
 
+const useStyles = makeStyles({
+  fakeDisabled: {
+    backgroundColor: "#B7CAC0",
+    "&:hover": {
+      backgroundColor: "#B7CAC0"
+    }
+  }
+});
+
 const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
   const intl = useIntl();
   const [selectedKJ, setSelectedKJ] = useState();
@@ -49,6 +58,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
   const inputEl = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isKJMissing, setIsKJMissing] = useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     const abortController = organisationsActions.load();
@@ -86,11 +96,8 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
   return organisations.data &&
     organisations.fetchedAt &&
     !organisations.isErroneous ? (
-    <Dialog
-      open={isVisible}
-      aria-labelledby="simple-dialog-title"
-      PaperProps={{ style: { overflowY: "visible" } }}>
-      <DialogTitle id="customized-dialog-title" onClose={onClose}>
+    <Dialog open={isVisible} PaperProps={{ style: { overflowY: "visible" } }}>
+      <DialogTitle onClose={onClose}>
         {intl.formatMessage(common.luoUusiAsia)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
@@ -100,9 +107,13 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
               <p className="mb-6">
                 {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
               </p>
+              <h4 className="font-medium mb-4">
+                {intl.formatMessage(common.haeKJYtunnuksella)}
+              </h4>
               <div className="flex items-center">
                 <FormControl>
                   <TextField
+                    id="search-field"
                     label={intl.formatMessage(common.syotaYtunnus)}
                     InputProps={{
                       endAdornment: isLoading ? (
@@ -189,6 +200,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                 {intl.formatMessage(common.luoUusiAsiaInstructions)}
               </p>
               <Autocomplete
+                id="list-of-organisations"
                 isMulti={false}
                 name="koulutuksen-jarjestaja"
                 options={sortBy(
@@ -240,6 +252,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
             </Button>
           </div>
           <Button
+            className={selectedKJ || organisation ? "" : classes.fakeDisabled}
             onClick={() => {
               const kj =
                 isSearchFieldVisible && organisation
