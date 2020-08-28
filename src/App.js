@@ -42,6 +42,7 @@ import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import "@reach/skip-nav/styles.css";
 import BaseData from "scenes/BaseData";
+import SessionDialog from "SessionDialog";
 
 const history = createBrowserHistory();
 
@@ -54,7 +55,7 @@ const keys = ["lupa"];
  *
  * @param {props} - Properties object.
  */
-const App = ({ isDebugModeOn }) => {
+const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   const intl = useIntl();
   const [userState] = useUser();
 
@@ -122,6 +123,11 @@ const App = ({ isDebugModeOn }) => {
     () => setSideMenuVisibility(isVisible => !isVisible),
     []
   );
+
+  const onSessionDialogLogout = useCallback(() => {
+    onLogout();
+    history.push("/cas-logout");
+  }, [onLogout]);
 
   const organisationLink = useMemo(() => {
     if (user && user.oid && organisation && organisation[user.oid]) {
@@ -363,12 +369,21 @@ const App = ({ isDebugModeOn }) => {
           </footer>
         </div>
       </Router>
+      {isSessionDialogVisible && !!user ? (
+        <SessionDialog
+          isVisible={isSessionDialogVisible}
+          onLogout={onSessionDialogLogout}
+          onOK={onSessionDialogOK}
+        />
+      ) : null}
     </React.Fragment>
   );
 };
 
 App.propTypes = {
-  isDebugModeOn: PropTypes.bool
+  isSessionDialogVisible: PropTypes.bool,
+  onLogout: PropTypes.func,
+  onSessionDialogOK: PropTypes.func
 };
 
 App.displayName = "App";

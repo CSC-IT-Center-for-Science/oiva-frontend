@@ -95,6 +95,10 @@ export default defineMessages({
     id: "common.attachmentAdd",
     defaultMessage: "Lisää liite"
   },
+  attachmentAddPaatoskirje: {
+    id: "common.attachmentAddPaatoskirje",
+    defaultMessage: "Lisää päätöskirje"
+  },
   attachmentRemove: {
     id: "common.attachmentRemove",
     defaultMessage: "Poista liite"
@@ -314,6 +318,10 @@ export default defineMessages({
   "asiaTable.actions.lataa": {
     id: "asiaTable.actions.lataa",
     defaultMessage: "Lataa PDF"
+  },
+  "asiaTable.actions.lataaLiite": {
+    id: "asiaTable.actions.lataaLiite",
+    defaultMessage: "Lataa liite"
   },
   "asiaTable.actions.muokkaa": {
     id: "asiaTable.actions.muokkaa",
@@ -864,5 +872,33 @@ export default defineMessages({
   lupapaatoksetTaulukko: {
     id: "common.lupapaatoksetTaulukko",
     defaultMessage: "Lupapäätökset-taulukko"
+  },
+  tilastosivunOhje: {
+    id: "common.tilastosivunOhje",
+    defaultMessage: "Linkkejä tilastodataan (beta-versio):"
+  },
+  ammatillisenKoulutuksenJarjestamisluvat: {
+    id: "common.ammatillisenKoulutuksenJarjestamisluvat",
+    defaultMessage: "Ammatillisen koulutuksen järjestämisluvat"
+  },
+  vaestoennuste: {
+    id: "common.vaestoennuste",
+    defaultMessage: "Väestöennuste"
+  },
+  vaestoAidinkielenMukaan: {
+    id: "common.vaestoAidinkielenMukaan",
+    defaultMessage: "Väestö äidinkielen mukaan"
+  },
+  koulutusJaPaaasiallinenToiminta: {
+    id: "common.koulutusJaPaaasiallinenToiminta",
+    defaultMessage: "Koulutus ja pääasiallinen toiminta"
+  },
+  tilaValmis: {
+    id: "common.tilaValmis",
+    defaultMessage: "Valmis"
+  },
+  opetusJaKulttuuriministerio: {
+    id: "common.opetusJaKulttuuriministerio",
+    defaultMessage: "Opetus- ja kulttuuriministeriö",
   }
 });

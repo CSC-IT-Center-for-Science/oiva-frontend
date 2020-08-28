@@ -51,12 +51,17 @@ const fetchJSON = async path => {
   return result.data;
 };
 
-const getRaw = async (key, path, keys) => {
+const getRaw = async (
+  key,
+  path,
+  keys,
+  _minimumTimeBetweenFetchingInMinutes = minimumTimeBetweenFetchingInMinutes
+) => {
   if (includes(key, keys) || isEmpty(keys)) {
     const stored = await localforage.getItem(path);
     return stored &&
       (new Date() - stored.fetchedAt) / 1000 / 60 <
-        minimumTimeBetweenFetchingInMinutes
+        _minimumTimeBetweenFetchingInMinutes
       ? stored.data
       : await fetchJSON(path);
   }
@@ -88,7 +93,8 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     lupa: await getRaw(
       "lupa",
       `${backendRoutes.lupa.path}${ytunnus}?with=all&useKoodistoVersions=false`,
-      keys
+      keys,
+      backendRoutes.lupa.minimumTimeBetweenFetchingInMinutes
     ),
     // Koulutukset (muut)
     ammatilliseentehtavaanvalmistavakoulutus: await getRaw(
