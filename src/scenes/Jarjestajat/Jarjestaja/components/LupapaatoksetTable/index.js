@@ -223,10 +223,10 @@ export default function LupapaatoksetTable({ data, lupa }) {
       kumottu: "",
       urls: {
         jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
-        paatoskirje: lupaPaatoskirje ?
+        paatoskirje: lupaPaatoskirje && lupa.asianumero ?
           `${API_BASE_URL}/liitteet/${lupaPaatoskirje.uuid}/raw` : null,
       },
-      paatoskirje: lupaPaatoskirje ? lupaPaatoskirje.nimi : null, // /api/liitteet/{uuid}/raw
+      paatoskirje: lupaPaatoskirje && lupa.asianumero ? lupaPaatoskirje.nimi : null, // /api/liitteet/{uuid}/raw
       voimassaoloalkupvm: lupa.alkupvm,
       voimassaololoppupvm: lupa.loppupvm
     },
