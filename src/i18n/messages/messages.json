@@ -15,6 +15,21 @@
     "filepath": "src/i18n/definitions/auth.js"
   },
   {
+    "id": "auth.sessionDialogTitle",
+    "defaultMessage": "Kirjautumisesi on vanhentumassa",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.sessionDialogCountdown",
+    "defaultMessage": "Kirjautumisesi vanhenee {time} jälkeen. Jatketaanko kirjautuneena?",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.jatkaKirjautuneena",
+    "defaultMessage": "Jatka kirjautuneena",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
     "id": "common.statistics",
     "defaultMessage": "Tilastot",
     "filepath": "src/i18n/definitions/common.js"
@@ -127,6 +142,11 @@
   {
     "id": "common.attachmentAdd",
     "defaultMessage": "Lisää liite",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.attachmentAddPaatoskirje",
+    "defaultMessage": "Lisää päätöskirje",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -247,6 +267,11 @@
   {
     "id": "common.stateAsia",
     "defaultMessage": "Asian tila",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.tilaValmis",
+    "defaultMessage":  "Valmis",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -397,6 +422,11 @@
   {
     "id": "asiaTable.actions.lataa",
     "defaultMessage": "Lataa PDF",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.actions.lataaLiite",
+    "defaultMessage": "Lataa liite",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -857,6 +887,11 @@
   {
     "id": "common.luoUusiAsiaInstructions",
     "defaultMessage": "Valitse sopiva koulutuksen järjestäjä listalta. Valinnan hyväksymisen jälkeen siirrytään automaattisesti luvan muokkaussivulle",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.opetusJaKulttuuriministerio",
+    "defaultMessage": "Opetus- ja kulttuuriministeriö",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
