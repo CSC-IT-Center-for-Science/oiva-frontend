@@ -12,7 +12,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import common from "../../../../../i18n/definitions/common";
 import Attachment from "@material-ui/icons/Attachment";
-import { map, addIndex, prepend } from "ramda";
+import { map, addIndex, prepend, find } from "ramda";
 import { useIntl } from "react-intl";
 import moment from "moment";
 import { API_BASE_URL } from "modules/constants";
@@ -187,6 +187,7 @@ export default function LupapaatoksetTable({ data, lupa }) {
 
   const historicalRows = map(
     ({
+      asianumero,
       diaarinumero,
       filename,
       kumottu,
@@ -196,14 +197,15 @@ export default function LupapaatoksetTable({ data, lupa }) {
       voimassaololoppupvm
     }) => {
       return {
-        diaarinumero,
+        diaarinumero: asianumero ? asianumero : diaarinumero,
         paatospvm,
         voimassaoloalkupvm,
         voimassaololoppupvm,
         urls: {
-          jarjestamislupa: `${API_BASE_URL}/pdf/historia/${uuid}`
+          jarjestamislupa: `${API_BASE_URL}/pdf/historia/${uuid}`,
+          paatoskirje: null
         },
-        paatoskirje: "[linkki tähän, kun tieto saatavilla]",
+        paatoskirje: null,
         jarjestamislupa: filename,
         kumottu
       };
@@ -211,19 +213,22 @@ export default function LupapaatoksetTable({ data, lupa }) {
     data
   );
 
+  const lupaPaatoskirje = find(liite => liite.tyyppi === 'paatosKirje', lupa.liitteet);
+
   const rows = prepend(
     {
-      diaarinumero: lupa.diaarinumero,
+      diaarinumero: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       paatospvm: lupa.paatospvm,
-      jarjestamislupa: lupa.diaarinumero,
+      jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       kumottu: "",
-      paatoskirje: "",
       urls: {
-        jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`
+        jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
+        paatoskirje: lupaPaatoskirje ?
+          `${API_BASE_URL}/liitteet/${lupaPaatoskirje.uuid}/raw` : null,
       },
-      paatoskirje: "[linkki tähän, kun tieto saatavilla]", // /api/liitteet/{uuid}/raw
+      paatoskirje: lupaPaatoskirje ? lupaPaatoskirje.nimi : null, // /api/liitteet/{uuid}/raw
       voimassaoloalkupvm: lupa.alkupvm,
-      voimassaololoppupvm: ""
+      voimassaololoppupvm: lupa.loppupvm
     },
     historicalRows
   );
@@ -327,8 +332,12 @@ export default function LupapaatoksetTable({ data, lupa }) {
                           : null}
                       </TableCell>
                       <TableCell align="left">
-                        <Attachment />
-                        <span className="ml-2">{row.paatoskirje}</span>
+                        {row.paatoskirje && (<Attachment />)}
+                        {row.paatoskirje && (<a
+                          href={row.urls.paatoskirje}
+                          className="ml-2 underline">
+                          {row.paatoskirje}
+                        </a>)}
                       </TableCell>
                       <TableCell align="left">
                         <Attachment />
