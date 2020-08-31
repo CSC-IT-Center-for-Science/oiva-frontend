@@ -76,14 +76,34 @@ const MuutospyyntoWizardMuut = props => {
    */
   const config = useMemo(() => {
     const dividedArticles = divideArticles();
+    const localeUpper = R.toUpper(intl.locale);
     return [
+      {
+        code: "01",
+        key: "laajennettu",
+        isInUse: !!dividedArticles["laajennettu"],
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["laajennettu"]
+        ),
+        categoryData: [
+          {
+            articles: dividedArticles.laajennettu || [],
+            componentName: "CheckboxWithLabel",
+            title: ""
+          }
+        ]
+      },
       {
         code: "02",
         key: "vaativatuki",
         isInUse:
           !!dividedArticles["vaativa_1"].length ||
           !!dividedArticles["vaativa_2"].length,
-        title: "Vaativan erityisen tuen tehtävä",
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["vaativa_1"]
+        ),
         categoryData: [
           {
             articles: dividedArticles.vaativa_1 || [],
@@ -101,7 +121,10 @@ const MuutospyyntoWizardMuut = props => {
         code: "03",
         key: "sisaoppilaitos",
         isInUse: !!dividedArticles["sisaoppilaitos"].length,
-        title: "Sisäoppilaitosmuotoinen koulutus",
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["sisaoppilaitos"]
+        ),
         categoryData: [
           {
             articles: dividedArticles.sisaoppilaitos || [],
@@ -114,7 +137,10 @@ const MuutospyyntoWizardMuut = props => {
         code: "04",
         key: "vankila",
         isInUse: !!dividedArticles["vankila"].length,
-        title: "Vankilaopetus",
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["vankila"]
+        ),
         categoryData: [
           {
             articles: dividedArticles.vankila || [],
@@ -127,7 +153,10 @@ const MuutospyyntoWizardMuut = props => {
         code: "05",
         key: "urheilu",
         isInUse: !!dividedArticles["urheilu"].length,
-        title: "Urheilijoiden ammatillinen koulutus",
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["urheilu"]
+        ),
         categoryData: [
           {
             articles: dividedArticles.urheilu || [],
@@ -140,7 +169,10 @@ const MuutospyyntoWizardMuut = props => {
         code: "06",
         key: "yhteistyo",
         isInUse: !!dividedArticles["yhteistyo"].length,
-        title: "Yhteistyö",
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["yhteistyo"]
+        ),
         categoryData: [
           {
             componentName: "CheckboxWithLabel",
@@ -150,39 +182,32 @@ const MuutospyyntoWizardMuut = props => {
         ]
       },
       {
-        code: "07",
-        key: "muumaarays",
-        isInUse: !!dividedArticles["muumaarays"],
-        title: "Muu määräys",
-        categoryData: [
-          {
-            articles: dividedArticles.muumaarays || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
-          }
-        ]
-      },
-      {
-        code: "08",
-        key: "laajennettu",
-        isInUse: !!dividedArticles["laajennettu"],
-        title: "Laajennettu oppisopimuskoulutuksen järjestämistehtävä",
-        categoryData: [
-          {
-            articles: dividedArticles.laajennettu || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
-          }
-        ]
-      },
-      {
         code: "09",
         key: "selvitykset",
         isInUse: !!dividedArticles["selvitykset"],
-        title: "Selvitys toimintaedellytyksistä",
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["selvitykset"]
+        ),
         categoryData: [
           {
             articles: dividedArticles.selvitykset || [],
+            componentName: "CheckboxWithLabel",
+            title: ""
+          }
+        ]
+      },
+      {
+        code: "07",
+        key: "muumaarays",
+        isInUse: !!dividedArticles["muumaarays"],
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["muumaarays"]
+        ),
+        categoryData: [
+          {
+            articles: dividedArticles.muumaarays || [],
             componentName: "CheckboxWithLabel",
             title: ""
           }
