@@ -893,6 +893,54 @@ export default defineMessages({
     id: "common.koulutusJaPaaasiallinenToiminta",
     defaultMessage: "Koulutus ja pääasiallinen toiminta"
   },
+  haeKJYtunnuksella: {
+    id: "common.haeKJYtunnuksella",
+    defaultMessage: "Hae koulutuksen järjestäjää Y-tunnuksella"
+  },
+  luoUusiAsiaEsidialogiInfo2: {
+    id: "common.luoUusiAsiaEsidialogiInfo2",
+    defaultMessage:
+      "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella."
+  },
+  suoritaYtunnushaku: {
+    id: "common.suoritaYtunnushaku",
+    defaultMessage: "Hae"
+  },
+  haullaLoytyiKJ: {
+    id: "common.haullaLoytyiKJ",
+    defaultMessage: "Haulla löytyi koulutuksenjärjestäjä"
+  },
+  KJHakuEpaonnistui: {
+    id: "common.KJHakuEpaonnistui",
+    defaultMessage: "Haulla ei löytynyt yhtään koulutuksenjärjestäjää"
+  },
+  KJHakuEpaonnistuiLisainfo: {
+    id: "common.KJHakuEpaonnistuiLisainfo",
+    defaultMessage:
+      "Tarkista syöttämäsi Y-tunnus. Mikäli koulutuksen järjestäjää ei löydy, ota yhteyttä Opetushallituksen organisaatiopalveluun"
+  },
+  yhteisetpalvelutEmailAddress: {
+    id: "common.yhteisetPalvelutEmailAddress",
+    defaultMessage: "yhteisetpalvelut@opintopolku.fi"
+  },
+  syotaYtunnus: {
+    id: "common.syotaYtunnus",
+    defaultMessage: "Syötä Y-tunnus"
+  },
+  suljeHaku: {
+    id: "common.suljeHaku",
+    defaultMessage: "Sulje haku"
+  },
+  loytyyjoVoimassaOlevaLupa: {
+    id: "common.loytyyjoVoimassaOlevaLupa",
+    defaultMessage:
+      "Tällä koulutuksen järjestäjällä on jo voimassa oleva järjestämislupa. Hyväksymällä siirrytään luvan muokkaussivulle."
+  },
+  oneKJMustBeSelected: {
+    id: "common.oneKJMustBeSelected",
+    defaultMessage:
+      "Sinun tulee valita yksi koulutuksen järjestäjä, ennen kuin voit jatkaa eteenpäin"
+  },
   tilaValmis: {
     id: "common.tilaValmis",
     defaultMessage: "Valmis"

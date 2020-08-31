@@ -40,13 +40,13 @@ const acceptJSON = {
  */
 const minimumTimeBetweenFetchingInMinutes = 60;
 
-const fetchJSON = async path => {
+export const fetchJSON = async path => {
   const response = await fetch(`${API_BASE_URL}/${path}`, acceptJSON);
   let result = {
     fetchedAt: new Date(),
     data: response.ok ? await response.json() : null
   };
-  result = !response.ok ? assoc("error", response) : result;
+  result = !response.ok ? assoc("error", !response.ok, result) : result;
   await localforage.setItem(path, result);
   return result.data;
 };
