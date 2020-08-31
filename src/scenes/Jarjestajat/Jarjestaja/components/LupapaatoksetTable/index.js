@@ -190,7 +190,7 @@ export default function LupapaatoksetTable({ data, lupa }) {
       asianumero,
       diaarinumero,
       filename,
-      kumottu,
+      kumottupvm,
       paatospvm,
       uuid,
       voimassaoloalkupvm,
@@ -207,7 +207,7 @@ export default function LupapaatoksetTable({ data, lupa }) {
         },
         paatoskirje: null,
         jarjestamislupa: filename,
-        kumottu
+        kumottupvm
       };
     },
     data
@@ -220,13 +220,12 @@ export default function LupapaatoksetTable({ data, lupa }) {
       diaarinumero: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       paatospvm: lupa.paatospvm,
       jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
-      kumottu: "",
       urls: {
         jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
         paatoskirje: lupaPaatoskirje && lupa.asianumero ?
           `${API_BASE_URL}/liitteet/${lupaPaatoskirje.uuid}/raw` : null,
       },
-      paatoskirje: lupaPaatoskirje && lupa.asianumero ? lupaPaatoskirje.nimi : null, // /api/liitteet/{uuid}/raw
+      paatoskirje: lupaPaatoskirje && lupa.asianumero ? lupaPaatoskirje.nimi : null,
       voimassaoloalkupvm: lupa.alkupvm,
       voimassaololoppupvm: lupa.loppupvm
     },
@@ -347,7 +346,9 @@ export default function LupapaatoksetTable({ data, lupa }) {
                           {row.jarjestamislupa}
                         </a>
                       </TableCell>
-                      <TableCell align="left">{row.kumottu}</TableCell>
+                      <TableCell align="left">
+                        {row.kumottupvm ? moment(row.kumottupvm).format("DD.MM.YYYY") : ''}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
