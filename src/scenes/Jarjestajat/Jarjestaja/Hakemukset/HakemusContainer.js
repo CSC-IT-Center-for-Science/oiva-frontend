@@ -229,8 +229,6 @@ const HakemusContainer = React.memo(
 
         delete changesBySection.categoryFilter;
 
-        console.info(changesBySection, JSON.stringify(changesBySection));
-
         /**
          * At this point the backend data is handled and change objects have been formed.
          */
