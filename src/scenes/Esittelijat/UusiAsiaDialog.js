@@ -421,7 +421,7 @@ UusiAsiaDialog.propTypes = {
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
   lupa: PropTypes.object,
-  lupKohteet: PropTypes.object,
+  lupaKohteet: PropTypes.object,
   maakunnat: PropTypes.array,
   maakuntakunnat: PropTypes.array,
   maaraystyypit: PropTypes.array,

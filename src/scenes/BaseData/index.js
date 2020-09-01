@@ -163,7 +163,13 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       keys
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
-    vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys)
+    vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
+    viimeisinLupa:  await getRaw(
+      "viimeisinLupa",
+      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false`,
+      keys,
+      backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
+    ),
   };
 
   /**
@@ -338,7 +344,8 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             });
           }, raw.vankilat)
         )
-      : undefined
+      : undefined,
+    viimeisinLupa: raw.viimeisinLupa
   };
   return result;
 };
@@ -350,7 +357,6 @@ const defaultProps = {
 const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
   const { ytunnus } = useParams();
   const [baseData, setBaseData] = useState({});
-
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
    * paikalliseen tietovarastoon jäsenneltynä.
