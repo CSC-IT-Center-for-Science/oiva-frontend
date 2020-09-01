@@ -49,6 +49,7 @@ export const backendRoutes = {
   organisaatio: { path: `organisaatiot/` },
   paatoskierrokset: { path: `paatoskierrokset/open` },
   vankilat: { path: `koodistot/koodit/vankilat` },
+  viimeisinLupa: { path: "luvat/jarjestaja/", postfix: "/viimeisin", minimumTimeBetweenFetchingInMinutes: 0},
   liitteet: { path: `liitteet/`, abortController: false },
   kaannokset: { path: "lokalisaatio" },
 

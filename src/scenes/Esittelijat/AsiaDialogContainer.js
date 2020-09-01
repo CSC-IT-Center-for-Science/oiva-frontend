@@ -83,14 +83,14 @@ const AsiaDialogContainer = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
-  lupa,
   maakunnat,
   maakuntakunnat,
   maaraystyypit,
   muut,
   opetuskielet,
   organisaatio,
-  tutkinnot
+  tutkinnot,
+  viimeisinLupa
 }) => {
   const intl = useIntl();
   let history = useHistory();
@@ -116,11 +116,11 @@ const AsiaDialogContainer = ({
   }, [muutospyynto, uuid]);
 
   const lupaKohteet = useMemo(() => {
-    const result = lupa
-      ? parseLupa({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase())
+    const result = viimeisinLupa
+      ? parseLupa({ ...viimeisinLupa }, intl.formatMessage, intl.locale.toUpperCase())
       : {};
     return result;
-  }, [lupa, intl]);
+  }, [viimeisinLupa, intl]);
 
   const filesFromMuutokset = useMemo(() => {
     if (muutospyynto) {
@@ -235,7 +235,7 @@ const AsiaDialogContainer = ({
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
       kunnat={kunnat}
-      lupa={lupa}
+      lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
       maakunnat={maakunnat}
       maakuntakunnat={maakuntakunnat}
