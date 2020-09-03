@@ -103,7 +103,7 @@ const UusiAsiaDialog = React.memo(
     const [changeObjects, setChangeObjects] = useState(null);
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
     const [hasInvalidFields, setHasInvalidFields] = useState(false);
-    const [isSavingEnabled, setIsSavingEnabled] = useState(false);
+    const [, setIsSavingEnabled] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(true);
 
     const [, muutospyyntoActions] = useMuutospyynto();
@@ -305,16 +305,19 @@ const UusiAsiaDialog = React.memo(
                   <p>
                     {organisationPhoneNumber && (
                       <React.Fragment>
-                        <a href={`tel:${organisationPhoneNumber}`}
-                           className="underline">
-                           {organisationPhoneNumber}
+                        <a
+                          href={`tel:${organisationPhoneNumber}`}
+                          className="underline">
+                          {organisationPhoneNumber}
                         </a>{" "}
                         |{" "}
                       </React.Fragment>
                     )}
                     {organisationPhoneNumber && (
                       <React.Fragment>
-                        <a href={`mailto:${organisationEmail}`} className="underline">
+                        <a
+                          href={`mailto:${organisationEmail}`}
+                          className="underline">
                           {organisationEmail}
                         </a>{" "}
                         |{" "}
@@ -322,7 +325,9 @@ const UusiAsiaDialog = React.memo(
                     )}
                     {organisation.ytunnus} |{" "}
                     {organisationWebsite && (
-                      <a href={organisationWebsite} className="underline">{organisationWebsite}</a>
+                      <a href={organisationWebsite} className="underline">
+                        {organisationWebsite}
+                      </a>
                     )}
                   </p>
                 </div>
@@ -365,7 +370,7 @@ const UusiAsiaDialog = React.memo(
                   tutkinnot={tutkinnot}
                 />
                 <EsittelijatWizardActions
-                  isSavingEnabled={isSavingEnabled}
+                  isSavingEnabled={true}
                   onClose={openCancelModal}
                   onPreview={() => {
                     return onAction("preview");
