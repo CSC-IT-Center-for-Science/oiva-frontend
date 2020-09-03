@@ -119,6 +119,7 @@ const MuutospyyntoWizard = ({
     4: 0
   });
 
+  const prevCosRef = useRef(null);
   const [changeObjects, setChangeObjects] = useState(initialChangeObjects);
   const [, muutospyyntoActions] = useMuutospyynto();
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
@@ -126,6 +127,10 @@ const MuutospyyntoWizard = ({
     isHelpVisible: false
   });
   const [steps, setSteps] = useState([]);
+
+  useEffect(() => {
+    prevCosRef.current = R.clone(initialChangeObjects);
+  }, initialChangeObjects);
 
   const handlePrev = useCallback(
     pageNumber => {
@@ -217,8 +222,6 @@ const MuutospyyntoWizard = ({
     }
     return R.concat(attachments, files);
   }, [changeObjects]);
-
-  const prevCosRef = useRef(changeObjects);
 
   useEffect(() => {
     // If user has made changes on the form the save action must be available.
@@ -342,7 +345,7 @@ const MuutospyyntoWizard = ({
        * save button. It will be enabled after new changes.
        */
       setIsSavingEnabled(false);
-      prevCosRef.current = changeObjects;
+      prevCosRef.current = R.clone(changeObjects);
 
       /**
        * Next thing is to check out if this was the first save. If so we need

@@ -26,7 +26,13 @@ h4 {
   @apply font-sans;
 }
 a {
-  @apply text-vihrea;
+  @apply text-green-500;
+}
+a:hover {
+  @apply text-green-800;
+}
+a.normal:visited {
+  @apply text-green-700;
 }
 
 /* User research indicates that number input controls need to go (CSCOIVA-1315) */
@@ -40,6 +46,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.breadcumbs-nav a {
+  @apply underline;
 }
 
 @tailwind components;

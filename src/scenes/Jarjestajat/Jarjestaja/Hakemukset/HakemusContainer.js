@@ -11,7 +11,9 @@ import {
   prop,
   propEq,
   split,
-  equals
+  equals,
+  mapObjIndexed,
+  uniq
 } from "ramda";
 import { useHistory, useParams } from "react-router-dom";
 import { isEmpty, toUpper } from "ramda";
@@ -148,7 +150,9 @@ const HakemusContainer = React.memo(
               return Object.assign({}, file, fileFromBackend);
             }, changeObj.properties.attachments || [])
           : null;
-        return files ? assocPath(["properties", "attachments"], files, changeObj) : changeObj;
+        return files
+          ? assocPath(["properties", "attachments"], files, changeObj)
+          : changeObj;
       }, findObjectWithKey({ ...muutospyynto.data }, "changeObjects"));
     }, [filesFromMuutokset, muutospyynto.data]);
 
@@ -200,6 +204,19 @@ const HakemusContainer = React.memo(
         }
 
         changesBySection.topthree = muutospyynto.data.meta.topthree || [];
+
+        /**
+         * Tutkintokielet saattavat sisältää useita samoja muutosobjekteja
+         * johtuen tavasta, jolla ne tallennetaan. Jotta käyttöliittymä
+         * toimisi oikein, poistetaa duplikaatit.
+         **/
+        changesBySection = assocPath(
+          ["kielet", "tutkintokielet"],
+          mapObjIndexed(_changeObjects => {
+            return uniq(_changeObjects);
+          }, path(["kielet", "tutkintokielet"], changesBySection)),
+          changesBySection
+        );
 
         if (
           changesBySection.categoryFilter &&

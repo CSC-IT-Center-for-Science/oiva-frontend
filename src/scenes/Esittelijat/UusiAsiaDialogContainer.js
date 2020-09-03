@@ -65,26 +65,25 @@ const UusiAsiaDialogContainer = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
-  lupa,
   maakunnat,
   maakuntakunnat,
   maaraystyypit,
   muut,
   opetuskielet,
   organisaatio,
-  tutkinnot
+  tutkinnot,
+  viimeisinLupa
 }) => {
   const intl = useIntl();
 
   let { ytunnus } = useParams();
   let history = useHistory();
-
   const lupaKohteet = useMemo(() => {
-    const result = lupa
-      ? parseLupa({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase())
+    const result = viimeisinLupa
+      ? parseLupa({ ...viimeisinLupa }, intl.formatMessage, intl.locale.toUpperCase())
       : {};
     return result;
-  }, [lupa, intl]);
+  }, [viimeisinLupa, intl]);
 
   const onNewDocSave = useCallback(
     uuid => {
@@ -106,7 +105,7 @@ const UusiAsiaDialogContainer = ({
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
       kunnat={kunnat}
-      lupa={lupa}
+      lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
       maakunnat={maakunnat}
       maakuntakunnat={maakuntakunnat}

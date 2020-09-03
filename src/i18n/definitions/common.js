@@ -95,6 +95,10 @@ export default defineMessages({
     id: "common.attachmentAdd",
     defaultMessage: "Lisää liite"
   },
+  attachmentAddPaatoskirje: {
+    id: "common.attachmentAddPaatoskirje",
+    defaultMessage: "Lisää päätöskirje"
+  },
   attachmentRemove: {
     id: "common.attachmentRemove",
     defaultMessage: "Poista liite"
@@ -205,7 +209,7 @@ export default defineMessages({
   },
   asiakirjatTakaisin: {
     id: "common.asiakirjatTakaisin",
-    defaultMessage: "Asiat sivulle"
+    defaultMessage: "Asiat-sivulle"
   },
   backFromAsiakirjat: {
     id: "common.backFromAsiakirjat",
@@ -314,6 +318,10 @@ export default defineMessages({
   "asiaTable.actions.lataa": {
     id: "asiaTable.actions.lataa",
     defaultMessage: "Lataa PDF"
+  },
+  "asiaTable.actions.lataaLiite": {
+    id: "asiaTable.actions.lataaLiite",
+    defaultMessage: "Lataa liite"
   },
   "asiaTable.actions.muokkaa": {
     id: "asiaTable.actions.muokkaa",
@@ -930,5 +938,81 @@ export default defineMessages({
     id: "common.kjSivuinfo",
     defaultMessage:
       "Tämä sivu sisältää taulukon voimassa olevista järjestämisluvista, joita on {kpl} kappaletta. Kukin lupa kuuluu jollekin koulutuksen järjestäjälle, jonka nimen kautta pääset tarkastelemaan tarkempia tietoja. Voit liikkua taulukon sivujen välillä käyttämällä taulukon alapuolella olevaa sivutustoiminnallisuutta."
+  },
+  tilastosivunOhje: {
+    id: "common.tilastosivunOhje",
+    defaultMessage: "Linkkejä tilastodataan (beta-versio):"
+  },
+  ammatillisenKoulutuksenJarjestamisluvat: {
+    id: "common.ammatillisenKoulutuksenJarjestamisluvat",
+    defaultMessage: "Ammatillisen koulutuksen järjestämisluvat"
+  },
+  vaestoennuste: {
+    id: "common.vaestoennuste",
+    defaultMessage: "Väestöennuste"
+  },
+  vaestoAidinkielenMukaan: {
+    id: "common.vaestoAidinkielenMukaan",
+    defaultMessage: "Väestö äidinkielen mukaan"
+  },
+  koulutusJaPaaasiallinenToiminta: {
+    id: "common.koulutusJaPaaasiallinenToiminta",
+    defaultMessage: "Koulutus ja pääasiallinen toiminta"
+  },
+  haeKJYtunnuksella: {
+    id: "common.haeKJYtunnuksella",
+    defaultMessage: "Hae koulutuksen järjestäjää Y-tunnuksella"
+  },
+  luoUusiAsiaEsidialogiInfo2: {
+    id: "common.luoUusiAsiaEsidialogiInfo2",
+    defaultMessage:
+      "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella."
+  },
+  suoritaYtunnushaku: {
+    id: "common.suoritaYtunnushaku",
+    defaultMessage: "Hae"
+  },
+  haullaLoytyiKJ: {
+    id: "common.haullaLoytyiKJ",
+    defaultMessage: "Haulla löytyi koulutuksenjärjestäjä"
+  },
+  KJHakuEpaonnistui: {
+    id: "common.KJHakuEpaonnistui",
+    defaultMessage: "Haulla ei löytynyt yhtään koulutuksenjärjestäjää"
+  },
+  KJHakuEpaonnistuiLisainfo: {
+    id: "common.KJHakuEpaonnistuiLisainfo",
+    defaultMessage:
+      "Tarkista syöttämäsi Y-tunnus. Mikäli koulutuksen järjestäjää ei löydy, ota yhteyttä Opetushallituksen organisaatiopalveluun"
+  },
+  yhteisetpalvelutEmailAddress: {
+    id: "common.yhteisetPalvelutEmailAddress",
+    defaultMessage: "yhteisetpalvelut@opintopolku.fi"
+  },
+  syotaYtunnus: {
+    id: "common.syotaYtunnus",
+    defaultMessage: "Syötä Y-tunnus"
+  },
+  suljeHaku: {
+    id: "common.suljeHaku",
+    defaultMessage: "Sulje haku"
+  },
+  loytyyjoVoimassaOlevaLupa: {
+    id: "common.loytyyjoVoimassaOlevaLupa",
+    defaultMessage:
+      "Tällä koulutuksen järjestäjällä on jo voimassa oleva järjestämislupa. Hyväksymällä siirrytään luvan muokkaussivulle."
+  },
+  oneKJMustBeSelected: {
+    id: "common.oneKJMustBeSelected",
+    defaultMessage:
+      "Sinun tulee valita yksi koulutuksen järjestäjä, ennen kuin voit jatkaa eteenpäin"
+  },
+  tilaValmis: {
+    id: "common.tilaValmis",
+    defaultMessage: "Valmis"
+  },
+  opetusJaKulttuuriministerio: {
+    id: "common.opetusJaKulttuuriministerio",
+    defaultMessage: "Opetus- ja kulttuuriministeriö",
   }
 });
