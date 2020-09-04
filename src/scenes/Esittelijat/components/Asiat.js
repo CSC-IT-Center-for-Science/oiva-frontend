@@ -68,7 +68,7 @@ const Asiat = ({ path: parentPath, user }) => {
           isVisible={isEsidialogVisible}
           onClose={() => setIsEsidialogVisible(false)}
           onSelect={selectedItem =>
-            history.push(`asiat/${selectedItem.value}/uusi`)
+            history.push(`/asiat/${selectedItem.value}/uusi`)
           }></UusiAsiaEsidialog>
       )}
 
