@@ -156,7 +156,13 @@ const UusiAsiaDialog = React.memo(
 
     useEffect(() => {
       setIsSavingEnabled(
-        !R.equals(prevCosRef.current, changeObjects) && !hasInvalidFields
+        /**
+         * Virheellisten kenttien huomioimiseksi on käytettävä
+         * ehtoa && !hasInvalidFields. Toistaiseksi lomakkeen
+         * tallennuksen halutaan kuitenkin olevan mahdollista,
+         * vaikka lomakkeella olisikin virheellisiä kenttiä.
+         **/
+        !R.equals(prevCosRef.current, changeObjects)
       );
     }, [hasInvalidFields, changeObjects]);
 
@@ -305,16 +311,19 @@ const UusiAsiaDialog = React.memo(
                   <p>
                     {organisationPhoneNumber && (
                       <React.Fragment>
-                        <a href={`tel:${organisationPhoneNumber}`}
-                           className="underline">
-                           {organisationPhoneNumber}
+                        <a
+                          href={`tel:${organisationPhoneNumber}`}
+                          className="underline">
+                          {organisationPhoneNumber}
                         </a>{" "}
                         |{" "}
                       </React.Fragment>
                     )}
                     {organisationPhoneNumber && (
                       <React.Fragment>
-                        <a href={`mailto:${organisationEmail}`} className="underline">
+                        <a
+                          href={`mailto:${organisationEmail}`}
+                          className="underline">
                           {organisationEmail}
                         </a>{" "}
                         |{" "}
@@ -322,7 +331,9 @@ const UusiAsiaDialog = React.memo(
                     )}
                     {organisation.ytunnus} |{" "}
                     {organisationWebsite && (
-                      <a href={organisationWebsite} className="underline">{organisationWebsite}</a>
+                      <a href={organisationWebsite} className="underline">
+                        {organisationWebsite}
+                      </a>
                     )}
                   </p>
                 </div>
