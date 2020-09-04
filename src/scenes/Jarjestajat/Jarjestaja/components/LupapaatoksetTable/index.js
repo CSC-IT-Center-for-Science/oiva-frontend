@@ -213,7 +213,7 @@ export default function LupapaatoksetTable({ data, lupa }) {
     data
   );
 
-  const lupaPaatoskirje = find(liite => liite.tyyppi === 'paatosKirje', lupa.liitteet);
+  const lupaPaatoskirje = find(liite => liite.tyyppi === 'paatosKirje', lupa.liitteet || []);
 
   const rows = prepend(
     {

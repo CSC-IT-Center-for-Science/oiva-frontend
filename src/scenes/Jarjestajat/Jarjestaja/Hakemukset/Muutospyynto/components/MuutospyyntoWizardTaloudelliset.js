@@ -73,6 +73,7 @@ const MuutospyyntoWizardTaloudelliset = ({
           </Section>
           <Section title={intl.formatMessage(wizard.liitteet)}>
             <TaloudellisetLiitteet
+              sectionId={'taloudelliset_liitteet'}
               changeObjects={changeObjects.taloudelliset.liitteet}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={onChangesUpdate}

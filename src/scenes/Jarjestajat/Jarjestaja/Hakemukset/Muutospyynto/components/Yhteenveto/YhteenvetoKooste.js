@@ -180,6 +180,7 @@ const YhteenvetoKooste = ({
                       maaraykset={lupa.maaraykset}
                       opetuskielet={opetuskielet}
                       tutkinnot={tutkinnot}
+                      koulutusalat={koulutusalat}
                       isReadOnly={true}
                       {..._props}
                     />
