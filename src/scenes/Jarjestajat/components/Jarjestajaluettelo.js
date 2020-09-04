@@ -341,7 +341,7 @@ function Jarjestajaluettelo({ luvat }) {
         return (
           <Link
             className="underline"
-            to={`jarjestajat/${row.values.ytunnus}`}
+            to={`jarjestajat/${row.values.ytunnus}/jarjestamislupa`}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.nimi
             })}>
