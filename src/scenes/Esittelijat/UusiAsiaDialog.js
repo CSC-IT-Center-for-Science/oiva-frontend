@@ -103,7 +103,7 @@ const UusiAsiaDialog = React.memo(
     const [changeObjects, setChangeObjects] = useState(null);
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
     const [hasInvalidFields, setHasInvalidFields] = useState(false);
-    const [, setIsSavingEnabled] = useState(false);
+    const [isSavingEnabled, setIsSavingEnabled] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(true);
 
     const [, muutospyyntoActions] = useMuutospyynto();
@@ -156,7 +156,13 @@ const UusiAsiaDialog = React.memo(
 
     useEffect(() => {
       setIsSavingEnabled(
-        !R.equals(prevCosRef.current, changeObjects) && !hasInvalidFields
+        /**
+         * Virheellisten kenttien huomioimiseksi on käytettävä
+         * ehtoa && !hasInvalidFields. Toistaiseksi lomakkeen
+         * tallennuksen halutaan kuitenkin olevan mahdollista,
+         * vaikka lomakkeella olisikin virheellisiä kenttiä.
+         **/
+        !R.equals(prevCosRef.current, changeObjects)
       );
     }, [hasInvalidFields, changeObjects]);
 
@@ -370,7 +376,7 @@ const UusiAsiaDialog = React.memo(
                   tutkinnot={tutkinnot}
                 />
                 <EsittelijatWizardActions
-                  isSavingEnabled={true}
+                  isSavingEnabled={isSavingEnabled}
                   onClose={openCancelModal}
                   onPreview={() => {
                     return onAction("preview");
