@@ -162,6 +162,10 @@ const MuutospyyntoWizard = ({
       if (anchor && changeObjects) {
         setChangeObjects(R.assocPath(R.split("_", anchor), changeObjects));
       }
+      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
+      if (anchor && anchor !== 'toimintaalue' && anchor !== 'kielet_tutkintokielet'  && R.isEmpty(changeObjects)) {
+        setChangeObjects(R.dissocPath(R.split("_", anchor)));
+      }
     },
     []
   );
@@ -403,8 +407,8 @@ const MuutospyyntoWizard = ({
     ]
   );
 
-  const openCancelModal = () => {
-    setIsConfirmDialogVisible(true);
+  const leaveOrOpenCancelModal = () => {
+    isSavingEnabled ? setIsConfirmDialogVisible(true) : history.push('../../jarjestamislupa-asia');
   };
 
   function handleCancel() {
@@ -450,11 +454,11 @@ const MuutospyyntoWizard = ({
       <React.Fragment>
         <FormDialog
           open={true}
-          onClose={openCancelModal}
+          onClose={leaveOrOpenCancelModal}
           maxWidth={state.isHelpVisible ? "xl" : "lg"}
           fullScreen={true}
           aria-labelledby="simple-dialog-title">
-          <DialogTitle id="customized-dialog-title" onClose={openCancelModal}>
+          <DialogTitle id="customized-dialog-title" onClose={leaveOrOpenCancelModal}>
             {intl.formatMessage(wizardMessages.formTitle_new)}
           </DialogTitle>
           <div

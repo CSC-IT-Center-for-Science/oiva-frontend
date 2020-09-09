@@ -89,8 +89,7 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             articles: dividedArticles.laajennettu || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
+            componentName: "CheckboxWithLabel"
           }
         ]
       },
@@ -128,8 +127,7 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             articles: dividedArticles.sisaoppilaitos || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
+            componentName: "CheckboxWithLabel"
           }
         ]
       },
@@ -144,8 +142,7 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             articles: dividedArticles.vankila || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
+            componentName: "CheckboxWithLabel"
           }
         ]
       },
@@ -160,8 +157,7 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             articles: dividedArticles.urheilu || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
+            componentName: "CheckboxWithLabel"
           }
         ]
       },
@@ -176,7 +172,6 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             componentName: "CheckboxWithLabel",
-            title: "",
             articles: dividedArticles.yhteistyo || []
           }
         ]
@@ -192,8 +187,7 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             articles: dividedArticles.selvitykset || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
+            componentName: "CheckboxWithLabel"
           }
         ]
       },
@@ -208,8 +202,7 @@ const MuutospyyntoWizardMuut = props => {
         categoryData: [
           {
             articles: dividedArticles.muumaarays || [],
-            componentName: "CheckboxWithLabel",
-            title: ""
+            componentName: "CheckboxWithLabel"
           }
         ]
       }
