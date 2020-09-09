@@ -71,7 +71,7 @@ const defaultProps = {
   muut: [],
   opetuskielet: [],
   organisation: {},
-  tutkinnot: {}
+  tutkinnot: []
 };
 
 const UusiAsiaDialog = React.memo(
@@ -219,6 +219,7 @@ const UusiAsiaDialog = React.memo(
         const formData = createMuutospyyntoOutput(
           await createObjectToSave(
             R.toUpper(intl.locale),
+            organisation,
             lupa,
             changeObjects,
             uuid,
@@ -265,6 +266,7 @@ const UusiAsiaDialog = React.memo(
         onNewDocSave,
         onPreview,
         onSave,
+        organisation,
         uuid
       ]
     );

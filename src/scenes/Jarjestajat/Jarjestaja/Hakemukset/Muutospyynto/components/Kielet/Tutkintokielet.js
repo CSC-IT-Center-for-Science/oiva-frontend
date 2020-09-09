@@ -154,7 +154,6 @@ Tutkintokielet.propTypes = {
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  lupa: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func,
   tutkinnot: PropTypes.array,

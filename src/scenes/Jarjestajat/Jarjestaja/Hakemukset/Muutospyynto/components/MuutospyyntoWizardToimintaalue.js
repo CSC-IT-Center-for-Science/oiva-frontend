@@ -56,7 +56,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           title: kunta.arvo,
           metadata: kunta
         };
-      }, props.lupakohde.kunnat)
+      }, props.lupakohde.kunnat || [])
     );
   }, [props.kuntamaaraykset, props.lupakohde.kunnat]);
 
@@ -68,7 +68,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           title: maakunta.arvo,
           metadata: maakunta
         };
-      }, props.lupakohde.maakunnat)
+      }, props.lupakohde.maakunnat || [])
     );
   }, [props.lupakohde.maakunnat]);
 
