@@ -361,7 +361,6 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
    */
   useEffect(() => {
     fetchBaseData(keys, locale, ytunnus).then(result => {
-      console.info(result);
       setBaseData(result);
     });
   }, [keys, locale, ytunnus]);
