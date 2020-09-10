@@ -246,13 +246,12 @@ const parseSectionData = (
       // Alimääräykset
       if (aliMaaraykset) {
         _.forEach(aliMaaraykset, alimaarays => {
-          const { koodi, kohde, maaraystyyppi } = alimaarays;
-          if (koodi) {
-            const { koodiArvo } = koodi;
+          const { kohde, maaraystyyppi } = alimaarays;
+          if (alimaarays.koodiarvo) {
             const nimi = parseLocalizedField(maarays.koodi.metadata, locale);
             const tutkintokoodi = maarays.koodiarvo;
             const obj = {
-              koodi: koodiArvo,
+              koodi: alimaarays.koodiarvo,
               maaraysId: uuid,
               nimi,
               tutkintokoodi,
@@ -262,7 +261,7 @@ const parseSectionData = (
 
             tutkintokielet.push(obj);
 
-            switch (koodiArvo) {
+            switch (alimaarays.koodiarvo) {
               case "EN":
                 tutkintokieletEn.push(obj);
                 break;
