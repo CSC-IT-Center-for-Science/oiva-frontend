@@ -164,12 +164,12 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
-    viimeisinLupa:  await getRaw(
+    viimeisinLupa: await getRaw(
       "viimeisinLupa",
       `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
-    ),
+    )
   };
 
   /**
@@ -301,35 +301,33 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     omovet: raw.omovet
       ? await localforage.setItem("omovet", raw.omovet)
       : undefined,
-    opetuskielet:
-      raw.lupa && raw.opetuskielet
-        ? await localforage.setItem(
-            "opetuskielet",
-            sortBy(
-              prop("koodiarvo"),
-              initializeOpetuskielet(
-                raw.opetuskielet,
-                prop("maaraykset", raw.lupa) || []
-              )
+    opetuskielet: raw.opetuskielet
+      ? await localforage.setItem(
+          "opetuskielet",
+          sortBy(
+            prop("koodiarvo"),
+            initializeOpetuskielet(
+              raw.opetuskielet,
+              prop("maaraykset", raw.lupa || {}) || []
             )
           )
-        : undefined,
+        )
+      : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
-    tutkinnot:
-      raw.lupa && raw.tutkinnot
-        ? await localforage.setItem(
-            "tutkinnot",
-            sortBy(
-              prop("koodiarvo"),
-              initializeTutkinnot(
-                raw.tutkinnot,
-                prop("maaraykset", raw.lupa) || []
-              )
+    tutkinnot: raw.tutkinnot
+      ? await localforage.setItem(
+          "tutkinnot",
+          sortBy(
+            prop("koodiarvo"),
+            initializeTutkinnot(
+              raw.tutkinnot,
+              prop("maaraykset", raw.lupa || {}) || []
             )
           )
-        : undefined,
+        )
+      : undefined,
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -345,7 +343,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.vankilat)
         )
       : undefined,
-    viimeisinLupa: raw.viimeisinLupa
+    viimeisinLupa: raw.viimeisinLupa || {}
   };
   return result;
 };

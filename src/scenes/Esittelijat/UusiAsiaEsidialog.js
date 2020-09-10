@@ -263,7 +263,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                 organisation &&
                 organisationStatus !== "duplicate"
               ) {
-                alert("Uuden luvan lisäämistä ei ole vielä toteutettu.");
+                return onSelect(kj);
               } else if (kj) {
                 return onSelect(kj);
               } else {
