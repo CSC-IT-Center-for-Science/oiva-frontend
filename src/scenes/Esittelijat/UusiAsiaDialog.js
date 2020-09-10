@@ -97,9 +97,9 @@ const UusiAsiaDialog = React.memo(
     const intl = useIntl();
     const params = useParams();
     let history = useHistory();
-
     let { uuid } = params;
 
+    const prevCosRef = useRef(null);
     const [changeObjects, setChangeObjects] = useState(null);
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
     const [hasInvalidFields, setHasInvalidFields] = useState(false);
@@ -109,7 +109,8 @@ const UusiAsiaDialog = React.memo(
     const [, muutospyyntoActions] = useMuutospyynto();
 
     useEffect(() => {
-      setChangeObjects(initialChangeObjects);
+      setChangeObjects(initialChangeObjects)
+      prevCosRef.current = R.clone(initialChangeObjects);
     }, [initialChangeObjects]);
 
     const organisationPhoneNumber = R.head(
@@ -124,8 +125,8 @@ const UusiAsiaDialog = React.memo(
       R.values(R.find(R.prop("www"), organisation.yhteystiedot))
     );
 
-    const openCancelModal = () => {
-      setIsConfirmDialogVisible(true);
+    const leaveOrOpenCancelModal = () => {
+      isSavingEnabled ? setIsConfirmDialogVisible(true) : history.push(`/asiat?force=true`);
     };
 
     function handleCancel() {
@@ -135,6 +136,10 @@ const UusiAsiaDialog = React.memo(
     const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
       if (id && changeObjects) {
         setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
+      }
+      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
+      if (id && id !== 'toimintaalue' && id !== 'kielet_tutkintokielet' && R.isEmpty(changeObjects)) {
+        setChangeObjects(R.dissocPath(R.split("_", id)));
       }
     }, []);
 
@@ -151,8 +156,6 @@ const UusiAsiaDialog = React.memo(
     }, [history, muutospyyntoActions]);
 
     const anchors = findObjectWithKey(changeObjects, "anchor");
-
-    const prevCosRef = useRef(initialChangeObjects);
 
     useEffect(() => {
       setIsSavingEnabled(
@@ -244,7 +247,7 @@ const UusiAsiaDialog = React.memo(
          * save button. It will be enabled after new changes.
          */
         setIsSavingEnabled(false);
-        prevCosRef.current = changeObjects;
+        prevCosRef.current = R.clone(changeObjects);
 
         if (!uuid && !fromDialog) {
           if (muutospyynto && muutospyynto.uuid) {
@@ -276,7 +279,7 @@ const UusiAsiaDialog = React.memo(
         <div className="max-w-7xl">
           <FormDialog
             open={isDialogOpen}
-            onClose={openCancelModal}
+            onClose={leaveOrOpenCancelModal}
             maxWidth={"lg"}
             fullScreen={true}
             aria-labelledby="simple-dialog-title">
@@ -291,7 +294,7 @@ const UusiAsiaDialog = React.memo(
                   <div>
                     <SimpleButton
                       text={`${intl.formatMessage(wizardMessages.getOut)} X`}
-                      onClick={openCancelModal}
+                      onClick={leaveOrOpenCancelModal}
                       variant={"text"}
                     />
                   </div>
@@ -379,7 +382,7 @@ const UusiAsiaDialog = React.memo(
                 />
                 <EsittelijatWizardActions
                   isSavingEnabled={isSavingEnabled}
-                  onClose={openCancelModal}
+                  onClose={leaveOrOpenCancelModal}
                   onPreview={() => {
                     return onAction("preview");
                   }}
