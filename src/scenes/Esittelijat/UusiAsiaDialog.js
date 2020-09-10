@@ -12,7 +12,6 @@ import { useHistory, useParams } from "react-router-dom";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
 import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
-import { findObjectWithKey } from "../../utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
 import { useMuutospyynto } from "../../stores/muutospyynto";
@@ -150,8 +149,6 @@ const UusiAsiaDialog = React.memo(
       return history.push(`/asiat?force=true`);
     }, [history, muutospyyntoActions]);
 
-    const anchors = findObjectWithKey(changeObjects, "anchor");
-
     const prevCosRef = useRef(initialChangeObjects);
 
     useEffect(() => {
@@ -254,7 +251,6 @@ const UusiAsiaDialog = React.memo(
         }
       },
       [
-        anchors,
         changeObjects,
         kohteet,
         intl.locale,

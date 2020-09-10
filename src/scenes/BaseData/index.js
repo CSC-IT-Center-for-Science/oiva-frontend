@@ -151,7 +151,6 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       backendRoutes.oivaperustelut.path,
       keys
     ),
-    omovet: await getRaw("omovet", backendRoutes.omovet.path, keys),
     opetuskielet: await getRaw(
       "opetuskielet",
       backendRoutes.opetuskielet.path,
@@ -164,12 +163,12 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
-    viimeisinLupa:  await getRaw(
+    viimeisinLupa: await getRaw(
       "viimeisinLupa",
       `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
-    ),
+    )
   };
 
   /**
@@ -297,9 +296,6 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             });
           }, raw.oivaperustelut)
         )
-      : undefined,
-    omovet: raw.omovet
-      ? await localforage.setItem("omovet", raw.omovet)
       : undefined,
     opetuskielet:
       raw.lupa && raw.opetuskielet
