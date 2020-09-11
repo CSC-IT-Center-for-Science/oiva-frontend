@@ -26,13 +26,13 @@ const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
       <div>
         {lupaException ? (
           <TopSectionWrapper className="p-8">
-            <Typography component="h1" variant="h5">
+            <Typography component="h2" variant="h5">
               {intl.formatMessage(titleMessageKey, { date: "" })}
             </Typography>
           </TopSectionWrapper>
         ) : (
           <TopSectionWrapper className="p-8">
-            <Typography component="h1" variant="h5">
+            <Typography component="h2" variant="h5">
               {intl.formatMessage(titleMessageKey, { date: dateString })}
             </Typography>
           </TopSectionWrapper>

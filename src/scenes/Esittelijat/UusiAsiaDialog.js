@@ -154,8 +154,6 @@ const UusiAsiaDialog = React.memo(
       return history.push(`/asiat?force=true`);
     }, [history, muutospyyntoActions]);
 
-    const prevCosRef = useRef(initialChangeObjects);
-
     useEffect(() => {
       setIsSavingEnabled(
         /**
