@@ -327,7 +327,6 @@ function Jarjestajaluettelo({ luvat }) {
           ) || {}
         ).nimi,
         ytunnus: jarjestaja.ytunnus,
-        www: jarjestaja.yhteystiedot[1].www,
         toiminnot: ["info"]
       };
     }, luvat)
@@ -357,21 +356,6 @@ function Jarjestajaluettelo({ luvat }) {
     {
       accessor: "ytunnus",
       Header: intl.formatMessage(common.ytunnus)
-    },
-    {
-      accessor: "www",
-      Cell: ({ row }) => {
-        return (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={row.values.www}
-            className="underline">
-            {row.values.www}
-          </a>
-        );
-      },
-      Header: intl.formatMessage(common.www)
     }
   ];
 

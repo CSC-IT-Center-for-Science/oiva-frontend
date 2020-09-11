@@ -1,4 +1,5 @@
 import { defineMessages } from "react-intl";
+import { xor } from "ramda";
 
 export default defineMessages({
   statistics: {
@@ -1014,5 +1015,9 @@ export default defineMessages({
   opetusJaKulttuuriministerio: {
     id: "common.opetusJaKulttuuriministerio",
     defaultMessage: "Opetus- ja kulttuuriministeriö",
+  },
+  minimumAmountOfYears: {
+    id: "common.minimumAmountOfYears",
+    defaultMessage: "Nykyinen"
   }
 });

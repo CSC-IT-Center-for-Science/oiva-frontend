@@ -19,36 +19,44 @@ const Tutkintokielet = React.memo(props => {
   );
 
   useEffect(() => {
-    if (props.unselectedAnchors.length && changeObjects.kielet.tutkintokielet) {
-      let tutkintokielichangesWithoutRemovedOnes = Object.assign(
+    if (!R.isEmpty(changeObjects.kielet.tutkintokielet)) {
+      let tutkintokielichangesWithoutRemovedOnes =
+      Object.assign(
         {},
         changeObjects.kielet.tutkintokielet
       );
-      R.forEach(anchor => {
-        const areaCode = R.compose(
-          R.last,
-          R.split("_"),
-          R.head,
-          R.split(".")
-        )(anchor);
+      // Remove properties with empty value array
+      Object.keys(tutkintokielichangesWithoutRemovedOnes).forEach(key => {
+        if (R.all(kielet => R.isEmpty(kielet.properties.value), tutkintokielichangesWithoutRemovedOnes[key])) {
+          tutkintokielichangesWithoutRemovedOnes = R.dissocPath([key], tutkintokielichangesWithoutRemovedOnes);
+        }
+      });
+      if (props.unselectedAnchors.length) {
+        R.forEach(anchor => {
+          const areaCode = R.compose(
+            R.last,
+            R.split("_"),
+            R.head,
+            R.split(".")
+          )(anchor);
 
-        const commonPart = R.compose(
-          R.join("."),
-          R.concat([areaCode])
-        )(R.slice(1, 3, R.split(".", anchor)));
+          const commonPart = R.compose(
+            R.join("."),
+            R.concat([areaCode])
+          )(R.slice(1, 3, R.split(".", anchor)));
+          tutkintokielichangesWithoutRemovedOnes = {
+            ...tutkintokielichangesWithoutRemovedOnes,
+            [areaCode]: R.filter(changeObj => {
+              return !R.contains(commonPart, changeObj.anchor);
+            }, tutkintokielichangesWithoutRemovedOnes[areaCode] || [])
+          };
+        }, props.unselectedAnchors);
 
-        tutkintokielichangesWithoutRemovedOnes = {
-          ...tutkintokielichangesWithoutRemovedOnes,
-          [areaCode]: R.filter(changeObj => {
-            return !R.contains(commonPart, changeObj.anchor);
-          }, tutkintokielichangesWithoutRemovedOnes[areaCode] || [])
-        };
-      }, props.unselectedAnchors);
-
-      tutkintokielichangesWithoutRemovedOnes = R.filter(
-        R.compose(R.not, R.isEmpty),
-        tutkintokielichangesWithoutRemovedOnes
-      );
+        tutkintokielichangesWithoutRemovedOnes = R.filter(
+          R.compose(R.not, R.isEmpty),
+          tutkintokielichangesWithoutRemovedOnes
+        );
+      }
 
       if (
         !R.equals(
@@ -154,7 +162,6 @@ Tutkintokielet.propTypes = {
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  lupa: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func,
   tutkinnot: PropTypes.array,

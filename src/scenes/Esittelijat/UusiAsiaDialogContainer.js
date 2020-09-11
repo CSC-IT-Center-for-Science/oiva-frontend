@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
+import { isEmpty } from "ramda";
 
 const changeObjects = {
   tutkinnot: {},
@@ -78,9 +79,14 @@ const UusiAsiaDialogContainer = ({
 
   let { ytunnus } = useParams();
   let history = useHistory();
+
   const lupaKohteet = useMemo(() => {
-    const result = viimeisinLupa
-      ? parseLupa({ ...viimeisinLupa }, intl.formatMessage, intl.locale.toUpperCase())
+    const result = !isEmpty(viimeisinLupa)
+      ? parseLupa(
+          { ...viimeisinLupa },
+          intl.formatMessage,
+          intl.locale.toUpperCase()
+        )
       : {};
     return result;
   }, [viimeisinLupa, intl]);

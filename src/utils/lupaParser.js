@@ -6,6 +6,7 @@ import {
 } from "../scenes/Jarjestajat/Jarjestaja/modules/constants";
 import { parseLocalizedField } from "../modules/helpers";
 import common from "../i18n/definitions/common";
+import { length } from "ramda";
 
 /**
  *
@@ -419,7 +420,7 @@ const parseSectionData = (
         common.lupaSectionOpiskelijavuodetLimitationPlural
       );
     }
-    if (tyovoimaMaarays.length > 0) {
+    if (length(tyovoimaMaarays) > 0) {
       returnobj.kohdeKuvaus = t(
         common.lupaSectionOpiskelijavuodetLimitationNone
       );

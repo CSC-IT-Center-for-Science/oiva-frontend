@@ -10,6 +10,7 @@ import * as koulutuksetHelper from "../../../helpers/koulutukset";
 
 export async function createObjectToSave(
   locale,
+  organisation,
   lupa,
   changeObjects,
   uuid,
@@ -224,8 +225,8 @@ export async function createObjectToSave(
   let objectToSave = {
     alkupera,
     diaarinumero: lupa.diaarinumero,
-    jarjestajaOid: lupa.jarjestajaOid,
-    jarjestajaYtunnus: lupa.jarjestajaYtunnus,
+    jarjestajaOid: organisation.oid,
+    jarjestajaYtunnus: organisation.ytunnus,
     luoja: sessionStorage.getItem("username"),
     // luontipvm: moment().valueOf(),
     luontipvm: moment().format("YYYY-MM-DD"),

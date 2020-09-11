@@ -309,23 +309,22 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
               )
             )
           )
-        : undefined,
+      : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
-    tutkinnot:
-      raw.lupa && raw.tutkinnot
-        ? await localforage.setItem(
-            "tutkinnot",
-            sortBy(
-              prop("koodiarvo"),
-              initializeTutkinnot(
-                raw.tutkinnot,
-                prop("maaraykset", raw.lupa) || []
-              )
+    tutkinnot: raw.tutkinnot
+      ? await localforage.setItem(
+          "tutkinnot",
+          sortBy(
+            prop("koodiarvo"),
+            initializeTutkinnot(
+              raw.tutkinnot,
+              prop("maaraykset", raw.lupa || {}) || []
             )
           )
-        : undefined,
+        )
+      : undefined,
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -341,7 +340,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.vankilat)
         )
       : undefined,
-    viimeisinLupa: raw.viimeisinLupa
+    viimeisinLupa: raw.viimeisinLupa || {}
   };
   return result;
 };

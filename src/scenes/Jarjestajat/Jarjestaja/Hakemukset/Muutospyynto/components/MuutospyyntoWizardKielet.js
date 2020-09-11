@@ -8,8 +8,6 @@ import _ from "lodash";
 const MuutospyyntoWizardKielet = props => {
   const prevTutkinnotItemsRef = useRef();
 
-  const { lupa } = props;
-
   /**
    * Array of anhors of checkboxes which have been checked. The idea behind
    * this is to remove corresponding change objects of Tutkintokielet section.
@@ -75,7 +73,6 @@ const MuutospyyntoWizardKielet = props => {
         kielet={props.kielet}
         koulutusalat={props.koulutusalat}
         koulutustyypit={props.koulutustyypit}
-        lupa={lupa}
         onChangesRemove={props.onChangesRemove}
         onChangesUpdate={props.onChangesUpdate}
         tutkinnot={props.tutkinnot}
@@ -90,7 +87,6 @@ MuutospyyntoWizardKielet.propTypes = {
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.array
