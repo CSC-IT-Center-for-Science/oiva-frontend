@@ -44,9 +44,6 @@ export const backendRoutes = {
   tarkistaDuplikaattiAsianumero: {
     path: "muutospyynnot/duplikaattiasianumero"
   },
-  omovet: {
-    path: `koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`
-  },
   oivaperustelut: { path: `koodistot/koodit/oivaperustelut` },
   opetuskielet: { path: `koodistot/opetuskielet` },
   organisaatio: { path: `organisaatiot/` },

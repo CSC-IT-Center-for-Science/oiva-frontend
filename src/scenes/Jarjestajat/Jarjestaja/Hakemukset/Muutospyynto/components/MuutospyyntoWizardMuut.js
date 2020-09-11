@@ -41,6 +41,7 @@ const MuutospyyntoWizardMuut = props => {
         const isInLupa = !!R.find(R.propEq("koodiarvo", article.koodiarvo))(
           osiota5koskevatMaaraykset
         );
+
         /**
          * Article is Määräys and there will be as many rows in section 5
          * as there are articles. Alert component will be shown for articles
@@ -58,7 +59,7 @@ const MuutospyyntoWizardMuut = props => {
             );
           }, flattenArrayOfChangeObjects);
         if (
-          (kuvaus || R.includes(article.koodiarvo, ["22", "7"])) &&
+          (kuvaus || R.includes(article.koodiarvo, ["22", "7", "8"])) &&
           kasite &&
           (isInLupa || article.koodiarvo !== "15")
         ) {
@@ -77,6 +78,7 @@ const MuutospyyntoWizardMuut = props => {
   const config = useMemo(() => {
     const dividedArticles = divideArticles();
     const localeUpper = R.toUpper(intl.locale);
+
     return [
       {
         code: "01",
@@ -173,6 +175,21 @@ const MuutospyyntoWizardMuut = props => {
           {
             componentName: "CheckboxWithLabel",
             articles: dividedArticles.yhteistyo || []
+          }
+        ]
+      },
+      {
+        code: "08",
+        key: "yhteistyosopimus",
+        isInUse: !!dividedArticles["yhteistyosopimus"],
+        title: R.path(
+          [0, "metadata", localeUpper, "nimi"],
+          dividedArticles["yhteistyosopimus"]
+        ),
+        categoryData: [
+          {
+            articles: dividedArticles.yhteistyosopimus || [],
+            componentName: "CheckboxWithLabel"
           }
         ]
       },
