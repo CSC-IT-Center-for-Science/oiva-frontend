@@ -15,7 +15,7 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { useOrganisations } from "../../stores/organisations";
-import { sortBy, prop, map, find, propEq } from "ramda";
+import { sortBy, prop, map, find, propEq, trim } from "ramda";
 import { resolveLocalizedOrganizationName } from "../../modules/helpers";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles, makeStyles } from "@material-ui/styles";
@@ -73,7 +73,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
     const { value: ytunnus } = inputEl.current;
     setIsLoading(true);
     const result = await fetchJSON(
-      `${backendRoutes.ytunnushaku.path}/${ytunnus}`
+      `${backendRoutes.ytunnushaku.path}/${trim(ytunnus)}`
     );
     setIsLoading(false);
     setOrganisation(result);
