@@ -2,7 +2,6 @@ import { isAdded, isRemoved, isInLupa } from "../../../css/label";
 import "../i18n-config";
 import { __ } from "i18n-for-browser";
 import * as R from "ramda";
-import _ from "lodash";
 import { sortArticlesByHuomioitavaKoodi } from "../utils";
 import { scrollToOpiskelijavuodet } from "./utils";
 
@@ -25,13 +24,22 @@ async function getModificationForm(
       anchor: configObj.key,
       title: item.title,
       categories: R.addIndex(R.map)((article, index) => {
-        const title =
-          _.find(article.metadata, m => {
-            return m.kieli === locale;
-          }).kuvaus || "Muu";
         const maarays = R.find(R.propEq("koodiarvo", article.koodiarvo))(
           osiota5koskevatMaaraykset
         );
+        const kuvaus = article.metadata[locale].kuvaus;
+        let title = R.isEmpty(kuvaus) ? article.metadata[locale].nimi : kuvaus;
+        /**
+         * Koodi 8 on erikoistapaus. Sen tullessa vastaan, ei käytetä edellä
+         * määriteltyä yleistä kuvaustekstiä, vaan kuvausteksti kaivetaan
+         * määräyksen alta. Tämä johtuu siitä, että eri koulutuksen
+         * järjestäjillä on koodilla 8 erilaisia kuvaustekstejä.
+         **/
+        if (article.koodiarvo === "8") {
+          title = maarays
+            ? maarays.meta["yhteistyösopimus"][R.toLower(locale)]
+            : title;
+        }
         const isInLupaBool = !!maarays;
         if (isInLupaBool) {
           noItemsInLupa = false;
@@ -106,6 +114,31 @@ async function getModificationForm(
           ];
         }
 
+        if (article.koodiarvo === "8") {
+          result.categories = [
+            {
+              anchor: "tekstikentta",
+              components: [
+                {
+                  anchor: "A",
+                  name: "TextBox",
+                  properties: {
+                    forChangeObject: {
+                      key: configObj.key,
+                      code: configObj.code,
+                      title: configObj.title,
+                      isInLupa: isInLupaBool,
+                      koodiarvo: article.koodiarvo,
+                      koodisto: article.koodisto
+                    },
+                    placeholder: __("other.placeholder")
+                  }
+                }
+              ]
+            }
+          ];
+        }
+
         if (article.koodiarvo === "22") {
           result.categories = [
             {
@@ -130,6 +163,7 @@ async function getModificationForm(
             }
           ];
         }
+
         return result;
       }, sortedArticles)
     };

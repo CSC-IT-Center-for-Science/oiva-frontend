@@ -151,7 +151,6 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       backendRoutes.oivaperustelut.path,
       keys
     ),
-    omovet: await getRaw("omovet", backendRoutes.omovet.path, keys),
     opetuskielet: await getRaw(
       "opetuskielet",
       backendRoutes.opetuskielet.path,
@@ -298,20 +297,18 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.oivaperustelut)
         )
       : undefined,
-    omovet: raw.omovet
-      ? await localforage.setItem("omovet", raw.omovet)
-      : undefined,
-    opetuskielet: raw.opetuskielet
-      ? await localforage.setItem(
-          "opetuskielet",
-          sortBy(
-            prop("koodiarvo"),
-            initializeOpetuskielet(
-              raw.opetuskielet,
-              prop("maaraykset", raw.lupa || {}) || []
+    opetuskielet:
+      raw.lupa && raw.opetuskielet
+        ? await localforage.setItem(
+            "opetuskielet",
+            sortBy(
+              prop("koodiarvo"),
+              initializeOpetuskielet(
+                raw.opetuskielet,
+                prop("maaraykset", raw.lupa) || []
+              )
             )
           )
-        )
       : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
