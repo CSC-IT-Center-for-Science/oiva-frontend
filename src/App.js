@@ -48,7 +48,7 @@ const history = createBrowserHistory();
 
 const logo = { text: "Oiva", path: "/" };
 
-const keys = ["lupa"];
+const keys = ["lupa", "kielet"];
 
 /**
  * App component forms the basic structure of the application and its routing.
@@ -338,6 +338,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                                 path={props.match.path}
                                 ytunnus={_props.ytunnus}
                                 user={user}
+                                kielet={_props.kielet}
                               />
                             );
                           }}

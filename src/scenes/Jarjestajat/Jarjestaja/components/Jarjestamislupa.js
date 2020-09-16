@@ -15,7 +15,7 @@ const TopSectionWrapper = styled.div`
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
 `;
 
-const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
+const Jarjestamislupa = React.memo(({ lupaKohteet, lupa, kielet }) => {
   const intl = useIntl();
   // Luvan poikkeuskäsittely erikoisluville (17kpl)
   const titleMessageKey = common.lupaPageTitleAmmatillinen;
@@ -48,6 +48,7 @@ const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
                 kohde={lupaKohteet[k]}
                 ytunnus={lupa.jarjestajaYtunnus}
                 lupaAlkuPvm={lupa.alkupvm}
+                kielet={kielet}
               />
             ))}
           </div>

@@ -51,7 +51,7 @@ function getModificationForm(
                        **/
                       return {
                         label:
-                        find(kieli => kieli.koodiarvo === tutkintokielimaarays.koodiarvo, kielet).metadata[localeUpper].nimi,
+                        find(kieli => kieli.koodiarvo === toUpper(tutkintokielimaarays.koodiarvo), kielet).metadata[localeUpper].nimi,
                         value: tutkintokielimaarays.koodiarvo
                       };
                     }

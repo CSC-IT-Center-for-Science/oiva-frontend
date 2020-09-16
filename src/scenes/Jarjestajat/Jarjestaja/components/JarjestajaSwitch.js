@@ -10,7 +10,7 @@ import Loading from "../../../../modules/Loading";
 import { prop } from "ramda";
 import BaseData from "scenes/BaseData";
 
-const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus }) => {
+const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus, kielet }) => {
   const intl = useIntl();
   const history = useHistory();
 
@@ -83,6 +83,7 @@ const JarjestajaSwitch = React.memo(({ lupa, path, user, ytunnus }) => {
                 path={path}
                 url={props.match.url}
                 user={user}
+                kielet={kielet}
               />
             );
           }

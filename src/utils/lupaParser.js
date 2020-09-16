@@ -6,7 +6,7 @@ import {
 } from "../scenes/Jarjestajat/Jarjestaja/modules/constants";
 import { parseLocalizedField } from "../modules/helpers";
 import common from "../i18n/definitions/common";
-import { length } from "ramda";
+import {length, toUpper} from "ramda";
 
 /**
  *
@@ -234,10 +234,7 @@ const parseSectionData = (
     returnobj.heading = t(common.lupaSectionOpetuskieliMainTitle);
     let opetuskielet = [];
     let tutkintokielet = [];
-    let tutkintokieletEn = [];
-    let tutkintokieletSv = [];
-    let tutkintokieletFi = [];
-    let tutkintokieletRu = [];
+    let tutkintokieletArr = [];
 
     _.forEach(maaraykset, maarays => {
       const { koodisto, uuid } = maarays;
@@ -261,22 +258,16 @@ const parseSectionData = (
 
             tutkintokielet.push(obj);
 
-            switch (alimaarays.koodiarvo) {
-              case "EN":
-                tutkintokieletEn.push(obj);
-                break;
-              case "SV":
-                tutkintokieletSv.push(obj);
-                break;
-              case "RU":
-                tutkintokieletRu.push(obj);
-                break;
-              case "FI":
-                tutkintokieletFi.push(obj);
-                break;
-              default:
-                return null;
+            if (alimaarays.koodisto === KOODISTOT.KIELI) {
+              const tutkinto = {
+                tutkintokoodi: obj.tutkintokoodi, nimi: obj.nimi
+              };
+              let tutkintokieli = tutkintokieletArr.find(tutkintokieli => tutkintokieli.kieli === toUpper(alimaarays.koodiarvo));
+              tutkintokieli ? tutkintokieli.tutkinnot.push(tutkinto) : tutkintokieletArr.push({kieli: toUpper(alimaarays.koodiarvo), tutkinnot: [tutkinto]});
             }
+           tutkintokieletArr.forEach(tutkintokieli => {
+             tutkintokieli.tutkinnot.sort((a, b) => a.tutkintokoodi - b.tutkintokoodi);
+           });
           }
         });
       }
@@ -292,10 +283,7 @@ const parseSectionData = (
         : t(common.lupaSectionOpetuskieliSingular);
     returnobj.kohdeArvot = getMaaraysArvoArray(opetuskielet, locale);
     returnobj.tutkinnotjakielet = tutkintokielet;
-    returnobj.tutkinnotjakieletEn = tutkintokieletEn;
-    returnobj.tutkinnotjakieletSv = tutkintokieletSv;
-    returnobj.tutkinnotjakieletRu = tutkintokieletRu;
-    returnobj.tutkinnotjakieletFi = tutkintokieletFi;
+    returnobj.tutkintokieletArr = tutkintokieletArr;
 
     // kohde 3: Toiminta-alueet
   } else if (target === KOHTEET.TOIMIALUE) {

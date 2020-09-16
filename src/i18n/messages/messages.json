@@ -735,43 +735,18 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.lupaSectionExtraLanguageEnglishSingular",
-    "defaultMessage": "Tutkintokieli on em. opetuskielen lisäksi englanti seuraavassa tutkinnossa",
+    "id": "common.lupaSectionTutkintokieliAdditionalLanguages",
+    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.lupaSectionExtraLanguageEnglishPlural",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi englanti seuraavassa tutkinnossa",
+    "id": "common.lupaSectionTutkintokieliFollowingDegreesSingular",
+    "defaultMessage": "seuraavassa tutkinnossa",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.lupaSectionExtraLanguageSwedishSingular",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
-    "id": "common.lupaSectionExtraLanguageSwedishPlural",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
-    "id": "common.lupaSectionExtraLanguageFinnishSingular",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
-    "id": "common.lupaSectionExtraLanguageFinnishPlural",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
-    "id": "common.lupaSectionExtraLanguageRussianSingular",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
-    "id": "common.lupaSectionExtraLanguageRussianPlural",
-    "defaultMessage": "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa",
+    "id": "common.lupaSectionTutkintokieliFollowingDegreesPlural",
+    "defaultMessage": "seuraavissa tutkinnoissa",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1246,7 +1221,7 @@
   },
   {
     "id": "common.minimumAmountOfYears",
-    "defaultMessage": "Vähintään",
+    "defaultMessage": "Nykyinen",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

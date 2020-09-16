@@ -41,6 +41,7 @@ export const KOODISTOT = {
   AMMATILLISEEN_TEHTAVAAN_VALMISTAVA_KOULUTUS:
     "ammatilliseentehtavaanvalmistavakoulutus",
   KULJETTAJAKOULUTUS: "kuljettajakoulutus",
+  KIELI: "kieli",
   OSAAMISALA: "osaamisala",
   OPPILAITOKSENOPETUSKIELI: "oppilaitoksenopetuskieli",
   OIVA_MUUT: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
