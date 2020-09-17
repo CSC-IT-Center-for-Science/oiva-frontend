@@ -430,13 +430,12 @@ const Asiakirjat = React.memo(() => {
               isConfirmDialogVisible={isDeleteLiiteDialogVisible}
               messages={{
                 content: intl.formatMessage(common.poistetaankoAsiakirja),
-                ok: intl.formatMessage(common.save),
-                noSave: intl.formatMessage(common.poista),
+                ok: intl.formatMessage(common.poista),
                 cancel: intl.formatMessage(common.doNotRemove),
                 title: intl.formatMessage(common.titleOfPoistetaankoAsiakirja)
               }}
               handleOk={removeLiite}
-              handleCancel={() => setIsRemovalDialogVisible(false)}
+              handleCancel={() => setIsDeleteLiiteDialogVisible(false)}
             />)}
             {isRemovalDialogVisible && (
               <RemovalDialogOfAsiakirja
