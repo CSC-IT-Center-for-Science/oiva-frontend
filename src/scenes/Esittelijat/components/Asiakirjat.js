@@ -27,6 +27,7 @@ import PDFAndStateDialog from "../PDFAndStateDialog";
 import error from "../../../i18n/definitions/error";
 import SelectAttachment from "okm-frontend-components/dist/components/02-organisms/SelectAttachment";
 import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
+import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 
 const WrapTable = styled.div``;
 
@@ -72,6 +73,10 @@ const Asiakirjat = React.memo(() => {
     isDownloadPDFAndChangeStateDialogVisible,
     setIsDownloadPDFAndChangeStateDialogVisible
   ] = useState(false);
+  const [
+    isDeleteLiiteDialogVisible,
+    setIsDeleteLiiteDialogVisible
+  ] = useState(false);
   const [documentIdForAction, setDocumentIdForAction] = useState();
   const [, muutospyynnotActions] = useMuutospyynnot();
 
@@ -107,6 +112,13 @@ const Asiakirjat = React.memo(() => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(`/asiat?force=${new Date().getTime()}`);
   };
+
+  const removeLiite = async () => {
+    const procedureHandler = new ProcedureHandler(intl.formatMessage);
+    await procedureHandler.run("muutospyynto.poisto.poistaLiite", [documentIdForAction, true]);
+    setIsDeleteLiiteDialogVisible(false);
+    muutospyynnonLiitteetAction.load(muutospyynto.data.uuid, true);
+  }
 
   const setStateOfMuutospyyntoAsEsittelyssa = async () => {
     setIsDownloadPDFAndChangeStateDialogVisible(false);
@@ -240,6 +252,7 @@ const Asiakirjat = React.memo(() => {
           rows: R.addIndex(R.map)((row, i) => {
             return {
               uuid: row.uuid,
+              type: row.type,
               fileLinkFn: row.fileLinkFn,
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLinkFn) {
@@ -250,8 +263,9 @@ const Asiakirjat = React.memo(() => {
                 } else if (action === "edit") {
                   history.push(`${ytunnus}/${row.uuid}`);
                 } else if (action === "remove") {
-                  setIsRemovalDialogVisible(true);
                   setDocumentIdForAction(row.uuid);
+                  row.type === 'liite' ?
+                    setIsDeleteLiiteDialogVisible(true) : setIsRemovalDialogVisible(true);
                 }
               },
               cells: R.addIndex(R.map)(
@@ -291,7 +305,7 @@ const Asiakirjat = React.memo(() => {
                           )
                         }
                       : null,
-                    row.type !== 'liite' &&  row.tila !== "ESITTELYSSA"
+                    row.tila !== "ESITTELYSSA"
                       ? {
                           id: "remove",
                           text: t(common.poista)
@@ -412,6 +426,18 @@ const Asiakirjat = React.memo(() => {
               fileType={"paatosKirje"}/>
               </h4>
             </span>
+            {isDeleteLiiteDialogVisible && (<ConfirmDialog
+              isConfirmDialogVisible={isDeleteLiiteDialogVisible}
+              messages={{
+                content: intl.formatMessage(common.poistetaankoAsiakirja),
+                ok: intl.formatMessage(common.save),
+                noSave: intl.formatMessage(common.poista),
+                cancel: intl.formatMessage(common.doNotRemove),
+                title: intl.formatMessage(common.titleOfPoistetaankoAsiakirja)
+              }}
+              handleOk={removeLiite}
+              handleCancel={() => setIsRemovalDialogVisible(false)}
+            />)}
             {isRemovalDialogVisible && (
               <RemovalDialogOfAsiakirja
                 isVisible={isRemovalDialogVisible}

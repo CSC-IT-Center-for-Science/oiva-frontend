@@ -35,6 +35,14 @@ export default defineMessages({
     id: "informUser.lahettaminenEpaonnistui",
     defaultMessage: "Lähettäminen epäonnistui."
   },
+  liitePoistettu: {
+    id: "informUser.liitePoistettu",
+    defaultMessage: "Liite poistettu"
+  },
+  liitteenPoistaminenEpaonnistui: {
+    id: "informUser.liitteenPoistaminenEpaonnistui",
+    defaultMessage: "Liitteen poistaminen epäonnistui"
+  },
   dokumenttiaEiLoytynyt: {
     id: "informUser.dokumenttiaEiLoytynyt",
     defaultMessage: "Dokumenttia ei syystä tai toisesta löytynyt"

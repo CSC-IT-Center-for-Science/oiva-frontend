@@ -48,6 +48,7 @@ export const backendRoutes = {
   opetuskielet: { path: `koodistot/opetuskielet` },
   organisaatio: { path: `organisaatiot/` },
   paatoskierrokset: { path: `paatoskierrokset/open` },
+  poistaLiite: { path: `liitteet/` },
   vankilat: { path: `koodistot/koodit/vankilat` },
   viimeisinLupa: {
     path: "luvat/jarjestaja/",
