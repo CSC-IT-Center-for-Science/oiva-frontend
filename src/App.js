@@ -286,6 +286,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   className="breadcumbs-nav"
                   aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
                   <Breadcrumbs
+                    hideIfEmpty={true}
                     separator={<b> / </b>}
                     item={NavLink}
                     finalItem={"b"}
