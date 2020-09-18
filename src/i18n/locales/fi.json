@@ -262,6 +262,8 @@
   "informUser.lahettaminenEpaonnistui": "Lähettäminen epäonnistui.",
   "informUser.lataaminenOnnistuiJaPDFTarkasteltavana": "Muutospyynnön lataaminen onnistui. PDF-muotoinen dokumentti on valmis tarkasteltavaksi.",
   "informUser.latausOnnistuiPDFUudessaIkkunassa": "Muutospyynnön lataaminen onnistui. PDF-muotoinen dokumentti avattiin uuteen selainikkunaan.",
+  "informUser.liitePoistettu": "Liite poistettu",
+  "informUser.liitteenPoistaminenEpaonnistui": "Liitteen poistaminen epäonnistui",
   "informUser.muutospyynnonPoistaminenEpaonnistui": "Muutospyynnön eli asian poistaminen epäonnistui.",
   "informUser.muutospyynnonTilaMuutettu": "Muutospyynnön eli asian tila muutettu!",
   "informUser.muutospyynonTilanMuuttaminenEpaonnistui": "Muutospyynnön eli asian tilaa ei voitu muuttaa.",
