@@ -84,20 +84,19 @@ export const initializeTutkintokielet = (tutkinto, maaraykset = []) => {
     map(maarays => {
       return map(_alimaarays => {
         let alimaarays = null;
-        if (_alimaarays.koodi) {
+        if (_alimaarays.koodiarvo) {
           if (_alimaarays.koodisto === "kieli") {
             alimaarays = {
               ..._alimaarays,
               koodi: {
-                ..._alimaarays.koodi,
-                koodiarvo: path(["koodi", "koodiArvo"], _alimaarays),
-                metadata: mapObjIndexed(
+                koodiarvo: _alimaarays.koodiarvo,
+                metadata: _alimaarays.koodi ? mapObjIndexed(
                   head,
                   groupBy(
                     prop("kieli"),
                     path(["koodi", "metadata"], _alimaarays)
                   )
-                )
+                ) : null
               }
             };
             alimaarays = dissocPath(["koodi", "koodiArvo"], alimaarays);

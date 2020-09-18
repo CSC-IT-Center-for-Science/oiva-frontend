@@ -30,7 +30,7 @@ const Separator = styled.div`
 `;
 
 const Jarjestaja = React.memo(
-  ({ lupaKohteet = [], lupa = {}, path, url, user }) => {
+  ({ lupaKohteet = [], lupa = {}, path, url, user, kielet }) => {
     const intl = useIntl();
 
     const jarjestaja = useMemo(() => {
@@ -131,6 +131,7 @@ const Jarjestaja = React.memo(
                     lupaKohteet={lupaKohteet}
                     lupa={lupa}
                     ytunnus={jarjestaja.ytunnus}
+                    kielet={kielet}
                   />
                 )}
               />
@@ -173,7 +174,7 @@ const Jarjestaja = React.memo(
               <Route
                 path={`${url}/jarjestamislupa`}
                 render={() => (
-                  <Jarjestamislupa lupa={lupa} lupaKohteet={lupaKohteet} />
+                  <Jarjestamislupa lupa={lupa} lupaKohteet={lupaKohteet} kielet={kielet} />
                 )}
               />
               <Route
