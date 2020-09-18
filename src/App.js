@@ -349,7 +349,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   />
                   <Route
                     path="/saavutettavuusseloste"
-                    component={Saavutettavuusseloste}
+                    render={() => <Saavutettavuusseloste locale={intl.locale} />}
                   />
                   <Route
                     path="/tietosuojailmoitus"
