@@ -25,7 +25,9 @@ const Jarjestajat = React.memo(() => {
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>Oiva | Ammatillinen koulutus</title>
+        <title>
+          Oiva | {intl.formatMessage(education.vocationalEducation)}
+        </title>
       </Helmet>
 
       <BreadcrumbsItem to="/">

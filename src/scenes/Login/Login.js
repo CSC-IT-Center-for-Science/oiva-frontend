@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { useIntl } from "react-intl";
+import auth from "../../i18n/definitions/auth";
 import common from "../../i18n/definitions/common";
 
 // import LoginForm from 'routes/Login/components/LoginForm'
@@ -30,7 +31,7 @@ const Login = () => {
   return (
     <div>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>Oiva | Kirjaudu sisään</title>
+        <title>Oiva | {intl.formatMessage(auth.logIn)}</title>
       </Helmet>
       <BreadcrumbsItem to="/">
         {intl.formatMessage(common.frontpage)}

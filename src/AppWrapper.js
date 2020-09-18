@@ -78,7 +78,7 @@ const AppWrapper = () => {
       //Using local files as source
       return translations;
     }
-  }, [kaannokset.data, isBackendTheSourceOfLocalizations]);
+  }, [kaannokset.data]);
 
   useEffect(() => {
     if (!isEmpty(messages)) {
