@@ -66,6 +66,7 @@
     "build:css": "tailwind build src/css/tailwind.src.pcss -c tailwind.js -o src/css/tailwind.css",
     "watch:css": "tailwind build src/css/tailwind.src.pcss -c tailwind.js -o src/css/tailwind.css -w",
     "watch:component-css": "postcss src/components/**/*.pcss --base src --dir src --ext module.css -w",
+    "watch:common-css": "postcss src/css/common.src.pcss -o src/css/common.css -w",
     "start:react": "HTTPS=true&&react-scripts start",
     "build:react": "react-scripts build",
     "predeploy": "npm run build",
