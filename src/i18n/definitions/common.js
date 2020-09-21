@@ -565,45 +565,17 @@ export default defineMessages({
     defaultMessage:
       "Koulutuksen järjestäjän on annettava opetusta seuraavilla opetuskielillä:"
   },
-  lupaSectionExtraLanguageEnglishSingular: {
-    id: "common.lupaSectionExtraLanguageEnglishSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielen lisäksi englanti seuraavassa tutkinnossa"
+  lupaSectionTutkintokieliAdditionalLanguages: {
+    id: "common.lupaSectionTutkintokieliAdditionalLanguages",
+    defaultMessage: "Tutkintokieli on em. opetuskielten lisäksi"
   },
-  lupaSectionExtraLanguageEnglishPlural: {
-    id: "common.lupaSectionExtraLanguageEnglishPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi englanti seuraavassa tutkinnossa"
+  lupaSectionTutkintokieliFollowingDegreesSingular: {
+    id: "common.lupaSectionTutkintokieliFollowingDegreesSingular",
+    defaultMessage: "seuraavassa tutkinnossa"
   },
-  lupaSectionExtraLanguageSwedishSingular: {
-    id: "common.lupaSectionExtraLanguageSwedishSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageSwedishPlural: {
-    id: "common.lupaSectionExtraLanguageSwedishPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageFinnishSingular: {
-    id: "common.lupaSectionExtraLanguageFinnishSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageFinnishPlural: {
-    id: "common.lupaSectionExtraLanguageFinnishPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageRussianSingular: {
-    id: "common.lupaSectionExtraLanguageRussianSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageRussianPlural: {
-    id: "common.lupaSectionExtraLanguageRussianPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa"
+  lupaSectionTutkintokieliFollowingDegreesPlural: {
+    id: "common.lupaSectionTutkintokieliFollowingDegreesPlural",
+    defaultMessage: "seuraavissa tutkinnoissa"
   },
   lupaSectionToimintaAlueMainTitle: {
     id: "common.lupaSectionToimintaAlueMainTitle",

@@ -15,7 +15,7 @@ const TopSectionWrapper = styled.div`
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
 `;
 
-const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
+const Jarjestamislupa = React.memo(({ lupaKohteet, lupa, kielet }) => {
   const intl = useIntl();
   // Luvan poikkeuskäsittely erikoisluville (17kpl)
   const titleMessageKey = common.lupaPageTitleAmmatillinen;
@@ -26,13 +26,13 @@ const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
       <div>
         {lupaException ? (
           <TopSectionWrapper className="p-8">
-            <Typography component="h1" variant="h5">
+            <Typography component="h2" variant="h5">
               {intl.formatMessage(titleMessageKey, { date: "" })}
             </Typography>
           </TopSectionWrapper>
         ) : (
           <TopSectionWrapper className="p-8">
-            <Typography component="h1" variant="h5">
+            <Typography component="h2" variant="h5">
               {intl.formatMessage(titleMessageKey, { date: dateString })}
             </Typography>
           </TopSectionWrapper>
@@ -48,6 +48,7 @@ const Jarjestamislupa = React.memo(({ lupaKohteet, lupa }) => {
                 kohde={lupaKohteet[k]}
                 ytunnus={lupa.jarjestajaYtunnus}
                 lupaAlkuPvm={lupa.alkupvm}
+                kielet={kielet}
               />
             ))}
           </div>
