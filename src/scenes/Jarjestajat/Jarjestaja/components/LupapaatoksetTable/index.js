@@ -193,6 +193,7 @@ export default function LupapaatoksetTable({ data, lupa }) {
       kumottupvm,
       paatospvm,
       uuid,
+      paatoskirje,
       voimassaoloalkupvm,
       voimassaololoppupvm
     }) => {
@@ -203,9 +204,9 @@ export default function LupapaatoksetTable({ data, lupa }) {
         voimassaololoppupvm,
         urls: {
           jarjestamislupa: `${API_BASE_URL}/pdf/historia/${uuid}`,
-          paatoskirje: null
+          paatoskirje: paatoskirje && asianumero ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw` : null
         },
-        paatoskirje: null,
+        paatoskirje: paatoskirje && asianumero ? paatoskirje.nimi : null,
         jarjestamislupa: filename,
         kumottupvm
       };
