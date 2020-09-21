@@ -986,10 +986,15 @@ export default defineMessages({
   },
   opetusJaKulttuuriministerio: {
     id: "common.opetusJaKulttuuriministerio",
-    defaultMessage: "Opetus- ja kulttuuriministeriö",
+    defaultMessage: "Opetus- ja kulttuuriministeriö"
   },
   minimumAmountOfYears: {
     id: "common.minimumAmountOfYears",
     defaultMessage: "Nykyinen"
+  },
+  KJPassiivinen: {
+    id: "common.KJPassiivinen",
+    defaultMessage:
+      "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä"
   }
 });

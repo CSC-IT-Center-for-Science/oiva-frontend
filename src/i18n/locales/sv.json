@@ -40,6 +40,7 @@
   "auth.sessionTimeoutTitle": "Kirjautumisesi on vanhentunut",
   "common.KJHakuEpaonnistui": "Haulla ei löytynyt yhtään koulutuksenjärjestäjää",
   "common.KJHakuEpaonnistuiLisainfo": "Tarkista syöttämäsi Y-tunnus. Mikäli koulutuksen järjestäjää ei löydy, ota yhteyttä Opetushallituksen organisaatiopalveluun",
+  "common.KJPassiivinen": "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä",
   "common.accept": "Hyväksy",
   "common.ammatillisenKoulutuksenJarjestajat": "SV: Ammatillisen koulutuksen järjestäjät",
   "common.ammatillisenKoulutuksenJarjestamisluvat": "Tillstånd att ordna yrkesinriktade examina och utbildningar",
