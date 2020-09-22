@@ -1,4 +1,4 @@
-import { map, toUpper } from "ramda";
+import { map, toUpper, find } from "ramda";
 
 function getModificationForm(
   koulutustyypit,
@@ -41,8 +41,9 @@ function getModificationForm(
                   value: map(tutkintokielimaarays => {
                     if (
                       tutkintokielimaarays &&
+                      (!tutkintokielimaarays.koodi.voimassaAlkuPvm ||
                       new Date(tutkintokielimaarays.koodi.voimassaAlkuPvm) <=
-                        currentDate
+                        currentDate)
                     ) {
                       /**
                        * Jos tutkintokielelle löytyy voimassa oleva määräys,
@@ -50,8 +51,8 @@ function getModificationForm(
                        **/
                       return {
                         label:
-                          tutkintokielimaarays.koodi.metadata[localeUpper].nimi,
-                        value: tutkintokielimaarays.koodi.koodiarvo
+                        find(kieli => kieli.koodiarvo === toUpper(tutkintokielimaarays.koodiarvo), kielet).metadata[localeUpper].nimi,
+                        value: tutkintokielimaarays.koodiarvo
                       };
                     }
                     return null;

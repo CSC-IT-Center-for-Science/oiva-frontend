@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
+import { isEmpty } from "ramda";
 
 const changeObjects = {
   tutkinnot: {},
@@ -65,14 +66,14 @@ const UusiAsiaDialogContainer = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
-  lupa,
   maakunnat,
   maakuntakunnat,
   maaraystyypit,
   muut,
   opetuskielet,
   organisaatio,
-  tutkinnot
+  tutkinnot,
+  viimeisinLupa
 }) => {
   const intl = useIntl();
 
@@ -80,11 +81,15 @@ const UusiAsiaDialogContainer = ({
   let history = useHistory();
 
   const lupaKohteet = useMemo(() => {
-    const result = lupa
-      ? parseLupa({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase())
+    const result = !isEmpty(viimeisinLupa)
+      ? parseLupa(
+          { ...viimeisinLupa },
+          intl.formatMessage,
+          intl.locale.toUpperCase()
+        )
       : {};
     return result;
-  }, [lupa, intl]);
+  }, [viimeisinLupa, intl]);
 
   const onNewDocSave = useCallback(
     uuid => {
@@ -106,7 +111,7 @@ const UusiAsiaDialogContainer = ({
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
       kunnat={kunnat}
-      lupa={lupa}
+      lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
       maakunnat={maakunnat}
       maakuntakunnat={maakuntakunnat}

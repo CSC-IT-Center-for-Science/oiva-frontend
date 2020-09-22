@@ -1,26 +1,15 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useIntl } from "react-intl";
-import {
-  assocPath,
-  find,
-  forEach,
-  includes,
-  insert,
-  map,
-  path,
-  prop,
-  propEq,
-  split
-} from "ramda";
+import React, {useEffect, useMemo, useState} from "react";
+import {useIntl} from "react-intl";
+import {assocPath, find, forEach, includes, insert, map, path, prop, propEq, split} from "ramda";
 import Loading from "../../modules/Loading";
-import { getAnchorPart, findObjectWithKey } from "../../utils/common";
-import { setAttachmentUuids } from "../../utils/muutospyyntoUtil";
+import {findObjectWithKey, getAnchorPart} from "../../utils/common";
+import {setAttachmentUuids} from "../../utils/muutospyyntoUtil";
 import UusiAsiaDialog from "./UusiAsiaDialog";
-import { useHistory, useParams } from "react-router-dom";
-import { parseLupa } from "../../utils/lupaParser";
+import {useHistory, useParams} from "react-router-dom";
+import {parseLupa} from "../../utils/lupaParser";
 import localforage from "localforage";
-import { API_BASE_URL } from "modules/constants";
-import { backendRoutes } from "stores/utils/backendRoutes";
+import {API_BASE_URL} from "modules/constants";
+import {backendRoutes} from "stores/utils/backendRoutes";
 
 const initialChangeObjects = {
   tutkinnot: {},
@@ -28,11 +17,7 @@ const initialChangeObjects = {
     opetuskielet: [],
     tutkintokielet: {}
   },
-  koulutukset: {
-    atvKoulutukset: [],
-    kuljettajakoulutukset: [],
-    valmentavatKoulutukset: []
-  },
+  koulutukset: {},
   perustelut: {
     kielet: {
       opetuskielet: [],
@@ -83,14 +68,14 @@ const AsiaDialogContainer = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
-  lupa,
   maakunnat,
   maakuntakunnat,
   maaraystyypit,
   muut,
   opetuskielet,
   organisaatio,
-  tutkinnot
+  tutkinnot,
+  viimeisinLupa
 }) => {
   const intl = useIntl();
   let history = useHistory();
@@ -116,11 +101,11 @@ const AsiaDialogContainer = ({
   }, [muutospyynto, uuid]);
 
   const lupaKohteet = useMemo(() => {
-    const result = lupa
-      ? parseLupa({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase())
+    const result = viimeisinLupa
+      ? parseLupa({ ...viimeisinLupa }, intl.formatMessage, intl.locale.toUpperCase())
       : {};
     return result;
-  }, [lupa, intl]);
+  }, [viimeisinLupa, intl]);
 
   const filesFromMuutokset = useMemo(() => {
     if (muutospyynto) {
@@ -144,7 +129,7 @@ const AsiaDialogContainer = ({
             return Object.assign({}, file, fileFromBackend);
           }, changeObj.properties.attachments || [])
         : null;
-      return assocPath(["properties", "attachments"], files, changeObj);
+      return files ? assocPath(["properties", "attachments"], files, changeObj) : changeObj;
     }, findObjectWithKey({ ...muutospyynto }, "changeObjects"));
   }, [filesFromMuutokset, muutospyynto]);
 
@@ -152,7 +137,7 @@ const AsiaDialogContainer = ({
     if (!muutospyynto) {
       return null;
     }
-    console.info("KÄYDÄÄN LÄPI.", muutospyynto);
+
     const { muutokset: backendMuutokset } = muutospyynto || {};
 
     let changesBySection = {};
@@ -235,7 +220,7 @@ const AsiaDialogContainer = ({
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
       kunnat={kunnat}
-      lupa={lupa}
+      lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
       maakunnat={maakunnat}
       maakuntakunnat={maakuntakunnat}

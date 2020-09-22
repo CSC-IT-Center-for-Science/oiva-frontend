@@ -17,6 +17,7 @@ import common from "../../../../i18n/definitions/common";
 import education from "../../../../i18n/definitions/education";
 import * as R from "ramda";
 import BaseData from "scenes/BaseData";
+import { Helmet } from "react-helmet";
 
 const Separator = styled.div`
   &:after {
@@ -30,7 +31,7 @@ const Separator = styled.div`
 `;
 
 const Jarjestaja = React.memo(
-  ({ lupaKohteet = [], lupa = {}, path, url, user }) => {
+  ({ lupaKohteet = [], lupa = {}, path, url, user, kielet }) => {
     const intl = useIntl();
 
     const jarjestaja = useMemo(() => {
@@ -94,6 +95,12 @@ const Jarjestaja = React.memo(
 
     return (
       <React.Fragment>
+        <Helmet htmlAttributes={{ lang: intl.locale }}>
+          <title>
+            {jarjestaja.nimi},{" "}
+            {intl.formatMessage(education.vocationalEducation)} - Oiva
+          </title>
+        </Helmet>
         <div className="mx-auto px-4 sm:px-0 w-11/12 lg:w-3/4">
           <BreadcrumbsItem to="/">
             {intl.formatMessage(common.frontpage)}
@@ -131,6 +138,7 @@ const Jarjestaja = React.memo(
                     lupaKohteet={lupaKohteet}
                     lupa={lupa}
                     ytunnus={jarjestaja.ytunnus}
+                    kielet={kielet}
                   />
                 )}
               />
@@ -173,7 +181,11 @@ const Jarjestaja = React.memo(
               <Route
                 path={`${url}/jarjestamislupa`}
                 render={() => (
-                  <Jarjestamislupa lupa={lupa} lupaKohteet={lupaKohteet} />
+                  <Jarjestamislupa
+                    lupa={lupa}
+                    lupaKohteet={lupaKohteet}
+                    kielet={kielet}
+                  />
                 )}
               />
               <Route

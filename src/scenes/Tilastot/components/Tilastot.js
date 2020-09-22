@@ -30,7 +30,7 @@ const Tilastot = () => {
 
   const pageTitle = intl.formatMessage(common.statistics);
 
-  const title = `Oiva | ${pageTitle}`;
+  const title = `${pageTitle} - Oiva`;
 
   return (
     <ContentContainer>

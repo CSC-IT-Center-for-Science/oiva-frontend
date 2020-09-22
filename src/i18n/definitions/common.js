@@ -1,4 +1,5 @@
 import { defineMessages } from "react-intl";
+import { xor } from "ramda";
 
 export default defineMessages({
   statistics: {
@@ -564,45 +565,17 @@ export default defineMessages({
     defaultMessage:
       "Koulutuksen järjestäjän on annettava opetusta seuraavilla opetuskielillä:"
   },
-  lupaSectionExtraLanguageEnglishSingular: {
-    id: "common.lupaSectionExtraLanguageEnglishSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielen lisäksi englanti seuraavassa tutkinnossa"
+  lupaSectionTutkintokieliAdditionalLanguages: {
+    id: "common.lupaSectionTutkintokieliAdditionalLanguages",
+    defaultMessage: "Tutkintokieli on em. opetuskielten lisäksi"
   },
-  lupaSectionExtraLanguageEnglishPlural: {
-    id: "common.lupaSectionExtraLanguageEnglishPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi englanti seuraavassa tutkinnossa"
+  lupaSectionTutkintokieliFollowingDegreesSingular: {
+    id: "common.lupaSectionTutkintokieliFollowingDegreesSingular",
+    defaultMessage: "seuraavassa tutkinnossa"
   },
-  lupaSectionExtraLanguageSwedishSingular: {
-    id: "common.lupaSectionExtraLanguageSwedishSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageSwedishPlural: {
-    id: "common.lupaSectionExtraLanguageSwedishPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi ruotsi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageFinnishSingular: {
-    id: "common.lupaSectionExtraLanguageFinnishSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageFinnishPlural: {
-    id: "common.lupaSectionExtraLanguageFinnishPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi suomi seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageRussianSingular: {
-    id: "common.lupaSectionExtraLanguageRussianSingular",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa"
-  },
-  lupaSectionExtraLanguageRussianPlural: {
-    id: "common.lupaSectionExtraLanguageRussianPlural",
-    defaultMessage:
-      "Tutkintokieli on em. opetuskielten lisäksi venäjä seuraavassa tutkinnossa"
+  lupaSectionTutkintokieliFollowingDegreesPlural: {
+    id: "common.lupaSectionTutkintokieliFollowingDegreesPlural",
+    defaultMessage: "seuraavissa tutkinnoissa"
   },
   lupaSectionToimintaAlueMainTitle: {
     id: "common.lupaSectionToimintaAlueMainTitle",
@@ -873,6 +846,72 @@ export default defineMessages({
     id: "common.lupapaatoksetTaulukko",
     defaultMessage: "Lupapäätökset-taulukko"
   },
+  jarjestajaluettelo: {
+    id: "common.jarjestajaluettelo",
+    defaultMessage: "Luettelo koulutuksen järjestäjistä"
+  },
+  www: {
+    id: "common.www",
+    defaultMessage: "WWW"
+  },
+  filterRows: {
+    id: "common.filterRows",
+    defaultMessage: "Suodata rivejä..."
+  },
+  navigationBetweenTablePages: {
+    id: "common.navigationBetweenTablePages",
+    defaultMessage: "Navigointi taulukon sivujen välillä"
+  },
+  siirryTaulukonEnsimmaiselleSivulleOhje: {
+    id: "common.siirryTaulukonEnsimmaiselleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry taulukon ensimmäiselle sivulle."
+  },
+  siirryTaulukonEdelliselleSivulleOhje: {
+    id: "common.siirryTaulukonEdelliselleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry edelliselle sivulle."
+  },
+  siirryTaulukonSeuraavalleSivulleOhje: {
+    id: "common.siirryTaulukonSeuraavalleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry seuraavalle sivulle."
+  },
+  siirryTaulukonViimeiselleSivulleOhje: {
+    id: "common.siirryTaulukonViimeiselleSivulleOhje",
+    defaultMessage:
+      "Olet taulukon sivulla {pageIndex}. Siirry taulukon viimeiselle sivulle."
+  },
+  ensimmainenSivu: {
+    id: "common.ensimmainenSivu",
+    defaultMessage: "Ensimmäinen sivu"
+  },
+  edellinen: {
+    id: "common.edellinen",
+    defaultMessage: "Edellinen"
+  },
+  seuraava: {
+    id: "common.seuraava",
+    defaultMessage: "Seuraava"
+  },
+  viimeinenSivu: {
+    id: "common.viimeinenSivu",
+    defaultMessage: "Viimeinen sivu"
+  },
+  siirrySivulle: {
+    id: "common.siirrySivulle",
+    defaultMessage: "Siirry sivulle"
+  },
+  siirryKJnTarkempiinTietoihin: {
+    id: "common.siirryKJnTarkempiinTietoihin",
+    defaultMessage:
+      "Siirry koulutuksen järjestäjän {nimi} tarkempiin tietoihin."
+  },
+  kjSivuinfo: {
+    id: "common.kjSivuinfo",
+    defaultMessage:
+      "Tämä sivu sisältää taulukon voimassa olevista järjestämisluvista, joita on {kpl} kappaletta. Kukin lupa kuuluu jollekin koulutuksen järjestäjälle, jonka nimen kautta pääset tarkastelemaan tarkempia tietoja. Voit liikkua taulukon sivujen välillä käyttämällä taulukon alapuolella olevaa sivutustoiminnallisuutta."
+  },
   tilastosivunOhje: {
     id: "common.tilastosivunOhje",
     defaultMessage: "Linkkejä tilastodataan (beta-versio):"
@@ -893,12 +932,69 @@ export default defineMessages({
     id: "common.koulutusJaPaaasiallinenToiminta",
     defaultMessage: "Koulutus ja pääasiallinen toiminta"
   },
+  haeKJYtunnuksella: {
+    id: "common.haeKJYtunnuksella",
+    defaultMessage: "Hae koulutuksen järjestäjää Y-tunnuksella"
+  },
+  luoUusiAsiaEsidialogiInfo2: {
+    id: "common.luoUusiAsiaEsidialogiInfo2",
+    defaultMessage:
+      "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella."
+  },
+  suoritaYtunnushaku: {
+    id: "common.suoritaYtunnushaku",
+    defaultMessage: "Hae"
+  },
+  haullaLoytyiKJ: {
+    id: "common.haullaLoytyiKJ",
+    defaultMessage: "Haulla löytyi koulutuksenjärjestäjä"
+  },
+  KJHakuEpaonnistui: {
+    id: "common.KJHakuEpaonnistui",
+    defaultMessage: "Haulla ei löytynyt yhtään koulutuksenjärjestäjää"
+  },
+  KJHakuEpaonnistuiLisainfo: {
+    id: "common.KJHakuEpaonnistuiLisainfo",
+    defaultMessage:
+      "Tarkista syöttämäsi Y-tunnus. Mikäli koulutuksen järjestäjää ei löydy, ota yhteyttä Opetushallituksen organisaatiopalveluun"
+  },
+  yhteisetpalvelutEmailAddress: {
+    id: "common.yhteisetPalvelutEmailAddress",
+    defaultMessage: "yhteisetpalvelut@opintopolku.fi"
+  },
+  syotaYtunnus: {
+    id: "common.syotaYtunnus",
+    defaultMessage: "Syötä Y-tunnus"
+  },
+  suljeHaku: {
+    id: "common.suljeHaku",
+    defaultMessage: "Sulje haku"
+  },
+  loytyyjoVoimassaOlevaLupa: {
+    id: "common.loytyyjoVoimassaOlevaLupa",
+    defaultMessage:
+      "Tällä koulutuksen järjestäjällä on jo voimassa oleva järjestämislupa. Hyväksymällä siirrytään luvan muokkaussivulle."
+  },
+  oneKJMustBeSelected: {
+    id: "common.oneKJMustBeSelected",
+    defaultMessage:
+      "Sinun tulee valita yksi koulutuksen järjestäjä, ennen kuin voit jatkaa eteenpäin"
+  },
   tilaValmis: {
     id: "common.tilaValmis",
     defaultMessage: "Valmis"
   },
   opetusJaKulttuuriministerio: {
     id: "common.opetusJaKulttuuriministerio",
-    defaultMessage: "Opetus- ja kulttuuriministeriö",
+    defaultMessage: "Opetus- ja kulttuuriministeriö"
+  },
+  minimumAmountOfYears: {
+    id: "common.minimumAmountOfYears",
+    defaultMessage: "Nykyinen"
+  },
+  KJPassiivinen: {
+    id: "common.KJPassiivinen",
+    defaultMessage:
+      "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä"
   }
 });

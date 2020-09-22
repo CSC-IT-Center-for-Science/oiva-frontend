@@ -11,13 +11,51 @@ import MuutospyyntoWizardToimintaalue from "../Jarjestajat/Jarjestaja/Hakemukset
 import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
 
+const defaultProps = {
+  kielet: [],
+  kohteet: [],
+  koulutukset: {},
+  koulutusalat: [],
+  koulutustyypit: [],
+  kunnat: [],
+  maakuntakunnat: [],
+  maakunnat: [],
+  lupa: {},
+  lupaKohteet: {},
+  maaraystyypit: [],
+  muut: [],
+  opetuskielet: [],
+  opiskelijavuodet: [],
+  tutkinnot: []
+};
+
 const EsittelijatMuutospyynto = React.memo(
-  props => {
+  ({
+    changeObjects,
+    kielet = defaultProps.kielet,
+    kohteet: osiokohteet = defaultProps.kohteet,
+    koulutukset = defaultProps.koulutukset,
+    koulutusalat = defaultProps.koulutusalat,
+    koulutustyypit = defaultProps.koulutustyypit,
+    kunnat = defaultProps.kunnat,
+    maakuntakunnat = defaultProps.maakuntakunnat,
+    maakunnat = defaultProps.maakunnat,
+    lupa = defaultProps.lupa,
+    lupaKohteet = defaultProps.lupaKohteet,
+    maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
+    muut = defaultProps.muut,
+    opetuskielet = defaultProps.opetuskielet,
+    opiskelijavuodet = defaultProps.opiskelijavuodet,
+    tutkinnot = defaultProps.tutkinnot,
+
+    // Callback methods
+    handleSubmit,
+    onChangesUpdate,
+    onUpdate
+  }) => {
     const intl = useIntl();
     const [kohteet, setKohteet] = useState({});
     const [maaraystyypit, setMaaraystyypit] = useState(null);
-
-    const { onChangesUpdate } = props;
 
     useEffect(() => {
       const _kohteet = R.mergeAll(
@@ -26,11 +64,11 @@ const EsittelijatMuutospyynto = React.memo(
             return {
               [R.props(["tunniste"], item)]: item
             };
-          }, props.kohteet)
+          }, osiokohteet)
         )
       );
       setKohteet(_kohteet);
-    }, [props.kohteet]);
+    }, [osiokohteet]);
 
     useEffect(() => {
       const _maaraystyypit = R.mergeAll(
@@ -39,11 +77,11 @@ const EsittelijatMuutospyynto = React.memo(
             return {
               [R.props(["tunniste"], item)]: item
             };
-          }, props.maaraystyypit)
+          }, maaraystyypitRaw)
         )
       );
       setMaaraystyypit(_maaraystyypit);
-    }, [props.maaraystyypit]);
+    }, [maaraystyypitRaw]);
 
     const onChangesRemove = useCallback(
       sectionId => {
@@ -61,67 +99,99 @@ const EsittelijatMuutospyynto = React.memo(
 
     const valtakunnallinenMaarays = R.find(
       R.propEq("koodisto", "nuts1"),
-      props.lupa.maaraykset || []
+      R.prop("maaraykset", lupa) || []
     );
+
+    const sectionHeadings = {
+      tutkinnotJaKoulutukset: {
+        number: R.path(["1", "headingNumber"], lupaKohteet) || 1,
+        title:
+          R.path(["1", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
+      },
+      opetusJaTutkintokieli: {
+        number: R.path(["2", "headingNumber"], lupaKohteet) || 2,
+        title:
+          R.path(["2", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
+      },
+      toimintaalue: {
+        number: R.path(["3", "headingNumber"], lupaKohteet) || 3,
+        title:
+          R.path(["3", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
+      },
+      opiskelijavuodet: {
+        number: R.path(["4", "headingNumber"], lupaKohteet) || 4,
+        title:
+          R.path(["4", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
+      },
+      muut: {
+        number: R.path(["5", "headingNumber"], lupaKohteet) || 5,
+        title:
+          R.path(["5", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionMuutMainTitle)
+      }
+    };
 
     return (
       <React.Fragment>
         <h2 className="my-6">{intl.formatMessage(common.changesText)}</h2>
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <Section
-            code={props.lupaKohteet[1].headingNumber}
-            title={props.lupaKohteet[1].heading}>
+            code={sectionHeadings.tutkinnotJaKoulutukset.number}
+            title={sectionHeadings.tutkinnotJaKoulutukset.title}>
             <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
             <Tutkinnot
-              changeObjects={props.changeObjects.tutkinnot}
-              koulutusalat={props.koulutusalat}
-              koulutustyypit={props.koulutustyypit}
+              changeObjects={changeObjects.tutkinnot}
+              koulutusalat={koulutusalat}
+              koulutustyypit={koulutustyypit}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              tutkinnot={props.tutkinnot}
+              tutkinnot={tutkinnot}
             />
             <h4 className="pt-8 pb-4">
               {intl.formatMessage(common.koulutukset)}
             </h4>
             <MuutospyyntoWizardKoulutukset
-              changeObjects={props.changeObjects}
+              changeObjects={changeObjects}
               key="koulutukset"
-              koulutukset={props.koulutukset}
-              maaraykset={props.lupa.maaraykset}
+              koulutukset={koulutukset}
+              maaraykset={lupa.maaraykset}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
             />
           </Section>
 
           <Section
-            code={props.lupaKohteet[2].headingNumber}
-            title={props.lupaKohteet[2].heading}>
+            code={sectionHeadings.opetusJaTutkintokieli.number}
+            title={sectionHeadings.opetusJaTutkintokieli.title}>
             <MuutospyyntoWizardKielet
-              changeObjects={props.changeObjects}
-              kielet={props.kielet}
-              koulutusalat={props.koulutusalat}
-              koulutustyypit={props.koulutustyypit}
-              lupa={props.lupa}
-              lupaKohteet={props.lupaKohteet}
-              koulutukset={props.koulutukset}
-              onUpdate={props.onUpdate}
+              changeObjects={changeObjects}
+              kielet={kielet}
+              koulutusalat={koulutusalat}
+              koulutustyypit={koulutustyypit}
+              lupaKohteet={lupaKohteet}
+              koulutukset={koulutukset}
+              onUpdate={onUpdate}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
-              opetuskielet={props.opetuskielet}
+              opetuskielet={opetuskielet}
               sectionId={"tutkinnot"}
-              tutkinnot={props.tutkinnot}
+              tutkinnot={tutkinnot}
             />
           </Section>
 
           <Section
-            code={props.lupaKohteet[3].headingNumber}
-            title={props.lupaKohteet[3].heading}>
+            code={sectionHeadings.toimintaalue.number}
+            title={sectionHeadings.toimintaalue.title}>
             <MuutospyyntoWizardToimintaalue
-              changeObjects={props.changeObjects}
-              lupakohde={props.lupaKohteet[3]}
-              kunnat={props.kunnat}
-              maakuntakunnat={props.maakuntakunnat}
-              maakunnat={props.maakunnat}
+              changeObjects={changeObjects}
+              lupakohde={lupaKohteet[3]}
+              kunnat={kunnat}
+              maakuntakunnat={maakuntakunnat}
+              maakunnat={maakunnat}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={updateChanges}
               sectionId={"toimintaalue"}
@@ -131,14 +201,14 @@ const EsittelijatMuutospyynto = React.memo(
 
           {kohteet.opiskelijavuodet && (
             <Section
-              code={props.lupaKohteet[4].headingNumber}
-              title={props.lupaKohteet[4].heading}>
+              code={sectionHeadings.opiskelijavuodet.number}
+              title={sectionHeadings.opiskelijavuodet.title}>
               <MuutospyyntoWizardOpiskelijavuodet
-                changeObjects={props.changeObjects}
-                lupaKohteet={props.lupaKohteet}
-                maaraykset={props.lupa.maaraykset}
-                muut={props.muut}
-                opiskelijavuodet={props.opiskelijavuodet}
+                changeObjects={changeObjects}
+                lupaKohteet={lupaKohteet}
+                maaraykset={lupa.maaraykset}
+                muut={muut}
+                opiskelijavuodet={opiskelijavuodet}
                 onChangesRemove={onChangesRemove}
                 onChangesUpdate={updateChanges}
                 sectionId={"opiskelijavuodet"}
@@ -146,15 +216,15 @@ const EsittelijatMuutospyynto = React.memo(
             </Section>
           )}
 
-          {kohteet.muut && props.muut && maaraystyypit && (
+          {kohteet.muut && muut && maaraystyypit && (
             <Section
-              code={props.lupaKohteet[5].headingNumber}
-              title={props.lupaKohteet[5].heading}>
+              code={sectionHeadings.muut.number}
+              title={sectionHeadings.muut.title}>
               <MuutospyyntoWizardMuut
-                changeObjects={props.changeObjects}
-                maaraykset={props.lupa.maaraykset}
-                muut={props.muut}
-                koulutukset={props.koulutukset}
+                changeObjects={changeObjects}
+                maaraykset={lupa.maaraykset}
+                muut={muut}
+                koulutukset={koulutukset}
                 onChangesRemove={onChangesRemove}
                 onChangesUpdate={updateChanges}
                 sectionId={"muut"}
@@ -179,10 +249,6 @@ const EsittelijatMuutospyynto = React.memo(
   }
 );
 
-EsittelijatMuutospyynto.defaultProps = {
-  maaraystyypit: []
-};
-
 EsittelijatMuutospyynto.propTypes = {
   kielet: PropTypes.array,
   kohteet: PropTypes.array,
@@ -198,6 +264,7 @@ EsittelijatMuutospyynto.propTypes = {
   muut: PropTypes.array,
   onChangesUpdate: PropTypes.func,
   opetuskielet: PropTypes.array,
+  opiskelijavuodet: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

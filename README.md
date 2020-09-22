@@ -46,7 +46,7 @@ Testejä voi ajaa näin:
 npm t -- --watchAll=false
 ```
 
-Testikattavuutta voi seurata näin:
+Testikattavuutta voi seurata seuraavasti:
 ```
 npm run coverage
 ```

@@ -33,7 +33,9 @@ const Footer = () => {
       <div className="flex flex-col items-baseline lg:flex-1 lg:flex-row">
         <div className="flex flex-1 flex-col justify-center text-center lg:text-left lg:pr-8">
           <img
-            alt="logo"
+            alt={`${intl.formatMessage(
+              common.opetusJaKulttuuriministerio
+            )} logo`}
             src={intl.locale === "sv" ? logo_sv : logo_fi}
             className="lg:w-fit-content max-w-sm"
           />

@@ -74,14 +74,11 @@ const AppWrapper = () => {
     if (!!kaannokset.data) {
       //Using backend data as source
       return kaannokset.data;
-    } else if (!isBackendTheSourceOfLocalizations) {
+    } else {
       //Using local files as source
       return translations;
-    } else {
-      //Falling back to default localization messages
-      return {};
     }
-  }, [kaannokset.data, isBackendTheSourceOfLocalizations]);
+  }, [kaannokset.data]);
 
   useEffect(() => {
     if (!isEmpty(messages)) {

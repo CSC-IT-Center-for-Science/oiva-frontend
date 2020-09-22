@@ -12,9 +12,9 @@ const Home = () => {
   return (
     <ContentContainer>
       <Helmet htmlAttributes={{ lang: locale }}>
-        <title>Oiva | {formatMessage(common.frontpage)}</title>
+        <title>Oiva - {formatMessage(common.frontpage)}</title>
       </Helmet>
-      <Typography component="h2" variant="h4" className="p-4">
+      <Typography component="h1" variant="h4" className="p-4">
         {formatMessage(homepage.header)}
       </Typography>
       <Card className="p-4">

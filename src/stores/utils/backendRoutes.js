@@ -37,20 +37,27 @@ export const backendRoutes = {
   tallennaMuutospyyntoEsittelijanToimesta: {
     path: "muutospyynnot/esittelija/tallenna"
   },
-  tallennaPaatoskirje: { path: "muutospyynnot/", postfix: "/liitteet/paatoskirje"},
+  tallennaPaatoskirje: {
+    path: "muutospyynnot/",
+    postfix: "/liitteet/paatoskirje"
+  },
   tarkistaDuplikaattiAsianumero: {
     path: "muutospyynnot/duplikaattiasianumero"
-  },
-  omovet: {
-    path: `koodistot/koodit/oivamuutoikeudetvelvollisuudetehdotjatehtavat`
   },
   oivaperustelut: { path: `koodistot/koodit/oivaperustelut` },
   opetuskielet: { path: `koodistot/opetuskielet` },
   organisaatio: { path: `organisaatiot/` },
   paatoskierrokset: { path: `paatoskierrokset/open` },
+  poistaLiite: { path: `liitteet/` },
   vankilat: { path: `koodistot/koodit/vankilat` },
+  viimeisinLupa: {
+    path: "luvat/jarjestaja/",
+    postfix: "/viimeisin",
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
   liitteet: { path: `liitteet/`, abortController: false },
   kaannokset: { path: "lokalisaatio" },
 
-  organisaatiot: { path: "luvat/organisaatiot" }
+  organisaatiot: { path: "luvat/organisaatiot" },
+  ytunnushaku: { path: "organisaatiot/" }
 };

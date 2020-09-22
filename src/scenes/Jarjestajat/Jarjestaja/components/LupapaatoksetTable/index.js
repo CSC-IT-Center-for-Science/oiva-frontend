@@ -190,9 +190,10 @@ export default function LupapaatoksetTable({ data, lupa }) {
       asianumero,
       diaarinumero,
       filename,
-      kumottu,
+      kumottupvm,
       paatospvm,
       uuid,
+      paatoskirje,
       voimassaoloalkupvm,
       voimassaololoppupvm
     }) => {
@@ -203,30 +204,29 @@ export default function LupapaatoksetTable({ data, lupa }) {
         voimassaololoppupvm,
         urls: {
           jarjestamislupa: `${API_BASE_URL}/pdf/historia/${uuid}`,
-          paatoskirje: null
+          paatoskirje: paatoskirje && asianumero ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw` : null
         },
-        paatoskirje: null,
+        paatoskirje: paatoskirje && asianumero ? paatoskirje.nimi : null,
         jarjestamislupa: filename,
-        kumottu
+        kumottupvm
       };
     },
     data
   );
 
-  const lupaPaatoskirje = find(liite => liite.tyyppi === 'paatosKirje', lupa.liitteet);
+  const lupaPaatoskirje = find(liite => liite.tyyppi === 'paatosKirje', lupa.liitteet || []);
 
   const rows = prepend(
     {
       diaarinumero: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       paatospvm: lupa.paatospvm,
       jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
-      kumottu: "",
       urls: {
         jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
         paatoskirje: lupaPaatoskirje && lupa.asianumero ?
           `${API_BASE_URL}/liitteet/${lupaPaatoskirje.uuid}/raw` : null,
       },
-      paatoskirje: lupaPaatoskirje && lupa.asianumero ? lupaPaatoskirje.nimi : null, // /api/liitteet/{uuid}/raw
+      paatoskirje: lupaPaatoskirje && lupa.asianumero ? lupaPaatoskirje.nimi : null,
       voimassaoloalkupvm: lupa.alkupvm,
       voimassaololoppupvm: lupa.loppupvm
     },
@@ -347,7 +347,9 @@ export default function LupapaatoksetTable({ data, lupa }) {
                           {row.jarjestamislupa}
                         </a>
                       </TableCell>
-                      <TableCell align="left">{row.kumottu}</TableCell>
+                      <TableCell align="left">
+                        {row.kumottupvm ? moment(row.kumottupvm).format("DD.MM.YYYY") : ''}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -40,13 +40,13 @@ const acceptJSON = {
  */
 const minimumTimeBetweenFetchingInMinutes = 60;
 
-const fetchJSON = async path => {
+export const fetchJSON = async path => {
   const response = await fetch(`${API_BASE_URL}/${path}`, acceptJSON);
   let result = {
     fetchedAt: new Date(),
     data: response.ok ? await response.json() : null
   };
-  result = !response.ok ? assoc("error", response) : result;
+  result = !response.ok ? assoc("error", !response.ok, result) : result;
   await localforage.setItem(path, result);
   return result.data;
 };
@@ -151,7 +151,6 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       backendRoutes.oivaperustelut.path,
       keys
     ),
-    omovet: await getRaw("omovet", backendRoutes.omovet.path, keys),
     opetuskielet: await getRaw(
       "opetuskielet",
       backendRoutes.opetuskielet.path,
@@ -163,7 +162,13 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       keys
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
-    vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys)
+    vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
+    viimeisinLupa: await getRaw(
+      "viimeisinLupa",
+      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false`,
+      keys,
+      backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
+    )
   };
 
   /**
@@ -292,38 +297,33 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.oivaperustelut)
         )
       : undefined,
-    omovet: raw.omovet
-      ? await localforage.setItem("omovet", raw.omovet)
-      : undefined,
-    opetuskielet:
-      raw.lupa && raw.opetuskielet
-        ? await localforage.setItem(
-            "opetuskielet",
-            sortBy(
-              prop("koodiarvo"),
-              initializeOpetuskielet(
-                raw.opetuskielet,
-                prop("maaraykset", raw.lupa) || []
-              )
+    opetuskielet: raw.opetuskielet
+      ? await localforage.setItem(
+          "opetuskielet",
+          sortBy(
+            prop("koodiarvo"),
+            initializeOpetuskielet(
+              raw.opetuskielet,
+              prop("maaraykset", raw.lupa) || []
             )
           )
-        : undefined,
+        )
+      : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
-    tutkinnot:
-      raw.lupa && raw.tutkinnot
-        ? await localforage.setItem(
-            "tutkinnot",
-            sortBy(
-              prop("koodiarvo"),
-              initializeTutkinnot(
-                raw.tutkinnot,
-                prop("maaraykset", raw.lupa) || []
-              )
+    tutkinnot: raw.tutkinnot
+      ? await localforage.setItem(
+          "tutkinnot",
+          sortBy(
+            prop("koodiarvo"),
+            initializeTutkinnot(
+              raw.tutkinnot,
+              prop("maaraykset", raw.lupa || {}) || []
             )
           )
-        : undefined,
+        )
+      : undefined,
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -338,7 +338,8 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             });
           }, raw.vankilat)
         )
-      : undefined
+      : undefined,
+    viimeisinLupa: raw.viimeisinLupa || {}
   };
   return result;
 };
@@ -350,7 +351,6 @@ const defaultProps = {
 const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
   const { ytunnus } = useParams();
   const [baseData, setBaseData] = useState({});
-
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
    * paikalliseen tietovarastoon jäsenneltynä.

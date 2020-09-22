@@ -66,7 +66,6 @@ const Tutkinnot = React.memo(
   },
   (currentProps, nextProps) => {
     return equals(currentProps.changeObjects, nextProps.changeObjects);
-    // return true;
   }
 );
 

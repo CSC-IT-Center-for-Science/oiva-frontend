@@ -119,6 +119,7 @@ const MuutospyyntoWizard = ({
     4: 0
   });
 
+  const prevCosRef = useRef(null);
   const [changeObjects, setChangeObjects] = useState(initialChangeObjects);
   const [, muutospyyntoActions] = useMuutospyynto();
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
@@ -126,6 +127,10 @@ const MuutospyyntoWizard = ({
     isHelpVisible: false
   });
   const [steps, setSteps] = useState([]);
+
+  useEffect(() => {
+    prevCosRef.current = R.clone(initialChangeObjects);
+  }, initialChangeObjects);
 
   const handlePrev = useCallback(
     pageNumber => {
@@ -156,6 +161,10 @@ const MuutospyyntoWizard = ({
     ({ anchor, changes: changeObjects }) => {
       if (anchor && changeObjects) {
         setChangeObjects(R.assocPath(R.split("_", anchor), changeObjects));
+      }
+      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
+      if (anchor && anchor !== 'toimintaalue' && anchor !== 'kielet_tutkintokielet'  && R.isEmpty(changeObjects)) {
+        setChangeObjects(R.dissocPath(R.split("_", anchor)));
       }
     },
     []
@@ -217,8 +226,6 @@ const MuutospyyntoWizard = ({
     }
     return R.concat(attachments, files);
   }, [changeObjects]);
-
-  const prevCosRef = useRef(changeObjects);
 
   useEffect(() => {
     // If user has made changes on the form the save action must be available.
@@ -342,7 +349,7 @@ const MuutospyyntoWizard = ({
        * save button. It will be enabled after new changes.
        */
       setIsSavingEnabled(false);
-      prevCosRef.current = changeObjects;
+      prevCosRef.current = R.clone(changeObjects);
 
       /**
        * Next thing is to check out if this was the first save. If so we need
@@ -400,8 +407,8 @@ const MuutospyyntoWizard = ({
     ]
   );
 
-  const openCancelModal = () => {
-    setIsConfirmDialogVisible(true);
+  const leaveOrOpenCancelModal = () => {
+    isSavingEnabled ? setIsConfirmDialogVisible(true) : history.push('../../jarjestamislupa-asia');
   };
 
   function handleCancel() {
@@ -447,11 +454,11 @@ const MuutospyyntoWizard = ({
       <React.Fragment>
         <FormDialog
           open={true}
-          onClose={openCancelModal}
+          onClose={leaveOrOpenCancelModal}
           maxWidth={state.isHelpVisible ? "xl" : "lg"}
           fullScreen={true}
           aria-labelledby="simple-dialog-title">
-          <DialogTitle id="customized-dialog-title" onClose={openCancelModal}>
+          <DialogTitle id="customized-dialog-title" onClose={leaveOrOpenCancelModal}>
             {intl.formatMessage(wizardMessages.formTitle_new)}
           </DialogTitle>
           <div

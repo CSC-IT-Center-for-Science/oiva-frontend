@@ -1,4 +1,8 @@
 module.exports = {
+  purge: ["./src/**/*.html", "./src/**/*.jsx"],
+  future: {
+    removeDeprecatedGapUtilities: true
+  },
   prefix: "",
   important: false,
   separator: ":",
@@ -425,12 +429,13 @@ module.exports = {
     }),
     zIndex: {
       auto: "auto",
-      "0": "0",
-      "10": "10",
-      "20": "20",
-      "30": "30",
-      "40": "40",
-      "50": "50"
+      "0": 0,
+      "10": 10,
+      "20": 20,
+      "30": 30,
+      "40": 40,
+      "50": 50,
+      "60": 60
     }
   },
   variants: {

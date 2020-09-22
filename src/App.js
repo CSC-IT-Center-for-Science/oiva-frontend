@@ -48,7 +48,7 @@ const history = createBrowserHistory();
 
 const logo = { text: "Oiva", path: "/" };
 
-const keys = ["lupa"];
+const keys = ["lupa", "kielet"];
 
 /**
  * App component forms the basic structure of the application and its routing.
@@ -286,6 +286,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   className="breadcumbs-nav"
                   aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
                   <Breadcrumbs
+                    hideIfEmpty={true}
                     separator={<b> / </b>}
                     item={NavLink}
                     finalItem={"b"}
@@ -338,6 +339,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                                 path={props.match.path}
                                 ytunnus={_props.ytunnus}
                                 user={user}
+                                kielet={_props.kielet}
                               />
                             );
                           }}
@@ -347,7 +349,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   />
                   <Route
                     path="/saavutettavuusseloste"
-                    component={Saavutettavuusseloste}
+                    render={() => <Saavutettavuusseloste locale={intl.locale} />}
                   />
                   <Route
                     path="/tietosuojailmoitus"

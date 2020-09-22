@@ -13,6 +13,7 @@ import Section from "../../../../components/03-templates/Section";
 import common from "../../../../i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { parseLocalizedField } from "../../../../modules/helpers";
+import { find } from "ramda";
 
 const Otsikko = styled.div`
   font-size: 16px;
@@ -85,7 +86,7 @@ const MuutSection = styled.div`
 `;
 
 const LupaSection = props => {
-  const { kohde, ytunnus, lupaAlkuPvm } = props;
+  const { kohde, ytunnus, lupaAlkuPvm, kielet } = props;
   const intl = useIntl();
 
   if (kohde) {
@@ -186,11 +187,13 @@ const LupaSection = props => {
         const {
           kohdeKuvaus,
           kohdeArvot,
-          tutkinnotjakieletEn,
-          tutkinnotjakieletSv,
-          tutkinnotjakieletFi,
-          tutkinnotjakieletRu
+          tutkintokieletArr
         } = kohde;
+
+        tutkintokieletArr.forEach(tutkintokieli => {
+          tutkintokieli.kieli = parseLocalizedField(find(k => k.koodiarvo === tutkintokieli.kieli, kielet).metadata, intl.locale.toUpperCase())
+        });
+        const tutkintokieletArrSorted = _.sortBy(tutkintokieletArr, 'kieli');
 
         return (
           <div className="border-b border-b-gray">
@@ -202,61 +205,22 @@ const LupaSection = props => {
                 ))}
               </List>
               <Tutkinnot>
-                {tutkinnotjakieletEn.length > 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageEnglishPlural
-                    )
-                  : null}
-                {tutkinnotjakieletEn.length === 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageEnglishSingular
-                    )
-                  : null}
-                {_.map(tutkinnotjakieletEn, (obj, i) => (
-                  <Tutkintokieli key={i} {...obj} />
-                ))}
-
-                {tutkinnotjakieletSv.length > 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageSwedishPlural
-                    )
-                  : null}
-                {tutkinnotjakieletSv.length === 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageSwedishSingular
-                    )
-                  : null}
-                {_.map(tutkinnotjakieletSv, (obj, i) => (
-                  <Tutkintokieli key={i} {...obj} />
-                ))}
-
-                {tutkinnotjakieletFi.length > 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageFinnishPlural
-                    )
-                  : null}
-                {tutkinnotjakieletFi.length === 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageFinnishSingular
-                    )
-                  : null}
-                {_.map(tutkinnotjakieletFi, (obj, i) => (
-                  <Tutkintokieli key={i} {...obj} />
-                ))}
-
-                {tutkinnotjakieletRu.length > 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageRussianPlural
-                    )
-                  : null}
-                {tutkinnotjakieletRu.length === 1
-                  ? intl.formatMessage(
-                      common.lupaSectionExtraLanguageRussianSingular
-                    )
-                  : null}
-                {_.map(tutkinnotjakieletRu, (obj, i) => (
-                  <Tutkintokieli key={i} {...obj} />
-                ))}
+                {tutkintokieletArrSorted.map((tutkintokieli, i) => {
+                  return (
+                    <div key={i}>
+                      {intl.formatMessage(common.lupaSectionTutkintokieliAdditionalLanguages)}&nbsp;
+                      {tutkintokieli.kieli}&nbsp;
+                      {tutkintokieli.tutkinnot.length <= 1 ? intl.formatMessage(common.lupaSectionTutkintokieliFollowingDegreesSingular)
+                        : intl.formatMessage(common.lupaSectionTutkintokieliFollowingDegreesPlural)}
+                      {(tutkintokieli.tutkinnot.map((tutkinto, i) => {
+                        return (
+                          <Tutkintokieli key={i} {...tutkinto} />
+                        );
+                      }))}
+                    </div>
+                  )
+                })
+                }
               </Tutkinnot>
             </Section>
           </div>
