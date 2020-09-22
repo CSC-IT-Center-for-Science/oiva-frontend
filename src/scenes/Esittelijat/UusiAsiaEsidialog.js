@@ -85,6 +85,8 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
       );
       if (isLupaExisting) {
         setOrganisationStatus("duplicate");
+      } else if (result.status === "PASSIIVINEN") {
+        setOrganisationStatus("passive");
       } else {
         setOrganisationStatus("ok");
       }
@@ -167,9 +169,29 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                     <a
                       href={`mailto:${intl.formatMessage(
                         common.yhteisetpalvelutEmailAddress
-                      )}`}>
+                      )}`}
+                      className="underline">
                       {intl.formatMessage(common.yhteisetpalvelutEmailAddress)}
                     </a>
+                  </p>
+                </div>
+              ) : null}
+              {organisationStatus === "passive" ? (
+                <div>
+                  <p className="my-4">
+                    <StyledErrorIcon />{" "}
+                    {organisation.nimi.fi || organisation.nimi.sv}
+                  </p>
+                  <p className="mb-2">
+                    {intl.formatMessage(common.KJPassiivinen)}{" "}
+                    <a
+                      href={`mailto:${intl.formatMessage(
+                        common.yhteisetpalvelutEmailAddress
+                      )}`}
+                      className="underline">
+                      {intl.formatMessage(common.yhteisetpalvelutEmailAddress)}
+                    </a>
+                    .
                   </p>
                 </div>
               ) : null}
@@ -252,19 +274,20 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
             </Button>
           </div>
           <Button
-            className={selectedKJ || organisation ? "" : classes.fakeDisabled}
+            className={
+              selectedKJ || (organisation && organisationStatus !== "passive")
+                ? ""
+                : classes.fakeDisabled
+            }
             onClick={() => {
               const kj =
-                isSearchFieldVisible && organisation
-                  ? { value: organisation.ytunnus }
-                  : selectedKJ;
-              if (
                 isSearchFieldVisible &&
                 organisation &&
-                organisationStatus !== "duplicate"
-              ) {
-                return onSelect(kj);
-              } else if (kj) {
+                organisationStatus !== "duplicate" &&
+                organisationStatus !== "passive"
+                  ? { value: organisation.ytunnus }
+                  : selectedKJ;
+              if (kj) {
                 return onSelect(kj);
               } else {
                 setIsKJMissing(true);

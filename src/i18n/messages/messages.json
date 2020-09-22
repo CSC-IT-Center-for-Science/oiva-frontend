@@ -1225,6 +1225,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.KJPassiivinen",
+    "defaultMessage": "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
