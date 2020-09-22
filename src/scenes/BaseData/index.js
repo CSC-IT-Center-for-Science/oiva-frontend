@@ -297,18 +297,17 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.oivaperustelut)
         )
       : undefined,
-    opetuskielet:
-      raw.lupa && raw.opetuskielet
-        ? await localforage.setItem(
-            "opetuskielet",
-            sortBy(
-              prop("koodiarvo"),
-              initializeOpetuskielet(
-                raw.opetuskielet,
-                prop("maaraykset", raw.lupa) || []
-              )
+    opetuskielet: raw.opetuskielet
+      ? await localforage.setItem(
+          "opetuskielet",
+          sortBy(
+            prop("koodiarvo"),
+            initializeOpetuskielet(
+              raw.opetuskielet,
+              prop("maaraykset", raw.lupa) || []
             )
           )
+        )
       : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)

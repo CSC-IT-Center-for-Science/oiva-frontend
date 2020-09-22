@@ -22,7 +22,6 @@ export const initializeOpetuskieli = ({
 
 export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
   const maarayksetByOpetuskieli = groupBy(prop("koodiarvo"), maaraykset);
-
   return opetuskieletData
     ? map(opetuskielidata => {
         // Luodaan opetuskieli
