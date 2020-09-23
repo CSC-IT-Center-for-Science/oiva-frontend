@@ -3,8 +3,8 @@ import dateformat from "dateformat";
 import {
   MUUTOS_TILAT,
   MUUTOS_TYPES
-} from "../scenes/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/uusiHakemusFormConstants";
-import { KOHTEET } from "../scenes/Jarjestajat/Jarjestaja/modules/constants";
+} from "../scenes/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/modules/uusiHakemusFormConstants";
+import { KOHTEET } from "../scenes/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/modules/constants";
 import * as R from "ramda";
 
 export function formatMuutospyynto(muutospyynto) {

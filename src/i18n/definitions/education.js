@@ -1,4 +1,3 @@
-
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
@@ -17,5 +16,13 @@ export default defineMessages({
   vstEducation: {
     id: "education.vstEducation",
     defaultMessage: "Vapaa sivistystyö"
+  },
+  koulutuksenJarjestaja: {
+    id: "education.koulutuksenJarjestaja",
+    defaultMessage: "Koulutuksen järjestäjä"
+  },
+  koulutuksenJarjestajat: {
+    id: "education.koulutuksenJarjestajat",
+    defaultMessage: "Koulutuksen järjestäjät"
   }
 });

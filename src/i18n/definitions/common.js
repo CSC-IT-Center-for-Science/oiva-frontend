@@ -1,5 +1,4 @@
 import { defineMessages } from "react-intl";
-import { xor } from "ramda";
 
 export default defineMessages({
   statistics: {
@@ -986,10 +985,19 @@ export default defineMessages({
   },
   opetusJaKulttuuriministerio: {
     id: "common.opetusJaKulttuuriministerio",
-    defaultMessage: "Opetus- ja kulttuuriministeriö",
+    defaultMessage: "Opetus- ja kulttuuriministeriö"
   },
   minimumAmountOfYears: {
     id: "common.minimumAmountOfYears",
     defaultMessage: "Nykyinen"
+  },
+  asianhallinta: {
+    id: "common.asianhallinta",
+    defaultMessage: "Asianhallinta"
+  },
+  asianhallintaInfoText: {
+    id: "common.asianhallintaInfoText",
+    defaultMessage:
+      "Valitse alla olevista vaihtoehdoista se koulutusmuoto, jonka järjestämislupia haluat käsitellä."
   }
 });
