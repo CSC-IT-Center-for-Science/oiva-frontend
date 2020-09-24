@@ -196,7 +196,7 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
                 ]
               })
             };
-          }, hakemusList)
+          }, hakemusList || [])
         }
       ]
     },

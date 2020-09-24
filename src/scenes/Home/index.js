@@ -13,7 +13,7 @@ import VapaaSivistystyoCard from "scenes/VapaaSivistystyo/VapaaSivistystyoCard";
 const Home = () => {
   const { formatMessage, locale } = useIntl();
   return (
-    <article className="p-8 md:px-12 lg:px-32 xxl:px-0 xxl:max-w-7xl mx-auto">
+    <article className="px-8 py-16 md:px-12 lg:px-32 xxl:px-0 xxl:max-w-8xl mx-auto">
       <Helmet htmlAttributes={{ lang: locale }}>
         <title>Oiva - {formatMessage(common.frontpage)}</title>
       </Helmet>
