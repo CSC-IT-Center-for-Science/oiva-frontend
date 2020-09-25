@@ -5,9 +5,11 @@ import common from "../../i18n/definitions/common";
 import Opetustehtavat from "./osiot/Opetustehtavat";
 import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
+import Opetuskieli from "./osiot/Opetuskieli";
 
 const defaultProps = {
   kielet: [],
+  kieletOPH: [],
   kohteet: [],
   koulutukset: {},
   koulutusalat: [],
@@ -30,6 +32,7 @@ const EsittelijatMuutospyynto = React.memo(
   ({
     changeObjects,
     kielet = defaultProps.kielet,
+    kieletOPH = defaultProps.kieletOPH,
     kohteet: osiokohteet = defaultProps.kohteet,
     koulutukset = defaultProps.koulutukset,
     koulutusalat = defaultProps.koulutusalat,
@@ -137,7 +140,7 @@ const EsittelijatMuutospyynto = React.memo(
     return (
       <form onSubmit={handleSubmit}>
         <Section
-          code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          code={1}
           title={opetustehtavakoodisto.metadata[R.toUpper(intl.locale)].kuvaus}>
           <Opetustehtavat
             changeObjects={changeObjects.opetustehtavat}
@@ -145,6 +148,14 @@ const EsittelijatMuutospyynto = React.memo(
             onChangesUpdate={updateChanges}
             opetustehtavakoodisto={opetustehtavakoodisto}
             opetustehtavat={opetustehtavat}
+          />
+        </Section>
+        <Section code={3} title={"Opetuskieli"}>
+          <Opetuskieli
+            changeObjects={changeObjects.opetuskieli}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+            kieletOPH={kieletOPH}
           />
         </Section>
       </form>

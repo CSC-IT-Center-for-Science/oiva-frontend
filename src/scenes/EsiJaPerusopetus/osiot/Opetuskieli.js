@@ -6,16 +6,10 @@ import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
 import { equals, toUpper } from "ramda";
 
-const Opetustehtavat = React.memo(
-  ({
-    changeObjects,
-    onChangesRemove,
-    onChangesUpdate,
-    opetustehtavakoodisto,
-    opetustehtavat
-  }) => {
+const Opetuskieli = React.memo(
+  ({ changeObjects, onChangesRemove, onChangesUpdate, kieletOPH }) => {
     const intl = useIntl();
-    const sectionId = "opetustehtavat";
+    const sectionId = "opetuskieli";
 
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
@@ -34,16 +28,16 @@ const Opetustehtavat = React.memo(
         onUpdate={onChangesUpdate}
         sectionId={sectionId}
         showCategoryTitles={true}
-        title={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}>
+        title={"Kielet"}>
         <Lomake
           action="modification"
           anchor={sectionId}
           changeObjects={changeObjects}
           data={{
-            opetustehtavat
+            kieletOPH
           }}
           onChangesUpdate={onChangesUpdate}
-          path={["esiJaPerusopetus", "opetusJotaLupaKoskee"]}
+          path={["esiJaPerusopetus", "opetuskielet"]}
           showCategoryTitles={true}></Lomake>
       </ExpandableRowRoot>
     );
@@ -53,11 +47,10 @@ const Opetustehtavat = React.memo(
   }
 );
 
-Opetustehtavat.propTypes = {
+Opetuskieli.propTypes = {
   changeObjects: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  opetustehtavakoodisto: PropTypes.object,
-  opetustehtavat: PropTypes.array
+  kieletOPH: PropTypes.array
 };
 
-export default Opetustehtavat;
+export default Opetuskieli;

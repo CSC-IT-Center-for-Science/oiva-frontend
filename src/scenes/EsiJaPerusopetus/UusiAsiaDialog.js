@@ -54,6 +54,7 @@ const FormDialog = withStyles(() => ({
 const defaultProps = {
   initialChangeObjects: {},
   kielet: [],
+  kieletOPH: [],
   kohteet: [],
   koulutukset: {
     muut: {},
@@ -79,6 +80,7 @@ const UusiAsiaDialog = React.memo(
   ({
     initialChangeObjects = defaultProps.initialChangeObjects,
     kielet = defaultProps.kielet,
+    kieletOPH = defaultProps.kieletOPH,
     kohteet = defaultProps.kohteet,
     koulutukset = defaultProps.koulutukset,
     koulutusalat = defaultProps.koulutusalat,
@@ -374,6 +376,7 @@ const UusiAsiaDialog = React.memo(
                 <EsittelijatMuutospyynto
                   changeObjects={changeObjects}
                   kielet={kielet}
+                  kieletOPH={kieletOPH}
                   kohteet={kohteet}
                   koulutukset={koulutukset}
                   koulutusalat={koulutusalat}
