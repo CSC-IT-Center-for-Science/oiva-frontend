@@ -31,6 +31,7 @@ import getVahimmaisopiskelijavuodetPerustelulomake from "./perustelut/opiskelija
 import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vaativa";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
+import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/opetus-jota-lupa-koskee";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -277,6 +278,12 @@ const lomakkeet = {
       addition: (data, isReadOnly, locale, changeObjects) =>
         getTopThree(data, isReadOnly, locale, changeObjects)
     }
+  },
+
+  // Esi- ja perusopetus
+  opetusJotaLupaKoskee: {
+    modification: (data, isReadOnly, locale) =>
+      opetusJotaLupaKoskee(data, isReadOnly, locale)
   }
 };
 

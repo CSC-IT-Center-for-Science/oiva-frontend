@@ -28,6 +28,7 @@ import { initializeKoulutustyyppi } from "helpers/koulutustyypit";
 import { initializeMuu } from "helpers/muut";
 import { initializeKoulutus } from "helpers/koulutukset";
 import { initializeOpetuskielet } from "helpers/opetuskielet";
+import { initializeOpetustehtavat } from "helpers/opetustehtavat";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -123,6 +124,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       `${backendRoutes.koulutus.path}999903`,
       keys
     ),
+    kieletOPH: await getRaw("kieletOPH", backendRoutes.kieletOPH.path, keys),
     koulutusalat: await getRaw(
       "koulutusalat",
       backendRoutes.koulutusalat.path,
@@ -156,6 +158,16 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       backendRoutes.opetuskielet.path,
       keys
     ),
+    opetustehtavakoodisto: await getRaw(
+      "opetustehtavakoodisto",
+      backendRoutes.opetustehtavakoodisto.path,
+      keys
+    ),
+    opetustehtavat: await getRaw(
+      "opetustehtavat",
+      backendRoutes.opetustehtavat.path,
+      keys
+    ),
     organisaatio: await getRaw(
       "organisaatio",
       `${backendRoutes.organisaatio.path}${ytunnus}`,
@@ -171,6 +183,8 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     )
   };
 
+  console.info(raw);
+
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
    * dataa. Samalla noudettu data tallennetaan lokaaliin tietovarastoon
@@ -185,6 +199,17 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             map(kieli => {
               return initializeKieli(kieli);
             }, raw.kielet),
+            localeUpper
+          )
+        )
+      : undefined,
+    kieletOPH: raw.kielet
+      ? await localforage.setItem(
+          "kieletOPH",
+          sortLanguages(
+            map(kieli => {
+              return initializeKieli(kieli);
+            }, raw.kieletOPH),
             localeUpper
           )
         )
@@ -309,6 +334,17 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
+    opetustehtavakoodisto: await localforage.setItem("opetustehtavakoodisto", {
+      ...raw.opetustehtavakoodisto,
+      metadata: mapObjIndexed(
+        head,
+        groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
+      )
+    }),
+    opetustehtavat: await localforage.setItem(
+      "opetustehtavat",
+      initializeOpetustehtavat(raw.opetustehtavat)
+    ),
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
@@ -362,6 +398,7 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
   }, [keys, locale, ytunnus]);
 
   if (!isEmpty(baseData)) {
+    console.info(baseData);
     return (
       <React.Fragment>
         {!!render ? render({ ...baseData }) : null}

@@ -1004,5 +1004,9 @@ export default defineMessages({
     id: "common.KJPassiivinen",
     defaultMessage:
       "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä"
+  },
+  page: {
+    id: "common.page",
+    defaultMessage: "Sivu"
   }
 });

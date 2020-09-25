@@ -71,6 +71,8 @@ const UusiAsiaDialogContainer = ({
   maaraystyypit,
   muut,
   opetuskielet,
+  opetustehtavakoodisto,
+  opetustehtavat,
   organisaatio,
   tutkinnot,
   viimeisinLupa
@@ -119,6 +121,8 @@ const UusiAsiaDialogContainer = ({
       muut={muut}
       onNewDocSave={onNewDocSave}
       opetuskielet={opetuskielet}
+      opetustehtavakoodisto={opetustehtavakoodisto}
+      opetustehtavat={opetustehtavat}
       organisation={organisaatio}
       tutkinnot={tutkinnot}
     />

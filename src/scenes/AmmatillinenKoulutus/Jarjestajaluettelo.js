@@ -267,7 +267,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
           </StyledButton>
         </div>
         <span>
-          Sivu{" "}
+          {intl.formatMessage(common.page)}{" "}
           <strong>
             {pageIndex + 1} / {pageOptions.length}
           </strong>{" "}

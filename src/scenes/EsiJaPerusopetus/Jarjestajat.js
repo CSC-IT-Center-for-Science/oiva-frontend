@@ -13,7 +13,12 @@ const Jarjestajat = React.memo(() => {
 
   // Let's fetch LUVAT
   useEffect(() => {
-    const abortController = luvatActions.load();
+    const abortController = luvatActions.load([
+      {
+        key: "koulutustyyppi",
+        value: "1"
+      }
+    ]);
     return function cancel() {
       if (abortController) {
         abortController.abort();

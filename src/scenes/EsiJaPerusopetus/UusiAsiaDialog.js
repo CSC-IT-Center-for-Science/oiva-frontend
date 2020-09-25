@@ -69,6 +69,8 @@ const defaultProps = {
   maaraystyypit: [],
   muut: [],
   opetuskielet: [],
+  opetustehtavakoodisto: {},
+  opetustehtavat: [],
   organisation: {},
   tutkinnot: []
 };
@@ -90,6 +92,8 @@ const UusiAsiaDialog = React.memo(
     muut = defaultProps.muut,
     onNewDocSave,
     opetuskielet = defaultProps.opetuskielet,
+    opetustehtavat = defaultProps.opetustehtavat,
+    opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
     organisation = defaultProps.organisation,
     tutkinnot = defaultProps.tutkinnot
   }) => {
@@ -158,7 +162,9 @@ const UusiAsiaDialog = React.memo(
       setIsConfirmDialogVisible(false);
       // Let's empty some store content on close.
       muutospyyntoActions.reset();
-      return history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=true`);
+      return history.push(
+        `/esi-ja-perusopetus/asianhallinta/avoimet?force=true`
+      );
     }, [history, muutospyyntoActions]);
 
     useEffect(() => {
@@ -381,6 +387,8 @@ const UusiAsiaDialog = React.memo(
                   muut={muut}
                   onChangesUpdate={onChangeObjectsUpdate}
                   opetuskielet={opetuskielet}
+                  opetustehtavat={opetustehtavat}
+                  opetustehtavakoodisto={opetustehtavakoodisto}
                   tutkinnot={tutkinnot}
                 />
                 <EsittelijatWizardActions
