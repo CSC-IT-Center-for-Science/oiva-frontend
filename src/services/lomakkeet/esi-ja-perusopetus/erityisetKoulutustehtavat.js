@@ -1,12 +1,12 @@
 import { isAdded, isRemoved } from "css/label";
 import { flatten, map, toUpper } from "ramda";
 
-export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
+export function erityisetKoulutustehtavat(data, isReadOnly, locale) {
   const localeUpper = toUpper(locale);
   return flatten([
-    map(muoto => {
+    map(erityinenKoulutustehtava => {
       return {
-        anchor: muoto.koodiarvo,
+        anchor: erityinenKoulutustehtava.koodiarvo,
         categories: [
           {
             anchor: "nimi",
@@ -23,8 +23,8 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
         ],
         components: [
           {
-            anchor: "A",
-            name: "RadioButtonWithLabel",
+            anchor: erityinenKoulutustehtava.koodiarvo,
+            name: "CheckboxWithLabel",
             properties: {
               isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
               isIndeterminate: false,
@@ -32,33 +32,14 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
                 addition: isAdded,
                 removal: isRemoved
               },
-              title: muoto.metadata[localeUpper].nimi
+              title: erityinenKoulutustehtava.metadata[localeUpper].nimi
             }
           }
         ]
       };
-    }, data.opetuksenJarjestamismuodot),
+    }, data.poErityisetKoulutustehtavat),
     {
-      anchor: "opetuksen-jarjestamismuodot",
-      components: [
-        {
-          anchor: "0",
-          name: "RadioButtonWithLabel",
-          properties: {
-            isChecked: true,
-            isIndeterminate: false,
-            labelStyles: {
-              addition: isAdded,
-              removal: isRemoved
-            },
-            title:
-              "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
-          }
-        }
-      ]
-    },
-    {
-      anchor: "opetuksen-jarjestamismuodot",
+      anchor: "erityiset-koulutustehtavat",
       layout: { margins: { top: "large" } },
       components: [
         {
@@ -73,7 +54,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
       ]
     },
     {
-      anchor: "opetuksen-jarjestamismuodot",
+      anchor: "erityiset-koulutustehtavat",
       components: [
         {
           anchor: "lisatiedot",

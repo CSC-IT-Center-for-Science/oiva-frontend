@@ -30,6 +30,7 @@ import { initializeKoulutus } from "helpers/koulutukset";
 import { initializeOpetuskielet } from "helpers/opetuskielet";
 import { initializeOpetustehtavat } from "helpers/opetustehtavat";
 import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJärjestämismuodot";
+import { initializePOErityisetKoulutustehtavat } from "helpers/poErityisetKoulutustehtavat";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -179,6 +180,11 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       `${backendRoutes.organisaatio.path}${ytunnus}`,
       keys
     ),
+    poErityisetKoulutustehtavat: await getRaw(
+      "poErityisetKoulutustehtavat",
+      backendRoutes.poErityisetKoulutustehtavat.path,
+      keys
+    ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
@@ -188,8 +194,6 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
   };
-
-  console.info(raw);
 
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
@@ -365,6 +369,15 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     ),
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
+      : undefined,
+    poErityisetKoulutustehtavat: raw.poErityisetKoulutustehtavat
+      ? await localforage.setItem(
+          "poErityisetKoulutustehtavat",
+          initializePOErityisetKoulutustehtavat(
+            raw.poErityisetKoulutustehtavat,
+            prop("maaraykset", raw.lupa) || []
+          )
+        )
       : undefined,
     tutkinnot: raw.tutkinnot
       ? await localforage.setItem(

@@ -65,5 +65,8 @@ export const backendRoutes = {
   kieletOPH: { path: "koodistot/koodit/kielikoodistoopetushallinto" },
   opetuksenJarjestamismuodot: {
     path: "koodistot/koodit/opetuksenjarjestamismuoto"
+  },
+  poErityisetKoulutustehtavat: {
+    path: "koodistot/koodit/poerityinenkoulutustehtava"
   }
 };

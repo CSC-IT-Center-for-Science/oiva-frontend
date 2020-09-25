@@ -74,6 +74,7 @@ const defaultProps = {
   opetustehtavakoodisto: {},
   opetustehtavat: [],
   organisation: {},
+  poErityisetKoulutustehtavat: [],
   tutkinnot: []
 };
 
@@ -99,6 +100,7 @@ const UusiAsiaDialog = React.memo(
     opetustehtavat = defaultProps.opetustehtavat,
     opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
     organisation = defaultProps.organisation,
+    poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
     tutkinnot = defaultProps.tutkinnot
   }) => {
     const intl = useIntl();
@@ -396,6 +398,7 @@ const UusiAsiaDialog = React.memo(
                   opetuskielet={opetuskielet}
                   opetustehtavat={opetustehtavat}
                   opetustehtavakoodisto={opetustehtavakoodisto}
+                  poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
                   tutkinnot={tutkinnot}
                 />
                 <EsittelijatWizardActions
@@ -442,7 +445,8 @@ const UusiAsiaDialog = React.memo(
       R.equals(cp.koulutustyypit, np.koulutustyypit) &&
       R.equals(cp.lupa, np.lupa) &&
       R.equals(cp.muut, np.muut) &&
-      R.equals(cp.tutkinnot, np.tutkinnot)
+      R.equals(cp.tutkinnot, np.tutkinnot) &&
+      R.equals(cp.poErityisetKoulutustehtavat, np.poErityisetKoulutustehtavat)
     );
   }
 );
@@ -464,6 +468,7 @@ UusiAsiaDialog.propTypes = {
   onNewDocSave: PropTypes.func,
   opetuskielet: PropTypes.array,
   organisation: PropTypes.object,
+  poErityisetKoulutustehtavat: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

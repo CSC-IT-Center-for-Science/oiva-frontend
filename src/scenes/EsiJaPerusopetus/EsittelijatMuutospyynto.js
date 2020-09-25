@@ -8,6 +8,7 @@ import Section from "../../components/03-templates/Section";
 import Opetuskieli from "./lomake/Opetuskieli";
 import OpetustaAntavatKunnat from "./lomake/OpetustaAntavatKunnat";
 import OpetuksenJarjestamismuoto from "./lomake/OpetuksenJarjestamismuoto";
+import ErityisetKoulutustehtavat from "./lomake/ErityisetKoulutustehtavat";
 
 const defaultProps = {
   kielet: [],
@@ -28,6 +29,7 @@ const defaultProps = {
   opiskelijavuodet: [],
   opetustehtavakoodisto: {},
   opetustehtavat: [],
+  poErityisetKoulutustehtavat: [],
   tutkinnot: []
 };
 
@@ -52,6 +54,7 @@ const EsittelijatMuutospyynto = React.memo(
     opetustehtavat = defaultProps.opetustehtavat,
     opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
     opiskelijavuodet = defaultProps.opiskelijavuodet,
+    poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
     tutkinnot = defaultProps.tutkinnot,
 
     // Callback methods
@@ -186,6 +189,15 @@ const EsittelijatMuutospyynto = React.memo(
             opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
           />
         </Section>
+
+        <Section code={5} title={"Erityinen koulutustehtävä"}>
+          <ErityisetKoulutustehtavat
+            changeObjects={changeObjects.poErityisetKoulutustehtavat}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+            poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+          />
+        </Section>
       </form>
     );
   },
@@ -202,6 +214,10 @@ const EsittelijatMuutospyynto = React.memo(
       R.equals(
         currentProps.opetuksenJarjestamismuodot,
         nextProps.opetuksenJarjestamismuodot
+      ) &&
+      R.equals(
+        currentProps.poErityisetKoulutustehtavat,
+        nextProps.poErityisetKoulutustehtavat
       )
     );
   }
@@ -224,6 +240,7 @@ EsittelijatMuutospyynto.propTypes = {
   opetuksenJarjestamismuodot: PropTypes.array,
   opetuskielet: PropTypes.array,
   opiskelijavuodet: PropTypes.array,
+  poErityisetKoulutustehtavat: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

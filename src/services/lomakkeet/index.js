@@ -34,6 +34,7 @@ import getTopThree from "./esittelija";
 import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/opetus-jota-lupa-koskee";
 import { opetuskielet } from "./esi-ja-perusopetus/opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/opetuksenJarjestamismuoto";
+import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/erityisetKoulutustehtavat";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -284,6 +285,10 @@ const lomakkeet = {
 
   // Esi- ja perusopetus
   esiJaPerusopetus: {
+    erityisetKoulutustehtavat: {
+      modification: (data, isReadOnly, locale) =>
+        erityisetKoulutustehtavat(data, isReadOnly, locale)
+    },
     opetuksenJarjestamismuoto: {
       modification: (data, isReadOnly, locale) =>
         opetuksenJarjestamismuoto(data, isReadOnly, locale)
