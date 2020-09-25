@@ -33,6 +33,7 @@ import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
 import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/opetus-jota-lupa-koskee";
 import { opetuskielet } from "./esi-ja-perusopetus/opetuskielet";
+import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/opetuksenJarjestamismuoto";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -283,6 +284,10 @@ const lomakkeet = {
 
   // Esi- ja perusopetus
   esiJaPerusopetus: {
+    opetuksenJarjestamismuoto: {
+      modification: (data, isReadOnly, locale) =>
+        opetuksenJarjestamismuoto(data, isReadOnly, locale)
+    },
     opetusJotaLupaKoskee: {
       modification: (data, isReadOnly, locale) =>
         opetusJotaLupaKoskee(data, isReadOnly, locale)
@@ -303,7 +308,6 @@ export async function getLomake(
   _path = [],
   prefix
 ) {
-  console.info(_path);
   // This defines the language of the requested form.
   setLocale(locale);
   const fn = path(concat(_path, [action]), lomakkeet);

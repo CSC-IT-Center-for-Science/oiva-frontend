@@ -69,6 +69,7 @@ const defaultProps = {
   maakuntakunnat: [],
   maaraystyypit: [],
   muut: [],
+  opetuksenJarjestamismuodot: [],
   opetuskielet: [],
   opetustehtavakoodisto: {},
   opetustehtavat: [],
@@ -93,6 +94,7 @@ const UusiAsiaDialog = React.memo(
     maaraystyypit = defaultProps.maaraystyypit,
     muut = defaultProps.muut,
     onNewDocSave,
+    opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
     opetuskielet = defaultProps.opetuskielet,
     opetustehtavat = defaultProps.opetustehtavat,
     opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
@@ -143,6 +145,7 @@ const UusiAsiaDialog = React.memo(
     const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
       if (id && changeObjects) {
         setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
+        console.info(id, changeObjects);
       }
       // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
       if (
@@ -389,6 +392,7 @@ const UusiAsiaDialog = React.memo(
                   maaraystyypit={maaraystyypit}
                   muut={muut}
                   onChangesUpdate={onChangeObjectsUpdate}
+                  opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
                   opetuskielet={opetuskielet}
                   opetustehtavat={opetustehtavat}
                   opetustehtavakoodisto={opetustehtavakoodisto}

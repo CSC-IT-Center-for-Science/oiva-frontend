@@ -29,6 +29,7 @@ import { initializeMuu } from "helpers/muut";
 import { initializeKoulutus } from "helpers/koulutukset";
 import { initializeOpetuskielet } from "helpers/opetuskielet";
 import { initializeOpetustehtavat } from "helpers/opetustehtavat";
+import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJärjestämismuodot";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -151,6 +152,11 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     oivaperustelut: await getRaw(
       "oivaperustelut",
       backendRoutes.oivaperustelut.path,
+      keys
+    ),
+    opetuksenJarjestamismuodot: await getRaw(
+      "opetuksenJarjestamismuodot",
+      backendRoutes.opetuksenJarjestamismuodot.path,
       keys
     ),
     opetuskielet: await getRaw(
@@ -320,6 +326,18 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
               )
             });
           }, raw.oivaperustelut)
+        )
+      : undefined,
+    opetuksenJarjestamismuodot: raw.opetuksenJarjestamismuodot
+      ? await localforage.setItem(
+          "opetuksenJarjestamismuodot",
+          sortBy(
+            prop("koodiarvo"),
+            initializeOpetuksenJarjestamismuodot(
+              raw.opetuksenJarjestamismuodot,
+              prop("maaraykset", raw.lupa) || []
+            )
+          )
         )
       : undefined,
     opetuskielet: raw.opetuskielet

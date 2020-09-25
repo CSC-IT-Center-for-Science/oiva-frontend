@@ -43,6 +43,7 @@ const changeObjects = {
     liitteet: []
   },
   muut: {},
+  opetuksenJarjestamismuoto: [],
   opetuskieli: [],
   opiskelijavuodet: [],
   toimintaalue: [],
@@ -62,6 +63,7 @@ const changeObjects = {
  */
 const UusiAsiaDialogContainer = ({
   kielet,
+  kieletOPH,
   kohteet,
   koulutukset,
   koulutusalat,
@@ -71,8 +73,8 @@ const UusiAsiaDialogContainer = ({
   maakuntakunnat,
   maaraystyypit,
   muut,
+  opetuksenJarjestamismuodot,
   opetuskielet,
-  kieletOPH,
   opetustehtavakoodisto,
   opetustehtavat,
   organisaatio,
@@ -123,6 +125,7 @@ const UusiAsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={onNewDocSave}
+      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
       opetustehtavat={opetustehtavat}

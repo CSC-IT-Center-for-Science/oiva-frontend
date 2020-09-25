@@ -7,6 +7,7 @@ import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
 import Opetuskieli from "./lomake/Opetuskieli";
 import OpetustaAntavatKunnat from "./lomake/OpetustaAntavatKunnat";
+import OpetuksenJarjestamismuoto from "./lomake/OpetuksenJarjestamismuoto";
 
 const defaultProps = {
   kielet: [],
@@ -22,6 +23,7 @@ const defaultProps = {
   lupaKohteet: {},
   maaraystyypit: [],
   muut: [],
+  opetuksenJarjestamismuodot: [],
   opetuskielet: [],
   opiskelijavuodet: [],
   opetustehtavakoodisto: {},
@@ -45,6 +47,7 @@ const EsittelijatMuutospyynto = React.memo(
     lupaKohteet = defaultProps.lupaKohteet,
     maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
     muut = defaultProps.muut,
+    opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
     opetuskielet = defaultProps.opetuskielet,
     opetustehtavat = defaultProps.opetustehtavat,
     opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
@@ -174,6 +177,15 @@ const EsittelijatMuutospyynto = React.memo(
             kieletOPH={kieletOPH}
           />
         </Section>
+
+        <Section code={4} title={"Opetuksen järjestämismuoto"}>
+          <OpetuksenJarjestamismuoto
+            changeObjects={changeObjects.opetuksenJarjestamismuoto}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+            opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
+          />
+        </Section>
       </form>
     );
   },
@@ -186,7 +198,11 @@ const EsittelijatMuutospyynto = React.memo(
       R.equals(currentProps.koulutustyypit, nextProps.koulutustyypit) &&
       R.equals(currentProps.tutkinnot, nextProps.tutkinnot) &&
       R.equals(currentProps.lupaKohteet, nextProps.lupaKohteet) &&
-      R.equals(currentProps.maaraystyypit, nextProps.maaraystyypit)
+      R.equals(currentProps.maaraystyypit, nextProps.maaraystyypit) &&
+      R.equals(
+        currentProps.opetuksenJarjestamismuodot,
+        nextProps.opetuksenJarjestamismuodot
+      )
     );
   }
 );
@@ -205,6 +221,7 @@ EsittelijatMuutospyynto.propTypes = {
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onChangesUpdate: PropTypes.func,
+  opetuksenJarjestamismuodot: PropTypes.array,
   opetuskielet: PropTypes.array,
   opiskelijavuodet: PropTypes.array,
   tutkinnot: PropTypes.array

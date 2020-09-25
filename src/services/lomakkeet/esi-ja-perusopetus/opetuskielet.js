@@ -32,7 +32,6 @@ export function opetuskielet(data, isReadOnly, locale) {
         {
           anchor: "toissijaiset",
           name: "Autocomplete",
-          styleClasses: ["pb-8 border-b"],
           properties: {
             options: map(kieli => {
               return {
@@ -50,14 +49,27 @@ export function opetuskielet(data, isReadOnly, locale) {
     },
     {
       anchor: "opetuskieli",
+      layout: { margins: { top: "large" } },
+      components: [
+        {
+          anchor: "lisatiedot-info",
+          name: "StatusTextRow",
+          styleClasses: ["pt-8 border-t"],
+          properties: {
+            title:
+              "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+          }
+        }
+      ]
+    },
+    {
+      anchor: "opetuskieli",
       components: [
         {
           anchor: "lisatiedot",
           name: "TextBox",
           properties: {
-            placeholder: "Lisätiedot",
-            title:
-              "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään."
+            placeholder: "Lisätiedot"
           }
         }
       ]
