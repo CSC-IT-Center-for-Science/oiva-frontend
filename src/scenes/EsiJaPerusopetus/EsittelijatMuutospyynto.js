@@ -2,10 +2,11 @@ import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "../../i18n/definitions/common";
-import Opetustehtavat from "./osiot/Opetustehtavat";
+import Opetustehtavat from "./lomake/Opetustehtavat";
 import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
-import Opetuskieli from "./osiot/Opetuskieli";
+import Opetuskieli from "./lomake/Opetuskieli";
+import OpetustaAntavatKunnat from "./lomake/OpetustaAntavatKunnat";
 
 const defaultProps = {
   kielet: [],
@@ -150,6 +151,21 @@ const EsittelijatMuutospyynto = React.memo(
             opetustehtavat={opetustehtavat}
           />
         </Section>
+
+        <Section code={2} title={"Kunnat, joissa opetusta järjestetään"}>
+          <OpetustaAntavatKunnat
+            changeObjects={changeObjects}
+            lupakohde={lupaKohteet[3]}
+            kunnat={kunnat}
+            maakuntakunnat={maakuntakunnat}
+            maakunnat={maakunnat}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+            sectionId={"toimintaalue"}
+            valtakunnallinenMaarays={valtakunnallinenMaarays}
+          />
+        </Section>
+
         <Section code={3} title={"Opetuskieli"}>
           <Opetuskieli
             changeObjects={changeObjects.opetuskieli}
