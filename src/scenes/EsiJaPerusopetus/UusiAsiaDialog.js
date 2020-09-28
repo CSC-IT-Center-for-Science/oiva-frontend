@@ -75,6 +75,7 @@ const defaultProps = {
   opetustehtavat: [],
   organisation: {},
   poErityisetKoulutustehtavat: [],
+  poMuutEhdot: [],
   tutkinnot: []
 };
 
@@ -101,6 +102,7 @@ const UusiAsiaDialog = React.memo(
     opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
     organisation = defaultProps.organisation,
     poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
+    poMuutEhdot = defaultProps.poMuutEhdot,
     tutkinnot = defaultProps.tutkinnot
   }) => {
     const intl = useIntl();
@@ -147,7 +149,6 @@ const UusiAsiaDialog = React.memo(
     const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
       if (id && changeObjects) {
         setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
-        console.info(id, changeObjects);
       }
       // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
       if (
@@ -399,6 +400,7 @@ const UusiAsiaDialog = React.memo(
                   opetustehtavat={opetustehtavat}
                   opetustehtavakoodisto={opetustehtavakoodisto}
                   poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+                  poMuutEhdot={poMuutEhdot}
                   tutkinnot={tutkinnot}
                 />
                 <EsittelijatWizardActions
@@ -446,7 +448,11 @@ const UusiAsiaDialog = React.memo(
       R.equals(cp.lupa, np.lupa) &&
       R.equals(cp.muut, np.muut) &&
       R.equals(cp.tutkinnot, np.tutkinnot) &&
-      R.equals(cp.poErityisetKoulutustehtavat, np.poErityisetKoulutustehtavat)
+      R.equals(
+        cp.poErityisetKoulutustehtavat,
+        np.poErityisetKoulutustehtavat
+      ) &&
+      R.equals(cp.poMuutEhdot, np.poMuutEhdot)
     );
   }
 );
@@ -469,6 +475,7 @@ UusiAsiaDialog.propTypes = {
   opetuskielet: PropTypes.array,
   organisation: PropTypes.object,
   poErityisetKoulutustehtavat: PropTypes.array,
+  poMuutEhdot: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

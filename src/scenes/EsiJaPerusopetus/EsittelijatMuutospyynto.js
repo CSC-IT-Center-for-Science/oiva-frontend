@@ -2,13 +2,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "../../i18n/definitions/common";
-import Opetustehtavat from "./lomake/Opetustehtavat";
+import Opetustehtavat from "./lomake/1-Opetustehtavat";
 import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
-import Opetuskieli from "./lomake/Opetuskieli";
-import OpetustaAntavatKunnat from "./lomake/OpetustaAntavatKunnat";
-import OpetuksenJarjestamismuoto from "./lomake/OpetuksenJarjestamismuoto";
-import ErityisetKoulutustehtavat from "./lomake/ErityisetKoulutustehtavat";
+import Opetuskieli from "./lomake/3-Opetuskieli";
+import OpetustaAntavatKunnat from "./lomake/2-OpetustaAntavatKunnat";
+import OpetuksenJarjestamismuoto from "./lomake/4-OpetuksenJarjestamismuoto";
+import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
+import MuutEhdot from "./lomake/7-MuutEhdot";
+import Liitetiedostot from "./lomake/8-Liitetiedostot";
 
 const defaultProps = {
   kielet: [],
@@ -30,6 +32,7 @@ const defaultProps = {
   opetustehtavakoodisto: {},
   opetustehtavat: [],
   poErityisetKoulutustehtavat: [],
+  poMuutEhdot: [],
   tutkinnot: []
 };
 
@@ -55,6 +58,7 @@ const EsittelijatMuutospyynto = React.memo(
     opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
     opiskelijavuodet = defaultProps.opiskelijavuodet,
     poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
+    poMuutEhdot = defaultProps.poMuutEhdot,
     tutkinnot = defaultProps.tutkinnot,
 
     // Callback methods
@@ -198,6 +202,27 @@ const EsittelijatMuutospyynto = React.memo(
             poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
           />
         </Section>
+
+        <Section
+          code={7}
+          title={"Muut koulutuksen järjestämiseen liittyvät ehdot"}>
+          <MuutEhdot
+            changeObjects={changeObjects.poMuutEhdot}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+            poMuutEhdot={poMuutEhdot}
+          />
+        </Section>
+
+        <Section
+          code={8}
+          title={"Liitetiedostot"}>
+          <Liitetiedostot
+            changeObjects={changeObjects.liitetiedostot}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+          />
+        </Section>
       </form>
     );
   },
@@ -218,7 +243,8 @@ const EsittelijatMuutospyynto = React.memo(
       R.equals(
         currentProps.poErityisetKoulutustehtavat,
         nextProps.poErityisetKoulutustehtavat
-      )
+      ) &&
+      R.equals(currentProps.poMuutEhdot, nextProps.poMuutEhdot)
     );
   }
 );
@@ -241,6 +267,7 @@ EsittelijatMuutospyynto.propTypes = {
   opetuskielet: PropTypes.array,
   opiskelijavuodet: PropTypes.array,
   poErityisetKoulutustehtavat: PropTypes.array,
+  poMuutEhdot: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

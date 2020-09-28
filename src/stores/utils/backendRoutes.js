@@ -68,5 +68,8 @@ export const backendRoutes = {
   },
   poErityisetKoulutustehtavat: {
     path: "koodistot/koodit/poerityinenkoulutustehtava"
+  },
+  poMuutEhdot: {
+    path: "koodistot/koodit/pomuutkoulutuksenjarjestamiseenliittyvatehdot"
   }
 };

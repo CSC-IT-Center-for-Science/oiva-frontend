@@ -42,11 +42,13 @@ const changeObjects = {
     tilinpaatostiedot: [],
     liitteet: []
   },
+  liitetiedostot: [],
   muut: {},
   opetuksenJarjestamismuoto: [],
   opetuskieli: [],
   opiskelijavuodet: [],
   poErityisetKoulutustehtavat: [],
+  poMuutEhdot: [],
   toimintaalue: [],
   yhteenveto: {
     yleisettiedot: [],
@@ -80,6 +82,7 @@ const UusiAsiaDialogContainer = ({
   opetustehtavat,
   organisaatio,
   poErityisetKoulutustehtavat,
+  poMuutEhdot,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -133,6 +136,7 @@ const UusiAsiaDialogContainer = ({
       opetustehtavat={opetustehtavat}
       organisation={organisaatio}
       poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+      poMuutEhdot={poMuutEhdot}
       tutkinnot={tutkinnot}
     />
   );

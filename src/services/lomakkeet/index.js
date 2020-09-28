@@ -35,6 +35,8 @@ import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/opetus-jota-lupa-kosk
 import { opetuskielet } from "./esi-ja-perusopetus/opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/opetuksenJarjestamismuoto";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/erityisetKoulutustehtavat";
+import { muutEhdot } from "./esi-ja-perusopetus/muutEhdot";
+import { liitetiedostot } from "./esi-ja-perusopetus/liitetiedostot";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -288,6 +290,14 @@ const lomakkeet = {
     erityisetKoulutustehtavat: {
       modification: (data, isReadOnly, locale) =>
         erityisetKoulutustehtavat(data, isReadOnly, locale)
+    },
+    liitetiedostot: {
+      modification: (data, isReadOnly, locale) =>
+        liitetiedostot(data, isReadOnly, locale)
+    },
+    muutEhdot: {
+      modification: (data, isReadOnly, locale) =>
+        muutEhdot(data, isReadOnly, locale)
     },
     opetuksenJarjestamismuoto: {
       modification: (data, isReadOnly, locale) =>

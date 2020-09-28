@@ -31,6 +31,7 @@ import { initializeOpetuskielet } from "helpers/opetuskielet";
 import { initializeOpetustehtavat } from "helpers/opetustehtavat";
 import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJärjestämismuodot";
 import { initializePOErityisetKoulutustehtavat } from "helpers/poErityisetKoulutustehtavat";
+import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -183,6 +184,11 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     poErityisetKoulutustehtavat: await getRaw(
       "poErityisetKoulutustehtavat",
       backendRoutes.poErityisetKoulutustehtavat.path,
+      keys
+    ),
+    poMuutEhdot: await getRaw(
+      "poMuutEhdot",
+      backendRoutes.poMuutEhdot.path,
       keys
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
@@ -375,6 +381,15 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           "poErityisetKoulutustehtavat",
           initializePOErityisetKoulutustehtavat(
             raw.poErityisetKoulutustehtavat,
+            prop("maaraykset", raw.lupa) || []
+          )
+        )
+      : undefined,
+    poMuutEhdot: raw.poMuutEhdot
+      ? await localforage.setItem(
+          "poMuutEhdot",
+          initializePOMuutEhdot(
+            raw.poMuutEhdot,
             prop("maaraykset", raw.lupa) || []
           )
         )
