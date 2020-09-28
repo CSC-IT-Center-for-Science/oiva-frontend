@@ -37,6 +37,7 @@ import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/opetuksenJarjest
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/erityisetKoulutustehtavat";
 import { muutEhdot } from "./esi-ja-perusopetus/muutEhdot";
 import { liitetiedostot } from "./esi-ja-perusopetus/liitetiedostot";
+import { opiskelijamaarat } from "./esi-ja-perusopetus/opiskelijamaarat";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -310,6 +311,10 @@ const lomakkeet = {
     opetuskielet: {
       modification: (data, isReadOnly, locale) =>
         opetuskielet(data, isReadOnly, locale)
+    },
+    opiskelijamaarat: {
+      modification: (data, isReadOnly, locale) =>
+        opiskelijamaarat(data, isReadOnly, locale)
     }
   }
 };

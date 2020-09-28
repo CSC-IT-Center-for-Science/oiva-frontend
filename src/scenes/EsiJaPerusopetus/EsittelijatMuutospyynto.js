@@ -11,6 +11,7 @@ import OpetuksenJarjestamismuoto from "./lomake/4-OpetuksenJarjestamismuoto";
 import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
 import Liitetiedostot from "./lomake/8-Liitetiedostot";
+import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 
 const defaultProps = {
   kielet: [],
@@ -203,6 +204,14 @@ const EsittelijatMuutospyynto = React.memo(
           />
         </Section>
 
+        <Section code={6} title={"Oppilas-/opiskelijamäärät"}>
+          <Opiskelijamaarat
+            changeObjects={changeObjects.opiskelijamaarat}
+            onChangesRemove={onChangesRemove}
+            onChangesUpdate={updateChanges}
+          />
+        </Section>
+
         <Section
           code={7}
           title={"Muut koulutuksen järjestämiseen liittyvät ehdot"}>
@@ -214,9 +223,7 @@ const EsittelijatMuutospyynto = React.memo(
           />
         </Section>
 
-        <Section
-          code={8}
-          title={"Liitetiedostot"}>
+        <Section code={8} title={"Liitetiedostot"}>
           <Liitetiedostot
             changeObjects={changeObjects.liitetiedostot}
             onChangesRemove={onChangesRemove}
