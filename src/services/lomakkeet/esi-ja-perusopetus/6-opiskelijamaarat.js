@@ -1,7 +1,4 @@
-import { map, toUpper } from "ramda";
-
-export function opiskelijamaarat(data, isReadOnly, locale) {
-  const localeUpper = toUpper(locale);
+export function opiskelijamaarat() {
   return [
     {
       anchor: "kenttaotsikko",

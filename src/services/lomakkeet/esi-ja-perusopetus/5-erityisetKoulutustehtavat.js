@@ -1,6 +1,6 @@
 import { isAdded, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import { addIndex, flatten, map, path, prop, toUpper } from "ramda";
+import { addIndex, flatten, map, path, toUpper } from "ramda";
 
 export function erityisetKoulutustehtavat(
   data,

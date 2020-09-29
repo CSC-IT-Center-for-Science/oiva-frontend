@@ -1,6 +1,6 @@
 import { getMessages } from "../utils";
 
-export function liitetiedostot(data, isReadOnly, locale) {
+export function liitetiedostot() {
   return [
     {
       anchor: "liitetiedostot",

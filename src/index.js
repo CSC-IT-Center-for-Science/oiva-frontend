@@ -10,6 +10,8 @@ import {
 import { COLORS } from "./modules/styles";
 import AppWrapper from "./AppWrapper";
 import localforage from "localforage";
+import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+
 // import * as serviceWorker from "./registerServiceWorker";
 
 import "./css/tailwind.css";
@@ -31,8 +33,38 @@ localforage.config({
   name: "Oiva App"
 });
 
+const breakpoints = createBreakpoints({});
+
 const theme = responsiveFontSizes(
   createMuiTheme({
+    overrides: {
+      MuiTypography: {
+        h1: {
+          fontSize: "3rem",
+          [breakpoints.down("xl")]: {
+            fontSize: "3rem"
+          },
+          [breakpoints.down("md")]: {
+            fontSize: "2.5rem"
+          },
+          [breakpoints.down("xs")]: {
+            fontSize: "2rem"
+          }
+        },
+        h2: {
+          fontSize: "2rem",
+          [breakpoints.down("xl")]: {
+            fontSize: "2rem"
+          },
+          [breakpoints.down("md")]: {
+            fontSize: "1.75rem"
+          },
+          [breakpoints.down("xs")]: {
+            fontSize: "1.5rem"
+          }
+        }
+      }
+    },
     palette: {
       primary: {
         // light: will be calculated from palette.primary.main,
