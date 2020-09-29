@@ -1,56 +1,65 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
-import { equals } from "ramda";
+import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 
-const MuutEhdot = React.memo(
-  ({ changeObjects, onChangesRemove, onChangesUpdate, poMuutEhdot }) => {
-    const intl = useIntl();
-    const sectionId = "poMuutEhdot";
+const MuutEhdot = ({
+  onChangesRemove,
+  onChangesUpdate,
+  poMuutEhdot,
+  sectionId
+}) => {
+  const [state, actions] = useEsiJaPerusopetus();
+  const intl = useIntl();
 
-    const changesMessages = {
-      undo: intl.formatMessage(common.undo),
-      changesTest: intl.formatMessage(common.changesText)
-    };
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  };
 
-    return (
-      <ExpandableRowRoot
+  const onAddButtonClick = useCallback(
+    payload => {
+      actions.addAClick(sectionId, payload.anchor);
+    },
+    [actions, sectionId]
+  );
+
+  return (
+    <ExpandableRowRoot
+      anchor={sectionId}
+      key={`expandable-row-root`}
+      changes={state.changeObjects[sectionId]}
+      hideAmountOfChanges={true}
+      isExpanded={true}
+      messages={changesMessages}
+      onChangesRemove={onChangesRemove}
+      onUpdate={onChangesUpdate}
+      sectionId={sectionId}
+      showCategoryTitles={true}
+      title={"Muut koulutukseen liittyvät ehdot"}>
+      <Lomake
+        action="modification"
         anchor={sectionId}
-        key={`expandable-row-root`}
-        changes={changeObjects}
-        hideAmountOfChanges={true}
-        isExpanded={true}
-        messages={changesMessages}
-        onChangesRemove={onChangesRemove}
-        onUpdate={onChangesUpdate}
-        sectionId={sectionId}
-        showCategoryTitles={true}
-        title={"Muut koulutukseen liittyvät ehdot"}>
-        <Lomake
-          action="modification"
-          anchor={sectionId}
-          changeObjects={changeObjects}
-          data={{
-            poMuutEhdot
-          }}
-          onChangesUpdate={onChangesUpdate}
-          path={["esiJaPerusopetus", "muutEhdot"]}
-          showCategoryTitles={true}></Lomake>
-      </ExpandableRowRoot>
-    );
-  },
-  (currentProps, nextProps) => {
-    return equals(currentProps.changeObjects, nextProps.changeObjects);
-  }
-);
+        changeObjects={state.changeObjects[sectionId]}
+        data={{
+          onAddButtonClick,
+          poMuutEhdot
+        }}
+        onChangesUpdate={onChangesUpdate}
+        path={["esiJaPerusopetus", "muutEhdot"]}
+        showCategoryTitles={true}></Lomake>
+    </ExpandableRowRoot>
+  );
+};
 
 MuutEhdot.propTypes = {
-  changeObjects: PropTypes.array,
+  onChangesRemove: PropTypes.func,
   onChangesUpdate: PropTypes.func,
-  poMuutEhdot: PropTypes.array
+  poMuutEhdot: PropTypes.array,
+  sectionId: PropTypes.string
 };
 
 export default MuutEhdot;

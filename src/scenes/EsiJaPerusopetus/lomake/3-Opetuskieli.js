@@ -4,12 +4,17 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
-import { equals, toUpper } from "ramda";
+import { equals } from "ramda";
 
 const Opetuskieli = React.memo(
-  ({ changeObjects, onChangesRemove, onChangesUpdate, kieletOPH }) => {
+  ({
+    changeObjects,
+    kieletOPH,
+    onChangesRemove,
+    onChangesUpdate,
+    sectionId
+  }) => {
     const intl = useIntl();
-    const sectionId = "opetuskieli";
 
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
@@ -46,6 +51,10 @@ const Opetuskieli = React.memo(
     return equals(currentProps.changeObjects, nextProps.changeObjects);
   }
 );
+
+Opetuskieli.defaultProps = {
+  changeObjects: []
+};
 
 Opetuskieli.propTypes = {
   changeObjects: PropTypes.array,

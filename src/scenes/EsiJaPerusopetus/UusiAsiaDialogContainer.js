@@ -48,7 +48,7 @@ const changeObjects = {
   opetuskieli: [],
   opiskelijamaarat: [],
   poErityisetKoulutustehtavat: [],
-  poMuutEhdot: [],
+  muutEhdot: [],
   toimintaalue: [],
   yhteenveto: {
     yleisettiedot: [],

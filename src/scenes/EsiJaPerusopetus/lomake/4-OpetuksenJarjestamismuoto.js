@@ -11,10 +11,10 @@ const OpetuksenJarjestamismuoto = React.memo(
     changeObjects,
     onChangesRemove,
     onChangesUpdate,
-    opetuksenJarjestamismuodot
+    opetuksenJarjestamismuodot,
+    sectionId
   }) => {
     const intl = useIntl();
-    const sectionId = "opetuksenJarjestamismuoto";
 
     const changesMessages = {
       undo: intl.formatMessage(common.undo),
@@ -52,10 +52,15 @@ const OpetuksenJarjestamismuoto = React.memo(
   }
 );
 
+OpetuksenJarjestamismuoto.defaultProps = {
+  changeObjects: []
+};
+
 OpetuksenJarjestamismuoto.propTypes = {
   changeObjects: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  opetuksenJarjestamismuodot: PropTypes.array
+  opetuksenJarjestamismuodot: PropTypes.array,
+  sectionId: PropTypes.string
 };
 
 export default OpetuksenJarjestamismuoto;

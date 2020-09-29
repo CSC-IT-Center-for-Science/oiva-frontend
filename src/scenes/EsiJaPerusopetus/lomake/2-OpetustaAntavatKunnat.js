@@ -103,7 +103,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
     changes => {
       const withoutCategoryFilterChangeObj = R.filter(
         R.compose(R.not, R.propEq("anchor", "categoryFilter")),
-        changeObjects.toimintaalue
+        changeObjects
       );
 
       const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
@@ -132,7 +132,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
         changes: changesToSet
       });
     },
-    [changeObjects.toimintaalue, onChangesUpdate, props.sectionId]
+    [changeObjects, onChangesUpdate, props.sectionId]
   );
 
   /**
@@ -288,18 +288,18 @@ const OpetustaAntavatKunnat = React.memo(props => {
   const provinceChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", "categoryFilter"),
-      changeObjects.toimintaalue
+      changeObjects
     );
     return changeObj ? changeObj.properties.changesByProvince : {};
-  }, [changeObjects.toimintaalue]);
+  }, [changeObjects]);
 
   const quickFilterChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", "categoryFilter"),
-      changeObjects.toimintaalue
+      changeObjects
     );
     return changeObj ? changeObj.properties.quickFilterChanges : {};
-  }, [changeObjects.toimintaalue]);
+  }, [changeObjects]);
 
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
@@ -310,7 +310,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
     <ExpandableRowRoot
       anchor={props.sectionId}
       key={`expandable-row-root`}
-      changes={changeObjects.toimintaalue}
+      changes={changeObjects}
       hideAmountOfChanges={true}
       messages={changesMessages}
       isExpanded={true}
@@ -324,7 +324,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
       <Lomake
         action="modification"
         anchor={props.sectionId}
-        changeObjects={changeObjects.toimintaalue}
+        changeObjects={changeObjects}
         data={{
           fiCode,
           isEditViewActive,
@@ -364,6 +364,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
 });
 
 OpetustaAntavatKunnat.defaultProps = {
+  changeObjects: [],
   kunnat: [],
   kuntamaaraykset: [],
   lupakohde: {},
@@ -373,6 +374,7 @@ OpetustaAntavatKunnat.defaultProps = {
 };
 
 OpetustaAntavatKunnat.propTypes = {
+  changeObjects: PropTypes.array,
   kunnat: PropTypes.array,
   lupakohde: PropTypes.object,
   maakunnat: PropTypes.array,

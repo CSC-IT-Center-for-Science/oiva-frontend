@@ -1,12 +1,12 @@
 import { isAdded, isRemoved } from "css/label";
 import { flatten, map, toUpper } from "ramda";
 
-export function erityisetKoulutustehtavat(data, isReadOnly, locale) {
+export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
   const localeUpper = toUpper(locale);
   return flatten([
-    map(erityinenKoulutustehtava => {
+    map(muoto => {
       return {
-        anchor: erityinenKoulutustehtava.koodiarvo,
+        anchor: muoto.koodiarvo,
         categories: [
           {
             anchor: "nimi",
@@ -23,8 +23,8 @@ export function erityisetKoulutustehtavat(data, isReadOnly, locale) {
         ],
         components: [
           {
-            anchor: erityinenKoulutustehtava.koodiarvo,
-            name: "CheckboxWithLabel",
+            anchor: "A",
+            name: "RadioButtonWithLabel",
             properties: {
               isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
               isIndeterminate: false,
@@ -32,18 +32,37 @@ export function erityisetKoulutustehtavat(data, isReadOnly, locale) {
                 addition: isAdded,
                 removal: isRemoved
               },
-              title: erityinenKoulutustehtava.metadata[localeUpper].nimi
+              title: muoto.metadata[localeUpper].nimi
             }
           }
         ]
       };
-    }, data.poErityisetKoulutustehtavat),
+    }, data.opetuksenJarjestamismuodot),
     {
-      anchor: "erityiset-koulutustehtavat",
+      anchor: "0",
+      components: [
+        {
+          anchor: "ei-jarjesteta",
+          name: "RadioButtonWithLabel",
+          properties: {
+            isChecked: true,
+            isIndeterminate: false,
+            labelStyles: {
+              addition: isAdded,
+              removal: isRemoved
+            },
+            title:
+              "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+          }
+        }
+      ]
+    },
+    {
+      anchor: "lisatiedot",
       layout: { margins: { top: "large" } },
       components: [
         {
-          anchor: "lisatiedot-info",
+          anchor: "info",
           name: "StatusTextRow",
           styleClasses: ["pt-8 border-t"],
           properties: {
@@ -54,10 +73,10 @@ export function erityisetKoulutustehtavat(data, isReadOnly, locale) {
       ]
     },
     {
-      anchor: "erityiset-koulutustehtavat",
+      anchor: "lisatiedot",
       components: [
         {
-          anchor: "lisatiedot",
+          anchor: "tekstikentta",
           name: "TextBox",
           properties: {
             placeholder: "Lisätiedot"

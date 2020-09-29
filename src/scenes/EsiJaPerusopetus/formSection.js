@@ -1,14 +1,14 @@
 import React, { useCallback } from "react";
 import PropTypes from "prop-types";
-import Section from "../Section";
+import Section from "components/03-templates/Section";
+import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 
-const FormSection = ({ children, code, id, render, runOnChanges, title }) => {
-  const updateChanges = useCallback(
-    payload => {
-      runOnChanges(payload.anchor, payload.changes);
-    },
-    [runOnChanges]
-  );
+const FormSection = ({ children, code, render, sectionId, title }) => {
+  const [, actions] = useEsiJaPerusopetus();
+
+  const updateChanges = useCallback(payload => {
+    actions.setChangeObjects(payload.anchor, payload.changes);
+  }, [actions]);
 
   const removeChanges = useCallback(
     (...payload) => {
@@ -23,7 +23,7 @@ const FormSection = ({ children, code, id, render, runOnChanges, title }) => {
         ? render({
             onChangesRemove: removeChanges,
             onChangesUpdate: updateChanges,
-            sectionId: id
+            sectionId
           })
         : null}
       {children}
@@ -32,9 +32,8 @@ const FormSection = ({ children, code, id, render, runOnChanges, title }) => {
 };
 
 FormSection.propTypes = {
-  id: PropTypes.string,
   code: PropTypes.number,
-  runOnChanges: PropTypes.func,
+  sectionId: PropTypes.string,
   title: PropTypes.string
 };
 

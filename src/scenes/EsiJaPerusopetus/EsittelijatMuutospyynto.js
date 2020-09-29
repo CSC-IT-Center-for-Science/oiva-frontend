@@ -37,224 +37,201 @@ const defaultProps = {
   tutkinnot: []
 };
 
-const EsittelijatMuutospyynto = React.memo(
-  ({
-    changeObjects,
-    kielet = defaultProps.kielet,
-    kieletOPH = defaultProps.kieletOPH,
-    kohteet: osiokohteet = defaultProps.kohteet,
-    koulutukset = defaultProps.koulutukset,
-    koulutusalat = defaultProps.koulutusalat,
-    koulutustyypit = defaultProps.koulutustyypit,
-    kunnat = defaultProps.kunnat,
-    maakuntakunnat = defaultProps.maakuntakunnat,
-    maakunnat = defaultProps.maakunnat,
-    lupa = defaultProps.lupa,
-    lupaKohteet = defaultProps.lupaKohteet,
-    maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
-    muut = defaultProps.muut,
-    opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
-    opetuskielet = defaultProps.opetuskielet,
-    opetustehtavat = defaultProps.opetustehtavat,
-    opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
-    opiskelijavuodet = defaultProps.opiskelijavuodet,
-    poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
-    poMuutEhdot = defaultProps.poMuutEhdot,
-    tutkinnot = defaultProps.tutkinnot,
+const EsittelijatMuutospyynto = ({
+  changeObjects,
+  kielet = defaultProps.kielet,
+  kieletOPH = defaultProps.kieletOPH,
+  kohteet: osiokohteet = defaultProps.kohteet,
+  koulutukset = defaultProps.koulutukset,
+  koulutusalat = defaultProps.koulutusalat,
+  koulutustyypit = defaultProps.koulutustyypit,
+  kunnat = defaultProps.kunnat,
+  maakuntakunnat = defaultProps.maakuntakunnat,
+  maakunnat = defaultProps.maakunnat,
+  lupa = defaultProps.lupa,
+  lupaKohteet = defaultProps.lupaKohteet,
+  maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
+  muut = defaultProps.muut,
+  opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
+  opetuskielet = defaultProps.opetuskielet,
+  opetustehtavat = defaultProps.opetustehtavat,
+  opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
+  opiskelijavuodet = defaultProps.opiskelijavuodet,
+  poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
+  poMuutEhdot = defaultProps.poMuutEhdot,
+  tutkinnot = defaultProps.tutkinnot,
 
-    // Callback methods
-    handleSubmit,
-    onChangesUpdate,
-    onUpdate
-  }) => {
-    const intl = useIntl();
-    const [kohteet, setKohteet] = useState({});
-    const [maaraystyypit, setMaaraystyypit] = useState(null);
+  // Callback methods
+  handleSubmit,
+  onChangesUpdate,
+  onUpdate
+}) => {
+  const intl = useIntl();
+  const [kohteet, setKohteet] = useState({});
+  const [maaraystyypit, setMaaraystyypit] = useState(null);
 
-    useEffect(() => {
-      const _kohteet = R.mergeAll(
-        R.flatten(
-          R.map(item => {
-            return {
-              [R.props(["tunniste"], item)]: item
-            };
-          }, osiokohteet)
-        )
-      );
-      setKohteet(_kohteet);
-    }, [osiokohteet]);
-
-    useEffect(() => {
-      const _maaraystyypit = R.mergeAll(
-        R.flatten(
-          R.map(item => {
-            return {
-              [R.props(["tunniste"], item)]: item
-            };
-          }, maaraystyypitRaw)
-        )
-      );
-      setMaaraystyypit(_maaraystyypit);
-    }, [maaraystyypitRaw]);
-
-    const onChangesRemove = useCallback(
-      sectionId => {
-        return onChangesUpdate(sectionId, []);
-      },
-      [onChangesUpdate]
+  useEffect(() => {
+    const _kohteet = R.mergeAll(
+      R.flatten(
+        R.map(item => {
+          return {
+            [R.props(["tunniste"], item)]: item
+          };
+        }, osiokohteet)
+      )
     );
+    setKohteet(_kohteet);
+  }, [osiokohteet]);
 
-    const updateChanges = useCallback(
-      payload => {
-        onChangesUpdate(payload.anchor, payload.changes);
-      },
-      [onChangesUpdate]
+  useEffect(() => {
+    const _maaraystyypit = R.mergeAll(
+      R.flatten(
+        R.map(item => {
+          return {
+            [R.props(["tunniste"], item)]: item
+          };
+        }, maaraystyypitRaw)
+      )
     );
+    setMaaraystyypit(_maaraystyypit);
+  }, [maaraystyypitRaw]);
 
-    const valtakunnallinenMaarays = R.find(
-      R.propEq("koodisto", "nuts1"),
-      R.prop("maaraykset", lupa) || []
-    );
+  const onChangesRemove = useCallback(
+    sectionId => {
+      return onChangesUpdate(sectionId, []);
+    },
+    [onChangesUpdate]
+  );
 
-    const sectionHeadings = {
-      tutkinnotJaKoulutukset: {
-        number: R.path(["1", "headingNumber"], lupaKohteet) || 1,
-        title:
-          R.path(["1", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
-      },
-      opetusJaTutkintokieli: {
-        number: R.path(["2", "headingNumber"], lupaKohteet) || 2,
-        title:
-          R.path(["2", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
-      },
-      toimintaalue: {
-        number: R.path(["3", "headingNumber"], lupaKohteet) || 3,
-        title:
-          R.path(["3", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
-      },
-      opiskelijavuodet: {
-        number: R.path(["4", "headingNumber"], lupaKohteet) || 4,
-        title:
-          R.path(["4", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
-      },
-      muut: {
-        number: R.path(["5", "headingNumber"], lupaKohteet) || 5,
-        title:
-          R.path(["5", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionMuutMainTitle)
-      }
-    };
+  const updateChanges = useCallback(
+    payload => {
+      onChangesUpdate(payload.anchor, payload.changes);
+    },
+    [onChangesUpdate]
+  );
 
-    return (
-      <form onSubmit={handleSubmit}>
-        <Section
-          code={1}
-          title={opetustehtavakoodisto.metadata[R.toUpper(intl.locale)].kuvaus}>
-          <Opetustehtavat
-            changeObjects={changeObjects.opetustehtavat}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-            opetustehtavakoodisto={opetustehtavakoodisto}
-            opetustehtavat={opetustehtavat}
-          />
-        </Section>
+  const valtakunnallinenMaarays = R.find(
+    R.propEq("koodisto", "nuts1"),
+    R.prop("maaraykset", lupa) || []
+  );
 
-        <Section code={2} title={"Kunnat, joissa opetusta järjestetään"}>
-          <OpetustaAntavatKunnat
-            changeObjects={changeObjects}
-            lupakohde={lupaKohteet[3]}
-            kunnat={kunnat}
-            maakuntakunnat={maakuntakunnat}
-            maakunnat={maakunnat}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-            sectionId={"toimintaalue"}
-            valtakunnallinenMaarays={valtakunnallinenMaarays}
-          />
-        </Section>
+  const sectionHeadings = {
+    tutkinnotJaKoulutukset: {
+      number: R.path(["1", "headingNumber"], lupaKohteet) || 1,
+      title:
+        R.path(["1", "heading"], lupaKohteet) ||
+        intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
+    },
+    opetusJaTutkintokieli: {
+      number: R.path(["2", "headingNumber"], lupaKohteet) || 2,
+      title:
+        R.path(["2", "heading"], lupaKohteet) ||
+        intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
+    },
+    toimintaalue: {
+      number: R.path(["3", "headingNumber"], lupaKohteet) || 3,
+      title:
+        R.path(["3", "heading"], lupaKohteet) ||
+        intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
+    },
+    opiskelijavuodet: {
+      number: R.path(["4", "headingNumber"], lupaKohteet) || 4,
+      title:
+        R.path(["4", "heading"], lupaKohteet) ||
+        intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
+    },
+    muut: {
+      number: R.path(["5", "headingNumber"], lupaKohteet) || 5,
+      title:
+        R.path(["5", "heading"], lupaKohteet) ||
+        intl.formatMessage(common.lupaSectionMuutMainTitle)
+    }
+  };
 
-        <Section code={3} title={"Opetuskieli"}>
-          <Opetuskieli
-            changeObjects={changeObjects.opetuskieli}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-            kieletOPH={kieletOPH}
-          />
-        </Section>
+  return (
+    <form onSubmit={handleSubmit}>
+      <Section
+        code={1}
+        title={opetustehtavakoodisto.metadata[R.toUpper(intl.locale)].kuvaus}>
+        <Opetustehtavat
+          changeObjects={changeObjects.opetustehtavat}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+          opetustehtavakoodisto={opetustehtavakoodisto}
+          opetustehtavat={opetustehtavat}
+        />
+      </Section>
 
-        <Section code={4} title={"Opetuksen järjestämismuoto"}>
-          <OpetuksenJarjestamismuoto
-            changeObjects={changeObjects.opetuksenJarjestamismuoto}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-            opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
-          />
-        </Section>
+      <Section code={2} title={"Kunnat, joissa opetusta järjestetään"}>
+        <OpetustaAntavatKunnat
+          changeObjects={changeObjects}
+          lupakohde={lupaKohteet[3]}
+          kunnat={kunnat}
+          maakuntakunnat={maakuntakunnat}
+          maakunnat={maakunnat}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+          sectionId={"toimintaalue"}
+          valtakunnallinenMaarays={valtakunnallinenMaarays}
+        />
+      </Section>
 
-        <Section code={5} title={"Erityinen koulutustehtävä"}>
-          <ErityisetKoulutustehtavat
-            changeObjects={changeObjects.poErityisetKoulutustehtavat}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-            poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
-          />
-        </Section>
+      <Section code={3} title={"Opetuskieli"}>
+        <Opetuskieli
+          changeObjects={changeObjects.opetuskieli}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+          kieletOPH={kieletOPH}
+        />
+      </Section>
 
-        <Section code={6} title={"Oppilas-/opiskelijamäärät"}>
-          <Opiskelijamaarat
-            changeObjects={changeObjects.opiskelijamaarat}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-          />
-        </Section>
+      <Section code={4} title={"Opetuksen järjestämismuoto"}>
+        <OpetuksenJarjestamismuoto
+          changeObjects={changeObjects.opetuksenJarjestamismuoto}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+          opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
+        />
+      </Section>
 
-        <Section
-          code={7}
-          title={"Muut koulutuksen järjestämiseen liittyvät ehdot"}>
-          <MuutEhdot
-            changeObjects={changeObjects.poMuutEhdot}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-            poMuutEhdot={poMuutEhdot}
-          />
-        </Section>
+      <Section code={5} title={"Erityinen koulutustehtävä"}>
+        <ErityisetKoulutustehtavat
+          changeObjects={changeObjects.poErityisetKoulutustehtavat}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+          poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+        />
+      </Section>
 
-        <Section code={8} title={"Liitetiedostot"}>
-          <Liitetiedostot
-            changeObjects={changeObjects.liitetiedostot}
-            onChangesRemove={onChangesRemove}
-            onChangesUpdate={updateChanges}
-          />
-        </Section>
-      </form>
-    );
-  },
-  (currentProps, nextProps) => {
-    return (
-      R.equals(currentProps.changeObjects, nextProps.changeObjects) &&
-      R.equals(currentProps.kielet, nextProps.kielet) &&
-      R.equals(currentProps.lupa, nextProps.lupa) &&
-      R.equals(currentProps.koulutusalat, nextProps.koulutusalat) &&
-      R.equals(currentProps.koulutustyypit, nextProps.koulutustyypit) &&
-      R.equals(currentProps.tutkinnot, nextProps.tutkinnot) &&
-      R.equals(currentProps.lupaKohteet, nextProps.lupaKohteet) &&
-      R.equals(currentProps.maaraystyypit, nextProps.maaraystyypit) &&
-      R.equals(
-        currentProps.opetuksenJarjestamismuodot,
-        nextProps.opetuksenJarjestamismuodot
-      ) &&
-      R.equals(
-        currentProps.poErityisetKoulutustehtavat,
-        nextProps.poErityisetKoulutustehtavat
-      ) &&
-      R.equals(currentProps.poMuutEhdot, nextProps.poMuutEhdot)
-    );
-  }
-);
+      <Section code={6} title={"Oppilas-/opiskelijamäärät"}>
+        <Opiskelijamaarat
+          changeObjects={changeObjects.opiskelijamaarat}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+        />
+      </Section>
+
+      <Section
+        code={7}
+        title={"Muut koulutuksen järjestämiseen liittyvät ehdot"}>
+        <MuutEhdot
+          changeObjects={changeObjects.poMuutEhdot}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+          poMuutEhdot={poMuutEhdot}
+        />
+      </Section>
+
+      <Section code={8} title={"Liitetiedostot"}>
+        <Liitetiedostot
+          changeObjects={changeObjects.liitetiedostot}
+          onChangesRemove={onChangesRemove}
+          onChangesUpdate={updateChanges}
+        />
+      </Section>
+    </form>
+  );
+};
 
 EsittelijatMuutospyynto.propTypes = {
   kielet: PropTypes.array,

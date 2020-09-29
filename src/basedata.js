@@ -444,7 +444,6 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
   }, [keys, locale, ytunnus]);
 
   if (!isEmpty(baseData)) {
-    console.info(baseData);
     return (
       <React.Fragment>
         {!!render ? render({ ...baseData }) : null}
