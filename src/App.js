@@ -88,6 +88,13 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
     { path: "/tilastot", text: intl.formatMessage(commonMessages.statistics) }
   ];
 
+  if (sessionStorage.getItem("role") === ROLE_ESITTELIJA) {
+    pageLinks.push({
+      path: "/asianhallinta",
+      text: intl.formatMessage(commonMessages.asianhallinta)
+    });
+  }
+
   const authenticationLink = useMemo(() => {
     return {
       text: !user
@@ -289,10 +296,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     path="/esi-ja-perusopetus"
                     component={EsiJaPerusopetus}
                   />
-                  <Route
-                    path="/lukiokoulutus"
-                    component={Lukiokoulutus}
-                  />
+                  <Route path="/lukiokoulutus" component={Lukiokoulutus} />
                   <Route
                     path="/asianhallinta"
                     render={() => {

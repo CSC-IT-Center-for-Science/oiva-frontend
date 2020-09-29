@@ -29,11 +29,9 @@ export default function Lukiokoulutus() {
   const { data: user } = userState;
 
   return (
-    <div className="bg-doublebubbledark">
-      <div className="mx-auto max-w-9xl border-l border-r-4  border-solid border-teal-500">
-        <div className="bg-castle h-64 max-w-9xl border-t border-b border-gray-500 bg-cover bg-center mx-auto">
-          <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
-        </div>
+    <div>
+      <div className="mx-auto max-w-9xl">
+        <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
         <div className="flex flex-col min-h-screen mx-auto bg-white mb-8 pb-8">
           <article className="px-16">
             <nav

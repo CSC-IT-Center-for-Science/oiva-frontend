@@ -4,7 +4,6 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { useIntl } from "react-intl";
@@ -30,22 +29,9 @@ export default function AmmatillinenkoulutusCard() {
         onClick={() => {
           history.push("/ammatillinenkoulutus");
         }}>
-        <CardMedia
-          component="img"
-          alt={intl.formatMessage(educationMessages.vocationalEducation)}
-          height="200"
-          image="https://picsum.photos/id/1/600/400/"
-          title={intl.formatMessage(educationMessages.vocationalEducation)}
-        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {intl.formatMessage(educationMessages.vocationalEducation)}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-            imperdiet ex ac justo ornare, et feugiat magna semper. Vestibulum
-            non volutpat odio, et tincidunt metus. Proin sit amet risus ac risus
-            ultricies tempus. Sed porta aliquam ante, sed dictum lectus.
           </Typography>
         </CardContent>
       </CardActionArea>

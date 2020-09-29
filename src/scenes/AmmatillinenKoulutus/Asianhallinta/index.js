@@ -32,7 +32,7 @@ const Asianhallinta = () => {
             <div className="grid grid-cols-3 gap-4 justify-items-auto pt-12">
               <NavLink
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
-                to={"/asianhallinta/esijaperusopetus"}
+                to={"/esi-ja-perusopetus/asianhallinta/avoimet"}
                 exact={true}
                 style={{ textDecoration: "none", color: "inherit" }}>
                 {intl.formatMessage(education.preAndBasicEducation)}
@@ -40,7 +40,7 @@ const Asianhallinta = () => {
               </NavLink>
               <NavLink
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
-                to={"/asianhallinta/lukio"}
+                to={"/lukiokoulutus/asianhallinta/avoimet"}
                 exact={true}
                 style={{ textDecoration: "none", color: "inherit" }}>
                 {intl.formatMessage(education.highSchoolEducation)}
@@ -48,7 +48,7 @@ const Asianhallinta = () => {
               </NavLink>
               <NavLink
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
-                to={"/asianhallinta/ammatillinen"}
+                to={"/ammatillinenkoulutus/asianhallinta/avoimet"}
                 exact={true}
                 style={{ textDecoration: "none", color: "inherit" }}>
                 {intl.formatMessage(education.vocationalEducation)}

@@ -29,11 +29,9 @@ export default function EsiJaPerusopetus() {
   const { data: user } = userState;
 
   return (
-    <div className="bg-doublebubbledark">
-      <div className="mx-auto max-w-9xl border-l border-r-4  border-solid border-blue-500">
-        <div className="bg-typewriter h-64 border-t border-b border-gray-500 bg-cover bg-center mx-auto">
-          <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
-        </div>
+    <div>
+      <div className="mx-auto max-w-9xl">
+        <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
         <div className="flex flex-col min-h-screen mx-auto bg-white mb-8 pb-8">
           <article className="px-16">
             <nav
