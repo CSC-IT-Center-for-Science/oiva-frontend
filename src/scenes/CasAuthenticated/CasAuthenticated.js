@@ -36,7 +36,7 @@ const CasAuthenticated = () => {
           <Redirect
             ytunnus={ytunnus}
             to={{
-              pathname: "/jarjestajat/" + ytunnus + "/omattiedot",
+              pathname: `/ammatillinenkoulutus/koulutuksenjarjestajat/${ytunnus}/omattiedot`,
               ytunnus
             }}
           />

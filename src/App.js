@@ -148,10 +148,10 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         ? result
         : R.assoc(
             "path",
-            `/jarjestajat/${R.prop(
+            `/ammatillinenkoulutus/koulutuksenjarjestajat/${R.prop(
               "ytunnus",
               organisation[user.oid].data
-            )}/jarjestamislupa-asia`,
+            )}/jarjestamislupa`,
             result
           );
     }
@@ -279,7 +279,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
           <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <SkipNavContent />
-              <main className="flex-1 flex flex-col">
+              <main className="flex-1 flex flex-col sm:w-4/5 mx-auto">
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route path="/logout" component={Logout} />
@@ -306,28 +306,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                         !!organisation[user.oid].fetchedAt ? (
                         <Asianhallinta />
                       ) : null;
-                    }}
-                  />
-                  <Route
-                    path="/jarjestajat/:ytunnus"
-                    render={props => {
-                      return (
-                        <BaseData
-                          keys={keys}
-                          locale={intl.locale}
-                          render={_props => {
-                            return (
-                              <JarjestajaSwitch
-                                lupa={_props.lupa}
-                                path={props.match.path}
-                                ytunnus={_props.ytunnus}
-                                user={user}
-                                kielet={_props.kielet}
-                              />
-                            );
-                          }}
-                        />
-                      );
                     }}
                   />
                   <Route

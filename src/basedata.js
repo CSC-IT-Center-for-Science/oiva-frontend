@@ -362,17 +362,21 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
-    opetustehtavakoodisto: await localforage.setItem("opetustehtavakoodisto", {
-      ...raw.opetustehtavakoodisto,
-      metadata: mapObjIndexed(
-        head,
-        groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
-      )
-    }),
-    opetustehtavat: await localforage.setItem(
-      "opetustehtavat",
-      initializeOpetustehtavat(raw.opetustehtavat)
-    ),
+    opetustehtavakoodisto: raw.opetustehtavakoodisto
+      ? await localforage.setItem("opetustehtavakoodisto", {
+          ...raw.opetustehtavakoodisto,
+          metadata: mapObjIndexed(
+            head,
+            groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
+          )
+        })
+      : undefined,
+    opetustehtavat: raw.opetustehtavat
+      ? await localforage.setItem(
+          "opetustehtavat",
+          initializeOpetustehtavat(raw.opetustehtavat)
+        )
+      : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,

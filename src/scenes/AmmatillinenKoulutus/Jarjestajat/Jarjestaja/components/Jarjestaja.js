@@ -1,11 +1,7 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import {
-  Route,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import JarjestajaBasicInfo from "./JarjestajaBasicInfo";
 import JulkisetTiedot from "./JulkisetTiedot";
@@ -79,12 +75,12 @@ const Jarjestaja = React.memo(
       // Basic routes (no authentication needed)
       const basicRoutes = [
         {
-          path: `${url}/jarjestamislupa`,
+          path: "jarjestamislupa",
           text: intl.formatMessage(common.lupaTitle),
           authenticated: true
         },
         {
-          path: `${url}`,
+          path: "paatokset",
           exact: true,
           text: intl.formatMessage(common.lupaPaatokset),
           authenticated: true
@@ -95,14 +91,14 @@ const Jarjestaja = React.memo(
         user && R.equals(user.oid, R.prop("oid", lupa.jarjestaja))
           ? [
               {
-                path: `${url}/omattiedot`,
+                path: "omattiedot",
                 exact: true,
                 text: intl.formatMessage(common.omatTiedotTitle),
                 authenticated: !!user
               },
               {
-                id: "jarjestamislupa-asiat",
-                path: `${url}/jarjestamislupa-asia`,
+                id: "jarjestamislupa-asia",
+                path: "jarjestamislupa-asiat",
                 text: intl.formatMessage(common.asiatTitle),
                 authenticated: !!user
               }
@@ -146,18 +142,19 @@ const Jarjestaja = React.memo(
             onChange={(e, val) => {
               history.push(val);
             }}>
-            <OivaTab
-              label={intl.formatMessage(common.lupaTitle)}
-              aria-label={intl.formatMessage(common.lupaTitle)}
-              to={"jarjestamislupa"}
-              value={"jarjestamislupa"}
-            />
-            <OivaTab
-              label={intl.formatMessage(common.lupaPaatokset)}
-              aria-label={intl.formatMessage(common.lupaPaatokset)}
-              to={"paatokset"}
-              value={"paatokset"}
-            />
+            {tabNavRoutes
+              ? R.map(route => {
+                  return (
+                    <OivaTab
+                      label={route.text}
+                      aria-label={route.text}
+                      to={route.path}
+                      value={route.path}
+                    />
+                  );
+                }, tabNavRoutes)
+              : null}
+             
           </OivaTabs>
           {!!user ? (
             <div>
@@ -196,7 +193,7 @@ const Jarjestaja = React.memo(
                 )}
               />
               <Route
-                path={`${url}/jarjestamislupa-asia`}
+                path={`${url}/jarjestamislupa-asiat`}
                 exact
                 render={props => (
                   <JarjestamislupaAsiat

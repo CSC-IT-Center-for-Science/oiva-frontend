@@ -93,7 +93,6 @@ export default function AmmatillinenKoulutus() {
                 render={props => {
                   return (
                     <BaseData
-                      keys={keys}
                       locale={locale}
                       render={_props => {
                         return (
