@@ -14,7 +14,8 @@ import {
   mapObjIndexed,
   groupBy,
   omit,
-  head
+  head,
+  filter
 } from "ramda";
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
@@ -171,6 +172,8 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     )
   };
 
+  const lupa = raw.viimeisinLupa || raw.lupa || {};
+
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
    * dataa. Samalla noudettu data tallennetaan lokaaliin tietovarastoon
@@ -297,17 +300,18 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.oivaperustelut)
         )
       : undefined,
-    opetuskielet: raw.opetuskielet
-      ? await localforage.setItem(
-          "opetuskielet",
-          sortBy(
-            prop("koodiarvo"),
-            initializeOpetuskielet(
-              raw.opetuskielet,
-              prop("maaraykset", raw.lupa) || []
+    opetuskielet:
+      raw.opetuskielet
+        ? await localforage.setItem(
+            "opetuskielet",
+            sortBy(
+              prop("koodiarvo"),
+              initializeOpetuskielet(
+                raw.opetuskielet,
+                filter(maarays => maarays.koodisto === 'oppilaitoksenopetuskieli', prop("maaraykset", lupa)) || []
+              )
             )
           )
-        )
       : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
@@ -319,7 +323,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             prop("koodiarvo"),
             initializeTutkinnot(
               raw.tutkinnot,
-              prop("maaraykset", raw.lupa || {}) || []
+              filter(maarays => maarays.koodisto === 'koulutus', prop("maaraykset", lupa)) || []
             )
           )
         )
