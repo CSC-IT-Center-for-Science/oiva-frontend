@@ -59,5 +59,17 @@ export const backendRoutes = {
   kaannokset: { path: "lokalisaatio" },
 
   organisaatiot: { path: "luvat/organisaatiot" },
-  ytunnushaku: { path: "organisaatiot/" }
+  ytunnushaku: { path: "organisaatiot/" },
+  opetustehtavakoodisto: { path: "koodistot/koodisto/opetustehtava" },
+  opetustehtavat: { path: "koodistot/koodit/opetustehtava" },
+  kieletOPH: { path: "koodistot/koodit/kielikoodistoopetushallinto" },
+  opetuksenJarjestamismuodot: {
+    path: "koodistot/koodit/opetuksenjarjestamismuoto"
+  },
+  poErityisetKoulutustehtavat: {
+    path: "koodistot/koodit/poerityinenkoulutustehtava"
+  },
+  poMuutEhdot: {
+    path: "koodistot/koodit/pomuutkoulutuksenjarjestamiseenliittyvatehdot"
+  }
 };

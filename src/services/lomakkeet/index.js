@@ -31,6 +31,13 @@ import getVahimmaisopiskelijavuodetPerustelulomake from "./perustelut/opiskelija
 import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vaativa";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
+import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetus-jota-lupa-koskee";
+import { opetuskielet } from "./esi-ja-perusopetus/3-opetuskielet";
+import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
+import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
+import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
+import { liitetiedostot } from "./esi-ja-perusopetus/8-liitetiedostot";
+import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -276,6 +283,38 @@ const lomakkeet = {
     topThree: {
       addition: (data, isReadOnly, locale, changeObjects) =>
         getTopThree(data, isReadOnly, locale, changeObjects)
+    }
+  },
+
+  // Esi- ja perusopetus
+  esiJaPerusopetus: {
+    erityisetKoulutustehtavat: {
+      modification: (data, isReadOnly, locale, changeObjects) =>
+        erityisetKoulutustehtavat(data, isReadOnly, locale, changeObjects)
+    },
+    liitetiedostot: {
+      modification: (data, isReadOnly, locale) =>
+        liitetiedostot(data, isReadOnly, locale)
+    },
+    muutEhdot: {
+      modification: (data, isReadOnly, locale, changeObjects) =>
+        muutEhdot(data, isReadOnly, locale, changeObjects)
+    },
+    opetuksenJarjestamismuoto: {
+      modification: (data, isReadOnly, locale) =>
+        opetuksenJarjestamismuoto(data, isReadOnly, locale)
+    },
+    opetusJotaLupaKoskee: {
+      modification: (data, isReadOnly, locale) =>
+        opetusJotaLupaKoskee(data, isReadOnly, locale)
+    },
+    opetuskielet: {
+      modification: (data, isReadOnly, locale) =>
+        opetuskielet(data, isReadOnly, locale)
+    },
+    opiskelijamaarat: {
+      modification: (data, isReadOnly, locale) =>
+        opiskelijamaarat(data, isReadOnly, locale)
     }
   }
 };

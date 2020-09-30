@@ -3,17 +3,13 @@ import { Route, Router, Switch } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import Login from "scenes/Login/Login";
 import Logout from "scenes/Logout/Logout";
-import Footer from "scenes/Footer/Footer";
-import Jarjestajat from "./scenes/Jarjestajat/Jarjestajat";
-import { COLORS } from "./modules/styles";
+import Footer from "components/03-templates/Footer";
 import Home from "scenes/Home";
 import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
-import Tilastot from "./scenes/Tilastot/components/Tilastot";
+import Tilastot from "./scenes/Tilastot/components";
 import RequireCasAuth from "./scenes/Login/services/RequireCasAuth";
 import DestroyCasAuth from "./scenes/Logout/services/DestroyCasAuth";
-import { Breadcrumbs } from "react-breadcrumbs-dynamic";
-import JarjestajaSwitch from "./scenes/Jarjestajat/Jarjestaja/components/JarjestajaSwitch";
-import { NavLink } from "react-dom";
+import JarjestajaSwitch from "./scenes/AmmatillinenKoulutus/JarjestajaSwitch";
 import { createBrowserHistory } from "history";
 import authMessages from "./i18n/definitions/auth";
 import { useIntl } from "react-intl";
@@ -28,21 +24,24 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "./modules/constants";
-import Esittelijat from "./scenes/Esittelijat/Esittelijat";
 import Header from "okm-frontend-components/dist/components/02-organisms/Header";
 import Navigation from "okm-frontend-components/dist/components/02-organisms/Navigation";
 import SideNavigation from "okm-frontend-components/dist/components/02-organisms/SideNavigation";
 import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
-import * as R from "ramda";
 import Yhteydenotto from "./scenes/Yhteydenotto";
 import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
 import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import "@reach/skip-nav/styles.css";
-import BaseData from "scenes/BaseData";
+import BaseData from "basedata";
 import SessionDialog from "SessionDialog";
+import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
+import AmmatillinenKoulutus from "scenes/AmmatillinenKoulutus";
+import EsiJaPerusopetus from "scenes/EsiJaPerusopetus";
+import Lukiokoulutus from "scenes/Lukiokoulutus";
+import * as R from "ramda";
 
 const history = createBrowserHistory();
 
@@ -71,15 +70,15 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   const pageLinks = [
     {
-      url: kujaURL + "/esi-ja-perusopetus",
+      path: "/esi-ja-perusopetus",
       text: intl.formatMessage(educationMessages.preAndBasicEducation)
     },
     {
-      url: kujaURL + "/lukiokoulutus",
+      path: "/lukiokoulutus",
       text: intl.formatMessage(educationMessages.highSchoolEducation)
     },
     {
-      path: "/jarjestajat",
+      path: "/ammatillinenkoulutus",
       text: intl.formatMessage(educationMessages.vocationalEducation)
     },
     {
@@ -91,8 +90,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   if (sessionStorage.getItem("role") === ROLE_ESITTELIJA) {
     pageLinks.push({
-      path: "/asiat",
-      text: "Asiat"
+      path: "/asianhallinta",
+      text: intl.formatMessage(commonMessages.asianhallinta)
     });
   }
 
@@ -149,10 +148,10 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         ? result
         : R.assoc(
             "path",
-            `/jarjestajat/${R.prop(
+            `/ammatillinenkoulutus/koulutuksenjarjestajat/${R.prop(
               "ytunnus",
               organisation[user.oid].data
-            )}/jarjestamislupa-asia`,
+            )}/jarjestamislupa`,
             result
           );
     }
@@ -242,65 +241,45 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   return (
     <React.Fragment>
       <Router history={history}>
-        <div className="flex flex-col min-h-screen">
+        <div
+          className={`relative lg:fixed z-50 ${
+            appState.isDebugModeOn ? "w-2/3" : "w-full"
+          }`}>
+          {getHeader()}
+
+          <div className="hidden md:block">
+            <Navigation links={pageLinks}></Navigation>
+          </div>
+        </div>
+
+        <SideNavigation
+          isVisible={isSideMenuVisible}
+          handleDrawerToggle={isVisible => {
+            setSideMenuVisibility(isVisible);
+          }}>
+          {getHeader("C")}
+
+          <div className="p-4 max-w-xl">
+            <Navigation
+              direction="vertical"
+              links={pageLinks}
+              theme={{
+                backgroundColor: "white",
+                color: "black",
+                hoverColor: "white"
+              }}></Navigation>
+          </div>
+        </SideNavigation>
+
+        <div className="flex flex-col min-h-screen bg-white">
           <SkipNavLink>
             {intl.formatMessage(commonMessages.jumpToContent)}
           </SkipNavLink>
-          <div
-            className={`relative lg:fixed z-50 ${
-              appState.isDebugModeOn ? "w-2/3" : "w-full"
-            }`}>
-            {getHeader()}
 
-            <div className="hidden md:block">
-              <Navigation links={pageLinks}></Navigation>
-            </div>
-          </div>
-
-          <SideNavigation
-            isVisible={isSideMenuVisible}
-            handleDrawerToggle={isVisible => {
-              setSideMenuVisibility(isVisible);
-            }}>
-            {getHeader("C")}
-
-            <div className="p-4 max-w-xl">
-              <Navigation
-                direction="vertical"
-                links={pageLinks}
-                theme={{
-                  backgroundColor: "white",
-                  color: "black",
-                  hoverColor: "white"
-                }}></Navigation>
-            </div>
-          </SideNavigation>
-
-          <div className="flex flex-1 flex-col justify-between mt-16 md:mt-0 lg:mt-32">
+          <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
-              <div
-                style={{ maxWidth: "90rem" }}
-                className="w-full mx-auto px-3 lg:px-8 py-8">
-                <nav
-                  tabIndex="0"
-                  className="breadcumbs-nav"
-                  aria-label={intl.formatMessage(commonMessages.breadCrumbs)}>
-                  <Breadcrumbs
-                    hideIfEmpty={true}
-                    separator={<b> / </b>}
-                    item={NavLink}
-                    finalItem={"b"}
-                    finalProps={{
-                      style: {
-                        fontWeight: 400,
-                        color: COLORS.BLACK
-                      }
-                    }}
-                  />
-                </nav>
-              </div>
               <SkipNavContent />
-              <main className="flex-1 flex flex-col">
+              <main className="flex-1 flex flex-col sm:w-4/5 mx-auto">
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route path="/logout" component={Logout} />
@@ -310,46 +289,30 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   <Route path="/cas-logout" component={DestroyCasAuth} />
                   <Route path="/cas-ready" component={CasAuthenticated} />
                   <Route
-                    exact
-                    path="/jarjestajat"
-                    render={props => <Jarjestajat />}
+                    path="/ammatillinenkoulutus"
+                    component={AmmatillinenKoulutus}
                   />
                   <Route
-                    path="/asiat"
+                    path="/esi-ja-perusopetus"
+                    component={EsiJaPerusopetus}
+                  />
+                  <Route path="/lukiokoulutus" component={Lukiokoulutus} />
+                  <Route
+                    path="/asianhallinta"
                     render={() => {
                       return user &&
                         !user.isLoading &&
                         organisation[user.oid] &&
                         !!organisation[user.oid].fetchedAt ? (
-                        <Esittelijat />
+                        <Asianhallinta />
                       ) : null;
                     }}
                   />
                   <Route
-                    path="/jarjestajat/:ytunnus"
-                    render={props => {
-                      return (
-                        <BaseData
-                          keys={keys}
-                          locale={intl.locale}
-                          render={_props => {
-                            return (
-                              <JarjestajaSwitch
-                                lupa={_props.lupa}
-                                path={props.match.path}
-                                ytunnus={_props.ytunnus}
-                                user={user}
-                                kielet={_props.kielet}
-                              />
-                            );
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                  <Route
                     path="/saavutettavuusseloste"
-                    render={() => <Saavutettavuusseloste locale={intl.locale} />}
+                    render={() => (
+                      <Saavutettavuusseloste locale={intl.locale} />
+                    )}
                   />
                   <Route
                     path="/tietosuojailmoitus"
@@ -363,13 +326,13 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
               </main>
             </div>
           </div>
-          <footer>
-            <Footer
-            // props={props}
-            />
-            <ToastContainer />
-          </footer>
         </div>
+      </Router>
+      <Router history={history}>
+        <footer>
+          <Footer />
+          <ToastContainer />
+        </footer>
       </Router>
       {isSessionDialogVisible && !!user ? (
         <SessionDialog

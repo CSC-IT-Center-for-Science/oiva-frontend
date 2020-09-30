@@ -29,14 +29,14 @@ const CasAuthenticated = () => {
     // TODO: Different roles routing here when applicable
     switch (role) {
       case ROLE_ESITTELIJA: {
-        return <Redirect to="/asiat" />;
+        return <Redirect to="/" />;
       }
       default: {
         return (
           <Redirect
             ytunnus={ytunnus}
             to={{
-              pathname: "/jarjestajat/" + ytunnus + "/omattiedot",
+              pathname: `/ammatillinenkoulutus/koulutuksenjarjestajat/${ytunnus}/omattiedot`,
               ytunnus
             }}
           />
