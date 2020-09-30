@@ -56,6 +56,7 @@ const Lomake = React.memo(
       anchor,
       changeObjects,
       data,
+      hasInvalidFieldsFn,
       isReadOnly,
       intl.locale,
       _path,

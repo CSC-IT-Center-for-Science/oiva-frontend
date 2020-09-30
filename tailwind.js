@@ -7,11 +7,22 @@ module.exports = {
   important: false,
   separator: ":",
   theme: {
+    extend: {
+      backgroundImage: theme => ({
+        beigetiles: "url('../static/images/beige-tiles.png')",
+        studying: "url(https://picsum.photos/id/1/1600/400)",
+        typewriter: "url(https://picsum.photos/id/403/1600/400)",
+        castle: "url(https://picsum.photos/id/1040/1600/400)",
+        doublebubbledark: "url('../static/images/double-bubble-dark.png')",
+        repeatedsquare: "url('../static/images/repeated-square.png')"
+      })
+    },
     screens: {
-      sm: "640px",
+      sm: "576px",
       md: "768px",
-      lg: "1024px",
-      xl: "1440px"
+      lg: "992px",
+      xl: "1200px",
+      xxl: "1600px"
     },
     colors: {
       // custom
@@ -342,6 +353,8 @@ module.exports = {
       "5xl": "64rem",
       "6xl": "72rem",
       "7xl": "80rem",
+      "8xl": "88rem",
+      "9xl": "96rem",
       full: "100%"
     },
     minHeight: {

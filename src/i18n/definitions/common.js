@@ -1,5 +1,4 @@
 import { defineMessages } from "react-intl";
-import { xor } from "ramda";
 
 export default defineMessages({
   statistics: {
@@ -992,9 +991,22 @@ export default defineMessages({
     id: "common.minimumAmountOfYears",
     defaultMessage: "Nykyinen"
   },
+  asianhallinta: {
+    id: "common.asianhallinta",
+    defaultMessage: "Asianhallinta"
+  },
+  asianhallintaInfoText: {
+    id: "common.asianhallintaInfoText",
+    defaultMessage:
+      "Valitse alla olevista vaihtoehdoista se koulutusmuoto, jonka järjestämislupia haluat käsitellä."
+  },
   KJPassiivinen: {
     id: "common.KJPassiivinen",
     defaultMessage:
       "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä"
+  },
+  page: {
+    id: "common.page",
+    defaultMessage: "Sivu"
   }
 });

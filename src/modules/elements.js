@@ -65,7 +65,6 @@ export const BreadcrumbsContainer = styled.div`
 export const InnerContentContainer = styled.div`
   background-color: ${COLORS.WHITE};
   border: 1px solid ${COLORS.BORDER_GRAY};
-  box-shadow: 0 2px 4px 3px rgba(219, 219, 219, 0.2);
 `;
 
 export const InnerContentWrapper = styled.div`
