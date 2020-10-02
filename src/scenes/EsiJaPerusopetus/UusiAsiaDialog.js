@@ -17,17 +17,17 @@ import { useMuutospyynto } from "../../stores/muutospyynto";
 import Opetustehtavat from "./lomake/1-Opetustehtavat";
 import FormSection from "./formSection";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
-import OpetustaAntavatKunnat from "./lomake/2-OpetustaAntavatKunnat";
-import Opetuskieli from "./lomake/3-Opetuskieli";
-import OpetuksenJarjestamismuoto from "./lomake/4-OpetuksenJarjestamismuoto";
-import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
-import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
-import MuutEhdot from "./lomake/7-MuutEhdot";
-import Liitetiedostot from "./lomake/8-Liitetiedostot";
+import OpetustaAntavatKunnat from "./lomakeosiot/2-OpetustaAntavatKunnat";
+import Opetuskieli from "./lomakeosiot/3-Opetuskieli";
+import OpetuksenJarjestamismuoto from "./lomakeosiot/4-OpetuksenJarjestamismuoto";
+import ErityisetKoulutustehtavat from "./lomakeosiot/5-ErityisetKoulutustehtavat";
+import Opiskelijamaarat from "./lomakeosiot/6-Opiskelijamaarat";
+import MuutEhdot from "./lomakeosiot/7-MuutEhdot";
+import Liitetiedostot from "./lomakeosiot/8-Liitetiedostot";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import education from "../../i18n/definitions/education";
-import {__} from "i18n-for-browser";
+import { __ } from "i18n-for-browser";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -469,7 +469,9 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"toimintaalue"}
-                  title={intl.formatMessage(education.opetustaAntavatKunnat)}></FormSection>
+                  title={intl.formatMessage(
+                    education.opetustaAntavatKunnat
+                  )}></FormSection>
 
                 <FormSection
                   code={3}

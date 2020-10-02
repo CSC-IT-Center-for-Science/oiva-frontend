@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import { useIntl } from "react-intl";
 import wizardMessages from "../../i18n/definitions/wizard";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
-import { WizardBottom } from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardComponents";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -17,7 +16,7 @@ const EsittelijatWizardActions = ({
   const intl = useIntl();
 
   return (
-    <WizardBottom>
+    <div>
       <div
         className={`flex flex-col md:flex-row justify-between ${
           isDebugOn ? "w-2/3" : "w-full"
@@ -48,7 +47,7 @@ const EsittelijatWizardActions = ({
           text={intl.formatMessage(wizardMessages.saveDraft)}
         />
       </div>
-    </WizardBottom>
+    </div>
   );
 };
 
