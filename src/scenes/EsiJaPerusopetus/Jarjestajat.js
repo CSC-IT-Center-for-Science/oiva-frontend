@@ -7,7 +7,7 @@ import education from "../../i18n/definitions/education";
 import Loading from "../../modules/Loading";
 import { useIntl } from "react-intl";
 
-const Jarjestajat = React.memo(() => {
+const Jarjestajat = () => {
   const intl = useIntl();
   const [luvat, luvatActions] = useLuvat();
 
@@ -44,6 +44,6 @@ const Jarjestajat = React.memo(() => {
       {luvat.isLoading && <Loading />}
     </React.Fragment>
   );
-});
+};
 
 export default Jarjestajat;

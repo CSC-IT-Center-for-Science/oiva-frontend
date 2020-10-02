@@ -147,12 +147,13 @@ step("Assert if text exists <string>", async string => {
 });
 
 step("Navigate to Esi- ja perusopetus", async () => {
-  click(link({ href: "/esi-ja-perusopetus" }));
+  const link = await link({ href: "/esi-ja-perusopetus" });
+  click(link);
   assert.ok(await text("Tulossa vuoden 2020 aikana").exists());
 });
 
 step("Navigate to Lukiokoulutus", async () => {
-  click(link({ href: "/lukiokoulutus" }));
+  click(link({ href: "https://localhost:4433/lukiokoulutus" }));
   assert.ok(await text("Tulossa vuoden 2020 aikana").exists());
 });
 
