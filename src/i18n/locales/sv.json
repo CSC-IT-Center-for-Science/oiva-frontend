@@ -122,6 +122,8 @@
   "common.kjSivuinfo": "Tämä sivu sisältää taulukon voimassa olevista järjestämisluvista, joita on {kpl} kappaletta. Kukin lupa kuuluu jollekin koulutuksen järjestäjälle, jonka nimen kautta pääset tarkastelemaan tarkempia tietoja. Voit liikkua taulukon sivujen välillä käyttämällä taulukon alapuolella olevaa sivutustoiminnallisuutta.",
   "common.koulutukset": "SV: SV: Koulutukset",
   "common.koulutusJaPaaasiallinenToiminta": "Koulutus ja pääasiallinen toiminta",
+  "common.lisatiedot": "Lisätiedot",
+  "common.lisatiedotInfo": "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä.",
   "common.loading": "Laddar data",
   "common.loginError": "SV: Kirjautumisessa tapahtui virhe",
   "common.loytyyjoVoimassaOlevaLupa": "Tällä koulutuksen järjestäjällä on jo voimassa oleva järjestämislupa. Hyväksymällä siirrytään luvan muokkaussivulle.",
