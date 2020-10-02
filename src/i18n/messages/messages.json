@@ -1250,6 +1250,16 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.lisatiedotInfo",
+    "defaultMessage": "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lisatiedot",
+    "defaultMessage": "Lisätiedot",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"

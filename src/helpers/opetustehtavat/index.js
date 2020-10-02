@@ -15,8 +15,8 @@ export const initializeOpetustehtava = opetustehtava => {
 export const initializeOpetustehtavat = opetustehtavat => {
   return sort(
     (a, b) => {
-      const aInt = parseInt(a.koodiarvo, 10);
-      const bInt = parseInt(b.koodiarvo, 10);
+      const aInt = parseInt(a.metadata.FI.huomioitavaKoodi, 10);
+      const bInt = parseInt(b.metadata.FI.huomioitavaKoodi, 10);
       if (aInt < bInt) {
         return -1;
       } else if (aInt > bInt) {
