@@ -17,7 +17,7 @@ import { useMuutospyynto } from "../../stores/muutospyynto";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Loading from "../../modules/Loading";
-import { asiaEsittelijaStateToLocalizationKeyMap } from "./Jarjestajat/Jarjestaja/modules/constants";
+import { asiaEsittelijaStateToLocalizationKeyMap } from "./constants";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
@@ -57,7 +57,7 @@ const states = [
   "PASSIVOITU"
 ];
 
-const Asiakirjat = React.memo(() => {
+const Asiakirjat = () => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
@@ -109,7 +109,9 @@ const Asiakirjat = React.memo(() => {
 
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
-    history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=${new Date().getTime()}`);
+    history.push(
+      `/esi-ja-perusopetus/asianhallinta/avoimet?force=${new Date().getTime()}`
+    );
   };
 
   const removeLiite = async () => {
@@ -138,7 +140,9 @@ const Asiakirjat = React.memo(() => {
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
     // Let's move to Asiat view.
-    history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=${new Date().getTime()}`);
+    history.push(
+      `/esi-ja-perusopetus/asianhallinta/avoimet?force=${new Date().getTime()}`
+    );
   };
 
   const baseRow = [
@@ -502,7 +506,7 @@ const Asiakirjat = React.memo(() => {
   } else {
     return <Loading />;
   }
-});
+};
 
 Asiakirjat.propTypes = {
   uuid: PropTypes.object

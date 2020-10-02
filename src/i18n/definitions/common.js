@@ -1020,5 +1020,9 @@ export default defineMessages({
   lisatiedot: {
     id: "common.lisatiedot",
     defaultMessage: "Lisätiedot"
+  },
+  nimi: {
+    id: "common.name",
+    defaultMessage: "Nimi"
   }
 });

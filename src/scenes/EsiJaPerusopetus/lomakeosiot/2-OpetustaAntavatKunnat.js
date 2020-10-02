@@ -36,7 +36,7 @@ const mapping = {
   "21": "FI-01"
 };
 
-const OpetustaAntavatKunnat = React.memo(props => {
+const OpetustaAntavatKunnat = props => {
   const { changeObjects } = props;
   const intl = useIntl();
   const { onChangesUpdate } = props;
@@ -361,7 +361,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
       />
     </ExpandableRowRoot>
   );
-});
+};
 
 OpetustaAntavatKunnat.defaultProps = {
   changeObjects: [],

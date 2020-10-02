@@ -1,5 +1,20 @@
 [
   {
+    "id": "common.dropAreaInfo1",
+    "defaultMessage": "Voit raahata tiedostot tähän tai klikata aluetta lisätäksesi liitteitä.",
+    "filepath": "src/i18n/definitions/attachments.js"
+  },
+  {
+    "id": "common.dropAreaInfo2",
+    "defaultMessage": "Liitteet näkyvät alla",
+    "filepath": "src/i18n/definitions/attachments.js"
+  },
+  {
+    "id": "common.dropAreaInfo3",
+    "defaultMessage": "Pudota tiedostot tähän ...",
+    "filepath": "src/i18n/definitions/attachments.js"
+  },
+  {
     "id": "auth.logIn",
     "defaultMessage": "Kirjaudu sisään",
     "filepath": "src/i18n/definitions/auth.js"
