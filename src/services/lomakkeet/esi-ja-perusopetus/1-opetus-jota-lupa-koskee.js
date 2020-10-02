@@ -50,7 +50,7 @@ export function opetusJotaLupaKoskee(data, isReadOnly, locale) {
             anchor: "lisatiedot",
             name: "TextBox",
             properties: {
-              placeholder: "Lisätiedot"
+              placeholder: __("common.lisatiedot")
             }
           }
         ]
