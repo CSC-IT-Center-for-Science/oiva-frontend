@@ -96,6 +96,7 @@ const Lomake = React.memo(
 );
 
 Lomake.propTypes = {
+  action: PropTypes.string,
   anchor: PropTypes.string,
   changeObjects: PropTypes.array,
   data: PropTypes.object,

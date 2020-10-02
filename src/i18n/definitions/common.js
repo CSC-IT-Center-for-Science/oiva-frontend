@@ -1008,5 +1008,9 @@ export default defineMessages({
   page: {
     id: "common.page",
     defaultMessage: "Sivu"
+  },
+  paattymispaivamaara: {
+      id: "common.paattymispaivamaara",
+      defaultMessage: "Päättymispäivämäärä"
   }
 });

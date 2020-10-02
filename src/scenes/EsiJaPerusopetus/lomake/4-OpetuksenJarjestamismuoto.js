@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
-import { equals, toUpper } from "ramda";
+import { equals } from "ramda";
 
 const OpetuksenJarjestamismuoto = React.memo(
   ({
