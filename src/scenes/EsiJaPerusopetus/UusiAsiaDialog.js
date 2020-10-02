@@ -424,13 +424,13 @@ const UusiAsiaDialog = ({
                   {intl.formatMessage(common.decisionDetails)}
                 </h2>
                 <Lomake
-                  anchor="topthree"
-                  changeObjects={changeObjects.topthree}
+                  anchor="paatoksentiedot"
+                  changeObjects={changeObjects.paatoksentiedot}
                   data={{ formatMessage: intl.formatMessage, uuid }}
                   onChangesUpdate={payload =>
                     onChangeObjectsUpdate(payload.anchor, payload.changes)
                   }
-                  path={["esittelija", "topThree"]}
+                  path={["esiJaPerusopetus", "paatoksenTiedot"]}
                   hasInvalidFieldsFn={invalidFields => {
                     setHasInvalidFields(invalidFields);
                   }}></Lomake>

@@ -202,7 +202,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     )
   };
 
-  const lupa = raw.viimeisinLupa || raw.lupa || {};
+  const lupa = raw.viimeisinLupa || raw.lupa || {maaraykset:[]};
 
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua

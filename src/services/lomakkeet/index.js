@@ -32,6 +32,7 @@ import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskeli
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
 import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetus-jota-lupa-koskee";
+import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
 import { opetuskielet } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
@@ -315,6 +316,10 @@ const lomakkeet = {
     opiskelijamaarat: {
       modification: (data, isReadOnly, locale) =>
         opiskelijamaarat(data, isReadOnly, locale)
+    },
+    paatoksenTiedot:{
+      addition: (data, isReadOnly, locale, changeObjects) =>
+        getPaatoksenTiedot(data, isReadOnly, locale, changeObjects)
     }
   }
 };
