@@ -45,7 +45,7 @@ export function opetuskielet(data, isReadOnly, locale) {
             callback: (payload, values) => {
               console.log(values.value[0]);
             },
-            title: __("common.valitseYksiTaiUseampi")
+            title: __("common.valitseYksiTaiUseampi"),
           }
         }
       ]

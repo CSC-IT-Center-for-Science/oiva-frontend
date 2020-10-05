@@ -26,6 +26,7 @@ import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
 import Liitetiedostot from "./lomake/8-Liitetiedostot";
 import * as R from "ramda";
+import {__} from "i18n-for-browser";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -479,7 +480,7 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuskielet"}
-                  title={"Opetuskieli"}></FormSection>
+                  title={__("common.opetuskieli")}></FormSection>
 
                 <FormSection
                   code={4}

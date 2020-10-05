@@ -1024,5 +1024,9 @@ export default defineMessages({
   valitseYksiTaiUseampi: {
     id: "common.valitseYksiTaiUseampi",
     defaultMessage: "Valitse yksi tai useampi"
+  },
+  opetuskieli: {
+    id: "common.opetuskieli",
+    defaultMessage: "Opetuskieli"
   }
 });
