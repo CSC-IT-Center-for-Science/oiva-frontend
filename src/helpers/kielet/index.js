@@ -17,6 +17,13 @@ import {
 } from "ramda";
 import localforage from "localforage";
 
+const kaytetytOPHKielet = ["FI", "SV", "SE", "RI", "VK", "EN", "FR", "DE", "RU"]
+
+export const filterOPHKielet = (kielet) => {
+  return map(kielikoodi =>
+    find(propEq("koodiArvo", kielikoodi), kielet), kaytetytOPHKielet);
+}
+
 export const initializeKieli = ({
   koodiArvo: koodiarvo,
   koodisto,

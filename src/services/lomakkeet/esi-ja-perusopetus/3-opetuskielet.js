@@ -1,4 +1,5 @@
-import { map, toUpper } from "ramda";
+import { map, toUpper, take, takeLast } from "ramda";
+import {__} from "i18n-for-browser";
 
 export function opetuskielet(data, isReadOnly, locale) {
   const localeUpper = toUpper(locale);
@@ -10,17 +11,18 @@ export function opetuskielet(data, isReadOnly, locale) {
         {
           anchor: "ensisijaiset",
           name: "Autocomplete",
+          short: true,
           properties: {
             options: map(kieli => {
               return {
                 label: kieli.metadata[localeUpper].nimi,
                 value: kieli.koodiarvo
               };
-            }, data.kieletOPH),
+            }, take(5, data.kieletOPH)),
             callback: (payload, values) => {
               console.log(values.value[0]);
             },
-            title: "Valitse yksi tai useampi"
+            title: "Valitse yksi tai useampi",
           }
         }
       ]
@@ -32,13 +34,14 @@ export function opetuskielet(data, isReadOnly, locale) {
         {
           anchor: "toissijaiset",
           name: "Autocomplete",
+          short: true,
           properties: {
             options: map(kieli => {
               return {
                 label: kieli.metadata[localeUpper].nimi,
                 value: kieli.koodiarvo
               };
-            }, data.kieletOPH),
+            }, takeLast(4, data.kieletOPH)),
             callback: (payload, values) => {
               console.log(values.value[0]);
             },
@@ -57,7 +60,7 @@ export function opetuskielet(data, isReadOnly, locale) {
           styleClasses: ["pt-8 border-t"],
           properties: {
             title:
-              "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+              __("common.lisatiedotInfo")
           }
         }
       ]
@@ -69,7 +72,7 @@ export function opetuskielet(data, isReadOnly, locale) {
           anchor: "lisatiedot",
           name: "TextBox",
           properties: {
-            placeholder: "Lisätiedot"
+            placeholder: __("common.lisatiedot")
           }
         }
       ]

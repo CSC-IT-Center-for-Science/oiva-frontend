@@ -473,12 +473,12 @@ const UusiAsiaDialog = ({
                   code={3}
                   render={props => (
                     <Opetuskieli
-                      changeObjects={state.changeObjects.opetuskieli}
+                      changeObjects={state.changeObjects.opetuskielet}
                       kieletOPH={kieletOPH}
                       {...props}
                     />
                   )}
-                  sectionId={"opetuskieli"}
+                  sectionId={"opetuskielet"}
                   title={"Opetuskieli"}></FormSection>
 
                 <FormSection
