@@ -1020,5 +1020,9 @@ export default defineMessages({
   lisatiedot: {
     id: "common.lisatiedot",
     defaultMessage: "Lisätiedot"
+  },
+  valitseYksiTaiUseampi: {
+    id: "common.valitseYksiTaiUseampi",
+    defaultMessage: "Valitse yksi tai useampi"
   }
 });

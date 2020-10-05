@@ -22,7 +22,7 @@ export function opetuskielet(data, isReadOnly, locale) {
             callback: (payload, values) => {
               console.log(values.value[0]);
             },
-            title: "Valitse yksi tai useampi",
+            title: __("common.valitseYksiTaiUseampi"),
           }
         }
       ]
@@ -45,7 +45,7 @@ export function opetuskielet(data, isReadOnly, locale) {
             callback: (payload, values) => {
               console.log(values.value[0]);
             },
-            title: "Valitse yksi tai useampi"
+            title: __("common.valitseYksiTaiUseampi")
           }
         }
       ]
