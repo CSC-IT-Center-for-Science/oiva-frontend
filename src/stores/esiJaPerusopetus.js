@@ -1,11 +1,14 @@
 import { createStore, createHook } from "react-sweet-state";
 import {
+  append,
+  assoc,
   assocPath,
   clone,
   dissocPath,
   filter,
   flatten,
   isEmpty,
+  prop,
   split
 } from "ramda";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
@@ -15,6 +18,25 @@ const Store = createStore({
     changeObjects: {}
   },
   actions: {
+    addCriterion: rajoiteId => ({ getState, setState }) => {
+      const currentChangeObjects = prop("changeObjects", getState());
+      const nextChangeObjects = assoc(
+        "rajoitteet",
+        append(
+          {
+            anchor: `rajoitteet.${rajoiteId}.kriteeri.${Math.round(
+              Math.random() * 100
+            )}`,
+            properties: {
+              testi: 1
+            }
+          },
+          currentChangeObjects.rajoitteet || []
+        ),
+        currentChangeObjects
+      );
+      setState({ ...getState(), changeObjects: nextChangeObjects });
+    },
     addAClick: (sectionId, anchor) => ({ getState, setState }) => {
       if (sectionId && anchor) {
         const currentChangeObjects = getState().changeObjects[sectionId];
