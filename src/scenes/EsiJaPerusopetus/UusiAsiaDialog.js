@@ -14,7 +14,6 @@ import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/com
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
 import { useMuutospyynto } from "../../stores/muutospyynto";
-import common from "../../i18n/definitions/common";
 import Opetustehtavat from "./lomake/1-Opetustehtavat";
 import FormSection from "./formSection";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
@@ -26,6 +25,8 @@ import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
 import Liitetiedostot from "./lomake/8-Liitetiedostot";
 import * as R from "ramda";
+import common from "../../i18n/definitions/common";
+import education from "../../i18n/definitions/education";
 import {__} from "i18n-for-browser";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
@@ -468,7 +469,7 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"toimintaalue"}
-                  title={"Kunnat, joissa opetusta järjestetään"}></FormSection>
+                  title={intl.formatMessage(education.opetustaAntavatKunnat)}></FormSection>
 
                 <FormSection
                   code={3}
