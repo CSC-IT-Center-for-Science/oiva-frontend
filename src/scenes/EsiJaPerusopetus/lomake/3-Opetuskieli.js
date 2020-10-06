@@ -4,47 +4,53 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
+import { equals } from "ramda";
 
-const Opetuskieli = ({
-  changeObjects,
-  kieletOPH,
-  onChangesRemove,
-  onChangesUpdate,
-  sectionId
-}) => {
-  const intl = useIntl();
+const Opetuskieli = React.memo(
+  ({
+    changeObjects,
+    kieletOPH,
+    onChangesRemove,
+    onChangesUpdate,
+    sectionId
+  }) => {
+    const intl = useIntl();
 
-  const changesMessages = {
-    undo: intl.formatMessage(common.undo),
-    changesTest: intl.formatMessage(common.changesText)
-  };
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    };
 
-  return (
-    <ExpandableRowRoot
-      anchor={sectionId}
-      key={`expandable-row-root`}
-      changes={changeObjects}
-      hideAmountOfChanges={true}
-      isExpanded={true}
-      messages={changesMessages}
-      onChangesRemove={onChangesRemove}
-      onUpdate={onChangesUpdate}
-      sectionId={sectionId}
-      showCategoryTitles={true}
-      title={"Kielet"}>
-      <Lomake
-        action="modification"
+    return (
+      <ExpandableRowRoot
         anchor={sectionId}
-        changeObjects={changeObjects}
-        data={{
-          kieletOPH
-        }}
-        onChangesUpdate={onChangesUpdate}
-        path={["esiJaPerusopetus", "opetuskielet"]}
-        showCategoryTitles={true}></Lomake>
-    </ExpandableRowRoot>
-  );
-};
+        key={`expandable-row-root`}
+        changes={changeObjects}
+        hideAmountOfChanges={true}
+        isExpanded={true}
+        messages={changesMessages}
+        onChangesRemove={onChangesRemove}
+        onUpdate={onChangesUpdate}
+        sectionId={sectionId}
+        showCategoryTitles={true}
+        title={"Kielet"}>
+        <Lomake
+          action="modification"
+          anchor={sectionId}
+          changeObjects={changeObjects}
+          data={{
+            kieletOPH
+          }}
+          onChangesUpdate={onChangesUpdate}
+          path={["esiJaPerusopetus", "opetuskielet"]}
+          showCategoryTitles={true}></Lomake>
+      </ExpandableRowRoot>
+    );
+  },
+  (currentProps, nextProps) => {
+    return equals(currentProps.changeObjects, nextProps.changeObjects);
+  }
+);
 
 Opetuskieli.defaultProps = {
   changeObjects: []

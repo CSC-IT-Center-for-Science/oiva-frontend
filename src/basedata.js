@@ -22,7 +22,7 @@ import localforage from "localforage";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useParams } from "react-router-dom";
 import { initializeMaakunta } from "helpers/maakunnat";
-import { initializeKieli } from "helpers/kielet";
+import { filterOPHKielet, initializeKieli } from "helpers/kielet";
 import { sortLanguages } from "utils/kieliUtil";
 import { initializeKoulutusala } from "helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "helpers/koulutustyypit";
@@ -225,12 +225,9 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     kieletOPH: raw.kielet
       ? await localforage.setItem(
           "kieletOPH",
-          sortLanguages(
-            map(kieli => {
-              return initializeKieli(kieli);
-            }, raw.kieletOPH),
-            localeUpper
-          )
+        map(kieli => {
+          return initializeKieli(kieli);
+            }, filterOPHKielet(raw.kieletOPH))
         )
       : undefined,
     kohteet: raw.kohteet

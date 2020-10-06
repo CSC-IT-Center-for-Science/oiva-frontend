@@ -39,6 +39,7 @@ import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulu
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
 import { liitetiedostot } from "./esi-ja-perusopetus/8-liitetiedostot";
 import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
+import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
 import { rajoitelomake } from "./esi-ja-perusopetus/9-rajoitteet";
 
 /**
@@ -55,7 +56,7 @@ import { rajoitelomake } from "./esi-ja-perusopetus/9-rajoitteet";
         categories: [{}, {}, { anchor: "level1category2", components: [] }]
       }
     ];
-* 
+*
 */
 const lomakkeet = {
   // Wizard page 1 forms
@@ -321,6 +322,10 @@ const lomakkeet = {
     paatoksenTiedot: {
       addition: (data, isReadOnly, locale, changeObjects) =>
         getPaatoksenTiedot(data, isReadOnly, locale, changeObjects)
+    },
+    opetustaAntavatKunnat: {
+      modification: (data, isReadOnly, locale) =>
+        opetustaAntavatKunnat(data, isReadOnly, locale)
     },
     rajoitteet: {
       addition: (data, isReadOnly, locale, changeObjects) =>

@@ -24,5 +24,9 @@ export default defineMessages({
   koulutuksenJarjestajat: {
     id: "education.koulutuksenJarjestajat",
     defaultMessage: "Koulutuksen järjestäjät"
+  },
+  opetustaAntavatKunnat: {
+    id: "education.opetustaAntavatKunnat",
+    defaultMessage: "Kunnat, joissa opetusta järjestetään"
   }
 });
