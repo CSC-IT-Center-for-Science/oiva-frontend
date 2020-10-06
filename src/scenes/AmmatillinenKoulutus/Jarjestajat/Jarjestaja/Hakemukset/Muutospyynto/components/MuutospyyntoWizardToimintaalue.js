@@ -341,6 +341,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
             newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
             ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
             quickFilter: intl.formatMessage(wizard.quickFilter),
+            editButtonText: intl.formatMessage(wizard.editAreaOfAction),
             sameAsTheCurrentAreaOfAction: intl.formatMessage(
               wizard.sameAsTheCurrentAreaOfAction
             ),
