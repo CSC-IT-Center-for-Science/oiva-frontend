@@ -14,9 +14,11 @@ export function opiskelijamaarat() {
     },
     {
       anchor: "kentat",
+      layout: { components: { justification: "start" } },
       components: [
         {
           anchor: "dropdown",
+          styleClasses: "mb-0 mr-2",
           name: "Dropdown",
           properties: {
             options: []
