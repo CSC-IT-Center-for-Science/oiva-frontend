@@ -1738,5 +1738,20 @@
     "id": "wizard.municipalitiesAndAreas",
     "defaultMessage": "Kunnat ja alueet",
     "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.noMunicipalitiesSelected",
+    "defaultMessage": "Ei valittuja kuntia",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.selectMunicipalities",
+    "defaultMessage": "Valitse kunnat",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.editAreaOfAction",
+    "defaultMessage": "Muokkaa toiminta-aluetta",
+    "filepath": "src/i18n/definitions/wizard.js"
   }
 ]
