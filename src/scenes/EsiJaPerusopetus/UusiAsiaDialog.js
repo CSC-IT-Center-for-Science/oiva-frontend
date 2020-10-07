@@ -441,14 +441,10 @@ const UusiAsiaDialog = ({
 
               <form onSubmit={() => {}}>
                 <FormSection
-                  render={props => (
-                    <Rajoitteet
-                      changeObjects={state.changeObjects.opetustehtavat}
-                      {...props}
-                    />
-                  )}
+                  render={props => <Rajoitteet {...props} />}
                   sectionId="opetustehtavat"
                   title={"Rajoitteet"}></FormSection>
+
                 <FormSection
                   code={1}
                   render={props => (

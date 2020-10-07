@@ -9,26 +9,31 @@ import {
   flatten,
   isEmpty,
   prop,
-  split
+  split,
+  startsWith
 } from "ramda";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
+import initialChangeObjects from "./tempState";
 
 const Store = createStore({
   initialState: {
-    changeObjects: {}
+    changeObjects: initialChangeObjects
   },
   actions: {
     addCriterion: rajoiteId => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
+      const rajoitekriteeritChangeObjects = filter(
+        changeObj =>
+          startsWith(`rajoitteet.${rajoiteId}.kriteeri`, changeObj.anchor),
+        currentChangeObjects.rajoitteet
+      );
       const nextChangeObjects = assoc(
         "rajoitteet",
         append(
           {
-            anchor: `rajoitteet.${rajoiteId}.kriteeri.${Math.round(
-              Math.random() * 100
-            )}`,
+            anchor: `rajoitteet.${rajoiteId}.kriteeri${rajoitekriteeritChangeObjects.length}.valintaelementti`,
             properties: {
-              testi: 1
+              value: { label: "Määräaika", value: "maaraaika" }
             }
           },
           currentChangeObjects.rajoitteet || []

@@ -40,7 +40,7 @@ import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
 import { liitetiedostot } from "./esi-ja-perusopetus/8-liitetiedostot";
 import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
-import { rajoitelomake } from "./esi-ja-perusopetus/9-rajoitteet";
+import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
