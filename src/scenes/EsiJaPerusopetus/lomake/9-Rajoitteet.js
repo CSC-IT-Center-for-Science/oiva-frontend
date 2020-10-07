@@ -14,6 +14,13 @@ const Rajoitteet = ({ onChangesUpdate }) => {
     [actions]
   );
 
+  const onRemoveCriterion = useCallback(
+    anchor => {
+      actions.removeCriterion(anchor);
+    },
+    [actions]
+  );
+
   return (
     <Lomake
       anchor={sectionId}
@@ -21,7 +28,8 @@ const Rajoitteet = ({ onChangesUpdate }) => {
       data={{
         rajoiteId: "eka",
         changeObjects: state.changeObjects,
-        onAddCriterion
+        onAddCriterion,
+        onRemoveCriterion
       }}
       onChangesUpdate={onChangesUpdate}
       path={["esiJaPerusopetus", "rajoitteet"]}

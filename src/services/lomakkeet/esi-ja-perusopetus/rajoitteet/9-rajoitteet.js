@@ -14,6 +14,7 @@ import {
   startsWith,
   values
 } from "ramda";
+import { getAnchorPart } from "utils/common";
 import opetustaAntavatKunnat from "./tarkentimet/2-opetustaAntavatKunnat";
 import maaraaika from "./tarkentimet/maaraaika";
 
@@ -94,11 +95,12 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
    * Rajoitekriteerit
    */
   const rajoitekriteerit = addIndex(map)((_changeObj, index) => {
+    const criterionAnchorPart = getAnchorPart(_changeObj.anchor, 2);
     let kriteerinTarkennin = {};
     const kriteeriChangeObj = find(
       propEq(
         "anchor",
-        `rajoitteet.${data.rajoiteId}.kriteeri${index}.valintaelementti`
+        `rajoitteet.${data.rajoiteId}.${criterionAnchorPart}.valintaelementti`
       ),
       changeObjects
     );
@@ -108,14 +110,14 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
       const tarkentimetChangeObjects = filter(
         compose(
           startsWith(
-            `rajoitteet.${data.rajoiteId}.kriteeri${index}.${kriteerintarkenninKey}`
+            `rajoitteet.${data.rajoiteId}.${criterionAnchorPart}.${kriteerintarkenninKey}`
           ),
           prop("anchor")
         ),
         changeObjects
       );
       kriteerinTarkennin = {
-        anchor: `kriteeri${index}`,
+        anchor: criterionAnchorPart,
         categories: [
           Object.assign(
             {},
@@ -134,10 +136,9 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
     }
     return {
       anchor: data.rajoiteId,
-      title: `Rajoitekriteeri ${index + 1}`,
       categories: [
         {
-          anchor: `kriteeri${index}`,
+          anchor: criterionAnchorPart,
           components: [
             {
               anchor: "valintaelementti",
@@ -154,7 +155,12 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
                 title: "Rajoitekriteeri"
               }
             }
-          ]
+          ],
+          isRemovable: true,
+          onRemove: category => {
+            data.onRemoveCriterion(category.anchor);
+          },
+          title: `Rajoitekriteeri ${index + 1}`
         },
         kriteerinTarkennin
       ]

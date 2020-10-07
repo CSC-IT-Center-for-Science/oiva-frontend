@@ -14,6 +14,7 @@ import {
 } from "ramda";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
 import initialChangeObjects from "./tempState";
+import { getAnchorPart } from "utils/common";
 
 const Store = createStore({
   initialState: {
@@ -72,6 +73,21 @@ const Store = createStore({
           assocPath(path, flatten([nextChangeObjects, changeObj]), getState())
         );
       }
+    },
+    removeCriterion: anchor => ({ getState, setState }) => {
+      const currentChangeObjects = prop("changeObjects", getState());
+      const nextChangeObjects = filter(changeObj => {
+        const criterionAnchor = getAnchorPart(changeObj.anchor, 2);
+        console.info(changeObj.anchor, anchor, criterionAnchor);
+        return criterionAnchor !== anchor;
+      }, currentChangeObjects.rajoitteet);
+      setState(
+        assocPath(
+          ["changeObjects", "rajoitteet"],
+          nextChangeObjects,
+          getState()
+        )
+      );
     },
     setChangeObjects: (sectionId, changeObjects) => ({
       getState,
