@@ -1,20 +1,10 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import { addIndex, flatten, map, path, toUpper } from "ramda";
+import {flatten, map, path, toUpper, filter, endsWith, startsWith} from "ramda";
+import {getAnchorPart} from "../../../utils/common";
 
 export function muutEhdot(data, isReadOnly, locale, changeObjects) {
   const localeUpper = toUpper(locale);
-  /**
-   * Selvitetään, montako valinnaista tekstikenttää lomakkeelle on luotava.
-   */
-  const changeObjOfOptionalFields = getChangeObjByAnchor(
-    `muutEhdot.muuehto.lisaaPainike`,
-    changeObjects
-  );
-
-  const amountOfOptionalTextBoxes = !!changeObjOfOptionalFields
-    ? changeObjOfOptionalFields.properties.amountOfClicks
-    : 0;
 
   const changeObj = getChangeObjByAnchor(
     `muutEhdot.muuehto.valintaelementti`,
@@ -63,24 +53,27 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
             ]
           },
           /**
-           * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
-           * erillisen painikkeen avulla.
+           * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
            */
-          addIndex(map)(
-            (item, index) => ({
-              anchor: String(index + 1),
-              components: [
-                {
-                  anchor: "nimi",
-                  name: "TextBox",
-                  properties: {
-                    placeholder: "Kirjoita tähän ehto vapaamuotoisesti",
-                    title: "Nimi"
-                  }
-                }
-              ]
-            }),
-            new Array(amountOfOptionalTextBoxes)
+          map(changeObj => {
+           return {
+             anchor: getAnchorPart(changeObj.anchor, 2),
+             components: [
+               {
+                 anchor: "nimi",
+                 name: "TextBox",
+                 properties: {
+                   placeholder: "Kirjoita tähän ehto vapaamuotoisesti",
+                   title: "Nimi",
+                   isRemovable: true,
+                   value: changeObj.properties.value
+                 }
+               }
+             ]
+           }
+          }, filter(changeObj =>
+            endsWith('.nimi', changeObj.anchor) && !startsWith('muutEhdot.muuehto.0', changeObj.anchor),
+            changeObjects)
           ),
           /**
            * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
