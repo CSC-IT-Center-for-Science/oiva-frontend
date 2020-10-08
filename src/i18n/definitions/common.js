@@ -1020,5 +1020,13 @@ export default defineMessages({
   lisatiedot: {
     id: "common.lisatiedot",
     defaultMessage: "Lisätiedot"
+  },
+  vahintaan: {
+      id: "common.vahintaan",
+      defaultMessage: "Vähintään"
+  },
+  enintaan: {
+      id: "common.enintaan",
+      defaultMessage: "Enintään"
   }
 });

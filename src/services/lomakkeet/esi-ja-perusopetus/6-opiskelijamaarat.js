@@ -18,10 +18,11 @@ export function opiskelijamaarat() {
       components: [
         {
           anchor: "dropdown",
-          styleClasses: "mb-0 mr-2",
+          styleClasses: "mb-0 mr-2 w-1/5",
+          fullWidth:true,
           name: "Dropdown",
           properties: {
-            options: []
+            options: [{ label: "common.vahintaan",value:"vähintään" },{ label: "common.enintaan",value:"enintään" }]
           }
         },
         {
