@@ -67,9 +67,9 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
   const kriteeritChangeObjects = filter(
     changeObj =>
       startsWith(
-        `${data.sectionId}.${data.rajoiteId}.kriteeri`,
+        `${data.sectionId}.${data.rajoiteId}.kriteerit`,
         changeObj.anchor
-      ) && endsWith("valintaelementti", changeObj.anchor),
+      ) && endsWith("autocomplete", changeObj.anchor),
     changeObjects
   );
 
@@ -91,13 +91,14 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
     const kriteeriChangeObj = find(
       propEq(
         "anchor",
-        `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.valintaelementti`
+        `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.valintaelementti.autocomplete`
       ),
       changeObjects
     );
 
     if (kriteeriChangeObj) {
       const kriteerintarkenninKey = kriteeriChangeObj.properties.value.value;
+      console.info(kriteerintarkenninKey);
       const tarkentimetChangeObjects = filter(
         compose(
           startsWith(

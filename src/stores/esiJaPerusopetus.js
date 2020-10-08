@@ -8,39 +8,72 @@ import {
   filter,
   flatten,
   isEmpty,
+  length,
+  map,
+  max,
   prop,
+  reduce,
   split,
   startsWith
 } from "ramda";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
 import tmpState from "./tempState";
-import { getAnchorPart } from "utils/common";
+import { getAnchorPart, replaceAnchorPartWith } from "utils/common";
 
 const Store = createStore({
   initialState: tmpState,
   actions: {
-    acceptRestriction: (sectionId, restrictionId) => ({
+    acceptRestriction: (sectionId, restrictionId, targetSectionId) => ({
       getState,
       setState
     }) => {
       const currentChangeObjects = prop("changeObjects", getState());
-      console.info(currentChangeObjects[sectionId], restrictionId);
+      const nextChangeObjects = map(changeObj => {
+        console.info(changeObj, targetSectionId);
+        return {
+          ...changeObj,
+          anchor: replaceAnchorPartWith(changeObj.anchor, 0, targetSectionId)
+        };
+      }, currentChangeObjects[sectionId]);
+      setState(
+        assocPath(
+          ["changeObjects", targetSectionId],
+          nextChangeObjects,
+          getState()
+        )
+      );
     },
     addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
       const rajoitekriteeritChangeObjects = filter(
         changeObj =>
-          startsWith(
-            `${sectionId}.${rajoiteId}.kriteerit.kriteeri`,
-            changeObj.anchor
-          ),
-        currentChangeObjects[sectionId]
+          startsWith(`${sectionId}.${rajoiteId}.kriteerit`, changeObj.anchor),
+        currentChangeObjects[sectionId] || []
       );
+
+      /**
+       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
+       * numero lisäämällä lukuun yksi.
+       */
+      const nextCriterionAnchorPart =
+        length(rajoitekriteeritChangeObjects) > 0
+          ? reduce(
+              max,
+              -Infinity,
+              map(changeObj => {
+                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+              }, rajoitekriteeritChangeObjects)
+            ) + 1
+          : 0;
+
+      /**
+       * Luodaan
+       */
       const nextChangeObjects = assoc(
         sectionId,
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.kriteerit.kriteeri${rajoitekriteeritChangeObjects.length}.valintaelementti`,
+            anchor: `${sectionId}.${rajoiteId}.kriteerit.${nextCriterionAnchorPart}.valintaelementti.autocomplete`,
             properties: {
               value: { label: "Määräaika", value: "maaraaika" }
             }
@@ -87,10 +120,8 @@ const Store = createStore({
     },
     removeCriterion: (sectionId, anchor) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
-      console.info("ANKKURI POISTETTAVA: ", anchor);
       const nextChangeObjects = filter(changeObj => {
         const criterionAnchor = getAnchorPart(changeObj.anchor, 3);
-        console.info(changeObj.anchor, criterionAnchor);
         return criterionAnchor !== anchor;
       }, currentChangeObjects[sectionId]);
       setState(

@@ -11,8 +11,9 @@ import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import Lomake from "../../../components/02-organisms/Lomake";
+import PropTypes from "prop-types";
 
-const Rajoite = ({ onChangesUpdate }) => {
+const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
   const [state, actions] = useEsiJaPerusopetus();
   const intl = useIntl();
   const sectionId = "rajoitelomake";
@@ -72,7 +73,11 @@ const Rajoite = ({ onChangesUpdate }) => {
           <Button
             onClick={() => {
               console.info("Hyväksytään ja suljetaan rajoitedialogi.");
-              actions.acceptRestriction(sectionId, restrictionId);
+              actions.acceptRestriction(
+                sectionId,
+                restrictionId,
+                parentSectionId
+              );
               actions.closeRestrictionDialog();
             }}
             color="primary"
@@ -85,6 +90,8 @@ const Rajoite = ({ onChangesUpdate }) => {
   );
 };
 
-Rajoite.propTypes = {};
+Rajoite.propTypes = {
+  parentSectionId: PropTypes.string
+};
 
 export default Rajoite;

@@ -17,7 +17,9 @@ const Rajoitteet = ({ onChangesUpdate, sectionId }) => {
   return (
     <React.Fragment>
       {state.isRestrictionDialogVisible && (
-        <Rajoite onChangesUpdate={onChangesUpdate}></Rajoite>
+        <Rajoite
+          onChangesUpdate={onChangesUpdate}
+          parentSectionId={sectionId}></Rajoite>
       )}
       <Lomake
         anchor={sectionId}

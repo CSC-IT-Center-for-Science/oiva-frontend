@@ -161,7 +161,7 @@ export default {
         }
       },
       {
-        anchor: "rajoitelomake.eka.kriteerit.kriteeri0.valintaelementti",
+        anchor: "rajoitelomake.eka.kriteerit.0.valintaelementti",
         properties: {
           value: {
             label: "Määräaika",
@@ -170,17 +170,7 @@ export default {
         }
       },
       {
-        anchor: "rajoitelomake.eka.kriteerit.kriteeri1.valintaelementti",
-        properties: {
-          value: {
-            label: "Määräaika",
-            value: "maaraaika"
-          }
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.eka.kriteerit.kriteeri0.valintaelementti.autocomplete",
+        anchor: "rajoitelomake.eka.kriteerit.1.valintaelementti",
         properties: {
           value: {
             label: "Määräaika",
@@ -190,14 +180,24 @@ export default {
       },
       {
         anchor:
-          "rajoitelomake.eka.kriteerit.kriteeri0.maaraaika.alkamispaiva",
+          "rajoitelomake.eka.kriteerit.0.valintaelementti.autocomplete",
+        properties: {
+          value: {
+            label: "Määräaika",
+            value: "maaraaika"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.eka.kriteerit.0.maaraaika.alkamispaiva",
         properties: {
           value: new Date(1602230400000)
         }
       },
       {
         anchor:
-          "rajoitelomake.eka.kriteerit.kriteeri1.valintaelementti.autocomplete",
+          "rajoitelomake.eka.kriteerit.1.valintaelementti.autocomplete",
         properties: {
           value: {
             label: "Määräaika",
@@ -207,7 +207,7 @@ export default {
       },
       {
         anchor:
-          "rajoitelomake.eka.kriteerit.kriteeri1.maaraaika.paattymispaiva",
+          "rajoitelomake.eka.kriteerit.1.maaraaika.paattymispaiva",
         properties: {
           value: new Date(1604048400000)
         }
