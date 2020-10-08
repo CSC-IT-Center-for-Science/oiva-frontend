@@ -34,26 +34,6 @@ const sections = {
   opetustaAntavatKunnat
 };
 
-// const rajoitekriteeri = id => {
-//   return {
-//     anchor: `kriteeri-${id}`,
-//     components: [
-//       {
-//         anchor: "valintaelementti",
-//         name: "Autocomplete",
-//         properties: {
-//           isMulti: false,
-//           options: values(
-//             mapObjIndexed((categoryFn, key) => {
-//               return { label: localizations[key], value: key };
-//             }, sections)
-//           )
-//         }
-//       }
-//     ]
-//   };
-// };
-
 export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
   let kohteenTarkennin = {};
   let tarkenninKey = "";
@@ -61,14 +41,20 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
   console.info(changeObjects);
 
   const changeObj = find(
-    propEq("anchor", `${data.sectionId}.kohteenValinta.valintaelementti`),
+    propEq(
+      "anchor",
+      `${data.sectionId}.${data.rajoiteId}.kohteenValinta.valintaelementti`
+    ),
     changeObjects
   );
 
   if (changeObj) {
     tarkenninKey = changeObj.properties.value.value;
     kohteenTarkentimetChangeObjects = filter(
-      compose(startsWith(`${data.sectionId}.${tarkenninKey}`), prop("anchor")),
+      compose(
+        startsWith(`${data.sectionId}.${data.rajoiteId}.${tarkenninKey}`),
+        prop("anchor")
+      ),
       changeObjects
     );
     kohteenTarkennin = sections[tarkenninKey](
@@ -80,12 +66,15 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
 
   const kriteeritChangeObjects = filter(
     changeObj =>
-      startsWith(`${data.sectionId}.${data.rajoiteId}.kriteeri`, changeObj.anchor) &&
-      endsWith("valintaelementti", changeObj.anchor),
+      startsWith(
+        `${data.sectionId}.${data.rajoiteId}.kriteeri`,
+        changeObj.anchor
+      ) && endsWith("valintaelementti", changeObj.anchor),
     changeObjects
   );
 
   console.info(
+    data.sectionId,
     kohteenTarkennin,
     kohteenTarkentimetChangeObjects,
     changeObjects,
@@ -96,12 +85,13 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
    * Rajoitekriteerit
    */
   const rajoitekriteerit = addIndex(map)((_changeObj, index) => {
-    const criterionAnchorPart = getAnchorPart(_changeObj.anchor, 2);
+    const criterionAnchorPart = getAnchorPart(_changeObj.anchor, 3);
+    console.info(_changeObj, criterionAnchorPart);
     let kriteerinTarkennin = {};
     const kriteeriChangeObj = find(
       propEq(
         "anchor",
-        `${data.sectionId}.${data.rajoiteId}.${criterionAnchorPart}.valintaelementti`
+        `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.valintaelementti`
       ),
       changeObjects
     );
@@ -111,38 +101,39 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
       const tarkentimetChangeObjects = filter(
         compose(
           startsWith(
-            `${data.sectionId}.${data.rajoiteId}.${criterionAnchorPart}.${kriteerintarkenninKey}`
+            `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.${kriteerintarkenninKey}`
           ),
           prop("anchor")
         ),
         changeObjects
       );
-      kriteerinTarkennin = {
-        anchor: criterionAnchorPart,
-        categories: [
-          Object.assign(
-            {},
-            sections[kriteerintarkenninKey](
-              changeObjects,
-              path(
-                [changeObjectMapping[kriteerintarkenninKey]],
-                data.changeObjects
-              ),
-              tarkentimetChangeObjects,
-              locale
-            )
-          )
-        ]
-      };
+      console.info(
+        tarkentimetChangeObjects,
+        `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.${kriteerintarkenninKey}`
+      );
+      kriteerinTarkennin = Object.assign(
+        {},
+        sections[kriteerintarkenninKey](
+          changeObjects,
+          path(
+            [changeObjectMapping[kriteerintarkenninKey]],
+            data.changeObjects
+          ),
+          tarkentimetChangeObjects,
+          locale
+        )
+      );
+
+      console.info("kriteerintarkennin", kriteerinTarkennin);
     }
     return {
-      anchor: data.rajoiteId,
+      anchor: criterionAnchorPart,
       categories: [
         {
-          anchor: criterionAnchorPart,
+          anchor: "valintaelementti",
           components: [
             {
-              anchor: "valintaelementti",
+              anchor: "autocomplete",
               name: "Autocomplete",
               properties: {
                 isMulti: false,
@@ -159,7 +150,7 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
           ],
           isRemovable: true,
           onRemove: category => {
-            data.onRemoveCriterion(category.anchor);
+            data.onRemoveCriterion(criterionAnchorPart);
           },
           title: `Rajoitekriteeri ${index + 1}`
         },
@@ -168,48 +159,69 @@ export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
     };
   }, kriteeritChangeObjects);
 
+  console.info("rajoitekriteerit", rajoitekriteerit);
+
+  const kriteeritStructure = Object.assign(
+    {},
+    {
+      anchor: "kriteerit",
+      categories: rajoitekriteerit
+    },
+    !!rajoitekriteerit.length
+      ? {
+          isRemovable: true,
+          title: "Rajoitekriteerit"
+        }
+      : {}
+  );
+
   /**
    * Palautettava lomakemerkkaus
    */
   const a = flatten([
     {
-      anchor: "kohteenValinta",
-      components: [
+      anchor: data.rajoiteId,
+      categories: [
         {
-          anchor: "valintaelementti",
-          name: "Autocomplete",
-          properties: {
-            isMulti: false,
-            options: values(
-              mapObjIndexed((categoryFn, key) => {
-                return { label: localizations[key], value: key };
-              }, sections)
-            )
-          }
-        }
-      ]
-    },
-    isEmpty(kohteenTarkennin) ? null : kohteenTarkennin,
-    rajoitekriteerit,
-    {
-      anchor: "kriteerinLisaaminen",
-      components: [
+          anchor: "kohteenValinta",
+          components: [
+            {
+              anchor: "valintaelementti",
+              name: "Autocomplete",
+              properties: {
+                isMulti: false,
+                options: values(
+                  mapObjIndexed((categoryFn, key) => {
+                    return { label: localizations[key], value: key };
+                  }, sections)
+                )
+              }
+            }
+          ]
+        },
+        isEmpty(kohteenTarkennin) ? null : kohteenTarkennin,
+        kriteeritStructure,
         {
-          anchor: "painike",
-          name: "SimpleButton",
-          onClick: payload =>
-            data.onAddCriterion({
-              ...payload,
-              metadata: { ...payload.metadata, rajoiteId: data.rajoiteId }
-            }),
-          properties: {
-            isVisible:
-              !!kohteenTarkentimetChangeObjects &&
-              kohteenTarkentimetChangeObjects.length > 0,
-            text: "Lisää rajoitekriteeri"
-          }
+          anchor: "kriteerinLisaaminen",
+          components: [
+            {
+              anchor: "painike",
+              name: "SimpleButton",
+              onClick: payload =>
+                data.onAddCriterion({
+                  ...payload,
+                  metadata: { ...payload.metadata, rajoiteId: data.rajoiteId }
+                }),
+              properties: {
+                isVisible:
+                  !!kohteenTarkentimetChangeObjects &&
+                  kohteenTarkentimetChangeObjects.length > 0,
+                text: "Lisää rajoitekriteeri"
+              }
+            }
+          ]
         }
-      ]
+      ].filter(Boolean)
     }
   ]).filter(Boolean);
 

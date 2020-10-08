@@ -16,6 +16,7 @@ const Rajoite = ({ onChangesUpdate }) => {
   const [state, actions] = useEsiJaPerusopetus();
   const intl = useIntl();
   const sectionId = "rajoitelomake";
+  const restrictionId = "eka";
 
   const onAddCriterion = useCallback(
     payload => {
@@ -50,7 +51,7 @@ const Rajoite = ({ onChangesUpdate }) => {
             changeObjects: state.changeObjects,
             onAddCriterion,
             onRemoveCriterion,
-            rajoiteId: "eka",
+            rajoiteId: restrictionId,
             sectionId
           }}
           noPadding={true}
@@ -71,6 +72,7 @@ const Rajoite = ({ onChangesUpdate }) => {
           <Button
             onClick={() => {
               console.info("Hyväksytään ja suljetaan rajoitedialogi.");
+              actions.acceptRestriction(sectionId, restrictionId);
               actions.closeRestrictionDialog();
             }}
             color="primary"

@@ -19,18 +19,28 @@ import { getAnchorPart } from "utils/common";
 const Store = createStore({
   initialState: tmpState,
   actions: {
+    acceptRestriction: (sectionId, restrictionId) => ({
+      getState,
+      setState
+    }) => {
+      const currentChangeObjects = prop("changeObjects", getState());
+      console.info(currentChangeObjects[sectionId], restrictionId);
+    },
     addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
       const rajoitekriteeritChangeObjects = filter(
         changeObj =>
-          startsWith(`${sectionId}.${rajoiteId}.kriteeri`, changeObj.anchor),
+          startsWith(
+            `${sectionId}.${rajoiteId}.kriteerit.kriteeri`,
+            changeObj.anchor
+          ),
         currentChangeObjects[sectionId]
       );
       const nextChangeObjects = assoc(
         sectionId,
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.kriteeri${rajoitekriteeritChangeObjects.length}.valintaelementti`,
+            anchor: `${sectionId}.${rajoiteId}.kriteerit.kriteeri${rajoitekriteeritChangeObjects.length}.valintaelementti`,
             properties: {
               value: { label: "Määräaika", value: "maaraaika" }
             }
@@ -77,9 +87,10 @@ const Store = createStore({
     },
     removeCriterion: (sectionId, anchor) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
+      console.info("ANKKURI POISTETTAVA: ", anchor);
       const nextChangeObjects = filter(changeObj => {
-        const criterionAnchor = getAnchorPart(changeObj.anchor, 2);
-        console.info(changeObj.anchor, anchor, criterionAnchor);
+        const criterionAnchor = getAnchorPart(changeObj.anchor, 3);
+        console.info(changeObj.anchor, criterionAnchor);
         return criterionAnchor !== anchor;
       }, currentChangeObjects[sectionId]);
       setState(
