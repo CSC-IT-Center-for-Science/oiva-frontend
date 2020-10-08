@@ -40,7 +40,8 @@ import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
 import { liitetiedostot } from "./esi-ja-perusopetus/8-liitetiedostot";
 import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
-import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
+import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
+import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
 
 /**
  * LOMAKEPALVELU - Provider of forms.
@@ -327,9 +328,13 @@ const lomakkeet = {
       modification: (data, isReadOnly, locale) =>
         opetustaAntavatKunnat(data, isReadOnly, locale)
     },
-    rajoitteet: {
+    rajoite: {
       addition: (data, isReadOnly, locale, changeObjects) =>
         rajoitelomake(data, isReadOnly, locale, changeObjects)
+    },
+    rajoitteet: {
+      addition: (data, isReadOnly, locale, changeObjects) =>
+        rajoitteet(data, isReadOnly, locale, changeObjects)
     }
   }
 };

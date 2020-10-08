@@ -13,31 +13,29 @@ import {
   startsWith
 } from "ramda";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import initialChangeObjects from "./tempState";
+import tmpState from "./tempState";
 import { getAnchorPart } from "utils/common";
 
 const Store = createStore({
-  initialState: {
-    changeObjects: initialChangeObjects
-  },
+  initialState: tmpState,
   actions: {
-    addCriterion: rajoiteId => ({ getState, setState }) => {
+    addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
       const rajoitekriteeritChangeObjects = filter(
         changeObj =>
-          startsWith(`rajoitteet.${rajoiteId}.kriteeri`, changeObj.anchor),
-        currentChangeObjects.rajoitteet
+          startsWith(`${sectionId}.${rajoiteId}.kriteeri`, changeObj.anchor),
+        currentChangeObjects[sectionId]
       );
       const nextChangeObjects = assoc(
-        "rajoitteet",
+        sectionId,
         append(
           {
-            anchor: `rajoitteet.${rajoiteId}.kriteeri${rajoitekriteeritChangeObjects.length}.valintaelementti`,
+            anchor: `${sectionId}.${rajoiteId}.kriteeri${rajoitekriteeritChangeObjects.length}.valintaelementti`,
             properties: {
               value: { label: "Määräaika", value: "maaraaika" }
             }
           },
-          currentChangeObjects.rajoitteet || []
+          currentChangeObjects[sectionId] || []
         ),
         currentChangeObjects
       );
@@ -74,19 +72,18 @@ const Store = createStore({
         );
       }
     },
-    removeCriterion: anchor => ({ getState, setState }) => {
+    closeRestrictionDialog: () => ({ getState, setState }) => {
+      setState({ ...getState(), isRestrictionDialogVisible: false });
+    },
+    removeCriterion: (sectionId, anchor) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
       const nextChangeObjects = filter(changeObj => {
         const criterionAnchor = getAnchorPart(changeObj.anchor, 2);
         console.info(changeObj.anchor, anchor, criterionAnchor);
         return criterionAnchor !== anchor;
-      }, currentChangeObjects.rajoitteet);
+      }, currentChangeObjects[sectionId]);
       setState(
-        assocPath(
-          ["changeObjects", "rajoitteet"],
-          nextChangeObjects,
-          getState()
-        )
+        assocPath(["changeObjects", sectionId], nextChangeObjects, getState())
       );
     },
     setChangeObjects: (sectionId, changeObjects) => ({
@@ -106,6 +103,9 @@ const Store = createStore({
       ) {
         setState(dissocPath(split("_", sectionId), getState().changeObjects));
       }
+    },
+    showNewRestrictionDialog: () => ({ getState, setState }) => {
+      setState({ ...getState(), isRestrictionDialogVisible: true });
     }
   },
   name: "Esi- ja perusopetus"

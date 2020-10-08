@@ -442,8 +442,8 @@ const UusiAsiaDialog = ({
               <form onSubmit={() => {}}>
                 <FormSection
                   render={props => <Rajoitteet {...props} />}
-                  sectionId="opetustehtavat"
-                  title={"Rajoitteet"}></FormSection>
+                  sectionId="rajoitteet"
+                  title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
 
                 <FormSection
                   code={1}

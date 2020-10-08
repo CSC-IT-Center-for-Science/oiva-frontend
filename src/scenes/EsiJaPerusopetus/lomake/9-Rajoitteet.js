@@ -1,39 +1,36 @@
 import React, { useCallback } from "react";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import Lomake from "../../../components/02-organisms/Lomake";
+import Rajoite from "./10-rajoite";
 
-const Rajoitteet = ({ onChangesUpdate }) => {
+const Rajoitteet = ({ onChangesUpdate, sectionId }) => {
   const [state, actions] = useEsiJaPerusopetus();
-  const sectionId = "rajoitteet";
 
-  const onAddCriterion = useCallback(
+  const onAddRestriction = useCallback(
     payload => {
       console.info(payload);
-      actions.addCriterion(payload.metadata.rajoiteId);
-    },
-    [actions]
-  );
-
-  const onRemoveCriterion = useCallback(
-    anchor => {
-      actions.removeCriterion(anchor);
+      actions.showNewRestrictionDialog();
     },
     [actions]
   );
 
   return (
-    <Lomake
-      anchor={sectionId}
-      changeObjects={state.changeObjects[sectionId]}
-      data={{
-        rajoiteId: "eka",
-        changeObjects: state.changeObjects,
-        onAddCriterion,
-        onRemoveCriterion
-      }}
-      onChangesUpdate={onChangesUpdate}
-      path={["esiJaPerusopetus", "rajoitteet"]}
-      showCategoryTitles={true}></Lomake>
+    <React.Fragment>
+      {state.isRestrictionDialogVisible && (
+        <Rajoite onChangesUpdate={onChangesUpdate}></Rajoite>
+      )}
+      <Lomake
+        anchor={sectionId}
+        changeObjects={state.changeObjects[sectionId]}
+        data={{
+          changeObjects: state.changeObjects,
+          onAddRestriction
+        }}
+        noPadding={true}
+        onChangesUpdate={onChangesUpdate}
+        path={["esiJaPerusopetus", "rajoitteet"]}
+        showCategoryTitles={true}></Lomake>
+    </React.Fragment>
   );
 };
 
