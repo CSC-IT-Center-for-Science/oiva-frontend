@@ -1270,6 +1270,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.nimi",
+    "defaultMessage": "Nimi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1302,6 +1307,21 @@
   {
     "id": "education.opetustaAntavatKunnat",
     "defaultMessage": "Kunnat, joissa opetusta järjestetään",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetuksenJarjestamismuoto",
+    "defaultMessage": "Opetuksen järjestämismuoto",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetuksenJarjestamismuodot",
+    "defaultMessage": "Opetuksen järjestämismuodot",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
+    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
