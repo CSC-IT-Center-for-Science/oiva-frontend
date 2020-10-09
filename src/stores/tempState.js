@@ -1,6 +1,20 @@
 export default {
   isRestrictionDialogVisible: true,
   changeObjects: {
+    opetustehtavat: [
+      {
+        anchor: "opetustehtavat.opetustehtava.6",
+        properties: {
+          isChecked: true
+        }
+      },
+      {
+        anchor: "opetustehtavat.opetustehtava.10",
+        properties: {
+          isChecked: true
+        }
+      }
+    ],
     toimintaalue: [
       {
         anchor: "categoryFilter",
@@ -133,7 +147,7 @@ export default {
     ],
     rajoitelomake: [
       {
-        anchor: "rajoitelomake.eka.kohteenValinta.valintaelementti",
+        anchor: "rajoitelomake.eka.asetukset.0.kohde.A",
         properties: {
           value: {
             label: "2. Kunnat, joissa opetusta järjestetään",
@@ -142,7 +156,7 @@ export default {
         }
       },
       {
-        anchor: "rajoitelomake.eka.opetustaAntavatKunnat.autocomplete",
+        anchor: "rajoitelomake.eka.asetukset.0.rajoitus.opetustaAntavatKunnat",
         properties: {
           value: [
             {
@@ -161,7 +175,16 @@ export default {
         }
       },
       {
-        anchor: "rajoitelomake.eka.kriteerit.0.valintaelementti",
+        anchor: "rajoitelomake.eka.asetukset.1.kohde.A",
+        properties: {
+          value: {
+            label: "1. Opetus, jota lupa koskee",
+            value: "opetustehtavat"
+          }
+        }
+      },
+      {
+        anchor: "rajoitelomake.eka.asetukset.2.kohde.A",
         properties: {
           value: {
             label: "Määräaika",
@@ -170,44 +193,7 @@ export default {
         }
       },
       {
-        anchor: "rajoitelomake.eka.kriteerit.1.valintaelementti",
-        properties: {
-          value: {
-            label: "Määräaika",
-            value: "maaraaika"
-          }
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.eka.kriteerit.0.valintaelementti.autocomplete",
-        properties: {
-          value: {
-            label: "Määräaika",
-            value: "maaraaika"
-          }
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.eka.kriteerit.0.maaraaika.alkamispaiva",
-        properties: {
-          value: new Date(1602230400000)
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.eka.kriteerit.1.valintaelementti.autocomplete",
-        properties: {
-          value: {
-            label: "Määräaika",
-            value: "maaraaika"
-          }
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.eka.kriteerit.1.maaraaika.paattymispaiva",
+        anchor: "rajoitelomake.eka.asetukset.2.rajoitus.paattymispaiva",
         properties: {
           value: new Date(1604048400000)
         }

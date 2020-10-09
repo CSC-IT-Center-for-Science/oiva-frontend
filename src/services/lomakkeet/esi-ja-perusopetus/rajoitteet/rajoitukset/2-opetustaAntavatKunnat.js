@@ -13,17 +13,12 @@ import {
   values
 } from "ramda";
 
-export default function opetustaAntavatKunnat(
-  changeObjects,
-  otherChangeObjects = [],
-  tarkentimetChangeObjects = []
-) {
+export default function opetustaAntavatKunnat(asetus, changeObjects = []) {
+  console.info(asetus);
   const changesByProvince = path(
     ["properties", "changesByProvince"],
-    head(otherChangeObjects) || {}
+    head(changeObjects) || {}
   );
-
-  console.info(changeObjects, otherChangeObjects, tarkentimetChangeObjects);
 
   if (changesByProvince) {
     const listOfMunicipalities = sortBy(
@@ -33,22 +28,28 @@ export default function opetustaAntavatKunnat(
         flatten(values(changesByProvince))
       )
     );
-    
-    const opetustaAntavatKunnatChangeObj = head(tarkentimetChangeObjects);
 
     return {
-      anchor: "opetustaAntavatKunnat",
+      anchor: "rajoitus",
       components: [
         {
-          anchor: "autocomplete",
+          anchor: "opetustaAntavatKunnat",
           name: "Autocomplete",
           properties: {
             options: map(changeObj => {
               const { koodiarvo, title } = changeObj.properties.metadata;
-              return !!opetustaAntavatKunnatChangeObj &&
+              return !!asetus.rajoitus &&
                 !!find(
                   propEq("value", koodiarvo),
-                  opetustaAntavatKunnatChangeObj.properties.value
+                  path(
+                    [
+                      "rajoitus",
+                      "opetustaAntavatKunnat",
+                      "properties",
+                      "value"
+                    ],
+                    asetus
+                  ) || []
                 )
                 ? null
                 : { label: title, value: koodiarvo };

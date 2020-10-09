@@ -75,7 +75,7 @@ const Store = createStore({
           {
             anchor: `${sectionId}.${rajoiteId}.kriteerit.${nextCriterionAnchorPart}.valintaelementti.autocomplete`,
             properties: {
-              value: { label: "Määräaika", value: "maaraaika" }
+              value: ""
             }
           },
           currentChangeObjects[sectionId] || []

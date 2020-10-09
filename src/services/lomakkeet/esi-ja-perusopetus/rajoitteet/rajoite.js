@@ -1,232 +1,281 @@
-import { __ } from "i18n-for-browser";
 import {
-  addIndex,
+  append,
+  assocPath,
   compose,
-  endsWith,
-  filter,
-  find,
+  drop,
   flatten,
-  isEmpty,
-  map,
+  head,
   mapObjIndexed,
+  nth,
   path,
   prop,
-  propEq,
-  startsWith,
+  split,
   values
 } from "ramda";
-import { getAnchorPart } from "utils/common";
-import opetustaAntavatKunnat from "./tarkentimet/2-opetustaAntavatKunnat";
-import maaraaika from "./tarkentimet/maaraaika";
+import maaraaika from "./rajoitukset/maaraaika";
+import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
+import opetustehtavat from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
+  maaraaika: "Määräaika",
   opetustaAntavatKunnat: "2. Kunnat, joissa opetusta järjestetään",
-  maaraaika: "Määräaika"
+  opetustehtavat: "1. Opetus, jota lupa koskee"
 };
 
 const changeObjectMapping = {
+  maaraaika: "maaraaika",
   opetustaAntavatKunnat: "toimintaalue",
-  maaraaika: "maaraaika"
+  opetustehtavat: "opetustehtavat"
 };
 
 const sections = {
   maaraaika,
-  opetustaAntavatKunnat
+  opetustaAntavatKunnat,
+  opetustehtavat
 };
 
-export function rajoitelomake(data, isReadOnly, locale, changeObjects) {
-  let kohteenTarkennin = {};
-  let tarkenninKey = "";
-  let kohteenTarkentimetChangeObjects = null;
-  console.info(changeObjects);
-
-  const changeObj = find(
-    propEq(
-      "anchor",
-      `${data.sectionId}.${data.rajoiteId}.kohteenValinta.valintaelementti`
-    ),
-    changeObjects
-  );
-
-  if (changeObj) {
-    tarkenninKey = changeObj.properties.value.value;
-    kohteenTarkentimetChangeObjects = filter(
-      compose(
-        startsWith(`${data.sectionId}.${data.rajoiteId}.${tarkenninKey}`),
-        prop("anchor")
-      ),
-      changeObjects
-    );
-    kohteenTarkennin = sections[tarkenninKey](
-      changeObjects,
-      path([changeObjectMapping[tarkenninKey]], data.changeObjects),
-      kohteenTarkentimetChangeObjects
-    );
-  }
-
-  const kriteeritChangeObjects = filter(
-    changeObj =>
-      startsWith(
-        `${data.sectionId}.${data.rajoiteId}.kriteerit`,
-        changeObj.anchor
-      ) && endsWith("autocomplete", changeObj.anchor),
-    changeObjects
-  );
-
-  console.info(
-    data.sectionId,
-    kohteenTarkennin,
-    kohteenTarkentimetChangeObjects,
-    changeObjects,
-    kriteeritChangeObjects
-  );
-
+async function defineRajoitusStructure(
+  asetus,
+  locale,
+  changeObjects,
+  onRemoveCriterion
+) {
   /**
-   * Rajoitekriteerit
+   * Ensimmäistä asetusta ei voi käyttäliittymässä poistaa. Kun uutta
+   * rajoitetta luodaan, näytetään käyttäjälle 1. asetuksen kohdekenttä, joka
+   * on pudotusvalikko. Kun käyttäjä on valinnut kohteen, hänelle näytetään
+   * ensimmäisen asetuksen rajoituskenttä. Rajoituskentän tyyppi ja sisältö
+   * määrittyvät sen mukaan, mikä on tai mitkä ovat:
+   *
+   * 1. Asetuksen kohde.
+   * 2. Käyttäjän lomakkeella tekemät muutokset.
+   * 3. Lupaan kuuluvat määritykset (toteutetaan myöhemmin).
+   *
+   * Määritetään asetuksen rajoitusosaa vastaava lomakerakenne, mikäli
+   * kohde on tiedossa.
    */
-  const rajoitekriteerit = addIndex(map)((_changeObj, index) => {
-    const criterionAnchorPart = getAnchorPart(_changeObj.anchor, 3);
-    console.info(_changeObj, criterionAnchorPart);
-    let kriteerinTarkennin = {};
-    const kriteeriChangeObj = find(
-      propEq(
-        "anchor",
-        `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.valintaelementti.autocomplete`
-      ),
-      changeObjects
+  if (asetus.kohde) {
+    /**
+     * Käydään noutamassa lomakerakenne rajoitusavaimen avulla. Rajoitusavain
+     * voi olla esim. maaraaika tai opetustaAntavatKunnat.
+     */
+    const rajoitusavain = path(
+      ["kohde", "A", "properties", "value", "value"],
+      asetus
     );
-
-    if (kriteeriChangeObj) {
-      const kriteerintarkenninKey = kriteeriChangeObj.properties.value.value;
-      console.info(kriteerintarkenninKey);
-      const tarkentimetChangeObjects = filter(
-        compose(
-          startsWith(
-            `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.${kriteerintarkenninKey}`
-          ),
-          prop("anchor")
-        ),
-        changeObjects
-      );
-      console.info(
-        tarkentimetChangeObjects,
-        `${data.sectionId}.${data.rajoiteId}.kriteerit.${criterionAnchorPart}.${kriteerintarkenninKey}`
-      );
-      kriteerinTarkennin = Object.assign(
-        {},
-        sections[kriteerintarkenninKey](
-          changeObjects,
-          path(
-            [changeObjectMapping[kriteerintarkenninKey]],
-            data.changeObjects
-          ),
-          tarkentimetChangeObjects,
-          locale
-        )
-      );
-
-      console.info("kriteerintarkennin", kriteerinTarkennin);
-    }
+    /**
+     * Mikäli itse rajoitusta on muokattu, on siitä olemassa muutosobjekti.
+     */
+    const rajoitus =
+      rajoitusavain && asetus.rajoitus
+        ? await sections[rajoitusavain](
+            asetus,
+            path([changeObjectMapping[rajoitusavain]], changeObjects),
+            locale
+          )
+        : null;
+    console.info(rajoitus, rajoitusavain);
     return {
-      anchor: criterionAnchorPart,
+      anchor: asetus.id,
       categories: [
         {
-          anchor: "valintaelementti",
+          anchor: "kohde",
           components: [
             {
-              anchor: "autocomplete",
+              anchor: "A",
               name: "Autocomplete",
               properties: {
                 isMulti: false,
                 options: values(
                   mapObjIndexed((categoryFn, key) => {
-                    return key !== tarkenninKey
-                      ? { label: localizations[key], value: key }
+                    return key !== rajoitusavain
+                      ? {
+                          label: localizations[key],
+                          value: key
+                        }
                       : null;
                   }, sections)
                 ).filter(Boolean),
-                title: "Rajoitekriteeri"
+                title: asetus.id === "0" ? "Kohde" : "Rajoitekriteeri"
               }
             }
-          ],
-          isRemovable: true,
-          onRemove: category => {
-            data.onRemoveCriterion(criterionAnchorPart);
-          },
-          title: `Rajoitekriteeri ${index + 1}`
+          ]
         },
-        kriteerinTarkennin
-      ]
+        rajoitusavain && asetus.rajoitus ? rajoitus : null
+      ].filter(Boolean),
+      isRemovable: asetus.id !== "0",
+      onRemove: category => {
+        onRemoveCriterion(asetus.id);
+      },
+      title:
+        asetus.id === "0" ? "Rajoituksen kohde" : `Rajoitekriteeri ${asetus.id}`
     };
-  }, kriteeritChangeObjects);
+  }
+  return null;
+}
 
-  console.info("rajoitekriteerit", rajoitekriteerit);
+async function defineRajoituksetStructure(
+  rajoiteId,
+  asetukset,
+  groupedChangeObjects,
+  locale,
+  changeObjects,
+  onRemoveCriterion,
+  index = 0,
+  structure = []
+) {
+  const initialAsetus = nth(index, asetukset);
+  if (initialAsetus) {
+    console.info(initialAsetus, groupedChangeObjects[rajoiteId].asetukset);
+    const asetusChangeObj =
+      groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id] || {};
+    const asetus = Object.assign({}, initialAsetus, asetusChangeObj);
+    console.info(asetus);
 
-  const kriteeritStructure = Object.assign(
-    {},
-    {
-      anchor: "kriteerit",
-      categories: rajoitekriteerit
-    },
-    !!rajoitekriteerit.length
-      ? {
-          isRemovable: true,
-          title: "Rajoitekriteerit"
+    const updatedStructure = append(
+      await defineRajoitusStructure(
+        asetus,
+        locale,
+        changeObjects,
+        onRemoveCriterion
+      ),
+      structure
+    );
+
+    return defineRajoituksetStructure(
+      rajoiteId,
+      asetukset,
+      groupedChangeObjects,
+      locale,
+      changeObjects,
+      onRemoveCriterion,
+      index + 1,
+      updatedStructure
+    );
+  }
+
+  console.info(structure);
+
+  return structure;
+}
+
+/**
+ * Lomake, joka funktion palauttaman rakenteen myötä muodostetaan, mahdollistaa
+ * sen, että käyttäjä voi luoda asetuksia, jotka yhdessä muodostavat rajoitteen.
+ * Jotta rajoitetta voidaan hyödyntää, tulee sen sisältää vähintään kaksi
+ * asetusta.
+ * 
+ * Esimerkkejä yksittäisestä asetuksesta:
+ * 
+ * Esimerkki 1:
+ 
+ * Kohde: Kunnat, joissa opetusta järjestetään
+ * Rajoitus: Kuopio, Pielavesi, Siilinjärvi
+ *
+ * Esimerkki 2:
+ * 
+ * Kohde: Määräaika
+ * Rajoitus: 20.9.2021 - 14.3.2022
+ *  
+ * @param {*} data 
+ * @param {*} isReadOnly 
+ * @param {*} locale 
+ * @param {*} changeObjects 
+ */
+export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
+  const asetukset = {
+    eka: [
+      {
+        id: "0",
+        kohde: {
+          A: "opetustaAntavatKunnat"
+        },
+        rajoitus: {
+          opetustaAntavatKunnat: []
         }
-      : {}
-  );
+      },
+      {
+        id: "1",
+        kohde: {
+          A: "opetustehtavat"
+        },
+        rajoitus: {
+          opetustehtavat: []
+        }
+      }
+    ]
+  };
+
+  function groupChangeObjects(changeObjects, index = 0, result = {}) {
+    const changeObj = head(changeObjects);
+    if (changeObj) {
+      const fn = compose(
+        assocPath,
+        drop(1),
+        split("."),
+        prop("anchor")
+      )(changeObj);
+      const updatedResult = fn(changeObj, result);
+      return groupChangeObjects(
+        drop(1, changeObjects),
+        index + 1,
+        updatedResult
+      );
+    }
+    return result;
+  }
+
+  const groupedChangeObjects = groupChangeObjects(changeObjects);
+
+  console.info(groupedChangeObjects);
 
   /**
    * Palautettava lomakemerkkaus
    */
-  const a = flatten([
+  const lomakerakenne = [
     {
       anchor: data.rajoiteId,
       categories: [
         {
-          anchor: "kohteenValinta",
-          components: [
+          anchor: "asetukset",
+          categories: flatten([
+            await defineRajoituksetStructure(
+              data.rajoiteId,
+              asetukset[data.rajoiteId],
+              groupedChangeObjects,
+              locale,
+              data.changeObjects,
+              data.onRemoveCriterion
+            ),
             {
-              anchor: "valintaelementti",
-              name: "Autocomplete",
-              properties: {
-                isMulti: false,
-                options: values(
-                  mapObjIndexed((categoryFn, key) => {
-                    return { label: localizations[key], value: key };
-                  }, sections)
-                )
-              }
+              anchor: "asetuksenLisaaminen",
+              components: [
+                {
+                  anchor: "painike",
+                  name: "SimpleButton",
+                  onClick: payload =>
+                    data.onAddCriterion({
+                      ...payload,
+                      metadata: {
+                        ...payload.metadata,
+                        rajoiteId: data.rajoiteId
+                      }
+                    }),
+                  properties: {
+                    isVisible: true,
+                    text: "Lisää rajoitekriteeri"
+                  }
+                }
+              ]
             }
-          ]
-        },
-        isEmpty(kohteenTarkennin) ? null : kohteenTarkennin,
-        kriteeritStructure,
-        {
-          anchor: "kriteerinLisaaminen",
-          components: [
-            {
-              anchor: "painike",
-              name: "SimpleButton",
-              onClick: payload =>
-                data.onAddCriterion({
-                  ...payload,
-                  metadata: { ...payload.metadata, rajoiteId: data.rajoiteId }
-                }),
-              properties: {
-                isVisible:
-                  !!kohteenTarkentimetChangeObjects &&
-                  kohteenTarkentimetChangeObjects.length > 0,
-                text: "Lisää rajoitekriteeri"
-              }
-            }
-          ]
+          ]),
+          title: "Asetukset"
         }
       ].filter(Boolean)
     }
-  ]).filter(Boolean);
+  ];
 
-  console.info(a);
+  console.info("Lomakkeen rakenne: ", lomakerakenne);
 
-  return a;
+  return lomakerakenne;
 }
