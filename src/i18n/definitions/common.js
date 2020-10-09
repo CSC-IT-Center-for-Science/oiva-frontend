@@ -1028,5 +1028,9 @@ export default defineMessages({
   opetuskieli: {
     id: "common.opetuskieli",
     defaultMessage: "Opetuskieli"
+  },
+  nimi: {
+    id: "common.nimi",
+    defaultMessage: "Nimi"
   }
 });

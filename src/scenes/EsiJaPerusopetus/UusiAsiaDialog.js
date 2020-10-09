@@ -495,7 +495,7 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuksenJarjestamismuoto"}
-                  title={"Opetuksen järjestämismuoto"}></FormSection>
+                  title={__("education.opetuksenJarjestamismuoto")}></FormSection>
 
                 <FormSection
                   code={5}

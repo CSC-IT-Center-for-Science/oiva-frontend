@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
 import { equals } from "ramda";
+import {__} from "i18n-for-browser";
 
 const OpetuksenJarjestamismuoto = React.memo(
   ({
@@ -33,7 +34,7 @@ const OpetuksenJarjestamismuoto = React.memo(
         onUpdate={onChangesUpdate}
         sectionId={sectionId}
         showCategoryTitles={true}
-        title={"Opetuksen järjestämismuodot"}>
+        title={__("education.opetuksenJarjestamismuodot")}>
         <Lomake
           action="modification"
           anchor={sectionId}
