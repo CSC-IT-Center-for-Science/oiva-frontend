@@ -28,5 +28,9 @@ export default defineMessages({
   opetustaAntavatKunnat: {
     id: "education.opetustaAntavatKunnat",
     defaultMessage: "Kunnat, joissa opetusta järjestetään"
+  },
+  opetustaJarjestetaanSuomenUlkopuolella:{
+    id: "education.opetustaSuomenUlkopuolella",
+    defaultValue: "Opetusta järjestetään Suomen ulkopuolella"
   }
 });

@@ -1028,5 +1028,9 @@ export default defineMessages({
   opetuskieli: {
     id: "common.opetuskieli",
     defaultMessage: "Opetuskieli"
+  },
+  maaJaPaikkakunta:{
+    id: "common.maaJaPaikkakunta",
+    defaultMessage: "Maa ja paikkakunta"
   }
 });

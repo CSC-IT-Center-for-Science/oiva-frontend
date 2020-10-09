@@ -323,8 +323,8 @@ const lomakkeet = {
         getPaatoksenTiedot(data, isReadOnly, locale, changeObjects)
     },
     opetustaAntavatKunnat: {
-      modification: (data, isReadOnly, locale) =>
-        opetustaAntavatKunnat(data, isReadOnly, locale)
+      modification: (data, isReadOnly, locale, changeObjects) =>
+        opetustaAntavatKunnat(data, isReadOnly, locale, changeObjects)
     }
   }
 };
