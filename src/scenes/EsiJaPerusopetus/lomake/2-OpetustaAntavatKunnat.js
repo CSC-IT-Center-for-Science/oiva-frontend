@@ -339,6 +339,7 @@ const OpetustaAntavatKunnat = props => {
             newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
             ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
             quickFilter: intl.formatMessage(wizard.quickFilter),
+            editButtonText: intl.formatMessage(wizard.selectMunicipalities),
             sameAsTheCurrentAreaOfAction: intl.formatMessage(
               wizard.sameAsTheCurrentAreaOfAction
             ),
