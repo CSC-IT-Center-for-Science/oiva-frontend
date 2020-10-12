@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
-import { find } from 'ramda';
+import { find } from "ramda";
 
 const MuutEhdot = ({
   onChangesRemove,
@@ -21,25 +21,27 @@ const MuutEhdot = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback(
-    payload => {
-      actions.createTextBoxChangeObject(sectionId);
-    },
-    [actions, sectionId]
-  );
+  const onAddButtonClick = useCallback(() => {
+    actions.createTextBoxChangeObject(sectionId);
+  }, [actions, sectionId]);
 
   const onChanges = useCallback(
-    ({anchor, changes}) => {
-      const removeBtnClickedChangeObject = find(change => change.properties && change.properties.textBoxDelete, changes);
+    ({ anchor, changes }) => {
+      const removeBtnClickedChangeObject = find(
+        change => change.properties && change.properties.textBoxDelete,
+        changes
+      );
       if (removeBtnClickedChangeObject) {
-        actions.removeTextBoxChangeObject(sectionId, removeBtnClickedChangeObject.anchor);
-     }
-      else {
-        onChangesUpdate({anchor: anchor, changes: changes});
+        actions.removeTextBoxChangeObject(
+          sectionId,
+          removeBtnClickedChangeObject.anchor
+        );
+      } else {
+        onChangesUpdate({ anchor: anchor, changes: changes });
       }
     },
     [onChangesUpdate]
-  )
+  );
 
   return (
     <ExpandableRowRoot

@@ -24,10 +24,11 @@ import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
 import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
 import Liitetiedostot from "./lomake/8-Liitetiedostot";
+import Rajoitteet from "./lomake/9-Rajoitteet";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import education from "../../i18n/definitions/education";
-import {__} from "i18n-for-browser";
+import { __ } from "i18n-for-browser";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -440,6 +441,11 @@ const UusiAsiaDialog = ({
 
               <form onSubmit={() => {}}>
                 <FormSection
+                  render={props => <Rajoitteet {...props} />}
+                  sectionId="rajoitteet"
+                  title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
+
+                <FormSection
                   code={1}
                   render={props => (
                     <Opetustehtavat
@@ -469,7 +475,9 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"toimintaalue"}
-                  title={intl.formatMessage(education.opetustaAntavatKunnat)}></FormSection>
+                  title={intl.formatMessage(
+                    education.opetustaAntavatKunnat
+                  )}></FormSection>
 
                 <FormSection
                   code={3}
