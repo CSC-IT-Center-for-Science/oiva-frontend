@@ -27,7 +27,6 @@ import Liitetiedostot from "./lomake/8-Liitetiedostot";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import education from "../../i18n/definitions/education";
-import {__} from "i18n-for-browser";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -481,7 +480,7 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuskielet"}
-                  title={__("common.opetuskieli")}></FormSection>
+                  title={intl.formatMessage(common.opetuskieli)}></FormSection>
 
                 <FormSection
                   code={4}
@@ -495,7 +494,7 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuksenJarjestamismuoto"}
-                  title={__("education.opetuksenJarjestamismuoto")}></FormSection>
+                  title={intl.formatMessage(education.opetuksenJarjestamismuoto)}></FormSection>
 
                 <FormSection
                   code={5}
