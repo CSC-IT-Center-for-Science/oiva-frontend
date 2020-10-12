@@ -31,7 +31,7 @@ export const initializeOpetustehtavat = opetustehtavat => {
   );
 };
 
-export const defineBackendChangeObjects = async (changeObjects, maaraystyypit, locale, kohteet) => {
+export const defineBackendChangeObjects = async (changeObjects = [], maaraystyypit, locale, kohteet) => {
   const opetustehtavat = await getOpetustehtavatFromStorage();
   // Luodaan LISÄYS
   const lisatiedotChangeObj = find(compose(endsWith(".lisatiedot"), prop("anchor")), changeObjects);

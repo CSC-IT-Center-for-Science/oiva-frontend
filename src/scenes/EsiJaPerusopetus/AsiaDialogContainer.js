@@ -20,6 +20,7 @@ import {useEsiJaPerusopetus} from "../../stores/esiJaPerusopetus";
  */
 const AsiaDialogContainer = ({
   kielet,
+  kieletOPH,
   kohteet,
   koulutukset,
   koulutusalat,
@@ -32,7 +33,10 @@ const AsiaDialogContainer = ({
   opetuskielet,
   opetustehtavakoodisto,
   opetustehtavat,
+  opetuksenJarjestamismuodot,
   organisaatio,
+  poErityisetKoulutustehtavat,
+  poMuutEhdot,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -165,6 +169,7 @@ const AsiaDialogContainer = ({
     <UusiAsiaDialog
       history={history}
       kielet={kielet}
+      kieletOPH={kieletOPH}
       kohteet={kohteet}
       koulutukset={koulutukset}
       koulutusalat={koulutusalat}
@@ -177,6 +182,9 @@ const AsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={() => {}}
+      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
+      poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+      poMuutEhdot={poMuutEhdot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
       opetustehtavat={opetustehtavat}

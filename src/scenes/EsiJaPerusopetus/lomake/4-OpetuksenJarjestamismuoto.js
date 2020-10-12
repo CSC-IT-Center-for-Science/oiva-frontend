@@ -4,15 +4,15 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
+import { useEsiJaPerusopetus } from "../../../stores/esiJaPerusopetus";
 
 const OpetuksenJarjestamismuoto = ({
-  changeObjects,
   onChangesRemove,
-  onChangesUpdate,
   opetuksenJarjestamismuodot,
   sectionId
 }) => {
   const intl = useIntl();
+  const [state, actions] = useEsiJaPerusopetus();
 
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
@@ -23,35 +23,30 @@ const OpetuksenJarjestamismuoto = ({
     <ExpandableRowRoot
       anchor={sectionId}
       key={`expandable-row-root`}
-      changes={changeObjects}
+      changes={state.changeObjects[sectionId]}
       hideAmountOfChanges={true}
       isExpanded={true}
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
-      onUpdate={onChangesUpdate}
+      onUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)}
       sectionId={sectionId}
       showCategoryTitles={true}
       title={"Opetuksen järjestämismuodot"}>
       <Lomake
         action="modification"
         anchor={sectionId}
-        changeObjects={changeObjects}
+        changeObjects={state.changeObjects[sectionId]}
         data={{
           opetuksenJarjestamismuodot
         }}
-        onChangesUpdate={onChangesUpdate}
-        path={["esiJaPerusopetus", "opetuksenJarjestamismuoto"]}
+        onChangesUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)}
+        path={["esiJaPerusopetus", "opetuksenJarjestamismuodot"]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
   );
 };
 
-OpetuksenJarjestamismuoto.defaultProps = {
-  changeObjects: []
-};
-
 OpetuksenJarjestamismuoto.propTypes = {
-  changeObjects: PropTypes.array,
   onChangesUpdate: PropTypes.func,
   opetuksenJarjestamismuodot: PropTypes.array,
   sectionId: PropTypes.string
