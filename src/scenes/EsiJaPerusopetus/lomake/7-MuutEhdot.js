@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
+import { find } from 'ramda';
 
 const MuutEhdot = ({
   onChangesRemove,
@@ -22,10 +23,23 @@ const MuutEhdot = ({
 
   const onAddButtonClick = useCallback(
     payload => {
-      actions.addAClick(sectionId, payload.anchor);
+      actions.createTextBoxChangeObject(sectionId);
     },
     [actions, sectionId]
   );
+
+  const onChanges = useCallback(
+    ({anchor, changes}) => {
+      const removeBtnClickedChangeObject = find(change => change.properties && change.properties.textBoxDelete, changes);
+      if (removeBtnClickedChangeObject) {
+        actions.removeTextBoxChangeObject(sectionId, removeBtnClickedChangeObject.anchor);
+     }
+      else {
+        onChangesUpdate({anchor: anchor, changes: changes});
+      }
+    },
+    [onChangesUpdate]
+  )
 
   return (
     <ExpandableRowRoot
@@ -36,7 +50,7 @@ const MuutEhdot = ({
       isExpanded={true}
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
-      onUpdate={onChangesUpdate}
+      onUpdate={onChanges}
       sectionId={sectionId}
       showCategoryTitles={true}
       title={"Muut koulutukseen liittyvät ehdot"}>
@@ -48,7 +62,7 @@ const MuutEhdot = ({
           onAddButtonClick,
           poMuutEhdot
         }}
-        onChangesUpdate={onChangesUpdate}
+        onChangesUpdate={onChanges}
         path={["esiJaPerusopetus", "muutEhdot"]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
