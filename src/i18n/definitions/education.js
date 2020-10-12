@@ -33,8 +33,12 @@ export default defineMessages({
     id: "education.opetuksenJarjestamismuoto",
     defaultMessage: "Opetuksen järjestämismuoto"
   },
+  opetuksenJarjestamismuodot: {
+    id: "education.opetuksenJarjestamismuodot",
+    defaultMessage: "Opetuksen järjestämismuodot"
+  },
   eiSisaOppilaitosTaiKotikoulumuotoinen: {
     id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    defaultMessage: "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+    defaultMessage: "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
   }
 });

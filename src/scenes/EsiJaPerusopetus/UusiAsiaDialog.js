@@ -27,7 +27,6 @@ import Rajoitteet from "./lomake/9-Rajoitteet";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import education from "../../i18n/definitions/education";
-import { __ } from "i18n-for-browser";
 import { createObjectToSave } from "./saving";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
@@ -438,7 +437,7 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuskielet"}
-                  title={__("common.opetuskieli")}></FormSection>
+                  title={intl.formatMessage(common.opetuskieli)}></FormSection>
 
                 <FormSection
                   code={4}

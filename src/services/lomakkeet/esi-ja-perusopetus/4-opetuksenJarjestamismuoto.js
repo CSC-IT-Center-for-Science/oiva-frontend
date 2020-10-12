@@ -1,5 +1,6 @@
 import { isAdded, isRemoved } from "css/label";
 import { flatten, map, toUpper } from "ramda";
+import {__} from "i18n-for-browser";
 
 export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
   const localeUpper = toUpper(locale);
@@ -15,7 +16,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
                 anchor: "A",
                 name: "TextBox",
                 properties: {
-                  title: "Nimi"
+                  title: __("common.nimi")
                 }
               }
             ]
@@ -52,7 +53,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
               removal: isRemoved
             },
             title:
-              "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+              __("education.eiSisaOppilaitosTaiKotikoulumuotoinen")
           }
         }
       ]
@@ -66,8 +67,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
           name: "StatusTextRow",
           styleClasses: ["pt-8 border-t"],
           properties: {
-            title:
-              "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+            title: __("common.lisatiedotInfo")
           }
         }
       ]
@@ -79,7 +79,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
           anchor: "tekstikentta",
           name: "TextBox",
           properties: {
-            placeholder: "Lisätiedot"
+            placeholder: __("common.lisatiedot")
           }
         }
       ]
