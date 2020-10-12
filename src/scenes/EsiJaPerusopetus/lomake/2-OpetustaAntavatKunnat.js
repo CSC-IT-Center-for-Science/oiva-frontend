@@ -318,9 +318,7 @@ const OpetustaAntavatKunnat = props => {
       showCategoryTitles={true}
       onChangesRemove={props.onChangesRemove}
       onUpdate={handleChanges}
-      title={intl.formatMessage(
-        wizard.singularMunicipalitiesOrTheWholeCountry
-      )}>
+      title={intl.formatMessage(wizard.municipalitiesAndAreas)}>
       <Lomake
         action="modification"
         anchor={props.sectionId}
@@ -334,7 +332,7 @@ const OpetustaAntavatKunnat = props => {
           localizations: {
             accept: intl.formatMessage(common.accept),
             areaOfActionIsUndefined: intl.formatMessage(
-              wizard.areaOfActionIsUndefined
+              wizard.noMunicipalitiesSelected
             ),
             cancel: intl.formatMessage(common.cancel),
             currentAreaOfAction: intl.formatMessage(wizard.currentAreaOfAction),
@@ -356,7 +354,7 @@ const OpetustaAntavatKunnat = props => {
           quickFilterChanges
         }}
         onChangesUpdate={handleChanges}
-        path={["toimintaalue"]}
+        path={["esiJaPerusopetus", "opetustaAntavatKunnat"]}
         showCategoryTitles={true}
       />
     </ExpandableRowRoot>
