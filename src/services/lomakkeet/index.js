@@ -304,7 +304,7 @@ const lomakkeet = {
       modification: (data, isReadOnly, locale, changeObjects) =>
         muutEhdot(data, isReadOnly, locale, changeObjects)
     },
-    opetuksenJarjestamismuoto: {
+    opetuksenJarjestamismuodot: {
       modification: (data, isReadOnly, locale) =>
         opetuksenJarjestamismuoto(data, isReadOnly, locale)
     },

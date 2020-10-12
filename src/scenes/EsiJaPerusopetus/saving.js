@@ -2,6 +2,7 @@
 import moment from "moment";
 import * as R from "ramda";
 import * as opetusHelper from  "helpers/opetustehtavat";
+import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJärjestämismuodot";
 
 export async function createObjectToSave(
   locale,
@@ -35,6 +36,11 @@ export async function createObjectToSave(
   const opetus = await opetusHelper.defineBackendChangeObjects(
     changeObjects.opetustehtavat, maaraystyypit, locale, kohteet);
 
+  // OPETUKSEN JÄRJESTÄMISMUODOT
+  const opetuksenJarjestamismuodot = await  opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
+    changeObjects.opetuksenJarjestamismuodot, maaraystyypit, locale, kohteet);
+
+
   let objectToSave = {
     alkupera,
     diaarinumero: lupa.diaarinumero,
@@ -53,7 +59,8 @@ export async function createObjectToSave(
     liitteet: allAttachments,
     meta: {},
     muutokset: R.flatten([
-      opetus
+      opetus,
+      opetuksenJarjestamismuodot
     ]),
     uuid
   };

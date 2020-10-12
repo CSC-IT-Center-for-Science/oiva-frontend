@@ -1031,7 +1031,7 @@ export default defineMessages({
     defaultMessage: "Opetuskieli"
   },
   nimi: {
-    id: "common.name",
+    id: "common.nimi",
     defaultMessage: "Nimi"
   }
 });

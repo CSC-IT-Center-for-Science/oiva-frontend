@@ -175,7 +175,7 @@ const UusiAsiaDialog = ({
    * User is redirected to the following path when the form is closed.
    */
   const closeWizard = useCallback(async () => {
-    actions.setChangeObjects(null);
+    actions.setChangeObjects(null, []);
     setIsDialogOpen(false);
     setIsConfirmDialogVisible(false);
     // Let's empty some store content on close.
@@ -444,15 +444,12 @@ const UusiAsiaDialog = ({
                   code={4}
                   render={props => (
                     <OpetuksenJarjestamismuoto
-                      changeObjects={
-                        state.changeObjects.opetuksenJarjestamismuoto
-                      }
                       opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
                       {...props}
                     />
                   )}
-                  sectionId={"opetuksenJarjestamismuoto"}
-                  title={"Opetuksen järjestämismuoto"}></FormSection>
+                  sectionId={"opetuksenJarjestamismuodot"}
+                  title={intl.formatMessage(education.opetuksenJarjestamismuoto)}></FormSection>
 
                 <FormSection
                   code={5}
