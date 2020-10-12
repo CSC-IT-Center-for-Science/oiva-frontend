@@ -118,6 +118,60 @@ const Store = createStore({
     closeRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: false });
     },
+    createTextBoxChangeObject: sectionId => ({ getState, setState }) => {
+      if (sectionId) {
+        const currentChangeObjects = prop("changeObjects", getState());
+        const textBoxChangeObjects = filter(
+          changeObj =>
+            endsWith(".nimi", changeObj.anchor) &&
+            !startsWith(`${sectionId}.muutehto.0`, changeObj.anchor),
+          currentChangeObjects[sectionId] || []
+        );
+
+        const nextTextBoxAnchorPart =
+          length(textBoxChangeObjects) > 0
+            ? reduce(
+                max,
+                -Infinity,
+                map(changeObj => {
+                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
+                }, textBoxChangeObjects)
+              ) + 1
+            : 1;
+
+        /**
+         * Luodaan
+         */
+        const nextChangeObjects = assoc(
+          sectionId,
+          append(
+            {
+              anchor: `${sectionId}.muuehto.${nextTextBoxAnchorPart}.nimi`,
+              properties: {
+                value: ""
+              }
+            },
+            currentChangeObjects[sectionId] || []
+          ),
+          currentChangeObjects
+        );
+        setState({ ...getState(), changeObjects: nextChangeObjects });
+      }
+    },
+    removeTextBoxChangeObject: (sectionId, anchor) => ({
+      getState,
+      setState
+    }) => {
+      if (sectionId && anchor) {
+        const currentChangeObjects = prop("changeObjects", getState());
+        const nextChangeObjects = filter(changeObj => {
+          return changeObj.anchor !== anchor;
+        }, currentChangeObjects[sectionId]);
+
+        const path = flatten(["changeObjects", split("_", sectionId)]);
+        setState(assocPath(path, flatten(nextChangeObjects), getState()));
+      }
+    },
     removeCriterion: (sectionId, anchor) => ({ getState, setState }) => {
       const currentChangeObjects = prop("changeObjects", getState());
       const nextChangeObjects = filter(changeObj => {
