@@ -57,7 +57,7 @@ const states = [
   "PASSIVOITU"
 ];
 
-const Asiakirjat = React.memo(() => {
+const Asiakirjat = () => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
@@ -502,7 +502,7 @@ const Asiakirjat = React.memo(() => {
   } else {
     return <Loading />;
   }
-});
+};
 
 Asiakirjat.propTypes = {
   uuid: PropTypes.object

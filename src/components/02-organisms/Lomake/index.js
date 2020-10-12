@@ -8,6 +8,7 @@ import { useIntl } from "react-intl";
 const defaultProps = {
   changeObjects: [],
   data: {},
+  noPadding: false,
   prefix: "",
   rules: [],
   showCategoryTitles: true,
@@ -26,7 +27,8 @@ const Lomake = React.memo(
     prefix = defaultProps.prefix,
     showCategoryTitles = defaultProps.showCategoryTitles,
     uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
-    hasInvalidFieldsFn
+    hasInvalidFieldsFn,
+    noPadding = defaultProps.noPadding
   }) => {
     const intl = useIntl();
 
@@ -68,7 +70,7 @@ const Lomake = React.memo(
     if (lomake && onChangesUpdate) {
       return (
         <React.Fragment>
-          <div className="p-8">
+          <div className={noPadding ? "" : "p-8"}>
             <CategorizedListRoot
               anchor={anchor}
               categories={lomake}

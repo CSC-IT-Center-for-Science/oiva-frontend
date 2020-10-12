@@ -1010,12 +1010,13 @@ export default defineMessages({
     defaultMessage: "Sivu"
   },
   paattymispaivamaara: {
-      id: "common.paattymispaivamaara",
-      defaultMessage: "Päättymispäivämäärä"
+    id: "common.paattymispaivamaara",
+    defaultMessage: "Päättymispäivämäärä"
   },
   lisatiedotInfo: {
     id: "common.lisatiedotInfo",
-    defaultMessage: "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+    defaultMessage:
+      "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
   },
   lisatiedot: {
     id: "common.lisatiedot",

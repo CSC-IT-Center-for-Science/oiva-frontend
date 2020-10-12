@@ -24,7 +24,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
         ],
         components: [
           {
-            anchor: "A",
+            anchor: "valinta",
             name: "RadioButtonWithLabel",
             properties: {
               isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
@@ -43,7 +43,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
       anchor: "0",
       components: [
         {
-          anchor: "ei-jarjesteta",
+          anchor: "valinta",
           name: "RadioButtonWithLabel",
           properties: {
             isChecked: true,

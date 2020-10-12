@@ -13,7 +13,6 @@ export const initializePOErityinenKoulutustehtava = erityinenKoulutustehtava => 
 };
 
 export const initializePOErityisetKoulutustehtavat = erityisetKoulutustehtavat => {
-  console.info(erityisetKoulutustehtavat);
   return sort(
     (a, b) => {
       const aInt = parseInt(a.koodiarvo, 10);
