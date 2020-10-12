@@ -5,6 +5,7 @@ import {
   assocPath,
   clone,
   dissocPath,
+  endsWith,
   filter,
   flatten,
   isEmpty,
@@ -17,11 +18,12 @@ import {
   startsWith
 } from "ramda";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import tmpState from "./tempState";
 import { getAnchorPart, replaceAnchorPartWith } from "utils/common";
 
 const Store = createStore({
-  initialState: tmpState,
+  initialState: {
+    changeObjects: {}
+  },
   actions: {
     acceptRestriction: (sectionId, restrictionId, targetSectionId) => ({
       getState,
