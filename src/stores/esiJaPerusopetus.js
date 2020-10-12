@@ -31,7 +31,6 @@ const Store = createStore({
     }) => {
       const currentChangeObjects = prop("changeObjects", getState());
       const nextChangeObjects = map(changeObj => {
-        console.info(changeObj, targetSectionId);
         return {
           ...changeObj,
           anchor: replaceAnchorPartWith(changeObj.anchor, 0, targetSectionId)
@@ -188,6 +187,10 @@ const Store = createStore({
       getState,
       setState
     }) => {
+      if (!sectionId && changeObjects) {
+        setState(assoc("changeObjects", changeObjects, getState()));
+      }
+
       if (sectionId && changeObjects) {
         const path = flatten(["changeObjects", split("_", sectionId)]);
         setState(assocPath(path, changeObjects, getState()));
