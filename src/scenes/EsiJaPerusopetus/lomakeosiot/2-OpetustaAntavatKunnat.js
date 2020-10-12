@@ -318,9 +318,7 @@ const OpetustaAntavatKunnat = props => {
       showCategoryTitles={true}
       onChangesRemove={props.onChangesRemove}
       onUpdate={handleChanges}
-      title={intl.formatMessage(
-        wizard.municipalitiesAndAreas
-      )}>
+      title={intl.formatMessage(wizard.municipalitiesAndAreas)}>
       <Lomake
         action="modification"
         anchor={props.sectionId}
@@ -341,7 +339,6 @@ const OpetustaAntavatKunnat = props => {
             newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
             ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
             quickFilter: intl.formatMessage(wizard.quickFilter),
-            editButtonText: intl.formatMessage(wizard.selectMunicipalities),
             sameAsTheCurrentAreaOfAction: intl.formatMessage(
               wizard.sameAsTheCurrentAreaOfAction
             ),

@@ -37,7 +37,7 @@ const Section = React.memo(
     const fullTitle = `${code ? `${code}. ` : ""}${title}`;
     return (
       <div>
-        {fullTitle && <h2 className="py-8">{fullTitle}</h2>}
+        {fullTitle && <h2 className="pt-8 pb-4">{fullTitle}</h2>}
         <div className="pb-4">{children}</div>
       </div>
     );
