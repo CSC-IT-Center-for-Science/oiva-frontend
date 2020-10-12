@@ -123,7 +123,7 @@ export const generateAvoimetAsiatTableStructure = (
                 } else if (action === "paata") {
                   await onPaatettyActionClicked(row);
                 } else {
-                  history.push("/ammatillinenkoulutus/asianhallinta/" + row.id);
+                  history.push("/esi-ja-perusopetus/asianhallinta/" + row.id);
                 }
               },
               cells: generateAsiaTableRows(row, intl).concat([

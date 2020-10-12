@@ -10,7 +10,6 @@ export const initializePOMuuEhto = ehto => {
 };
 
 export const initializePOMuutEhdot = ehdot => {
-  console.info(ehdot);
   return sort(
     (a, b) => {
       const aInt = parseInt(a.koodiarvo, 10);
