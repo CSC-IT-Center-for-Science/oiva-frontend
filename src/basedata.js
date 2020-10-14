@@ -22,7 +22,7 @@ import localforage from "localforage";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useParams } from "react-router-dom";
 import { initializeMaakunta } from "helpers/maakunnat";
-import { initializeKieli } from "helpers/kielet";
+import { filterOPHKielet, initializeKieli } from "helpers/kielet";
 import { sortLanguages } from "utils/kieliUtil";
 import { initializeKoulutusala } from "helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "helpers/koulutustyypit";
@@ -202,7 +202,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     )
   };
 
-  const lupa = raw.viimeisinLupa || raw.lupa || {maaraykset:[]};
+  const lupa = raw.viimeisinLupa || raw.lupa || { maaraykset: [] };
 
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
@@ -225,12 +225,9 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     kieletOPH: raw.kielet
       ? await localforage.setItem(
           "kieletOPH",
-          sortLanguages(
-            map(kieli => {
-              return initializeKieli(kieli);
-            }, raw.kieletOPH),
-            localeUpper
-          )
+        map(kieli => {
+          return initializeKieli(kieli);
+            }, filterOPHKielet(raw.kieletOPH))
         )
       : undefined,
     kohteet: raw.kohteet
@@ -353,33 +350,35 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
-    opetuskielet:
-      raw.opetuskielet
-        ? await localforage.setItem(
-        "opetuskielet",
-        sortBy(
-          prop("koodiarvo"),
-          initializeOpetuskielet(
-            raw.opetuskielet,
-            filter(maarays => maarays.koodisto === 'oppilaitoksenopetuskieli', prop("maaraykset", lupa)) || []
+    opetuskielet: raw.opetuskielet
+      ? await localforage.setItem(
+          "opetuskielet",
+          sortBy(
+            prop("koodiarvo"),
+            initializeOpetuskielet(
+              raw.opetuskielet,
+              filter(
+                maarays => maarays.koodisto === "oppilaitoksenopetuskieli",
+                prop("maaraykset", lupa)
+              ) || []
+            )
           )
-        )
         )
       : undefined,
     opetustehtavakoodisto: raw.opetustehtavakoodisto
       ? await localforage.setItem("opetustehtavakoodisto", {
-        ...raw.opetustehtavakoodisto,
-        metadata: mapObjIndexed(
-          head,
-          groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
-        )
-      })
+          ...raw.opetustehtavakoodisto,
+          metadata: mapObjIndexed(
+            head,
+            groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
+          )
+        })
       : undefined,
     opetustehtavat: raw.opetustehtavat
       ? await localforage.setItem(
-        "opetustehtavat",
-        initializeOpetustehtavat(raw.opetustehtavat)
-      )
+          "opetustehtavat",
+          initializeOpetustehtavat(raw.opetustehtavat)
+        )
       : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
@@ -409,7 +408,10 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             prop("koodiarvo"),
             initializeTutkinnot(
               raw.tutkinnot,
-              filter(maarays => maarays.koodisto === 'koulutus', prop("maaraykset", lupa)) || []
+              filter(
+                maarays => maarays.koodisto === "koulutus",
+                prop("maaraykset", lupa)
+              ) || []
             )
           )
         )

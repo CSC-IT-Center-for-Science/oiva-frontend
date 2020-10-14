@@ -1010,12 +1010,13 @@ export default defineMessages({
     defaultMessage: "Sivu"
   },
   paattymispaivamaara: {
-      id: "common.paattymispaivamaara",
-      defaultMessage: "Päättymispäivämäärä"
+    id: "common.paattymispaivamaara",
+    defaultMessage: "Päättymispäivämäärä"
   },
   lisatiedotInfo: {
     id: "common.lisatiedotInfo",
-    defaultMessage: "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+    defaultMessage:
+      "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
   },
   lisatiedot: {
     id: "common.lisatiedot",
@@ -1028,5 +1029,21 @@ export default defineMessages({
   enintaan: {
       id: "common.enintaan",
       defaultMessage: "Enintään"
+  },
+  valitseYksiTaiUseampi: {
+    id: "common.valitseYksiTaiUseampi",
+    defaultMessage: "Valitse yksi tai useampi"
+  },
+  opetuskieli: {
+    id: "common.opetuskieli",
+    defaultMessage: "Opetuskieli"
+  },
+  nimi: {
+    id: "common.nimi",
+    defaultMessage: "Nimi"
+  },
+  lisaaUusiNimi: {
+    id: "common.lisaaUusiNimi",
+    defaultMessage: "Lisää uusi nimi"
   }
 });

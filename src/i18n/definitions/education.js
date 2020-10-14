@@ -24,5 +24,21 @@ export default defineMessages({
   koulutuksenJarjestajat: {
     id: "education.koulutuksenJarjestajat",
     defaultMessage: "Koulutuksen järjestäjät"
+  },
+  opetustaAntavatKunnat: {
+    id: "education.opetustaAntavatKunnat",
+    defaultMessage: "Kunnat, joissa opetusta järjestetään"
+  },
+  opetuksenJarjestamismuoto: {
+    id: "education.opetuksenJarjestamismuoto",
+    defaultMessage: "Opetuksen järjestämismuoto"
+  },
+  opetuksenJarjestamismuodot: {
+    id: "education.opetuksenJarjestamismuodot",
+    defaultMessage: "Opetuksen järjestämismuodot"
+  },
+  eiSisaOppilaitosTaiKotikoulumuotoinen: {
+    id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
+    defaultMessage: "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
   }
 });

@@ -36,7 +36,7 @@ const mapping = {
   "21": "FI-01"
 };
 
-const OpetustaAntavatKunnat = React.memo(props => {
+const OpetustaAntavatKunnat = props => {
   const { changeObjects } = props;
   const intl = useIntl();
   const { onChangesUpdate } = props;
@@ -318,9 +318,7 @@ const OpetustaAntavatKunnat = React.memo(props => {
       showCategoryTitles={true}
       onChangesRemove={props.onChangesRemove}
       onUpdate={handleChanges}
-      title={intl.formatMessage(
-        wizard.singularMunicipalitiesOrTheWholeCountry
-      )}>
+      title={intl.formatMessage(wizard.municipalitiesAndAreas)}>
       <Lomake
         action="modification"
         anchor={props.sectionId}
@@ -334,13 +332,14 @@ const OpetustaAntavatKunnat = React.memo(props => {
           localizations: {
             accept: intl.formatMessage(common.accept),
             areaOfActionIsUndefined: intl.formatMessage(
-              wizard.areaOfActionIsUndefined
+              wizard.noMunicipalitiesSelected
             ),
             cancel: intl.formatMessage(common.cancel),
             currentAreaOfAction: intl.formatMessage(wizard.currentAreaOfAction),
             newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
             ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
             quickFilter: intl.formatMessage(wizard.quickFilter),
+            editButtonText: intl.formatMessage(wizard.selectMunicipalities),
             sameAsTheCurrentAreaOfAction: intl.formatMessage(
               wizard.sameAsTheCurrentAreaOfAction
             ),
@@ -356,12 +355,12 @@ const OpetustaAntavatKunnat = React.memo(props => {
           quickFilterChanges
         }}
         onChangesUpdate={handleChanges}
-        path={["toimintaalue"]}
+        path={["esiJaPerusopetus", "opetustaAntavatKunnat"]}
         showCategoryTitles={true}
       />
     </ExpandableRowRoot>
   );
-});
+};
 
 OpetustaAntavatKunnat.defaultProps = {
   changeObjects: [],

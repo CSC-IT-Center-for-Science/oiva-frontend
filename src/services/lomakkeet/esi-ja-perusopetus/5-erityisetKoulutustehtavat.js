@@ -1,6 +1,7 @@
 import { isAdded, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
 import { addIndex, flatten, map, path, toUpper } from "ramda";
+import {__} from "i18n-for-browser";
 
 export function erityisetKoulutustehtavat(
   data,
@@ -63,7 +64,7 @@ export function erityisetKoulutustehtavat(
                     anchor: "A",
                     name: "TextBox",
                     properties: {
-                      title: "Nimi"
+                      title: __("common.nimi")
                     }
                   }
                 ]
@@ -82,7 +83,10 @@ export function erityisetKoulutustehtavat(
                   onClick: data.onAddButtonClick,
                   properties: {
                     isVisible: isCheckedByChange,
-                    text: "Lisää uusi nimi"
+                    text: __("common.lisaaUusiNimi"),
+                    icon: "FaPlus",
+                    iconFontSize: 10,
+                    variant: "text"
                   }
                 }
               ]
@@ -116,7 +120,7 @@ export function erityisetKoulutustehtavat(
           styleClasses: ["pt-8 border-t"],
           properties: {
             title:
-              "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+              __("common.lisatiedotInfo")
           }
         }
       ]
@@ -128,7 +132,7 @@ export function erityisetKoulutustehtavat(
           anchor: "lisatiedot",
           name: "TextBox",
           properties: {
-            placeholder: "Lisätiedot"
+            placeholder: __("common.lisatiedot")
           }
         }
       ]

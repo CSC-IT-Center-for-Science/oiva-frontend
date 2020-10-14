@@ -5,59 +5,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
 
-const changeObjects = {
-  tutkinnot: {},
-  kielet: {
-    opetuskielet: [],
-    tutkintokielet: {}
-  },
-  koulutukset: {
-    atvKoulutukset: [],
-    kuljettajakoulutukset: [],
-    valmentavatKoulutukset: []
-  },
-  perustelut: {
-    kielet: {
-      opetuskielet: [],
-      tutkintokielet: []
-    },
-    koulutukset: {
-      atvKoulutukset: [],
-      kuljettajakoulutukset: [],
-      tyovoimakoulutukset: [],
-      valmentavatKoulutukset: []
-    },
-    opiskelijavuodet: {
-      sisaoppilaitos: [],
-      vaativatuki: [],
-      vahimmaisopiskelijavuodet: []
-    },
-    liitteet: [],
-    toimintaalue: [],
-    tutkinnot: {}
-  },
-  taloudelliset: {
-    yleisettiedot: [],
-    investoinnit: [],
-    tilinpaatostiedot: [],
-    liitteet: []
-  },
-  liitetiedostot: [],
-  muut: {},
-  opetuksenJarjestamismuoto: [],
-  opetuskieli: [],
-  opiskelijamaarat: [],
-  poErityisetKoulutustehtavat: [],
-  muutEhdot: [],
-  toimintaalue: [],
-  yhteenveto: {
-    yleisettiedot: [],
-    hakemuksenLiitteet: []
-  },
-  // Top three fields of muutospyyntö form of esittelijä role
-  topthree: []
-};
-
 /**
  * Container component of UusiaAsiaDialog.
  *
@@ -115,7 +62,6 @@ const UusiAsiaDialogContainer = ({
   return (
     <UusiAsiaDialog
       history={history}
-      initialChangeObjects={changeObjects}
       kielet={kielet}
       kieletOPH={kieletOPH}
       kohteet={kohteet}

@@ -9,12 +9,10 @@ import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import { useHistory, useParams } from "react-router-dom";
 import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
-import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
 import { useMuutospyynto } from "../../stores/muutospyynto";
-import common from "../../i18n/definitions/common";
 import Opetustehtavat from "./lomake/1-Opetustehtavat";
 import FormSection from "./formSection";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
@@ -25,7 +23,11 @@ import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
 import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
 import Liitetiedostot from "./lomake/8-Liitetiedostot";
+import Rajoitteet from "./lomake/9-Rajoitteet";
 import * as R from "ramda";
+import common from "../../i18n/definitions/common";
+import education from "../../i18n/definitions/education";
+import { createObjectToSave } from "./saving";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -61,7 +63,6 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
-  initialChangeObjects: {},
   kielet: [],
   kieletOPH: [],
   kohteet: [],
@@ -89,7 +90,6 @@ const defaultProps = {
 };
 
 const UusiAsiaDialog = ({
-  initialChangeObjects = defaultProps.initialChangeObjects,
   kielet = defaultProps.kielet,
   kieletOPH = defaultProps.kieletOPH,
   kohteet = defaultProps.kohteet,
@@ -113,7 +113,7 @@ const UusiAsiaDialog = ({
   poMuutEhdot = defaultProps.poMuutEhdot,
   tutkinnot = defaultProps.tutkinnot
 }) => {
-  const [state] = useEsiJaPerusopetus();
+  const [state, actions] = useEsiJaPerusopetus();
 
   const intl = useIntl();
   const params = useParams();
@@ -121,7 +121,6 @@ const UusiAsiaDialog = ({
   let { uuid } = params;
 
   const prevCosRef = useRef(null);
-  const [changeObjects, setChangeObjects] = useState(null);
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [hasInvalidFields, setHasInvalidFields] = useState(false);
   const [isSavingEnabled, setIsSavingEnabled] = useState(false);
@@ -129,58 +128,10 @@ const UusiAsiaDialog = ({
 
   const [, muutospyyntoActions] = useMuutospyynto();
 
-  // const [kohteet, setKohteet] = useState({});
-  // const [maaraystyypit, setMaaraystyypit] = useState(null);
-
-  // useEffect(() => {
-  //   const _kohteet = R.mergeAll(
-  //     R.flatten(
-  //       R.map(item => {
-  //         return {
-  //           [R.props(["tunniste"], item)]: item
-  //         };
-  //       }, osiokohteet)
-  //     )
-  //   );
-  //   setKohteet(_kohteet);
-  // }, [kohteet]);
-
-  // useEffect(() => {
-  //   const _maaraystyypit = R.mergeAll(
-  //     R.flatten(
-  //       R.map(item => {
-  //         return {
-  //           [R.props(["tunniste"], item)]: item
-  //         };
-  //       }, maaraystyypitRaw)
-  //     )
-  //   );
-  //   setMaaraystyypit(_maaraystyypit);
-  // }, [maaraystyypitRaw]);
-
-  // const onChangesRemove = useCallback(
-  //   sectionId => {
-  //     return onChangesUpdate(sectionId, []);
-  //   },
-  //   [onChangesUpdate]
-  // );
-
-  // const updateChanges = useCallback(
-  //   payload => {
-  //     onChangesUpdate(payload.anchor, payload.changes);
-  //   },
-  //   [onChangesUpdate]
-  // );
-
   const valtakunnallinenMaarays = R.find(
     R.propEq("koodisto", "nuts1"),
     R.prop("maaraykset", lupa) || []
   );
-
-  useEffect(() => {
-    setChangeObjects(initialChangeObjects);
-    prevCosRef.current = R.clone(initialChangeObjects);
-  }, [initialChangeObjects]);
 
   const organisationPhoneNumber = R.head(
     R.values(R.find(R.prop("numero"), organisation.yhteystiedot))
@@ -206,7 +157,7 @@ const UusiAsiaDialog = ({
 
   const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
     if (id && changeObjects) {
-      setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
+      actions.setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
     }
     // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
     if (
@@ -215,21 +166,21 @@ const UusiAsiaDialog = ({
       id !== "kielet_tutkintokielet" &&
       R.isEmpty(changeObjects)
     ) {
-      setChangeObjects(R.dissocPath(R.split("_", id)));
+      actions.setChangeObjects(R.dissocPath(R.split("_", id)));
     }
-  }, []);
+  }, [actions]);
 
   /**
    * User is redirected to the following path when the form is closed.
    */
   const closeWizard = useCallback(async () => {
-    setChangeObjects(null);
+    actions.setChangeObjects(null, []);
     setIsDialogOpen(false);
     setIsConfirmDialogVisible(false);
     // Let's empty some store content on close.
     muutospyyntoActions.reset();
     return history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=true`);
-  }, [history, muutospyyntoActions]);
+  }, [history, muutospyyntoActions, actions]);
 
   useEffect(() => {
     setIsSavingEnabled(
@@ -239,9 +190,9 @@ const UusiAsiaDialog = ({
        * tallennuksen halutaan kuitenkin olevan mahdollista,
        * vaikka lomakkeella olisikin virheellisiä kenttiä.
        **/
-      !R.equals(prevCosRef.current, changeObjects)
+      !R.equals(prevCosRef.current, state.changeObjects)
     );
-  }, [hasInvalidFields, changeObjects]);
+  }, [hasInvalidFields, state.changeObjects]);
 
   /**
    * Opens the preview.
@@ -298,7 +249,7 @@ const UusiAsiaDialog = ({
           R.toUpper(intl.locale),
           organisation,
           lupa,
-          changeObjects,
+          state.changeObjects,
           uuid,
           kohteet,
           maaraystyypit,
@@ -321,18 +272,17 @@ const UusiAsiaDialog = ({
        * save button. It will be enabled after new changes.
        */
       setIsSavingEnabled(false);
-      prevCosRef.current = R.clone(changeObjects);
+      prevCosRef.current = R.clone(state.changeObjects);
 
       if (!uuid && !fromDialog) {
         if (muutospyynto && muutospyynto.uuid) {
           // It was the first save...
-          setChangeObjects(null);
+          actions.setChangeObjects(null);
           onNewDocSave(muutospyynto.uuid);
         }
       }
     },
     [
-      changeObjects,
       kohteet,
       intl.locale,
       lupa,
@@ -343,12 +293,14 @@ const UusiAsiaDialog = ({
       onPreview,
       onSave,
       organisation,
-      uuid
+      uuid,
+      state.changeObjects,
+      actions
     ]
   );
 
   return (
-    changeObjects !== null && (
+    state.changeObjects !== null && (
       <div className="max-w-7xl">
         <FormDialog
           open={isDialogOpen}
@@ -425,10 +377,9 @@ const UusiAsiaDialog = ({
                 </h2>
                 <Lomake
                   anchor="paatoksentiedot"
-                  changeObjects={changeObjects.paatoksentiedot}
+                  changeObjects={state.changeObjects.paatoksentiedot}
                   data={{ formatMessage: intl.formatMessage, uuid }}
-                  onChangesUpdate={payload =>
-                    onChangeObjectsUpdate(payload.anchor, payload.changes)
+                  onChangesUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)
                   }
                   path={["esiJaPerusopetus", "paatoksenTiedot"]}
                   hasInvalidFieldsFn={invalidFields => {
@@ -437,6 +388,11 @@ const UusiAsiaDialog = ({
               </div>
 
               <form onSubmit={() => {}}>
+                <FormSection
+                  render={props => <Rajoitteet {...props} />}
+                  sectionId="rajoitteet"
+                  title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
+
                 <FormSection
                   code={1}
                   render={props => (
@@ -467,33 +423,32 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"toimintaalue"}
-                  title={"Kunnat, joissa opetusta järjestetään"}></FormSection>
+                  title={intl.formatMessage(
+                    education.opetustaAntavatKunnat
+                  )}></FormSection>
 
                 <FormSection
                   code={3}
                   render={props => (
                     <Opetuskieli
-                      changeObjects={state.changeObjects.opetuskieli}
+                      changeObjects={state.changeObjects.opetuskielet}
                       kieletOPH={kieletOPH}
                       {...props}
                     />
                   )}
-                  sectionId={"opetuskieli"}
-                  title={"Opetuskieli"}></FormSection>
+                  sectionId={"opetuskielet"}
+                  title={intl.formatMessage(common.opetuskieli)}></FormSection>
 
                 <FormSection
                   code={4}
                   render={props => (
                     <OpetuksenJarjestamismuoto
-                      changeObjects={
-                        state.changeObjects.opetuksenJarjestamismuoto
-                      }
                       opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
                       {...props}
                     />
                   )}
-                  sectionId={"opetuksenJarjestamismuoto"}
-                  title={"Opetuksen järjestämismuoto"}></FormSection>
+                  sectionId={"opetuksenJarjestamismuodot"}
+                  title={intl.formatMessage(education.opetuksenJarjestamismuoto)}></FormSection>
 
                 <FormSection
                   code={5}
@@ -578,7 +533,6 @@ const UusiAsiaDialog = ({
 
 UusiAsiaDialog.propTypes = {
   history: PropTypes.object,
-  initialChangeObjects: PropTypes.object,
   kielet: PropTypes.array,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
@@ -592,6 +546,8 @@ UusiAsiaDialog.propTypes = {
   onChangeObjectsUpdate: PropTypes.func,
   onNewDocSave: PropTypes.func,
   opetuskielet: PropTypes.array,
+  opetustehtavakoodisto: PropTypes.object,
+  opetustehtavat: PropTypes.array,
   organisation: PropTypes.object,
   poErityisetKoulutustehtavat: PropTypes.array,
   poMuutEhdot: PropTypes.array,

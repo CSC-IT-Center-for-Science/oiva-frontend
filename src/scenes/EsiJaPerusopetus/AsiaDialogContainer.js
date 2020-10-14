@@ -10,50 +10,7 @@ import {parseLupa} from "../../utils/lupaParser";
 import localforage from "localforage";
 import {API_BASE_URL} from "modules/constants";
 import {backendRoutes} from "stores/utils/backendRoutes";
-
-const initialChangeObjects = {
-  tutkinnot: {},
-  kielet: {
-    opetuskielet: [],
-    tutkintokielet: {}
-  },
-  koulutukset: {},
-  perustelut: {
-    kielet: {
-      opetuskielet: [],
-      tutkintokielet: []
-    },
-    koulutukset: {
-      atvKoulutukset: [],
-      kuljettajakoulutukset: [],
-      tyovoimakoulutukset: [],
-      valmentavatKoulutukset: []
-    },
-    opiskelijavuodet: {
-      sisaoppilaitos: [],
-      vaativatuki: [],
-      vahimmaisopiskelijavuodet: []
-    },
-    liitteet: [],
-    toimintaalue: [],
-    tutkinnot: {}
-  },
-  taloudelliset: {
-    yleisettiedot: [],
-    investoinnit: [],
-    tilinpaatostiedot: [],
-    liitteet: []
-  },
-  muut: {},
-  opiskelijavuodet: [],
-  toimintaalue: [],
-  yhteenveto: {
-    yleisettiedot: [],
-    hakemuksenLiitteet: []
-  },
-  // Top three fields of muutospyyntö form of esittelijä role
-  topthree: []
-};
+import {useEsiJaPerusopetus} from "../../stores/esiJaPerusopetus";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -63,6 +20,7 @@ const initialChangeObjects = {
  */
 const AsiaDialogContainer = ({
   kielet,
+  kieletOPH,
   kohteet,
   koulutukset,
   koulutusalat,
@@ -73,7 +31,12 @@ const AsiaDialogContainer = ({
   maaraystyypit,
   muut,
   opetuskielet,
+  opetustehtavakoodisto,
+  opetustehtavat,
+  opetuksenJarjestamismuodot,
   organisaatio,
+  poErityisetKoulutustehtavat,
+  poMuutEhdot,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -83,7 +46,7 @@ const AsiaDialogContainer = ({
   const { uuid } = useParams();
 
   const [muutospyynto, setMuutospyynto] = useState();
-
+  const [state, actions] = useEsiJaPerusopetus();
   useEffect(() => {
     async function fetchMuutospyynto() {
       const response = await fetch(
@@ -133,88 +96,80 @@ const AsiaDialogContainer = ({
     }, findObjectWithKey({ ...muutospyynto }, "changeObjects"));
   }, [filesFromMuutokset, muutospyynto]);
 
-  const changeObjects = useMemo(() => {
-    if (!muutospyynto) {
-      return null;
-    }
+  useEffect(() => {
+    if (muutospyynto) {
 
-    const { muutokset: backendMuutokset } = muutospyynto || {};
+      const {muutokset: backendMuutokset} = muutospyynto || {};
 
-    let changesBySection = {};
+      let changesBySection = {};
 
-    localforage.setItem("backendMuutokset", backendMuutokset);
+      localforage.setItem("backendMuutokset", backendMuutokset);
 
-    if (updatedC) {
-      forEach(changeObj => {
-        const anchorInitialSplitted = split(
-          "_",
-          getAnchorPart(changeObj.anchor, 0)
-        );
-        const existingChangeObjects =
-          path(anchorInitialSplitted, changesBySection) || [];
-        const changeObjects = insert(-1, changeObj, existingChangeObjects);
-        changesBySection = assocPath(
-          anchorInitialSplitted,
-          changeObjects,
-          changesBySection
-        );
-      }, updatedC);
-    }
+      if (updatedC) {
+        forEach(changeObj => {
+          const anchorInitialSplitted = split(
+            "_",
+            getAnchorPart(changeObj.anchor, 0)
+          );
+          const existingChangeObjects =
+            path(anchorInitialSplitted, changesBySection) || [];
+          const changeObjects = insert(-1, changeObj, existingChangeObjects);
+          changesBySection = assocPath(
+            anchorInitialSplitted,
+            changeObjects,
+            changesBySection
+          );
+        }, updatedC);
+      }
 
-    // Special case: Toiminta-alueen perustelut
-    const toimintaAluePerusteluChangeObject = path(
-      ["perustelut", "toimintaalue", "0"],
-      changesBySection
-    );
-    if (
-      toimintaAluePerusteluChangeObject &&
-      !includes("reasoning", toimintaAluePerusteluChangeObject.anchor)
-    ) {
-      changesBySection = assocPath(
-        ["perustelut", "toimintaalue"],
-        [
-          {
-            anchor: "perustelut_toimintaalue.reasoning.A",
-            properties: toimintaAluePerusteluChangeObject.properties
-          }
-        ],
+      // Special case: Toiminta-alueen perustelut
+      const toimintaAluePerusteluChangeObject = path(
+        ["perustelut", "toimintaalue", "0"],
         changesBySection
       );
+      if (
+        toimintaAluePerusteluChangeObject &&
+        !includes("reasoning", toimintaAluePerusteluChangeObject.anchor)
+      ) {
+        changesBySection = assocPath(
+          ["perustelut", "toimintaalue"],
+          [
+            {
+              anchor: "perustelut_toimintaalue.reasoning.A",
+              properties: toimintaAluePerusteluChangeObject.properties
+            }
+          ],
+          changesBySection
+        );
+      }
+      changesBySection.paatoksentiedot = path(["meta", "paatoksentiedot"], muutospyynto) || [];
+      // Set uuid for asianumero
+      find(paatoksentiedot => getAnchorPart(paatoksentiedot.anchor, 1) === 'asianumero', changesBySection.paatoksentiedot)
+        .properties.metadata = {uuid: muutospyynto.uuid};
+
+      if (
+        changesBySection.categoryFilter &&
+        changesBySection.categoryFilter.length > 0
+      ) {
+        changesBySection.toimintaalue = [
+          Object.assign({}, changesBySection.categoryFilter[0])
+        ];
+      }
+
+      delete changesBySection.categoryFilter;
+
+      /**
+       * At this point the backend data is handled and change objects have been formed.
+       */
+      actions.setChangeObjects(null, changesBySection);
     }
+  }, [muutospyynto, updatedC, actions]);
 
-    changesBySection.topthree = path(["meta", "topthree"], muutospyynto) || [];
-    // Set uuid for asianumero
-    find(topthree => getAnchorPart(topthree.anchor, 1) === 'asianumero', changesBySection.topthree)
-      .properties.metadata = {uuid: muutospyynto.uuid};
-
-    if (
-      changesBySection.categoryFilter &&
-      changesBySection.categoryFilter.length > 0
-    ) {
-      changesBySection.toimintaalue = [
-        Object.assign({}, changesBySection.categoryFilter[0])
-      ];
-    }
-
-    delete changesBySection.categoryFilter;
-
-    /**
-     * At this point the backend data is handled and change objects have been formed.
-     */
-    const nextChangeObjects = Object.assign(
-      {},
-      initialChangeObjects,
-      changesBySection
-    );
-
-    return nextChangeObjects;
-  }, [muutospyynto, updatedC]);
-
-  return muutospyynto && changeObjects ? (
+  return muutospyynto && state.changeObjects ? (
     <UusiAsiaDialog
       history={history}
-      initialChangeObjects={changeObjects}
       kielet={kielet}
+      kieletOPH={kieletOPH}
       kohteet={kohteet}
       koulutukset={koulutukset}
       koulutusalat={koulutusalat}
@@ -227,7 +182,12 @@ const AsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={() => {}}
+      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
+      poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+      poMuutEhdot={poMuutEhdot}
       opetuskielet={opetuskielet}
+      opetustehtavakoodisto={opetustehtavakoodisto}
+      opetustehtavat={opetustehtavat}
       organisation={organisaatio}
       tutkinnot={tutkinnot}
     />
