@@ -16,7 +16,9 @@ import {
   reject,
   isNil,
   includes,
-  concat
+  concat,
+  endsWith,
+  prop
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";
@@ -417,13 +419,71 @@ export async function defineBackendChangeObjects(
     ).filter(Boolean);
   }
 
-  const { lisatiedot: lisatiedotChangeObj } = changeObjects;
+  /**
+   * Jos opetusta järjestetään Suomen ulkopuolella, on backendille lähetettävä
+   * tiedot siitä.
+   */
+  const changeObjUlkomaaCheckbox = find(
+    compose(endsWith(".200"), prop("anchor")),
+    changeObjects.ulkomaa
+  );
+
+  const ulkomaaBEchangeObjectCheckbox = changeObjUlkomaaCheckbox
+    ? [
+        {
+          meta: {
+            changeObjects: [changeObjUlkomaaCheckbox]
+          },
+          kohde,
+          koodiarvo: path(
+            ["properties", "metadata", "koodiarvo"],
+            changeObjUlkomaaCheckbox
+          ),
+          koodisto: path(
+            ["properties", "metadata", "koodisto", "koodistoUri"],
+            changeObjUlkomaaCheckbox
+          ),
+          maaraystyyppi,
+          tila: changeObjUlkomaaCheckbox.properties.isChecked
+            ? "LISAYS"
+            : "POISTO"
+        }
+      ]
+    : null;
+
+  const changeObjUlkomaaTextBox = find(
+    compose(endsWith(".200.lisatiedot"), prop("anchor")),
+    changeObjects.ulkomaa
+  );
+  const ulkomaaBEchangeObjectTextBox = changeObjUlkomaaTextBox
+    ? [
+        {
+          tila: "LISAYS",
+          meta: {
+            arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
+            changeObjects: [changeObjUlkomaaTextBox]
+          },
+          kohde,
+          koodiarvo: path(
+            ["properties", "metadata", "koodiarvo"],
+            changeObjUlkomaaTextBox
+          ),
+          koodisto: path(
+            ["properties", "metadata", "koodisto", "koodistoUri"],
+            changeObjUlkomaaTextBox
+          ),
+          maaraystyyppi
+        }
+      ]
+    : null;
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
    * muutoksia. Siksi kentän tiedoista luodaan tässä kohtaa oma backend-
    * muotoinen muutosobjekti.
    */
+  const { lisatiedot: lisatiedotChangeObj } = changeObjects;
+
   const lisatiedotBEchangeObject = lisatiedotChangeObj
     ? {
         tila: "LISAYS",
@@ -444,12 +504,12 @@ export async function defineBackendChangeObjects(
       }
     : null;
 
-  console.info(lisatiedotChangeObj, lisatiedotBEchangeObject);
-
   let allBEobjects = flatten([
     quickFilterBEchangeObjects,
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,
+    ulkomaaBEchangeObjectCheckbox,
+    ulkomaaBEchangeObjectTextBox,
     lisatiedotBEchangeObject
   ]).filter(Boolean);
 

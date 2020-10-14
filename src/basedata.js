@@ -34,6 +34,7 @@ import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJarjestam
 import { initializePOErityisetKoulutustehtavat } from "helpers/poErityisetKoulutustehtavat";
 import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
 import { initializeLisatiedot } from "helpers/lisatiedot";
+import { initializeKunta } from "helpers/kunnat";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -305,7 +306,17 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
-    kunnat: raw.kunnat,
+    kunnat: raw.kunnat
+      ? await localforage.setItem(
+          "kunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(kunta => {
+              return initializeKunta(kunta, localeUpper);
+            }, raw.kunnat).filter(Boolean)
+          )
+        )
+      : undefined,
     lisatiedot: raw.lisatiedot
       ? await localforage.setItem(
           "lisatiedot",
@@ -462,7 +473,6 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
    */
   useEffect(() => {
     fetchBaseData(keys, locale, ytunnus).then(result => {
-      console.info(result);
       setBaseData(result);
     });
   }, [keys, locale, ytunnus]);

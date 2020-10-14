@@ -43,6 +43,8 @@ const OpetustaAntavatKunnat = props => {
 
   const [isEditViewActive, toggleEditView] = useState(false);
 
+  const ulkomaa = R.find(R.propEq("koodiarvo", "200"), props.kunnat);
+
   const kunnatInLupa = useMemo(() => {
     return R.sortBy(
       R.path(["metadata", "arvo"]),
@@ -83,19 +85,10 @@ const OpetustaAntavatKunnat = props => {
    */
   const handleChanges = useCallback(
     changesByAnchor => {
-      // const updatedChanges = R.filter(
-      //   R.compose(R.not, R.propEq("anchor", "toimintaalue.")),
-      //   changesByAnchor.changes
-      // );
-      // const categoryFilterChanges = R.uniq(R.flatten(updatedChanges)).filter(
-      //   Boolean
-      // );
-      console.info(props.sectionId, changesByAnchor, props.changeObjects);
       const sectionChanges = {
         anchor: props.sectionId,
         changes: changesByAnchor.changes
       };
-      console.info(sectionChanges);
       onChangesUpdate(sectionChanges);
     },
     [onChangesUpdate, props.changeObjects, props.sectionId]
@@ -103,7 +96,6 @@ const OpetustaAntavatKunnat = props => {
 
   const whenChanges = useCallback(
     changes => {
-      console.info(changes);
       const withoutCategoryFilterChangeObj = R.filter(
         R.compose(
           R.not,
@@ -132,8 +124,6 @@ const OpetustaAntavatKunnat = props => {
             ]
           : []
       ]);
-
-      console.info(props.sectionId);
 
       return onChangesUpdate({
         anchor: props.sectionId,
@@ -356,6 +346,7 @@ const OpetustaAntavatKunnat = props => {
               wizard.wholeCountryWithoutAhvenanmaa
             )
           },
+          ulkomaa,
           maakunnat: provincesWithoutAhvenanmaa,
           onChanges: whenChanges,
           toggleEditView,

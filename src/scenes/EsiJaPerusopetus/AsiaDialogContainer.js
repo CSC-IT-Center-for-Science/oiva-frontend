@@ -128,8 +128,6 @@ const AsiaDialogContainer = ({
       find(paatoksentiedot => getAnchorPart(paatoksentiedot.anchor, 1) === 'asianumero', changesBySection.paatoksentiedot)
         .properties.metadata = {uuid: muutospyynto.uuid};
 
-      console.info(changesBySection);
-
       if (
         changesBySection.categoryFilter &&
         changesBySection.categoryFilter.length > 0

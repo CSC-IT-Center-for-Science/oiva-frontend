@@ -33,41 +33,56 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
           }
         ]
       },
-      {
-        anchor: "suomenulkopuolinenopetus",
-        components: [
-          {
-            anchor: "jarjestaminen",
-            name: "CheckboxWithLabel",
-            properties: {
-              title: __("education.opetustaSuomenUlkopuolella"),
-              labelStyles: {
-                addition: isAdded,
-                removal: isRemoved,
-                custom: Object.assign({}, !!false ? isInLupa : {}) // TODO: määritä oikea arvo
-              },
-              isChecked: false,
-              isIndeterminate: false
-            },
-            styleClasses: "mt-8"
-          }
-        ],
-        categories: [
-          {
-            anchor: "sijainti",
+      !!data.ulkomaa
+        ? {
+            anchor: "ulkomaa",
             components: [
               {
-                anchor: "maajapaikkakunta",
-                name: "TextBox",
+                anchor: data.ulkomaa.koodiarvo,
+                name: "CheckboxWithLabel",
                 properties: {
-                  placeholder: __("common.maaJaPaikkakunta"),
-                  title: __("common.maaJaPaikkakunta")
-                }
+                  forChangeObject: {
+                    koodiarvo: data.ulkomaa.koodiarvo,
+                    koodisto: data.ulkomaa.koodisto,
+                    versio: data.ulkomaa.versio,
+                    voimassaAlkuPvm: data.ulkomaa.voimassaAlkuPvm
+                  },
+                  labelStyles: {
+                    addition: isAdded,
+                    removal: isRemoved,
+                    // TODO: määritä oikea ehto ja arvo
+                    custom: Object.assign({}, !!false ? isInLupa : {})
+                  },
+                  isChecked: false,
+                  isIndeterminate: false,
+                  title: __("education.opetustaSuomenUlkopuolella")
+                },
+                styleClasses: "mt-8"
+              }
+            ],
+            categories: [
+              {
+                anchor: data.ulkomaa.koodiarvo,
+                components: [
+                  {
+                    anchor: "lisatiedot",
+                    name: "TextBox",
+                    properties: {
+                      forChangeObject: {
+                        koodiarvo: data.ulkomaa.koodiarvo,
+                        koodisto: data.ulkomaa.koodisto,
+                        versio: data.ulkomaa.versio,
+                        voimassaAlkuPvm: data.ulkomaa.voimassaAlkuPvm
+                      },
+                      placeholder: __("common.maaJaPaikkakunta"),
+                      title: __("common.maaJaPaikkakunta")
+                    }
+                  }
+                ]
               }
             ]
           }
-        ]
-      },
+        : null,
       lisatiedotObj
         ? [
             {
