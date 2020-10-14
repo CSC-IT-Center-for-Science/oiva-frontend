@@ -39,6 +39,11 @@ export default defineMessages({
   },
   eiSisaOppilaitosTaiKotikoulumuotoinen: {
     id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    defaultMessage: "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+    defaultMessage:
+      "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+  },
+  muutEhdotTitle: {
+    id: "education.muutEhdotTitle",
+    defaultMessage: "Muut koulutuksen järjestämiseen liittyvät ehdot"
   }
 });
