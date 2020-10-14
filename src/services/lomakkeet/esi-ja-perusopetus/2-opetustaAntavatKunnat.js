@@ -1,6 +1,7 @@
 import {__} from "i18n-for-browser";
 
-export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
+export const opetustaAntavatKunnat = (data, isReadOnly, locale, changeObjects) => {
+
     return [
       {
         anchor: "valintakentta",
@@ -26,6 +27,41 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
         ]
       },
       {
+        anchor: "suomenulkopuolinenopetus",
+        components: [
+          {
+            anchor: "jarjestaminen",
+            name: "CheckboxWithLabel",
+            properties: {
+              title:  __("education.opetustaSuomenUlkopuolella"),
+              labelStyles: {
+                addition: false,
+                removal: false,
+                custom: {}
+              },
+              isChecked: false,
+              isIndeterminate: false
+            }
+          }
+        ],
+        categories: [
+          {
+            anchor: "sijainti",
+            components: [
+              {
+                anchor: "maajapaikkakunta",
+                name: "TextBox",
+                properties: {
+                  placeholder: __("common.maaJaPaikkakunta"),
+                  title: __("common.maaJaPaikkakunta")
+                }
+              }
+            ]
+          }
+        ],
+      },
+
+      {
         anchor: "maakunnatjakunnat",
         layout: { margins: { top: "large" } },
         components: [
@@ -34,8 +70,8 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
             name: "StatusTextRow",
             styleClasses: ["pt-8 border-t"],
             properties: {
-              title:
-                __("common.lisatiedotInfo")
+                title:
+                    __("common.lisatiedotInfo")
             }
           }
         ]
@@ -45,6 +81,7 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
         components: [
           {
             anchor: "lisatiedot",
+            styleClasses: ["pt-8 border-t"],
             name: "TextBox",
             properties: {
               placeholder: __("common.lisatiedot")
