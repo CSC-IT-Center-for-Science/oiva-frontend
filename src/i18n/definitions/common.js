@@ -1033,5 +1033,9 @@ export default defineMessages({
   nimi: {
     id: "common.nimi",
     defaultMessage: "Nimi"
+  },
+  lisaaUusiNimi: {
+    id: "common.lisaaUusiNimi",
+    defaultMessage: "Lisää uusi nimi"
   }
 });

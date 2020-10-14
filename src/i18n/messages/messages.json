@@ -1290,6 +1290,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.lisaaUusiNimi",
+    "defaultMessage": "Lisää uusi nimi",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
