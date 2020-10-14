@@ -31,7 +31,7 @@ const Opetuskieli = ({
       onUpdate={onChangesUpdate}
       sectionId={sectionId}
       showCategoryTitles={true}
-      title={"Kielet"}>
+      title={intl.formatMessage(common.kielet)}>
       <Lomake
         action="modification"
         anchor={sectionId}

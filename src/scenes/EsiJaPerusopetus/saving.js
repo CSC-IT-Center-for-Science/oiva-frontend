@@ -1,8 +1,9 @@
 
 import moment from "moment";
 import * as R from "ramda";
-import * as opetusHelper from  "helpers/opetustehtavat";
+import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJärjestämismuodot";
+import * as opetuskieletHelper from "helpers/opetuskielet"
 
 export async function createObjectToSave(
   locale,
@@ -37,9 +38,10 @@ export async function createObjectToSave(
     changeObjects.opetustehtavat, maaraystyypit, locale, kohteet);
 
   // OPETUKSEN JÄRJESTÄMISMUODOT
-  const opetuksenJarjestamismuodot = await  opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
+  const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
     changeObjects.opetuksenJarjestamismuodot, maaraystyypit, locale, kohteet);
-
+  const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(changeObjects.opetuskielet,
+    maaraystyypit, locale, kohteet);
 
   let objectToSave = {
     alkupera,
@@ -60,7 +62,8 @@ export async function createObjectToSave(
     meta: {},
     muutokset: R.flatten([
       opetus,
-      opetuksenJarjestamismuodot
+      opetuksenJarjestamismuodot,
+      opetuskielet
     ]),
     uuid
   };
