@@ -1,8 +1,15 @@
-import {__} from "i18n-for-browser";
+import { isAdded, isInLupa, isRemoved } from "css/label";
+import { __ } from "i18n-for-browser";
+import { find, flatten, pathEq, toUpper } from "ramda";
 
-export const opetustaAntavatKunnat = (data, isReadOnly, locale, changeObjects) => {
+export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    data.lisatiedot
+  );
 
-    return [
+  return flatten(
+    [
       {
         anchor: "valintakentta",
         components: [
@@ -33,15 +40,16 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale, changeObjects) =
             anchor: "jarjestaminen",
             name: "CheckboxWithLabel",
             properties: {
-              title:  __("education.opetustaSuomenUlkopuolella"),
+              title: __("education.opetustaSuomenUlkopuolella"),
               labelStyles: {
-                addition: false,
-                removal: false,
-                custom: {}
+                addition: isAdded,
+                removal: isRemoved,
+                custom: Object.assign({}, !!false ? isInLupa : {}) // TODO: määritä oikea arvo
               },
               isChecked: false,
               isIndeterminate: false
-            }
+            },
+            styleClasses: "mt-8"
           }
         ],
         categories: [
@@ -58,36 +66,45 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale, changeObjects) =
               }
             ]
           }
-        ],
-      },
-
-      {
-        anchor: "maakunnatjakunnat",
-        layout: { margins: { top: "large" } },
-        components: [
-          {
-            anchor: "lisatiedot-info",
-            name: "StatusTextRow",
-            styleClasses: ["pt-8 border-t"],
-            properties: {
-                title:
-                    __("common.lisatiedotInfo")
-            }
-          }
         ]
       },
-      {
-        anchor: "maakunnatjakunnat",
-        components: [
-          {
-            anchor: "lisatiedot",
-            styleClasses: ["pt-8 border-t"],
-            name: "TextBox",
-            properties: {
-              placeholder: __("common.lisatiedot")
+      lisatiedotObj
+        ? [
+            {
+              anchor: "lisatiedotTitle",
+              layout: { margins: { top: "large" } },
+              components: [
+                {
+                  anchor: lisatiedotObj.koodiarvo,
+                  name: "StatusTextRow",
+                  styleClasses: ["pt-8 border-t"],
+                  properties: {
+                    title: __("common.lisatiedotInfo")
+                  }
+                }
+              ]
+            },
+            {
+              anchor: "lisatiedot",
+              components: [
+                {
+                  anchor: lisatiedotObj.koodiarvo,
+                  name: "TextBox",
+                  properties: {
+                    forChangeObject: {
+                      koodiarvo: lisatiedotObj.koodiarvo,
+                      koodisto: lisatiedotObj.koodisto,
+                      versio: lisatiedotObj.versio,
+                      voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+                    },
+                    placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
+                      .nimi
+                  }
+                }
+              ]
             }
-          }
-        ]
-      }
-    ];
-  }
+          ]
+        : null
+    ].filter(Boolean)
+  );
+};

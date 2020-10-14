@@ -30,9 +30,10 @@ import { initializeMuu } from "helpers/muut";
 import { initializeKoulutus } from "helpers/koulutukset";
 import { initializeOpetuskielet } from "helpers/opetuskielet";
 import { initializeOpetustehtavat } from "helpers/opetustehtavat";
-import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJärjestämismuodot";
+import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJarjestamismuodot";
 import { initializePOErityisetKoulutustehtavat } from "helpers/poErityisetKoulutustehtavat";
 import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
+import { initializeLisatiedot } from "helpers/lisatiedot";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -95,6 +96,12 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     ),
     kielet: await getRaw("kielet", backendRoutes.kielet.path, keys),
     kohteet: await getRaw("kohteet", backendRoutes.kohteet.path, keys),
+    lisatiedot: await getRaw(
+      "lisatietoja",
+      backendRoutes.lisatietoja.path,
+      keys,
+      backendRoutes.lisatietoja.minimumTimeBetweenFetchingInMinutes
+    ),
     lupa: await getRaw(
       "lupa",
       `${backendRoutes.lupa.path}${ytunnus}?with=all&useKoodistoVersions=false`,
@@ -225,9 +232,9 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     kieletOPH: raw.kielet
       ? await localforage.setItem(
           "kieletOPH",
-        map(kieli => {
-          return initializeKieli(kieli);
-            }, filterOPHKielet(raw.kieletOPH))
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, filterOPHKielet(raw.kieletOPH))
         )
       : undefined,
     kohteet: raw.kohteet
@@ -299,6 +306,12 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
         )
       : undefined,
     kunnat: raw.kunnat,
+    lisatiedot: raw.lisatiedot
+      ? await localforage.setItem(
+          "lisatiedot",
+          initializeLisatiedot(raw.lisatiedot)
+        )
+      : undefined,
     lupa: raw.lupa,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat
@@ -449,6 +462,7 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
    */
   useEffect(() => {
     fetchBaseData(keys, locale, ytunnus).then(result => {
+      console.info(result);
       setBaseData(result);
     });
   }, [keys, locale, ytunnus]);

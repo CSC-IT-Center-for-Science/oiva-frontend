@@ -19,6 +19,7 @@ const UusiAsiaDialogContainer = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
+  lisatiedot,
   maakunnat,
   maakuntakunnat,
   maaraystyypit,
@@ -69,6 +70,7 @@ const UusiAsiaDialogContainer = ({
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
       kunnat={kunnat}
+      lisatiedot={lisatiedot}
       lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
       maakunnat={maakunnat}

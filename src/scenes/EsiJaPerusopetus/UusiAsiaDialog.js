@@ -73,6 +73,7 @@ const defaultProps = {
   koulutusalat: {},
   koulutustyypit: {},
   kunnat: [],
+  lisatiedot: [],
   lupa: {},
   lupaKohteet: {},
   maakunnat: [],
@@ -97,6 +98,7 @@ const UusiAsiaDialog = ({
   koulutusalat = defaultProps.koulutusalat,
   koulutustyypit = defaultProps.koulutustyypit,
   kunnat = defaultProps.kunnat,
+  lisatiedot = defaultProps.lisatiedot,
   lupa = defaultProps.lupa,
   lupaKohteet = defaultProps.lupaKohteet,
   maakunnat = defaultProps.maakunnat,
@@ -155,20 +157,23 @@ const UusiAsiaDialog = ({
     setIsConfirmDialogVisible(false);
   }
 
-  const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
-    if (id && changeObjects) {
-      actions.setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
-    }
-    // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
-    if (
-      id &&
-      id !== "toimintaalue" &&
-      id !== "kielet_tutkintokielet" &&
-      R.isEmpty(changeObjects)
-    ) {
-      actions.setChangeObjects(R.dissocPath(R.split("_", id)));
-    }
-  }, [actions]);
+  const onChangeObjectsUpdate = useCallback(
+    (id, changeObjects) => {
+      if (id && changeObjects) {
+        actions.setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
+      }
+      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
+      if (
+        id &&
+        id !== "toimintaalue" &&
+        id !== "kielet_tutkintokielet" &&
+        R.isEmpty(changeObjects)
+      ) {
+        actions.setChangeObjects(R.dissocPath(R.split("_", id)));
+      }
+    },
+    [actions]
+  );
 
   /**
    * User is redirected to the following path when the form is closed.
@@ -379,7 +384,8 @@ const UusiAsiaDialog = ({
                   anchor="paatoksentiedot"
                   changeObjects={state.changeObjects.paatoksentiedot}
                   data={{ formatMessage: intl.formatMessage, uuid }}
-                  onChangesUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)
+                  onChangesUpdate={payload =>
+                    actions.setChangeObjects(payload.anchor, payload.changes)
                   }
                   path={["esiJaPerusopetus", "paatoksenTiedot"]}
                   hasInvalidFieldsFn={invalidFields => {
@@ -416,6 +422,7 @@ const UusiAsiaDialog = ({
                       changeObjects={state.changeObjects.toimintaalue}
                       lupakohde={lupaKohteet[3]}
                       kunnat={kunnat}
+                      lisatiedot={lisatiedot}
                       maakuntakunnat={maakuntakunnat}
                       maakunnat={maakunnat}
                       valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -448,7 +455,9 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuksenJarjestamismuodot"}
-                  title={intl.formatMessage(education.opetuksenJarjestamismuoto)}></FormSection>
+                  title={intl.formatMessage(
+                    education.opetuksenJarjestamismuoto
+                  )}></FormSection>
 
                 <FormSection
                   code={5}
@@ -537,6 +546,7 @@ UusiAsiaDialog.propTypes = {
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
+  lisatiedot: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maakunnat: PropTypes.array,
