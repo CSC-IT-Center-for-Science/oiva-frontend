@@ -37,8 +37,6 @@ export function rajoitteet(data, isReadOnly, locale, changeObjects) {
     };
   }, changeObjectsByRajoiteId);
 
-  console.info(rajoitteetGrouped);
-
   const rajoitteet = values(
     mapObjIndexed((rajoite, rajoiteId) => {
       const {
@@ -118,8 +116,6 @@ export function rajoitteet(data, isReadOnly, locale, changeObjects) {
     }, rajoitteetGrouped)
   );
 
-  console.info(rajoitteet);
-
   const lomake = flatten(
     [
       {
@@ -151,8 +147,6 @@ export function rajoitteet(data, isReadOnly, locale, changeObjects) {
       rajoitteet
     ].filter(Boolean)
   );
-
-  console.info("Lomake", lomake);
 
   return lomake;
 }

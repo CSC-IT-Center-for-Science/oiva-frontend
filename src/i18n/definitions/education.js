@@ -40,5 +40,9 @@ export default defineMessages({
   eiSisaOppilaitosTaiKotikoulumuotoinen: {
     id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
     defaultMessage: "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+  },
+  opetustaJarjestetaanSuomenUlkopuolella:{
+    id: "education.opetustaSuomenUlkopuolella",
+    defaultValue: "Opetusta järjestetään Suomen ulkopuolella"
   }
 });

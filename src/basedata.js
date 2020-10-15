@@ -30,9 +30,11 @@ import { initializeMuu } from "helpers/muut";
 import { initializeKoulutus } from "helpers/koulutukset";
 import { initializeOpetuskielet } from "helpers/opetuskielet";
 import { initializeOpetustehtavat } from "helpers/opetustehtavat";
-import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJärjestämismuodot";
+import { initializeOpetuksenJarjestamismuodot } from "helpers/opetuksenJarjestamismuodot";
 import { initializePOErityisetKoulutustehtavat } from "helpers/poErityisetKoulutustehtavat";
 import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
+import { initializeLisatiedot } from "helpers/lisatiedot";
+import { initializeKunta } from "helpers/kunnat";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -95,6 +97,12 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     ),
     kielet: await getRaw("kielet", backendRoutes.kielet.path, keys),
     kohteet: await getRaw("kohteet", backendRoutes.kohteet.path, keys),
+    lisatiedot: await getRaw(
+      "lisatietoja",
+      backendRoutes.lisatietoja.path,
+      keys,
+      backendRoutes.lisatietoja.minimumTimeBetweenFetchingInMinutes
+    ),
     lupa: await getRaw(
       "lupa",
       `${backendRoutes.lupa.path}${ytunnus}?with=all&useKoodistoVersions=false`,
@@ -225,9 +233,9 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     kieletOPH: raw.kielet
       ? await localforage.setItem(
           "kieletOPH",
-        map(kieli => {
-          return initializeKieli(kieli);
-            }, filterOPHKielet(raw.kieletOPH))
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, filterOPHKielet(raw.kieletOPH))
         )
       : undefined,
     kohteet: raw.kohteet
@@ -298,7 +306,23 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
-    kunnat: raw.kunnat,
+    kunnat: raw.kunnat
+      ? await localforage.setItem(
+          "kunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(kunta => {
+              return initializeKunta(kunta, localeUpper);
+            }, raw.kunnat).filter(Boolean)
+          )
+        )
+      : undefined,
+    lisatiedot: raw.lisatiedot
+      ? await localforage.setItem(
+          "lisatiedot",
+          initializeLisatiedot(raw.lisatiedot)
+        )
+      : undefined,
     lupa: raw.lupa,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat
