@@ -73,6 +73,7 @@ const defaultProps = {
   koulutusalat: {},
   koulutustyypit: {},
   kunnat: [],
+  lisatiedot: [],
   lupa: {},
   lupaKohteet: {},
   maakunnat: [],
@@ -90,13 +91,10 @@ const defaultProps = {
 };
 
 const UusiAsiaDialog = ({
-  kielet = defaultProps.kielet,
   kieletOPH = defaultProps.kieletOPH,
   kohteet = defaultProps.kohteet,
-  koulutukset = defaultProps.koulutukset,
-  koulutusalat = defaultProps.koulutusalat,
-  koulutustyypit = defaultProps.koulutustyypit,
   kunnat = defaultProps.kunnat,
+  lisatiedot = defaultProps.lisatiedot,
   lupa = defaultProps.lupa,
   lupaKohteet = defaultProps.lupaKohteet,
   maakunnat = defaultProps.maakunnat,
@@ -105,13 +103,11 @@ const UusiAsiaDialog = ({
   muut = defaultProps.muut,
   onNewDocSave,
   opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
-  opetuskielet = defaultProps.opetuskielet,
   opetustehtavat = defaultProps.opetustehtavat,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
-  poMuutEhdot = defaultProps.poMuutEhdot,
-  tutkinnot = defaultProps.tutkinnot
+  poMuutEhdot = defaultProps.poMuutEhdot
 }) => {
   const [state, actions] = useEsiJaPerusopetus();
 
@@ -154,24 +150,6 @@ const UusiAsiaDialog = ({
   function handleCancel() {
     setIsConfirmDialogVisible(false);
   }
-
-  const onChangeObjectsUpdate = useCallback(
-    (id, changeObjects) => {
-      if (id && changeObjects) {
-        actions.setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
-      }
-      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
-      if (
-        id &&
-        id !== "toimintaalue" &&
-        id !== "kielet_tutkintokielet" &&
-        R.isEmpty(changeObjects)
-      ) {
-        actions.setChangeObjects(R.dissocPath(R.split("_", id)));
-      }
-    },
-    [actions]
-  );
 
   /**
    * User is redirected to the following path when the form is closed.
@@ -256,8 +234,6 @@ const UusiAsiaDialog = ({
           uuid,
           kohteet,
           maaraystyypit,
-          muut,
-          lupaKohteet,
           "ESITTELIJA"
         )
       );
@@ -440,6 +416,7 @@ const UusiAsiaDialog = ({
                       changeObjects={state.changeObjects.toimintaalue}
                       lupakohde={lupaKohteet[3]}
                       kunnat={kunnat}
+                      lisatiedot={lisatiedot}
                       maakuntakunnat={maakuntakunnat}
                       maakunnat={maakunnat}
                       valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -543,13 +520,13 @@ UusiAsiaDialog.propTypes = {
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
+  lisatiedot: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maakunnat: PropTypes.array,
   maakuntakunnat: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
-  onChangeObjectsUpdate: PropTypes.func,
   onNewDocSave: PropTypes.func,
   opetuskielet: PropTypes.array,
   opetustehtavakoodisto: PropTypes.object,

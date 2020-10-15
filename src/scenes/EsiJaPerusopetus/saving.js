@@ -1,8 +1,9 @@
 import moment from "moment";
 import * as R from "ramda";
-import * as opetusHelper from "helpers/opetustehtavat";
-import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJärjestämismuodot";
 import * as muutEhdotHelper from "helpers/poMuutEhdot";
+import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJärjestämismuodot";
+import * as opetusHelper from "helpers/opetustehtavat";
+import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 
 export async function createObjectToSave(
   locale,
@@ -12,8 +13,6 @@ export async function createObjectToSave(
   uuid,
   kohteet,
   maaraystyypit,
-  muut,
-  lupaKohteet,
   alkupera = "KJ"
 ) {
   const allAttachmentsRaw = [];
@@ -47,6 +46,10 @@ export async function createObjectToSave(
     kohteet
   );
 
+  );
+  
+    ) || {};
+
   // MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
   const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
     changeObjects.muutEhdot,
@@ -54,6 +57,39 @@ export async function createObjectToSave(
     locale,
     kohteet
   );
+
+  // OPETUSTA ANTAVAT KUNNAT
+  const categoryFilterChangeObj =
+    R.find(
+      R.propEq("anchor", "toimintaalue.categoryFilter"),
+      changeObjects.toimintaalue || []
+    ) || {};
+
+  const opetustaAntavatKunnat = await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
+    {
+      quickFilterChanges: R.path(
+        ["properties", "quickFilterChanges"],
+        categoryFilterChangeObj
+      ),
+      changesByProvince: R.path(
+        ["properties", "changesByProvince"],
+        categoryFilterChangeObj
+      ),
+      lisatiedot: R.find(
+        R.compose(R.includes(".lisatiedot."), R.prop("anchor")),
+        changeObjects.toimintaalue || []
+      ),
+      ulkomaa: R.filter(
+        R.compose(R.includes(".ulkomaa."), R.prop("anchor")),
+        changeObjects.toimintaalue || []
+      )
+    },
+    R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
+    maaraystyypit,
+    lupa.maaraykset
+  );
+
+  console.info("alkuperä", alkupera);
 
   let objectToSave = {
     alkupera,
@@ -72,7 +108,7 @@ export async function createObjectToSave(
     voimassaloppupvm: null, // TODO: find the correct value somehow,
     liitteet: allAttachments,
     meta: {},
-    muutokset: R.flatten([muutEhdot, opetuksenJarjestamismuodot, opetus]),
+    muutokset: R.flatten([muutEhdot, opetuksenJarjestamismuodot, opetus, opetustaAntavatKunnat]),
     uuid
   };
 

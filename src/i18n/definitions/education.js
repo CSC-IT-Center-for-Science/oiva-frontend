@@ -45,5 +45,9 @@ export default defineMessages({
   muutEhdotTitle: {
     id: "education.muutEhdotTitle",
     defaultMessage: "Muut koulutuksen järjestämiseen liittyvät ehdot"
+  },
+  opetustaJarjestetaanSuomenUlkopuolella: {
+    id: "education.opetustaJarjestetaanSuomenUlkopuolella",
+    defaultValue: "Opetusta järjestetään Suomen ulkopuolella"
   }
 });
