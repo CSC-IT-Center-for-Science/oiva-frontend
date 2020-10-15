@@ -21,8 +21,8 @@ const MuutEhdot = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback(() => {
-    actions.createTextBoxChangeObject(sectionId);
+  const onAddButtonClick = useCallback(koodiarvo => {
+    actions.createTextBoxChangeObject(sectionId, koodiarvo);
   }, [actions, sectionId]);
 
   const onChanges = useCallback(

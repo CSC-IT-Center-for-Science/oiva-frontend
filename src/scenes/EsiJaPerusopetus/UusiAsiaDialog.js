@@ -155,20 +155,23 @@ const UusiAsiaDialog = ({
     setIsConfirmDialogVisible(false);
   }
 
-  const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
-    if (id && changeObjects) {
-      actions.setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
-    }
-    // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
-    if (
-      id &&
-      id !== "toimintaalue" &&
-      id !== "kielet_tutkintokielet" &&
-      R.isEmpty(changeObjects)
-    ) {
-      actions.setChangeObjects(R.dissocPath(R.split("_", id)));
-    }
-  }, [actions]);
+  const onChangeObjectsUpdate = useCallback(
+    (id, changeObjects) => {
+      if (id && changeObjects) {
+        actions.setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
+      }
+      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
+      if (
+        id &&
+        id !== "toimintaalue" &&
+        id !== "kielet_tutkintokielet" &&
+        R.isEmpty(changeObjects)
+      ) {
+        actions.setChangeObjects(R.dissocPath(R.split("_", id)));
+      }
+    },
+    [actions]
+  );
 
   /**
    * User is redirected to the following path when the form is closed.
@@ -379,7 +382,8 @@ const UusiAsiaDialog = ({
                   anchor="paatoksentiedot"
                   changeObjects={state.changeObjects.paatoksentiedot}
                   data={{ formatMessage: intl.formatMessage, uuid }}
-                  onChangesUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)
+                  onChangesUpdate={payload =>
+                    actions.setChangeObjects(payload.anchor, payload.changes)
                   }
                   path={["esiJaPerusopetus", "paatoksenTiedot"]}
                   hasInvalidFieldsFn={invalidFields => {
@@ -388,6 +392,26 @@ const UusiAsiaDialog = ({
               </div>
 
               <form onSubmit={() => {}}>
+                <EsittelijatWizardActions
+                  isSavingEnabled={isSavingEnabled}
+                  onClose={leaveOrOpenCancelModal}
+                  onPreview={() => {
+                    return onAction("preview");
+                  }}
+                  onSave={() => {
+                    return onAction("save");
+                  }}
+                />
+                <FormSection
+                  code={7}
+                  render={props => (
+                    <MuutEhdot poMuutEhdot={poMuutEhdot} {...props} />
+                  )}
+                  sectionId={"muutEhdot"}
+                  title={intl.formatMessage(
+                    education.muutEhdotTitle
+                  )}></FormSection>
+
                 <FormSection
                   render={props => <Rajoitteet {...props} />}
                   sectionId="rajoitteet"
@@ -448,7 +472,9 @@ const UusiAsiaDialog = ({
                     />
                   )}
                   sectionId={"opetuksenJarjestamismuodot"}
-                  title={intl.formatMessage(education.opetuksenJarjestamismuoto)}></FormSection>
+                  title={intl.formatMessage(
+                    education.opetuksenJarjestamismuoto
+                  )}></FormSection>
 
                 <FormSection
                   code={5}
@@ -473,16 +499,6 @@ const UusiAsiaDialog = ({
                   title={"Oppilas-/opiskelijamäärät"}></FormSection>
 
                 <FormSection
-                  code={7}
-                  render={props => (
-                    <MuutEhdot poMuutEhdot={poMuutEhdot} {...props} />
-                  )}
-                  sectionId={"muutEhdot"}
-                  title={
-                    "Muut koulutuksen järjestämiseen liittyvät ehdot"
-                  }></FormSection>
-
-                <FormSection
                   code={8}
                   render={props => (
                     <Liitetiedostot
@@ -493,16 +509,6 @@ const UusiAsiaDialog = ({
                   sectionId={"liitetiedostot"}
                   title={"Liitetiedostot"}></FormSection>
               </form>
-              <EsittelijatWizardActions
-                isSavingEnabled={isSavingEnabled}
-                onClose={leaveOrOpenCancelModal}
-                onPreview={() => {
-                  return onAction("preview");
-                }}
-                onSave={() => {
-                  return onAction("save");
-                }}
-              />
             </div>
           </DialogContentWithStyles>
         </FormDialog>
