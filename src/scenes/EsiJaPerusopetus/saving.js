@@ -1,7 +1,8 @@
 import moment from "moment";
 import * as R from "ramda";
-import * as opetusHelper from "helpers/opetustehtavat";
+import * as muutEhdotHelper from "helpers/poMuutEhdot";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
+import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 
 export async function createObjectToSave(
@@ -21,15 +22,7 @@ export async function createObjectToSave(
     return R.dissoc("tiedosto", attachment);
   }, allAttachmentsRaw);
 
-  const getValueByPathAndAnchor = (anchor, path, changeObjects) => {
-    return R.path(
-      ["properties", "value"],
-      R.find(R.propEq("anchor", anchor), R.path(path, changeObjects) || []) ||
-        {}
-    );
-  };
-
-  // OPETUSTEHTÄVÄT
+  // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
     changeObjects.opetustehtavat,
     maaraystyypit,
@@ -37,7 +30,7 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // OPETUKSEN JÄRJESTÄMISMUODOT
+  // 2. OPETUKSEN JÄRJESTÄMISMUOTO
   const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
     changeObjects.opetuksenJarjestamismuodot,
     maaraystyypit,
@@ -45,7 +38,15 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // OPETUSTA ANTAVAT KUNNAT
+  // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
+  const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
+    changeObjects.muutEhdot,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
+
+  // 2. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
   const categoryFilterChangeObj =
     R.find(
       R.propEq("anchor", "toimintaalue.categoryFilter"),
@@ -76,8 +77,6 @@ export async function createObjectToSave(
     lupa.maaraykset
   );
 
-  console.info("alkuperä", alkupera);
-
   let objectToSave = {
     alkupera,
     diaarinumero: lupa.diaarinumero,
@@ -96,8 +95,9 @@ export async function createObjectToSave(
     liitteet: allAttachments,
     meta: {},
     muutokset: R.flatten([
-      opetus,
+      muutEhdot,
       opetuksenJarjestamismuodot,
+      opetus,
       opetustaAntavatKunnat
     ]),
     uuid

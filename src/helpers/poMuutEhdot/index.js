@@ -1,4 +1,20 @@
-import { mapObjIndexed, groupBy, prop, head, omit, map, sort } from "ramda";
+import {
+  mapObjIndexed,
+  groupBy,
+  prop,
+  head,
+  omit,
+  map,
+  sort,
+  endsWith,
+  find,
+  compose,
+  propEq,
+  filter,
+  path,
+  flatten,
+  includes
+} from "ramda";
 import localforage from "localforage";
 
 export const initializePOMuuEhto = ehto => {
@@ -30,3 +46,95 @@ export const initializePOMuutEhdot = ehdot => {
 export function getPOMuutEhdotFromStorage() {
   return localforage.getItem("poMuutEhdot");
 }
+
+export const defineBackendChangeObjects = async (
+  changeObjects = [],
+  maaraystyypit,
+  locale,
+  kohteet
+) => {
+  const kohde = find(propEq("tunniste", "muut"), kohteet); // TODO: Onko oikea kohde?
+  const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
+  const muutEhdot = await getPOMuutEhdotFromStorage();
+
+  const muutokset = map(ehto => {
+    // Checkbox-kenttien muutokset
+    const changeObj = find(
+      compose(endsWith(`${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
+      changeObjects
+    );
+
+    // Nimikenttien muutokset kohdassa (muu ehto)
+    const nimiChangeObjects = filter(changeObj => {
+      return (
+        ehto.koodiarvo ===
+          path(["metadata", "koodiarvo"], changeObj.properties) &&
+        endsWith(".nimi", changeObj.anchor)
+      );
+    }, changeObjects);
+
+    const checkboxBEchangeObjects = changeObj
+      ? {
+          generatedId: `muuEhto-${Math.random()}`,
+          kohde,
+          koodiarvo: ehto.koodiarvo,
+          koodisto: ehto.koodisto.koodistoUri,
+          kuvaus: ehto.metadata[locale].kuvaus,
+          maaraystyyppi,
+          meta: {
+            changeObjects: [changeObj]
+          },
+          tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
+        }
+      : null;
+
+    const nimiBEchangeObjects = map(changeObj => {
+      return {
+        generatedId: changeObj.anchor,
+        kohde,
+        koodiarvo: ehto.koodiarvo,
+        koodisto: ehto.koodisto.koodistoUri,
+        kuvaus: changeObj.properties.value,
+        maaraystyyppi,
+        meta: {
+          changeObjects: [changeObj]
+        },
+        tila: "LISAYS"
+      };
+    }, nimiChangeObjects);
+
+    return [checkboxBEchangeObjects, nimiBEchangeObjects];
+  }, muutEhdot);
+
+  /**
+   * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
+   * muutoksia. Siksi kentän tiedoista luodaan tässä kohtaa oma backend-
+   * muotoinen muutosobjekti.
+   */
+  const lisatiedotChangeObj = find(
+    compose(includes(".lisatiedot."), prop("anchor")),
+    changeObjects
+  );
+
+  const lisatiedotBEchangeObject = lisatiedotChangeObj
+    ? {
+        tila: "LISAYS",
+        meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
+          changeObjects: [lisatiedotChangeObj]
+        },
+        kohde,
+        koodiarvo: path(
+          ["properties", "metadata", "koodiarvo"],
+          lisatiedotChangeObj
+        ),
+        koodisto: path(
+          ["properties", "metadata", "koodisto", "koodistoUri"],
+          lisatiedotChangeObj
+        ),
+        maaraystyyppi
+      }
+    : null;
+
+  return flatten([muutokset, lisatiedotBEchangeObject]).filter(Boolean);
+};

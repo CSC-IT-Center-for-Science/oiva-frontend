@@ -458,12 +458,16 @@ const UusiAsiaDialog = ({
                 <FormSection
                   code={7}
                   render={props => (
-                    <MuutEhdot poMuutEhdot={poMuutEhdot} {...props} />
+                    <MuutEhdot
+                      lisatiedot={lisatiedot}
+                      poMuutEhdot={poMuutEhdot}
+                      {...props}
+                    />
                   )}
                   sectionId={"muutEhdot"}
-                  title={
-                    "Muut koulutuksen järjestämiseen liittyvät ehdot"
-                  }></FormSection>
+                  title={intl.formatMessage(
+                    education.muutEhdotTitle
+                  )}></FormSection>
 
                 <FormSection
                   code={8}
@@ -475,17 +479,18 @@ const UusiAsiaDialog = ({
                   )}
                   sectionId={"liitetiedostot"}
                   title={"Liitetiedostot"}></FormSection>
+
+                <EsittelijatWizardActions
+                  isSavingEnabled={isSavingEnabled}
+                  onClose={leaveOrOpenCancelModal}
+                  onPreview={() => {
+                    return onAction("preview");
+                  }}
+                  onSave={() => {
+                    return onAction("save");
+                  }}
+                />
               </form>
-              <EsittelijatWizardActions
-                isSavingEnabled={isSavingEnabled}
-                onClose={leaveOrOpenCancelModal}
-                onPreview={() => {
-                  return onAction("preview");
-                }}
-                onSave={() => {
-                  return onAction("save");
-                }}
-              />
             </div>
           </DialogContentWithStyles>
         </FormDialog>
