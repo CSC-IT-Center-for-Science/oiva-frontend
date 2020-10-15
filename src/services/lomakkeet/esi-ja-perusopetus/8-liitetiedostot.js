@@ -2,7 +2,6 @@ import { getMessages } from "../utils";
 import { __ } from "i18n-for-browser";
 
 export function liitetiedostot(data) {
-  console.info(__("common.dropAreaInfo1"));
   return [
     {
       anchor: "ohjeteksti",

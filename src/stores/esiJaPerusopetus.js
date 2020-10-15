@@ -119,13 +119,16 @@ const Store = createStore({
     closeRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: false });
     },
-    createTextBoxChangeObject: sectionId => ({ getState, setState }) => {
+    createTextBoxChangeObject: (sectionId, koodiarvo) => ({
+      getState,
+      setState
+    }) => {
       if (sectionId) {
         const currentChangeObjects = prop("changeObjects", getState());
         const textBoxChangeObjects = filter(
           changeObj =>
             endsWith(".nimi", changeObj.anchor) &&
-            !startsWith(`${sectionId}.muutehto.0`, changeObj.anchor),
+            !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           currentChangeObjects[sectionId] || []
         );
 
@@ -147,7 +150,7 @@ const Store = createStore({
           sectionId,
           append(
             {
-              anchor: `${sectionId}.muuehto.${nextTextBoxAnchorPart}.nimi`,
+              anchor: `${sectionId}.${koodiarvo}.${nextTextBoxAnchorPart}.nimi`,
               properties: {
                 value: ""
               }

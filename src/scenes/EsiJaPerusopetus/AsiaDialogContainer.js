@@ -26,6 +26,7 @@ const AsiaDialogContainer = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
+  lisatiedot,
   maakunnat,
   maakuntakunnat,
   maaraystyypit,
@@ -122,26 +123,6 @@ const AsiaDialogContainer = ({
         }, updatedC);
       }
 
-      // Special case: Toiminta-alueen perustelut
-      const toimintaAluePerusteluChangeObject = path(
-        ["perustelut", "toimintaalue", "0"],
-        changesBySection
-      );
-      if (
-        toimintaAluePerusteluChangeObject &&
-        !includes("reasoning", toimintaAluePerusteluChangeObject.anchor)
-      ) {
-        changesBySection = assocPath(
-          ["perustelut", "toimintaalue"],
-          [
-            {
-              anchor: "perustelut_toimintaalue.reasoning.A",
-              properties: toimintaAluePerusteluChangeObject.properties
-            }
-          ],
-          changesBySection
-        );
-      }
       changesBySection.paatoksentiedot = path(["meta", "paatoksentiedot"], muutospyynto) || [];
       // Set uuid for asianumero
       find(paatoksentiedot => getAnchorPart(paatoksentiedot.anchor, 1) === 'asianumero', changesBySection.paatoksentiedot)
@@ -175,6 +156,7 @@ const AsiaDialogContainer = ({
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
       kunnat={kunnat}
+      lisatiedot={lisatiedot}
       lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
       maakunnat={maakunnat}
