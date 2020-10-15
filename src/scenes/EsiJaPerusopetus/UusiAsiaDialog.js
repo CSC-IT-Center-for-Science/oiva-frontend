@@ -234,8 +234,6 @@ const UusiAsiaDialog = ({
           uuid,
           kohteet,
           maaraystyypit,
-          muut,
-          lupaKohteet,
           "ESITTELIJA"
         )
       );

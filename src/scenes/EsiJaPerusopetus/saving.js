@@ -49,7 +49,7 @@ export async function createObjectToSave(
   const categoryFilterChangeObj =
     R.find(
       R.propEq("anchor", "toimintaalue.categoryFilter"),
-      changeObjects.toimintaalue
+      changeObjects.toimintaalue || []
     ) || {};
 
   const opetustaAntavatKunnat = await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
@@ -64,17 +64,19 @@ export async function createObjectToSave(
       ),
       lisatiedot: R.find(
         R.compose(R.includes(".lisatiedot."), R.prop("anchor")),
-        changeObjects.toimintaalue
+        changeObjects.toimintaalue || []
       ),
       ulkomaa: R.filter(
         R.compose(R.includes(".ulkomaa."), R.prop("anchor")),
-        changeObjects.toimintaalue
+        changeObjects.toimintaalue || []
       )
     },
     R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
     maaraystyypit,
     lupa.maaraykset
   );
+
+  console.info("alkuperä", alkupera);
 
   let objectToSave = {
     alkupera,
