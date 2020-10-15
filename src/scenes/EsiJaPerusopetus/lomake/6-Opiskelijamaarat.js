@@ -4,14 +4,16 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
+import education from "../../../i18n/definitions/education";
 
 const Opiskelijamaarat = ({
   changeObjects,
+  lisatiedot,
   onChangesRemove,
-  onChangesUpdate
+  onChangesUpdate,
+  sectionId
 }) => {
   const intl = useIntl();
-  const sectionId = "opiskelijamaarat";
 
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
@@ -30,11 +32,14 @@ const Opiskelijamaarat = ({
       onUpdate={onChangesUpdate}
       sectionId={sectionId}
       showCategoryTitles={true}
-      title={"Oppilas-/Opiskelijamäärät"}>
+      title={intl.formatMessage(education.oppilasOpiskelijamaarat)}>
       <Lomake
         action="modification"
         anchor={sectionId}
         changeObjects={changeObjects}
+        data={{
+          lisatiedot
+        }}
         onChangesUpdate={onChangesUpdate}
         path={["esiJaPerusopetus", "opiskelijamaarat"]}
         showCategoryTitles={true}></Lomake>

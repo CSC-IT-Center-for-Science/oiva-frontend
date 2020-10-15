@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {useIntl} from "react-intl";
-import {assocPath, find, forEach, includes, insert, map, path, prop, propEq, split} from "ramda";
+import {assocPath, find, forEach, insert, map, path, prop, propEq, split} from "ramda";
 import Loading from "../../modules/Loading";
 import {findObjectWithKey, getAnchorPart} from "../../utils/common";
 import {setAttachmentUuids} from "../../utils/muutospyyntoUtil";

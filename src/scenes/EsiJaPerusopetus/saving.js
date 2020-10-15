@@ -4,6 +4,7 @@ import * as muutEhdotHelper from "helpers/poMuutEhdot";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
 import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
+import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 
 export async function createObjectToSave(
   locale,
@@ -30,9 +31,17 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // 2. OPETUKSEN JÄRJESTÄMISMUOTO
+  // 4. OPETUKSEN JÄRJESTÄMISMUOTO
   const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
     changeObjects.opetuksenJarjestamismuodot,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
+
+  // 6. OPPILAS-/OPISKELIJAMÄÄRÄT
+  const opiskelijamaarat = await opiskelijamaaratHelper.defineBackendChangeObjects(
+    changeObjects.opiskelijamaarat,
     maaraystyypit,
     locale,
     kohteet
@@ -77,6 +86,8 @@ export async function createObjectToSave(
     lupa.maaraykset
   );
 
+  console.info(opiskelijamaarat);
+
   let objectToSave = {
     alkupera,
     diaarinumero: lupa.diaarinumero,
@@ -98,7 +109,8 @@ export async function createObjectToSave(
       muutEhdot,
       opetuksenJarjestamismuodot,
       opetus,
-      opetustaAntavatKunnat
+      opetustaAntavatKunnat,
+      opiskelijamaarat
     ]),
     uuid
   };

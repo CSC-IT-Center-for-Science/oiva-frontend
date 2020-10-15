@@ -1,7 +1,14 @@
 import { __ } from "i18n-for-browser";
+import { find, flatten, pathEq } from "ramda";
 
-export function opiskelijamaarat() {
-  return [
+export function opiskelijamaarat(data) {
+  console.info(data.lisatiedot);
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    data.lisatiedot || []
+  );
+
+  return flatten([
     {
       anchor: "kenttaotsikko",
       components: [
@@ -40,31 +47,41 @@ export function opiskelijamaarat() {
         }
       ]
     },
-    {
-      anchor: "ohjeteksti",
-      layout: { margins: { top: "large" } },
-      components: [
-        {
-          anchor: "lisatiedot",
-          name: "StatusTextRow",
-          styleClasses: ["pt-8 border-t"],
-          properties: {
-            title: __("common.lisatiedotInfo")
+    lisatiedotObj
+      ? [
+          {
+            anchor: "lisatiedotTitle",
+            layout: { margins: { top: "large" } },
+            components: [
+              {
+                anchor: lisatiedotObj.koodiarvo,
+                name: "StatusTextRow",
+                styleClasses: ["pt-8 border-t"],
+                properties: {
+                  title: __("common.lisatiedotInfo")
+                }
+              }
+            ]
+          },
+          {
+            anchor: "lisatiedot",
+            components: [
+              {
+                anchor: lisatiedotObj.koodiarvo,
+                name: "TextBox",
+                properties: {
+                  forChangeObject: {
+                    koodiarvo: lisatiedotObj.koodiarvo,
+                    koodisto: lisatiedotObj.koodisto,
+                    versio: lisatiedotObj.versio,
+                    voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+                  },
+                  placeholder: __("common.lisatiedot")
+                }
+              }
+            ]
           }
-        }
-      ]
-    },
-    {
-      anchor: "lisatiedot",
-      components: [
-        {
-          anchor: "textarea",
-          name: "TextBox",
-          properties: {
-            placeholder: __("common.lisatiedot")
-          }
-        }
-      ]
-    }
-  ];
+        ]
+      : null
+  ]).filter(Boolean);
 }

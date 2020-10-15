@@ -1,4 +1,4 @@
-import { mapObjIndexed, head, groupBy, prop, omit, filter } from "ramda";
+import { mapObjIndexed, head, groupBy, prop, omit } from "ramda";
 import localforage from "localforage";
 
 export function initializeKunta(kuntadata) {
