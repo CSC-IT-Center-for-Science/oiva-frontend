@@ -368,26 +368,6 @@ const UusiAsiaDialog = ({
               </div>
 
               <form onSubmit={() => {}}>
-                <EsittelijatWizardActions
-                  isSavingEnabled={isSavingEnabled}
-                  onClose={leaveOrOpenCancelModal}
-                  onPreview={() => {
-                    return onAction("preview");
-                  }}
-                  onSave={() => {
-                    return onAction("save");
-                  }}
-                />
-                <FormSection
-                  code={7}
-                  render={props => (
-                    <MuutEhdot poMuutEhdot={poMuutEhdot} {...props} />
-                  )}
-                  sectionId={"muutEhdot"}
-                  title={intl.formatMessage(
-                    education.muutEhdotTitle
-                  )}></FormSection>
-
                 <FormSection
                   render={props => <Rajoitteet {...props} />}
                   sectionId="rajoitteet"
@@ -476,6 +456,20 @@ const UusiAsiaDialog = ({
                   title={"Oppilas-/opiskelijamäärät"}></FormSection>
 
                 <FormSection
+                  code={7}
+                  render={props => (
+                    <MuutEhdot
+                      lisatiedot={lisatiedot}
+                      poMuutEhdot={poMuutEhdot}
+                      {...props}
+                    />
+                  )}
+                  sectionId={"muutEhdot"}
+                  title={intl.formatMessage(
+                    education.muutEhdotTitle
+                  )}></FormSection>
+
+                <FormSection
                   code={8}
                   render={props => (
                     <Liitetiedostot
@@ -485,6 +479,17 @@ const UusiAsiaDialog = ({
                   )}
                   sectionId={"liitetiedostot"}
                   title={"Liitetiedostot"}></FormSection>
+
+                <EsittelijatWizardActions
+                  isSavingEnabled={isSavingEnabled}
+                  onClose={leaveOrOpenCancelModal}
+                  onPreview={() => {
+                    return onAction("preview");
+                  }}
+                  onSave={() => {
+                    return onAction("save");
+                  }}
+                />
               </form>
             </div>
           </DialogContentWithStyles>

@@ -10,10 +10,10 @@ import {
   find,
   compose,
   propEq,
-  concat,
   filter,
   path,
-  flatten
+  flatten,
+  includes
 } from "ramda";
 import localforage from "localforage";
 
@@ -56,80 +56,85 @@ export const defineBackendChangeObjects = async (
   const kohde = find(propEq("tunniste", "muut"), kohteet); // TODO: Onko oikea kohde?
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const muutEhdot = await getPOMuutEhdotFromStorage();
-  const lisatiedotChangeObj = find(
-    compose(endsWith(".lisatiedot.tekstikentta"), prop("anchor")),
-    changeObjects
-  );
 
-  const muutokset = flatten(
-    map(ehto => {
-      // Checkbox-kenttien muutokset
-      const changeObj = find(
-        compose(endsWith(`${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
-        changeObjects
+  const muutokset = map(ehto => {
+    // Checkbox-kenttien muutokset
+    const changeObj = find(
+      compose(endsWith(`${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
+      changeObjects
+    );
+
+    // Nimikenttien muutokset kohdassa (muu ehto)
+    const nimiChangeObjects = filter(changeObj => {
+      return (
+        ehto.koodiarvo ===
+          path(["metadata", "koodiarvo"], changeObj.properties) &&
+        endsWith(".nimi", changeObj.anchor)
       );
+    }, changeObjects);
 
-      // Nimikenttien muutokset kohdassa (muu ehto)
-      const nimiChangeObjects = filter(changeObj => {
-        return (
-          ehto.koodiarvo ===
-            path(["metadata", "koodiarvo"], changeObj.properties) &&
-          endsWith(".nimi", changeObj.anchor)
-        );
-      }, changeObjects);
-
-      const checkboxBEchangeObjects = changeObj
-        ? {
-            generatedId: `muuEhto-${Math.random()}`,
-            kohde,
-            koodiarvo: ehto.koodiarvo,
-            koodisto: ehto.koodisto.koodistoUri,
-            kuvaus: ehto.metadata[locale].kuvaus,
-            maaraystyyppi,
-            meta: {
-              changeObjects: [changeObj]
-            },
-            tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
-          }
-        : null;
-
-      const nimiBEchangeObjects = map(changeObj => {
-        return {
-          generatedId: changeObj.anchor,
+    const checkboxBEchangeObjects = changeObj
+      ? {
+          generatedId: `muuEhto-${Math.random()}`,
           kohde,
           koodiarvo: ehto.koodiarvo,
           koodisto: ehto.koodisto.koodistoUri,
-          kuvaus: changeObj.properties.value,
+          kuvaus: ehto.metadata[locale].kuvaus,
           maaraystyyppi,
           meta: {
             changeObjects: [changeObj]
           },
-          tila: "LISAYS"
-        };
-      }, nimiChangeObjects);
+          tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
+        }
+      : null;
 
-      const lisatiedotBEchangeObject = lisatiedotBEchangeObject
-        ? {
-            generatedId: `muuEhto-lisatiedot-${Math.random()}`,
-            kohde,
-            koodiarvo: ehto.koodiarvo,
-            koodisto: ehto.koodisto.koodistoUri,
-            kuvaus: changeObj.properties.value,
-            maaraystyyppi,
-            meta: {
-              changeObjects: [changeObj]
-            },
-            tila: "LISAYS"
-          }
-        : null;
+    const nimiBEchangeObjects = map(changeObj => {
+      return {
+        generatedId: changeObj.anchor,
+        kohde,
+        koodiarvo: ehto.koodiarvo,
+        koodisto: ehto.koodisto.koodistoUri,
+        kuvaus: changeObj.properties.value,
+        maaraystyyppi,
+        meta: {
+          changeObjects: [changeObj]
+        },
+        tila: "LISAYS"
+      };
+    }, nimiChangeObjects);
 
-      return [
-        checkboxBEchangeObjects,
-        lisatiedotBEchangeObject,
-        nimiBEchangeObjects
-      ];
-    }, muutEhdot)
-  ).filter(Boolean);
+    return [checkboxBEchangeObjects, nimiBEchangeObjects];
+  }, muutEhdot);
 
-  return muutokset;
+  /**
+   * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
+   * muutoksia. Siksi kentän tiedoista luodaan tässä kohtaa oma backend-
+   * muotoinen muutosobjekti.
+   */
+  const lisatiedotChangeObj = find(
+    compose(includes(".lisatiedot."), prop("anchor")),
+    changeObjects
+  );
+
+  const lisatiedotBEchangeObject = lisatiedotChangeObj
+    ? {
+        tila: "LISAYS",
+        meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
+          changeObjects: [lisatiedotChangeObj]
+        },
+        kohde,
+        koodiarvo: path(
+          ["properties", "metadata", "koodiarvo"],
+          lisatiedotChangeObj
+        ),
+        koodisto: path(
+          ["properties", "metadata", "koodisto", "koodistoUri"],
+          lisatiedotChangeObj
+        ),
+        maaraystyyppi
+      }
+    : null;
+
+  return flatten([muutokset, lisatiedotBEchangeObject]).filter(Boolean);
 };

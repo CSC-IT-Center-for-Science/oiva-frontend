@@ -4,12 +4,14 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
+import education from "../../../i18n/definitions/education";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { find } from "ramda";
 
 const MuutEhdot = ({
   onChangesRemove,
   onChangesUpdate,
+  lisatiedot,
   poMuutEhdot,
   sectionId
 }) => {
@@ -21,9 +23,12 @@ const MuutEhdot = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback(koodiarvo => {
-    actions.createTextBoxChangeObject(sectionId, koodiarvo);
-  }, [actions, sectionId]);
+  const onAddButtonClick = useCallback(
+    koodiarvo => {
+      actions.createTextBoxChangeObject(sectionId, koodiarvo);
+    },
+    [actions, sectionId]
+  );
 
   const onChanges = useCallback(
     ({ anchor, changes }) => {
@@ -55,12 +60,13 @@ const MuutEhdot = ({
       onUpdate={onChanges}
       sectionId={sectionId}
       showCategoryTitles={true}
-      title={"Muut koulutukseen liittyvät ehdot"}>
+      title={intl.formatMessage(education.muutEhdotTitle)}>
       <Lomake
         action="modification"
         anchor={sectionId}
         changeObjects={state.changeObjects[sectionId]}
         data={{
+          lisatiedot,
           onAddButtonClick,
           poMuutEhdot
         }}
