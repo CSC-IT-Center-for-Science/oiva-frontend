@@ -1,7 +1,7 @@
 import moment from "moment";
 import * as R from "ramda";
 import * as muutEhdotHelper from "helpers/poMuutEhdot";
-import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJärjestämismuodot";
+import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
 import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 
@@ -45,10 +45,6 @@ export async function createObjectToSave(
     locale,
     kohteet
   );
-
-  );
-  
-    ) || {};
 
   // MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
   const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
@@ -108,7 +104,12 @@ export async function createObjectToSave(
     voimassaloppupvm: null, // TODO: find the correct value somehow,
     liitteet: allAttachments,
     meta: {},
-    muutokset: R.flatten([muutEhdot, opetuksenJarjestamismuodot, opetus, opetustaAntavatKunnat]),
+    muutokset: R.flatten([
+      muutEhdot,
+      opetuksenJarjestamismuodot,
+      opetus,
+      opetustaAntavatKunnat
+    ]),
     uuid
   };
 
