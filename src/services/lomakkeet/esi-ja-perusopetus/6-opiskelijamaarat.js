@@ -1,3 +1,5 @@
+import { __ } from "i18n-for-browser";
+
 export function opiskelijamaarat() {
   return [
     {
@@ -7,7 +9,7 @@ export function opiskelijamaarat() {
           anchor: "A",
           name: "StatusTextRow",
           properties: {
-            title: "Opetuksen järjestäjän oppilas-/opiskelijamäärä"
+            title: __("education.oppilastaOpiskelijaaOtsikko")
           }
         }
       ]
@@ -18,17 +20,21 @@ export function opiskelijamaarat() {
       components: [
         {
           anchor: "dropdown",
-          styleClasses: "mb-0 mr-2",
+          styleClasses: "mb-0 mr-2 w-1/5",
           name: "Dropdown",
           properties: {
-            options: []
+            options: [
+              { label: __("common.vahintaan"), value: "vahintaan" },
+              { label: __("common.enintaan"), value: "enintaan" }
+            ]
           }
         },
         {
           anchor: "input",
           name: "Input",
           properties: {
-            placeholder: "Oppilasta/opiskelijaa",
+            placeholder: __("education.oppilastaOpiskelijaa"),
+            type: "number",
             value: ""
           }
         }
@@ -43,8 +49,7 @@ export function opiskelijamaarat() {
           name: "StatusTextRow",
           styleClasses: ["pt-8 border-t"],
           properties: {
-            title:
-              "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+            title: __("common.lisatiedotInfo")
           }
         }
       ]
@@ -56,7 +61,7 @@ export function opiskelijamaarat() {
           anchor: "textarea",
           name: "TextBox",
           properties: {
-            placeholder: "Lisätiedot"
+            placeholder: __("common.lisatiedot")
           }
         }
       ]
