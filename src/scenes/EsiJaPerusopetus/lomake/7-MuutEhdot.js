@@ -6,6 +6,7 @@ import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { find } from "ramda";
+import { getAnchorPart } from "../../../utils/common";
 
 const MuutEhdot = ({
   onChangesRemove,
@@ -21,8 +22,8 @@ const MuutEhdot = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback(() => {
-    actions.createTextBoxChangeObject(sectionId);
+  const onAddButtonClick = useCallback( addBtn => {
+    actions.createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
   }, [actions, sectionId]);
 
   const onChanges = useCallback(

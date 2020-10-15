@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
+import { getAnchorPart } from "../../../utils/common";
+import { find } from "ramda";
 
 const ErityisetKoulutustehtavat = ({
   onChangesRemove,
@@ -20,11 +22,26 @@ const ErityisetKoulutustehtavat = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback(
-    payload => {
-      actions.addAClick(sectionId, payload.anchor);
+  const onAddButtonClick = useCallback((addBtn) => {
+    actions.createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
+  }, [actions, sectionId]);
+
+  const onChanges = useCallback(
+    ({ anchor, changes }) => {
+      const removeBtnClickedChangeObject = find(
+        change => change.properties && change.properties.textBoxDelete,
+        changes
+      );
+      if (removeBtnClickedChangeObject) {
+        actions.removeTextBoxChangeObject(
+          sectionId,
+          removeBtnClickedChangeObject.anchor
+        );
+      } else {
+        onChangesUpdate({ anchor: anchor, changes: changes });
+      }
     },
-    [actions, sectionId]
+    [onChangesUpdate]
   );
 
   return (
@@ -36,7 +53,7 @@ const ErityisetKoulutustehtavat = ({
       isExpanded={true}
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
-      onUpdate={onChangesUpdate}
+      onUpdate={onChanges}
       sectionId={sectionId}
       showCategoryTitles={true}
       title={"Erityiset koulutustehtävät"}>
@@ -48,7 +65,7 @@ const ErityisetKoulutustehtavat = ({
           onAddButtonClick,
           poErityisetKoulutustehtavat
         }}
-        onChangesUpdate={onChangesUpdate}
+        onChangesUpdate={onChanges}
         path={["esiJaPerusopetus", "erityisetKoulutustehtavat"]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>

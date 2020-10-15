@@ -1,7 +1,8 @@
 import { isAdded, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import { addIndex, flatten, map, path, toUpper } from "ramda";
+import { endsWith, filter, flatten, map, path, startsWith, toUpper } from "ramda";
 import {__} from "i18n-for-browser";
+import { getAnchorPart } from "../../../utils/common";
 
 export function erityisetKoulutustehtavat(
   data,
@@ -56,20 +57,27 @@ export function erityisetKoulutustehtavat(
              * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
              * erillisen painikkeen avulla.
              */
-            addIndex(map)(
-              (item, index) => ({
-                anchor: String(index + 1),
-                components: [
-                  {
-                    anchor: "A",
-                    name: "TextBox",
-                    properties: {
-                      title: __("common.nimi")
+            map(changeObj => {
+                return {
+                  anchor: getAnchorPart(changeObj.anchor, 2),
+                  components: [
+                    {
+                      anchor: "nimi",
+                      name: "TextBox",
+                      properties: {
+                        placeholder: __("common.nimi"),
+                        title: "Nimi",
+                        isRemovable: true,
+                        value: changeObj.properties.value
+                      }
                     }
-                  }
-                ]
-              }),
-              new Array(amountOfOptionalTextBoxes)
+                  ]
+                }
+              }, filter(changeObj =>
+              startsWith(`erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}`, changeObj.anchor) &&
+              endsWith('.nimi', changeObj.anchor) &&
+              !startsWith(`erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.0`, changeObj.anchor),
+              changeObjects)
             ),
             /**
              * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
