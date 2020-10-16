@@ -27,7 +27,9 @@ export function liitetiedostot(data) {
             dropAreaInfo1: __("attachments.dropAreaInfo1"),
             dropAreaInfo2: __("attachments.dropAreaInfo2"),
             dropAreaInfo3: __("attachments.dropAreaInfo3"),
-            functions: __("common.functions")
+            functions: __("common.functions"),
+            "file-invalid-type": "Tiedosto on väärän tyyppinen.",
+            "file-too-large": "Tiedosto on liian suuri."
           },
           styleClasses: ["w-full"],
           properties: {

@@ -14,7 +14,7 @@ import {
 } from "ramda";
 import maaraaika from "./rajoitukset/maaraaika";
 import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
-import opetustehtavat from "./rajoitukset/1-opetustehtavat";
+import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
   maaraaika: "Määräaika",
@@ -31,7 +31,7 @@ const changeObjectMapping = {
 const sections = {
   maaraaika,
   opetustaAntavatKunnat,
-  opetustehtavat
+  getOpetustehtavatLomake
 };
 
 async function defineRajoitusStructure(

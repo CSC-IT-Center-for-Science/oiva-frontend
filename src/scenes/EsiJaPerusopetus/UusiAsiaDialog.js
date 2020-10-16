@@ -367,6 +367,17 @@ const UusiAsiaDialog = ({
 
               <form onSubmit={() => {}}>
                 <FormSection
+                  code={8}
+                  render={props => (
+                    <Liitetiedostot
+                      changeObjects={state.changeObjects.liitetiedostot}
+                      {...props}
+                    />
+                  )}
+                  sectionId={"liitetiedostot"}
+                  title={"Liitetiedostot"}></FormSection>
+
+                <FormSection
                   render={props => <Rajoitteet {...props} />}
                   sectionId="rajoitteet"
                   title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
@@ -470,17 +481,6 @@ const UusiAsiaDialog = ({
                   title={intl.formatMessage(
                     education.muutEhdotTitle
                   )}></FormSection>
-
-                <FormSection
-                  code={8}
-                  render={props => (
-                    <Liitetiedostot
-                      changeObjects={state.changeObjects.liitetiedostot}
-                      {...props}
-                    />
-                  )}
-                  sectionId={"liitetiedostot"}
-                  title={"Liitetiedostot"}></FormSection>
 
                 <EsittelijatWizardActions
                   isSavingEnabled={isSavingEnabled}
