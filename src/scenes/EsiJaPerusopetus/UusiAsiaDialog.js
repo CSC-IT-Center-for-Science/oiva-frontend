@@ -265,9 +265,7 @@ const UusiAsiaDialog = ({
       kohteet,
       intl.locale,
       lupa,
-      lupaKohteet,
       maaraystyypit,
-      muut,
       onNewDocSave,
       onPreview,
       onSave,
@@ -449,12 +447,15 @@ const UusiAsiaDialog = ({
                   code={6}
                   render={props => (
                     <Opiskelijamaarat
+                      lisatiedot={lisatiedot}
                       changeObjects={state.changeObjects.opiskelijamaarat}
                       {...props}
                     />
                   )}
                   sectionId={"opiskelijamaarat"}
-                  title={"Oppilas-/opiskelijamäärät"}></FormSection>
+                  title={intl.formatMessage(
+                    education.oppilasOpiskelijamaarat
+                  )}></FormSection>
 
                 <FormSection
                   code={7}

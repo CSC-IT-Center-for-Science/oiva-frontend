@@ -57,5 +57,9 @@ export default defineMessages({
   opetustaJarjestetaanSuomenUlkopuolella: {
     id: "education.opetustaJarjestetaanSuomenUlkopuolella",
     defaultValue: "Opetusta järjestetään Suomen ulkopuolella"
+  },
+  oppilasOpiskelijamaarat: {
+    id: "education.oppilasOpiskelijamaarat",
+    defaultMessage: "Oppilas-/opiskelijamäärät"
   }
 });

@@ -1,7 +1,13 @@
 import { __ } from "i18n-for-browser";
+import { find, flatten, pathEq } from "ramda";
 
-export function opiskelijamaarat() {
-  return [
+export function opiskelijamaarat({ lisatiedot = [] }) {
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    lisatiedot
+  );
+
+  return flatten([
     {
       anchor: "kenttaotsikko",
       components: [
@@ -24,8 +30,10 @@ export function opiskelijamaarat() {
           name: "Dropdown",
           properties: {
             options: [
-              { label: __("common.vahintaan"), value: "vahintaan" },
-              { label: __("common.enintaan"), value: "enintaan" }
+              // 1 = koodiarvo 1, enintään, koodisto: kujalisamaareet
+              { label: __("common.enintaan"), value: "1" },
+              // 2 = koodiarvo 2, enintään, koodisto: kujalisamaareet
+              { label: __("common.vahintaan"), value: "2" }
             ]
           }
         },
@@ -40,31 +48,35 @@ export function opiskelijamaarat() {
         }
       ]
     },
-    {
-      anchor: "ohjeteksti",
-      layout: { margins: { top: "large" } },
-      components: [
-        {
-          anchor: "lisatiedot",
-          name: "StatusTextRow",
-          styleClasses: ["pt-8 border-t"],
-          properties: {
-            title: __("common.lisatiedotInfo")
+    !!lisatiedotObj
+      ? [
+          {
+            anchor: "lisatiedotTitle",
+            layout: { margins: { top: "large" } },
+            components: [
+              {
+                anchor: lisatiedotObj.koodiarvo,
+                name: "StatusTextRow",
+                styleClasses: ["pt-8 border-t"],
+                properties: {
+                  title: __("common.lisatiedotInfo")
+                }
+              }
+            ]
+          },
+          {
+            anchor: "lisatiedot",
+            components: [
+              {
+                anchor: lisatiedotObj.koodiarvo,
+                name: "TextBox",
+                properties: {
+                  placeholder: __("common.lisatiedot")
+                }
+              }
+            ]
           }
-        }
-      ]
-    },
-    {
-      anchor: "lisatiedot",
-      components: [
-        {
-          anchor: "textarea",
-          name: "TextBox",
-          properties: {
-            placeholder: __("common.lisatiedot")
-          }
-        }
-      ]
-    }
-  ];
+        ]
+      : null
+  ]).filter(Boolean);
 }
