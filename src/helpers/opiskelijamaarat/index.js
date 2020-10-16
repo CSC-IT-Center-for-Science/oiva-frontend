@@ -14,10 +14,16 @@ export const defineBackendChangeObjects = async (
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
 
   /**
-   * Dropdown-kentän backend-muotoisen muutosobjektin luominen.
+   * Dropdown-kentän ja input-kentän yhdistelmästä muodostetaan
+   * backend-muotoinen muutosobjekti.
    */
   const dropdownChangeObj = find(
     compose(endsWith(".dropdown"), prop("anchor")),
+    changeObjects
+  );
+
+  const inputChangeObj = find(
+    compose(endsWith(".input"), prop("anchor")),
     changeObjects
   );
 
@@ -30,40 +36,18 @@ export const defineBackendChangeObjects = async (
     lisamaareet
   );
 
-  const dropdownBEchangeObject =
-    !!dropdownKoodiarvo && !!lisamaareObj
+  const dropdownInputBEchangeObject =
+    !!dropdownKoodiarvo && !!inputChangeObj && !!lisamaareObj
       ? {
-          tila: "LISAYS",
-          meta: {
-            changeObjects: [dropdownChangeObj]
-          },
+          arvo: path(["properties", "value"], inputChangeObj),
           kohde,
           koodiarvo: dropdownKoodiarvo,
           koodisto: lisamaareObj.koodisto.koodistoUri,
-          maaraystyyppi
-        }
-      : null;
-
-  /**
-   * Input-kentän backend-muotoisen muutosobjektin luominen.
-   */
-  const inputChangeObj = find(
-    compose(endsWith(".input"), prop("anchor")),
-    changeObjects
-  );
-
-  const inputBEchangeObject =
-    !!inputChangeObj && !!lisamaareObj
-      ? {
-          tila: "LISAYS",
+          maaraystyyppi,
           meta: {
-            arvo: path(["properties", "value"], inputChangeObj),
-            changeObjects: [inputChangeObj]
+            changeObjects: [dropdownChangeObj, inputChangeObj]
           },
-          kohde,
-          koodiarvo: dropdownKoodiarvo,
-          koodisto: lisamaareObj.koodisto.koodistoUri,
-          maaraystyyppi
+          tila: "LISAYS"
         }
       : null;
 
@@ -82,21 +66,20 @@ export const defineBackendChangeObjects = async (
   const lisatiedotBEchangeObject =
     !!lisatiedotChangeObj && !!lisatiedotObj
       ? {
-          tila: "LISAYS",
-          meta: {
-            arvo: path(["properties", "value"], lisatiedotChangeObj),
-            changeObjects: [lisatiedotChangeObj]
-          },
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
           kohde,
           koodiarvo: lisatiedotObj.koodiarvo,
           koodisto: lisatiedotObj.koodisto.koodistoUri,
-          maaraystyyppi
+          maaraystyyppi,
+          meta: {
+            changeObjects: [lisatiedotChangeObj]
+          },
+          tila: "LISAYS"
         }
       : null;
 
   const allBEchangeObjects = [
-    dropdownBEchangeObject,
-    inputBEchangeObject,
+    dropdownInputBEchangeObject,
     lisatiedotBEchangeObject
   ].filter(Boolean);
 
