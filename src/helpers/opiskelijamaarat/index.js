@@ -98,7 +98,7 @@ export const defineBackendChangeObjects = async (
     dropdownBEchangeObject,
     inputBEchangeObject,
     lisatiedotBEchangeObject
-  ];
+  ].filter(Boolean);
 
   return allBEchangeObjects;
 };
