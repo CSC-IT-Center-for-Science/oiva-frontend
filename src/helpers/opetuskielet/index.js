@@ -12,7 +12,7 @@ import {
   filter,
   compose,
   includes,
-  flatten
+  flatten, pathEq
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
@@ -58,6 +58,12 @@ export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
 export const defineBackendChangeObjects = async (changeObjects = [], maaraystyypit, locale, kohteet) => {
   const opetuskielet = await getkieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
+
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    lisatiedot || []
+  );
+
   const opetuskieletChangeObjs = filter(compose(startsWith("opetuskielet.opetuskieli"), prop("anchor")), changeObjects);
 
   /** Lisätietokentän käsittely */
@@ -69,8 +75,8 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
   const lisatiedotBeChangeObj = lisatiedotChangeObj ?
     {
       kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-      koodiarvo: lisatiedot[0].koodiarvo,
-      koodisto: lisatiedot[0].koodisto.koodistoUri,
+      koodiarvo: lisatiedotObj.koodiarvo,
+      koodisto: lisatiedotObj.koodisto.koodistoUri,
       kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
       maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
       meta: {
