@@ -1,11 +1,10 @@
 import { __ } from "i18n-for-browser";
 import { find, flatten, pathEq } from "ramda";
 
-export function opiskelijamaarat(data) {
-  console.info(data.lisatiedot);
+export function opiskelijamaarat({ lisatiedot = [] }) {
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    data.lisatiedot || []
+    lisatiedot
   );
 
   return flatten([
@@ -31,8 +30,10 @@ export function opiskelijamaarat(data) {
           name: "Dropdown",
           properties: {
             options: [
-              { label: __("common.vahintaan"), value: "vahintaan" },
-              { label: __("common.enintaan"), value: "enintaan" }
+              // 1 = koodiarvo 1, enintään, koodisto: kujalisamaareet
+              { label: __("common.enintaan"), value: "1" },
+              // 2 = koodiarvo 2, enintään, koodisto: kujalisamaareet
+              { label: __("common.vahintaan"), value: "2" }
             ]
           }
         },
@@ -47,7 +48,7 @@ export function opiskelijamaarat(data) {
         }
       ]
     },
-    lisatiedotObj
+    !!lisatiedotObj
       ? [
           {
             anchor: "lisatiedotTitle",
@@ -70,12 +71,6 @@ export function opiskelijamaarat(data) {
                 anchor: lisatiedotObj.koodiarvo,
                 name: "TextBox",
                 properties: {
-                  forChangeObject: {
-                    koodiarvo: lisatiedotObj.koodiarvo,
-                    koodisto: lisatiedotObj.koodisto,
-                    versio: lisatiedotObj.versio,
-                    voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
-                  },
                   placeholder: __("common.lisatiedot")
                 }
               }

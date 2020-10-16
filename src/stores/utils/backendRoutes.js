@@ -13,6 +13,7 @@ export const backendRoutes = {
   koulutus: { path: `koodistot/koodi/koulutus/` },
   koulutusalat: { path: `koodistot/koulutusalat/` },
   koulutustyypit: { path: `koodistot/koulutustyypit/` },
+  kujalisamaareet: { path: `koodistot/koodit/kujalisamaareet` },
   kunnat: { path: `koodistot/kunnat` },
   lisatietoja: {
     path: `koodistot/koodit/lisatietoja/`,

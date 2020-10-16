@@ -50,6 +50,7 @@ const Opiskelijamaarat = ({
 Opiskelijamaarat.propTypes = {
   changeObjects: PropTypes.array,
   onChangesUpdate: PropTypes.func,
+  lisatiedot: PropTypes.array,
   poMuutEhdot: PropTypes.array
 };
 

@@ -35,6 +35,7 @@ import { initializePOErityisetKoulutustehtavat } from "helpers/poErityisetKoulut
 import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
 import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
+import { initializeLisamaare } from "helpers/kujalisamaareet";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -145,6 +146,11 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     koulutustyypit: await getRaw(
       "koulutustyypit",
       backendRoutes.koulutustyypit.path,
+      keys
+    ),
+    kujalisamaareet: await getRaw(
+      "kujalisamaareet",
+      backendRoutes.kujalisamaareet.path,
       keys
     ),
     kunnat: await getRaw("kunnat", backendRoutes.kunnat.path, keys),
@@ -303,6 +309,17 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
             map(koulutustyyppi => {
               return initializeKoulutustyyppi(koulutustyyppi);
             }, raw.koulutustyypit)
+          )
+        )
+      : undefined,
+    lisamaareet: raw.kunnat
+      ? await localforage.setItem(
+          "kujalisamaareet",
+          sortBy(
+            prop("koodiarvo"),
+            map(lisamaare => {
+              return initializeLisamaare(lisamaare);
+            }, raw.kujalisamaareet).filter(Boolean)
           )
         )
       : undefined,

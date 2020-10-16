@@ -1,16 +1,26 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {useIntl} from "react-intl";
-import {assocPath, find, forEach, insert, map, path, prop, propEq, split} from "ramda";
+import React, { useEffect, useMemo, useState } from "react";
+import { useIntl } from "react-intl";
+import {
+  assocPath,
+  find,
+  forEach,
+  insert,
+  map,
+  path,
+  prop,
+  propEq,
+  split
+} from "ramda";
 import Loading from "../../modules/Loading";
-import {findObjectWithKey, getAnchorPart} from "../../utils/common";
-import {setAttachmentUuids} from "../../utils/muutospyyntoUtil";
+import { findObjectWithKey, getAnchorPart } from "../../utils/common";
+import { setAttachmentUuids } from "../../utils/muutospyyntoUtil";
 import UusiAsiaDialog from "./UusiAsiaDialog";
-import {useHistory, useParams} from "react-router-dom";
-import {parseLupa} from "../../utils/lupaParser";
+import { useHistory, useParams } from "react-router-dom";
+import { parseLupa } from "../../utils/lupaParser";
 import localforage from "localforage";
-import {API_BASE_URL} from "modules/constants";
-import {backendRoutes} from "stores/utils/backendRoutes";
-import {useEsiJaPerusopetus} from "../../stores/esiJaPerusopetus";
+import { API_BASE_URL } from "modules/constants";
+import { backendRoutes } from "stores/utils/backendRoutes";
+import { useEsiJaPerusopetus } from "../../stores/esiJaPerusopetus";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -66,7 +76,11 @@ const AsiaDialogContainer = ({
 
   const lupaKohteet = useMemo(() => {
     const result = viimeisinLupa
-      ? parseLupa({ ...viimeisinLupa }, intl.formatMessage, intl.locale.toUpperCase())
+      ? parseLupa(
+          { ...viimeisinLupa },
+          intl.formatMessage,
+          intl.locale.toUpperCase()
+        )
       : {};
     return result;
   }, [viimeisinLupa, intl]);
@@ -93,14 +107,15 @@ const AsiaDialogContainer = ({
             return Object.assign({}, file, fileFromBackend);
           }, changeObj.properties.attachments || [])
         : null;
-      return files ? assocPath(["properties", "attachments"], files, changeObj) : changeObj;
+      return files
+        ? assocPath(["properties", "attachments"], files, changeObj)
+        : changeObj;
     }, findObjectWithKey({ ...muutospyynto }, "changeObjects"));
   }, [filesFromMuutokset, muutospyynto]);
 
   useEffect(() => {
     if (muutospyynto) {
-
-      const {muutokset: backendMuutokset} = muutospyynto || {};
+      const { muutokset: backendMuutokset } = muutospyynto || {};
 
       let changesBySection = {};
 
@@ -123,10 +138,14 @@ const AsiaDialogContainer = ({
         }, updatedC);
       }
 
-      changesBySection.paatoksentiedot = path(["meta", "paatoksentiedot"], muutospyynto) || [];
+      changesBySection.paatoksentiedot =
+        path(["meta", "paatoksentiedot"], muutospyynto) || [];
       // Set uuid for asianumero
-      find(paatoksentiedot => getAnchorPart(paatoksentiedot.anchor, 1) === 'asianumero', changesBySection.paatoksentiedot)
-        .properties.metadata = {uuid: muutospyynto.uuid};
+      find(
+        paatoksentiedot =>
+          getAnchorPart(paatoksentiedot.anchor, 1) === "asianumero",
+        changesBySection.paatoksentiedot
+      ).properties.metadata = { uuid: muutospyynto.uuid };
 
       if (
         changesBySection.categoryFilter &&
