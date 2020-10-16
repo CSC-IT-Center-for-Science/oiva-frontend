@@ -4,6 +4,7 @@ import * as muutEhdotHelper from "helpers/poMuutEhdot";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
 import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
+import * as opetuskieletHelper from "helpers/opetuskielet"
 
 export async function createObjectToSave(
   locale,
@@ -33,6 +34,14 @@ export async function createObjectToSave(
   // 2. OPETUKSEN JÄRJESTÄMISMUOTO
   const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
     changeObjects.opetuksenJarjestamismuodot,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
+
+  // 3. OPETUSKIELET
+  const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
+    changeObjects.opetuskielet,
     maaraystyypit,
     locale,
     kohteet
@@ -98,7 +107,8 @@ export async function createObjectToSave(
       muutEhdot,
       opetuksenJarjestamismuodot,
       opetus,
-      opetustaAntavatKunnat
+      opetustaAntavatKunnat,
+      opetuskielet
     ]),
     uuid
   };

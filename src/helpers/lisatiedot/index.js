@@ -1,4 +1,5 @@
 import { mapObjIndexed, groupBy, prop, head, map } from "ramda";
+import localforage from "localforage";
 
 export const initializeLisatieto = ({
   koodiArvo: koodiarvo,
@@ -25,3 +26,7 @@ export const initializeLisatiedot = (lisatiedotData, maaraykset = []) => {
       }, lisatiedotData)
     : [];
 };
+
+export function getLisatiedotFromStorage() {
+  return localforage.getItem("lisatiedot");
+}

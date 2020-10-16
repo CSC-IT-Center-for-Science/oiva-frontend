@@ -1049,5 +1049,9 @@ export default defineMessages({
   lisaaUusiNimi: {
     id: "common.lisaaUusiNimi",
     defaultMessage: "Lisää uusi nimi"
+  },
+  kielet: {
+    id: "common.kielet",
+    defaultMessage: "kielet"
   }
 });

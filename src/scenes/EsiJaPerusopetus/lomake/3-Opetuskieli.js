@@ -8,6 +8,7 @@ import common from "../../../i18n/definitions/common";
 const Opetuskieli = ({
   changeObjects,
   kieletOPH,
+  lisatiedot,
   onChangesRemove,
   onChangesUpdate,
   sectionId
@@ -31,13 +32,14 @@ const Opetuskieli = ({
       onUpdate={onChangesUpdate}
       sectionId={sectionId}
       showCategoryTitles={true}
-      title={"Kielet"}>
+      title={intl.formatMessage(common.kielet)}>
       <Lomake
         action="modification"
         anchor={sectionId}
         changeObjects={changeObjects}
         data={{
-          kieletOPH
+          kieletOPH,
+          lisatiedot
         }}
         onChangesUpdate={onChangesUpdate}
         path={["esiJaPerusopetus", "opetuskielet"]}
