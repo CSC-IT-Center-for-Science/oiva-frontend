@@ -39,6 +39,23 @@ export default defineMessages({
   },
   eiSisaOppilaitosTaiKotikoulumuotoinen: {
     id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    defaultMessage: "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+    defaultMessage:
+      "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+  },
+  oppilastaOpiskelijaa: {
+    id: "education.oppilastaOpiskelijaa",
+    defaultMessage: "Oppilasta/opiskelijaa"
+  },
+  oppilastaOpiskelijaaOtsikko: {
+    id: "education.oppilastaOpiskelijaaOtsikko",
+    defaultMessage: "Opetuksen järjestäjän oppilas-/opiskelijamäärä"
+  },
+  muutEhdotTitle: {
+    id: "education.muutEhdotTitle",
+    defaultMessage: "Muut koulutuksen järjestämiseen liittyvät ehdot"
+  },
+  opetustaJarjestetaanSuomenUlkopuolella: {
+    id: "education.opetustaJarjestetaanSuomenUlkopuolella",
+    defaultValue: "Opetusta järjestetään Suomen ulkopuolella"
   }
 });

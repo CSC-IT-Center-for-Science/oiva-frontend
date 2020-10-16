@@ -1022,6 +1022,14 @@ export default defineMessages({
     id: "common.lisatiedot",
     defaultMessage: "Lisätiedot"
   },
+  vahintaan: {
+      id: "common.vahintaan",
+      defaultMessage: "Vähintään"
+  },
+  enintaan: {
+      id: "common.enintaan",
+      defaultMessage: "Enintään"
+  },
   valitseYksiTaiUseampi: {
     id: "common.valitseYksiTaiUseampi",
     defaultMessage: "Valitse yksi tai useampi"
@@ -1029,6 +1037,10 @@ export default defineMessages({
   opetuskieli: {
     id: "common.opetuskieli",
     defaultMessage: "Opetuskieli"
+  },
+  maaJaPaikkakunta:{
+    id: "common.maaJaPaikkakunta",
+    defaultMessage: "Maa ja paikkakunta"
   },
   nimi: {
     id: "common.nimi",

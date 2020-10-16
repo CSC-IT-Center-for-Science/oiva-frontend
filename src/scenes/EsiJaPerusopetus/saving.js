@@ -1,8 +1,9 @@
-
 import moment from "moment";
 import * as R from "ramda";
-import * as opetusHelper from  "helpers/opetustehtavat";
-import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJärjestämismuodot";
+import * as muutEhdotHelper from "helpers/poMuutEhdot";
+import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
+import * as opetusHelper from "helpers/opetustehtavat";
+import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 
 export async function createObjectToSave(
   locale,
@@ -12,11 +13,8 @@ export async function createObjectToSave(
   uuid,
   kohteet,
   maaraystyypit,
-  muut,
-  lupaKohteet,
   alkupera = "KJ"
 ) {
-
   const allAttachmentsRaw = [];
 
   // ... without tiedosto-property
@@ -24,22 +22,60 @@ export async function createObjectToSave(
     return R.dissoc("tiedosto", attachment);
   }, allAttachmentsRaw);
 
-  const getValueByPathAndAnchor = (anchor, path, changeObjects) => {
-    return R.path(
-      ["properties", "value"],
-      R.find(R.propEq("anchor", anchor), R.path(path, changeObjects) || []) ||
-      {}
-    );
-  };
-
-  // OPETUSTEHTÄVÄT
+  // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
-    changeObjects.opetustehtavat, maaraystyypit, locale, kohteet);
+    changeObjects.opetustehtavat,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
 
-  // OPETUKSEN JÄRJESTÄMISMUODOT
-  const opetuksenJarjestamismuodot = await  opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
-    changeObjects.opetuksenJarjestamismuodot, maaraystyypit, locale, kohteet);
+  // 2. OPETUKSEN JÄRJESTÄMISMUOTO
+  const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
+    changeObjects.opetuksenJarjestamismuodot,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
 
+  // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
+  const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
+    changeObjects.muutEhdot,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
+
+  // 2. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
+  const categoryFilterChangeObj =
+    R.find(
+      R.propEq("anchor", "toimintaalue.categoryFilter"),
+      changeObjects.toimintaalue || []
+    ) || {};
+
+  const opetustaAntavatKunnat = await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
+    {
+      quickFilterChanges: R.path(
+        ["properties", "quickFilterChanges"],
+        categoryFilterChangeObj
+      ),
+      changesByProvince: R.path(
+        ["properties", "changesByProvince"],
+        categoryFilterChangeObj
+      ),
+      lisatiedot: R.find(
+        R.compose(R.includes(".lisatiedot."), R.prop("anchor")),
+        changeObjects.toimintaalue || []
+      ),
+      ulkomaa: R.filter(
+        R.compose(R.includes(".ulkomaa."), R.prop("anchor")),
+        changeObjects.toimintaalue || []
+      )
+    },
+    R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
+    maaraystyypit,
+    lupa.maaraykset
+  );
 
   let objectToSave = {
     alkupera,
@@ -59,43 +95,43 @@ export async function createObjectToSave(
     liitteet: allAttachments,
     meta: {},
     muutokset: R.flatten([
+      muutEhdot,
+      opetuksenJarjestamismuodot,
       opetus,
-      opetuksenJarjestamismuodot
+      opetustaAntavatKunnat
     ]),
     uuid
   };
 
-    const asianumeroObj = R.find(
-      R.propEq("anchor", "paatoksentiedot.asianumero.A"),
-      changeObjects.paatoksentiedot || []
-    );
-    objectToSave.asianumero = asianumeroObj
-      ? asianumeroObj.properties.value
-      : "";
-    const paatospaivaObj = R.find(
-      R.propEq("anchor", "paatoksentiedot.paatospaiva.A"),
-      changeObjects.paatoksentiedot || []
-    );
-    objectToSave.paatospvm = paatospaivaObj
-      ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
-      : "";
-    const voimaantulopaivaObj = R.find(
-      R.propEq("anchor", "paatoksentiedot.voimaantulopaiva.A"),
-      changeObjects.paatoksentiedot || []
-    );
-    objectToSave.voimassaalkupvm = voimaantulopaivaObj
-      ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
-      : "";
-    const paattymispaivamaaraObj = R.find(
+  const asianumeroObj = R.find(
+    R.propEq("anchor", "paatoksentiedot.asianumero.A"),
+    changeObjects.paatoksentiedot || []
+  );
+  objectToSave.asianumero = asianumeroObj ? asianumeroObj.properties.value : "";
+  const paatospaivaObj = R.find(
+    R.propEq("anchor", "paatoksentiedot.paatospaiva.A"),
+    changeObjects.paatoksentiedot || []
+  );
+  objectToSave.paatospvm = paatospaivaObj
+    ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
+    : "";
+  const voimaantulopaivaObj = R.find(
+    R.propEq("anchor", "paatoksentiedot.voimaantulopaiva.A"),
+    changeObjects.paatoksentiedot || []
+  );
+  objectToSave.voimassaalkupvm = voimaantulopaivaObj
+    ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
+    : "";
+  const paattymispaivamaaraObj = R.find(
     R.propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
-    changeObjects.paatoksentiedot || []
-    );
-    objectToSave.paattymispaivamaara = paattymispaivamaaraObj
+    changeObjects.paatoksentiedot || []
+  );
+  objectToSave.paattymispaivamaara = paattymispaivamaaraObj
     ? moment(paattymispaivamaaraObj.properties.value).format("YYYY-MM-DD")
     : "";
 
-    // This helps the frontend to initialize the first four fields on form load.
-    objectToSave.meta.paatoksentiedot = changeObjects.paatoksentiedot;
+  // This helps the frontend to initialize the first four fields on form load.
+  objectToSave.meta.paatoksentiedot = changeObjects.paatoksentiedot;
 
   return objectToSave;
 }

@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import common from "../../../i18n/definitions/common";
+import education from "../../../i18n/definitions/education";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { find } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
@@ -11,6 +12,7 @@ import { getAnchorPart } from "../../../utils/common";
 const MuutEhdot = ({
   onChangesRemove,
   onChangesUpdate,
+  lisatiedot,
   poMuutEhdot,
   sectionId
 }) => {
@@ -56,12 +58,13 @@ const MuutEhdot = ({
       onUpdate={onChanges}
       sectionId={sectionId}
       showCategoryTitles={true}
-      title={"Muut koulutukseen liittyvät ehdot"}>
+      title={intl.formatMessage(education.muutEhdotTitle)}>
       <Lomake
         action="modification"
         anchor={sectionId}
         changeObjects={state.changeObjects[sectionId]}
         data={{
+          lisatiedot,
           onAddButtonClick,
           poMuutEhdot
         }}

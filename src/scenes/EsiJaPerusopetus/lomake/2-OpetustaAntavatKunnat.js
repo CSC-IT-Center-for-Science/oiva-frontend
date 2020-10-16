@@ -43,6 +43,8 @@ const OpetustaAntavatKunnat = props => {
 
   const [isEditViewActive, toggleEditView] = useState(false);
 
+  const ulkomaa = R.find(R.propEq("koodiarvo", "200"), props.kunnat);
+
   const kunnatInLupa = useMemo(() => {
     return R.sortBy(
       R.path(["metadata", "arvo"]),
@@ -83,26 +85,22 @@ const OpetustaAntavatKunnat = props => {
    */
   const handleChanges = useCallback(
     changesByAnchor => {
-      const updatedChanges = R.filter(
-        R.compose(R.not, R.propEq("anchor", "toimintaalue.")),
-        changesByAnchor.changes
-      );
-      const categoryFilterChanges = R.uniq(R.flatten(updatedChanges)).filter(
-        Boolean
-      );
       const sectionChanges = {
-        anchor: changesByAnchor.anchor,
-        changes: categoryFilterChanges
+        anchor: props.sectionId,
+        changes: changesByAnchor.changes
       };
       onChangesUpdate(sectionChanges);
     },
-    [onChangesUpdate]
+    [onChangesUpdate, props.changeObjects, props.sectionId]
   );
 
   const whenChanges = useCallback(
     changes => {
       const withoutCategoryFilterChangeObj = R.filter(
-        R.compose(R.not, R.propEq("anchor", "categoryFilter")),
+        R.compose(
+          R.not,
+          R.propEq("anchor", `${props.sectionId}.categoryFilter`)
+        ),
         changeObjects
       );
 
@@ -112,12 +110,12 @@ const OpetustaAntavatKunnat = props => {
         R.values(changes.quickFilterChanges)
       ).length;
 
-      const changesToSet = R.concat(
+      const changesToSet = R.flatten([
         withoutCategoryFilterChangeObj,
         amountOfChanges || amountOfQuickFilterChanges
           ? [
               {
-                anchor: "categoryFilter",
+                anchor: `${props.sectionId}.categoryFilter`,
                 properties: {
                   changesByProvince: changes.changesByProvince,
                   quickFilterChanges: changes.quickFilterChanges
@@ -125,7 +123,7 @@ const OpetustaAntavatKunnat = props => {
               }
             ]
           : []
-      );
+      ]);
 
       return onChangesUpdate({
         anchor: props.sectionId,
@@ -287,19 +285,19 @@ const OpetustaAntavatKunnat = props => {
 
   const provinceChanges = useMemo(() => {
     const changeObj = R.find(
-      R.propEq("anchor", "categoryFilter"),
+      R.propEq("anchor", `${props.sectionId}.categoryFilter`),
       changeObjects
     );
     return changeObj ? changeObj.properties.changesByProvince : {};
-  }, [changeObjects]);
+  }, [changeObjects, props.sectionId]);
 
   const quickFilterChanges = useMemo(() => {
     const changeObj = R.find(
-      R.propEq("anchor", "categoryFilter"),
+      R.propEq("anchor", `${props.sectionId}.categoryFilter`),
       changeObjects
     );
     return changeObj ? changeObj.properties.quickFilterChanges : {};
-  }, [changeObjects]);
+  }, [changeObjects, props.sectionId]);
 
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
@@ -329,6 +327,7 @@ const OpetustaAntavatKunnat = props => {
           isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
           isValtakunnallinenChecked: fiCode === "FI1",
           kunnat: kunnatWithoutAhvenanmaan,
+          lisatiedot: props.lisatiedot,
           localizations: {
             accept: intl.formatMessage(common.accept),
             areaOfActionIsUndefined: intl.formatMessage(
@@ -347,6 +346,7 @@ const OpetustaAntavatKunnat = props => {
               wizard.wholeCountryWithoutAhvenanmaa
             )
           },
+          ulkomaa,
           maakunnat: provincesWithoutAhvenanmaa,
           onChanges: whenChanges,
           toggleEditView,
@@ -366,6 +366,7 @@ OpetustaAntavatKunnat.defaultProps = {
   changeObjects: [],
   kunnat: [],
   kuntamaaraykset: [],
+  lisatiedot: [],
   lupakohde: {},
   maakunnat: [],
   maakuntakunnat: [],
@@ -379,6 +380,7 @@ OpetustaAntavatKunnat.propTypes = {
   maakunnat: PropTypes.array,
   maakuntakunnat: PropTypes.array,
   kuntamaaraykset: PropTypes.array,
+  lisatiedot: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func,
