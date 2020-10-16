@@ -412,6 +412,7 @@ const UusiAsiaDialog = ({
                     <Opetuskieli
                       changeObjects={state.changeObjects.opetuskielet}
                       kieletOPH={kieletOPH}
+                      lisatiedot={lisatiedot}
                       {...props}
                     />
                   )}

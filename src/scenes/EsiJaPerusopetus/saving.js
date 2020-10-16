@@ -5,6 +5,7 @@ import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamism
 import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
+import * as opetuskieletHelper from "helpers/opetuskielet"
 
 export async function createObjectToSave(
   locale,
@@ -26,6 +27,21 @@ export async function createObjectToSave(
   // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
     changeObjects.opetustehtavat,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
+  
+  // 2. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
+  const categoryFilterChangeObj =
+    R.find(
+      R.propEq("anchor", "toimintaalue.categoryFilter"),
+      changeObjects.toimintaalue || []
+    ) || {};
+  
+  // 3. OPETUSKIELET
+  const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
+    changeObjects.opetuskielet,
     maaraystyypit,
     locale,
     kohteet
@@ -54,13 +70,6 @@ export async function createObjectToSave(
     locale,
     kohteet
   );
-
-  // 2. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
-  const categoryFilterChangeObj =
-    R.find(
-      R.propEq("anchor", "toimintaalue.categoryFilter"),
-      changeObjects.toimintaalue || []
-    ) || {};
 
   const opetustaAntavatKunnat = await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
     {
@@ -109,6 +118,7 @@ export async function createObjectToSave(
       muutEhdot,
       opetuksenJarjestamismuodot,
       opetus,
+      opetuskielet,
       opetustaAntavatKunnat,
       opiskelijamaarat
     ]),

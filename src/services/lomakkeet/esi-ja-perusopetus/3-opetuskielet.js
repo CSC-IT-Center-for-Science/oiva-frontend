@@ -1,7 +1,13 @@
-import { map, toUpper, take, takeLast } from "ramda";
+import { map, toUpper, take, takeLast, find, pathEq } from "ramda";
 import {__} from "i18n-for-browser";
 
 export function opetuskielet(data, isReadOnly, locale) {
+
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    data.lisatiedot || []
+  );
+
   const localeUpper = toUpper(locale);
   return [
     {
@@ -66,12 +72,18 @@ export function opetuskielet(data, isReadOnly, locale) {
       ]
     },
     {
-      anchor: "opetuskieli",
+      anchor: "lisatiedot",
       components: [
         {
-          anchor: "lisatiedot",
+          anchor: lisatiedotObj.koodiarvo,
           name: "TextBox",
           properties: {
+            forChangeObject: {
+              koodiarvo: lisatiedotObj.koodiarvo,
+              koodisto: lisatiedotObj.koodisto,
+              versio: lisatiedotObj.versio,
+              voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+            },
             placeholder: __("common.lisatiedot")
           }
         }
