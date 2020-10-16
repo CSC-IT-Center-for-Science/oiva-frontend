@@ -39,10 +39,13 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // OPETUSKIELET
-  const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(changeObjects.opetuskielet,
-    maaraystyypit, locale, kohteet);
-
+  // 3. OPETUSKIELET
+  const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
+    changeObjects.opetuskielet,
+    maaraystyypit,
+    locale,
+    kohteet
+  );
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
   const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(

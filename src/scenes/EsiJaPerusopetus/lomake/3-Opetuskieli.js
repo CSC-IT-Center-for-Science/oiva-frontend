@@ -8,6 +8,7 @@ import common from "../../../i18n/definitions/common";
 const Opetuskieli = ({
   changeObjects,
   kieletOPH,
+  lisatiedot,
   onChangesRemove,
   onChangesUpdate,
   sectionId
@@ -37,7 +38,8 @@ const Opetuskieli = ({
         anchor={sectionId}
         changeObjects={changeObjects}
         data={{
-          kieletOPH
+          kieletOPH,
+          lisatiedot
         }}
         onChangesUpdate={onChangesUpdate}
         path={["esiJaPerusopetus", "opetuskielet"]}
