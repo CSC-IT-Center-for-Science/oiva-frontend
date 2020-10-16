@@ -29,7 +29,7 @@ const Esittelijat = () => {
         <Typography component="h1" variant="h1">
           {formatMessage(commonMessages.asianhallinta)}
         </Typography>
-        <Typography component="h2" variant="h4" className="pb-4 mt--12">
+        <Typography component="h2" style={{fontSize: "1.25rem"}} className="pb-4 mt--12">
           {formatMessage(educationMessages.vocationalEducation)}
         </Typography>
 
