@@ -45,8 +45,6 @@ const history = createBrowserHistory();
 
 const logo = { text: "Oiva", path: "/" };
 
-const keys = ["lupa", "kielet"];
-
 /**
  * App component forms the basic structure of the application and its routing.
  *

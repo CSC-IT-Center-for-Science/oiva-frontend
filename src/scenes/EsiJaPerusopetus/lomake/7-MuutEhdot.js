@@ -43,7 +43,7 @@ const MuutEhdot = ({
         onChangesUpdate({ anchor: anchor, changes: changes });
       }
     },
-    [onChangesUpdate]
+    [actions, onChangesUpdate, sectionId]
   );
 
   return (
