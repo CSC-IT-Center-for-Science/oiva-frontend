@@ -7,7 +7,6 @@ import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { find } from "ramda";
-import { getAnchorPart } from "../../../utils/common";
 
 const MuutEhdot = ({
   onChangesRemove,
