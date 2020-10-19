@@ -24,9 +24,12 @@ const MuutEhdot = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback( addBtn => {
-    actions.createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
-  }, [actions, sectionId]);
+  const onAddButtonClick = useCallback(
+    koodiarvo => {
+      actions.createTextBoxChangeObject(sectionId, koodiarvo);
+    },
+    [actions, sectionId]
+  );
 
   const onChanges = useCallback(
     ({ anchor, changes }) => {
