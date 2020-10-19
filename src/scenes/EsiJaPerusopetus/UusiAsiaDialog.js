@@ -482,20 +482,21 @@ const UusiAsiaDialog = ({
                   )}
                   sectionId={"liitetiedostot"}
                   title={"Liitetiedostot"}></FormSection>
-
-                <EsittelijatWizardActions
-                  isSavingEnabled={isSavingEnabled}
-                  onClose={leaveOrOpenCancelModal}
-                  onPreview={() => {
-                    return onAction("preview");
-                  }}
-                  onSave={() => {
-                    return onAction("save");
-                  }}
-                />
               </form>
             </div>
           </DialogContentWithStyles>
+          <div className="fixed w-full bg-gray-100 border-t border-gray-300 bottom-0">
+            <EsittelijatWizardActions
+              isSavingEnabled={isSavingEnabled}
+              onClose={leaveOrOpenCancelModal}
+              onPreview={() => {
+                return onAction("preview");
+              }}
+              onSave={() => {
+                return onAction("save");
+              }}
+            />
+          </div>
         </FormDialog>
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}
