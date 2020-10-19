@@ -1,7 +1,48 @@
-import { map, toUpper, take, takeLast, find, pathEq } from "ramda";
-import {__} from "i18n-for-browser";
+import {
+  map,
+  toUpper,
+  find,
+  pathEq,
+  not,
+  includes,
+  prop,
+  path,
+  filter,
+  uniq,
+  concat
+} from "ramda";
+import { __ } from "i18n-for-browser";
 
-export function opetuskielet(data, isReadOnly, locale) {
+export function getOpetuskieletOPHLomake(
+  data,
+  isReadOnly,
+  locale,
+  changeObjects
+) {
+  // TODO: Huomioidaan myöhemmin myös lupaan kuuluvat kielet
+  const valitutEnsisijaisetKoodiarvot = map(
+    prop("value"),
+    path([0, "properties", "value"], changeObjects) || []
+  );
+
+  const valitutToissijaisetKoodiarvot = map(
+    prop("value"),
+    path([1, "properties", "value"], changeObjects) || []
+  );
+
+  const valitutKoodiarvot = uniq(
+    concat(valitutEnsisijaisetKoodiarvot, valitutToissijaisetKoodiarvot)
+  );
+
+  const valittavanaOlevatEnsisisijaisetOpetuskielet = filter(
+    kieli => not(includes(kieli.koodiarvo, valitutKoodiarvot)),
+    data.ensisijaisetOpetuskieletOPH
+  );
+
+  const valittavanaOlevatToissisijaisetOpetuskielet = filter(
+    kieli => not(includes(kieli.koodiarvo, valitutKoodiarvot)),
+    data.toissijaisetOpetuskieletOPH
+  );
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -24,11 +65,8 @@ export function opetuskielet(data, isReadOnly, locale) {
                 label: kieli.metadata[localeUpper].nimi,
                 value: kieli.koodiarvo
               };
-            }, take(5, data.kieletOPH)),
-            callback: (payload, values) => {
-              console.log(values.value[0]);
-            },
-            title: __("common.valitseYksiTaiUseampi"),
+            }, valittavanaOlevatEnsisisijaisetOpetuskielet),
+            title: __("common.valitseYksiTaiUseampi")
           }
         }
       ]
@@ -47,11 +85,8 @@ export function opetuskielet(data, isReadOnly, locale) {
                 label: kieli.metadata[localeUpper].nimi,
                 value: kieli.koodiarvo
               };
-            }, takeLast(4, data.kieletOPH)),
-            callback: (payload, values) => {
-              console.log(values.value[0]);
-            },
-            title: __("common.valitseYksiTaiUseampi"),
+            }, valittavanaOlevatToissisijaisetOpetuskielet),
+            title: __("common.valitseYksiTaiUseampi")
           }
         }
       ]
@@ -65,8 +100,7 @@ export function opetuskielet(data, isReadOnly, locale) {
           name: "StatusTextRow",
           styleClasses: ["pt-8 border-t"],
           properties: {
-            title:
-              __("common.lisatiedotInfo")
+            title: __("common.lisatiedotInfo")
           }
         }
       ]

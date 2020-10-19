@@ -29,8 +29,8 @@ import { useEsiJaPerusopetus } from "../../stores/esiJaPerusopetus";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const AsiaDialogContainer = ({
+  ensisijaisetOpetuskieletOPH,
   kielet,
-  kieletOPH,
   kohteet,
   koulutukset,
   koulutusalat,
@@ -48,6 +48,7 @@ const AsiaDialogContainer = ({
   organisaatio,
   poErityisetKoulutustehtavat,
   poMuutEhdot,
+  toissijaisetOpetuskieletOPH,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -167,9 +168,9 @@ const AsiaDialogContainer = ({
 
   return muutospyynto && state.changeObjects ? (
     <UusiAsiaDialog
+      ensisijaisetOpetuskieletOPH={ensisijaisetOpetuskieletOPH}
       history={history}
       kielet={kielet}
-      kieletOPH={kieletOPH}
       kohteet={kohteet}
       koulutukset={koulutukset}
       koulutusalat={koulutusalat}
@@ -190,6 +191,7 @@ const AsiaDialogContainer = ({
       opetustehtavakoodisto={opetustehtavakoodisto}
       opetustehtavat={opetustehtavat}
       organisation={organisaatio}
+      toissijaisetOpetuskieletOPH={toissijaisetOpetuskieletOPH}
       tutkinnot={tutkinnot}
     />
   ) : (
