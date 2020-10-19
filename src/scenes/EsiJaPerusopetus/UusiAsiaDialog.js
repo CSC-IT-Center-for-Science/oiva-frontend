@@ -437,6 +437,7 @@ const UusiAsiaDialog = ({
                   render={props => (
                     <ErityisetKoulutustehtavat
                       poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+                      lisatiedot={lisatiedot}
                       {...props}
                     />
                   )}
