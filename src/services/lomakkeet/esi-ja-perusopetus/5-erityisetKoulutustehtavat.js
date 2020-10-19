@@ -1,6 +1,6 @@
 import { isAdded, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import { endsWith, filter, flatten, map, path, startsWith, toUpper } from "ramda";
+import { endsWith, filter, find, flatten, map, path, pathEq, startsWith, toUpper } from "ramda";
 import {__} from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
 
@@ -12,20 +12,13 @@ export function erityisetKoulutustehtavat(
 ) {
   const localeUpper = toUpper(locale);
 
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    data.lisatiedot
+  );
+
   return flatten([
     map(erityinenKoulutustehtava => {
-      /**
-       * Selvitetään, montako valinnaista tekstikenttää lomakkeelle on luotava.
-       */
-      const changeObjOfOptionalFields = getChangeObjByAnchor(
-        `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.lisaaPainike`,
-        changeObjects
-      );
-
-      const amountOfOptionalTextBoxes = !!changeObjOfOptionalFields
-        ? changeObjOfOptionalFields.properties.amountOfClicks
-        : 0;
-
       const changeObj = getChangeObjByAnchor(
         `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
         changeObjects
@@ -134,13 +127,20 @@ export function erityisetKoulutustehtavat(
       ]
     },
     {
-      anchor: "erityiset-koulutustehtavat",
+      anchor: "lisatiedot",
       components: [
         {
-          anchor: "lisatiedot",
+          anchor: lisatiedotObj.koodiarvo,
           name: "TextBox",
           properties: {
-            placeholder: __("common.lisatiedot")
+            forChangeObject: {
+              koodiarvo: lisatiedotObj.koodiarvo,
+              koodisto: lisatiedotObj.koodisto,
+              versio: lisatiedotObj.versio,
+              voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+            },
+            placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
+              .nimi
           }
         }
       ]

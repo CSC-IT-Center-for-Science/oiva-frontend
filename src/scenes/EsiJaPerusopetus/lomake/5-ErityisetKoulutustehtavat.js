@@ -9,6 +9,7 @@ import { getAnchorPart } from "../../../utils/common";
 import { find } from "ramda";
 
 const ErityisetKoulutustehtavat = ({
+  lisatiedot,
   onChangesRemove,
   onChangesUpdate,
   poErityisetKoulutustehtavat,
@@ -63,7 +64,8 @@ const ErityisetKoulutustehtavat = ({
         changeObjects={state.changeObjects[sectionId]}
         data={{
           onAddButtonClick,
-          poErityisetKoulutustehtavat
+          poErityisetKoulutustehtavat,
+          lisatiedot
         }}
         onChangesUpdate={onChanges}
         path={["esiJaPerusopetus", "erityisetKoulutustehtavat"]}
