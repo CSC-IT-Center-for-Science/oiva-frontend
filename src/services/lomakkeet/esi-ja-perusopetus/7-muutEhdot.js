@@ -165,7 +165,5 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
       : null
   ]);
 
-  console.info(lomakerakenne);
-
   return lomakerakenne;
 }

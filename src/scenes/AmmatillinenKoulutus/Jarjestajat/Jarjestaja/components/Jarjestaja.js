@@ -105,7 +105,7 @@ const Jarjestaja = React.memo(
             ]
           : [];
       return R.flatten(R.insert(1, basicRoutes, additionalRoutes));
-    }, [lupa.jarjestaja, url, user, intl]);
+    }, [lupa.jarjestaja, user, intl]);
 
     const newApplicationRouteItem = useMemo(() => {
       return {

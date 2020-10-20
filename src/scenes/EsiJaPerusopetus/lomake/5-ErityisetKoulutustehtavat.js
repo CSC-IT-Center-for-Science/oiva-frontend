@@ -23,9 +23,15 @@ const ErityisetKoulutustehtavat = ({
     changesTest: intl.formatMessage(common.changesText)
   };
 
-  const onAddButtonClick = useCallback((addBtn) => {
-    actions.createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
-  }, [actions, sectionId]);
+  const onAddButtonClick = useCallback(
+    addBtn => {
+      actions.createTextBoxChangeObject(
+        sectionId,
+        getAnchorPart(addBtn.anchor, 1)
+      );
+    },
+    [actions, sectionId]
+  );
 
   const onChanges = useCallback(
     ({ anchor, changes }) => {
@@ -42,7 +48,7 @@ const ErityisetKoulutustehtavat = ({
         onChangesUpdate({ anchor: anchor, changes: changes });
       }
     },
-    [onChangesUpdate]
+    [actions, onChangesUpdate, sectionId]
   );
 
   return (

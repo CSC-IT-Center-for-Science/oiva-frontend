@@ -9,6 +9,7 @@ import { useEsiJaPerusopetus } from "../../../stores/esiJaPerusopetus";
 
 const OpetuksenJarjestamismuoto = ({
   onChangesRemove,
+  lisatiedot,
   opetuksenJarjestamismuodot,
   sectionId
 }) => {
@@ -29,7 +30,9 @@ const OpetuksenJarjestamismuoto = ({
       isExpanded={true}
       messages={changesMessages}
       onChangesRemove={onChangesRemove}
-      onUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)}
+      onUpdate={payload =>
+        actions.setChangeObjects(payload.anchor, payload.changes)
+      }
       sectionId={sectionId}
       showCategoryTitles={true}
       title={intl.formatMessage(education.opetuksenJarjestamismuodot)}>
@@ -38,9 +41,12 @@ const OpetuksenJarjestamismuoto = ({
         anchor={sectionId}
         changeObjects={state.changeObjects[sectionId]}
         data={{
+          lisatiedot,
           opetuksenJarjestamismuodot
         }}
-        onChangesUpdate={payload => actions.setChangeObjects(payload.anchor, payload.changes)}
+        onChangesUpdate={payload =>
+          actions.setChangeObjects(payload.anchor, payload.changes)
+        }
         path={["esiJaPerusopetus", "opetuksenJarjestamismuodot"]}
         showCategoryTitles={true}></Lomake>
     </ExpandableRowRoot>
@@ -48,6 +54,7 @@ const OpetuksenJarjestamismuoto = ({
 };
 
 OpetuksenJarjestamismuoto.propTypes = {
+  lisatiedot: PropTypes.array,
   onChangesUpdate: PropTypes.func,
   opetuksenJarjestamismuodot: PropTypes.array,
   sectionId: PropTypes.string

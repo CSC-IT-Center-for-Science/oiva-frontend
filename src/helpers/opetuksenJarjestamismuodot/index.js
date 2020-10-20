@@ -71,18 +71,18 @@ export const defineBackendChangeObjects = async (
         ),
         changeObjects
       );
+
       return changeObj
         ? {
             generatedId: `opetuksenJarjestamismuoto-${Math.random()}`,
             kohde,
             koodiarvo: jarjestamismuoto.koodiarvo,
             koodisto: jarjestamismuoto.koodisto.koodistoUri,
-            kuvaus:
-              path(["metadata", locale, "kuvaus"], jarjestamismuoto) ||
-              jarjestamismuoto.kuvaus,
+            kuvaus: changeObj.properties.value,
             maaraystyyppi,
             meta: {
-              changeObjects: [changeObj, kuvausChangeObj].filter(Boolean)
+              changeObjects: [changeObj, kuvausChangeObj].filter(Boolean),
+              kuvaus: changeObj.properties.value
             },
             tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
           }

@@ -29,7 +29,6 @@ export function erityisetKoulutustehtavat(
 
   return flatten([
     map(erityinenKoulutustehtava => {
-      console.info(erityinenKoulutustehtava);
       const changeObj = getChangeObjByAnchor(
         `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
         changeObjects

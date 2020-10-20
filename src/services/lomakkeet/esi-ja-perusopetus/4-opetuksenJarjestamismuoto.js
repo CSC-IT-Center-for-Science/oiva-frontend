@@ -1,22 +1,30 @@
 import { isAdded, isRemoved } from "css/label";
-import { flatten, map, toUpper } from "ramda";
-import {__} from "i18n-for-browser";
+import { find, flatten, map, pathEq, toUpper } from "ramda";
+import { __ } from "i18n-for-browser";
 
 export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
   const localeUpper = toUpper(locale);
+
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    data.lisatiedot || []
+  );
+
   return flatten([
     map(muoto => {
       return {
         anchor: muoto.koodiarvo,
         categories: [
           {
-            anchor: "nimi",
+            anchor: "kuvaus",
             components: [
               {
                 anchor: "A",
                 name: "TextBox",
                 properties: {
-                  title: __("common.nimi")
+                  placeholder: __("common.kuvausPlaceholder"),
+                  title: __("common.kuvaus"),
+                  value: muoto.metadata[localeUpper].kuvaus
                 }
               }
             ]
@@ -52,8 +60,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
               addition: isAdded,
               removal: isRemoved
             },
-            title:
-              __("education.eiSisaOppilaitosTaiKotikoulumuotoinen")
+            title: __("education.eiSisaOppilaitosTaiKotikoulumuotoinen")
           }
         }
       ]
@@ -79,6 +86,12 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
           anchor: "tekstikentta",
           name: "TextBox",
           properties: {
+            forChangeObject: {
+              koodiarvo: lisatiedotObj.koodiarvo,
+              koodisto: lisatiedotObj.koodisto,
+              versio: lisatiedotObj.versio,
+              voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+            },
             placeholder: __("common.lisatiedot")
           }
         }
