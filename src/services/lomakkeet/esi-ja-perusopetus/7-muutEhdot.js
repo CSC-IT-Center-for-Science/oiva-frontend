@@ -118,6 +118,14 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                       properties: {
                         isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
                         text: __("common.lisaaUusiKuvaus")
+                        icon: "FaPlus",
+                        iconContainerStyles: {
+                          width: "15px"
+                        },
+                        iconStyles: {
+                          fontSize: 10
+                        },
+                        variant: "text"
                       }
                     }
                   ]
