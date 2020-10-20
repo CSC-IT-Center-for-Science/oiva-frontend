@@ -131,7 +131,7 @@ export const defineBackendChangeObjects = async (
   return flatten([
     opetuksenJarjestamismuotoChangeObjs,
     lisatiedotBEchangeObject
-  ]);
+  ]).filter(Boolean);
 };
 
 export function getOpetuksenJarjestamismuodotFromStorage() {
