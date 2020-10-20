@@ -117,7 +117,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                       onClick: () => data.onAddButtonClick(ehto.koodiarvo),
                       properties: {
                         isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
-                        text: __("common.lisaaUusiKuvaus")
+                        text: __("common.lisaaUusiKuvaus"),
                         icon: "FaPlus",
                         iconContainerStyles: {
                           width: "15px"
