@@ -71,7 +71,7 @@ export const defineBackendChangeObjects = async (
       changeObjects
     );
 
-    // Ensimmäisen nimikentän muutos
+    // Ensimmäisen kuvauskentän muutos
     const firstNameChangeObject = find(
       cObj =>
         cObj.anchor ===
@@ -79,11 +79,11 @@ export const defineBackendChangeObjects = async (
       changeObjects
     );
 
-    // Dynaamisten nimikenttien muutokset
-    const nimiChangeObjects = filter(changeObj => {
+    // Dynaamisten kuvauskenttien muutokset
+    const kuvausChangeObjects = filter(changeObj => {
       return (
         koulutustehtava.koodiarvo === getAnchorPart(changeObj.anchor, 1) &&
-        endsWith(".nimi", changeObj.anchor)
+        endsWith(".kuvaus", changeObj.anchor)
       );
     }, changeObjects);
 
@@ -102,7 +102,7 @@ export const defineBackendChangeObjects = async (
         }
       : null;
 
-    const nimiBEchangeObjects = map(changeObj => {
+    const kuvausBEchangeObjects = map(changeObj => {
       return changeObj
         ? {
             generatedId: changeObj.anchor,
@@ -112,14 +112,15 @@ export const defineBackendChangeObjects = async (
             kuvaus: changeObj.properties.value,
             maaraystyyppi,
             meta: {
+              kuvaus: changeObj.properties.value,
               changeObjects: [changeObj]
             },
             tila: "LISAYS"
           }
         : null;
-    }, append(firstNameChangeObject, nimiChangeObjects));
+    }, append(firstNameChangeObject, kuvausChangeObjects));
 
-    return [checkboxBEchangeObjects, nimiBEchangeObjects].filter(Boolean);
+    return [checkboxBEchangeObjects, kuvausBEchangeObjects].filter(Boolean);
   }, erityisetKoulutustehtavat);
 
   const lisatiedotChangeObj = find(
@@ -129,11 +130,6 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
     ? {
-        tila: "LISAYS",
-        meta: {
-          arvo: path(["properties", "value"], lisatiedotChangeObj),
-          changeObjects: [lisatiedotChangeObj]
-        },
         kohde,
         koodiarvo: path(
           ["properties", "metadata", "koodiarvo"],
@@ -143,7 +139,12 @@ export const defineBackendChangeObjects = async (
           ["properties", "metadata", "koodisto", "koodistoUri"],
           lisatiedotChangeObj
         ),
-        maaraystyyppi
+        maaraystyyppi,
+        meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
+          changeObjects: [lisatiedotChangeObj]
+        },
+        tila: "LISAYS"
       }
     : null;
 
