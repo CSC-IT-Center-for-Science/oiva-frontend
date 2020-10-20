@@ -52,74 +52,82 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
         categories:
           ehto.koodiarvo === "99" // 99 = Muu ehto
             ? flatten([
-                [
-                  {
-                    anchor: "0",
-                    components: [
-                      {
-                        anchor: "nimi",
-                        name: "TextBox",
-                        properties: {
-                          forChangeObject: {
-                            koodiarvo: ehto.koodiarvo
-                          },
-                          placeholder: "Kirjoita tähän ehto vapaamuotoisesti",
-                          title: "Muu ehto"
-                        }
+              [
+                {
+                  anchor: "0",
+                  components: [
+                    {
+                      anchor: "nimi",
+                      name: "TextBox",
+                      properties: {
+                        forChangeObject: {
+                          koodiarvo: ehto.koodiarvo
+                        },
+                        placeholder: "Kirjoita tähän ehto vapaamuotoisesti",
+                        title: "Muu ehto"
                       }
-                    ]
-                  },
-                  /**
-                   * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
-                   */
-                  map(
-                    changeObj => {
-                      return {
-                        anchor: getAnchorPart(changeObj.anchor, 2),
-                        components: [
-                          {
-                            anchor: "nimi",
-                            name: "TextBox",
-                            properties: {
-                              forChangeObject: {
-                                koodiarvo: ehto.koodiarvo
-                              },
-                              placeholder:
-                                "Kirjoita tähän ehto vapaamuotoisesti",
-                              title: "Nimi",
-                              isRemovable: true,
-                              value: changeObj.properties.value
-                            }
+                    }
+                  ]
+                },
+                /**
+                 * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
+                 */
+                map(
+                  changeObj => {
+                    return {
+                      anchor: getAnchorPart(changeObj.anchor, 2),
+                      components: [
+                        {
+                          anchor: "nimi",
+                          name: "TextBox",
+                          properties: {
+                            forChangeObject: {
+                              koodiarvo: ehto.koodiarvo
+                            },
+                            placeholder:
+                              "Kirjoita tähän ehto vapaamuotoisesti",
+                            title: "Nimi",
+                            isRemovable: true,
+                            value: changeObj.properties.value
                           }
-                        ]
-                      };
-                    },
-                    filter(
-                      changeObj =>
-                        endsWith(".nimi", changeObj.anchor) &&
-                        !includes(`${ehto.koodiarvo}.0`, changeObj.anchor),
-                      changeObjects
-                    )
-                  ),
-                  /**
-                   * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
-                   */
-                  {
-                    anchor: "lisaaPainike",
-                    components: [
-                      {
-                        anchor: "A",
-                        name: "SimpleButton",
-                        onClick: () => data.onAddButtonClick(ehto.koodiarvo),
-                        properties: {
-                          isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
-                          text: "Lisää uusi nimi"
                         }
+                      ]
+                    };
+                  },
+                  filter(
+                    changeObj =>
+                      endsWith(".nimi", changeObj.anchor) &&
+                      !includes(`${ehto.koodiarvo}.0`, changeObj.anchor),
+                    changeObjects
+                  )
+                ),
+                /**
+                 * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
+                 */
+                {
+                  anchor: "lisaaPainike",
+                  components: [
+                    {
+                      anchor: "A",
+                      name: "SimpleButton",
+                      onClick: () => data.onAddButtonClick(ehto.koodiarvo),
+                      properties: {
+                        isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
+                        text: __("common.lisaaUusiNimi"),
+                        icon: "FaPlus",
+                        iconContainerStyles: {
+                          width: "15px"
+                        },
+                        iconStyles: {
+                          fontSize: 10
+                        },
+                        variant: "text"
                       }
-                    ]
-                  }
-                ]
-              ])
+                    }
+                  ]
+                }
+              ]
+            ])
             : []
       };
     }, data.poMuutEhdot),

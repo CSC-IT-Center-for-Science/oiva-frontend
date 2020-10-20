@@ -86,7 +86,12 @@ export function erityisetKoulutustehtavat(
                     isVisible: isCheckedByChange,
                     text: __("common.lisaaUusiNimi"),
                     icon: "FaPlus",
-                    iconFontSize: 10,
+                    iconContainerStyles: {
+                      width: "15px"
+                    },
+                    iconStyles: {
+                      fontSize: 10
+                    },
                     variant: "text"
                   }
                 }
