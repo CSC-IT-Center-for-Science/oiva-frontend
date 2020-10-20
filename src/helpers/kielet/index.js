@@ -13,16 +13,40 @@ import {
   filter,
   propEq,
   path,
-  find
+  find,
+  concat,
+  uniq,
+  sortBy
 } from "ramda";
 import localforage from "localforage";
 
-const kaytetytOPHKielet = ["FI", "SV", "SE", "RI", "VK", "EN", "FR", "DE", "RU"]
+const ensisijaisetOPHKielet = ["FI", "SV", "SE", "RI", "VK"];
 
-export const filterOPHKielet = (kielet) => {
-  return map(kielikoodi =>
-    find(propEq("koodiArvo", kielikoodi), kielet), kaytetytOPHKielet);
-}
+const toissijaisetOPHKielet = ["EN", "FR", "DE", "RU"];
+
+export const filterEnsisijaisetOpetuskieletOPH = (kielet, localeUpper) => {
+  return uniq(
+    concat(
+      map(
+        kielikoodi => find(propEq("koodiarvo", kielikoodi), kielet),
+        ensisijaisetOPHKielet
+      ),
+      sortBy(path(["metadata", localeUpper, "nimi"]), kielet)
+    )
+  );
+};
+
+export const filterToissijaisetOpetuskieletOPH = (kielet, localeUpper) => {
+  return uniq(
+    concat(
+      map(
+        kielikoodi => find(propEq("koodiarvo", kielikoodi), kielet),
+        toissijaisetOPHKielet
+      ),
+      sortBy(path(["metadata", localeUpper, "nimi"]), kielet)
+    )
+  );
+};
 
 export const initializeKieli = ({
   koodiArvo: koodiarvo,

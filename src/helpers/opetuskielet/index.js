@@ -12,7 +12,8 @@ import {
   filter,
   compose,
   includes,
-  flatten, pathEq
+  flatten,
+  pathEq
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
@@ -55,8 +56,13 @@ export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
     : [];
 };
 
-export const defineBackendChangeObjects = async (changeObjects = [], maaraystyypit, locale, kohteet) => {
-  const opetuskielet = await getkieletOPHFromStorage();
+export const defineBackendChangeObjects = async (
+  changeObjects = [],
+  maaraystyypit,
+  locale,
+  kohteet
+) => {
+  const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
 
   const lisatiedotObj = find(
@@ -64,7 +70,10 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
     lisatiedot || []
   );
 
-  const opetuskieletChangeObjs = filter(compose(startsWith("opetuskielet.opetuskieli"), prop("anchor")), changeObjects);
+  const opetuskieletChangeObjs = filter(
+    compose(startsWith("opetuskielet.opetuskieli"), prop("anchor")),
+    changeObjects
+  );
 
   /** Lisätietokentän käsittely */
   const lisatiedotChangeObj = find(
@@ -72,41 +81,53 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
     changeObjects
   );
 
-  const lisatiedotBeChangeObj = lisatiedotChangeObj ?
-    {
-      kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-      koodiarvo: lisatiedotObj.koodiarvo,
-      koodisto: lisatiedotObj.koodisto.koodistoUri,
-      kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
-      maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
-      meta: {
-        arvo: path(["properties", "value"], lisatiedotChangeObj),
-        changeObjects: [lisatiedotChangeObj]
-      },
-      tila: "LISAYS" } : [];
+  const lisatiedotBeChangeObj = lisatiedotChangeObj
+    ? {
+        kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
+        koodiarvo: lisatiedotObj.koodiarvo,
+        koodisto: lisatiedotObj.koodisto.koodistoUri,
+        kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
+        maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+        meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
+          changeObjects: [lisatiedotChangeObj]
+        },
+        tila: "LISAYS"
+      }
+    : [];
 
   /** Opetuskielten käsittely */
   const opetuskieliBeChangeObjects = map(opetuskieli => {
-    const changeObj = find(cObj => find(kieli => kieli.value === opetuskieli.koodiarvo, cObj.properties.value), opetuskieletChangeObjs);
+    const changeObj = find(
+      cObj =>
+        find(
+          kieli => kieli.value === opetuskieli.koodiarvo,
+          cObj.properties.value
+        ),
+      opetuskieletChangeObjs
+    );
 
-    return changeObj ? {
-      generatedId: `opetuskielet-${Math.random()}`,
-      kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-      koodiarvo: opetuskieli.koodiarvo,
-      koodisto: opetuskieli.koodisto.koodistoUri,
-      kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
-      maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
-      meta: {
-        changeObjects: [changeObj]
-      },
-      tila: "LISAYS"
-    } : null
+    return changeObj
+      ? {
+          generatedId: `opetuskielet-${Math.random()}`,
+          kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
+          koodiarvo: opetuskieli.koodiarvo,
+          koodisto: opetuskieli.koodisto.koodistoUri,
+          kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
+          maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+          meta: {
+            changeObjects: [changeObj]
+          },
+          tila: "LISAYS"
+        }
+      : null;
   }, opetuskielet);
 
-  return flatten([opetuskieliBeChangeObjects, lisatiedotBeChangeObj]).filter(Boolean);
+  return flatten([opetuskieliBeChangeObjects, lisatiedotBeChangeObj]).filter(
+    Boolean
+  );
+};
 
-}
-
-export function getkieletOPHFromStorage() {
-  return localforage.getItem("kieletOPH");
+export function getEnsisijaisetOpetuskieletOPHFromStorage() {
+  return localforage.getItem("ensisijaisetOpetuskieletOPH");
 }

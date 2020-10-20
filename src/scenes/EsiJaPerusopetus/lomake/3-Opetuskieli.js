@@ -7,11 +7,12 @@ import common from "../../../i18n/definitions/common";
 
 const Opetuskieli = ({
   changeObjects,
-  kieletOPH,
+  ensisijaisetOpetuskieletOPH,
   lisatiedot,
   onChangesRemove,
   onChangesUpdate,
-  sectionId
+  sectionId,
+  toissijaisetOpetuskieletOPH
 }) => {
   const intl = useIntl();
 
@@ -38,8 +39,9 @@ const Opetuskieli = ({
         anchor={sectionId}
         changeObjects={changeObjects}
         data={{
-          kieletOPH,
-          lisatiedot
+          ensisijaisetOpetuskieletOPH,
+          lisatiedot,
+          toissijaisetOpetuskieletOPH
         }}
         onChangesUpdate={onChangesUpdate}
         path={["esiJaPerusopetus", "opetuskielet"]}
@@ -55,7 +57,8 @@ Opetuskieli.defaultProps = {
 Opetuskieli.propTypes = {
   changeObjects: PropTypes.array,
   onChangesUpdate: PropTypes.func,
-  kieletOPH: PropTypes.array
+  ensisijaisetOpetuskieletOPH: PropTypes.array,
+  toissijaisetOpetuskieletOPH: PropTypes.array
 };
 
 export default Opetuskieli;

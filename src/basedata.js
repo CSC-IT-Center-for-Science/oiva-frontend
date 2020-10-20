@@ -22,7 +22,11 @@ import localforage from "localforage";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useParams } from "react-router-dom";
 import { initializeMaakunta } from "helpers/maakunnat";
-import { filterOPHKielet, initializeKieli } from "helpers/kielet";
+import {
+  filterEnsisijaisetOpetuskieletOPH,
+  filterToissijaisetOpetuskieletOPH,
+  initializeKieli
+} from "helpers/kielet";
 import { sortLanguages } from "utils/kieliUtil";
 import { initializeKoulutusala } from "helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "helpers/koulutustyypit";
@@ -236,12 +240,15 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
-    kieletOPH: raw.kielet
+    ensisijaisetOpetuskieletOPH: raw.kielet
       ? await localforage.setItem(
-          "kieletOPH",
-          map(kieli => {
-            return initializeKieli(kieli);
-          }, filterOPHKielet(raw.kieletOPH))
+          "ensisijaisetOpetuskieletOPH",
+          filterEnsisijaisetOpetuskieletOPH(
+            map(kieli => {
+              return initializeKieli(kieli);
+            }, raw.kieletOPH),
+            localeUpper
+          )
         )
       : undefined,
     kohteet: raw.kohteet
@@ -439,6 +446,17 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           initializePOMuutEhdot(
             raw.poMuutEhdot,
             prop("maaraykset", raw.lupa) || []
+          )
+        )
+      : undefined,
+    toissijaisetOpetuskieletOPH: raw.kieletOPH
+      ? await localforage.setItem(
+          "toissijaisetOpetuskieletOPH",
+          filterToissijaisetOpetuskieletOPH(
+            map(kieli => {
+              return initializeKieli(kieli);
+            }, raw.kieletOPH),
+            localeUpper
           )
         )
       : undefined,

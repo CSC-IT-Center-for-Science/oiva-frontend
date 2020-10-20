@@ -63,8 +63,8 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
+  ensisijaisetOpetuskieletOPH: [],
   kielet: [],
-  kieletOPH: [],
   kohteet: [],
   koulutukset: {
     muut: {},
@@ -87,11 +87,12 @@ const defaultProps = {
   organisation: {},
   poErityisetKoulutustehtavat: [],
   poMuutEhdot: [],
+  toissijaisetOpetuskieletOPH: [],
   tutkinnot: []
 };
 
 const UusiAsiaDialog = ({
-  kieletOPH = defaultProps.kieletOPH,
+  ensisijaisetOpetuskieletOPH = defaultProps.ensisijaisetOpetuskieletOPH,
   kohteet = defaultProps.kohteet,
   kunnat = defaultProps.kunnat,
   lisatiedot = defaultProps.lisatiedot,
@@ -107,7 +108,8 @@ const UusiAsiaDialog = ({
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
-  poMuutEhdot = defaultProps.poMuutEhdot
+  poMuutEhdot = defaultProps.poMuutEhdot,
+  toissijaisetOpetuskieletOPH = defaultProps.toissijaisetOpetuskieletOPH
 }) => {
   const [state, actions] = useEsiJaPerusopetus();
 
@@ -411,8 +413,9 @@ const UusiAsiaDialog = ({
                   render={props => (
                     <Opetuskieli
                       changeObjects={state.changeObjects.opetuskielet}
-                      kieletOPH={kieletOPH}
+                      ensisijaisetOpetuskieletOPH={ensisijaisetOpetuskieletOPH}
                       lisatiedot={lisatiedot}
+                      toissijaisetOpetuskieletOPH={toissijaisetOpetuskieletOPH}
                       {...props}
                     />
                   )}

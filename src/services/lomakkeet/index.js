@@ -33,7 +33,7 @@ import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
 import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetus-jota-lupa-koskee";
 import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
-import { opetuskielet } from "./esi-ja-perusopetus/3-opetuskielet";
+import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
@@ -313,8 +313,8 @@ const lomakkeet = {
         opetusJotaLupaKoskee(data, isReadOnly, locale)
     },
     opetuskielet: {
-      modification: (data, isReadOnly, locale) =>
-        opetuskielet(data, isReadOnly, locale)
+      modification: (data, isReadOnly, locale, changeObjects) =>
+        getOpetuskieletOPHLomake(data, isReadOnly, locale, changeObjects)
     },
     opiskelijamaarat: {
       modification: (data, isReadOnly, locale) =>
