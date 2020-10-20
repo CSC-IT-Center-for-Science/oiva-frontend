@@ -426,6 +426,7 @@ const UusiAsiaDialog = ({
                   code={4}
                   render={props => (
                     <OpetuksenJarjestamismuoto
+                      lisatiedot={lisatiedot}
                       opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
                       {...props}
                     />

@@ -3,7 +3,6 @@ import {
   append,
   assoc,
   assocPath,
-  clone,
   dissocPath,
   endsWith,
   filter,
@@ -95,7 +94,8 @@ const Store = createStore({
         const currentChangeObjects = prop("changeObjects", getState());
         const textBoxChangeObjects = filter(
           changeObj =>
-            startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) && endsWith(".nimi", changeObj.anchor) &&
+            startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
+            endsWith(".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           currentChangeObjects[sectionId] || []
         );
@@ -118,7 +118,7 @@ const Store = createStore({
           sectionId,
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.nimi`,
+              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
               properties: {
                 value: ""
               }

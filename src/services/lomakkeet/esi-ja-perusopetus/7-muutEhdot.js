@@ -17,12 +17,15 @@ import { getAnchorPart } from "../../../utils/common";
 export function muutEhdot(data, isReadOnly, locale, changeObjects) {
   const localeUpper = toUpper(locale);
 
-  const changeObj = getChangeObjByAnchor(
+  const muuEhtoChangeObj = getChangeObjByAnchor(
     `muutEhdot.99.valintaelementti`,
     changeObjects
   );
 
-  const isCheckedByChange = !!path(["properties", "isChecked"], changeObj);
+  const isCheckedByChange = !!path(
+    ["properties", "isChecked"],
+    muuEhtoChangeObj
+  );
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -49,44 +52,44 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
             }
           }
         ],
-        categories:
-          ehto.koodiarvo === "99" // 99 = Muu ehto
-            ? flatten([
-              [
-                {
-                  anchor: "0",
-                  components: [
-                    {
-                      anchor: "nimi",
-                      name: "TextBox",
-                      properties: {
-                        forChangeObject: {
-                          koodiarvo: ehto.koodiarvo
-                        },
-                        placeholder: "Kirjoita tähän ehto vapaamuotoisesti",
-                        title: "Muu ehto"
-                      }
-                    }
-                  ]
-                },
-                /**
-                 * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
-                 */
+        categories: flatten([
+          {
+            anchor: "0",
+            components: [
+              {
+                anchor: "kuvaus",
+                name: "TextBox",
+                properties: {
+                  forChangeObject: {
+                    koodiarvo: ehto.koodiarvo
+                  },
+                  placeholder: __("common.kuvausPlaceholder"),
+                  title: __("common.kuvaus"),
+                  value: ehto.metadata[localeUpper].kuvaus
+                }
+              }
+            ]
+          },
+          /**
+           * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
+           * 99 = Muu ehto
+           */
+          ehto.koodiarvo === "99"
+            ? [
                 map(
                   changeObj => {
                     return {
                       anchor: getAnchorPart(changeObj.anchor, 2),
                       components: [
                         {
-                          anchor: "nimi",
+                          anchor: "kuvaus",
                           name: "TextBox",
                           properties: {
                             forChangeObject: {
                               koodiarvo: ehto.koodiarvo
                             },
-                            placeholder:
-                              "Kirjoita tähän ehto vapaamuotoisesti",
-                            title: "Nimi",
+                            placeholder: __("common.kuvausPlaceholder"),
+                            title: __("common.kuvaus"),
                             isRemovable: true,
                             value: changeObj.properties.value
                           }
@@ -94,12 +97,13 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                       ]
                     };
                   },
-                  filter(
-                    changeObj =>
-                      endsWith(".nimi", changeObj.anchor) &&
-                      !includes(`${ehto.koodiarvo}.0`, changeObj.anchor),
-                    changeObjects
-                  )
+                  filter(changeObj => {
+                    return (
+                      endsWith(".kuvaus", changeObj.anchor) &&
+                      includes(`.${ehto.koodiarvo}`, changeObj.anchor) &&
+                      !includes(`${ehto.koodiarvo}.0`, changeObj.anchor)
+                    );
+                  }, changeObjects)
                 ),
                 /**
                  * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
@@ -113,7 +117,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                       onClick: () => data.onAddButtonClick(ehto.koodiarvo),
                       properties: {
                         isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
-                        text: __("common.lisaaUusiNimi"),
+                        text: __("common.lisaaUusiKuvaus"),
                         icon: "FaPlus",
                         iconContainerStyles: {
                           width: "15px"
@@ -127,8 +131,8 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                   ]
                 }
               ]
-            ])
             : []
+        ])
       };
     }, data.poMuutEhdot),
     lisatiedotObj

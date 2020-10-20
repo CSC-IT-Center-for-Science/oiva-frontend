@@ -1,4 +1,3 @@
-import { __ } from "i18n-for-browser";
 import {
   compose,
   flatten,
@@ -43,7 +42,6 @@ export function rajoitteet(data, isReadOnly, locale, changeObjects) {
         label: kohdeLabel,
         value: kohdeValue
       } = rajoite.elements.kohteenValinta[0].properties.value;
-      console.info(kohdeLabel, kohdeValue);
       const kohteenTarkenninChangeObject = rajoite.elements[kohdeValue][0];
       const kohteenTarkenninValue = getKohteenTarkenninValue(
         kohteenTarkenninChangeObject

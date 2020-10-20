@@ -91,7 +91,7 @@ const OpetustaAntavatKunnat = props => {
       };
       onChangesUpdate(sectionChanges);
     },
-    [onChangesUpdate, props.changeObjects, props.sectionId]
+    [onChangesUpdate, props.sectionId]
   );
 
   const whenChanges = useCallback(

@@ -84,11 +84,17 @@ export function createBEOofTutkinnotJaOsaamisalat(
    * tai jos tutkinnon perusteluita on muutettu.
    */
 
- const perustelutForTutkinto = filter(perustelu => getAnchorPart(tutkintoChangeObj.anchor, 2) ===
-   getAnchorPart(perustelu.anchor, 2) && !includes('osaamisala', perustelu.anchor), perustelut);
+  const perustelutForTutkinto = filter(
+    perustelu =>
+      getAnchorPart(tutkintoChangeObj.anchor, 2) ===
+        getAnchorPart(perustelu.anchor, 2) &&
+      !includes("osaamisala", perustelu.anchor),
+    perustelut
+  );
   const isTutkinnonMuutosobjektiNeeded =
-    tutkintoChangeObj &&
-    tutkintoChangeObj.properties.isChecked !== isTutkintoInLupa || perustelutForTutkinto.length;
+    (tutkintoChangeObj &&
+      tutkintoChangeObj.properties.isChecked !== isTutkintoInLupa) ||
+    perustelutForTutkinto.length;
 
   /**
    * Mahdollinen tutkintomuutos on paikallaan määritellä muokattavana
@@ -133,8 +139,12 @@ export function createBEOofTutkinnotJaOsaamisalat(
    * ja tarkistettava, onko niihin kohdistettu muutoksia.
    */
   const osaamisalamuutokset = map(osaamisala => {
-    const osaamisalaPerustelut = filter(perustelu =>
-      getAnchorPart(perustelu.anchor, 4) === osaamisala.koodiarvo && includes('osaamisala', perustelu.anchor), perustelut);
+    const osaamisalaPerustelut = filter(
+      perustelu =>
+        getAnchorPart(perustelu.anchor, 4) === osaamisala.koodiarvo &&
+        includes("osaamisala", perustelu.anchor),
+      perustelut
+    );
 
     const isOsaamisalaRajoiteInLupa = !!osaamisala.maarays;
     let osaamisalamuutos = null;
@@ -170,9 +180,10 @@ export function createBEOofTutkinnotJaOsaamisalat(
           maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
           // maaraysUuid,
           meta: {
-            changeObjects: flatten([[osaamisalaChangeObj], osaamisalaPerustelut]).filter(
-              Boolean
-            ),
+            changeObjects: flatten([
+              [osaamisalaChangeObj],
+              osaamisalaPerustelut
+            ]).filter(Boolean),
             nimi: osaamisala.metadata[locale].nimi,
             koulutusala: tutkinto.koulutusalaKoodiarvo,
             koulutustyyppi: tutkinto.koulutustyyppiKoodiarvo,
@@ -218,9 +229,10 @@ export function createBEOofTutkinnotJaOsaamisalat(
           maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
           maaraysUuid: osaamisala.maarays.uuid,
           meta: {
-            changeObjects: flatten([[osaamisalaChangeObj], osaamisalaPerustelut]).filter(
-              Boolean
-            ),
+            changeObjects: flatten([
+              [osaamisalaChangeObj],
+              osaamisalaPerustelut
+            ]).filter(Boolean),
             nimi: osaamisala.metadata[locale].nimi,
             koulutusala: tutkinto.koulutusalaKoodiarvo,
             koulutustyyppi: tutkinto.koulutustyyppiKoodiarvo,

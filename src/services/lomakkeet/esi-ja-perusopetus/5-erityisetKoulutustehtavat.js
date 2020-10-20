@@ -1,7 +1,17 @@
 import { isAdded, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import { endsWith, filter, find, flatten, map, path, pathEq, startsWith, toUpper } from "ramda";
-import {__} from "i18n-for-browser";
+import {
+  endsWith,
+  filter,
+  find,
+  flatten,
+  map,
+  path,
+  pathEq,
+  startsWith,
+  toUpper
+} from "ramda";
+import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
 
 export function erityisetKoulutustehtavat(
@@ -38,10 +48,12 @@ export function erityisetKoulutustehtavat(
               anchor: "0",
               components: [
                 {
-                  anchor: "A",
+                  anchor: "kuvaus",
                   name: "TextBox",
                   properties: {
-                    title: "Nimi"
+                    placeholder: __("common.kuvausPlaceholder"),
+                    title: __("common.kuvaus"),
+                    value: erityinenKoulutustehtava.metadata[localeUpper].kuvaus
                   }
                 }
               ]
@@ -50,27 +62,37 @@ export function erityisetKoulutustehtavat(
              * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
              * erillisen painikkeen avulla.
              */
-            map(changeObj => {
+            map(
+              changeObj => {
                 return {
                   anchor: getAnchorPart(changeObj.anchor, 2),
                   components: [
                     {
-                      anchor: "nimi",
+                      anchor: "kuvaus",
                       name: "TextBox",
                       properties: {
-                        placeholder: __("common.nimi"),
-                        title: "Nimi",
+                        placeholder: __("common.kuvausPlaceholder"),
+                        title: __("common.kuvaus"),
                         isRemovable: true,
                         value: changeObj.properties.value
                       }
                     }
                   ]
-                }
-              }, filter(changeObj =>
-              startsWith(`erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}`, changeObj.anchor) &&
-              endsWith('.nimi', changeObj.anchor) &&
-              !startsWith(`erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.0`, changeObj.anchor),
-              changeObjects)
+                };
+              },
+              filter(
+                changeObj =>
+                  startsWith(
+                    `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}`,
+                    changeObj.anchor
+                  ) &&
+                  endsWith(".kuvaus", changeObj.anchor) &&
+                  !startsWith(
+                    `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.0`,
+                    changeObj.anchor
+                  ),
+                changeObjects
+              )
             ),
             /**
              * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
@@ -84,7 +106,7 @@ export function erityisetKoulutustehtavat(
                   onClick: data.onAddButtonClick,
                   properties: {
                     isVisible: isCheckedByChange,
-                    text: __("common.lisaaUusiNimi"),
+                    text: __("common.lisaaUusiKuvaus"),
                     icon: "FaPlus",
                     iconContainerStyles: {
                       width: "15px"
@@ -125,8 +147,7 @@ export function erityisetKoulutustehtavat(
           name: "StatusTextRow",
           styleClasses: ["pt-8 border-t"],
           properties: {
-            title:
-              __("common.lisatiedotInfo")
+            title: __("common.lisatiedotInfo")
           }
         }
       ]
@@ -144,8 +165,7 @@ export function erityisetKoulutustehtavat(
               versio: lisatiedotObj.versio,
               voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
             },
-            placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
-              .nimi
+            placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {}).nimi
           }
         }
       ]

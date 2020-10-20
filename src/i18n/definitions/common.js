@@ -1023,12 +1023,12 @@ export default defineMessages({
     defaultMessage: "Lisätiedot"
   },
   vahintaan: {
-      id: "common.vahintaan",
-      defaultMessage: "Vähintään"
+    id: "common.vahintaan",
+    defaultMessage: "Vähintään"
   },
   enintaan: {
-      id: "common.enintaan",
-      defaultMessage: "Enintään"
+    id: "common.enintaan",
+    defaultMessage: "Enintään"
   },
   valitseYksiTaiUseampi: {
     id: "common.valitseYksiTaiUseampi",
@@ -1038,7 +1038,7 @@ export default defineMessages({
     id: "common.opetuskieli",
     defaultMessage: "Opetuskieli"
   },
-  maaJaPaikkakunta:{
+  maaJaPaikkakunta: {
     id: "common.maaJaPaikkakunta",
     defaultMessage: "Maa ja paikkakunta"
   },
@@ -1053,5 +1053,17 @@ export default defineMessages({
   kielet: {
     id: "common.kielet",
     defaultMessage: "kielet"
+  },
+  lisaaUusiKuvaus: {
+    id: "common.lisaaUusiKuvaus",
+    defaultMessage: "Lisää uusi kuvaus"
+  },
+  kuvaus: {
+    id: "common.kuvaus",
+    defaultMessage: "Kuvaus"
+  },
+  kuvausPlaceholder: {
+    id: "common.kuvausPlaceholder",
+    defaultMessage: "Kirjoita kuvaus tähän"
   }
 });
