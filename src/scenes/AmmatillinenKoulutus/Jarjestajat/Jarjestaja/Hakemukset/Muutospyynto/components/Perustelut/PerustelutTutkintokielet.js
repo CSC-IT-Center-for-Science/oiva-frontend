@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "../../../../../../../../components/02-organisms/ExpandableRowRoot";
 import * as R from "ramda";
 import Lomake from "../../../../../../../../components/02-organisms/Lomake";
 import wizardMessages from "../../../../../../../../i18n/definitions/wizard";

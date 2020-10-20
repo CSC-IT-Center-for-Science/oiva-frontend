@@ -1,5 +1,5 @@
 import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
-import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
+import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
 import { map, toUpper } from "ramda";
 
 export default async function getOpetustehtavatLomake(

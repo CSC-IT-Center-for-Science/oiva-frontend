@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
-import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
+import DialogTitle from "../../components/02-organisms/DialogTitle";
+import ConfirmDialog from "../..//components/02-organisms/ConfirmDialog";
 import wizardMessages from "../../i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import { useHistory, useParams } from "react-router-dom";
-import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
+import SimpleButton from "../..//components/00-atoms/SimpleButton";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";

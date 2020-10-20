@@ -1,6 +1,6 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
 import { __ } from "i18n-for-browser";
-import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
+import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
   flatten,
   map,

@@ -9,7 +9,7 @@ import common from "../../i18n/definitions/common";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
-import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
+import SimpleButton from "../../components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "./UusiAsiaEsidialog";
 import { last, split } from "ramda";
 
@@ -64,7 +64,9 @@ const Asiat = ({ path, user }) => {
           isVisible={isEsidialogVisible}
           onClose={() => setIsEsidialogVisible(false)}
           onSelect={selectedItem =>
-            history.push(`/ammatillinenkoulutus/asianhallinta/${selectedItem.value}/uusi`)
+            history.push(
+              `/ammatillinenkoulutus/asianhallinta/${selectedItem.value}/uusi`
+            )
           }></UusiAsiaEsidialog>
       )}
 

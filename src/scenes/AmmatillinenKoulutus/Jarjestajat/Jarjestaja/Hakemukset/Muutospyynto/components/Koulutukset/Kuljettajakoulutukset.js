@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import wizardMessages from "../../../../../../../../i18n/definitions/wizard";
 import common from "../../../../../../../../i18n/definitions/common";
-import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "../../../../../../../../components/02-organisms/ExpandableRowRoot";
 import { getDataForKoulutusList } from "../../../../../../../../utils/koulutusUtil";
 import Lomake from "../../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";

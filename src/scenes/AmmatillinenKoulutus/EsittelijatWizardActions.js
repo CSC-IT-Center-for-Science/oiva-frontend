@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import { useIntl } from "react-intl";
 import wizardMessages from "../../i18n/definitions/wizard";
-import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
+import SimpleButton from "../../components/00-atoms/SimpleButton";
 import { WizardBottom } from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardComponents";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";

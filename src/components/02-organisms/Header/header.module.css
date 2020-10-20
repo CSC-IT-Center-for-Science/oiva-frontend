@@ -1,0 +1,25 @@
+.locale-button {
+  padding: 0.5em !important;
+  height: auto;
+  border: none !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+.locale-button:hover {
+  background-color: transparent !important;
+}
+
+.locale-selected:hover {
+  text-decoration: underline;
+}
+
+.locale-selected {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 700 !important;
+}
+
+.locale-label {
+  text-transform: none;
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
+import DialogTitle from "../../components/02-organisms/DialogTitle";
 import common from "../../i18n/definitions/common";
 import {
   DialogContent,

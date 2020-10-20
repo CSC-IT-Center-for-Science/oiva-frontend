@@ -1,5 +1,5 @@
 import { isAdded, isRemoved } from "css/label";
-import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
+import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
   endsWith,
   filter,

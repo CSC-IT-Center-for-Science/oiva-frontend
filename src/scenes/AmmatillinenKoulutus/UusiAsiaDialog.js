@@ -1,15 +1,15 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
-import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
+import DialogTitle from "../../components/02-organisms/DialogTitle";
+import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
 import wizardMessages from "../../i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import { useHistory, useParams } from "react-router-dom";
-import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
+import SimpleButton from "../../components/00-atoms/SimpleButton";
 import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
@@ -127,7 +127,9 @@ const UusiAsiaDialog = React.memo(
     const leaveOrOpenCancelModal = () => {
       isSavingEnabled
         ? setIsConfirmDialogVisible(true)
-        : history.push(`/ammatillinenkoulutus/asianhallinta/avoimet?force=true`);
+        : history.push(
+            `/ammatillinenkoulutus/asianhallinta/avoimet?force=true`
+          );
     };
 
     function handleCancel() {
@@ -158,7 +160,9 @@ const UusiAsiaDialog = React.memo(
       setIsConfirmDialogVisible(false);
       // Let's empty some store content on close.
       muutospyyntoActions.reset();
-      return history.push(`/ammatillinenkoulutus/asianhallinta/avoimet?force=true`);
+      return history.push(
+        `/ammatillinenkoulutus/asianhallinta/avoimet?force=true`
+      );
     }, [history, muutospyyntoActions]);
 
     useEffect(() => {

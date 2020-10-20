@@ -23,9 +23,9 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "./modules/constants";
-import Header from "okm-frontend-components/dist/components/02-organisms/Header";
-import Navigation from "okm-frontend-components/dist/components/02-organisms/Navigation";
-import SideNavigation from "okm-frontend-components/dist/components/02-organisms/SideNavigation";
+import Header from "./components/02-organisms/Header";
+import Navigation from "./components/02-organisms/Navigation";
+import SideNavigation from "./components/02-organisms/SideNavigation";
 import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
