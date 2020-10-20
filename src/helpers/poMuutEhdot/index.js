@@ -64,12 +64,12 @@ export const defineBackendChangeObjects = async (
       changeObjects
     );
 
-    // Nimikenttien muutokset kohdassa (muu ehto)
-    const nimiChangeObjects = filter(changeObj => {
+    // Kuvauskenttien muutokset kohdassa (muu ehto)
+    const kuvausChangeObjects = filter(changeObj => {
       return (
         ehto.koodiarvo ===
           path(["metadata", "koodiarvo"], changeObj.properties) &&
-        endsWith(".nimi", changeObj.anchor)
+        endsWith(".kuvaus", changeObj.anchor)
       );
     }, changeObjects);
 
@@ -88,8 +88,9 @@ export const defineBackendChangeObjects = async (
         }
       : null;
 
-    const nimiBEchangeObjects = map(changeObj => {
+    const kuvausBEchangeObjects = map(changeObj => {
       return {
+        arvo: changeObj.properties.value,
         generatedId: changeObj.anchor,
         kohde,
         koodiarvo: ehto.koodiarvo,
@@ -101,9 +102,9 @@ export const defineBackendChangeObjects = async (
         },
         tila: "LISAYS"
       };
-    }, nimiChangeObjects);
+    }, kuvausChangeObjects);
 
-    return [checkboxBEchangeObjects, nimiBEchangeObjects];
+    return [checkboxBEchangeObjects, kuvausBEchangeObjects];
   }, muutEhdot);
 
   /**
@@ -118,11 +119,7 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
     ? {
-        tila: "LISAYS",
-        meta: {
-          arvo: path(["properties", "value"], lisatiedotChangeObj),
-          changeObjects: [lisatiedotChangeObj]
-        },
+        arvo: path(["properties", "value"], lisatiedotChangeObj),
         kohde,
         koodiarvo: path(
           ["properties", "metadata", "koodiarvo"],
@@ -132,7 +129,11 @@ export const defineBackendChangeObjects = async (
           ["properties", "metadata", "koodisto", "koodistoUri"],
           lisatiedotChangeObj
         ),
-        maaraystyyppi
+        maaraystyyppi,
+        meta: {
+          changeObjects: [lisatiedotChangeObj]
+        },
+        tila: "LISAYS"
       }
     : null;
 
