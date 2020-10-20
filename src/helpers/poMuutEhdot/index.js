@@ -98,6 +98,7 @@ export const defineBackendChangeObjects = async (
         kuvaus: changeObj.properties.value,
         maaraystyyppi,
         meta: {
+          kuvaus: changeObj.properties.value,
           changeObjects: [changeObj]
         },
         tila: "LISAYS"
