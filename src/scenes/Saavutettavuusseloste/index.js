@@ -157,7 +157,7 @@ const contentSv = (
       Tillgänglighetsutlåtande
     </h1>
     <p className="mb-2">
-      Detta tillgänglighetsutlåtande gäller OIVA – Utbildningsförvaltningens styrnings- och regleringstjänst och har utarbetats den 4 september 2020. I fråga om tillgängligheten har den finska versionen av denna tjänst bedömts av en extern bedömare den 30 augusti 2020. (På finska?)
+      Detta tillgänglighetsutlåtande gäller OIVA – Utbildningsförvaltningens styrnings- och regleringstjänst och har utarbetats den 4 september 2020. I fråga om tillgängligheten har den finska versionen av denna tjänst bedömts av en extern bedömare den 30 augusti 2020.
     </p>
     <p className="mb-2">
       OIVA är en styrnings- och regleringstjänst inom undervisningsförvaltningen. Undervisnings - och kulturministeriet ansvarar för innehållet i tjänsten.
