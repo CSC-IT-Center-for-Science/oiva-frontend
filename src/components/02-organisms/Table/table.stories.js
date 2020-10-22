@@ -31,7 +31,7 @@ storiesOf("Table", module)
   })
   .add("Table with filters", () => {
     return (
-      <>
+      <React.Fragment>
         <div className="flex flex-col lg:flex-row mb-4">
           <div className="lg:mr-4 h-13 w-full lg:w-1/4">
             <SearchFilter callback={() => {}} />
@@ -52,7 +52,7 @@ storiesOf("Table", module)
           </div>
         </div>
         <Table structure={conditionalMenuInTableCell} />
-      </>
+      </React.Fragment>
     );
   })
   .add("Dates", () => {

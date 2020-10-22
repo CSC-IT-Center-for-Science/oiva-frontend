@@ -341,7 +341,7 @@ function Jarjestajaluettelo({ luvat }) {
         return (
           <Link
             className="underline"
-            to={`/ammatillinenkoulutus/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
+            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.nimi
             })}>

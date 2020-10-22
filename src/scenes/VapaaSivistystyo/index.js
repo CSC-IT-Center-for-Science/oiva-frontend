@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography } from "@material-ui/core";
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
@@ -13,20 +13,62 @@ import {
   useLocation
 } from "react-router-dom";
 import { COLORS } from "modules/styles";
-import Jarjestajat from "scenes/AmmatillinenKoulutus/Jarjestajat";
 import AsianhallintaCard from "./AsianhallintaCard";
 import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
 import BaseData from "basedata";
 import JarjestajaSwitch from "./JarjestajaSwitch";
 import { useUser } from "stores/user";
+import Jarjestajat from "./Jarjestajat";
+import { map } from "ramda";
+import {
+  resolveLocalizedOrganizerName,
+  resolveVSTOppilaitosNameFromLupa
+} from "modules/helpers";
 
-export default function AmmatillinenKoulutus() {
-  const keys = ["lupa", "kielet"];
-  const history = useHistory();
+export default function VapaaSivistystyo({ vstLuvat }) {
+  const intl = useIntl();
   const { formatMessage, locale } = useIntl();
+  const history = useHistory();
   const location = useLocation();
   const [userState] = useUser();
+  const [luvat, setLuvat] = useState([]);
+  const [allDataLength, setAllDataLength] = useState(0);
+  const [filteredDataLength, setFilteredDataLength] = useState(0);
+  const [vstYllapitajaFilter, setVstYllapitajaFilter] = useState("");
   const { data: user } = userState;
+
+  // useEffect(() => {
+  //   if (vstLuvat) {
+  //     const filteredLuvat =
+  //       vstYllapitajaFilter.length > 0
+  //         ? map(lupa => {
+  //             const nimi = resolveLocalizedOrganizerName(lupa, intl.locale);
+  //             const oppilaitosnimi =
+  //               resolveVSTOppilaitosNameFromLupa(lupa, intl.locale) || "";
+  //             if (nimi) {
+  //               return (
+  //                 nimi
+  //                   .toLocaleLowerCase()
+  //                   .includes(vstYllapitajaFilter.toLocaleLowerCase()) ||
+  //                 oppilaitosnimi
+  //                   .toLocaleLowerCase()
+  //                   .includes(vstYllapitajaFilter.toLocaleLowerCase())
+  //               );
+  //             } else {
+  //               return false;
+  //             }
+  //           }, filteredLuvat)
+  //         : [];
+  //     if (vstOppilaitostyyppiFilter) {
+  //       filteredLuvat = filteredLuvat.filter(
+  //         lupa => lupa.oppilaitostyyppi === vstOppilaitostyyppiFilter
+  //       );
+  //     }
+  //     setLuvat(filteredLuvat);
+  //     setAllDataLength(luvatRaw.data.length);
+  //     setFilteredDataLength(filteredLuvat.length);
+  //   }
+  // }, [vstLuvat, vstYllapitajaFilter, vstOppilaitostyyppiFilter, intl.locale]);
 
   return (
     <div>
@@ -51,10 +93,10 @@ export default function AmmatillinenKoulutus() {
                 }}
               />
             </nav>
-            {location.pathname === "/ammatillinenkoulutus" ? (
+            {location.pathname === "/vapaa-sivistystyo" ? (
               <React.Fragment>
                 <Typography component="h1" variant="h1" className="py-4">
-                  {formatMessage(educationMessages.vocationalEducation)}
+                  {formatMessage(educationMessages.vstEducation)}
                 </Typography>
                 <Typography component="p" className="pb-8">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
@@ -76,7 +118,7 @@ export default function AmmatillinenKoulutus() {
                   <AsianhallintaCard></AsianhallintaCard>
                 </section>
                 <section className="pt-12">
-                  <Jarjestajat />
+                  <Jarjestajat luvat={vstLuvat} />
                 </section>
               </React.Fragment>
             ) : null}
@@ -85,30 +127,27 @@ export default function AmmatillinenKoulutus() {
           <Router history={history}>
             <Switch>
               <Route
-                path="/ammatillinenkoulutus/asianhallinta"
+                path="/vapaa-sivistystyo/asianhallinta"
                 component={Asianhallinta}
               />
               <Route
-                path="/ammatillinenkoulutus/koulutuksenjarjestajat/:ytunnus"
-                render={props => {
-                  return (
-                    <BaseData
-                      keys={keys}
-                      locale={locale}
-                      render={_props => {
-                        return (
-                          <JarjestajaSwitch
-                            lupa={_props.lupa}
-                            path={props.match.path}
-                            ytunnus={_props.ytunnus}
-                            user={user}
-                            kielet={_props.kielet}
-                          />
-                        );
-                      }}
-                    />
-                  );
-                }}
+                path="/vapaa-sivistystyo/koulutuksenjarjestajat/:ytunnus"
+                render={props => (
+                  <BaseData
+                    locale={locale}
+                    render={_props => {
+                      return (
+                        <JarjestajaSwitch
+                          lupa={_props.lupa}
+                          path={props.match.path}
+                          ytunnus={_props.ytunnus}
+                          user={user}
+                          kielet={_props.kielet}
+                        />
+                      );
+                    }}
+                  />
+                )}
               />
             </Switch>
           </Router>

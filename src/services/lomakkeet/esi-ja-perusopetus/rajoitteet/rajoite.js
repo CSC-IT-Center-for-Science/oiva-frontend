@@ -5,6 +5,7 @@ import {
   drop,
   flatten,
   head,
+  isEmpty,
   mapObjIndexed,
   nth,
   path,
@@ -125,10 +126,11 @@ async function defineRajoituksetStructure(
   structure = []
 ) {
   const initialAsetus = nth(index, asetukset);
-  if (initialAsetus) {
+  if (initialAsetus && !isEmpty(groupedChangeObjects)) {
     console.info(initialAsetus, groupedChangeObjects[rajoiteId].asetukset);
-    const asetusChangeObj =
-      groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id] || {};
+    const asetusChangeObj = groupedChangeObjects[rajoiteId].asetukset
+      ? groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id]
+      : {};
     const asetus = Object.assign({}, initialAsetus, asetusChangeObj);
     console.info(asetus);
 

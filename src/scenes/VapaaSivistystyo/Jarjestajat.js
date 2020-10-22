@@ -1,44 +1,26 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { useLuvat } from "../../stores/luvat";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
 import { Helmet } from "react-helmet";
 import education from "../../i18n/definitions/education";
-import Loading from "../../modules/Loading";
 import { useIntl } from "react-intl";
 
-const Jarjestajat = React.memo(() => {
+const Jarjestajat = ({ luvat }) => {
   const intl = useIntl();
-  const [luvat, luvatActions] = useLuvat();
-
-  // Let's fetch LUVAT
-  useEffect(() => {
-    const abortController = luvatActions.load();
-    return function cancel() {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [luvatActions]);
 
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>
-          {intl.formatMessage(education.vocationalEducation)} - Oiva
-        </title>
+        <title>{intl.formatMessage(education.vstEducation)} - Oiva</title>
       </Helmet>
 
-      <BreadcrumbsItem to="/ammatillinenkoulutus">
-        {intl.formatMessage(education.vocationalEducation)}
+      <BreadcrumbsItem to="/vapaa-sivistystyo">
+        {intl.formatMessage(education.vstEducation)}
       </BreadcrumbsItem>
 
-      {luvat.isLoading === false && !luvat.isErroneous && (
-        <Jarjestajaluettelo luvat={luvat.data} />
-      )}
-      {luvat.isLoading && <Loading />}
+      <Jarjestajaluettelo luvat={luvat} />
     </React.Fragment>
   );
-});
+};
 
 export default Jarjestajat;

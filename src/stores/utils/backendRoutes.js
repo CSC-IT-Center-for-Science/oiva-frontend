@@ -19,9 +19,16 @@ export const backendRoutes = {
     path: `koodistot/koodit/lisatietoja/`,
     minimumTimeBetweenFetchingInMinutes: 0
   },
-  lupa: { path: `luvat/jarjestaja/`, minimumTimeBetweenFetchingInMinutes: 0 },
+  lupaByYtunnus: {
+    path: `luvat/jarjestaja/`,
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
+  lupaByUuid: { path: `luvat/`, minimumTimeBetweenFetchingInMinutes: 0 },
   lupahistoria: { path: `luvat/historia/` },
-  luvat: { path: `luvat/jarjestajilla` },
+  luvat: {
+    path: `luvat/jarjestajilla`,
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
   maakunnat: { path: `koodistot/maakunnat` },
   maakuntakunnat: { path: `koodistot/maakuntakunta` },
   maaraystyypit: { path: `maaraykset/maaraystyypit` },
@@ -76,5 +83,6 @@ export const backendRoutes = {
   },
   poMuutEhdot: {
     path: "koodistot/koodit/pomuutkoulutuksenjarjestamiseenliittyvatehdot"
-  }
+  },
+  vsttyypit: { path: `koodistot/koodit/vsttyypit` }
 };

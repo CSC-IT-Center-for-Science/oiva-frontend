@@ -8,7 +8,7 @@ import common from "../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { downloadFileFn } from "../../utils/common";
-import Table from "okm-frontend-components/dist/components/02-organisms/Table";
+import Table from "../../components/02-organisms/Table";
 import { useOrganisation } from "../../stores/organisation";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
@@ -25,9 +25,9 @@ import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja";
 import { useMuutospyynnot } from "../../stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
 import error from "../../i18n/definitions/error";
-import SelectAttachment from "okm-frontend-components/dist/components/02-organisms/SelectAttachment";
+import SelectAttachment from "../../components/02-organisms/SelectAttachment";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
-import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
+import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
 
 const WrapTable = styled.div``;
 

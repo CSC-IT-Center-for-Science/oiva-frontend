@@ -6,7 +6,7 @@ import Attachments from "./index";
 storiesOf("Attachments", module)
   .addDecorator(withInfo)
   .add("Example 1", () => (
-    <>
+    <React.Fragment>
       <Attachments
         messages={{
           addAttachment: "Lisää liite",
@@ -25,5 +25,5 @@ storiesOf("Attachments", module)
         requiredMessage="Liite vaaditaan"
         showValidationErrors={true}
       />
-    </>
+    </React.Fragment>
   ));

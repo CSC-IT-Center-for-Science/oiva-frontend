@@ -9,13 +9,18 @@ import { useIntl } from "react-intl";
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
 import { ROLE_ESITTELIJA } from "modules/constants";
+import { useHistory } from "react-router-dom";
 
 export default function VapaaSivistystyoCard() {
+  const history = useHistory();
   const intl = useIntl();
 
   return (
     <Card>
-      <CardActionArea>
+      <CardActionArea
+        onClick={() => {
+          history.push("/vapaa-sivistystyo");
+        }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {intl.formatMessage(educationMessages.vstEducation)}
@@ -24,7 +29,12 @@ export default function VapaaSivistystyoCard() {
       </CardActionArea>
       {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
         <CardActions>
-          <Button size="small" color="primary">
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => {
+              history.push("/vapaa-sivistystyo/asianhallinta/avoimet");
+            }}>
             {intl.formatMessage(commonMessages.asianhallinta)}
           </Button>
         </CardActions>
