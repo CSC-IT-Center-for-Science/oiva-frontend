@@ -57,6 +57,8 @@ const EsittelijatMuutospyynto = React.memo(
     const [kohteet, setKohteet] = useState({});
     const [maaraystyypit, setMaaraystyypit] = useState(null);
 
+    console.info(changeObjects);
+
     useEffect(() => {
       const _kohteet = R.mergeAll(
         R.flatten(

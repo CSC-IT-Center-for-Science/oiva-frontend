@@ -8,13 +8,7 @@ import PropTypes from "prop-types";
 import Lomake from "../../../../../../../../components/02-organisms/Lomake";
 import { toUpper } from "ramda";
 
-const ATVKoulutukset = ({
-  changeObjects,
-  koulutukset,
-  maaraykset,
-  onChangesRemove,
-  onChangesUpdate
-}) => {
+const ATVKoulutukset = ({ koulutukset, maaraykset }) => {
   const intl = useIntl();
   const sectionId = "koulutukset_atvKoulutukset";
 
@@ -33,36 +27,28 @@ const ATVKoulutukset = ({
   };
 
   return (
-    <ExpandableRowRoot
+    // <ExpandableRowRoot
+    //   anchor={sectionId}
+    //   key={`expandable-row-root`}
+    //   hideAmountOfChanges={true}
+    //   messages={changesMessages}
+    //   sectionId={sectionId}
+    //   title={intl.formatMessage(wizardMessages.vocationalTraining)}>
+    <Lomake
+      action="modification"
       anchor={sectionId}
-      key={`expandable-row-root`}
-      categories={[]}
-      changes={changeObjects.koulutukset.atvKoulutukset}
-      hideAmountOfChanges={true}
-      messages={changesMessages}
-      onChangesRemove={onChangesRemove}
-      onUpdate={onChangesUpdate}
-      sectionId={sectionId}
-      title={intl.formatMessage(wizardMessages.vocationalTraining)}>
-      {koulutukset && (
-        <Lomake
-          action="modification"
-          anchor={sectionId}
-          changeObjects={changeObjects.koulutukset.atvKoulutukset}
-          data={{
-            koulutusdata
-          }}
-          onChangesUpdate={onChangesUpdate}
-          path={["koulutukset", "atvKoulutukset"]}
-          showCategoryTitles={true}></Lomake>
-      )}
-    </ExpandableRowRoot>
+      data={{
+        koulutusdata
+      }}
+      path={["koulutukset", "atvKoulutukset"]}
+      showCategoryTitles={true}></Lomake>
+    // </ExpandableRowRoot>
   );
 };
 
 ATVKoulutukset.propTypes = {
-  changeObjects: PropTypes.object,
-  koulutukset: PropTypes.object
+  koulutukset: PropTypes.object,
+  maaraykset: PropTypes.array
 };
 
 export default ATVKoulutukset;

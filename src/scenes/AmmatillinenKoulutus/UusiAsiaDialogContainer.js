@@ -4,54 +4,7 @@ import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
-
-const changeObjects = {
-  tutkinnot: {},
-  kielet: {
-    opetuskielet: [],
-    tutkintokielet: {}
-  },
-  koulutukset: {
-    atvKoulutukset: [],
-    kuljettajakoulutukset: [],
-    valmentavatKoulutukset: []
-  },
-  perustelut: {
-    kielet: {
-      opetuskielet: [],
-      tutkintokielet: []
-    },
-    koulutukset: {
-      atvKoulutukset: [],
-      kuljettajakoulutukset: [],
-      tyovoimakoulutukset: [],
-      valmentavatKoulutukset: []
-    },
-    opiskelijavuodet: {
-      sisaoppilaitos: [],
-      vaativatuki: [],
-      vahimmaisopiskelijavuodet: []
-    },
-    liitteet: [],
-    toimintaalue: [],
-    tutkinnot: {}
-  },
-  taloudelliset: {
-    yleisettiedot: [],
-    investoinnit: [],
-    tilinpaatostiedot: [],
-    liitteet: []
-  },
-  muut: {},
-  opiskelijavuodet: [],
-  toimintaalue: [],
-  yhteenveto: {
-    yleisettiedot: [],
-    hakemuksenLiitteet: []
-  },
-  // Top three fields of muutospyyntö form of esittelijä role
-  topthree: []
-};
+import { MuutoksetContainer } from "./store";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -102,26 +55,42 @@ const UusiAsiaDialogContainer = ({
   );
 
   return (
-    <UusiAsiaDialog
-      history={history}
-      initialChangeObjects={changeObjects}
-      kielet={kielet}
-      kohteet={kohteet}
-      koulutukset={koulutukset}
-      koulutusalat={koulutusalat}
-      koulutustyypit={koulutustyypit}
-      kunnat={kunnat}
-      lupa={viimeisinLupa}
-      lupaKohteet={lupaKohteet}
-      maakunnat={maakunnat}
-      maakuntakunnat={maakuntakunnat}
-      maaraystyypit={maaraystyypit}
-      muut={muut}
-      onNewDocSave={onNewDocSave}
-      opetuskielet={opetuskielet}
-      organisation={organisaatio}
-      tutkinnot={tutkinnot}
-    />
+    <MuutoksetContainer
+      kielet={{
+        opetuskielet: [],
+        tutkintokielet: {}
+      }}
+      koulutukset={{
+        atvKoulutukset: [],
+        kuljettajakoulutukset: [],
+        valmentavatKoulutukset: []
+      }}
+      muut={{}}
+      opiskelijavuodet={[]}
+      toimintaalue={[]}
+      topthree={[]}
+      tutkinnot={[]}>
+      <UusiAsiaDialog
+        history={history}
+        kielet={kielet}
+        kohteet={kohteet}
+        koulutukset={koulutukset}
+        koulutusalat={koulutusalat}
+        koulutustyypit={koulutustyypit}
+        kunnat={kunnat}
+        lupa={viimeisinLupa}
+        lupaKohteet={lupaKohteet}
+        maakunnat={maakunnat}
+        maakuntakunnat={maakuntakunnat}
+        maaraystyypit={maaraystyypit}
+        muut={muut}
+        onNewDocSave={onNewDocSave}
+        opetuskielet={opetuskielet}
+        organisation={organisaatio}
+        tutkinnot={tutkinnot}
+      />
+      );
+    </MuutoksetContainer>
   );
 };
 
