@@ -119,8 +119,6 @@ async function getModificationForm(
     maaraykset
   );
 
-  console.info(opiskelijavuosimaaraysVaativaTuki);
-
   return [
     {
       anchor: "vahimmaisopiskelijavuodet",
