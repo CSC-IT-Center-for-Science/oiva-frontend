@@ -5,6 +5,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
 import { MuutoksetContainer } from "./store";
+import Lupa from "./Lupa";
+import { LomakedataContainer } from "./lomakedata";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -55,42 +57,31 @@ const UusiAsiaDialogContainer = ({
   );
 
   return (
-    <MuutoksetContainer
-      kielet={{
-        opetuskielet: [],
-        tutkintokielet: {}
-      }}
-      koulutukset={{
-        atvKoulutukset: [],
-        kuljettajakoulutukset: [],
-        valmentavatKoulutukset: []
-      }}
-      muut={{}}
-      opiskelijavuodet={[]}
-      toimintaalue={[]}
-      topthree={[]}
-      tutkinnot={[]}>
-      <UusiAsiaDialog
-        history={history}
-        kielet={kielet}
-        kohteet={kohteet}
-        koulutukset={koulutukset}
-        koulutusalat={koulutusalat}
-        koulutustyypit={koulutustyypit}
-        kunnat={kunnat}
-        lupa={viimeisinLupa}
-        lupaKohteet={lupaKohteet}
-        maakunnat={maakunnat}
-        maakuntakunnat={maakuntakunnat}
-        maaraystyypit={maaraystyypit}
-        muut={muut}
-        onNewDocSave={onNewDocSave}
-        opetuskielet={opetuskielet}
-        organisation={organisaatio}
-        tutkinnot={tutkinnot}
-      />
-      );
-    </MuutoksetContainer>
+    <React.Fragment>
+      <LomakedataContainer>
+        <MuutoksetContainer>
+          <Lupa
+            history={history}
+            kielet={kielet}
+            kohteet={kohteet}
+            koulutukset={koulutukset}
+            koulutusalat={koulutusalat}
+            koulutustyypit={koulutustyypit}
+            kunnat={kunnat}
+            lupa={viimeisinLupa}
+            lupaKohteet={lupaKohteet}
+            maakunnat={maakunnat}
+            maakuntakunnat={maakuntakunnat}
+            maaraystyypit={maaraystyypit}
+            muut={muut}
+            onNewDocSave={onNewDocSave}
+            opetuskielet={opetuskielet}
+            organisation={organisaatio}
+            tutkinnot={tutkinnot}
+          />
+        </MuutoksetContainer>
+      </LomakedataContainer>
+    </React.Fragment>
   );
 };
 

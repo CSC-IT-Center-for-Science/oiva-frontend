@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  useMemo
+} from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";
@@ -71,6 +77,10 @@ const defaultProps = {
   opetuskielet: [],
   organisation: {},
   tutkinnot: []
+};
+
+const formLocations = {
+  kolmeEnsimmaistaKenttaa: ["esittelija", "topThree"]
 };
 
 const UusiAsiaDialog = ({
@@ -270,6 +280,11 @@ const UusiAsiaDialog = ({
     ]
   );
 
+  const topThreeData = useMemo(
+    () => ({ formatMessage: intl.formatMessage, uuid }),
+    [intl.formatMessage, uuid]
+  );
+
   return (
     changeObjects !== null && (
       <div className="max-w-7xl">
@@ -349,15 +364,16 @@ const UusiAsiaDialog = ({
                 <Lomake
                   anchor="topthree"
                   changeObjects={changeObjects.topthree}
-                  data={{ formatMessage: intl.formatMessage, uuid }}
+                  data={topThreeData}
                   onChangesUpdate={
                     payload => {}
                     // onChangeObjectsUpdate(payload.anchor, payload.changes)
                   }
-                  path={["esittelija", "topThree"]}
-                  hasInvalidFieldsFn={invalidFields => {
-                    setHasInvalidFields(invalidFields);
-                  }}></Lomake>
+                  path={formLocations.kolmeEnsimmaistaKenttaa}
+                  // hasInvalidFieldsFn={invalidFields => {
+                  //   setHasInvalidFields(invalidFields);
+                  // }}
+                ></Lomake>
               </div>
               <EsittelijatMuutospyynto
                 changeObjects={changeObjects}

@@ -1,31 +1,31 @@
 import React, { useEffect } from "react";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
-import common from "../../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { useIntl } from "react-intl";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
 import { values, filter, flatten, includes, find, path } from "ramda";
+import { useLomakeSection } from "scenes/AmmatillinenKoulutus/store";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
+
+const constants = {
+  formLocation: ["opiskelijavuodet"]
+};
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({
-    changeObjects,
-    maaraykset,
-    muut,
-    onChangesRemove,
-    onChangesUpdate,
-    sectionId
-  }) => {
-    const intl = useIntl();
+  ({ maaraykset, muut, sectionId }) => {
+    const [changeObjects, { setChanges }] = useLomakeSection({
+      anchor: "opiskelijavuodet"
+    });
+    const [muutChangeObjects] = useLomakeSection({
+      anchor: "muut"
+    });
+    const [lomakedata, { setLomakedata }] = useLomakedata({
+      anchor: "opiskelijavuodet"
+    });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
       maaraykset
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
-    const changesMessages = {
-      undo: intl.formatMessage(common.undo),
-      changesTest: intl.formatMessage(common.changesText)
-    };
 
     /**
      * Opiskelijavuodet-osio (4) on kytköksissä osioon 5 (Muut oikeudet,
@@ -44,7 +44,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           includes("vaativatuki", changeObj.anchor) &&
           changeObj.properties.isChecked
         );
-      }, flatten(values(changeObjects.muut)));
+      }, flatten(values(muutChangeObjects)));
 
       const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
         ? path(
@@ -55,7 +55,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
 
       const activeSection4VaativaTukiChangeObj = find(changeObj => {
         return includes("vaativatuki", changeObj.anchor);
-      }, changeObjects.opiskelijavuodet);
+      }, changeObjects);
 
       const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
         ? path(
@@ -70,52 +70,37 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         vaativaTukiKoodiarvoSection5 !== null &&
         vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
       ) {
-        onChangesUpdate({
-          anchor: sectionId,
-          changes: filter(changeObj => {
+        setChanges(
+          filter(changeObj => {
             return (
               changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
             );
-          }, changeObjects.opiskelijavuodet || [])
-        });
+          }, changeObjects),
+          sectionId
+        );
       }
-    }, [
-      changeObjects.muut,
-      changeObjects.opiskelijavuodet,
-      onChangesUpdate,
-      sectionId
-    ]);
+    }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
+
+    useEffect(() => {
+      setLomakedata(
+        {
+          isSisaoppilaitosValueRequired: false,
+          isVaativaTukiValueRequired: false,
+          muutChanges: muutChangeObjects,
+          sectionId
+        },
+        sectionId
+      );
+    }, [muut, muutChangeObjects, sectionId, setLomakedata]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
-      <ExpandableRowRoot
+      <Lomake
+        action="modification"
         anchor={sectionId}
-        key={`expandable-row-root`}
-        categories={[]}
-        changes={changeObjects.opiskelijavuodet}
-        hideAmountOfChanges={true}
-        messages={changesMessages}
-        onChangesRemove={onChangesRemove}
-        onUpdate={onChangesUpdate}
-        sectionId={sectionId}
-        showCategoryTitles={true}
-        isExpanded={true}>
-        <Lomake
-          action="modification"
-          anchor={sectionId}
-          changeObjects={changeObjects.opiskelijavuodet}
-          data={{
-            isSisaoppilaitosValueRequired: false,
-            isVaativaTukiValueRequired: false,
-            maaraykset: opiskelijavuosiMaaraykset,
-            muut,
-            muutChanges: changeObjects.muut,
-            muutMaaraykset,
-            sectionId: sectionId
-          }}
-          onChangesUpdate={onChangesUpdate}
-          path={["opiskelijavuodet"]}
-          showCategoryTitles={true}></Lomake>
-      </ExpandableRowRoot>
+        data={lomakedata}
+        isRowExpanded={true}
+        path={constants.formLocation}
+        showCategoryTitles={true}></Lomake>
     ) : null;
   }
 );
@@ -128,8 +113,6 @@ MuutospyyntoWizardOpiskelijavuodet.propTypes = {
   lupaKohteet: PropTypes.object,
   maaraykset: PropTypes.array,
   muut: PropTypes.array,
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
   sectionId: PropTypes.string
 };
 

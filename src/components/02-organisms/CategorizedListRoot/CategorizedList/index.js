@@ -675,14 +675,6 @@ const CategorizedList = props => {
                                 linkText={propsObj.linkText}
                                 handleLinkClick={propsObj.handleLinkClick}
                                 onChanges={handleChanges}
-                                payload={{
-                                  anchor,
-                                  categories: category.categories,
-                                  component,
-                                  fullPath,
-                                  parent: props.parent,
-                                  rootPath: props.rootPath
-                                }}
                               />
                             </div>
                           );

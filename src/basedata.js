@@ -366,7 +366,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa,
+    lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
     vstLuvat: raw.vstLuvat,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat

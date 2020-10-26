@@ -228,3 +228,12 @@ export function sortObjectsByProperty(a, b, path) {
   }
   return 0;
 }
+
+export const getLatestChangesByAnchor = (anchor, latestChanges = []) => {
+  return R.filter(
+    R.pipe(R.prop("anchor"), a =>
+      R.or(R.startsWith(`${anchor}_`, a), R.startsWith(`${anchor}.`, a))
+    ),
+    latestChanges
+  );
+};

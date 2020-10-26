@@ -1,49 +1,33 @@
-import {
-  createStore,
-  createHook,
-  createSubscriber,
-  createContainer
-} from "react-sweet-state";
-import {
-  append,
-  assoc,
-  assocPath,
-  dissocPath,
-  endsWith,
-  filter,
-  flatten,
-  isEmpty,
-  length,
-  map,
-  max,
-  path,
-  prop,
-  reduce,
-  split,
-  startsWith
-} from "ramda";
-import { getAnchorPart, replaceAnchorPartWith } from "utils/common";
-import { createSelector } from "reselect";
+import { createStore, createHook, createContainer } from "react-sweet-state";
+import { assoc, assocPath, path, split, symmetricDifference } from "ramda";
+
+const setLatestChanges = diff => ({ getState, setState }) => {
+  setState(assoc("latestChanges", diff, getState()));
+};
 
 const Store = createStore({
-  initialState: { tutkinnot: [] },
+  initialState: {},
   actions: {
-    setChanges: (changeObjects, anchor) => ({ getState, setState }) => {
-      //   if (!anchor && changeObjects) {
-      //     setState(assoc("changeObjects", changeObjects, getState()));
-      //   }
+    setChanges: (changeObjects, anchor) => ({
+      getState,
+      dispatch,
+      setState
+    }) => {
+      const anchorParts = split("_", anchor);
 
       if (anchor && changeObjects) {
-        setState(assocPath(split("_", anchor), changeObjects, getState()));
-      }
-      // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
-      if (
-        anchor &&
-        anchor !== "toimintaalue" &&
-        anchor !== "kielet_tutkintokielet" &&
-        isEmpty(changeObjects)
-      ) {
-        setState(dissocPath(split("_", anchor), getState()));
+        const currentStateOfAnchor = path(anchorParts, getState());
+        const nextState = assocPath(anchorParts, changeObjects, getState());
+        const nextStateOfAnchor = path(anchorParts, nextState);
+        setState(nextState);
+        dispatch(
+          setLatestChanges(
+            symmetricDifference(
+              nextStateOfAnchor || [],
+              currentStateOfAnchor || []
+            )
+          )
+        );
       }
     }
   },
@@ -51,27 +35,21 @@ const Store = createStore({
 });
 
 const getChangeObjectsBySectionId = (state, { anchor }) => {
-  console.info(state, anchor, path(split("_", anchor), state));
-  return path(split("_", anchor), state);
+  return path(split("_", anchor), state) || [];
 };
 
-const getTutkinnotChanges = createSelector(
-  state => state.tutkinnot,
-  tutkinnot => ({ tukinnot: { "01": [] } })
-);
-
-export const useTutkinnotChanges = createHook(Store, {
-  selector: getTutkinnotChanges
-});
 export const useMuutokset = createHook(Store);
-export const useLomake = createHook(Store, {
+
+export const useLomake = createHook(Store);
+
+export const useLatestChanges = createHook(Store, {
+  selector: state => state.latestChanges
+});
+
+export const useLomakeSection = createHook(Store, {
   selector: getChangeObjectsBySectionId
 });
 
-// export const LomakeSubscriber = createSubscriber(Store, {
-//   selector: getChangeObjectsBySectionId
-// });
-export const MuutoksetSubscriber = createSubscriber(Store);
 export const MuutoksetContainer = createContainer(Store, {
   onInit: () => ({ setState }, initialState) => {
     setState(initialState);

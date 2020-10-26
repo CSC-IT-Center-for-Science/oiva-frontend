@@ -131,3 +131,7 @@ export const defineBackendChangeObjects = async (
 export function getEnsisijaisetOpetuskieletOPHFromStorage() {
   return localforage.getItem("ensisijaisetOpetuskieletOPH");
 }
+
+export function getOpetuskieletFromStorage() {
+  return localforage.getItem("opetuskielet");
+}

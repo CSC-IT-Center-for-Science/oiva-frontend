@@ -4,13 +4,17 @@ import { __ } from "i18n-for-browser";
 import * as R from "ramda";
 import { sortArticlesByHuomioitavaKoodi } from "../utils";
 import { scrollToOpiskelijavuodet } from "./utils";
+import { getMaarayksetByKoodisto } from "helpers/lupa";
 
 async function getModificationForm(
   configObj,
   opiskelijavuodetChangeObjects,
-  osiota5koskevatMaaraykset,
   locale
 ) {
+  const osiota5koskevatMaaraykset = await getMaarayksetByKoodisto(
+    "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+  );
+
   return R.map(item => {
     let noItemsInLupa = true;
     const isVaativatukiRadios =
@@ -176,7 +180,6 @@ export default async function getMuutLomake(action, data, isReadOnly, locale) {
       return await getModificationForm(
         data.configObj,
         data.opiskelijavuodetChangeObjects,
-        data.osiota5koskevatMaaraykset,
         R.toUpper(locale)
       );
     default:

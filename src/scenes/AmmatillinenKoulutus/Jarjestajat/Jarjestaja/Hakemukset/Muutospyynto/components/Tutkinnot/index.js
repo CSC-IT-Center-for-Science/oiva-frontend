@@ -1,10 +1,12 @@
 import React from "react";
-import ExpandableRowRoot from "../../../../../../../../components/02-organisms/ExpandableRowRoot";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../../components/02-organisms/Lomake";
-import common from "../../../../../../../../i18n/definitions/common";
 import { toUpper, map, groupBy, prop, equals } from "ramda";
+
+const constants = {
+  formLocation: ["tutkinnot"]
+};
 
 const Tutkinnot = React.memo(
   props => {
@@ -16,11 +18,6 @@ const Tutkinnot = React.memo(
       props.tutkinnot || []
     );
 
-    const changesMessages = {
-      undo: intl.formatMessage(common.undo),
-      changesTest: intl.formatMessage(common.changesText)
-    };
-
     return (
       <React.Fragment>
         {map(koulutusala => {
@@ -31,32 +28,22 @@ const Tutkinnot = React.memo(
               prop("koulutustyyppikoodiarvo"),
               tutkinnotByKoulutusala[koulutusala.koodiarvo]
             );
+            const lomakedata = {
+              koulutusala,
+              koulutustyypit: props.koulutustyypit,
+              title,
+              tutkinnotByKoulutustyyppi
+            };
+
             return (
-              <ExpandableRowRoot
+              <Lomake
+                action="modification"
                 anchor={fullSectionId}
-                key={`expandable-row-root-${koulutusala.koodiarvo}`}
-                changes={props.changeObjects[koulutusala.koodiarvo]}
-                hideAmountOfChanges={true}
-                messages={changesMessages}
-                onChangesRemove={props.onChangesRemove}
-                onUpdate={props.onChangesUpdate}
-                sectionId={fullSectionId}
-                showCategoryTitles={true}
-                title={title}>
-                <Lomake
-                  action="modification"
-                  anchor={fullSectionId}
-                  changeObjects={props.changeObjects[koulutusala.koodiarvo]}
-                  data={{
-                    koulutusala,
-                    koulutustyypit: props.koulutustyypit,
-                    title,
-                    tutkinnotByKoulutustyyppi
-                  }}
-                  onChangesUpdate={props.onChangesUpdate}
-                  path={["tutkinnot"]}
-                  showCategoryTitles={true}></Lomake>
-              </ExpandableRowRoot>
+                data={lomakedata}
+                key={fullSectionId}
+                path={constants.formLocation}
+                rowTitle={title}
+                showCategoryTitles={true}></Lomake>
             );
           }
           return null;
@@ -70,10 +57,8 @@ const Tutkinnot = React.memo(
 );
 
 Tutkinnot.propTypes = {
-  changeObjects: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  onChangesUpdate: PropTypes.func,
   tutkinnot: PropTypes.array
 };
 

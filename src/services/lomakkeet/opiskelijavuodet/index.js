@@ -16,15 +16,14 @@ import {
   findSisaoppilaitosRajoitus,
   findVaativatukiRajoitus
 } from "../../../helpers/opiskelijavuodet";
+import { getMaarayksetByTunniste } from "helpers/lupa";
+import { getMuutFromStorage } from "helpers/muut";
 
-function getModificationForm(
+async function getModificationForm(
   locale,
   isSisaoppilaitosValueRequired,
   isVaativaTukiValueRequired,
-  maaraykset,
-  muut,
   muutChanges,
-  muutMaaraykset,
   sectionId
 ) {
   const titles = [__("current"), __("applyFor"), __("difference")];
@@ -35,6 +34,10 @@ function getModificationForm(
   ];
   const currentDate = new Date();
   const muutChangesFlatten = flatten(values(muutChanges));
+
+  const maaraykset = await getMaarayksetByTunniste("opiskelijavuodet");
+  const muutMaaraykset = await getMaarayksetByTunniste("muut");
+  const muut = await getMuutFromStorage();
 
   /**
    * SISÄOPPILAITOSTIETUEEN NÄYTTÄMISEN MÄÄRITTÄMINEN
@@ -116,6 +119,8 @@ function getModificationForm(
     maaraykset
   );
 
+  console.info(opiskelijavuosimaaraysVaativaTuki);
+
   return [
     {
       anchor: "vahimmaisopiskelijavuodet",
@@ -130,10 +135,10 @@ function getModificationForm(
               maaraysUuid: (vahimmaisopiskelijavuodetMaarays || {}).uuid
             },
             initialValue: vahimmaisopiskelijavuodetMaarays
-              ? vahimmaisopiskelijavuodetMaarays.arvo
+              ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
               : 0,
             applyForValue: vahimmaisopiskelijavuodetMaarays
-              ? vahimmaisopiskelijavuodetMaarays.arvo
+              ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
               : 0,
             name: `${sectionId}-difference-1`,
             titles
@@ -161,10 +166,10 @@ function getModificationForm(
                 },
                 isRequired: isVaativaTukiValueRequired,
                 initialValue: opiskelijavuosimaaraysVaativaTuki
-                  ? opiskelijavuosimaaraysVaativaTuki.arvo
+                  ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
                   : 0,
                 applyForValue: opiskelijavuosimaaraysVaativaTuki
-                  ? opiskelijavuosimaaraysVaativaTuki.arvo
+                  ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
                   : 0,
                 name: `${sectionId}-difference-2`,
                 titles: titlesSisaoppilaitosAndVaativa
@@ -189,10 +194,10 @@ function getModificationForm(
                 },
                 isRequired: isSisaoppilaitosValueRequired,
                 initialValue: opiskelijavuosimaaraysSisaoppilaitos
-                  ? opiskelijavuosimaaraysSisaoppilaitos.arvo
+                  ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
                   : 0,
                 applyForValue: opiskelijavuosimaaraysSisaoppilaitos
-                  ? opiskelijavuosimaaraysSisaoppilaitos.arvo
+                  ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
                   : 0,
                 name: `${sectionId}-difference-3`,
                 titles: titlesSisaoppilaitosAndVaativa
@@ -204,7 +209,7 @@ function getModificationForm(
   ].filter(Boolean);
 }
 
-export default function getOpiskelijavuodetLomake(
+export default async function getOpiskelijavuodetLomake(
   action,
   data,
   isReadOnly,
@@ -212,14 +217,11 @@ export default function getOpiskelijavuodetLomake(
 ) {
   switch (action) {
     case "modification":
-      return getModificationForm(
+      return await getModificationForm(
         locale,
         data.isSisaoppilaitosValueRequired,
         data.isVaativaTukiValueRequired,
-        data.maaraykset,
-        data.muut,
         data.muutChanges,
-        data.muutMaaraykset,
         data.sectionId
       );
     default:

@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import Tutkintokielet from "./Kielet/Tutkintokielet";
 import * as R from "ramda";
 import _ from "lodash";
+import { useLomakeSection } from "scenes/AmmatillinenKoulutus/store";
 
 const MuutospyyntoWizardKielet = props => {
+  const [tutkinnotChangeObjects] = useLomakeSection({ anchor: "tutkinnot" });
   const prevTutkinnotItemsRef = useRef();
 
   /**
@@ -35,7 +37,7 @@ const MuutospyyntoWizardKielet = props => {
             return R.filter(changeObj => {
               const isInCurrentChanges = !!R.find(
                 R.propEq("anchor", changeObj.anchor),
-                props.changeObjects.tutkinnot[key] || []
+                tutkinnotChangeObjects[key] || []
               );
               return changeObj.properties.isChecked && !isInCurrentChanges;
             }, value);
@@ -49,32 +51,22 @@ const MuutospyyntoWizardKielet = props => {
       R.prop("anchor"),
       R.filter(
         R.compose(R.equals(false), R.path(["properties", "isChecked"])),
-        R.flatten(R.values(props.changeObjects.tutkinnot))
+        R.flatten(R.values(tutkinnotChangeObjects))
       )
     );
 
-    prevTutkinnotItemsRef.current = props.changeObjects.tutkinnot;
+    prevTutkinnotItemsRef.current = tutkinnotChangeObjects;
 
     // Here we combine the arrays 1 and 2
     return R.concat(wereSelected, wereSelectedByDefault);
-  }, [props.changeObjects.tutkinnot]);
+  }, [tutkinnotChangeObjects]);
 
   return (
     <React.Fragment>
-      <Opetuskielet
-        changeObjects={props.changeObjects}
-        opetuskielet={props.opetuskielet}
-        onChangesRemove={props.onChangesRemove}
-        onChangesUpdate={props.onChangesUpdate}
-      />
+      <Opetuskielet />
 
       <Tutkintokielet
-        changeObjects={props.changeObjects}
-        kielet={props.kielet}
         koulutusalat={props.koulutusalat}
-        koulutustyypit={props.koulutustyypit}
-        onChangesRemove={props.onChangesRemove}
-        onChangesUpdate={props.onChangesUpdate}
         tutkinnot={props.tutkinnot}
         unselectedAnchors={unselectedAnchors}
       />
