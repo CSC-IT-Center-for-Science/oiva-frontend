@@ -5,8 +5,6 @@ import {
   difference,
   flatten,
   isEmpty,
-  map,
-  mergeAll,
   path,
   prepend,
   split,
@@ -20,7 +18,11 @@ const setLatestChanges = diff => ({ getState, setState }) => {
 
 const Store = createStore({
   initialState: {
-    changeObjects: {}
+    changeObjects: {
+      saved: {},
+      unsaved: {},
+      toBeRemoved: {}
+    }
   },
   actions: {
     setChanges: (changeObjects, anchor = "") => ({
@@ -30,8 +32,13 @@ const Store = createStore({
     }) => {
       const currentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", anchor);
+
       const unsavedFullPath = prepend("unsaved", anchorParts).filter(Boolean);
       const savedFullPath = prepend("saved", anchorParts).filter(Boolean);
+      const toBeRemovedFullPath = prepend("toBeRemoved", anchorParts).filter(
+        Boolean
+      );
+
       const savedByAnchor = path(savedFullPath, getState().changeObjects) || [];
       const currentStateOfAnchor = path(unsavedFullPath, currentChangeObjects);
       const unsavedChangeObjects = difference(changeObjects, savedByAnchor);
@@ -46,8 +53,8 @@ const Store = createStore({
       const nextSavedByAnchor = difference(savedByAnchor, savedChangeObjects);
 
       nextChangeObjects = assocPath(
-        savedFullPath,
-        nextSavedByAnchor,
+        toBeRemovedFullPath,
+        savedChangeObjects,
         nextChangeObjects
       );
 
@@ -60,10 +67,12 @@ const Store = createStore({
 
       if (isEmpty(nextSavedByAnchor)) {
         nextChangeObjects = recursiveTreeShake(
-          savedFullPath,
+          toBeRemovedFullPath,
           nextChangeObjects
         );
       }
+
+      console.info(nextChangeObjects);
 
       const nextStateOfAnchor = path(unsavedFullPath, nextChangeObjects);
       setState(assoc("changeObjects", nextChangeObjects, getState()));
@@ -95,29 +104,15 @@ const Store = createStore({
   name: "Muutokset"
 });
 
-const getChangeObjectsByAnchor = (
-  state,
-  { anchor },
-  keys = ["unsaved", "saved"]
-) => {
-  return mergeAll(
-    flatten(
-      map(key => {
-        return {
-          [key]:
-            path(prepend(key, split("_", anchor)), state.changeObjects) || []
-        };
-      }, keys)
-    )
-  );
-};
-
 const getChangeObjects = (state, { anchor }) => {
   const anchorParts = split("_", anchor);
-  return flatten([
+  const toBeRemoved =
+    path(prepend("toBeRemoved", anchorParts), state.changeObjects) || [];
+  const allChangeObjects = flatten([
     path(prepend("saved", anchorParts), state.changeObjects) || [],
     path(prepend("unsaved", anchorParts), state.changeObjects) || []
   ]);
+  return difference(allChangeObjects, toBeRemoved);
 };
 
 export const useLomake = createHook(Store);
@@ -131,10 +126,6 @@ export const useChangeObjectsByAnchor = createHook(Store, {
 });
 
 export const useChangeObjects = createHook(Store);
-
-export const useLomakeSection = createHook(Store, {
-  selector: getChangeObjectsByAnchor
-});
 
 export const useUnsavedChangeObjects = createHook(Store, {
   selector: state => state.changeObjects.unsaved
