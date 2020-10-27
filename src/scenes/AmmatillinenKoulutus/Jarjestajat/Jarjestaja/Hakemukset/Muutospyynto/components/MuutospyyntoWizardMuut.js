@@ -5,6 +5,7 @@ import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import {
+  useChangeObjects,
   useLatestChanges,
   useLomakeSection
 } from "scenes/AmmatillinenKoulutus/store";
@@ -24,7 +25,7 @@ const constants = {
 const koodiarvot = [2, 16, 17, 18, 19, 20, 21].concat(4);
 
 const MuutospyyntoWizardMuut = props => {
-  const [changeObjects] = useLomakeSection({ anchor: "muut" });
+  const [changeObjects] = useChangeObjects({ anchor: "muut" });
   const [opiskelijavuodetChangeObjects] = useLomakeSection({
     anchor: "opiskelijavuodet"
   });
@@ -44,7 +45,7 @@ const MuutospyyntoWizardMuut = props => {
   const divideArticles = useMemo(() => {
     return () => {
       const group = {};
-      const flattenArrayOfChangeObjects = R.flatten(R.values(changeObjects));
+
       R.forEach(article => {
         const { metadata } = article;
         const kasite =
@@ -71,7 +72,7 @@ const MuutospyyntoWizardMuut = props => {
               changeObj.properties.isChecked &&
               R.includes(parseInt(koodiarvo, 10), koodiarvot)
             );
-          }, flattenArrayOfChangeObjects);
+          }, changeObjects);
         if (
           (kuvaus || R.includes(article.koodiarvo, ["22", "7", "8"])) &&
           kasite &&
@@ -241,7 +242,7 @@ const MuutospyyntoWizardMuut = props => {
   }, [divideArticles, intl]);
 
   useEffect(() => {
-    R.map(configObj => {
+    R.forEach(configObj => {
       const latestSectionChanges = getLatestChangesByAnchor(
         `${sectionId}_${configObj.code}`,
         latestChanges
@@ -257,7 +258,13 @@ const MuutospyyntoWizardMuut = props => {
       }
     }, R.filter(R.propEq("isInUse", true))(config));
     setInitialized(true);
-  }, [latestChanges, setLomakedata]);
+  }, [
+    config,
+    initialized,
+    latestChanges,
+    opiskelijavuodetChangeObjects,
+    setLomakedata
+  ]);
 
   return (
     <React.Fragment>

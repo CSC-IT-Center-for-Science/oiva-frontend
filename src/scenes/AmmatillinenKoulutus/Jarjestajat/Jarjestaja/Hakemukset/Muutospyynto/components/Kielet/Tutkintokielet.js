@@ -6,8 +6,8 @@ import { getActiveOnes } from "../../../../../../../../helpers/tutkinnot";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
 import {
-  useLatestChanges,
-  useLomakeSection
+  useChangeObjects,
+  useLatestChanges
 } from "scenes/AmmatillinenKoulutus/store";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 import { getLatestChangesByAnchor } from "utils/common";
@@ -19,13 +19,10 @@ const constants = {
 const Tutkintokielet = props => {
   const sectionId = "kielet_tutkintokielet";
   const intl = useIntl();
-  const [tutkinnotChangeObjects] = useLomakeSection({
+  const [tutkinnotChangeObjects] = useChangeObjects({
     anchor: "tutkinnot"
   });
-  const [tutkintokieletChangeObjects, { setChanges }] = useLomakeSection({
-    anchor: "kielet_tutkintokielet"
-  });
-  const [latestChanges] = useLatestChanges();
+  const [latestChanges, { setChanges }] = useLatestChanges();
 
   const [lomakedata, { setLomakedata }] = useLomakedata({
     anchor: "tutkinnot"
@@ -37,81 +34,43 @@ const Tutkintokielet = props => {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!R.isEmpty(tutkintokieletChangeObjects)) {
-      let tutkintokielichangesWithoutRemovedOnes = Object.assign(
-        {},
-        tutkintokieletChangeObjects
-      );
-      // Remove properties with empty value array
-      Object.keys(tutkintokielichangesWithoutRemovedOnes).forEach(key => {
-        if (
-          R.all(
-            kielet => R.isEmpty(kielet.properties.value),
-            tutkintokielichangesWithoutRemovedOnes[key]
-          )
-        ) {
-          tutkintokielichangesWithoutRemovedOnes = R.dissocPath(
-            [key],
-            tutkintokielichangesWithoutRemovedOnes
-          );
-        }
-      });
-      if (props.unselectedAnchors.length) {
-        R.forEach(anchor => {
-          const areaCode = R.compose(
-            R.last,
-            R.split("_"),
-            R.head,
-            R.split(".")
-          )(anchor);
-
-          const commonPart = R.compose(
-            R.join("."),
-            R.concat([areaCode])
-          )(R.slice(1, 3, R.split(".", anchor)));
-          tutkintokielichangesWithoutRemovedOnes = {
-            ...tutkintokielichangesWithoutRemovedOnes,
-            [areaCode]: R.filter(changeObj => {
-              return !R.contains(commonPart, changeObj.anchor);
-            }, tutkintokielichangesWithoutRemovedOnes[areaCode] || [])
-          };
-        }, props.unselectedAnchors);
-
-        tutkintokielichangesWithoutRemovedOnes = R.filter(
-          R.compose(R.not, R.isEmpty),
-          tutkintokielichangesWithoutRemovedOnes
-        );
-      }
-
-      setChanges(tutkintokielichangesWithoutRemovedOnes, sectionId);
-    }
-  }, [setChanges, tutkintokieletChangeObjects, props.unselectedAnchors]);
-
-  useEffect(() => {
     R.forEach(koulutusala => {
       const latestSectionChanges = getLatestChangesByAnchor(
         `tutkinnot_${koulutusala.koodiarvo}`,
         latestChanges
       );
       if (latestSectionChanges.length || !initialized) {
+        // console.info(
+        //   koulutusala.koodiarvo,
+        //   latestSectionChanges,
+        //   tutkinnotChangeObjects
+        // );
         setLomakedata(
           {
             valitutTutkinnot: R.groupBy(
               R.prop("koulutustyyppikoodiarvo"),
               getActiveOnes(
                 tutkinnotByKoulutusala[koulutusala.koodiarvo],
-                tutkinnotChangeObjects[koulutusala.koodiarvo]
+                R.prop(koulutusala.koodiarvo, R.head(tutkinnotChangeObjects))
               )
             )
           },
           `tutkinnot_${koulutusala.koodiarvo}`
         );
+
+        R.forEach(changeObj => {
+          if (changeObj.properties.isChecked === false) {
+            setChanges([], `${sectionId}_${koulutusala.koodiarvo}`);
+          }
+        }, latestSectionChanges);
       }
     }, props.koulutusalat).filter(Boolean);
     setInitialized(true);
   }, [
+    initialized,
     latestChanges,
     props.koulutusalat,
+    setChanges,
     setLomakedata,
     tutkinnotByKoulutusala,
     tutkinnotChangeObjects
@@ -139,14 +98,9 @@ const Tutkintokielet = props => {
   ) : null;
 };
 
-Tutkintokielet.defaultProps = {
-  unselectedAnchors: []
-};
-
 Tutkintokielet.propTypes = {
   koulutusalat: PropTypes.array,
-  tutkinnot: PropTypes.array,
-  unselectedAnchors: PropTypes.array
+  tutkinnot: PropTypes.array
 };
 
 export default Tutkintokielet;

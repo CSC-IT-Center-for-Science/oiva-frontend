@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
-import { find, head, last, prop, values } from "ramda";
+import { find, head, includes, last, prop, values } from "ramda";
 import common from "i18n/definitions/common";
 import Lomake from "components/02-organisms/Lomake";
 import { useParams } from "react-router-dom";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
-import EsittelijatWizardActions from "./EsittelijatWizardActions";
+import { useValidity } from "./lomakedata";
 
 const formLocations = {
   kolmeEnsimmaistaKenttaa: ["esittelija", "topThree"]
@@ -30,6 +30,7 @@ const Lupa = ({
 }) => {
   const intl = useIntl();
   const { uuid } = useParams();
+  const [validity] = useValidity();
 
   const organisationPhoneNumber = head(
     values(find(prop("numero"), organisation.yhteystiedot))
@@ -43,10 +44,20 @@ const Lupa = ({
     values(find(prop("www"), organisation.yhteystiedot))
   );
 
-  const topThreeData = { formatMessage: intl.formatMessage, uuid };
+  const topThreeData = useMemo(
+    () => ({ formatMessage: intl.formatMessage, uuid }),
+    [intl, uuid]
+  );
+
+  const isLupaValid = useMemo(() => {
+    return !includes(false, values(validity));
+  }, [validity]);
 
   return (
-    <div className="border border-gray-300">
+    <div
+      className={`border-8 ${
+        isLupaValid ? "border-green-500" : "border-red-500"
+      }`}>
       <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
         <div className="py-4">
           <h1>
@@ -94,11 +105,7 @@ const Lupa = ({
             anchor="topthree"
             isInExpandableRow={false}
             data={topThreeData}
-            path={formLocations.kolmeEnsimmaistaKenttaa}
-            // hasInvalidFieldsFn={invalidFields => {
-            //   setHasInvalidFields(invalidFields);
-            // }}
-          ></Lomake>
+            path={formLocations.kolmeEnsimmaistaKenttaa}></Lomake>
         </div>
         <EsittelijatMuutospyynto
           kielet={kielet}
@@ -113,7 +120,6 @@ const Lupa = ({
           lupaKohteet={lupaKohteet}
           maaraystyypit={maaraystyypit}
           muut={muut}
-          onChangesUpdate={() => {}}
           opetuskielet={opetuskielet}
           tutkinnot={tutkinnot}
         />

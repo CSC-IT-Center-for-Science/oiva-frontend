@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
-import { useLomakeSection } from "../../../scenes/AmmatillinenKoulutus/store";
+import { useChangeObjects } from "../../../scenes/AmmatillinenKoulutus/store";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { isEmpty } from "ramda";
+import { has, isEmpty } from "ramda";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 const defaultProps = {
   data: {},
@@ -47,7 +48,8 @@ const Lomake = ({
       }
     : rowMessages;
 
-  const [changeObjects, actions] = useLomakeSection({ anchor });
+  const [changeObjects, actions] = useChangeObjects({ anchor });
+  const [, lomakedataActions] = useLomakedata({ anchor });
   const [lomake, setLomake] = useState();
 
   const onChangesRemove = useCallback(
@@ -79,8 +81,9 @@ const Lomake = ({
     }
 
     fetchLomake().then(result => {
-      if (hasInvalidFieldsFn && result) {
-        hasInvalidFieldsFn(!result.isValid);
+      if (has("isValid", result)) {
+        // console.info("Laitellaan validiustietoa.");
+        lomakedataActions.setValidity(result.isValid, anchor);
       }
       result.structure ? setLomake(result.structure) : setLomake(result);
     });
@@ -92,6 +95,7 @@ const Lomake = ({
     hasInvalidFieldsFn,
     isReadOnly,
     intl.locale,
+    lomakedataActions,
     _path,
     prefix
   ]);

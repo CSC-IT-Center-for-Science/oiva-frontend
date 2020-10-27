@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
-import { values, filter, flatten, includes, find, path } from "ramda";
-import { useLomakeSection } from "scenes/AmmatillinenKoulutus/store";
-import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
+import { filter, includes, find, path } from "ramda";
+import {
+  useChangeObjects,
+  useLomakeSection
+} from "scenes/AmmatillinenKoulutus/store";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
@@ -15,11 +17,8 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     const [changeObjects, { setChanges }] = useLomakeSection({
       anchor: "opiskelijavuodet"
     });
-    const [muutChangeObjects] = useLomakeSection({
+    const [muutChangeObjects] = useChangeObjects({
       anchor: "muut"
-    });
-    const [lomakedata, { setLomakedata }] = useLomakedata({
-      anchor: "opiskelijavuodet"
     });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
@@ -44,7 +43,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           includes("vaativatuki", changeObj.anchor) &&
           changeObj.properties.isChecked
         );
-      }, flatten(values(muutChangeObjects)));
+      }, muutChangeObjects);
 
       const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
         ? path(
@@ -81,17 +80,14 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       }
     }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
 
-    useEffect(() => {
-      setLomakedata(
-        {
-          isSisaoppilaitosValueRequired: false,
-          isVaativaTukiValueRequired: false,
-          muutChanges: muutChangeObjects,
-          sectionId
-        },
+    const lomakedata = useMemo(() => {
+      return {
+        isSisaoppilaitosValueRequired: false,
+        isVaativaTukiValueRequired: false,
+        muutChanges: muutChangeObjects,
         sectionId
-      );
-    }, [muut, muutChangeObjects, sectionId, setLomakedata]);
+      };
+    }, [muutChangeObjects, sectionId]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake

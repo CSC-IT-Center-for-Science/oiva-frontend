@@ -17,7 +17,7 @@ export const backendRoutes = {
   kunnat: { path: `koodistot/kunnat` },
   lisatietoja: {
     path: `koodistot/koodit/lisatietoja/`,
-    minimumTimeBetweenFetchingInMinutes: 0
+    minimumTimeBetweenFetchingInMinutes: 30
   },
   lupaByYtunnus: {
     path: `luvat/jarjestaja/`,

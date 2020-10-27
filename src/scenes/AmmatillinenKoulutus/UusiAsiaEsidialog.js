@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";

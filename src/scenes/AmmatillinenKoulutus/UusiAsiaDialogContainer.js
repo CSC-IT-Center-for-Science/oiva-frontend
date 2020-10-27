@@ -5,7 +5,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
 import { MuutoksetContainer } from "./store";
-import Lupa from "./Lupa";
 import { LomakedataContainer } from "./lomakedata";
 
 /**
@@ -60,7 +59,7 @@ const UusiAsiaDialogContainer = ({
     <React.Fragment>
       <LomakedataContainer>
         <MuutoksetContainer>
-          <Lupa
+          <UusiAsiaDialog
             history={history}
             kielet={kielet}
             kohteet={kohteet}

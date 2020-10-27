@@ -237,3 +237,33 @@ export const getLatestChangesByAnchor = (anchor, latestChanges = []) => {
     latestChanges
   );
 };
+
+const isObject = variable => {
+  return Object.prototype.toString.call(variable) === "[object Object]";
+};
+
+const isSubTreeEmpty = obj => {
+  if (Array.isArray(obj) || isObject(obj)) {
+    return R.flatten(R.values(R.mapObjIndexed(isSubTreeEmpty, obj)));
+  } else {
+    return obj;
+  }
+};
+
+export const isTreeEmpty = obj => R.isEmpty(isSubTreeEmpty(obj));
+
+export const recursiveTreeShake = (p, tree) => {
+  const subTree = R.path(p, tree);
+  const isSubTreeEmpty = isTreeEmpty(subTree);
+  if (isSubTreeEmpty) {
+    let updatedTree = R.dissocPath(p, tree);
+    if (isTreeEmpty(R.init(p), updatedTree)) {
+      updatedTree = R.dissocPath(R.init(p), tree);
+    }
+    if (R.length(p)) {
+      return recursiveTreeShake(R.init(p), updatedTree);
+    }
+  }
+
+  return tree;
+};

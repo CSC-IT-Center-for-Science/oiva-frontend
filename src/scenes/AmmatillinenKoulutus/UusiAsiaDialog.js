@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo
-} from "react";
+import React, { useState, useCallback, useRef, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";
@@ -13,17 +7,16 @@ import wizardMessages from "../../i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
-import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import { useHistory, useParams } from "react-router-dom";
 import SimpleButton from "../../components/00-atoms/SimpleButton";
 import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
-import Lomake from "../../components/02-organisms/Lomake";
 import { useMuutospyynto } from "../../stores/muutospyynto";
 import common from "../../i18n/definitions/common";
 import * as R from "ramda";
-import { useMuutokset } from "./store";
+import { useMuutokset, useUnsavedChangeObjects } from "./store";
+import Lupa from "./Lupa";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -79,10 +72,6 @@ const defaultProps = {
   tutkinnot: []
 };
 
-const formLocations = {
-  kolmeEnsimmaistaKenttaa: ["esittelija", "topThree"]
-};
-
 const UusiAsiaDialog = ({
   kielet = defaultProps.kielet,
   kohteet = defaultProps.kohteet,
@@ -99,36 +88,22 @@ const UusiAsiaDialog = ({
   onNewDocSave,
   opetuskielet = defaultProps.opetuskielet,
   organisation = defaultProps.organisation,
-  tutkinnot = defaultProps.tutkinnot
+  tutkinnot = defaultProps.tutkinnot,
+  viimeisinLupa
 }) => {
   const intl = useIntl();
   const params = useParams();
   let history = useHistory();
   let { uuid } = params;
 
-  const prevCosRef = useRef(null);
-  const [changeObjects, actions] = useMuutokset();
+  const [{ changeObjects }] = useMuutokset();
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
-  const [hasInvalidFields, setHasInvalidFields] = useState(false);
-  const [isSavingEnabled, setIsSavingEnabled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
-
+  const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
 
-  const organisationPhoneNumber = R.head(
-    R.values(R.find(R.prop("numero"), organisation.yhteystiedot))
-  );
-
-  const organisationEmail = R.head(
-    R.values(R.find(R.prop("email"), organisation.yhteystiedot))
-  );
-
-  const organisationWebsite = R.head(
-    R.values(R.find(R.prop("www"), organisation.yhteystiedot))
-  );
-
   const leaveOrOpenCancelModal = () => {
-    isSavingEnabled
+    !R.isEmpty(unsavedChangeObjects)
       ? setIsConfirmDialogVisible(true)
       : history.push(`/ammatillinenkoulutus/asianhallinta/avoimet?force=true`);
   };
@@ -136,21 +111,6 @@ const UusiAsiaDialog = ({
   function handleCancel() {
     setIsConfirmDialogVisible(false);
   }
-
-  // const onChangeObjectsUpdate = useCallback((id, changeObjects) => {
-  //   if (id && changeObjects) {
-  //     setChangeObjects(R.assocPath(R.split("_", id), changeObjects));
-  //   }
-  //   // Properties not including Toimintaalue and Tutkintokielet are deleted if empty.
-  //   if (
-  //     id &&
-  //     id !== "toimintaalue" &&
-  //     id !== "kielet_tutkintokielet" &&
-  //     R.isEmpty(changeObjects)
-  //   ) {
-  //     setChangeObjects(R.dissocPath(R.split("_", id)));
-  //   }
-  // }, []);
 
   /**
    * User is redirected to the following path when the form is closed.
@@ -164,18 +124,6 @@ const UusiAsiaDialog = ({
       `/ammatillinenkoulutus/asianhallinta/avoimet?force=true`
     );
   }, [history, muutospyyntoActions]);
-
-  useEffect(() => {
-    setIsSavingEnabled(
-      /**
-       * Virheellisten kenttien huomioimiseksi on käytettävä
-       * ehtoa && !hasInvalidFields. Toistaiseksi lomakkeen
-       * tallennuksen halutaan kuitenkin olevan mahdollista,
-       * vaikka lomakkeella olisikin virheellisiä kenttiä.
-       **/
-      !R.equals(prevCosRef.current, changeObjects)
-    );
-  }, [hasInvalidFields, changeObjects]);
 
   /**
    * Opens the preview.
@@ -232,7 +180,11 @@ const UusiAsiaDialog = ({
           R.toUpper(intl.locale),
           organisation,
           lupa,
-          changeObjects,
+          R.mergeAll(
+            R.flatten([changeObjects.unsaved, changeObjects.saved]).filter(
+              Boolean
+            )
+          ),
           uuid,
           kohteet,
           maaraystyypit,
@@ -249,13 +201,6 @@ const UusiAsiaDialog = ({
       } else if (action === "preview") {
         muutospyynto = await onPreview(formData);
       }
-
-      /**
-       * The form is saved and the requested action is run. Let's disable the
-       * save button. It will be enabled after new changes.
-       */
-      setIsSavingEnabled(false);
-      prevCosRef.current = R.clone(changeObjects);
 
       if (!uuid && !fromDialog) {
         if (muutospyynto && muutospyynto.uuid) {
@@ -278,11 +223,6 @@ const UusiAsiaDialog = ({
       organisation,
       uuid
     ]
-  );
-
-  const topThreeData = useMemo(
-    () => ({ formatMessage: intl.formatMessage, uuid }),
-    [intl.formatMessage, uuid]
   );
 
   return (
@@ -313,97 +253,37 @@ const UusiAsiaDialog = ({
             </DialogTitleWithStyles>
           </div>
           <DialogContentWithStyles>
-            <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
-              <div className="py-4">
-                <h1>
-                  {organisation.nimi[intl.locale] ||
-                    R.last(R.values(organisation.nimi))}
-                </h1>
-                <p>
-                  {organisation.kayntiosoite.osoite},{" "}
-                  {organisation.postiosoite.osoite}{" "}
-                  {organisation.kayntiosoite.postitoimipaikka}
-                </p>
-                <p>
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a
-                        href={`tel:${organisationPhoneNumber}`}
-                        className="underline">
-                        {organisationPhoneNumber}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a
-                        href={`mailto:${organisationEmail}`}
-                        className="underline">
-                        {organisationEmail}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisation.ytunnus} |{" "}
-                  {organisationWebsite && (
-                    <a href={organisationWebsite} className="underline">
-                      {organisationWebsite}
-                    </a>
-                  )}
-                </p>
-              </div>
-            </div>
-            <div
-              id="wizard-content"
-              className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
-              <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-                <h2 className="p-8">
-                  {intl.formatMessage(common.decisionDetails)}
-                </h2>
-                <Lomake
-                  anchor="topthree"
-                  changeObjects={changeObjects.topthree}
-                  data={topThreeData}
-                  onChangesUpdate={
-                    payload => {}
-                    // onChangeObjectsUpdate(payload.anchor, payload.changes)
-                  }
-                  path={formLocations.kolmeEnsimmaistaKenttaa}
-                  // hasInvalidFieldsFn={invalidFields => {
-                  //   setHasInvalidFields(invalidFields);
-                  // }}
-                ></Lomake>
-              </div>
-              <EsittelijatMuutospyynto
-                changeObjects={changeObjects}
+            <div className="mb-20">
+              <Lupa
+                history={history}
                 kielet={kielet}
                 kohteet={kohteet}
                 koulutukset={koulutukset}
                 koulutusalat={koulutusalat}
                 koulutustyypit={koulutustyypit}
                 kunnat={kunnat}
-                maakuntakunnat={maakuntakunnat}
-                maakunnat={maakunnat}
-                lupa={lupa}
+                lupa={viimeisinLupa}
                 lupaKohteet={lupaKohteet}
+                maakunnat={maakunnat}
+                maakuntakunnat={maakuntakunnat}
                 maaraystyypit={maaraystyypit}
                 muut={muut}
-                onChangesUpdate={() => {}}
+                onNewDocSave={onNewDocSave}
                 opetuskielet={opetuskielet}
+                organisation={organisation}
                 tutkinnot={tutkinnot}
               />
-              <EsittelijatWizardActions
-                isSavingEnabled={isSavingEnabled}
-                onClose={leaveOrOpenCancelModal}
-                onPreview={() => {
-                  return onAction("preview");
-                }}
-                onSave={() => {
-                  return onAction("save");
-                }}
-              />
             </div>
+            <EsittelijatWizardActions
+              isSavingEnabled={!R.isEmpty(unsavedChangeObjects)}
+              onClose={leaveOrOpenCancelModal}
+              onPreview={() => {
+                return onAction("preview");
+              }}
+              onSave={() => {
+                return onAction("save");
+              }}
+            />
           </DialogContentWithStyles>
         </FormDialog>
         <ConfirmDialog

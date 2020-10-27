@@ -25,8 +25,6 @@ const ATVKoulutukset = ({ koulutukset, maaraykset }) => {
     };
   }, [intl.locale, koulutukset, maaraykset]);
 
-  console.info(lomakedata);
-
   return (
     <Lomake
       action="modification"
