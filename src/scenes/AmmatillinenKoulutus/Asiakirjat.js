@@ -337,10 +337,7 @@ const Asiakirjat = () => {
 
   const handleAddPaatoskirje = async attachment => {
     // Search for existing paatoskirje in muutospyynto
-    let paatoskirje = muutospyynto.data.liitteet
-      ? muutospyynto.data.liitteet.find(liite => liite.tyyppi === "paatosKirje")
-      : null;
-
+    let paatoskirje = R.find(pk => pk.tyyppi === "paatosKirje", muutospyynto.data.liitteet || []);
     // If paatoskirje exists, replace the existing file, otherwise append to liitteet array
     if (paatoskirje) {
       paatoskirje.nimi = attachment.nimi;
@@ -358,6 +355,7 @@ const Asiakirjat = () => {
       muutospyynto.data,
       true
     ]);
+    muutospyyntoActions.load(uuid, true);
     muutospyynnonLiitteetAction.load(muutospyynto.data.uuid, true);
   };
 
