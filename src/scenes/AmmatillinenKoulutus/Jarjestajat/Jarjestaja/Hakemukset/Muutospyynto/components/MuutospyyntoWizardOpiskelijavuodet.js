@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
-import { filter, includes, find, path } from "ramda";
+import { filter, includes, find, path, head, values, flatten } from "ramda";
 import {
   useChangeObjects,
   useLomakeSection
@@ -43,7 +43,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           includes("vaativatuki", changeObj.anchor) &&
           changeObj.properties.isChecked
         );
-      }, muutChangeObjects);
+      }, flatten(values(head(muutChangeObjects))));
 
       const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
         ? path(

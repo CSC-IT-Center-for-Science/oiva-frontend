@@ -20,7 +20,7 @@ const defaultProps = {
   kunnat: [],
   maakuntakunnat: [],
   maakunnat: [],
-  lupa: {},
+  maaraykset: [],
   lupaKohteet: {},
   maaraystyypit: [],
   muut: [],
@@ -38,7 +38,7 @@ const EsittelijatMuutospyynto = ({
   kunnat = defaultProps.kunnat,
   maakuntakunnat = defaultProps.maakuntakunnat,
   maakunnat = defaultProps.maakunnat,
-  lupa = defaultProps.lupa,
+  maaraykset = defaultProps.maaraykset,
   lupaKohteet = defaultProps.lupaKohteet,
   maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
   muut = defaultProps.muut,
@@ -81,7 +81,7 @@ const EsittelijatMuutospyynto = ({
 
   const valtakunnallinenMaarays = R.find(
     R.propEq("koodisto", "nuts1"),
-    R.prop("maaraykset", lupa) || []
+    maaraykset
   );
 
   const sectionHeadings = {
@@ -135,7 +135,7 @@ const EsittelijatMuutospyynto = ({
           </h4>
           <MuutospyyntoWizardKoulutukset
             koulutukset={koulutukset}
-            maaraykset={lupa.maaraykset}
+            maaraykset={maaraykset}
           />
         </Section>
 
@@ -173,7 +173,7 @@ const EsittelijatMuutospyynto = ({
             title={sectionHeadings.opiskelijavuodet.title}>
             <MuutospyyntoWizardOpiskelijavuodet
               lupaKohteet={lupaKohteet}
-              maaraykset={lupa.maaraykset}
+              maaraykset={maaraykset}
               muut={muut}
               opiskelijavuodet={opiskelijavuodet}
               sectionId={"opiskelijavuodet"}
@@ -186,7 +186,7 @@ const EsittelijatMuutospyynto = ({
             code={sectionHeadings.muut.number}
             title={sectionHeadings.muut.title}>
             <MuutospyyntoWizardMuut
-              maaraykset={lupa.maaraykset}
+              maaraykset={maaraykset}
               muut={muut}
               koulutukset={koulutukset}
               sectionId={"muut"}
@@ -206,8 +206,8 @@ EsittelijatMuutospyynto.propTypes = {
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
   maakuntakunnat: PropTypes.array,
+  maaraykset: PropTypes.object,
   maakunnat: PropTypes.array,
-  lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,

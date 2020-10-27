@@ -2,7 +2,6 @@ import { createStore, createHook, createContainer } from "react-sweet-state";
 import {
   assoc,
   assocPath,
-  concat,
   flatten,
   isEmpty,
   map,
@@ -133,10 +132,6 @@ const getChangeObjects = (state, { anchor }) => {
     path(prepend("saved", anchorParts), state.changeObjects) || [],
     path(prepend("unsaved", anchorParts), state.changeObjects) || []
   ]);
-};
-
-const getUnsavedChangeObjectsBySectionId = (state, { anchor }) => {
-  return getChangeObjectsByAnchor(state, { anchor }, ["unsaved"]);
 };
 
 export const useMuutokset = createHook(Store);

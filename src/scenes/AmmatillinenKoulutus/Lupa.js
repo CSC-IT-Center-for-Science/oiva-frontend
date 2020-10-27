@@ -18,7 +18,7 @@ const Lupa = ({
   koulutusalat,
   koulutustyypit,
   kunnat,
-  lupa,
+  maaraykset,
   lupaKohteet,
   maakunnat,
   maakuntakunnat,
@@ -116,7 +116,7 @@ const Lupa = ({
           kunnat={kunnat}
           maakuntakunnat={maakuntakunnat}
           maakunnat={maakunnat}
-          lupa={lupa}
+          maaraykset={maaraykset}
           lupaKohteet={lupaKohteet}
           maaraystyypit={maaraystyypit}
           muut={muut}

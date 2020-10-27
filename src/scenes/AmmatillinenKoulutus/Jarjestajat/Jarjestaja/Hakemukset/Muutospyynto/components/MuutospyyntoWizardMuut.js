@@ -37,13 +37,12 @@ const MuutospyyntoWizardMuut = props => {
   const intl = useIntl();
   const sectionId = "muut";
 
-  const osiota5koskevatMaaraykset = R.filter(
-    R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
-    props.maaraykset || []
-  );
-
   const divideArticles = useMemo(() => {
     return () => {
+      const osiota5koskevatMaaraykset = R.filter(
+        R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
+        props.maaraykset || []
+      );
       const group = {};
 
       R.forEach(article => {
@@ -72,7 +71,7 @@ const MuutospyyntoWizardMuut = props => {
               changeObj.properties.isChecked &&
               R.includes(parseInt(koodiarvo, 10), koodiarvot)
             );
-          }, changeObjects);
+          }, R.flatten(R.values(R.head(changeObjects))));
         if (
           (kuvaus || R.includes(article.koodiarvo, ["22", "7", "8"])) &&
           kasite &&
@@ -84,7 +83,7 @@ const MuutospyyntoWizardMuut = props => {
       }, props.muut);
       return group;
     };
-  }, [changeObjects, osiota5koskevatMaaraykset, props.muut]);
+  }, [changeObjects, props.maaraykset, props.muut]);
 
   /**
    * The config will be looped through and the forms of section 5

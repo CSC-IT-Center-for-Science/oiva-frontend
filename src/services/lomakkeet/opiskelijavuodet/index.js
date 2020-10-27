@@ -10,7 +10,8 @@ import {
   path,
   prop,
   includes,
-  propEq
+  propEq,
+  head
 } from "ramda";
 import {
   findSisaoppilaitosRajoitus,
@@ -33,7 +34,7 @@ async function getModificationForm(
     __("difference")
   ];
   const currentDate = new Date();
-  const muutChangesFlatten = flatten(values(muutChanges));
+  const muutChangesFlatten = flatten(values(head(muutChanges)));
 
   const maaraykset = await getMaarayksetByTunniste("opiskelijavuodet");
   const muutMaaraykset = await getMaarayksetByTunniste("muut");
@@ -215,6 +216,7 @@ export default async function getOpiskelijavuodetLomake(
 ) {
   switch (action) {
     case "modification":
+      console.info(data);
       return await getModificationForm(
         locale,
         data.isSisaoppilaitosValueRequired,

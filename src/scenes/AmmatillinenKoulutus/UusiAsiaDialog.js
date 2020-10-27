@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";
@@ -225,6 +225,8 @@ const UusiAsiaDialog = ({
     ]
   );
 
+  const maaraykset = R.prop("maaraykset", viimeisinLupa);
+
   return (
     changeObjects !== null && (
       <div className="max-w-7xl">
@@ -262,7 +264,7 @@ const UusiAsiaDialog = ({
                 koulutusalat={koulutusalat}
                 koulutustyypit={koulutustyypit}
                 kunnat={kunnat}
-                lupa={viimeisinLupa}
+                maaraykset={maaraykset}
                 lupaKohteet={lupaKohteet}
                 maakunnat={maakunnat}
                 maakuntakunnat={maakuntakunnat}

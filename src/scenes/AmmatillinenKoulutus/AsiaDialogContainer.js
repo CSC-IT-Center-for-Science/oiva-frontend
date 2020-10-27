@@ -81,12 +81,12 @@ const AsiaDialogContainer = ({
   }, [viimeisinLupa, intl]);
 
   const filesFromMuutokset = useMemo(() => {
-    // if (muutospyynto) {
-    //   const attachments = prop("liitteet", muutospyynto);
-    //   const muutospyyntoData = setAttachmentUuids(attachments, muutospyynto);
-    //   const backendMuutokset = prop("muutokset")(muutospyyntoData);
-    //   return findObjectWithKey(backendMuutokset, "liitteet");
-    // }
+    if (muutospyynto) {
+      const attachments = prop("liitteet", muutospyynto);
+      const muutospyyntoData = setAttachmentUuids(attachments, muutospyynto);
+      const backendMuutokset = prop("muutokset")(muutospyyntoData);
+      return findObjectWithKey(backendMuutokset, "liitteet");
+    }
     return null;
   }, [muutospyynto]);
 
