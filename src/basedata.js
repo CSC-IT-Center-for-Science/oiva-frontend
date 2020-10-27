@@ -130,6 +130,11 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       keys,
       backendRoutes.luvat.minimumTimeBetweenFetchingInMinutes
     ),
+    vstTyypit: await getRaw(
+      "vstTyypit",
+      `${backendRoutes.vsttyypit.path}`,
+      keys
+    ),
     // Koulutukset (muut)
     ammatilliseentehtavaanvalmistavakoulutus: await getRaw(
       "ammatilliseentehtavaanvalmistavakoulutus",
@@ -368,6 +373,14 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       : undefined,
     lupa,
     vstLuvat: raw.vstLuvat,
+    vstTyypit: raw.vstTyypit ? await localforage.setItem(
+      "vsttyypit",
+      map(vstTyyppi => omit(["koodiArvo"], {
+        ...vstTyyppi,
+          koodiarvo: vstTyyppi.koodiArvo,
+          metadata: mapObjIndexed(head, groupBy(prop("kieli"), vstTyyppi.metadata))
+      }),raw.vstTyypit
+      )) : undefined,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(

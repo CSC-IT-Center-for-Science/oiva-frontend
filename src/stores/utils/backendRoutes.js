@@ -84,5 +84,7 @@ export const backendRoutes = {
   poMuutEhdot: {
     path: "koodistot/koodit/pomuutkoulutuksenjarjestamiseenliittyvatehdot"
   },
-  vsttyypit: { path: `koodistot/koodit/vsttyypit` }
+  vsttyypit: {
+    path: `koodistot/koodit/vsttyypit`
+  }
 };
