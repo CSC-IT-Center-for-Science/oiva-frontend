@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";
@@ -15,7 +15,7 @@ import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import { useMuutospyynto } from "../../stores/muutospyynto";
 import common from "../../i18n/definitions/common";
 import * as R from "ramda";
-import { useMuutokset, useUnsavedChangeObjects } from "./store";
+import { useChangeObjects, useUnsavedChangeObjects } from "./store";
 import Lupa from "./Lupa";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
@@ -96,11 +96,15 @@ const UusiAsiaDialog = ({
   let history = useHistory();
   let { uuid } = params;
 
-  const [{ changeObjects }] = useMuutokset();
+  const [{ changeObjects }] = useChangeObjects();
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
+
+  const isSavingEnabled = useMemo(() => {
+    return unsavedChangeObjects ? !R.isEmpty(unsavedChangeObjects) : false;
+  }, [unsavedChangeObjects]);
 
   const leaveOrOpenCancelModal = () => {
     !R.isEmpty(unsavedChangeObjects)
@@ -277,7 +281,7 @@ const UusiAsiaDialog = ({
               />
             </div>
             <EsittelijatWizardActions
-              isSavingEnabled={!R.isEmpty(unsavedChangeObjects)}
+              isSavingEnabled={isSavingEnabled}
               onClose={leaveOrOpenCancelModal}
               onPreview={() => {
                 return onAction("preview");

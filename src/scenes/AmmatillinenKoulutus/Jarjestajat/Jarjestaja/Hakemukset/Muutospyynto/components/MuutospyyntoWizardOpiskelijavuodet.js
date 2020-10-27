@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
 import { filter, includes, find, path, head, values, flatten } from "ramda";
-import {
-  useChangeObjects,
-  useLomakeSection
-} from "scenes/AmmatillinenKoulutus/store";
+import { useChangeObjectsByAnchor } from "scenes/AmmatillinenKoulutus/store";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
@@ -14,10 +11,10 @@ const constants = {
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
   ({ maaraykset, muut, sectionId }) => {
-    const [changeObjects, { setChanges }] = useLomakeSection({
+    const [changeObjects, { setChanges }] = useChangeObjectsByAnchor({
       anchor: "opiskelijavuodet"
     });
-    const [muutChangeObjects] = useChangeObjects({
+    const [muutChangeObjects] = useChangeObjectsByAnchor({
       anchor: "muut"
     });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(

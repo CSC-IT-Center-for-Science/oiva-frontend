@@ -6,8 +6,8 @@ import wizard from "../../../../../../../i18n/definitions/wizard";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { isAdded, isRemoved, isInLupa } from "../../../../../../../css/label";
 import kuntaProvinceMapping from "../../../../../../../utils/kuntaProvinceMapping";
+import { useChangeObjectsByAnchor } from "scenes/AmmatillinenKoulutus/store";
 import * as R from "ramda";
-import { useLomakeSection } from "scenes/AmmatillinenKoulutus/store";
 
 const labelStyles = {
   addition: isAdded,
@@ -42,7 +42,7 @@ const constants = {
 
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const intl = useIntl();
-  const [changeObjects, { setChanges }] = useLomakeSection({
+  const [changeObjects, { setChanges }] = useChangeObjectsByAnchor({
     anchor: "toimintaalue"
   });
   const [isEditViewActive, toggleEditView] = useState(false);

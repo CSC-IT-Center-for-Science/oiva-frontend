@@ -5,9 +5,8 @@ import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import {
-  useChangeObjects,
-  useLatestChanges,
-  useLomakeSection
+  useChangeObjectsByAnchor,
+  useLatestChanges
 } from "scenes/AmmatillinenKoulutus/store";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 import * as R from "ramda";
@@ -25,8 +24,8 @@ const constants = {
 const koodiarvot = [2, 16, 17, 18, 19, 20, 21].concat(4);
 
 const MuutospyyntoWizardMuut = props => {
-  const [changeObjects] = useChangeObjects({ anchor: "muut" });
-  const [opiskelijavuodetChangeObjects] = useLomakeSection({
+  const [changeObjects] = useChangeObjectsByAnchor({ anchor: "muut" });
+  const [opiskelijavuodetChangeObjects] = useChangeObjectsByAnchor({
     anchor: "opiskelijavuodet"
   });
   const [latestChanges] = useLatestChanges();

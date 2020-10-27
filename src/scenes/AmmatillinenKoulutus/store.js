@@ -2,6 +2,7 @@ import { createStore, createHook, createContainer } from "react-sweet-state";
 import {
   assoc,
   assocPath,
+  difference,
   flatten,
   isEmpty,
   map,
@@ -19,82 +20,52 @@ const setLatestChanges = diff => ({ getState, setState }) => {
 
 const Store = createStore({
   initialState: {
-    changeObjects: {
-      unsaved: {
-        kielet: {
-          opetuskielet: [
-            {
-              anchor: "kielet_opetuskielet.2.A",
-              properties: {
-                metadata: {
-                  isInLupa: false,
-                  maaraysUuid: undefined,
-                  kuvaus: "ruotsi",
-                  meta: undefined
-                },
-                isChecked: true
-              }
-            },
-            {
-              anchor: "kielet_opetuskielet.5.A",
-              properties: {
-                metadata: {
-                  isInLupa: false,
-                  maaraysUuid: undefined,
-                  kuvaus: "saame",
-                  meta: undefined
-                },
-                isChecked: true
-              }
-            }
-          ]
-        },
-        tutkinnot: {
-          "01": [
-            {
-              anchor: "tutkinnot_01.12.417101.tutkinto",
-              properties: {
-                isChecked: true
-              }
-            }
-          ]
-        }
-      }
-    },
-    latestChanges: [
-      {
-        anchor: "tutkinnot_01.12.417101.tutkinto",
-        properties: {
-          isChecked: true
-        }
-      }
-    ]
+    changeObjects: {}
   },
   actions: {
-    setChanges: (changeObjects, anchor = "", key = "unsaved") => ({
+    setChanges: (changeObjects, anchor = "") => ({
       getState,
       dispatch,
       setState
     }) => {
+      const currentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", anchor);
-      const fullPath = prepend(key, anchorParts).filter(Boolean);
-
-      const currentStateOfAnchor = path(fullPath, getState().changeObjects);
-
-      console.info(fullPath, changeObjects);
-      // console.trace();
+      const unsavedFullPath = prepend("unsaved", anchorParts).filter(Boolean);
+      const savedFullPath = prepend("saved", anchorParts).filter(Boolean);
+      const savedByAnchor = path(savedFullPath, getState().changeObjects) || [];
+      const currentStateOfAnchor = path(unsavedFullPath, currentChangeObjects);
+      const unsavedChangeObjects = difference(changeObjects, savedByAnchor);
+      const savedChangeObjects = difference(savedByAnchor, changeObjects);
 
       let nextChangeObjects = assocPath(
-        fullPath,
-        changeObjects,
-        getState().changeObjects
+        unsavedFullPath,
+        unsavedChangeObjects,
+        currentChangeObjects
       );
 
-      if (isEmpty(changeObjects)) {
-        nextChangeObjects = recursiveTreeShake(fullPath, nextChangeObjects);
+      const nextSavedByAnchor = difference(savedByAnchor, savedChangeObjects);
+
+      nextChangeObjects = assocPath(
+        savedFullPath,
+        nextSavedByAnchor,
+        nextChangeObjects
+      );
+
+      if (isEmpty(unsavedChangeObjects)) {
+        nextChangeObjects = recursiveTreeShake(
+          unsavedFullPath,
+          nextChangeObjects
+        );
       }
 
-      const nextStateOfAnchor = path(fullPath, nextChangeObjects);
+      if (isEmpty(nextSavedByAnchor)) {
+        nextChangeObjects = recursiveTreeShake(
+          savedFullPath,
+          nextChangeObjects
+        );
+      }
+
+      const nextStateOfAnchor = path(unsavedFullPath, nextChangeObjects);
       setState(assoc("changeObjects", nextChangeObjects, getState()));
       dispatch(
         setLatestChanges(
@@ -104,6 +75,21 @@ const Store = createStore({
           )
         )
       );
+    },
+    setSavedChanges: (changeObjects, anchor) => ({ getState, setState }) => {
+      if (anchor) {
+        setState(
+          assocPath(split(".", anchor), changeObjects, getState().changeObjects)
+        );
+      } else {
+        const nextState = assocPath(
+          ["changeObjects", "saved"],
+          changeObjects,
+          getState()
+        );
+        console.info(nextState);
+        setState(nextState);
+      }
     }
   },
   name: "Muutokset"
@@ -134,17 +120,17 @@ const getChangeObjects = (state, { anchor }) => {
   ]);
 };
 
-export const useMuutokset = createHook(Store);
-
 export const useLomake = createHook(Store);
 
 export const useLatestChanges = createHook(Store, {
   selector: state => state.latestChanges
 });
 
-export const useChangeObjects = createHook(Store, {
+export const useChangeObjectsByAnchor = createHook(Store, {
   selector: getChangeObjects
 });
+
+export const useChangeObjects = createHook(Store);
 
 export const useLomakeSection = createHook(Store, {
   selector: getChangeObjectsByAnchor

@@ -21,7 +21,7 @@ import { parseLupa } from "../../utils/lupaParser";
 import localforage from "localforage";
 import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
-import { useMuutokset } from "./store";
+import { useChangeObjects } from "./store";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -50,7 +50,7 @@ const AsiaDialogContainer = ({
 
   const { uuid } = useParams();
 
-  const [, { setChanges }] = useMuutokset();
+  const [, { setSavedChanges }] = useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
   useEffect(() => {
@@ -173,9 +173,9 @@ const AsiaDialogContainer = ({
 
       delete changesBySection.categoryFilter;
 
-      setChanges(changesBySection, "", "saved");
+      setSavedChanges(changesBySection);
     }
-  }, [muutospyynto, setChanges, updatedC]);
+  }, [muutospyynto, setSavedChanges, updatedC]);
 
   return muutospyynto ? (
     <UusiAsiaDialog

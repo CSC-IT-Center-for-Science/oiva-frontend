@@ -6,7 +6,7 @@ import { getActiveOnes } from "../../../../../../../../helpers/tutkinnot";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
 import {
-  useChangeObjects,
+  useChangeObjectsByAnchor,
   useLatestChanges
 } from "scenes/AmmatillinenKoulutus/store";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
@@ -19,7 +19,7 @@ const constants = {
 const Tutkintokielet = props => {
   const sectionId = "kielet_tutkintokielet";
   const intl = useIntl();
-  const [tutkinnotChangeObjects] = useChangeObjects({
+  const [tutkinnotChangeObjects] = useChangeObjectsByAnchor({
     anchor: "tutkinnot"
   });
   const [latestChanges, { setChanges }] = useLatestChanges();
