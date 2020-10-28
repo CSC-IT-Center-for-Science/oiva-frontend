@@ -8,7 +8,8 @@ import {
   path,
   prepend,
   split,
-  symmetricDifference
+  symmetricDifference,
+  without
 } from "ramda";
 import { recursiveTreeShake } from "utils/common";
 
@@ -21,7 +22,7 @@ const Store = createStore({
     changeObjects: {
       saved: {},
       unsaved: {},
-      toBeRemoved: {}
+      underRemoval: {}
     }
   },
   actions: {
@@ -35,7 +36,7 @@ const Store = createStore({
 
       const unsavedFullPath = prepend("unsaved", anchorParts).filter(Boolean);
       const savedFullPath = prepend("saved", anchorParts).filter(Boolean);
-      const toBeRemovedFullPath = prepend("toBeRemoved", anchorParts).filter(
+      const underRemovalFullPath = prepend("underRemoval", anchorParts).filter(
         Boolean
       );
 
@@ -44,33 +45,58 @@ const Store = createStore({
       const unsavedChangeObjects = difference(changeObjects, savedByAnchor);
       const savedChangeObjects = difference(savedByAnchor, changeObjects);
 
+      /**
+       * Etsitään ankkuria käyttäen vastaavat underRemoval-tilassa olevat
+       * muutokset.
+       */
+      const underRemovalByAnchor =
+        path(underRemovalFullPath, getState().changeObjects) || [];
+
+      // difference(savedByAnchor, changeObjects);
+
+      /**
+       * Etsitään löydetyistä muutosobjekteista ne, joita vastaavia muutos-
+       * objekteja ollaan tallentamassa.
+       */
+      const freshNewChangeObjects = difference(
+        unsavedChangeObjects,
+        underRemovalByAnchor
+      );
+
+      console.info("Fresh:", freshNewChangeObjects);
+
+      // let nextChangeObjects = assocPath(
+      //   unsavedFullPath,
+      //   unsavedChangeObjects,
+      //   currentChangeObjects
+      // );
+
       let nextChangeObjects = assocPath(
         unsavedFullPath,
-        unsavedChangeObjects,
+        freshNewChangeObjects,
         currentChangeObjects
       );
 
       const nextSavedByAnchor = difference(savedByAnchor, savedChangeObjects);
 
       nextChangeObjects = assocPath(
-        toBeRemovedFullPath,
+        underRemovalFullPath,
         savedChangeObjects,
         nextChangeObjects
       );
 
-      if (isEmpty(unsavedChangeObjects)) {
-        nextChangeObjects = recursiveTreeShake(
-          unsavedFullPath,
-          nextChangeObjects
-        );
-      }
-
-      if (isEmpty(nextSavedByAnchor)) {
-        nextChangeObjects = recursiveTreeShake(
-          toBeRemovedFullPath,
-          nextChangeObjects
-        );
-      }
+      nextChangeObjects = recursiveTreeShake(
+        unsavedFullPath,
+        nextChangeObjects
+      );
+      nextChangeObjects = recursiveTreeShake(
+        underRemovalFullPath,
+        nextChangeObjects
+      );
+      nextChangeObjects = recursiveTreeShake(
+        unsavedFullPath,
+        nextChangeObjects
+      );
 
       console.info(nextChangeObjects);
 
@@ -106,13 +132,13 @@ const Store = createStore({
 
 const getChangeObjects = (state, { anchor }) => {
   const anchorParts = split("_", anchor);
-  const toBeRemoved =
-    path(prepend("toBeRemoved", anchorParts), state.changeObjects) || [];
+  const underRemoval =
+    path(prepend("underRemoval", anchorParts), state.changeObjects) || [];
   const allChangeObjects = flatten([
     path(prepend("saved", anchorParts), state.changeObjects) || [],
     path(prepend("unsaved", anchorParts), state.changeObjects) || []
   ]);
-  return difference(allChangeObjects, toBeRemoved);
+  return difference(allChangeObjects, underRemoval);
 };
 
 export const useLomake = createHook(Store);
@@ -129,6 +155,10 @@ export const useChangeObjects = createHook(Store);
 
 export const useUnsavedChangeObjects = createHook(Store, {
   selector: state => state.changeObjects.unsaved
+});
+
+export const useUnderRemovalChangeObjects = createHook(Store, {
+  selector: state => state.changeObjects.underRemoval
 });
 
 export const MuutoksetContainer = createContainer(Store, {

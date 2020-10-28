@@ -15,7 +15,11 @@ import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import { useMuutospyynto } from "../../stores/muutospyynto";
 import common from "../../i18n/definitions/common";
 import * as R from "ramda";
-import { useChangeObjects, useUnsavedChangeObjects } from "./store";
+import {
+  useChangeObjects,
+  useUnderRemovalChangeObjects,
+  useUnsavedChangeObjects
+} from "./store";
 import Lupa from "./Lupa";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
@@ -100,11 +104,18 @@ const UusiAsiaDialog = ({
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
+  const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
 
   const isSavingEnabled = useMemo(() => {
-    return unsavedChangeObjects ? !R.isEmpty(unsavedChangeObjects) : false;
-  }, [unsavedChangeObjects]);
+    const hasUnsavedChanges = unsavedChangeObjects
+      ? !R.isEmpty(unsavedChangeObjects)
+      : false;
+    const hasChangesUnderRemoval = underRemovalChangeObjects
+      ? !R.isEmpty(underRemovalChangeObjects)
+      : false;
+    return hasUnsavedChanges || hasChangesUnderRemoval;
+  }, [underRemovalChangeObjects, unsavedChangeObjects]);
 
   const leaveOrOpenCancelModal = () => {
     !R.isEmpty(unsavedChangeObjects)

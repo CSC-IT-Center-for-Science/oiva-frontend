@@ -1,6 +1,6 @@
 import { isAdded, isRemoved, isInLupa } from "../../../../css/label";
 import { getOpetuskieletFromStorage } from "helpers/opetuskielet";
-import { map, toUpper } from "ramda";
+import { isNil, map, reject, toUpper } from "ramda";
 
 /**
  * For: Koulutuksen järjestäjä
@@ -18,12 +18,12 @@ async function getModificationForm(locale) {
           anchor: "A",
           name: "CheckboxWithLabel",
           properties: {
-            forChangeObject: {
+            forChangeObject: reject(isNil)({
               isInLupa: !!opetuskieli.maarays,
               maaraysUuid: opetuskieli.maaraysUuid,
               kuvaus: opetuskieli.metadata[localeUpper].kuvaus,
               meta: opetuskieli.meta
-            },
+            }),
             name: "CheckboxWithLabel",
             isChecked: !!opetuskieli.maarays,
             title: opetuskieli.metadata[localeUpper].nimi,
