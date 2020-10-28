@@ -22,100 +22,119 @@ const defaultProps = {
   uncheckParentWithoutActiveChildNodes: false
 };
 
-const Lomake = ({
-  action,
-  anchor,
-  data = defaultProps.data,
-  isInExpandableRow = defaultProps.isInExpandableRow,
-  isReadOnly,
-  isRowExpanded = defaultProps.isRowExpanded,
-  path: _path,
-  prefix = defaultProps.prefix,
-  showCategoryTitles = defaultProps.showCategoryTitles,
-  uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
-  hasInvalidFieldsFn,
-  noPadding = defaultProps.noPadding,
-  rowMessages = defaultProps.rowMessages,
-  rowTitle = defaultProps.rowTitle,
-  showValidationErrors = defaultProps.showValidationErrors
-}) => {
-  const intl = useIntl();
-
-  const rowLocalizations = isEmpty(rowMessages)
-    ? {
-        undo: intl.formatMessage(formMessages.undo),
-        changesTest: intl.formatMessage(formMessages.changesText)
-      }
-    : rowMessages;
-
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor
-  });
-  const [, lomakedataActions] = useLomakedata({ anchor });
-  const [lomake, setLomake] = useState();
-
-  const onChangesRemove = useCallback(
-    anchor => {
-      actions.setChanges([], anchor);
-    },
-    [actions]
-  );
-
-  const onChangesUpdate = useCallback(
-    ({ anchor, changes }) => {
-      actions.setChanges(changes, anchor);
-    },
-    [actions]
-  );
-
-  useEffect(() => {
-    console.info("LUODAAN LOMAKE", anchor, changeObjects);
-    async function fetchLomake() {
-      return await getLomake(
-        action,
-        changeObjects,
-        data,
-        isReadOnly,
-        intl.locale,
-        _path,
-        prefix
-      );
-    }
-
-    fetchLomake().then(result => {
-      if (has("isValid", result)) {
-        // console.info("Laitellaan validiustietoa.");
-        lomakedataActions.setValidity(result.isValid, anchor);
-      }
-      result.structure ? setLomake(result.structure) : setLomake(result);
-    });
-  }, [
+const Lomake = React.memo(
+  ({
     action,
     anchor,
-    changeObjects,
-    data,
-    hasInvalidFieldsFn,
+    data = defaultProps.data,
+    isInExpandableRow = defaultProps.isInExpandableRow,
     isReadOnly,
-    intl.locale,
-    lomakedataActions,
-    _path,
-    prefix
-  ]);
+    isRowExpanded = defaultProps.isRowExpanded,
+    path: _path,
+    prefix = defaultProps.prefix,
+    showCategoryTitles = defaultProps.showCategoryTitles,
+    uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
+    hasInvalidFieldsFn,
+    noPadding = defaultProps.noPadding,
+    rowMessages = defaultProps.rowMessages,
+    rowTitle = defaultProps.rowTitle,
+    showValidationErrors = defaultProps.showValidationErrors
+  }) => {
+    const intl = useIntl();
 
-  if (lomake) {
-    return (
-      <React.Fragment>
-        {isInExpandableRow ? (
-          <ExpandableRowRoot
-            anchor={anchor}
-            changes={changeObjects}
-            key={`expandable-row-root`}
-            hideAmountOfChanges={true}
-            isExpanded={isRowExpanded}
-            onChangesRemove={onChangesRemove}
-            messages={rowLocalizations}
-            sectionId={anchor}
-            title={rowTitle}>
+    const rowLocalizations = isEmpty(rowMessages)
+      ? {
+          undo: intl.formatMessage(formMessages.undo),
+          changesTest: intl.formatMessage(formMessages.changesText)
+        }
+      : rowMessages;
+
+    const [
+      changeObjects,
+      actions
+    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor
+    });
+    const [, lomakedataActions] = useLomakedata({ anchor });
+    const [lomake, setLomake] = useState();
+
+    const onChangesRemove = useCallback(
+      anchor => {
+        actions.setChanges([], anchor);
+      },
+      [actions]
+    );
+
+    const onChangesUpdate = useCallback(
+      ({ anchor, changes }) => {
+        actions.setChanges(changes, anchor);
+      },
+      [actions]
+    );
+
+    useEffect(() => {
+      console.info("LUODAAN LOMAKE", anchor, changeObjects);
+      async function fetchLomake() {
+        return await getLomake(
+          action,
+          changeObjects,
+          data,
+          isReadOnly,
+          intl.locale,
+          _path,
+          prefix
+        );
+      }
+
+      fetchLomake().then(result => {
+        if (has("isValid", result)) {
+          // console.info("Laitellaan validiustietoa.");
+          lomakedataActions.setValidity(result.isValid, anchor);
+        }
+        result.structure ? setLomake(result.structure) : setLomake(result);
+      });
+    }, [
+      action,
+      anchor,
+      changeObjects,
+      data,
+      hasInvalidFieldsFn,
+      isReadOnly,
+      intl.locale,
+      lomakedataActions,
+      _path,
+      prefix
+    ]);
+
+    if (lomake) {
+      return (
+        <React.Fragment>
+          {isInExpandableRow ? (
+            <ExpandableRowRoot
+              anchor={anchor}
+              changes={changeObjects}
+              key={`expandable-row-root`}
+              hideAmountOfChanges={true}
+              isExpanded={isRowExpanded}
+              onChangesRemove={onChangesRemove}
+              messages={rowLocalizations}
+              sectionId={anchor}
+              title={rowTitle}>
+              <div className={noPadding ? "" : "p-8"}>
+                <CategorizedListRoot
+                  anchor={anchor}
+                  categories={lomake}
+                  changes={changeObjects}
+                  onUpdate={onChangesUpdate}
+                  showCategoryTitles={showCategoryTitles}
+                  showValidationErrors={showValidationErrors}
+                  uncheckParentWithoutActiveChildNodes={
+                    uncheckParentWithoutActiveChildNodes
+                  }
+                />
+              </div>
+            </ExpandableRowRoot>
+          ) : (
             <div className={noPadding ? "" : "p-8"}>
               <CategorizedListRoot
                 anchor={anchor}
@@ -129,28 +148,14 @@ const Lomake = ({
                 }
               />
             </div>
-          </ExpandableRowRoot>
-        ) : (
-          <div className={noPadding ? "" : "p-8"}>
-            <CategorizedListRoot
-              anchor={anchor}
-              categories={lomake}
-              changes={changeObjects}
-              onUpdate={onChangesUpdate}
-              showCategoryTitles={showCategoryTitles}
-              showValidationErrors={showValidationErrors}
-              uncheckParentWithoutActiveChildNodes={
-                uncheckParentWithoutActiveChildNodes
-              }
-            />
-          </div>
-        )}
-      </React.Fragment>
-    );
-  } else {
-    return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
+          )}
+        </React.Fragment>
+      );
+    } else {
+      return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
+    }
   }
-};
+);
 
 Lomake.propTypes = {
   action: PropTypes.string,

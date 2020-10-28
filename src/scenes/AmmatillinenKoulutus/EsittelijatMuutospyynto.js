@@ -139,20 +139,14 @@ const EsittelijatMuutospyynto = ({
           />
         </Section>
 
-        {/* <Section
+        <Section
           code={sectionHeadings.opetusJaTutkintokieli.number}
           title={sectionHeadings.opetusJaTutkintokieli.title}>
           <MuutospyyntoWizardKielet
-            kielet={kielet}
             koulutusalat={koulutusalat}
-            koulutustyypit={koulutustyypit}
-            lupaKohteet={lupaKohteet}
-            koulutukset={koulutukset}
-            opetuskielet={opetuskielet}
-            sectionId={"tutkinnot"}
             tutkinnot={tutkinnot}
           />
-        </Section> */}
+        </Section>
 
         {/* <Section
           code={sectionHeadings.toimintaalue.number}

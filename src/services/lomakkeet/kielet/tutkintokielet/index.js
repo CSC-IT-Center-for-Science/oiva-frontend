@@ -1,15 +1,18 @@
-import { map, toUpper, find } from "ramda";
+import { find, filter, map, propEq, toUpper } from "ramda";
 import { getKieletFromStorage } from "helpers/kielet";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
 
-async function getModificationForm(tutkinnotByKoulutustyyppi, locale) {
+async function getModificationForm(aktiivisetTutkinnot, locale) {
   const kielet = await getKieletFromStorage();
   const koulutustyypit = await getKoulutustyypitFromStorage();
   const localeUpper = toUpper(locale);
   const currentDate = new Date();
   return map(koulutustyyppi => {
-    const tutkinnot = tutkinnotByKoulutustyyppi[koulutustyyppi.koodiarvo];
-    if (tutkinnot) {
+    const tutkinnot = filter(
+      propEq("koulutustyyppikoodiarvo", koulutustyyppi.koodiarvo),
+      aktiivisetTutkinnot
+    );
+    if (tutkinnot.length) {
       return {
         anchor: koulutustyyppi.koodiarvo,
         title: koulutustyyppi.metadata[localeUpper].nimi,
@@ -79,7 +82,7 @@ export default async function getTutkintokieletLomake(
 ) {
   switch (action) {
     case "modification":
-      return await getModificationForm(data.valitutTutkinnot, locale);
+      return await getModificationForm(data.aktiiviset, locale);
     default:
       return [];
   }

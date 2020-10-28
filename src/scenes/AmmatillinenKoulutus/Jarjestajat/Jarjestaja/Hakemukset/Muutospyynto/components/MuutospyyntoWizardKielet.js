@@ -11,7 +11,7 @@ const constants = {
   }
 };
 
-const MuutospyyntoWizardKielet = props => {
+const MuutospyyntoWizardKielet = ({ koulutusalat, tutkinnot }) => {
   const intl = useIntl();
   return (
     <React.Fragment>
@@ -24,21 +24,13 @@ const MuutospyyntoWizardKielet = props => {
         showCategoryTitles={true}
       />
 
-      <Tutkintokielet
-        koulutusalat={props.koulutusalat}
-        tutkinnot={props.tutkinnot}
-      />
+      <Tutkintokielet koulutusalat={koulutusalat} tutkinnot={tutkinnot} />
     </React.Fragment>
   );
 };
 
 MuutospyyntoWizardKielet.propTypes = {
-  kielet: PropTypes.array,
-  koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
-  koulutustyypit: PropTypes.array,
-  lupaKohteet: PropTypes.object,
-  opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

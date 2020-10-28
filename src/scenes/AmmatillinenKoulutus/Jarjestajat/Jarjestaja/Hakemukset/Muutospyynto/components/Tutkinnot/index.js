@@ -17,7 +17,6 @@ const Tutkinnot = ({ koulutusalat, koulutustyypit, tutkinnot }) => {
     <React.Fragment>
       {map(koulutusala => {
         if (tutkinnotByKoulutusala[koulutusala.koodiarvo]) {
-          const fullSectionId = `${sectionId}_${koulutusala.koodiarvo}`;
           const title = koulutusala.metadata[localeUpper].nimi;
           const tutkinnotByKoulutustyyppi = groupBy(
             prop("koulutustyyppikoodiarvo"),
@@ -31,9 +30,9 @@ const Tutkinnot = ({ koulutusalat, koulutustyypit, tutkinnot }) => {
           };
           return (
             <Koulutusala
-              sectionId={fullSectionId}
+              sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
               data={lomakedata}
-              key={fullSectionId}
+              key={koulutusala.koodiarvo}
               title={title}
               tutkinnot={
                 tutkinnotByKoulutusala[koulutusala.koodiarvo]
