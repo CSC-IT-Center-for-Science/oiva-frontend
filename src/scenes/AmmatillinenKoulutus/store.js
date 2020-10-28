@@ -2,20 +2,24 @@ import { createStore, createHook, createContainer } from "react-sweet-state";
 import {
   assoc,
   assocPath,
+  compose,
   concat,
   difference,
-  flatten,
-  isEmpty,
+  filter,
+  not,
   path,
   prepend,
-  split,
-  symmetricDifference,
-  without
+  propEq,
+  split
 } from "ramda";
-import { recursiveTreeShake } from "utils/common";
+import {
+  getAnchorPart,
+  getLatestChangesByAnchor,
+  recursiveTreeShake
+} from "utils/common";
 
-const setLatestChanges = diff => ({ getState, setState }) => {
-  setState(assoc("latestChanges", diff, getState()));
+const setLatestChanges = changeObjects => ({ getState, setState }) => {
+  setState(assoc("latestChanges", changeObjects, getState()));
 };
 
 const Store = createStore({
@@ -24,9 +28,28 @@ const Store = createStore({
       saved: {},
       unsaved: {},
       underRemoval: {}
-    }
+    },
+    latestChanges: {}
   },
   actions: {
+    removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
+      const allCurrentChangeObjects = getState().changeObjects;
+      const anchorParts = split("_", getAnchorPart(anchor, 0));
+      const unsavedFullPath = prepend("unsaved", anchorParts);
+      const changeObjects = path(unsavedFullPath, allCurrentChangeObjects);
+      if (changeObjects) {
+        let nextChangeObjects = assocPath(
+          unsavedFullPath,
+          filter(compose(not, propEq("anchor", anchor)), changeObjects),
+          getState().changeObjects
+        );
+        nextChangeObjects = recursiveTreeShake(
+          unsavedFullPath,
+          nextChangeObjects
+        );
+        setState(assoc("changeObjects", nextChangeObjects, getState()));
+      }
+    },
     setChanges: (changeObjects, anchor = "") => ({
       getState,
       dispatch,
@@ -42,7 +65,6 @@ const Store = createStore({
       );
 
       const savedByAnchor = path(savedFullPath, getState().changeObjects) || [];
-      const currentStateOfAnchor = path(unsavedFullPath, currentChangeObjects);
       const unsavedChangeObjects = difference(changeObjects, savedByAnchor);
       const savedChangeObjects = difference(savedByAnchor, changeObjects);
 
@@ -68,8 +90,6 @@ const Store = createStore({
         currentChangeObjects
       );
 
-      // const nextSavedByAnchor = difference(savedByAnchor, savedChangeObjects);
-
       nextChangeObjects = assocPath(
         underRemovalFullPath,
         savedChangeObjects,
@@ -79,7 +99,6 @@ const Store = createStore({
       /**
        * Ravistetaan muutosten puusta tyhjät objektit pois.
        **/
-
       nextChangeObjects = recursiveTreeShake(
         unsavedFullPath,
         nextChangeObjects
@@ -93,18 +112,13 @@ const Store = createStore({
         nextChangeObjects
       );
 
-      console.info(nextChangeObjects);
-
-      const nextStateOfAnchor = path(unsavedFullPath, nextChangeObjects);
-      setState(assoc("changeObjects", nextChangeObjects, getState()));
       dispatch(
-        setLatestChanges(
-          symmetricDifference(
-            nextStateOfAnchor || [],
-            currentStateOfAnchor || []
-          )
-        )
+        setLatestChanges({
+          underRemoval: savedChangeObjects,
+          unsaved: freshNewChangeObjects
+        })
       );
+      setState(assoc("changeObjects", nextChangeObjects, getState()));
     },
     setSavedChanges: (changeObjects, anchor) => ({ getState, setState }) => {
       if (anchor) {
@@ -117,7 +131,6 @@ const Store = createStore({
           changeObjects,
           getState()
         );
-        console.info(nextState);
         setState(nextState);
       }
     }
@@ -158,21 +171,22 @@ const getChangeObjectsByAnchorWithoutUnderRemoval = (state, { anchor }) => {
   return difference(concat(saved, unsaved), underRemoval);
 };
 
-const getChangeObjects = (state, { anchor }) => {
-  const anchorParts = split("_", anchor);
-  const underRemoval =
-    path(prepend("underRemoval", anchorParts), state.changeObjects) || [];
-  const allChangeObjects = flatten([
-    path(prepend("saved", anchorParts), state.changeObjects) || [],
-    path(prepend("unsaved", anchorParts), state.changeObjects) || []
-  ]);
-  return difference(allChangeObjects, underRemoval);
+const getLatestChangesByAnchorByKey = (state, { anchor }) => {
+  const { latestChanges } = state;
+  return {
+    underRemoval: getLatestChangesByAnchor(anchor, latestChanges.underRemoval),
+    unsaved: getLatestChangesByAnchor(anchor, latestChanges.unsaved)
+  };
 };
 
 export const useLomake = createHook(Store);
 
 export const useLatestChanges = createHook(Store, {
   selector: state => state.latestChanges
+});
+
+export const useLatestChangesByAnchor = createHook(Store, {
+  selector: getLatestChangesByAnchorByKey
 });
 
 export const useChangeObjectsByAnchor = createHook(Store, {
