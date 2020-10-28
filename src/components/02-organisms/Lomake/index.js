@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
-import { useChangeObjectsByAnchor } from "../../../scenes/AmmatillinenKoulutus/store";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../scenes/AmmatillinenKoulutus/store";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
 import { has, isEmpty } from "ramda";
@@ -48,7 +48,9 @@ const Lomake = ({
       }
     : rowMessages;
 
-  const [changeObjects, actions] = useChangeObjectsByAnchor({ anchor });
+  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor
+  });
   const [, lomakedataActions] = useLomakedata({ anchor });
   const [lomake, setLomake] = useState();
 

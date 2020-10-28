@@ -139,7 +139,7 @@ const EsittelijatMuutospyynto = ({
           />
         </Section>
 
-        <Section
+        {/* <Section
           code={sectionHeadings.opetusJaTutkintokieli.number}
           title={sectionHeadings.opetusJaTutkintokieli.title}>
           <MuutospyyntoWizardKielet
@@ -152,9 +152,9 @@ const EsittelijatMuutospyynto = ({
             sectionId={"tutkinnot"}
             tutkinnot={tutkinnot}
           />
-        </Section>
+        </Section> */}
 
-        <Section
+        {/* <Section
           code={sectionHeadings.toimintaalue.number}
           title={sectionHeadings.toimintaalue.title}>
           <MuutospyyntoWizardToimintaalue
@@ -165,9 +165,9 @@ const EsittelijatMuutospyynto = ({
             sectionId={"toimintaalue"}
             valtakunnallinenMaarays={valtakunnallinenMaarays}
           />
-        </Section>
+        </Section> */}
 
-        {kohteet.opiskelijavuodet && (
+        {/* {kohteet.opiskelijavuodet && (
           <Section
             code={sectionHeadings.opiskelijavuodet.number}
             title={sectionHeadings.opiskelijavuodet.title}>
@@ -179,9 +179,9 @@ const EsittelijatMuutospyynto = ({
               sectionId={"opiskelijavuodet"}
             />
           </Section>
-        )}
+        )} */}
 
-        {kohteet.muut && muut && maaraystyypit && (
+        {/* {kohteet.muut && muut && maaraystyypit && (
           <Section
             code={sectionHeadings.muut.number}
             title={sectionHeadings.muut.title}>
@@ -192,7 +192,7 @@ const EsittelijatMuutospyynto = ({
               sectionId={"muut"}
             />
           </Section>
-        )}
+        )} */}
       </form>
     </React.Fragment>
   );

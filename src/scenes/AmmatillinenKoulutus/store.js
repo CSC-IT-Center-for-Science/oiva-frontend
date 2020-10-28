@@ -2,6 +2,7 @@ import { createStore, createHook, createContainer } from "react-sweet-state";
 import {
   assoc,
   assocPath,
+  concat,
   difference,
   flatten,
   isEmpty,
@@ -52,8 +53,6 @@ const Store = createStore({
       const underRemovalByAnchor =
         path(underRemovalFullPath, getState().changeObjects) || [];
 
-      // difference(savedByAnchor, changeObjects);
-
       /**
        * Etsitään löydetyistä muutosobjekteista ne, joita vastaavia muutos-
        * objekteja ollaan tallentamassa.
@@ -63,27 +62,23 @@ const Store = createStore({
         underRemovalByAnchor
       );
 
-      console.info("Fresh:", freshNewChangeObjects);
-
-      // let nextChangeObjects = assocPath(
-      //   unsavedFullPath,
-      //   unsavedChangeObjects,
-      //   currentChangeObjects
-      // );
-
       let nextChangeObjects = assocPath(
         unsavedFullPath,
         freshNewChangeObjects,
         currentChangeObjects
       );
 
-      const nextSavedByAnchor = difference(savedByAnchor, savedChangeObjects);
+      // const nextSavedByAnchor = difference(savedByAnchor, savedChangeObjects);
 
       nextChangeObjects = assocPath(
         underRemovalFullPath,
         savedChangeObjects,
         nextChangeObjects
       );
+
+      /**
+       * Ravistetaan muutosten puusta tyhjät objektit pois.
+       **/
 
       nextChangeObjects = recursiveTreeShake(
         unsavedFullPath,
@@ -130,6 +125,39 @@ const Store = createStore({
   name: "Muutokset"
 });
 
+const getChangeObjectsByKeyAndAnchor = (key, anchor, changeObjects = {}) => {
+  return path(prepend(key, split("_", anchor)), changeObjects) || [];
+};
+
+const getAllChangeObjectsByKeyAnchor = (state, { anchor }) => {
+  const { changeObjects } = state;
+  return {
+    saved: getChangeObjectsByKeyAndAnchor("saved", anchor, changeObjects),
+    underRemoval: getChangeObjectsByKeyAndAnchor(
+      "underRemoval",
+      anchor,
+      changeObjects
+    ),
+    unsaved: getChangeObjectsByKeyAndAnchor("unsaved", anchor, changeObjects)
+  };
+};
+
+const getChangeObjectsByAnchorWithoutUnderRemoval = (state, { anchor }) => {
+  const { changeObjects } = state;
+  const saved = getChangeObjectsByKeyAndAnchor("saved", anchor, changeObjects);
+  const underRemoval = getChangeObjectsByKeyAndAnchor(
+    "underRemoval",
+    anchor,
+    changeObjects
+  );
+  const unsaved = getChangeObjectsByKeyAndAnchor(
+    "unsaved",
+    anchor,
+    changeObjects
+  );
+  return difference(concat(saved, unsaved), underRemoval);
+};
+
 const getChangeObjects = (state, { anchor }) => {
   const anchorParts = split("_", anchor);
   const underRemoval =
@@ -148,7 +176,11 @@ export const useLatestChanges = createHook(Store, {
 });
 
 export const useChangeObjectsByAnchor = createHook(Store, {
-  selector: getChangeObjects
+  selector: getAllChangeObjectsByKeyAnchor
+});
+
+export const useChangeObjectsByAnchorWithoutUnderRemoval = createHook(Store, {
+  selector: getChangeObjectsByAnchorWithoutUnderRemoval
 });
 
 export const useChangeObjects = createHook(Store);

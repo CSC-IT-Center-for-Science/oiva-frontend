@@ -1,5 +1,6 @@
 import { createStore, createHook, createContainer } from "react-sweet-state";
 import { assocPath, path, split } from "ramda";
+import { recursiveTreeShake } from "utils/common";
 
 const Store = createStore({
   initialState: {
@@ -7,7 +8,11 @@ const Store = createStore({
   },
   actions: {
     setLomakedata: (data, anchor) => ({ getState, setState }) => {
-      setState(assocPath(split("_", anchor), data, getState()));
+      const anchorParts = split("_", anchor);
+      const nextStateCandidate = assocPath(anchorParts, data, getState());
+      const shakedTree = recursiveTreeShake(anchorParts, nextStateCandidate);
+      console.info(anchor, nextStateCandidate, shakedTree);
+      setState(shakedTree);
     },
     setValidity: (status, anchor) => ({ getState, setState }) => {
       setState(assocPath(["validity", anchor], status, getState()));
@@ -22,7 +27,7 @@ const getLomakedataByAnchor = (state, { anchor }) => {
 
 export const useValidity = createHook(Store, {
   selector: state => state.validity
-})
+});
 
 export const useLomakedata = createHook(Store, {
   selector: getLomakedataByAnchor

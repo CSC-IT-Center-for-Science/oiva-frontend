@@ -2,12 +2,13 @@ import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
-import { getActiveOnes } from "../../../../../../../../helpers/tutkinnot";
+import { getAktiivisetTutkinnot } from "../../../../../../../../helpers/tutkinnot";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
 import {
   useChangeObjectsByAnchor,
-  useLatestChanges
+  useLatestChanges,
+  useUnderRemovalChangeObjects
 } from "scenes/AmmatillinenKoulutus/store";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 import { getLatestChangesByAnchor } from "utils/common";
@@ -23,6 +24,7 @@ const Tutkintokielet = props => {
     anchor: "tutkinnot"
   });
   const [latestChanges, { setChanges }] = useLatestChanges();
+  const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
 
   const [lomakedata, { setLomakedata }] = useLomakedata({
     anchor: "tutkinnot"
@@ -39,19 +41,35 @@ const Tutkintokielet = props => {
         `tutkinnot_${koulutusala.koodiarvo}`,
         latestChanges
       );
-      if (latestSectionChanges.length || !initialized) {
-        // console.info(
-        //   koulutusala.koodiarvo,
-        //   latestSectionChanges,
-        //   tutkinnotChangeObjects
-        // );
+      const tutkinnotChangeObjectsUnderRemoval = R.path(
+        ["tutkinnot", koulutusala.koodiarvo],
+        underRemovalChangeObjects
+      );
+      console.info(tutkinnotChangeObjectsUnderRemoval);
+      if (
+        R.length(latestSectionChanges || []) ||
+        R.length(tutkinnotChangeObjectsUnderRemoval || []) ||
+        !initialized
+      ) {
+        const testi = R.difference(
+          R.mergeAll(tutkinnotChangeObjects) || [],
+          R.mergeAll(tutkinnotChangeObjectsUnderRemoval) || []
+        );
+        console.info(
+          "Asetetaan lomakedataa.",
+          tutkinnotChangeObjects,
+          latestSectionChanges,
+          tutkinnotChangeObjectsUnderRemoval,
+          testi
+        );
+
         setLomakedata(
           {
             valitutTutkinnot: R.groupBy(
               R.prop("koulutustyyppikoodiarvo"),
-              getActiveOnes(
+              getAktiivisetTutkinnot(
                 tutkinnotByKoulutusala[koulutusala.koodiarvo],
-                R.prop(koulutusala.koodiarvo, R.head(tutkinnotChangeObjects))
+                R.prop(koulutusala.koodiarvo, R.mergeAll(testi))
               )
             )
           },
@@ -73,7 +91,8 @@ const Tutkintokielet = props => {
     setChanges,
     setLomakedata,
     tutkinnotByKoulutusala,
-    tutkinnotChangeObjects
+    tutkinnotChangeObjects,
+    underRemovalChangeObjects
   ]);
 
   return !R.isEmpty(lomakedata) ? (

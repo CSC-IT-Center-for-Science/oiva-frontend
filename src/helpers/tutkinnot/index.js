@@ -43,7 +43,7 @@ export async function getTutkinnotGroupedBy(key, tutkinnot) {
  * @param {array} tutkinnot
  * @param {array} changeObjects
  */
-export function getActiveOnes(tutkinnot = [], changeObjects = []) {
+export function getAktiivisetTutkinnot(tutkinnot = [], changeObjects = []) {
   const activeOnes = filter(tutkinto => {
     const anchor = `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
     const changeObj = find(propEq("anchor", anchor), changeObjects);

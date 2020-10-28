@@ -252,7 +252,7 @@ const isSubTreeEmpty = obj => {
 
 export const isTreeEmpty = obj => R.isEmpty(isSubTreeEmpty(obj));
 
-export const recursiveTreeShake = (p, tree) => {
+export const recursiveTreeShake = (p = [], tree) => {
   const subTree = R.path(p, tree);
   const isSubTreeEmpty = isTreeEmpty(subTree);
   if (isSubTreeEmpty) {
