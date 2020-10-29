@@ -40,6 +40,8 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     );
 
     useEffect(() => {
+// 1. unsaved, 2. saved, jos ei poistettavana
+
       // console.info(vahimmaisopiskelijavuodetInput);
       // const applyForValue = vahimmaisopiskelijavuodetMaarays
       //   ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)

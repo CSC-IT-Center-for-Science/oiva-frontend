@@ -113,6 +113,18 @@ const UusiAsiaDialog = ({
   const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "topthree"
   });
+  const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "tutkinnot"
+  });
+  const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "koulutukset"
+  });
+  const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "kielet_opetuskielet"
+  });
+  const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "kielet_tutkintokielet"
+  });
   const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijavuodet"
   });
@@ -205,7 +217,14 @@ const UusiAsiaDialog = ({
           R.toUpper(intl.locale),
           organisation,
           lupa,
-          { topthree: topThreeCO, opiskelijavuodet: opiskelijavuodetCO },
+          {
+            koulutukset: koulutuksetCO,
+            opetuskielet: opetuskieletCO,
+            opiskelijavuodet: opiskelijavuodetCO,
+            topthree: topThreeCO,
+            tutkinnot: tutkinnotCO,
+            tutkintokielet: tutkintokieletCO
+          },
           uuid,
           kohteet,
           maaraystyypit,

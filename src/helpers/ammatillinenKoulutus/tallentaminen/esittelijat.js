@@ -7,6 +7,21 @@ import * as kieletHelper from "../../../helpers/kielet";
 import * as koulutuksetHelper from "../../../helpers/koulutukset";
 import * as R from "ramda";
 
+/**
+ * Muodostaa ja palauttaa objektin, joka sisältää tallennettavat tiedot.
+ * Koska funktiota kutsutaan esittelijöiden toimesta, ei perusteluita
+ * muutoksille tarvita.
+ *
+ * @param {*} locale
+ * @param {*} organisation
+ * @param {*} lupa
+ * @param {*} changeObjects
+ * @param {*} uuid
+ * @param {*} kohteet
+ * @param {*} maaraystyypit
+ * @param {*} muut
+ * @param {*} lupaKohteet
+ */
 export async function createObjectToSave(
   locale,
   organisation,
@@ -19,30 +34,43 @@ export async function createObjectToSave(
   lupaKohteet
 ) {
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
-  //   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
-  //     {
-  //       tutkinnotJaOsaamisalat: {
-  //         muutokset: R.flatten(R.values(changeObjects.tutkinnot)),
-  //         perustelut: changeObjects.perustelut
-  //           ? R.flatten(R.values(changeObjects.perustelut.tutkinnot))
-  //           : []
-  //       },
-  //       tutkintokielet: {
-  //         muutokset: R.flatten(
-  //           R.values(R.path(["kielet", "tutkintokielet"], changeObjects))
-  //         ),
-  //         perustelut: R.flatten(
-  //           R.values(
-  //             R.path(["perustelut", "kielet", "tutkintokielet"], changeObjects)
-  //           )
-  //         )
-  //       }
-  //     },
-  //     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
-  //     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-  //     maaraystyypit,
-  //     locale
-  //   );
+  const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
+    {
+      tutkinnotJaOsaamisalat: {
+        muutokset: changeObjects.tutkinnot,
+        perustelut: []
+      },
+      tutkintokielet: {
+        muutokset: changeObjects.tutkintokielet,
+        perustelut: []
+      }
+    },
+    R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
+    R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
+    maaraystyypit,
+    locale
+  );
+
+  // KOULUTUKSET
+  const koulutukset = koulutuksetHelper.getChangesToSave(
+    {
+      muutokset: changeObjects.koulutukset,
+      perustelut: []
+    },
+    R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
+    maaraystyypit,
+    locale
+  );
+
+  // OPETUSKIELET
+  const opetuskielet = kieletHelper.getChangesToSave(
+    {
+      muutokset: changeObjects.opetuskielet,
+      perustelut: []
+    },
+    R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
+    maaraystyypit
+  );
 
   // TOIMINTA-ALUE
   //   const categoryFilterChangeObj =
@@ -86,49 +114,13 @@ export async function createObjectToSave(
   //     lupa.maaraykset
   //   );
 
-  // KOULUTUKSET
-  //   const koulutukset = koulutuksetHelper.getChangesToSave(
-  //     {
-  //       muutokset: R.compose(
-  //         R.flatten,
-  //         R.values
-  //       )(R.values(R.path(["koulutukset"], changeObjects))),
-  //       perustelut: R.compose(
-  //         R.filter(R.compose(R.not, R.isEmpty)),
-  //         R.flatten,
-  //         R.values
-  //       )(R.values(R.path(["perustelut", "koulutukset"], changeObjects)))
-  //     },
-  //     R.find(R.propEq("tunniste", "tutkinnotjakoulutukset"), kohteet),
-  //     maaraystyypit,
-  //     locale
-  //   );
-
-  // OPETUSKIELET
-  //   const opetuskielet = kieletHelper.getChangesToSave(
-  //     {
-  //       muutokset: R.compose(
-  //         R.flatten,
-  //         R.values
-  //       )(R.values(R.path(["kielet", "opetuskielet"], changeObjects))),
-  //       perustelut: R.compose(
-  //         R.flatten,
-  //         R.values
-  //       )(
-  //         R.values(
-  //           R.path(["perustelut", "kielet", "opetuskielet"], changeObjects)
-  //         )
-  //       )
-  //     },
-  //     R.find(R.propEq("tunniste", "opetusjatutkintokieli"), kohteet),
-  //     maaraystyypit
-  //   );
+  console.info(changeObjects, opetuskielet);
 
   // OPISKELIJAVUODET
   const opiskelijavuodet = opiskelijavuodetHelper.createBackendChangeObjects(
     {
       muutokset: changeObjects.opiskelijavuodet,
-      perustelut: [] // Esittelijän ei tarvitse perustella tekemiään muutoksia
+      perustelut: []
     },
     R.find(R.propEq("tunniste", "opiskelijavuodet"), kohteet),
     maaraystyypit,
@@ -169,9 +161,9 @@ export async function createObjectToSave(
     liitteet: [], // allAttachments,
     meta: {},
     muutokset: R.flatten([
-      //   tutkinnot,
-      //   koulutukset,
-      //   opetuskielet,
+      tutkinnot,
+      koulutukset,
+      opetuskielet,
       //   toimintaalue,
       opiskelijavuodet
       //   muutMuutokset

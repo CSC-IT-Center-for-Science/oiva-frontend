@@ -7,12 +7,16 @@ import {
   difference,
   dissoc,
   filter,
+  flatten,
+  isNil,
   map,
   not,
   path,
   prepend,
   propEq,
-  split
+  reject,
+  split,
+  values
 } from "ramda";
 import {
   getAnchorPart,
@@ -178,16 +182,25 @@ const getAllChangeObjectsByKeyAnchor = (state, { anchor }) => {
 
 const getChangeObjectsByAnchorWithoutUnderRemoval = (state, { anchor }) => {
   const { changeObjects } = state;
-  const saved = getChangeObjectsByKeyAndAnchor("saved", anchor, changeObjects);
-  const underRemoval = getChangeObjectsByKeyAndAnchor(
-    "underRemoval",
-    anchor,
-    changeObjects
+  const saved = reject(
+    isNil,
+    flatten(
+      values(getChangeObjectsByKeyAndAnchor("saved", anchor, changeObjects))
+    )
   );
-  const unsaved = getChangeObjectsByKeyAndAnchor(
-    "unsaved",
-    anchor,
-    changeObjects
+  const underRemoval = reject(
+    isNil,
+    flatten(
+      values(
+        getChangeObjectsByKeyAndAnchor("underRemoval", anchor, changeObjects)
+      )
+    )
+  );
+  const unsaved = reject(
+    isNil,
+    flatten(
+      values(getChangeObjectsByKeyAndAnchor("unsaved", anchor, changeObjects))
+    )
   );
   return difference(concat(saved, unsaved), underRemoval);
 };
