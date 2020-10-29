@@ -125,6 +125,9 @@ const UusiAsiaDialog = ({
   const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "kielet_tutkintokielet"
   });
+  const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "toimintaalue"
+  });
   const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijavuodet"
   });
@@ -221,6 +224,7 @@ const UusiAsiaDialog = ({
             koulutukset: koulutuksetCO,
             opetuskielet: opetuskieletCO,
             opiskelijavuodet: opiskelijavuodetCO,
+            toimintaalue: toimintaalueCO,
             topthree: topThreeCO,
             tutkinnot: tutkinnotCO,
             tutkintokielet: tutkintokieletCO

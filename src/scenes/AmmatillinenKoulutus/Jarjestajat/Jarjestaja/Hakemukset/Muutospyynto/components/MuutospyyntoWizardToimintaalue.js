@@ -6,7 +6,7 @@ import wizard from "../../../../../../../i18n/definitions/wizard";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { isAdded, isRemoved, isInLupa } from "../../../../../../../css/label";
 import kuntaProvinceMapping from "../../../../../../../utils/kuntaProvinceMapping";
-import { useChangeObjectsByAnchor } from "scenes/AmmatillinenKoulutus/store";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
 import * as R from "ramda";
 
 const labelStyles = {
@@ -42,9 +42,13 @@ const constants = {
 
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const intl = useIntl();
-  const [changeObjects, { setChanges }] = useChangeObjectsByAnchor({
+  const [
+    changeObjects,
+    { setChanges }
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "toimintaalue"
   });
+
   const [isEditViewActive, toggleEditView] = useState(false);
 
   const kunnatInLupa = useMemo(() => {
@@ -81,34 +85,12 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     props.lupakohde
   );
 
-  /**
-   * Changes are handled here. Changes objects will be formed and callback
-   * function will be called with them.
-   */
-  const handleChanges = useCallback(
-    changesByAnchor => {
-      const updatedChanges = R.filter(
-        R.compose(R.not, R.propEq("anchor", "toimintaalue.")),
-        changesByAnchor.changes
-      );
-      const categoryFilterChanges = R.uniq(R.flatten(updatedChanges)).filter(
-        Boolean
-      );
-
-      setChanges(categoryFilterChanges, changesByAnchor.anchor);
-    },
-    [setChanges]
-  );
-
   const whenChanges = useCallback(
     changes => {
-      console.info(changes, changeObjects);
       const withoutCategoryFilterChangeObj = R.filter(
         R.compose(R.not, R.propEq("anchor", "categoryFilter")),
         changeObjects
       );
-
-      console.info(withoutCategoryFilterChangeObj, changeObjects);
 
       const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
         .length;
@@ -306,7 +288,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     <Lomake
       action="modification"
       anchor={props.sectionId}
-      changeObjects={changeObjects}
       data={{
         fiCode,
         isEditViewActive,
@@ -339,7 +320,6 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         quickFilterChanges
       }}
       isRowExpanded={true}
-      onChangesUpdate={handleChanges}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(
         wizard.singularMunicipalitiesOrTheWholeCountry

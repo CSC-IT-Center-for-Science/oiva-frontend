@@ -9,7 +9,6 @@ import {
   filter,
   flatten,
   isNil,
-  map,
   not,
   path,
   prepend,

@@ -148,7 +148,7 @@ const EsittelijatMuutospyynto = ({
           />
         </Section>
 
-        {/* <Section
+        <Section
           code={sectionHeadings.toimintaalue.number}
           title={sectionHeadings.toimintaalue.title}>
           <MuutospyyntoWizardToimintaalue
@@ -159,7 +159,7 @@ const EsittelijatMuutospyynto = ({
             sectionId={"toimintaalue"}
             valtakunnallinenMaarays={valtakunnallinenMaarays}
           />
-        </Section> */}
+        </Section>
 
         {kohteet.opiskelijavuodet && (
           <Section

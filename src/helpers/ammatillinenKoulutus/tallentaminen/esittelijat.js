@@ -73,48 +73,29 @@ export async function createObjectToSave(
   );
 
   // TOIMINTA-ALUE
-  //   const categoryFilterChangeObj =
-  //     R.find(
-  //       R.propEq("anchor", "categoryFilter"),
-  //       changeObjects.toimintaalue || []
-  //     ) || {};
-  //   const toimintaalue = await toimintaalueHelper.defineBackendChangeObjects(
-  //     {
-  //       quickFilterChanges: R.path(
-  //         ["properties", "quickFilterChanges"],
-  //         categoryFilterChangeObj
-  //       ),
-  //       changesByProvince: R.path(
-  //         ["properties", "changesByProvince"],
-  //         categoryFilterChangeObj
-  //       ),
-  //       perustelut: (() => {
-  //         // There is only one field for reasoning and it must be used as a source
-  //         // for the actual change objects.
-  //         const sourceObject = (R.path(
-  //           ["perustelut", "toimintaalue"],
-  //           changeObjects
-  //         ) || [])[0];
-  //         /**
-  //          * Next step is to go through all the Toiminta-alue related "change objects" of the first
-  //          * page of the wizard and generate change objects based on them.
-  //          */
-  //         return !!sourceObject
-  //           ? R.map(changeObject => {
-  //               return {
-  //                 anchor: `perustelut_toimintaalue`,
-  //                 properties: sourceObject.properties
-  //               };
-  //             }, R.path(["toimintaalue"], changeObjects) || [])
-  //           : [];
-  //       })()
-  //     },
-  //     R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
-  //     maaraystyypit,
-  //     lupa.maaraykset
-  //   );
+  const categoryFilterChangeObj = R.find(
+    R.propEq("anchor", "categoryFilter"),
+    changeObjects.toimintaalue
+  );
 
-  console.info(changeObjects, opetuskielet);
+  const toimintaalue = categoryFilterChangeObj
+    ? await toimintaalueHelper.defineBackendChangeObjects(
+        {
+          quickFilterChanges: R.path(
+            ["properties", "quickFilterChanges"],
+            categoryFilterChangeObj
+          ),
+          changesByProvince: R.path(
+            ["properties", "changesByProvince"],
+            categoryFilterChangeObj
+          ),
+          perustelut: []
+        },
+        R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
+        maaraystyypit,
+        lupa.maaraykset
+      )
+    : [];
 
   // OPISKELIJAVUODET
   const opiskelijavuodet = opiskelijavuodetHelper.createBackendChangeObjects(
@@ -164,7 +145,7 @@ export async function createObjectToSave(
       tutkinnot,
       koulutukset,
       opetuskielet,
-      //   toimintaalue,
+      toimintaalue,
       opiskelijavuodet
       //   muutMuutokset
     ]),
