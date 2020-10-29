@@ -46,8 +46,8 @@ const Difference = ({
 
   const handleChange = useCallback(
     (payload, properties) => {
-      const resultIsNaN = isNaN(parseInt(properties.value, 10));
-      const result = resultIsNaN
+      const isResultNan = isNaN(parseInt(properties.value, 10));
+      const result = isResultNan
         ? emptySelectionPlaceholderValue
         : properties.value;
       const resultIsValid = isValueValid(required, result);
@@ -58,7 +58,8 @@ const Difference = ({
       setTimeoutHandle(
         setTimeout(() => {
           onChanges(payload, {
-            applyForValue: resultIsNaN ? initialValue : properties.value,
+            isValueSet: !isResultNan,
+            applyForValue: isResultNan ? initialValue : properties.value,
             isValid: resultIsValid
           });
         }, delay)

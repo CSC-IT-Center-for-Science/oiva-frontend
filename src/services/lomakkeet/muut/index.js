@@ -6,15 +6,11 @@ import { sortArticlesByHuomioitavaKoodi } from "../utils";
 import { scrollToOpiskelijavuodet } from "./utils";
 import { getMaarayksetByKoodisto } from "helpers/lupa";
 
-async function getModificationForm(
-  configObj,
-  opiskelijavuodetChangeObjects,
-  locale
-) {
+async function getModificationForm(configObj, locale) {
   const osiota5koskevatMaaraykset = await getMaarayksetByKoodisto(
     "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
   );
-
+  console.info(configObj);
   return R.map(item => {
     let noItemsInLupa = true;
     const isVaativatukiRadios =
@@ -51,13 +47,7 @@ async function getModificationForm(
         const labelClasses = {
           isInLupa: isInLupaBool
         };
-        const section4changeObj = R.find(
-          R.pathEq(["properties", "metadata", "koodiarvo"], article.koodiarvo),
-          opiskelijavuodetChangeObjects
-        );
-        const showAlertBecauseOfSection4 =
-          !section4changeObj ||
-          !section4changeObj.properties.applyForValue.length;
+        const showAlertBecauseOfSection4 = true;
         let result = {
           anchor: article.koodiarvo,
           components: [
@@ -97,7 +87,7 @@ async function getModificationForm(
             }
           ]
         };
-        if (article.showAlertBecauseOfSection5 && showAlertBecauseOfSection4) {
+        if (configObj.shouldAlertBeVisible) {
           result.categories = [
             {
               anchor: "notification",
@@ -177,11 +167,7 @@ async function getModificationForm(
 export default async function getMuutLomake(action, data, isReadOnly, locale) {
   switch (action) {
     case "modification":
-      return await getModificationForm(
-        data.configObj,
-        data.opiskelijavuodetChangeObjects,
-        R.toUpper(locale)
-      );
+      return await getModificationForm(data, R.toUpper(locale));
     default:
       return [];
   }

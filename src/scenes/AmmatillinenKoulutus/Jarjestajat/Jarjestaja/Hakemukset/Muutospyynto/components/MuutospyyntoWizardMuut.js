@@ -1,17 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { parseLocalizedField } from "../../../../../../../modules/helpers";
 import wizardMessages from "../../../../../../../i18n/definitions/wizard";
-import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import {
-  useChangeObjectsByAnchor,
-  useLatestChanges
-} from "scenes/AmmatillinenKoulutus/store";
-import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
-import * as R from "ramda";
-import { getLatestChangesByAnchor } from "utils/common";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
 import Muu from "./Muu";
+import * as R from "ramda";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 /**
  * If anyone of the following codes is active a notification (Alert comp.)
@@ -21,17 +16,16 @@ import Muu from "./Muu";
 const koodiarvot = [2, 16, 17, 18, 19, 20, 21].concat(4);
 
 const MuutospyyntoWizardMuut = props => {
-  const [changeObjects] = useChangeObjectsByAnchor({ anchor: "muut" });
-  const [opiskelijavuodetChangeObjects] = useChangeObjectsByAnchor({
-    anchor: "opiskelijavuodet"
-  });
-  const [latestChanges] = useLatestChanges();
-  const [lomakedata, { setLomakedata }] = useLomakedata({
-    anchor: "muut"
-  });
-  const [initialized, setInitialized] = useState(false);
   const intl = useIntl();
   const sectionId = "muut";
+
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "muut"
+  });
+
+  const [opiskelijavuodetData] = useLomakedata({
+    anchor: "opiskelijavuodet"
+  });
 
   const divideArticles = useMemo(() => {
     return () => {
@@ -67,7 +61,7 @@ const MuutospyyntoWizardMuut = props => {
               changeObj.properties.isChecked &&
               R.includes(parseInt(koodiarvo, 10), koodiarvot)
             );
-          }, R.flatten(R.values(R.head(changeObjects))));
+          }, changeObjects);
         if (
           (kuvaus || R.includes(article.koodiarvo, ["22", "7", "8"])) &&
           kasite &&
@@ -126,7 +120,11 @@ const MuutospyyntoWizardMuut = props => {
             componentName: "CheckboxWithLabel",
             title: intl.formatMessage(wizardMessages.chooseAdditional)
           }
-        ]
+        ],
+        shouldAlertBeVisible: !R.path(
+          ["vaativaTuki", "isApplyForValueSet"],
+          opiskelijavuodetData
+        )
       },
       {
         code: "03",
@@ -141,7 +139,11 @@ const MuutospyyntoWizardMuut = props => {
             articles: dividedArticles.sisaoppilaitos || [],
             componentName: "CheckboxWithLabel"
           }
-        ]
+        ],
+        shouldAlertBeVisible: !R.path(
+          ["sisaoppilaitos", "isApplyForValueSet"],
+          opiskelijavuodetData
+        )
       },
       {
         code: "04",
@@ -234,19 +236,20 @@ const MuutospyyntoWizardMuut = props => {
         ]
       }
     ];
-  }, [divideArticles, intl]);
+  }, [divideArticles, intl, opiskelijavuodetData]);
 
   return (
     <React.Fragment>
-      {R.map(configObj => {
-        return !!lomakedata[configObj.code] ? (
+      {R.map(
+        configObj => (
           <Muu
             configObj={configObj}
             key={configObj.code}
             sectionId={`${sectionId}_${configObj.code}`}
           />
-        ) : null;
-      }, R.filter(R.propEq("isInUse", true))(config)).filter(Boolean)}
+        ),
+        R.filter(R.propEq("isInUse", true))(config)
+      ).filter(Boolean)}
     </React.Fragment>
   );
 };

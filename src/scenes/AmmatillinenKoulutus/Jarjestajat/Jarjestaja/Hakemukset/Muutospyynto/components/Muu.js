@@ -1,56 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
+import { map, path, pathEq } from "ramda";
 
 const constants = {
   formLocation: ["muut"]
 };
 
-const Muu = ({ configObj, koodiarvo, sectionId, title }) => {
+const Muu = ({ configObj, sectionId, title }) => {
+  const [
+    changeObjects,
+    { setChanges }
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
 
-  // const []
+  const [, { setLomakedata }] = useLomakedata({ anchor: "muut" });
 
-  // useEffect(() => {
-  //   R.forEach(configObj => {
-  //     const latestSectionChanges = getLatestChangesByAnchor(
-  //       `${sectionId}_${configObj.code}`,
-  //       latestChanges
-  //     );
-  //     if (latestSectionChanges.length || !initialized) {
-  //       setLomakedata(
-  //         {
-  //           configObj,
-  //           opiskelijavuodetChangeObjects: opiskelijavuodetChangeObjects
-  //         },
-  //         `${sectionId}_${configObj.code}`
-  //       );
-  //     }
-  //   }, R.filter(R.propEq("isInUse", true))(config));
-  //   setInitialized(true);
-  // }, [
-  //   config,
-  //   initialized,
-  //   latestChanges,
-  //   opiskelijavuodetChangeObjects,
-  //   setLomakedata
-  // ]);
+  useEffect(() => {
+    setLomakedata(
+      map(changeObj => {
+        return pathEq(["properties", "isChecked"], true, changeObj)
+          ? path(["properties", "metadata", "koodiarvo"], changeObj)
+          : null;
+      }, changeObjects).filter(Boolean),
+      `${sectionId}_valitutKoodiarvot`
+    );
+  }, [changeObjects]);
 
   return (
-    <div>{sectionId}</div>
-    // <Lomake
-    //   action="modification"
-    //   anchor={sectionId}
-    //   data={lomakedata[configObj.code]}
-    //   key={`lomake-${configObj.code}`}
-    //   path={constants.formLocation}
-    //   rowTitle={configObj.title}
-    //   showCategoryTitles={true}
-    // />
+    <Lomake
+      action="modification"
+      anchor={sectionId}
+      data={configObj}
+      path={constants.formLocation}
+      rowTitle={configObj.title}
+      showCategoryTitles={true}
+    />
   );
 };
 
 Muu.propTypes = {
   koodiarvo: PropTypes.string,
+  opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

@@ -175,7 +175,7 @@ const EsittelijatMuutospyynto = ({
           </Section>
         )}
 
-        {/* {kohteet.muut && muut && maaraystyypit && (
+        {kohteet.muut && muut && maaraystyypit && (
           <Section
             code={sectionHeadings.muut.number}
             title={sectionHeadings.muut.title}>
@@ -186,7 +186,7 @@ const EsittelijatMuutospyynto = ({
               sectionId={"muut"}
             />
           </Section>
-        )} */}
+        )}
       </form>
     </React.Fragment>
   );

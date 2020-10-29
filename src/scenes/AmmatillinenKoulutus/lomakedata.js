@@ -11,7 +11,6 @@ const Store = createStore({
       const anchorParts = split("_", anchor);
       const nextStateCandidate = assocPath(anchorParts, data, getState());
       const shakedTree = recursiveTreeShake(anchorParts, nextStateCandidate);
-      console.info(anchor, nextStateCandidate, shakedTree);
       setState(shakedTree);
     },
     setValidity: (status, anchor) => ({ getState, setState }) => {

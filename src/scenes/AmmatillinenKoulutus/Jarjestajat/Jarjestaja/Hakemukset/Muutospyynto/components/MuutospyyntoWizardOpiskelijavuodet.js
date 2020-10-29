@@ -10,24 +10,45 @@ import {
   head,
   values,
   flatten,
-  propEq
+  propEq,
+  isEmpty,
+  length,
+  difference
 } from "ramda";
-import { useChangeObjectsByAnchor } from "scenes/AmmatillinenKoulutus/store";
+import {
+  useChangeObjectsByAnchor,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "scenes/AmmatillinenKoulutus/store";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
 };
 
+/**
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 03
+ * (vaativa tuki), näytetään vaativaa tukea koskevat kentät tässä osiossa
+ * (Opiskelijavuodet).
+ **/
+export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
+
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
   ({ maaraykset, muut, sectionId }) => {
-    const [changeObjects, { setChanges }] = useChangeObjectsByAnchor({
+    const [
+      changeObjects,
+      { setChanges }
+    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "opiskelijavuodet"
     });
     const [muutChangeObjects] = useChangeObjectsByAnchor({
       anchor: "muut"
     });
-    const [, { setLomakedata }] = useLomakedata({ anchor: sectionId });
+    const [lomakedata] = useLomakedata({
+      anchor: sectionId
+    });
+    const [muutLomakedata, { setLomakedata }] = useLomakedata({
+      anchor: "muut"
+    });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
       maaraykset
@@ -39,27 +60,69 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       maaraykset
     );
 
+    /**
+     * Muodostetaan data, jonka perusteella lomake voidaan luoda
+     * lomakepalvelussa. Koska opiskelijavuosiosion sisältö riippuu Muut-osion
+     * sisällöstä, on tarpeen reagoida Muut-osiossa tehtyihin muutoksiin.
+     */
     useEffect(() => {
-// 1. unsaved, 2. saved, jos ei poistettavana
+      // Mikäli Muut-osion lomakkeelta 02 (vaativa tuki) on valittu jokin
+      // listatuista koodiarvoista, on vaativaa tukea koskeva tietue näytettävä
+      // opiskelijavuosiosiossa.
+      const visibilityOfVaativaTuki =
+        length(
+          difference(
+            vaativatCodes,
+            path(["02", "valitutKoodiarvot"], muutLomakedata) || []
+          )
+        ) < length(vaativatCodes);
+      // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
+      // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
+      // opiskelijavuosiosiossa.
+      const visibilityOfSisaoppilaitos = !isEmpty(
+        path(["03", "valitutKoodiarvot"], muutLomakedata) || []
+      );
+      setLomakedata(
+        {
+          sisaoppilaitos: visibilityOfSisaoppilaitos,
+          vaativaTuki: visibilityOfVaativaTuki
+        },
+        `${sectionId}_visibility`
+      );
+    }, [muutLomakedata]);
 
-      // console.info(vahimmaisopiskelijavuodetInput);
-      // const applyForValue = vahimmaisopiskelijavuodetMaarays
-      //   ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
-      //   : null;
-
-      // let value = changeObjects.unsaved.length ?
-
-      // console.info(
-      //   applyForValue,
-      //   vahimmaisopiskelijavuodetMaarays,
-      //   maaraykset,
-      //   changeObjects.unsaved
-      // );
-      // const aktiivisetTutkinnot = getAktiivisetTutkinnot(
-      //   tutkinnot,
-      //   changeObjects
-      // );
-      // setLomakedata(aktiivisetTutkinnot, `${sectionId}_sisaoppilaitos`);
+    useEffect(() => {
+      console.info(changeObjects);
+      const vahimmaisopiskelijavuodetChangeObj = find(
+        propEq("anchor", `${sectionId}.vahimmaisopiskelijavuodet.A`),
+        changeObjects
+      );
+      if (!!vahimmaisopiskelijavuodetChangeObj) {
+        setLomakedata(
+          vahimmaisopiskelijavuodetChangeObj.properties.isValueSet,
+          `${sectionId}_vahimmaisopiskelijavuodet_isApplyForValueSet`
+        );
+      }
+      const sisaoppilaitosChangeObj = find(
+        propEq("anchor", `${sectionId}.sisaoppilaitos.A`),
+        changeObjects
+      );
+      if (!!sisaoppilaitosChangeObj) {
+        setLomakedata(
+          sisaoppilaitosChangeObj.properties.isValueSet,
+          `${sectionId}_sisaoppilaitos_isApplyForValueSet`
+        );
+      }
+      const vaativaTukiChangeObj = find(
+        propEq("anchor", `${sectionId}.vaativatuki.A`),
+        changeObjects
+      );
+      if (!!vaativaTukiChangeObj) {
+        setLomakedata(
+          vaativaTukiChangeObj.properties.isValueSet,
+          `${sectionId}_vaativaTuki_isApplyForValueSet`
+        );
+      }
     }, [changeObjects, setLomakedata]);
 
     /**
@@ -115,15 +178,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         );
       }
     }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
-
-    const lomakedata = useMemo(() => {
-      return {
-        isSisaoppilaitosValueRequired: false,
-        isVaativaTukiValueRequired: false,
-        muutChanges: muutChangeObjects,
-        sectionId
-      };
-    }, [muutChangeObjects, sectionId]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake

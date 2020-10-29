@@ -24,11 +24,13 @@ import { getMuutFromStorage } from "helpers/muut";
 
 async function getModificationForm(
   locale,
+  visibility = {},
   isSisaoppilaitosValueRequired,
   isVaativaTukiValueRequired,
-  muutChanges,
+  muutChanges = [],
   sectionId
 ) {
+  console.info(visibility);
   const titles = [__("current"), __("applyFor"), __("difference")];
   const titlesSisaoppilaitosAndVaativa = [
     __("current"),
@@ -67,10 +69,11 @@ async function getModificationForm(
    * lisäämässä, näytetään sisäoppilaitoksen tietue käyttäjälle, jotta hän
    * voi täyttää sen tiedot.
    **/
-  const isSisaoppilaitosVisible = helper.isSisaoppilaitosRajoitusVisible(
-    muutMaaraykset,
-    muutChangesFlatten
-  );
+
+  // const isSisaoppilaitosVisible = helper.isSisaoppilaitosRajoitusVisible(
+  //   muutMaaraykset,
+  //   muutChangesFlatten
+  // );
 
   const opiskelijavuosimaaraysSisaoppilaitos = sisaoppilaitosmaarays
     ? find(propEq("koodiarvo", sisaoppilaitosmaarays.koodiarvo), maaraykset)
@@ -140,14 +143,14 @@ async function getModificationForm(
               : 0,
             applyForValue: vahimmaisopiskelijavuodetMaarays
               ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
-              : 0,
+              : undefined,
             name: `${sectionId}-difference-1`,
             titles
           }
         }
       ]
     },
-    isVaativaTukiVisible
+    visibility.vaativaTuki === true
       ? {
           anchor: "vaativatuki",
           title: __("limitForSpecialSupport"),
@@ -171,7 +174,7 @@ async function getModificationForm(
                   : 0,
                 applyForValue: opiskelijavuosimaaraysVaativaTuki
                   ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
-                  : 0,
+                  : undefined,
                 name: `${sectionId}-difference-2`,
                 titles: titlesSisaoppilaitosAndVaativa
               }
@@ -179,7 +182,7 @@ async function getModificationForm(
           ]
         }
       : null,
-    isSisaoppilaitosVisible
+    visibility.sisaoppilaitos === true
       ? {
           anchor: "sisaoppilaitos",
           title: __("limitForBoardingSchool"),
@@ -199,7 +202,7 @@ async function getModificationForm(
                   : 0,
                 applyForValue: opiskelijavuosimaaraysSisaoppilaitos
                   ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
-                  : 0,
+                  : undefined,
                 name: `${sectionId}-difference-3`,
                 titles: titlesSisaoppilaitosAndVaativa
               }
@@ -221,6 +224,7 @@ export default async function getOpiskelijavuodetLomake(
       console.info(data);
       return await getModificationForm(
         locale,
+        data.visibility,
         data.isSisaoppilaitosValueRequired,
         data.isVaativaTukiValueRequired,
         data.muutChanges,
