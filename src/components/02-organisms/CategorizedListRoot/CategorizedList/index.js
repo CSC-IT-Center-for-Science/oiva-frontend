@@ -784,6 +784,7 @@ const CategorizedList = props => {
                       <div className="flex-2">
                         <Difference
                           applyForValue={propsObj.applyForValue}
+                          id={fullAnchor}
                           initialValue={propsObj.initialValue}
                           onChanges={handleChanges}
                           payload={{

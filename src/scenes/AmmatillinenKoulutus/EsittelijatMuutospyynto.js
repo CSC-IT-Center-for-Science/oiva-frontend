@@ -161,7 +161,7 @@ const EsittelijatMuutospyynto = ({
           />
         </Section> */}
 
-        {/* {kohteet.opiskelijavuodet && (
+        {kohteet.opiskelijavuodet && (
           <Section
             code={sectionHeadings.opiskelijavuodet.number}
             title={sectionHeadings.opiskelijavuodet.title}>
@@ -173,7 +173,7 @@ const EsittelijatMuutospyynto = ({
               sectionId={"opiskelijavuodet"}
             />
           </Section>
-        )} */}
+        )}
 
         {/* {kohteet.muut && muut && maaraystyypit && (
           <Section

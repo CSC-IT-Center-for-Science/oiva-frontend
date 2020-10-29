@@ -11,10 +11,7 @@ import {
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 import * as R from "ramda";
 import { getLatestChangesByAnchor } from "utils/common";
-
-const constants = {
-  formLocation: ["muut"]
-};
+import Muu from "./Muu";
 
 /**
  * If anyone of the following codes is active a notification (Alert comp.)
@@ -239,44 +236,14 @@ const MuutospyyntoWizardMuut = props => {
     ];
   }, [divideArticles, intl]);
 
-  useEffect(() => {
-    R.forEach(configObj => {
-      const latestSectionChanges = getLatestChangesByAnchor(
-        `${sectionId}_${configObj.code}`,
-        latestChanges
-      );
-      if (latestSectionChanges.length || !initialized) {
-        setLomakedata(
-          {
-            configObj,
-            opiskelijavuodetChangeObjects: opiskelijavuodetChangeObjects
-          },
-          `${sectionId}_${configObj.code}`
-        );
-      }
-    }, R.filter(R.propEq("isInUse", true))(config));
-    setInitialized(true);
-  }, [
-    config,
-    initialized,
-    latestChanges,
-    opiskelijavuodetChangeObjects,
-    setLomakedata
-  ]);
-
   return (
     <React.Fragment>
       {R.map(configObj => {
-        const fullSectionId = `${sectionId}_${configObj.code}`;
         return !!lomakedata[configObj.code] ? (
-          <Lomake
-            action="modification"
-            anchor={fullSectionId}
-            data={lomakedata[configObj.code]}
-            key={`lomake-${configObj.code}`}
-            path={constants.formLocation}
-            rowTitle={configObj.title}
-            showCategoryTitles={true}
+          <Muu
+            configObj={configObj}
+            key={configObj.code}
+            sectionId={`${sectionId}_${configObj.code}`}
           />
         ) : null;
       }, R.filter(R.propEq("isInUse", true))(config)).filter(Boolean)}

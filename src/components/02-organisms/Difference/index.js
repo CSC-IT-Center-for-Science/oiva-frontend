@@ -29,6 +29,7 @@ function isValueValid(isRequired, value) {
 const Difference = ({
   applyForValue = defaultValues.applyForValue,
   delay = defaultValues.delay,
+  id,
   initialValue = defaultValues.initialValue,
   onChanges,
   payload = {},
@@ -89,12 +90,13 @@ const Difference = ({
           <Typography>{inputAreaTitle}</Typography>
           {!readonly && (
             <Input
-              type="number"
+              fullWidth={false}
+              id={id}
+              isRequired={isRequired}
               onChanges={handleChange}
               payload={payload}
+              type="number"
               value={String(value)}
-              fullWidth={false}
-              isRequired={isRequired}
             />
           )}
           {readonly && applyForValue}
@@ -111,6 +113,7 @@ const Difference = ({
 Difference.propTypes = {
   applyForValue: PropTypes.number,
   delay: PropTypes.number,
+  id: PropTypes.string,
   initialValue: PropTypes.number,
   onChanges: PropTypes.func,
   payload: PropTypes.object,

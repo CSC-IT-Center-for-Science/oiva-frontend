@@ -2,8 +2,18 @@ import React, { useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
-import { filter, includes, find, path, head, values, flatten } from "ramda";
+import {
+  filter,
+  includes,
+  find,
+  path,
+  head,
+  values,
+  flatten,
+  propEq
+} from "ramda";
 import { useChangeObjectsByAnchor } from "scenes/AmmatillinenKoulutus/store";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
@@ -17,11 +27,38 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     const [muutChangeObjects] = useChangeObjectsByAnchor({
       anchor: "muut"
     });
+    const [, { setLomakedata }] = useLomakedata({ anchor: sectionId });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
       maaraykset
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
+
+    const vahimmaisopiskelijavuodetMaarays = find(
+      propEq("koodisto", "koulutussektori"),
+      maaraykset
+    );
+
+    useEffect(() => {
+      // console.info(vahimmaisopiskelijavuodetInput);
+      // const applyForValue = vahimmaisopiskelijavuodetMaarays
+      //   ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
+      //   : null;
+
+      // let value = changeObjects.unsaved.length ?
+
+      // console.info(
+      //   applyForValue,
+      //   vahimmaisopiskelijavuodetMaarays,
+      //   maaraykset,
+      //   changeObjects.unsaved
+      // );
+      // const aktiivisetTutkinnot = getAktiivisetTutkinnot(
+      //   tutkinnot,
+      //   changeObjects
+      // );
+      // setLomakedata(aktiivisetTutkinnot, `${sectionId}_sisaoppilaitos`);
+    }, [changeObjects, setLomakedata]);
 
     /**
      * Opiskelijavuodet-osio (4) on kytköksissä osioon 5 (Muut oikeudet,

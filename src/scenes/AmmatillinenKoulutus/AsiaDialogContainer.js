@@ -1,27 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
-import {
-  assocPath,
-  find,
-  forEach,
-  includes,
-  insert,
-  map,
-  path,
-  prop,
-  propEq,
-  split
-} from "ramda";
 import Loading from "../../modules/Loading";
-import { findObjectWithKey, getAnchorPart } from "../../utils/common";
-import { setAttachmentUuids } from "../../utils/muutospyyntoUtil";
 import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
-import localforage from "localforage";
 import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useChangeObjects } from "./store";
+import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -50,7 +36,7 @@ const AsiaDialogContainer = ({
 
   const { uuid } = useParams();
 
-  const [, { setSavedChanges }] = useChangeObjects();
+  const [, { initializeChanges }] = useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
   useEffect(() => {
@@ -80,102 +66,10 @@ const AsiaDialogContainer = ({
     return result;
   }, [viimeisinLupa, intl]);
 
-  const filesFromMuutokset = useMemo(() => {
-    if (muutospyynto) {
-      const attachments = prop("liitteet", muutospyynto);
-      const muutospyyntoData = setAttachmentUuids(attachments, muutospyynto);
-      const backendMuutokset = prop("muutokset")(muutospyyntoData);
-      return findObjectWithKey(backendMuutokset, "liitteet");
-    }
-    return null;
-  }, [muutospyynto]);
-
-  const updatedC = useMemo(() => {
-    return map(changeObj => {
-      const files = path(["properties", "attachments"], changeObj)
-        ? map(file => {
-            const fileFromBackend =
-              find(
-                propEq("tiedostoId", file.tiedostoId),
-                filesFromMuutokset || {}
-              ) || {};
-            return Object.assign({}, file, fileFromBackend);
-          }, changeObj.properties.attachments || [])
-        : null;
-      return files
-        ? assocPath(["properties", "attachments"], files, changeObj)
-        : changeObj;
-    }, findObjectWithKey({ ...muutospyynto }, "changeObjects"));
-  }, [filesFromMuutokset, muutospyynto]);
-
   useEffect(() => {
-    if (!!muutospyynto) {
-      const { muutokset: backendMuutokset } = muutospyynto || {};
-
-      let changesBySection = {};
-
-      localforage.setItem("backendMuutokset", backendMuutokset);
-
-      if (updatedC) {
-        forEach(changeObj => {
-          const anchorInitialSplitted = split(
-            "_",
-            getAnchorPart(changeObj.anchor, 0)
-          );
-          const existingChangeObjects =
-            path(anchorInitialSplitted, changesBySection) || [];
-          const changeObjects = insert(-1, changeObj, existingChangeObjects);
-          changesBySection = assocPath(
-            anchorInitialSplitted,
-            changeObjects,
-            changesBySection
-          );
-        }, updatedC);
-      }
-
-      // Special case: Toiminta-alueen perustelut
-      const toimintaAluePerusteluChangeObject = path(
-        ["perustelut", "toimintaalue", "0"],
-        changesBySection
-      );
-      if (
-        toimintaAluePerusteluChangeObject &&
-        !includes("reasoning", toimintaAluePerusteluChangeObject.anchor)
-      ) {
-        changesBySection = assocPath(
-          ["perustelut", "toimintaalue"],
-          [
-            {
-              anchor: "perustelut_toimintaalue.reasoning.A",
-              properties: toimintaAluePerusteluChangeObject.properties
-            }
-          ],
-          changesBySection
-        );
-      }
-
-      changesBySection.topthree =
-        path(["meta", "topthree"], muutospyynto) || [];
-      // Set uuid for asianumero
-      find(
-        topthree => getAnchorPart(topthree.anchor, 1) === "asianumero",
-        changesBySection.topthree
-      ).properties.metadata = { uuid: muutospyynto.uuid };
-
-      if (
-        changesBySection.categoryFilter &&
-        changesBySection.categoryFilter.length > 0
-      ) {
-        changesBySection.toimintaalue = [
-          Object.assign({}, changesBySection.categoryFilter[0])
-        ];
-      }
-
-      delete changesBySection.categoryFilter;
-
-      setSavedChanges(changesBySection);
-    }
-  }, [muutospyynto, setSavedChanges, updatedC]);
+    const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+    initializeChanges(changeObjectsFromBackend);
+  }, [muutospyynto, initializeChanges]);
 
   return muutospyynto ? (
     <UusiAsiaDialog

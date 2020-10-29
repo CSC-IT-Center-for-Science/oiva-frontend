@@ -50,6 +50,7 @@ const CategorizedListRoot = React.memo(
      */
     const onChangesUpdate = useCallback(
       changeObj => {
+        console.info(changeObj);
         // Target node is the component affected by the change.
         const targetNode = getTargetNode(changeObj, reducedStructure);
         // The array of change objects will be updated.

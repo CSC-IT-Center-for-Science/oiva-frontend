@@ -9,6 +9,7 @@ import * as kieletHelper from "../../../helpers/kielet";
 import * as koulutuksetHelper from "../../../helpers/koulutukset";
 
 export async function createObjectToSave(
+  opiskelijavuodetCO,
   locale,
   organisation,
   lupa,
@@ -20,6 +21,9 @@ export async function createObjectToSave(
   lupaKohteet,
   alkupera = "KJ"
 ) {
+  const { unsaved, saved } = changeObjects;
+
+  console.info("Opiskelijavuosimuutokset", opiskelijavuodetCO);
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
     ["yhteenveto", "yleisettiedot"],
@@ -34,7 +38,7 @@ export async function createObjectToSave(
     changeObjects
   );
   const perustelutLiitteet = R.path(["perustelut", "liitteet"], changeObjects);
-
+  console.info(changeObjects);
   //get actual attachment props
 
   const perustelutLiitteetList =
@@ -196,10 +200,7 @@ export async function createObjectToSave(
   // OPISKELIJAVUODET
   const opiskelijavuodet = opiskelijavuodetHelper.createBackendChangeObjects(
     {
-      muutokset: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["opiskelijavuodet"], changeObjects))),
+      muutokset: R.prop("opiskelijavuodet", unsaved),
       perustelut: R.compose(
         R.flatten,
         R.values

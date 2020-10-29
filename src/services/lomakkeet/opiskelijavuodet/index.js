@@ -11,7 +11,9 @@ import {
   prop,
   includes,
   propEq,
-  head
+  head,
+  isNil,
+  reject
 } from "ramda";
 import {
   findSisaoppilaitosRajoitus,
@@ -129,10 +131,10 @@ async function getModificationForm(
           anchor: "A",
           name: "Difference",
           properties: {
-            forChangeObject: {
+            forChangeObject: reject(isNil, {
               koodiarvo: helper.vahimmaisopiskelijamaaraKoodiarvo,
               maaraysUuid: (vahimmaisopiskelijavuodetMaarays || {}).uuid
-            },
+            }),
             initialValue: vahimmaisopiskelijavuodetMaarays
               ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
               : 0,

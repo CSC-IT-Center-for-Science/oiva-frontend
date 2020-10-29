@@ -5,7 +5,9 @@ import {
   compose,
   concat,
   difference,
+  dissoc,
   filter,
+  map,
   not,
   path,
   prepend,
@@ -18,8 +20,35 @@ import {
   recursiveTreeShake
 } from "utils/common";
 
+const removeUnderRemoval = () => ({ getState, setState }) => {
+  const currentState = getState();
+  const nextChangeObjects = dissoc("underRemoval", currentState.changeObjects);
+  setState(assoc("changeObjects", nextChangeObjects, currentState));
+};
+
+const removeUnsavedChanges = () => ({ getState, setState }) => {
+  const currentState = getState();
+  const nextChangeObjects = dissoc("unsaved", currentState.changeObjects);
+  setState(assoc("changeObjects", nextChangeObjects, currentState));
+};
+
 const setLatestChanges = changeObjects => ({ getState, setState }) => {
   setState(assoc("latestChanges", changeObjects, getState()));
+};
+
+const setSavedChanges = (changeObjects, anchor) => ({ getState, setState }) => {
+  if (anchor) {
+    setState(
+      assocPath(split(".", anchor), changeObjects, getState().changeObjects)
+    );
+  } else {
+    const nextState = assocPath(
+      ["changeObjects", "saved"],
+      changeObjects,
+      getState()
+    );
+    setState(nextState);
+  }
 };
 
 const Store = createStore({
@@ -32,6 +61,12 @@ const Store = createStore({
     latestChanges: {}
   },
   actions: {
+    initializeChanges: changeObjects => ({ dispatch }) => {
+      dispatch(setSavedChanges(changeObjects));
+      dispatch(setLatestChanges({}));
+      dispatch(removeUnderRemoval());
+      dispatch(removeUnsavedChanges());
+    },
     removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
       const allCurrentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", getAnchorPart(anchor, 0));
@@ -119,20 +154,6 @@ const Store = createStore({
         })
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
-    },
-    setSavedChanges: (changeObjects, anchor) => ({ getState, setState }) => {
-      if (anchor) {
-        setState(
-          assocPath(split(".", anchor), changeObjects, getState().changeObjects)
-        );
-      } else {
-        const nextState = assocPath(
-          ["changeObjects", "saved"],
-          changeObjects,
-          getState()
-        );
-        setState(nextState);
-      }
     }
   },
   name: "Muutokset"

@@ -9,7 +9,6 @@ import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import { useHistory, useParams } from "react-router-dom";
 import SimpleButton from "../../components/00-atoms/SimpleButton";
-import { createObjectToSave } from "../../services/muutoshakemus/utils/saving";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import { useMuutospyynto } from "../../stores/muutospyynto";
@@ -17,10 +16,13 @@ import common from "../../i18n/definitions/common";
 import * as R from "ramda";
 import {
   useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval,
   useUnderRemovalChangeObjects,
   useUnsavedChangeObjects
 } from "./store";
 import Lupa from "./Lupa";
+import { createObjectToSave } from "helpers/ammatillinenKoulutus/tallentaminen/esittelijat";
+import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -100,12 +102,20 @@ const UusiAsiaDialog = ({
   let history = useHistory();
   let { uuid } = params;
 
-  const [{ changeObjects }] = useChangeObjects();
+  const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
+
+  // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
+  const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "topthree"
+  });
+  const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "opiskelijavuodet"
+  });
 
   const isSavingEnabled = useMemo(() => {
     const hasUnsavedChanges = unsavedChangeObjects
@@ -195,11 +205,7 @@ const UusiAsiaDialog = ({
           R.toUpper(intl.locale),
           organisation,
           lupa,
-          R.mergeAll(
-            R.flatten([changeObjects.unsaved, changeObjects.saved]).filter(
-              Boolean
-            )
-          ),
+          { topthree: topThreeCO, opiskelijavuodet: opiskelijavuodetCO },
           uuid,
           kohteet,
           maaraystyypit,
@@ -217,11 +223,16 @@ const UusiAsiaDialog = ({
         muutospyynto = await onPreview(formData);
       }
 
-      if (!uuid && !fromDialog) {
-        if (muutospyynto && muutospyynto.uuid) {
-          // It was the first save...
-          onNewDocSave(muutospyynto.uuid);
-        }
+      if (!uuid && !fromDialog && muutospyynto && muutospyynto.uuid) {
+        // Jos kyseessä on ensimmäinen tallennus...
+        onNewDocSave(muutospyynto.uuid);
+      } else {
+        /**
+         * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
+         * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
+         **/
+        const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+        initializeChanges(changeObjectsFromBackend);
       }
     },
     [
@@ -235,6 +246,7 @@ const UusiAsiaDialog = ({
       onNewDocSave,
       onPreview,
       onSave,
+      opiskelijavuodetCO,
       organisation,
       uuid
     ]
