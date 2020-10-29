@@ -101,6 +101,8 @@ export default function AmmatillinenKoulutus() {
                             ytunnus={_props.ytunnus}
                             user={user}
                             kielet={_props.kielet}
+                            tulevatLuvat={_props.tulevatLuvat}
+                            voimassaOlevaLupa={_props.voimassaOlevaLupa}
                           />
                         );
                       }}

@@ -227,6 +227,12 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       keys
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
+    tulevatLuvat: await getRaw(
+      "tulevatLuvat",
+      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false`,
+      keys,
+      backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
+    ),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
@@ -495,6 +501,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           )
         )
       : undefined,
+    tulevatLuvat: raw.tulevatLuvat || [],
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -510,7 +517,8 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           }, raw.vankilat)
         )
       : undefined,
-    viimeisinLupa: raw.viimeisinLupa || {}
+    viimeisinLupa: raw.viimeisinLupa || {},
+    voimassaOlevaLupa: raw.lupaByYtunnus
   };
   return result;
 };
