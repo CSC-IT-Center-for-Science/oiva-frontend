@@ -1,6 +1,6 @@
 import { compose, endsWith, find, groupBy, head, map, mapObjIndexed, omit, prop, propEq, sort } from "ramda";
 import localforage from "localforage";
-import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
+import { getChangeObjByAnchor } from "../../components/02-organisms/CategorizedListRoot/utils";
 
 export const initializeOpetustehtava = opetustehtava => {
   return omit(["koodiArvo"], {

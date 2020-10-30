@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../../../../i18n/definitions/common";
-import Table from "okm-frontend-components/dist/components/02-organisms/Table";
+import Table from "../../../../../components/02-organisms/Table";
 import moment from "moment";
 import { ROLE_KATSELIJA } from "../../../../../modules/constants";
 import { FIELDS } from "../../../../../locales/uusiHakemusFormConstants";

@@ -23,9 +23,9 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "./modules/constants";
-import Header from "okm-frontend-components/dist/components/02-organisms/Header";
-import Navigation from "okm-frontend-components/dist/components/02-organisms/Navigation";
-import SideNavigation from "okm-frontend-components/dist/components/02-organisms/SideNavigation";
+import Header from "./components/02-organisms/Header";
+import Navigation from "./components/02-organisms/Navigation";
+import SideNavigation from "./components/02-organisms/SideNavigation";
 import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
@@ -39,7 +39,9 @@ import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
 import AmmatillinenKoulutus from "scenes/AmmatillinenKoulutus";
 import EsiJaPerusopetus from "scenes/EsiJaPerusopetus";
 import Lukiokoulutus from "scenes/Lukiokoulutus";
+import VapaaSivistystyo from "scenes/VapaaSivistystyo";
 import * as R from "ramda";
+import BaseData from "basedata";
 
 const history = createBrowserHistory();
 
@@ -62,8 +64,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   const [appState, appActions] = useGlobalSettings();
 
-  const kujaURL = process.env.REACT_APP_KUJA_URL || "https://localhost:4433";
-
   const pageLinks = [
     {
       path: "/esi-ja-perusopetus",
@@ -78,7 +78,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       text: intl.formatMessage(educationMessages.vocationalEducation)
     },
     {
-      url: kujaURL + "/vapaa-sivistystyo",
+      path: "/vapaa-sivistystyo",
       text: intl.formatMessage(educationMessages.vstEducation)
     },
     { path: "/tilastot", text: intl.formatMessage(commonMessages.statistics) }
@@ -293,6 +293,20 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     component={EsiJaPerusopetus}
                   />
                   <Route path="/lukiokoulutus" component={Lukiokoulutus} />
+                  <Route
+                    path="/vapaa-sivistystyo"
+                    render={() => {
+                      return (
+                        <BaseData
+                        keys={["vstLuvat", "vstTyypit"]}
+                        locale={intl.locale}
+                          render={props => {
+                            return <VapaaSivistystyo {...props} />;
+                          }}
+                        />
+                      );
+                    }}
+                  />
                   <Route
                     path="/asianhallinta"
                     render={() => {

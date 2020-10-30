@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MaUTable from "@material-ui/core/Table";
@@ -15,12 +15,12 @@ import {
   usePagination
 } from "react-table";
 
-import { map, toUpper, head, values, find, propEq } from "ramda";
+import { toUpper, filter } from "ramda";
 import { useIntl } from "react-intl";
 
 import common from "../../i18n/definitions/common";
-import education from "../../i18n/definitions/education";
 import { Link } from "react-router-dom";
+import Dropdown from "../../components/00-atoms/Dropdown";
 
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -36,8 +36,7 @@ import {
   InputLabel,
   Select,
   Input,
-  FormLabel,
-  Typography
+  FormLabel
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
@@ -70,7 +69,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = val => !val;
 
-function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
+function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -128,7 +127,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
             id: "nimi",
             asc: true
           }
-        ]
+        ],
+        hiddenColumns: ["ytunnus"]
       },
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
@@ -143,6 +143,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
       // when we edit the data.
       autoResetPage: !skipReset,
       autoResetSelectedRows: !skipReset,
+      autoResetFilters: false,
       disableMultiSort: true
     },
     useFilters, // useFilters!
@@ -314,49 +315,74 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
   );
 }
 
-function Jarjestajaluettelo({ luvat }) {
-  const intl = useIntl();
-  const [data, setData] = useState(() =>
-    map(({ jarjestaja }) => {
-      const localeUpper = toUpper(intl.locale);
-      return {
-        nimi: jarjestaja.nimi[intl.locale] || head(values(jarjestaja.nimi)),
-        maakunta: (
-          find(
-            propEq("kieli", localeUpper),
-            jarjestaja.maakuntaKoodi.metadata
-          ) || {}
-        ).nimi,
-        ytunnus: jarjestaja.ytunnus,
-        toiminnot: ["info"]
-      };
-    }, luvat)
+function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
+  const initialData = useRef(tableData);
+  const [data, setData] = useState(tableData);
+  const [vstTypeOptions, setvstTypeOptions] = useState([]);
+  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
+    ""
   );
+  const intl = useIntl();
+
+  useEffect(() => {
+    setData(
+      filter(
+        item =>
+          vstOppilaitostyyppiFilter
+            ? vstOppilaitostyyppiFilter === item.oppilaitostyyppi
+            : true,
+        initialData.current
+      )
+    );
+  }, [vstOppilaitostyyppiFilter]);
+
+  useEffect(() => {
+    const vstOptions = [];
+    vstOptions.push({
+      value: "",
+      label: intl.formatMessage(common.noSelection)
+    });
+    vstTyypit.forEach(item => {
+      vstOptions.push({
+        value: item.metadata[toUpper(intl.locale)].nimi,
+        label: item.metadata[toUpper(intl.locale)].nimi
+      });
+    });
+    setvstTypeOptions(vstOptions);
+  }, [vstTyypit, intl]);
+
+  const onOppilaitostyyppiSelectionChange = (_, { selectedOption }) => {
+    setVstOppilaitostyyppiFilter(selectedOption);
+  };
 
   const columns = [
     {
-      accessor: "nimi",
-      Header: intl.formatMessage(common.jarjestaja),
+      accessor: "yllapitaja",
+      Header: intl.formatMessage(common.yllapitaja),
       Cell: ({ row }) => {
         return (
           <Link
             className="underline"
-            to={`/ammatillinenkoulutus/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
+            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
-              nimi: row.values.nimi
+              nimi: row.values.yllapitaja
             })}>
-            {row.values.nimi}
+            {row.values.yllapitaja}
           </Link>
         );
       }
     },
     {
-      accessor: "maakunta",
-      Header: intl.formatMessage(common.homeCounty)
+      accessor: "oppilaitos",
+      Header: intl.formatMessage(common.VSTOppilaitosTitle)
     },
     {
-      accessor: "ytunnus",
-      Header: intl.formatMessage(common.ytunnus)
+      accessor: "oppilaitostyyppi",
+      Header: intl.formatMessage(common.oppilaitostyyppi),
+      disableFilters: true
+    },
+    {
+      accessor: "ytunnus"
     }
   ];
 
@@ -392,20 +418,30 @@ function Jarjestajaluettelo({ luvat }) {
 
   return (
     <div className="mx-auto w-full mb-16">
-      <Typography component="h2" variant="h2" className="py-4">
-        {intl.formatMessage(education.koulutuksenJarjestajat)}
-      </Typography>
       <p className="mt-4 mb-8">
         {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
       </p>
       <CssBaseline />
+      <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">
+        <Dropdown
+          onChanges={onOppilaitostyyppiSelectionChange}
+          isClearable={true}
+          options={vstTypeOptions}
+          value={vstOppilaitostyyppiFilter}
+          fullWidth={true}
+          label={intl.formatMessage(common.filterByOppilaitostyyppi)}
+          isTall={false}
+          className="w-full lg:w-20"
+          emptyMessage={intl.formatMessage(common.noSelection)}
+        />
+      </div>
       <Table
         columns={columns}
         data={data}
         intl={intl}
-        luvat={luvat}
         skipReset={skipResetRef.current}
         updateMyData={updateMyData}
+        luvat={luvat}
       />
     </div>
   );

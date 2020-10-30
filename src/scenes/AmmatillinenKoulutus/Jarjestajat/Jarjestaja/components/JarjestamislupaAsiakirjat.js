@@ -8,7 +8,7 @@ import common from "../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { downloadFileFn } from "../../../../../utils/common";
-import Table from "okm-frontend-components/dist/components/02-organisms/Table";
+import Table from "../../../../../components/02-organisms/Table";
 import { useOrganisation } from "../../../../../stores/organisation";
 import { useIntl } from "react-intl";
 import * as R from "ramda";

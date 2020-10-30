@@ -27,3 +27,10 @@ export const autocompleteShortStyles = {
     };
   }
 };
+
+export const autocompleteWidthStyles = {
+  container: base => ({
+    ...base,
+    width: 400
+  })
+};

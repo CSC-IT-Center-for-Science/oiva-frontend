@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "../../../components/02-organisms/ExpandableRowRoot";
 import common from "../../../i18n/definitions/common";
 import wizard from "../../../i18n/definitions/wizard";
 import Lomake from "../../../components/02-organisms/Lomake";
@@ -304,6 +304,8 @@ const OpetustaAntavatKunnat = props => {
     changesTest: intl.formatMessage(common.changesText)
   };
 
+  const noSelectionsInLupa = R.isEmpty(maakunnatInLupa) && R.isEmpty(kunnatInLupa) && fiCode !== "FI1";
+
   return (
     <ExpandableRowRoot
       anchor={props.sectionId}
@@ -334,8 +336,9 @@ const OpetustaAntavatKunnat = props => {
               wizard.noMunicipalitiesSelected
             ),
             cancel: intl.formatMessage(common.cancel),
-            currentAreaOfAction: intl.formatMessage(wizard.currentAreaOfAction),
-            newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
+            currentAreaOfAction: intl.formatMessage(wizard.municipalitiesInPresentLupa),
+            newAreaOfAction: noSelectionsInLupa ?
+              intl.formatMessage(wizard.municipalities) : intl.formatMessage(wizard.municipalitiesInNewLupa),
             ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
             quickFilter: intl.formatMessage(wizard.quickFilter),
             editButtonText: intl.formatMessage(wizard.selectMunicipalities),
@@ -352,7 +355,8 @@ const OpetustaAntavatKunnat = props => {
           toggleEditView,
           options,
           changeObjectsByProvince: Object.assign({}, provinceChanges),
-          quickFilterChanges
+          quickFilterChanges,
+          noSelectionsInLupa,
         }}
         onChangesUpdate={handleChanges}
         path={["esiJaPerusopetus", "opetustaAntavatKunnat"]}

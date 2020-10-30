@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import CategorizedListRoot from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot";
+import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { isEqual } from "lodash";
 import { useIntl } from "react-intl";

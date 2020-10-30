@@ -5,7 +5,7 @@ import React, {
   useState,
   useRef
 } from "react";
-import StepperNavigation from "okm-frontend-components/dist/components/01-molecules/Stepper";
+import StepperNavigation from "../../../../../../../components/01-molecules/Stepper";
 import WizardPage from "./WizardPage";
 import DialogContent from "@material-ui/core/DialogContent";
 import MuutospyyntoWizardMuutokset from "./MuutospyyntoWizardMuutokset";
@@ -27,8 +27,8 @@ import {
   combineArrays
 } from "../../../../../../../utils/muutospyyntoUtil";
 import { findObjectWithKey } from "../../../../../../../utils/common";
-import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
-import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
+import ConfirmDialog from "../../../../../../../components/02-organisms/ConfirmDialog";
+import DialogTitle from "../../../../../../../components/02-organisms/DialogTitle";
 import ProcedureHandler from "../../../../../../../components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "../../../../../../../services/muutoshakemus/utils/common";
 import { useMuutospyynto } from "../../../../../../../stores/muutospyynto";

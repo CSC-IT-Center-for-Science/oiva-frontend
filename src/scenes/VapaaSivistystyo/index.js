@@ -13,17 +13,16 @@ import {
   useLocation
 } from "react-router-dom";
 import { COLORS } from "modules/styles";
-import Jarjestajat from "scenes/AmmatillinenKoulutus/Jarjestajat";
 import AsianhallintaCard from "./AsianhallintaCard";
 import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
 import BaseData from "basedata";
 import JarjestajaSwitch from "./JarjestajaSwitch";
 import { useUser } from "stores/user";
+import Jarjestajat from "./Jarjestajat";
 
-export default function AmmatillinenKoulutus() {
-  const keys = ["lupa", "kielet"];
-  const history = useHistory();
+export default function VapaaSivistystyo({ vstLuvat, vstTyypit }) {
   const { formatMessage, locale } = useIntl();
+  const history = useHistory();
   const location = useLocation();
   const [userState] = useUser();
   const { data: user } = userState;
@@ -51,10 +50,10 @@ export default function AmmatillinenKoulutus() {
                 }}
               />
             </nav>
-            {location.pathname === "/ammatillinenkoulutus" ? (
+            {location.pathname === "/vapaa-sivistystyo" ? (
               <React.Fragment>
                 <Typography component="h1" variant="h1" className="py-4">
-                  {formatMessage(educationMessages.vocationalEducation)}
+                  {formatMessage(educationMessages.vstEducation)}
                 </Typography>
                 <Typography component="p" className="pb-8">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
@@ -76,7 +75,7 @@ export default function AmmatillinenKoulutus() {
                   <AsianhallintaCard></AsianhallintaCard>
                 </section>
                 <section className="pt-12">
-                  <Jarjestajat />
+                  <Jarjestajat luvat={vstLuvat} vstTyypit={vstTyypit} />
                 </section>
               </React.Fragment>
             ) : null}
@@ -85,30 +84,27 @@ export default function AmmatillinenKoulutus() {
           <Router history={history}>
             <Switch>
               <Route
-                path="/ammatillinenkoulutus/asianhallinta"
+                path="/vapaa-sivistystyo/asianhallinta"
                 component={Asianhallinta}
               />
               <Route
-                path="/ammatillinenkoulutus/koulutuksenjarjestajat/:ytunnus"
-                render={props => {
-                  return (
-                    <BaseData
-                      keys={keys}
-                      locale={locale}
-                      render={_props => {
-                        return (
-                          <JarjestajaSwitch
-                            lupa={_props.lupa}
-                            path={props.match.path}
-                            ytunnus={_props.ytunnus}
-                            user={user}
-                            kielet={_props.kielet}
-                          />
-                        );
-                      }}
-                    />
-                  );
-                }}
+                path="/vapaa-sivistystyo/koulutuksenjarjestajat/:ytunnus"
+                render={props => (
+                  <BaseData
+                    locale={locale}
+                    render={_props => {
+                      return (
+                        <JarjestajaSwitch
+                          lupa={_props.lupa}
+                          path={props.match.path}
+                          ytunnus={_props.ytunnus}
+                          user={user}
+                          kielet={_props.kielet}
+                        />
+                      );
+                    }}
+                  />
+                )}
               />
             </Switch>
           </Router>

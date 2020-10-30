@@ -5,20 +5,19 @@ import {
   drop,
   flatten,
   head,
+  isEmpty,
   mapObjIndexed,
   nth,
   path,
   prop,
   split,
-  values,
-  isEmpty
+  values
 } from "ramda";
 import maaraaika from "./rajoitukset/maaraaika";
 import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
 import opetuskielet from "./rajoitukset/3-opetuskielet";
 import opetustehtavat from "./rajoitukset/1-opetustehtavat";
 import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
-
 
 const localizations = {
   maaraaika: "Määräaika",
@@ -133,14 +132,12 @@ async function defineRajoituksetStructure(
   structure = []
 ) {
   const initialAsetus = nth(index, asetukset);
-  if (initialAsetus && !isEmpty(groupedChangeObjects)){
-
-    console.info(initialAsetus, groupedChangeObjects[rajoiteId].asetukset); 
-    const asetusChangeObj = groupedChangeObjects[rajoiteId].asetukset ? 
-        groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id] : {}; 
-    const asetus = Object.assign({}, initialAsetus, asetusChangeObj); 
-
+  if (initialAsetus && !isEmpty(groupedChangeObjects)) {
     console.info(initialAsetus, groupedChangeObjects[rajoiteId].asetukset);
+    const asetusChangeObj = groupedChangeObjects[rajoiteId].asetukset
+      ? groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id]
+      : {};
+    const asetus = Object.assign({}, initialAsetus, asetusChangeObj);
 
     const updatedStructure = append(
       await defineRajoitusStructure(

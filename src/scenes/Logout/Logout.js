@@ -3,7 +3,7 @@ import { MessageWrapper } from "../../modules/elements";
 import localforage from "localforage";
 import auth from "../../i18n/definitions/auth";
 import { useIntl } from "react-intl";
-import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
+import SimpleButton from "../../components/00-atoms/SimpleButton";
 import { useHistory } from "react-router-dom";
 import { sessionTimeoutInMinutes } from "modules/constants";
 

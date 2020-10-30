@@ -20,7 +20,7 @@ import {
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
 import { backendRoutes } from "stores/utils/backendRoutes";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { initializeMaakunta } from "helpers/maakunnat";
 import {
   filterEnsisijaisetOpetuskieletOPH,
@@ -89,7 +89,7 @@ const getRaw = async (
  * @param {string} locale - fi / sv
  * @param {string} ytunnus
  */
-const fetchBaseData = async (keys, locale, ytunnus) => {
+const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
   const localeUpper = toUpper(locale);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
@@ -108,11 +108,32 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       keys,
       backendRoutes.lisatietoja.minimumTimeBetweenFetchingInMinutes
     ),
-    lupa: await getRaw(
-      "lupa",
-      `${backendRoutes.lupa.path}${ytunnus}?with=all&useKoodistoVersions=false`,
+    lupaByUuid: lupaUuid
+      ? await getRaw(
+          "lupaByUuid",
+          `${backendRoutes.lupaByUuid.path}${lupaUuid}?with=all&useKoodistoVersions=false`,
+          keys,
+          backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
+        )
+      : null,
+    lupaByYtunnus: ytunnus
+      ? await getRaw(
+          "lupaByYtunnus",
+          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false`,
+          keys,
+          backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
+        )
+      : null,
+    vstLuvat: await getRaw(
+      "vstLuvat",
+      `${backendRoutes.luvat.path}?koulutustyyppi=3`,
       keys,
-      backendRoutes.lupa.minimumTimeBetweenFetchingInMinutes
+      backendRoutes.luvat.minimumTimeBetweenFetchingInMinutes
+    ),
+    vstTyypit: await getRaw(
+      "vstTyypit",
+      `${backendRoutes.vsttyypit.path}`,
+      keys
     ),
     // Koulutukset (muut)
     ammatilliseentehtavaanvalmistavakoulutus: await getRaw(
@@ -211,6 +232,12 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
       keys
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
+    tulevatLuvat: await getRaw(
+      "tulevatLuvat",
+      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false`,
+      keys,
+      backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
+    ),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
@@ -220,7 +247,10 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
     )
   };
 
-  const lupa = raw.viimeisinLupa || raw.lupa || { maaraykset: [] };
+  const lupa = raw.viimeisinLupa ||
+    (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
+      maaraykset: []
+    };
 
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
@@ -347,7 +377,16 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa: raw.lupa,
+    lupa,
+    vstLuvat: raw.vstLuvat,
+    vstTyypit: raw.vstTyypit ? await localforage.setItem(
+      "vsttyypit",
+      map(vstTyyppi => omit(["koodiArvo"], {
+        ...vstTyyppi,
+          koodiarvo: vstTyyppi.koodiArvo,
+          metadata: mapObjIndexed(head, groupBy(prop("kieli"), vstTyyppi.metadata))
+      }),raw.vstTyypit
+      )) : undefined,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
@@ -475,6 +514,7 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           )
         )
       : undefined,
+    tulevatLuvat: raw.tulevatLuvat || [],
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -490,7 +530,8 @@ const fetchBaseData = async (keys, locale, ytunnus) => {
           }, raw.vankilat)
         )
       : undefined,
-    viimeisinLupa: raw.viimeisinLupa || {}
+    viimeisinLupa: raw.viimeisinLupa || {},
+    voimassaOlevaLupa: raw.lupaByYtunnus
   };
   return result;
 };
@@ -500,17 +541,23 @@ const defaultProps = {
 };
 
 const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
-  const { ytunnus } = useParams();
+  const { lupaUuid, ytunnus } = useParams();
   const [baseData, setBaseData] = useState({});
+  const location = useLocation();
+
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
    * paikalliseen tietovarastoon jäsenneltynä.
    */
   useEffect(() => {
-    fetchBaseData(keys, locale, ytunnus).then(result => {
-      setBaseData(result);
+    let isSubscribed = true;
+    fetchBaseData(keys, locale, lupaUuid, ytunnus).then(result => {
+      if (isSubscribed) {
+        setBaseData(result);
+      }
     });
-  }, [keys, locale, ytunnus]);
+    return () => (isSubscribed = false);
+  }, [keys, locale, lupaUuid, ytunnus, location.pathname]);
 
   if (!isEmpty(baseData)) {
     return (

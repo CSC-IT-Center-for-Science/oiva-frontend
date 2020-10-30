@@ -2,18 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import Lupapaatokset from "./Lupapaatokset";
 
-const JulkisetTiedot = ({ jarjestaja, lupa }) => {
+const JulkisetTiedot = ({ jarjestaja, tulevatLuvat, voimassaOlevaLupa }) => {
   return (
     <div className="bg-white border-solid border border-gray-200">
-      <Lupapaatokset jarjestajaOid={jarjestaja.oid} lupa={lupa} />
+      <Lupapaatokset jarjestajaOid={jarjestaja.oid} tulevatLuvat={tulevatLuvat} voimassaOlevaLupa={voimassaOlevaLupa} />
     </div>
   );
 };
 
 JulkisetTiedot.propTypes = {
-  history: PropTypes.object,
   jarjestaja: PropTypes.object,
-  lupa: PropTypes.object
+  tulevatLuvat: PropTypes.array,
+  voimassaOlevaLupa: PropTypes.object
 };
 
 export default JulkisetTiedot;

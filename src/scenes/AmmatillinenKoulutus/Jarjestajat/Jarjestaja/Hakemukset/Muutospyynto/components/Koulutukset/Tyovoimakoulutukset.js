@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { getDataForKoulutusList } from "../../../../../../../../utils/koulutusUtil";
-import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "../../../../../../../../components/02-organisms/ExpandableRowRoot";
 import wizardMessages from "../../../../../../../../i18n/definitions/wizard";
 import common from "../../../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";

@@ -50,7 +50,7 @@ const OivaTabs = withStyles(() => ({
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
 const Jarjestaja = React.memo(
-  ({ lupaKohteet = [], lupa = {}, path, url, user, kielet }) => {
+  ({ lupaKohteet = [], lupa = {}, path, url, user, kielet, tulevatLuvat = [], voimassaOlevaLupa = {}}) => {
     const history = useHistory();
     const intl = useIntl();
     const location = useLocation();
@@ -186,9 +186,9 @@ const Jarjestaja = React.memo(
                 exact
                 render={props => (
                   <JulkisetTiedot
-                    history={props.history}
                     jarjestaja={jarjestaja}
-                    lupa={lupa}
+                    tulevatLuvat={tulevatLuvat}
+                    voimassaOlevaLupa={voimassaOlevaLupa}
                   />
                 )}
               />
@@ -231,7 +231,7 @@ const Jarjestaja = React.memo(
                 path={`${url}/paatokset`}
                 exact
                 render={() => (
-                  <JulkisetTiedot lupa={lupa} jarjestaja={jarjestaja} />
+                  <JulkisetTiedot jarjestaja={jarjestaja} tulevatLuvat={tulevatLuvat} voimassaOlevaLupa={voimassaOlevaLupa} />
                 )}
               />
             </div>
@@ -247,7 +247,10 @@ Jarjestaja.propTypes = {
   lupa: PropTypes.object,
   path: PropTypes.string,
   url: PropTypes.string,
-  user: PropTypes.object
+  user: PropTypes.object,
+  kielet: PropTypes.array,
+  tulevatLuvat: PropTypes.array,
+  voimassaOlevaLupa: PropTypes.object
 };
 
 export default Jarjestaja;

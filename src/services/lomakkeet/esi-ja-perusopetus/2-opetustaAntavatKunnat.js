@@ -28,7 +28,9 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
               provinces: data.options,
               provincesWithoutMunicipalities: data.maakunnat,
               quickFilterChanges: data.quickFilterChanges,
-              showCategoryTitles: false
+              showCategoryTitles: false,
+              nothingInLupa: data.noSelectionsInLupa,
+              koulutustyyppi: "esiJaPerusopetus"
             }
           }
         ]

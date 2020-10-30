@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ExpandableRowRoot from "okm-frontend-components/dist/components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "../../../../../components/02-organisms/ExpandableRowRoot";
 import Tutkinto from "./Tutkinto";
 import _ from "lodash";
 import { values, prop, map, length, compose, sum } from "ramda";
