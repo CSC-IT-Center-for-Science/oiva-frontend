@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Typography } from "@material-ui/core";
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
@@ -19,22 +19,12 @@ import BaseData from "basedata";
 import JarjestajaSwitch from "./JarjestajaSwitch";
 import { useUser } from "stores/user";
 import Jarjestajat from "./Jarjestajat";
-import { map } from "ramda";
-import {
-  resolveLocalizedOrganizerName,
-  resolveVSTOppilaitosNameFromLupa
-} from "modules/helpers";
 
-export default function VapaaSivistystyo({ vstLuvat }) {
-  const intl = useIntl();
+export default function VapaaSivistystyo({ vstLuvat, vstTyypit }) {
   const { formatMessage, locale } = useIntl();
   const history = useHistory();
   const location = useLocation();
   const [userState] = useUser();
-  const [luvat, setLuvat] = useState([]);
-  const [allDataLength, setAllDataLength] = useState(0);
-  const [filteredDataLength, setFilteredDataLength] = useState(0);
-  const [vstYllapitajaFilter, setVstYllapitajaFilter] = useState("");
   const { data: user } = userState;
 
   // useEffect(() => {
@@ -118,7 +108,7 @@ export default function VapaaSivistystyo({ vstLuvat }) {
                   <AsianhallintaCard></AsianhallintaCard>
                 </section>
                 <section className="pt-12">
-                  <Jarjestajat luvat={vstLuvat} />
+                  <Jarjestajat luvat={vstLuvat} vstTyypit={vstTyypit} />
                 </section>
               </React.Fragment>
             ) : null}

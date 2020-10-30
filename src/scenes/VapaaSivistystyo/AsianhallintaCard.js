@@ -18,13 +18,6 @@ export default function AsianhallintaCard() {
         onClick={() => {
           history.push("/ammatillinenkoulutus/asianhallinta/avoimet");
         }}>
-        <CardMedia
-          component="img"
-          alt={intl.formatMessage(commonMessages.asianhallinta)}
-          height="200"
-          image="https://picsum.photos/id/527/1200/200/"
-          title={intl.formatMessage(commonMessages.asianhallinta)}
-        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {intl.formatMessage(commonMessages.asianhallinta)}

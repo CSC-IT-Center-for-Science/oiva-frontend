@@ -298,7 +298,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     render={() => {
                       return (
                         <BaseData
-                        keys={["vstLuvat"]}
+                        keys={["vstLuvat", "vstTyypit"]}
                         locale={intl.locale}
                           render={props => {
                             return <VapaaSivistystyo {...props} />;
