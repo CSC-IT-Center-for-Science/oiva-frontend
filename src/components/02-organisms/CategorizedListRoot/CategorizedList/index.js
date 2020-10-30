@@ -880,6 +880,8 @@ const CategorizedList = props => {
                           showCategoryTitles={propsObj.showCategoryTitles}
                           toggleEditView={propsObj.toggleEditView}
                           onChanges={propsObj.onChanges}
+                          nothingInLupa={propsObj.nothingInLupa}
+                          koulutustyyppi={propsObj.koulutustyyppi}
                           payload={{
                             anchor,
                             categories: category.categories,

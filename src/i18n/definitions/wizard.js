@@ -271,5 +271,13 @@ export default defineMessages({
   editAreaOfAction: {
     id: "wizard.editAreaOfAction",
     defaultMessage: "Muokkaa toiminta-aluetta"
+  },
+  municipalitiesInPresentLupa: {
+    id: "wizard.municipalitiesInPresentLupa",
+    defaultMessage: "Nykyisen luvan kunnat"
+  },
+  municipalitiesInNewLupa: {
+    id: "wizard.municipalitiesInNewLupa",
+    defaultMessage: "Uuden luvan kunnat"
   }
 });

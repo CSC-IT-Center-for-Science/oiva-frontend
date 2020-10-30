@@ -26,7 +26,9 @@ const CategoryFilter = ({
   toggleEditView,
   provinces = [],
   provincesWithoutMunicipalities = [],
-  quickFilterChangeObjects = []
+  quickFilterChangeObjects = [],
+  nothingInLupa = false,
+  koulutustyyppi = ""
 }) => {
   const [changeObjects, setChangeObjects] = useState(changeObjectsByProvince);
   const [quickFilterChanges, setQuickFilterChanges] = useState(
@@ -160,27 +162,52 @@ const CategoryFilter = ({
       />
     );
   } else {
-    return (
-      <React.Fragment>
-        <h3 className="mb-4">{localizations.currentAreaOfAction}</h3>
-        {renderToimintaalueList(provinces)}
-        {flatten(values(changeObjects)).length > 0 && (
+    const isEsiJaPerusopetus = koulutustyyppi === "esiJaPerusopetus";
+
+    /** Esi- ja perusopetuksen layout */
+    if (isEsiJaPerusopetus) {
+      return (<React.Fragment>
+          {!nothingInLupa && (<span>
+            <h3 className="mb-4">{localizations.currentAreaOfAction}</h3>
+            {renderToimintaalueList(provinces)}</span>)}
           <React.Fragment>
-            <hr />
-            <h3 className="mt-8 mb-4">{localizations.newAreaOfAction}</h3>
+            {!nothingInLupa && (<hr/>)}
+            <h3 className={`mb-4 ${nothingInLupa ? "" : "mt-8"}`}>{localizations.newAreaOfAction}</h3>
             {renderToimintaalueList(provinces, changeObjects)}
           </React.Fragment>
-        )}
-        <div className={"pt-6"}>
-          <SimpleButton
-            variant="outlined"
-            onClick={() => toggleEditView(true)}
-            text={localizations.editButtonText}></SimpleButton>
-        </div>
-      </React.Fragment>
-    );
+          <div className={"pt-6"}>
+            <SimpleButton
+              variant="outlined"
+              onClick={() => toggleEditView(true)}
+              text={localizations.editButtonText}></SimpleButton>
+          </div>
+        </React.Fragment>
+      );
+    }
+    else {
+      /** Default layout */
+      return (
+        <React.Fragment>
+          <h3 className="mb-4">{localizations.currentAreaOfAction}</h3>
+          {renderToimintaalueList(provinces)}
+          {flatten(values(changeObjects)).length > 0 && (
+            <React.Fragment>
+              <hr/>
+              <h3 className="mt-8 mb-4">{localizations.newAreaOfAction}</h3>
+              {renderToimintaalueList(provinces, changeObjects)}
+            </React.Fragment>
+          )}
+          <div className={"pt-6"}>
+            <SimpleButton
+              variant="outlined"
+              onClick={() => toggleEditView(true)}
+              text={localizations.editButtonText}></SimpleButton>
+          </div>
+        </React.Fragment>
+      );
+    }
   }
-};
+}
 
 CategoryFilter.propTypes = {
   anchor: PropTypes.string,
@@ -190,7 +217,9 @@ CategoryFilter.propTypes = {
   municipalities: PropTypes.array,
   onChanges: PropTypes.func.isRequired,
   toggleEditView: PropTypes.func.isRequired,
-  provincesWithoutMunicipalities: PropTypes.array
+  provincesWithoutMunicipalities: PropTypes.array,
+  nothingInLupa: PropTypes.bool,
+  koulutustyyppi: PropTypes.string
 };
 
 export default CategoryFilter;

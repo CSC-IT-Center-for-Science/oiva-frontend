@@ -361,6 +361,8 @@
   "wizard.minimumAmountOfYears": "Koulutuksen järjestäjän opiskelijavuosien vähimmäismäärä",
   "wizard.municipalities": "Kunnat",
   "wizard.municipalitiesAndAreas": "Kunnat ja alueet",
+  "wizard.municipalitiesInNewLupa": "Uuden luvan kunnat",
+  "wizard.municipalitiesInPresentLupa": "Nykyisen luvan kunnat",
   "wizard.newAreaOfAction": "Uusi toiminta-alue",
   "wizard.next": "Seuraava",
   "wizard.noAddedTutkinnot": "Taloudelliset edellytykset ilmoitetaan vain, kun järjestämislupaan haetaan uusia tutkintoja tai koulutuksia. Jatka seuraavalle välilehdelle Seuraava-painikkeella.",

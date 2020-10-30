@@ -361,6 +361,8 @@
   "wizard.minimumAmountOfYears": "Utbildningsanordnarens minimiantal studerandeår",
   "wizard.municipalities": "svenska: Kunnat",
   "wizard.municipalitiesAndAreas": "Kunnat ja alueet",
+  "wizard.municipalitiesInNewLupa": "Uuden luvan kunnat",
+  "wizard.municipalitiesInPresentLupa": "Nykyisen luvan kunnat",
   "wizard.newAreaOfAction": "SV: Uusi toiminta-alue",
   "wizard.next": "svenska: Next",
   "wizard.noAddedTutkinnot": "SV: Taloudelliset edellytykset ilmoitetaan vain, kun järjestämislupaan haetaan uusia tutkintoja tai koulutuksia. Jatka seuraavalle välilehdelle Seuraava-painikkeella.",
