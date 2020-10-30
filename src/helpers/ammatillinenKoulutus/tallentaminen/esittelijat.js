@@ -107,24 +107,18 @@ export async function createObjectToSave(
     maaraystyypit,
     muut,
     lupaKohteet,
-    R.compose(R.flatten, R.values)(R.values(R.path(["muut"], changeObjects)))
+    changeObjects.muut
   );
 
   // MUUT
-  //   const muutMuutokset = muutHelper.getChangesToSave(
-  //     {
-  //       muutokset: R.compose(
-  //         R.flatten,
-  //         R.values
-  //       )(R.values(R.path(["muut"], changeObjects))),
-  //       perustelut: R.compose(
-  //         R.flatten,
-  //         R.values
-  //       )(R.values(R.path(["perustelut", "muut"], changeObjects)))
-  //     },
-  //     R.find(R.propEq("tunniste", "muut"), kohteet),
-  //     maaraystyypit
-  //   );
+  const muutMuutokset = muutHelper.getChangesToSave(
+    {
+      muutokset: changeObjects.muut,
+      perustelut: []
+    },
+    R.find(R.propEq("tunniste", "muut"), kohteet),
+    maaraystyypit
+  );
 
   let objectToSave = {
     alkupera: "ESITTELIJA",
@@ -146,8 +140,8 @@ export async function createObjectToSave(
       koulutukset,
       opetuskielet,
       toimintaalue,
-      opiskelijavuodet
-      //   muutMuutokset
+      opiskelijavuodet,
+      muutMuutokset
     ]),
     uuid
   };

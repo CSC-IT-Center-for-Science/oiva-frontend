@@ -108,10 +108,10 @@ async function getModificationForm(
    * lisäämässä, näytetään sisäoppilaitoksen tietue käyttäjälle, jotta hän
    * voi täyttää sen tiedot.
    **/
-  const isVaativaTukiVisible = helper.isVaativatukiRajoitusVisible(
-    muutMaaraykset,
-    muutChangesFlatten
-  );
+  // const isVaativaTukiVisible = helper.isVaativatukiRajoitusVisible(
+  //   muutMaaraykset,
+  //   muutChangesFlatten
+  // );
 
   const opiskelijavuosimaaraysVaativaTuki = vaativaTukiMaarays
     ? find(propEq("koodiarvo", vaativaTukiMaarays.koodiarvo), maaraykset)

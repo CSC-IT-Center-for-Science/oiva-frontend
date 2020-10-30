@@ -106,7 +106,6 @@ export function createBackendChangeObjects(
     R.values,
     R.filter(R.propEq("tunniste", "muut"))
   )(lupamuutokset);
-
   const unhandledChangeObjects =
     // Filter out opiskelijamaararajoitukset if they are not visible
     R.filter(changeObj => {
@@ -119,6 +118,8 @@ export function createBackendChangeObjects(
       return true;
     }, changeObjects.muutokset);
 
+  console.info(unhandledChangeObjects);
+
   const uudetMuutokset = R.map(changeObj => {
     const anchorParts = R.split(".", changeObj.anchor);
     const koodiarvo = changeObj.properties.metadata.koodiarvo;
@@ -128,6 +129,7 @@ export function createBackendChangeObjects(
       R.nth(1, anchorParts)
     );
     if (!isVahimmaismaara) {
+      console.info(muut, koodiarvo);
       koodisto = (R.find(R.propEq("koodiarvo", koodiarvo), muut) || {})
         .koodisto;
     }

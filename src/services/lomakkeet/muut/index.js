@@ -10,7 +10,6 @@ async function getModificationForm(configObj, locale) {
   const osiota5koskevatMaaraykset = await getMaarayksetByKoodisto(
     "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
   );
-  console.info(configObj);
   return R.map(item => {
     let noItemsInLupa = true;
     const isVaativatukiRadios =
@@ -47,7 +46,7 @@ async function getModificationForm(configObj, locale) {
         const labelClasses = {
           isInLupa: isInLupaBool
         };
-        const showAlertBecauseOfSection4 = true;
+
         let result = {
           anchor: article.koodiarvo,
           components: [

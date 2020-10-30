@@ -79,9 +79,11 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
       // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
       // opiskelijavuosiosiossa.
-      const visibilityOfSisaoppilaitos = !isEmpty(
+      const visibilityOfSisaoppilaitos = filter(
+        koodiarvo => includes(koodiarvo, vaativatCodes),
         path(["03", "valitutKoodiarvot"], muutLomakedata) || []
       );
+      console.info(visibilityOfSisaoppilaitos);
       setLomakedata(
         {
           sisaoppilaitos: visibilityOfSisaoppilaitos,
@@ -136,48 +138,48 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
      * tallennusvaiheessa backendille lähtee väärä koodiarvo koskien
      * vaativaan tukeen liittyvää opiskelijavuosimäärätietoa.
      */
-    useEffect(() => {
-      const activeSection5VaativaTukiChangeObj = find(changeObj => {
-        return (
-          includes("vaativatuki", changeObj.anchor) &&
-          changeObj.properties.isChecked
-        );
-      }, flatten(values(head(muutChangeObjects))));
+    // useEffect(() => {
+    //   const activeSection5VaativaTukiChangeObj = find(changeObj => {
+    //     return (
+    //       includes("vaativatuki", changeObj.anchor) &&
+    //       changeObj.properties.isChecked
+    //     );
+    //   }, flatten(values(head(muutChangeObjects))));
 
-      const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
-        ? path(
-            ["properties", "metadata", "koodiarvo"],
-            activeSection5VaativaTukiChangeObj
-          )
-        : null;
+    //   const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
+    //     ? path(
+    //         ["properties", "metadata", "koodiarvo"],
+    //         activeSection5VaativaTukiChangeObj
+    //       )
+    //     : null;
 
-      const activeSection4VaativaTukiChangeObj = find(changeObj => {
-        return includes("vaativatuki", changeObj.anchor);
-      }, changeObjects);
+    //   const activeSection4VaativaTukiChangeObj = find(changeObj => {
+    //     return includes("vaativatuki", changeObj.anchor);
+    //   }, changeObjects);
 
-      const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
-        ? path(
-            ["properties", "metadata", "koodiarvo"],
-            activeSection4VaativaTukiChangeObj
-          )
-        : null;
+    //   const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
+    //     ? path(
+    //         ["properties", "metadata", "koodiarvo"],
+    //         activeSection4VaativaTukiChangeObj
+    //       )
+    //     : null;
 
-      if (
-        activeSection4VaativaTukiChangeObj &&
-        vaativaTukiKoodiarvoSection4 !== null &&
-        vaativaTukiKoodiarvoSection5 !== null &&
-        vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
-      ) {
-        setChanges(
-          filter(changeObj => {
-            return (
-              changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
-            );
-          }, changeObjects),
-          sectionId
-        );
-      }
-    }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
+    //   if (
+    //     activeSection4VaativaTukiChangeObj &&
+    //     vaativaTukiKoodiarvoSection4 !== null &&
+    //     vaativaTukiKoodiarvoSection5 !== null &&
+    //     vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
+    //   ) {
+    //     setChanges(
+    //       filter(changeObj => {
+    //         return (
+    //           changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
+    //         );
+    //       }, changeObjects),
+    //       sectionId
+    //     );
+    //   }
+    // }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake

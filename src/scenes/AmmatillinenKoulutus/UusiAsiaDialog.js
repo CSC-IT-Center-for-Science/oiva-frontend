@@ -131,6 +131,9 @@ const UusiAsiaDialog = ({
   const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijavuodet"
   });
+  const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "muut"
+  });
 
   const isSavingEnabled = useMemo(() => {
     const hasUnsavedChanges = unsavedChangeObjects
@@ -222,6 +225,7 @@ const UusiAsiaDialog = ({
           lupa,
           {
             koulutukset: koulutuksetCO,
+            muut: muutCO,
             opetuskielet: opetuskieletCO,
             opiskelijavuodet: opiskelijavuodetCO,
             toimintaalue: toimintaalueCO,
