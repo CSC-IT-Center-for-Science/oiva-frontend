@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
-import common from "../../i18n/definitions/common";
+import common from "i18n/definitions/common";
 import {
   DialogContent,
   Dialog,
@@ -10,7 +10,7 @@ import {
   Button
 } from "@material-ui/core";
 
-const PDFAndStateDialog = ({ isVisible, onClose, onOK }) => {
+const RemovalDialogOfAsiakirja = ({ isVisible, onClose, onOK, removeAsia }) => {
   const intl = useIntl();
 
   return (
@@ -19,16 +19,22 @@ const PDFAndStateDialog = ({ isVisible, onClose, onOK }) => {
       aria-labelledby="simple-dialog-title"
       PaperProps={{ style: { overflowY: "visible" } }}>
       <DialogTitle id="customized-dialog-title" onClose={onClose}>
-        {intl.formatMessage(common.titleOfPDFAndStateDialog)}
+        {removeAsia
+          ? intl.formatMessage(common.titleOfPoistetaankoKokoAsia)
+          : intl.formatMessage(common.titleOfPoistetaankoAsiakirja)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <p>{intl.formatMessage(common.textOfPDFAndStateDialog)}</p>
+        <p>
+          {removeAsia
+            ? intl.formatMessage(common.poistetaankoKokoAsia)
+            : intl.formatMessage(common.poistetaankoAsiakirja)}
+        </p>
       </DialogContent>
       <DialogActions>
         <div className="flex pr-6 pb-4">
           <div className="mr-4">
             <Button onClick={onClose} color="primary" variant="outlined">
-              {intl.formatMessage(common.cancel)}
+              {intl.formatMessage(common.doNotRemove)}
             </Button>
           </div>
           <Button
@@ -37,7 +43,7 @@ const PDFAndStateDialog = ({ isVisible, onClose, onOK }) => {
             }}
             color="primary"
             variant="contained">
-            {intl.formatMessage(common.downloadPDFAndChangeState)}
+            {intl.formatMessage(common.poista)}
           </Button>
         </div>
       </DialogActions>
@@ -45,12 +51,13 @@ const PDFAndStateDialog = ({ isVisible, onClose, onOK }) => {
   );
 };
 
-PDFAndStateDialog.propTypes = {
+RemovalDialogOfAsiakirja.propTypes = {
   // Boolean that tells if the dialog is open or closed.
   isVisible: PropTypes.bool,
   // Function that will be called when the dialog is going to be closed / hided.
   onOK: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  removeAsia: PropTypes.bool
 };
 
-export default PDFAndStateDialog;
+export default RemovalDialogOfAsiakirja;
