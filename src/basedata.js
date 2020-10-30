@@ -63,7 +63,7 @@ export const fetchJSON = async path => {
   return result.data;
 };
 
-const getRaw = async (
+export const getRaw = async (
   key,
   path,
   keys,
@@ -219,6 +219,11 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     organisaatio: await getRaw(
       "organisaatio",
       `${backendRoutes.organisaatio.path}${ytunnus}`,
+      keys
+    ),
+    organisaatiot: await getRaw(
+      "organisaatiot",
+      backendRoutes.organisaatiot.path,
       keys
     ),
     poErityisetKoulutustehtavat: await getRaw(
@@ -377,7 +382,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa,
+    lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
     vstLuvat: raw.vstLuvat,
     vstTyypit: raw.vstTyypit ? await localforage.setItem(
       "vsttyypit",
@@ -469,6 +474,9 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       : undefined,
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
+      : undefined,
+    organisaatiot: raw.organisaatiot
+      ? await localforage.setItem("organisaatiot", raw.organisaatiot)
       : undefined,
     poErityisetKoulutustehtavat: raw.poErityisetKoulutustehtavat
       ? await localforage.setItem(

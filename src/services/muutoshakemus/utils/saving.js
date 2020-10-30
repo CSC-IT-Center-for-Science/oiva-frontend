@@ -9,6 +9,7 @@ import * as kieletHelper from "../../../helpers/kielet";
 import * as koulutuksetHelper from "../../../helpers/koulutukset";
 
 export async function createObjectToSave(
+  opiskelijavuodetCO,
   locale,
   organisation,
   lupa,
@@ -20,6 +21,9 @@ export async function createObjectToSave(
   lupaKohteet,
   alkupera = "KJ"
 ) {
+  const { unsaved, saved } = changeObjects;
+
+  console.info("Opiskelijavuosimuutokset", opiskelijavuodetCO);
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
     ["yhteenveto", "yleisettiedot"],
@@ -34,7 +38,7 @@ export async function createObjectToSave(
     changeObjects
   );
   const perustelutLiitteet = R.path(["perustelut", "liitteet"], changeObjects);
-
+  console.info(changeObjects);
   //get actual attachment props
 
   const perustelutLiitteetList =
@@ -92,10 +96,14 @@ export async function createObjectToSave(
     {
       tutkinnotJaOsaamisalat: {
         muutokset: R.flatten(R.values(changeObjects.tutkinnot)),
-        perustelut: R.flatten(R.values(changeObjects.perustelut.tutkinnot))
+        perustelut: changeObjects.perustelut
+          ? R.flatten(R.values(changeObjects.perustelut.tutkinnot))
+          : []
       },
       tutkintokielet: {
-        muutokset: R.flatten(R.values(changeObjects.kielet.tutkintokielet)),
+        muutokset: R.flatten(
+          R.values(R.path(["kielet", "tutkintokielet"], changeObjects))
+        ),
         perustelut: R.flatten(
           R.values(
             R.path(["perustelut", "kielet", "tutkintokielet"], changeObjects)
@@ -111,8 +119,10 @@ export async function createObjectToSave(
 
   // TOIMINTA-ALUE
   const categoryFilterChangeObj =
-    R.find(R.propEq("anchor", "categoryFilter"), changeObjects.toimintaalue) ||
-    {};
+    R.find(
+      R.propEq("anchor", "categoryFilter"),
+      changeObjects.toimintaalue || []
+    ) || {};
   const toimintaalue = await toimintaalueHelper.defineBackendChangeObjects(
     {
       quickFilterChanges: R.path(
@@ -190,10 +200,7 @@ export async function createObjectToSave(
   // OPISKELIJAVUODET
   const opiskelijavuodet = opiskelijavuodetHelper.createBackendChangeObjects(
     {
-      muutokset: R.compose(
-        R.flatten,
-        R.values
-      )(R.values(R.path(["opiskelijavuodet"], changeObjects))),
+      muutokset: R.prop("opiskelijavuodet", unsaved),
       perustelut: R.compose(
         R.flatten,
         R.values
@@ -263,21 +270,21 @@ export async function createObjectToSave(
   if (alkupera === "ESITTELIJA") {
     const asianumeroObj = R.find(
       R.propEq("anchor", "topthree.asianumero.A"),
-      changeObjects.topthree
+      changeObjects.topthree || []
     );
     objectToSave.asianumero = asianumeroObj
       ? asianumeroObj.properties.value
       : "";
     const paatospaivaObj = R.find(
       R.propEq("anchor", "topthree.paatospaiva.A"),
-      changeObjects.topthree
+      changeObjects.topthree || []
     );
     objectToSave.paatospvm = paatospaivaObj
       ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
       : "";
     const voimaantulopaivaObj = R.find(
       R.propEq("anchor", "topthree.voimaantulopaiva.A"),
-      changeObjects.topthree
+      changeObjects.topthree || []
     );
     objectToSave.voimassaalkupvm = voimaantulopaivaObj
       ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
@@ -394,6 +401,8 @@ export async function createObjectToSave(
       ]).filter(Boolean)
     };
   }
+
+  console.info(objectToSave);
 
   return objectToSave;
 }

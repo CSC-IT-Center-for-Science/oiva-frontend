@@ -47,7 +47,10 @@ const Input = props => {
   const { classes } = props;
 
   const updateValue = e => {
-    props.onChanges(props.payload, { value: e.target.value });
+    props.onChanges(props.payload, {
+      value:
+        props.type === "number" ? parseInt(e.target.value, 10) : e.target.value
+    });
   };
 
   return (

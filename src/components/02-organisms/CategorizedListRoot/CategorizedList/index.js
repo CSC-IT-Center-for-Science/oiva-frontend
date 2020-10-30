@@ -675,14 +675,6 @@ const CategorizedList = props => {
                                 linkText={propsObj.linkText}
                                 handleLinkClick={propsObj.handleLinkClick}
                                 onChanges={handleChanges}
-                                payload={{
-                                  anchor,
-                                  categories: category.categories,
-                                  component,
-                                  fullPath,
-                                  parent: props.parent,
-                                  rootPath: props.rootPath
-                                }}
                               />
                             </div>
                           );
@@ -792,6 +784,7 @@ const CategorizedList = props => {
                       <div className="flex-2">
                         <Difference
                           applyForValue={propsObj.applyForValue}
+                          id={fullAnchor}
                           initialValue={propsObj.initialValue}
                           onChanges={handleChanges}
                           payload={{
