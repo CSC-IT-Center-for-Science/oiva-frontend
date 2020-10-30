@@ -1,5 +1,5 @@
 import React from "react";
-import { Td, Td2, Tr } from "../../modules/Table";
+import { Td, Td2, Tr } from "modules/Table";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 

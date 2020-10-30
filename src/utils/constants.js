@@ -41,3 +41,13 @@ export const LUPA_SECTIONS = {
     OPPILAITOKSENOPETUSKIELI: "oppilaitoksenopetuskieli",
     OIVA_MUUT: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
   };
+
+  export const asiaEsittelijaStateToLocalizationKeyMap = {
+    LUONNOS: "asiaStates.esittelija.LUONNOS",
+    AVOIN: "asiaStates.esittelija.AVOIN",
+    VALMISTELUSSA: "asiaStates.esittelija.VALMISTELUSSA",
+    TAYDENNETTAVA: "asiaStates.esittelija.TAYDENNETTAVA",
+    PAATETTY: "asiaStates.esittelija.PAATETTY",
+    PASSIVOITU: "asiaStates.esittelija.PASSIVOITU",
+    ESITTELYSSA: "asiaStates.esittelija.ESITTELYSSA"
+  };

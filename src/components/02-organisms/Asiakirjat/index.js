@@ -1,32 +1,31 @@
 import React, { useMemo, useEffect, useState } from "react";
 import Media from "react-media";
 import styled from "styled-components";
-import { Table as OldTable, Tbody } from "../../modules/Table";
-import { COLORS, MEDIA_QUERIES } from "../../modules/styles";
+import { Table as OldTable, Tbody } from "modules/Table";
+import { COLORS, MEDIA_QUERIES } from "modules/styles";
 import AsiakirjatItem from "./AsiakirjatItem";
-import common from "../../i18n/definitions/common";
+import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import { downloadFileFn } from "../../utils/common";
 import Table from "../../components/02-organisms/Table";
-import { useOrganisation } from "../../stores/organisation";
+import { downloadFileFn } from "utils/common";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
-import { useMuutospyynnonLiitteet } from "../../stores/muutospyynnonLiitteet";
-import { useMuutospyynto } from "../../stores/muutospyynto";
+import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
+import { useMuutospyynto } from "stores/muutospyynto";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import Loading from "../../modules/Loading";
-import { asiaEsittelijaStateToLocalizationKeyMap } from "./Jarjestajat/Jarjestaja/modules/constants";
+import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja";
-import { useMuutospyynnot } from "../../stores/muutospyynnot";
+import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
-import error from "../../i18n/definitions/error";
+import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
+import error from "i18n/definitions/error";
 import SelectAttachment from "../../components/02-organisms/SelectAttachment";
-import ProcedureHandler from "../../components/02-organisms/procedureHandler";
+import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
 
 const WrapTable = styled.div``;
@@ -54,15 +53,15 @@ const states = [
   "VALMISTELUSSA",
   "TAYDENNETTAVA",
   "PAATETTY",
-  "PASSIVOITU"
+  "PASSIVOITU",
+  "ESITTELYSSA"
 ];
 
-const Asiakirjat = () => {
+const Asiakirjat = ({koulutustyyppi}) => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
   const t = intl.formatMessage;
-  const [organisation] = useOrganisation();
   const [
     muutospyynnonLiitteet,
     muutospyynnonLiitteetAction
@@ -110,7 +109,7 @@ const Asiakirjat = () => {
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(
-      `/ammatillinenkoulutus/asianhallinta/avoimet?force=${new Date().getTime()}`
+      `/${koulutustyyppi}/asianhallinta/avoimet?force=${new Date().getTime()}`
     );
   };
 
@@ -150,8 +149,7 @@ const Asiakirjat = () => {
             asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
           ]
         )
-      : "",
-    R.path(["nimi", intl.locale], organisation.data)
+      : ""
   ];
 
   const liitteetRowItems = useMemo(() => {
@@ -167,7 +165,7 @@ const Asiakirjat = () => {
               " " +
               R.prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
-            intl.formatMessage(common.opetusJaKulttuuriministerio),
+            liite.luoja,
             liite.luontipvm ? (
               <Moment format="D.M.YYYY">{liite.luontipvm}</Moment>
             ) : (
@@ -193,6 +191,9 @@ const Asiakirjat = () => {
   ]);
 
   const muutospyyntoRowItem = useMemo(() => {
+    if (!muutospyynto.fetchedAt) {
+      return {items: []};
+    }
     return {
       uuid,
       fileLinkFn: async () => {
@@ -202,10 +203,14 @@ const Asiakirjat = () => {
         }
       },
       openInNewWindow: true,
-      items: [intl.formatMessage(common.application), ...baseRow, ""],
+      items: [intl.formatMessage(common.application),
+        ...baseRow,
+        muutospyynto.data.luoja,
+        muutospyynto.data.luontipvm ? (<Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>) : ("")
+      ],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
-  }, [baseRow, intl, muutospyynto.data, uuid, muutospyyntoActions]);
+  }, [baseRow, intl, muutospyynto.data, muutospyynto.fetchedAt, uuid, muutospyyntoActions]);
 
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
@@ -337,10 +342,7 @@ const Asiakirjat = () => {
 
   const handleAddPaatoskirje = async attachment => {
     // Search for existing paatoskirje in muutospyynto
-    let paatoskirje = muutospyynto.data.liitteet
-      ? muutospyynto.data.liitteet.find(liite => liite.tyyppi === "paatosKirje")
-      : null;
-
+    let paatoskirje = R.find(pk => pk.tyyppi === "paatosKirje", muutospyynto.data.liitteet || []);
     // If paatoskirje exists, replace the existing file, otherwise append to liitteet array
     if (paatoskirje) {
       paatoskirje.nimi = attachment.nimi;
@@ -358,6 +360,7 @@ const Asiakirjat = () => {
       muutospyynto.data,
       true
     ]);
+    muutospyyntoActions.load(uuid, true);
     muutospyynnonLiitteetAction.load(muutospyynto.data.uuid, true);
   };
 
@@ -372,7 +375,7 @@ const Asiakirjat = () => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <BreadcrumbsItem to={`/ammatillinenkoulutus/asianhallinta/${ytunnus}`}>
+        <BreadcrumbsItem to={`/${koulutustyyppi}/asianhallinta/${ytunnus}`}>
           {nimi}
         </BreadcrumbsItem>
         <div
@@ -384,7 +387,7 @@ const Asiakirjat = () => {
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
             onClick={() => {
-              history.push("/ammatillinenkoulutus/asianhallinta/avoimet");
+              history.push(`/${koulutustyyppi}/asianhallinta/avoimet`);
             }}>
             <BackIcon
               style={{
@@ -505,7 +508,8 @@ const Asiakirjat = () => {
 };
 
 Asiakirjat.propTypes = {
-  uuid: PropTypes.object
+  uuid: PropTypes.object,
+  koulutustyyppi: PropTypes.string
 };
 
 export default Asiakirjat;
