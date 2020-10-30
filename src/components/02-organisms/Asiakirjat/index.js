@@ -1,33 +1,32 @@
 import React, { useMemo, useEffect, useState } from "react";
 import Media from "react-media";
 import styled from "styled-components";
-import { Table as OldTable, Tbody } from "../../modules/Table";
-import { COLORS, MEDIA_QUERIES } from "../../modules/styles";
+import { Table as OldTable, Tbody } from "modules/Table";
+import { COLORS, MEDIA_QUERIES } from "modules/styles";
 import AsiakirjatItem from "./AsiakirjatItem";
-import common from "../../i18n/definitions/common";
+import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import { downloadFileFn } from "../../utils/common";
+import { downloadFileFn } from "utils/common";
 import Table from "okm-frontend-components/dist/components/02-organisms/Table";
-import { useOrganisation } from "../../stores/organisation";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
-import { useMuutospyynnonLiitteet } from "../../stores/muutospyynnonLiitteet";
-import { useMuutospyynto } from "../../stores/muutospyynto";
+import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
+import { useMuutospyynto } from "stores/muutospyynto";
 import { Helmet } from "react-helmet";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import Loading from "../../modules/Loading";
-import { asiaEsittelijaStateToLocalizationKeyMap } from "../AmmatillinenKoulutus/Jarjestajat/Jarjestaja/modules/constants";
+import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja";
-import { useMuutospyynnot } from "../../stores/muutospyynnot";
+import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
-import error from "../../i18n/definitions/error";
+import error from "i18n/definitions/error";
 import SelectAttachment from "okm-frontend-components/dist/components/02-organisms/SelectAttachment";
-import ProcedureHandler from "../../components/02-organisms/procedureHandler";
+import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
+import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
 
 const WrapTable = styled.div``;
 
@@ -54,15 +53,15 @@ const states = [
   "VALMISTELUSSA",
   "TAYDENNETTAVA",
   "PAATETTY",
-  "PASSIVOITU"
+  "PASSIVOITU",
+  "ESITTELYSSA"
 ];
 
-const Asiakirjat = React.memo(() => {
+const Asiakirjat = ({koulutustyyppi}) => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
   const t = intl.formatMessage;
-  const [organisation] = useOrganisation();
   const [
     muutospyynnonLiitteet,
     muutospyynnonLiitteetAction
@@ -109,7 +108,9 @@ const Asiakirjat = React.memo(() => {
 
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
-    history.push(`/asiat?force=${new Date().getTime()}`);
+    history.push(
+      `/${koulutustyyppi}/asianhallinta/avoimet?force=${new Date().getTime()}`
+    );
   };
 
   const removeLiite = async () => {
@@ -148,8 +149,7 @@ const Asiakirjat = React.memo(() => {
             asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
           ]
         )
-      : "",
-    R.path(["nimi", intl.locale], organisation.data)
+      : ""
   ];
 
   const liitteetRowItems = useMemo(() => {
@@ -165,7 +165,7 @@ const Asiakirjat = React.memo(() => {
               " " +
               R.prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
-            intl.formatMessage(common.opetusJaKulttuuriministerio),
+            liite.luoja,
             liite.luontipvm ? (
               <Moment format="D.M.YYYY">{liite.luontipvm}</Moment>
             ) : (
@@ -191,6 +191,9 @@ const Asiakirjat = React.memo(() => {
   ]);
 
   const muutospyyntoRowItem = useMemo(() => {
+    if (!muutospyynto.fetchedAt) {
+      return {items: []};
+    }
     return {
       uuid,
       fileLinkFn: async () => {
@@ -200,10 +203,14 @@ const Asiakirjat = React.memo(() => {
         }
       },
       openInNewWindow: true,
-      items: [intl.formatMessage(common.application), ...baseRow, ""],
+      items: [intl.formatMessage(common.application),
+        ...baseRow,
+        muutospyynto.data.luoja,
+        muutospyynto.data.luontipvm ? (<Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>) : ("")
+      ],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
-  }, [baseRow, intl, muutospyynto.data, uuid, muutospyyntoActions]);
+  }, [baseRow, intl, muutospyynto.data, muutospyynto.fetchedAt, uuid, muutospyyntoActions]);
 
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
@@ -370,11 +377,9 @@ const Asiakirjat = React.memo(() => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <BreadcrumbsItem to="/">{t(common.frontpage)}</BreadcrumbsItem>
-        <BreadcrumbsItem to="/asianhallinta">
-          {t(common.asianhallinta)}
+        <BreadcrumbsItem to={`/${koulutustyyppi}/asianhallinta/${ytunnus}`}>
+          {nimi}
         </BreadcrumbsItem>
-        <BreadcrumbsItem to="/asiakirjat">{nimi}</BreadcrumbsItem>
         <div
           className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8"
           style={{
@@ -384,7 +389,7 @@ const Asiakirjat = React.memo(() => {
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
             onClick={() => {
-              history.push("/asiat");
+              history.push(`/${koulutustyyppi}/asianhallinta/avoimet`);
             }}>
             <BackIcon
               style={{
@@ -502,10 +507,11 @@ const Asiakirjat = React.memo(() => {
   } else {
     return <Loading />;
   }
-});
+};
 
 Asiakirjat.propTypes = {
-  uuid: PropTypes.object
+  uuid: PropTypes.object,
+  koulutustyyppi: PropTypes.string
 };
 
 export default Asiakirjat;

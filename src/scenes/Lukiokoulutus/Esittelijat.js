@@ -7,7 +7,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 
 import BaseData from "basedata";
 import Asiat from "./Asiat";
-import Asiakirjat from "./Asiakirjat";
+import Asiakirjat from "components/02-organisms/Asiakirjat";
 import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
 import AsiaDialogContainer from "./AsiaDialogContainer";
 
@@ -21,7 +21,7 @@ const Esittelijat = () => {
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to="/lukiokoulutus/asianhallinta">
+      <BreadcrumbsItem to="/lukiokoulutus/asianhallinta/avoimet">
         {formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
 
@@ -50,7 +50,7 @@ const Esittelijat = () => {
             authenticated={!!user}
             exact
             path={`${path}/:uuid`}
-            render={() => <Asiakirjat />}
+            render={() => <Asiakirjat koulutustyyppi={"lukiokoulutus"}/>}
           />
           <Route
             authenticated={!!user}
