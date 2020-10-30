@@ -7,10 +7,9 @@ import AsiakirjatItem from "./AsiakirjatItem";
 import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import Table from "../../components/02-organisms/Table";
+import Table from "components/02-organisms/Table";
 import { downloadFileFn } from "utils/common";
 import { useIntl } from "react-intl";
-import * as R from "ramda";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
 import { useMuutospyynto } from "stores/muutospyynto";
 import { Helmet } from "react-helmet";
@@ -24,9 +23,10 @@ import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
 import error from "i18n/definitions/error";
-import SelectAttachment from "../../components/02-organisms/SelectAttachment";
+import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
-import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
+import ConfirmDialog from "../ConfirmDialog";
+import * as R from "ramda";
 
 const WrapTable = styled.div``;
 
@@ -57,7 +57,7 @@ const states = [
   "ESITTELYSSA"
 ];
 
-const Asiakirjat = ({koulutustyyppi}) => {
+const Asiakirjat = ({ koulutustyyppi }) => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
@@ -192,7 +192,7 @@ const Asiakirjat = ({koulutustyyppi}) => {
 
   const muutospyyntoRowItem = useMemo(() => {
     if (!muutospyynto.fetchedAt) {
-      return {items: []};
+      return { items: [] };
     }
     return {
       uuid,
@@ -203,14 +203,26 @@ const Asiakirjat = ({koulutustyyppi}) => {
         }
       },
       openInNewWindow: true,
-      items: [intl.formatMessage(common.application),
+      items: [
+        intl.formatMessage(common.application),
         ...baseRow,
         muutospyynto.data.luoja,
-        muutospyynto.data.luontipvm ? (<Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>) : ("")
+        muutospyynto.data.luontipvm ? (
+          <Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>
+        ) : (
+          ""
+        )
       ],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
-  }, [baseRow, intl, muutospyynto.data, muutospyynto.fetchedAt, uuid, muutospyyntoActions]);
+  }, [
+    baseRow,
+    intl,
+    muutospyynto.data,
+    muutospyynto.fetchedAt,
+    uuid,
+    muutospyyntoActions
+  ]);
 
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
@@ -342,7 +354,10 @@ const Asiakirjat = ({koulutustyyppi}) => {
 
   const handleAddPaatoskirje = async attachment => {
     // Search for existing paatoskirje in muutospyynto
-    let paatoskirje = R.find(pk => pk.tyyppi === "paatosKirje", muutospyynto.data.liitteet || []);
+    let paatoskirje = R.find(
+      pk => pk.tyyppi === "paatosKirje",
+      muutospyynto.data.liitteet || []
+    );
     // If paatoskirje exists, replace the existing file, otherwise append to liitteet array
     if (paatoskirje) {
       paatoskirje.nimi = attachment.nimi;

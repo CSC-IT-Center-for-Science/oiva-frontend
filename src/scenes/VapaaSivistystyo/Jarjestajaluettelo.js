@@ -19,7 +19,6 @@ import { toUpper, filter } from "ramda";
 import { useIntl } from "react-intl";
 
 import common from "../../i18n/definitions/common";
-import education from "../../i18n/definitions/education";
 import { Link } from "react-router-dom";
 import Dropdown from "../../components/00-atoms/Dropdown";
 
@@ -37,8 +36,7 @@ import {
   InputLabel,
   Select,
   Input,
-  FormLabel,
-  Typography
+  FormLabel
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
@@ -71,7 +69,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = val => !val;
 
-function Table({ columns, data, intl, skipReset, updateMyData, luvat}) {
+function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -317,29 +315,45 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat}) {
   );
 }
 
-function Jarjestajaluettelo({tableData, vstTyypit, luvat}) {
+function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
   const initialData = useRef(tableData);
   const [data, setData] = useState(tableData);
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
-  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState("");
+  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
+    ""
+  );
   const intl = useIntl();
 
   useEffect(() => {
-    setData(filter(item => vstOppilaitostyyppiFilter ? vstOppilaitostyyppiFilter === item.oppilaitostyyppi : true, initialData.current))
+    setData(
+      filter(
+        item =>
+          vstOppilaitostyyppiFilter
+            ? vstOppilaitostyyppiFilter === item.oppilaitostyyppi
+            : true,
+        initialData.current
+      )
+    );
   }, [vstOppilaitostyyppiFilter]);
 
   useEffect(() => {
     const vstOptions = [];
-    vstOptions.push({value: "", label: intl.formatMessage(common.noSelection)})
+    vstOptions.push({
+      value: "",
+      label: intl.formatMessage(common.noSelection)
+    });
     vstTyypit.forEach(item => {
-      vstOptions.push({ value: item.metadata[toUpper(intl.locale)].nimi, label: item.metadata[toUpper(intl.locale)].nimi });
+      vstOptions.push({
+        value: item.metadata[toUpper(intl.locale)].nimi,
+        label: item.metadata[toUpper(intl.locale)].nimi
+      });
     });
     setvstTypeOptions(vstOptions);
-  }, [vstTyypit, intl.locale]);
+  }, [vstTyypit, intl]);
 
   const onOppilaitostyyppiSelectionChange = (_, { selectedOption }) => {
     setVstOppilaitostyyppiFilter(selectedOption);
-  }
+  };
 
   const columns = [
     {
@@ -365,12 +379,11 @@ function Jarjestajaluettelo({tableData, vstTyypit, luvat}) {
     {
       accessor: "oppilaitostyyppi",
       Header: intl.formatMessage(common.oppilaitostyyppi),
-      disableFilters: true,
+      disableFilters: true
     },
-     {
-       accessor: "ytunnus"
-     },
-
+    {
+      accessor: "ytunnus"
+    }
   ];
 
   // We need to keep the table from resetting the pageIndex when we
@@ -403,35 +416,35 @@ function Jarjestajaluettelo({tableData, vstTyypit, luvat}) {
     skipResetRef.current = false;
   }, [data]);
 
-     return (
-       <div className="mx-auto w-full mb-16">
-         <p className="mt-4 mb-8">
-           {intl.formatMessage(common.kjSivuinfo, {kpl: luvat.length})}
-         </p>
-         <CssBaseline/>
-         <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">
-           <Dropdown
-             onChanges={onOppilaitostyyppiSelectionChange}
-             isClearable={true}
-             options={vstTypeOptions}
-             value={vstOppilaitostyyppiFilter}
-             fullWidth={true}
-             label={intl.formatMessage(common.filterByOppilaitostyyppi)}
-             isTall={false}
-             className="w-full lg:w-20"
-             emptyMessage={intl.formatMessage(common.noSelection)}
-           />
-         </div>
-         <Table
-           columns={columns}
-           data={data}
-           intl={intl}
-           skipReset={skipResetRef.current}
-           updateMyData={updateMyData}
-           luvat={luvat}
-         />
-       </div>
-     );
+  return (
+    <div className="mx-auto w-full mb-16">
+      <p className="mt-4 mb-8">
+        {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
+      </p>
+      <CssBaseline />
+      <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">
+        <Dropdown
+          onChanges={onOppilaitostyyppiSelectionChange}
+          isClearable={true}
+          options={vstTypeOptions}
+          value={vstOppilaitostyyppiFilter}
+          fullWidth={true}
+          label={intl.formatMessage(common.filterByOppilaitostyyppi)}
+          isTall={false}
+          className="w-full lg:w-20"
+          emptyMessage={intl.formatMessage(common.noSelection)}
+        />
+      </div>
+      <Table
+        columns={columns}
+        data={data}
+        intl={intl}
+        skipReset={skipResetRef.current}
+        updateMyData={updateMyData}
+        luvat={luvat}
+      />
+    </div>
+  );
 }
 
 export default Jarjestajaluettelo;

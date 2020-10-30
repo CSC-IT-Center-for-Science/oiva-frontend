@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Typography } from "@material-ui/core";
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
@@ -26,39 +26,6 @@ export default function VapaaSivistystyo({ vstLuvat, vstTyypit }) {
   const location = useLocation();
   const [userState] = useUser();
   const { data: user } = userState;
-
-  // useEffect(() => {
-  //   if (vstLuvat) {
-  //     const filteredLuvat =
-  //       vstYllapitajaFilter.length > 0
-  //         ? map(lupa => {
-  //             const nimi = resolveLocalizedOrganizerName(lupa, intl.locale);
-  //             const oppilaitosnimi =
-  //               resolveVSTOppilaitosNameFromLupa(lupa, intl.locale) || "";
-  //             if (nimi) {
-  //               return (
-  //                 nimi
-  //                   .toLocaleLowerCase()
-  //                   .includes(vstYllapitajaFilter.toLocaleLowerCase()) ||
-  //                 oppilaitosnimi
-  //                   .toLocaleLowerCase()
-  //                   .includes(vstYllapitajaFilter.toLocaleLowerCase())
-  //               );
-  //             } else {
-  //               return false;
-  //             }
-  //           }, filteredLuvat)
-  //         : [];
-  //     if (vstOppilaitostyyppiFilter) {
-  //       filteredLuvat = filteredLuvat.filter(
-  //         lupa => lupa.oppilaitostyyppi === vstOppilaitostyyppiFilter
-  //       );
-  //     }
-  //     setLuvat(filteredLuvat);
-  //     setAllDataLength(luvatRaw.data.length);
-  //     setFilteredDataLength(filteredLuvat.length);
-  //   }
-  // }, [vstLuvat, vstYllapitajaFilter, vstOppilaitostyyppiFilter, intl.locale]);
 
   return (
     <div>

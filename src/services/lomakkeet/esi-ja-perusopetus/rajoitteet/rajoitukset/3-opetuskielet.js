@@ -1,5 +1,5 @@
-import { getkieletOPHFromStorage } from "helpers/opetuskielet";
-import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
+import { getChangeObjByAnchor } from "components/02-organisms/CategorizedListRoot/utils";
+import { getEnsisijaisetOpetuskieletOPHFromStorage } from "helpers/opetuskielet";
 import { map, toUpper } from "ramda";
 
 export default async function opetustehtavat(
@@ -7,20 +7,30 @@ export default async function opetustehtavat(
   changeObjects = [],
   locale
 ) {
-  const opetuskielet = await getkieletOPHFromStorage();
+  const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const localeUpper = toUpper(locale);
-  console.info(asetus, changeObjects, opetuskielet, locale);
   const anchorA = `opetuskielet.opetuskieli.ensisijaiset`;
   const anchorB = `opetuskielet.opetuskieli.toissijaiset`;
   const changeLangObj = getChangeObjByAnchor(anchorA, changeObjects);
   const addLangObj = getChangeObjByAnchor(anchorB, changeObjects);
 
-  if (changeLangObj && changeLangObj.properties || addLangObj && addLangObj.properties) {
-
-    let valitutKielet = changeLangObj.properties.value || addLangObj.properties.value;
+  if (
+    (changeLangObj && changeLangObj.properties) ||
+    (addLangObj && addLangObj.properties)
+  ) {
+    let valitutKielet =
+      changeLangObj.properties.value || addLangObj.properties.value;
     // lisätään toissijaiset kielet vain, jos on sekä ensi- että toissijaisia kieliä
-    if (changeLangObj && changeLangObj.properties && addLangObj && addLangObj.properties){
-      valitutKielet = [].concat(changeLangObj.properties.value, addLangObj.properties.value);
+    if (
+      changeLangObj &&
+      changeLangObj.properties &&
+      addLangObj &&
+      addLangObj.properties
+    ) {
+      valitutKielet = [].concat(
+        changeLangObj.properties.value,
+        addLangObj.properties.value
+      );
     }
 
     return {
@@ -31,10 +41,11 @@ export default async function opetustehtavat(
           name: "Autocomplete",
           properties: {
             options: map(kieli => {
-              return  {
-                label: opetuskielet.filter(opetuskieli => {return opetuskieli.koodiarvo === kieli.value})
-                  [0]. metadata[localeUpper].nimi // filtteröity lokalisoitu kielen nimi opetuskielten joukosta
-                  || kieli.label,// tai osan ei pitäisi koskaan tulla, varmistus
+              return {
+                label:
+                  opetuskielet.filter(opetuskieli => {
+                    return opetuskieli.koodiarvo === kieli.value;
+                  })[0].metadata[localeUpper].nimi || kieli.label, // filtteröity lokalisoitu kielen nimi opetuskielten joukosta // tai osan ei pitäisi koskaan tulla, varmistus
                 value: kieli.value
               };
             }, valitutKielet),
