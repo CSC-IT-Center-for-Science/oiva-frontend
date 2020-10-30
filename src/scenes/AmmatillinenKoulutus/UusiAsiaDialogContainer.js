@@ -4,8 +4,54 @@ import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../utils/lupaParser";
 import { isEmpty } from "ramda";
-import { MuutoksetContainer } from "./store";
-import { LomakedataContainer } from "./lomakedata";
+
+const changeObjects = {
+  tutkinnot: {},
+  kielet: {
+    opetuskielet: [],
+    tutkintokielet: {}
+  },
+  koulutukset: {
+    atvKoulutukset: [],
+    kuljettajakoulutukset: [],
+    valmentavatKoulutukset: []
+  },
+  perustelut: {
+    kielet: {
+      opetuskielet: [],
+      tutkintokielet: []
+    },
+    koulutukset: {
+      atvKoulutukset: [],
+      kuljettajakoulutukset: [],
+      tyovoimakoulutukset: [],
+      valmentavatKoulutukset: []
+    },
+    opiskelijavuodet: {
+      sisaoppilaitos: [],
+      vaativatuki: [],
+      vahimmaisopiskelijavuodet: []
+    },
+    liitteet: [],
+    toimintaalue: [],
+    tutkinnot: {}
+  },
+  taloudelliset: {
+    yleisettiedot: [],
+    investoinnit: [],
+    tilinpaatostiedot: [],
+    liitteet: []
+  },
+  muut: {},
+  opiskelijavuodet: [],
+  toimintaalue: [],
+  yhteenveto: {
+    yleisettiedot: [],
+    hakemuksenLiitteet: []
+  },
+  // Top three fields of muutospyyntö form of esittelijä role
+  topthree: []
+};
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -56,31 +102,26 @@ const UusiAsiaDialogContainer = ({
   );
 
   return (
-    <React.Fragment>
-      <LomakedataContainer>
-        <MuutoksetContainer>
-          <UusiAsiaDialog
-            history={history}
-            kielet={kielet}
-            kohteet={kohteet}
-            koulutukset={koulutukset}
-            koulutusalat={koulutusalat}
-            koulutustyypit={koulutustyypit}
-            kunnat={kunnat}
-            lupa={viimeisinLupa}
-            lupaKohteet={lupaKohteet}
-            maakunnat={maakunnat}
-            maakuntakunnat={maakuntakunnat}
-            maaraystyypit={maaraystyypit}
-            muut={muut}
-            onNewDocSave={onNewDocSave}
-            opetuskielet={opetuskielet}
-            organisation={organisaatio}
-            tutkinnot={tutkinnot}
-          />
-        </MuutoksetContainer>
-      </LomakedataContainer>
-    </React.Fragment>
+    <UusiAsiaDialog
+      history={history}
+      initialChangeObjects={changeObjects}
+      kielet={kielet}
+      kohteet={kohteet}
+      koulutukset={koulutukset}
+      koulutusalat={koulutusalat}
+      koulutustyypit={koulutustyypit}
+      kunnat={kunnat}
+      lupa={viimeisinLupa}
+      lupaKohteet={lupaKohteet}
+      maakunnat={maakunnat}
+      maakuntakunnat={maakuntakunnat}
+      maaraystyypit={maaraystyypit}
+      muut={muut}
+      onNewDocSave={onNewDocSave}
+      opetuskielet={opetuskielet}
+      organisation={organisaatio}
+      tutkinnot={tutkinnot}
+    />
   );
 };
 

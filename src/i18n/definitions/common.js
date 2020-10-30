@@ -1174,5 +1174,9 @@ export default defineMessages({
     id: "common.lupaPageTitleVSTLiikunnanKoulutuskeskus",
     defaultMessage:
       "Ajantasainen liikunnan koulutuskeskuksen ylläpitämislupa {date}"
+  },
+  voimassaoleva: {
+    id: "common.voimassaoleva",
+    defaultMessage: "Voimassaoleva"
   }
 });

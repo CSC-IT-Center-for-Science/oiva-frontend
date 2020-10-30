@@ -1,15 +1,13 @@
 import { isAdded, isRemoved, isInLupa } from "../../../../css/label";
-import { getOpetuskieletFromStorage } from "helpers/opetuskielet";
-import { isNil, map, reject, toUpper } from "ramda";
+import { map, toUpper } from "ramda";
 
 /**
  * For: Koulutuksen järjestäjä
  * Used on: Wizard page 1
  * Section: kielet, opetuskielet
  */
-async function getModificationForm(locale) {
+function getModificationForm(locale, opetuskielet) {
   const localeUpper = toUpper(locale);
-  const opetuskielet = await getOpetuskieletFromStorage();
   return map(opetuskieli => {
     return {
       anchor: opetuskieli.koodiarvo,
@@ -18,12 +16,12 @@ async function getModificationForm(locale) {
           anchor: "A",
           name: "CheckboxWithLabel",
           properties: {
-            forChangeObject: reject(isNil)({
+            forChangeObject: {
               isInLupa: !!opetuskieli.maarays,
               maaraysUuid: opetuskieli.maaraysUuid,
               kuvaus: opetuskieli.metadata[localeUpper].kuvaus,
               meta: opetuskieli.meta
-            }),
+            },
             name: "CheckboxWithLabel",
             isChecked: !!opetuskieli.maarays,
             title: opetuskieli.metadata[localeUpper].nimi,
@@ -39,15 +37,10 @@ async function getModificationForm(locale) {
   }, opetuskielet);
 }
 
-export default async function getOpetuskieletLomake(
-  action,
-  data,
-  isReadOnly,
-  locale
-) {
+export default function getOpetuskieletLomake(action, data, isReadOnly, locale) {
   switch (action) {
     case "modification":
-      return await getModificationForm(locale);
+      return getModificationForm(locale, data.opetuskielet);
     default:
       return [];
   }

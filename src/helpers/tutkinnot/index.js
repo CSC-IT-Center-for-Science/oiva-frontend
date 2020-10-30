@@ -43,7 +43,7 @@ export async function getTutkinnotGroupedBy(key, tutkinnot) {
  * @param {array} tutkinnot
  * @param {array} changeObjects
  */
-export function getAktiivisetTutkinnot(tutkinnot = [], changeObjects = []) {
+export function getActiveOnes(tutkinnot = [], changeObjects = []) {
   const activeOnes = filter(tutkinto => {
     const anchor = `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
     const changeObj = find(propEq("anchor", anchor), changeObjects);
@@ -90,15 +90,13 @@ export const initializeTutkintokielet = (tutkinto, maaraykset = []) => {
               ..._alimaarays,
               koodi: {
                 koodiarvo: _alimaarays.koodiarvo,
-                metadata: _alimaarays.koodi
-                  ? mapObjIndexed(
-                      head,
-                      groupBy(
-                        prop("kieli"),
-                        path(["koodi", "metadata"], _alimaarays)
-                      )
-                    )
-                  : null
+                metadata: _alimaarays.koodi ? mapObjIndexed(
+                  head,
+                  groupBy(
+                    prop("kieli"),
+                    path(["koodi", "metadata"], _alimaarays)
+                  )
+                ) : null
               }
             };
             alimaarays = dissocPath(["koodi", "koodiArvo"], alimaarays);

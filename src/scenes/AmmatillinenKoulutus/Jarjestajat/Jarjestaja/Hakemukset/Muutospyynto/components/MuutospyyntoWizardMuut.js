@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
+import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
 import { parseLocalizedField } from "../../../../../../../modules/helpers";
 import wizardMessages from "../../../../../../../i18n/definitions/wizard";
+import common from "../../../../../../../i18n/definitions/common";
+import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
-import Muu from "./Muu";
 import * as R from "ramda";
-import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 /**
  * If anyone of the following codes is active a notification (Alert comp.)
@@ -18,23 +18,19 @@ const koodiarvot = [2, 16, 17, 18, 19, 20, 21].concat(4);
 const MuutospyyntoWizardMuut = props => {
   const intl = useIntl();
   const sectionId = "muut";
+  const { onChangesRemove, onChangesUpdate } = props;
 
-  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "muut"
-  });
-
-  const [opiskelijavuodetData] = useLomakedata({
-    anchor: "opiskelijavuodet"
-  });
+  const osiota5koskevatMaaraykset = R.filter(
+    R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
+    props.maaraykset || []
+  );
 
   const divideArticles = useMemo(() => {
     return () => {
-      const osiota5koskevatMaaraykset = R.filter(
-        R.propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
-        props.maaraykset || []
-      );
       const group = {};
-
+      const flattenArrayOfChangeObjects = R.flatten(
+        R.values(props.changeObjects.muut)
+      );
       R.forEach(article => {
         const { metadata } = article;
         const kasite =
@@ -61,7 +57,7 @@ const MuutospyyntoWizardMuut = props => {
               changeObj.properties.isChecked &&
               R.includes(parseInt(koodiarvo, 10), koodiarvot)
             );
-          }, changeObjects);
+          }, flattenArrayOfChangeObjects);
         if (
           (kuvaus || R.includes(article.koodiarvo, ["22", "7", "8"])) &&
           kasite &&
@@ -73,7 +69,7 @@ const MuutospyyntoWizardMuut = props => {
       }, props.muut);
       return group;
     };
-  }, [changeObjects, props.maaraykset, props.muut]);
+  }, [props.changeObjects, osiota5koskevatMaaraykset, props.muut]);
 
   /**
    * The config will be looped through and the forms of section 5
@@ -120,11 +116,7 @@ const MuutospyyntoWizardMuut = props => {
             componentName: "CheckboxWithLabel",
             title: intl.formatMessage(wizardMessages.chooseAdditional)
           }
-        ],
-        shouldAlertBeVisible: !R.path(
-          ["vaativaTuki", "isApplyForValueSet"],
-          opiskelijavuodetData
-        )
+        ]
       },
       {
         code: "03",
@@ -139,11 +131,7 @@ const MuutospyyntoWizardMuut = props => {
             articles: dividedArticles.sisaoppilaitos || [],
             componentName: "CheckboxWithLabel"
           }
-        ],
-        shouldAlertBeVisible: !R.path(
-          ["sisaoppilaitos", "isApplyForValueSet"],
-          opiskelijavuodetData
-        )
+        ]
       },
       {
         code: "04",
@@ -236,20 +224,47 @@ const MuutospyyntoWizardMuut = props => {
         ]
       }
     ];
-  }, [divideArticles, intl, opiskelijavuodetData]);
+  }, [divideArticles, intl]);
+
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  };
 
   return (
     <React.Fragment>
-      {R.map(
-        configObj => (
-          <Muu
-            configObj={configObj}
-            key={configObj.code}
-            sectionId={`${sectionId}_${configObj.code}`}
-          />
-        ),
-        R.filter(R.propEq("isInUse", true))(config)
-      ).filter(Boolean)}
+      {R.addIndex(R.map)((configObj, i) => {
+        const fullSectionId = `${sectionId}_${configObj.code}`;
+        return (
+          <ExpandableRowRoot
+            anchor={fullSectionId}
+            key={`expandable-row-root-${i}`}
+            changes={R.prop(configObj.code, props.changeObjects.muut)}
+            hideAmountOfChanges={true}
+            messages={changesMessages}
+            index={i}
+            onUpdate={onChangesUpdate}
+            sectionId={fullSectionId}
+            showCategoryTitles={true}
+            title={configObj.title}
+            onChangesRemove={onChangesRemove}>
+            <Lomake
+              action="modification"
+              anchor={fullSectionId}
+              changeObjects={R.prop(configObj.code, props.changeObjects.muut)}
+              data={{
+                configObj,
+                opiskelijavuodetChangeObjects:
+                  props.changeObjects.opiskelijavuodet,
+                osiota5koskevatMaaraykset
+              }}
+              onChangesUpdate={onChangesUpdate}
+              path={["muut"]}
+              showCategoryTitles={true}
+            />
+          </ExpandableRowRoot>
+        );
+      }, R.filter(R.propEq("isInUse", true))(config))}
     </React.Fragment>
   );
 };
@@ -257,7 +272,9 @@ const MuutospyyntoWizardMuut = props => {
 MuutospyyntoWizardMuut.propTypes = {
   headingNumber: PropTypes.number,
   maaraykset: PropTypes.array,
-  muut: PropTypes.array
+  muut: PropTypes.array,
+  onChangesRemove: PropTypes.func,
+  onChangesUpdate: PropTypes.func
 };
 
 export default MuutospyyntoWizardMuut;

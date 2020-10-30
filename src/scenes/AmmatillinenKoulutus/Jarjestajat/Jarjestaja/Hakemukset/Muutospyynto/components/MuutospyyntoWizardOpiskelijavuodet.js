@@ -1,131 +1,31 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
+import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
+import common from "../../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import { useIntl } from "react-intl";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
-import {
-  filter,
-  includes,
-  find,
-  path,
-  head,
-  values,
-  flatten,
-  propEq,
-  isEmpty,
-  length,
-  difference
-} from "ramda";
-import {
-  useChangeObjectsByAnchor,
-  useChangeObjectsByAnchorWithoutUnderRemoval
-} from "scenes/AmmatillinenKoulutus/store";
-import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
-
-const constants = {
-  formLocation: ["opiskelijavuodet"]
-};
-
-/**
- * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 03
- * (vaativa tuki), näytetään vaativaa tukea koskevat kentät tässä osiossa
- * (Opiskelijavuodet).
- **/
-export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
+import { values, filter, flatten, includes, find, path } from "ramda";
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({ maaraykset, muut, sectionId }) => {
-    const [
-      changeObjects,
-      { setChanges }
-    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "opiskelijavuodet"
-    });
-    const [muutChangeObjects] = useChangeObjectsByAnchor({
-      anchor: "muut"
-    });
-    const [lomakedata] = useLomakedata({
-      anchor: sectionId
-    });
-    const [muutLomakedata, { setLomakedata }] = useLomakedata({
-      anchor: "muut"
-    });
+  ({
+    changeObjects,
+    maaraykset,
+    muut,
+    onChangesRemove,
+    onChangesUpdate,
+    sectionId
+  }) => {
+    const intl = useIntl();
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
       maaraykset
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
-
-    const vahimmaisopiskelijavuodetMaarays = find(
-      propEq("koodisto", "koulutussektori"),
-      maaraykset
-    );
-
-    /**
-     * Muodostetaan data, jonka perusteella lomake voidaan luoda
-     * lomakepalvelussa. Koska opiskelijavuosiosion sisältö riippuu Muut-osion
-     * sisällöstä, on tarpeen reagoida Muut-osiossa tehtyihin muutoksiin.
-     */
-    useEffect(() => {
-      // Mikäli Muut-osion lomakkeelta 02 (vaativa tuki) on valittu jokin
-      // listatuista koodiarvoista, on vaativaa tukea koskeva tietue näytettävä
-      // opiskelijavuosiosiossa.
-      const visibilityOfVaativaTuki =
-        length(
-          difference(
-            vaativatCodes,
-            path(["02", "valitutKoodiarvot"], muutLomakedata) || []
-          )
-        ) < length(vaativatCodes);
-      // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
-      // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
-      // opiskelijavuosiosiossa.
-      const visibilityOfSisaoppilaitos = filter(
-        koodiarvo => includes(koodiarvo, vaativatCodes),
-        path(["03", "valitutKoodiarvot"], muutLomakedata) || []
-      );
-      console.info(visibilityOfSisaoppilaitos);
-      setLomakedata(
-        {
-          sisaoppilaitos: visibilityOfSisaoppilaitos,
-          vaativaTuki: visibilityOfVaativaTuki
-        },
-        `${sectionId}_visibility`
-      );
-    }, [muutLomakedata]);
-
-    useEffect(() => {
-      console.info(changeObjects);
-      const vahimmaisopiskelijavuodetChangeObj = find(
-        propEq("anchor", `${sectionId}.vahimmaisopiskelijavuodet.A`),
-        changeObjects
-      );
-      if (!!vahimmaisopiskelijavuodetChangeObj) {
-        setLomakedata(
-          vahimmaisopiskelijavuodetChangeObj.properties.isValueSet,
-          `${sectionId}_vahimmaisopiskelijavuodet_isApplyForValueSet`
-        );
-      }
-      const sisaoppilaitosChangeObj = find(
-        propEq("anchor", `${sectionId}.sisaoppilaitos.A`),
-        changeObjects
-      );
-      if (!!sisaoppilaitosChangeObj) {
-        setLomakedata(
-          sisaoppilaitosChangeObj.properties.isValueSet,
-          `${sectionId}_sisaoppilaitos_isApplyForValueSet`
-        );
-      }
-      const vaativaTukiChangeObj = find(
-        propEq("anchor", `${sectionId}.vaativatuki.A`),
-        changeObjects
-      );
-      if (!!vaativaTukiChangeObj) {
-        setLomakedata(
-          vaativaTukiChangeObj.properties.isValueSet,
-          `${sectionId}_vaativaTuki_isApplyForValueSet`
-        );
-      }
-    }, [changeObjects, setLomakedata]);
+    const changesMessages = {
+      undo: intl.formatMessage(common.undo),
+      changesTest: intl.formatMessage(common.changesText)
+    };
 
     /**
      * Opiskelijavuodet-osio (4) on kytköksissä osioon 5 (Muut oikeudet,
@@ -138,57 +38,84 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
      * tallennusvaiheessa backendille lähtee väärä koodiarvo koskien
      * vaativaan tukeen liittyvää opiskelijavuosimäärätietoa.
      */
-    // useEffect(() => {
-    //   const activeSection5VaativaTukiChangeObj = find(changeObj => {
-    //     return (
-    //       includes("vaativatuki", changeObj.anchor) &&
-    //       changeObj.properties.isChecked
-    //     );
-    //   }, flatten(values(head(muutChangeObjects))));
+    useEffect(() => {
+      const activeSection5VaativaTukiChangeObj = find(changeObj => {
+        return (
+          includes("vaativatuki", changeObj.anchor) &&
+          changeObj.properties.isChecked
+        );
+      }, flatten(values(changeObjects.muut)));
 
-    //   const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
-    //     ? path(
-    //         ["properties", "metadata", "koodiarvo"],
-    //         activeSection5VaativaTukiChangeObj
-    //       )
-    //     : null;
+      const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
+        ? path(
+            ["properties", "metadata", "koodiarvo"],
+            activeSection5VaativaTukiChangeObj
+          )
+        : null;
 
-    //   const activeSection4VaativaTukiChangeObj = find(changeObj => {
-    //     return includes("vaativatuki", changeObj.anchor);
-    //   }, changeObjects);
+      const activeSection4VaativaTukiChangeObj = find(changeObj => {
+        return includes("vaativatuki", changeObj.anchor);
+      }, changeObjects.opiskelijavuodet);
 
-    //   const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
-    //     ? path(
-    //         ["properties", "metadata", "koodiarvo"],
-    //         activeSection4VaativaTukiChangeObj
-    //       )
-    //     : null;
+      const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
+        ? path(
+            ["properties", "metadata", "koodiarvo"],
+            activeSection4VaativaTukiChangeObj
+          )
+        : null;
 
-    //   if (
-    //     activeSection4VaativaTukiChangeObj &&
-    //     vaativaTukiKoodiarvoSection4 !== null &&
-    //     vaativaTukiKoodiarvoSection5 !== null &&
-    //     vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
-    //   ) {
-    //     setChanges(
-    //       filter(changeObj => {
-    //         return (
-    //           changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
-    //         );
-    //       }, changeObjects),
-    //       sectionId
-    //     );
-    //   }
-    // }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
+      if (
+        activeSection4VaativaTukiChangeObj &&
+        vaativaTukiKoodiarvoSection4 !== null &&
+        vaativaTukiKoodiarvoSection5 !== null &&
+        vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
+      ) {
+        onChangesUpdate({
+          anchor: sectionId,
+          changes: filter(changeObj => {
+            return (
+              changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
+            );
+          }, changeObjects.opiskelijavuodet || [])
+        });
+      }
+    }, [
+      changeObjects.muut,
+      changeObjects.opiskelijavuodet,
+      onChangesUpdate,
+      sectionId
+    ]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
-      <Lomake
-        action="modification"
+      <ExpandableRowRoot
         anchor={sectionId}
-        data={lomakedata}
-        isRowExpanded={true}
-        path={constants.formLocation}
-        showCategoryTitles={true}></Lomake>
+        key={`expandable-row-root`}
+        categories={[]}
+        changes={changeObjects.opiskelijavuodet}
+        hideAmountOfChanges={true}
+        messages={changesMessages}
+        onChangesRemove={onChangesRemove}
+        onUpdate={onChangesUpdate}
+        sectionId={sectionId}
+        showCategoryTitles={true}
+        isExpanded={true}>
+        <Lomake
+          action="modification"
+          anchor={sectionId}
+          changeObjects={changeObjects.opiskelijavuodet}
+          data={{
+            isSisaoppilaitosValueRequired: false,
+            isVaativaTukiValueRequired: false,
+            maaraykset: opiskelijavuosiMaaraykset,
+            muut,
+            muutChanges: changeObjects.muut,
+            muutMaaraykset,
+            sectionId: sectionId
+          }}
+          onChangesUpdate={onChangesUpdate}
+          path={["opiskelijavuodet"]}
+          showCategoryTitles={true}></Lomake>
+      </ExpandableRowRoot>
     ) : null;
   }
 );
@@ -201,6 +128,8 @@ MuutospyyntoWizardOpiskelijavuodet.propTypes = {
   lupaKohteet: PropTypes.object,
   maaraykset: PropTypes.array,
   muut: PropTypes.array,
+  onChangesRemove: PropTypes.func,
+  onChangesUpdate: PropTypes.func,
   sectionId: PropTypes.string
 };
 

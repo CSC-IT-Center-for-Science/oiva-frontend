@@ -15,23 +15,29 @@ import {
 } from "ramda";
 import maaraaika from "./rajoitukset/maaraaika";
 import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
+import opetuskielet from "./rajoitukset/3-opetuskielet";
+import opetustehtavat from "./rajoitukset/1-opetustehtavat";
 import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
   maaraaika: "Määräaika",
   opetustaAntavatKunnat: "2. Kunnat, joissa opetusta järjestetään",
+  opetuskielet: "3. Opetuskieli",
   opetustehtavat: "1. Opetus, jota lupa koskee"
 };
 
 const changeObjectMapping = {
   maaraaika: "maaraaika",
   opetustaAntavatKunnat: "toimintaalue",
+  opetuskielet: "opetuskielet",
   opetustehtavat: "opetustehtavat"
 };
 
 const sections = {
   maaraaika,
   opetustaAntavatKunnat,
+  opetuskielet,
+  opetustehtavat,
   getOpetustehtavatLomake
 };
 
@@ -132,7 +138,6 @@ async function defineRajoituksetStructure(
       ? groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id]
       : {};
     const asetus = Object.assign({}, initialAsetus, asetusChangeObj);
-    console.info(asetus);
 
     const updatedStructure = append(
       await defineRajoitusStructure(

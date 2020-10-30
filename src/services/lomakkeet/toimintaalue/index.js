@@ -1,4 +1,4 @@
-const getModificationForm = (
+function getModificationForm(
   isEditViewActive,
   changeObjectsByProvince = {},
   quickFilterChanges = [],
@@ -8,7 +8,7 @@ const getModificationForm = (
   maakunnat,
   localizations,
   toggleEditView
-) => {
+) {
   return [
     {
       anchor: "valintakentta",
@@ -34,7 +34,7 @@ const getModificationForm = (
       ]
     }
   ];
-};
+}
 
 export default function getToimintaaluelomake(action, data) {
   switch (action) {

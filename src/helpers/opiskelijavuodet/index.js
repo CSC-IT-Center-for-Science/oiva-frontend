@@ -1,5 +1,4 @@
 import * as R from "ramda";
-import { getAnchorInit } from "utils/common";
 
 // Magic constants
 
@@ -106,19 +105,31 @@ export function createBackendChangeObjects(
     R.values,
     R.filter(R.propEq("tunniste", "muut"))
   )(lupamuutokset);
-  const unhandledChangeObjects =
+
+  const unhandledChangeObjects = R.compose(
     // Filter out opiskelijamaararajoitukset if they are not visible
-    R.filter(changeObj => {
-      const anchorInit = getAnchorInit(changeObj.anchor);
+    R.filter(({ anchorInit }) => {
       if (anchorInit === "opiskelijavuodet.vaativatuki") {
         return isVaativatukiRajoitusVisible(muutMaaraykset, muutMuutokset);
       } else if (anchorInit === "opiskelijavuodet.sisaoppilaitos") {
         return isSisaoppilaitosRajoitusVisible(muutMaaraykset, muutMuutokset);
       }
       return true;
-    }, changeObjects.muutokset);
+    }),
 
-  console.info(unhandledChangeObjects);
+    // Set anchorInit property
+    R.map(changeObj => {
+      const anchorInit = R.compose(
+        R.join("."),
+        R.init,
+        R.split(".")
+      )(changeObj.anchor);
+      return {
+        ...changeObj,
+        anchorInit
+      };
+    })
+  )(changeObjects.muutokset);
 
   const uudetMuutokset = R.map(changeObj => {
     const anchorParts = R.split(".", changeObj.anchor);
@@ -129,11 +140,10 @@ export function createBackendChangeObjects(
       R.nth(1, anchorParts)
     );
     if (!isVahimmaismaara) {
-      console.info(muut, koodiarvo);
       koodisto = (R.find(R.propEq("koodiarvo", koodiarvo), muut) || {})
         .koodisto;
     }
-    const anchorInit = getAnchorInit(changeObj.anchor);
+    const anchorInit = changeObj.anchorInit;
     let anchor = "";
     if (anchorInit === "opiskelijavuodet.vahimmaisopiskelijavuodet") {
       anchor = "perustelut_opiskelijavuodet_vahimmaisopiskelijavuodet";
@@ -211,18 +221,16 @@ export function createBackendChangeObjects(
     R.filter(R.propEq("tunniste", "opiskelijavuodet"))
   )(lupamuutokset);
 
-  const generateMuutosFromMaarays = maarays => {
-    return R.reject(R.isNil)({
-      kategoria: "opiskelijavuodet",
-      koodiarvo: maarays.koodiarvo,
-      koodisto: maarays.koodisto,
-      kohde: maarays.kohde,
-      maaraysUuid: maarays.maaraysUuid,
-      maaraystyyppi: R.find(R.propEq("tunniste", "RAJOITE"), maaraystyypit),
-      meta: {},
-      tila: "POISTO"
-    });
-  };
+  const generateMuutosFromMaarays = maarays => ({
+    kategoria: "opiskelijavuodet",
+    koodiarvo: maarays.koodiarvo,
+    koodisto: maarays.koodisto,
+    kohde: maarays.kohde,
+    maaraysUuid: maarays.maaraysUuid,
+    maaraystyyppi: R.find(R.propEq("tunniste", "RAJOITE"), maaraystyypit),
+    meta: {},
+    tila: "POISTO"
+  });
 
   // If last radio selection (23) is selected, vuosimaara should be removed
   if (findIsChecked(vaativatukiSelectionAnchor, muutMuutokset)) {
@@ -239,8 +247,6 @@ export function createBackendChangeObjects(
       uudetMuutokset.push(generateMuutosFromMaarays(sisaoppilaitosMaarays));
     }
   }
-
-  console.info(uudetMuutokset);
 
   return R.flatten([uudetMuutokset]);
 }

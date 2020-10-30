@@ -1,36 +1,94 @@
-import React from "react";
+import React, { useMemo, useRef } from "react";
+import Opetuskielet from "./Kielet/Opetuskielet";
 import PropTypes from "prop-types";
 import Tutkintokielet from "./Kielet/Tutkintokielet";
-import Lomake from "components/02-organisms/Lomake";
-import { useIntl } from "react-intl";
-import wizardMessages from "../../../../../../../i18n/definitions/wizard";
+import * as R from "ramda";
+import _ from "lodash";
 
-const constants = {
-  formLocation: {
-    opetuskielet: ["kielet", "opetuskielet"]
-  }
-};
+const MuutospyyntoWizardKielet = props => {
+  const prevTutkinnotItemsRef = useRef();
 
-const MuutospyyntoWizardKielet = ({ koulutusalat, tutkinnot }) => {
-  const intl = useIntl();
+  /**
+   * Array of anhors of checkboxes which have been checked. The idea behind
+   * this is to remove corresponding change objects of Tutkintokielet section.
+   *
+   * E.g."321204 Musiikkialan perustutkinto" has been checked and user
+   * disables it. We need to remove all changes on Tutkintokielet section
+   * related to the disabed degree.
+   */
+  const unselectedAnchors = useMemo(() => {
+    const clonedPrevChanges = _.cloneDeep(prevTutkinnotItemsRef.current) || {};
+
+    /**
+     * There are two use cases:
+     *
+     * 1) Degree is unchecked. User activates it and deactivates it later.
+     * 2) Degree is checked by default and user deactivates.
+     */
+
+    // Use case 1 (Array 1)
+    const wereSelected = R.map(
+      R.prop("anchor"),
+      R.flatten(
+        R.values(
+          R.mapObjIndexed((value, key) => {
+            return R.filter(changeObj => {
+              const isInCurrentChanges = !!R.find(
+                R.propEq("anchor", changeObj.anchor),
+                props.changeObjects.tutkinnot[key] || []
+              );
+              return changeObj.properties.isChecked && !isInCurrentChanges;
+            }, value);
+          }, clonedPrevChanges)
+        )
+      )
+    );
+
+    // Use case 2 (Array 2)
+    const wereSelectedByDefault = R.map(
+      R.prop("anchor"),
+      R.filter(
+        R.compose(R.equals(false), R.path(["properties", "isChecked"])),
+        R.flatten(R.values(props.changeObjects.tutkinnot))
+      )
+    );
+
+    prevTutkinnotItemsRef.current = props.changeObjects.tutkinnot;
+
+    // Here we combine the arrays 1 and 2
+    return R.concat(wereSelected, wereSelectedByDefault);
+  }, [props.changeObjects.tutkinnot]);
+
   return (
     <React.Fragment>
-      <Lomake
-        action="modification"
-        anchor={"kielet_opetuskielet"}
-        isRowExpanded={true}
-        path={constants.formLocation.opetuskielet}
-        rowTitle={intl.formatMessage(wizardMessages.teachingLanguages)}
-        showCategoryTitles={true}
+      <Opetuskielet
+        changeObjects={props.changeObjects}
+        opetuskielet={props.opetuskielet}
+        onChangesRemove={props.onChangesRemove}
+        onChangesUpdate={props.onChangesUpdate}
       />
 
-      <Tutkintokielet koulutusalat={koulutusalat} tutkinnot={tutkinnot} />
+      <Tutkintokielet
+        changeObjects={props.changeObjects}
+        kielet={props.kielet}
+        koulutusalat={props.koulutusalat}
+        koulutustyypit={props.koulutustyypit}
+        onChangesRemove={props.onChangesRemove}
+        onChangesUpdate={props.onChangesUpdate}
+        tutkinnot={props.tutkinnot}
+        unselectedAnchors={unselectedAnchors}
+      />
     </React.Fragment>
   );
 };
 
 MuutospyyntoWizardKielet.propTypes = {
+  kielet: PropTypes.array,
+  koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
+  koulutustyypit: PropTypes.array,
+  lupaKohteet: PropTypes.object,
+  opetuskielet: PropTypes.array,
   tutkinnot: PropTypes.array
 };
 

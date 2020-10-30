@@ -1,4 +1,5 @@
+import en from "./en.json";
 import fi from "./fi.json";
 import sv from "./sv.json";
 
-export default { fi, sv };
+export default { en, fi, sv };

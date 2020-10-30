@@ -12,7 +12,6 @@ import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "../../components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "./UusiAsiaEsidialog";
 import { last, split } from "ramda";
-import BaseData from "basedata";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -45,8 +44,6 @@ const OivaTabs = withStyles(() => ({
   }
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
-const requiredResources = ["organisaatiot"];
-
 const Asiat = ({ path, user }) => {
   const history = useHistory();
   const intl = useIntl();
@@ -63,22 +60,14 @@ const Asiat = ({ path, user }) => {
       </Helmet>
 
       {isEsidialogVisible && (
-        <BaseData
-          locale={intl.locale}
-          path={requiredResources}
-          render={props => (
-            <UusiAsiaEsidialog
-              isVisible={isEsidialogVisible}
-              onClose={() => setIsEsidialogVisible(false)}
-              onSelect={selectedItem =>
-                history.push(
-                  `/ammatillinenkoulutus/asianhallinta/${selectedItem.value}/uusi`
-                )
-              }
-              {...props}
-            />
-          )}
-        />
+        <UusiAsiaEsidialog
+          isVisible={isEsidialogVisible}
+          onClose={() => setIsEsidialogVisible(false)}
+          onSelect={selectedItem =>
+            history.push(
+              `/ammatillinenkoulutus/asianhallinta/${selectedItem.value}/uusi`
+            )
+          }></UusiAsiaEsidialog>
       )}
 
       <div

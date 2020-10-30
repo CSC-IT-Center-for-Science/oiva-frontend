@@ -12,7 +12,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import common from "../../../../../../i18n/definitions/common";
 import Attachment from "@material-ui/icons/Attachment";
-import { map, addIndex, prepend, find } from "ramda";
+import { map, addIndex, prepend, find, concat, isEmpty } from "ramda";
 import { useIntl } from "react-intl";
 import moment from "moment";
 import { API_BASE_URL } from "modules/constants";
@@ -152,7 +152,11 @@ const useStyles = makeStyles(() => ({
  *
  * @param {array} param0 - Base data for table construction.
  */
-export default function LupapaatoksetTable({ data, lupa }) {
+export default function LupapaatoksetTable({
+  data,
+  tulevatLuvat,
+  voimassaOlevaLupa
+}) {
   const intl = useIntl();
   const headCells = [
     {
@@ -204,7 +208,10 @@ export default function LupapaatoksetTable({ data, lupa }) {
         voimassaololoppupvm,
         urls: {
           jarjestamislupa: `${API_BASE_URL}/pdf/historia/${uuid}`,
-          paatoskirje: paatoskirje && asianumero ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw` : null
+          paatoskirje:
+            paatoskirje && asianumero
+              ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`
+              : null
         },
         paatoskirje: paatoskirje && asianumero ? paatoskirje.nimi : null,
         jarjestamislupa: filename,
@@ -214,24 +221,41 @@ export default function LupapaatoksetTable({ data, lupa }) {
     data
   );
 
-  const lupaPaatoskirje = find(liite => liite.tyyppi === 'paatosKirje', lupa.liitteet || []);
+  /** Concatenate historical rows with present Lupa */
+  const historicalRowsAndPresentRow = voimassaOlevaLupa
+    ? prepend(getTableDataFromLupa(voimassaOlevaLupa, true), historicalRows)
+    : historicalRows;
 
-  const rows = prepend(
-    {
+  /** Historical rows, present Lupa and future luvat concatenated */
+  const rows = concat(
+    map(tulevaLupa => getTableDataFromLupa(tulevaLupa), tulevatLuvat || []),
+    historicalRowsAndPresentRow
+  );
+
+  function getTableDataFromLupa(lupa, voimassaoleva = false) {
+    const paatoskirje = find(
+      liite => liite.tyyppi === "paatosKirje",
+      lupa.liitteet || []
+    );
+    return {
       diaarinumero: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       paatospvm: lupa.paatospvm,
       jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       urls: {
         jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
-        paatoskirje: lupaPaatoskirje && lupa.asianumero ?
-          `${API_BASE_URL}/liitteet/${lupaPaatoskirje.uuid}/raw` : null,
+        paatoskirje:
+          paatoskirje && lupa.asianumero
+            ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`
+            : null
       },
-      paatoskirje: lupaPaatoskirje && lupa.asianumero ? lupaPaatoskirje.nimi : null,
+      paatoskirje: paatoskirje && lupa.asianumero ? paatoskirje.nimi : null,
       voimassaoloalkupvm: lupa.alkupvm,
-      voimassaololoppupvm: lupa.loppupvm
-    },
-    historicalRows
-  );
+      voimassaololoppupvm: lupa.loppupvm,
+      voimassaoleva: voimassaoleva
+        ? intl.formatMessage(common.voimassaoleva)
+        : ""
+    };
+  }
 
   const classes = useStyles();
   const [order, setOrder] = React.useState("desc");
@@ -327,17 +351,23 @@ export default function LupapaatoksetTable({ data, lupa }) {
                           : null}
                       </TableCell>
                       <TableCell align="left">
-                        {row.voimassaololoppupvm
-                          ? moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
-                          : null}
+                        {isEmpty(row.voimassaololoppupvm || "") ? (
+                          <span className="bg-green-250 p-2">
+                            {row.voimassaoleva}
+                          </span>
+                        ) : (
+                          moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
+                        )}
                       </TableCell>
                       <TableCell align="left">
-                        {row.paatoskirje && (<Attachment />)}
-                        {row.paatoskirje && (<a
-                          href={row.urls.paatoskirje}
-                          className="ml-2 underline">
-                          {row.paatoskirje}
-                        </a>)}
+                        {row.paatoskirje && <Attachment />}
+                        {row.paatoskirje && (
+                          <a
+                            href={row.urls.paatoskirje}
+                            className="ml-2 underline">
+                            {row.paatoskirje}
+                          </a>
+                        )}
                       </TableCell>
                       <TableCell align="left">
                         <Attachment />
@@ -348,7 +378,9 @@ export default function LupapaatoksetTable({ data, lupa }) {
                         </a>
                       </TableCell>
                       <TableCell align="left">
-                        {row.kumottupvm ? moment(row.kumottupvm).format("DD.MM.YYYY") : ''}
+                        {row.kumottupvm
+                          ? moment(row.kumottupvm).format("DD.MM.YYYY")
+                          : ""}
                       </TableCell>
                     </TableRow>
                   );

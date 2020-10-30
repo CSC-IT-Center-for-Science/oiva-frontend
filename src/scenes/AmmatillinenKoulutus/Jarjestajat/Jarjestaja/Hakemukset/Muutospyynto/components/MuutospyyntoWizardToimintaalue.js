@@ -1,12 +1,12 @@
 import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
+import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
 import common from "../../../../../../../i18n/definitions/common";
 import wizard from "../../../../../../../i18n/definitions/wizard";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { isAdded, isRemoved, isInLupa } from "../../../../../../../css/label";
 import kuntaProvinceMapping from "../../../../../../../utils/kuntaProvinceMapping";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
 import * as R from "ramda";
 
 const labelStyles = {
@@ -36,18 +36,10 @@ const mapping = {
   "21": "FI-01"
 };
 
-const constants = {
-  formLocation: ["toimintaalue"]
-};
-
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
+  const { changeObjects } = props;
   const intl = useIntl();
-  const [
-    changeObjects,
-    { setChanges }
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "toimintaalue"
-  });
+  const { onChangesUpdate } = props;
 
   const [isEditViewActive, toggleEditView] = useState(false);
 
@@ -85,11 +77,33 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
     props.lupakohde
   );
 
+  /**
+   * Changes are handled here. Changes objects will be formed and callback
+   * function will be called with them.
+   */
+  const handleChanges = useCallback(
+    changesByAnchor => {
+      const updatedChanges = R.filter(
+        R.compose(R.not, R.propEq("anchor", "toimintaalue.")),
+        changesByAnchor.changes
+      );
+      const categoryFilterChanges = R.uniq(R.flatten(updatedChanges)).filter(
+        Boolean
+      );
+      const sectionChanges = {
+        anchor: changesByAnchor.anchor,
+        changes: categoryFilterChanges
+      };
+      onChangesUpdate(sectionChanges);
+    },
+    [onChangesUpdate]
+  );
+
   const whenChanges = useCallback(
     changes => {
       const withoutCategoryFilterChangeObj = R.filter(
         R.compose(R.not, R.propEq("anchor", "categoryFilter")),
-        changeObjects
+        changeObjects.toimintaalue
       );
 
       const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
@@ -113,9 +127,12 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           : []
       );
 
-      return setChanges(changesToSet, props.sectionId);
+      return onChangesUpdate({
+        anchor: props.sectionId,
+        changes: changesToSet
+      });
     },
-    [changeObjects, props.sectionId, setChanges]
+    [changeObjects.toimintaalue, onChangesUpdate, props.sectionId]
   );
 
   /**
@@ -271,61 +288,79 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const provinceChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", "categoryFilter"),
-      changeObjects
+      changeObjects.toimintaalue
     );
     return changeObj ? changeObj.properties.changesByProvince : {};
-  }, [changeObjects]);
+  }, [changeObjects.toimintaalue]);
 
   const quickFilterChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", "categoryFilter"),
-      changeObjects
+      changeObjects.toimintaalue
     );
     return changeObj ? changeObj.properties.quickFilterChanges : {};
-  }, [changeObjects]);
+  }, [changeObjects.toimintaalue]);
+
+  const changesMessages = {
+    undo: intl.formatMessage(common.undo),
+    changesTest: intl.formatMessage(common.changesText)
+  };
 
   return (
-    <Lomake
-      action="modification"
+    <ExpandableRowRoot
       anchor={props.sectionId}
-      data={{
-        fiCode,
-        isEditViewActive,
-        isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
-        isValtakunnallinenChecked: fiCode === "FI1",
-        kunnat: kunnatWithoutAhvenanmaan,
-        localizations: {
-          accept: intl.formatMessage(common.accept),
-          areaOfActionIsUndefined: intl.formatMessage(
-            wizard.areaOfActionIsUndefined
-          ),
-          cancel: intl.formatMessage(common.cancel),
-          currentAreaOfAction: intl.formatMessage(wizard.currentAreaOfAction),
-          newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
-          ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
-          quickFilter: intl.formatMessage(wizard.quickFilter),
-          editButtonText: intl.formatMessage(wizard.editAreaOfAction),
-          sameAsTheCurrentAreaOfAction: intl.formatMessage(
-            wizard.sameAsTheCurrentAreaOfAction
-          ),
-          wholeCountryWithoutAhvenanmaa: intl.formatMessage(
-            wizard.wholeCountryWithoutAhvenanmaa
-          )
-        },
-        maakunnat: provincesWithoutAhvenanmaa,
-        onChanges: whenChanges,
-        toggleEditView,
-        options,
-        changeObjectsByProvince: Object.assign({}, provinceChanges),
-        quickFilterChanges
-      }}
-      isRowExpanded={true}
-      path={constants.formLocation}
-      rowTitle={intl.formatMessage(
-        wizard.singularMunicipalitiesOrTheWholeCountry
-      )}
+      key={`expandable-row-root`}
+      changes={changeObjects.toimintaalue}
+      hideAmountOfChanges={true}
+      messages={changesMessages}
+      isExpanded={true}
+      sectionId={props.sectionId}
       showCategoryTitles={true}
-    />
+      onChangesRemove={props.onChangesRemove}
+      onUpdate={handleChanges}
+      title={intl.formatMessage(
+        wizard.singularMunicipalitiesOrTheWholeCountry
+      )}>
+      <Lomake
+        action="modification"
+        anchor={props.sectionId}
+        changeObjects={changeObjects.toimintaalue}
+        data={{
+          fiCode,
+          isEditViewActive,
+          isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
+          isValtakunnallinenChecked: fiCode === "FI1",
+          kunnat: kunnatWithoutAhvenanmaan,
+          localizations: {
+            accept: intl.formatMessage(common.accept),
+            areaOfActionIsUndefined: intl.formatMessage(
+              wizard.areaOfActionIsUndefined
+            ),
+            cancel: intl.formatMessage(common.cancel),
+            currentAreaOfAction: intl.formatMessage(wizard.currentAreaOfAction),
+            newAreaOfAction: intl.formatMessage(wizard.newAreaOfAction),
+            ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
+            quickFilter: intl.formatMessage(wizard.quickFilter),
+            editButtonText: intl.formatMessage(wizard.editAreaOfAction),
+            sameAsTheCurrentAreaOfAction: intl.formatMessage(
+              wizard.sameAsTheCurrentAreaOfAction
+            ),
+            wholeCountryWithoutAhvenanmaa: intl.formatMessage(
+              wizard.wholeCountryWithoutAhvenanmaa
+            )
+          },
+          maakunnat: provincesWithoutAhvenanmaa,
+          onChanges: whenChanges,
+          toggleEditView,
+          options,
+          changeObjectsByProvince: Object.assign({}, provinceChanges),
+          quickFilterChanges
+        }}
+        onChangesUpdate={handleChanges}
+        path={["toimintaalue"]}
+        showCategoryTitles={true}
+      />
+    </ExpandableRowRoot>
   );
 });
 
@@ -345,6 +380,8 @@ MuutospyyntoWizardToimintaalue.propTypes = {
   maakuntakunnat: PropTypes.array,
   kuntamaaraykset: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object,
+  onChangesUpdate: PropTypes.func,
+  onChangesRemove: PropTypes.func,
   sectionId: PropTypes.string
 };
 

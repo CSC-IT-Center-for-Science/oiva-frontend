@@ -1,18 +1,16 @@
-import { find, filter, map, propEq, toUpper } from "ramda";
-import { getKieletFromStorage } from "helpers/kielet";
-import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
+import { map, toUpper, find } from "ramda";
 
-async function getModificationForm(aktiivisetTutkinnot, locale) {
-  const kielet = await getKieletFromStorage();
-  const koulutustyypit = await getKoulutustyypitFromStorage();
+function getModificationForm(
+  koulutustyypit,
+  tutkinnotByKoulutustyyppi,
+  kielet,
+  locale
+) {
   const localeUpper = toUpper(locale);
   const currentDate = new Date();
   return map(koulutustyyppi => {
-    const tutkinnot = filter(
-      propEq("koulutustyyppikoodiarvo", koulutustyyppi.koodiarvo),
-      aktiivisetTutkinnot
-    );
-    if (tutkinnot.length) {
+    const tutkinnot = tutkinnotByKoulutustyyppi[koulutustyyppi.koodiarvo];
+    if (tutkinnot) {
       return {
         anchor: koulutustyyppi.koodiarvo,
         title: koulutustyyppi.metadata[localeUpper].nimi,
@@ -44,20 +42,16 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
                     if (
                       tutkintokielimaarays &&
                       (!tutkintokielimaarays.koodi.voimassaAlkuPvm ||
-                        new Date(tutkintokielimaarays.koodi.voimassaAlkuPvm) <=
-                          currentDate)
+                      new Date(tutkintokielimaarays.koodi.voimassaAlkuPvm) <=
+                        currentDate)
                     ) {
                       /**
                        * Jos tutkintokielelle löytyy voimassa oleva määräys,
                        * näytetään tutkintokieli autocomplete-kentässä.
                        **/
                       return {
-                        label: find(
-                          kieli =>
-                            kieli.koodiarvo ===
-                            toUpper(tutkintokielimaarays.koodiarvo),
-                          kielet
-                        ).metadata[localeUpper].nimi,
+                        label:
+                        find(kieli => kieli.koodiarvo === toUpper(tutkintokielimaarays.koodiarvo), kielet).metadata[localeUpper].nimi,
                         value: tutkintokielimaarays.koodiarvo
                       };
                     }
@@ -74,7 +68,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
   }, koulutustyypit).filter(Boolean);
 }
 
-export default async function getTutkintokieletLomake(
+export default function getTutkintokieletLomake(
   action,
   data,
   isReadOnly,
@@ -82,7 +76,13 @@ export default async function getTutkintokieletLomake(
 ) {
   switch (action) {
     case "modification":
-      return await getModificationForm(data.aktiiviset, locale);
+      const result = getModificationForm(
+        data.koulutustyypit,
+        data.tutkinnotByKoulutustyyppi,
+        data.kielet,
+        locale
+      );
+      return result;
     default:
       return [];
   }

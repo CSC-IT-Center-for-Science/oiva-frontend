@@ -3,27 +3,19 @@ import { Helmet } from "react-helmet";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import {
-  Route,
-  useHistory,
-  useLocation,
-  useParams,
-  useRouteMatch
-} from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import JarjestajaBasicInfo from "./JarjestajaBasicInfo";
 import { COLORS } from "../../../modules/styles";
 import { FullWidthWrapper } from "../../../modules/elements";
 import Paatokset from "./Paatokset";
 import common from "../../../i18n/definitions/common";
-import Loading from "../../../modules/Loading";
 import { parseGenericKujaLupa, parseVSTLupa } from "../utils/lupaParser";
 import Jarjestamislupa from "./Jarjestamislupa";
 import moment from "moment";
 import { resolveLocalizedOrganizerName } from "../../../modules/helpers";
 import { Tabs, Tab } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import education from "../../../i18n/definitions/education";
 import { last, split } from "ramda";
 
 const Separator = styled.div`
@@ -110,8 +102,6 @@ const getTyyppiMessage = lupaData => {
 const Jarjestaja = ({ lupa, path }) => {
   const history = useHistory();
   const intl = useIntl();
-  const { uuid } = useParams();
-  const match = useRouteMatch();
   const t = intl.formatMessage;
   const location = useLocation();
   const tabKey = last(split("/", location.pathname));

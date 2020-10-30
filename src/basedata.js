@@ -63,7 +63,7 @@ export const fetchJSON = async path => {
   return result.data;
 };
 
-export const getRaw = async (
+const getRaw = async (
   key,
   path,
   keys,
@@ -129,6 +129,11 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       `${backendRoutes.luvat.path}?koulutustyyppi=3`,
       keys,
       backendRoutes.luvat.minimumTimeBetweenFetchingInMinutes
+    ),
+    vstTyypit: await getRaw(
+      "vstTyypit",
+      `${backendRoutes.vsttyypit.path}`,
+      keys
     ),
     // Koulutukset (muut)
     ammatilliseentehtavaanvalmistavakoulutus: await getRaw(
@@ -216,11 +221,6 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       `${backendRoutes.organisaatio.path}${ytunnus}`,
       keys
     ),
-    organisaatiot: await getRaw(
-      "organisaatiot",
-      backendRoutes.organisaatiot.path,
-      keys
-    ),
     poErityisetKoulutustehtavat: await getRaw(
       "poErityisetKoulutustehtavat",
       backendRoutes.poErityisetKoulutustehtavat.path,
@@ -232,6 +232,12 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       keys
     ),
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
+    tulevatLuvat: await getRaw(
+      "tulevatLuvat",
+      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false`,
+      keys,
+      backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
+    ),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
@@ -371,8 +377,16 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
+    lupa,
     vstLuvat: raw.vstLuvat,
+    vstTyypit: raw.vstTyypit ? await localforage.setItem(
+      "vsttyypit",
+      map(vstTyyppi => omit(["koodiArvo"], {
+        ...vstTyyppi,
+          koodiarvo: vstTyyppi.koodiArvo,
+          metadata: mapObjIndexed(head, groupBy(prop("kieli"), vstTyyppi.metadata))
+      }),raw.vstTyypit
+      )) : undefined,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
@@ -456,9 +470,6 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
-    organisaatiot: raw.organisaatiot
-      ? await localforage.setItem("organisaatiot", raw.organisaatiot)
-      : undefined,
     poErityisetKoulutustehtavat: raw.poErityisetKoulutustehtavat
       ? await localforage.setItem(
           "poErityisetKoulutustehtavat",
@@ -503,6 +514,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           )
         )
       : undefined,
+    tulevatLuvat: raw.tulevatLuvat || [],
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -518,7 +530,8 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           }, raw.vankilat)
         )
       : undefined,
-    viimeisinLupa: raw.viimeisinLupa || {}
+    viimeisinLupa: raw.viimeisinLupa || {},
+    voimassaOlevaLupa: raw.lupaByYtunnus
   };
   return result;
 };

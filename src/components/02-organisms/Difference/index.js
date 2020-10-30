@@ -29,7 +29,6 @@ function isValueValid(isRequired, value) {
 const Difference = ({
   applyForValue = defaultValues.applyForValue,
   delay = defaultValues.delay,
-  id,
   initialValue = defaultValues.initialValue,
   onChanges,
   payload = {},
@@ -46,8 +45,8 @@ const Difference = ({
 
   const handleChange = useCallback(
     (payload, properties) => {
-      const isResultNan = isNaN(parseInt(properties.value, 10));
-      const result = isResultNan
+      const resultIsNaN = isNaN(parseInt(properties.value, 10));
+      const result = resultIsNaN
         ? emptySelectionPlaceholderValue
         : properties.value;
       const resultIsValid = isValueValid(required, result);
@@ -58,8 +57,7 @@ const Difference = ({
       setTimeoutHandle(
         setTimeout(() => {
           onChanges(payload, {
-            isValueSet: !isResultNan,
-            applyForValue: isResultNan ? initialValue : properties.value,
+            applyForValue: resultIsNaN ? initialValue : properties.value,
             isValid: resultIsValid
           });
         }, delay)
@@ -91,13 +89,12 @@ const Difference = ({
           <Typography>{inputAreaTitle}</Typography>
           {!readonly && (
             <Input
-              fullWidth={false}
-              id={id}
-              isRequired={isRequired}
+              type="number"
               onChanges={handleChange}
               payload={payload}
-              type="number"
               value={String(value)}
+              fullWidth={false}
+              isRequired={isRequired}
             />
           )}
           {readonly && applyForValue}
@@ -114,7 +111,6 @@ const Difference = ({
 Difference.propTypes = {
   applyForValue: PropTypes.number,
   delay: PropTypes.number,
-  id: PropTypes.string,
   initialValue: PropTypes.number,
   onChanges: PropTypes.func,
   payload: PropTypes.object,

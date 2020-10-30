@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";
@@ -14,6 +14,7 @@ import {
   TextField,
   CircularProgress
 } from "@material-ui/core";
+import { useOrganisations } from "../../stores/organisations";
 import { sortBy, prop, map, find, propEq, trim } from "ramda";
 import { resolveLocalizedOrganizationName } from "../../modules/helpers";
 import SearchIcon from "@material-ui/icons/Search";
@@ -47,9 +48,10 @@ const useStyles = makeStyles({
   }
 });
 
-const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect, organisaatiot }) => {
+const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
   const intl = useIntl();
   const [selectedKJ, setSelectedKJ] = useState();
+  const [organisations, organisationsActions] = useOrganisations({});
   const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(false);
   const [organisation, setOrganisation] = useState(null);
   const [organisationStatus, setOrganisationStatus] = useState();
@@ -57,6 +59,15 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect, organisaatiot }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isKJMissing, setIsKJMissing] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    const abortController = organisationsActions.load();
+    return function cancel() {
+      if (abortController) {
+        abortController.abort();
+      }
+    };
+  }, [organisationsActions]);
 
   const searchByYtunnus = useCallback(async () => {
     const { value: ytunnus } = inputEl.current;
@@ -70,7 +81,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect, organisaatiot }) => {
     if (result) {
       const isLupaExisting = !!find(
         propEq("oid", result.oid),
-        organisaatiot
+        organisations.data
       );
       if (isLupaExisting) {
         setOrganisationStatus("duplicate");
@@ -82,9 +93,11 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect, organisaatiot }) => {
     } else {
       setOrganisationStatus("notfound");
     }
-  }, [organisaatiot]);
+  }, [organisations]);
 
-  return organisaatiot ? (
+  return organisations.data &&
+    organisations.fetchedAt &&
+    !organisations.isErroneous ? (
     <Dialog open={isVisible} PaperProps={{ style: { overflowY: "visible" } }}>
       <DialogTitle onClose={onClose}>
         {intl.formatMessage(common.luoUusiAsia)}
@@ -209,7 +222,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect, organisaatiot }) => {
                 {intl.formatMessage(common.luoUusiAsiaInstructions)}
               </p>
               <Autocomplete
-                id="list-of-organisaatiot"
+                id="list-of-organisations"
                 isMulti={false}
                 name="koulutuksen-jarjestaja"
                 options={sortBy(
@@ -224,7 +237,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect, organisaatiot }) => {
                           value: organisation.ytunnus
                         }
                       : null;
-                  }, organisaatiot)
+                  }, organisations.data)
                 ).filter(Boolean)}
                 callback={(payload, values) => {
                   setSelectedKJ(values.value);

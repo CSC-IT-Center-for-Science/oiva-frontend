@@ -6,13 +6,13 @@ import { loadProgressBar } from "axios-progress-bar";
 import { useUser } from "./stores/user";
 import App from "./App";
 import "axios-progress-bar/dist/nprogress.css";
+import { useKaannokset } from "./stores/localizations";
 import { useGlobalSettings } from "./stores/appStore";
+import { CircularProgress } from "@material-ui/core";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
 import { useIdleTimer } from "react-idle-timer";
 import { isEmpty } from "ramda";
 import { sessionTimeoutInMinutes } from "modules/constants";
-import { backendRoutes } from "stores/utils/backendRoutes";
-import { getRaw } from "./basedata";
 
 defaults.devtools = true;
 
@@ -34,12 +34,12 @@ if (!Intl.RelativeTimeFormat) {
  * authenticated user the basic structures of the app is shown.
  */
 const AppWrapper = () => {
+  const [kaannokset, kaannoksetActions] = useKaannokset();
   // See the file: .env.development.local
   const isBackendTheSourceOfLocalizations = !process.env.USE_LOCAL_TRANSLATIONS;
   const [user, userActions] = useUser();
   const [state] = useGlobalSettings();
   const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
-  const [messages, setMessages] = useState();
 
   const handleOnIdle = event => {
     setSessionDialogVisible(true);
@@ -61,13 +61,24 @@ const AppWrapper = () => {
 
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
-      getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(result => {
-        setMessages(result || translations);
-      });
-    } else {
-      setMessages(translations);
+      const abortController = kaannoksetActions.load();
+      return function cancel() {
+        if (abortController) {
+          abortController.abort();
+        }
+      };
     }
-  }, [isBackendTheSourceOfLocalizations]);
+  }, [isBackendTheSourceOfLocalizations, kaannoksetActions]);
+
+  const messages = useMemo(() => {
+    if (!!kaannokset.data) {
+      //Using backend data as source
+      return kaannokset.data;
+    } else {
+      //Using local files as source
+      return translations;
+    }
+  }, [kaannokset.data]);
 
   useEffect(() => {
     if (!isEmpty(messages)) {
@@ -115,7 +126,13 @@ const AppWrapper = () => {
     user.fetchedAt
   ]);
 
-  if (appStructure && messages && state.locale && user.fetchedAt) {
+  if (
+    !kaannokset.fetchedAt &&
+    !kaannokset.isErroneous &&
+    isBackendTheSourceOfLocalizations
+  ) {
+    return <CircularProgress size={80} />;
+  } else if (appStructure && messages && state.locale && user.fetchedAt) {
     return (
       // Key has been set to ensure the providers's refresh when locale changes.
       <IntlProvider

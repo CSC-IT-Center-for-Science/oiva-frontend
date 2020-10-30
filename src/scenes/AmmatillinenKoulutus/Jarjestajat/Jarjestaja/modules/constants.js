@@ -56,15 +56,6 @@ export const asiaStateToLocalizationKeyMap = {
   PASSIVOITU: "asiaStates.kj.PASSIVOITU"
 };
 
-export const asiaEsittelijaStateToLocalizationKeyMap = {
-  LUONNOS: "asiaStates.esittelija.LUONNOS",
-  AVOIN: "asiaStates.esittelija.AVOIN",
-  VALMISTELUSSA: "asiaStates.esittelija.VALMISTELUSSA",
-  TAYDENNETTAVA: "asiaStates.esittelija.TAYDENNETTAVA",
-  PAATETTY: "asiaStates.esittelija.PAATETTY",
-  PASSIVOITU: "asiaStates.esittelija.PASSIVOITU"
-};
-
 export const LUPA_VOIMASSAOLO_20181231_ASTI = [
   "384301",
   "354301",
