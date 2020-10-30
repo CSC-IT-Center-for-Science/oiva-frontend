@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Table from "okm-frontend-components/dist/components/02-organisms/Table";
-import ConfirmDialog from "okm-frontend-components/dist/components/02-organisms/ConfirmDialog";
 import { generateAvoimetAsiatTableStructure } from "./asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
@@ -9,6 +7,8 @@ import { useMuutospyynnot } from "../../stores/muutospyynnot";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
+import Table from "components/02-organisms/Table";
+import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 
 const AvoimetAsiat = () => {
   const history = useHistory();
