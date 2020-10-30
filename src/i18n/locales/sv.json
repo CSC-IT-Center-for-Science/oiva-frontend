@@ -281,6 +281,7 @@
   "common.viimeinenSivu": "Viimeinen sivu",
   "common.viiva": "Viiva",
   "common.voimassaOlevatJarjestamisluvat": "SV: Voimassa olevat järjestämisluvat ({amount} kpl)",
+  "common.voimassaoleva": "Voimassaoleva",
   "common.vstActiveLuvatCount": "Voimassa olevat ylläpitämisluvat ({count} kpl)",
   "common.vstTitleName": "Vapaa sivistystyö",
   "common.vstYllapitajatHeading": "Vapaan sivistystyön oppilaitosten ylläpitäjät",

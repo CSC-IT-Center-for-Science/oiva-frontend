@@ -90,6 +90,7 @@ module.exports = {
       green: {
         100: "#d2ffe8", //#f0fff4 x
         200: "#c8dcc3", //#c6f6d5 form header
+        250: "#CAE4C0",
         300: "#a7ecc5", //#9ae6b4
         400: "#65A884", //#68d391
         500: "#4C7A61", //#48bb78 main green
