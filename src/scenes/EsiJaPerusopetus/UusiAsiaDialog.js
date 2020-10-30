@@ -63,8 +63,8 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
+  ensisijaisetOpetuskieletOPH: [],
   kielet: [],
-  kieletOPH: [],
   kohteet: [],
   koulutukset: {
     muut: {},
@@ -87,11 +87,12 @@ const defaultProps = {
   organisation: {},
   poErityisetKoulutustehtavat: [],
   poMuutEhdot: [],
+  toissijaisetOpetuskieletOPH: [],
   tutkinnot: []
 };
 
 const UusiAsiaDialog = ({
-  kieletOPH = defaultProps.kieletOPH,
+  ensisijaisetOpetuskieletOPH = defaultProps.ensisijaisetOpetuskieletOPH,
   kohteet = defaultProps.kohteet,
   kunnat = defaultProps.kunnat,
   lisatiedot = defaultProps.lisatiedot,
@@ -107,7 +108,8 @@ const UusiAsiaDialog = ({
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
-  poMuutEhdot = defaultProps.poMuutEhdot
+  poMuutEhdot = defaultProps.poMuutEhdot,
+  toissijaisetOpetuskieletOPH = defaultProps.toissijaisetOpetuskieletOPH
 }) => {
   const [state, actions] = useEsiJaPerusopetus();
 
@@ -411,8 +413,9 @@ const UusiAsiaDialog = ({
                   render={props => (
                     <Opetuskieli
                       changeObjects={state.changeObjects.opetuskielet}
-                      kieletOPH={kieletOPH}
+                      ensisijaisetOpetuskieletOPH={ensisijaisetOpetuskieletOPH}
                       lisatiedot={lisatiedot}
+                      toissijaisetOpetuskieletOPH={toissijaisetOpetuskieletOPH}
                       {...props}
                     />
                   )}
@@ -423,6 +426,7 @@ const UusiAsiaDialog = ({
                   code={4}
                   render={props => (
                     <OpetuksenJarjestamismuoto
+                      lisatiedot={lisatiedot}
                       opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
                       {...props}
                     />
@@ -437,6 +441,7 @@ const UusiAsiaDialog = ({
                   render={props => (
                     <ErityisetKoulutustehtavat
                       poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
+                      lisatiedot={lisatiedot}
                       {...props}
                     />
                   )}
@@ -481,20 +486,21 @@ const UusiAsiaDialog = ({
                   )}
                   sectionId={"liitetiedostot"}
                   title={"Liitetiedostot"}></FormSection>
-
-                <EsittelijatWizardActions
-                  isSavingEnabled={isSavingEnabled}
-                  onClose={leaveOrOpenCancelModal}
-                  onPreview={() => {
-                    return onAction("preview");
-                  }}
-                  onSave={() => {
-                    return onAction("save");
-                  }}
-                />
               </form>
             </div>
           </DialogContentWithStyles>
+          <div className="fixed w-full bg-gray-100 border-t border-gray-300 bottom-0">
+            <EsittelijatWizardActions
+              isSavingEnabled={isSavingEnabled}
+              onClose={leaveOrOpenCancelModal}
+              onPreview={() => {
+                return onAction("preview");
+              }}
+              onSave={() => {
+                return onAction("save");
+              }}
+            />
+          </div>
         </FormDialog>
         <ConfirmDialog
           isConfirmDialogVisible={isConfirmDialogVisible}

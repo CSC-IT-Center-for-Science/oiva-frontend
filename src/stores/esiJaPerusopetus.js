@@ -3,7 +3,6 @@ import {
   append,
   assoc,
   assocPath,
-  clone,
   dissocPath,
   endsWith,
   filter,
@@ -17,7 +16,6 @@ import {
   split,
   startsWith
 } from "ramda";
-import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
 import { getAnchorPart, replaceAnchorPartWith } from "utils/common";
 
 const Store = createStore({
@@ -85,37 +83,6 @@ const Store = createStore({
       );
       setState({ ...getState(), changeObjects: nextChangeObjects });
     },
-    addAClick: (sectionId, anchor) => ({ getState, setState }) => {
-      if (sectionId && anchor) {
-        const currentChangeObjects = getState().changeObjects[sectionId];
-        let nextChangeObjects = clone(currentChangeObjects);
-        let changeObj = getChangeObjByAnchor(
-          anchor,
-          getState().changeObjects[sectionId]
-        );
-        if (changeObj) {
-          nextChangeObjects = filter(changeObj => {
-            return changeObj.anchor !== anchor;
-          }, currentChangeObjects);
-          changeObj = assocPath(
-            ["properties", "amountOfClicks"],
-            changeObj.properties.amountOfClicks + 1,
-            changeObj
-          );
-        } else {
-          changeObj = {
-            anchor: anchor,
-            properties: {
-              amountOfClicks: 1
-            }
-          };
-        }
-        const path = flatten(["changeObjects", split("_", sectionId)]);
-        setState(
-          assocPath(path, flatten([nextChangeObjects, changeObj]), getState())
-        );
-      }
-    },
     closeRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: false });
     },
@@ -127,12 +94,13 @@ const Store = createStore({
         const currentChangeObjects = prop("changeObjects", getState());
         const textBoxChangeObjects = filter(
           changeObj =>
-            endsWith(".nimi", changeObj.anchor) &&
+            startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
+            endsWith(".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           currentChangeObjects[sectionId] || []
         );
 
-        const nextTextBoxAnchorPart =
+        const textBoxNumber =
           length(textBoxChangeObjects) > 0
             ? reduce(
                 max,
@@ -150,7 +118,7 @@ const Store = createStore({
           sectionId,
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${nextTextBoxAnchorPart}.nimi`,
+              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
               properties: {
                 value: ""
               }

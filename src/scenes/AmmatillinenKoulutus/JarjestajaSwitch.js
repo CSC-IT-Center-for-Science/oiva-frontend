@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import { parseLupa } from "../../utils/lupaParser";
 import HakemusContainer from "./Jarjestajat/Jarjestaja/Hakemukset/HakemusContainer";
-import { equals, isEmpty } from "ramda";
+import { isEmpty } from "ramda";
 import Loading from "../../modules/Loading";
 import { prop } from "ramda";
 import BaseData from "basedata";

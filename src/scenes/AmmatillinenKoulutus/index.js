@@ -21,7 +21,6 @@ import { useUser } from "stores/user";
 import Asianhallinta from "./Asianhallinta";
 
 export default function AmmatillinenKoulutus() {
-  const keys = ["lupa", "kielet"];
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
   const location = useLocation();
