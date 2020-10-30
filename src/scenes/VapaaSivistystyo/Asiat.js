@@ -10,9 +10,9 @@ import education from "../../i18n/definitions/education";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
-import SimpleButton from "okm-frontend-components/dist/components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "./UusiAsiaEsidialog";
 import { last, split } from "ramda";
+import SimpleButton from "components/00-atoms/SimpleButton";
 
 const OivaTab = withStyles(theme => ({
   root: {

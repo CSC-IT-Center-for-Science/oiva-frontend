@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "okm-frontend-components/dist/components/02-organisms/DialogTitle";
-import Autocomplete from "okm-frontend-components/dist/components/02-organisms/Autocomplete";
 import common from "../../i18n/definitions/common";
 import {
   DialogContent,
@@ -23,6 +21,8 @@ import { fetchJSON } from "../../basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import CheckIcon from "@material-ui/icons/Check";
 import ErrorIcon from "@material-ui/icons/Error";
+import DialogTitle from "components/02-organisms/DialogTitle";
+import Autocomplete from "components/02-organisms/Autocomplete";
 
 const StyledButton = withStyles({
   root: {
