@@ -29,6 +29,13 @@ export const backendRoutes = {
     path: `luvat/jarjestajilla`,
     minimumTimeBetweenFetchingInMinutes: 0
   },
+
+  tulevatLuvat: {
+    path: `luvat/jarjestaja/`,
+    postfix: "/tulevaisuus",
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
+
   maakunnat: { path: `koodistot/maakunnat` },
   maakuntakunnat: { path: `koodistot/maakuntakunta` },
   maaraystyypit: { path: `maaraykset/maaraystyypit` },
