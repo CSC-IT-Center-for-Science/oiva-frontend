@@ -15,13 +15,14 @@ import {
 } from "ramda";
 import maaraaika from "./rajoitukset/maaraaika";
 import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
+import opetuksenJarjestamismuoto from "./rajoitukset/4-opetuksenjarjestamismuoto";
 import opetuskielet from "./rajoitukset/3-opetuskielet";
 import opetustehtavat from "./rajoitukset/1-opetustehtavat";
-import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
   maaraaika: "Määräaika",
   opetustaAntavatKunnat: "2. Kunnat, joissa opetusta järjestetään",
+  opetuksenJarjestamismuoto: "4. Opetuksen järjestämismuoto",
   opetuskielet: "3. Opetuskieli",
   opetustehtavat: "1. Opetus, jota lupa koskee"
 };
@@ -29,16 +30,17 @@ const localizations = {
 const changeObjectMapping = {
   maaraaika: "maaraaika",
   opetustaAntavatKunnat: "toimintaalue",
+  opetuksenJarjestamismuoto: "opetuksenJarjestamismuodot",
   opetuskielet: "opetuskielet",
   opetustehtavat: "opetustehtavat"
 };
 
 const sections = {
   maaraaika,
+  opetustehtavat,
   opetustaAntavatKunnat,
   opetuskielet,
-  opetustehtavat,
-  getOpetustehtavatLomake
+  opetuksenJarjestamismuoto,
 };
 
 async function defineRajoitusStructure(
