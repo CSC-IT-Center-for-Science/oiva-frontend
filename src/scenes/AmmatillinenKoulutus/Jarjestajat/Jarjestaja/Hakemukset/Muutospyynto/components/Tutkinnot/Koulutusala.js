@@ -22,7 +22,7 @@ const Koulutusala = ({ data, sectionId, title, tutkinnot }) => {
       changeObjects
     );
     setLomakedata(aktiivisetTutkinnot, `${sectionId}_aktiiviset`);
-  }, [changeObjects, setLomakedata, tutkinnot]);
+  }, [changeObjects, sectionId, setLomakedata, tutkinnot]);
 
   return (
     <Lomake

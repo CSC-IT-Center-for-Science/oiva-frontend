@@ -21,7 +21,7 @@ export async function createObjectToSave(
   lupaKohteet,
   alkupera = "KJ"
 ) {
-  const { unsaved, saved } = changeObjects;
+  const { unsaved } = changeObjects;
 
   console.info("Opiskelijavuosimuutokset", opiskelijavuodetCO);
   // Adds data that has attachements

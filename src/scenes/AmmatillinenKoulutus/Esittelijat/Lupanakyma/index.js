@@ -4,14 +4,14 @@ import { find, head, includes, last, prop, values } from "ramda";
 import common from "i18n/definitions/common";
 import Lomake from "components/02-organisms/Lomake";
 import { useParams } from "react-router-dom";
-import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
-import { useValidity } from "./lomakedata";
+import EsittelijatMuutospyynto from "../../EsittelijatMuutospyynto";
+import { useValidity } from "../../lomakedata";
 
 const formLocations = {
   kolmeEnsimmaistaKenttaa: ["esittelija", "topThree"]
 };
 
-const Lupa = ({
+const Lupanakyma = ({
   kielet,
   kohteet,
   koulutukset,
@@ -24,7 +24,6 @@ const Lupa = ({
   maakuntakunnat,
   maaraystyypit,
   muut,
-  opetuskielet,
   organisation,
   tutkinnot
 }) => {
@@ -120,7 +119,6 @@ const Lupa = ({
           lupaKohteet={lupaKohteet}
           maaraystyypit={maaraystyypit}
           muut={muut}
-          opetuskielet={opetuskielet}
           tutkinnot={tutkinnot}
         />
       </div>
@@ -128,4 +126,4 @@ const Lupa = ({
   );
 };
 
-export default Lupa;
+export default Lupanakyma;

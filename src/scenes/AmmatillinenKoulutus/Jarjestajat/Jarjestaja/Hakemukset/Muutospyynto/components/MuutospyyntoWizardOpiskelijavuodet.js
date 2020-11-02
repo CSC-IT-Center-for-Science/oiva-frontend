@@ -3,17 +3,13 @@ import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
 import {
+  difference,
   filter,
-  includes,
   find,
-  path,
-  head,
-  values,
-  flatten,
-  propEq,
-  isEmpty,
+  includes,
   length,
-  difference
+  path,
+  propEq
 } from "ramda";
 import {
   useChangeObjectsByAnchor,
@@ -26,18 +22,22 @@ const constants = {
 };
 
 /**
- * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 03
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 02
  * (vaativa tuki), näytetään vaativaa tukea koskevat kentät tässä osiossa
  * (Opiskelijavuodet).
  **/
 export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
 
+/**
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 03
+ * (sisäoppilaitos), näytetään sisäoppilaitosta koskevat kentät tässä osiossa
+ * (Opiskelijavuodet).
+ **/
+export const sisaoppilaitosCodes = ["4"];
+
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
   ({ maaraykset, muut, sectionId }) => {
-    const [
-      changeObjects,
-      { setChanges }
-    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "opiskelijavuodet"
     });
     const [muutChangeObjects] = useChangeObjectsByAnchor({
@@ -76,14 +76,18 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
             path(["02", "valitutKoodiarvot"], muutLomakedata) || []
           )
         ) < length(vaativatCodes);
+
       // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
       // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
       // opiskelijavuosiosiossa.
-      const visibilityOfSisaoppilaitos = filter(
-        koodiarvo => includes(koodiarvo, vaativatCodes),
-        path(["03", "valitutKoodiarvot"], muutLomakedata) || []
-      );
-      console.info(visibilityOfSisaoppilaitos);
+      const visibilityOfSisaoppilaitos =
+        length(
+          difference(
+            sisaoppilaitosCodes,
+            path(["03", "valitutKoodiarvot"], muutLomakedata) || []
+          )
+        ) < length(sisaoppilaitosCodes);
+
       setLomakedata(
         {
           sisaoppilaitos: visibilityOfSisaoppilaitos,
@@ -91,10 +95,15 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         },
         `${sectionId}_visibility`
       );
-    }, [muutLomakedata]);
+    }, [muutLomakedata, sectionId, setLomakedata]);
 
+    /**
+     * Tässä reagoidaan opiskelijavuosiosion muutoksiin ja tarkastellaan sitä,
+     * onko sisäoppilaitosta ja vaativaa tukea koskevat kentät täytetty.
+     * Tieto asetetaan jaettuun tilaan, josta sitä tarvitseva osio voi sen
+     * lukea.
+     */
     useEffect(() => {
-      console.info(changeObjects);
       const vahimmaisopiskelijavuodetChangeObj = find(
         propEq("anchor", `${sectionId}.vahimmaisopiskelijavuodet.A`),
         changeObjects
@@ -125,7 +134,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           `${sectionId}_vaativaTuki_isApplyForValueSet`
         );
       }
-    }, [changeObjects, setLomakedata]);
+    }, [changeObjects, sectionId, setLomakedata]);
 
     /**
      * Opiskelijavuodet-osio (4) on kytköksissä osioon 5 (Muut oikeudet,

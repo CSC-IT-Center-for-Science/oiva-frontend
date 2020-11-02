@@ -30,7 +30,6 @@ async function getModificationForm(
   muutChanges = [],
   sectionId
 ) {
-  console.info(visibility);
   const titles = [__("current"), __("applyFor"), __("difference")];
   const titlesSisaoppilaitosAndVaativa = [
     __("current"),
@@ -221,7 +220,6 @@ export default async function getOpiskelijavuodetLomake(
 ) {
   switch (action) {
     case "modification":
-      console.info(data);
       return await getModificationForm(
         locale,
         data.visibility,

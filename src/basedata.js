@@ -40,6 +40,7 @@ import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
 import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
+import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -384,14 +385,23 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       : undefined,
     lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
     vstLuvat: raw.vstLuvat,
-    vstTyypit: raw.vstTyypit ? await localforage.setItem(
-      "vsttyypit",
-      map(vstTyyppi => omit(["koodiArvo"], {
-        ...vstTyyppi,
-          koodiarvo: vstTyyppi.koodiArvo,
-          metadata: mapObjIndexed(head, groupBy(prop("kieli"), vstTyyppi.metadata))
-      }),raw.vstTyypit
-      )) : undefined,
+    vstTyypit: raw.vstTyypit
+      ? await localforage.setItem(
+          "vsttyypit",
+          map(
+            vstTyyppi =>
+              omit(["koodiArvo"], {
+                ...vstTyyppi,
+                koodiarvo: vstTyyppi.koodiArvo,
+                metadata: mapObjIndexed(
+                  head,
+                  groupBy(prop("kieli"), vstTyyppi.metadata)
+                )
+              }),
+            raw.vstTyypit
+          )
+        )
+      : undefined,
     maakunnat: raw.maakunnat,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
@@ -410,9 +420,12 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     muut: raw.muut
       ? await localforage.setItem(
           "muut",
-          map(muudata => {
-            return initializeMuu(muudata);
-          }, raw.muut)
+          sortArticlesByHuomioitavaKoodi(
+            map(muudata => {
+              return initializeMuu(muudata);
+            }, raw.muut),
+            localeUpper
+          )
         )
       : undefined,
     oivaperustelut: raw.oivaperustelut
@@ -522,7 +535,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           )
         )
       : undefined,
-    tulevatLuvat: raw.tulevatLuvat || [],
+    tulevatLuvat: raw.tulevatLuvat || [],
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),

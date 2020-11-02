@@ -42,7 +42,6 @@ const EsittelijatMuutospyynto = ({
   lupaKohteet = defaultProps.lupaKohteet,
   maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
   muut = defaultProps.muut,
-  opetuskielet = defaultProps.opetuskielet,
   opiskelijavuodet = defaultProps.opiskelijavuodet,
   tutkinnot = defaultProps.tutkinnot,
 
@@ -182,7 +181,6 @@ const EsittelijatMuutospyynto = ({
             <MuutospyyntoWizardMuut
               maaraykset={maaraykset}
               muut={muut}
-              koulutukset={koulutukset}
               sectionId={"muut"}
             />
           </Section>
@@ -200,12 +198,11 @@ EsittelijatMuutospyynto.propTypes = {
   koulutustyypit: PropTypes.array,
   kunnat: PropTypes.array,
   maakuntakunnat: PropTypes.array,
-  maaraykset: PropTypes.object,
+  maaraykset: PropTypes.array,
   maakunnat: PropTypes.array,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
-  opetuskielet: PropTypes.array,
   opiskelijavuodet: PropTypes.array,
   tutkinnot: PropTypes.array
 };

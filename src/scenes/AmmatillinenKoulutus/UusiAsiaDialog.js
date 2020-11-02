@@ -20,7 +20,7 @@ import {
   useUnderRemovalChangeObjects,
   useUnsavedChangeObjects
 } from "./store";
-import Lupa from "./Lupa";
+import Lupanakyma from "./Esittelijat/Lupanakyma";
 import { createObjectToSave } from "helpers/ammatillinenKoulutus/tallentaminen/esittelijat";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 
@@ -92,10 +92,8 @@ const UusiAsiaDialog = ({
   maaraystyypit = defaultProps.maaraystyypit,
   muut = defaultProps.muut,
   onNewDocSave,
-  opetuskielet = defaultProps.opetuskielet,
   organisation = defaultProps.organisation,
-  tutkinnot = defaultProps.tutkinnot,
-  viimeisinLupa
+  tutkinnot = defaultProps.tutkinnot
 }) => {
   const intl = useIntl();
   const params = useParams();
@@ -263,23 +261,28 @@ const UusiAsiaDialog = ({
       }
     },
     [
-      changeObjects,
       kohteet,
+      initializeChanges,
       intl.locale,
+      koulutuksetCO,
       lupa,
       lupaKohteet,
       maaraystyypit,
       muut,
+      muutCO,
       onNewDocSave,
       onPreview,
       onSave,
+      opetuskieletCO,
       opiskelijavuodetCO,
       organisation,
+      toimintaalueCO,
+      topThreeCO,
+      tutkinnotCO,
+      tutkintokieletCO,
       uuid
     ]
   );
-
-  const maaraykset = R.prop("maaraykset", viimeisinLupa);
 
   return (
     changeObjects !== null && (
@@ -310,7 +313,7 @@ const UusiAsiaDialog = ({
           </div>
           <DialogContentWithStyles>
             <div className="mb-20">
-              <Lupa
+              <Lupanakyma
                 history={history}
                 kielet={kielet}
                 kohteet={kohteet}
@@ -318,14 +321,13 @@ const UusiAsiaDialog = ({
                 koulutusalat={koulutusalat}
                 koulutustyypit={koulutustyypit}
                 kunnat={kunnat}
-                maaraykset={maaraykset}
+                maaraykset={lupa.maaraykset}
                 lupaKohteet={lupaKohteet}
                 maakunnat={maakunnat}
                 maakuntakunnat={maakuntakunnat}
                 maaraystyypit={maaraystyypit}
                 muut={muut}
                 onNewDocSave={onNewDocSave}
-                opetuskielet={opetuskielet}
                 organisation={organisation}
                 tutkinnot={tutkinnot}
               />
