@@ -73,6 +73,9 @@ export function getMuutSisaoppilaitos(
       ];
     }
 
-    return lomakerakenne;
+    return {
+      anchor: "sisaoppilaitos",
+      categories: [lomakerakenne]
+    };
   }, items);
 }

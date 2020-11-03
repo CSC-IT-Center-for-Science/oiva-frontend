@@ -158,7 +158,7 @@ async function getModificationForm(
               anchor: "A",
               name: "Difference",
               properties: {
-                forChangeObject: {
+                forChangeObject: reject(isNil, {
                   koodiarvo:
                     prop("koodiarvo", vaativaTukiMaarays) ||
                     path(
@@ -166,7 +166,7 @@ async function getModificationForm(
                       vaativaTukiChangeObj
                     ),
                   maaraysUuid: (findVaativatukiRajoitus(maaraykset) || {}).uuid
-                },
+                }),
                 isRequired: isVaativaTukiValueRequired,
                 initialValue: opiskelijavuosimaaraysVaativaTuki
                   ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
@@ -190,11 +190,11 @@ async function getModificationForm(
               anchor: "A",
               name: "Difference",
               properties: {
-                forChangeObject: {
+                forChangeObject: reject(isNil, {
                   koodiarvo: helper.sisaoppilaitosOpiskelijamaaraKoodiarvo,
                   maaraysUuid: (findSisaoppilaitosRajoitus(maaraykset) || {})
                     .uuid
-                },
+                }),
                 isRequired: isSisaoppilaitosValueRequired,
                 initialValue: opiskelijavuosimaaraysSisaoppilaitos
                   ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)

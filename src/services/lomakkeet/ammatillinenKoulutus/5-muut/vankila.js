@@ -16,28 +16,33 @@ export function getMuutVankila(
   return map(item => {
     const maarays = maarayksetByKoodiarvo[item.koodiarvo];
     return {
-      anchor: item.koodiarvo,
-      components: [
+      anchor: "vankila",
+      categories: [
         {
-          anchor: "A",
-          name: "CheckboxWithLabel",
-          properties: {
-            forChangeObject: reject(isNil, {
-              koodiarvo: item.koodiarvo,
-              koodisto: item.koodisto,
-              maaraysUuid: (maarays || {}).uuid
-            }),
-            isChecked: !!maarays,
-            isReadOnly,
-            labelStyles: {
-              addition: isAdded,
-              removal: isRemoved,
-              custom: !!maarays ? isInLupa : {}
-            },
-            title:
-              item.metadata[localeUpper].kuvaus ||
-              item.metadata[localeUpper].nimi
-          }
+          anchor: item.koodiarvo,
+          components: [
+            {
+              anchor: "A",
+              name: "CheckboxWithLabel",
+              properties: {
+                forChangeObject: reject(isNil, {
+                  koodiarvo: item.koodiarvo,
+                  koodisto: item.koodisto,
+                  maaraysUuid: (maarays || {}).uuid
+                }),
+                isChecked: !!maarays,
+                isReadOnly,
+                labelStyles: {
+                  addition: isAdded,
+                  removal: isRemoved,
+                  custom: !!maarays ? isInLupa : {}
+                },
+                title:
+                  item.metadata[localeUpper].kuvaus ||
+                  item.metadata[localeUpper].nimi
+              }
+            }
+          ]
         }
       ]
     };

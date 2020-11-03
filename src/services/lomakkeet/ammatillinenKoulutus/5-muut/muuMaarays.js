@@ -13,7 +13,6 @@ export function getMuutMuuMaarays(
   isReadOnly,
   locale
 ) {
-  console.info(items);
   const localeUpper = locale.toUpperCase();
   return map(item => {
     const maarays = maarayksetByKoodiarvo[item.koodiarvo];
@@ -67,6 +66,11 @@ export function getMuutMuuMaarays(
         ];
       }
     }
-    return lomakerakenne;
+    return !!lomakerakenne
+      ? {
+          anchor: "muumaarays",
+          categories: [lomakerakenne]
+        }
+      : null;
   }, items).filter(Boolean);
 }

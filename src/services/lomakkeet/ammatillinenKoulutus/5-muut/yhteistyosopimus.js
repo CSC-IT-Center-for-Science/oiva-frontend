@@ -53,29 +53,34 @@ export function getMuutYhteistyosopimus(
     }
 
     return {
-      anchor: item.koodiarvo,
-      components: [
+      anchor: "yhteistyosopimus",
+      categories: [
         {
-          anchor: "A",
-          name: "CheckboxWithLabel",
-          properties: {
-            forChangeObject: reject(isNil, {
-              koodiarvo: item.koodiarvo,
-              koodisto: item.koodisto,
-              maaraysUuid: (maarays || {}).uuid
-            }),
-            isChecked: !!maarays,
-            isReadOnly,
-            labelStyles: {
-              addition: isAdded,
-              removal: isRemoved,
-              custom: !!maarays ? isInLupa : {}
-            },
-            title
-          }
+          anchor: item.koodiarvo,
+          components: [
+            {
+              anchor: "A",
+              name: "CheckboxWithLabel",
+              properties: {
+                forChangeObject: reject(isNil, {
+                  koodiarvo: item.koodiarvo,
+                  koodisto: item.koodisto,
+                  maaraysUuid: (maarays || {}).uuid
+                }),
+                isChecked: !!maarays,
+                isReadOnly,
+                labelStyles: {
+                  addition: isAdded,
+                  removal: isRemoved,
+                  custom: !!maarays ? isInLupa : {}
+                },
+                title
+              }
+            }
+          ],
+          categories: mitaHaluatHakea
         }
-      ],
-      categories: mitaHaluatHakea
+      ]
     };
   }, items);
 }
