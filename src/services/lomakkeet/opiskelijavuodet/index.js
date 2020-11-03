@@ -61,19 +61,6 @@ async function getModificationForm(
     );
   }, muutMaaraykset);
 
-  /**
-   * Muodostetaan boolean-tyyppinen muuttuja sille, pitääkö sisäoppilaitosta
-   * koskeva tietue näyttää lomakkeella. Jos sisäoppilaitosta koskeva määräys
-   * on olemassa ja sitä ei olla kumoamassa tai jos määräystä ollaan
-   * lisäämässä, näytetään sisäoppilaitoksen tietue käyttäjälle, jotta hän
-   * voi täyttää sen tiedot.
-   **/
-
-  // const isSisaoppilaitosVisible = helper.isSisaoppilaitosRajoitusVisible(
-  //   muutMaaraykset,
-  //   muutChangesFlatten
-  // );
-
   const opiskelijavuosimaaraysSisaoppilaitos = sisaoppilaitosmaarays
     ? find(propEq("koodiarvo", sisaoppilaitosmaarays.koodiarvo), maaraykset)
     : null;
@@ -99,18 +86,6 @@ async function getModificationForm(
     const { key, koodiarvo } = changeObj.properties.metadata;
     return key === "vaativatuki" && includes(koodiarvo, helper.vaativatCodes);
   }, muutChangesFlatten);
-
-  /**
-   * Muodostetaan boolean-tyyppinen muuttuja sille, pitääkö sisäoppilaitosta
-   * koskeva tietue näyttää lomakkeella. Jos sisäoppilaitosta koskeva määräys
-   * on olemassa ja sitä ei olla kumoamassa tai jos määräystä ollaan
-   * lisäämässä, näytetään sisäoppilaitoksen tietue käyttäjälle, jotta hän
-   * voi täyttää sen tiedot.
-   **/
-  // const isVaativaTukiVisible = helper.isVaativatukiRajoitusVisible(
-  //   muutMaaraykset,
-  //   muutChangesFlatten
-  // );
 
   const opiskelijavuosimaaraysVaativaTuki = vaativaTukiMaarays
     ? find(propEq("koodiarvo", vaativaTukiMaarays.koodiarvo), maaraykset)
