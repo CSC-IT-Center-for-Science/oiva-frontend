@@ -1,5 +1,5 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { map } from "ramda";
+import { isNil, map, reject } from "ramda";
 
 /**
  * Ammatillinen koulutus - Esittelijän lomakenäkymä - Osio 5 - Laajennettu.
@@ -14,7 +14,7 @@ export function getMuutLaajennettu(
 ) {
   const localeUpper = locale.toUpperCase();
   return map(item => {
-    const hasMaarays = !!maarayksetByKoodiarvo[item.koodiarvo];
+    const maarays = maarayksetByKoodiarvo[item.koodiarvo];
     return {
       anchor: item.koodiarvo,
       components: [
@@ -22,14 +22,21 @@ export function getMuutLaajennettu(
           anchor: "A",
           name: "CheckboxWithLabel",
           properties: {
-            isChecked: !!hasMaarays,
+            forChangeObject: reject(isNil, {
+              koodiarvo: item.koodiarvo,
+              koodisto: item.koodisto,
+              maaraysUuid: (maarays || {}).uuid
+            }),
+            isChecked: !!maarays,
             isReadOnly,
             labelStyles: {
               addition: isAdded,
               removal: isRemoved,
-              custom: !!hasMaarays ? isInLupa : {}
+              custom: !!maarays ? isInLupa : {}
             },
-            title: item.metadata[localeUpper].kuvaus
+            title:
+              item.metadata[localeUpper].kuvaus ||
+              item.metadata[localeUpper].nimi
           }
         }
       ]

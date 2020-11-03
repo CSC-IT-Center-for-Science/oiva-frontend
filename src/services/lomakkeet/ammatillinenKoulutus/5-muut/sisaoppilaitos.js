@@ -26,6 +26,7 @@ export function getMuutSisaoppilaitos(
           properties: {
             forChangeObject: reject(isNil, {
               koodiarvo: item.koodiarvo,
+              koodisto: item.koodisto,
               maaraysUuid: (maarays || {}).uuid
             }),
             isChecked: !!maarays,
@@ -35,7 +36,9 @@ export function getMuutSisaoppilaitos(
               removal: isRemoved,
               custom: !!maarays ? isInLupa : {}
             },
-            title: item.metadata[localeUpper].kuvaus
+            title:
+              item.metadata[localeUpper].kuvaus ||
+              item.metadata[localeUpper].nimi
           }
         }
       ]

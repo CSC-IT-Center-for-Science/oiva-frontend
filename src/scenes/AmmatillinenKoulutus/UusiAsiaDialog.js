@@ -248,16 +248,18 @@ const UusiAsiaDialog = ({
         muutospyynto = await onPreview(formData);
       }
 
-      if (!uuid && !fromDialog && muutospyynto && muutospyynto.uuid) {
-        // Jos kyseessä on ensimmäinen tallennus...
-        onNewDocSave(muutospyynto.uuid);
-      } else {
-        /**
-         * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
-         * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
-         **/
-        const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-        initializeChanges(changeObjectsFromBackend);
+      if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
+        if (!uuid && !fromDialog) {
+          // Jos kyseessä on ensimmäinen tallennus...
+          onNewDocSave(muutospyynto.uuid);
+        } else {
+          /**
+           * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
+           * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
+           **/
+          const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+          initializeChanges(changeObjectsFromBackend);
+        }
       }
     },
     [

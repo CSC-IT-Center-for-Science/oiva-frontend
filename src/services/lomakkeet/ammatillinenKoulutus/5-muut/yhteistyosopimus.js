@@ -1,5 +1,6 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { map, toLower } from "ramda";
+import { __ } from "i18n-for-browser";
+import { isNil, map, reject, toLower } from "ramda";
 
 /**
  * Ammatillinen koulutus - Esittelijän lomakenäkymä - Osio 5 - Yhteistyosopimukset.
@@ -18,17 +19,37 @@ export function getMuutYhteistyosopimus(
     const maarays = maarayksetByKoodiarvo[item.koodiarvo];
     let title =
       item.metadata[localeUpper].kuvaus || item.metadata[localeUpper].nimi;
+    let mitaHaluatHakea = [];
 
     /**
-     * Koodi 8 on erikoistapaus. Sen tullessa vastaan, ei käytetä edellä
-     * määriteltyä yleistä kuvaustekstiä, vaan kuvausteksti kaivetaan
+     * Koodi 8 on erikoistapaus. Sen kohdalla, ei käytetä koodistosta tulevaa
+     * kuvaustekstiä, vaan kuvausteksti kaivetaan koodiarvoa 8 koskevan
      * määräyksen alta. Tämä johtuu siitä, että eri koulutuksen
-     * järjestäjillä on koodilla 8 erilaisia kuvaustekstejä.
+     * järjestäjillä on koodiarvolla 8 erilaisia kuvaustekstejä.
      **/
     if (item.koodiarvo === "8") {
       title = maarays
         ? maarays.meta["yhteistyösopimus"][toLower(locale)]
         : title;
+      mitaHaluatHakea = [
+        {
+          anchor: "tekstikentta",
+          components: [
+            {
+              anchor: "A",
+              name: "TextBox",
+              properties: {
+                forChangeObject: reject(isNil, {
+                  koodiarvo: item.koodiarvo,
+                  koodisto: item.koodisto,
+                  maaraysUuid: (maarays || {}).uuid
+                }),
+                placeholder: __("other.placeholder")
+              }
+            }
+          ]
+        }
+      ];
     }
 
     return {
@@ -38,6 +59,11 @@ export function getMuutYhteistyosopimus(
           anchor: "A",
           name: "CheckboxWithLabel",
           properties: {
+            forChangeObject: reject(isNil, {
+              koodiarvo: item.koodiarvo,
+              koodisto: item.koodisto,
+              maaraysUuid: (maarays || {}).uuid
+            }),
             isChecked: !!maarays,
             isReadOnly,
             labelStyles: {
@@ -48,7 +74,8 @@ export function getMuutYhteistyosopimus(
             title
           }
         }
-      ]
+      ],
+      categories: mitaHaluatHakea
     };
   }, items);
 }

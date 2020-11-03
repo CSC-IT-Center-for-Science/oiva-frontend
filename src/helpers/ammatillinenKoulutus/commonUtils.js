@@ -89,10 +89,14 @@ export const getSavedChangeObjects = muutospyynto => {
 
     changesBySection.topthree = path(["meta", "topthree"], muutospyynto) || [];
     // Set uuid for asianumero
-    find(
+    const topThreeChanges = find(
       topthree => getAnchorPart(topthree.anchor, 1) === "asianumero",
       changesBySection.topthree
-    ).properties.metadata = { uuid: muutospyynto.uuid };
+    );
+
+    if (topThreeChanges) {
+      topThreeChanges.properties.metadata = { uuid: muutospyynto.uuid };
+    }
 
     if (
       changesBySection.categoryFilter &&

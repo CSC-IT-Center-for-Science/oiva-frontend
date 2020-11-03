@@ -1,5 +1,6 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { map } from "ramda";
+import { __ } from "i18n-for-browser";
+import { isNil, map, reject } from "ramda";
 
 /**
  * Ammatillinen koulutus - Esittelijän lomakenäkymä - Osio 5 - Muu määräys.
@@ -12,27 +13,60 @@ export function getMuutMuuMaarays(
   isReadOnly,
   locale
 ) {
+  console.info(items);
   const localeUpper = locale.toUpperCase();
   return map(item => {
-    const hasMaarays = !!maarayksetByKoodiarvo[item.koodiarvo];
-    return {
-      anchor: item.koodiarvo,
-      components: [
-        {
-          anchor: "A",
-          name: "CheckboxWithLabel",
-          properties: {
-            isChecked: !!hasMaarays,
-            isReadOnly,
-            labelStyles: {
-              addition: isAdded,
-              removal: isRemoved,
-              custom: !!hasMaarays ? isInLupa : {}
-            },
-            title: item.metadata[localeUpper].kuvaus
+    const maarays = maarayksetByKoodiarvo[item.koodiarvo];
+    let lomakerakenne = null;
+    if (item.koodiarvo !== "15" || !!maarays) {
+      lomakerakenne = {
+        anchor: item.koodiarvo,
+        components: [
+          {
+            anchor: "A",
+            name: "CheckboxWithLabel",
+            properties: {
+              forChangeObject: reject(isNil, {
+                koodiarvo: item.koodiarvo,
+                koodisto: item.koodisto,
+                maaraysUuid: (maarays || {}).uuid
+              }),
+              isChecked: !!maarays,
+              isReadOnly,
+              labelStyles: {
+                addition: isAdded,
+                removal: isRemoved,
+                custom: !!maarays ? isInLupa : {}
+              },
+              title:
+                item.metadata[localeUpper].kuvaus ||
+                item.metadata[localeUpper].nimi
+            }
           }
-        }
-      ]
-    };
-  }, items);
+        ]
+      };
+
+      if (item.koodiarvo === "22") {
+        lomakerakenne.categories = [
+          {
+            anchor: "other",
+            components: [
+              {
+                anchor: "A",
+                name: "TextBox",
+                properties: {
+                  forChangeObject: {
+                    koodiarvo: item.koodiarvo,
+                    koodisto: item.koodisto
+                  },
+                  placeholder: __("other.placeholder")
+                }
+              }
+            ]
+          }
+        ];
+      }
+    }
+    return lomakerakenne;
+  }, items).filter(Boolean);
 }
