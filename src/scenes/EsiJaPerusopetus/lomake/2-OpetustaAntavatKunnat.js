@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import ExpandableRowRoot from "../../../components/02-organisms/ExpandableRowRoot";
 import common from "../../../i18n/definitions/common";
 import wizard from "../../../i18n/definitions/wizard";
 import Lomake from "../../../components/02-organisms/Lomake";
@@ -12,6 +11,10 @@ import * as R from "ramda";
 const labelStyles = {
   addition: isAdded,
   removal: isRemoved
+};
+
+const constants = {
+  formLocation: ["esiJaPerusopetus", "opetustaAntavatKunnat"]
 };
 
 const mapping = {
@@ -77,21 +80,6 @@ const OpetustaAntavatKunnat = props => {
   const fiCode = R.view(
     R.lensPath(["valtakunnallinen", "arvo"]),
     props.lupakohde
-  );
-
-  /**
-   * Changes are handled here. Changes objects will be formed and callback
-   * function will be called with them.
-   */
-  const handleChanges = useCallback(
-    changesByAnchor => {
-      const sectionChanges = {
-        anchor: props.sectionId,
-        changes: changesByAnchor.changes
-      };
-      onChangesUpdate(sectionChanges);
-    },
-    [onChangesUpdate, props.sectionId]
   );
 
   const whenChanges = useCallback(
@@ -286,7 +274,7 @@ const OpetustaAntavatKunnat = props => {
   const provinceChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", `${props.sectionId}.categoryFilter`),
-      changeObjects
+      changeObjects || []
     );
     return changeObj ? changeObj.properties.changesByProvince : {};
   }, [changeObjects, props.sectionId]);
@@ -294,35 +282,18 @@ const OpetustaAntavatKunnat = props => {
   const quickFilterChanges = useMemo(() => {
     const changeObj = R.find(
       R.propEq("anchor", `${props.sectionId}.categoryFilter`),
-      changeObjects
+      changeObjects || []
     );
     return changeObj ? changeObj.properties.quickFilterChanges : {};
   }, [changeObjects, props.sectionId]);
 
-  const changesMessages = {
-    undo: intl.formatMessage(common.undo),
-    changesTest: intl.formatMessage(common.changesText)
-  };
-
   const noSelectionsInLupa = R.isEmpty(maakunnatInLupa) && R.isEmpty(kunnatInLupa) && fiCode !== "FI1";
 
   return (
-    <ExpandableRowRoot
-      anchor={props.sectionId}
-      key={`expandable-row-root`}
-      changes={changeObjects}
-      hideAmountOfChanges={true}
-      messages={changesMessages}
-      isExpanded={true}
-      sectionId={props.sectionId}
-      showCategoryTitles={true}
-      onChangesRemove={props.onChangesRemove}
-      onUpdate={handleChanges}
-      title={intl.formatMessage(wizard.municipalitiesAndAreas)}>
       <Lomake
         action="modification"
         anchor={props.sectionId}
-        changeObjects={changeObjects}
+        isInExpandableRow={true}
         data={{
           fiCode,
           isEditViewActive,
@@ -358,16 +329,14 @@ const OpetustaAntavatKunnat = props => {
           quickFilterChanges,
           noSelectionsInLupa,
         }}
-        onChangesUpdate={handleChanges}
-        path={["esiJaPerusopetus", "opetustaAntavatKunnat"]}
+        path={constants.formLocation}
         showCategoryTitles={true}
+        rowTitle={intl.formatMessage(wizard.municipalitiesAndAreas)}
       />
-    </ExpandableRowRoot>
   );
 };
 
 OpetustaAntavatKunnat.defaultProps = {
-  changeObjects: [],
   kunnat: [],
   kuntamaaraykset: [],
   lisatiedot: [],
@@ -378,7 +347,6 @@ OpetustaAntavatKunnat.defaultProps = {
 };
 
 OpetustaAntavatKunnat.propTypes = {
-  changeObjects: PropTypes.array,
   kunnat: PropTypes.array,
   lupakohde: PropTypes.object,
   maakunnat: PropTypes.array,
@@ -386,8 +354,6 @@ OpetustaAntavatKunnat.propTypes = {
   kuntamaaraykset: PropTypes.array,
   lisatiedot: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object,
-  onChangesUpdate: PropTypes.func,
-  onChangesRemove: PropTypes.func,
   sectionId: PropTypes.string
 };
 

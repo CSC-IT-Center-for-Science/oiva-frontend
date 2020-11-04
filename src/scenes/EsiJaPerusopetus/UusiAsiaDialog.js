@@ -356,6 +356,7 @@ const UusiAsiaDialog = ({
                 </h2>
                 <Lomake
                   anchor="paatoksentiedot"
+                  isInExpandableRow={false}
                   changeObjects={state.changeObjects.paatoksentiedot}
                   data={{ formatMessage: intl.formatMessage, uuid }}
                   onChangesUpdate={payload =>
