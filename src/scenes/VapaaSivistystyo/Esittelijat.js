@@ -21,7 +21,7 @@ const Esittelijat = () => {
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to="/ammatillinenkoulutus/asianhallinta/avoimet">
+      <BreadcrumbsItem to="/vapaa-sivistystyo/asianhallinta/avoimet">
         {formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
 
@@ -30,7 +30,7 @@ const Esittelijat = () => {
           {formatMessage(commonMessages.asianhallinta)}
         </Typography>
         <Typography component="h2" style={{fontSize: "1.25rem"}} className="pb-4 mt--12">
-          {formatMessage(educationMessages.vocationalEducation)}
+          {formatMessage(educationMessages.vstEducation)}
         </Typography>
 
         <Switch>

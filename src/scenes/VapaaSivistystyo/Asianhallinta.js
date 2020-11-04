@@ -21,8 +21,8 @@ const Asianhallinta = () => {
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to="/ammatillinenkoulutus">
-        {intl.formatMessage(education.vocationalEducation)}
+      <BreadcrumbsItem to="/vapaa-sivistystyo">
+        {intl.formatMessage(education.vstEducation)}
       </BreadcrumbsItem>
       {location.pathname === "/asianhallinta" ? (
         <div className="flex-1 bg-gray-100">
@@ -62,7 +62,7 @@ const Asianhallinta = () => {
       <Router history={history}>
         <Switch>
           <Route
-            path="/ammatillinenkoulutus/asianhallinta"
+            path="/vapaa-sivistystyo/asianhallinta"
             render={() => <Esittelijat />}
           />
         </Switch>

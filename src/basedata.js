@@ -125,12 +125,6 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
       : null,
-    vstLuvat: await getRaw(
-      "vstLuvat",
-      `${backendRoutes.luvat.path}?koulutustyyppi=3`,
-      keys,
-      backendRoutes.luvat.minimumTimeBetweenFetchingInMinutes
-    ),
     vstTyypit: await getRaw(
       "vstTyypit",
       `${backendRoutes.vsttyypit.path}`,

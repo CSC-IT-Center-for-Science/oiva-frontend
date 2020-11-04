@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { generateAvoimetAsiatTableStructure } from "./asiatUtils";
+import { generateAvoimetAsiatTableStructure } from "../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../modules/Loading";
@@ -9,6 +9,7 @@ import common from "../../i18n/definitions/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Table from "components/02-organisms/Table";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog";
+import { koulutustyypitMap } from "../../utils/constants";
 
 const AvoimetAsiat = () => {
   const history = useHistory();
@@ -28,7 +29,8 @@ const AvoimetAsiat = () => {
       ["AVOIN", "VALMISTELUSSA", "ESITTELYSSA"],
       ["avoimet"],
       false,
-      isForced
+      isForced,
+      koulutustyypitMap.VAPAASIVISTYSTYO
     );
 
     return function cancel() {

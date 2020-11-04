@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Table from "../../components/02-organisms/Table";
-import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
 import { generateAvoimetAsiatTableStructure } from "../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
@@ -9,6 +7,8 @@ import { useMuutospyynnot } from "../../stores/muutospyynnot";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
+import Table from "components/02-organisms/Table";
+import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 import { koulutustyypitMap } from "../../utils/constants";
 
 const AvoimetAsiat = () => {
@@ -30,7 +30,7 @@ const AvoimetAsiat = () => {
       ["avoimet"],
       false,
       isForced,
-      koulutustyypitMap.ESI_JA_PERUSOPETUS
+      koulutustyypitMap.LUKIO
     );
 
     return function cancel() {
@@ -58,6 +58,7 @@ const AvoimetAsiat = () => {
   }, [rowActionTargetId, history, intl.formatMessage]);
 
   const tableStructure = useMemo(() => {
+    console.info(muutospyynnot);
     return muutospyynnot.avoimet &&
       muutospyynnot.avoimet.fetchedAt &&
       muutospyynnot.avoimet.data !== null

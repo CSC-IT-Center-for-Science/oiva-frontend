@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import education from "../../i18n/definitions/education";
 import Loading from "../../modules/Loading";
 import { useIntl } from "react-intl";
+import { koulutustyypitMap } from "../../utils/constants";
 
 const Jarjestajat = React.memo(() => {
   const intl = useIntl();
@@ -13,7 +14,12 @@ const Jarjestajat = React.memo(() => {
 
   // Let's fetch LUVAT
   useEffect(() => {
-    const abortController = luvatActions.load();
+    const abortController = luvatActions.load([
+      {
+        key: "koulutustyyppi",
+        value: koulutustyypitMap.LUKIO
+      }
+    ]);
     return function cancel() {
       if (abortController) {
         abortController.abort();

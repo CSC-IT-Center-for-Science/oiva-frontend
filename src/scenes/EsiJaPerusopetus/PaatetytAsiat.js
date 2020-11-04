@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import Table from "../../components/02-organisms/Table";
-import { generatePaatetytAsiatTableStructure } from "./asiatUtils";
+import { generatePaatetytAsiatTableStructure } from "../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../modules/Loading";
 import { useMuutospyynnot } from "../../stores/muutospyynnot";
 import * as R from "ramda";
+import { koulutustyypitMap } from "../../utils/constants";
 
 const PaatetytAsiat = () => {
   const history = useHistory();
@@ -19,7 +20,8 @@ const PaatetytAsiat = () => {
       ["PAATETTY"],
       ["paatetyt"],
       false,
-      isForced
+      isForced,
+      koulutustyypitMap.ESI_JA_PERUSOPETUS
     );
 
     return function cancel() {

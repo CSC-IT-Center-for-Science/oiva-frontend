@@ -1,8 +1,8 @@
 import * as R from "ramda";
-import common from "../../i18n/definitions/common";
+import common from "../i18n/definitions/common";
 import moment from "moment";
-import ProcedureHandler from "../../components/02-organisms/procedureHandler";
-import { resolveLocalizedOrganizationName } from "../../modules/helpers";
+import ProcedureHandler from "../components/02-organisms/procedureHandler";
+import { resolveLocalizedOrganizationName } from "../modules/helpers";
 
 const asiatTableColumnSetup = [
   { titleKey: common["asiaTable.headers.asianumero"], widthClass: "w-2/12" },

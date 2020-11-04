@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
-import AvoimetAsiat from "../AmmatillinenKoulutus/AvoimetAsiat";
-import PaatetytAsiat from "../AmmatillinenKoulutus/PaatetytAsiat";
+import AvoimetAsiat from "./AvoimetAsiat";
+import PaatetytAsiat from "./PaatetytAsiat";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../i18n/definitions/common";
