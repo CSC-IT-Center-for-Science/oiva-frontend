@@ -4,11 +4,10 @@ import { useIntl } from "react-intl";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 import Koulutusala from "./Koulutusala";
 import { useLatestChangesByAnchor } from "scenes/AmmatillinenKoulutus/store";
-import { forEach, isEmpty, map, replace, toUpper } from "ramda";
-import { replaceAnchorPartWith } from "utils/common";
+import { find, forEach, map, path, propEq, toUpper } from "ramda";
 import wizard from "i18n/definitions/wizard";
 
-const Tutkintokielet = ({ koulutusalat }) => {
+const Tutkintokielet = ({ koulutusalat, tutkinnot }) => {
   const sectionId = "kielet_tutkintokielet";
   const intl = useIntl();
 
@@ -16,39 +15,43 @@ const Tutkintokielet = ({ koulutusalat }) => {
     anchor: "tutkinnot"
   });
 
-  const [
-    latestChanges,
-    { removeChangeObjectByAnchor }
-  ] = useLatestChangesByAnchor({ anchor: "tutkinnot" });
+  const [, { removeChangeObjectByAnchor }] = useLatestChangesByAnchor({
+    anchor: "tutkinnot"
+  });
 
   /**
-   * Tarkkaillaan tutkintoja koskevia muutoksia ja poistetaan tarvittaessa
-   * niitä vastaavat muutosobjektit tutkintokieliosiosta. Eli kyseessä on
-   * käyttötapaus, jossa käyttäjä poistaa ruksin jonkin tutkinnon kohdalta.
-   * Jos kyseiselle tutkinnolle on asetettu tutkintokieli(ä), on tutkinto-
-   * kielet lisäävät muutosobjektit poistettava. Tässä tehdään se.
+   * Tarkkaillaan tutkinto-osion deaktiivisia tutkintoja ja poistetaan
+   * tarvittaessa niitä vastaavat muutosobjektit tutkintokieliosiosta. Eli
+   * kyseessä on käyttötapaus, jossa käyttäjä poistaa ruksin jonkin
+   * tutkinnon kohdalta. Jos kyseiselle tutkinnolle on asetettu
+   * tutkintokieli(ä), on tutkintokielet lisäävät muutosobjektit
+   * poistettava. Tässä tehdään se.
    */
   useEffect(() => {
-    if (!isEmpty(latestChanges.underRemoval)) {
-      forEach(changeObj => {
-        if (changeObj.properties.isChecked) {
-          removeChangeObjectByAnchor(
-            /**
-             * Tutkintoankkuria muutetaan siten, että saadaan aikaan vastaava
-             * tutkintokieliankkuri. Esim. tutkintoankkuria
-             * tutkinnot_01.12.417101.tutkinto vastaava tutkintokieliankkuri on
-             * kielet_tutkintokielet_01.12.417101.kielet
-             **/
-            replaceAnchorPartWith(
-              replace("tutkinnot", sectionId, changeObj.anchor),
-              3,
-              "kielet"
-            )
-          );
-        }
-      }, latestChanges.underRemoval);
-    }
-  }, [latestChanges]);
+    forEach(tutkinto => {
+      const {
+        koulutusalakoodiarvo,
+        koulutustyyppikoodiarvo,
+        koodiarvo
+      } = tutkinto;
+      const aktiivisetTutkinnot = path(
+        [koulutusalakoodiarvo, "aktiiviset"],
+        tutkintodata
+      );
+      const isTutkintoEnabled = !!find(
+        propEq("koodiarvo", koodiarvo),
+        aktiivisetTutkinnot || []
+      );
+      if (!isTutkintoEnabled) {
+        /**
+         * Muodostetaan tutkinnon pohjalta ankkuri, jolla saaadaan kiinni
+         * tutkintoa vastaava tutkintokielimuutos.
+         **/
+        const anchor = `kielet_tutkintokielet_${koulutusalakoodiarvo}.${koulutustyyppikoodiarvo}.${koodiarvo}.kielet`;
+        removeChangeObjectByAnchor(anchor);
+      }
+    }, tutkinnot);
+  }, [tutkintodata, tutkinnot, tutkintodata]);
 
   return (
     <React.Fragment>
