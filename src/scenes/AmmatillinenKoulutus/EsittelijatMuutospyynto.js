@@ -10,6 +10,7 @@ import MuutospyyntoWizardOpiskelijavuodet from "./Jarjestajat/Jarjestaja/Hakemuk
 import MuutospyyntoWizardToimintaalue from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardToimintaalue";
 import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
+import MuutospyyntoWizardTopThree from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTopThree";
 
 const defaultProps = {
   kielet: [],
@@ -118,8 +119,14 @@ const EsittelijatMuutospyynto = ({
 
   return (
     <React.Fragment>
-      <h2 className="my-6">{intl.formatMessage(common.changesText)}</h2>
       <form onSubmit={handleSubmit}>
+        <Section>
+          <div className="w-1/3">
+            <h2 className="p-8" style={{ marginLeft: "-2rem" }}>{intl.formatMessage(common.decisionDetails)}</h2>
+            <MuutospyyntoWizardTopThree/>
+          </div>
+        </Section>
+        <h2 className="my-6">{intl.formatMessage(common.changesText)}</h2>
         <Section
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
           title={sectionHeadings.tutkinnotJaKoulutukset.title}>

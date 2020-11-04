@@ -1,15 +1,8 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import { find, head, includes, last, prop, values } from "ramda";
-import common from "i18n/definitions/common";
-import Lomake from "components/02-organisms/Lomake";
-import { useParams } from "react-router-dom";
 import EsittelijatMuutospyynto from "../../EsittelijatMuutospyynto";
 import { useValidity } from "../../lomakedata";
-
-const formLocations = {
-  kolmeEnsimmaistaKenttaa: ["esittelija", "topThree"]
-};
 
 const Lupanakyma = ({
   kielet,
@@ -28,7 +21,6 @@ const Lupanakyma = ({
   tutkinnot
 }) => {
   const intl = useIntl();
-  const { uuid } = useParams();
   const [validity] = useValidity();
 
   const organisationPhoneNumber = head(
@@ -41,11 +33,6 @@ const Lupanakyma = ({
 
   const organisationWebsite = head(
     values(find(prop("www"), organisation.yhteystiedot))
-  );
-
-  const topThreeData = useMemo(
-    () => ({ formatMessage: intl.formatMessage, uuid }),
-    [intl, uuid]
   );
 
   const isLupaValid = useMemo(() => {
@@ -98,14 +85,6 @@ const Lupanakyma = ({
       <div
         id="wizard-content"
         className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
-        <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-          <h2 className="p-8">{intl.formatMessage(common.decisionDetails)}</h2>
-          <Lomake
-            anchor="topthree"
-            isInExpandableRow={false}
-            data={topThreeData}
-            path={formLocations.kolmeEnsimmaistaKenttaa}></Lomake>
-        </div>
         <EsittelijatMuutospyynto
           kielet={kielet}
           kohteet={kohteet}
