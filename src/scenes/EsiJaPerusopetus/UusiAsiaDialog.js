@@ -22,7 +22,6 @@ import OpetuksenJarjestamismuoto from "./lomake/4-OpetuksenJarjestamismuoto";
 import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
 import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
-import Liitetiedostot from "./lomake/8-Liitetiedostot";
 import Rajoitteet from "./lomake/9-Rajoitteet";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
@@ -476,17 +475,6 @@ const UusiAsiaDialog = ({
                   title={intl.formatMessage(
                     education.muutEhdotTitle
                   )}></FormSection>
-
-                <FormSection
-                  code={8}
-                  render={props => (
-                    <Liitetiedostot
-                      changeObjects={state.changeObjects.liitetiedostot}
-                      {...props}
-                    />
-                  )}
-                  sectionId={"liitetiedostot"}
-                  title={"Liitetiedostot"}></FormSection>
               </form>
             </div>
           </DialogContentWithStyles>

@@ -36,7 +36,6 @@ import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
-import { liitetiedostot } from "./esi-ja-perusopetus/8-liitetiedostot";
 import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
 import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
@@ -330,10 +329,6 @@ const lomakkeet = {
     erityisetKoulutustehtavat: {
       modification: (data, isReadOnly, locale, changeObjects) =>
         erityisetKoulutustehtavat(data, isReadOnly, locale, changeObjects)
-    },
-    liitetiedostot: {
-      modification: (data, isReadOnly, locale) =>
-        liitetiedostot(data, isReadOnly, locale)
     },
     muutEhdot: {
       modification: (data, isReadOnly, locale, changeObjects) =>
