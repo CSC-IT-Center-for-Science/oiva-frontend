@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
 import { Helmet } from "react-helmet";
@@ -6,11 +6,30 @@ import education from "../../i18n/definitions/education";
 import { useIntl } from "react-intl";
 import { find, head, map, toUpper, values, prop, descend, sort } from "ramda";
 import { resolveVSTOppilaitosNameFromLupa } from "../../modules/helpers";
+import { koulutustyypitMap } from "../../utils/constants";
+import { useLuvat } from "../../stores/luvat";
+import Loading from "../../modules/Loading";
 
-const Jarjestajat = ({ luvat, vstTyypit }) => {
+const Jarjestajat = ({ vstTyypit }) => {
   const intl = useIntl();
   const byYllapitaja = descend(prop('yllapitaja'));
-  const tableData = sort(byYllapitaja,
+  // Let's fetch LUVAT
+  const [luvat, luvatActions] = useLuvat();
+  useEffect(() => {
+    const abortController = luvatActions.load([
+      {
+        key: "koulutustyyppi",
+        value: koulutustyypitMap.VAPAASIVISTYSTYO
+      }
+    ]);
+    return function cancel() {
+      if (abortController) {
+        abortController.abort();
+      }
+    };
+  }, [luvatActions]);
+
+  const tableData = luvat.fetchedAt ? sort(byYllapitaja,
     map(lupa => {
       const oppilaitostyyppiKoodistosta = find(tyyppi => tyyppi.koodiarvo === lupa.oppilaitostyyppi, vstTyypit);
       const localeUpper = toUpper(intl.locale);
@@ -21,7 +40,7 @@ const Jarjestajat = ({ luvat, vstTyypit }) => {
         toiminnot: ["info"],
         ytunnus: lupa.jarjestajaYtunnus
       };
-    }, luvat));
+    }, luvat.data)) : [];
 
   return (
     <React.Fragment>
@@ -32,8 +51,10 @@ const Jarjestajat = ({ luvat, vstTyypit }) => {
       <BreadcrumbsItem to="/vapaa-sivistystyo">
         {intl.formatMessage(education.vstEducation)}
       </BreadcrumbsItem>
-
-      <Jarjestajaluettelo tableData={tableData} vstTyypit={vstTyypit} luvat={luvat}/>
+      {luvat.isLoading === false && !luvat.isErroneous && (
+        <Jarjestajaluettelo tableData={tableData} vstTyypit={vstTyypit} luvat={luvat.data}/>
+      )}
+      {luvat.isLoading && <Loading />}
     </React.Fragment>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Table from "../../components/02-organisms/Table";
 import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
-import { generateAvoimetAsiatTableStructure } from "./asiatUtils";
+import { generateAvoimetAsiatTableStructure } from "../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../modules/Loading";

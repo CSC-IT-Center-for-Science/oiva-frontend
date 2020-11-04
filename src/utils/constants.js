@@ -51,3 +51,9 @@ export const LUPA_SECTIONS = {
     PASSIVOITU: "asiaStates.esittelija.PASSIVOITU",
     ESITTELYSSA: "asiaStates.esittelija.ESITTELYSSA"
   };
+
+  export const koulutustyypitMap = {
+    ESI_JA_PERUSOPETUS: "2",
+    LUKIO: "1",
+    VAPAASIVISTYSTYO: "3"
+  };
