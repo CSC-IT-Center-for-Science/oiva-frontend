@@ -73,7 +73,6 @@ const Lomake = React.memo(
     );
 
     useEffect(() => {
-      console.info("LUODAAN LOMAKE", anchor, changeObjects);
       async function fetchLomake() {
         return await getLomake(
           action,
@@ -88,7 +87,6 @@ const Lomake = React.memo(
 
       fetchLomake().then(result => {
         if (has("isValid", result)) {
-          // console.info("Laitellaan validiustietoa.");
           lomakedataActions.setValidity(result.isValid, anchor);
         }
         result.structure ? setLomake(result.structure) : setLomake(result);

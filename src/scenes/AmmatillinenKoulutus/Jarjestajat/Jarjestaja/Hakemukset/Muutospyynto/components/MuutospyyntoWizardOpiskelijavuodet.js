@@ -90,7 +90,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           lomakedata
         )
       ) {
-        console.info("Asetetaan näkyvyys!");
         setLomakedata(
           {
             sisaoppilaitos: visibilityOfSisaoppilaitos,

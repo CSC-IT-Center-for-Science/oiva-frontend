@@ -68,6 +68,12 @@ const FormDialog = withStyles(() => ({
   return <Dialog {...props}>{props.children}</Dialog>;
 });
 
+const constants = {
+  formLocation: {
+    paatoksenTiedot: ["esiJaPerusopetus", "paatoksenTiedot"]
+  }
+};
+
 const defaultProps = {
   ensisijaisetOpetuskieletOPH: [],
   kielet: [],
@@ -117,15 +123,17 @@ const UusiAsiaDialog = ({
   poMuutEhdot = defaultProps.poMuutEhdot,
   toissijaisetOpetuskieletOPH = defaultProps.toissijaisetOpetuskieletOPH
 }) => {
-
-  const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval( {
+  const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "paatoksentiedot"
+  });
+  const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "toimintaalue"
   });
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
 
-  const [state, actions] = useEsiJaPerusopetus();
+  const [state] = useEsiJaPerusopetus();
   const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
 
   const intl = useIntl();
@@ -134,7 +142,6 @@ const UusiAsiaDialog = ({
   let { uuid } = params;
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
-  const [hasInvalidFields, setHasInvalidFields] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
@@ -177,7 +184,6 @@ const UusiAsiaDialog = ({
     muutospyyntoActions.reset();
     return history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=true`);
   }, [history, muutospyyntoActions]);
-
 
   const isSavingEnabled = useMemo(() => {
     const hasUnsavedChanges = unsavedChangeObjects
@@ -246,7 +252,8 @@ const UusiAsiaDialog = ({
           lupa,
           {
             paatoksentiedot: paatoksentiedotCo,
-            opetustehtavat: opetustehtavatCo
+            opetustehtavat: opetustehtavatCo,
+            toimintaalue: toimintaalueCO
           },
           uuid,
           kohteet,
@@ -278,18 +285,19 @@ const UusiAsiaDialog = ({
       }
     },
     [
-      kohteet,
+      initializeChanges,
       intl.locale,
+      kohteet,
       lupa,
       maaraystyypit,
       onNewDocSave,
       onPreview,
       onSave,
-      organisation,
-      uuid,
-      paatoksentiedotCo,
       opetustehtavatCo,
-      initializeChanges
+      organisation,
+      paatoksentiedotCo,
+      toimintaalueCO,
+      uuid
     ]
   );
 
@@ -373,7 +381,7 @@ const UusiAsiaDialog = ({
                   isInExpandableRow={false}
                   anchor="paatoksentiedot"
                   data={{ formatMessage: intl.formatMessage, uuid }}
-                  path={["esiJaPerusopetus", "paatoksenTiedot"]}></Lomake>
+                  path={constants.formLocation.paatoksenTiedot}></Lomake>
               </div>
 
               <form onSubmit={() => {}}>

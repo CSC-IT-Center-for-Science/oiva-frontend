@@ -402,7 +402,26 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           )
         )
       : undefined,
-    maakunnat: raw.maakunnat,
+    maakunnat: raw.maakuntakunnat
+      ? await localforage.setItem(
+          "maakunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(
+              maakunta =>
+                omit(["koodiArvo"], {
+                  ...maakunta,
+                  koodiarvo: maakunta.koodiArvo,
+                  metadata: mapObjIndexed(
+                    head,
+                    groupBy(prop("kieli"), maakunta.metadata)
+                  )
+                }),
+              raw.maakunnat
+            ).filter(Boolean)
+          )
+        )
+      : undefined,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
           "maakuntakunnat",
