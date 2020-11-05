@@ -355,16 +355,10 @@ const UusiAsiaDialog = ({
                   {intl.formatMessage(common.decisionDetails)}
                 </h2>
                 <Lomake
+                  isInExpandableRow={false}
                   anchor="paatoksentiedot"
-                  changeObjects={state.changeObjects.paatoksentiedot}
                   data={{ formatMessage: intl.formatMessage, uuid }}
-                  onChangesUpdate={payload =>
-                    actions.setChangeObjects(payload.anchor, payload.changes)
-                  }
-                  path={["esiJaPerusopetus", "paatoksenTiedot"]}
-                  hasInvalidFieldsFn={invalidFields => {
-                    setHasInvalidFields(invalidFields);
-                  }}></Lomake>
+                  path={["esiJaPerusopetus", "paatoksenTiedot"]}></Lomake>
               </div>
 
               <form onSubmit={() => {}}>
