@@ -13,11 +13,13 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
+import { MuutoksetContainer } from "../AmmatillinenKoulutus/store";
 
 const Esittelijat = () => {
   const { formatMessage, locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
+  const scope = "po-esittelijan-lupanakyma";
 
   return (
     <React.Fragment>
@@ -59,7 +61,11 @@ const Esittelijat = () => {
             render={() => (
               <BaseData
                 locale={locale}
-                render={_props => <UusiAsiaDialogContainer {..._props} />}
+                render={_props => (
+                  <MuutoksetContainer scope={scope}>
+                    <UusiAsiaDialogContainer {..._props} />}
+                  </MuutoksetContainer>
+                  )}
               />
             )}
           />
@@ -71,7 +77,11 @@ const Esittelijat = () => {
               return (
                 <BaseData
                   locale={locale}
-                  render={_props => <AsiaDialogContainer {..._props} />}
+                  render={_props => (
+                    <MuutoksetContainer scope={scope}>
+                      <AsiaDialogContainer {..._props} />}
+                    </MuutoksetContainer>
+                    )}
                 />
               );
             }}

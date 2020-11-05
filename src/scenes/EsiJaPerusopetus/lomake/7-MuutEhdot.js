@@ -1,15 +1,16 @@
 import React, { useCallback } from "react";
-import ExpandableRowRoot from "../../../components/02-organisms/ExpandableRowRoot";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
-import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { find } from "ramda";
 
+const constants = {
+  formLocations: ["esiJaPerusopetus", "muutEhdot"]
+}
+
 const MuutEhdot = ({
-  onChangesRemove,
   onChangesUpdate,
   lisatiedot,
   poMuutEhdot,
@@ -17,11 +18,6 @@ const MuutEhdot = ({
 }) => {
   const [state, actions] = useEsiJaPerusopetus();
   const intl = useIntl();
-
-  const changesMessages = {
-    undo: intl.formatMessage(common.undo),
-    changesTest: intl.formatMessage(common.changesText)
-  };
 
   const onAddButtonClick = useCallback(
     koodiarvo => {
@@ -49,31 +45,17 @@ const MuutEhdot = ({
   );
 
   return (
-    <ExpandableRowRoot
+    <Lomake
+      action="modification"
       anchor={sectionId}
-      key={`expandable-row-root`}
-      changes={state.changeObjects[sectionId]}
-      hideAmountOfChanges={true}
-      isExpanded={true}
-      messages={changesMessages}
-      onChangesRemove={onChangesRemove}
-      onUpdate={onChanges}
-      sectionId={sectionId}
+      data={{
+        lisatiedot,
+        onAddButtonClick,
+        poMuutEhdot
+      }}
+      path={constants.formLocations}
       showCategoryTitles={true}
-      title={intl.formatMessage(education.muutEhdotTitle)}>
-      <Lomake
-        action="modification"
-        anchor={sectionId}
-        changeObjects={state.changeObjects[sectionId]}
-        data={{
-          lisatiedot,
-          onAddButtonClick,
-          poMuutEhdot
-        }}
-        onChangesUpdate={onChanges}
-        path={["esiJaPerusopetus", "muutEhdot"]}
-        showCategoryTitles={true}></Lomake>
-    </ExpandableRowRoot>
+      rowTitle={intl.formatMessage(education.muutEhdotTitle)}></Lomake>
   );
 };
 

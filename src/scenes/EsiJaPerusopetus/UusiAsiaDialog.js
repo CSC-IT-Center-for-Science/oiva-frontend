@@ -1,14 +1,13 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../components/02-organisms/DialogTitle";
-import ConfirmDialog from "../..//components/02-organisms/ConfirmDialog";
+import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
 import wizardMessages from "../../i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
-import { DialogContent, Dialog } from "@material-ui/core";
+import { Dialog, DialogContent } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import { useHistory, useParams } from "react-router-dom";
-import SimpleButton from "../..//components/00-atoms/SimpleButton";
 import { createMuutospyyntoOutput } from "../../services/muutoshakemus/utils/common";
 import ProcedureHandler from "../../components/02-organisms/procedureHandler";
 import Lomake from "../../components/02-organisms/Lomake";
@@ -22,12 +21,19 @@ import OpetuksenJarjestamismuoto from "./lomake/4-OpetuksenJarjestamismuoto";
 import ErityisetKoulutustehtavat from "./lomake/5-ErityisetKoulutustehtavat";
 import Opiskelijamaarat from "./lomake/6-Opiskelijamaarat";
 import MuutEhdot from "./lomake/7-MuutEhdot";
-import Liitetiedostot from "./lomake/8-Liitetiedostot";
 import Rajoitteet from "./lomake/9-Rajoitteet";
 import * as R from "ramda";
 import common from "../../i18n/definitions/common";
 import education from "../../i18n/definitions/education";
 import { createObjectToSave } from "./saving";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval,
+  useUnderRemovalChangeObjects,
+  useUnsavedChangeObjects
+} from "../AmmatillinenKoulutus/store";
+import { getSavedChangeObjects } from "../../helpers/ammatillinenKoulutus/commonUtils";
+import SimpleButton from "../../components/00-atoms/SimpleButton";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -111,19 +117,27 @@ const UusiAsiaDialog = ({
   poMuutEhdot = defaultProps.poMuutEhdot,
   toissijaisetOpetuskieletOPH = defaultProps.toissijaisetOpetuskieletOPH
 }) => {
+
+  const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval( {
+    anchor: "paatoksentiedot"
+  });
+  const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "opetustehtavat"
+  });
+
   const [state, actions] = useEsiJaPerusopetus();
+  const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
 
   const intl = useIntl();
   const params = useParams();
   let history = useHistory();
   let { uuid } = params;
 
-  const prevCosRef = useRef(null);
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
   const [hasInvalidFields, setHasInvalidFields] = useState(false);
-  const [isSavingEnabled, setIsSavingEnabled] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
-
+  const [unsavedChangeObjects] = useUnsavedChangeObjects();
+  const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
 
   const valtakunnallinenMaarays = R.find(
@@ -144,7 +158,7 @@ const UusiAsiaDialog = ({
   );
 
   const leaveOrOpenCancelModal = () => {
-    isSavingEnabled
+    !R.isEmpty(unsavedChangeObjects)
       ? setIsConfirmDialogVisible(true)
       : history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=true`);
   };
@@ -157,25 +171,23 @@ const UusiAsiaDialog = ({
    * User is redirected to the following path when the form is closed.
    */
   const closeWizard = useCallback(async () => {
-    actions.setChangeObjects(null, []);
     setIsDialogOpen(false);
     setIsConfirmDialogVisible(false);
     // Let's empty some store content on close.
     muutospyyntoActions.reset();
     return history.push(`/esi-ja-perusopetus/asianhallinta/avoimet?force=true`);
-  }, [history, muutospyyntoActions, actions]);
+  }, [history, muutospyyntoActions]);
 
-  useEffect(() => {
-    setIsSavingEnabled(
-      /**
-       * Virheellisten kenttien huomioimiseksi on käytettävä
-       * ehtoa && !hasInvalidFields. Toistaiseksi lomakkeen
-       * tallennuksen halutaan kuitenkin olevan mahdollista,
-       * vaikka lomakkeella olisikin virheellisiä kenttiä.
-       **/
-      !R.equals(prevCosRef.current, state.changeObjects)
-    );
-  }, [hasInvalidFields, state.changeObjects]);
+
+  const isSavingEnabled = useMemo(() => {
+    const hasUnsavedChanges = unsavedChangeObjects
+      ? !R.isEmpty(unsavedChangeObjects)
+      : false;
+    const hasChangesUnderRemoval = underRemovalChangeObjects
+      ? !R.isEmpty(underRemovalChangeObjects)
+      : false;
+    return hasUnsavedChanges || hasChangesUnderRemoval;
+  }, [underRemovalChangeObjects, unsavedChangeObjects]);
 
   /**
    * Opens the preview.
@@ -232,7 +244,10 @@ const UusiAsiaDialog = ({
           R.toUpper(intl.locale),
           organisation,
           lupa,
-          state.changeObjects,
+          {
+            paatoksentiedot: paatoksentiedotCo,
+            opetustehtavat: opetustehtavatCo
+          },
           uuid,
           kohteet,
           maaraystyypit,
@@ -248,18 +263,17 @@ const UusiAsiaDialog = ({
         muutospyynto = await onPreview(formData);
       }
 
-      /**
-       * The form is saved and the requested action is run. Let's disable the
-       * save button. It will be enabled after new changes.
-       */
-      setIsSavingEnabled(false);
-      prevCosRef.current = R.clone(state.changeObjects);
-
-      if (!uuid && !fromDialog) {
-        if (muutospyynto && muutospyynto.uuid) {
-          // It was the first save...
-          actions.setChangeObjects(null);
+      if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
+        if (!uuid && !fromDialog) {
+          // Jos kyseessä on ensimmäinen tallennus...
           onNewDocSave(muutospyynto.uuid);
+        } else {
+          /**
+           * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
+           * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
+           **/
+          const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+          initializeChanges(changeObjectsFromBackend);
         }
       }
     },
@@ -273,13 +287,14 @@ const UusiAsiaDialog = ({
       onSave,
       organisation,
       uuid,
-      state.changeObjects,
-      actions
+      paatoksentiedotCo,
+      opetustehtavatCo,
+      initializeChanges
     ]
   );
 
   return (
-    state.changeObjects !== null && (
+    changeObjects !== null && (
       <div className="max-w-7xl">
         <FormDialog
           open={isDialogOpen}
@@ -371,7 +386,6 @@ const UusiAsiaDialog = ({
                   code={1}
                   render={props => (
                     <Opetustehtavat
-                      changeObjects={state.changeObjects.opetustehtavat}
                       opetustehtavakoodisto={opetustehtavakoodisto}
                       opetustehtavat={opetustehtavat}
                       {...props}
@@ -469,17 +483,6 @@ const UusiAsiaDialog = ({
                   title={intl.formatMessage(
                     education.muutEhdotTitle
                   )}></FormSection>
-
-                <FormSection
-                  code={8}
-                  render={props => (
-                    <Liitetiedostot
-                      changeObjects={state.changeObjects.liitetiedostot}
-                      {...props}
-                    />
-                  )}
-                  sectionId={"liitetiedostot"}
-                  title={"Liitetiedostot"}></FormSection>
               </form>
             </div>
           </DialogContentWithStyles>

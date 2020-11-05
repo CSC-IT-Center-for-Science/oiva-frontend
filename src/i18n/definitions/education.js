@@ -61,5 +61,9 @@ export default defineMessages({
   oppilasOpiskelijamaarat: {
     id: "education.oppilasOpiskelijamaarat",
     defaultMessage: "Oppilas-/opiskelijamäärät"
+  },
+  erityisetKoulutustehtavat: {
+    id: "education.erityisetKoulutustehtavat",
+    defaultMessage: "Erityiset koulutustehtävät"
   }
 });

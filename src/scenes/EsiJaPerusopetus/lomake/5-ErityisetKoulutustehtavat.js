@@ -1,27 +1,24 @@
 import React, { useCallback } from "react";
-import ExpandableRowRoot from "../../../components/02-organisms/ExpandableRowRoot";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
-import common from "../../../i18n/definitions/common";
+import education from "../../../i18n/definitions/education";
 import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { getAnchorPart } from "../../../utils/common";
 import { find } from "ramda";
 
+const constants = {
+  formLocations: ["esiJaPerusopetus", "erityisetKoulutustehtavat"]
+}
+
 const ErityisetKoulutustehtavat = ({
-  lisatiedot,
-  onChangesRemove,
   onChangesUpdate,
+  lisatiedot,
   poErityisetKoulutustehtavat,
   sectionId
 }) => {
   const [state, actions] = useEsiJaPerusopetus();
   const intl = useIntl();
-
-  const changesMessages = {
-    undo: intl.formatMessage(common.undo),
-    changesTest: intl.formatMessage(common.changesText)
-  };
 
   const onAddButtonClick = useCallback(
     addBtn => {
@@ -34,7 +31,7 @@ const ErityisetKoulutustehtavat = ({
   );
 
   const onChanges = useCallback(
-    ({ anchor, changes }) => {
+    ({anchor, changes}) => {
       const removeBtnClickedChangeObject = find(
         change => change.properties && change.properties.textBoxDelete,
         changes
@@ -45,44 +42,29 @@ const ErityisetKoulutustehtavat = ({
           removeBtnClickedChangeObject.anchor
         );
       } else {
-        onChangesUpdate({ anchor: anchor, changes: changes });
+        onChangesUpdate({anchor: anchor, changes: changes});
       }
     },
     [actions, onChangesUpdate, sectionId]
   );
 
   return (
-    <ExpandableRowRoot
+    <Lomake
+      action="modification"
       anchor={sectionId}
-      key={`expandable-row-root`}
-      changes={state.changeObjects[sectionId]}
-      hideAmountOfChanges={true}
-      isExpanded={true}
-      messages={changesMessages}
-      onChangesRemove={onChangesRemove}
-      onUpdate={onChanges}
-      sectionId={sectionId}
+      data={{
+        onAddButtonClick,
+        poErityisetKoulutustehtavat,
+        lisatiedot
+      }}
+      path={constants.formLocations}
       showCategoryTitles={true}
-      title={"Erityiset koulutustehtävät"}>
-      <Lomake
-        action="modification"
-        anchor={sectionId}
-        changeObjects={state.changeObjects[sectionId]}
-        data={{
-          onAddButtonClick,
-          poErityisetKoulutustehtavat,
-          lisatiedot
-        }}
-        onChangesUpdate={onChanges}
-        path={["esiJaPerusopetus", "erityisetKoulutustehtavat"]}
-        showCategoryTitles={true}></Lomake>
-    </ExpandableRowRoot>
+      rowTitle={intl.formatMessage(education.erityisetKoulutustehtavat)}></Lomake>
   );
 };
 
 ErityisetKoulutustehtavat.propTypes = {
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
+  lisatiedot: PropTypes.array,
   poErityisetKoulutustehtavat: PropTypes.array,
   sectionId: PropTypes.string
 };
