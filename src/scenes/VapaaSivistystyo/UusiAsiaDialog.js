@@ -125,7 +125,7 @@ const UusiAsiaDialog = React.memo(
     );
 
     const leaveOrOpenCancelModal = () => {
-      isSavingEnabled ? setIsConfirmDialogVisible(true) : history.push(`/asiat?force=true`);
+      isSavingEnabled ? setIsConfirmDialogVisible(true) : history.push(`/vapaa-sivistystyo/asianhallinta/avoimet?force=true`);
     };
 
     function handleCancel() {
@@ -151,7 +151,7 @@ const UusiAsiaDialog = React.memo(
       setIsConfirmDialogVisible(false);
       // Let's empty some store content on close.
       muutospyyntoActions.reset();
-      return history.push(`/asiat?force=true`);
+      return history.push(`/vapaa-sivistystyo/asianhallinta/avoimet?force=true`);
     }, [history, muutospyyntoActions]);
 
     useEffect(() => {
