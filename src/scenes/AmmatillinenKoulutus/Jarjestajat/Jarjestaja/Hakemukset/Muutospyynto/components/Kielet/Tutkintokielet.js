@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 import Koulutusala from "./Koulutusala";
-import { useLatestChangesByAnchor } from "scenes/AmmatillinenKoulutus/store";
-import { forEach, isEmpty, map, replace, toUpper } from "ramda";
-import { replaceAnchorPartWith } from "utils/common";
+import { map, toUpper } from "ramda";
 import wizard from "i18n/definitions/wizard";
 
 const Tutkintokielet = ({ koulutusalat }) => {
@@ -15,40 +13,6 @@ const Tutkintokielet = ({ koulutusalat }) => {
   const [tutkintodata] = useLomakedata({
     anchor: "tutkinnot"
   });
-
-  const [
-    latestChanges,
-    { removeChangeObjectByAnchor }
-  ] = useLatestChangesByAnchor({ anchor: "tutkinnot" });
-
-  /**
-   * Tarkkaillaan tutkintoja koskevia muutoksia ja poistetaan tarvittaessa
-   * niitä vastaavat muutosobjektit tutkintokieliosiosta. Eli kyseessä on
-   * käyttötapaus, jossa käyttäjä poistaa ruksin jonkin tutkinnon kohdalta.
-   * Jos kyseiselle tutkinnolle on asetettu tutkintokieli(ä), on tutkinto-
-   * kielet lisäävät muutosobjektit poistettava. Tässä tehdään se.
-   */
-  useEffect(() => {
-    if (!isEmpty(latestChanges.underRemoval)) {
-      forEach(changeObj => {
-        if (changeObj.properties.isChecked) {
-          removeChangeObjectByAnchor(
-            /**
-             * Tutkintoankkuria muutetaan siten, että saadaan aikaan vastaava
-             * tutkintokieliankkuri. Esim. tutkintoankkuria
-             * tutkinnot_01.12.417101.tutkinto vastaava tutkintokieliankkuri on
-             * kielet_tutkintokielet_01.12.417101.kielet
-             **/
-            replaceAnchorPartWith(
-              replace("tutkinnot", sectionId, changeObj.anchor),
-              3,
-              "kielet"
-            )
-          );
-        }
-      }, latestChanges.underRemoval);
-    }
-  }, [latestChanges]);
 
   return (
     <React.Fragment>
@@ -72,8 +36,7 @@ const Tutkintokielet = ({ koulutusalat }) => {
 };
 
 Tutkintokielet.propTypes = {
-  koulutusalat: PropTypes.array,
-  tutkinnot: PropTypes.array
+  koulutusalat: PropTypes.array
 };
 
 export default Tutkintokielet;

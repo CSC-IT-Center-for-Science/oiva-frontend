@@ -2,19 +2,8 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
-import {
-  difference,
-  filter,
-  find,
-  includes,
-  length,
-  path,
-  propEq
-} from "ramda";
-import {
-  useChangeObjectsByAnchor,
-  useChangeObjectsByAnchorWithoutUnderRemoval
-} from "scenes/AmmatillinenKoulutus/store";
+import { difference, find, length, path, pathEq, propEq } from "ramda";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
 import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 const constants = {
@@ -40,9 +29,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "opiskelijavuodet"
     });
-    const [muutChangeObjects] = useChangeObjectsByAnchor({
-      anchor: "muut"
-    });
     const [lomakedata] = useLomakedata({
       anchor: sectionId
     });
@@ -54,11 +40,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       maaraykset
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
-
-    const vahimmaisopiskelijavuodetMaarays = find(
-      propEq("koodisto", "koulutussektori"),
-      maaraykset
-    );
 
     /**
      * Muodostetaan data, jonka perusteella lomake voidaan luoda
@@ -88,14 +69,37 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           )
         ) < length(sisaoppilaitosCodes);
 
-      setLomakedata(
+      console.info(
+        `${sectionId}_visibility`,
         {
           sisaoppilaitos: visibilityOfSisaoppilaitos,
           vaativaTuki: visibilityOfVaativaTuki
         },
-        `${sectionId}_visibility`
+        lomakedata
       );
-    }, [muutLomakedata, sectionId, setLomakedata]);
+
+      if (
+        !pathEq(
+          ["visibility", "sisaoppilaitos"],
+          visibilityOfSisaoppilaitos,
+          lomakedata
+        ) ||
+        !pathEq(
+          ["visibility", "vaativaTuki"],
+          visibilityOfVaativaTuki,
+          lomakedata
+        )
+      ) {
+        console.info("Asetetaan näkyvyys!");
+        setLomakedata(
+          {
+            sisaoppilaitos: visibilityOfSisaoppilaitos,
+            vaativaTuki: visibilityOfVaativaTuki
+          },
+          `${sectionId}_visibility`
+        );
+      }
+    }, [lomakedata, muutLomakedata, sectionId, setLomakedata]);
 
     /**
      * Tässä reagoidaan opiskelijavuosiosion muutoksiin ja tarkastellaan sitä,
@@ -135,60 +139,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         );
       }
     }, [changeObjects, sectionId, setLomakedata]);
-
-    /**
-     * Opiskelijavuodet-osio (4) on kytköksissä osioon 5 (Muut oikeudet,
-     * velvollisuudet, ehdot ja tehtävät) siten, että osion 5 valinnat
-     * vaikuttavat siihen, mitä sisältöä osiossa 4 näytetään.
-     *
-     * Alla oleva useEffect käsittelee tilannetta, jossa käyttäjä on valinnut
-     * jonkin vaativaa tukea koskevan kohdan osiosta 5. Tällöin on
-     * tarkistettava, että molempien osioiden koodiarvot ovat samat. Muutoin
-     * tallennusvaiheessa backendille lähtee väärä koodiarvo koskien
-     * vaativaan tukeen liittyvää opiskelijavuosimäärätietoa.
-     */
-    // useEffect(() => {
-    //   const activeSection5VaativaTukiChangeObj = find(changeObj => {
-    //     return (
-    //       includes("vaativatuki", changeObj.anchor) &&
-    //       changeObj.properties.isChecked
-    //     );
-    //   }, flatten(values(head(muutChangeObjects))));
-
-    //   const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
-    //     ? path(
-    //         ["properties", "metadata", "koodiarvo"],
-    //         activeSection5VaativaTukiChangeObj
-    //       )
-    //     : null;
-
-    //   const activeSection4VaativaTukiChangeObj = find(changeObj => {
-    //     return includes("vaativatuki", changeObj.anchor);
-    //   }, changeObjects);
-
-    //   const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
-    //     ? path(
-    //         ["properties", "metadata", "koodiarvo"],
-    //         activeSection4VaativaTukiChangeObj
-    //       )
-    //     : null;
-
-    //   if (
-    //     activeSection4VaativaTukiChangeObj &&
-    //     vaativaTukiKoodiarvoSection4 !== null &&
-    //     vaativaTukiKoodiarvoSection5 !== null &&
-    //     vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
-    //   ) {
-    //     setChanges(
-    //       filter(changeObj => {
-    //         return (
-    //           changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
-    //         );
-    //       }, changeObjects),
-    //       sectionId
-    //     );
-    //   }
-    // }, [muutChangeObjects, changeObjects, sectionId, setChanges]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake

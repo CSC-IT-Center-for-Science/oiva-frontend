@@ -56,7 +56,8 @@ const Sisaoppilaitos = ({
       );
       return (
         includes(koodiarvo, koodiarvot) &&
-        pathEq(["properties", "isChecked"], true, changeObj)
+        (!changeObj ||
+          (changeObj && pathEq(["properties", "isChecked"], true, changeObj)))
       );
     }, keys(maarayksetByKoodiarvo)).filter(Boolean);
 
@@ -86,7 +87,13 @@ const Sisaoppilaitos = ({
       ),
       `${sectionId}_valitutKoodiarvot`
     );
-  }, [changeObjects, maarayksetByKoodiarvo, sectionId, setLomakedata]);
+  }, [
+    changeObjects,
+    koodiarvot,
+    maarayksetByKoodiarvo,
+    sectionId,
+    setLomakedata
+  ]);
 
   return (
     <Lomake

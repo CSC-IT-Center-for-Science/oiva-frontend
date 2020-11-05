@@ -13,6 +13,10 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
+import { LomakedataContainer } from "./lomakedata";
+import { MuutoksetContainer } from "./store";
+
+const scope = "ak-esittelijan-lupanakyma";
 
 const Esittelijat = () => {
   const { formatMessage, locale } = useIntl();
@@ -34,7 +38,7 @@ const Esittelijat = () => {
           style={{ fontSize: "1.25rem" }}
           className="pb-4 mt--12">
           {formatMessage(educationMessages.vocationalEducation)}
-        </Typography>        
+        </Typography>
 
         <Switch>
           <Route
@@ -53,7 +57,9 @@ const Esittelijat = () => {
             authenticated={!!user}
             exact
             path={`${path}/:uuid`}
-            render={() => <Asiakirjat koulutustyyppi={"ammatillinenkoulutus"}/>}
+            render={() => (
+              <Asiakirjat koulutustyyppi={"ammatillinenkoulutus"} />
+            )}
           />
           <Route
             authenticated={!!user}
@@ -62,7 +68,13 @@ const Esittelijat = () => {
             render={() => (
               <BaseData
                 locale={locale}
-                render={_props => <UusiAsiaDialogContainer {..._props} />}
+                render={_props => (
+                  <LomakedataContainer scope={scope}>
+                    <MuutoksetContainer scope={scope}>
+                      <UusiAsiaDialogContainer {..._props} />
+                    </MuutoksetContainer>
+                  </LomakedataContainer>
+                )}
               />
             )}
           />
@@ -74,7 +86,13 @@ const Esittelijat = () => {
               return (
                 <BaseData
                   locale={locale}
-                  render={_props => <AsiaDialogContainer {..._props} />}
+                  render={_props => (
+                    <LomakedataContainer scope={scope}>
+                      <MuutoksetContainer scope={scope}>
+                        <AsiaDialogContainer {..._props} />
+                      </MuutoksetContainer>
+                    </LomakedataContainer>
+                  )}
                 />
               );
             }}
