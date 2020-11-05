@@ -88,6 +88,8 @@ export const getSavedChangeObjects = muutospyynto => {
     }
 
     changesBySection.topthree = path(["meta", "topthree"], muutospyynto) || [];
+    changesBySection.paatoksentiedot = path(["meta", "paatoksentiedot"], muutospyynto) || [];
+
     // Set uuid for asianumero
     const topThreeChanges = find(
       topthree => getAnchorPart(topthree.anchor, 1) === "asianumero",
