@@ -21,7 +21,7 @@ import {
   dissocPath
 } from "ramda";
 import localforage from "localforage";
-import { createBEOofTutkintakielet } from "./tallentaminen/tutkintokielet";
+import { createBEOofTutkintokielet } from "./tallentaminen/tutkintokielet";
 import { createBEOofTutkinnotJaOsaamisalat } from "./tallentaminen/tutkinnotJaOsaamisalat";
 
 export function getTutkinnotFromStorage() {
@@ -221,7 +221,7 @@ export const defineBackendChangeObjects = async (
     /**
      * TUTKINTOKIELET
      */
-    const beoOfTutkintokielet = createBEOofTutkintakielet(
+    const beoOfTutkintokielet = createBEOofTutkintokielet(
       tutkinto,
       changeObjects,
       kieletKohde,

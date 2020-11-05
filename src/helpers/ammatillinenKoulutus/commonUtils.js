@@ -8,7 +8,8 @@ import {
   path,
   prop,
   propEq,
-  split
+  split,
+  uniq
 } from "ramda";
 import { findObjectWithKey, getAnchorPart } from "utils/common";
 import { setAttachmentUuids } from "utils/muutospyyntoUtil";
@@ -60,7 +61,7 @@ export const getSavedChangeObjects = muutospyynto => {
         const changeObjects = insert(-1, changeObj, existingChangeObjects);
         changesBySection = assocPath(
           anchorInitialSplitted,
-          changeObjects,
+          uniq(changeObjects),
           changesBySection
         );
       }, updatedC);

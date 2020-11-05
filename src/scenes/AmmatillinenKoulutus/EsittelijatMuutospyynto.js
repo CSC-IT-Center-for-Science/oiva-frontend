@@ -2,15 +2,23 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "../../i18n/definitions/common";
+import wizardMessages from "../../i18n/definitions/wizard";
 import Tutkinnot from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Tutkinnot";
-import MuutospyyntoWizardKielet from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardKielet";
 import MuutospyyntoWizardKoulutukset from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardKoulutukset";
 import MuutospyyntoWizardMuut from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardMuut";
 import MuutospyyntoWizardOpiskelijavuodet from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardOpiskelijavuodet";
 import MuutospyyntoWizardToimintaalue from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardToimintaalue";
-import * as R from "ramda";
 import Section from "../../components/03-templates/Section";
 import MuutospyyntoWizardTopThree from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTopThree";
+import Lomake from "components/02-organisms/Lomake";
+import * as R from "ramda";
+import Tutkintokielet from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
+
+const constants = {
+  formLocation: {
+    opetuskielet: ["kielet", "opetuskielet"]
+  }
+};
 
 const defaultProps = {
   kielet: [],
@@ -122,8 +130,10 @@ const EsittelijatMuutospyynto = ({
       <form onSubmit={handleSubmit}>
         <Section>
           <div className="w-1/3">
-            <h2 className="p-8" style={{ marginLeft: "-2rem" }}>{intl.formatMessage(common.decisionDetails)}</h2>
-            <MuutospyyntoWizardTopThree/>
+            <h2 className="p-8" style={{ marginLeft: "-2rem" }}>
+              {intl.formatMessage(common.decisionDetails)}
+            </h2>
+            <MuutospyyntoWizardTopThree />
           </div>
         </Section>
         <h2 className="my-6">{intl.formatMessage(common.changesText)}</h2>
@@ -148,10 +158,15 @@ const EsittelijatMuutospyynto = ({
         <Section
           code={sectionHeadings.opetusJaTutkintokieli.number}
           title={sectionHeadings.opetusJaTutkintokieli.title}>
-          <MuutospyyntoWizardKielet
-            koulutusalat={koulutusalat}
-            tutkinnot={tutkinnot}
+          <Lomake
+            action="modification"
+            anchor={"kielet_opetuskielet"}
+            isRowExpanded={true}
+            path={constants.formLocation.opetuskielet}
+            rowTitle={intl.formatMessage(wizardMessages.teachingLanguages)}
+            showCategoryTitles={true}
           />
+          <Tutkintokielet koulutusalat={koulutusalat} tutkinnot={tutkinnot} />
         </Section>
 
         <Section

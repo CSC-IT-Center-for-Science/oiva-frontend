@@ -50,7 +50,7 @@ const MuutospyyntoWizardMuut = ({
       }, muut)
     );
     return group;
-  }, [muut]);
+  }, [localeUpper, muut]);
 
   const vaativaTukiItems = useMemo(
     () => ({
