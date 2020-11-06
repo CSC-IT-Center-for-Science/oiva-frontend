@@ -95,7 +95,6 @@ const defaultProps = {
   opetuksenJarjestamismuodot: [],
   opetuskielet: [],
   opetustehtavakoodisto: {},
-  opetustehtavat: [],
   organisation: {},
   poErityisetKoulutustehtavat: [],
   poMuutEhdot: [],
@@ -116,7 +115,6 @@ const UusiAsiaDialog = ({
   muut = defaultProps.muut,
   onNewDocSave,
   opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
-  opetustehtavat = defaultProps.opetustehtavat,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
@@ -395,7 +393,6 @@ const UusiAsiaDialog = ({
                   render={props => (
                     <Opetustehtavat
                       opetustehtavakoodisto={opetustehtavakoodisto}
-                      opetustehtavat={opetustehtavat}
                       {...props}
                     />
                   )}
@@ -548,7 +545,6 @@ UusiAsiaDialog.propTypes = {
   onNewDocSave: PropTypes.func,
   opetuskielet: PropTypes.array,
   opetustehtavakoodisto: PropTypes.object,
-  opetustehtavat: PropTypes.array,
   organisation: PropTypes.object,
   poErityisetKoulutustehtavat: PropTypes.array,
   poMuutEhdot: PropTypes.array,
