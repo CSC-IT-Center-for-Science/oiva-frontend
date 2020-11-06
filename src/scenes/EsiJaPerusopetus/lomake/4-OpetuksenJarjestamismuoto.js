@@ -19,6 +19,7 @@ const OpetuksenJarjestamismuoto = ({
       anchor={sectionId}
       path={constants.formLocations}
       showCategoryTitles={true}
+      isRowExpanded={true}
       rowTitle={intl.formatMessage(education.opetuksenJarjestamismuodot)}></Lomake>
   );
 };
