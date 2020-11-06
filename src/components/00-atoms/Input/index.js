@@ -179,7 +179,10 @@ Input.propTypes = {
   isDense: PropTypes.bool,
   requiredMessage: PropTypes.string,
   showValidationErrors: PropTypes.bool,
-  value: PropTypes.string
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ])
 };
 
 export default withStyles(inputStyles)(Input);

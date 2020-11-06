@@ -446,12 +446,15 @@ const CategorizedList = props => {
                             props.changes
                           );
                           const isDisabled =
-                            (previousSibling.name === "CheckboxWithLabel" ||
-                              previousSibling.name ===
+                            propsObj.isReadOnly ||
+                            (
+                              (previousSibling.name === "CheckboxWithLabel" ||
+                                previousSibling.name ===
                                 "RadioButtonWithLabel") &&
-                            !(
-                              isPreviousSiblingCheckedByDefault ||
-                              change.properties.isChecked
+                              !(
+                                isPreviousSiblingCheckedByDefault ||
+                                change.properties.isChecked
+                              )
                             );
                           return (
                             <div
