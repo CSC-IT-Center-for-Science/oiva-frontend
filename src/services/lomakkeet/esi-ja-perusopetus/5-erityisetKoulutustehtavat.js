@@ -13,13 +13,15 @@ import {
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
+import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 
-export function erityisetKoulutustehtavat(
+export async function erityisetKoulutustehtavat(
   data,
   isReadOnly,
   locale,
   changeObjects
 ) {
+  const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
   const localeUpper = toUpper(locale);
 
   const lisatiedotObj = find(
@@ -51,6 +53,7 @@ export function erityisetKoulutustehtavat(
                   anchor: "kuvaus",
                   name: "TextBox",
                   properties: {
+                    isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
                     value: erityinenKoulutustehtava.metadata[localeUpper].kuvaus
@@ -137,7 +140,7 @@ export function erityisetKoulutustehtavat(
           }
         ]
       };
-    }, data.poErityisetKoulutustehtavat),
+    }, poErityisetKoulutustehtavat),
     {
       anchor: "erityiset-koulutustehtavat",
       layout: { margins: { top: "large" } },

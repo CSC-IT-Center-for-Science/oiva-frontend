@@ -128,6 +128,11 @@ const UusiAsiaDialog = ({
   const [opetuksenJarjestamismuodotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetuksenJarjestamismuodot"
   });
+  const [
+    erityisetKoulutustehtavatCO
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "erityisetKoulutustehtavat"
+  });
 
   const [state] = useEsiJaPerusopetus();
   const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
@@ -247,6 +252,7 @@ const UusiAsiaDialog = ({
           organisation,
           lupa,
           {
+            erityisetKoulutustehtavat: erityisetKoulutustehtavatCO,
             paatoksentiedot: paatoksentiedotCo,
             opetustehtavat: opetustehtavatCo,
             toimintaalue: toimintaalueCO,
@@ -283,6 +289,7 @@ const UusiAsiaDialog = ({
       }
     },
     [
+      erityisetKoulutustehtavatCO,
       initializeChanges,
       intl.locale,
       kohteet,
