@@ -344,7 +344,7 @@ const lomakkeet = {
     },
     opetuskielet: {
       modification: (data, isReadOnly, locale, changeObjects) =>
-        getOpetuskieletOPHLomake(data, isReadOnly, locale, changeObjects)
+        getOpetuskieletOPHLomake(isReadOnly, locale, changeObjects)
     },
     opiskelijamaarat: {
       modification: (data, isReadOnly, locale) =>

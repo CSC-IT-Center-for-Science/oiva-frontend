@@ -12,13 +12,21 @@ import {
   concat
 } from "ramda";
 import { __ } from "i18n-for-browser";
+import {
+  getEnsisijaisetOpetuskieletOPHFromStorage,
+  getToissijaisetOpetuskieletOPHFromStorage
+} from "helpers/opetuskielet";
+import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
-export function getOpetuskieletOPHLomake(
-  data,
+export async function getOpetuskieletOPHLomake(
   isReadOnly,
   locale,
   changeObjects
 ) {
+  const ensisijaisetOpetuskieletOPH = await getEnsisijaisetOpetuskieletOPHFromStorage();
+  const toissijaisetOpetuskieletOPH = await getToissijaisetOpetuskieletOPHFromStorage();
+  const lisatiedot = await getLisatiedotFromStorage();
+
   // TODO: Huomioidaan myöhemmin myös lupaan kuuluvat kielet
   const valitutEnsisijaisetKoodiarvot = map(
     prop("value"),
@@ -36,17 +44,17 @@ export function getOpetuskieletOPHLomake(
 
   const valittavanaOlevatEnsisisijaisetOpetuskielet = filter(
     kieli => not(includes(kieli.koodiarvo, valitutKoodiarvot)),
-    data.ensisijaisetOpetuskieletOPH
+    ensisijaisetOpetuskieletOPH || []
   );
 
   const valittavanaOlevatToissisijaisetOpetuskielet = filter(
     kieli => not(includes(kieli.koodiarvo, valitutKoodiarvot)),
-    data.toissijaisetOpetuskieletOPH
+    toissijaisetOpetuskieletOPH || []
   );
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    data.lisatiedot || []
+    lisatiedot || []
   );
 
   const localeUpper = toUpper(locale);
@@ -60,6 +68,7 @@ export function getOpetuskieletOPHLomake(
           name: "Autocomplete",
           short: true,
           properties: {
+            isReadOnly,
             options: map(kieli => {
               return {
                 label: kieli.metadata[localeUpper].nimi,
@@ -80,6 +89,7 @@ export function getOpetuskieletOPHLomake(
           name: "Autocomplete",
           short: true,
           properties: {
+            isReadOnly,
             options: map(kieli => {
               return {
                 label: kieli.metadata[localeUpper].nimi,
@@ -118,6 +128,7 @@ export function getOpetuskieletOPHLomake(
               versio: lisatiedotObj.versio,
               voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
             },
+            isReadOnly,
             placeholder: __("common.lisatiedot")
           }
         }
