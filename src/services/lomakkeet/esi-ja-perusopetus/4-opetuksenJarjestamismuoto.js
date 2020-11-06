@@ -1,13 +1,17 @@
 import { isAdded, isRemoved } from "css/label";
 import { find, flatten, map, pathEq, toUpper } from "ramda";
 import { __ } from "i18n-for-browser";
+import { getLisatiedotFromStorage } from "../../../helpers/lisatiedot";
+import { getOpetuksenJarjestamismuodotFromStorage } from "../../../helpers/opetuksenJarjestamismuodot";
 
-export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
+export async function opetuksenJarjestamismuoto(isReadOnly, locale) {
   const localeUpper = toUpper(locale);
+  const lisatiedot = await getLisatiedotFromStorage();
+  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    data.lisatiedot || []
+    lisatiedot || []
   );
 
   return flatten([
@@ -22,6 +26,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
                 anchor: "A",
                 name: "TextBox",
                 properties: {
+                  isReadOnly,
                   placeholder: __("common.kuvausPlaceholder"),
                   title: __("common.kuvaus"),
                   value: muoto.metadata[localeUpper].kuvaus
@@ -35,6 +40,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
             anchor: "valinta",
             name: "RadioButtonWithLabel",
             properties: {
+              isReadOnly,
               isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
               isIndeterminate: false,
               labelStyles: {
@@ -46,7 +52,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
           }
         ]
       };
-    }, data.opetuksenJarjestamismuodot),
+    }, opetuksenJarjestamismuodot),
     {
       anchor: "0",
       components: [
@@ -54,6 +60,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
           anchor: "valinta",
           name: "RadioButtonWithLabel",
           properties: {
+            isReadOnly,
             isChecked: true,
             isIndeterminate: false,
             labelStyles: {
@@ -86,6 +93,7 @@ export function opetuksenJarjestamismuoto(data, isReadOnly, locale) {
           anchor: "tekstikentta",
           name: "TextBox",
           properties: {
+            isReadOnly,
             forChangeObject: {
               koodiarvo: lisatiedotObj.koodiarvo,
               koodisto: lisatiedotObj.koodisto,

@@ -92,7 +92,6 @@ const defaultProps = {
   maakuntakunnat: [],
   maaraystyypit: [],
   muut: [],
-  opetuksenJarjestamismuodot: [],
   opetuskielet: [],
   opetustehtavakoodisto: {},
   organisation: {},
@@ -114,7 +113,6 @@ const UusiAsiaDialog = ({
   maaraystyypit = defaultProps.maaraystyypit,
   muut = defaultProps.muut,
   onNewDocSave,
-  opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
@@ -129,6 +127,9 @@ const UusiAsiaDialog = ({
   });
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
+  });
+  const [opetuksenJarjestamismuodotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "opetuksenJarjestamismuodot"
   });
 
   const [state] = useEsiJaPerusopetus();
@@ -251,7 +252,8 @@ const UusiAsiaDialog = ({
           {
             paatoksentiedot: paatoksentiedotCo,
             opetustehtavat: opetustehtavatCo,
-            toimintaalue: toimintaalueCO
+            toimintaalue: toimintaalueCO,
+            opetuksenJarjestamismuodot: opetuksenJarjestamismuodotCo
           },
           uuid,
           kohteet,
@@ -291,6 +293,7 @@ const UusiAsiaDialog = ({
       onNewDocSave,
       onPreview,
       onSave,
+      opetuksenJarjestamismuodotCo,
       opetustehtavatCo,
       organisation,
       paatoksentiedotCo,
@@ -439,8 +442,6 @@ const UusiAsiaDialog = ({
                   code={4}
                   render={props => (
                     <OpetuksenJarjestamismuoto
-                      lisatiedot={lisatiedot}
-                      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
                       {...props}
                     />
                   )}

@@ -24,7 +24,6 @@ const UusiAsiaDialogContainer = ({
   maakuntakunnat,
   maaraystyypit,
   muut,
-  opetuksenJarjestamismuodot,
   opetuskielet,
   opetustehtavakoodisto,
   organisaatio,
@@ -78,7 +77,6 @@ const UusiAsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={onNewDocSave}
-      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
       organisation={organisaatio}
