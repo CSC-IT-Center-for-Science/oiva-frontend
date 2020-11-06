@@ -6,40 +6,23 @@ import common from "../../../i18n/definitions/common";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "opetuskielet"]
-}
+};
 
-const Opetuskieli = ({
-  ensisijaisetOpetuskieletOPH,
-  lisatiedot,
-  sectionId,
-  toissijaisetOpetuskieletOPH
-}) => {
+const Opetuskieli = ({ sectionId }) => {
   const intl = useIntl();
   return (
     <Lomake
       action="modification"
       anchor={sectionId}
-      data={{
-        ensisijaisetOpetuskieletOPH,
-        lisatiedot,
-        toissijaisetOpetuskieletOPH
-      }}
+      isRowExpanded={true}
       path={constants.formLocation}
       showCategoryTitles={true}
       rowTitle={intl.formatMessage(common.kielet)}></Lomake>
-  )
-};
-
-Opetuskieli.defaultProps = {
-  lisatiedot: [],
-  ensisijaisetOpetuskieletOPH: [],
-  toissijaisetOpetuskieletOPH: []
+  );
 };
 
 Opetuskieli.propTypes = {
-  lisatiedot: PropTypes.array,
-  ensisijaisetOpetuskieletOPH: PropTypes.array,
-  toissijaisetOpetuskieletOPH: PropTypes.array
+  sectionId: PropTypes.string
 };
 
 export default Opetuskieli;

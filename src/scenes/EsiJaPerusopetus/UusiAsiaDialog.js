@@ -75,7 +75,6 @@ const constants = {
 };
 
 const defaultProps = {
-  ensisijaisetOpetuskieletOPH: [],
   kielet: [],
   kohteet: [],
   koulutukset: {
@@ -91,19 +90,16 @@ const defaultProps = {
   maakunnat: [],
   maakuntakunnat: [],
   maaraystyypit: [],
-  muut: [],
   opetuksenJarjestamismuodot: [],
   opetuskielet: [],
   opetustehtavakoodisto: {},
   organisation: {},
   poErityisetKoulutustehtavat: [],
   poMuutEhdot: [],
-  toissijaisetOpetuskieletOPH: [],
   tutkinnot: []
 };
 
 const UusiAsiaDialog = ({
-  ensisijaisetOpetuskieletOPH = defaultProps.ensisijaisetOpetuskieletOPH,
   kohteet = defaultProps.kohteet,
   kunnat = defaultProps.kunnat,
   lisatiedot = defaultProps.lisatiedot,
@@ -112,20 +108,21 @@ const UusiAsiaDialog = ({
   maakunnat = defaultProps.maakunnat,
   maakuntakunnat = defaultProps.maakuntakunnat,
   maaraystyypit = defaultProps.maaraystyypit,
-  muut = defaultProps.muut,
   onNewDocSave,
   opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
-  poMuutEhdot = defaultProps.poMuutEhdot,
-  toissijaisetOpetuskieletOPH = defaultProps.toissijaisetOpetuskieletOPH
+  poMuutEhdot = defaultProps.poMuutEhdot
 }) => {
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "paatoksentiedot"
   });
   const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "toimintaalue"
+  });
+  const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "opetuskielet"
   });
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
@@ -251,7 +248,8 @@ const UusiAsiaDialog = ({
           {
             paatoksentiedot: paatoksentiedotCo,
             opetustehtavat: opetustehtavatCo,
-            toimintaalue: toimintaalueCO
+            toimintaalue: toimintaalueCO,
+            opetuskielet: opetuskieletCO
           },
           uuid,
           kohteet,
@@ -291,6 +289,7 @@ const UusiAsiaDialog = ({
       onNewDocSave,
       onPreview,
       onSave,
+      opetuskieletCO,
       opetustehtavatCo,
       organisation,
       paatoksentiedotCo,
@@ -423,15 +422,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={3}
-                  render={props => (
-                    <Opetuskieli
-                      changeObjects={state.changeObjects.opetuskielet}
-                      ensisijaisetOpetuskieletOPH={ensisijaisetOpetuskieletOPH}
-                      lisatiedot={lisatiedot}
-                      toissijaisetOpetuskieletOPH={toissijaisetOpetuskieletOPH}
-                      {...props}
-                    />
-                  )}
+                  render={props => <Opetuskieli {...props} />}
                   sectionId={"opetuskielet"}
                   title={intl.formatMessage(common.opetuskieli)}></FormSection>
 
