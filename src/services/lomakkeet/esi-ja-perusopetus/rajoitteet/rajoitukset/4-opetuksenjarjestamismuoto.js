@@ -1,6 +1,6 @@
 import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
 import { getChangeObjByAnchor } from "okm-frontend-components/dist/components/02-organisms/CategorizedListRoot/utils";
-import { map, addIndex, toUpper } from "ramda";
+import { map,toUpper } from "ramda";
 
 export default async function opetuksenjarjestamismuodot(
   asetus,
@@ -9,9 +9,6 @@ export default async function opetuksenjarjestamismuodot(
 ) {
   const opetuksenjarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
   const localeUpper = toUpper(locale);
-  const mapIndexed = addIndex(map);
-
-  console.info(asetus, changeObjects, opetuksenjarjestamismuodot, locale);
 
   if (opetuksenjarjestamismuodot.length) {
     return {
@@ -21,16 +18,13 @@ export default async function opetuksenjarjestamismuodot(
           anchor: "opetuksenJarjestamismuodot",
           name: "Autocomplete",
           properties: {
-            options: mapIndexed((opetuksenjarjestamismuodot, index) => {
+            options: map((opetuksenjarjestamismuodot) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
-              const anchor = `opetuksenJarjestamismuodot.${index}.valinta`;
-              console.log(anchor);
-              console.log(changeObjects);
+              const anchor = `opetuksenJarjestamismuodot.${opetuksenjarjestamismuodot.koodiarvo}.valinta`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
-              console.info(changeObj);
               return (!!maarays &&
-                (!changeObj || changeObj.properties.isChecked)) ||
-                (changeObj && changeObj.properties.isChecked)
+              (!changeObj || changeObj.properties.isChecked)) ||
+              (changeObj && changeObj.properties.isChecked)
                 ? {
                     label: opetuksenjarjestamismuodot.metadata[localeUpper].nimi,
                     value: opetuksenjarjestamismuodot.koodiarvo

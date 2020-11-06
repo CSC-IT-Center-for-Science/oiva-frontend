@@ -18,6 +18,7 @@ import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
 import opetuksenJarjestamismuoto from "./rajoitukset/4-opetuksenjarjestamismuoto";
 import opetuskielet from "./rajoitukset/3-opetuskielet";
 import opetustehtavat from "./rajoitukset/1-opetustehtavat";
+import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
   maaraaika: "Määräaika",
