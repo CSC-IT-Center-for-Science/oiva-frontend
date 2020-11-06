@@ -63,7 +63,7 @@ export const defineBackendChangeObjects = async (
 
   const muutokset = map(koulutustehtava => {
     // Checkbox-kentän muutos
-    const changeObj = find(
+    const checkboxChangeObj = find(
       compose(
         endsWith(`${koulutustehtava.koodiarvo}.valintaelementti`),
         prop("anchor")
@@ -71,56 +71,68 @@ export const defineBackendChangeObjects = async (
       changeObjects
     );
 
-    // Ensimmäisen kuvauskentän muutos
-    const firstNameChangeObject = find(
-      cObj =>
-        cObj.anchor ===
-        `erityisetKoulutustehtavat.${koulutustehtava.koodiarvo}.0.A`,
-      changeObjects
-    );
+    const isChecked = // (!!maarays && !checkboxChangeObj) ||
+      checkboxChangeObj && checkboxChangeObj.properties.isChecked === true;
 
-    // Dynaamisten kuvauskenttien muutokset
-    const kuvausChangeObjects = filter(changeObj => {
-      return (
-        koulutustehtava.koodiarvo === getAnchorPart(changeObj.anchor, 1) &&
-        endsWith(".kuvaus", changeObj.anchor)
+    let checkboxBEchangeObject = null;
+    let kuvausBEchangeObjects = null;
+
+    /**
+     * Jos kuvauskenttiin liittyvä checkbox on ruksattu päälle,
+     * lähetetään backendille kuvauskenttiin tehdyt muutokset.
+     */
+    if (isChecked) {
+      // Ensimmäisen kuvauskentän muutos
+      const firstNameChangeObject = find(
+        cObj =>
+          cObj.anchor ===
+          `erityisetKoulutustehtavat.${koulutustehtava.koodiarvo}.0.A`,
+        changeObjects
       );
-    }, changeObjects);
 
-    const checkboxBEchangeObjects = changeObj
-      ? {
-          generatedId: `erityinenKoulutustehtava-${Math.random()}`,
-          kohde,
-          koodiarvo: koulutustehtava.koodiarvo,
-          koodisto: koulutustehtava.koodisto.koodistoUri,
-          kuvaus: koulutustehtava.metadata[locale].kuvaus,
-          maaraystyyppi,
-          meta: {
-            changeObjects: [changeObj]
-          },
-          tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
-        }
-      : null;
+      // Dynaamisten kuvauskenttien muutokset
+      const kuvausChangeObjects = filter(changeObj => {
+        return (
+          koulutustehtava.koodiarvo === getAnchorPart(changeObj.anchor, 1) &&
+          endsWith(".kuvaus", changeObj.anchor)
+        );
+      }, changeObjects);
 
-    const kuvausBEchangeObjects = map(changeObj => {
-      return changeObj
+      checkboxBEchangeObject = checkboxChangeObj
         ? {
-            generatedId: changeObj.anchor,
+            generatedId: `erityinenKoulutustehtava-${Math.random()}`,
             kohde,
             koodiarvo: koulutustehtava.koodiarvo,
             koodisto: koulutustehtava.koodisto.koodistoUri,
-            kuvaus: changeObj.properties.value,
+            kuvaus: koulutustehtava.metadata[locale].kuvaus,
             maaraystyyppi,
             meta: {
-              kuvaus: changeObj.properties.value,
-              changeObjects: [changeObj]
+              changeObjects: [checkboxChangeObj]
             },
-            tila: "LISAYS"
+            tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
           }
         : null;
-    }, append(firstNameChangeObject, kuvausChangeObjects));
 
-    return [checkboxBEchangeObjects, kuvausBEchangeObjects].filter(Boolean);
+      kuvausBEchangeObjects = map(changeObj => {
+        return changeObj
+          ? {
+              generatedId: changeObj.anchor,
+              kohde,
+              koodiarvo: koulutustehtava.koodiarvo,
+              koodisto: koulutustehtava.koodisto.koodistoUri,
+              kuvaus: changeObj.properties.value,
+              maaraystyyppi,
+              meta: {
+                kuvaus: changeObj.properties.value,
+                changeObjects: [changeObj]
+              },
+              tila: "LISAYS"
+            }
+          : null;
+      }, append(firstNameChangeObject, kuvausChangeObjects));
+    }
+
+    return [checkboxBEchangeObject, kuvausBEchangeObjects].filter(Boolean);
   }, erityisetKoulutustehtavat);
 
   const lisatiedotChangeObj = find(

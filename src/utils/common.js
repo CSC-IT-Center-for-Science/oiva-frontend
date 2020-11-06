@@ -252,16 +252,43 @@ const isSubTreeEmpty = obj => {
 
 export const isTreeEmpty = obj => R.isEmpty(isSubTreeEmpty(obj));
 
+const removeFromTreeIfTrue = (changeObjects, property = "deleteElement") => {
+  return R.filter(changeObj => {
+    return changeObj.properties[property] !== true;
+  }, changeObjects);
+};
+
+const protectedTreeProps = ["unsaved", "underRemoval"];
+
+/**
+ * Funktiossa ravistellaan moniulotteisesta objektista (tree) pois
+ * tyhjät taulukot ja objektit.
+ * @param {*} p Polku, joka käydään läpi aloittaen polun perältä
+ * @param {*} tree Objekti, josta polku etsitään läpi käytäväksi
+ */
 export const recursiveTreeShake = (p = [], tree) => {
   const subTree = R.path(p, tree);
-  const isSubTreeEmpty = isTreeEmpty(subTree);
-  if (isSubTreeEmpty) {
-    let updatedTree = R.dissocPath(p, tree);
-    if (isTreeEmpty(R.init(p), updatedTree)) {
-      updatedTree = R.dissocPath(R.init(p), tree);
-    }
-    if (R.length(p)) {
-      return recursiveTreeShake(R.init(p), updatedTree);
+  const subTreeWithoutFlaggedAsDeleted = Array.isArray(subTree)
+    ? removeFromTreeIfTrue(subTree)
+    : subTree;
+  const isSubTreeEmpty = isTreeEmpty(subTreeWithoutFlaggedAsDeleted);
+
+  /**
+   * Tyhjän alipuun voi poistaa, kunhan huomioidaan se, ettei poisteta
+   * puusta "suojeltuja" propertyjä, jotka on määritelty
+   * protectedTreeProps-muuttujassa.
+   */
+  if (!R.includes(R.last(p), protectedTreeProps)) {
+    if (isSubTreeEmpty) {
+      let updatedTree = R.dissocPath(p, tree);
+      if (isTreeEmpty(R.init(p), updatedTree)) {
+        updatedTree = R.dissocPath(R.init(p), tree);
+      }
+      if (R.length(p)) {
+        return recursiveTreeShake(R.init(p), updatedTree);
+      }
+    } else {
+      tree = R.assocPath(p, subTreeWithoutFlaggedAsDeleted, tree);
     }
   }
 

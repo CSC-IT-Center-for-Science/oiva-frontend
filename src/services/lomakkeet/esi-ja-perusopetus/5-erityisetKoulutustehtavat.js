@@ -14,19 +14,21 @@ import {
 import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
+import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 export async function erityisetKoulutustehtavat(
-  data,
+  onAddButtonClick,
   isReadOnly,
   locale,
   changeObjects
 ) {
   const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const lisatiedot = await getLisatiedotFromStorage();
   const localeUpper = toUpper(locale);
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    data.lisatiedot
+    lisatiedot
   );
 
   return flatten([
@@ -106,7 +108,7 @@ export async function erityisetKoulutustehtavat(
                 {
                   anchor: "A",
                   name: "SimpleButton",
-                  onClick: data.onAddButtonClick,
+                  onClick: onAddButtonClick,
                   properties: {
                     isVisible: isCheckedByChange,
                     text: __("common.lisaaUusiKuvaus"),
