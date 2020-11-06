@@ -17,7 +17,7 @@ import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKo
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 export async function erityisetKoulutustehtavat(
-  onAddButtonClick,
+  data,
   isReadOnly,
   locale,
   changeObjects
@@ -108,7 +108,7 @@ export async function erityisetKoulutustehtavat(
                 {
                   anchor: "A",
                   name: "SimpleButton",
-                  onClick: onAddButtonClick,
+                  onClick: data.onAddButtonClick,
                   properties: {
                     isVisible: isCheckedByChange,
                     text: __("common.lisaaUusiKuvaus"),
