@@ -10,7 +10,6 @@ const constants = {
 
 const Opetustehtavat = ({
   opetustehtavakoodisto,
-  opetustehtavat,
   sectionId
 }) => {
   const intl = useIntl();
@@ -19,9 +18,6 @@ const Opetustehtavat = ({
     <Lomake
       action="modification"
       anchor={sectionId}
-      data={{
-        opetustehtavat
-      }}
       path={constants.formLocation}
       rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
       showCategoryTitles={true}></Lomake>
@@ -30,7 +26,6 @@ const Opetustehtavat = ({
 
 Opetustehtavat.propTypes = {
   opetustehtavakoodisto: PropTypes.object,
-  opetustehtavat: PropTypes.array,
   sectionId: PropTypes.string
 };
 

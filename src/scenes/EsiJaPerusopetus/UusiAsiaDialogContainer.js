@@ -27,7 +27,6 @@ const UusiAsiaDialogContainer = ({
   opetuksenJarjestamismuodot,
   opetuskielet,
   opetustehtavakoodisto,
-  opetustehtavat,
   organisaatio,
   poErityisetKoulutustehtavat,
   poMuutEhdot,
@@ -82,7 +81,6 @@ const UusiAsiaDialogContainer = ({
       opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
-      opetustehtavat={opetustehtavat}
       organisation={organisaatio}
       poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
       poMuutEhdot={poMuutEhdot}
