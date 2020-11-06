@@ -90,7 +90,6 @@ const defaultProps = {
   maakunnat: [],
   maakuntakunnat: [],
   maaraystyypit: [],
-  opetuksenJarjestamismuodot: [],
   opetuskielet: [],
   opetustehtavakoodisto: {},
   organisation: {},
@@ -109,7 +108,6 @@ const UusiAsiaDialog = ({
   maakuntakunnat = defaultProps.maakuntakunnat,
   maaraystyypit = defaultProps.maaraystyypit,
   onNewDocSave,
-  opetuksenJarjestamismuodot = defaultProps.opetuksenJarjestamismuodot,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
   poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
@@ -126,6 +124,9 @@ const UusiAsiaDialog = ({
   });
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
+  });
+  const [opetuksenJarjestamismuodotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "opetuksenJarjestamismuodot"
   });
 
   const [state] = useEsiJaPerusopetus();
@@ -249,7 +250,8 @@ const UusiAsiaDialog = ({
             paatoksentiedot: paatoksentiedotCo,
             opetustehtavat: opetustehtavatCo,
             toimintaalue: toimintaalueCO,
-            opetuskielet: opetuskieletCO
+            opetuskielet: opetuskieletCO,
+            opetuksenJarjestamismuodot: opetuksenJarjestamismuodotCo
           },
           uuid,
           kohteet,
@@ -289,6 +291,7 @@ const UusiAsiaDialog = ({
       onNewDocSave,
       onPreview,
       onSave,
+      opetuksenJarjestamismuodotCo,
       opetuskieletCO,
       opetustehtavatCo,
       organisation,
@@ -428,13 +431,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={4}
-                  render={props => (
-                    <OpetuksenJarjestamismuoto
-                      lisatiedot={lisatiedot}
-                      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
-                      {...props}
-                    />
-                  )}
+                  render={props => <OpetuksenJarjestamismuoto {...props}/>}
                   sectionId={"opetuksenJarjestamismuodot"}
                   title={intl.formatMessage(
                     education.opetuksenJarjestamismuoto

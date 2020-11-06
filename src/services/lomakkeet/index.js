@@ -336,7 +336,7 @@ const lomakkeet = {
     },
     opetuksenJarjestamismuodot: {
       modification: (data, isReadOnly, locale) =>
-        opetuksenJarjestamismuoto(data, isReadOnly, locale)
+        opetuksenJarjestamismuoto(isReadOnly, locale)
     },
     opetusJotaLupaKoskee: {
       modification: (data, isReadOnly, locale) =>
