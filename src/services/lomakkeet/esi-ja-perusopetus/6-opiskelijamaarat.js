@@ -1,7 +1,10 @@
 import { __ } from "i18n-for-browser";
 import { find, flatten, pathEq } from "ramda";
+import { getLisatiedotFromStorage } from "../../../helpers/lisatiedot";
 
-export function opiskelijamaarat({ lisatiedot = [] }) {
+export async function opiskelijamaarat(isReadOnly) {
+
+  const lisatiedot = await getLisatiedotFromStorage();
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
     lisatiedot
@@ -34,7 +37,8 @@ export function opiskelijamaarat({ lisatiedot = [] }) {
               { label: __("common.enintaan"), value: "1" },
               // 2 = koodiarvo 2, enintään, koodisto: kujalisamaareet
               { label: __("common.vahintaan"), value: "2" }
-            ]
+            ],
+            isReadOnly
           }
         },
         {
@@ -43,7 +47,8 @@ export function opiskelijamaarat({ lisatiedot = [] }) {
           properties: {
             placeholder: __("education.oppilastaOpiskelijaa"),
             type: "number",
-            value: ""
+            value: "",
+            isReadOnly
           }
         }
       ]
@@ -71,7 +76,8 @@ export function opiskelijamaarat({ lisatiedot = [] }) {
                 anchor: lisatiedotObj.koodiarvo,
                 name: "TextBox",
                 properties: {
-                  placeholder: __("common.lisatiedot")
+                  placeholder: __("common.lisatiedot"),
+                  isReadOnly
                 }
               }
             ]

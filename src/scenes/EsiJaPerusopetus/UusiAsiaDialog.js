@@ -133,6 +133,9 @@ const UusiAsiaDialog = ({
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "erityisetKoulutustehtavat"
   });
+  const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "opiskelijamaarat"
+  });
 
   const [state] = useEsiJaPerusopetus();
   const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
@@ -257,7 +260,8 @@ const UusiAsiaDialog = ({
             opetustehtavat: opetustehtavatCo,
             toimintaalue: toimintaalueCO,
             opetuskielet: opetuskieletCO,
-            opetuksenJarjestamismuodot: opetuksenJarjestamismuodotCo
+            opetuksenJarjestamismuodot: opetuksenJarjestamismuodotCo,
+            opiskelijamaarat: opiskelijamaaratCo
           },
           uuid,
           kohteet,
@@ -301,6 +305,7 @@ const UusiAsiaDialog = ({
       opetuksenJarjestamismuodotCo,
       opetuskieletCO,
       opetustehtavatCo,
+      opiskelijamaaratCo,
       organisation,
       paatoksentiedotCo,
       toimintaalueCO,
@@ -452,13 +457,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={6}
-                  render={props => (
-                    <Opiskelijamaarat
-                      lisatiedot={lisatiedot}
-                      changeObjects={state.changeObjects.opiskelijamaarat}
-                      {...props}
-                    />
-                  )}
+                  render={props => <Opiskelijamaarat {...props}/>}
                   sectionId={"opiskelijamaarat"}
                   title={intl.formatMessage(
                     education.oppilasOpiskelijamaarat

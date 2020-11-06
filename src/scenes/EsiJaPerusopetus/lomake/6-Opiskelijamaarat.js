@@ -9,7 +9,6 @@ const constants = {
 }
 
 const Opiskelijamaarat = ({
-  lisatiedot,
   sectionId
 }) => {
   const intl = useIntl();
@@ -18,9 +17,7 @@ const Opiskelijamaarat = ({
     <Lomake
       action="modification"
       anchor={sectionId}
-      data={{
-        lisatiedot
-      }}
+      isRowExpanded={true}
       path={constants.formLocations}
       showCategoryTitles={true}
       rowTitle={intl.formatMessage(education.oppilasOpiskelijamaarat)}></Lomake>
@@ -28,7 +25,6 @@ const Opiskelijamaarat = ({
 };
 
 Opiskelijamaarat.propTypes = {
-  lisatiedot: PropTypes.array,
   sectionId: PropTypes.string
 };
 
