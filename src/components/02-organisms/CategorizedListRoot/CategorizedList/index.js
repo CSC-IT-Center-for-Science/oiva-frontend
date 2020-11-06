@@ -775,6 +775,7 @@ const CategorizedList = props => {
                                 height={heights.SHORT}
                                 short={component.short}
                                 title={propsObj.title}
+                                hideSelectedOptions={propsObj.hideSelectedOptions}
                               />
                             </div>
                           );

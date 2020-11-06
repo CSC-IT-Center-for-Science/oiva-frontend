@@ -81,7 +81,13 @@ const VaativaTuki = ({
       ),
       `${sectionId}_valitutKoodiarvot`
     );
-  }, [changeObjects, maarayksetByKoodiarvo, sectionId, setLomakedata]);
+  }, [
+    changeObjects,
+    koodiarvot,
+    maarayksetByKoodiarvo,
+    sectionId,
+    setLomakedata
+  ]);
 
   return (
     <Lomake

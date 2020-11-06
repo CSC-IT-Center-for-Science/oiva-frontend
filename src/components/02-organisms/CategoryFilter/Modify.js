@@ -510,10 +510,10 @@ const Modify = React.memo(
           let okToList = true;
           let provinceKey = "";
           let kuntaMapping = null;
-          const metadata = find(propEq("kieli", locale), option.metadata);
+          const metadata = option.metadata[locale];
           if (isKunta) {
             kuntaMapping = find(
-              propEq("kuntaKoodiarvo", option.koodiArvo),
+              propEq("kuntaKoodiarvo", option.koodiarvo),
               kuntaProvinceMapping
             );
             if (kuntaMapping) {
@@ -525,12 +525,12 @@ const Modify = React.memo(
               okToList =
                 !isProvinceActive ||
                 !provinceInstance.isMunicipalityActive(
-                  option.koodiArvo,
+                  option.koodiarvo,
                   cos[provinceKey]
                 );
             }
           } else {
-            provinceKey = mapping[option.koodiArvo];
+            provinceKey = mapping[option.koodiarvo];
             const provinceInstance = provinceInstances[provinceKey];
             if (provinceInstance) {
               const areAllMunicipalitiesActive = provinceInstance
@@ -544,7 +544,7 @@ const Modify = React.memo(
           return okToList
             ? {
                 label: metadata.nimi,
-                value: option.koodiArvo,
+                value: option.koodiarvo,
                 provinceKey,
                 isKunta
               }
