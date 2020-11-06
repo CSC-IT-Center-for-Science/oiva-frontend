@@ -7,6 +7,7 @@ import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
 import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat";
+import { koulutustyypitMap } from "../../utils/constants";
 
 export async function createObjectToSave(
   locale,
@@ -108,6 +109,7 @@ export async function createObjectToSave(
 
   let objectToSave = {
     alkupera,
+    koulutustyyppi: koulutustyypitMap.ESI_JA_PERUSOPETUS,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,

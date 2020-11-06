@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 import { COLORS } from "modules/styles";
 import AsianhallintaCard from "./AsianhallintaCard";
-import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
+import Asianhallinta from "scenes/VapaaSivistystyo/Asianhallinta";
 import BaseData from "basedata";
 import JarjestajaSwitch from "./JarjestajaSwitch";
 import { useUser } from "stores/user";
@@ -75,7 +75,7 @@ export default function VapaaSivistystyo({ vstLuvat, vstTyypit }) {
                   <AsianhallintaCard></AsianhallintaCard>
                 </section>
                 <section className="pt-12">
-                  <Jarjestajat luvat={vstLuvat} vstTyypit={vstTyypit} />
+                  <Jarjestajat vstTyypit={vstTyypit} />
                 </section>
               </React.Fragment>
             ) : null}

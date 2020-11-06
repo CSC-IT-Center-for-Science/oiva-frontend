@@ -15,7 +15,7 @@ export default function AsianhallintaCard() {
     <Card>
       <CardActionArea
         onClick={() => {
-          history.push("/ammatillinenkoulutus/asianhallinta/avoimet");
+          history.push("/vapaa-sivistystyo/asianhallinta/avoimet");
         }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

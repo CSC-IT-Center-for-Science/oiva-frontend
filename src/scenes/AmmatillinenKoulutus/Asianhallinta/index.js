@@ -54,6 +54,14 @@ const Asianhallinta = () => {
                 {intl.formatMessage(education.vocationalEducation)}
                 <ArrowForwardIcon className="ml-4" />
               </NavLink>
+              <NavLink
+                className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
+                to={"/vapaa-sivistystyo/asianhallinta/avoimet"}
+                exact={true}
+                style={{ textDecoration: "none", color: "inherit" }}>
+                {intl.formatMessage(education.vstEducation)}
+                <ArrowForwardIcon className="ml-4" />
+              </NavLink>
             </div>
           </div>
         </div>
