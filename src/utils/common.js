@@ -228,3 +228,69 @@ export function sortObjectsByProperty(a, b, path) {
   }
   return 0;
 }
+
+export const getLatestChangesByAnchor = (anchor, latestChanges = []) => {
+  return R.filter(
+    R.pipe(R.prop("anchor"), a =>
+      R.or(R.startsWith(`${anchor}_`, a), R.startsWith(`${anchor}.`, a))
+    ),
+    latestChanges
+  );
+};
+
+const isObject = variable => {
+  return Object.prototype.toString.call(variable) === "[object Object]";
+};
+
+const isSubTreeEmpty = obj => {
+  if (Array.isArray(obj) || isObject(obj)) {
+    return R.flatten(R.values(R.mapObjIndexed(isSubTreeEmpty, obj)));
+  } else {
+    return obj;
+  }
+};
+
+export const isTreeEmpty = obj => R.isEmpty(isSubTreeEmpty(obj));
+
+const removeOldLeaves = (branchOfTree = [], property = "deleteElement") => {
+  return R.filter(leaf => {
+    return !R.pathEq(["properties", property], true, leaf);
+  }, branchOfTree);
+};
+
+const protectedTreeProps = ["unsaved", "underRemoval"];
+
+/**
+ * Funktiossa ravistellaan moniulotteisesta objektista (tree) pois
+ * tyhjät taulukot ja objektit.
+ * @param {*} p Polku, joka käydään läpi aloittaen polun perältä
+ * @param {*} tree Objekti, josta polku etsitään läpi käytäväksi
+ */
+export const recursiveTreeShake = (p = [], tree) => {
+  const subTree = R.path(p, tree);
+  const subTreeWithoutFlaggedAsDeleted = Array.isArray(subTree)
+    ? removeOldLeaves(subTree)
+    : subTree;
+  const isSubTreeEmpty = isTreeEmpty(subTreeWithoutFlaggedAsDeleted);
+
+  /**
+   * Tyhjän alipuun voi poistaa, kunhan huomioidaan se, ettei poisteta
+   * puusta "suojeltuja" propertyjä, jotka on määritelty
+   * protectedTreeProps-muuttujassa.
+   */
+  if (!R.includes(R.last(p), protectedTreeProps)) {
+    if (isSubTreeEmpty) {
+      let updatedTree = R.dissocPath(p, tree);
+      if (isTreeEmpty(R.init(p), updatedTree)) {
+        updatedTree = R.dissocPath(R.init(p), tree);
+      }
+      if (R.length(p)) {
+        return recursiveTreeShake(R.init(p), updatedTree);
+      }
+    } else {
+      tree = R.assocPath(p, subTreeWithoutFlaggedAsDeleted, tree);
+    }
+  }
+
+  return tree;
+};

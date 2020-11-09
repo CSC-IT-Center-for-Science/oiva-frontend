@@ -1,17 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
-import { isEqual } from "lodash";
 import { useIntl } from "react-intl";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../scenes/AmmatillinenKoulutus/store";
+import ExpandableRowRoot from "../ExpandableRowRoot";
+import formMessages from "i18n/definitions/lomake";
+import { has, isEmpty } from "ramda";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
 
 const defaultProps = {
-  changeObjects: [],
   data: {},
+  isInExpandableRow: true,
+  isRowExpanded: false,
   noPadding: false,
   prefix: "",
-  rules: [],
+  rowMessages: {},
+  rowTitle: "",
   showCategoryTitles: true,
+  showValidationErrors: true,
   uncheckParentWithoutActiveChildNodes: false
 };
 
@@ -19,20 +26,51 @@ const Lomake = React.memo(
   ({
     action,
     anchor,
-    changeObjects = defaultProps.changeObjects,
     data = defaultProps.data,
+    isInExpandableRow = defaultProps.isInExpandableRow,
     isReadOnly,
-    onChangesUpdate,
+    isRowExpanded = defaultProps.isRowExpanded,
     path: _path,
     prefix = defaultProps.prefix,
     showCategoryTitles = defaultProps.showCategoryTitles,
     uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
     hasInvalidFieldsFn,
-    noPadding = defaultProps.noPadding
+    noPadding = defaultProps.noPadding,
+    rowMessages = defaultProps.rowMessages,
+    rowTitle = defaultProps.rowTitle,
+    showValidationErrors = defaultProps.showValidationErrors
   }) => {
     const intl = useIntl();
 
+    const rowLocalizations = isEmpty(rowMessages)
+      ? {
+          undo: intl.formatMessage(formMessages.undo),
+          changesTest: intl.formatMessage(formMessages.changesText)
+        }
+      : rowMessages;
+
+    const [
+      changeObjects,
+      actions
+    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor
+    });
+    const [, lomakedataActions] = useLomakedata({ anchor });
     const [lomake, setLomake] = useState();
+
+    const onChangesRemove = useCallback(
+      anchor => {
+        actions.setChanges([], anchor);
+      },
+      [actions]
+    );
+
+    const onChangesUpdate = useCallback(
+      ({ anchor, changes }) => {
+        actions.setChanges(changes, anchor);
+      },
+      [actions]
+    );
 
     useEffect(() => {
       async function fetchLomake() {
@@ -48,8 +86,8 @@ const Lomake = React.memo(
       }
 
       fetchLomake().then(result => {
-        if (hasInvalidFieldsFn && result) {
-          hasInvalidFieldsFn(!result.isValid);
+        if (has("isValid", result)) {
+          lomakedataActions.setValidity(result.isValid, anchor);
         }
         result.structure ? setLomake(result.structure) : setLomake(result);
       });
@@ -61,56 +99,73 @@ const Lomake = React.memo(
       hasInvalidFieldsFn,
       isReadOnly,
       intl.locale,
+      lomakedataActions,
       _path,
       prefix
     ]);
 
-    const showValidationErrors = true;
-
-    if (lomake && onChangesUpdate) {
+    if (lomake) {
       return (
         <React.Fragment>
-          <div className={noPadding ? "" : "p-8"}>
-            <CategorizedListRoot
+          {isInExpandableRow ? (
+            <ExpandableRowRoot
               anchor={anchor}
-              categories={lomake}
               changes={changeObjects}
-              onUpdate={onChangesUpdate}
-              showCategoryTitles={showCategoryTitles}
-              showValidationErrors={showValidationErrors}
-              uncheckParentWithoutActiveChildNodes={
-                uncheckParentWithoutActiveChildNodes
-              }
-            />
-          </div>
+              key={`expandable-row-root`}
+              hideAmountOfChanges={true}
+              isExpanded={isRowExpanded}
+              onChangesRemove={onChangesRemove}
+              messages={rowLocalizations}
+              sectionId={anchor}
+              title={rowTitle}>
+              <div className={noPadding ? "" : "p-8"}>
+                <CategorizedListRoot
+                  anchor={anchor}
+                  categories={lomake}
+                  changes={changeObjects}
+                  onUpdate={onChangesUpdate}
+                  showCategoryTitles={showCategoryTitles}
+                  showValidationErrors={showValidationErrors}
+                  uncheckParentWithoutActiveChildNodes={
+                    uncheckParentWithoutActiveChildNodes
+                  }
+                />
+              </div>
+            </ExpandableRowRoot>
+          ) : (
+            <div className={noPadding ? "" : "p-8"}>
+              <CategorizedListRoot
+                anchor={anchor}
+                categories={lomake}
+                changes={changeObjects}
+                onUpdate={onChangesUpdate}
+                showCategoryTitles={showCategoryTitles}
+                showValidationErrors={showValidationErrors}
+                uncheckParentWithoutActiveChildNodes={
+                  uncheckParentWithoutActiveChildNodes
+                }
+              />
+            </div>
+          )}
         </React.Fragment>
       );
     } else {
       return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
     }
-  },
-  (prevState, nextState) => {
-    const isSameOld =
-      isEqual(prevState.changeObjects, nextState.changeObjects) &&
-      isEqual(prevState.data, nextState.data);
-    return isSameOld;
   }
 );
 
 Lomake.propTypes = {
   action: PropTypes.string,
   anchor: PropTypes.string,
-  changeObjects: PropTypes.array,
   data: PropTypes.object,
+  isInExpandableRow: PropTypes.bool,
+  isRowExpanded: PropTypes.bool,
   metadata: PropTypes.object,
-  onChangesUpdate: PropTypes.func,
   path: PropTypes.array,
-  // Is used for matching the anchor of reasoning field to the anchor of
-  // original change object.
   prefix: PropTypes.string,
-  rules: PropTypes.array,
-  // This is useful for dynamic forms.
-  rulesFn: PropTypes.func,
+  rowMessages: PropTypes.object,
+  rowTitle: PropTypes.string,
   uncheckParentWithoutActiveChildNodes: PropTypes.bool,
   hasInvalidFieldsFn: PropTypes.func
 };

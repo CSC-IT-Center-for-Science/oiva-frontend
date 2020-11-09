@@ -12,7 +12,6 @@ import { isEmpty } from "ramda";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const UusiAsiaDialogContainer = ({
-  ensisijaisetOpetuskieletOPH,
   kielet,
   kohteet,
   koulutukset,
@@ -24,14 +23,9 @@ const UusiAsiaDialogContainer = ({
   maakuntakunnat,
   maaraystyypit,
   muut,
-  opetuksenJarjestamismuodot,
   opetuskielet,
   opetustehtavakoodisto,
-  opetustehtavat,
   organisaatio,
-  poErityisetKoulutustehtavat,
-  poMuutEhdot,
-  toissijaisetOpetuskieletOPH,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -65,7 +59,6 @@ const UusiAsiaDialogContainer = ({
     <UusiAsiaDialog
       history={history}
       kielet={kielet}
-      ensisijaisetOpetuskieletOPH={ensisijaisetOpetuskieletOPH}
       kohteet={kohteet}
       koulutukset={koulutukset}
       koulutusalat={koulutusalat}
@@ -79,14 +72,9 @@ const UusiAsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={onNewDocSave}
-      opetuksenJarjestamismuodot={opetuksenJarjestamismuodot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
-      opetustehtavat={opetustehtavat}
       organisation={organisaatio}
-      poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
-      poMuutEhdot={poMuutEhdot}
-      toissijaisetOpetuskieletOPH={toissijaisetOpetuskieletOPH}
       tutkinnot={tutkinnot}
     />
   );

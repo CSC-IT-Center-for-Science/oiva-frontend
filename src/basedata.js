@@ -40,6 +40,7 @@ import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
 import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
+import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -63,7 +64,7 @@ export const fetchJSON = async path => {
   return result.data;
 };
 
-const getRaw = async (
+export const getRaw = async (
   key,
   path,
   keys,
@@ -94,7 +95,6 @@ const getRaw = async (
  */
 const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) => {
   const localeUpper = toUpper(locale);
-  console.log("Koulutustyyppi: " + koulutustyyppi);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
    */
@@ -217,6 +217,11 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     organisaatio: await getRaw(
       "organisaatio",
       `${backendRoutes.organisaatio.path}${ytunnus}`,
+      keys
+    ),
+    organisaatiot: await getRaw(
+      "organisaatiot",
+      backendRoutes.organisaatiot.path,
       keys
     ),
     poErityisetKoulutustehtavat: await getRaw(
@@ -375,17 +380,45 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa,
+    lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
     vstLuvat: raw.vstLuvat,
-    vstTyypit: raw.vstTyypit ? await localforage.setItem(
-      "vsttyypit",
-      map(vstTyyppi => omit(["koodiArvo"], {
-        ...vstTyyppi,
-          koodiarvo: vstTyyppi.koodiArvo,
-          metadata: mapObjIndexed(head, groupBy(prop("kieli"), vstTyyppi.metadata))
-      }),raw.vstTyypit
-      )) : undefined,
-    maakunnat: raw.maakunnat,
+    vstTyypit: raw.vstTyypit
+      ? await localforage.setItem(
+          "vsttyypit",
+          map(
+            vstTyyppi =>
+              omit(["koodiArvo"], {
+                ...vstTyyppi,
+                koodiarvo: vstTyyppi.koodiArvo,
+                metadata: mapObjIndexed(
+                  head,
+                  groupBy(prop("kieli"), vstTyyppi.metadata)
+                )
+              }),
+            raw.vstTyypit
+          )
+        )
+      : undefined,
+    maakunnat: raw.maakuntakunnat
+      ? await localforage.setItem(
+          "maakunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(
+              maakunta =>
+                omit(["koodiArvo"], {
+                  ...maakunta,
+                  koodiarvo: maakunta.koodiArvo,
+                  metadata: mapObjIndexed(
+                    head,
+                    groupBy(prop("kieli"), maakunta.metadata)
+                  )
+                }),
+              raw.maakunnat
+            ).filter(Boolean)
+          )
+        )
+      : undefined,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
           "maakuntakunnat",
@@ -403,9 +436,12 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     muut: raw.muut
       ? await localforage.setItem(
           "muut",
-          map(muudata => {
-            return initializeMuu(muudata);
-          }, raw.muut)
+          sortArticlesByHuomioitavaKoodi(
+            map(muudata => {
+              return initializeMuu(muudata);
+            }, raw.muut),
+            localeUpper
+          )
         )
       : undefined,
     oivaperustelut: raw.oivaperustelut
@@ -468,6 +504,9 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
+    organisaatiot: raw.organisaatiot
+      ? await localforage.setItem("organisaatiot", raw.organisaatiot)
+      : undefined,
     poErityisetKoulutustehtavat: raw.poErityisetKoulutustehtavat
       ? await localforage.setItem(
           "poErityisetKoulutustehtavat",
@@ -512,7 +551,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
           )
         )
       : undefined,
-    tulevatLuvat: raw.tulevatLuvat || [],
+    tulevatLuvat: raw.tulevatLuvat || [],
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),

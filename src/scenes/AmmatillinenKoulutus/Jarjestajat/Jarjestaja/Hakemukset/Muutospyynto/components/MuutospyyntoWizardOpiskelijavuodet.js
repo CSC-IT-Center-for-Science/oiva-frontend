@@ -1,121 +1,143 @@
 import React, { useEffect } from "react";
-import ExpandableRowRoot from "../../../../../../../components/02-organisms/ExpandableRowRoot";
-import common from "../../../../../../../i18n/definitions/common";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import { useIntl } from "react-intl";
 import { getMaarayksetByTunniste } from "../../../../../../../helpers/lupa";
-import { values, filter, flatten, includes, find, path } from "ramda";
+import { difference, find, length, path, pathEq, propEq } from "ramda";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
+import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
+
+const constants = {
+  formLocation: ["opiskelijavuodet"]
+};
+
+/**
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 02
+ * (vaativa tuki), näytetään vaativaa tukea koskevat kentät tässä osiossa
+ * (Opiskelijavuodet).
+ **/
+export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
+
+/**
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 03
+ * (sisäoppilaitos), näytetään sisäoppilaitosta koskevat kentät tässä osiossa
+ * (Opiskelijavuodet).
+ **/
+export const sisaoppilaitosCodes = ["4"];
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({
-    changeObjects,
-    maaraykset,
-    muut,
-    onChangesRemove,
-    onChangesUpdate,
-    sectionId
-  }) => {
-    const intl = useIntl();
+  ({ maaraykset, muut, sectionId }) => {
+    const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opiskelijavuodet"
+    });
+    const [lomakedata] = useLomakedata({
+      anchor: sectionId
+    });
+    const [muutLomakedata, { setLomakedata }] = useLomakedata({
+      anchor: "muut"
+    });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
       maaraykset
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
-    const changesMessages = {
-      undo: intl.formatMessage(common.undo),
-      changesTest: intl.formatMessage(common.changesText)
-    };
 
     /**
-     * Opiskelijavuodet-osio (4) on kytköksissä osioon 5 (Muut oikeudet,
-     * velvollisuudet, ehdot ja tehtävät) siten, että osion 5 valinnat
-     * vaikuttavat siihen, mitä sisältöä osiossa 4 näytetään.
-     *
-     * Alla oleva useEffect käsittelee tilannetta, jossa käyttäjä on valinnut
-     * jonkin vaativaa tukea koskevan kohdan osiosta 5. Tällöin on
-     * tarkistettava, että molempien osioiden koodiarvot ovat samat. Muutoin
-     * tallennusvaiheessa backendille lähtee väärä koodiarvo koskien
-     * vaativaan tukeen liittyvää opiskelijavuosimäärätietoa.
+     * Muodostetaan data, jonka perusteella lomake voidaan luoda
+     * lomakepalvelussa. Koska opiskelijavuosiosion sisältö riippuu Muut-osion
+     * sisällöstä, on tarpeen reagoida Muut-osiossa tehtyihin muutoksiin.
      */
     useEffect(() => {
-      const activeSection5VaativaTukiChangeObj = find(changeObj => {
-        return (
-          includes("vaativatuki", changeObj.anchor) &&
-          changeObj.properties.isChecked
-        );
-      }, flatten(values(changeObjects.muut)));
-
-      const vaativaTukiKoodiarvoSection5 = activeSection5VaativaTukiChangeObj
-        ? path(
-            ["properties", "metadata", "koodiarvo"],
-            activeSection5VaativaTukiChangeObj
+      // Mikäli Muut-osion lomakkeelta 02 (vaativa tuki) on valittu jokin
+      // listatuista koodiarvoista, on vaativaa tukea koskeva tietue näytettävä
+      // opiskelijavuosiosiossa.
+      const visibilityOfVaativaTuki =
+        length(
+          difference(
+            vaativatCodes,
+            path(["02", "valitutKoodiarvot"], muutLomakedata) || []
           )
-        : null;
+        ) < length(vaativatCodes);
 
-      const activeSection4VaativaTukiChangeObj = find(changeObj => {
-        return includes("vaativatuki", changeObj.anchor);
-      }, changeObjects.opiskelijavuodet);
-
-      const vaativaTukiKoodiarvoSection4 = activeSection4VaativaTukiChangeObj
-        ? path(
-            ["properties", "metadata", "koodiarvo"],
-            activeSection4VaativaTukiChangeObj
+      // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
+      // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
+      // opiskelijavuosiosiossa.
+      const visibilityOfSisaoppilaitos =
+        length(
+          difference(
+            sisaoppilaitosCodes,
+            path(["03", "valitutKoodiarvot"], muutLomakedata) || []
           )
-        : null;
+        ) < length(sisaoppilaitosCodes);
 
       if (
-        activeSection4VaativaTukiChangeObj &&
-        vaativaTukiKoodiarvoSection4 !== null &&
-        vaativaTukiKoodiarvoSection5 !== null &&
-        vaativaTukiKoodiarvoSection4 !== vaativaTukiKoodiarvoSection5
+        !pathEq(
+          ["visibility", "sisaoppilaitos"],
+          visibilityOfSisaoppilaitos,
+          lomakedata
+        ) ||
+        !pathEq(
+          ["visibility", "vaativaTuki"],
+          visibilityOfVaativaTuki,
+          lomakedata
+        )
       ) {
-        onChangesUpdate({
-          anchor: sectionId,
-          changes: filter(changeObj => {
-            return (
-              changeObj.anchor !== activeSection4VaativaTukiChangeObj.anchor
-            );
-          }, changeObjects.opiskelijavuodet || [])
-        });
+        setLomakedata(
+          {
+            sisaoppilaitos: visibilityOfSisaoppilaitos,
+            vaativaTuki: visibilityOfVaativaTuki
+          },
+          `${sectionId}_visibility`
+        );
       }
-    }, [
-      changeObjects.muut,
-      changeObjects.opiskelijavuodet,
-      onChangesUpdate,
-      sectionId
-    ]);
+    }, [lomakedata, muutLomakedata, sectionId, setLomakedata]);
+
+    /**
+     * Tässä reagoidaan opiskelijavuosiosion muutoksiin ja tarkastellaan sitä,
+     * onko sisäoppilaitosta ja vaativaa tukea koskevat kentät täytetty.
+     * Tieto asetetaan jaettuun tilaan, josta sitä tarvitseva osio voi sen
+     * lukea.
+     */
+    useEffect(() => {
+      const vahimmaisopiskelijavuodetChangeObj = find(
+        propEq("anchor", `${sectionId}.vahimmaisopiskelijavuodet.A`),
+        changeObjects
+      );
+      if (!!vahimmaisopiskelijavuodetChangeObj) {
+        setLomakedata(
+          vahimmaisopiskelijavuodetChangeObj.properties.isValueSet,
+          `${sectionId}_vahimmaisopiskelijavuodet_isApplyForValueSet`
+        );
+      }
+      const sisaoppilaitosChangeObj = find(
+        propEq("anchor", `${sectionId}.sisaoppilaitos.A`),
+        changeObjects
+      );
+      if (!!sisaoppilaitosChangeObj) {
+        setLomakedata(
+          sisaoppilaitosChangeObj.properties.isValueSet,
+          `${sectionId}_sisaoppilaitos_isApplyForValueSet`
+        );
+      }
+      const vaativaTukiChangeObj = find(
+        propEq("anchor", `${sectionId}.vaativatuki.A`),
+        changeObjects
+      );
+      if (!!vaativaTukiChangeObj) {
+        setLomakedata(
+          vaativaTukiChangeObj.properties.isValueSet,
+          `${sectionId}_vaativaTuki_isApplyForValueSet`
+        );
+      }
+    }, [changeObjects, sectionId, setLomakedata]);
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
-      <ExpandableRowRoot
+      <Lomake
+        action="modification"
         anchor={sectionId}
-        key={`expandable-row-root`}
-        categories={[]}
-        changes={changeObjects.opiskelijavuodet}
-        hideAmountOfChanges={true}
-        messages={changesMessages}
-        onChangesRemove={onChangesRemove}
-        onUpdate={onChangesUpdate}
-        sectionId={sectionId}
-        showCategoryTitles={true}
-        isExpanded={true}>
-        <Lomake
-          action="modification"
-          anchor={sectionId}
-          changeObjects={changeObjects.opiskelijavuodet}
-          data={{
-            isSisaoppilaitosValueRequired: false,
-            isVaativaTukiValueRequired: false,
-            maaraykset: opiskelijavuosiMaaraykset,
-            muut,
-            muutChanges: changeObjects.muut,
-            muutMaaraykset,
-            sectionId: sectionId
-          }}
-          onChangesUpdate={onChangesUpdate}
-          path={["opiskelijavuodet"]}
-          showCategoryTitles={true}></Lomake>
-      </ExpandableRowRoot>
+        data={lomakedata}
+        isRowExpanded={true}
+        path={constants.formLocation}
+        showCategoryTitles={true}></Lomake>
     ) : null;
   }
 );
@@ -128,8 +150,6 @@ MuutospyyntoWizardOpiskelijavuodet.propTypes = {
   lupaKohteet: PropTypes.object,
   maaraykset: PropTypes.array,
   muut: PropTypes.array,
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
   sectionId: PropTypes.string
 };
 

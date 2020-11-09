@@ -1,57 +1,31 @@
 import React from "react";
-import ExpandableRowRoot from "../../../components/02-organisms/ExpandableRowRoot";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
-import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 
+const constants = {
+  formLocations: ["esiJaPerusopetus", "opiskelijamaarat"]
+}
+
 const Opiskelijamaarat = ({
-  changeObjects,
-  lisatiedot,
-  onChangesRemove,
-  onChangesUpdate,
   sectionId
 }) => {
   const intl = useIntl();
 
-  const changesMessages = {
-    undo: intl.formatMessage(common.undo),
-    changesTest: intl.formatMessage(common.changesText)
-  };
-
   return (
-    <ExpandableRowRoot
+    <Lomake
+      action="modification"
       anchor={sectionId}
-      key={`expandable-row-root`}
-      changes={changeObjects}
-      hideAmountOfChanges={true}
-      isExpanded={true}
-      messages={changesMessages}
-      onChangesRemove={onChangesRemove}
-      onUpdate={onChangesUpdate}
-      sectionId={sectionId}
+      isRowExpanded={true}
+      path={constants.formLocations}
       showCategoryTitles={true}
-      title={intl.formatMessage(education.oppilasOpiskelijamaarat)}>
-      <Lomake
-        action="modification"
-        anchor={sectionId}
-        changeObjects={changeObjects}
-        data={{
-          lisatiedot
-        }}
-        onChangesUpdate={onChangesUpdate}
-        path={["esiJaPerusopetus", "opiskelijamaarat"]}
-        showCategoryTitles={true}></Lomake>
-    </ExpandableRowRoot>
+      rowTitle={intl.formatMessage(education.oppilasOpiskelijamaarat)}></Lomake>
   );
 };
 
 Opiskelijamaarat.propTypes = {
-  changeObjects: PropTypes.array,
-  onChangesUpdate: PropTypes.func,
-  lisatiedot: PropTypes.array,
-  poMuutEhdot: PropTypes.array
+  sectionId: PropTypes.string
 };
 
 export default Opiskelijamaarat;

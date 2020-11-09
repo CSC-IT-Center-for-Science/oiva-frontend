@@ -13,12 +13,14 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
-import { koulutustyypitMap } from "../../utils/constants";
+import { MuutoksetContainer } from "../AmmatillinenKoulutus/store";
+import { koulutustyypitMap } from "utils/constants";
 
 const Esittelijat = () => {
   const { formatMessage, locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
+  const scope = "po-esittelijan-lupanakyma";
 
   return (
     <React.Fragment>
@@ -30,7 +32,10 @@ const Esittelijat = () => {
         <Typography component="h1" variant="h1">
           {formatMessage(commonMessages.asianhallinta)}
         </Typography>
-        <Typography component="h2" style={{fontSize: "1.25rem"}} className="pb-4 mt--12">
+        <Typography
+          component="h2"
+          style={{ fontSize: "1.25rem" }}
+          className="pb-4 mt--12">
           {formatMessage(educationMessages.preAndBasicEducation)}
         </Typography>
 
@@ -51,7 +56,7 @@ const Esittelijat = () => {
             authenticated={!!user}
             exact
             path={`${path}/:uuid`}
-            render={() => <Asiakirjat koulutustyyppi={"esi-ja-perusopetus"}/>}
+            render={() => <Asiakirjat koulutustyyppi={"esi-ja-perusopetus"} />}
           />
           <Route
             authenticated={!!user}
@@ -61,7 +66,11 @@ const Esittelijat = () => {
               <BaseData
                 locale={locale}
                 koulutustyyppi={koulutustyypitMap.ESI_JA_PERUSOPETUS}
-                render={_props => <UusiAsiaDialogContainer {..._props} />}
+                render={_props => (
+                  <MuutoksetContainer scope={scope}>
+                    <UusiAsiaDialogContainer {..._props} />
+                  </MuutoksetContainer>
+                )}
               />
             )}
           />
@@ -74,7 +83,11 @@ const Esittelijat = () => {
                 <BaseData
                   locale={locale}
                   koulutustyyppi={koulutustyypitMap.ESI_JA_PERUSOPETUS}
-                  render={_props => <AsiaDialogContainer {..._props} />}
+                  render={_props => (
+                    <MuutoksetContainer scope={scope}>
+                      <AsiaDialogContainer {..._props} />
+                    </MuutoksetContainer>
+                  )}
                 />
               );
             }}
