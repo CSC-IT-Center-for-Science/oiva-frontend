@@ -93,7 +93,6 @@ const defaultProps = {
   opetuskielet: [],
   opetustehtavakoodisto: {},
   organisation: {},
-  poMuutEhdot: [],
   tutkinnot: []
 };
 
@@ -108,8 +107,7 @@ const UusiAsiaDialog = ({
   maaraystyypit = defaultProps.maaraystyypit,
   onNewDocSave,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
-  organisation = defaultProps.organisation,
-  poMuutEhdot = defaultProps.poMuutEhdot
+  organisation = defaultProps.organisation
 }) => {
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "paatoksentiedot"
@@ -470,13 +468,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={7}
-                  render={props => (
-                    <MuutEhdot
-                      lisatiedot={lisatiedot}
-                      poMuutEhdot={poMuutEhdot}
-                      {...props}
-                    />
-                  )}
+                  render={props => <MuutEhdot {...props} />}
                   sectionId={"muutEhdot"}
                   title={intl.formatMessage(
                     education.muutEhdotTitle

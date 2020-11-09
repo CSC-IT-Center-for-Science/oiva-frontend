@@ -26,7 +26,6 @@ const UusiAsiaDialogContainer = ({
   opetuskielet,
   opetustehtavakoodisto,
   organisaatio,
-  poMuutEhdot,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -76,7 +75,6 @@ const UusiAsiaDialogContainer = ({
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
       organisation={organisaatio}
-      poMuutEhdot={poMuutEhdot}
       tutkinnot={tutkinnot}
     />
   );
