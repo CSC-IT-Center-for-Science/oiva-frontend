@@ -5,16 +5,22 @@ import {
   flatten,
   map,
   path,
+  prop,
   toUpper,
   filter,
   endsWith,
   includes,
   pathEq,
-  find
+  find,
+  sortBy
 } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
+import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
+import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
-export function muutEhdot(data, isReadOnly, locale, changeObjects) {
+export async function muutEhdot(data, isReadOnly, locale, changeObjects) {
+  const poMuutEhdot = await getPOMuutEhdotFromStorage();
+  const lisatiedot = await getLisatiedotFromStorage();
   const localeUpper = toUpper(locale);
 
   const muuEhtoChangeObj = getChangeObjByAnchor(
@@ -29,7 +35,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    data.lisatiedot || []
+    lisatiedot || []
   );
 
   const lomakerakenne = flatten([
@@ -41,6 +47,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
             anchor: "valintaelementti",
             name: "CheckboxWithLabel",
             properties: {
+              isReadOnly,
               title: ehto.metadata[localeUpper].nimi,
               labelStyles: {
                 addition: isAdded,
@@ -63,6 +70,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                   forChangeObject: {
                     koodiarvo: ehto.koodiarvo
                   },
+                  isReadOnly,
                   placeholder: __("common.kuvausPlaceholder"),
                   title: __("common.kuvaus"),
                   value: ehto.metadata[localeUpper].kuvaus
@@ -76,34 +84,38 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
            */
           ehto.koodiarvo === "99"
             ? [
-                map(
-                  changeObj => {
-                    return {
-                      anchor: getAnchorPart(changeObj.anchor, 2),
-                      components: [
-                        {
-                          anchor: "kuvaus",
-                          name: "TextBox",
-                          properties: {
-                            forChangeObject: {
-                              koodiarvo: ehto.koodiarvo
-                            },
-                            placeholder: __("common.kuvausPlaceholder"),
-                            title: __("common.kuvaus"),
-                            isRemovable: true,
-                            value: changeObj.properties.value
+                sortBy(
+                  prop("anchor"),
+                  map(
+                    changeObj => {
+                      return {
+                        anchor: getAnchorPart(changeObj.anchor, 2),
+                        components: [
+                          {
+                            anchor: "kuvaus",
+                            name: "TextBox",
+                            properties: {
+                              forChangeObject: {
+                                koodiarvo: ehto.koodiarvo
+                              },
+                              isReadOnly,
+                              placeholder: __("common.kuvausPlaceholder"),
+                              title: __("common.kuvaus"),
+                              isRemovable: true,
+                              value: changeObj.properties.value
+                            }
                           }
-                        }
-                      ]
-                    };
-                  },
-                  filter(changeObj => {
-                    return (
-                      endsWith(".kuvaus", changeObj.anchor) &&
-                      includes(`.${ehto.koodiarvo}`, changeObj.anchor) &&
-                      !includes(`${ehto.koodiarvo}.0`, changeObj.anchor)
-                    );
-                  }, changeObjects)
+                        ]
+                      };
+                    },
+                    filter(changeObj => {
+                      return (
+                        endsWith(".kuvaus", changeObj.anchor) &&
+                        includes(`.${ehto.koodiarvo}`, changeObj.anchor) &&
+                        !includes(`${ehto.koodiarvo}.0`, changeObj.anchor)
+                      );
+                    }, changeObjects)
+                  )
                 ),
                 /**
                  * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
@@ -116,6 +128,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                       name: "SimpleButton",
                       onClick: () => data.onAddButtonClick(ehto.koodiarvo),
                       properties: {
+                        isReadOnly,
                         isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
                         text: __("common.lisaaUusiKuvaus"),
                         icon: "FaPlus",
@@ -134,7 +147,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
             : []
         ])
       };
-    }, data.poMuutEhdot),
+    }, poMuutEhdot),
     lisatiedotObj
       ? [
           {
@@ -164,6 +177,7 @@ export function muutEhdot(data, isReadOnly, locale, changeObjects) {
                     versio: lisatiedotObj.versio,
                     voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
                   },
+                  isReadOnly,
                   placeholder: __("common.lisatiedot")
                 }
               }
