@@ -8,23 +8,29 @@ import {
   map,
   path,
   pathEq,
+  prop,
+  sortBy,
   startsWith,
   toUpper
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
+import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
+import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
-export function erityisetKoulutustehtavat(
+export async function erityisetKoulutustehtavat(
   data,
   isReadOnly,
   locale,
   changeObjects
 ) {
+  const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const lisatiedot = await getLisatiedotFromStorage();
   const localeUpper = toUpper(locale);
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    data.lisatiedot
+    lisatiedot
   );
 
   return flatten([
@@ -51,6 +57,7 @@ export function erityisetKoulutustehtavat(
                   anchor: "kuvaus",
                   name: "TextBox",
                   properties: {
+                    isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
                     value: erityinenKoulutustehtava.metadata[localeUpper].kuvaus
@@ -62,36 +69,40 @@ export function erityisetKoulutustehtavat(
              * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
              * erillisen painikkeen avulla.
              */
-            map(
-              changeObj => {
-                return {
-                  anchor: getAnchorPart(changeObj.anchor, 2),
-                  components: [
-                    {
-                      anchor: "kuvaus",
-                      name: "TextBox",
-                      properties: {
-                        placeholder: __("common.kuvausPlaceholder"),
-                        title: __("common.kuvaus"),
-                        isRemovable: true,
-                        value: changeObj.properties.value
+            sortBy(
+              prop("anchor"),
+              map(
+                changeObj => {
+                  return {
+                    anchor: getAnchorPart(changeObj.anchor, 2),
+                    components: [
+                      {
+                        anchor: "kuvaus",
+                        name: "TextBox",
+                        properties: {
+                          isReadOnly,
+                          isRemovable: true,
+                          placeholder: __("common.kuvausPlaceholder"),
+                          title: __("common.kuvaus"),
+                          value: changeObj.properties.value
+                        }
                       }
-                    }
-                  ]
-                };
-              },
-              filter(
-                changeObj =>
-                  startsWith(
-                    `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}`,
-                    changeObj.anchor
-                  ) &&
-                  endsWith(".kuvaus", changeObj.anchor) &&
-                  !startsWith(
-                    `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.0`,
-                    changeObj.anchor
-                  ),
-                changeObjects
+                    ]
+                  };
+                },
+                filter(
+                  changeObj =>
+                    startsWith(
+                      `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}`,
+                      changeObj.anchor
+                    ) &&
+                    endsWith(".kuvaus", changeObj.anchor) &&
+                    !startsWith(
+                      `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.0`,
+                      changeObj.anchor
+                    ),
+                  changeObjects
+                )
               )
             ),
             /**
@@ -105,8 +116,8 @@ export function erityisetKoulutustehtavat(
                   name: "SimpleButton",
                   onClick: data.onAddButtonClick,
                   properties: {
+                    isReadOnly,
                     isVisible: isCheckedByChange,
-                    text: __("common.lisaaUusiKuvaus"),
                     icon: "FaPlus",
                     iconContainerStyles: {
                       width: "15px"
@@ -114,6 +125,7 @@ export function erityisetKoulutustehtavat(
                     iconStyles: {
                       fontSize: 10
                     },
+                    text: __("common.lisaaUusiKuvaus"),
                     variant: "text"
                   }
                 }
@@ -128,6 +140,7 @@ export function erityisetKoulutustehtavat(
             properties: {
               isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
               isIndeterminate: false,
+              isReadOnly,
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved
@@ -137,7 +150,7 @@ export function erityisetKoulutustehtavat(
           }
         ]
       };
-    }, data.poErityisetKoulutustehtavat),
+    }, poErityisetKoulutustehtavat),
     {
       anchor: "erityiset-koulutustehtavat",
       layout: { margins: { top: "large" } },
@@ -165,6 +178,7 @@ export function erityisetKoulutustehtavat(
               versio: lisatiedotObj.versio,
               voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
             },
+            isReadOnly,
             placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {}).nimi
           }
         }

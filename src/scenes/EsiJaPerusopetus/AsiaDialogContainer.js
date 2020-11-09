@@ -17,7 +17,6 @@ import { useChangeObjects } from "../AmmatillinenKoulutus/store";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const AsiaDialogContainer = ({
-  ensisijaisetOpetuskieletOPH,
   kielet,
   kohteet,
   koulutukset,
@@ -32,9 +31,7 @@ const AsiaDialogContainer = ({
   opetuskielet,
   opetustehtavakoodisto,
   organisaatio,
-  poErityisetKoulutustehtavat,
   poMuutEhdot,
-  toissijaisetOpetuskieletOPH,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -78,7 +75,6 @@ const AsiaDialogContainer = ({
 
   return muutospyynto ? (
     <UusiAsiaDialog
-      ensisijaisetOpetuskieletOPH={ensisijaisetOpetuskieletOPH}
       history={history}
       kielet={kielet}
       kohteet={kohteet}
@@ -94,12 +90,10 @@ const AsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={() => {}}
-      poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
       poMuutEhdot={poMuutEhdot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
       organisation={organisaatio}
-      toissijaisetOpetuskieletOPH={toissijaisetOpetuskieletOPH}
       tutkinnot={tutkinnot}
     />
   ) : (

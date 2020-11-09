@@ -1,20 +1,26 @@
 import { createStore, createHook, createContainer } from "react-sweet-state";
 import {
+  append,
   assoc,
   assocPath,
   compose,
   concat,
   difference,
-  dissoc,
+  endsWith,
   filter,
   flatten,
   isNil,
+  length,
+  map,
+  max,
   not,
   path,
   prepend,
   propEq,
+  reduce,
   reject,
   split,
+  startsWith,
   values
 } from "ramda";
 import {
@@ -25,13 +31,17 @@ import {
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
-  const nextChangeObjects = dissoc("underRemoval", currentState.changeObjects);
+  const nextChangeObjects = assoc(
+    "underRemoval",
+    {},
+    currentState.changeObjects
+  );
   setState(assoc("changeObjects", nextChangeObjects, currentState));
 };
 
 const removeUnsavedChanges = () => ({ getState, setState }) => {
   const currentState = getState();
-  const nextChangeObjects = dissoc("unsaved", currentState.changeObjects);
+  const nextChangeObjects = assoc("unsaved", {}, currentState.changeObjects);
   setState(assoc("changeObjects", nextChangeObjects, currentState));
 };
 
@@ -64,6 +74,54 @@ const Store = createStore({
     latestChanges: {}
   },
   actions: {
+    createTextBoxChangeObject: (sectionId, koodiarvo) => ({
+      getState,
+      setState
+    }) => {
+      if (sectionId) {
+        const currentChangeObjects = getState().changeObjects;
+        const textBoxChangeObjects = filter(
+          changeObj =>
+            startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
+            endsWith(".kuvaus", changeObj.anchor) &&
+            !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
+          concat(
+            currentChangeObjects.unsaved[sectionId] || [],
+            currentChangeObjects.saved[sectionId] || []
+          ) || []
+        );
+
+        const textBoxNumber =
+          length(textBoxChangeObjects) > 0
+            ? reduce(
+                max,
+                -Infinity,
+                map(changeObj => {
+                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
+                }, textBoxChangeObjects)
+              ) + 1
+            : 1;
+
+        /**
+         * Luodaan
+         */
+        const nextChangeObjects = assocPath(
+          ["unsaved", sectionId],
+          append(
+            {
+              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
+              properties: {
+                value: ""
+              }
+            },
+            currentChangeObjects.unsaved[sectionId] || []
+          ),
+          currentChangeObjects
+        );
+        console.info(nextChangeObjects);
+        setState({ ...getState(), changeObjects: nextChangeObjects });
+      }
+    },
     initializeChanges: changeObjects => ({ dispatch }) => {
       dispatch(setSavedChanges(changeObjects));
       dispatch(setLatestChanges({}));
@@ -143,10 +201,6 @@ const Store = createStore({
       );
       nextChangeObjects = recursiveTreeShake(
         underRemovalFullPath,
-        nextChangeObjects
-      );
-      nextChangeObjects = recursiveTreeShake(
-        unsavedFullPath,
         nextChangeObjects
       );
 

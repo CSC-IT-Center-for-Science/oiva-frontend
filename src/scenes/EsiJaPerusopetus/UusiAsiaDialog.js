@@ -93,7 +93,6 @@ const defaultProps = {
   opetuskielet: [],
   opetustehtavakoodisto: {},
   organisation: {},
-  poErityisetKoulutustehtavat: [],
   poMuutEhdot: [],
   tutkinnot: []
 };
@@ -110,7 +109,6 @@ const UusiAsiaDialog = ({
   onNewDocSave,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
   organisation = defaultProps.organisation,
-  poErityisetKoulutustehtavat = defaultProps.poErityisetKoulutustehtavat,
   poMuutEhdot = defaultProps.poMuutEhdot
 }) => {
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -125,8 +123,15 @@ const UusiAsiaDialog = ({
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
-  const [opetuksenJarjestamismuodotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [
+    opetuksenJarjestamismuodotCo
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetuksenJarjestamismuodot"
+  });
+  const [
+    erityisetKoulutustehtavatCO
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "erityisetKoulutustehtavat"
   });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
@@ -250,6 +255,7 @@ const UusiAsiaDialog = ({
           organisation,
           lupa,
           {
+            erityisetKoulutustehtavat: erityisetKoulutustehtavatCO,
             paatoksentiedot: paatoksentiedotCo,
             opetustehtavat: opetustehtavatCo,
             toimintaalue: toimintaalueCO,
@@ -287,6 +293,7 @@ const UusiAsiaDialog = ({
       }
     },
     [
+      erityisetKoulutustehtavatCO,
       initializeChanges,
       intl.locale,
       kohteet,
@@ -436,7 +443,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={4}
-                  render={props => <OpetuksenJarjestamismuoto {...props}/>}
+                  render={props => <OpetuksenJarjestamismuoto {...props} />}
                   sectionId={"opetuksenJarjestamismuodot"}
                   title={intl.formatMessage(
                     education.opetuksenJarjestamismuoto
@@ -444,13 +451,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={5}
-                  render={props => (
-                    <ErityisetKoulutustehtavat
-                      poErityisetKoulutustehtavat={poErityisetKoulutustehtavat}
-                      lisatiedot={lisatiedot}
-                      {...props}
-                    />
-                  )}
+                  render={props => <ErityisetKoulutustehtavat {...props} />}
                   sectionId={"erityisetKoulutustehtavat"}
                   title={"Erityinen koulutustehtävä"}></FormSection>
 

@@ -3,69 +3,39 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "../../../components/02-organisms/Lomake";
 import education from "../../../i18n/definitions/education";
-import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import { getAnchorPart } from "../../../utils/common";
-import { find } from "ramda";
+import { useChangeObjects } from "scenes/AmmatillinenKoulutus/store";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "erityisetKoulutustehtavat"]
-}
+};
 
-const ErityisetKoulutustehtavat = ({
-  onChangesUpdate,
-  lisatiedot,
-  poErityisetKoulutustehtavat,
-  sectionId
-}) => {
-  const [state, actions] = useEsiJaPerusopetus();
+const ErityisetKoulutustehtavat = ({ sectionId }) => {
   const intl = useIntl();
+  const [, { createTextBoxChangeObject }] = useChangeObjects();
 
   const onAddButtonClick = useCallback(
     addBtn => {
-      actions.createTextBoxChangeObject(
-        sectionId,
-        getAnchorPart(addBtn.anchor, 1)
-      );
+      createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
     },
-    [actions, sectionId]
-  );
-
-  const onChanges = useCallback(
-    ({anchor, changes}) => {
-      const removeBtnClickedChangeObject = find(
-        change => change.properties && change.properties.textBoxDelete,
-        changes
-      );
-      if (removeBtnClickedChangeObject) {
-        actions.removeTextBoxChangeObject(
-          sectionId,
-          removeBtnClickedChangeObject.anchor
-        );
-      } else {
-        onChangesUpdate({anchor: anchor, changes: changes});
-      }
-    },
-    [actions, onChangesUpdate, sectionId]
+    [createTextBoxChangeObject, sectionId]
   );
 
   return (
     <Lomake
       action="modification"
       anchor={sectionId}
-      data={{
-        onAddButtonClick,
-        poErityisetKoulutustehtavat,
-        lisatiedot
-      }}
+      data={{ onAddButtonClick }}
+      isRowExpanded={true}
       path={constants.formLocations}
       showCategoryTitles={true}
-      rowTitle={intl.formatMessage(education.erityisetKoulutustehtavat)}></Lomake>
+      rowTitle={intl.formatMessage(
+        education.erityisetKoulutustehtavat
+      )}></Lomake>
   );
 };
 
 ErityisetKoulutustehtavat.propTypes = {
-  lisatiedot: PropTypes.array,
-  poErityisetKoulutustehtavat: PropTypes.array,
   sectionId: PropTypes.string
 };
 
