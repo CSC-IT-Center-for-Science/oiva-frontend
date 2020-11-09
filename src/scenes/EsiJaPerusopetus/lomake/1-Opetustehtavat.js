@@ -8,16 +8,14 @@ const constants = {
   formLocation: ["esiJaPerusopetus", "opetusJotaLupaKoskee"]
 };
 
-const Opetustehtavat = ({
-  opetustehtavakoodisto,
-  sectionId
-}) => {
+const Opetustehtavat = ({ opetustehtavakoodisto, sectionId }) => {
   const intl = useIntl();
 
   return (
     <Lomake
       action="modification"
       anchor={sectionId}
+      isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
       showCategoryTitles={true}></Lomake>

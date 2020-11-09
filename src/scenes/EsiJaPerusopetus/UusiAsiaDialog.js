@@ -93,7 +93,6 @@ const defaultProps = {
   opetuskielet: [],
   opetustehtavakoodisto: {},
   organisation: {},
-  poMuutEhdot: [],
   tutkinnot: []
 };
 
@@ -108,8 +107,7 @@ const UusiAsiaDialog = ({
   maaraystyypit = defaultProps.maaraystyypit,
   onNewDocSave,
   opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
-  organisation = defaultProps.organisation,
-  poMuutEhdot = defaultProps.poMuutEhdot
+  organisation = defaultProps.organisation
 }) => {
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "paatoksentiedot"
@@ -135,6 +133,9 @@ const UusiAsiaDialog = ({
   });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
+  });
+  const [muutEhdotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "muutEhdot"
   });
 
   const [state] = useEsiJaPerusopetus();
@@ -256,12 +257,13 @@ const UusiAsiaDialog = ({
           lupa,
           {
             erityisetKoulutustehtavat: erityisetKoulutustehtavatCO,
-            paatoksentiedot: paatoksentiedotCo,
-            opetustehtavat: opetustehtavatCo,
-            toimintaalue: toimintaalueCO,
-            opetuskielet: opetuskieletCO,
+            muutEhdot: muutEhdotCo,
             opetuksenJarjestamismuodot: opetuksenJarjestamismuodotCo,
-            opiskelijamaarat: opiskelijamaaratCo
+            opetuskielet: opetuskieletCO,
+            opetustehtavat: opetustehtavatCo,
+            opiskelijamaarat: opiskelijamaaratCo,
+            paatoksentiedot: paatoksentiedotCo,
+            toimintaalue: toimintaalueCO
           },
           uuid,
           kohteet,
@@ -299,6 +301,7 @@ const UusiAsiaDialog = ({
       kohteet,
       lupa,
       maaraystyypit,
+      muutEhdotCo,
       onNewDocSave,
       onPreview,
       onSave,
@@ -457,7 +460,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={6}
-                  render={props => <Opiskelijamaarat {...props}/>}
+                  render={props => <Opiskelijamaarat {...props} />}
                   sectionId={"opiskelijamaarat"}
                   title={intl.formatMessage(
                     education.oppilasOpiskelijamaarat
@@ -465,13 +468,7 @@ const UusiAsiaDialog = ({
 
                 <FormSection
                   code={7}
-                  render={props => (
-                    <MuutEhdot
-                      lisatiedot={lisatiedot}
-                      poMuutEhdot={poMuutEhdot}
-                      {...props}
-                    />
-                  )}
+                  render={props => <MuutEhdot {...props} />}
                   sectionId={"muutEhdot"}
                   title={intl.formatMessage(
                     education.muutEhdotTitle

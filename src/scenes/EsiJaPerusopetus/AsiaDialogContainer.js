@@ -31,7 +31,6 @@ const AsiaDialogContainer = ({
   opetuskielet,
   opetustehtavakoodisto,
   organisaatio,
-  poMuutEhdot,
   tutkinnot,
   viimeisinLupa
 }) => {
@@ -90,7 +89,6 @@ const AsiaDialogContainer = ({
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={() => {}}
-      poMuutEhdot={poMuutEhdot}
       opetuskielet={opetuskielet}
       opetustehtavakoodisto={opetustehtavakoodisto}
       organisation={organisaatio}
