@@ -66,7 +66,8 @@ const AvoimetAsiat = () => {
           muutospyynnot.avoimet.data,
           intl,
           history,
-          onPaatettyActionClicked
+          onPaatettyActionClicked,
+          "vapaa-sivistystyo"
         )
       : [];
   }, [intl, muutospyynnot.avoimet, history]);
