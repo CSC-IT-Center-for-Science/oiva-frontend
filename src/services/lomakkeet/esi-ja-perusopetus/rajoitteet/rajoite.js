@@ -17,6 +17,7 @@ import maaraaika from "./rajoitukset/maaraaika";
 import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
 import opetuksenJarjestamismuoto from "./rajoitukset/4-opetuksenjarjestamismuoto";
 import opetuskielet from "./rajoitukset/3-opetuskielet";
+import muutEhdot from "./rajoitukset/7-muutEhdot";
 import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
@@ -24,6 +25,7 @@ const localizations = {
   opetustaAntavatKunnat: "2. Kunnat, joissa opetusta järjestetään",
   opetuksenJarjestamismuoto: "4. Opetuksen järjestämismuoto",
   opetuskielet: "3. Opetuskieli",
+  muutEhdot: "7. Muut koulutuksen järjestämiseen liittyvät ehdot",
   getOpetustehtavatLomake: "1. Opetus, jota lupa koskee"
 };
 
@@ -32,6 +34,7 @@ const changeObjectMapping = {
   opetustaAntavatKunnat: "toimintaalue",
   opetuksenJarjestamismuoto: "opetuksenJarjestamismuodot",
   opetuskielet: "opetuskielet",
+  muutEhdot: "muutEhdot",
   getOpetustehtavatLomake: "opetustehtavat"
 };
 
@@ -41,6 +44,7 @@ const sections = {
   opetustaAntavatKunnat,
   opetuskielet,
   opetuksenJarjestamismuoto,
+  muutEhdot
 };
 
 async function defineRajoitusStructure(

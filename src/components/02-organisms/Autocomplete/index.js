@@ -89,6 +89,7 @@ const Autocomplete = React.memo(
         },
         multiValueLabel: (styles, { data }) => ({
           ...styles,
+          whiteSpace: "normal",
           color: data.color
         }),
         multiValueRemove: (styles, { data }) => ({
