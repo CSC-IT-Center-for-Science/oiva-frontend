@@ -64,6 +64,7 @@ const Esittelijat = () => {
             render={() => (
               <BaseData
                 locale={locale}
+                koulutustyyppi={koulutustyypitMap.ESI_JA_PERUSOPETUS}
                 render={_props => (
                   <MuutoksetContainer scope={scope}>
                     <UusiAsiaDialogContainer {..._props} />
@@ -80,6 +81,7 @@ const Esittelijat = () => {
               return (
                 <BaseData
                   locale={locale}
+                  koulutustyyppi={koulutustyypitMap.ESI_JA_PERUSOPETUS}
                   render={_props => (
                     <MuutoksetContainer scope={scope}>
                       <AsiaDialogContainer {..._props} />

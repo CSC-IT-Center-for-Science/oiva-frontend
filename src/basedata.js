@@ -87,11 +87,15 @@ export const getRaw = async (
  * ja sen sisältämiä määräyksiä hyödynnetään parsittaessa pohjadataa
  * tarvittaessa paremmin sovellusta palvelevaan muotoon.
  *
+ * @param keys
  * @param {string} locale - fi / sv
+ * @param lupaUuid
  * @param {string} ytunnus
+ * @param koulutustyyppi
  */
-const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
+const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) => {
   const localeUpper = toUpper(locale);
+  console.log("Koulutustyyppi: " + koulutustyyppi);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
    */
@@ -241,7 +245,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
-      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false`,
+      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false${koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
@@ -574,7 +578,7 @@ const defaultProps = {
   keys: []
 };
 
-const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
+const BaseData = ({ keys = defaultProps.keys, locale, render, koulutustyyppi }) => {
   const { lupaUuid, ytunnus } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
@@ -585,13 +589,13 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, ytunnus).then(result => {
+    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(result => {
       if (isSubscribed) {
         setBaseData(result);
       }
     });
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, ytunnus, location.pathname]);
+  }, [keys, locale, lupaUuid, ytunnus, location.pathname, koulutustyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
@@ -606,7 +610,8 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
 BaseData.propTypes = {
   keys: PropTypes.array,
   locale: PropTypes.string,
-  render: PropTypes.func
+  render: PropTypes.func,
+  koulutustyyppi: PropTypes.string
 };
 
 export default BaseData;

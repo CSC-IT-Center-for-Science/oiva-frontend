@@ -13,6 +13,7 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
+import { koulutustyypitMap } from "../../utils/constants";
 
 const Esittelijat = () => {
   const { formatMessage, locale } = useIntl();
@@ -59,6 +60,7 @@ const Esittelijat = () => {
             render={() => (
               <BaseData
                 locale={locale}
+                koulutustyyppi={koulutustyypitMap.LUKIO}
                 render={_props => <UusiAsiaDialogContainer {..._props} />}
               />
             )}
@@ -71,6 +73,7 @@ const Esittelijat = () => {
               return (
                 <BaseData
                   locale={locale}
+                  koulutustyyppi={koulutustyypitMap.LUKIO}
                   render={_props => <AsiaDialogContainer {..._props} />}
                 />
               );
