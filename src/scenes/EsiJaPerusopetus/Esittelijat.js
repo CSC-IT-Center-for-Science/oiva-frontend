@@ -14,6 +14,7 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
 import { MuutoksetContainer } from "../AmmatillinenKoulutus/store";
+import { koulutustyypitMap } from "utils/constants";
 
 const Esittelijat = () => {
   const { formatMessage, locale } = useIntl();

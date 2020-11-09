@@ -95,7 +95,6 @@ export const getRaw = async (
  */
 const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) => {
   const localeUpper = toUpper(locale);
-  console.log("Koulutustyyppi: " + koulutustyyppi);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
    */

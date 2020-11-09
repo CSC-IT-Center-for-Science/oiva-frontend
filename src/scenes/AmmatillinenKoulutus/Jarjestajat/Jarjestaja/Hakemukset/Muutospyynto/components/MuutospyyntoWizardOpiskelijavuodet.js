@@ -69,15 +69,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           )
         ) < length(sisaoppilaitosCodes);
 
-      console.info(
-        `${sectionId}_visibility`,
-        {
-          sisaoppilaitos: visibilityOfSisaoppilaitos,
-          vaativaTuki: visibilityOfVaativaTuki
-        },
-        lomakedata
-      );
-
       if (
         !pathEq(
           ["visibility", "sisaoppilaitos"],

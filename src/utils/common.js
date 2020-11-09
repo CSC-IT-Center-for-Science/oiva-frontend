@@ -252,10 +252,10 @@ const isSubTreeEmpty = obj => {
 
 export const isTreeEmpty = obj => R.isEmpty(isSubTreeEmpty(obj));
 
-const removeFromTreeIfTrue = (changeObjects, property = "deleteElement") => {
-  return R.filter(changeObj => {
-    return changeObj.properties[property] !== true;
-  }, changeObjects);
+const removeOldLeaves = (branchOfTree = [], property = "deleteElement") => {
+  return R.filter(leaf => {
+    return !R.pathEq(["properties", property], true, leaf);
+  }, branchOfTree);
 };
 
 const protectedTreeProps = ["unsaved", "underRemoval"];
@@ -269,7 +269,7 @@ const protectedTreeProps = ["unsaved", "underRemoval"];
 export const recursiveTreeShake = (p = [], tree) => {
   const subTree = R.path(p, tree);
   const subTreeWithoutFlaggedAsDeleted = Array.isArray(subTree)
-    ? removeFromTreeIfTrue(subTree)
+    ? removeOldLeaves(subTree)
     : subTree;
   const isSubTreeEmpty = isTreeEmpty(subTreeWithoutFlaggedAsDeleted);
 
