@@ -72,17 +72,23 @@ export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
       perustelutForBackend,
       perusteluteksti ? { perusteluteksti } : null
     );
-    return {
-      koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
-      koodisto: path(
-        ["properties", "metadata", "koodisto", "koodistoUri"],
-        changeObj
-      ),
-      isInLupa: path(["properties", "metadata", "isInLupa"], changeObj),
-      kohde,
-      maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
-      maaraysUuid: changeObj.properties.metadata.maaraysUuid,
-      meta,
-      tila
-    };
+    const maaraysUuid = path(
+      ["properties", "metadata", "maaraysUuid"],
+      changeObj
+    );
+    return maaraysUuid
+      ? {
+          koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
+          koodisto: path(
+            ["properties", "metadata", "koodisto", "koodistoUri"],
+            changeObj
+          ),
+          isInLupa: path(["properties", "metadata", "isInLupa"], changeObj),
+          kohde,
+          maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
+          maaraysUuid,
+          meta,
+          tila
+        }
+      : null;
   }, changeObjects.muutokset).filter(Boolean);

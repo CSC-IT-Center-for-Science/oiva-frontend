@@ -1,6 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjects } from "scenes/AmmatillinenKoulutus/store";
+import { getAnchorPart } from "utils/common";
 
 const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "yhteistyosopimus"]
@@ -12,12 +14,23 @@ const Yhteistyosopimus = ({
   maarayksetByKoodiarvo,
   sectionId
 }) => {
+  const [, { createTextBoxChangeObject }] = useChangeObjects();
+
+  const onAddButtonClick = useCallback(
+    addBtn => {
+      createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
+    },
+    [createTextBoxChangeObject, sectionId]
+  );
+
   const dataLomakepalvelulle = useMemo(
     () => ({
       items,
-      maarayksetByKoodiarvo
+      maarayksetByKoodiarvo,
+      onAddButtonClick,
+      sectionId
     }),
-    [items, maarayksetByKoodiarvo]
+    [items, maarayksetByKoodiarvo, onAddButtonClick, sectionId]
   );
 
   return (

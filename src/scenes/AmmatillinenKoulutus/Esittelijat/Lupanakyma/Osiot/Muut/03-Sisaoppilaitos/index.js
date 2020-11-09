@@ -67,13 +67,6 @@ const Sisaoppilaitos = ({
         changeObj
       );
 
-      console.info(
-        koodiarvo,
-        typeof koodiarvo,
-        koodiarvot,
-        includes(koodiarvo, koodiarvot)
-      );
-
       return includes(koodiarvo, koodiarvot) &&
         pathEq(["properties", "isChecked"], true, changeObj)
         ? path(["properties", "metadata", "koodiarvo"], changeObj)

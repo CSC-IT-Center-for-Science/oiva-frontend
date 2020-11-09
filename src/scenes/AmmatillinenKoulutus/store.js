@@ -78,6 +78,7 @@ const Store = createStore({
       getState,
       setState
     }) => {
+      const splittedSectionId = split("_", sectionId);
       if (sectionId) {
         const currentChangeObjects = getState().changeObjects;
         const textBoxChangeObjects = filter(
@@ -86,8 +87,8 @@ const Store = createStore({
             endsWith(".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           concat(
-            currentChangeObjects.unsaved[sectionId] || [],
-            currentChangeObjects.saved[sectionId] || []
+            path(splittedSectionId, currentChangeObjects.unsaved) || [],
+            path(splittedSectionId, currentChangeObjects.saved) || []
           ) || []
         );
 
@@ -106,7 +107,7 @@ const Store = createStore({
          * Luodaan
          */
         const nextChangeObjects = assocPath(
-          ["unsaved", sectionId],
+          prepend("unsaved", splittedSectionId),
           append(
             {
               anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
@@ -114,7 +115,7 @@ const Store = createStore({
                 value: ""
               }
             },
-            currentChangeObjects.unsaved[sectionId] || []
+            path(splittedSectionId, currentChangeObjects.unsaved) || []
           ),
           currentChangeObjects
         );

@@ -92,8 +92,8 @@ const lomakkeet = {
           getMuutYhteistyo(data, isReadOnly, locale)
       },
       yhteistyosopimus: {
-        modification: (data, isReadOnly, locale) =>
-          getMuutYhteistyosopimus(data, isReadOnly, locale)
+        modification: (data, isReadOnly, locale, changeObjects) =>
+          getMuutYhteistyosopimus(data, isReadOnly, locale, changeObjects)
       }
     }
   },
@@ -347,8 +347,7 @@ const lomakkeet = {
         getOpetuskieletOPHLomake(isReadOnly, locale, changeObjects)
     },
     opiskelijamaarat: {
-      modification: (data, isReadOnly) =>
-        opiskelijamaarat(isReadOnly)
+      modification: (data, isReadOnly) => opiskelijamaarat(isReadOnly)
     },
     paatoksenTiedot: {
       addition: (data, isReadOnly, locale, changeObjects) =>
