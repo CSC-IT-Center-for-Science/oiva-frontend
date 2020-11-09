@@ -77,7 +77,8 @@ export const generateAvoimetAsiatTableStructure = (
   hakemusList,
   intl,
   history,
-  onPaatettyActionClicked
+  onPaatettyActionClicked,
+  koulutustyyppi
 ) => {
   const formatMessage = intl.formatMessage;
   return [
@@ -123,7 +124,7 @@ export const generateAvoimetAsiatTableStructure = (
                 } else if (action === "paata") {
                   await onPaatettyActionClicked(row);
                 } else {
-                  history.push("/ammatillinenkoulutus/asianhallinta/" + row.id);
+                  history.push(`/${koulutustyyppi}/asianhallinta/${row.id}`);
                 }
               },
               cells: generateAsiaTableRows(row, intl).concat([
