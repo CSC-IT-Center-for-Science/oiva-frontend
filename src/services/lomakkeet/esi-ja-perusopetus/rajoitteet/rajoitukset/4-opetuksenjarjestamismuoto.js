@@ -3,7 +3,6 @@ import { getChangeObjByAnchor } from "../../../../../components/02-organisms/Cat
 import { map,toUpper } from "ramda";
 
 export default async function opetuksenjarjestamismuodot(
-  asetus,
   changeObjects = [],
   locale
 ) {

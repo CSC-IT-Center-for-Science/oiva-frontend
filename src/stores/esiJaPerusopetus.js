@@ -176,9 +176,6 @@ const Store = createStore({
         setState(dissocPath(split("_", sectionId), getState().changeObjects));
       }
     },
-    showNewRestrictionDialog: () => ({ getState, setState }) => {
-      setState({ ...getState(), isRestrictionDialogVisible: true });
-    }
   },
   name: "Esi- ja perusopetus"
 });

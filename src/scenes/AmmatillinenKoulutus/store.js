@@ -13,9 +13,11 @@ import {
   length,
   map,
   max,
+  mergeAll,
   not,
   path,
   prepend,
+  prop,
   propEq,
   reduce,
   reject,
@@ -71,9 +73,51 @@ const Store = createStore({
       unsaved: {},
       underRemoval: {}
     },
+    isRestrictionDialogVisible: false,
     latestChanges: {}
   },
   actions: {
+    addCriterion: () => (sectionId, rajoiteId) => ({ getState, setState }) => {
+      const currentChangeObjects = prop("changeObjects", getState());
+      const rajoitekriteeritChangeObjects = filter(
+        changeObj =>
+          startsWith(`${sectionId}.${rajoiteId}.kriteerit`, changeObj.anchor),
+        currentChangeObjects[sectionId] || []
+      );
+
+      /**
+       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
+       * numero lisäämällä lukuun yksi.
+       */
+      const nextCriterionAnchorPart =
+        length(rajoitekriteeritChangeObjects) > 0
+          ? reduce(
+          max,
+          -Infinity,
+          map(changeObj => {
+            return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+          }, rajoitekriteeritChangeObjects)
+        ) + 1
+          : 0;
+
+      /**
+       * Luodaan
+       */
+      const nextChangeObjects = assoc(
+        sectionId,
+        append(
+          {
+            anchor: `${sectionId}.${rajoiteId}.kriteerit.${nextCriterionAnchorPart}.valintaelementti.autocomplete`,
+            properties: {
+              value: ""
+            }
+          },
+          currentChangeObjects[sectionId] || []
+        ),
+        currentChangeObjects
+      );
+      setState({ ...getState(), changeObjects: nextChangeObjects });
+    },
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
       setState
@@ -119,16 +163,16 @@ const Store = createStore({
           currentChangeObjects
         );
         console.info(nextChangeObjects);
-        setState({ ...getState(), changeObjects: nextChangeObjects });
+        setState({...getState(), changeObjects: nextChangeObjects});
       }
     },
-    initializeChanges: changeObjects => ({ dispatch }) => {
+    initializeChanges: changeObjects => ({dispatch}) => {
       dispatch(setSavedChanges(changeObjects));
       dispatch(setLatestChanges({}));
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
-    removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
+    removeChangeObjectByAnchor: anchor => ({getState, setState}) => {
       const allCurrentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", getAnchorPart(anchor, 0));
       const unsavedFullPath = prepend("unsaved", anchorParts);
@@ -211,7 +255,10 @@ const Store = createStore({
         })
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
-    }
+    },
+    showNewRestrictionDialog: () => ({getState, setState}) => {
+      setState({...getState(), isRestrictionDialogVisible: true});
+    },
   },
   name: "Muutokset"
 });
@@ -282,6 +329,16 @@ export const useChangeObjectsByAnchor = createHook(Store, {
 
 export const useChangeObjectsByAnchorWithoutUnderRemoval = createHook(Store, {
   selector: getChangeObjectsByAnchorWithoutUnderRemoval
+});
+
+export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(Store, {
+  selector: (state, { anchors }) => {
+   return mergeAll(map(anchor => {
+      return {
+        [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {anchor})
+      }
+    }, anchors))
+  }
 });
 
 export const useChangeObjects = createHook(Store);

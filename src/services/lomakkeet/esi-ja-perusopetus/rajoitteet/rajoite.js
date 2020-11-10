@@ -11,7 +11,8 @@ import {
   path,
   prop,
   split,
-  values
+  values,
+  find
 } from "ramda";
 import maaraaika from "./rajoitukset/maaraaika";
 import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
@@ -78,7 +79,6 @@ async function defineRajoitusStructure(
     const rajoitus =
       rajoitusavain && asetus.rajoitus
         ? await sections[rajoitusavain](
-            asetus,
             path([changeObjectMapping[rajoitusavain]], changeObjects),
             locale
           )
@@ -110,14 +110,14 @@ async function defineRajoitusStructure(
             }
           ]
         },
+        // Lisätään lomakerakenteeseen rajoituskenttä, jonka sisältö määrittyy sitä edeltävän kohdekentän perusteella
         rajoitusavain && asetus.rajoitus ? rajoitus : null
       ].filter(Boolean),
       isRemovable: asetus.id !== "0",
       onRemove: category => {
         onRemoveCriterion(asetus.id);
       },
-      title:
-        asetus.id === "0" ? "Rajoituksen kohde" : `Rajoitekriteeri ${asetus.id}`
+      title: `Rajoitekriteeri ${asetus.id}`
     };
   }
   return null;
@@ -173,23 +173,23 @@ async function defineRajoituksetStructure(
  * sen, että käyttäjä voi luoda asetuksia, jotka yhdessä muodostavat rajoitteen.
  * Jotta rajoitetta voidaan hyödyntää, tulee sen sisältää vähintään kaksi
  * asetusta.
- * 
+ *
  * Esimerkkejä yksittäisestä asetuksesta:
- * 
+ *
  * Esimerkki 1:
- 
+
  * Kohde: Kunnat, joissa opetusta järjestetään
  * Rajoitus: Kuopio, Pielavesi, Siilinjärvi
  *
  * Esimerkki 2:
- * 
+ *
  * Kohde: Määräaika
  * Rajoitus: 20.9.2021 - 14.3.2022
- *  
- * @param {*} data 
- * @param {*} isReadOnly 
- * @param {*} locale 
- * @param {*} changeObjects 
+ *
+ * @param {*} data
+ * @param {*} isReadOnly
+ * @param {*} locale
+ * @param {*} changeObjects
  */
 export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
   const asetukset = {
@@ -197,19 +197,26 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
       {
         id: "0",
         kohde: {
-          A: "opetustaAntavatKunnat"
+          components: [
+            {
+              anchor: "A",
+              name: "Autocomplete",
+              properties: {
+                isMulti: false,
+                options: values(
+                  mapObjIndexed((categoryFn, key) => {
+                    return {
+                        label: localizations[key],
+                        value: key
+                    }
+                  }, sections)
+                ).filter(Boolean),
+                title: "Kohde"
+              }
+            }
+          ]
         },
         rajoitus: {
-          opetustaAntavatKunnat: []
-        }
-      },
-      {
-        id: "1",
-        kohde: {
-          A: "opetustehtavat"
-        },
-        rajoitus: {
-          opetustehtavat: []
         }
       }
     ]
@@ -238,6 +245,21 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
 
   console.info(groupedChangeObjects);
 
+  const kohdeChangeObj = find(obj => obj.anchor === `${data.sectionId}.${data.rajoiteId}.asetukset.kohde.A`, changeObjects);
+
+  const rajoitusavain = path(
+    ["properties", "value", "value"],
+    kohdeChangeObj || {}
+  );
+
+  const rajoitus =
+    rajoitusavain
+      ? await sections[rajoitusavain](
+        data.changeObjects[changeObjectMapping[rajoitusavain]],
+      locale
+      )
+      : null;
+
   /**
    * Palautettava lomakemerkkaus
    */
@@ -247,7 +269,27 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
       categories: [
         {
           anchor: "asetukset",
-          categories: flatten([
+          categories: flatten([{
+            anchor: "kohde",
+            title: "Rajoituksen kohde",
+            components: [{
+              anchor: "A",
+              name: "Autocomplete",
+              properties: {
+                isMulti: false,
+                options: values(
+                  mapObjIndexed((categoryFn, key) => {
+                    return {
+                      label: localizations[key],
+                      value: key
+                    }
+                  }, sections)
+                ).filter(Boolean),
+                title: "Kohde",
+              }
+            }],
+            categories: [rajoitus ? rajoitus : {}]
+          },
             await defineRajoituksetStructure(
               data.rajoiteId,
               asetukset[data.rajoiteId],
