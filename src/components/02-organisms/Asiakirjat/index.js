@@ -97,7 +97,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
   }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const nimi = useMemo(
-    () => muutospyynto.data && muutospyynto.data.jarjestaja.nimi.fi,
+    () => muutospyynto.data && (muutospyynto.data.jarjestaja.nimi.fi || muutospyynto.data.jarjestaja.nimi.sv),
     [muutospyynto.data]
   );
 
