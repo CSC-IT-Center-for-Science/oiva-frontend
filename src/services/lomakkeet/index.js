@@ -92,8 +92,8 @@ const lomakkeet = {
           getMuutYhteistyo(data, isReadOnly, locale)
       },
       yhteistyosopimus: {
-        modification: (data, isReadOnly, locale, changeObjects) =>
-          getMuutYhteistyosopimus(data, isReadOnly, locale, changeObjects)
+        modification: (data, isReadOnly, locale) =>
+          getMuutYhteistyosopimus(data, isReadOnly, locale)
       }
     }
   },

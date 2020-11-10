@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import { useChangeObjects } from "scenes/AmmatillinenKoulutus/store";
-import { getAnchorPart } from "utils/common";
+import { path } from "ramda";
 
 const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "yhteistyosopimus"]
@@ -18,7 +18,13 @@ const Yhteistyosopimus = ({
 
   const onAddButtonClick = useCallback(
     addBtn => {
-      createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.anchor, 1));
+      createTextBoxChangeObject(
+        sectionId,
+        path(
+          ["component", "properties", "forChangeObject", "koodiarvo"],
+          addBtn
+        )
+      );
     },
     [createTextBoxChangeObject, sectionId]
   );
