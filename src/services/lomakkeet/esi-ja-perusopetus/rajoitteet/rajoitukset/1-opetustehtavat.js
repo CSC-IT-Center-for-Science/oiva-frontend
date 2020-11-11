@@ -3,14 +3,13 @@ import { getChangeObjByAnchor } from "../../../../../components/02-organisms/Cat
 import { map, toUpper } from "ramda";
 
 export default async function getOpetustehtavatLomake(
-  asetus,
   changeObjects = [],
   locale
 ) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const localeUpper = toUpper(locale);
 
-  console.info(asetus, changeObjects, opetustehtavat, locale);
+  console.info(changeObjects, opetustehtavat, locale);
 
   if (opetustehtavat.length) {
     return {
