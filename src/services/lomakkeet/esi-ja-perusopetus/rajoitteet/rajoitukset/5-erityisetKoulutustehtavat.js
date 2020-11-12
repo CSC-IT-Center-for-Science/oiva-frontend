@@ -1,15 +1,13 @@
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map, addIndex, toUpper } from "ramda";
+import { map,toUpper } from "ramda";
 
 export default async function opetuksenjarjestamismuodot(
-  asetus,
   changeObjects = [],
   locale
 ) {
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
   const localeUpper = toUpper(locale);
-  const mapIndexed = addIndex(map);
 
   if (erityisetKoulutustehtavat.length) {
     return {
@@ -19,10 +17,13 @@ export default async function opetuksenjarjestamismuodot(
           anchor: "opetuksenJarjestamismuodot",
           name: "Autocomplete",
           properties: {
-            options: mapIndexed((erityisetKoulutustehtavat, index) => {
+            options: map((erityisetKoulutustehtavat) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `erityisetKoulutustehtavat.${erityisetKoulutustehtavat.koodiarvo}.valintaelementti`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
+              console.log("@"+anchor);
+              console.log(changeObj);
+              console.log(changeObjects);
               return (!!maarays &&
                 (!changeObj || changeObj.properties.isChecked)) ||
                 (changeObj && changeObj.properties.isChecked)
