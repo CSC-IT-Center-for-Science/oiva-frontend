@@ -42,50 +42,6 @@ const Store = createStore({
         )
       );
     },
-    addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
-      const currentChangeObjects = prop("changeObjects", getState());
-      const rajoitekriteeritChangeObjects = filter(
-        changeObj =>
-          startsWith(`${sectionId}.${rajoiteId}.kriteerit`, changeObj.anchor),
-        currentChangeObjects[sectionId] || []
-      );
-
-      /**
-       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
-       * numero lisäämällä lukuun yksi.
-       */
-      const nextCriterionAnchorPart =
-        length(rajoitekriteeritChangeObjects) > 0
-          ? reduce(
-              max,
-              -Infinity,
-              map(changeObj => {
-                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-              }, rajoitekriteeritChangeObjects)
-            ) + 1
-          : 0;
-
-      /**
-       * Luodaan
-       */
-      const nextChangeObjects = assoc(
-        sectionId,
-        append(
-          {
-            anchor: `${sectionId}.${rajoiteId}.kriteerit.${nextCriterionAnchorPart}.valintaelementti.autocomplete`,
-            properties: {
-              value: ""
-            }
-          },
-          currentChangeObjects[sectionId] || []
-        ),
-        currentChangeObjects
-      );
-      setState({ ...getState(), changeObjects: nextChangeObjects });
-    },
-    closeRestrictionDialog: () => ({ getState, setState }) => {
-      setState({ ...getState(), isRestrictionDialogVisible: false });
-    },
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
       setState

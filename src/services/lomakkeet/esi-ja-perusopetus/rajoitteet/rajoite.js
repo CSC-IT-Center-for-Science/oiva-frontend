@@ -12,7 +12,12 @@ import {
   prop,
   split,
   values,
-  find
+  find,
+  map,
+  filter,
+  startsWith,
+  concat,
+  includes
 } from "ramda";
 import erityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
 import maaraaika from "./rajoitukset/maaraaika";
@@ -22,6 +27,7 @@ import opetuskielet from "./rajoitukset/3-opetuskielet";
 import muutEhdot from "./rajoitukset/7-muutEhdot";
 import opiskelijamaarat from "./rajoitukset/6-opiskelijamaarat";
 import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
+import { getAnchorPart } from "../../../../utils/common";
 
 const localizations = {
   maaraaika: "Määräaika",
@@ -117,7 +123,7 @@ async function defineRajoitusStructure(
                       : null;
                   }, sections)
                 ).filter(Boolean),
-                title: asetus.id === "0" ? "Kohde" : "Rajoitekriteeri"
+                title: "Rajoitekriteeri"
               }
             }
           ]
@@ -204,34 +210,67 @@ async function defineRajoituksetStructure(
  * @param {*} changeObjects
  */
 export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
-  const asetukset = {
-    eka: [
-      {
-        id: "0",
-        kohde: {
-          components: [
-            {
-              anchor: "A",
-              name: "Autocomplete",
-              properties: {
-                isMulti: false,
-                options: values(
-                  mapObjIndexed((categoryFn, key) => {
-                    return {
-                        label: localizations[key],
-                        value: key
-                    }
-                  }, sections)
-                ).filter(Boolean),
-                title: "Kohde"
-              }
+  const kohdeChangeObjects = filter(cObj => startsWith(`rajoitelomake.eka.asetukset`, cObj.anchor) &&
+    !startsWith(`rajoitelomake.eka.asetukset.kohde`, cObj.anchor) &&
+    !includes("rajoitus", cObj.anchor) &&
+    !startsWith(`rajoitelomake.eka.asetukset.1`, cObj.anchor), changeObjects);
+
+ const addedRajoitteet = map(cObj => {
+    return {
+      id: getAnchorPart(cObj.anchor, 3),
+      kohde: {
+        components: [
+          {
+            anchor: "A",
+            name: "Autocomplete",
+            properties: {
+              isMulti: false,
+              options: values(
+                mapObjIndexed((categoryFn, key) => {
+                  return {
+                    label: localizations[key],
+                    value: key
+                  }
+                }, sections)
+              ).filter(Boolean),
+              title: "Kohde"
             }
-          ]
-        },
-        rajoitus: {
-        }
-      }
-    ]
+          }
+        ]
+      },
+      rajoitus: {}
+    }
+  }, kohdeChangeObjects || []).filter(Boolean);
+
+ const ekaAsetus = [
+   {
+     id: "1",
+     kohde: {
+       components: [
+         {
+           anchor: "A",
+           name: "Autocomplete",
+           properties: {
+             isMulti: false,
+             options: values(
+               mapObjIndexed((categoryFn, key) => {
+                 return {
+                   label: localizations[key],
+                   value: key
+                 }
+               }, sections)
+             ).filter(Boolean),
+             title: "Kohde"
+           }
+         }
+       ]
+     },
+     rajoitus: {}
+   }
+  ];
+
+  const asetukset = {
+    eka: addedRajoitteet ? concat(ekaAsetus, addedRajoitteet) : ekaAsetus
   };
 
   function groupChangeObjects(changeObjects, index = 0, result = {}) {
@@ -258,7 +297,6 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
   console.info(groupedChangeObjects);
 
   const kohdeChangeObj = find(obj => obj.anchor === `${data.sectionId}.${data.rajoiteId}.asetukset.kohde.A`, changeObjects);
-
   const rajoitusavain = path(
     ["properties", "value", "value"],
     kohdeChangeObj || {}
@@ -300,8 +338,8 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
                 title: "Kohde",
               }
             }],
-            categories: [rajoitus ? rajoitus : {}]
           },
+            rajoitus ? rajoitus : {},
             await defineRajoituksetStructure(
               data.rajoiteId,
               asetukset[data.rajoiteId],
