@@ -262,7 +262,6 @@ const TextBox = props => {
 TextBox.defaultProps = {
   ariaLabel: "Text area",
   delay: 300,
-  shouldHaveFocus: false,
   isDisabled: false,
   isHidden: false,
   payload: {},
@@ -282,7 +281,7 @@ TextBox.defaultProps = {
 TextBox.propTypes = {
   ariaLabel: PropTypes.string,
   delay: PropTypes.number,
-  shouldHaveFocus: PropTypes.bool,
+  shouldHaveFocus: PropTypes.number,
   id: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,

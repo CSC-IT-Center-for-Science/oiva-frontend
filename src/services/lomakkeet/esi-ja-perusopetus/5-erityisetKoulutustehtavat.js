@@ -81,7 +81,12 @@ export async function erityisetKoulutustehtavat(
                         name: "TextBox",
                         properties: {
                           forChangeObject: {
-                            focusWhenDeleted: `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
+                            focusWhenDeleted: `${data.sectionId}.${
+                              erityinenKoulutustehtava.koodiarvo
+                            }.${parseInt(
+                              getAnchorPart(changeObj.anchor, 2) - 1,
+                              10
+                            )}.kuvaus`
                           },
                           isReadOnly,
                           isRemovable: true,

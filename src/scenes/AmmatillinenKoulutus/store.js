@@ -86,7 +86,6 @@ const Store = createStore({
               metadata: {
                 focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
               },
-              lisaa: true,
               value: ""
             }
           },
@@ -96,8 +95,7 @@ const Store = createStore({
               metadata: {
                 focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
               },
-              shouldHaveFocus: true,
-              lisaa: true,
+              shouldHaveFocus: +new Date(),
               value: ""
             }
           },
@@ -129,7 +127,6 @@ const Store = createStore({
             metadata: {
               focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
             },
-            lisaa: true,
             value: ""
           }
         },
@@ -139,8 +136,7 @@ const Store = createStore({
             metadata: {
               focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
             },
-            shouldHaveFocus: true,
-            lisaa: true,
+            shouldHaveFocus: +new Date(),
             value: ""
           }
         },
@@ -158,8 +154,12 @@ const Store = createStore({
     addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = getState().changeObjects;
       const rajoitekriteeritChangeObjects = filter(
-        changeObj => startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
-          !startsWith(`${sectionId}.${rajoiteId}.asetukset.kohde`, changeObj.anchor),
+        changeObj =>
+          startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
+          !startsWith(
+            `${sectionId}.${rajoiteId}.asetukset.kohde`,
+            changeObj.anchor
+          ),
         concat(
           currentChangeObjects.unsaved[sectionId] || [],
           currentChangeObjects.saved[sectionId] || []
@@ -173,12 +173,12 @@ const Store = createStore({
       const nextCriterionAnchorPart =
         length(rajoitekriteeritChangeObjects) > 0
           ? reduce(
-          max,
-          -Infinity,
-          map(changeObj => {
-            return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-          }, rajoitekriteeritChangeObjects)
-        ) + 1
+              max,
+              -Infinity,
+              map(changeObj => {
+                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+              }, rajoitekriteeritChangeObjects)
+            ) + 1
           : 1;
 
       /**
@@ -207,6 +207,7 @@ const Store = createStore({
       setState
     }) => {
       if (sectionId) {
+        const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
         const textBoxChangeObjects = filter(
           changeObj =>
@@ -277,13 +278,13 @@ const Store = createStore({
         setState({ ...getState(), changeObjects: nextChangeObjects });
       }
     },
-    initializeChanges: changeObjects => ({dispatch}) => {
+    initializeChanges: changeObjects => ({ dispatch }) => {
       dispatch(setSavedChanges(changeObjects));
       dispatch(setLatestChanges({}));
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
-    removeChangeObjectByAnchor: anchor => ({getState, setState}) => {
+    removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
       const allCurrentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", getAnchorPart(anchor, 0));
       const unsavedFullPath = prepend("unsaved", anchorParts);
@@ -367,9 +368,9 @@ const Store = createStore({
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
     },
-    showNewRestrictionDialog: () => ({getState, setState}) => {
-      setState({...getState(), isRestrictionDialogVisible: true});
-    },
+    showNewRestrictionDialog: () => ({ getState, setState }) => {
+      setState({ ...getState(), isRestrictionDialogVisible: true });
+    }
   },
   name: "Muutokset"
 });
@@ -442,15 +443,22 @@ export const useChangeObjectsByAnchorWithoutUnderRemoval = createHook(Store, {
   selector: getChangeObjectsByAnchorWithoutUnderRemoval
 });
 
-export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(Store, {
-  selector: (state, { anchors }) => {
-   return mergeAll(map(anchor => {
-      return {
-        [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {anchor})
-      }
-    }, anchors))
+export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(
+  Store,
+  {
+    selector: (state, { anchors }) => {
+      return mergeAll(
+        map(anchor => {
+          return {
+            [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {
+              anchor
+            })
+          };
+        }, anchors)
+      );
+    }
   }
-});
+);
 
 export const useChangeObjects = createHook(Store);
 
