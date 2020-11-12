@@ -1178,5 +1178,21 @@ export default defineMessages({
   voimassaoleva: {
     id: "common.voimassaoleva",
     defaultMessage: "Voimassaoleva"
+  },
+  lupaSisaltaaYhteistyosopimuksia: {
+    id: "common.lupaSisaltaaYhteistyosopimuksia",
+    defaultMessage: "Lupa sisältää yhteistyösopimuksia"
+  },
+  maarayksenKuvaus: {
+    id: "common.maarayksenKuvaus",
+    defaultMessage: "Määräyksen kuvaus"
+  },
+  maarayksenXKuvaus: {
+    id: "common.maarayksenXKuvaus",
+    defaultMessage: "Määräyksen {nro} kuvaus"
+  },
+  lisaaUusiYhteistyosopimus: {
+    id: "common.lisaaUusiYhteistyosopimus",
+    defaultMessage: "Lisää uusi yhteistyösopimus"
   }
 });

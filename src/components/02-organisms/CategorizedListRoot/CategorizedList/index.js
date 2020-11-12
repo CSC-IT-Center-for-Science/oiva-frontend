@@ -447,15 +447,13 @@ const CategorizedList = props => {
                           );
                           const isDisabled =
                             propsObj.isReadOnly ||
-                            (
-                              (previousSibling.name === "CheckboxWithLabel" ||
-                                previousSibling.name ===
+                            ((previousSibling.name === "CheckboxWithLabel" ||
+                              previousSibling.name ===
                                 "RadioButtonWithLabel") &&
                               !(
                                 isPreviousSiblingCheckedByDefault ||
                                 change.properties.isChecked
-                              )
-                            );
+                              ));
                           return (
                             <div
                               className={component.styleClasses || "px-2 mb-1"}>
@@ -513,6 +511,7 @@ const CategorizedList = props => {
                                 rootPath: props.rootPath
                               }}
                               placeholder={propsObj.placeholder}
+                              shouldHaveFocus={propsObj.shouldHaveFocus}
                               title={propsObj.title}
                               tooltip={propsObj.tooltip}
                               value={propsObj.value}
@@ -778,7 +777,9 @@ const CategorizedList = props => {
                                 height={heights.SHORT}
                                 short={component.short}
                                 title={propsObj.title}
-                                hideSelectedOptions={propsObj.hideSelectedOptions}
+                                hideSelectedOptions={
+                                  propsObj.hideSelectedOptions
+                                }
                               />
                             </div>
                           );
@@ -806,6 +807,7 @@ const CategorizedList = props => {
                     {component.name === "SimpleButton" && (
                       <div className={`${component.styleClasses} flex-2`}>
                         <SimpleButton
+                          id={fullAnchor}
                           isReadOnly={propsObj.isReadOnly}
                           text={propsObj.text}
                           variant={propsObj.variant}

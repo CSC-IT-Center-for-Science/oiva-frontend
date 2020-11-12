@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import PropTypes from "prop-types";
 import Tooltip from "../../02-organisms/Tooltip";
@@ -97,8 +97,12 @@ const TextBox = props => {
   const [isFocused, setIsFocused] = useState(false);
   const { classes } = props;
 
+  const textBoxRef = useRef(null);
+
   const updateValue = e => {
-    props.onChanges(props.payload, { value: e.target.value });
+    props.onChanges(props.payload, {
+      value: e.target.value
+    });
   };
 
   const deleteTextBox = () => {
@@ -106,6 +110,12 @@ const TextBox = props => {
       deleteElement: true
     });
   };
+
+  useEffect(() => {
+    if (props.shouldHaveFocus) {
+      textBoxRef.current.focus();
+    }
+  }, [props.shouldHaveFocus]);
 
   return (
     <React.Fragment>
@@ -156,6 +166,7 @@ const TextBox = props => {
                 placeholder={
                   props.isDisabled || props.isReadOnly ? "" : props.placeholder
                 }
+                ref={textBoxRef}
                 rows={props.isReadOnly ? 1 : props.rows}
                 rowsMax={props.isReadOnly ? Infinity : props.rowsMax}
                 className={`${props.isHidden ? "hidden" : "rounded"} 
@@ -251,6 +262,7 @@ const TextBox = props => {
 TextBox.defaultProps = {
   ariaLabel: "Text area",
   delay: 300,
+  shouldHaveFocus: false,
   isDisabled: false,
   isHidden: false,
   payload: {},
@@ -270,6 +282,7 @@ TextBox.defaultProps = {
 TextBox.propTypes = {
   ariaLabel: PropTypes.string,
   delay: PropTypes.number,
+  shouldHaveFocus: PropTypes.bool,
   id: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,

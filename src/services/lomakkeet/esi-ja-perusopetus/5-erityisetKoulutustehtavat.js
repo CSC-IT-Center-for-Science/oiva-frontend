@@ -36,7 +36,7 @@ export async function erityisetKoulutustehtavat(
   return flatten([
     map(erityinenKoulutustehtava => {
       const changeObj = getChangeObjByAnchor(
-        `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
+        `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
         changeObjects
       );
 
@@ -80,6 +80,9 @@ export async function erityisetKoulutustehtavat(
                         anchor: "kuvaus",
                         name: "TextBox",
                         properties: {
+                          forChangeObject: {
+                            focusWhenDeleted: `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
+                          },
                           isReadOnly,
                           isRemovable: true,
                           placeholder: __("common.kuvausPlaceholder"),
@@ -93,12 +96,12 @@ export async function erityisetKoulutustehtavat(
                 filter(
                   changeObj =>
                     startsWith(
-                      `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}`,
+                      `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
                       changeObj.anchor
                     ) &&
                     endsWith(".kuvaus", changeObj.anchor) &&
                     !startsWith(
-                      `erityisetKoulutustehtavat.${erityinenKoulutustehtava.koodiarvo}.0`,
+                      `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0`,
                       changeObj.anchor
                     ),
                   changeObjects

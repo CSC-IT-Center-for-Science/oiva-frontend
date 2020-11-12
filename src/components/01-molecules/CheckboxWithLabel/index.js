@@ -23,6 +23,7 @@ import Check from "@material-ui/icons/CheckBoxOutlined";
 const CheckboxWithLabel = React.memo(
   ({
     children,
+    id,
     isChecked,
     isDisabled,
     isIndeterminate,
@@ -61,6 +62,7 @@ const CheckboxWithLabel = React.memo(
               control={
                 <Checkbox
                   checked={isChecked}
+                  id={id}
                   indeterminate={isChecked && isIndeterminate}
                   value="1"
                   onChange={handleChanges}
@@ -105,6 +107,7 @@ CheckboxWithLabel.defaultProps = {
 };
 
 CheckboxWithLabel.propTypes = {
+  id: PropTypes.string,
   isChecked: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isIndeterminate: PropTypes.bool,
