@@ -11,8 +11,7 @@ import {
   values
 } from "ramda";
 
-export default function opetustaAntavatKunnat(asetus, changeObjects = []) {
-  console.info(asetus);
+export default function opetustaAntavatKunnat(changeObjects = []) {
   const changesByProvince = path(
     ["properties", "changesByProvince"],
     head(changeObjects) || {}

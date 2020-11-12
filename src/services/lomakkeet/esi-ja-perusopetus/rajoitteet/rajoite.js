@@ -20,6 +20,7 @@ import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
 import opetuksenJarjestamismuoto from "./rajoitukset/4-opetuksenjarjestamismuoto";
 import opetuskielet from "./rajoitukset/3-opetuskielet";
 import muutEhdot from "./rajoitukset/7-muutEhdot";
+import opiskelijamaarat from "./rajoitukset/6-opiskelijamaarat";
 import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
 
 const localizations = {
@@ -29,6 +30,7 @@ const localizations = {
   opetuksenJarjestamismuoto: "4. Opetuksen järjestämismuoto",
   opetuskielet: "3. Opetuskieli",
   muutEhdot: "7. Muut koulutuksen järjestämiseen liittyvät ehdot",
+  opiskelijamaarat: "6. Oppilas-/opiskelijamäärät",
   getOpetustehtavatLomake: "1. Opetus, jota lupa koskee"
 };
 
@@ -39,6 +41,7 @@ const changeObjectMapping = {
   opetuksenJarjestamismuoto: "opetuksenJarjestamismuodot",
   opetuskielet: "opetuskielet",
   muutEhdot: "muutEhdot",
+  opiskelijamaarat: "opiskelijamaarat",
   getOpetustehtavatLomake: "opetustehtavat"
 };
 
@@ -47,6 +50,7 @@ const sections = {
   getOpetustehtavatLomake,
   opetustaAntavatKunnat,
   opetuskielet,
+  opiskelijamaarat,
   opetuksenJarjestamismuoto,
   erityisetKoulutustehtavat,
   muutEhdot

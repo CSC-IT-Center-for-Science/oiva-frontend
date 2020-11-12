@@ -22,8 +22,15 @@ const constants = {
 
 const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
   const [changeObjectsByAnchor] = useChangeObjectsByMultipleAnchorsWithoutUnderRemoval({
-    anchors: ["opetustehtavat", "opetuskielet"]
-    });
+    anchors: [
+        "opetustehtavat",
+        "opetuskielet",
+        "toimintaalue",
+        "opetuksenJarjestamismuodot",
+        "erityisetKoulutustehtavat",
+        "opiskelijamaarat",
+        "muutEhdot"]
+  });
   const [state, actions] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "rajoitelomake";
