@@ -1,17 +1,21 @@
 import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import ExpandableRowRoot from "../../../components/02-organisms/ExpandableRowRoot";
 import common from "../../../i18n/definitions/common";
 import wizard from "../../../i18n/definitions/wizard";
 import Lomake from "../../../components/02-organisms/Lomake";
 import { isAdded, isRemoved, isInLupa } from "../../../css/label";
 import kuntaProvinceMapping from "../../../utils/kuntaProvinceMapping";
 import * as R from "ramda";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "scenes/AmmatillinenKoulutus/store";
 
 const labelStyles = {
   addition: isAdded,
   removal: isRemoved
+};
+
+const constants = {
+  formLocation: ["esiJaPerusopetus", "opetustaAntavatKunnat"]
 };
 
 const mapping = {
@@ -36,10 +40,14 @@ const mapping = {
   "21": "FI-01"
 };
 
-const OpetustaAntavatKunnat = props => {
-  const { changeObjects } = props;
+const OpetustaAntavatKunnat = React.memo(props => {
   const intl = useIntl();
-  const { onChangesUpdate } = props;
+  const [
+    changeObjects,
+    { setChanges }
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: props.sectionId
+  });
 
   const [isEditViewActive, toggleEditView] = useState(false);
 
@@ -79,21 +87,6 @@ const OpetustaAntavatKunnat = props => {
     props.lupakohde
   );
 
-  /**
-   * Changes are handled here. Changes objects will be formed and callback
-   * function will be called with them.
-   */
-  const handleChanges = useCallback(
-    changesByAnchor => {
-      const sectionChanges = {
-        anchor: props.sectionId,
-        changes: changesByAnchor.changes
-      };
-      onChangesUpdate(sectionChanges);
-    },
-    [onChangesUpdate, props.sectionId]
-  );
-
   const whenChanges = useCallback(
     changes => {
       const withoutCategoryFilterChangeObj = R.filter(
@@ -110,7 +103,7 @@ const OpetustaAntavatKunnat = props => {
         R.values(changes.quickFilterChanges)
       ).length;
 
-      const changesToSet = R.flatten([
+      const changesToSet = R.concat(
         withoutCategoryFilterChangeObj,
         amountOfChanges || amountOfQuickFilterChanges
           ? [
@@ -123,14 +116,11 @@ const OpetustaAntavatKunnat = props => {
               }
             ]
           : []
-      ]);
+      );
 
-      return onChangesUpdate({
-        anchor: props.sectionId,
-        changes: changesToSet
-      });
+      return setChanges(changesToSet, props.sectionId);
     },
-    [changeObjects, onChangesUpdate, props.sectionId]
+    [changeObjects, props.sectionId, setChanges]
   );
 
   /**
@@ -267,11 +257,11 @@ const OpetustaAntavatKunnat = props => {
   const kunnatWithoutAhvenanmaan = useMemo(() => {
     return R.filter(kunta => {
       const result = R.find(
-        R.propEq("kuntaKoodiarvo", kunta.koodiArvo),
+        R.propEq("kuntaKoodiarvo", kunta.koodiarvo),
         kuntaProvinceMapping
       );
       return (
-        result && result.maakuntaKey !== "FI-01" && kunta.koodiArvo !== "200" // 200 Ulkomaa
+        result && result.maakuntaKey !== "FI-01" && kunta.koodiarvo !== "200" // 200 Ulkomaa
       );
     }, props.kunnat);
   }, [props.kunnat]);
@@ -279,7 +269,7 @@ const OpetustaAntavatKunnat = props => {
   const provincesWithoutAhvenanmaa = useMemo(() => {
     return R.filter(maakunta => {
       // 21 = Ahvenanmaa
-      return maakunta.koodiArvo !== "21";
+      return maakunta.koodiarvo !== "21";
     }, props.maakunnat);
   }, [props.maakunnat]);
 
@@ -299,75 +289,61 @@ const OpetustaAntavatKunnat = props => {
     return changeObj ? changeObj.properties.quickFilterChanges : {};
   }, [changeObjects, props.sectionId]);
 
-  const changesMessages = {
-    undo: intl.formatMessage(common.undo),
-    changesTest: intl.formatMessage(common.changesText)
-  };
-
-  const noSelectionsInLupa = R.isEmpty(maakunnatInLupa) && R.isEmpty(kunnatInLupa) && fiCode !== "FI1";
+  const noSelectionsInLupa =
+    R.isEmpty(maakunnatInLupa) && R.isEmpty(kunnatInLupa) && fiCode !== "FI1";
 
   return (
-    <ExpandableRowRoot
+    <Lomake
+      action="modification"
       anchor={props.sectionId}
-      key={`expandable-row-root`}
-      changes={changeObjects}
-      hideAmountOfChanges={true}
-      messages={changesMessages}
-      isExpanded={true}
-      sectionId={props.sectionId}
+      isInExpandableRow={true}
+      isRowExpanded={true}
+      data={{
+        fiCode,
+        isEditViewActive,
+        isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
+        isValtakunnallinenChecked: fiCode === "FI1",
+        kunnat: kunnatWithoutAhvenanmaan,
+        lisatiedot: props.lisatiedot,
+        localizations: {
+          accept: intl.formatMessage(common.accept),
+          areaOfActionIsUndefined: intl.formatMessage(
+            wizard.noMunicipalitiesSelected
+          ),
+          cancel: intl.formatMessage(common.cancel),
+          currentAreaOfAction: intl.formatMessage(
+            wizard.municipalitiesInPresentLupa
+          ),
+          newAreaOfAction: noSelectionsInLupa
+            ? intl.formatMessage(wizard.municipalities)
+            : intl.formatMessage(wizard.municipalitiesInNewLupa),
+          ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
+          quickFilter: intl.formatMessage(wizard.quickFilter),
+          editButtonText: intl.formatMessage(wizard.selectMunicipalities),
+          sameAsTheCurrentAreaOfAction: intl.formatMessage(
+            wizard.sameAsTheCurrentAreaOfAction
+          ),
+          wholeCountryWithoutAhvenanmaa: intl.formatMessage(
+            wizard.wholeCountryWithoutAhvenanmaa
+          )
+        },
+        ulkomaa,
+        maakunnat: provincesWithoutAhvenanmaa,
+        onChanges: whenChanges,
+        toggleEditView,
+        options,
+        changeObjectsByProvince: Object.assign({}, provinceChanges),
+        quickFilterChanges,
+        noSelectionsInLupa
+      }}
+      path={constants.formLocation}
       showCategoryTitles={true}
-      onChangesRemove={props.onChangesRemove}
-      onUpdate={handleChanges}
-      title={intl.formatMessage(wizard.municipalitiesAndAreas)}>
-      <Lomake
-        action="modification"
-        anchor={props.sectionId}
-        changeObjects={changeObjects}
-        data={{
-          fiCode,
-          isEditViewActive,
-          isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
-          isValtakunnallinenChecked: fiCode === "FI1",
-          kunnat: kunnatWithoutAhvenanmaan,
-          lisatiedot: props.lisatiedot,
-          localizations: {
-            accept: intl.formatMessage(common.accept),
-            areaOfActionIsUndefined: intl.formatMessage(
-              wizard.noMunicipalitiesSelected
-            ),
-            cancel: intl.formatMessage(common.cancel),
-            currentAreaOfAction: intl.formatMessage(wizard.municipalitiesInPresentLupa),
-            newAreaOfAction: noSelectionsInLupa ?
-              intl.formatMessage(wizard.municipalities) : intl.formatMessage(wizard.municipalitiesInNewLupa),
-            ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
-            quickFilter: intl.formatMessage(wizard.quickFilter),
-            editButtonText: intl.formatMessage(wizard.selectMunicipalities),
-            sameAsTheCurrentAreaOfAction: intl.formatMessage(
-              wizard.sameAsTheCurrentAreaOfAction
-            ),
-            wholeCountryWithoutAhvenanmaa: intl.formatMessage(
-              wizard.wholeCountryWithoutAhvenanmaa
-            )
-          },
-          ulkomaa,
-          maakunnat: provincesWithoutAhvenanmaa,
-          onChanges: whenChanges,
-          toggleEditView,
-          options,
-          changeObjectsByProvince: Object.assign({}, provinceChanges),
-          quickFilterChanges,
-          noSelectionsInLupa,
-        }}
-        onChangesUpdate={handleChanges}
-        path={["esiJaPerusopetus", "opetustaAntavatKunnat"]}
-        showCategoryTitles={true}
-      />
-    </ExpandableRowRoot>
+      rowTitle={intl.formatMessage(wizard.municipalitiesAndAreas)}
+    />
   );
-};
+});
 
 OpetustaAntavatKunnat.defaultProps = {
-  changeObjects: [],
   kunnat: [],
   kuntamaaraykset: [],
   lisatiedot: [],
@@ -378,7 +354,6 @@ OpetustaAntavatKunnat.defaultProps = {
 };
 
 OpetustaAntavatKunnat.propTypes = {
-  changeObjects: PropTypes.array,
   kunnat: PropTypes.array,
   lupakohde: PropTypes.object,
   maakunnat: PropTypes.array,
@@ -386,8 +361,6 @@ OpetustaAntavatKunnat.propTypes = {
   kuntamaaraykset: PropTypes.array,
   lisatiedot: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object,
-  onChangesUpdate: PropTypes.func,
-  onChangesRemove: PropTypes.func,
   sectionId: PropTypes.string
 };
 

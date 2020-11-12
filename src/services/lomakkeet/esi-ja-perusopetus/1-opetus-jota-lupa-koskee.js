@@ -1,9 +1,11 @@
 import {isAdded, isInLupa, isRemoved} from "css/label";
 import {flatten, map, toUpper} from "ramda";
 import {__} from "i18n-for-browser";
+import { getOpetustehtavatFromStorage } from "../../../helpers/opetustehtavat";
 
-export function opetusJotaLupaKoskee(data, isReadOnly, locale) {
+export async function opetusJotaLupaKoskee(data, isReadOnly, locale) {
   const localeUpper = toUpper(locale);
+  const opetustehtavat = await getOpetustehtavatFromStorage();
 
   return flatten(
     [
@@ -27,7 +29,7 @@ export function opetusJotaLupaKoskee(data, isReadOnly, locale) {
             }
           ]
         };
-      }, data.opetustehtavat),
+      }, opetustehtavat),
       {
         anchor: "opetus",
         layout: {margins: {top: "large"}},

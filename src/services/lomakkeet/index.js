@@ -19,7 +19,6 @@ import getTutkinnotLomake from "./tutkinnot";
 import getOpetuskieletLomake from "./kielet/opetuskielet";
 import getTutkintokieletLomake from "./kielet/tutkintokielet";
 import getToimintaaluelomake from "./toimintaalue";
-import getMuutLomake from "./muut";
 import getOpiskelijavuodetLomake from "./opiskelijavuodet";
 import getPerustelutLiitteetlomake from "./perustelut/liitteet";
 import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
@@ -37,29 +36,68 @@ import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
-import { liitetiedostot } from "./esi-ja-perusopetus/8-liitetiedostot";
 import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
 import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
 import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
+import { getMuutLaajennettu } from "./ammatillinenKoulutus/5-muut/laajennettu";
+import { getMuutVaativaTuki } from "./ammatillinenKoulutus/5-muut/vaativaTuki";
+import { getMuutSisaoppilaitos } from "./ammatillinenKoulutus/5-muut/sisaoppilaitos";
+import { getMuutVankila } from "./ammatillinenKoulutus/5-muut/vankila";
+import { getMuutUrheilu } from "./ammatillinenKoulutus/5-muut/urheilu";
+import { getMuutYhteistyo } from "./ammatillinenKoulutus/5-muut/yhteistyo";
+import { getMuutYhteistyosopimus } from "./ammatillinenKoulutus/5-muut/yhteistyosopimus";
+import { getMuutSelvitykset } from "./ammatillinenKoulutus/5-muut/selvitykset";
+import { getMuutMuuMaarays } from "./ammatillinenKoulutus/5-muut/muuMaarays";
 
 /**
- * LOMAKEPALVELU - Provider of forms.
- *
- * One big form / wizard is divided into multiple smaller forms. A form is an
- * array of objects. A form includes components (e.g. radio buttons, checkboxes,
- * inputs) and the structure of a form can be nested.
- *
- * E.g.
-    [
-      {
-        anchor: "level0category0",
-        categories: [{}, {}, { anchor: "level1category2", components: [] }]
-      }
-    ];
-*
-*/
+ * LOMAKEPALVELU
+ */
 const lomakkeet = {
+  /**
+   * AMMATILLINEN KOULUTUS
+   */
+  ammatillinenKoulutus: {
+    muut: {
+      laajennettu: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutLaajennettu(data, isReadOnly, locale)
+      },
+      muuMaarays: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutMuuMaarays(data, isReadOnly, locale)
+      },
+      sisaoppilaitos: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutSisaoppilaitos(data, isReadOnly, locale)
+      },
+      urheilu: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutUrheilu(data, isReadOnly, locale)
+      },
+      selvitykset: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutSelvitykset(data, isReadOnly, locale)
+      },
+      vaativaTuki: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutVaativaTuki(data, isReadOnly, locale)
+      },
+      vankila: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutVankila(data, isReadOnly, locale)
+      },
+      yhteistyo: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutYhteistyo(data, isReadOnly, locale)
+      },
+      yhteistyosopimus: {
+        modification: (data, isReadOnly, locale) =>
+          getMuutYhteistyosopimus(data, isReadOnly, locale)
+      }
+    }
+  },
+
   // Wizard page 1 forms
   tutkinnot: {
     modification: (data, isReadOnly, locale) =>
@@ -101,10 +139,6 @@ const lomakkeet = {
   opiskelijavuodet: {
     modification: (data, isReadOnly, locale) =>
       getOpiskelijavuodetLomake("modification", data, isReadOnly, locale)
-  },
-  muut: {
-    modification: (data, isReadOnly, locale) =>
-      getMuutLomake("modification", data, isReadOnly, locale)
   },
 
   // Wizard page 2 forms
@@ -296,17 +330,13 @@ const lomakkeet = {
       modification: (data, isReadOnly, locale, changeObjects) =>
         erityisetKoulutustehtavat(data, isReadOnly, locale, changeObjects)
     },
-    liitetiedostot: {
-      modification: (data, isReadOnly, locale) =>
-        liitetiedostot(data, isReadOnly, locale)
-    },
     muutEhdot: {
       modification: (data, isReadOnly, locale, changeObjects) =>
         muutEhdot(data, isReadOnly, locale, changeObjects)
     },
     opetuksenJarjestamismuodot: {
       modification: (data, isReadOnly, locale) =>
-        opetuksenJarjestamismuoto(data, isReadOnly, locale)
+        opetuksenJarjestamismuoto(isReadOnly, locale)
     },
     opetusJotaLupaKoskee: {
       modification: (data, isReadOnly, locale) =>
@@ -314,11 +344,11 @@ const lomakkeet = {
     },
     opetuskielet: {
       modification: (data, isReadOnly, locale, changeObjects) =>
-        getOpetuskieletOPHLomake(data, isReadOnly, locale, changeObjects)
+        getOpetuskieletOPHLomake(isReadOnly, locale, changeObjects)
     },
     opiskelijamaarat: {
-      modification: (data, isReadOnly, locale) =>
-        opiskelijamaarat(data, isReadOnly, locale)
+      modification: (data, isReadOnly) =>
+        opiskelijamaarat(isReadOnly)
     },
     paatoksenTiedot: {
       addition: (data, isReadOnly, locale, changeObjects) =>

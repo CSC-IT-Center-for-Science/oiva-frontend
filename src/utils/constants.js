@@ -53,7 +53,7 @@ export const LUPA_SECTIONS = {
   };
 
   export const koulutustyypitMap = {
-    ESI_JA_PERUSOPETUS: "2",
-    LUKIO: "1",
+    ESI_JA_PERUSOPETUS: "1",
+    LUKIO: "2",
     VAPAASIVISTYSTYO: "3"
   };

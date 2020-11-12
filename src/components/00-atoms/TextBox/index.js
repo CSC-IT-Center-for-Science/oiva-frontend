@@ -103,8 +103,7 @@ const TextBox = props => {
 
   const deleteTextBox = () => {
     props.onChanges(props.payload, {
-      value: "",
-      textBoxDelete: true
+      deleteElement: true
     });
   };
 

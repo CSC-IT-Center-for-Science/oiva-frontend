@@ -89,6 +89,7 @@ const Autocomplete = React.memo(
         },
         multiValueLabel: (styles, { data }) => ({
           ...styles,
+          whiteSpace: "normal",
           color: data.color
         }),
         multiValueRemove: (styles, { data }) => ({
@@ -201,7 +202,7 @@ const Autocomplete = React.memo(
             isSearchable={true}
             searchFilter={searchFilter}
             styles={optionStyles}
-            hideSelectedOptions={props.isSearch}
+            hideSelectedOptions={props.hideSelectedOptions}
             width={props.width}
             required={props.isRequired}
           />
@@ -231,7 +232,8 @@ Autocomplete.defaultProps = {
   isSearch: false,
   minChars: 3,
   width: "100%",
-  autoSize: false
+  autoSize: false,
+  hideSelectedOptions: true
 };
 
 Autocomplete.propTypes = {
@@ -250,7 +252,8 @@ Autocomplete.propTypes = {
   width: PropTypes.string,
   autosize: PropTypes.bool,
   title: PropTypes.string,
-  short: PropTypes.bool
+  short: PropTypes.bool,
+  hideSelectedOptions: PropTypes.bool
 };
 
 export default Autocomplete;

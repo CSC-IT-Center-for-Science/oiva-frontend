@@ -47,7 +47,10 @@ const Input = props => {
   const { classes } = props;
 
   const updateValue = e => {
-    props.onChanges(props.payload, { value: e.target.value });
+    props.onChanges(props.payload, {
+      value:
+        props.type === "number" ? parseInt(e.target.value, 10) : e.target.value
+    });
   };
 
   return (
@@ -176,7 +179,10 @@ Input.propTypes = {
   isDense: PropTypes.bool,
   requiredMessage: PropTypes.string,
   showValidationErrors: PropTypes.bool,
-  value: PropTypes.string
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ])
 };
 
 export default withStyles(inputStyles)(Input);

@@ -65,7 +65,8 @@ const AvoimetAsiat = () => {
           muutospyynnot.avoimet.data,
           intl,
           history,
-          onPaatettyActionClicked
+          onPaatettyActionClicked,
+          "esi-ja-perusopetus"
         )
       : [];
   }, [intl, muutospyynnot.avoimet, history]);

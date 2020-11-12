@@ -3,7 +3,6 @@ import { getEnsisijaisetOpetuskieletOPHFromStorage } from "helpers/opetuskielet"
 import { map, toUpper } from "ramda";
 
 export default async function opetustehtavat(
-  asetus,
   changeObjects = [],
   locale
 ) {

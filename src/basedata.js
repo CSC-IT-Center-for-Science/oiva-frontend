@@ -40,6 +40,7 @@ import { initializePOMuutEhdot } from "helpers/poMuutEhdot";
 import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
+import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -63,7 +64,7 @@ export const fetchJSON = async path => {
   return result.data;
 };
 
-const getRaw = async (
+export const getRaw = async (
   key,
   path,
   keys,
@@ -86,10 +87,13 @@ const getRaw = async (
  * ja sen sisältämiä määräyksiä hyödynnetään parsittaessa pohjadataa
  * tarvittaessa paremmin sovellusta palvelevaan muotoon.
  *
+ * @param keys
  * @param {string} locale - fi / sv
+ * @param lupaUuid
  * @param {string} ytunnus
+ * @param koulutustyyppi
  */
-const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
+const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) => {
   const localeUpper = toUpper(locale);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
@@ -215,6 +219,11 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
       `${backendRoutes.organisaatio.path}${ytunnus}`,
       keys
     ),
+    organisaatiot: await getRaw(
+      "organisaatiot",
+      backendRoutes.organisaatiot.path,
+      keys
+    ),
     poErityisetKoulutustehtavat: await getRaw(
       "poErityisetKoulutustehtavat",
       backendRoutes.poErityisetKoulutustehtavat.path,
@@ -235,7 +244,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
-      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false`,
+      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false${koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
@@ -371,17 +380,45 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa,
+    lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
     vstLuvat: raw.vstLuvat,
-    vstTyypit: raw.vstTyypit ? await localforage.setItem(
-      "vsttyypit",
-      map(vstTyyppi => omit(["koodiArvo"], {
-        ...vstTyyppi,
-          koodiarvo: vstTyyppi.koodiArvo,
-          metadata: mapObjIndexed(head, groupBy(prop("kieli"), vstTyyppi.metadata))
-      }),raw.vstTyypit
-      )) : undefined,
-    maakunnat: raw.maakunnat,
+    vstTyypit: raw.vstTyypit
+      ? await localforage.setItem(
+          "vsttyypit",
+          map(
+            vstTyyppi =>
+              omit(["koodiArvo"], {
+                ...vstTyyppi,
+                koodiarvo: vstTyyppi.koodiArvo,
+                metadata: mapObjIndexed(
+                  head,
+                  groupBy(prop("kieli"), vstTyyppi.metadata)
+                )
+              }),
+            raw.vstTyypit
+          )
+        )
+      : undefined,
+    maakunnat: raw.maakuntakunnat
+      ? await localforage.setItem(
+          "maakunnat",
+          sortBy(
+            path(["metadata", localeUpper, "nimi"]),
+            map(
+              maakunta =>
+                omit(["koodiArvo"], {
+                  ...maakunta,
+                  koodiarvo: maakunta.koodiArvo,
+                  metadata: mapObjIndexed(
+                    head,
+                    groupBy(prop("kieli"), maakunta.metadata)
+                  )
+                }),
+              raw.maakunnat
+            ).filter(Boolean)
+          )
+        )
+      : undefined,
     maakuntakunnat: raw.maakuntakunnat
       ? await localforage.setItem(
           "maakuntakunnat",
@@ -399,9 +436,12 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     muut: raw.muut
       ? await localforage.setItem(
           "muut",
-          map(muudata => {
-            return initializeMuu(muudata);
-          }, raw.muut)
+          sortArticlesByHuomioitavaKoodi(
+            map(muudata => {
+              return initializeMuu(muudata);
+            }, raw.muut),
+            localeUpper
+          )
         )
       : undefined,
     oivaperustelut: raw.oivaperustelut
@@ -464,6 +504,9 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
     organisaatio: raw.organisaatio
       ? await localforage.setItem("organisaatio", raw.organisaatio)
       : undefined,
+    organisaatiot: raw.organisaatiot
+      ? await localforage.setItem("organisaatiot", raw.organisaatiot)
+      : undefined,
     poErityisetKoulutustehtavat: raw.poErityisetKoulutustehtavat
       ? await localforage.setItem(
           "poErityisetKoulutustehtavat",
@@ -508,7 +551,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus) => {
           )
         )
       : undefined,
-    tulevatLuvat: raw.tulevatLuvat || [],
+    tulevatLuvat: raw.tulevatLuvat || [],
     vankilat: raw.vankilat
       ? sortBy(
           prop("koodiarvo"),
@@ -534,7 +577,7 @@ const defaultProps = {
   keys: []
 };
 
-const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
+const BaseData = ({ keys = defaultProps.keys, locale, render, koulutustyyppi }) => {
   const { lupaUuid, ytunnus } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
@@ -545,13 +588,13 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, ytunnus).then(result => {
+    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(result => {
       if (isSubscribed) {
         setBaseData(result);
       }
     });
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, ytunnus, location.pathname]);
+  }, [keys, locale, lupaUuid, ytunnus, location.pathname, koulutustyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
@@ -566,7 +609,8 @@ const BaseData = ({ keys = defaultProps.keys, locale, render }) => {
 BaseData.propTypes = {
   keys: PropTypes.array,
   locale: PropTypes.string,
-  render: PropTypes.func
+  render: PropTypes.func,
+  koulutustyyppi: PropTypes.string
 };
 
 export default BaseData;

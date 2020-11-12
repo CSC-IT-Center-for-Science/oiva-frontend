@@ -446,12 +446,15 @@ const CategorizedList = props => {
                             props.changes
                           );
                           const isDisabled =
-                            (previousSibling.name === "CheckboxWithLabel" ||
-                              previousSibling.name ===
+                            propsObj.isReadOnly ||
+                            (
+                              (previousSibling.name === "CheckboxWithLabel" ||
+                                previousSibling.name ===
                                 "RadioButtonWithLabel") &&
-                            !(
-                              isPreviousSiblingCheckedByDefault ||
-                              change.properties.isChecked
+                              !(
+                                isPreviousSiblingCheckedByDefault ||
+                                change.properties.isChecked
+                              )
                             );
                           return (
                             <div
@@ -675,14 +678,6 @@ const CategorizedList = props => {
                                 linkText={propsObj.linkText}
                                 handleLinkClick={propsObj.handleLinkClick}
                                 onChanges={handleChanges}
-                                payload={{
-                                  anchor,
-                                  categories: category.categories,
-                                  component,
-                                  fullPath,
-                                  parent: props.parent,
-                                  rootPath: props.rootPath
-                                }}
                               />
                             </div>
                           );
@@ -783,6 +778,7 @@ const CategorizedList = props => {
                                 height={heights.SHORT}
                                 short={component.short}
                                 title={propsObj.title}
+                                hideSelectedOptions={propsObj.hideSelectedOptions}
                               />
                             </div>
                           );
@@ -792,6 +788,7 @@ const CategorizedList = props => {
                       <div className="flex-2">
                         <Difference
                           applyForValue={propsObj.applyForValue}
+                          id={fullAnchor}
                           initialValue={propsObj.initialValue}
                           onChanges={handleChanges}
                           payload={{

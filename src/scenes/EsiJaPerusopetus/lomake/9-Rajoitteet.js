@@ -1,10 +1,14 @@
 import React, { useCallback } from "react";
-import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import Lomake from "../../../components/02-organisms/Lomake";
 import Rajoite from "./10-rajoite";
+import { useChangeObjects } from "../../AmmatillinenKoulutus/store";
+
+const constants = {
+  formLocations: ["esiJaPerusopetus", "rajoitteet"]
+}
 
 const Rajoitteet = ({ onChangesUpdate, sectionId }) => {
-  const [state, actions] = useEsiJaPerusopetus();
+  const [state, actions] = useChangeObjects();
 
   const onAddRestriction = useCallback(
     payload => {
@@ -22,15 +26,15 @@ const Rajoitteet = ({ onChangesUpdate, sectionId }) => {
           parentSectionId={sectionId}></Rajoite>
       )}
       <Lomake
+        isInExpandableRow={false}
         anchor={sectionId}
-        changeObjects={state.changeObjects[sectionId]}
         data={{
           changeObjects: state.changeObjects,
           onAddRestriction
         }}
         noPadding={true}
         onChangesUpdate={onChangesUpdate}
-        path={["esiJaPerusopetus", "rajoitteet"]}
+        path={constants.formLocations}
         showCategoryTitles={true}></Lomake>
     </React.Fragment>
   );

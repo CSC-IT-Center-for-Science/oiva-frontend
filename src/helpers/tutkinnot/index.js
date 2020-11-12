@@ -21,7 +21,7 @@ import {
   dissocPath
 } from "ramda";
 import localforage from "localforage";
-import { createBEOofTutkintakielet } from "./tallentaminen/tutkintokielet";
+import { createBEOofTutkintokielet } from "./tallentaminen/tutkintokielet";
 import { createBEOofTutkinnotJaOsaamisalat } from "./tallentaminen/tutkinnotJaOsaamisalat";
 
 export function getTutkinnotFromStorage() {
@@ -43,7 +43,7 @@ export async function getTutkinnotGroupedBy(key, tutkinnot) {
  * @param {array} tutkinnot
  * @param {array} changeObjects
  */
-export function getActiveOnes(tutkinnot = [], changeObjects = []) {
+export function getAktiivisetTutkinnot(tutkinnot = [], changeObjects = []) {
   const activeOnes = filter(tutkinto => {
     const anchor = `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.tutkinto`;
     const changeObj = find(propEq("anchor", anchor), changeObjects);
@@ -90,13 +90,15 @@ export const initializeTutkintokielet = (tutkinto, maaraykset = []) => {
               ..._alimaarays,
               koodi: {
                 koodiarvo: _alimaarays.koodiarvo,
-                metadata: _alimaarays.koodi ? mapObjIndexed(
-                  head,
-                  groupBy(
-                    prop("kieli"),
-                    path(["koodi", "metadata"], _alimaarays)
-                  )
-                ) : null
+                metadata: _alimaarays.koodi
+                  ? mapObjIndexed(
+                      head,
+                      groupBy(
+                        prop("kieli"),
+                        path(["koodi", "metadata"], _alimaarays)
+                      )
+                    )
+                  : null
               }
             };
             alimaarays = dissocPath(["koodi", "koodiArvo"], alimaarays);
@@ -219,7 +221,7 @@ export const defineBackendChangeObjects = async (
     /**
      * TUTKINTOKIELET
      */
-    const beoOfTutkintokielet = createBEOofTutkintakielet(
+    const beoOfTutkintokielet = createBEOofTutkintokielet(
       tutkinto,
       changeObjects,
       kieletKohde,
