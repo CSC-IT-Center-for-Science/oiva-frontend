@@ -7,7 +7,7 @@ export default function maaraaika(
   locale
 ) {
   return {
-    anchor: "maaraaika",
+    anchor: "rajoitus",
     components: [
       {
         anchor: "alkamispaiva",

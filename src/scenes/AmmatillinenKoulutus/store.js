@@ -1,4 +1,4 @@
-import { createStore, createHook, createContainer } from "react-sweet-state";
+import { createContainer, createHook, createStore } from "react-sweet-state";
 import {
   append,
   assoc,
@@ -17,7 +17,6 @@ import {
   not,
   path,
   prepend,
-  prop,
   propEq,
   reduce,
   reject,
@@ -25,11 +24,7 @@ import {
   startsWith,
   values
 } from "ramda";
-import {
-  getAnchorPart,
-  getLatestChangesByAnchor,
-  recursiveTreeShake
-} from "utils/common";
+import { getAnchorPart, getLatestChangesByAnchor, recursiveTreeShake } from "utils/common";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -77,12 +72,15 @@ const Store = createStore({
     latestChanges: {}
   },
   actions: {
-    addCriterion: () => (sectionId, rajoiteId) => ({ getState, setState }) => {
-      const currentChangeObjects = prop("changeObjects", getState());
+    addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
+      const currentChangeObjects = getState().changeObjects;
       const rajoitekriteeritChangeObjects = filter(
-        changeObj =>
-          startsWith(`${sectionId}.${rajoiteId}.kriteerit`, changeObj.anchor),
-        currentChangeObjects[sectionId] || []
+        changeObj => startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
+          !startsWith(`${sectionId}.${rajoiteId}.asetukset.kohde`, changeObj.anchor),
+        concat(
+          currentChangeObjects.unsaved[sectionId] || [],
+          currentChangeObjects.saved[sectionId] || []
+        ) || []
       );
 
       /**
@@ -98,25 +96,28 @@ const Store = createStore({
             return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
           }, rajoitekriteeritChangeObjects)
         ) + 1
-          : 0;
+          : 1;
 
       /**
        * Luodaan
        */
-      const nextChangeObjects = assoc(
-        sectionId,
+      const nextChangeObjects = assocPath(
+        ["unsaved", sectionId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.kriteerit.${nextCriterionAnchorPart}.valintaelementti.autocomplete`,
+            anchor: `${sectionId}.${rajoiteId}.asetukset.${nextCriterionAnchorPart}.kohde.A`,
             properties: {
               value: ""
             }
           },
-          currentChangeObjects[sectionId] || []
+          currentChangeObjects.unsaved[sectionId] || []
         ),
         currentChangeObjects
       );
       setState({ ...getState(), changeObjects: nextChangeObjects });
+    },
+    closeRestrictionDialog: () => ({ getState, setState }) => {
+      setState({ ...getState(), isRestrictionDialogVisible: false });
     },
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,

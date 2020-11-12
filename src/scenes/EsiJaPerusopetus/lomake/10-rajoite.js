@@ -46,7 +46,7 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
   return (
     <Dialog
       open={state.isRestrictionDialogVisible}
-      PaperProps={{ style: { overflowY: "visible" } }}>
+      PaperProps={{ style: { overflowY: "auto" } }}>
       <DialogTitle onClose={actions.closeRestrictionDialog}>
         Lisää rajoite luvalle
       </DialogTitle>
