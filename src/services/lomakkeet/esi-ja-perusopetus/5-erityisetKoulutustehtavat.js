@@ -7,13 +7,11 @@ import {
   find,
   flatten,
   map,
-  nth,
   path,
   pathEq,
   prop,
   propEq,
   sortBy,
-  split,
   startsWith,
   toUpper
 } from "ramda";

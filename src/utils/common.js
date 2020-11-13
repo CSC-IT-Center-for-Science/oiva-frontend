@@ -303,21 +303,3 @@ export const recursiveTreeShake = (p = [], branch, dispatch) => {
   }
   return updatedBranch;
 };
-
-/**
- * Käy annetun oksan (branch) lehdet (muutosobjektit) läpi ja
- * palauttaa niistä uudet versiot hyödyntäen parametrinä annettua funktiota.
- * Mikäli oksa sisältää alioksia, kutsuu modifyLeavesOfBranch itseään
- * parametreinä fn ja alioksa.
- * @param {*} fn Funktio, joka palauttaa oksan lehdistä uudet versiot.
- * @param {*} branch Objekti (puu), joka käydään läpi.
- */
-export const modifyLeavesOfBranch = (fn, branch) => {
-  return R.mapObjIndexed(subBranch => {
-    if (Array.isArray(subBranch)) {
-      return fn(subBranch);
-    } else {
-      return modifyLeavesOfBranch(fn, subBranch);
-    }
-  }, branch);
-};
