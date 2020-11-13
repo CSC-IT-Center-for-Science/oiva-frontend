@@ -87,7 +87,7 @@ const LupaHistory = ({ history, jarjestajaOid }) => {
                 if (lupaHistoryObject) {
                   downloadFileFn({
                     openInNewWindow: true,
-                    url: `/pebble/resources/liitteet/${lupaHistoryObject.filename}`
+                    url: `/pebble/resources/liitteet/vst/${lupaHistoryObject.filename}`
                   })();
                 } else {
                   console.error(intl.formatMessage(common.errorFetchingRow));
