@@ -1,15 +1,19 @@
 import { isAdded, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
+  compose,
   endsWith,
   filter,
   find,
   flatten,
   map,
+  nth,
   path,
   pathEq,
   prop,
+  propEq,
   sortBy,
+  split,
   startsWith,
   toUpper
 } from "ramda";
@@ -37,6 +41,20 @@ export async function erityisetKoulutustehtavat(
     map(erityinenKoulutustehtava => {
       const changeObj = getChangeObjByAnchor(
         `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
+        changeObjects
+      );
+
+      const dynamicTextBoxChangeObjects = filter(
+        changeObj =>
+          startsWith(
+            `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
+            changeObj.anchor
+          ) &&
+          endsWith(".kuvaus", changeObj.anchor) &&
+          !startsWith(
+            `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0`,
+            changeObj.anchor
+          ),
         changeObjects
       );
 
@@ -70,48 +88,40 @@ export async function erityisetKoulutustehtavat(
              * erillisen painikkeen avulla.
              */
             sortBy(
-              prop("anchor"),
-              map(
-                changeObj => {
-                  return {
-                    anchor: getAnchorPart(changeObj.anchor, 2),
-                    components: [
-                      {
-                        anchor: "kuvaus",
-                        name: "TextBox",
-                        properties: {
-                          forChangeObject: {
-                            focusWhenDeleted: `${data.sectionId}.${
-                              erityinenKoulutustehtava.koodiarvo
-                            }.${parseInt(
-                              getAnchorPart(changeObj.anchor, 2) - 1,
-                              10
-                            )}.kuvaus`
-                          },
-                          isReadOnly,
-                          isRemovable: true,
-                          placeholder: __("common.kuvausPlaceholder"),
-                          title: __("common.kuvaus"),
-                          value: changeObj.properties.value
-                        }
+              compose(anchorPart => parseInt(anchorPart, 10), prop("anchor")),
+              map(changeObj => {
+                const previousTextBoxAnchor = `${data.sectionId}.${
+                  erityinenKoulutustehtava.koodiarvo
+                }.${parseInt(getAnchorPart(changeObj.anchor, 2), 10) -
+                  1}.kuvaus`;
+
+                const previousTextBoxChangeObj = find(
+                  propEq("anchor", previousTextBoxAnchor),
+                  dynamicTextBoxChangeObjects
+                );
+
+                return {
+                  anchor: getAnchorPart(changeObj.anchor, 2),
+                  components: [
+                    {
+                      anchor: "kuvaus",
+                      name: "TextBox",
+                      properties: {
+                        forChangeObject: {
+                          focusWhenDeleted: !!previousTextBoxChangeObj
+                            ? previousTextBoxAnchor
+                            : `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
+                        },
+                        isReadOnly,
+                        isRemovable: true,
+                        placeholder: __("common.kuvausPlaceholder"),
+                        title: __("common.kuvaus"),
+                        value: changeObj.properties.value
                       }
-                    ]
-                  };
-                },
-                filter(
-                  changeObj =>
-                    startsWith(
-                      `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
-                      changeObj.anchor
-                    ) &&
-                    endsWith(".kuvaus", changeObj.anchor) &&
-                    !startsWith(
-                      `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0`,
-                      changeObj.anchor
-                    ),
-                  changeObjects
-                )
-              )
+                    }
+                  ]
+                };
+              }, dynamicTextBoxChangeObjects)
             ),
             /**
              * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.

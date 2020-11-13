@@ -93,6 +93,7 @@ const textboxStyles = {
 };
 
 const TextBox = props => {
+  const { onFocus } = props;
   const [isVisited, setIsVisited] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const { classes } = props;
@@ -114,8 +115,9 @@ const TextBox = props => {
   useEffect(() => {
     if (props.shouldHaveFocus) {
       textBoxRef.current.focus();
+      onFocus();
     }
-  }, [props.shouldHaveFocus]);
+  }, [onFocus, props.shouldHaveFocus]);
 
   return (
     <React.Fragment>
@@ -281,7 +283,7 @@ TextBox.defaultProps = {
 TextBox.propTypes = {
   ariaLabel: PropTypes.string,
   delay: PropTypes.number,
-  shouldHaveFocus: PropTypes.number,
+  shouldHaveFocus: PropTypes.bool,
   id: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,

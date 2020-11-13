@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../scenes/AmmatillinenKoulutus/store";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "../../../scenes/AmmatillinenKoulutus/store";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
 import { has, isEmpty } from "ramda";
@@ -47,7 +50,7 @@ const Lomake = ({
         changesTest: intl.formatMessage(formMessages.changesText)
       }
     : rowMessages;
-
+  const [{ focusOn }] = useChangeObjects();
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor
   });
@@ -67,6 +70,10 @@ const Lomake = ({
     },
     [actions]
   );
+
+  const onFocus = useCallback(() => {
+    actions.setFocusOn(null);
+  }, [actions]);
 
   useEffect(() => {
     async function fetchLomake() {
@@ -117,8 +124,10 @@ const Lomake = ({
             <div className={noPadding ? "" : "p-8"}>
               <CategorizedListRoot
                 anchor={anchor}
+                focusOn={focusOn}
                 categories={lomake}
                 changes={changeObjects}
+                onFocus={onFocus}
                 onUpdate={onChangesUpdate}
                 showCategoryTitles={showCategoryTitles}
                 showValidationErrors={showValidationErrors}
@@ -132,8 +141,10 @@ const Lomake = ({
           <div className={noPadding ? "" : "p-8"}>
             <CategorizedListRoot
               anchor={anchor}
+              focusOn={focusOn}
               categories={lomake}
               changes={changeObjects}
+              onFocus={onFocus}
               onUpdate={onChangesUpdate}
               showCategoryTitles={showCategoryTitles}
               showValidationErrors={showValidationErrors}

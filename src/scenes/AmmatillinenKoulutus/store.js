@@ -6,11 +6,10 @@ import {
   compose,
   concat,
   difference,
-  dissocPath,
   endsWith,
   filter,
   flatten,
-  isEmpty,
+  head,
   isNil,
   length,
   map,
@@ -29,7 +28,6 @@ import {
 import {
   getAnchorPart,
   getLatestChangesByAnchor,
-  modifyLeavesOfBranch,
   recursiveTreeShake
 } from "utils/common";
 
@@ -47,6 +45,10 @@ const removeUnsavedChanges = () => ({ getState, setState }) => {
   const currentState = getState();
   const nextChangeObjects = assoc("unsaved", {}, currentState.changeObjects);
   setState(assoc("changeObjects", nextChangeObjects, currentState));
+};
+
+const setFocusOn = anchor => ({ getState, setState }) => {
+  setState(assoc("focusOn", anchor, getState()));
 };
 
 const setLatestChanges = changeObjects => ({ getState, setState }) => {
@@ -72,85 +74,16 @@ const Store = createStore({
   initialState: {
     changeObjects: {
       saved: {},
-      unsaved: {
-        erityisetKoulutustehtavat: [
-          {
-            anchor: "erityisetKoulutustehtavat.2.valintaelementti",
-            properties: {
-              isChecked: true
-            }
-          },
-          {
-            anchor: "erityisetKoulutustehtavat.2.1.kuvaus",
-            properties: {
-              metadata: {
-                focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
-              },
-              value: ""
-            }
-          },
-          {
-            anchor: "erityisetKoulutustehtavat.2.2.kuvaus",
-            properties: {
-              metadata: {
-                focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
-              },
-              shouldHaveFocus: +new Date(),
-              value: ""
-            }
-          },
-          {
-            anchor: "erityisetKoulutustehtavat.2.0.kuvaus",
-            properties: {
-              value:
-                "Koska erityisen tehtävän mukaisesti painotettavan oppiaineen tuntimäärä ylittää valtioneuvoston asetuksessa (422/2012) säädetyn tuntimäärän, voidaan mainitun asetuksen tuntimäärästä poiketa seuraavasti:23523"
-            }
-          }
-        ]
-      },
-      underRemoval: {
-        erityisetKoulutustehtavat: []
-      }
+      unsaved: {},
+      underRemoval: {}
     },
-    latestChanges: {
-      underRemoval: [],
-      unsaved: [
-        {
-          anchor: "erityisetKoulutustehtavat.2.valintaelementti",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "erityisetKoulutustehtavat.2.1.kuvaus",
-          properties: {
-            metadata: {
-              focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
-            },
-            value: ""
-          }
-        },
-        {
-          anchor: "erityisetKoulutustehtavat.2.2.kuvaus",
-          properties: {
-            metadata: {
-              focusWhenDeleted: "erityisetKoulutustehtavat.2.0.kuvaus"
-            },
-            shouldHaveFocus: +new Date(),
-            value: ""
-          }
-        },
-        {
-          anchor: "erityisetKoulutustehtavat.2.0.kuvaus",
-          properties: {
-            value:
-              "Koska erityisen tehtävän mukaisesti painotettavan oppiaineen tuntimäärä ylittää valtioneuvoston asetuksessa (422/2012) säädetyn tuntimäärän, voidaan mainitun asetuksen tuntimäärästä poiketa seuraavasti:23523"
-          }
-        }
-      ]
-    }
+    focusOn: null,
+    latestChanges: {}
   },
   actions: {
+    /**
+     * -------------------- CRITERIONS OF LIMITATIONS --------------------
+     */
     addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = getState().changeObjects;
       const rajoitekriteeritChangeObjects = filter(
@@ -202,8 +135,12 @@ const Store = createStore({
     closeRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: false });
     },
+    /**
+     * -------------------- DYNAMIC TEXTBOXES --------------------
+     */
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
+      dispatch,
       setState
     }) => {
       if (sectionId) {
@@ -219,27 +156,6 @@ const Store = createStore({
             currentChangeObjects.saved[sectionId] || []
           ) || []
         );
-
-        /**
-         * Poistetaan focus-ominaisuus kaikista puun muutosobjekteista.
-         */
-        let nextChangeObjects = modifyLeavesOfBranch(leaves => {
-          return map(leaf => {
-            const updatedLeaf = dissocPath(
-              ["properties", "shouldHaveFocus"],
-              leaf
-            );
-            return isEmpty(updatedLeaf.properties) ? null : updatedLeaf;
-          }, leaves).filter(Boolean);
-        }, currentChangeObjects);
-
-        // let nextChangeObjects = assocPath(
-        //   prepend("unsaved", splittedSectionId),
-        //   map(changeObj => {
-        //     return dissocPath(["properties", "shouldHaveFocus"], changeObj);
-        //   }, path(prepend("unsaved", splittedSectionId), currentChangeObjects)),
-        //   currentChangeObjects
-        // );
 
         const textBoxNumber =
           length(textBoxChangeObjects) > 0
@@ -257,24 +173,21 @@ const Store = createStore({
          * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
          * kenttä olisi automaattisesti fokusoitu.
          */
-        nextChangeObjects = assocPath(
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
+        let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
               anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
               properties: {
-                metadata: {
-                  focusWhenDeleted: `${sectionId}.${koodiarvo}.0.kuvaus`
-                },
-                // Current timestamp in milliseconds
-                shouldHaveFocus: +new Date(),
                 value: ""
               }
             },
-            path(splittedSectionId, nextChangeObjects.unsaved) || []
+            path(splittedSectionId, currentChangeObjects.unsaved) || []
           ),
-          nextChangeObjects
+          currentChangeObjects
         );
+        dispatch(setFocusOn(anchorOfTextBoxChangeObj));
         setState({ ...getState(), changeObjects: nextChangeObjects });
       }
     },
@@ -353,12 +266,28 @@ const Store = createStore({
        **/
       nextChangeObjects = recursiveTreeShake(
         unsavedFullPath,
-        nextChangeObjects
+        nextChangeObjects,
+        dispatch
       );
       nextChangeObjects = recursiveTreeShake(
         underRemovalFullPath,
-        nextChangeObjects
+        nextChangeObjects,
+        dispatch
       );
+
+      const focusWhenDeleted = head(
+        map(changeObj => {
+          const anchor = path(
+            ["properties", "metadata", "focusWhenDeleted"],
+            changeObj
+          );
+          return changeObj.properties.deleteElement && anchor ? anchor : null;
+        }, changeObjects).filter(Boolean)
+      );
+
+      if (focusWhenDeleted) {
+        dispatch(setFocusOn(focusWhenDeleted));
+      }
 
       dispatch(
         setLatestChanges({
@@ -367,6 +296,9 @@ const Store = createStore({
         })
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
+    },
+    setFocusOn: anchor => ({ dispatch }) => {
+      dispatch(setFocusOn(anchor));
     },
     showNewRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: true });

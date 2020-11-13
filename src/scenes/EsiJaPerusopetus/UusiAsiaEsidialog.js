@@ -221,7 +221,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                   setSelectedKJ(values.value);
                 }}
                 title={""}
-                value={selectedKJ}
+                value={[selectedKJ]}
               />
               <p className="my-4">
                 {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}

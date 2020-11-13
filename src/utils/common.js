@@ -254,61 +254,17 @@ const isBranchEmpty = obj => {
 
 const isWholeBranchEmpty = obj => R.isEmpty(isBranchEmpty(obj));
 
-/**
- * Palauttaa muutosten puusta uuden version, jossa parametrinä annetun polun
- * päässä sijaitsevan oksan lehti on korvattu annetulla versiolla. Huom!
- * Ankkuria ei tarvitse antaa erikseen, vaan funktio löytää lehden parametrinä
- * annetun lehden ankkurin perusteella.
- * @param {*} p Polku, jonka päästä löytyy oksa, jossa lehti on.
- * @param {*} leafWithNewData Lehti, jolla aiempi versio lehdestä korvataan.
- * @param {*} tree Muutosten puu.
- */
-const updateLeaf = (p, leafWithNewData, tree) => {
-  const anchor = R.prop("anchor", leafWithNewData);
-  const branch = R.map(leaf => {
-    return leaf.anchor === anchor ? leafWithNewData : leaf;
-  }, R.path(p, tree));
-  return R.assocPath(p, branch, tree);
-};
-
-const setFocusOnLeaf = (anchors, tree, index = 0) => {
-  const anchor = R.nth(index, anchors);
-  if (anchor) {
-    const p = R.prepend("unsaved", R.split("_", getAnchorPart(anchor, 0)));
-    const leafToUpdate = R.find(
-      R.propEq("anchor", anchor),
-      R.path(R.split("_", getAnchorPart(anchor, 0)), tree.unsaved)
-    );
-    const updatedLeaf = R.assocPath(
-      ["properties", "shouldHaveFocus"],
-      +new Date(), // Current timestamp in milliseconds
-      leafToUpdate
-    );
-    const updatedTree = updateLeaf(p, updatedLeaf, tree);
-    if (!!R.nth(index + 1, anchors)) {
-      return setFocusOnLeaf(anchors, updatedTree, index + 1);
-    } else {
-      return updatedTree;
-    }
-  }
-  return tree;
-};
-
 const removeOldLeaves = (p = [], tree) => {
-  const branch = R.path(p, tree);
-  const leavesToRemove = R.filter(
-    R.pathEq(["properties", "deleteElement"], true),
-    branch
-  );
-  let updatedTree = setFocusOnLeaf(
-    R.map(
-      R.path(["properties", "metadata", "focusWhenDeleted"]),
-      leavesToRemove
+  return R.assocPath(
+    p,
+    R.without(
+      R.filter(leaf => {
+        return R.pathEq(["properties", "deleteElement"], true, leaf);
+      }, R.path(p, tree)),
+      R.path(p, tree)
     ),
     tree
   );
-  const leavesLeftOnBranch = R.without(leavesToRemove, R.path(p, updatedTree));
-  return R.assocPath(p, leavesLeftOnBranch, updatedTree);
 };
 
 const protectedTreeProps = ["unsaved", "underRemoval"];
@@ -320,7 +276,7 @@ const protectedTreeProps = ["unsaved", "underRemoval"];
  * @param {*} p Polku, joka käydään läpi aloittaen polun perältä
  * @param {*} branch Objekti (oksa), joka käydään läpi. Voi olla koko puu.
  */
-export const recursiveTreeShake = (p = [], branch) => {
+export const recursiveTreeShake = (p = [], branch, dispatch) => {
   /**
    * Poistetaan käsiteltävänä olevasta oksasta poistettavaksi merkityt lehdet.
    * Toimenpiteen ohessa lehdestä voi löytyä merkintöjä operaatoista, jotka
