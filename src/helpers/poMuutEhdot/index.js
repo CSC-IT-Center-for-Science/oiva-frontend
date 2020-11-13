@@ -53,7 +53,7 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
-  const kohde = find(propEq("tunniste", "muut"), kohteet); // TODO: Onko oikea kohde?
+  const kohde = find(propEq("tunniste", "muutkoulutuksenjarjestamiseenliittyvatehdot"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const muutEhdot = await getPOMuutEhdotFromStorage();
 

@@ -10,7 +10,7 @@ export const defineBackendChangeObjects = async (
 ) => {
   const lisamaareet = await getKujalisamaareetFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
-  const kohde = find(propEq("tunniste", "opiskelijavuodet"), kohteet); // TODO: Onko oikea kohde?
+  const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
 
   /**

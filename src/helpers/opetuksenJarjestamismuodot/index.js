@@ -52,7 +52,7 @@ export const defineBackendChangeObjects = async (
 ) => {
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
-  const kohde = find(propEq("tunniste", "tutkinnotjakoulutukset"), kohteet); // TODO: Onko oikea kohde?
+  const kohde = find(propEq("tunniste", "opetuksenjarjestamismuoto"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
 
   const opetuksenJarjestamismuotoChangeObjs = map(
