@@ -105,7 +105,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
       keys
     ),
     kielet: await getRaw("kielet", backendRoutes.kielet.path, keys),
-    kohteet: await getRaw("kohteet", backendRoutes.kohteet.path, keys),
+    kohteet: await getRaw("kohteet", `${backendRoutes.kohteet.path}${koulutustyyppi ? "?koulutustyyppi=" + koulutustyyppi : ""}`, keys),
     lisatiedot: await getRaw(
       "lisatietoja",
       backendRoutes.lisatietoja.path,

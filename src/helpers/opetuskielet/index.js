@@ -83,7 +83,7 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotBeChangeObj = lisatiedotChangeObj
     ? {
-        kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
+        kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
         koodiarvo: lisatiedotObj.koodiarvo,
         koodisto: lisatiedotObj.koodisto.koodistoUri,
         kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
@@ -110,7 +110,7 @@ export const defineBackendChangeObjects = async (
     return changeObj
       ? {
           generatedId: `opetuskielet-${Math.random()}`,
-          kohde: find(propEq("tunniste", "opetusjatutkintokieli"), kohteet),
+          kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
           koodiarvo: opetuskieli.koodiarvo,
           koodisto: opetuskieli.koodisto.koodistoUri,
           kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
