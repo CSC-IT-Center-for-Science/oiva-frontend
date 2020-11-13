@@ -69,12 +69,14 @@ export default function EsiJaPerusopetus() {
                   Nullam auctor a libero sed ultricies. Morbi viverra erat ut
                   faucibus ornare. Mauris ut euismod dui.
                 </Typography>
-                <section>
-                  <Typography component="h2" variant="h2" className="py-4">
-                    {formatMessage(commonMessages.asianhallinta)}
-                  </Typography>
-                  <AsianhallintaCard></AsianhallintaCard>
-                </section>
+                {!!user ? (
+                  <section>
+                    <Typography component="h2" variant="h2" className="py-4">
+                      {formatMessage(commonMessages.asianhallinta)}
+                    </Typography>
+                    <AsianhallintaCard></AsianhallintaCard>
+                  </section>
+                ) : null}
                 <section className="pt-12">
                   <Jarjestajat />
                 </section>
