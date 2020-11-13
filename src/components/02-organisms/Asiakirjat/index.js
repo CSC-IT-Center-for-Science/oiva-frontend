@@ -97,7 +97,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
   }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const nimi = useMemo(
-    () => muutospyynto.data && muutospyynto.data.jarjestaja.nimi.fi,
+    () => muutospyynto.data && (muutospyynto.data.jarjestaja.nimi.fi || muutospyynto.data.jarjestaja.nimi.sv),
     [muutospyynto.data]
   );
 
@@ -139,7 +139,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
     // Let's move to Asiat view.
-    history.push(`/asiat?force=${new Date().getTime()}`);
+    history.push(`/${koulutustyyppi}/asianhallinta/avoimet?force=${new Date().getTime()}`);
   };
 
   const baseRow = [

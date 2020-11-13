@@ -88,9 +88,10 @@ export default function VapaaSivistystyo({ vstLuvat, vstTyypit }) {
                 component={Asianhallinta}
               />
               <Route
-                path="/vapaa-sivistystyo/koulutuksenjarjestajat/:ytunnus"
-                render={props => (
+                path="/vapaa-sivistystyo/:lupaUuid"
+                render={(props) => (
                   <BaseData
+                    keys={["lupaByUuid"]}
                     locale={locale}
                     render={_props => {
                       return (

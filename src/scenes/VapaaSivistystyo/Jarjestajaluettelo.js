@@ -128,7 +128,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             asc: true
           }
         ],
-        hiddenColumns: ["ytunnus"]
+        hiddenColumns: ["ytunnus", "lupaUuid"]
       },
       data,
       defaultColumn, // Be sure to pass the defaultColumn option
@@ -363,7 +363,7 @@ function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
         return (
           <Link
             className="underline"
-            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
+            to={`/vapaa-sivistystyo/${row.values.lupaUuid}/jarjestamislupa`}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
             })}>
@@ -383,6 +383,9 @@ function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
     },
     {
       accessor: "ytunnus"
+    },
+    {
+      accessor: "lupaUuid"
     }
   ];
 

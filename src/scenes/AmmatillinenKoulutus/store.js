@@ -1,4 +1,4 @@
-import { createStore, createHook, createContainer } from "react-sweet-state";
+import { createContainer, createHook, createStore } from "react-sweet-state";
 import {
   append,
   assoc,
@@ -13,6 +13,7 @@ import {
   length,
   map,
   max,
+  mergeAll,
   not,
   path,
   prepend,
@@ -71,9 +72,57 @@ const Store = createStore({
       unsaved: {},
       underRemoval: {}
     },
+    isRestrictionDialogVisible: false,
     latestChanges: {}
   },
   actions: {
+    addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
+      const currentChangeObjects = getState().changeObjects;
+      const rajoitekriteeritChangeObjects = filter(
+        changeObj => startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
+          !startsWith(`${sectionId}.${rajoiteId}.asetukset.kohde`, changeObj.anchor),
+        concat(
+          currentChangeObjects.unsaved[sectionId] || [],
+          currentChangeObjects.saved[sectionId] || []
+        ) || []
+      );
+
+      /**
+       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
+       * numero lisäämällä lukuun yksi.
+       */
+      const nextCriterionAnchorPart =
+        length(rajoitekriteeritChangeObjects) > 0
+          ? reduce(
+          max,
+          -Infinity,
+          map(changeObj => {
+            return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+          }, rajoitekriteeritChangeObjects)
+        ) + 1
+          : 1;
+
+      /**
+       * Luodaan
+       */
+      const nextChangeObjects = assocPath(
+        ["unsaved", sectionId],
+        append(
+          {
+            anchor: `${sectionId}.${rajoiteId}.asetukset.${nextCriterionAnchorPart}.kohde.A`,
+            properties: {
+              value: ""
+            }
+          },
+          currentChangeObjects.unsaved[sectionId] || []
+        ),
+        currentChangeObjects
+      );
+      setState({ ...getState(), changeObjects: nextChangeObjects });
+    },
+    closeRestrictionDialog: () => ({ getState, setState }) => {
+      setState({ ...getState(), isRestrictionDialogVisible: false });
+    },
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
       setState
@@ -119,7 +168,6 @@ const Store = createStore({
           ),
           currentChangeObjects
         );
-        console.info(nextChangeObjects);
         setState({ ...getState(), changeObjects: nextChangeObjects });
       }
     },
@@ -212,6 +260,9 @@ const Store = createStore({
         })
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
+    },
+    showNewRestrictionDialog: () => ({getState, setState}) => {
+      setState({...getState(), isRestrictionDialogVisible: true});
     }
   },
   name: "Muutokset"
@@ -283,6 +334,16 @@ export const useChangeObjectsByAnchor = createHook(Store, {
 
 export const useChangeObjectsByAnchorWithoutUnderRemoval = createHook(Store, {
   selector: getChangeObjectsByAnchorWithoutUnderRemoval
+});
+
+export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(Store, {
+  selector: (state, { anchors }) => {
+   return mergeAll(map(anchor => {
+      return {
+        [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {anchor})
+      }
+    }, anchors))
+  }
 });
 
 export const useChangeObjects = createHook(Store);

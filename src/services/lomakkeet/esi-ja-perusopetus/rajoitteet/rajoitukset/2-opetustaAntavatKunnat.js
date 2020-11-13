@@ -1,20 +1,17 @@
 import {
   compose,
   filter,
-  find,
   flatten,
   head,
   isNil,
   map,
   not,
   path,
-  propEq,
   sortBy,
   values
 } from "ramda";
 
-export default function opetustaAntavatKunnat(asetus, changeObjects = []) {
-  console.info(asetus);
+export default function opetustaAntavatKunnat(changeObjects = []) {
   const changesByProvince = path(
     ["properties", "changesByProvince"],
     head(changeObjects) || {}
@@ -38,21 +35,7 @@ export default function opetustaAntavatKunnat(asetus, changeObjects = []) {
           properties: {
             options: map(changeObj => {
               const { koodiarvo, title } = changeObj.properties.metadata;
-              return !!asetus.rajoitus &&
-                !!find(
-                  propEq("value", koodiarvo),
-                  path(
-                    [
-                      "rajoitus",
-                      "opetustaAntavatKunnat",
-                      "properties",
-                      "value"
-                    ],
-                    asetus
-                  ) || []
-                )
-                ? null
-                : { label: title, value: koodiarvo };
+              return { label: title, value: koodiarvo };
             }, listOfMunicipalities).filter(Boolean),
             value: ""
           }

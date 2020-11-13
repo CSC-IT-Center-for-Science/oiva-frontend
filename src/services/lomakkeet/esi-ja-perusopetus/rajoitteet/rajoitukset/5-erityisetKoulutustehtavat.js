@@ -1,4 +1,4 @@
-import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
+import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
 import { map,toUpper } from "ramda";
 
@@ -6,10 +6,10 @@ export default async function opetuksenjarjestamismuodot(
   changeObjects = [],
   locale
 ) {
-  const opetuksenjarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
   const localeUpper = toUpper(locale);
 
-  if (opetuksenjarjestamismuodot.length) {
+  if (erityisetKoulutustehtavat.length) {
     return {
       anchor: "rajoitus",
       components: [
@@ -17,19 +17,22 @@ export default async function opetuksenjarjestamismuodot(
           anchor: "opetuksenJarjestamismuodot",
           name: "Autocomplete",
           properties: {
-            options: map((opetuksenjarjestamismuodot) => {
+            options: map((erityisetKoulutustehtavat) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
-              const anchor = `opetuksenJarjestamismuodot.${opetuksenjarjestamismuodot.koodiarvo}.valinta`;
+              const anchor = `erityisetKoulutustehtavat.${erityisetKoulutustehtavat.koodiarvo}.valintaelementti`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
+              console.log("@"+anchor);
+              console.log(changeObj);
+              console.log(changeObjects);
               return (!!maarays &&
-              (!changeObj || changeObj.properties.isChecked)) ||
-              (changeObj && changeObj.properties.isChecked)
+                (!changeObj || changeObj.properties.isChecked)) ||
+                (changeObj && changeObj.properties.isChecked)
                 ? {
-                    label: opetuksenjarjestamismuodot.metadata[localeUpper].nimi,
-                    value: opetuksenjarjestamismuodot.koodiarvo
+                    label: erityisetKoulutustehtavat.metadata[localeUpper].nimi,
+                    value: erityisetKoulutustehtavat.koodiarvo
                   }
                 : null;
-            }, opetuksenjarjestamismuodot).filter(Boolean),
+            }, erityisetKoulutustehtavat).filter(Boolean),
             value: ""
           }
         }

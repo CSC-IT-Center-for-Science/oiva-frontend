@@ -105,7 +105,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
       keys
     ),
     kielet: await getRaw("kielet", backendRoutes.kielet.path, keys),
-    kohteet: await getRaw("kohteet", backendRoutes.kohteet.path, keys),
+    kohteet: await getRaw("kohteet", `${backendRoutes.kohteet.path}${koulutustyyppi ? "?koulutustyyppi=" + koulutustyyppi : ""}`, keys),
     lisatiedot: await getRaw(
       "lisatietoja",
       backendRoutes.lisatietoja.path,
@@ -380,7 +380,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
           initializeLisatiedot(raw.lisatiedot)
         )
       : undefined,
-    lupa: lupa ? localforage.setItem("lupa", lupa) : undefined,
+    lupa: lupa ? await localforage.setItem("lupa", lupa) : undefined,
     vstLuvat: raw.vstLuvat,
     vstTyypit: raw.vstTyypit
       ? await localforage.setItem(

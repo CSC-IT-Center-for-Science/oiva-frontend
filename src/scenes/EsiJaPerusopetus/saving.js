@@ -60,7 +60,7 @@ export async function createObjectToSave(
         changeObjects.toimintaalue || []
       )
     },
-    R.find(R.propEq("tunniste", "toimintaalue"), kohteet),
+    R.find(R.propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
     maaraystyypit,
     lupa.maaraykset
   );
@@ -104,8 +104,6 @@ export async function createObjectToSave(
     locale,
     kohteet
   );
-
-
 
   let objectToSave = {
     alkupera,

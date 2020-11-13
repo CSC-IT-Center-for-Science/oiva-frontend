@@ -55,8 +55,7 @@ export const defineBackendChangeObjects = async (
   kohteet
 ) => {
   const kohde =
-    find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet) ||
-    find(propEq("tunniste", "muut"), kohteet); // TODO: POISTA || JÄLKEINEN KOODI KUN KUJAN KOHTEET SAATU OIVAAN
+    find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
 
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();

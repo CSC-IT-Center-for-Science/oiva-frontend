@@ -1,8 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjects } from "scenes/AmmatillinenKoulutus/store";
-import { path } from "ramda";
 
 const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "yhteistyosopimus"]
@@ -14,29 +12,12 @@ const Yhteistyosopimus = ({
   maarayksetByKoodiarvo,
   sectionId
 }) => {
-  const [, { createTextBoxChangeObject }] = useChangeObjects();
-
-  const onAddButtonClick = useCallback(
-    addBtn => {
-      createTextBoxChangeObject(
-        sectionId,
-        path(
-          ["component", "properties", "forChangeObject", "koodiarvo"],
-          addBtn
-        )
-      );
-    },
-    [createTextBoxChangeObject, sectionId]
-  );
-
   const dataLomakepalvelulle = useMemo(
     () => ({
       items,
-      maarayksetByKoodiarvo,
-      onAddButtonClick,
-      sectionId
+      maarayksetByKoodiarvo
     }),
-    [items, maarayksetByKoodiarvo, onAddButtonClick, sectionId]
+    [items, maarayksetByKoodiarvo]
   );
 
   return (

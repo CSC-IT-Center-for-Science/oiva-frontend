@@ -9,12 +9,29 @@ import {
 import common from "i18n/definitions/common";
 import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
-import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
 import Lomake from "../../../components/02-organisms/Lomake";
 import PropTypes from "prop-types";
+import {
+  useChangeObjects,
+  useChangeObjectsByMultipleAnchorsWithoutUnderRemoval
+} from "../../AmmatillinenKoulutus/store";
+
+const constants = {
+  formLocation: ["esiJaPerusopetus", "rajoite"]
+}
 
 const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
-  const [state, actions] = useEsiJaPerusopetus();
+  const [changeObjectsByAnchor] = useChangeObjectsByMultipleAnchorsWithoutUnderRemoval({
+    anchors: [
+        "opetustehtavat",
+        "opetuskielet",
+        "toimintaalue",
+        "opetuksenJarjestamismuodot",
+        "erityisetKoulutustehtavat",
+        "opiskelijamaarat",
+        "muutEhdot"]
+  });
+  const [state, actions] = useChangeObjects();
   const intl = useIntl();
   const sectionId = "rajoitelomake";
   const restrictionId = "eka";
@@ -36,7 +53,7 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
   return (
     <Dialog
       open={state.isRestrictionDialogVisible}
-      PaperProps={{ style: { overflowY: "visible" } }}>
+      PaperProps={{ style: { overflowY: "auto" } }}>
       <DialogTitle onClose={actions.closeRestrictionDialog}>
         Lisää rajoite luvalle
       </DialogTitle>
@@ -46,10 +63,10 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
           tarvittavat rajoitukset haluamallasi tavalla
         </Typography>
         <Lomake
+          isInExpandableRow={false}
           anchor={sectionId}
-          changeObjects={state.changeObjects[sectionId]}
           data={{
-            changeObjects: state.changeObjects,
+            changeObjects: changeObjectsByAnchor,
             onAddCriterion,
             onRemoveCriterion,
             rajoiteId: restrictionId,
@@ -57,7 +74,7 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
           }}
           noPadding={true}
           onChangesUpdate={onChangesUpdate}
-          path={["esiJaPerusopetus", "rajoite"]}
+          path={constants.formLocation}
           showCategoryTitles={true}></Lomake>
       </DialogContent>
       <DialogActions>

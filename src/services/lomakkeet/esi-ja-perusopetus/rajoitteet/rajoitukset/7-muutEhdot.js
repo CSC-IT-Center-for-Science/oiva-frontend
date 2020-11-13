@@ -1,35 +1,36 @@
-import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
+import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
 import { map,toUpper } from "ramda";
 
-export default async function opetuksenjarjestamismuodot(
+export default async function muutEhdot(
   changeObjects = [],
   locale
 ) {
-  const opetuksenjarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
 
-  if (opetuksenjarjestamismuodot.length) {
+  if (muutEhdot.length) {
     return {
       anchor: "rajoitus",
       components: [
         {
-          anchor: "opetuksenJarjestamismuodot",
+          anchor: "muutEhdot",
           name: "Autocomplete",
           properties: {
-            options: map((opetuksenjarjestamismuodot) => {
+            options: map((muutEhdot) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
-              const anchor = `opetuksenJarjestamismuodot.${opetuksenjarjestamismuodot.koodiarvo}.valinta`;
+              const anchor = `muutEhdot.${muutEhdot.koodiarvo}.valintaelementti`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
               return (!!maarays &&
               (!changeObj || changeObj.properties.isChecked)) ||
               (changeObj && changeObj.properties.isChecked)
                 ? {
-                    label: opetuksenjarjestamismuodot.metadata[localeUpper].nimi,
-                    value: opetuksenjarjestamismuodot.koodiarvo
+                    label: muutEhdot.metadata[localeUpper].kuvaus ?
+                        muutEhdot.metadata[localeUpper].kuvaus : muutEhdot.metadata[localeUpper].nimi,
+                    value: muutEhdot.koodiarvo
                   }
                 : null;
-            }, opetuksenjarjestamismuodot).filter(Boolean),
+            }, muutEhdot).filter(Boolean),
             value: ""
           }
         }

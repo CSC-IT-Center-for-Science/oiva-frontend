@@ -132,6 +132,9 @@ const UusiAsiaDialog = ({
   const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "muut"
   });
+  const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitteet"
+  })
 
   const isSavingEnabled = useMemo(() => {
     const hasUnsavedChanges = unsavedChangeObjects
@@ -229,7 +232,8 @@ const UusiAsiaDialog = ({
             toimintaalue: toimintaalueCO,
             topthree: topThreeCO,
             tutkinnot: tutkinnotCO,
-            tutkintokielet: tutkintokieletCO
+            tutkintokielet: tutkintokieletCO,
+            rajoitteet: rajoitteetCO
           },
           uuid,
           kohteet,
@@ -278,6 +282,7 @@ const UusiAsiaDialog = ({
       opetuskieletCO,
       opiskelijavuodetCO,
       organisation,
+      rajoitteetCO,
       toimintaalueCO,
       topThreeCO,
       tutkinnotCO,

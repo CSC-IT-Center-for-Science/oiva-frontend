@@ -41,7 +41,7 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
 
       return changeObj ? {
         generatedId: `opetustehtava-${Math.random()}`,
-        kohde: find(propEq("tunniste", "tutkinnotjakoulutukset"), kohteet), // TODO: Onko oikea kohde?
+        kohde: find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
         koodiarvo: opetustehtava.koodiarvo,
         koodisto: opetustehtava.koodisto.koodistoUri,
         kuvaus: opetustehtava.metadata[locale].kuvaus,
