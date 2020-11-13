@@ -242,55 +242,64 @@ const isObject = variable => {
   return Object.prototype.toString.call(variable) === "[object Object]";
 };
 
-const isSubTreeEmpty = obj => {
-  if (Array.isArray(obj) || isObject(obj)) {
-    return R.flatten(R.values(R.mapObjIndexed(isSubTreeEmpty, obj)));
-  } else {
-    return obj;
-  }
+/**
+ * Tarkistaa, onko annettu objekti tyhjä.
+ * @param {*} obj
+ */
+const isBranchEmpty = obj => {
+  return Array.isArray(obj) || isObject(obj)
+    ? R.flatten(R.values(R.mapObjIndexed(isBranchEmpty, obj)))
+    : obj;
 };
 
-export const isTreeEmpty = obj => R.isEmpty(isSubTreeEmpty(obj));
+const isWholeBranchEmpty = obj => R.isEmpty(isBranchEmpty(obj));
 
-const removeOldLeaves = (branchOfTree = [], property = "deleteElement") => {
-  return R.filter(leaf => {
-    return !R.pathEq(["properties", property], true, leaf);
-  }, branchOfTree);
+const removeOldLeaves = (p = [], tree) => {
+  return R.assocPath(
+    p,
+    R.without(
+      R.filter(leaf => {
+        return R.pathEq(["properties", "deleteElement"], true, leaf);
+      }, R.path(p, tree)),
+      R.path(p, tree)
+    ),
+    tree
+  );
 };
 
 const protectedTreeProps = ["unsaved", "underRemoval"];
 
 /**
  * Funktiossa ravistellaan moniulotteisesta objektista (tree) pois
- * tyhjät taulukot ja objektit.
+ * tyhjät taulukot ja objektit sekä suoritetaan mahdolliset poistamista
+ * edeltävät operaatiot.
  * @param {*} p Polku, joka käydään läpi aloittaen polun perältä
- * @param {*} tree Objekti, josta polku etsitään läpi käytäväksi
+ * @param {*} branch Objekti (oksa), joka käydään läpi. Voi olla koko puu.
  */
-export const recursiveTreeShake = (p = [], tree) => {
-  const subTree = R.path(p, tree);
-  const subTreeWithoutFlaggedAsDeleted = Array.isArray(subTree)
-    ? removeOldLeaves(subTree)
-    : subTree;
-  const isSubTreeEmpty = isTreeEmpty(subTreeWithoutFlaggedAsDeleted);
+export const recursiveTreeShake = (p = [], branch, dispatch) => {
+  /**
+   * Poistetaan käsiteltävänä olevasta oksasta poistettavaksi merkityt lehdet.
+   * Toimenpiteen ohessa lehdestä voi löytyä merkintöjä operaatoista, jotka
+   * on suoritettava ennen lehden poistamista. Esimerkkinä tällaisesta
+   * operaatiosta on fokuksen siirtäminen poistettavasta lehdestä muutospuun
+   * toiseen lehteen. removeOldLeaves hoitaa tällaiset operaatiot ennen kuin
+   * se poistaa poistettavaksi merkityn lehden. Lopuksi se palauttaa
+   * uuden version muutosten puusta.
+   **/
+  let updatedBranch = removeOldLeaves(p, branch);
 
   /**
-   * Tyhjän alipuun voi poistaa, kunhan huomioidaan se, ettei poisteta
-   * puusta "suojeltuja" propertyjä, jotka on määritelty
+   * Tyhjän oksan voi poistaa, kunhan huomioidaan se, ettei poisteta
+   * puusta pääoksien kiinnityskohtia, jotka on määritelty
    * protectedTreeProps-muuttujassa.
    */
   if (!R.includes(R.last(p), protectedTreeProps)) {
-    if (isSubTreeEmpty) {
-      let updatedTree = R.dissocPath(p, tree);
-      if (isTreeEmpty(R.init(p), updatedTree)) {
-        updatedTree = R.dissocPath(R.init(p), tree);
-      }
+    if (isWholeBranchEmpty(R.path(p, branch))) {
+      updatedBranch = R.dissocPath(p, branch);
       if (R.length(p)) {
-        return recursiveTreeShake(R.init(p), updatedTree);
+        return recursiveTreeShake(R.init(p), updatedBranch);
       }
-    } else {
-      tree = R.assocPath(p, subTreeWithoutFlaggedAsDeleted, tree);
     }
   }
-
-  return tree;
+  return updatedBranch;
 };

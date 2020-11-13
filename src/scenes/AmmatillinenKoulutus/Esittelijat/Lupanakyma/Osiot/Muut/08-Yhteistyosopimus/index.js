@@ -25,6 +25,7 @@ const Yhteistyosopimus = ({
       action="modification"
       anchor={sectionId}
       data={dataLomakepalvelulle}
+      isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}

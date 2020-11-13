@@ -22,7 +22,12 @@ const RadioButtonWithLabel = React.memo(
         }
       },
       checked: {}
-    })(props => <Radio color="default" {...props} />);
+    })(props => (
+      <Radio
+        color="default"
+        {...props}
+      />
+    ));
 
     const handleChanges = () => {
       props.onChanges(props.payload, { isChecked: !props.isChecked });
