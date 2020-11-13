@@ -38,7 +38,8 @@ const Jarjestajat = ({ vstTyypit }) => {
         oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, intl.locale),
         oppilaitostyyppi: oppilaitostyyppiKoodistosta ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi : "",
         toiminnot: ["info"],
-        ytunnus: lupa.jarjestajaYtunnus
+        ytunnus: lupa.jarjestajaYtunnus,
+        lupaUuid: lupa.uuid
       };
     }, luvat.data)) : [];
 
