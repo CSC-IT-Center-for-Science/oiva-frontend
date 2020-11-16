@@ -1,10 +1,18 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { isNil, length, map, path, reject } from "ramda";
+import { head, isEmpty, isNil, map, path, reject } from "ramda";
 import { __ } from "i18n-for-browser";
 
 export async function getMuutYhteistyosopimus(data, isReadOnly) {
   const lomakerakenne = map(item => {
-    const maaraykset = data.maarayksetByKoodiarvo[item.koodiarvo] || [];
+    // Käsitellään vain ensimmäinen määräys, koska niin on sovittu.
+    const maarays =
+      head(data.maarayksetByKoodiarvo[item.koodiarvo] || []) || {};
+
+    const forChangeObject = reject(isNil, {
+      koodiarvo: item.koodiarvo,
+      koodisto: item.koodisto,
+      maaraysUuid: maarays.uuid
+    });
 
     return {
       anchor: "yhteistyosopimukset",
@@ -13,47 +21,38 @@ export async function getMuutYhteistyosopimus(data, isReadOnly) {
           anchor: "valintaelementti",
           name: "CheckboxWithLabel",
           properties: {
-            forChangeObject: reject(isNil, {
-              koodiarvo: item.koodiarvo,
-              koodisto: item.koodisto,
-              maaraysUuid: path([0, "uuid"], maaraykset)
-            }),
-            isChecked: !!length(maaraykset),
+            forChangeObject,
+            isChecked: !isEmpty(maarays),
             isIndeterminate: false,
             isReadOnly,
             labelStyles: {
               addition: isAdded,
               removal: isRemoved,
-              custom: !!length(maaraykset) ? isInLupa : {}
+              custom: !isEmpty(maarays) ? isInLupa : {}
             },
             title: __("common.lupaSisaltaaYhteistyosopimuksia")
           }
         }
       ],
-      categories: map(maarays => {
-        const forChangeObject = reject(isNil, {
-          koodiarvo: item.koodiarvo,
-          koodisto: item.koodisto,
-          maaraysUuid: (maarays || {}).uuid
-        });
-
-        return {
-          anchor: item.koodiarvo,
+      categories: [
+        {
+          anchor: "tekstikentta",
           components: [
             {
-              anchor: maarays.uuid,
+              anchor: "A",
               name: "TextBox",
               properties: {
                 forChangeObject,
                 isReadOnly,
                 placeholder: __("common.kuvausPlaceholder"),
                 title: __("common.maarayksenKuvaus"),
-                value: maarays.meta["yhteistyosopimus"].kuvaus
+                value:
+                  path(["meta", "yhteistyosopimus", "kuvaus"], maarays) || ""
               }
             }
           ]
-        };
-      }, maaraykset).filter(Boolean)
+        }
+      ]
     };
   }, data.items);
 

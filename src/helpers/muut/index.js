@@ -18,6 +18,7 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { fillForBackend } from "../../services/lomakkeet/backendMappings";
+import { getAnchorInit } from "utils/common";
 
 export const initializeMuu = muuData => {
   return omit(["koodiArvo"], {
@@ -33,7 +34,7 @@ export function getMuutFromStorage() {
 
 export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
   map(changeObj => {
-    const anchorInit = compose(join("."), init, split("."))(changeObj.anchor);
+    const anchorInit = getAnchorInit(changeObj.anchor);
 
     let tila = changeObj.properties.isChecked ? "LISAYS" : "POISTO";
     if (
@@ -65,7 +66,7 @@ export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
     let meta = Object.assign(
       {},
       {
-        tunniste: "tutkintokieli",
+        tunniste: "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
         changeObjects: flatten([[changeObj], perustelut]),
         muutosperustelukoodiarvo: []
       },
@@ -76,19 +77,16 @@ export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
       ["properties", "metadata", "maaraysUuid"],
       changeObj
     );
-    return maaraysUuid
-      ? {
-          koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
-          koodisto: path(
-            ["properties", "metadata", "koodisto", "koodistoUri"],
-            changeObj
-          ),
-          isInLupa: path(["properties", "metadata", "isInLupa"], changeObj),
-          kohde,
-          maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
-          maaraysUuid,
-          meta,
-          tila
-        }
-      : null;
+    return {
+      koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
+      koodisto: path(
+        ["properties", "metadata", "koodisto", "koodistoUri"],
+        changeObj
+      ),
+      kohde,
+      maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
+      maaraysUuid,
+      meta,
+      tila
+    };
   }, changeObjects.muutokset).filter(Boolean);
