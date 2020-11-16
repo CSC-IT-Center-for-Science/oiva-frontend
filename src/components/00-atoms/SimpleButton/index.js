@@ -33,6 +33,7 @@ const styles = createStyles(theme => ({
 }));
 
 const SimpleButton = ({
+  id,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
   payload = defaultProps.payload,
@@ -55,6 +56,7 @@ const SimpleButton = ({
     <React.Fragment>
       {!isReadOnly && (
         <Button
+          id={id}
           size={size}
           onClick={handleClick}
           variant={variant}
@@ -65,13 +67,9 @@ const SimpleButton = ({
           aria-label={ariaLabel}
           className={classes.root}>
           {icon && (
-            <span style={ iconContainerStyles }>
-              {icon === "FaPlus" && (
-                <FaPlus style={ iconStyles }/>
-              )}
-              {icon === "ClearIcon" && (
-                <ClearIcon style={ iconStyles }/>
-                )}
+            <span style={iconContainerStyles}>
+              {icon === "FaPlus" && <FaPlus style={iconStyles} />}
+              {icon === "ClearIcon" && <ClearIcon style={iconStyles} />}
             </span>
           )}
           {text}
@@ -85,6 +83,7 @@ SimpleButton.propTypes = {
   ariaLabel: PropTypes.string,
   color: PropTypes.string,
   disabled: PropTypes.bool,
+  id: PropTypes.string,
   isReadOnly: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   payload: PropTypes.object,

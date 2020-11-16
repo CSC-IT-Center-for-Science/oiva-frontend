@@ -9,6 +9,7 @@ import {
   endsWith,
   filter,
   flatten,
+  head,
   isNil,
   length,
   map,
@@ -46,6 +47,10 @@ const removeUnsavedChanges = () => ({ getState, setState }) => {
   setState(assoc("changeObjects", nextChangeObjects, currentState));
 };
 
+const setFocusOn = anchor => ({ getState, setState }) => {
+  setState(assoc("focusOn", anchor, getState()));
+};
+
 const setLatestChanges = changeObjects => ({ getState, setState }) => {
   setState(assoc("latestChanges", changeObjects, getState()));
 };
@@ -72,15 +77,22 @@ const Store = createStore({
       unsaved: {},
       underRemoval: {}
     },
-    isRestrictionDialogVisible: false,
+    focusOn: null,
     latestChanges: {}
   },
   actions: {
+    /**
+     * -------------------- CRITERIONS OF LIMITATIONS --------------------
+     */
     addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = getState().changeObjects;
       const rajoitekriteeritChangeObjects = filter(
-        changeObj => startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
-          !startsWith(`${sectionId}.${rajoiteId}.asetukset.kohde`, changeObj.anchor),
+        changeObj =>
+          startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
+          !startsWith(
+            `${sectionId}.${rajoiteId}.asetukset.kohde`,
+            changeObj.anchor
+          ),
         concat(
           currentChangeObjects.unsaved[sectionId] || [],
           currentChangeObjects.saved[sectionId] || []
@@ -94,12 +106,12 @@ const Store = createStore({
       const nextCriterionAnchorPart =
         length(rajoitekriteeritChangeObjects) > 0
           ? reduce(
-          max,
-          -Infinity,
-          map(changeObj => {
-            return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-          }, rajoitekriteeritChangeObjects)
-        ) + 1
+              max,
+              -Infinity,
+              map(changeObj => {
+                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+              }, rajoitekriteeritChangeObjects)
+            ) + 1
           : 1;
 
       /**
@@ -123,12 +135,17 @@ const Store = createStore({
     closeRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: false });
     },
+    /**
+     * -------------------- DYNAMIC TEXTBOXES --------------------
+     */
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
+      dispatch,
       setState
     }) => {
       const splittedSectionId = split("_", sectionId);
       if (sectionId) {
+        const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
         const textBoxChangeObjects = filter(
           changeObj =>
@@ -153,9 +170,12 @@ const Store = createStore({
             : 1;
 
         /**
-         * Luodaan
+         * Luodaan uusi muutosobjekti ja annetaan sille focus-ominaisuus,
+         * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
+         * kenttä olisi automaattisesti fokusoitu.
          */
-        const nextChangeObjects = assocPath(
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
+        let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
@@ -168,6 +188,7 @@ const Store = createStore({
           ),
           currentChangeObjects
         );
+        dispatch(setFocusOn(anchorOfTextBoxChangeObj));
         setState({ ...getState(), changeObjects: nextChangeObjects });
       }
     },
@@ -246,12 +267,28 @@ const Store = createStore({
        **/
       nextChangeObjects = recursiveTreeShake(
         unsavedFullPath,
-        nextChangeObjects
+        nextChangeObjects,
+        dispatch
       );
       nextChangeObjects = recursiveTreeShake(
         underRemovalFullPath,
-        nextChangeObjects
+        nextChangeObjects,
+        dispatch
       );
+
+      const focusWhenDeleted = head(
+        map(changeObj => {
+          const anchor = path(
+            ["properties", "metadata", "focusWhenDeleted"],
+            changeObj
+          );
+          return changeObj.properties.deleteElement && anchor ? anchor : null;
+        }, changeObjects).filter(Boolean)
+      );
+
+      if (focusWhenDeleted) {
+        dispatch(setFocusOn(focusWhenDeleted));
+      }
 
       dispatch(
         setLatestChanges({
@@ -261,8 +298,11 @@ const Store = createStore({
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
     },
-    showNewRestrictionDialog: () => ({getState, setState}) => {
-      setState({...getState(), isRestrictionDialogVisible: true});
+    setFocusOn: anchor => ({ dispatch }) => {
+      dispatch(setFocusOn(anchor));
+    },
+    showNewRestrictionDialog: () => ({ getState, setState }) => {
+      setState({ ...getState(), isRestrictionDialogVisible: true });
     }
   },
   name: "Muutokset"
@@ -336,15 +376,22 @@ export const useChangeObjectsByAnchorWithoutUnderRemoval = createHook(Store, {
   selector: getChangeObjectsByAnchorWithoutUnderRemoval
 });
 
-export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(Store, {
-  selector: (state, { anchors }) => {
-   return mergeAll(map(anchor => {
-      return {
-        [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {anchor})
-      }
-    }, anchors))
+export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(
+  Store,
+  {
+    selector: (state, { anchors }) => {
+      return mergeAll(
+        map(anchor => {
+          return {
+            [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {
+              anchor
+            })
+          };
+        }, anchors)
+      );
+    }
   }
-});
+);
 
 export const useChangeObjects = createHook(Store);
 

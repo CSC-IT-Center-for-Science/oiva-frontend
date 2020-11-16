@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import PropTypes from "prop-types";
 import Tooltip from "../../02-organisms/Tooltip";
@@ -93,12 +93,17 @@ const textboxStyles = {
 };
 
 const TextBox = props => {
+  const { onFocus } = props;
   const [isVisited, setIsVisited] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const { classes } = props;
 
+  const textBoxRef = useRef(null);
+
   const updateValue = e => {
-    props.onChanges(props.payload, { value: e.target.value });
+    props.onChanges(props.payload, {
+      value: e.target.value
+    });
   };
 
   const deleteTextBox = () => {
@@ -106,6 +111,13 @@ const TextBox = props => {
       deleteElement: true
     });
   };
+
+  useEffect(() => {
+    if (props.shouldHaveFocus) {
+      textBoxRef.current.focus();
+      onFocus();
+    }
+  }, [onFocus, props.shouldHaveFocus]);
 
   return (
     <React.Fragment>
@@ -156,6 +168,7 @@ const TextBox = props => {
                 placeholder={
                   props.isDisabled || props.isReadOnly ? "" : props.placeholder
                 }
+                ref={textBoxRef}
                 rows={props.isReadOnly ? 1 : props.rows}
                 rowsMax={props.isReadOnly ? Infinity : props.rowsMax}
                 className={`${props.isHidden ? "hidden" : "rounded"} 
@@ -270,6 +283,7 @@ TextBox.defaultProps = {
 TextBox.propTypes = {
   ariaLabel: PropTypes.string,
   delay: PropTypes.number,
+  shouldHaveFocus: PropTypes.bool,
   id: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,
