@@ -1,4 +1,3 @@
-import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
 import { } from "ramda";
@@ -16,32 +15,40 @@ export default async function opiskelijaMaarat(
       pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
       lisatiedot
   );
+  const anchorA = `opiskelijamaarat.kentat.dropdown`;
+  const anchorB = `opiskelijamaarat.kentat.input`
+  const changeObjA = getChangeObjByAnchor(anchorA, changeObjects);
+  const changeObjB = getChangeObjByAnchor(anchorB, changeObjects);
+  const oppilasMaaraValinnat = [{ label: __("common.enintaan"), value: "1" },{ label: __("common.vahintaan"), value: "2"}];
+
+  console.log(changeObjA);
 
   return {
-      anchor: "maaraaika",
+      anchor: "rajoitus",
       components: [
           {
-              anchor: "dropdown",
+              anchor: "opiskelijamaarat.dropdown",
               styleClasses: "mb-0 mr-2 w-1/5",
               name: "Dropdown",
+              value: "Vähintään",
               properties: {
-                  options: [
-                      // 1 = koodiarvo 1, enintään, koodisto: kujalisamaareet
-                      { label: __("common.enintaan"), value: "1" },
-                      // 2 = koodiarvo 2, enintään, koodisto: kujalisamaareet
-                      { label: __("common.vahintaan"), value: "2" }
-                  ],
-                  isReadOnly
+                  options: map((oppilasMaaraValinta) =>{
+                      return (
+                          {
+                              label: oppilasMaaraValinta.label,
+                              value: oppilasMaaraValinta.value,
+                          }
+                      )
+                  }, oppilasMaaraValinnat),
               }
           },
           {
-              anchor: "input",
+              anchor: "opiskelijamaarat.input",
               name: "Input",
               properties: {
                   placeholder: __("education.oppilastaOpiskelijaa"),
                   type: "number",
-                  value: "",
-                  isReadOnly
+                  value: changeObjB ? changeObjB.properties.value : "",
               }
           }
       ]

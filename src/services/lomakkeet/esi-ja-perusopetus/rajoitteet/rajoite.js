@@ -56,9 +56,9 @@ const sections = {
   getOpetustehtavatLomake,
   opetustaAntavatKunnat,
   opetuskielet,
-  opiskelijamaarat,
   opetuksenJarjestamismuoto,
   erityisetKoulutustehtavat,
+  opiskelijamaarat,
   muutEhdot
 };
 

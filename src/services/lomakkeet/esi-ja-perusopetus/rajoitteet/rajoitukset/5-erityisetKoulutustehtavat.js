@@ -21,9 +21,6 @@ export default async function opetuksenjarjestamismuodot(
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `erityisetKoulutustehtavat.${erityisetKoulutustehtavat.koodiarvo}.valintaelementti`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
-              console.log("@"+anchor);
-              console.log(changeObj);
-              console.log(changeObjects);
               return (!!maarays &&
                 (!changeObj || changeObj.properties.isChecked)) ||
                 (changeObj && changeObj.properties.isChecked)
