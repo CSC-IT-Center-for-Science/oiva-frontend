@@ -488,10 +488,8 @@ const parseSectionData = (
             break;
           }
           case "8": {
-            // TODO localization
             const { yhteistyosopimus } = meta;
-            const { fi } = yhteistyosopimus;
-            obj.kuvaus = fi;
+            obj.kuvaus = yhteistyosopimus.kuvaus;
             yhteistyosopimukset.push(obj);
             break;
           }
