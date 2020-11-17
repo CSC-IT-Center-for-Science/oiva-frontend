@@ -22,7 +22,7 @@ const Lupanakyma = ({
 }) => {
   const intl = useIntl();
   const [validity] = useValidity();
-
+  console.info(organisation);
   const organisationPhoneNumber = head(
     values(find(prop("numero"), organisation.yhteystiedot))
   );

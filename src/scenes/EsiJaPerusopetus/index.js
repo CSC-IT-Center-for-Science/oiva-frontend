@@ -91,7 +91,7 @@ export default function EsiJaPerusopetus() {
                 component={Asianhallinta}
               />
               <Route
-                path="/esi-ja-perusopetus/koulutuksenjarjestajat/:ytunnus"
+                path="/esi-ja-perusopetus/koulutuksenjarjestajat/:id"
                 render={props => {
                   return (
                     <BaseData
@@ -102,7 +102,6 @@ export default function EsiJaPerusopetus() {
                           <JarjestajaSwitch
                             lupa={_props.lupa}
                             path={props.match.path}
-                            ytunnus={_props.ytunnus}
                             user={user}
                             kielet={_props.kielet}
                           />

@@ -63,7 +63,6 @@ const JarjestajaSwitch = ({ lupa, path }) => {
 
 JarjestajaSwitch.propTypes = {
   path: PropTypes.string,
-  ytunnus: PropTypes.string,
   user: PropTypes.object
 };
 

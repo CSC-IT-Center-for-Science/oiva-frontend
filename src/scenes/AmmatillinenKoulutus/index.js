@@ -1,4 +1,5 @@
 import React from "react";
+import { PropTypes } from "prop-types";
 import { Typography } from "@material-ui/core";
 import commonMessages from "../../i18n/definitions/common";
 import educationMessages from "../../i18n/definitions/education";
@@ -20,7 +21,7 @@ import JarjestajaSwitch from "./JarjestajaSwitch";
 import { useUser } from "stores/user";
 import Asianhallinta from "./Asianhallinta";
 
-export default function AmmatillinenKoulutus() {
+export default function AmmatillinenKoulutus({ organisation }) {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
   const location = useLocation();
@@ -90,7 +91,7 @@ export default function AmmatillinenKoulutus() {
                 component={Asianhallinta}
               />
               <Route
-                path="/ammatillinenkoulutus/koulutuksenjarjestajat/:ytunnus"
+                path="/ammatillinenkoulutus/koulutuksenjarjestajat/:id"
                 render={props => {
                   return (
                     <BaseData
@@ -103,6 +104,7 @@ export default function AmmatillinenKoulutus() {
                             ytunnus={_props.ytunnus}
                             user={user}
                             kielet={_props.kielet}
+                            organisation={organisation}
                             tulevatLuvat={_props.tulevatLuvat}
                             voimassaOlevaLupa={_props.voimassaOlevaLupa}
                           />
@@ -119,3 +121,7 @@ export default function AmmatillinenKoulutus() {
     </div>
   );
 }
+
+AmmatillinenKoulutus.propTypes = {
+  organisation: PropTypes.object
+};

@@ -64,13 +64,14 @@ const Esittelijat = () => {
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:ytunnus/uusi`}
+            path={`${path}/:id/uusi`}
             render={() => (
               <BaseData
                 locale={locale}
                 render={_props => (
                   <LomakedataContainer scope={scope}>
                     <MuutoksetContainer scope={scope}>
+                      {console.info(_props)}
                       <UusiAsiaDialogContainer {..._props} />
                     </MuutoksetContainer>
                   </LomakedataContainer>
@@ -81,7 +82,7 @@ const Esittelijat = () => {
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:ytunnus/:uuid`}
+            path={`${path}/:id/:uuid`}
             render={() => {
               return (
                 <BaseData

@@ -15,7 +15,8 @@ import {
   groupBy,
   omit,
   head,
-  filter
+  filter,
+  test
 } from "ramda";
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
@@ -93,7 +94,13 @@ export const getRaw = async (
  * @param {string} ytunnus
  * @param koulutustyyppi
  */
-const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) => {
+const fetchBaseData = async (
+  keys,
+  locale,
+  lupaUuid,
+  ytunnus,
+  koulutustyyppi
+) => {
   const localeUpper = toUpper(locale);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
@@ -105,7 +112,13 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
       keys
     ),
     kielet: await getRaw("kielet", backendRoutes.kielet.path, keys),
-    kohteet: await getRaw("kohteet", `${backendRoutes.kohteet.path}${koulutustyyppi ? "?koulutustyyppi=" + koulutustyyppi : ""}`, keys),
+    kohteet: await getRaw(
+      "kohteet",
+      `${backendRoutes.kohteet.path}${
+        koulutustyyppi ? "?koulutustyyppi=" + koulutustyyppi : ""
+      }`,
+      keys
+    ),
     lisatiedot: await getRaw(
       "lisatietoja",
       backendRoutes.lisatietoja.path,
@@ -244,7 +257,11 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
-      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false${koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
+      `${backendRoutes.viimeisinLupa.path}${ytunnus}${
+        backendRoutes.viimeisinLupa.postfix
+      }?with=all&useKoodistoVersions=false${
+        koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+      }`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
@@ -254,7 +271,6 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
       maaraykset: []
     };
-
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
    * dataa. Samalla noudettu data tallennetaan lokaaliin tietovarastoon
@@ -352,7 +368,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
           )
         )
       : undefined,
-    lisamaareet: raw.kunnat
+    lisamaareet: raw.kujalisamaareet
       ? await localforage.setItem(
           "kujalisamaareet",
           sortBy(
@@ -577,10 +593,21 @@ const defaultProps = {
   keys: []
 };
 
-const BaseData = ({ keys = defaultProps.keys, locale, render, koulutustyyppi }) => {
-  const { lupaUuid, ytunnus } = useParams();
+const BaseData = ({
+  keys = defaultProps.keys,
+  locale,
+  render,
+  koulutustyyppi
+}) => {
+  const { lupaUuid, id } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
+  const ytunnus = id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null;
+  /**
+   * TO DO: Käytetään hauissa oid:tä, mikäli se on annettu y-tunnuksen sijaan.
+   * Organisaation oid on aina muotoa 1.g2.246.562.10.XXXXXXXXXX.
+   * const oid = !!ytunnus ? id : null;
+   **/
 
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
@@ -588,18 +615,20 @@ const BaseData = ({ keys = defaultProps.keys, locale, render, koulutustyyppi }) 
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(result => {
-      if (isSubscribed) {
-        setBaseData(result);
+    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(
+      result => {
+        if (isSubscribed) {
+          setBaseData(result);
+        }
       }
-    });
+    );
     return () => (isSubscribed = false);
   }, [keys, locale, lupaUuid, ytunnus, location.pathname, koulutustyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData }) : null}
+        {!!render ? render({ ...baseData, ytunnus }) : null}
       </React.Fragment>
     );
   }

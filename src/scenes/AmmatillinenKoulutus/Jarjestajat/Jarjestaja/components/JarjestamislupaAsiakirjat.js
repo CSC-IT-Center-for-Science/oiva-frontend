@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { downloadFileFn } from "../../../../../utils/common";
 import Table from "../../../../../components/02-organisms/Table";
-import { useOrganisation } from "../../../../../stores/organisation";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
 import { useMuutospyynnonLiitteet } from "../../../../../stores/muutospyynnonLiitteet";
@@ -41,10 +40,9 @@ const states = [
   "PASSIVOITU"
 ];
 
-const JarjestamislupaAsiakirjat = ({ muutospyynto }) => {
+const JarjestamislupaAsiakirjat = ({ muutospyynto, organisation }) => {
   const intl = useIntl();
 
-  const [organisation] = useOrganisation();
   const [muutospyynnonLiitteet, actions] = useMuutospyynnonLiitteet();
 
   // Let's fetch MUUTOSPYYNNÖN LIITTEET
@@ -54,13 +52,13 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto }) => {
     }
   }, [actions, muutospyynto.uuid]);
 
-  const attachmentRow = ["", R.path(["nimi", intl.locale], organisation.data)];
+  const attachmentRow = ["", R.path(["nimi", intl.locale], organisation)];
 
   const baseRow = [
     muutospyynto.tila && states.includes(muutospyynto.tila)
       ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[muutospyynto.tila]])
       : muutospyynto.tila,
-    R.path(["nimi", intl.locale], organisation.data)
+    R.path(["nimi", intl.locale], organisation)
   ];
 
   const liitteetRowItems = useMemo(() => {
