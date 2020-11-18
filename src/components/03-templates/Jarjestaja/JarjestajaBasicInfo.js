@@ -24,10 +24,6 @@ const JarjestajaBasicInfo = ({ jarjestaja }) => {
 
   return (
     <React.Fragment>
-      <Typography component="h2" variant="h4" className="pb-4 mt--12">
-        {intl.formatMessage(education.koulutuksenJarjestaja)}
-      </Typography>
-
       <LargeParagraph aria-label={ariaLabel} role="text">
         {ytunnusTitle} {jarjestaja.ytunnus}
       </LargeParagraph>

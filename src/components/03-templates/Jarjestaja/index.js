@@ -15,7 +15,6 @@ import BaseData from "basedata";
 import { Helmet } from "react-helmet";
 import { Tab, Tabs, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { Separator } from "./MuutospyyntoWizardComponents";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -51,13 +50,11 @@ const OivaTabs = withStyles(() => ({
 const Jarjestaja = React.memo(
   ({
     JarjestamislupaJSX,
-    lupaKohteet = [],
     lupa = {},
     organisation = {},
     path,
     url,
     user,
-    kielet,
     tulevatLuvat = [],
     voimassaOlevaLupa = {}
   }) => {
@@ -126,7 +123,7 @@ const Jarjestaja = React.memo(
     }, [intl, url, user]);
 
     return (
-      <article>
+      <article className="flex flex-1 flex-col">
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>
             {jarjestaja.nimi},{" "}
@@ -134,17 +131,15 @@ const Jarjestaja = React.memo(
           </title>
         </Helmet>
         <BreadcrumbsItem to={breadcrumb}>{jarjestaja.nimi}</BreadcrumbsItem>
-        <section className="px-8">
-          <Typography component="h1" variant="h1">
-            {jarjestaja.nimi}
-          </Typography>
+        <div className="sm:w-4/5 mx-auto">
+          <section className="my-8">
+            <Typography component="h1" variant="h1">
+              {jarjestaja.nimi}
+            </Typography>
 
-          <JarjestajaBasicInfo jarjestaja={jarjestaja} />
-        </section>
+            <JarjestajaBasicInfo jarjestaja={jarjestaja} />
+          </section>
 
-        <Separator />
-
-        <div className="px-8">
           <OivaTabs
             value={tabKey}
             indicatorColor="primary"
@@ -165,90 +160,89 @@ const Jarjestaja = React.memo(
                   );
                 }, tabNavRoutes)
               : null}
-             
           </OivaTabs>
-          {!!user ? (
-            <div>
-              <Route
-                path={`${path}/omattiedot`}
-                exact
-                render={() => (
-                  <BaseData
-                    keys={["kunnat", "lupa", "maakunnat"]}
-                    locale={intl.locale}
-                    render={_props => (
-                      <OmatTiedot organisation={organisation} {..._props} />
-                    )}
-                  />
-                )}
-              />
-              <Route
-                path={`${url}/jarjestamislupa`}
-                render={() => (
-                  <div className="border mt-12 p-12">
-                    <JarjestamislupaJSX lupa={lupa} />
-                  </div>
-                )}
-              />
-              <Route
-                path={`${url}/paatokset`}
-                exact
-                render={props => (
-                  <JulkisetTiedot
-                    jarjestaja={jarjestaja}
-                    tulevatLuvat={tulevatLuvat}
-                    voimassaOlevaLupa={voimassaOlevaLupa}
-                  />
-                )}
-              />
-              <Route
-                path={`${url}/jarjestamislupa-asiat`}
-                exact
-                render={props => (
-                  <JarjestamislupaAsiat
-                    history={props.history}
-                    intl={intl}
-                    isForceReloadRequested={R.includes(
-                      "force=true",
-                      props.location.search
-                    )}
-                    match={props.match}
-                    newApplicationRouteItem={newApplicationRouteItem}
-                    lupa={lupa}
-                    organisation={organisation}
-                  />
-                )}
-              />
-              <Route
-                path={`${path}/hakemukset-ja-paatokset`}
-                exact
-                render={props => <HakemuksetJaPaatokset match={props.match} />}
-              />
-            </div>
-          ) : (
-            <div>
-              <Route
-                path={`${url}/jarjestamislupa`}
-                render={() => (
-                  <div className="border mt-12 p-12">
-                    <JarjestamislupaJSX lupa={lupa} />
-                  </div>
-                )}
-              />
-              <Route
-                path={`${url}/paatokset`}
-                exact
-                render={() => (
-                  <JulkisetTiedot
-                    jarjestaja={jarjestaja}
-                    tulevatLuvat={tulevatLuvat}
-                    voimassaOlevaLupa={voimassaOlevaLupa}
-                  />
-                )}
-              />
-            </div>
-          )}
         </div>
+        {!!user ? (
+          <div className="flex-1 bg-gray-100 border-t border-solid border-gray-300">
+            <Route
+              path={`${path}/omattiedot`}
+              exact
+              render={() => (
+                <BaseData
+                  keys={["kunnat", "lupa", "maakunnat"]}
+                  locale={intl.locale}
+                  render={_props => (
+                    <OmatTiedot organisation={organisation} {..._props} />
+                  )}
+                />
+              )}
+            />
+            <Route
+              path={`${url}/jarjestamislupa`}
+              render={() => (
+                <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                  <JarjestamislupaJSX lupa={lupa} />
+                </div>
+              )}
+            />
+            <Route
+              path={`${url}/paatokset`}
+              exact
+              render={props => (
+                <JulkisetTiedot
+                  jarjestaja={jarjestaja}
+                  tulevatLuvat={tulevatLuvat}
+                  voimassaOlevaLupa={voimassaOlevaLupa}
+                />
+              )}
+            />
+            <Route
+              path={`${url}/jarjestamislupa-asiat`}
+              exact
+              render={props => (
+                <JarjestamislupaAsiat
+                  history={props.history}
+                  intl={intl}
+                  isForceReloadRequested={R.includes(
+                    "force=true",
+                    props.location.search
+                  )}
+                  match={props.match}
+                  newApplicationRouteItem={newApplicationRouteItem}
+                  lupa={lupa}
+                  organisation={organisation}
+                />
+              )}
+            />
+            <Route
+              path={`${path}/hakemukset-ja-paatokset`}
+              exact
+              render={props => <HakemuksetJaPaatokset match={props.match} />}
+            />
+          </div>
+        ) : (
+          <div>
+            <Route
+              path={`${url}/jarjestamislupa`}
+              render={() => (
+                <div className="border mt-12 p-12">
+                  <JarjestamislupaJSX lupa={lupa} />
+                </div>
+              )}
+            />
+            <Route
+              path={`${url}/paatokset`}
+              exact
+              render={() => (
+                <JulkisetTiedot
+                  jarjestaja={jarjestaja}
+                  tulevatLuvat={tulevatLuvat}
+                  voimassaOlevaLupa={voimassaOlevaLupa}
+                />
+              )}
+            />
+          </div>
+        )}
       </article>
     );
   }

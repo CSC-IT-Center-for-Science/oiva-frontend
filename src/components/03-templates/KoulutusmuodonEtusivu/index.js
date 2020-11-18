@@ -36,55 +36,55 @@ export default function KoulutusmuodonEtusivu({
   const { data: user } = userState;
 
   return (
-    <div>
-      <div className="mx-auto max-w-9xl">
-        <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
-        <div className="flex flex-col min-h-screen mx-auto bg-white mb-8 pb-8">
-          <article className="px-16">
-            <nav
-              tabIndex="0"
-              className="breadcumbs-nav py-8"
-              aria-label={formatMessage(commonMessages.breadCrumbs)}>
-              <Breadcrumbs
-                hideIfEmpty={true}
-                separator={<b> / </b>}
-                item={NavLink}
-                finalItem={"b"}
-                finalProps={{
-                  style: {
-                    fontWeight: 400,
-                    color: COLORS.BLACK
-                  }
-                }}
-              />
-            </nav>
-            {location.pathname === `/${koulutusmuoto.kebabCase}` ? (
-              <React.Fragment>
-                <Typography component="h1" variant="h1" className="py-4">
-                  {sivunOtsikko}
-                </Typography>
-                <Typography component="p" className="pb-8">
-                  {kuvausteksti}
-                </Typography>
-                {!!user ? (
-                  <section>
-                    <Typography component="h2" variant="h2" className="py-4">
-                      {formatMessage(commonMessages.asianhallinta)}
-                    </Typography>
-                    <AsianhallintaCard
-                      koulutusmuoto={koulutusmuoto}></AsianhallintaCard>
-                  </section>
-                ) : null}
-                <section className="pt-12">
-                  <Jarjestajat
-                    koulutusmuoto={koulutusmuoto}
-                    sivunOtsikko={sivunOtsikko}
-                  />
+    <React.Fragment>
+      <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
+      <div className="flex flex-col min-h-screen bg-white">
+        <article>
+          <nav
+            tabIndex="0"
+            className="breadcumbs-nav py-4 border-b pl-8"
+            aria-label={formatMessage(commonMessages.breadCrumbs)}>
+            <Breadcrumbs
+              hideIfEmpty={true}
+              separator={<b> / </b>}
+              item={NavLink}
+              finalItem={"b"}
+              finalProps={{
+                style: {
+                  fontWeight: 400,
+                  color: COLORS.BLACK
+                }
+              }}
+            />
+          </nav>
+          {location.pathname === `/${koulutusmuoto.kebabCase}` ? (
+            <div className="mx-auto w-4/5 mt-12">
+              <Typography component="h1" variant="h1" className="py-4">
+                {sivunOtsikko}
+              </Typography>
+              <Typography component="p" className="pb-8">
+                {kuvausteksti}
+              </Typography>
+              {!!user ? (
+                <section>
+                  <Typography component="h2" variant="h2" className="py-4">
+                    {formatMessage(commonMessages.asianhallinta)}
+                  </Typography>
+                  <AsianhallintaCard
+                    koulutusmuoto={koulutusmuoto}></AsianhallintaCard>
                 </section>
-              </React.Fragment>
-            ) : null}
-          </article>
+              ) : null}
+              <section className="pt-12">
+                <Jarjestajat
+                  koulutusmuoto={koulutusmuoto}
+                  sivunOtsikko={sivunOtsikko}
+                />
+              </section>
+            </div>
+          ) : null}
+        </article>
 
+        <div className="flex-1 flex flex-col">
           <Router history={history}>
             <Switch>
               <Route
@@ -125,6 +125,6 @@ export default function KoulutusmuodonEtusivu({
           </Router>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
