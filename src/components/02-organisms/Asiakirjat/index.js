@@ -57,7 +57,7 @@ const states = [
   "ESITTELYSSA"
 ];
 
-const Asiakirjat = ({ koulutustyyppi }) => {
+const Asiakirjat = ({ koulutusmuoto }) => {
   const history = useHistory();
   const { uuid } = useParams();
   const intl = useIntl();
@@ -109,7 +109,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(
-      `/${koulutustyyppi}/asianhallinta/avoimet?force=${new Date().getTime()}`
+      `/${koulutusmuoto.kebabCase}/asianhallinta/avoimet?force=${new Date().getTime()}`
     );
   };
 
@@ -139,7 +139,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
     // Let's move to Asiat view.
-    history.push(`/${koulutustyyppi}/asianhallinta/avoimet?force=${new Date().getTime()}`);
+    history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet?force=${new Date().getTime()}`);
   };
 
   const baseRow = [
@@ -390,7 +390,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <BreadcrumbsItem to={`/${koulutustyyppi}/asianhallinta/${ytunnus}`}>
+        <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}>
           {nimi}
         </BreadcrumbsItem>
         <div
@@ -402,7 +402,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
             onClick={() => {
-              history.push(`/${koulutustyyppi}/asianhallinta/avoimet`);
+              history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`);
             }}>
             <BackIcon
               style={{
@@ -524,7 +524,7 @@ const Asiakirjat = ({ koulutustyyppi }) => {
 
 Asiakirjat.propTypes = {
   uuid: PropTypes.object,
-  koulutustyyppi: PropTypes.string
+  koulutusmuoto: PropTypes.string
 };
 
 export default Asiakirjat;

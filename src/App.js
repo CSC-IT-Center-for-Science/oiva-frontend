@@ -189,7 +189,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   const getHeader = useCallback(
     template => {
-      console.info(organisation);
       if (appState.locale) {
         return (
           <Header
@@ -217,7 +216,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       appState.locale,
       authenticationLink,
       intl,
-      organisation,
       onLocaleChange,
       onLoginButtonClick,
       onMenuClick,

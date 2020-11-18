@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
-import AvoimetAsiat from "./AvoimetAsiat";
-import PaatetytAsiat from "./PaatetytAsiat";
+import AvoimetAsiat from "../AvoimetAsiat";
+import PaatetytAsiat from "../PaatetytAsiat";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
-import common from "../../i18n/definitions/common";
+import common from "i18n/definitions/common";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
-import SimpleButton from "../../components/00-atoms/SimpleButton";
-import UusiAsiaEsidialog from "./UusiAsiaEsidialog";
+import SimpleButton from "components/00-atoms/SimpleButton";
+import UusiAsiaEsidialog from "../UusiAsiaEsidialog";
 import { last, split } from "ramda";
 
 const OivaTab = withStyles(theme => ({
@@ -44,7 +44,7 @@ const OivaTabs = withStyles(() => ({
   }
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
-const Asiat = ({ path, user }) => {
+const Asiat = ({ koulutusmuoto, path, user }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -64,7 +64,9 @@ const Asiat = ({ path, user }) => {
           isVisible={isEsidialogVisible}
           onClose={() => setIsEsidialogVisible(false)}
           onSelect={selectedItem =>
-            history.push(`/esi-ja-perusopetus/asianhallinta/${selectedItem.value}/uusi`)
+            history.push(
+              `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi`
+            )
           }></UusiAsiaEsidialog>
       )}
 
@@ -121,7 +123,7 @@ const Asiat = ({ path, user }) => {
               <Route
                 authenticated={!!user}
                 path={`${path}/avoimet`}
-                render={() => <AvoimetAsiat />}
+                render={() => <AvoimetAsiat koulutusmuoto={koulutusmuoto} />}
               />
               <Route
                 authenticated={!!user}

@@ -58,7 +58,6 @@ const AvoimetAsiat = () => {
   }, [rowActionTargetId, history, intl.formatMessage]);
 
   const tableStructure = useMemo(() => {
-    console.info(muutospyynnot);
     return muutospyynnot.avoimet &&
       muutospyynnot.avoimet.fetchedAt &&
       muutospyynnot.avoimet.data !== null

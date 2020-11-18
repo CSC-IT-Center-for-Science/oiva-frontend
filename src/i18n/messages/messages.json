@@ -1470,6 +1470,26 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.lupaSisaltaaYhteistyosopimuksia",
+    "defaultMessage": "Lupa sisältää yhteistyösopimuksia",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.maarayksenKuvaus",
+    "defaultMessage": "Määräyksen kuvaus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.maarayksenXKuvaus",
+    "defaultMessage": "Määräyksen {nro} kuvaus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lisaaUusiYhteistyosopimus",
+    "defaultMessage": "Lisää uusi yhteistyösopimus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1545,6 +1565,11 @@
     "filepath": "src/i18n/definitions/education.js"
   },
   {
+    "id": "education.erityisetKoulutustehtavat",
+    "defaultMessage": "Erityiset koulutustehtävät",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
     "id": "error.duplicateAsianumero",
     "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
     "filepath": "src/i18n/definitions/error.js"
@@ -1553,6 +1578,11 @@
     "id": "error.muutospyyntoNotFound",
     "defaultMessage": "Muutospyyntöä ei löytynyt",
     "filepath": "src/i18n/definitions/error.js"
+  },
+  {
+    "id": "esiJaPerusopetus.htmlLuvanOtsikko",
+    "defaultMessage": "Ajantasainen perusopetuksen järjestämislupa {date}",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
     "id": "homepage.header",

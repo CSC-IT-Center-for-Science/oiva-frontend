@@ -2,14 +2,26 @@ import React, { useMemo } from "react";
 import { Switch, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import { parseLupa } from "../../utils/lupaParser";
-import { isEmpty } from "ramda";
-import Loading from "../../modules/Loading";
+import { isEmpty, prop } from "ramda";
+import Loading from "../../../modules/Loading";
 import BaseData from "basedata";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import education from "../../i18n/definitions/education";
+import education from "../../../i18n/definitions/education";
+import { parseLupa } from "utils/lupaParser";
+import Jarjestaja from "components/03-templates/Jarjestaja";
 
-const JarjestajaSwitch = ({ lupa, path }) => {
+const JarjestajaSwitch = ({
+  JarjestamislupaJSX,
+  koulutusmuoto,
+  lupa,
+  organisation,
+  path,
+  user,
+  ytunnus,
+  kielet,
+  tulevatLuvat,
+  voimassaOlevaLupa
+}) => {
   const intl = useIntl();
 
   const lupaKohteet = useMemo(() => {
@@ -20,7 +32,7 @@ const JarjestajaSwitch = ({ lupa, path }) => {
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to="/esi-ja-perusopetus">
+      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
         {intl.formatMessage(education.preAndBasicEducation)}
       </BreadcrumbsItem>
       <Switch>
@@ -50,6 +62,32 @@ const JarjestajaSwitch = ({ lupa, path }) => {
                 <BaseData
                   locale={intl.locale}
                   render={_props => <div>TODO: Avataan KJ-puolen lomake</div>}
+                />
+              );
+            }
+            return <Loading />;
+          }}
+        />
+        <Route
+          path={`${path}`}
+          render={props => {
+            if (
+              lupa &&
+              ytunnus === prop("jarjestajaYtunnus", lupa) &&
+              !isEmpty(lupaKohteet)
+            ) {
+              return (
+                <Jarjestaja
+                  JarjestamislupaJSX={JarjestamislupaJSX}
+                  lupaKohteet={lupaKohteet}
+                  lupa={lupa}
+                  organisation={organisation}
+                  path={path}
+                  url={props.match.url}
+                  user={user}
+                  kielet={kielet}
+                  tulevatLuvat={tulevatLuvat}
+                  voimassaOlevaLupa={voimassaOlevaLupa}
                 />
               );
             }

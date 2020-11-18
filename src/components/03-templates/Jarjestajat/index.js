@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { useLuvat } from "../../stores/luvat";
-import Jarjestajaluettelo from "./Jarjestajaluettelo";
+import { useLuvat } from "stores/luvat";
+import Jarjestajaluettelo from "scenes/EsiJaPerusopetus/Jarjestajaluettelo";
 import { Helmet } from "react-helmet";
-import education from "../../i18n/definitions/education";
-import Loading from "../../modules/Loading";
+import Loading from "modules/Loading";
 import { useIntl } from "react-intl";
 
-const Jarjestajat = () => {
+const Jarjestajat = ({ koulutusmuoto, sivunOtsikko }) => {
   const intl = useIntl();
   const [luvat, luvatActions] = useLuvat();
 
@@ -16,7 +15,7 @@ const Jarjestajat = () => {
     const abortController = luvatActions.load([
       {
         key: "koulutustyyppi",
-        value: "1"
+        value: koulutusmuoto.koulutustyyppi
       }
     ]);
     return function cancel() {
@@ -24,18 +23,16 @@ const Jarjestajat = () => {
         abortController.abort();
       }
     };
-  }, [luvatActions]);
+  }, [koulutusmuoto.koulutustyyppi, luvatActions]);
 
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>
-          {intl.formatMessage(education.preAndBasicEducation)} - Oiva
-        </title>
+        <title>{sivunOtsikko} - Oiva</title>
       </Helmet>
 
-      <BreadcrumbsItem to="/esi-ja-perusopetus">
-        {intl.formatMessage(education.preAndBasicEducation)}
+      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
+        {sivunOtsikko}
       </BreadcrumbsItem>
 
       {luvat.isLoading === false && !luvat.isErroneous && (

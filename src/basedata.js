@@ -266,7 +266,6 @@ const fetchBaseData = async (
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
   };
-
   const lupa = raw.viimeisinLupa ||
     (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
       maaraykset: []
