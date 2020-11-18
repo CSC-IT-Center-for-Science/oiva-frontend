@@ -18,8 +18,6 @@ const CasAuthenticated = ({ organisation }) => {
 
   const { ytunnus } = organisation;
 
-  console.info(ytunnus);
-
   if (user.hasErrored) {
     return <p>{intl.formatMessage(commonMessages.loginError)}</p>;
   } else if (user.fetchedAt && ytunnus) {
