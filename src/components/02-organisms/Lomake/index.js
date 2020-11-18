@@ -162,7 +162,7 @@ const Lomake = React.memo(
   } else {
     return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
   }
-};
+})
 
 Lomake.propTypes = {
   action: PropTypes.string,
