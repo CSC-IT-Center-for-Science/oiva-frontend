@@ -23,25 +23,6 @@ const Store = createStore({
     changeObjects: {}
   },
   actions: {
-    acceptRestriction: (sectionId, restrictionId, targetSectionId) => ({
-      getState,
-      setState
-    }) => {
-      const currentChangeObjects = prop("changeObjects", getState());
-      const nextChangeObjects = map(changeObj => {
-        return {
-          ...changeObj,
-          anchor: replaceAnchorPartWith(changeObj.anchor, 0, targetSectionId)
-        };
-      }, currentChangeObjects[sectionId]);
-      setState(
-        assocPath(
-          ["changeObjects", targetSectionId],
-          nextChangeObjects,
-          getState()
-        )
-      );
-    },
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
       setState

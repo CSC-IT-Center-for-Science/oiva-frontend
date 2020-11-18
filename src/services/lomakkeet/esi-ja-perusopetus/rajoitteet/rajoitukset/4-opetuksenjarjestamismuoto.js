@@ -17,6 +17,9 @@ export default async function opetuksenjarjestamismuodot(
           anchor: "opetuksenJarjestamismuodot",
           name: "Autocomplete",
           properties: {
+            forChangeObject: {
+              section: "opetuksenJarjestamismuoto",
+            },
             options: map((opetuksenjarjestamismuodot) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `opetuksenJarjestamismuodot.${opetuksenjarjestamismuodot.koodiarvo}.valinta`;

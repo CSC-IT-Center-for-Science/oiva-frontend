@@ -33,6 +33,9 @@ export default function opetustaAntavatKunnat(changeObjects = []) {
           anchor: "opetustaAntavatKunnat",
           name: "Autocomplete",
           properties: {
+            forChangeObject: {
+              section: "opetustaAntavatKunnat"
+            },
             options: map(changeObj => {
               const { koodiarvo, title } = changeObj.properties.metadata;
               return { label: title, value: koodiarvo };

@@ -16,7 +16,6 @@ import {
   map,
   filter,
   startsWith,
-  concat,
   includes
 } from "ramda";
 import erityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
@@ -151,7 +150,7 @@ async function defineRajoituksetStructure(
   index = 0,
   structure = []
 ) {
-  const initialAsetus = nth(index, asetukset);
+  const initialAsetus = nth(index, asetukset || []);
   if (initialAsetus && !isEmpty(groupedChangeObjects)) {
     console.info(initialAsetus, groupedChangeObjects[rajoiteId].asetukset);
     const asetusChangeObj = groupedChangeObjects[rajoiteId].asetukset
@@ -210,12 +209,12 @@ async function defineRajoituksetStructure(
  * @param {*} changeObjects
  */
 export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
-  const kohdeChangeObjects = filter(cObj => startsWith(`rajoitelomake.eka.asetukset`, cObj.anchor) &&
-    !startsWith(`rajoitelomake.eka.asetukset.kohde`, cObj.anchor) &&
-    !includes("rajoitus", cObj.anchor) &&
-    !startsWith(`rajoitelomake.eka.asetukset.1`, cObj.anchor), changeObjects);
+  const rajoiteId = data.rajoiteId;
+  const kohdeChangeObjects = filter(cObj => startsWith(`rajoitelomake.${rajoiteId}.asetukset`, cObj.anchor) &&
+    !startsWith(`rajoitelomake.${rajoiteId}.asetukset.kohde`, cObj.anchor) &&
+    !includes("rajoitus", cObj.anchor), changeObjects)
 
- const addedRajoitteet = map(cObj => {
+  const addedRajoitteet = map(cObj => {
     return {
       id: getAnchorPart(cObj.anchor, 3),
       kohde: {
@@ -242,36 +241,9 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
     }
   }, kohdeChangeObjects || []).filter(Boolean);
 
- const ekaAsetus = [
-   {
-     id: "1",
-     kohde: {
-       components: [
-         {
-           anchor: "A",
-           name: "Autocomplete",
-           properties: {
-             isMulti: false,
-             options: values(
-               mapObjIndexed((categoryFn, key) => {
-                 return {
-                   label: localizations[key],
-                   value: key
-                 }
-               }, sections)
-             ).filter(Boolean),
-             title: "Kohde"
-           }
-         }
-       ]
-     },
-     rajoitus: {}
-   }
-  ];
-
-  const asetukset = {
-    eka: addedRajoitteet ? concat(ekaAsetus, addedRajoitteet) : ekaAsetus
-  };
+   const asetukset = {
+     [rajoiteId]: addedRajoitteet
+   };
 
   function groupChangeObjects(changeObjects, index = 0, result = {}) {
     const changeObj = head(changeObjects);

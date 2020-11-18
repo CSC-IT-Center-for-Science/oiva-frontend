@@ -14,9 +14,12 @@ export default async function opetuksenjarjestamismuodot(
       anchor: "rajoitus",
       components: [
         {
-          anchor: "opetuksenJarjestamismuodot",
+          anchor: "erityisetKoulutustehtavat",
           name: "Autocomplete",
           properties: {
+            forChangeObject: {
+              section: "erityisetKoulutustehtavat",
+            },
             options: map((erityisetKoulutustehtavat) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `erityisetKoulutustehtavat.${erityisetKoulutustehtavat.koodiarvo}.valintaelementti`;

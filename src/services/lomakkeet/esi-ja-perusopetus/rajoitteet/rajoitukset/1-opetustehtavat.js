@@ -19,6 +19,9 @@ export default async function getOpetustehtavatLomake(
           anchor: "opetustehtavat",
           name: "Autocomplete",
           properties: {
+            forChangeObject: {
+              section: "getOpetustehtavatLomake"
+            },
             options: map(opetustehtava => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `opetustehtavat.opetustehtava.${opetustehtava.koodiarvo}`;

@@ -24,22 +24,23 @@ const defaultProps = {
 
 const Lomake = React.memo(
   ({
-    action,
-    anchor,
-    data = defaultProps.data,
-    isInExpandableRow = defaultProps.isInExpandableRow,
-    isReadOnly,
-    isRowExpanded = defaultProps.isRowExpanded,
-    path: _path,
-    prefix = defaultProps.prefix,
-    showCategoryTitles = defaultProps.showCategoryTitles,
-    uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
-    hasInvalidFieldsFn,
-    noPadding = defaultProps.noPadding,
-    rowMessages = defaultProps.rowMessages,
-    rowTitle = defaultProps.rowTitle,
-    showValidationErrors = defaultProps.showValidationErrors
-  }) => {
+     action,
+     anchor,
+     data = defaultProps.data,
+     isInExpandableRow = defaultProps.isInExpandableRow,
+     isReadOnly,
+     isRowExpanded = defaultProps.isRowExpanded,
+     onChanges,
+     path: _path,
+     prefix = defaultProps.prefix,
+     showCategoryTitles = defaultProps.showCategoryTitles,
+     uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
+     hasInvalidFieldsFn,
+     noPadding = defaultProps.noPadding,
+     rowMessages = defaultProps.rowMessages,
+     rowTitle = defaultProps.rowTitle,
+     showValidationErrors = defaultProps.showValidationErrors,
+   }) => {
     const intl = useIntl();
 
     const rowLocalizations = isEmpty(rowMessages)
@@ -67,9 +68,10 @@ const Lomake = React.memo(
 
     const onChangesUpdate = useCallback(
       ({ anchor, changes }) => {
-        actions.setChanges(changes, anchor);
+        onChanges ? onChanges(anchor, changes)
+          : actions.setChanges(changes, anchor);
       },
-      [actions]
+      [actions, onChanges]
     );
 
     useEffect(() => {
@@ -167,7 +169,8 @@ Lomake.propTypes = {
   rowMessages: PropTypes.object,
   rowTitle: PropTypes.string,
   uncheckParentWithoutActiveChildNodes: PropTypes.bool,
-  hasInvalidFieldsFn: PropTypes.func
+  hasInvalidFieldsFn: PropTypes.func,
+  onChanges: PropTypes.func
 };
 
 export default Lomake;

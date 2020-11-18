@@ -39,6 +39,9 @@ export default async function opetustehtavat(
           anchor: "opetuskielet",
           name: "Autocomplete",
           properties: {
+            forChangeObject: {
+              section: "opetuskielet",
+            },
             options: map(kieli => {
               return {
                 label:

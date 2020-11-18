@@ -13,6 +13,9 @@ export default function maaraaika(
         anchor: "alkamispaiva",
         name: "Datepicker",
         properties: {
+          forChangeObject: {
+            section: "maaraaika",
+          },
           label: "Alkamispäivä",
           value: "",
           onChanges: () => {},
@@ -34,6 +37,9 @@ export default function maaraaika(
         anchor: "paattymispaiva",
         name: "Datepicker",
         properties: {
+          forChangeObject: {
+            section: "maaraaika",
+          },
           label: "Päättymispäivä",
           value: "",
           onChanges: () => {},

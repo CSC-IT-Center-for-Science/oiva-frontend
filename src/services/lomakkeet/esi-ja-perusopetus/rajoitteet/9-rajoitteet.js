@@ -8,9 +8,15 @@ import {
   nth,
   prop,
   split,
-  values
+  values,
+  tail,
+  filter,
+  find,
+  pipe,
+  startsWith,
+  path, addIndex
 } from "ramda";
-import { getAnchorPart } from "utils/common";
+import { getAnchorPart, removeAnchorPart, replaceAnchorPartWith } from "utils/common";
 
 const getKohteenTarkenninValue = changeObj => {
   const typeOfRajoite = getAnchorPart(changeObj.anchor, 3);
@@ -37,79 +43,103 @@ export function rajoitteet(data, isReadOnly, locale, changeObjects) {
   }, changeObjectsByRajoiteId);
 
   const rajoitteet = values(
-    mapObjIndexed((rajoite, rajoiteId) => {
-      const {
-        label: kohdeLabel,
-        value: kohdeValue
-      } = rajoite.elements.kohteenValinta[0].properties.value;
-      const kohteenTarkenninChangeObject = rajoite.elements[kohdeValue][0];
-      const kohteenTarkenninValue = getKohteenTarkenninValue(
-        kohteenTarkenninChangeObject
-      );
-
+    addIndex(mapObjIndexed)((rajoite, rajoiteId, foo, ind) => {
+      const changeObj = rajoite.elements.asetukset[0];
+      const anchor = removeAnchorPart(replaceAnchorPartWith(changeObj.anchor, 3, "rajoitus"), 4);
+      const tarkenninChangeObj = find(pipe(prop("anchor"), startsWith(anchor)), rajoite.elements.asetukset);
+      const rajoiteValue = path(["properties", "value"], tarkenninChangeObj || {}) || [];
+      const rajoitteenArvo = Array.isArray(rajoiteValue) ? join(", ", map(prop("label"), rajoiteValue)) : rajoiteValue;
       return {
         anchor: rajoiteId,
         components: [
           {
             anchor: "title",
             name: "StatusTextRow",
+            styleClasses: ["font-bold", "text-lg"],
             properties: {
-              title: `Rajoite ${rajoiteId}`
+              title: `Rajoite ${ind + 1}`,
             }
-          }
+          },
         ],
         categories: flatten([
           {
             anchor: "kohde",
-            layout: { margins: { top: "none" } },
+            layout: {indentation: "none"},
             components: [
               {
                 anchor: "A",
                 name: "StatusTextRow",
                 properties: {
-                  title: `Rajoitteen kohde: ${kohdeLabel}`
+                  statusText: `Rajoitteen kohde:`,
+                  statusTextStyleClasses: ["font-bold", "pr-2"],
+                  title: `${changeObj.properties.value.label}`,
                 }
-              }
+              },
             ]
           },
           {
             anchor: "kohteenTarkennin",
-            layout: { margins: { top: "none" } },
+            layout: {margins: {top: "none"}, indentation: "none"},
             components: [
               {
                 anchor: "label",
-                containerStyleClasses: "",
                 name: "StatusTextRow",
                 properties: {
-                  title: "Testi vain:"
+                  title: `${rajoitteenArvo}`
                 },
-                styleClasses: ["pr-2 font-bold"]
-              },
-              {
-                anchor: "value",
-                name: "StatusTextRow",
-                properties: {
-                  title: kohteenTarkenninValue
-                }
               }
             ]
           },
           map(changeObj => {
-            return {
-              anchor: "kriteerit",
-              layout: { margins: { top: "none" } },
-              components: [
+            console.log(changeObj);
+            const anchor = removeAnchorPart(replaceAnchorPartWith(changeObj.anchor, 4, "rajoitus"), 5);
+            const tarkenninChangeObj = find(pipe(prop("anchor"), startsWith(anchor)), rajoite.elements.asetukset);
+            const rajoiteValue = path(["properties", "value"], tarkenninChangeObj || {}) || [];
+            const rajoitteenArvo = Array.isArray(rajoiteValue) ? join(", ", map(prop("label"), rajoiteValue)) : rajoiteValue;
+            return tarkenninChangeObj ?
+              [
                 {
-                  anchor: getAnchorPart(changeObj.anchor, 3),
-                  name: "StatusTextRow",
+                  anchor: "kriteerit",
+                  layout: {margins: {top: "none"}, indentation: "none"},
+                  components: [
+                    {
+                      anchor: getAnchorPart(changeObj.anchor, 3),
+                      name: "StatusTextRow",
+                      properties: {
+                        statusText: `${changeObj.properties.value.label}`,
+                        statusTextStyleClasses: ["font-bold", "pr-2"],
+                        styleClasses: ["font-bold"],
+                        title: rajoitteenArvo,
+                      }
+                    }
+                  ],
+                },
+              ] : {}
+          }, filter(changeObj => getAnchorPart(changeObj.anchor, 4) === "kohde", tail(rajoite.elements.asetukset))),
+          {
+            anchor: "toiminnot",
+            components:
+              [
+                {
+                  anchor: "muokkaa",
+                  name: "SimpleButton",
+                  onClick: data.onModifyRestriction,
                   properties: {
-                    title: `Rajoitteen kohde: `
+                    text: "Muokkaa rajoitetta",
+                    variant: "text"
+                  }
+                },
+                {
+                  anchor: "poista",
+                  name: "SimpleButton",
+                  onClick: data.onRemoveRestriction,
+                  properties: {
+                    text: "Poista rajoite",
+                    variant: "text"
                   }
                 }
               ]
-            };
-          }, rajoite.elements.kriteerit)
-        ])
+          }])
       };
     }, rajoitteetGrouped)
   );
