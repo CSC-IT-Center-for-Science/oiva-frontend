@@ -115,7 +115,7 @@ const getPropertiesObject = (
  * form structure will be gone through again and so the form will be updated.
  */
 const CategorizedList = props => {
-  const { onChangesUpdate, showValidationErrors } = props;
+  const { onChangesUpdate, onFocus, showValidationErrors } = props;
 
   /**
    * Click of the SimpleButton is handled here.
@@ -447,15 +447,13 @@ const CategorizedList = props => {
                           );
                           const isDisabled =
                             propsObj.isReadOnly ||
-                            (
-                              (previousSibling.name === "CheckboxWithLabel" ||
-                                previousSibling.name ===
+                            ((previousSibling.name === "CheckboxWithLabel" ||
+                              previousSibling.name ===
                                 "RadioButtonWithLabel") &&
                               !(
                                 isPreviousSiblingCheckedByDefault ||
                                 change.properties.isChecked
-                              )
-                            );
+                              ));
                           return (
                             <div
                               className={component.styleClasses || "px-2 mb-1"}>
@@ -504,6 +502,7 @@ const CategorizedList = props => {
                               isRequired={propsObj.isRequired}
                               isValid={propsObj.isValid}
                               onChanges={handleChanges}
+                              onFocus={onFocus}
                               payload={{
                                 anchor,
                                 categories: category.categories,
@@ -513,6 +512,7 @@ const CategorizedList = props => {
                                 rootPath: props.rootPath
                               }}
                               placeholder={propsObj.placeholder}
+                              shouldHaveFocus={props.focusOn === fullAnchor}
                               title={propsObj.title}
                               tooltip={propsObj.tooltip}
                               value={propsObj.value}
@@ -778,7 +778,9 @@ const CategorizedList = props => {
                                 height={heights.SHORT}
                                 short={component.short}
                                 title={propsObj.title}
-                                hideSelectedOptions={propsObj.hideSelectedOptions}
+                                hideSelectedOptions={
+                                  propsObj.hideSelectedOptions
+                                }
                               />
                             </div>
                           );
@@ -806,6 +808,7 @@ const CategorizedList = props => {
                     {component.name === "SimpleButton" && (
                       <div className={`${component.styleClasses} flex-2`}>
                         <SimpleButton
+                          id={fullAnchor}
                           isReadOnly={propsObj.isReadOnly}
                           text={propsObj.text}
                           variant={propsObj.variant}
@@ -904,6 +907,7 @@ const CategorizedList = props => {
             category.categories && (
               <CategorizedList
                 anchor={anchor}
+                focusOn={props.focusOn}
                 categories={category.categories}
                 changes={categoryChanges}
                 debug={props.debug}
@@ -920,6 +924,7 @@ const CategorizedList = props => {
                 runRootOperations={props.runRootOperations}
                 showCategoryTitles={props.showCategoryTitles}
                 onChangesUpdate={props.onChangesUpdate}
+                onFocus={props.onFocus}
                 showValidationErrors={showValidationErrors}
                 requiredMessage={props.requiredMessage}
               />
@@ -937,6 +942,7 @@ CategorizedList.defaultProps = {
 
 CategorizedList.propTypes = {
   anchor: PropTypes.string,
+  focusOn: PropTypes.string,
   categories: PropTypes.array,
   changes: PropTypes.array,
   debug: PropTypes.bool,
@@ -945,7 +951,8 @@ CategorizedList.propTypes = {
   runRootOperations: PropTypes.func,
   showCategoryTitles: PropTypes.bool,
   onChangesUpdate: PropTypes.func,
-  onChangesRemove: PropTypes.func
+  onChangesRemove: PropTypes.func,
+  onFocus: PropTypes.func
 };
 
 CategorizedList.displayName = "CategorizedList222";

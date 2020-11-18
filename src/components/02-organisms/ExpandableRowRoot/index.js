@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import UndoIcon from "@material-ui/icons/Undo";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
+import { compose, filter, not, pathEq } from "ramda";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -53,6 +54,11 @@ const ExpandableRowRoot = ({
     setIsToggleOpen(props[1]);
   };
 
+  const amountOfRelevantChanges = filter(
+    compose(not, pathEq(["properties", "metadata", "isOnlyForUI"], true)),
+    changes
+  );
+
   return (
     <React.Fragment>
       {categories && (
@@ -65,10 +71,14 @@ const ExpandableRowRoot = ({
             <span>{title}</span>
           </h4>
           <div data-slot="info">
-            {changes.length > 0 && (
+            {amountOfRelevantChanges.length > 0 && (
               <div className="flex items-center">
                 {!hideAmountOfChanges && (
-                  <NumberOfChanges changes={changes} id={anchor} messages={messages} />
+                  <NumberOfChanges
+                    changes={amountOfRelevantChanges}
+                    id={anchor}
+                    messages={messages}
+                  />
                 )}
                 {!disableReverting && (
                   <span className="mx-6">

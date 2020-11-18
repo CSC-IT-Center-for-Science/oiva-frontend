@@ -19,8 +19,10 @@ const defaultProps = {
 const CategorizedListRoot = React.memo(
   ({
     anchor = defaultProps.anchor,
+    focusOn,
     categories = defaultProps.categories,
     changes = defaultProps.changes,
+    onFocus,
     onUpdate,
     showCategoryTitles = defaultProps.showCategoryTitles,
     isReadOnly,
@@ -105,11 +107,13 @@ const CategorizedListRoot = React.memo(
               return (
                 <CategorizedList
                   anchor={anchor}
+                  focusOn={focusOn}
                   categories={categories}
                   changes={changes}
                   rootPath={[]}
                   showCategoryTitles={showCategoryTitles}
                   onChangesUpdate={onChangesUpdate}
+                  onFocus={onFocus}
                   removeChangeObject={removeChangeObject}
                   isReadOnly={isReadOnly}
                   showValidationErrors={showValidationErrors}
@@ -132,12 +136,16 @@ const CategorizedListRoot = React.memo(
 CategorizedListRoot.propTypes = {
   // Root anchor of the form. Dots are not allowed.
   anchor: PropTypes.string,
+  // Anchor of the element that should have focus
+  focusOn: PropTypes.string,
   // Structure of the form. Array of categories.
   categories: PropTypes.array,
   // Array of change objects.
   changes: PropTypes.array,
   // Callback function that will be called when something changes on the form.
   onUpdate: PropTypes.func.isRequired,
+  // Should be called when a component sets focus on some of its elements.
+  onFocus: PropTypes.func,
   // Categories might have titles. The boolean defines if are going to be shown.
   showCategoryTitles: PropTypes.bool,
   // Defines if the form can be modified.

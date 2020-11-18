@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../scenes/AmmatillinenKoulutus/store";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "../../../scenes/AmmatillinenKoulutus/store";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
 import { has, isEmpty } from "ramda";
@@ -43,28 +46,25 @@ const Lomake = React.memo(
    }) => {
     const intl = useIntl();
 
-    const rowLocalizations = isEmpty(rowMessages)
-      ? {
-          undo: intl.formatMessage(formMessages.undo),
-          changesTest: intl.formatMessage(formMessages.changesText)
-        }
-      : rowMessages;
+  const rowLocalizations = isEmpty(rowMessages)
+    ? {
+        undo: intl.formatMessage(formMessages.undo),
+        changesTest: intl.formatMessage(formMessages.changesText)
+      }
+    : rowMessages;
+  const [{ focusOn }] = useChangeObjects();
+  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor
+  });
+  const [, lomakedataActions] = useLomakedata({ anchor });
+  const [lomake, setLomake] = useState();
 
-    const [
-      changeObjects,
-      actions
-    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor
-    });
-    const [, lomakedataActions] = useLomakedata({ anchor });
-    const [lomake, setLomake] = useState();
-
-    const onChangesRemove = useCallback(
-      anchor => {
-        actions.setChanges([], anchor);
-      },
-      [actions]
-    );
+  const onChangesRemove = useCallback(
+    anchor => {
+      actions.setChanges([], anchor);
+    },
+    [actions]
+  );
 
     const onChangesUpdate = useCallback(
       ({ anchor, changes }) => {
@@ -74,72 +74,63 @@ const Lomake = React.memo(
       [actions, onChanges]
     );
 
-    useEffect(() => {
-      async function fetchLomake() {
-        return await getLomake(
-          action,
-          changeObjects,
-          data,
-          isReadOnly,
-          intl.locale,
-          _path,
-          prefix
-        );
+  const onFocus = useCallback(() => {
+    actions.setFocusOn(null);
+  }, [actions]);
+
+  useEffect(() => {
+    async function fetchLomake() {
+      return await getLomake(
+        action,
+        changeObjects,
+        data,
+        isReadOnly,
+        intl.locale,
+        _path,
+        prefix
+      );
+    }
+
+    fetchLomake().then(result => {
+      if (has("isValid", result)) {
+        lomakedataActions.setValidity(result.isValid, anchor);
       }
+      result.structure ? setLomake(result.structure) : setLomake(result);
+    });
+  }, [
+    action,
+    anchor,
+    changeObjects,
+    data,
+    hasInvalidFieldsFn,
+    isReadOnly,
+    intl.locale,
+    lomakedataActions,
+    _path,
+    prefix
+  ]);
 
-      fetchLomake().then(result => {
-        if (has("isValid", result)) {
-          lomakedataActions.setValidity(result.isValid, anchor);
-        }
-        result.structure ? setLomake(result.structure) : setLomake(result);
-      });
-    }, [
-      action,
-      anchor,
-      changeObjects,
-      data,
-      hasInvalidFieldsFn,
-      isReadOnly,
-      intl.locale,
-      lomakedataActions,
-      _path,
-      prefix
-    ]);
-
-    if (lomake) {
-      return (
-        <React.Fragment>
-          {isInExpandableRow ? (
-            <ExpandableRowRoot
-              anchor={anchor}
-              changes={changeObjects}
-              key={`expandable-row-root`}
-              hideAmountOfChanges={true}
-              isExpanded={isRowExpanded}
-              onChangesRemove={onChangesRemove}
-              messages={rowLocalizations}
-              sectionId={anchor}
-              title={rowTitle}>
-              <div className={noPadding ? "" : "p-8"}>
-                <CategorizedListRoot
-                  anchor={anchor}
-                  categories={lomake}
-                  changes={changeObjects}
-                  onUpdate={onChangesUpdate}
-                  showCategoryTitles={showCategoryTitles}
-                  showValidationErrors={showValidationErrors}
-                  uncheckParentWithoutActiveChildNodes={
-                    uncheckParentWithoutActiveChildNodes
-                  }
-                />
-              </div>
-            </ExpandableRowRoot>
-          ) : (
+  if (lomake) {
+    return (
+      <React.Fragment>
+        {isInExpandableRow ? (
+          <ExpandableRowRoot
+            anchor={anchor}
+            changes={changeObjects}
+            key={`expandable-row-root`}
+            hideAmountOfChanges={true}
+            isExpanded={isRowExpanded}
+            onChangesRemove={onChangesRemove}
+            messages={rowLocalizations}
+            sectionId={anchor}
+            title={rowTitle}>
             <div className={noPadding ? "" : "p-8"}>
               <CategorizedListRoot
                 anchor={anchor}
+                focusOn={focusOn}
                 categories={lomake}
                 changes={changeObjects}
+                onFocus={onFocus}
                 onUpdate={onChangesUpdate}
                 showCategoryTitles={showCategoryTitles}
                 showValidationErrors={showValidationErrors}
@@ -148,14 +139,30 @@ const Lomake = React.memo(
                 }
               />
             </div>
-          )}
-        </React.Fragment>
-      );
-    } else {
-      return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
-    }
+          </ExpandableRowRoot>
+        ) : (
+          <div className={noPadding ? "" : "p-8"}>
+            <CategorizedListRoot
+              anchor={anchor}
+              focusOn={focusOn}
+              categories={lomake}
+              changes={changeObjects}
+              onFocus={onFocus}
+              onUpdate={onChangesUpdate}
+              showCategoryTitles={showCategoryTitles}
+              showValidationErrors={showValidationErrors}
+              uncheckParentWithoutActiveChildNodes={
+                uncheckParentWithoutActiveChildNodes
+              }
+            />
+          </div>
+        )}
+      </React.Fragment>
+    );
+  } else {
+    return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
   }
-);
+};
 
 Lomake.propTypes = {
   action: PropTypes.string,

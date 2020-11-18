@@ -25,7 +25,7 @@ const ErityisetKoulutustehtavat = ({ sectionId }) => {
     <Lomake
       action="modification"
       anchor={sectionId}
-      data={{ onAddButtonClick }}
+      data={{ onAddButtonClick, sectionId }}
       isRowExpanded={true}
       path={constants.formLocations}
       showCategoryTitles={true}

@@ -9,6 +9,7 @@ import {
   endsWith,
   filter,
   flatten,
+  head,
   isNil,
   length,
   map,
@@ -26,7 +27,11 @@ import {
   includes,
   prop
 } from "ramda";
-import { getAnchorPart, getLatestChangesByAnchor, recursiveTreeShake } from "utils/common";
+import {
+  getAnchorPart,
+  getLatestChangesByAnchor,
+  recursiveTreeShake
+} from "utils/common";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -42,6 +47,10 @@ const removeUnsavedChanges = () => ({ getState, setState }) => {
   const currentState = getState();
   const nextChangeObjects = assoc("unsaved", {}, currentState.changeObjects);
   setState(assoc("changeObjects", nextChangeObjects, currentState));
+};
+
+const setFocusOn = anchor => ({ getState, setState }) => {
+  setState(assoc("focusOn", anchor, getState()));
 };
 
 const setLatestChanges = changeObjects => ({ getState, setState }) => {
@@ -82,10 +91,14 @@ const Store = createStore({
       unsaved: {},
       underRemoval: {}
     },
+    focusOn: null,
     isRestrictionDialogVisible: false,
     latestChanges: {}
   },
   actions: {
+    /**
+     * -------------------- CRITERIONS OF LIMITATIONS --------------------
+     */
     acceptRestriction: (sectionId, restrictionId, targetSectionId) => ({
     getState,
     dispatch,
@@ -153,11 +166,16 @@ const Store = createStore({
     closeRestrictionDialog: (initialChangeObjects = [], rajoiteId) => ({ getState, dispatch, setState }) => {
       dispatch(closeRestrictionDialog());
     },
+    /**
+     * -------------------- DYNAMIC TEXTBOXES --------------------
+     */
     createTextBoxChangeObject: (sectionId, koodiarvo) => ({
       getState,
+      dispatch,
       setState
     }) => {
       if (sectionId) {
+        const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
         const textBoxChangeObjects = filter(
           changeObj =>
@@ -182,10 +200,13 @@ const Store = createStore({
             : 1;
 
         /**
-         * Luodaan
+         * Luodaan uusi muutosobjekti ja annetaan sille focus-ominaisuus,
+         * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
+         * kenttä olisi automaattisesti fokusoitu.
          */
-        const nextChangeObjects = assocPath(
-          ["unsaved", sectionId],
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
+        let nextChangeObjects = assocPath(
+          prepend("unsaved", splittedSectionId),
           append(
             {
               anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
@@ -193,21 +214,21 @@ const Store = createStore({
                 value: ""
               }
             },
-            currentChangeObjects.unsaved[sectionId] || []
+            path(splittedSectionId, currentChangeObjects.unsaved) || []
           ),
           currentChangeObjects
         );
-        console.info(nextChangeObjects);
-        setState({...getState(), changeObjects: nextChangeObjects});
+        dispatch(setFocusOn(anchorOfTextBoxChangeObj));
+        setState({ ...getState(), changeObjects: nextChangeObjects });
       }
     },
-    initializeChanges: changeObjects => ({dispatch}) => {
+    initializeChanges: changeObjects => ({ dispatch }) => {
       dispatch(setSavedChanges(changeObjects));
       dispatch(setLatestChanges({}));
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
-    removeChangeObjectByAnchor: anchor => ({getState, setState}) => {
+    removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
       const allCurrentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", getAnchorPart(anchor, 0));
       const unsavedFullPath = prepend("unsaved", anchorParts);
@@ -282,12 +303,28 @@ const Store = createStore({
        **/
       nextChangeObjects = recursiveTreeShake(
         unsavedFullPath,
-        nextChangeObjects
+        nextChangeObjects,
+        dispatch
       );
       nextChangeObjects = recursiveTreeShake(
         underRemovalFullPath,
-        nextChangeObjects
+        nextChangeObjects,
+        dispatch
       );
+
+      const focusWhenDeleted = head(
+        map(changeObj => {
+          const anchor = path(
+            ["properties", "metadata", "focusWhenDeleted"],
+            changeObj
+          );
+          return changeObj.properties.deleteElement && anchor ? anchor : null;
+        }, changeObjects).filter(Boolean)
+      );
+
+      if (focusWhenDeleted) {
+        dispatch(setFocusOn(focusWhenDeleted));
+      }
 
       dispatch(
         setLatestChanges({
@@ -296,6 +333,9 @@ const Store = createStore({
         })
       );
       setState(assoc("changeObjects", nextChangeObjects, getState()));
+    },
+    setFocusOn: anchor => ({ dispatch }) => {
+      dispatch(setFocusOn(anchor));
     },
     setRajoitelomakeChangeObjects: (unsavedChangeObjects) => ({getState, setState}) => {
       setState(assocPath(["changeObjects", "unsaved", "rajoitelomake"], unsavedChangeObjects, getState()));
@@ -375,15 +415,22 @@ export const useChangeObjectsByAnchorWithoutUnderRemoval = createHook(Store, {
   selector: getChangeObjectsByAnchorWithoutUnderRemoval
 });
 
-export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(Store, {
-  selector: (state, { anchors }) => {
-   return mergeAll(map(anchor => {
-      return {
-        [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {anchor})
-      }
-    }, anchors))
+export const useChangeObjectsByMultipleAnchorsWithoutUnderRemoval = createHook(
+  Store,
+  {
+    selector: (state, { anchors }) => {
+      return mergeAll(
+        map(anchor => {
+          return {
+            [anchor]: getChangeObjectsByAnchorWithoutUnderRemoval(state, {
+              anchor
+            })
+          };
+        }, anchors)
+      );
+    }
   }
-});
+);
 
 export const useChangeObjects = createHook(Store);
 
