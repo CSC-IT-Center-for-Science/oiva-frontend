@@ -126,7 +126,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
               <Route
                 authenticated={!!user}
                 path={`${path}/paatetyt`}
-                render={() => <PaatetytAsiat />}
+                render={() => <PaatetytAsiat koulutusmuoto={koulutusmuoto} />}
               />
             </Switch>
           </div>

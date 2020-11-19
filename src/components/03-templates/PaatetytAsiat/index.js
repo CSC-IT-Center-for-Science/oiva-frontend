@@ -8,7 +8,7 @@ import { useMuutospyynnot } from "stores/muutospyynnot";
 import * as R from "ramda";
 import { koulutustyypitMap } from "../../../utils/constants";
 
-const PaatetytAsiat = () => {
+const PaatetytAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -21,7 +21,7 @@ const PaatetytAsiat = () => {
       ["paatetyt"],
       false,
       isForced,
-      koulutustyypitMap.ESI_JA_PERUSOPETUS
+      koulutusmuoto.koulutustyyppi
     );
 
     return function cancel() {
