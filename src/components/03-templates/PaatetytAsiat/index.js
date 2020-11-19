@@ -6,7 +6,6 @@ import { useLocation, useHistory } from "react-router-dom";
 import Loading from "modules/Loading";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import * as R from "ramda";
-import { koulutustyypitMap } from "../../../utils/constants";
 
 const PaatetytAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
@@ -29,7 +28,7 @@ const PaatetytAsiat = ({ koulutusmuoto }) => {
         abortController.abort();
       }
     };
-  }, [location.search, muutospyynnotActions]);
+  }, [location.search, muutospyynnotActions, koulutusmuoto.koulutustyyppi]);
 
   const tableStructure = useMemo(() => {
     return !!muutospyynnot.paatetyt && muutospyynnot.paatetyt.fetchedAt
