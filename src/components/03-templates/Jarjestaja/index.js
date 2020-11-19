@@ -172,9 +172,13 @@ const Jarjestaja = React.memo(
                 <BaseData
                   keys={["kunnat", "lupa", "maakunnat"]}
                   locale={intl.locale}
-                  render={_props => (
-                    <OmatTiedot organisation={organisation} {..._props} />
-                  )}
+                  render={_props =>
+                    !R.isEmpty(organisation) ? (
+                      <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                        <OmatTiedot organisation={organisation} {..._props} />
+                      </div>
+                    ) : null
+                  }
                 />
               )}
             />
@@ -201,18 +205,20 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa-asiat`}
               exact
               render={props => (
-                <JarjestamislupaAsiat
-                  history={props.history}
-                  intl={intl}
-                  isForceReloadRequested={R.includes(
-                    "force=true",
-                    props.location.search
-                  )}
-                  match={props.match}
-                  newApplicationRouteItem={newApplicationRouteItem}
-                  lupa={lupa}
-                  organisation={organisation}
-                />
+                <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                  <JarjestamislupaAsiat
+                    history={props.history}
+                    intl={intl}
+                    isForceReloadRequested={R.includes(
+                      "force=true",
+                      props.location.search
+                    )}
+                    match={props.match}
+                    newApplicationRouteItem={newApplicationRouteItem}
+                    lupa={lupa}
+                    organisation={organisation}
+                  />
+                </div>
               )}
             />
             <Route

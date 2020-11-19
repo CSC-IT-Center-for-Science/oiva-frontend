@@ -18,8 +18,9 @@ import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
 import AsianhallintaCard from "../AsianhallintaCard";
 import Asianhallinta from "../Asianhallinta";
+import { includes } from "ramda";
 
-const keys = ["lupaByYtunnus"];
+const keys = ["lupaByYtunnus", "organisaatio"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
@@ -36,10 +37,14 @@ export default function KoulutusmuodonEtusivu({
   const [userState] = useUser();
   const { data: user } = userState;
 
+  const isEsittelija = user
+    ? includes("OIVA_APP_ESITTELIJA", user.roles)
+    : false;
+
   return (
     <React.Fragment>
       <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
-      <div className="flex flex-col min-h-screen bg-white">
+      <div className="flex-1 flex flex-col bg-white">
         <article>
           <nav
             tabIndex="0"
@@ -66,7 +71,7 @@ export default function KoulutusmuodonEtusivu({
               <Typography component="p" className="pb-8">
                 {kuvausteksti}
               </Typography>
-              {!!user ? (
+              {isEsittelija ? (
                 <section>
                   <Typography component="h2" variant="h2" className="py-4">
                     {formatMessage(commonMessages.asianhallinta)}
@@ -113,6 +118,7 @@ export default function KoulutusmuodonEtusivu({
                             JarjestamislupaJSX={JarjestamislupaJSX}
                             koulutusmuoto={koulutusmuoto}
                             lupa={_props.lupa}
+                            organisation={_props.organisaatio}
                             path={props.match.path}
                             user={user}
                             {..._props}

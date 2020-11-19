@@ -34,11 +34,11 @@ import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import "@reach/skip-nav/styles.css";
 import SessionDialog from "SessionDialog";
-import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
-import AmmatillinenKoulutus from "scenes/AmmatillinenKoulutus";
-import EsiJaPerusopetus from "scenes/EsiJaPerusopetus";
-import Lukiokoulutus from "scenes/Lukiokoulutus";
-import VapaaSivistystyo from "scenes/VapaaSivistystyo";
+import Asianhallinta from "scenes/Asianhallinta";
+import AmmatillinenKoulutus from "scenes/Koulutusmuodot/AmmatillinenKoulutus";
+import EsiJaPerusopetus from "scenes/Koulutusmuodot/EsiJaPerusopetus";
+import Lukiokoulutus from "scenes/Koulutusmuodot/Lukiokoulutus";
+import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo";
 import BaseData, { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import * as R from "ramda";
@@ -48,6 +48,22 @@ import "react-toastify/dist/ReactToastify.css";
 const history = createBrowserHistory();
 
 const logo = { text: "Oiva", path: "/" };
+
+const constants = {
+  koulutusmuodot: {
+    ammatillinenKoulutus: {
+      kebabCase: "ammatillinenkoulutus"
+    },
+    esiJaPerusopetus: {
+      kebabCase: "esi-ja-perusopetus",
+      koulutustyyppi: "1"
+    },
+    lukiokoulutus: {
+      kebabCase: "lukiokoulutus",
+      koulutustyyppi: "2"
+    }
+  }
+};
 
 /**
  * App component forms the basic structure of the application and its routing.
@@ -61,6 +77,33 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   const { data: user } = userState;
 
   const [organisation, setOrganisation] = useState();
+
+  const koulutusmuodot = useMemo(
+    () => ({
+      ...constants.koulutusmuodot,
+      ammatillinenKoulutus: {
+        ...constants.koulutusmuodot.ammatillinenKoulutus,
+        // TO DO: Aseta kuvausteksti käännöksiin
+        kuvausteksti:
+          "Ammatillisten tutkintojen ja koulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää tutkintojen ja koulutuksen järjestämislupaa. Järjestämislupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
+        sivunOtsikko: intl.formatMessage(educationMessages.vocationalEducation)
+      },
+      esiJaPerusopetus: {
+        ...constants.koulutusmuodot.esiJaPerusopetus,
+        // TO DO: Aseta kuvausteksti käännöksiin
+        kuvausteksti:
+          "Kunta on perusopetuslain nojalla velvollinen järjestämään sen alueella asuville oppivelvollisuusikäisille esi- ja perusopetusta. Valtioneuvosto voi myöntää opetus- ja kulttuuriministeriön esityksestä myös rekisteröidylle yhteisölle tai säätiölle luvan perusopetuslain mukaisen opetuksen järjestämiseen. Opetusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella opetuksen järjestäjiä ja heidän järjestämislupiaan.",
+        sivunOtsikko: intl.formatMessage(educationMessages.preAndBasicEducation)
+      },
+      lukiokoulutus: {
+        ...constants.koulutusmuodot.lukiokoulutus,
+        // TO DO: Aseta kuvausteksti käännöksiin
+        kuvausteksti: "Kuvaus tulossa myöhemmin.",
+        sivunOtsikko: intl.formatMessage(educationMessages.highSchoolEducation)
+      }
+    }),
+    [intl]
+  );
 
   useEffect(() => {
     if (user && user.oid) {
@@ -265,13 +308,16 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
           <SkipNavLink>
             {intl.formatMessage(commonMessages.jumpToContent)}
           </SkipNavLink>
-
           <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <SkipNavContent />
               <main className="flex-1 flex flex-col">
                 <Switch>
-                  <Route exact path="/" component={Home} />
+                  <Route
+                    exact
+                    path="/"
+                    render={() => <Home koulutusmuodot={koulutusmuodot} />}
+                  />
                   <Route path="/logout" component={Logout} />
                   <Route path="/kirjaudu" component={Login} />
                   <Route exact path="/tilastot" component={Tilastot} />
@@ -288,14 +334,27 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   <Route
                     path="/ammatillinenkoulutus"
                     render={() => (
-                      <AmmatillinenKoulutus organisation={organisation} />
+                      <AmmatillinenKoulutus
+                        koulutusmuoto={koulutusmuodot.ammatillinenKoulutus}
+                      />
                     )}
                   />
                   <Route
                     path="/esi-ja-perusopetus"
-                    component={EsiJaPerusopetus}
+                    render={() => (
+                      <EsiJaPerusopetus
+                        koulutusmuoto={koulutusmuodot.esiJaPerusopetus}
+                      />
+                    )}
                   />
-                  <Route path="/lukiokoulutus" component={Lukiokoulutus} />
+                  <Route
+                    path="/lukiokoulutus"
+                    render={() => (
+                      <Lukiokoulutus
+                        koulutusmuoto={koulutusmuodot.lukiokoulutus}
+                      />
+                    )}
+                  />
                   <Route
                     path="/vapaa-sivistystyo"
                     render={() => {
@@ -336,11 +395,10 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
               </main>
             </div>
           </div>
+          <footer>
+            <Footer />
+          </footer>
         </div>
-
-        <footer>
-          <Footer />
-        </footer>
       </Router>
 
       {isSessionDialogVisible && !!user ? (
