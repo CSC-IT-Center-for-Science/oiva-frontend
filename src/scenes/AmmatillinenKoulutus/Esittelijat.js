@@ -64,7 +64,7 @@ const Esittelijat = () => {
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:ytunnus/uusi`}
+            path={`${path}/:id/uusi`}
             render={() => (
               <BaseData
                 locale={locale}
@@ -81,7 +81,7 @@ const Esittelijat = () => {
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:ytunnus/:uuid`}
+            path={`${path}/:id/:uuid`}
             render={() => {
               return (
                 <BaseData

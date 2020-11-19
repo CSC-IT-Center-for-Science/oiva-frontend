@@ -26,7 +26,6 @@ import {
 import Header from "./components/02-organisms/Header";
 import Navigation from "./components/02-organisms/Navigation";
 import SideNavigation from "./components/02-organisms/SideNavigation";
-import { useOrganisation } from "./stores/organisation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
 import Yhteydenotto from "./scenes/Yhteydenotto";
@@ -40,8 +39,11 @@ import AmmatillinenKoulutus from "scenes/AmmatillinenKoulutus";
 import EsiJaPerusopetus from "scenes/EsiJaPerusopetus";
 import Lukiokoulutus from "scenes/Lukiokoulutus";
 import VapaaSivistystyo from "scenes/VapaaSivistystyo";
+import BaseData, { getRaw } from "basedata";
+import { backendRoutes } from "stores/utils/backendRoutes";
 import * as R from "ramda";
-import BaseData from "basedata";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const history = createBrowserHistory();
 
@@ -58,7 +60,19 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   const { data: user } = userState;
 
-  const [organisation, organisationActions] = useOrganisation();
+  const [organisation, setOrganisation] = useState();
+
+  useEffect(() => {
+    if (user && user.oid) {
+      getRaw(
+        "organisaatio",
+        `${backendRoutes.organisaatio.path}/${user.oid}`,
+        []
+      ).then(result => {
+        setOrganisation(result);
+      });
+    }
+  }, [setOrganisation, user]);
 
   const [isSideMenuVisible, setSideMenuVisibility] = useState(false);
 
@@ -125,11 +139,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   }, [onLogout]);
 
   const organisationLink = useMemo(() => {
-    if (user && user.oid && organisation && organisation[user.oid]) {
-      const orgNimi =
-        user && organisation && organisation[user.oid]
-          ? R.prop("nimi", organisation[user.oid].data)
-          : "";
+    if (user && user.oid && organisation) {
+      const orgNimi = user && organisation ? R.prop("nimi", organisation) : "";
       const isEsittelija = user
         ? R.includes("OIVA_APP_ESITTELIJA", user.roles)
         : false;
@@ -146,7 +157,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
             "path",
             `/ammatillinenkoulutus/koulutuksenjarjestajat/${R.prop(
               "ytunnus",
-              organisation[user.oid].data
+              organisation
             )}/jarjestamislupa`,
             result
           );
@@ -158,19 +169,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
     text: intl.formatMessage(commonMessages.siteShortDescription),
     path: "/"
   };
-
-  // Let's fetch ORGANISAATIO
-  useEffect(() => {
-    let abortController;
-    if (user && user.oid) {
-      abortController = organisationActions.load(user.oid);
-    }
-    return () => {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [organisationActions, user]);
 
   /**
    * If user has authenticated save some of his/her information into the
@@ -193,11 +191,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   const getHeader = useCallback(
     template => {
-      if (
-        appState.locale &&
-        intl &&
-        (!user || (organisation[user.oid] && !organisation[user.oid].isLoding))
-      ) {
+      if (appState.locale) {
         return (
           <Header
             inFinnish={intl.formatMessage(langMessages.inFinnish)}
@@ -210,7 +204,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
             onLocaleChange={onLocaleChange}
             onLoginButtonClick={onLoginButtonClick}
             onMenuClick={onMenuClick}
-            organisation={organisationLink}
+            organisationLink={organisationLink}
             shortDescription={shortDescription}
             template={template}
             languageSelectionAriaLabel={intl.formatMessage(
@@ -224,7 +218,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       appState.locale,
       authenticationLink,
       intl,
-      organisation,
       onLocaleChange,
       onLoginButtonClick,
       onMenuClick,
@@ -236,6 +229,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   return (
     <React.Fragment>
+      <ToastContainer />
       <Router history={history}>
         <div
           className={`relative lg:fixed z-50 ${
@@ -275,7 +269,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
           <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <SkipNavContent />
-              <main className="flex-1 flex flex-col sm:w-4/5 mx-auto">
+              <main className="flex-1 flex flex-col">
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route path="/logout" component={Logout} />
@@ -283,10 +277,19 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   <Route exact path="/tilastot" component={Tilastot} />
                   <Route path="/cas-auth" component={RequireCasAuth} />
                   <Route path="/cas-logout" component={DestroyCasAuth} />
-                  <Route path="/cas-ready" component={CasAuthenticated} />
+                  {!!organisation && (
+                    <Route
+                      path="/cas-ready"
+                      render={() => (
+                        <CasAuthenticated organisation={organisation} />
+                      )}
+                    />
+                  )}
                   <Route
                     path="/ammatillinenkoulutus"
-                    component={AmmatillinenKoulutus}
+                    render={() => (
+                      <AmmatillinenKoulutus organisation={organisation} />
+                    )}
                   />
                   <Route
                     path="/esi-ja-perusopetus"
@@ -298,8 +301,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     render={() => {
                       return (
                         <BaseData
-                        keys={["vstLuvat", "vstTyypit"]}
-                        locale={intl.locale}
+                          keys={["vstLuvat", "vstTyypit"]}
+                          locale={intl.locale}
                           render={props => {
                             return <VapaaSivistystyo {...props} />;
                           }}
@@ -310,10 +313,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   <Route
                     path="/asianhallinta"
                     render={() => {
-                      return user &&
-                        !user.isLoading &&
-                        organisation[user.oid] &&
-                        !!organisation[user.oid].fetchedAt ? (
+                      return user && !user.isLoading && organisation ? (
                         <Asianhallinta />
                       ) : null;
                     }}
@@ -337,13 +337,12 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
             </div>
           </div>
         </div>
-      </Router>
-      <Router history={history}>
+
         <footer>
           <Footer />
-          <ToastContainer />
         </footer>
       </Router>
+
       {isSessionDialogVisible && !!user ? (
         <SessionDialog
           isVisible={isSessionDialogVisible}

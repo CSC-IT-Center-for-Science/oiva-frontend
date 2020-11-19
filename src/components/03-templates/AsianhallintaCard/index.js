@@ -4,10 +4,10 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useIntl } from "react-intl";
-import commonMessages from "../../i18n/definitions/common";
+import commonMessages from "../../../i18n/definitions/common";
 import { useHistory } from "react-router-dom";
 
-export default function AsianhallintaCard() {
+export default function AsianhallintaCard({ koulutusmuoto }) {
   const intl = useIntl();
   const history = useHistory();
 
@@ -15,7 +15,7 @@ export default function AsianhallintaCard() {
     <Card>
       <CardActionArea
         onClick={() => {
-          history.push("/esi-ja-perusopetus/asianhallinta/avoimet");
+          history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`);
         }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

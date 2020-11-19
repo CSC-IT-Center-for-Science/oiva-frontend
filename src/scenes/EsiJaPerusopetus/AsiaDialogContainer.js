@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
-
 import Loading from "../../modules/Loading";
 import UusiAsiaDialog from "./UusiAsiaDialog";
 import { useHistory, useParams } from "react-router-dom";

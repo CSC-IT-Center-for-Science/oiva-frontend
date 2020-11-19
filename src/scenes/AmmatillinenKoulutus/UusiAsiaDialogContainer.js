@@ -29,7 +29,7 @@ const UusiAsiaDialogContainer = ({
 }) => {
   const intl = useIntl();
 
-  let { ytunnus } = useParams();
+  let { id } = useParams();
   let history = useHistory();
 
   const lupaKohteet = useMemo(() => {
@@ -48,9 +48,9 @@ const UusiAsiaDialogContainer = ({
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(`/ammatillinenkoulutus/asianhallinta/${ytunnus}/${uuid}`);
+      history.push(`/ammatillinenkoulutus/asianhallinta/${id}/${uuid}`);
     },
-    [history, ytunnus]
+    [history, id]
   );
 
   return (
