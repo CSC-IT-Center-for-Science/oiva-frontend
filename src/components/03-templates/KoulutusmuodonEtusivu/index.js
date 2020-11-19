@@ -18,6 +18,9 @@ import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
 import AsianhallintaCard from "../AsianhallintaCard";
 import Asianhallinta from "../Asianhallinta";
+import { koulutustyypitMap } from "../../../utils/constants";
+import { userHasAnyOfRoles } from "../../../modules/helpers";
+import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
 const keys = ["lupaByYtunnus"];
 
@@ -39,6 +42,9 @@ export default function KoulutusmuodonEtusivu({
   return (
     <React.Fragment>
       <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
+      {koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO && !userHasAnyOfRoles(user, [ROLE_YLLAPITAJA, ROLE_ESITTELIJA]) ?
+        <div style={{position: "absolute", top: "40%", left: "43%"}}>{formatMessage(commonMessages.tietoaTulevanJulkaisunAjankohdasta)}</div>
+        :
       <div className="flex flex-col min-h-screen bg-white">
         <article>
           <nav
@@ -126,7 +132,7 @@ export default function KoulutusmuodonEtusivu({
             </Switch>
           </Router>
         </div>
-      </div>
+      </div>}
     </React.Fragment>
   );
 }
