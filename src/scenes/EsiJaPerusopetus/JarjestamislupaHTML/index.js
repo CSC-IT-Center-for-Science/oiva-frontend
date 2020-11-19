@@ -1,19 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import common from "i18n/definitions/common";
 import { Typography } from "@material-ui/core";
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
  */
-const JarjestamislupaJSX = ({ lupa }) => {
+const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
   const { formatMessage } = useIntl();
   return (
     <div>
       <Typography variant="h2">
-        {formatMessage(esiJaPerusopetus.htmlLuvanOtsikko, {
+        {formatMessage(common.htmlLuvanOtsikko, {
           date: new Date().toLocaleDateString()
         })}
       </Typography>
@@ -22,7 +22,8 @@ const JarjestamislupaJSX = ({ lupa }) => {
 };
 
 JarjestamislupaJSX.propTypes = {
-  lupa: PropTypes.object.isRequired
+  lupa: PropTypes.object.isRequired,
+  lupakohteet: PropTypes.object
 };
 
 export default JarjestamislupaJSX;

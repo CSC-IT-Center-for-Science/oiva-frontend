@@ -5,10 +5,11 @@ import KoulutusmuodonEtusivu from "components/03-templates/KoulutusmuodonEtusivu
 import AsiaDialogContainer from "./AsiaDialogContainer";
 import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
+import Jarjestajaluettelo from "./Jarjestajaluettelo";
 
 const koulutusmuoto = {
   kebabCase: "esi-ja-perusopetus",
-  koulutustyyppi: 1
+  koulutustyyppi: "1"
 };
 
 export default function EsiJaPerusopetus() {
@@ -17,6 +18,7 @@ export default function EsiJaPerusopetus() {
   return (
     <KoulutusmuodonEtusivu
       AsiaDialogContainer={AsiaDialogContainer}
+      Jarjestajaluettelo={Jarjestajaluettelo}
       JarjestamislupaJSX={JarjestamislupaJSX}
       koulutusmuoto={koulutusmuoto}
       kuvausteksti="Esi- ja perusopetuksen kuvaus tulee tähän."

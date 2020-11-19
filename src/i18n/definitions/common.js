@@ -1194,5 +1194,9 @@ export default defineMessages({
   lisaaUusiYhteistyosopimus: {
     id: "common.lisaaUusiYhteistyosopimus",
     defaultMessage: "Lisää uusi yhteistyösopimus"
+  },
+  htmlLuvanOtsikko: {
+    id: "common.htmlLuvanOtsikko",
+    defaultMessage: "Ajantasainen perusopetuksen järjestämislupa {date}"
   }
 });

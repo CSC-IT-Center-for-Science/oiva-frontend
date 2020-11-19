@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import common from "i18n/definitions/common";
-import education from "i18n/definitions/education";
 import { useIntl } from "react-intl";
 import { split, join, replace } from "ramda";
-import { Typography } from "@material-ui/core";
 
 const LargeParagraph = styled.p`
   font-size: 20px;

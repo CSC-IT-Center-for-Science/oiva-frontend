@@ -23,6 +23,7 @@ const keys = ["lupaByYtunnus"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
+  Jarjestajaluettelo,
   JarjestamislupaJSX,
   koulutusmuoto,
   kuvausteksti,
@@ -42,7 +43,7 @@ export default function KoulutusmuodonEtusivu({
         <article>
           <nav
             tabIndex="0"
-            className="breadcumbs-nav py-4 border-b pl-8"
+            className="breadcumbs-nav py-4 border-b pl-8 mb-12"
             aria-label={formatMessage(commonMessages.breadCrumbs)}>
             <Breadcrumbs
               hideIfEmpty={true}
@@ -77,6 +78,7 @@ export default function KoulutusmuodonEtusivu({
               <section className="pt-12">
                 <Jarjestajat
                   koulutusmuoto={koulutusmuoto}
+                  Jarjestajaluettelo={Jarjestajaluettelo}
                   sivunOtsikko={sivunOtsikko}
                 />
               </section>

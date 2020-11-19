@@ -524,7 +524,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
 Asiakirjat.propTypes = {
   uuid: PropTypes.object,
-  koulutusmuoto: PropTypes.string
+  koulutusmuoto: PropTypes.object
 };
 
 export default Asiakirjat;

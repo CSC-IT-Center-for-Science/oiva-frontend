@@ -51,6 +51,7 @@ const Jarjestaja = React.memo(
   ({
     JarjestamislupaJSX,
     lupa = {},
+    lupakohteet = [],
     organisation = {},
     path,
     url,
@@ -181,7 +182,7 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa`}
               render={() => (
                 <div className="border m-12 p-12 bg-white mx-auto w-4/5">
-                  <JarjestamislupaJSX lupa={lupa} />
+                  <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
                 </div>
               )}
             />
@@ -226,7 +227,7 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa`}
               render={() => (
                 <div className="border mt-12 p-12">
-                  <JarjestamislupaJSX lupa={lupa} />
+                  <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
                 </div>
               )}
             />

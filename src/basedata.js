@@ -288,7 +288,7 @@ const fetchBaseData = async (
           )
         )
       : undefined,
-    ensisijaisetOpetuskieletOPH: raw.kielet
+    ensisijaisetOpetuskieletOPH: raw.kieletOPH
       ? await localforage.setItem(
           "ensisijaisetOpetuskieletOPH",
           filterEnsisijaisetOpetuskieletOPH(

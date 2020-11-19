@@ -79,7 +79,7 @@ const JarjestajaSwitch = ({
               return (
                 <Jarjestaja
                   JarjestamislupaJSX={JarjestamislupaJSX}
-                  lupaKohteet={lupaKohteet}
+                  lupakohteet={lupaKohteet}
                   lupa={lupa}
                   organisation={organisation}
                   path={path}

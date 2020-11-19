@@ -70,9 +70,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
           }></UusiAsiaEsidialog>
       )}
 
-      <div
-        className="flex flex-col justify-end w-full h-40 mx-auto"
-        style={{ maxWidth: "90rem", borderTop: "0.05rem solid #E3E3E3" }}>
+      <div className="flex flex-col justify-end w-full h-40">
         <div className="flex items-center">
           <div className="flex-1">
             <div className="w-full flex flex-row justify-between">
