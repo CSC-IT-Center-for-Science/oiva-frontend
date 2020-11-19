@@ -14,7 +14,8 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
     <div>
       <Typography variant="h2">
         {formatMessage(common.htmlLuvanOtsikko, {
-          date: new Date().toLocaleDateString()
+          date: new Date().toLocaleDateString(),
+          koulutusmuodon: "esi- ja perusopetuksen",
         })}
       </Typography>
     </div>

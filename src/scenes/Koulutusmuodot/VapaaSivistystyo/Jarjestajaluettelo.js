@@ -164,7 +164,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
     useSortBy,
     usePagination
   );
-console.info(rows);
+  console.info(rows);
   // Render the UI for your table
   return (
     <React.Fragment>
@@ -357,7 +357,7 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
           };
         }, luvat)
       ),
-    [luvat]
+    [byYllapitaja, intl.locale, luvat, vstTyypit]
   );
 
   const [data, setData] = useState(tableData);
@@ -407,7 +407,7 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
         return (
           <Link
             className="underline"
-            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
+            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.lupaUuid}/jarjestamislupa`}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
             })}>

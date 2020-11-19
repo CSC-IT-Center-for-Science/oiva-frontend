@@ -21,14 +21,13 @@ import { path } from "ramda";
  * @param {Object} intl react-intl utility object
  * @returns {{heading: String, values: String[]}[]} sectionDataList
  */
-export const parseVSTLupa = (lupa, intl) => {
+export const parseVSTLupa = (lupa, formatMessage, locale) => {
   if (lupa) {
-    console.info(lupa.maaraykset);
     const organizerSectionData = generateOrganizerSectionData(
       lupa,
-      intl.locale
+      locale
     );
-    organizerSectionData.heading = intl.formatMessage(
+    organizerSectionData.heading = formatMessage(
       common.VSTLupaSectionTitleOrganizer
     );
     const sectionDataList = [organizerSectionData];
@@ -42,7 +41,6 @@ export const parseVSTLupa = (lupa, intl) => {
             metaDataObject.kohdeTunniste
           );
         });
-        console.info(metaDataObject.kohdeTunniste);
         generateSectionData = getSectionDataGeneratorForVST(
           metaDataObject.kohdeTunniste
         );
@@ -57,18 +55,16 @@ export const parseVSTLupa = (lupa, intl) => {
 
       let sectionData = {};
       if (maaraykset.length > 0) {
-        console.info("Määräykset", maaraykset, generateSectionData);
         sectionData = generateSectionData(
           maaraykset,
-          intl.locale,
+          locale,
           lupa.diaarinumero
         );
       }
 
-      sectionData.heading = intl.formatMessage(metaDataObject.titleMessageKey);
+      sectionData.heading = formatMessage(metaDataObject.titleMessageKey);
       sectionDataList.push(sectionData);
     }
-    console.info(sectionDataList);
     return sectionDataList;
   }
 };
@@ -246,7 +242,6 @@ const generateSopimuskunnatDataForVST = (maaraykset, locale) => {
 
 const generateOppilaitoksetDataForVST = (maaraykset, locale, diaarinumero) => {
   let values = [];
-  console.info(maaraykset, locale, diaarinumero);
   for (const maarays of maaraykset) {
     if (!!maarays.organisaatio) {
       const schoolName = maarays.organisaatio.nimi[locale];

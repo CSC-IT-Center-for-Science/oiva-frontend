@@ -20,7 +20,8 @@ import AsianhallintaCard from "../AsianhallintaCard";
 import Asianhallinta from "../Asianhallinta";
 import { includes } from "ramda";
 
-const keys = ["lupaByYtunnus", "organisaatio"];
+const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio"];
+const keys2 = ["organisaatio"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
@@ -72,7 +73,7 @@ export default function KoulutusmuodonEtusivu({
                 {kuvausteksti}
               </Typography>
               {isEsittelija ? (
-                <section>
+                <section className="mb-12">
                   <Typography component="h2" variant="h2" className="py-4">
                     {formatMessage(commonMessages.asianhallinta)}
                   </Typography>
@@ -114,19 +115,60 @@ export default function KoulutusmuodonEtusivu({
                     <BaseData
                       keys={keys}
                       locale={locale}
-                      render={_props => {
-                        console.info(_props);
-                        return (
-                          <JarjestajaSwitch
-                            JarjestamislupaJSX={JarjestamislupaJSX}
-                            koulutusmuoto={koulutusmuoto}
-                            lupa={_props.lupa}
-                            organisation={_props.organisaatio}
-                            path={props.match.path}
-                            user={user}
-                            {..._props}
-                          />
-                        );
+                      render={_props1 => {
+                        /**
+                         * Tämä toteutus olisi paljon yksinkertaisempi, jos
+                         * kaikkien opetusmuotojen lupatietojen noutamisen
+                         * voisi tehdä samalla tavalla. Vapaa sivistystyo
+                         * on kuitenkin poikkeus, koska VST-luvat noudetaan
+                         * lupaUuid:n avulla. Muiden koulutusmuotojen luvat
+                         * voidaan noutaa y-tunnusta käyttämällä.
+                         *
+                         * Y-tunnuksen ollessa tiedossa, saadaan luvan
+                         * lisäksi noudettua myös organisaation tiedot.
+                         * VST:n tapauksessa täytyy noutaa ensin lupa
+                         * ja käyttää luvalta löytyvää y-tunnusta
+                         * organisaatiotietojen hakemiseen.
+                         */
+                        if (_props1.organisaatio) {
+                          return (
+                            <JarjestajaSwitch
+                              JarjestamislupaJSX={JarjestamislupaJSX}
+                              koulutusmuoto={koulutusmuoto}
+                              lupa={_props1.lupa}
+                              organisation={_props1.organisaatio}
+                              path={props.match.path}
+                              user={user}
+                              ytunnus={_props1.ytunnus}
+                            />
+                          );
+                        } else if (
+                          _props1.lupa &&
+                          _props1.lupa.jarjestajaYtunnus
+                        ) {
+                          return (
+                            <BaseData
+                              keys={keys2}
+                              locale={locale}
+                              render={_props2 => {
+                                if (_props2.organisaatio) {
+                                  return (
+                                    <JarjestajaSwitch
+                                      JarjestamislupaJSX={JarjestamislupaJSX}
+                                      koulutusmuoto={koulutusmuoto}
+                                      lupa={_props1.lupa}
+                                      lupaUuid={_props1.lupaUuid}
+                                      organisation={_props2.organisaatio}
+                                      path={props.match.path}
+                                      user={user}
+                                    />
+                                  );
+                                }
+                              }}
+                              ytunnus={_props1.lupa.jarjestajaYtunnus}
+                            />
+                          );
+                        }
                       }}
                     />
                   );

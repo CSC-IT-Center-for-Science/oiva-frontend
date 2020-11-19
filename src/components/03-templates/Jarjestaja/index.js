@@ -64,8 +64,8 @@ const Jarjestaja = React.memo(
     const location = useLocation();
     const tabKey = R.last(R.split("/", location.pathname));
 
-    const jarjestaja = useMemo(() => {
-      return lupa && lupa.jarjestaja
+    const jarjestaja =
+      lupa && lupa.jarjestaja
         ? {
             ...lupa.jarjestaja,
             nimi:
@@ -73,7 +73,6 @@ const Jarjestaja = React.memo(
               R.head(R.values(lupa.jarjestaja.nimi))
           }
         : {};
-    }, [intl.locale, lupa]);
 
     const breadcrumb = useMemo(() => {
       return jarjestaja ? `/jarjestajat/${jarjestaja.oid}` : "";
@@ -186,7 +185,9 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa`}
               render={() => (
                 <div className="border m-12 p-12 bg-white mx-auto w-4/5">
-                  <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  {JarjestamislupaJSX ? (
+                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  ) : null}
                 </div>
               )}
             />
@@ -233,7 +234,9 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa`}
               render={() => (
                 <div className="border mt-12 p-12">
-                  <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  {JarjestamislupaJSX ? (
+                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  ) : null}
                 </div>
               )}
             />

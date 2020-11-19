@@ -6,14 +6,15 @@ import { isEmpty, prop } from "ramda";
 import Loading from "../../../modules/Loading";
 import BaseData from "basedata";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import education from "../../../i18n/definitions/education";
 import { parseLupa } from "utils/lupaParser";
 import Jarjestaja from "components/03-templates/Jarjestaja";
+import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaParser";
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
   koulutusmuoto,
   lupa,
+  lupaUuid,
   organisation,
   path,
   user,
@@ -24,23 +25,29 @@ const JarjestajaSwitch = ({
 }) => {
   const intl = useIntl();
 
-  const lupaKohteet = useMemo(() => {
+  /**
+   * Vapaan sivistystyön luvat täytyy parsia eri tavalla. Siksi tämä ehto.
+   */
+  const parseLupaFn =
+    lupa && lupa.koulutustyyppi === "3" ? parseVSTLupa : parseLupa;
+
+  const lupakohteet = useMemo(() => {
     return !lupa
       ? {}
-      : parseLupa({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
-  }, [lupa, intl]);
+      : parseLupaFn({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
+  }, [lupa, intl, parseLupaFn]);
 
   return (
     <React.Fragment>
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {intl.formatMessage(education.preAndBasicEducation)}
+        {koulutusmuoto.sivunOtsikko}
       </BreadcrumbsItem>
       <Switch>
         <Route
           exact
           path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
           render={props => {
-            if (!isEmpty(lupaKohteet) && lupa) {
+            if (!isEmpty(lupakohteet) && lupa) {
               return (
                 <BaseData
                   locale={intl.locale}
@@ -57,7 +64,7 @@ const JarjestajaSwitch = ({
           exact
           path={`${path}/hakemukset-ja-paatokset/:uuid/:page`}
           render={props => {
-            if (lupaKohteet && lupa) {
+            if (lupakohteet && lupa) {
               return (
                 <BaseData
                   locale={intl.locale}
@@ -71,15 +78,25 @@ const JarjestajaSwitch = ({
         <Route
           path={`${path}`}
           render={props => {
+            /**
+             * Varmistetaan, että ollaan aikeissa näyttää halutun järjestäjän
+             * tiedot vertaamalla haussa käytettyä y-tunnusta luvan
+             * y-tunnukseen, mikäli haussa käytettiin y-tunnusta. Toinen
+             * vaihtoehto on, että haku on tehty lupaUuid:llä, jolloin
+             * vertaamme sitä luvan vastaavaan tietoon.
+             * */
             if (
-              lupa &&
-              ytunnus === prop("jarjestajaYtunnus", lupa) &&
-              !isEmpty(lupaKohteet)
+              (lupa &&
+                ytunnus &&
+                ytunnus === prop("jarjestajaYtunnus", lupa)) ||
+              (lupaUuid &&
+                lupaUuid === prop("uuid", lupa) &&
+                !isEmpty(lupakohteet))
             ) {
               return (
                 <Jarjestaja
                   JarjestamislupaJSX={JarjestamislupaJSX}
-                  lupakohteet={lupaKohteet}
+                  lupakohteet={lupakohteet}
                   lupa={lupa}
                   organisation={organisation}
                   path={path}
