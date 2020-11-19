@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MaUTable from "@material-ui/core/Table";
@@ -15,7 +15,17 @@ import {
   usePagination
 } from "react-table";
 
-import { toUpper, filter } from "ramda";
+import {
+  toUpper,
+  filter,
+  descend,
+  prop,
+  sort,
+  map,
+  find,
+  head,
+  values
+} from "ramda";
 import { useIntl } from "react-intl";
 
 import common from "../../../i18n/definitions/common";
@@ -36,10 +46,13 @@ import {
   InputLabel,
   Select,
   Input,
-  FormLabel
+  FormLabel,
+  Typography
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
+import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
+import education from "i18n/definitions/education";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -76,7 +89,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
       fuzzyText: fuzzyTextFilterFn,
       // Or, override the default text filter to use
       // "startWith"
-      text: (rows, id, filterValue) => {
+      text: (rows = [], id, filterValue) => {
         return rows.filter(row => {
           const rowValue = row.values[id];
           return rowValue !== undefined
@@ -151,7 +164,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
     useSortBy,
     usePagination
   );
-
+console.info(rows);
   // Render the UI for your table
   return (
     <React.Fragment>
@@ -315,14 +328,45 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
-function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
-  const initialData = useRef(tableData);
+function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
+  const intl = useIntl();
+
+  const byYllapitaja = descend(prop("yllapitaja"));
+
+  const tableData = useMemo(
+    () =>
+      sort(
+        byYllapitaja,
+        map(lupa => {
+          const oppilaitostyyppiKoodistosta = find(
+            tyyppi => tyyppi.koodiarvo === lupa.oppilaitostyyppi,
+            vstTyypit
+          );
+          const localeUpper = toUpper(intl.locale);
+          return {
+            yllapitaja:
+              lupa.jarjestaja.nimi[intl.locale] ||
+              head(values(lupa.jarjestaja.nimi)),
+            oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, intl.locale),
+            oppilaitostyyppi: oppilaitostyyppiKoodistosta
+              ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi
+              : "",
+            toiminnot: ["info"],
+            ytunnus: lupa.jarjestajaYtunnus,
+            lupaUuid: lupa.uuid
+          };
+        }, luvat)
+      ),
+    [luvat]
+  );
+
   const [data, setData] = useState(tableData);
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
   const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
     ""
   );
-  const intl = useIntl();
+
+  const initialData = useRef(tableData);
 
   useEffect(() => {
     setData(
@@ -363,7 +407,7 @@ function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
         return (
           <Link
             className="underline"
-            to={`/vapaa-sivistystyo/${row.values.lupaUuid}/jarjestamislupa`}
+            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
             })}>
@@ -421,6 +465,9 @@ function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
 
   return (
     <div className="mx-auto w-full mb-16">
+      <Typography component="h2" variant="h2" className="py-4">
+        {intl.formatMessage(education.koulutuksenJarjestajat)}
+      </Typography>
       <p className="mt-4 mb-8">
         {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
       </p>
@@ -438,14 +485,16 @@ function Jarjestajaluettelo({ tableData, vstTyypit, luvat }) {
           emptyMessage={intl.formatMessage(common.noSelection)}
         />
       </div>
-      <Table
-        columns={columns}
-        data={data}
-        intl={intl}
-        skipReset={skipResetRef.current}
-        updateMyData={updateMyData}
-        luvat={luvat}
-      />
+      {luvat.length ? (
+        <Table
+          columns={columns}
+          data={data}
+          intl={intl}
+          skipReset={skipResetRef.current}
+          updateMyData={updateMyData}
+          luvat={luvat}
+        />
+      ) : null}
     </div>
   );
 }

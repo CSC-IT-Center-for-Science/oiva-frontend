@@ -80,12 +80,14 @@ export default function KoulutusmuodonEtusivu({
                     koulutusmuoto={koulutusmuoto}></AsianhallintaCard>
                 </section>
               ) : null}
-              <section className="pt-12">
-                <Jarjestajat
-                  koulutusmuoto={koulutusmuoto}
-                  Jarjestajaluettelo={Jarjestajaluettelo}
-                  sivunOtsikko={sivunOtsikko}
-                />
+              <section>
+                {Jarjestajaluettelo ? (
+                  <Jarjestajat
+                    koulutusmuoto={koulutusmuoto}
+                    Jarjestajaluettelo={Jarjestajaluettelo}
+                    sivunOtsikko={sivunOtsikko}
+                  />
+                ) : null}
               </section>
             </div>
           ) : null}
@@ -113,6 +115,7 @@ export default function KoulutusmuodonEtusivu({
                       keys={keys}
                       locale={locale}
                       render={_props => {
+                        console.info(_props);
                         return (
                           <JarjestajaSwitch
                             JarjestamislupaJSX={JarjestamislupaJSX}

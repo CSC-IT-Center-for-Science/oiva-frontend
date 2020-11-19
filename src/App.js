@@ -39,7 +39,7 @@ import AmmatillinenKoulutus from "scenes/Koulutusmuodot/AmmatillinenKoulutus";
 import EsiJaPerusopetus from "scenes/Koulutusmuodot/EsiJaPerusopetus";
 import Lukiokoulutus from "scenes/Koulutusmuodot/Lukiokoulutus";
 import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo";
-import BaseData, { getRaw } from "basedata";
+import { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import * as R from "ramda";
 
@@ -61,6 +61,10 @@ const constants = {
     lukiokoulutus: {
       kebabCase: "lukiokoulutus",
       koulutustyyppi: "2"
+    },
+    vapaaSivistystyo: {
+      kebabCase: "vapaa-sivistystyo",
+      koulutustyyppi: "3"
     }
   }
 };
@@ -100,6 +104,13 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         // TO DO: Aseta kuvausteksti käännöksiin
         kuvausteksti: "Kuvaus tulossa myöhemmin.",
         sivunOtsikko: intl.formatMessage(educationMessages.highSchoolEducation)
+      },
+      vapaaSivistystyo: {
+        ...constants.koulutusmuodot.vapaaSivistystyo,
+        // TO DO: Aseta kuvausteksti käännöksiin
+        kuvausteksti:
+          "Vapaan sivistystyön oppilaitoksia ovat kansalaisopistot, kansanopistot, kesäyliopistot, liikunnan koulutuskeskukset ja opintokeskukset. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan vapaan sivistystyön oppilaitoksen ylläpitämiseen. Tällä sivulla voit tarkastella oppilaitosten ylläpitäjiä ja heidän ylläpitämislupiaan.",
+        sivunOtsikko: intl.formatMessage(educationMessages.vstEducation)
       }
     }),
     [intl]
@@ -357,17 +368,11 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   />
                   <Route
                     path="/vapaa-sivistystyo"
-                    render={() => {
-                      return (
-                        <BaseData
-                          keys={["vstLuvat", "vstTyypit"]}
-                          locale={intl.locale}
-                          render={props => {
-                            return <VapaaSivistystyo {...props} />;
-                          }}
-                        />
-                      );
-                    }}
+                    render={() => (
+                      <VapaaSivistystyo
+                        koulutusmuoto={koulutusmuodot.vapaaSivistystyo}
+                      />
+                    )}
                   />
                   <Route
                     path="/asianhallinta"
