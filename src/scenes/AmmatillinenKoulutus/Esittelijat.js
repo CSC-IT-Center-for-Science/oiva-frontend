@@ -71,7 +71,6 @@ const Esittelijat = () => {
                 render={_props => (
                   <LomakedataContainer scope={scope}>
                     <MuutoksetContainer scope={scope}>
-                      {console.info(_props)}
                       <UusiAsiaDialogContainer {..._props} />
                     </MuutoksetContainer>
                   </LomakedataContainer>

@@ -43,6 +43,8 @@ import BaseData, { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import * as R from "ramda";
 
+import "react-toastify/dist/ReactToastify.css";
+
 const history = createBrowserHistory();
 
 const logo = { text: "Oiva", path: "/" };
@@ -227,6 +229,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   return (
     <React.Fragment>
+      <ToastContainer />
       <Router history={history}>
         <div
           className={`relative lg:fixed z-50 ${
@@ -334,13 +337,12 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
             </div>
           </div>
         </div>
-      </Router>
-      <Router history={history}>
+
         <footer>
           <Footer />
-          <ToastContainer />
         </footer>
       </Router>
+
       {isSessionDialogVisible && !!user ? (
         <SessionDialog
           isVisible={isSessionDialogVisible}
