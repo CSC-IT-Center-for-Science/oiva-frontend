@@ -169,7 +169,7 @@ export default function KoulutusmuodonEtusivu({
                                       organisation={_props2.organisaatio}
                                       path={props.match.path}
                                       tulevatLuvat={_props1.tulevatLuvat}
-                                      voimassaOlevaLupa={_props2.voimassaOlevaLupa}
+                                      voimassaOlevaLupa={_props1.voimassaOlevaLupa}
                                       user={user}
                                     />
                                   );
