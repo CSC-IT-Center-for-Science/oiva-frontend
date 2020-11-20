@@ -67,11 +67,7 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto, organisation }) => {
         liite => ({
           uuid: liite.uuid,
           items: [
-            intl.formatMessage(
-              liite.salainen ? common.secretAttachment : common.attachment
-            ) +
-              " " +
-              R.prop("nimi", liite),
+            R.prop("nimi", liite),
             ...attachmentRow,
             liite.luontipvm ? (
               <Moment format="D.M.YYYY">{liite.luontipvm}</Moment>
