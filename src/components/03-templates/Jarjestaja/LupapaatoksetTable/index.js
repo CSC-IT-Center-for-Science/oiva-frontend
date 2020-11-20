@@ -332,7 +332,7 @@ export default function LupapaatoksetTable({
                       onClick={event => handleClick(event, row.diaarinumero)}
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.diaarinumero}>
+                      key={`row-${index}`}>
                       <TableCell
                         component="td"
                         id={labelId}

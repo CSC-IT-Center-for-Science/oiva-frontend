@@ -164,7 +164,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
     useSortBy,
     usePagination
   );
-  console.info(rows);
+
   // Render the UI for your table
   return (
     <React.Fragment>
