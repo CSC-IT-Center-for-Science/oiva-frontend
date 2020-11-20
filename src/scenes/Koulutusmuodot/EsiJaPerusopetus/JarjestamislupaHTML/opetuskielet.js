@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { filter, find, includes, map, toUpper, isEmpty } from "ramda";
 import { useIntl } from "react-intl";
-import education from "../../../i18n/definitions/education";
-import { getKieletOPHFromStorage } from "../../../helpers/opetuskielet";
+import education from "../../../../i18n/definitions/education";
+import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
 
 export default function PoOpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
@@ -35,7 +35,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
-            <li key={opetuskieli.koodiarvo} style={{"line-height": "1.325"}}>
+            <li key={opetuskieli.koodiarvo} style={{"lineHeight": "1.325"}}>
               {find(kieli => kieli.koodiarvo === opetuskieli.koodiarvo, kieletOPH).metadata[locale].nimi}
             </li>,
           ensisijaisetOpetuskielet || [])
@@ -46,7 +46,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
-              <li key={opetuskieli.koodiarvo} style={{"line-height": "1.325"}}>
+              <li key={opetuskieli.koodiarvo} style={{"lineHeight": "1.325"}}>
                 {find(kieli => kieli.koodiarvo === opetuskieli.koodiarvo, kieletOPH).metadata[locale].nimi}
               </li>,
             toissijaisetOpetuskielet || [])
