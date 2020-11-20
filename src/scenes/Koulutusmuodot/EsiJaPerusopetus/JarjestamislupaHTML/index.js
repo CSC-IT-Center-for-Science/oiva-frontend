@@ -15,7 +15,7 @@ const TopSectionWrapper = styled.div`
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
  */
-const JarjestamislupaJSX = ({ lupa, lupaKohteet }) => {
+const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
   const { formatMessage } = useIntl();
 
   return (
