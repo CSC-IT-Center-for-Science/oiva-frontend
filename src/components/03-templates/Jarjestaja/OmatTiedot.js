@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { InnerContentContainer, InnerContentWrapper } from "modules/elements";
+import { InnerContentWrapper } from "modules/elements";
 import { Typography } from "@material-ui/core";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
@@ -54,7 +54,7 @@ const OmatTiedot = ({ kunnat, maakunnat, organisation }) => {
             www
           } = yhteystiedot;
           return (
-            <InnerContentContainer>
+            <React.Fragment>
               <InnerContentWrapper>
                 <Typography component="h2" variant="h5" className="pb-4">
                   {intl.formatMessage(common.omatTiedotTitle)}
@@ -140,7 +140,7 @@ const OmatTiedot = ({ kunnat, maakunnat, organisation }) => {
                 <br />
                 <p>{intl.formatMessage(common.omatTiedotInfo)}</p>
               </InnerContentWrapper>
-            </InnerContentContainer>
+            </React.Fragment>
           );
         })()}
       </React.Fragment>

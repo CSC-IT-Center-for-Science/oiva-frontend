@@ -8,7 +8,7 @@ import BaseData from "basedata";
 import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
 import commonMessages from "i18n/definitions/common";
-import { MuutoksetContainer } from "../../../scenes/AmmatillinenKoulutus/store";
+import { MuutoksetContainer } from "../../../stores/muutokset";
 
 const Esittelijat = ({
   AsiaDialogContainer,
@@ -19,7 +19,7 @@ const Esittelijat = ({
   const { formatMessage, locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
-  const scope = "po-esittelijan-lupanakyma";
+  const scope = "esittelijan-lupanakyma";
 
   return (
     <React.Fragment>
@@ -27,16 +27,18 @@ const Esittelijat = ({
         {formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
 
-      <article className="px-16">
-        <Typography component="h1" variant="h1">
-          {formatMessage(commonMessages.asianhallinta)}
-        </Typography>
-        <Typography
-          component="h2"
-          style={{ fontSize: "1.25rem" }}
-          className="pb-4 mt--12">
-          {sivunOtsikko}
-        </Typography>
+      <article className="flex-1 flex-col flex">
+        <div className="mx-auto w-4/5">
+          <Typography component="h1" variant="h1">
+            {formatMessage(commonMessages.asianhallinta)}
+          </Typography>
+          <Typography
+            component="h2"
+            style={{ fontSize: "1.25rem" }}
+            className="pb-4 mt--12">
+            {sivunOtsikko}
+          </Typography>
+        </div>
 
         <Switch>
           <Route

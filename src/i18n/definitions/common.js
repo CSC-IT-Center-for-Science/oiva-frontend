@@ -1197,6 +1197,6 @@ export default defineMessages({
   },
   htmlLuvanOtsikko: {
     id: "common.htmlLuvanOtsikko",
-    defaultMessage: "Ajantasainen perusopetuksen järjestämislupa {date}"
+    defaultMessage: "Ajantasainen {koulutusmuodon} järjestämislupa {date}"
   }
 });
