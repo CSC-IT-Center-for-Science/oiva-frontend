@@ -46,7 +46,7 @@ const Header = React.memo(
      onLocaleChange,
      onLoginButtonClick,
      onMenuClick,
-     organisation,
+     organisationLink,
      shortDescription,
      template = "A",
      languageSelectionAriaLabel = "Kielivalinta"
@@ -73,15 +73,15 @@ const Header = React.memo(
       ) : (
         <React.Fragment />
       ),
-      organisation.path ? (
+      organisationLink.path ? (
         <NavLink
           className="link-to-own-organisation"
-          to={organisation.path}
+          to={organisationLink.path}
           exact={false}>
-          <span className="text-gray-600">{organisation.text}</span>
+          <span className="text-gray-600">{organisationLink.text}</span>
         </NavLink>
       ) : (
-        <span className="text-gray-800">{organisation.text}</span>
+        <span className="text-gray-800">{organisationLink.text}</span>
       )
     ];
 
@@ -210,7 +210,7 @@ const Header = React.memo(
   (currentProps, nextProps) => {
     const isSameOld =
       equals("" + currentProps.onLocaleChange, "" + nextProps.onLocaleChange) &&
-      equals(currentProps.organisation, nextProps.organisation) &&
+      equals(currentProps.organisationLink, nextProps.organisationLink) &&
       equals(currentProps.locale, nextProps.locale);
     return isSameOld;
   }
@@ -227,7 +227,7 @@ Header.propTypes = {
   onLocaleChange: PropTypes.func.isRequired,
   onLoginButtonClick: PropTypes.func.isRequired,
   onMenuClick: PropTypes.func.isRequired,
-  organisation: PropTypes.object,
+  organisationLink: PropTypes.object,
   shortDescription: PropTypes.object,
   template: PropTypes.string,
   languageSelectionAriaLabel: PropTypes.string

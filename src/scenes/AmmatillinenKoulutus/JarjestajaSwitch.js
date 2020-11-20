@@ -12,9 +12,19 @@ import BaseData from "basedata";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import education from "../../i18n/definitions/education";
 
-const JarjestajaSwitch = ({ lupa, path, user, ytunnus, kielet, tulevatLuvat, voimassaOlevaLupa }) => {
+const JarjestajaSwitch = ({
+  lupa,
+  organisation,
+  path,
+  user,
+  ytunnus,
+  kielet,
+  tulevatLuvat,
+  voimassaOlevaLupa
+}) => {
   const intl = useIntl();
   const history = useHistory();
+
   const lupaKohteet = useMemo(() => {
     return !lupa
       ? {}
@@ -78,13 +88,14 @@ const JarjestajaSwitch = ({ lupa, path, user, ytunnus, kielet, tulevatLuvat, voi
           render={props => {
             if (
               lupa &&
-              ytunnus === prop("ytunnus", lupa.keyParams) &&
+              ytunnus === prop("jarjestajaYtunnus", lupa) &&
               !isEmpty(lupaKohteet)
             ) {
               return (
                 <Jarjestaja
                   lupaKohteet={lupaKohteet}
                   lupa={lupa}
+                  organisation={organisation}
                   path={path}
                   url={props.match.url}
                   user={user}
@@ -103,10 +114,11 @@ const JarjestajaSwitch = ({ lupa, path, user, ytunnus, kielet, tulevatLuvat, voi
 };
 
 JarjestajaSwitch.propTypes = {
+  lupa: PropTypes.object,
+  organisation: PropTypes.object,
   path: PropTypes.string,
   ytunnus: PropTypes.string,
   user: PropTypes.object,
-  lupa: PropTypes.object,
   kielet: PropTypes.array,
   tulevatLuvat: PropTypes.array,
   voimassaOlevaLupa: PropTypes.object

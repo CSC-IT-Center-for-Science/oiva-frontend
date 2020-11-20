@@ -9,7 +9,6 @@ import { ROLE_MUOKKAAJA } from "../../../../../../modules/constants";
 import { HAKEMUS_VIESTI } from "../Muutospyynto/modules/uusiHakemusFormConstants";
 import { useMuutospyynnot } from "../../../../../../stores/muutospyynnot";
 import { useUser } from "../../../../../../stores/user";
-import { useOrganisation } from "../../../../../../stores/organisation";
 import * as R from "ramda";
 
 const Wrapper = styled.div`
@@ -32,7 +31,8 @@ const UusiMuutospyynto = styled(Link)`
 const HakemuksetJaPaatokset = ({ match }) => {
   const [muutospyynnot] = useMuutospyynnot();
   const [user] = useUser();
-  const [organisation] = useOrganisation();
+
+  const organisation = {};
 
   const getMuutospyyntoUrl = () => {
     return `${match.url}/uusi`;

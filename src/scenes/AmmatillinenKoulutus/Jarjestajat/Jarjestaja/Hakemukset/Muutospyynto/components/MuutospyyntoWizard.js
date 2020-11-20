@@ -18,7 +18,6 @@ import Dialog from "@material-ui/core/Dialog";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
 import PropTypes from "prop-types";
-import "react-toastify/dist/ReactToastify.css";
 import MuutospyyntoWizardPerustelut from "./MuutospyyntoWizardPerustelut";
 import MuutospyyntoWizardTaloudelliset from "./MuutospyyntoWizardTaloudelliset";
 import MuutospyyntoWizardYhteenveto from "./MuutospyyntoWizardYhteenveto";

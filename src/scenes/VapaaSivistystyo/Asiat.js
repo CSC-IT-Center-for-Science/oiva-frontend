@@ -6,7 +6,6 @@ import PaatetytAsiat from "./PaatetytAsiat";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "../../i18n/definitions/common";
-import education from "../../i18n/definitions/education";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";

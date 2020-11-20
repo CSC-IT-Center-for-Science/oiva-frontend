@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import Table from "../../components/02-organisms/Table";
-import ConfirmDialog from "../../components/02-organisms/ConfirmDialog";
-import { generateAvoimetAsiatTableStructure } from "../../utils/asiatUtils";
+import Table from "../../02-organisms/Table";
+import ConfirmDialog from "../../02-organisms/ConfirmDialog";
+import { generateAvoimetAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
-import Loading from "../../modules/Loading";
-import { useMuutospyynnot } from "../../stores/muutospyynnot";
+import Loading from "../../../modules/Loading";
+import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import * as R from "ramda";
-import common from "../../i18n/definitions/common";
-import ProcedureHandler from "../../components/02-organisms/procedureHandler";
-import { koulutustyypitMap } from "../../utils/constants";
+import common from "../../../i18n/definitions/common";
+import ProcedureHandler from "../../02-organisms/procedureHandler";
 
-const AvoimetAsiat = () => {
+const AvoimetAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -30,7 +29,7 @@ const AvoimetAsiat = () => {
       ["avoimet"],
       false,
       isForced,
-      koulutustyypitMap.ESI_JA_PERUSOPETUS
+      koulutusmuoto.koulutustyyppi
     );
 
     return function cancel() {
@@ -38,7 +37,7 @@ const AvoimetAsiat = () => {
         abortController.abort();
       }
     };
-  }, [location.search, muutospyynnotActions]);
+  }, [koulutusmuoto.koulutustyyppi, location.search, muutospyynnotActions]);
 
   const onPaatettyActionClicked = row => {
     setRowActionTargetId(row.id);
@@ -66,10 +65,10 @@ const AvoimetAsiat = () => {
           intl,
           history,
           onPaatettyActionClicked,
-          "esi-ja-perusopetus"
+          koulutusmuoto.kebabCase
         )
       : [];
-  }, [intl, muutospyynnot.avoimet, history]);
+  }, [intl, koulutusmuoto.kebabCase, muutospyynnot.avoimet, history]);
 
   if (
     muutospyynnot.avoimet &&

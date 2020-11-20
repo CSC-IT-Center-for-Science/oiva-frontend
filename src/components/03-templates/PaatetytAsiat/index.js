@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo } from "react";
-import Table from "../../components/02-organisms/Table";
-import { generatePaatetytAsiatTableStructure } from "../../utils/asiatUtils";
+import Table from "../../02-organisms/Table";
+import { generatePaatetytAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
-import Loading from "../../modules/Loading";
-import { useMuutospyynnot } from "../../stores/muutospyynnot";
+import Loading from "modules/Loading";
+import { useMuutospyynnot } from "stores/muutospyynnot";
 import * as R from "ramda";
-import { koulutustyypitMap } from "../../utils/constants";
 
-const PaatetytAsiat = () => {
+const PaatetytAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -21,7 +20,7 @@ const PaatetytAsiat = () => {
       ["paatetyt"],
       false,
       isForced,
-      koulutustyypitMap.ESI_JA_PERUSOPETUS
+      koulutusmuoto.koulutustyyppi
     );
 
     return function cancel() {
@@ -29,7 +28,7 @@ const PaatetytAsiat = () => {
         abortController.abort();
       }
     };
-  }, [location.search, muutospyynnotActions]);
+  }, [location.search, muutospyynnotActions, koulutusmuoto.koulutustyyppi]);
 
   const tableStructure = useMemo(() => {
     return !!muutospyynnot.paatetyt && muutospyynnot.paatetyt.fetchedAt

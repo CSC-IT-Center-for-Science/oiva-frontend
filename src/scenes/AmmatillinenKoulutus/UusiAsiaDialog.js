@@ -134,7 +134,7 @@ const UusiAsiaDialog = ({
   });
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
-  })
+  });
 
   const isSavingEnabled = useMemo(() => {
     const hasUnsavedChanges = unsavedChangeObjects
@@ -320,24 +320,26 @@ const UusiAsiaDialog = ({
           </div>
           <DialogContentWithStyles>
             <div className="mb-20">
-              <Lupanakyma
-                history={history}
-                kielet={kielet}
-                kohteet={kohteet}
-                koulutukset={koulutukset}
-                koulutusalat={koulutusalat}
-                koulutustyypit={koulutustyypit}
-                kunnat={kunnat}
-                maaraykset={lupa.maaraykset}
-                lupaKohteet={lupaKohteet}
-                maakunnat={maakunnat}
-                maakuntakunnat={maakuntakunnat}
-                maaraystyypit={maaraystyypit}
-                muut={muut}
-                onNewDocSave={onNewDocSave}
-                organisation={organisation}
-                tutkinnot={tutkinnot}
-              />
+              {!R.isEmpty(organisation) ? (
+                <Lupanakyma
+                  history={history}
+                  kielet={kielet}
+                  kohteet={kohteet}
+                  koulutukset={koulutukset}
+                  koulutusalat={koulutusalat}
+                  koulutustyypit={koulutustyypit}
+                  kunnat={kunnat}
+                  maaraykset={lupa.maaraykset}
+                  lupaKohteet={lupaKohteet}
+                  maakunnat={maakunnat}
+                  maakuntakunnat={maakuntakunnat}
+                  maaraystyypit={maaraystyypit}
+                  muut={muut}
+                  onNewDocSave={onNewDocSave}
+                  organisation={organisation}
+                  tutkinnot={tutkinnot}
+                />
+              ) : null}
             </div>
             <EsittelijatWizardActions
               isSavingEnabled={isSavingEnabled}

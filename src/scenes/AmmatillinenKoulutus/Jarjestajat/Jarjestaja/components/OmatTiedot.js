@@ -1,47 +1,37 @@
 import React, { useMemo } from "react";
+import PropTypes from "prop-types";
 import {
   InnerContentContainer,
   InnerContentWrapper
 } from "../../../../../modules/elements";
 import { Typography } from "@material-ui/core";
 import { useIntl } from "react-intl";
-import { useOrganisation } from "../../../../../stores/organisation";
 import common from "../../../../../i18n/definitions/common";
-import { useUser } from "../../../../../stores/user";
 import * as R from "ramda";
 
-const OmatTiedot = ({ kunnat, maakunnat }) => {
+const OmatTiedot = ({ kunnat, maakunnat, organisation }) => {
   const intl = useIntl();
 
-  const [organisation] = useOrganisation();
-  const [user] = useUser();
-  const userOrganisation = organisation[user.data.oid];
-
   const yhteystiedot = useMemo(() => {
-    let values =
-      userOrganisation.fetchedAt && userOrganisation.data
-        ? {
-            postinumero: userOrganisation.data.kayntiosoite.postinumeroUri
-              ? userOrganisation.data.kayntiosoite.postinumeroUri.substr(6)
-              : null,
-            ppostinumero: userOrganisation.data.postiosoite.postinumeroUri
-              ? userOrganisation.data.postiosoite.postinumeroUri.substr(6)
-              : null,
-            email: (
-              R.find(R.prop("email"), userOrganisation.data.yhteystiedot) || {}
-            ).email,
-            numero: (
-              R.find(R.prop("numero"), userOrganisation.data.yhteystiedot) || {}
-            ).numero,
-            www: (
-              R.find(R.prop("www"), userOrganisation.data.yhteystiedot) || {}
-            ).www
-          }
-        : {};
+    let values = organisation
+      ? {
+          postinumero: organisation.kayntiosoite.postinumeroUri
+            ? organisation.kayntiosoite.postinumeroUri.substr(6)
+            : null,
+          ppostinumero: organisation.postiosoite.postinumeroUri
+            ? organisation.postiosoite.postinumeroUri.substr(6)
+            : null,
+          email: (R.find(R.prop("email"), organisation.yhteystiedot) || {})
+            .email,
+          numero: (R.find(R.prop("numero"), organisation.yhteystiedot) || {})
+            .numero,
+          www: (R.find(R.prop("www"), organisation.yhteystiedot) || {}).www
+        }
+      : {};
 
     if (kunnat.fetchedAt && maakunnat.fetchedAt) {
-      const koodiarvo = userOrganisation.data.kotipaikkaUri.substr(6);
-      const source = koodiarvo.length === 3 ? kunnat.data : maakunnat.data;
+      const koodiarvo = organisation.kotipaikkaUri.substr(6);
+      const source = koodiarvo.length === 3 ? kunnat : maakunnat;
       const kotipaikkaObj = R.find(R.propEq("koodiArvo", koodiarvo), source);
       values.kotipaikka = (kotipaikkaObj
         ? R.find(
@@ -52,17 +42,9 @@ const OmatTiedot = ({ kunnat, maakunnat }) => {
       ).nimi;
     }
     return values;
-  }, [
-    intl.locale,
-    userOrganisation.fetchedAt,
-    userOrganisation.data,
-    kunnat.data,
-    kunnat.fetchedAt,
-    maakunnat.data,
-    maakunnat.fetchedAt
-  ]);
+  }, [intl.locale, organisation, kunnat, maakunnat]);
 
-  if (userOrganisation.fetchedAt && !userOrganisation.isErroneous) {
+  if (organisation) {
     return (
       <React.Fragment>
         {(() => {
@@ -84,26 +66,26 @@ const OmatTiedot = ({ kunnat, maakunnat }) => {
                   {intl.formatMessage(common.omatTiedotVisitAddress)}
                 </Typography>
                 <p className="pb-4">
-                  {userOrganisation.data.kayntiosoite.osoite}
+                  {organisation.kayntiosoite.osoite}
                   {postinumero && <span>,&nbsp;</span>}
                   {postinumero}
-                  {userOrganisation.data.kayntiosoite.postitoimipaikka && (
+                  {organisation.kayntiosoite.postitoimipaikka && (
                     <span>&nbsp;</span>
                   )}
-                  {userOrganisation.data.kayntiosoite.postitoimipaikka}
+                  {organisation.kayntiosoite.postitoimipaikka}
                 </p>
                 <Typography component="h3" variant="h6">
                   {intl.formatMessage(common.omatTiedotMailAddress)}
                 </Typography>
                 <p className="pb-4">
-                  {userOrganisation.data.postiosoite.osoite &&
-                    userOrganisation.data.postiosoite.osoite}
+                  {organisation.postiosoite.osoite &&
+                    organisation.postiosoite.osoite}
                   {ppostinumero && <span>,&nbsp;</span>}
                   {ppostinumero && ppostinumero}&nbsp;
-                  {userOrganisation.data.postiosoite.postitoimipaikka && (
+                  {organisation.postiosoite.postitoimipaikka && (
                     <span>&nbsp;</span>
                   )}
-                  {userOrganisation.data.postiosoite.postitoimipaikka}
+                  {organisation.postiosoite.postitoimipaikka}
                 </p>
                 <Typography component="h3" variant="h6">
                   {intl.formatMessage(common.omatTiedotMunicipality)}
@@ -167,6 +149,10 @@ const OmatTiedot = ({ kunnat, maakunnat }) => {
       </React.Fragment>
     );
   }
+};
+
+OmatTiedot.propTypes = {
+  organisation: PropTypes.object
 };
 
 export default OmatTiedot;

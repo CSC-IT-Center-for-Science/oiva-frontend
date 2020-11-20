@@ -1190,5 +1190,9 @@ export default defineMessages({
   maarayksenXKuvaus: {
     id: "common.maarayksenXKuvaus",
     defaultMessage: "Määräyksen {nro} kuvaus"
+  },
+  htmlLuvanOtsikko: {
+    id: "common.htmlLuvanOtsikko",
+    defaultMessage: "Ajantasainen {koulutusmuodon} järjestämislupa {date}"
   }
 });

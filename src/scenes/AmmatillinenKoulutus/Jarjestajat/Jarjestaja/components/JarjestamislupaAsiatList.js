@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import JarjestamislupaAsiatListItem from "./JarjestamislupaAsiatListItem";
-import {asiaStateToLocalizationKeyMap} from "../modules/constants";
+import { asiaStateToLocalizationKeyMap } from "../modules/constants";
 import Button from "@material-ui/core/Button";
 import Add from "@material-ui/icons/AddCircleOutline";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -52,9 +52,10 @@ const states = [
 const JarjestamislupaAsiatList = ({
   history,
   isForceReloadRequested,
+  lupa,
   match,
   newApplicationRouteItem,
-  lupa
+  organisation
 }) => {
   const intl = useIntl();
 
@@ -80,12 +81,7 @@ const JarjestamislupaAsiatList = ({
         abortController.abort();
       }
     };
-  }, [
-    isForceReloadRequested,
-    lupa,
-    muutospyynnotActions,
-    match
-  ]);
+  }, [isForceReloadRequested, lupa, muutospyynnotActions, match]);
 
   const tableData = useMemo(() => {
     if (muutospyynnot.fetchedAt && muutospyynnot.data) {
@@ -141,7 +137,9 @@ const JarjestamislupaAsiatList = ({
           rows: R.addIndex(R.map)((row, i) => {
             const tilaText =
               row.tila && states.includes(row.tila)
-                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[row.tila]])
+                ? intl.formatMessage(
+                    common[asiaStateToLocalizationKeyMap[row.tila]]
+                  )
                 : row.tila;
             let cells = R.addIndex(R.map)(
               (col, ii) => {
@@ -248,7 +246,10 @@ const JarjestamislupaAsiatList = ({
             {intl.formatMessage(common.hakemusAsiakirjat)}
           </h3>
           <Paper className={classes.root}>
-            <JarjestamislupaAsiakirjat muutospyynto={muutospyynto} />
+            <JarjestamislupaAsiakirjat
+              muutospyynto={muutospyynto}
+              organisation={organisation}
+            />
           </Paper>
         </div>
       )}
@@ -272,7 +273,8 @@ JarjestamislupaAsiatList.propTypes = {
   lupahistory: PropTypes.array,
   match: PropTypes.object,
   muutospyynnot: PropTypes.array,
-  newApplicationRouteItem: PropTypes.object
+  newApplicationRouteItem: PropTypes.object,
+  organisation: PropTypes.object
 };
 
 export default JarjestamislupaAsiatList;

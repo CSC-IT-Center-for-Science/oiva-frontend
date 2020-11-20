@@ -3,12 +3,12 @@ import MuutospyyntoWizard from './components/MuutospyyntoWizard'
 
 const routes = [
   {
-    path: '/jarjestajat/:ytunnus/hakemukset/uusi',
+    path: '/jarjestajat/:id/hakemukset/uusi',
     exact: true,
     component: MuutospyyntoWizard
   },
   {
-    path: '/jarjestajat/:ytunnus/hakemukset-ja-paatokset/:diaarinumero',
+    path: '/jarjestajat/:id/hakemukset-ja-paatokset/:diaarinumero',
     component: MuutospyyntoContainer
   }
 ]

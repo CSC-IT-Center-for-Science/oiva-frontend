@@ -60,7 +60,7 @@ const LupaTextWrapper = styled.div`
 
 const CurrentLupa = (props) => {
   const { filename, diaarinumero, jarjestaja, voimassaolo } = props;
-  const url = `${API_BASE_URL}/pebble/resources/liitteet/${filename}`;
+  const url = `${API_BASE_URL}/pebble/resources/liitteet/vst/${filename}`;
   const sinceDate = new moment(voimassaolo, 'YYYY-MM-DD');
   const intl = useIntl();
 

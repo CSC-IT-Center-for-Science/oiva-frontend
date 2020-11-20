@@ -50,7 +50,17 @@ const OivaTabs = withStyles(() => ({
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
 const Jarjestaja = React.memo(
-  ({ lupaKohteet = [], lupa = {}, path, url, user, kielet, tulevatLuvat = [], voimassaOlevaLupa = {}}) => {
+  ({
+    lupaKohteet = [],
+    lupa = {},
+    organisation = {},
+    path,
+    url,
+    user,
+    kielet,
+    tulevatLuvat = [],
+    voimassaOlevaLupa = {}
+  }) => {
     const history = useHistory();
     const intl = useIntl();
     const location = useLocation();
@@ -143,9 +153,10 @@ const Jarjestaja = React.memo(
               history.push(val);
             }}>
             {tabNavRoutes
-              ? R.map(route => {
+              ? R.addIndex(R.map)((route, index) => {
                   return (
                     <OivaTab
+                      key={`tab-${index}`}
                       label={route.text}
                       aria-label={route.text}
                       to={route.path}
@@ -165,7 +176,9 @@ const Jarjestaja = React.memo(
                   <BaseData
                     keys={["kunnat", "lupa", "maakunnat"]}
                     locale={intl.locale}
-                    render={_props => <OmatTiedot {..._props} />}
+                    render={_props => (
+                      <OmatTiedot organisation={organisation} {..._props} />
+                    )}
                   />
                 )}
               />
@@ -199,13 +212,14 @@ const Jarjestaja = React.memo(
                   <JarjestamislupaAsiat
                     history={props.history}
                     intl={intl}
-                    match={props.match}
                     isForceReloadRequested={R.includes(
                       "force=true",
                       props.location.search
                     )}
+                    match={props.match}
                     newApplicationRouteItem={newApplicationRouteItem}
                     lupa={lupa}
+                    organisation={organisation}
                   />
                 )}
               />
@@ -231,7 +245,11 @@ const Jarjestaja = React.memo(
                 path={`${url}/paatokset`}
                 exact
                 render={() => (
-                  <JulkisetTiedot jarjestaja={jarjestaja} tulevatLuvat={tulevatLuvat} voimassaOlevaLupa={voimassaOlevaLupa} />
+                  <JulkisetTiedot
+                    jarjestaja={jarjestaja}
+                    tulevatLuvat={tulevatLuvat}
+                    voimassaOlevaLupa={voimassaOlevaLupa}
+                  />
                 )}
               />
             </div>
@@ -245,6 +263,7 @@ const Jarjestaja = React.memo(
 Jarjestaja.propTypes = {
   lupaKohteet: PropTypes.object,
   lupa: PropTypes.object,
+  organisation: PropTypes.object,
   path: PropTypes.string,
   url: PropTypes.string,
   user: PropTypes.object,
