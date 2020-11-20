@@ -34,6 +34,7 @@ import {
 } from "stores/muutokset";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import SimpleButton from "components/00-atoms/SimpleButton";
+import { useValidity } from "stores/lomakedata";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -151,6 +152,7 @@ const UusiAsiaDialog = ({
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
+  const [validity] = useValidity();
 
   const valtakunnallinenMaarays = R.find(
     R.propEq("koodisto", "nuts1"),
@@ -198,7 +200,10 @@ const UusiAsiaDialog = ({
       ? !R.isEmpty(underRemovalChangeObjects)
       : false;
     return hasUnsavedChanges || hasChangesUnderRemoval;
-  }, [underRemovalChangeObjects, unsavedChangeObjects]);
+    return (
+      (hasUnsavedChanges || hasChangesUnderRemoval) && validity.paatoksentiedot
+    );
+  }, [validity, underRemovalChangeObjects, unsavedChangeObjects]);
 
   /**
    * Opens the preview.
