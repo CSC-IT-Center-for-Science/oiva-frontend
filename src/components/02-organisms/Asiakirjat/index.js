@@ -159,11 +159,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           uuid: liite.uuid,
           type: "liite",
           items: [
-            intl.formatMessage(
-              liite.salainen ? common.secretAttachment : common.attachment
-            ) +
-              " " +
-              R.prop("nimi", liite),
+            R.prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
             liite.luoja,
             liite.luontipvm ? (

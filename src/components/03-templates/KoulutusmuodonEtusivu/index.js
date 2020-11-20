@@ -18,8 +18,13 @@ import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
 import AsianhallintaCard from "../AsianhallintaCard";
 import Asianhallinta from "../Asianhallinta";
+import { includes } from "ramda";
+import { koulutustyypitMap } from "../../../utils/constants";
+import { userHasAnyOfRoles } from "../../../modules/helpers";
+import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
-const keys = ["lupaByYtunnus", "kieletOPH"];
+const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio"];
+const keys2 = ["organisaatio", "kieletOPH"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
@@ -36,10 +41,17 @@ export default function KoulutusmuodonEtusivu({
   const [userState] = useUser();
   const { data: user } = userState;
 
+  const isEsittelija = user
+    ? includes("OIVA_APP_ESITTELIJA", user.roles)
+    : false;
+
   return (
     <React.Fragment>
       <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
-      <div className="flex flex-col min-h-screen bg-white">
+      {koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO && !userHasAnyOfRoles(user, [ROLE_YLLAPITAJA, ROLE_ESITTELIJA]) ?
+        <div style={{position: "absolute", top: "40%", left: "43%"}}>{formatMessage(commonMessages.tietoaTulevanJulkaisunAjankohdasta)}</div>
+        :
+        <div className="flex-1 flex flex-col bg-white">
         <article>
           <nav
             tabIndex="0"
@@ -66,8 +78,8 @@ export default function KoulutusmuodonEtusivu({
               <Typography component="p" className="pb-8">
                 {kuvausteksti}
               </Typography>
-              {!!user ? (
-                <section>
+              {isEsittelija ? (
+                <section className="mb-12">
                   <Typography component="h2" variant="h2" className="py-4">
                     {formatMessage(commonMessages.asianhallinta)}
                   </Typography>
@@ -75,12 +87,14 @@ export default function KoulutusmuodonEtusivu({
                     koulutusmuoto={koulutusmuoto}></AsianhallintaCard>
                 </section>
               ) : null}
-              <section className="pt-12">
-                <Jarjestajat
-                  koulutusmuoto={koulutusmuoto}
-                  Jarjestajaluettelo={Jarjestajaluettelo}
-                  sivunOtsikko={sivunOtsikko}
-                />
+              <section>
+                {Jarjestajaluettelo ? (
+                  <Jarjestajat
+                    koulutusmuoto={koulutusmuoto}
+                    Jarjestajaluettelo={Jarjestajaluettelo}
+                    sivunOtsikko={sivunOtsikko}
+                  />
+                ) : null}
               </section>
             </div>
           ) : null}
@@ -108,17 +122,60 @@ export default function KoulutusmuodonEtusivu({
                       keys={keys}
                       locale={locale}
                       koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                      render={_props => {
-                        return (
-                          <JarjestajaSwitch
-                            JarjestamislupaJSX={JarjestamislupaJSX}
-                            koulutusmuoto={koulutusmuoto}
-                            lupa={_props.lupa}
-                            path={props.match.path}
-                            user={user}
-                            {..._props}
-                          />
-                        );
+                      render={_props1 => {
+                        /**
+                         * Tämä toteutus olisi paljon yksinkertaisempi, jos
+                         * kaikkien opetusmuotojen lupatietojen noutamisen
+                         * voisi tehdä samalla tavalla. Vapaa sivistystyo
+                         * on kuitenkin poikkeus, koska VST-luvat noudetaan
+                         * lupaUuid:n avulla. Muiden koulutusmuotojen luvat
+                         * voidaan noutaa y-tunnusta käyttämällä.
+                         *
+                         * Y-tunnuksen ollessa tiedossa, saadaan luvan
+                         * lisäksi noudettua myös organisaation tiedot.
+                         * VST:n tapauksessa täytyy noutaa ensin lupa
+                         * ja käyttää luvalta löytyvää y-tunnusta
+                         * organisaatiotietojen hakemiseen.
+                         */
+                        if (_props1.organisaatio) {
+                          return (
+                            <JarjestajaSwitch
+                              JarjestamislupaJSX={JarjestamislupaJSX}
+                              koulutusmuoto={koulutusmuoto}
+                              lupa={_props1.lupa}
+                              organisation={_props1.organisaatio}
+                              path={props.match.path}
+                              user={user}
+                              ytunnus={_props1.ytunnus}
+                            />
+                          );
+                        } else if (
+                          _props1.lupa &&
+                          _props1.lupa.jarjestajaYtunnus
+                        ) {
+                          return (
+                            <BaseData
+                              keys={keys2}
+                              locale={locale}
+                              render={_props2 => {
+                                if (_props2.organisaatio) {
+                                  return (
+                                    <JarjestajaSwitch
+                                      JarjestamislupaJSX={JarjestamislupaJSX}
+                                      koulutusmuoto={koulutusmuoto}
+                                      lupa={_props1.lupa}
+                                      lupaUuid={_props1.lupaUuid}
+                                      organisation={_props2.organisaatio}
+                                      path={props.match.path}
+                                      user={user}
+                                    />
+                                  );
+                                }
+                              }}
+                              ytunnus={_props1.lupa.jarjestajaYtunnus}
+                            />
+                          );
+                        }
                       }}
                     />
                   );
@@ -127,7 +184,7 @@ export default function KoulutusmuodonEtusivu({
             </Switch>
           </Router>
         </div>
-      </div>
+      </div>}
     </React.Fragment>
   );
 }

@@ -271,6 +271,7 @@ const fetchBaseData = async (
     (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
       maaraykset: []
     };
+
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
    * dataa. Samalla noudettu data tallennetaan lokaaliin tietovarastoon
@@ -608,16 +609,22 @@ const BaseData = ({
   keys = defaultProps.keys,
   locale,
   render,
-  koulutustyyppi
+  koulutustyyppi,
+  ytunnus
 }) => {
-  const { lupaUuid, id } = useParams();
+  const { id } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
-  const ytunnus = id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null;
+  const _ytunnus = ytunnus || (id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null);
+  const lupaUuid =
+    id &&
+    test(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/, id)
+      ? id
+      : null;
   /**
    * TO DO: Käytetään hauissa oid:tä, mikäli se on annettu y-tunnuksen sijaan.
    * Organisaation oid on aina muotoa 1.g2.246.562.10.XXXXXXXXXX.
-   * const oid = !!ytunnus ? id : null;
+   * const oid = !!_ytunnus ? id : null;
    **/
 
   /**
@@ -626,7 +633,7 @@ const BaseData = ({
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(
+    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi).then(
       result => {
         if (isSubscribed) {
           setBaseData(result);
@@ -634,12 +641,12 @@ const BaseData = ({
       }
     );
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, ytunnus, location.pathname, koulutustyyppi]);
+  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData, ytunnus }) : null}
+        {!!render ? render({ ...baseData, lupaUuid, ytunnus: _ytunnus }) : null}
       </React.Fragment>
     );
   }

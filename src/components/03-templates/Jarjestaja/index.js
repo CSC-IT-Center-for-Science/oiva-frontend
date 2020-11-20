@@ -64,8 +64,8 @@ const Jarjestaja = React.memo(
     const location = useLocation();
     const tabKey = R.last(R.split("/", location.pathname));
 
-    const jarjestaja = useMemo(() => {
-      return lupa && lupa.jarjestaja
+    const jarjestaja =
+      lupa && lupa.jarjestaja
         ? {
             ...lupa.jarjestaja,
             nimi:
@@ -73,7 +73,6 @@ const Jarjestaja = React.memo(
               R.head(R.values(lupa.jarjestaja.nimi))
           }
         : {};
-    }, [intl.locale, lupa]);
 
     const breadcrumb = useMemo(() => {
       return jarjestaja ? `/jarjestajat/${jarjestaja.oid}` : "";
@@ -172,9 +171,13 @@ const Jarjestaja = React.memo(
                 <BaseData
                   keys={["kunnat", "lupa", "maakunnat"]}
                   locale={intl.locale}
-                  render={_props => (
-                    <OmatTiedot organisation={organisation} {..._props} />
-                  )}
+                  render={_props =>
+                    !R.isEmpty(organisation) ? (
+                      <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                        <OmatTiedot organisation={organisation} {..._props} />
+                      </div>
+                    ) : null
+                  }
                 />
               )}
             />
@@ -182,7 +185,9 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa`}
               render={() => (
                 <div className="border m-12 p-12 bg-white mx-auto w-4/5">
-                  <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  {JarjestamislupaJSX ? (
+                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  ) : null}
                 </div>
               )}
             />
@@ -201,18 +206,20 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa-asiat`}
               exact
               render={props => (
-                <JarjestamislupaAsiat
-                  history={props.history}
-                  intl={intl}
-                  isForceReloadRequested={R.includes(
-                    "force=true",
-                    props.location.search
-                  )}
-                  match={props.match}
-                  newApplicationRouteItem={newApplicationRouteItem}
-                  lupa={lupa}
-                  organisation={organisation}
-                />
+                <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                  <JarjestamislupaAsiat
+                    history={props.history}
+                    intl={intl}
+                    isForceReloadRequested={R.includes(
+                      "force=true",
+                      props.location.search
+                    )}
+                    match={props.match}
+                    newApplicationRouteItem={newApplicationRouteItem}
+                    lupa={lupa}
+                    organisation={organisation}
+                  />
+                </div>
               )}
             />
             <Route
@@ -222,12 +229,14 @@ const Jarjestaja = React.memo(
             />
           </div>
         ) : (
-          <div>
+          <div className="flex-1 bg-gray-100 border-t border-solid border-gray-300">
             <Route
               path={`${url}/jarjestamislupa`}
               render={() => (
-                <div className="border mt-12 p-12">
-                  <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                <div className="border my-12 p-12 bg-white mx-auto w-4/5">
+                  {JarjestamislupaJSX ? (
+                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                  ) : null}
                 </div>
               )}
             />

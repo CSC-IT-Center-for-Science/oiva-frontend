@@ -6,11 +6,11 @@ import { useIntl } from "react-intl";
 import {
   useChangeObjects,
   useChangeObjectsByAnchorWithoutUnderRemoval
-} from "../../../scenes/AmmatillinenKoulutus/store";
+} from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
 import { has, isEmpty } from "ramda";
-import { useLomakedata } from "scenes/AmmatillinenKoulutus/lomakedata";
+import { useLomakedata } from "stores/lomakedata";
 
 const defaultProps = {
   data: {},
