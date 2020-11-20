@@ -1,6 +1,7 @@
-import { compose, endsWith, find, groupBy, head, map, mapObjIndexed, omit, prop, propEq, sort } from "ramda";
+import { compose, endsWith, find, groupBy, head, map, mapObjIndexed, omit, prop, propEq, sort, flatten, pathEq, path } from "ramda";
 import localforage from "localforage";
 import { getChangeObjByAnchor } from "../../components/02-organisms/CategorizedListRoot/utils";
+import { getLisatiedotFromStorage } from "../lisatiedot";
 
 export const initializeOpetustehtava = opetustehtava => {
   return omit(["koodiArvo"], {
@@ -33,8 +34,29 @@ export const initializeOpetustehtavat = opetustehtavat => {
 
 export const defineBackendChangeObjects = async (changeObjects = [], maaraystyypit, locale, kohteet) => {
   const opetustehtavat = await getOpetustehtavatFromStorage();
+  const lisatiedot = await getLisatiedotFromStorage();
   // Luodaan LISÄYS
+  const lisatiedotObj = find(
+    pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
+    lisatiedot || []
+  );
   const lisatiedotChangeObj = find(compose(endsWith(".lisatiedot"), prop("anchor")), changeObjects);
+  const lisatiedotBeChangeObj =
+    !!lisatiedotChangeObj && !!lisatiedotObj
+    ? {
+      kohde: find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
+      koodiarvo: lisatiedotObj.koodiarvo,
+      koodisto: lisatiedotObj.koodisto.koodistoUri,
+      kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
+      maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+      meta: {
+        arvo: path(["properties", "value"], lisatiedotChangeObj),
+        changeObjects: [lisatiedotChangeObj]
+      },
+      tila: "LISAYS"
+    }
+    : [];
+
   const opetusMuutokset = map(opetustehtava => {
     const opetustehtavaAnchor = `opetustehtavat.opetustehtava.${opetustehtava.koodiarvo}`;
     const changeObj = getChangeObjByAnchor(opetustehtavaAnchor, changeObjects);
@@ -47,13 +69,15 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
         kuvaus: opetustehtava.metadata[locale].kuvaus,
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
-          changeObjects: [changeObj, lisatiedotChangeObj]
+          changeObjects: [changeObj]
         },
         tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
       } : null
     }, opetustehtavat).filter(Boolean);
 
-  return opetusMuutokset;
+  return flatten([opetusMuutokset, lisatiedotBeChangeObj]).filter(
+    Boolean
+  );
 }
 
 export function getOpetustehtavatFromStorage() {

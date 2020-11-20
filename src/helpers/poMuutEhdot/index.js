@@ -90,7 +90,6 @@ export const defineBackendChangeObjects = async (
 
     const kuvausBEchangeObjects = map(changeObj => {
       return {
-        arvo: changeObj.properties.value,
         generatedId: changeObj.anchor,
         kohde,
         koodiarvo: ehto.koodiarvo,
@@ -120,7 +119,6 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
     ? {
-        arvo: path(["properties", "value"], lisatiedotChangeObj),
         kohde,
         koodiarvo: path(
           ["properties", "metadata", "koodiarvo"],
@@ -132,6 +130,7 @@ export const defineBackendChangeObjects = async (
         ),
         maaraystyyppi,
         meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
           changeObjects: [lisatiedotChangeObj]
         },
         tila: "LISAYS"
