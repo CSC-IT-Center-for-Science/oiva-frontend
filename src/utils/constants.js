@@ -57,3 +57,15 @@ export const LUPA_SECTIONS = {
     LUKIO: "2",
     VAPAASIVISTYSTYO: "3"
   };
+
+  export const MUUTOS_TILAT = {
+    MUUTOS: "MUUTOS",
+    LISAYS: "LISAYS",
+    POISTO: "POISTO"
+  };
+
+  export const MUUTOS_TYPES = {
+    ADDITION: "addition",
+    REMOVAL: "removal",
+    CHANGE: "change"
+  };

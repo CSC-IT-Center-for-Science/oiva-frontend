@@ -1491,7 +1491,7 @@
   },
   {
     "id": "common.htmlLuvanOtsikko",
-    "defaultMessage": "Ajantasainen perusopetuksen järjestämislupa {date}",
+    "defaultMessage": "Ajantasainen {koulutusmuodon} järjestämislupa {date}",
     "filepath": "src/i18n/definitions/common.js"
   },
   {

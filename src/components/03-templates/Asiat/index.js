@@ -70,7 +70,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
           }></UusiAsiaEsidialog>
       )}
 
-      <div className="flex flex-col justify-end w-full h-40">
+      <div className="flex flex-col justify-end h-40 mx-auto w-4/5">
         <div className="flex items-center">
           <div className="flex-1">
             <div className="w-full flex flex-row justify-between">
@@ -110,13 +110,9 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
         </div>
       </div>
 
-      <div
-        className="flex-1 flex w-full"
-        style={{ borderTop: "0.05rem solid #E3E3E3" }}>
-        <div className="flex-1 flex flex-col w-full mx-auto py-12">
-          <div
-            className="flex-1 bg-white"
-            style={{ border: "0.05rem solid #E3E3E3" }}>
+      <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+        <div className="flex mx-auto w-4/5 py-12">
+          <div className="flex-1 bg-white">
             <Switch>
               <Route
                 authenticated={!!user}
