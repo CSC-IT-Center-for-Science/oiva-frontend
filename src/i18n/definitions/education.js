@@ -65,5 +65,9 @@ export default defineMessages({
   erityisetKoulutustehtavat: {
     id: "education.erityisetKoulutustehtavat",
     defaultMessage: "Erityiset koulutustehtävät"
+  },
+  voidaanAntaaMyosSeuraavillaKielilla: {
+    id: "education.voidaanAntaaMyosSeuraavillaKielilla",
+    defaultMessage: "Opetusta voidaan antaa myös seuraavilla kielillä"
   }
 });

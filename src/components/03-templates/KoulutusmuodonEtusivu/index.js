@@ -19,7 +19,7 @@ import { useUser } from "stores/user";
 import AsianhallintaCard from "../AsianhallintaCard";
 import Asianhallinta from "../Asianhallinta";
 
-const keys = ["lupaByYtunnus"];
+const keys = ["lupaByYtunnus", "kieletOPH"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
@@ -107,6 +107,7 @@ export default function KoulutusmuodonEtusivu({
                     <BaseData
                       keys={keys}
                       locale={locale}
+                      koulutustyyppi={koulutusmuoto.koulutustyyppi}
                       render={_props => {
                         return (
                           <JarjestajaSwitch
