@@ -199,7 +199,6 @@ const UusiAsiaDialog = ({
     const hasChangesUnderRemoval = underRemovalChangeObjects
       ? !R.isEmpty(underRemovalChangeObjects)
       : false;
-    return hasUnsavedChanges || hasChangesUnderRemoval;
     return (
       (hasUnsavedChanges || hasChangesUnderRemoval) && validity.paatoksentiedot
     );
