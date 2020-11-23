@@ -584,6 +584,8 @@ const fetchBaseData = async (
         )
       : undefined,
     viimeisinLupa: raw.viimeisinLupa || {},
+    // Noinkohan tämä sijoitus toimii VST-puolella, missä lupa haetaan
+    // uuid:llä...
     voimassaOlevaLupa: raw.lupaByYtunnus
   };
   return result;
