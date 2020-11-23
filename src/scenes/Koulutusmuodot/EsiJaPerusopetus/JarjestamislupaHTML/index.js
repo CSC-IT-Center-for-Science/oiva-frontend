@@ -5,6 +5,7 @@ import common from "i18n/definitions/common";
 import { Typography } from "@material-ui/core";
 import PoOpetuskieletHtml from "./opetuskielet";
 import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
+import PoOpetuksenMuutEhdotHtml from "./muutEhdot";
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
@@ -16,16 +17,17 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
   return (
     <React.Fragment>
       <div className="border-b border-solid border-gray-400 py-16">
-          <Typography variant="h2">
-            {formatMessage(common.htmlLuvanOtsikko, {
-              date: new Date().toLocaleDateString(),
-              koulutusmuodon: "esi- ja perusopetuksen",
-            })}
-          </Typography>
+        <Typography variant="h2">
+          {formatMessage(common.htmlLuvanOtsikko, {
+            date: new Date().toLocaleDateString(),
+            koulutusmuodon: "esi- ja perusopetuksen"
+          })}
+        </Typography>
       </div>
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
-      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset }/>
-  </React.Fragment>
+      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />
+      <PoOpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
+    </React.Fragment>
   );
 };
 
