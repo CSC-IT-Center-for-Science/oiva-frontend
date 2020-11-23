@@ -23,7 +23,7 @@ import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
-const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio", "kieletOPH"];
+const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio", "tulevatLuvat", "kieletOPH"];
 const keys2 = ["organisaatio"];
 
 export default function KoulutusmuodonEtusivu({
@@ -146,6 +146,8 @@ export default function KoulutusmuodonEtusivu({
                               organisation={_props1.organisaatio}
                               path={props.match.path}
                               user={user}
+                              tulevatLuvat={_props1.tulevatLuvat}
+                              voimassaOlevaLupa={_props1.voimassaOlevaLupa}
                               ytunnus={_props1.ytunnus}
                             />
                           );
@@ -167,6 +169,8 @@ export default function KoulutusmuodonEtusivu({
                                       lupaUuid={_props1.lupaUuid}
                                       organisation={_props2.organisaatio}
                                       path={props.match.path}
+                                      tulevatLuvat={_props1.tulevatLuvat}
+                                      voimassaOlevaLupa={_props1.voimassaOlevaLupa}
                                       user={user}
                                     />
                                   );
