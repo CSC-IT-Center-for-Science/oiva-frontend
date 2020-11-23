@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { filter, find, includes, map, toUpper, isEmpty } from "ramda";
+import { filter, find, includes, map, toUpper, isEmpty, propEq } from "ramda";
 import { useIntl } from "react-intl";
+import common from "../../../../i18n/definitions/common";
 import education from "../../../../i18n/definitions/education";
 import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
 
@@ -31,12 +32,12 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   return ( (!isEmpty(ensisijaisetOpetuskielet) || !isEmpty(toissijaisetOpetuskielet)) && !isEmpty(kieletOPH)) && (
     <div className={"pt-8 pb-4"}>
-      <h1 className="font-medium mb-4">Opetuskielet</h1>
+      <h1 className="font-medium mb-4">{intl.formatMessage(common.opetuskieli)}</h1>
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
-            <li key={opetuskieli.koodiarvo} style={{"lineHeight": "1.325"}}>
-              {find(kieli => kieli.koodiarvo === opetuskieli.koodiarvo, kieletOPH).metadata[locale].nimi}
+            <li key={opetuskieli.koodiarvo} className="leading-bulletList">
+              {find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH).metadata[locale].nimi}
             </li>,
           ensisijaisetOpetuskielet || [])
         }
@@ -46,8 +47,8 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
-              <li key={opetuskieli.koodiarvo} style={{"lineHeight": "1.325"}}>
-                {find(kieli => kieli.koodiarvo === opetuskieli.koodiarvo, kieletOPH).metadata[locale].nimi}
+              <li key={opetuskieli.koodiarvo} className="leading-bulletList">
+                {find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH).metadata[locale].nimi}
               </li>,
             toissijaisetOpetuskielet || [])
         }
