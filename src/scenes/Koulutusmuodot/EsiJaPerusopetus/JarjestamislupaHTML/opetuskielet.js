@@ -27,12 +27,12 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
     maarays.koodisto === "kielikoodistoopetushallinto" && includes("toissijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset);
 
-  const lisatietoMaarays = find(maarays => maarays.kohde.tunniste === "opetuskieli" &&
+  const lisatietomaarays = find(maarays => maarays.kohde.tunniste === "opetuskieli" &&
     maarays.koodisto === "lisatietoja", maaraykset);
 
   return ( (!isEmpty(ensisijaisetOpetuskielet) || !isEmpty(toissijaisetOpetuskielet)) && !isEmpty(kieletOPH)) && (
-    <div className={"pt-8 pb-4"}>
-      <h1 className="font-medium mb-4">{intl.formatMessage(common.opetuskieli)}</h1>
+    <div className="mt-4">
+      <h3 className="font-medium mb-4">{intl.formatMessage(common.opetuskieli)}</h3>
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
@@ -43,7 +43,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
         }
       </ul>
       {!isEmpty(toissijaisetOpetuskielet) &&
-      <h4 className="font-medium mb-4">{intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}</h4>}
+      <h3 className="font-medium mb-4">{intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}</h3>}
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>

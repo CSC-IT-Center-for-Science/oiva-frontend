@@ -83,3 +83,7 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
 export function getOpetustehtavatFromStorage() {
   return localforage.getItem("opetustehtavat");
 }
+
+export function getOpetustehtavaKoodistoFromStorage() {
+  return localforage.getItem("opetustehtavakoodisto");
+}
