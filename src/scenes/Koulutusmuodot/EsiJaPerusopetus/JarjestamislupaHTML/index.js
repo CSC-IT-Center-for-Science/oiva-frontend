@@ -18,7 +18,7 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
     <React.Fragment>
       <h2 className="font-medium mb-6">
         {formatMessage(common.htmlLuvanOtsikko, {
-          date: moment(new Date().toLocaleDateString()).format("DD.MM.YYYY"),
+          date: moment().format("DD.MM.YYYY"),
           koulutusmuodon: "esi- ja perusopetuksen",
         })}
       </h2>

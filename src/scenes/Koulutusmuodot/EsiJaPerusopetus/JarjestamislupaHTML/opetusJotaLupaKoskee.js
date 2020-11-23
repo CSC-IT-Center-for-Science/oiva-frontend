@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { filter, find, includes, map, toUpper, isEmpty, propEq } from "ramda";
+import { filter, find, map, toUpper, isEmpty, propEq } from "ramda";
 import { useIntl } from "react-intl";
 import { getOpetustehtavatFromStorage, getOpetustehtavaKoodistoFromStorage } from "../../../../helpers/opetustehtavat";
 import * as R from "ramda";
@@ -10,20 +10,17 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
   const [opetustehtavatFromStorage, setOpetustehtavatFromStorage] = useState([]);
   const [opetustehtavaKoodisto, setOpetustehtavaKoodisto] = useState([]);
 
-  /** Fetch opetustehtavat from storage */
+  /** Fetch opetustehtavat and opetustehtavaKoodisto from storage */
   useEffect(() => {
-    getOpetustehtavatFromStorage().then(opetustehtavat => {
-        setOpetustehtavatFromStorage(opetustehtavat);
+    getOpetustehtavaKoodistoFromStorage().then(opetustehtavaKoodisto => {
+        setOpetustehtavaKoodisto(opetustehtavaKoodisto);
       }
     ).catch(err => {
       console.error(err);
     });
-  }, []);
 
-  /** Fetch opetustehtavaKoodisto from storage */
-  useEffect(() => {
-    getOpetustehtavaKoodistoFromStorage().then(opetustehtavaKoodisto => {
-        setOpetustehtavaKoodisto(opetustehtavaKoodisto);
+    getOpetustehtavatFromStorage().then(opetustehtavat => {
+        setOpetustehtavatFromStorage(opetustehtavat);
       }
     ).catch(err => {
       console.error(err);
@@ -48,7 +45,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
               { find(propEq("koodiarvo", opetustehtava.koodiarvo), opetustehtavatFromStorage)
                 .metadata[locale].nimi }
             </li>,
-          opetustehtavat || [])
+          opetustehtavat)
         }
       </ul>
     </div>
