@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import PoOpetuskieletHtml from "./opetuskielet";
 import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
+import PoOpetuksenErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import moment from "moment";
 
@@ -22,10 +23,12 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
           koulutusmuodon: "esi- ja perusopetuksen",
         })}
       </h2>
+
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
-      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset }/>
-  </React.Fragment>
+      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />
+      <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
+    </React.Fragment>
   );
 };
 
