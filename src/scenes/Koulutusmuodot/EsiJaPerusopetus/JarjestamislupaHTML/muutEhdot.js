@@ -30,7 +30,7 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
         console.error(err);
       });
   }, []);
-  console.info(maaraykset);
+
   const muutEhdot = filter(
     maarays =>
       maarays.kohde.tunniste === "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
