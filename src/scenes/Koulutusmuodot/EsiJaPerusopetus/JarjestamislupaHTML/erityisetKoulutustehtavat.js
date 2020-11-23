@@ -48,9 +48,9 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   return !isEmpty(erityisetKoulutustehtavat) &&
     !isEmpty(erityisetKoulutustehtavatKoodisto) ? (
     <div className={"pt-8 pb-4"}>
-      <h1 className="font-medium mb-4">
+      <h3 className="font-medium mb-4">
         {intl.formatMessage(education.erityisetKoulutustehtavat)}
-      </h1>
+      </h3>
       <ul className="ml-8 list-disc mb-4">
         {map(erityinenKoulutustehtava => {
           const koodistonTiedot = find(
