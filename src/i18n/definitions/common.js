@@ -1198,5 +1198,9 @@ export default defineMessages({
   htmlLuvanOtsikko: {
     id: "common.htmlLuvanOtsikko",
     defaultMessage: "Ajantasainen {koulutusmuodon} järjestämislupa {date}"
+  },
+  jarjestamisJaYllapitamisluvat: {
+    id: "common.jarjestamisJaYllapitamisluvat",
+    defaultMessage: "Järjestämis- ja ylläpitämisluvat"
   }
 });

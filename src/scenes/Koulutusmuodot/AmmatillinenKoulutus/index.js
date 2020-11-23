@@ -13,7 +13,7 @@ export default function AmmatillinenKoulutus({ koulutusmuoto }) {
       JarjestamislupaJSX={JarjestamislupaJSX}
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
-      sivunOtsikko={koulutusmuoto.sivunOtsikko}
+      paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
       UusiAsiaDialogContainer={UusiAsiaDialogContainer}></KoulutusmuodonEtusivu>
   );
 }

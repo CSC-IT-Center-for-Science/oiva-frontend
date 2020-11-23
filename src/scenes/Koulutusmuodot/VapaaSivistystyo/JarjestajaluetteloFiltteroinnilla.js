@@ -1,5 +1,4 @@
 import React from "react";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
 import { Helmet } from "react-helmet";
 import education from "../../../i18n/definitions/education";
@@ -16,10 +15,6 @@ const JarjestajaluetteloFiltteroinnilla = ({ luvat }) => {
       <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>{intl.formatMessage(education.vstEducation)} - Oiva</title>
       </Helmet>
-
-      <BreadcrumbsItem to="/vapaa-sivistystyo">
-        {intl.formatMessage(education.vstEducation)}
-      </BreadcrumbsItem>
 
       <BaseData
         locale={intl.locale}

@@ -65,5 +65,25 @@ export default defineMessages({
   erityisetKoulutustehtavat: {
     id: "education.erityisetKoulutustehtavat",
     defaultMessage: "Erityiset koulutustehtävät"
+  },
+  ammatillisenKoulutuksen: {
+    id: "education.ammatillisenKoulutuksen",
+    defaultMessage: "Ammatillisen koulutuksen"
+  },
+  esiJaPerusopetuksen: {
+    id: "education.esiJaPerusopetuksen",
+    defaultMessage: "Esi- ja perusopetuksen"
+  },
+  lukiokoulutuksen: {
+    id: "education.lukiokoulutuksen",
+    defaultMessage: "Lukiokoulutuksen"
+  },
+  vapaanSivistystyon: {
+    id: "education.vapaanSivistystyon",
+    defaultMessage: "Vapaan sivistystyön"
+  },
+  koulutusmuodot: {
+    id: "education.koulutusmuodot",
+    defaultMessage: "Koulutusmuodot"
   }
 });
