@@ -23,8 +23,8 @@ import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
-const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio"];
-const keys2 = ["organisaatio", "kieletOPH"];
+const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio", "kieletOPH"];
+const keys2 = ["organisaatio"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,

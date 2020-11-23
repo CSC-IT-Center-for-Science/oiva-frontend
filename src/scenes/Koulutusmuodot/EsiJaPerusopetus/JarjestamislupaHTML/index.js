@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import { Typography } from "@material-ui/core";
-import styled from "styled-components";
-import { COLORS } from "../../../../modules/styles";
 import PoOpetuskieletHtml from "./opetuskielet";
-
-const TopSectionWrapper = styled.div`
-  border-bottom: 1px solid ${COLORS.BORDER_GRAY};
-`;
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
@@ -19,18 +13,17 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <div>
-      <TopSectionWrapper className="py-16">
-        <Typography variant="h2">
-          {formatMessage(common.htmlLuvanOtsikko, {
-            date: new Date().toLocaleDateString(),
-            koulutusmuodon: "esi- ja perusopetuksen",
-          })}
-        </Typography>
-      </TopSectionWrapper>
-
+    <React.Fragment>
+      <div className="border-b border-solid border-gray-400 py-16">
+          <Typography variant="h2">
+            {formatMessage(common.htmlLuvanOtsikko, {
+              date: new Date().toLocaleDateString(),
+              koulutusmuodon: "esi- ja perusopetuksen",
+            })}
+          </Typography>
+      </div>
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
-    </div>
+  </React.Fragment>
   );
 };
 
