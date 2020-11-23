@@ -27,7 +27,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
     maarays.koodisto === "kielikoodistoopetushallinto" && includes("toissijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset);
 
-  const lisatietoMaarays = find(maarays => maarays.kohde.tunniste === "opetuskieli" &&
+  const lisatietomaarays = find(maarays => maarays.kohde.tunniste === "opetuskieli" &&
     maarays.koodisto === "lisatietoja", maaraykset);
 
   return ( (!isEmpty(ensisijaisetOpetuskielet) || !isEmpty(toissijaisetOpetuskielet)) && !isEmpty(kieletOPH)) && (

@@ -35,7 +35,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
     maarays.koodisto === "opetustehtava",
     maaraykset);
 
-  const lisatietoMaarays = find(maarays => maarays.kohde.tunniste === "opetusjotalupakoskee" &&
+  const lisatietomaarays = find(maarays => maarays.kohde.tunniste === "opetusjotalupakoskee" &&
     maarays.koodisto === "lisatietoja", maaraykset);
 
   return !isEmpty(opetustehtavat) && !isEmpty(opetustehtavaKoodisto) && !isEmpty(opetustehtavatFromStorage) && (
