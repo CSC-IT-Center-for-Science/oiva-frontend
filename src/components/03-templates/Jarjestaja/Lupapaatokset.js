@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useLupahistoria } from "stores/lupahistoria";
 import LupapaatoksetTable from "./LupapaatoksetTable";
 
-const Lupapaatokset = ({ jarjestajaOid, tulevatLuvat, voimassaOlevaLupa }) => {
+const Lupapaatokset = ({ koulutusmuoto, jarjestajaOid, tulevatLuvat, voimassaOlevaLupa }) => {
   const [lupahistoria, actions] = useLupahistoria();
 
   // Let's fetch LUPAHISTORIA
@@ -15,6 +15,7 @@ const Lupapaatokset = ({ jarjestajaOid, tulevatLuvat, voimassaOlevaLupa }) => {
 
   return lupahistoria.data ? (
     <LupapaatoksetTable
+      koulutusmuoto={koulutusmuoto}
       data={lupahistoria.data}
       tulevatLuvat={tulevatLuvat}
       voimassaOlevaLupa={voimassaOlevaLupa}></LupapaatoksetTable>
@@ -22,6 +23,7 @@ const Lupapaatokset = ({ jarjestajaOid, tulevatLuvat, voimassaOlevaLupa }) => {
 };
 
 Lupapaatokset.propTypes = {
+  koulutusmuoto: PropTypes.object,
   jarjestajaOid: PropTypes.string,
   tulevatLuvat: PropTypes.array,
   voimassaOlevaLupa: PropTypes.object

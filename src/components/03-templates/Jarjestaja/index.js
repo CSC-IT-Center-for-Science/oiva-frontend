@@ -50,6 +50,7 @@ const OivaTabs = withStyles(() => ({
 const Jarjestaja = React.memo(
   ({
     JarjestamislupaJSX,
+    koulutusmuoto,
     lupa = {},
     lupakohteet = [],
     organisation = {},
@@ -196,6 +197,7 @@ const Jarjestaja = React.memo(
               exact
               render={props => (
                 <JulkisetTiedot
+                  koulutusmuoto={koulutusmuoto}
                   jarjestaja={jarjestaja}
                   tulevatLuvat={tulevatLuvat}
                   voimassaOlevaLupa={voimassaOlevaLupa}
@@ -245,6 +247,7 @@ const Jarjestaja = React.memo(
               exact
               render={() => (
                 <JulkisetTiedot
+                  koulutusmuoto={koulutusmuoto}
                   jarjestaja={jarjestaja}
                   tulevatLuvat={tulevatLuvat}
                   voimassaOlevaLupa={voimassaOlevaLupa}
@@ -259,6 +262,7 @@ const Jarjestaja = React.memo(
 );
 
 Jarjestaja.propTypes = {
+  koulutusmuoto: PropTypes.object,
   lupaKohteet: PropTypes.object,
   lupa: PropTypes.object,
   organisation: PropTypes.object,
