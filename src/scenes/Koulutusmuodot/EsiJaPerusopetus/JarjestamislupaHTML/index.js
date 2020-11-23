@@ -6,6 +6,7 @@ import { Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { COLORS } from "../../../../modules/styles";
 import PoOpetuskieletHtml from "./opetuskielet";
+import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
 
 const TopSectionWrapper = styled.div`
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
@@ -30,6 +31,7 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
       </TopSectionWrapper>
 
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
+      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset }/>
     </div>
   );
 };
