@@ -23,7 +23,7 @@ import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
-const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio", "tulevatLuvat"];
+const keys = ["lupaByUuid", "lupaByYtunnus", "organisaatio", "tulevatLuvat", "kieletOPH"];
 const keys2 = ["organisaatio"];
 
 export default function KoulutusmuodonEtusivu({
@@ -121,6 +121,7 @@ export default function KoulutusmuodonEtusivu({
                     <BaseData
                       keys={keys}
                       locale={locale}
+                      koulutustyyppi={koulutusmuoto.koulutustyyppi}
                       render={_props1 => {
                         /**
                          * Tämä toteutus olisi paljon yksinkertaisempi, jos
