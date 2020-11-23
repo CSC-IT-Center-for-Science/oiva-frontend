@@ -23,13 +23,13 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
     maarays.koodisto === "opetuksenjarjestamismuoto",
     maaraykset);
 
-  const lisatietoMaarays = find(
+  const lisatietomaarays = find(
     maarays => maarays.kohde.tunniste === "opetuksenjarjestamismuoto" &&
     maarays.koodisto === "lisatietoja", maaraykset);
 
   return opetuksenJarjestamismuoto && !isEmpty(jarjestamismuodotKoodisto) ? (
-    <div className={"pt-8 pb-4"}>
-      <h1 className="font-medium mb-4">{intl.formatMessage(education.opetuksenJarjestamismuoto)}</h1>
+    <div className="mt-4">
+      <h3 className="font-medium mb-4">{intl.formatMessage(education.opetuksenJarjestamismuoto)}</h3>
       <ul className="ml-8 list-disc mb-4">
         <li key={opetuksenJarjestamismuoto.koodiarvo}>
           {find(propEq("koodiarvo", opetuksenJarjestamismuoto.koodiarvo), jarjestamismuodotKoodisto)
