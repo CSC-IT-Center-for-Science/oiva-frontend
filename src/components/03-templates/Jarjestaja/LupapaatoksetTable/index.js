@@ -264,6 +264,7 @@ export default function LupapaatoksetTable({
   const [page, setPage] = React.useState(0);
   const [dense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [today] = React.useState(moment().startOf("day"));
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -351,12 +352,12 @@ export default function LupapaatoksetTable({
                           : null}
                       </TableCell>
                       <TableCell align="left">
-                        {isEmpty(row.voimassaololoppupvm || "") ? (
+                        {!isEmpty(row.voimassaoleva) && moment(row.voimassaoloalkupvm) <= today && moment(row.voimassaololoppupvm) >= today ? (
                           <span className="bg-green-250 p-2">
                             {row.voimassaoleva}
                           </span>
                         ) : (
-                          moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
+                           row.voimassaololoppupvm && moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
                         )}
                       </TableCell>
                       <TableCell align="left">

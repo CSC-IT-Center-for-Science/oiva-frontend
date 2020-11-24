@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import PoOpetuskieletHtml from "./opetuskielet";
 import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
+import PoOpetuksenErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import moment from "moment";
 import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
@@ -19,15 +20,16 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
     <React.Fragment>
       <h2 className="font-medium mb-6">
         {formatMessage(common.htmlLuvanOtsikko, {
-          date: moment(new Date().toLocaleDateString()).format("DD.MM.YYYY"),
+          date: moment().format("DD.MM.YYYY"),
           koulutusmuodon: "esi- ja perusopetuksen",
         })}
       </h2>
+
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
-      <PoOpetustaAntavatKunnatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
-      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset }/>
-  </React.Fragment>
+      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />
+      <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
+    </React.Fragment>
   );
 };
 
