@@ -85,7 +85,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       <ul className="ml-8 list-disc mb-4">
         {
           map(kunta =>
-            <li key={kunta.koodiarvo}>
+            <li key={kunta.koodiarvo} className="leading-bulletList">
             { kunta.nimi }
           </li>, kunnatFromLupa)
         }
