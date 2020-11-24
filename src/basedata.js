@@ -15,7 +15,8 @@ import {
   groupBy,
   omit,
   head,
-  filter
+  filter,
+  test
 } from "ramda";
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
@@ -93,7 +94,13 @@ export const getRaw = async (
  * @param {string} ytunnus
  * @param koulutustyyppi
  */
-const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) => {
+const fetchBaseData = async (
+  keys,
+  locale,
+  lupaUuid,
+  ytunnus,
+  koulutustyyppi
+) => {
   const localeUpper = toUpper(locale);
   /**
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
@@ -105,7 +112,13 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
       keys
     ),
     kielet: await getRaw("kielet", backendRoutes.kielet.path, keys),
-    kohteet: await getRaw("kohteet", `${backendRoutes.kohteet.path}${koulutustyyppi ? "?koulutustyyppi=" + koulutustyyppi : ""}`, keys),
+    kohteet: await getRaw(
+      "kohteet",
+      `${backendRoutes.kohteet.path}${
+        koulutustyyppi ? "?koulutustyyppi=" + koulutustyyppi : ""
+      }`,
+      keys
+    ),
     lisatiedot: await getRaw(
       "lisatietoja",
       backendRoutes.lisatietoja.path,
@@ -123,7 +136,8 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     lupaByYtunnus: ytunnus
       ? await getRaw(
           "lupaByYtunnus",
-          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false`,
+          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false${
+            koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
           keys,
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
@@ -244,12 +258,15 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
-      `${backendRoutes.viimeisinLupa.path}${ytunnus}${backendRoutes.viimeisinLupa.postfix}?with=all&useKoodistoVersions=false${koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
+      `${backendRoutes.viimeisinLupa.path}${ytunnus}${
+        backendRoutes.viimeisinLupa.postfix
+      }?with=all&useKoodistoVersions=false${
+        koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+      }`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
   };
-
   const lupa = raw.viimeisinLupa ||
     (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
       maaraykset: []
@@ -273,7 +290,18 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
           )
         )
       : undefined,
-    ensisijaisetOpetuskieletOPH: raw.kielet
+    kieletOPH: raw.kieletOPH ?
+      await localforage.setItem(
+        "kieletOPH",
+        sortLanguages(
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, raw.kieletOPH),
+        localeUpper
+        )
+      )
+      : undefined,
+    ensisijaisetOpetuskieletOPH: raw.kieletOPH
       ? await localforage.setItem(
           "ensisijaisetOpetuskieletOPH",
           filterEnsisijaisetOpetuskieletOPH(
@@ -352,7 +380,7 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
           )
         )
       : undefined,
-    lisamaareet: raw.kunnat
+    lisamaareet: raw.kujalisamaareet
       ? await localforage.setItem(
           "kujalisamaareet",
           sortBy(
@@ -568,6 +596,8 @@ const fetchBaseData = async (keys, locale, lupaUuid, ytunnus, koulutustyyppi) =>
         )
       : undefined,
     viimeisinLupa: raw.viimeisinLupa || {},
+    // Noinkohan tämä sijoitus toimii VST-puolella, missä lupa haetaan
+    // uuid:llä...
     voimassaOlevaLupa: raw.lupaByYtunnus
   };
   return result;
@@ -577,10 +607,27 @@ const defaultProps = {
   keys: []
 };
 
-const BaseData = ({ keys = defaultProps.keys, locale, render, koulutustyyppi }) => {
-  const { lupaUuid, ytunnus } = useParams();
+const BaseData = ({
+  keys = defaultProps.keys,
+  locale,
+  render,
+  koulutustyyppi,
+  ytunnus
+}) => {
+  const { id } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
+  const _ytunnus = ytunnus || (id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null);
+  const lupaUuid =
+    id &&
+    test(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/, id)
+      ? id
+      : null;
+  /**
+   * TO DO: Käytetään hauissa oid:tä, mikäli se on annettu y-tunnuksen sijaan.
+   * Organisaation oid on aina muotoa 1.g2.246.562.10.XXXXXXXXXX.
+   * const oid = !!_ytunnus ? id : null;
+   **/
 
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
@@ -588,18 +635,20 @@ const BaseData = ({ keys = defaultProps.keys, locale, render, koulutustyyppi }) 
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(result => {
-      if (isSubscribed) {
-        setBaseData(result);
+    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi).then(
+      result => {
+        if (isSubscribed) {
+          setBaseData(result);
+        }
       }
-    });
+    );
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, ytunnus, location.pathname, koulutustyyppi]);
+  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData }) : null}
+        {!!render ? render({ ...baseData, lupaUuid, ytunnus: _ytunnus }) : null}
       </React.Fragment>
     );
   }

@@ -15,6 +15,7 @@ import { length, path, toUpper } from "ramda";
  * @param {string} locale
  */
 export const parseLupa = (lupa, formatMessage, locale) => {
+  const localeUpper = toUpper(locale);
   if (lupa) {
     let lupaObj = {};
     let tyovoimaMaarays = checkTyovoima(lupa.maaraykset);
@@ -30,7 +31,7 @@ export const parseLupa = (lupa, formatMessage, locale) => {
           headingNumber,
           tyovoimaMaarays,
           formatMessage,
-          locale
+          localeUpper
         );
       }
     }
