@@ -6,6 +6,7 @@ import PoOpetuskieletHtml from "./opetuskielet";
 import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import moment from "moment";
+import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
@@ -23,6 +24,7 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
         })}
       </h2>
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
+      <PoOpetustaAntavatKunnatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset }/>
   </React.Fragment>
