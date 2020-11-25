@@ -2,6 +2,7 @@ import React from "react";
 import { find, includes } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
+import Typography from "@material-ui/core/Typography";
 
 export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
   const intl = useIntl();
@@ -21,12 +22,15 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
 
   return opetuksenJarjestamismuoto ? (
     <div className="mt-4">
-      <h3 className="font-medium mb-4">{intl.formatMessage(education.opetuksenJarjestamismuoto)}</h3>
+      <Typography component="h3" variant="h3">
+        {intl.formatMessage(education.opetuksenJarjestamismuoto)}
+      </Typography>
       <ul className="ml-8 list-disc mb-4">
         <li key={opetuksenJarjestamismuoto.koodiarvo}>
           {jarjestamismuodonKuvaus}
         </li>
       </ul>
+      { lisatietomaarays && (lisatietomaarays.meta.arvo)}
     </div>
   ) : null
 }

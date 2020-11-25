@@ -14,6 +14,7 @@ import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { parseLocalizedField } from "modules/helpers";
 import { find } from "ramda";
+import Typography from "@material-ui/core/Typography";
 
 const Otsikko = styled.div`
   font-size: 16px;
@@ -95,9 +96,9 @@ const LupaSection = props => {
     const section = list =>
       list.length > 0 ? (
         <MuutSection>
-          <h4>
+          <Typography component="h4" variant="h4">
             <Bold>{list[0].tyyppi}</Bold>
-          </h4>
+          </Typography>
           {_.map(list, (item, i) => {
             const { kuvaus } = item;
             return (
@@ -325,9 +326,9 @@ const LupaSection = props => {
                 const { tyyppi, kuvaus } = muu;
                 return (
                   <MuutSection key={i}>
-                    <h4>
+                    <Typography component="h4" variant="h4">
                       <Bold>{tyyppi}</Bold>
-                    </h4>
+                    </Typography>
                     <Kuvaus>{kuvaus}</Kuvaus>
                   </MuutSection>
                 );

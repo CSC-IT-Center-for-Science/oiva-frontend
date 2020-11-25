@@ -16,6 +16,7 @@ import {
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
+import Typography from "@material-ui/core/Typography";
 
 export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
   const intl = useIntl();
@@ -38,11 +39,18 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
     maaraykset
   );
 
+  const lisatietomaarays = find(
+    maarays =>
+      maarays.kohde.tunniste === "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
+      maarays.koodisto === "lisatietoja",
+    maaraykset
+  );
+
   return !isEmpty(muutEhdot) && !isEmpty(muutEhdotKoodisto) ? (
-    <div className={"pt-8 pb-4"}>
-      <h3 className="font-medium mb-4">
+    <div className="mt-4">
+      <Typography component="h3" variant="h3">
         {intl.formatMessage(education.muutEhdotTitle)}
-      </h3>
+      </Typography>
       <ul className="ml-8 list-disc mb-4">
         {map(muuEhto => {
           const koodistonTiedot = find(
@@ -82,6 +90,7 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
           Boolean
         )}
       </ul>
+      { lisatietomaarays ? (lisatietomaarays.meta.arvo) : null}
     </div>
   ) : null;
 }

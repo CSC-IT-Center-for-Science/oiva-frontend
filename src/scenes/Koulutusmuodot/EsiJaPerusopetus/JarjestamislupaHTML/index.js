@@ -10,6 +10,7 @@ import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import moment from "moment";
 import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 import PoOpiskelijamaaratHtml from "./opiskelijamaarat";
+import Typography from "@material-ui/core/Typography";
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
@@ -20,12 +21,12 @@ const JarjestamislupaJSX = ({ lupa }) => {
 
   return (
     <React.Fragment>
-      <h2 className="font-medium mb-6">
+      <Typography component="h2" variant="h2">
         {formatMessage(common.htmlLuvanOtsikko, {
           date: moment().format("DD.MM.YYYY"),
           koulutusmuodon: "esi- ja perusopetuksen",
         })}
-      </h2>
+      </Typography>
 
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
       <PoOpetustaAntavatKunnatHtml maaraykset={lupa.maaraykset} />
