@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import styled from "styled-components";
 import LupaSection from "./LupaSection";
@@ -11,6 +11,7 @@ import {
 import PropTypes from "prop-types";
 import common from "i18n/definitions/common";
 import moment from "moment";
+import { getKieletFromStorage } from "helpers/kielet";
 
 const TopSectionWrapper = styled.div`
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};
@@ -21,13 +22,26 @@ const TopSectionWrapper = styled.div`
  * (TO DO: Siirrä lupanäkymän generointi tänne).
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
  */
-const JarjestamislupaJSX = ({ lupa, lupakohteet, kielet = [] }) => {
+const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
   const intl = useIntl();
   // Luvan poikkeuskäsittely erikoisluville (17kpl)
   const titleMessageKey = common.lupaPageTitleAmmatillinen;
   const lupaException = LUPA_LISAKOULUTTAJAT[lupa.jarjestajaYtunnus];
   const dateString = new moment().format("D.M.YYYY");
-  return (
+
+  const [kielet, setKielet] = useState();
+
+  useEffect(() => {
+    getKieletFromStorage()
+      .then(kielet => {
+        setKielet(kielet);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }, []);
+
+  return !!kielet ? (
     <div>
       {lupaException ? (
         <TopSectionWrapper className="py-16">
@@ -47,19 +61,21 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet, kielet = [] }) => {
         ""
       ) : (
         <div>
-          {Object.keys(LUPA_SECTIONS).map((k, i) => (
-            <LupaSection
-              key={i}
-              kohde={lupakohteet[k]}
-              ytunnus={lupa.jarjestajaYtunnus}
-              lupaAlkuPvm={lupa.alkupvm}
-              kielet={kielet}
-            />
-          ))}
+          {Object.keys(LUPA_SECTIONS).map((k, i) => {
+            return (
+              <LupaSection
+                key={i}
+                kohde={lupakohteet[k]}
+                ytunnus={lupa.jarjestajaYtunnus}
+                lupaAlkuPvm={lupa.alkupvm}
+                kielet={kielet}
+              />
+            );
+          })}
         </div>
       )}
     </div>
-  );
+  ) : null;
 };
 
 JarjestamislupaJSX.propTypes = {

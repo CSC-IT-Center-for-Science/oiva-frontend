@@ -12,7 +12,7 @@ import Table from "components/02-organisms/Table";
 import { useIntl } from "react-intl";
 import * as R from "ramda";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
-import {asiaStateToLocalizationKeyMap} from "./constants";
+import { asiaStateToLocalizationKeyMap } from "./constants";
 
 const WrapTable = styled.div``;
 
@@ -56,7 +56,9 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto, organisation }) => {
 
   const baseRow = [
     muutospyynto.tila && states.includes(muutospyynto.tila)
-      ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[muutospyynto.tila]])
+      ? intl.formatMessage(
+          common[asiaStateToLocalizationKeyMap[muutospyynto.tila]]
+        )
       : muutospyynto.tila,
     R.path(["nimi", intl.locale], organisation)
   ];
@@ -82,7 +84,6 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto, organisation }) => {
     }
     return [];
   }, [
-    intl,
     muutospyynnonLiitteet.fetchedAt,
     muutospyynnonLiitteet.data,
     attachmentRow
