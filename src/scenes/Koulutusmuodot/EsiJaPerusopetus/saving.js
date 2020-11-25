@@ -139,7 +139,18 @@ export async function createObjectToSave(
     R.propEq("anchor", "paatoksentiedot.asianumero.A"),
     changeObjects.paatoksentiedot || []
   );
+
   objectToSave.asianumero = asianumeroObj ? asianumeroObj.properties.value : "";
+
+  const diaarinumeroObj = R.find(
+    R.propEq("anchor", "paatoksentiedot.diaarinumero.A"),
+    changeObjects.paatoksentiedot || []
+  );
+
+  objectToSave.diaarinumero = diaarinumeroObj
+    ? diaarinumeroObj.properties.value
+    : "";
+
   const paatospaivaObj = R.find(
     R.propEq("anchor", "paatoksentiedot.paatospaiva.A"),
     changeObjects.paatoksentiedot || []

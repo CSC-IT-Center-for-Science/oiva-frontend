@@ -139,3 +139,7 @@ export function getToissijaisetOpetuskieletOPHFromStorage() {
 export function getOpetuskieletFromStorage() {
   return localforage.getItem("opetuskielet");
 }
+
+export function getKieletOPHFromStorage() {
+  return localforage.getItem("kieletOPH");
+}

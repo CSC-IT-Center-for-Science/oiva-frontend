@@ -136,7 +136,8 @@ const fetchBaseData = async (
     lupaByYtunnus: ytunnus
       ? await getRaw(
           "lupaByYtunnus",
-          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false`,
+          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false${
+            koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
           keys,
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
@@ -288,6 +289,17 @@ const fetchBaseData = async (
             localeUpper
           )
         )
+      : undefined,
+    kieletOPH: raw.kieletOPH ?
+      await localforage.setItem(
+        "kieletOPH",
+        sortLanguages(
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, raw.kieletOPH),
+        localeUpper
+        )
+      )
       : undefined,
     ensisijaisetOpetuskieletOPH: raw.kieletOPH
       ? await localforage.setItem(

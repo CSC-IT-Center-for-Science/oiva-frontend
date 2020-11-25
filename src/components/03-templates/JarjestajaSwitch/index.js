@@ -96,6 +96,7 @@ const JarjestajaSwitch = ({
               return (
                 <Jarjestaja
                   JarjestamislupaJSX={JarjestamislupaJSX}
+                  koulutusmuoto={koulutusmuoto}
                   lupakohteet={lupakohteet}
                   lupa={lupa}
                   organisation={organisation}
