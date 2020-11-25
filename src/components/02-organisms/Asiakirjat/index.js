@@ -425,7 +425,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               <Typography component="h4" variant="h4" className="float-left">
                 {t(common.asianAsiakirjat)}
               </Typography>
-              <Typography component="h4" variant="h4" className="float-right" style={{margin: 0, padding: 0}}>
+              <Typography component="h4" variant="h4" className="float-right" style={{margin: 0}}>
                 <SelectAttachment
                   attachmentAdded={handleAddPaatoskirje}
                   messages={{
