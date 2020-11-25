@@ -22,10 +22,10 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
         }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {koulutusmuoto.sivunOtsikko}
+            {koulutusmuoto.kortinOtsikko}
           </Typography>
           <Typography gutterBottom component="p">
-            {koulutusmuoto.kuvausteksti}
+            {koulutusmuoto.lyhytKuvaus}
           </Typography>
         </CardContent>
       </CardActionArea>

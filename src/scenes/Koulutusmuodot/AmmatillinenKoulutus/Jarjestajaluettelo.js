@@ -19,7 +19,6 @@ import { map, toUpper, head, values, find, propEq } from "ramda";
 import { useIntl } from "react-intl";
 
 import common from "../../../i18n/definitions/common";
-import education from "../../../i18n/definitions/education";
 import { Link } from "react-router-dom";
 
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -36,8 +35,7 @@ import {
   InputLabel,
   Select,
   Input,
-  FormLabel,
-  Typography
+  FormLabel
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
@@ -392,9 +390,6 @@ function Jarjestajaluettelo({ luvat }) {
 
   return (
     <div className="mx-auto w-full mb-16">
-      <Typography component="h2" variant="h2" className="py-4">
-        {intl.formatMessage(education.koulutuksenJarjestajat)}
-      </Typography>
       <p className="mt-4 mb-8">
         {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
       </p>

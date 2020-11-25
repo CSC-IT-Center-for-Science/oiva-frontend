@@ -17,7 +17,7 @@ import Esittelijat from "../Esittelijat/index";
 const Asianhallinta = ({
   AsiaDialogContainer,
   koulutusmuoto,
-  sivunOtsikko,
+  paasivunOtsikko,
   UusiAsiaDialogContainer
 }) => {
   const history = useHistory();
@@ -27,7 +27,7 @@ const Asianhallinta = ({
   return (
     <React.Fragment>
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {sivunOtsikko}
+        {paasivunOtsikko}
       </BreadcrumbsItem>
       {location.pathname === "/asianhallinta" ? (
         <div className="flex-1 bg-gray-100">
@@ -72,7 +72,7 @@ const Asianhallinta = ({
               <Esittelijat
                 AsiaDialogContainer={AsiaDialogContainer}
                 koulutusmuoto={koulutusmuoto}
-                sivunOtsikko={sivunOtsikko}
+                paasivunOtsikko={paasivunOtsikko}
                 UusiAsiaDialogContainer={UusiAsiaDialogContainer}
               />
             )}
