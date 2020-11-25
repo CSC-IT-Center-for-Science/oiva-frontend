@@ -12,8 +12,8 @@ import DestroyCasAuth from "./scenes/Logout/services/DestroyCasAuth";
 import { createBrowserHistory } from "history";
 import authMessages from "./i18n/definitions/auth";
 import { useIntl } from "react-intl";
-import commonMessages from "./i18n/definitions/common";
-import educationMessages from "./i18n/definitions/education";
+import common from "./i18n/definitions/common";
+import education from "./i18n/definitions/education";
 import langMessages from "./i18n/definitions/languages";
 import { ToastContainer } from "react-toastify";
 import {
@@ -41,6 +41,12 @@ import Lukiokoulutus from "scenes/Koulutusmuodot/Lukiokoulutus";
 import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo";
 import { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
+
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import lukiokoulutus from "i18n/definitions/lukiokoulutus";
+import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
+
 import * as R from "ramda";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -87,30 +93,37 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       ...constants.koulutusmuodot,
       ammatillinenKoulutus: {
         ...constants.koulutusmuodot.ammatillinenKoulutus,
-        // TO DO: Aseta kuvausteksti käännöksiin
-        kuvausteksti:
-          "Ammatillisten tutkintojen ja koulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää tutkintojen ja koulutuksen järjestämislupaa. Järjestämislupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
-        sivunOtsikko: intl.formatMessage(educationMessages.vocationalEducation)
+        genetiivi: intl.formatMessage(ammatillinenKoulutus.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.vocationalEducation),
+        kuvausteksti: intl.formatMessage(ammatillinenKoulutus.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(ammatillinenKoulutus.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(
+          ammatillinenKoulutus.paasivunOtsikko
+        )
       },
       esiJaPerusopetus: {
         ...constants.koulutusmuodot.esiJaPerusopetus,
-        // TO DO: Aseta kuvausteksti käännöksiin
-        kuvausteksti:
-          "Kunta on perusopetuslain nojalla velvollinen järjestämään sen alueella asuville oppivelvollisuusikäisille esi- ja perusopetusta. Valtioneuvosto voi myöntää opetus- ja kulttuuriministeriön esityksestä myös rekisteröidylle yhteisölle tai säätiölle luvan perusopetuslain mukaisen opetuksen järjestämiseen. Opetusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella opetuksen järjestäjiä ja heidän järjestämislupiaan.",
-        sivunOtsikko: intl.formatMessage(educationMessages.preAndBasicEducation)
+        genetiivi: intl.formatMessage(esiJaPerusopetus.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.preAndBasicEducation),
+        kuvausteksti: intl.formatMessage(esiJaPerusopetus.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(esiJaPerusopetus.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(esiJaPerusopetus.paasivunOtsikko)
       },
       lukiokoulutus: {
         ...constants.koulutusmuodot.lukiokoulutus,
-        // TO DO: Aseta kuvausteksti käännöksiin
-        kuvausteksti: "Kuvaus tulossa myöhemmin.",
-        sivunOtsikko: intl.formatMessage(educationMessages.highSchoolEducation)
+        genetiivi: intl.formatMessage(lukiokoulutus.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.highSchoolEducation),
+        kuvausteksti: intl.formatMessage(lukiokoulutus.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(lukiokoulutus.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(lukiokoulutus.paasivunOtsikko)
       },
       vapaaSivistystyo: {
         ...constants.koulutusmuodot.vapaaSivistystyo,
-        // TO DO: Aseta kuvausteksti käännöksiin
-        kuvausteksti:
-          "Vapaan sivistystyön oppilaitoksia ovat kansalaisopistot, kansanopistot, kesäyliopistot, liikunnan koulutuskeskukset ja opintokeskukset. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan vapaan sivistystyön oppilaitoksen ylläpitämiseen. Tällä sivulla voit tarkastella oppilaitosten ylläpitäjiä ja heidän ylläpitämislupiaan.",
-        sivunOtsikko: intl.formatMessage(educationMessages.vstEducation)
+        genetiivi: intl.formatMessage(vapaaSivistystyo.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.vstEducation),
+        kuvausteksti: intl.formatMessage(vapaaSivistystyo.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(vapaaSivistystyo.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(vapaaSivistystyo.paasivunOtsikko)
       }
     }),
     [intl]
@@ -135,27 +148,27 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   const pageLinks = [
     {
       path: "/esi-ja-perusopetus",
-      text: intl.formatMessage(educationMessages.preAndBasicEducation)
+      text: intl.formatMessage(education.preAndBasicEducation)
     },
     {
       path: "/lukiokoulutus",
-      text: intl.formatMessage(educationMessages.highSchoolEducation)
+      text: intl.formatMessage(education.highSchoolEducation)
     },
     {
       path: "/ammatillinenkoulutus",
-      text: intl.formatMessage(educationMessages.vocationalEducation)
+      text: intl.formatMessage(education.vocationalEducation)
     },
     {
       path: "/vapaa-sivistystyo",
-      text: intl.formatMessage(educationMessages.vstEducation)
+      text: intl.formatMessage(education.vstEducation)
     },
-    { path: "/tilastot", text: intl.formatMessage(commonMessages.statistics) }
+    { path: "/tilastot", text: intl.formatMessage(common.statistics) }
   ];
 
   if (sessionStorage.getItem("role") === ROLE_ESITTELIJA) {
     pageLinks.push({
       path: "/asianhallinta",
-      text: intl.formatMessage(commonMessages.asianhallinta)
+      text: intl.formatMessage(common.asianhallinta)
     });
   }
 
@@ -220,7 +233,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   }, [intl, organisation, user]);
 
   const shortDescription = {
-    text: intl.formatMessage(commonMessages.siteShortDescription),
+    text: intl.formatMessage(common.siteShortDescription),
     path: "/"
   };
 
@@ -316,9 +329,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         </SideNavigation>
 
         <div className="flex flex-col min-h-screen bg-white">
-          <SkipNavLink>
-            {intl.formatMessage(commonMessages.jumpToContent)}
-          </SkipNavLink>
+          <SkipNavLink>{intl.formatMessage(common.jumpToContent)}</SkipNavLink>
           <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <SkipNavContent />

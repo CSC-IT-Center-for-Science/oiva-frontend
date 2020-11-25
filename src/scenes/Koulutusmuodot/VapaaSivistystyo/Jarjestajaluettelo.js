@@ -46,13 +46,11 @@ import {
   InputLabel,
   Select,
   Input,
-  FormLabel,
-  Typography
+  FormLabel
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
-import education from "i18n/definitions/education";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -465,9 +463,6 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
 
   return (
     <div className="mx-auto w-full mb-16">
-      <Typography component="h2" variant="h2" className="py-4">
-        {intl.formatMessage(education.koulutuksenJarjestajat)}
-      </Typography>
       <p className="mt-4 mb-8">
         {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
       </p>

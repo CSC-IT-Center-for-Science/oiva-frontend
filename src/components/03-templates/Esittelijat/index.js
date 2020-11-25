@@ -13,7 +13,7 @@ import { MuutoksetContainer } from "../../../stores/muutokset";
 const Esittelijat = ({
   AsiaDialogContainer,
   koulutusmuoto,
-  sivunOtsikko,
+  paasivunOtsikko,
   UusiAsiaDialogContainer
 }) => {
   const { formatMessage, locale } = useIntl();
@@ -36,7 +36,7 @@ const Esittelijat = ({
             component="h2"
             style={{ fontSize: "1.25rem" }}
             className="pb-4 mt--12">
-            {sivunOtsikko}
+            {paasivunOtsikko}
           </Typography>
         </div>
 

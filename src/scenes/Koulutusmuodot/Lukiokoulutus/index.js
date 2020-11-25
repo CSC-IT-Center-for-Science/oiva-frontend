@@ -10,6 +10,6 @@ export default function Lukio({ koulutusmuoto }) {
       JarjestamislupaJSX={JarjestamislupaJSX}
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
-      sivunOtsikko={koulutusmuoto.sivunOtsikko}></KoulutusmuodonEtusivu>
+      paasivunOtsikko={koulutusmuoto.paasivunOtsikko}></KoulutusmuodonEtusivu>
   );
 }

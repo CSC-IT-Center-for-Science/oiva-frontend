@@ -5,8 +5,10 @@ import common from "i18n/definitions/common";
 import PoOpetuskieletHtml from "./opetuskielet";
 import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
 import PoOpetuksenMuutEhdotHtml from "./muutEhdot";
+import PoOpetuksenErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import moment from "moment";
+import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
@@ -23,9 +25,12 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
           koulutusmuodon: "esi- ja perusopetuksen",
         })}
       </h2>
+
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
+      <PoOpetustaAntavatKunnatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />
+      <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
     </React.Fragment>
   );

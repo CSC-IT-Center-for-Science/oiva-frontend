@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { filter, find, map, toUpper, isEmpty, propEq } from "ramda";
 import { useIntl } from "react-intl";
 import { getOpetustehtavatFromStorage, getOpetustehtavaKoodistoFromStorage } from "../../../../helpers/opetustehtavat";
-import * as R from "ramda";
 
 export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
   const intl = useIntl();
@@ -37,7 +36,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
 
   return !isEmpty(opetustehtavat) && !isEmpty(opetustehtavaKoodisto) && !isEmpty(opetustehtavatFromStorage) && (
     <div className="mt-4">
-      <h3 className="font-medium mb-4">{opetustehtavaKoodisto.metadata[R.toUpper(intl.locale)].kuvaus}</h3>
+      <h3 className="font-medium mb-4">{opetustehtavaKoodisto.metadata[toUpper(intl.locale)].kuvaus}</h3>
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetustehtava =>
