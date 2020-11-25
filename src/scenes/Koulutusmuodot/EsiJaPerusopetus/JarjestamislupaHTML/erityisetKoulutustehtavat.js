@@ -47,7 +47,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
 
   return !isEmpty(erityisetKoulutustehtavat) &&
     !isEmpty(erityisetKoulutustehtavatKoodisto) ? (
-    <div className={"pt-8 pb-4"}>
+    <div className="mt-4">
       <h3 className="font-medium mb-4">
         {intl.formatMessage(education.erityisetKoulutustehtavat)}
       </h3>

@@ -7,12 +7,13 @@ import PoOpetuksenJarjestamismuotoHtml from "./opetuksenJarjestamismuoto";
 import PoOpetuksenErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import moment from "moment";
+import PoOpiskelijamaaratHtml from "./opiskelijamaarat";
 
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
  */
-const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
+const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -27,14 +28,14 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />
+      <PoOpiskelijamaaratHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
     </React.Fragment>
   );
 };
 
 JarjestamislupaJSX.propTypes = {
-  lupa: PropTypes.object.isRequired,
-  lupakohteet: PropTypes.object
+  lupa: PropTypes.object.isRequired
 };
 
 export default JarjestamislupaJSX;
