@@ -43,7 +43,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
         }
       </ul>
       {!isEmpty(toissijaisetOpetuskielet) &&
-      <h3 className="font-medium mb-4">{intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}</h3>}
+      <h4 className="font-medium mb-4">{intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}</h4>}
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>

@@ -69,5 +69,25 @@ export default defineMessages({
   voidaanAntaaMyosSeuraavillaKielilla: {
     id: "education.voidaanAntaaMyosSeuraavillaKielilla",
     defaultMessage: "Opetusta voidaan antaa myös seuraavilla kielillä"
+  },
+  ammatillisenKoulutuksen: {
+    id: "education.ammatillisenKoulutuksen",
+    defaultMessage: "Ammatillisen koulutuksen"
+  },
+  esiJaPerusopetuksen: {
+    id: "education.esiJaPerusopetuksen",
+    defaultMessage: "Esi- ja perusopetuksen"
+  },
+  lukiokoulutuksen: {
+    id: "education.lukiokoulutuksen",
+    defaultMessage: "Lukiokoulutuksen"
+  },
+  vapaanSivistystyon: {
+    id: "education.vapaanSivistystyon",
+    defaultMessage: "Vapaan sivistystyön"
+  },
+  koulutusmuodot: {
+    id: "education.koulutusmuodot",
+    defaultMessage: "Koulutusmuodot"
   }
 });
