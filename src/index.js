@@ -2,15 +2,10 @@
 import React from "react";
 import { render } from "react-dom";
 import { ThroughProvider } from "react-through";
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  responsiveFontSizes
-} from "@material-ui/core/styles";
-import { COLORS } from "./modules/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import AppWrapper from "./AppWrapper";
 import localforage from "localforage";
-import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import { COLORS } from "modules/styles";
 
 // import * as serviceWorker from "./registerServiceWorker";
 
@@ -33,57 +28,45 @@ localforage.config({
   name: "Oiva App"
 });
 
-const breakpoints = createBreakpoints({});
+const theme = createMuiTheme();
 
-const theme = responsiveFontSizes(
-  createMuiTheme({
-    overrides: {
-      MuiTypography: {
-        h1: {
-          fontSize: "3rem",
-          [breakpoints.down("xl")]: {
-            fontSize: "3rem"
-          },
-          [breakpoints.down("md")]: {
-            fontSize: "2.5rem"
-          },
-          [breakpoints.down("xs")]: {
-            fontSize: "2rem"
-          }
-        },
-        h2: {
-          fontSize: "2rem",
-          [breakpoints.down("xl")]: {
-            fontSize: "2rem"
-          },
-          [breakpoints.down("md")]: {
-            fontSize: "1.75rem"
-          },
-          [breakpoints.down("xs")]: {
-            fontSize: "1.5rem"
-          }
-        }
-      }
-    },
-    palette: {
-      primary: {
-        // light: will be calculated from palette.primary.main,
-        main: COLORS.OIVA_GREEN
-        // dark: will be calculated from palette.primary.main,
-      },
-      secondary: {
-        // light: will be calculated from palette.secondary.main,
-        main: COLORS.DARK_GRAY
-        // dark: will be calculated from palette.secondary.main,
-        // contrastText: will be calculated to contrast with palette.secondary.main
-      }
-      // error: will use the default color
-    },
-    typography: {
-      useNextVariants: true
-    }
-  })
-);
+theme.typography.useNextVariants = true;
+
+theme.typography.h1 = {
+  fontSize: "2rem",
+  fontWeight: 500,
+  lineHeight: "1.2",
+  marginBottom: "1rem",
+  marginTop: "1rem",
+  [theme.breakpoints.down("xs")]: {
+    fontSize: "1.875rem"
+  }
+};
+
+theme.typography.h2 = {
+  fontSize: "1.5rem",
+  fontWeight: 500,
+  [theme.breakpoints.down("xs")]: {
+    fontSize: "1.375rem"
+  }
+};
+
+theme.typography.h3 = {
+  fontSize: "1.2rem",
+  fontWeight: 500
+};
+
+theme.typography.h4 = {
+  fontSize: "1rem",
+  fontWeight: 500
+};
+
+theme.typography.p = {
+  marginBottom: "1.5rem"
+};
+
+theme.palette.primary.main = COLORS.OIVA_GREEN;
+theme.palette.secondary.main = COLORS.DARK_GRAY;
 
 render(
   <ThroughProvider>

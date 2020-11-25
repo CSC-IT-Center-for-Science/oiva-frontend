@@ -12,6 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "../UusiAsiaEsidialog";
 import { last, split } from "ramda";
+import { Typography } from "@material-ui/core";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -74,7 +75,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
         <div className="flex items-center">
           <div className="flex-1">
             <div className="w-full flex flex-row justify-between">
-              <h1 className="mb-5">{t(common.asiat)}</h1>
+              <Typography component="h2" variant="h2">{t(common.asiat)}</Typography>
               <div className="pt-3 my-auto">
                 <SimpleButton
                   aria-label={t(common.luoUusiAsia)}

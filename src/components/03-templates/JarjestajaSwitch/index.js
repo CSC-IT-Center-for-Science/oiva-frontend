@@ -40,7 +40,7 @@ const JarjestajaSwitch = ({
   return (
     <React.Fragment>
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {koulutusmuoto.sivunOtsikko}
+        {koulutusmuoto.paasivunOtsikko}
       </BreadcrumbsItem>
       <Switch>
         <Route

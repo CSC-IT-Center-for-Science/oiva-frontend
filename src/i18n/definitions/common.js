@@ -1210,5 +1210,9 @@ export default defineMessages({
   paatoskirjeDownload: {
     id: "common.paatoskirjeDownload",
     defaultMessage: "Lataa päätöskirje"
+  },
+  jarjestamisJaYllapitamisluvat: {
+    id: "common.jarjestamisJaYllapitamisluvat",
+    defaultMessage: "Järjestämis- ja ylläpitämisluvat"
   }
 });
