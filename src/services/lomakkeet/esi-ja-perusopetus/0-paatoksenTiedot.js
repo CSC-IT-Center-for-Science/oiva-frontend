@@ -22,10 +22,11 @@ const isFieldEmpty = (anchor, defaultValue, changeObjects) => {
  */
 export default async function getPaatoksenTiedot(
   data,
-  isReadOnly,
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects
 ) {
+  console.info(isPreviewModeOn);
   const defaultAsianumero = "";
   const defaultDiaarinumero = "";
 

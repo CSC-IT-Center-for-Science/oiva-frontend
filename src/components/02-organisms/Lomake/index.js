@@ -9,12 +9,19 @@ import {
 } from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { has, isEmpty } from "ramda";
+import { has, isEmpty, map, prop } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
+import {
+  getChangeObjByAnchor,
+  getReducedStructure
+} from "../CategorizedListRoot/utils";
+import FormTitle from "components/00-atoms/FormTitle";
 
 const defaultProps = {
   data: {},
   isInExpandableRow: true,
+  isPreviewModeOn: false,
+  isReadOnly: false,
   isRowExpanded: false,
   noPadding: false,
   prefix: "",
@@ -26,12 +33,15 @@ const defaultProps = {
 };
 
 const Lomake = ({
-  action,
   anchor,
+  code,
   data = defaultProps.data,
+  formTitle,
   isInExpandableRow = defaultProps.isInExpandableRow,
-  isReadOnly,
+  isPreviewModeOn = defaultProps.isPreviewModeOn,
+  isReadOnly = defaultProps.isReadOnly,
   isRowExpanded = defaultProps.isRowExpanded,
+  mode,
   path: _path,
   prefix = defaultProps.prefix,
   showCategoryTitles = defaultProps.showCategoryTitles,
@@ -54,7 +64,7 @@ const Lomake = ({
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor
   });
-  const [, lomakedataActions] = useLomakedata({ anchor });
+  const [lomakedata, lomakedataActions] = useLomakedata({ anchor });
   const [lomake, setLomake] = useState();
 
   const onChangesRemove = useCallback(
@@ -78,10 +88,10 @@ const Lomake = ({
   useEffect(() => {
     async function fetchLomake() {
       return await getLomake(
-        action,
+        mode,
         changeObjects,
-        data,
-        isReadOnly,
+        { ...data, lomakedata },
+        { isPreviewModeOn, isReadOnly },
         intl.locale,
         _path,
         prefix
@@ -92,25 +102,58 @@ const Lomake = ({
       if (has("isValid", result)) {
         lomakedataActions.setValidity(result.isValid, anchor);
       }
-      result.structure ? setLomake(result.structure) : setLomake(result);
+      let reducedStructure = [];
+      if (result.structure) {
+        reducedStructure = getReducedStructure(result.structure);
+        setLomake(result.structure);
+      } else {
+        reducedStructure = getReducedStructure(result);
+        setLomake(result);
+      }
+      lomakedataActions.setLomakedata(
+        map(component => {
+          const changeObj = getChangeObjByAnchor(
+            `${anchor}.${component.fullAnchor}`,
+            changeObjects
+          );
+          return {
+            anchor: `${anchor}.${component.fullAnchor}`,
+            properties: Object.assign(
+              {},
+              component.properties,
+              prop("properties", changeObj) || {}
+            )
+          };
+        }, reducedStructure),
+        anchor
+      );
     });
   }, [
-    action,
     anchor,
     changeObjects,
     data,
+    formTitle,
     hasInvalidFieldsFn,
+    isPreviewModeOn,
     isReadOnly,
     intl.locale,
     lomakedataActions,
+    mode,
     _path,
     prefix
   ]);
 
-  if (lomake) {
+  if (Array.isArray(lomake) && lomake.length) {
     return (
-      <React.Fragment>
-        {isInExpandableRow ? (
+      <div
+        className={`${
+          !isPreviewModeOn ? "align-top p-12" : "mx-8"
+        }`}>
+        <FormTitle
+          code={isPreviewModeOn || !code ? null : code}
+          title={formTitle}
+        />
+        {isInExpandableRow && !isPreviewModeOn ? (
           <ExpandableRowRoot
             anchor={anchor}
             changes={changeObjects}
@@ -127,6 +170,7 @@ const Lomake = ({
                 focusOn={focusOn}
                 categories={lomake}
                 changes={changeObjects}
+                isReadOnly={isReadOnly}
                 onFocus={onFocus}
                 onUpdate={onChangesUpdate}
                 showCategoryTitles={showCategoryTitles}
@@ -138,11 +182,13 @@ const Lomake = ({
             </div>
           </ExpandableRowRoot>
         ) : (
-          <div className={noPadding ? "" : "p-8"}>
+          <div className={noPadding ? "" : "py-8"}>
             <CategorizedListRoot
               anchor={anchor}
               focusOn={focusOn}
               categories={lomake}
+              isPreviewModeOn={isPreviewModeOn}
+              isReadOnly={isReadOnly}
               changes={changeObjects}
               onFocus={onFocus}
               onUpdate={onChangesUpdate}
@@ -154,20 +200,23 @@ const Lomake = ({
             />
           </div>
         )}
-      </React.Fragment>
+      </div>
     );
   } else {
-    return <div>Lomakkeen kenttiä ei voida näyttää.</div>;
+    return null;
   }
 };
 
 Lomake.propTypes = {
-  action: PropTypes.string,
   anchor: PropTypes.string,
+  code: PropTypes.string,
   data: PropTypes.object,
   isInExpandableRow: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   isRowExpanded: PropTypes.bool,
   metadata: PropTypes.object,
+  mode: PropTypes.string,
   path: PropTypes.array,
   prefix: PropTypes.string,
   rowMessages: PropTypes.object,

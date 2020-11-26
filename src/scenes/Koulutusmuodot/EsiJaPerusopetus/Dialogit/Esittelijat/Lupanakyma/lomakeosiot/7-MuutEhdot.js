@@ -1,15 +1,22 @@
 import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import education from "../../../../../../../i18n/definitions/education";
+import Lomake from "components/02-organisms/Lomake";
+import education from "i18n/definitions/education";
 import { useChangeObjects } from "stores/muutokset";
 
 const constants = {
-  formLocations: ["esiJaPerusopetus", "muutEhdot"]
+  formLocation: ["esiJaPerusopetus", "muutEhdot"],
+  mode: "modification"
 };
 
-const MuutEhdot = ({ sectionId }) => {
+const MuutEhdot = ({
+  code,
+  isPreviewModeOn,
+  mode = constants.mode,
+  sectionId,
+  title
+}) => {
   const intl = useIntl();
   const [, { createTextBoxChangeObject }] = useChangeObjects();
 
@@ -22,18 +29,25 @@ const MuutEhdot = ({ sectionId }) => {
 
   return (
     <Lomake
-      action="modification"
       anchor={sectionId}
+      code={code}
       data={{ onAddButtonClick }}
+      formTitle={title}
+      mode={mode}
+      isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
-      path={constants.formLocations}
-      showCategoryTitles={true}
-      rowTitle={intl.formatMessage(education.muutEhdotTitle)}></Lomake>
+      path={constants.formLocation}
+      rowTitle={intl.formatMessage(education.muutEhdotTitle)}
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 MuutEhdot.propTypes = {
-  sectionId: PropTypes.string
+  code: PropTypes.string,
+  isPreviewModeOn: PropTypes.bool,
+  mode: PropTypes.string,
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default MuutEhdot;

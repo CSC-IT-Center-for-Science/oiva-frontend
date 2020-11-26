@@ -3,7 +3,7 @@ import {
   getKuljettajienPeruskoulutuslomake
 } from "./perustelut/kuljettajakoulutukset";
 import { getTaloudellisetlomake } from "./taloudelliset";
-import { concat, path } from "ramda";
+import { append, path } from "ramda";
 import getATVKoulutuksetPerustelulomake from "./perustelut/koulutukset/atv-koulutukset";
 import getValmentavatKoulutuksetPerustelulomake from "./perustelut/koulutukset/valmentavatKoulutukset";
 import { setLocale } from "./i18n-config";
@@ -30,7 +30,7 @@ import getVahimmaisopiskelijavuodetPerustelulomake from "./perustelut/opiskelija
 import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vaativa";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
-import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetus-jota-lupa-koskee";
+import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoskee";
 import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
 import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
@@ -49,6 +49,15 @@ import { getMuutYhteistyo } from "./ammatillinenKoulutus/5-muut/yhteistyo";
 import { getMuutYhteistyosopimus } from "./ammatillinenKoulutus/5-muut/yhteistyosopimus";
 import { getMuutSelvitykset } from "./ammatillinenKoulutus/5-muut/selvitykset";
 import { getMuutMuuMaarays } from "./ammatillinenKoulutus/5-muut/muuMaarays";
+
+// Esi- ja perusopetuksen esikatselulomakkeet
+import { previewOfOpetusJotaLupaKoskee } from "./esi-ja-perusopetus/esikatselu/1-opetusJotaLupaKoskee";
+import { previewOfOpetuskielet } from "./esi-ja-perusopetus/esikatselu/3-opetuskielet";
+import { previewOfOpetuksenJarjestamismuoto } from "./esi-ja-perusopetus/esikatselu/4-opetuksenJarjestamismuoto";
+import { previewOfErityisetKoulutustehtavat } from "./esi-ja-perusopetus/esikatselu/5-erityisetKoulutustehtavat";
+import { previewOfOpiskelijamaarat } from "./esi-ja-perusopetus/esikatselu/6-opiskelijamaarat";
+import { previewOfMuutEhdot } from "./esi-ja-perusopetus/esikatselu/7-muutEhdot";
+import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2-opetustaAntavatKunnat";
 
 /**
  * LOMAKEPALVELU
@@ -327,62 +336,85 @@ const lomakkeet = {
   // Esi- ja perusopetus
   esiJaPerusopetus: {
     erityisetKoulutustehtavat: {
-      modification: (data, isReadOnly, locale, changeObjects) =>
-        erityisetKoulutustehtavat(data, isReadOnly, locale, changeObjects)
+      modification: (data, booleans, locale, changeObjects) =>
+        erityisetKoulutustehtavat(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfErityisetKoulutustehtavat(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
     },
     muutEhdot: {
-      modification: (data, isReadOnly, locale, changeObjects) =>
-        muutEhdot(data, isReadOnly, locale, changeObjects)
+      modification: (data, booleans, locale, changeObjects) =>
+        muutEhdot(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfMuutEhdot(data, booleans, locale, changeObjects)
     },
     opetuksenJarjestamismuodot: {
-      modification: (data, isReadOnly, locale) =>
-        opetuksenJarjestamismuoto(isReadOnly, locale)
+      modification: (data, booleans, locale) =>
+        opetuksenJarjestamismuoto(data, booleans, locale),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetuksenJarjestamismuoto(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
     },
     opetusJotaLupaKoskee: {
-      modification: (data, isReadOnly, locale) =>
-        opetusJotaLupaKoskee(data, isReadOnly, locale)
+      modification: (data, booleans, locale, changeObjects) =>
+        opetusJotaLupaKoskee(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetusJotaLupaKoskee(data, booleans, locale, changeObjects)
     },
     opetuskielet: {
-      modification: (data, isReadOnly, locale, changeObjects) =>
-        getOpetuskieletOPHLomake(isReadOnly, locale, changeObjects)
+      modification: (data, booleans, locale, changeObjects) =>
+        getOpetuskieletOPHLomake(booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetuskielet(data, booleans, locale, changeObjects)
     },
     opiskelijamaarat: {
-      modification: (data, isReadOnly) =>
-        opiskelijamaarat(isReadOnly)
+      modification: (data, booleans) => opiskelijamaarat(data, booleans),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpiskelijamaarat(data, booleans, locale, changeObjects)
     },
     paatoksenTiedot: {
-      addition: (data, isReadOnly, locale, changeObjects) =>
-        getPaatoksenTiedot(data, isReadOnly, locale, changeObjects)
+      addition: (data, booleans, locale, changeObjects) =>
+        getPaatoksenTiedot(data, booleans, locale, changeObjects)
     },
     opetustaAntavatKunnat: {
-      modification: (data, isReadOnly, locale) =>
-        opetustaAntavatKunnat(data, isReadOnly, locale)
+      modification: (data, booleans, locale) =>
+        opetustaAntavatKunnat(data, booleans, locale),
+      preview: (data, booleans, locale) =>
+        previewOfOpetustaAntavaKunnat(data, booleans, locale)
     },
     rajoite: {
-      addition: (data, isReadOnly, locale, changeObjects) =>
-        rajoitelomake(data, isReadOnly, locale, changeObjects)
+      addition: (data, booleans, locale, changeObjects) =>
+        rajoitelomake(data, booleans, locale, changeObjects)
     },
     rajoitteet: {
-      addition: (data, isReadOnly, locale, changeObjects) =>
-        rajoitteet(data, isReadOnly, locale, changeObjects)
+      addition: (data, booleans, locale, changeObjects) =>
+        rajoitteet(data, booleans, locale, changeObjects)
     }
   }
 };
 
 export async function getLomake(
-  action = "addition",
+  mode = "addition",
   changeObjects = [],
   data = {},
-  isReadOnly,
+  booleans,
   locale,
   _path = [],
   prefix
 ) {
   // This defines the language of the requested form.
   setLocale(locale);
-  const fn = path(concat(_path, [action]), lomakkeet);
+  const fn = path(append(mode, _path), lomakkeet);
   const lomake = fn
-    ? await fn(data, isReadOnly, locale, changeObjects, prefix)
+    ? await fn(data, booleans, locale, changeObjects, prefix)
     : [];
 
   return lomake;

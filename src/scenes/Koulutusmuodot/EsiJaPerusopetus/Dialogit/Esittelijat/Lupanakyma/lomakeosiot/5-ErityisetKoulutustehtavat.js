@@ -1,16 +1,23 @@
 import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import education from "../../../../../../../i18n/definitions/education";
-import { getAnchorPart } from "../../../../../../../utils/common";
+import Lomake from "components/02-organisms/Lomake";
+import education from "i18n/definitions/education";
+import { getAnchorPart } from "utils/common";
 import { useChangeObjects } from "stores/muutokset";
 
 const constants = {
-  formLocations: ["esiJaPerusopetus", "erityisetKoulutustehtavat"]
+  formLocation: ["esiJaPerusopetus", "erityisetKoulutustehtavat"],
+  mode: "modification"
 };
 
-const ErityisetKoulutustehtavat = ({ sectionId }) => {
+const ErityisetKoulutustehtavat = ({
+  code,
+  isPreviewModeOn,
+  mode = constants.mode,
+  sectionId,
+  title
+}) => {
   const intl = useIntl();
   const [, { createTextBoxChangeObject }] = useChangeObjects();
 
@@ -23,20 +30,25 @@ const ErityisetKoulutustehtavat = ({ sectionId }) => {
 
   return (
     <Lomake
-      action="modification"
       anchor={sectionId}
+      code={code}
       data={{ onAddButtonClick, sectionId }}
+      formTitle={title}
+      mode={mode}
+      isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
-      path={constants.formLocations}
-      showCategoryTitles={true}
-      rowTitle={intl.formatMessage(
-        education.erityisetKoulutustehtavat
-      )}></Lomake>
+      path={constants.formLocation}
+      rowTitle={intl.formatMessage(education.erityisetKoulutustehtavat)}
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 ErityisetKoulutustehtavat.propTypes = {
-  sectionId: PropTypes.string
+  code: PropTypes.string,
+  isPreviewModeOn: PropTypes.bool,
+  mode: PropTypes.string,
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default ErityisetKoulutustehtavat;

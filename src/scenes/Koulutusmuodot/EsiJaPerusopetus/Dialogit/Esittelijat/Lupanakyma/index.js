@@ -5,8 +5,7 @@ import DialogTitle from "components/02-organisms/DialogTitle";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 import wizardMessages from "i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
-import { Dialog, DialogContent } from "@material-ui/core";
-import EsittelijatWizardActions from "../../../EsittelijatWizardActions";
+import { Button, Dialog, DialogContent } from "@material-ui/core";
 import { useHistory, useParams } from "react-router-dom";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
@@ -148,6 +147,7 @@ const UusiAsiaDialog = ({
   let { uuid } = params;
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
+  const [isPreviewModeOn, setPreviewMode] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
@@ -208,31 +208,9 @@ const UusiAsiaDialog = ({
    * Opens the preview.
    * @param {object} formData
    */
-  const onPreview = useCallback(
-    async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
-      /**
-       * Let's save the form without notification. Notification about saving isn't
-       * needed when we're going to show a notification related to the preview.
-       */
-      const outputs = await procedureHandler.run(
-        "muutospyynto.tallennus.tallennaEsittelijanToimesta",
-        [formData, false] // false = Notification of save success won't be shown.
-      );
-      const muutospyynto =
-        outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
-          .result;
-      // Let's get the path of preview (PDF) document and download the file.
-      const path = await muutospyyntoActions.getLupaPreviewDownloadPath(
-        muutospyynto.uuid
-      );
-      if (path) {
-        muutospyyntoActions.download(path, intl.formatMessage);
-      }
-      return muutospyynto;
-    },
-    [intl.formatMessage, muutospyyntoActions]
-  );
+  const onPreview = useCallback(async () => {
+    setPreviewMode(isPreviewModeOn => !isPreviewModeOn);
+  }, []);
 
   /**
    * Saves the form.
@@ -284,17 +262,21 @@ const UusiAsiaDialog = ({
         muutospyynto = await onPreview(formData);
       }
 
-      if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
-        if (!uuid && !fromDialog) {
-          // Jos kyseessä on ensimmäinen tallennus...
-          onNewDocSave(muutospyynto.uuid);
-        } else {
-          /**
-           * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
-           * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
-           **/
-          const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-          initializeChanges(changeObjectsFromBackend);
+      if (action === "save") {
+        if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
+          if (!uuid && !fromDialog) {
+            // Jos kyseessä on ensimmäinen tallennus...
+            onNewDocSave(muutospyynto.uuid);
+          } else {
+            /**
+             * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
+             * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
+             **/
+            const changeObjectsFromBackend = getSavedChangeObjects(
+              muutospyynto
+            );
+            initializeChanges(changeObjectsFromBackend);
+          }
         }
       }
     },
@@ -329,168 +311,213 @@ const UusiAsiaDialog = ({
           maxWidth={"lg"}
           fullScreen={true}
           aria-labelledby="simple-dialog-title">
-          <div className={"w-full m-auto"}>
-            <DialogTitleWithStyles id="customized-dialog-title">
-              <div className="flex">
-                <div className="flex-1">
-                  {intl.formatMessage(
-                    wizardMessages.esittelijatMuutospyyntoDialogTitle
-                  )}
+          {isPreviewModeOn ? null : (
+            <div className={"w-full m-auto"}>
+              <DialogTitleWithStyles id="customized-dialog-title">
+                <div className="flex">
+                  <div className="flex-1">
+                    {intl.formatMessage(
+                      wizardMessages.esittelijatMuutospyyntoDialogTitle
+                    )}
+                  </div>
+                  <div>
+                    <SimpleButton
+                      text={`${intl.formatMessage(wizardMessages.getOut)} X`}
+                      onClick={leaveOrOpenCancelModal}
+                      variant={"text"}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <SimpleButton
-                    text={`${intl.formatMessage(wizardMessages.getOut)} X`}
-                    onClick={leaveOrOpenCancelModal}
-                    variant={"text"}
-                  />
-                </div>
-              </div>
-            </DialogTitleWithStyles>
-          </div>
-          <DialogContentWithStyles>
-            <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
-              <div className="py-4">
-                <h1>
-                  {organisation.nimi[intl.locale] ||
-                    R.last(R.values(organisation.nimi))}
-                </h1>
-                <p>
-                  {organisation.kayntiosoite.osoite},{" "}
-                  {organisation.postiosoite.osoite}{" "}
-                  {organisation.kayntiosoite.postitoimipaikka}
-                </p>
-                <p>
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a
-                        href={`tel:${organisationPhoneNumber}`}
-                        className="underline">
-                        {organisationPhoneNumber}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a
-                        href={`mailto:${organisationEmail}`}
-                        className="underline">
-                        {organisationEmail}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisation.ytunnus} |{" "}
-                  {organisationWebsite && (
-                    <a href={organisationWebsite} className="underline">
-                      {organisationWebsite}
-                    </a>
-                  )}
-                </p>
-              </div>
+              </DialogTitleWithStyles>
             </div>
+          )}
+          <DialogContentWithStyles>
+            {isPreviewModeOn ? null : (
+              <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
+                <div className="py-4">
+                  <h1>
+                    {organisation.nimi[intl.locale] ||
+                      R.last(R.values(organisation.nimi))}
+                  </h1>
+                  <p>
+                    {organisation.kayntiosoite.osoite},{" "}
+                    {organisation.postiosoite.osoite}{" "}
+                    {organisation.kayntiosoite.postitoimipaikka}
+                  </p>
+                  <p>
+                    {organisationPhoneNumber && (
+                      <React.Fragment>
+                        <a
+                          href={`tel:${organisationPhoneNumber}`}
+                          className="underline">
+                          {organisationPhoneNumber}
+                        </a>{" "}
+                        |{" "}
+                      </React.Fragment>
+                    )}
+                    {organisationPhoneNumber && (
+                      <React.Fragment>
+                        <a
+                          href={`mailto:${organisationEmail}`}
+                          className="underline">
+                          {organisationEmail}
+                        </a>{" "}
+                        |{" "}
+                      </React.Fragment>
+                    )}
+                    {organisation.ytunnus} |{" "}
+                    {organisationWebsite && (
+                      <a href={organisationWebsite} className="underline">
+                        {organisationWebsite}
+                      </a>
+                    )}
+                  </p>
+                </div>
+              </div>
+            )}
             <div
               id="wizard-content"
-              className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
-              <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-                <h2 className="p-8">
-                  {intl.formatMessage(common.decisionDetails)}
-                </h2>
-                <Lomake
-                  isInExpandableRow={false}
-                  anchor="paatoksentiedot"
-                  data={{ formatMessage: intl.formatMessage, uuid }}
-                  path={constants.formLocation.paatoksenTiedot}></Lomake>
-              </div>
+              className={`xl:w-3/4 max-w-6xl mx-auto mb-32`}>
+              {!isPreviewModeOn ? (
+                <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
+                  <h2 className="p-8">
+                    {intl.formatMessage(common.decisionDetails)}
+                  </h2>
+                  <Lomake
+                    isInExpandableRow={false}
+                    isPreviewModeOn={isPreviewModeOn}
+                    anchor="paatoksentiedot"
+                    data={{ formatMessage: intl.formatMessage, uuid }}
+                    path={constants.formLocation.paatoksenTiedot}></Lomake>
+                </div>
+              ) : null}
 
-              <form onSubmit={() => {}}>
-                <FormSection
-                  render={props => <Rajoitteet {...props} />}
-                  sectionId="rajoitteet"
-                  title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
+              <form
+                onSubmit={() => {}}
+                className={
+                  isPreviewModeOn ? "border border-gray-300 p-12" : ""
+                }>
+                {!isPreviewModeOn ? (
+                  <FormSection
+                    render={props => <Rajoitteet {...props} />}
+                    sectionId="rajoitteet"
+                    title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
+                ) : null}
 
-                <FormSection
-                  code={1}
-                  render={props => (
-                    <Opetustehtavat
-                      opetustehtavakoodisto={opetustehtavakoodisto}
-                      {...props}
-                    />
-                  )}
+                <Opetustehtavat
+                  code="1"
+                  isPreviewModeOn={isPreviewModeOn}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
+                  opetustehtavakoodisto={opetustehtavakoodisto}
                   sectionId="opetustehtavat"
                   title={
                     opetustehtavakoodisto.metadata[R.toUpper(intl.locale)]
                       .kuvaus
-                  }></FormSection>
+                  }
+                />
 
-                <FormSection
-                  code={2}
-                  render={props => (
-                    <OpetustaAntavatKunnat
-                      changeObjects={state.changeObjects.toimintaalue}
-                      lupakohde={lupaKohteet[3]}
-                      kunnat={kunnat}
-                      lisatiedot={lisatiedot}
-                      maakuntakunnat={maakuntakunnat}
-                      maakunnat={maakunnat}
-                      valtakunnallinenMaarays={valtakunnallinenMaarays}
-                      {...props}
-                    />
-                  )}
+                <OpetustaAntavatKunnat
+                  changeObjects={state.changeObjects.toimintaalue}
+                  code="2"
+                  isPreviewModeOn={isPreviewModeOn}
+                  kunnat={kunnat}
+                  lisatiedot={lisatiedot}
+                  lupakohde={lupaKohteet[3]}
+                  maakunnat={maakunnat}
+                  maakuntakunnat={maakuntakunnat}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
                   sectionId={"toimintaalue"}
-                  title={intl.formatMessage(
-                    education.opetustaAntavatKunnat
-                  )}></FormSection>
+                  title={intl.formatMessage(education.opetustaAntavatKunnat)}
+                  valtakunnallinenMaarays={valtakunnallinenMaarays}
+                />
 
-                <FormSection
-                  code={3}
-                  render={props => <Opetuskieli {...props} />}
+                <Opetuskieli
+                  code="3"
+                  isPreviewModeOn={isPreviewModeOn}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
                   sectionId={"opetuskielet"}
-                  title={intl.formatMessage(common.opetuskieli)}></FormSection>
+                  title={intl.formatMessage(common.opetuskieli)}
+                />
 
-                <FormSection
-                  code={4}
-                  render={props => <OpetuksenJarjestamismuoto {...props} />}
+                <OpetuksenJarjestamismuoto
+                  code="4"
+                  isPreviewModeOn={isPreviewModeOn}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
                   sectionId={"opetuksenJarjestamismuodot"}
                   title={intl.formatMessage(
                     education.opetuksenJarjestamismuoto
-                  )}></FormSection>
+                  )}
+                />
 
-                <FormSection
-                  code={5}
-                  render={props => <ErityisetKoulutustehtavat {...props} />}
+                <ErityisetKoulutustehtavat
+                  code="5"
+                  isPreviewModeOn={isPreviewModeOn}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
                   sectionId={"erityisetKoulutustehtavat"}
-                  title={"Erityinen koulutustehtävä"}></FormSection>
+                  title={intl.formatMessage(
+                    common.VSTLupaSectionTitleSchoolMissionSpecial
+                  )}
+                />
 
-                <FormSection
-                  code={6}
-                  render={props => <Opiskelijamaarat {...props} />}
+                <Opiskelijamaarat
+                  code="6"
+                  isPreviewModeOn={isPreviewModeOn}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
                   sectionId={"opiskelijamaarat"}
-                  title={intl.formatMessage(
-                    education.oppilasOpiskelijamaarat
-                  )}></FormSection>
+                  title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
+                />
 
-                <FormSection
-                  code={7}
-                  render={props => <MuutEhdot {...props} />}
+                <MuutEhdot
+                  code="7"
+                  isPreviewModeOn={isPreviewModeOn}
+                  mode={isPreviewModeOn ? "preview" : "modification"}
                   sectionId={"muutEhdot"}
-                  title={intl.formatMessage(
-                    education.muutEhdotTitle
-                  )}></FormSection>
+                  title={intl.formatMessage(education.muutEhdotTitle)}
+                />
               </form>
             </div>
           </DialogContentWithStyles>
           <div className="fixed w-full bg-gray-100 border-t border-gray-300 bottom-0">
-            <EsittelijatWizardActions
-              isSavingEnabled={isSavingEnabled}
-              onClose={leaveOrOpenCancelModal}
-              onPreview={() => {
-                return onAction("preview");
-              }}
-              onSave={() => {
-                return onAction("save");
-              }}
-            />
+            <div
+              className={`flex flex-col md:flex-row justify-between ${
+                isDebugOn ? "w-2/3" : "w-full"
+              }  max-w-5xl p-4 mx-auto`}>
+              <div className="inline-flex">
+                <div className="inline-flex mr-4">
+                  {isPreviewModeOn ? null : (
+                    <Button
+                      color="secondary"
+                      className="save"
+                      onClick={leaveOrOpenCancelModal}
+                      variant="outlined">
+                      {intl.formatMessage(wizardMessages.getOut)}
+                    </Button>
+                  )}
+                </div>
+                <Button
+                  color="secondary"
+                  className="preview"
+                  onClick={() => {
+                    return onAction("preview");
+                  }}
+                  variant="outlined">
+                  {isPreviewModeOn
+                    ? intl.formatMessage(wizardMessages.closePreview)
+                    : intl.formatMessage(wizardMessages.preview)}
+                </Button>
+              </div>
+              {isPreviewModeOn ? null : (
+                <SimpleButton
+                  color="primary"
+                  disabled={!isSavingEnabled}
+                  className="button-right save"
+                  onClick={() => {
+                    return onAction("save");
+                  }}
+                  text={intl.formatMessage(wizardMessages.saveDraft)}
+                />
+              )}
+            </div>
           </div>
         </FormDialog>
         <ConfirmDialog

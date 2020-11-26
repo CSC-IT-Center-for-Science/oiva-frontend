@@ -2,23 +2,30 @@ import { isAdded, isInLupa, isRemoved } from "css/label";
 import { __ } from "i18n-for-browser";
 import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
+  compose,
+  endsWith,
+  filter,
+  find,
   flatten,
+  includes,
   map,
   path,
-  prop,
-  toUpper,
-  filter,
-  endsWith,
-  includes,
   pathEq,
-  find,
-  sortBy
+  prop,
+  sortBy,
+  toUpper
 } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
-export async function muutEhdot(data, isReadOnly, locale, changeObjects) {
+export async function muutEhdot(
+  data,
+  { isPreviewModeOn, isReadOnly },
+  locale,
+  changeObjects
+) {
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
   const poMuutEhdot = await getPOMuutEhdotFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   const localeUpper = toUpper(locale);
@@ -40,130 +47,157 @@ export async function muutEhdot(data, isReadOnly, locale, changeObjects) {
 
   const lomakerakenne = flatten([
     map(ehto => {
+      const stateOfComponent = find(
+        compose(
+          endsWith(`.${ehto.koodiarvo}.valintaelementti`),
+          prop("anchor")
+        ),
+        data.lomakedata
+      );
       return {
         anchor: ehto.koodiarvo,
-        components: [
-          {
-            anchor: "valintaelementti",
-            name: "CheckboxWithLabel",
-            properties: {
-              isReadOnly,
-              title: ehto.metadata[localeUpper].nimi,
-              labelStyles: {
-                addition: isAdded,
-                removal: isRemoved,
-                custom: Object.assign({}, !!ehto.maarays ? isInLupa : {})
-              },
-              isChecked: !!ehto.maarays,
-              isIndeterminate: false
-            }
-          }
-        ],
-        categories: flatten([
-          {
-            anchor: "0",
-            components: [
+        components: isPreviewModeOn
+          ? []
+          : [
               {
-                anchor: "kuvaus",
-                name: "TextBox",
+                anchor: "valintaelementti",
+                name: "CheckboxWithLabel",
                 properties: {
-                  forChangeObject: {
-                    koodiarvo: ehto.koodiarvo
+                  isPreviewModeOn,
+                  isReadOnly: _isReadOnly,
+                  title: ehto.metadata[localeUpper].nimi,
+                  labelStyles: {
+                    addition: isAdded,
+                    removal: isRemoved,
+                    custom: Object.assign({}, !!ehto.maarays ? isInLupa : {})
                   },
-                  isReadOnly,
-                  placeholder: __("common.kuvausPlaceholder"),
-                  title: __("common.kuvaus"),
-                  value: ehto.metadata[localeUpper].kuvaus
+                  isChecked: !!ehto.maarays,
+                  isIndeterminate: false
                 }
               }
-            ]
-          },
-          /**
-           * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
-           * 99 = Muu ehto
-           */
-          ehto.koodiarvo === "99"
-            ? [
-                sortBy(
-                  prop("anchor"),
-                  map(
-                    changeObj => {
-                      return {
-                        anchor: getAnchorPart(changeObj.anchor, 2),
-                        components: [
-                          {
-                            anchor: "kuvaus",
-                            name: "TextBox",
-                            properties: {
-                              forChangeObject: {
-                                koodiarvo: ehto.koodiarvo
-                              },
-                              isReadOnly,
-                              placeholder: __("common.kuvausPlaceholder"),
-                              title: __("common.kuvaus"),
-                              isRemovable: true,
-                              value: changeObj.properties.value
-                            }
-                          }
-                        ]
-                      };
-                    },
-                    filter(changeObj => {
-                      return (
-                        endsWith(".kuvaus", changeObj.anchor) &&
-                        includes(`.${ehto.koodiarvo}`, changeObj.anchor) &&
-                        !includes(`${ehto.koodiarvo}.0`, changeObj.anchor)
-                      );
-                    }, changeObjects)
-                  )
-                ),
-                /**
-                 * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
-                 */
-                {
-                  anchor: "lisaaPainike",
+            ],
+        categories: flatten(
+          [
+            !isPreviewModeOn ||
+            (isPreviewModeOn &&
+              stateOfComponent &&
+              path(["properties", "isChecked"], stateOfComponent))
+              ? {
+                  anchor: "0",
                   components: [
                     {
-                      anchor: "A",
-                      name: "SimpleButton",
-                      onClick: () => data.onAddButtonClick(ehto.koodiarvo),
+                      anchor: "kuvaus",
+                      name: "TextBox",
                       properties: {
-                        isReadOnly,
-                        isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
-                        text: __("common.lisaaUusiKuvaus"),
-                        icon: "FaPlus",
-                        iconContainerStyles: {
-                          width: "15px"
+                        forChangeObject: {
+                          koodiarvo: ehto.koodiarvo
                         },
-                        iconStyles: {
-                          fontSize: 10
-                        },
-                        variant: "text"
+                        isPreviewModeOn,
+                        isReadOnly: _isReadOnly,
+                        placeholder: isPreviewModeOn
+                          ? undefined
+                          : __("common.kuvausPlaceholder"),
+                        title: isPreviewModeOn
+                          ? undefined
+                          : __("common.kuvaus"),
+                        value: ehto.metadata[localeUpper].kuvaus
                       }
                     }
-                  ]
+                  ],
+                  layout: isPreviewModeOn ? { indentation: "none" } : {}
                 }
-              ]
-            : []
-        ])
+              : null,
+            /**
+             * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
+             * 99 = Muu ehto
+             */
+            ehto.koodiarvo === "99"
+              ? [
+                  sortBy(
+                    prop("anchor"),
+                    map(
+                      changeObj => {
+                        return {
+                          anchor: getAnchorPart(changeObj.anchor, 2),
+                          components: [
+                            {
+                              anchor: "kuvaus",
+                              name: "TextBox",
+                              properties: {
+                                forChangeObject: {
+                                  koodiarvo: ehto.koodiarvo
+                                },
+                                isPreviewModeOn,
+                                isReadOnly: _isReadOnly,
+                                placeholder: __("common.kuvausPlaceholder"),
+                                title: __("common.kuvaus"),
+                                isRemovable: true,
+                                value: changeObj.properties.value
+                              }
+                            }
+                          ]
+                        };
+                      },
+                      filter(changeObj => {
+                        return (
+                          endsWith(".kuvaus", changeObj.anchor) &&
+                          includes(`.${ehto.koodiarvo}`, changeObj.anchor) &&
+                          !includes(`${ehto.koodiarvo}.0`, changeObj.anchor)
+                        );
+                      }, changeObjects)
+                    )
+                  ),
+                  /**
+                   * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
+                   */
+                  {
+                    anchor: "lisaaPainike",
+                    components: [
+                      {
+                        anchor: "A",
+                        name: "SimpleButton",
+                        onClick: () => data.onAddButtonClick(ehto.koodiarvo),
+                        properties: {
+                          isPreviewModeOn,
+                          isReadOnly: _isReadOnly,
+                          isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
+                          text: __("common.lisaaUusiKuvaus"),
+                          icon: "FaPlus",
+                          iconContainerStyles: {
+                            width: "15px"
+                          },
+                          iconStyles: {
+                            fontSize: 10
+                          },
+                          variant: "text"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              : []
+          ].filter(Boolean)
+        )
       };
     }, poMuutEhdot),
     lisatiedotObj
       ? [
-          {
-            anchor: "lisatiedotTitle",
-            layout: { margins: { top: "large" } },
-            components: [
-              {
-                anchor: lisatiedotObj.koodiarvo,
-                name: "StatusTextRow",
-                styleClasses: ["pt-8 border-t"],
-                properties: {
-                  title: __("common.lisatiedotInfo")
-                }
-              }
-            ]
-          },
+          isPreviewModeOn
+            ? null
+            : {
+                anchor: "lisatiedotTitle",
+                layout: { margins: { top: "large" } },
+                components: [
+                  {
+                    anchor: lisatiedotObj.koodiarvo,
+                    name: "StatusTextRow",
+                    styleClasses: ["pt-8", "border-t"],
+                    properties: {
+                      title: __("common.lisatiedotInfo")
+                    }
+                  }
+                ]
+              },
           {
             anchor: "lisatiedot",
             components: [
@@ -177,13 +211,16 @@ export async function muutEhdot(data, isReadOnly, locale, changeObjects) {
                     versio: lisatiedotObj.versio,
                     voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
                   },
-                  isReadOnly,
-                  placeholder: __("common.lisatiedot")
+                  isPreviewModeOn,
+                  isReadOnly: _isReadOnly,
+                  placeholder: isPreviewModeOn
+                    ? undefined
+                    : __("common.lisatiedot")
                 }
               }
             ]
           }
-        ]
+        ].filter(Boolean)
       : null
   ]);
 

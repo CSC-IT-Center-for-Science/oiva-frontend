@@ -2,11 +2,17 @@ import { isAdded, isInLupa, isRemoved } from "css/label";
 import { __ } from "i18n-for-browser";
 import { find, flatten, pathEq, toUpper } from "ramda";
 
-export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
+export const opetustaAntavatKunnat = (
+  data,
+  { isPreviewModeOn, isReadOnly },
+  locale
+) => {
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
     data.lisatiedot
   );
+
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
 
   return flatten(
     [
@@ -20,6 +26,7 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
             properties: {
               anchor: "areaofaction",
               changeObjectsByProvince: data.changeObjectsByProvince,
+              isPreviewModeOn,
               isEditViewActive: data.isEditViewActive,
               localizations: data.localizations,
               municipalities: data.kunnat,
@@ -57,9 +64,11 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
                   },
                   isChecked: false,
                   isIndeterminate: false,
+                  isPreviewModeOn,
+                  isReadOnly: _isReadOnly,
                   title: __("education.opetustaSuomenUlkopuolella")
                 },
-                styleClasses: "mt-8"
+                styleClasses: ["mt-8"]
               }
             ],
             categories: [
@@ -76,6 +85,8 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
                         versio: data.ulkomaa.versio,
                         voimassaAlkuPvm: data.ulkomaa.voimassaAlkuPvm
                       },
+                      isPreviewModeOn,
+                      isReadOnly: _isReadOnly,
                       placeholder: __("common.maaJaPaikkakunta"),
                       title: __("common.maaJaPaikkakunta")
                     }
@@ -94,7 +105,7 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
                 {
                   anchor: lisatiedotObj.koodiarvo,
                   name: "StatusTextRow",
-                  styleClasses: ["pt-8 border-t"],
+                  styleClasses: ["pt-8", "border-t"],
                   properties: {
                     title: __("common.lisatiedotInfo")
                   }
@@ -114,6 +125,8 @@ export const opetustaAntavatKunnat = (data, isReadOnly, locale) => {
                       versio: lisatiedotObj.versio,
                       voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
                     },
+                    isPreviewModeOn,
+                    isReadOnly: _isReadOnly,
                     placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
                       .nimi
                   }

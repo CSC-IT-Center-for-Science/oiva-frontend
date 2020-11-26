@@ -8,7 +8,6 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 const defaultProps = {
   isReadOnly: false,
-  payload: {},
   text: "[text is missing]",
   variant: "contained",
   color: "primary",
@@ -36,7 +35,6 @@ const SimpleButton = ({
   id,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
-  payload = defaultProps.payload,
   text = defaultProps.text,
   variant = defaultProps.variant,
   color = defaultProps.color,
@@ -49,7 +47,7 @@ const SimpleButton = ({
   iconStyles = defaultProps.iconStyles
 }) => {
   const handleClick = event => {
-    onClick(payload, {}, event);
+    onClick({}, {}, event);
   };
 
   return (
@@ -86,7 +84,6 @@ SimpleButton.propTypes = {
   id: PropTypes.string,
   isReadOnly: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
-  payload: PropTypes.object,
   text: PropTypes.string,
   variant: PropTypes.string,
   icon: PropTypes.string,

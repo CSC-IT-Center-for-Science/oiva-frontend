@@ -2,8 +2,8 @@ import { __ } from "i18n-for-browser";
 import { find, flatten, pathEq } from "ramda";
 import { getLisatiedotFromStorage } from "../../../helpers/lisatiedot";
 
-export async function opiskelijamaarat(isReadOnly) {
-
+export async function opiskelijamaarat(data, { isPreviewModeOn, isReadOnly }) {
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -29,26 +29,34 @@ export async function opiskelijamaarat(isReadOnly) {
       components: [
         {
           anchor: "dropdown",
-          styleClasses: "mb-0 mr-2 w-1/5",
+          styleClasses: ["mb-0", "mr-2", "w-1/5"],
           name: "Dropdown",
           properties: {
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
             options: [
               // 1 = koodiarvo 1, enintään, koodisto: kujalisamaareet
-              { label: __("common.enintaan"), value: "1" },
+              {
+                label: __("common.enintaan"),
+                value: "1"
+              },
               // 2 = koodiarvo 2, enintään, koodisto: kujalisamaareet
-              { label: __("common.vahintaan"), value: "2" }
-            ],
-            isReadOnly
+              {
+                label: __("common.vahintaan"),
+                value: "2"
+              }
+            ]
           }
         },
         {
           anchor: "input",
           name: "Input",
           properties: {
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
             placeholder: __("education.oppilastaOpiskelijaa"),
             type: "number",
-            value: "",
-            isReadOnly
+            value: ""
           }
         }
       ]
@@ -62,7 +70,7 @@ export async function opiskelijamaarat(isReadOnly) {
               {
                 anchor: lisatiedotObj.koodiarvo,
                 name: "StatusTextRow",
-                styleClasses: ["pt-8 border-t"],
+                styleClasses: isPreviewModeOn ? [] : ["pt-8", "border-t"],
                 properties: {
                   title: __("common.lisatiedotInfo")
                 }
@@ -76,8 +84,9 @@ export async function opiskelijamaarat(isReadOnly) {
                 anchor: lisatiedotObj.koodiarvo,
                 name: "TextBox",
                 properties: {
-                  placeholder: __("common.lisatiedot"),
-                  isReadOnly
+                  isPreviewModeOn,
+                  isReadOnly: _isReadOnly,
+                  placeholder: __("common.lisatiedot")
                 }
               }
             ]

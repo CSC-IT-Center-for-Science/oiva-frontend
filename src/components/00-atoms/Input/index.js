@@ -47,15 +47,20 @@ const Input = props => {
   const { classes } = props;
 
   const updateValue = e => {
-    props.onChanges(props.payload, {
-      value:
-        props.type === "number" ? parseInt(e.target.value, 10) : e.target.value
-    });
+    props.onChanges(
+      { forChangeObject: props.forChangeObject, fullAnchor: props.fullAnchor },
+      {
+        value:
+          props.type === "number"
+            ? parseInt(e.target.value, 10)
+            : e.target.value
+      }
+    );
   };
 
   return (
     <React.Fragment>
-      <div className="flex items-center">
+      <div className={`flex items-center ${props.isHidden ? "hidden" : ""}`}>
         <TextField
           id={props.id}
           aria-label={props.ariaLabel}
@@ -140,7 +145,6 @@ Input.defaultProps = {
   isReadOnly: false,
   isRequired: false,
   isValid: true,
-  payload: {},
   placeholder: "",
   rows: 1,
   rowsMax: 1,
@@ -156,17 +160,18 @@ Input.defaultProps = {
 Input.propTypes = {
   ariaLabel: PropTypes.string,
   delay: PropTypes.number,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
   label: PropTypes.string,
   /** Is called with the payload and the value. */
   onChanges: PropTypes.func,
-  /** Custom object defined by user. */
-  payload: PropTypes.object,
   placeholder: PropTypes.string,
   rows: PropTypes.number,
   rowsMax: PropTypes.number,
@@ -179,10 +184,7 @@ Input.propTypes = {
   isDense: PropTypes.bool,
   requiredMessage: PropTypes.string,
   showValidationErrors: PropTypes.bool,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ])
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default withStyles(inputStyles)(Input);

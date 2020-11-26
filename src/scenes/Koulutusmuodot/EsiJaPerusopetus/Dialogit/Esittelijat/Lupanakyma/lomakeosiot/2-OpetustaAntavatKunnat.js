@@ -294,9 +294,12 @@ const OpetustaAntavatKunnat = React.memo(props => {
 
   return (
     <Lomake
-      action="modification"
       anchor={props.sectionId}
+      code={props.code}
+      formTitle={props.title}
+      mode={props.mode}
       isInExpandableRow={true}
+      isPreviewModeOn={props.isPreviewModeOn}
       isRowExpanded={true}
       data={{
         fiCode,

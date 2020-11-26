@@ -1,31 +1,43 @@
 import React from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import Lomake from "../../../../../../../components/02-organisms/Lomake";
-import education from "../../../../../../../i18n/definitions/education";
+import Lomake from "components/02-organisms/Lomake";
+import education from "i18n/definitions/education";
 
 const constants = {
-  formLocations: ["esiJaPerusopetus", "opiskelijamaarat"]
-}
+  formLocation: ["esiJaPerusopetus", "opiskelijamaarat"],
+  mode: "modification"
+};
 
 const Opiskelijamaarat = ({
-  sectionId
+  code,
+  isPreviewModeOn,
+  mode = constants.mode,
+  sectionId,
+  title
 }) => {
   const intl = useIntl();
 
   return (
     <Lomake
-      action="modification"
       anchor={sectionId}
+      code={code}
+      formTitle={title}
+      mode={mode}
+      isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
-      path={constants.formLocations}
-      showCategoryTitles={true}
-      rowTitle={intl.formatMessage(education.oppilasOpiskelijamaarat)}></Lomake>
+      path={constants.formLocation}
+      rowTitle={intl.formatMessage(education.oppilasOpiskelijamaarat)}
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 Opiskelijamaarat.propTypes = {
-  sectionId: PropTypes.string
+  code: PropTypes.string,
+  isPreviewModeOn: PropTypes.bool,
+  mode: PropTypes.string,
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default Opiskelijamaarat;
