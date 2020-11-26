@@ -30,8 +30,8 @@ export function getKieliList(kielet, locale) {
 // Sort languages: promote some common languages, sort others alphabetically
 export function sortLanguages(languages = [], localeUpper = "FI") {
   return R.sort((a, b) => {
-    const { nimi: aLabel } = a.metadata[localeUpper];
-    const { nimi: bLabel } = b.metadata[localeUpper];
+    const { nimi: aLabel } = a.metadata[localeUpper] || a.metadata["FI"];
+    const { nimi: bLabel } = b.metadata[localeUpper] || b.metadata["FI"];
 
     if (a.koodiarvo === "FI") return -1;
     if (b.koodiarvo === "FI") return 1;

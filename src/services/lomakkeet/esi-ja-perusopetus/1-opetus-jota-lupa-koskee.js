@@ -1,5 +1,5 @@
 import {isAdded, isInLupa, isRemoved} from "css/label";
-import {flatten, map, toUpper} from "ramda";
+import {flatten, map, toUpper, path} from "ramda";
 import {__} from "i18n-for-browser";
 import { getOpetustehtavatFromStorage } from "../../../helpers/opetustehtavat";
 
@@ -17,7 +17,7 @@ export async function opetusJotaLupaKoskee(data, isReadOnly, locale) {
               anchor: opetustehtava.koodiarvo,
               name: "CheckboxWithLabel",
               properties: {
-                title: opetustehtava.metadata[localeUpper].nimi,
+                title: path(["metadata", localeUpper, "nimi"], opetustehtava),
                 labelStyles: {
                   addition: isAdded,
                   removal: isRemoved,

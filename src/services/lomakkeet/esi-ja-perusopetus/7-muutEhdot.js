@@ -48,7 +48,7 @@ export async function muutEhdot(data, isReadOnly, locale, changeObjects) {
             name: "CheckboxWithLabel",
             properties: {
               isReadOnly,
-              title: ehto.metadata[localeUpper].nimi,
+              title: path(["metadata", localeUpper, "nimi"], ehto),
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
@@ -73,7 +73,7 @@ export async function muutEhdot(data, isReadOnly, locale, changeObjects) {
                   isReadOnly,
                   placeholder: __("common.kuvausPlaceholder"),
                   title: __("common.kuvaus"),
-                  value: ehto.metadata[localeUpper].kuvaus
+                  value: path(["metadata", localeUpper, "kuvaus"], ehto)
                 }
               }
             ]
