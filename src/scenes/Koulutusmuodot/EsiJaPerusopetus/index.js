@@ -14,6 +14,7 @@ export default function EsiJaPerusopetus({ koulutusmuoto }) {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
+      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
       UusiAsiaDialogContainer={UusiAsiaDialogContainer}></KoulutusmuodonEtusivu>
   );
 }

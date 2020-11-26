@@ -38,6 +38,7 @@ export default function KoulutusmuodonEtusivu({
   koulutusmuoto,
   kuvausteksti,
   paasivunOtsikko,
+  jarjestajatOtsikko,
   UusiAsiaDialogContainer
 }) {
   const history = useHistory();
@@ -92,6 +93,9 @@ export default function KoulutusmuodonEtusivu({
                     {toLower(formatMessage(common.asianhallinta))}
                   </NavLink>
                 ) : null}
+                <Typography component="h2" variant="h2">
+                  {jarjestajatOtsikko}
+                </Typography>
                 <section>
                   {Jarjestajaluettelo ? (
                     <Jarjestajat

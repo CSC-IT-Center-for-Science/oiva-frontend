@@ -10,6 +10,7 @@ export default function VapaaSivistystyo({ koulutusmuoto }) {
       JarjestamislupaJSX={JarjestamislupaJSX}
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
-      paasivunOtsikko={koulutusmuoto.paasivunOtsikko}></KoulutusmuodonEtusivu>
+      paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
+      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}></KoulutusmuodonEtusivu>
   );
 }

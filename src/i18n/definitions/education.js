@@ -89,5 +89,13 @@ export default defineMessages({
   koulutusmuodot: {
     id: "education.koulutusmuodot",
     defaultMessage: "Koulutusmuodot"
+  },
+  oppilaitostenYllapitajat: {
+    id: "education.oppilaitostenYllapitajat",
+    defaultMessage: "Oppilaitosten ylläpitäjät"
+  },
+  opetuksenJarjestajat: {
+    id: "education.opetuksenJarjestajat",
+    defaultMessage: "Opetuksen järjestäjät"
   }
 });
