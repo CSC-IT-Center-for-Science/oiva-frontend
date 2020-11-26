@@ -65,7 +65,7 @@
     "tailwind:css": "tailwind build src/css/tailwind.src.pcss -c tailwind.js -o src/css/tailwind.css",
     "start": "npm-run-all --parallel watch:css watch:component-css start:react",
     "build": "npm-run-all build:css build:react build:component-css",
-    "build:component-css": "postcss src/scenes/**/*.pcss --base src --dir src --ext module.css",
+    "build:component-css": "postcss src/components/**/*.pcss --base src --dir src --ext module.css",
     "build:css": "tailwind build src/css/tailwind.src.pcss -c tailwind.js -o src/css/tailwind.css",
     "watch:css": "tailwind build src/css/tailwind.src.pcss -c tailwind.js -o src/css/tailwind.css -w",
     "watch:component-css": "postcss src/components/**/*.pcss --base src --dir src --ext module.css -w",

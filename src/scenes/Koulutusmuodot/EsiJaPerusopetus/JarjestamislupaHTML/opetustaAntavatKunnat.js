@@ -19,6 +19,7 @@ import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import { getKunnatFromStorage } from "../../../../helpers/kunnat";
 import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
+import Typography from "@material-ui/core/Typography";
 
 export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
   const intl = useIntl();
@@ -54,6 +55,10 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     return !isEmpty(maakuntaKunnat) ? find(propEq("koodiarvo", maakunta.koodiarvo), maakuntaKunnat).kunnat : null
   }, maakuntaMaaraykset);
 
+  const lisatietomaarays = find(maarays =>
+    maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan"
+    && maarays.koodisto === "lisatietoja", maaraykset);
+
   const opetustaJarjestetaanUlkomaillaValintaMaarays = find(maarays =>
     maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
     !isNil(path(["meta", "changeObjects"], maarays)) &&
@@ -61,7 +66,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     startsWith("toimintaalue.ulkomaa", maarays.meta.changeObjects[0].anchor) , maaraykset)
 
   const opetustaJarjestetaanUlkomaillaIsChecked = opetustaJarjestetaanUlkomaillaValintaMaarays &&
-    opetustaJarjestetaanUlkomaillaValintaMaarays.meta.changeObjects[0].properties.isChecked;
+    path(["meta", "changeObjects", "0", "properties", "isChecked"], opetustaJarjestetaanUlkomaillaValintaMaarays);
 
   const opetustaJarjestetaanUlkomaillaLisatiedotMaarays = find(maarays =>
     maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
@@ -79,9 +84,11 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     }, flatten(concat(kunnatFromMaakuntaMaaraykset, kuntaMaaraykset)).filter(Boolean))
   );
 
-  return !isEmpty(kunnat) && !isEmpty(maakuntaKunnat) && !isEmpty(kunnatFromLupa) ? (
+  return !isEmpty(kunnat) && !isEmpty(maakuntaKunnat) && (!isEmpty(kunnatFromLupa) || opetustaJarjestetaanUlkomaillaIsChecked) ? (
     <div className="mt-4">
-      <h3 className="font-medium mb-4">{intl.formatMessage(education.opetustaAntavatKunnat)}</h3>
+      <Typography component="h3" variant="h3">
+        {intl.formatMessage(education.opetustaAntavatKunnat)}
+      </Typography>
       <ul className="ml-8 list-disc mb-4">
         {
           map(kunta =>
@@ -91,11 +98,14 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
         }
       </ul>
       { opetustaJarjestetaanUlkomaillaIsChecked && (
-        <div>
-          <h4 className="font-medium mb-4">{intl.formatMessage(education.opetustaJarjestetaanSuomenUlkopuolella)}</h4>
+        <div className="mb-4">
+          <Typography component="h4" variant="h4">
+            {intl.formatMessage(education.opetustaJarjestetaanSuomenUlkopuolella)}
+          </Typography>
           {opetustaJarjestetaanUlkomaillaLisatiedotMaarays ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo : ""}
         </div>
       )}
+      { lisatietomaarays && (lisatietomaarays.meta.arvo)}
     </div>
   ) : null
 }

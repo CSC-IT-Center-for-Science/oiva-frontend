@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 import common from "../i18n/definitions/common";
 import PropTypes from "prop-types";
 import * as R from "ramda";
+import Typography from "@material-ui/core/Typography";
 
 const Loading = ({ notReadyList = [], percentage, text }) => {
   const intl = useIntl();
@@ -17,7 +18,7 @@ const Loading = ({ notReadyList = [], percentage, text }) => {
         )}
         <CircularProgress size={80} value={percentage} />
       </span>
-      <h3 className="ml-4">{loadingtext}...</h3>
+      <Typography component="h3" variant="h3" className="ml-4">{loadingtext}...</Typography>
       <ul className="ml-10">
         {R.addIndex(R.map)((item, i) => {
           return <li key={`${item}-${i}`}>{item}</li>;
