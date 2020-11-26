@@ -89,5 +89,9 @@ export default defineMessages({
   koulutusmuodot: {
     id: "education.koulutusmuodot",
     defaultMessage: "Koulutusmuodot"
+  },
+  opetuksenJarjestaja: {
+    id: "education.opetuksenJarjestaja",
+    defaultMessage: "Opetuksen järjestäjä"
   }
 });

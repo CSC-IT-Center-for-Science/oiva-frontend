@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -15,10 +14,11 @@ import {
   usePagination
 } from "react-table";
 
-import { map, toUpper, head, values, find, propEq } from "ramda";
+import { map, head, values } from "ramda";
 import { useIntl } from "react-intl";
 
 import common from "i18n/definitions/common";
+import education from "i18n/definitions/education";
 import { Link } from "react-router-dom";
 
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -316,15 +316,8 @@ function Jarjestajaluettelo({ luvat }) {
   const intl = useIntl();
   const [data, setData] = useState(() =>
     map(({ jarjestaja }) => {
-      const localeUpper = toUpper(intl.locale);
       return {
         nimi: jarjestaja.nimi[intl.locale] || head(values(jarjestaja.nimi)),
-        maakunta: (
-          find(
-            propEq("kieli", localeUpper),
-            jarjestaja.maakuntaKoodi.metadata
-          ) || {}
-        ).nimi,
         ytunnus: jarjestaja.ytunnus,
         toiminnot: ["info"]
       };
@@ -334,7 +327,7 @@ function Jarjestajaluettelo({ luvat }) {
   const columns = [
     {
       accessor: "nimi",
-      Header: intl.formatMessage(common.jarjestaja),
+      Header: intl.formatMessage(education.opetuksenJarjestaja),
       Cell: ({ row }) => {
         return (
           <Link
@@ -347,10 +340,6 @@ function Jarjestajaluettelo({ luvat }) {
           </Link>
         );
       }
-    },
-    {
-      accessor: "maakunta",
-      Header: intl.formatMessage(common.homeCounty)
     },
     {
       accessor: "ytunnus",
