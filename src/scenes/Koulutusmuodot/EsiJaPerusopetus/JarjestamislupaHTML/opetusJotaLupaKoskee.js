@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { filter, find, map, toUpper, isEmpty, propEq } from "ramda";
+import { filter, find, map, toUpper, isEmpty, propEq, path } from "ramda";
 import { useIntl } from "react-intl";
 import { getOpetustehtavatFromStorage, getOpetustehtavaKoodistoFromStorage } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
@@ -44,8 +44,8 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
         {
           map(opetustehtava =>
             <li key={opetustehtava.koodiarvo} className="leading-bulletList">
-              { find(propEq("koodiarvo", opetustehtava.koodiarvo), opetustehtavatFromStorage)
-                .metadata[locale].nimi }
+              { path(["metadata", locale, "nimi"],
+                find(propEq("koodiarvo", opetustehtava.koodiarvo), opetustehtavatFromStorage))}
             </li>,
           opetustehtavat)
         }

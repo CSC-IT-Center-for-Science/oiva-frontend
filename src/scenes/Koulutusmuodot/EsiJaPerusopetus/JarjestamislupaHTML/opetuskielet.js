@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { filter, find, includes, map, toUpper, isEmpty, propEq } from "ramda";
+import { filter, find, includes, map, toUpper, isEmpty, propEq, path } from "ramda";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
 import education from "../../../../i18n/definitions/education";
@@ -40,7 +40,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
         {
           map(opetuskieli =>
             <li key={opetuskieli.koodiarvo} className="leading-bulletList">
-              {find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH).metadata[locale].nimi}
+              {path(["metadata", locale, "nimi"], find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH))}
             </li>,
           ensisijaisetOpetuskielet || [])
         }
@@ -53,7 +53,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
         {
           map(opetuskieli =>
               <li key={opetuskieli.koodiarvo} className="leading-bulletList">
-                {find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH).metadata[locale].nimi}
+                {path(["metadata", locale, "nimi"], find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH))}
               </li>,
             toissijaisetOpetuskielet || [])
         }
