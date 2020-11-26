@@ -97,9 +97,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         kortinOtsikko: intl.formatMessage(education.vocationalEducation),
         kuvausteksti: intl.formatMessage(ammatillinenKoulutus.kuvausteksti),
         lyhytKuvaus: intl.formatMessage(ammatillinenKoulutus.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(
-          ammatillinenKoulutus.paasivunOtsikko
-        )
+        paasivunOtsikko: intl.formatMessage(education.vocationalEducation),
+        jarjestajatOtsikko: intl.formatMessage(education.koulutuksenJarjestajat)
       },
       esiJaPerusopetus: {
         ...constants.koulutusmuodot.esiJaPerusopetus,
@@ -107,7 +106,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         kortinOtsikko: intl.formatMessage(education.preAndBasicEducation),
         kuvausteksti: intl.formatMessage(esiJaPerusopetus.kuvausteksti),
         lyhytKuvaus: intl.formatMessage(esiJaPerusopetus.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(esiJaPerusopetus.paasivunOtsikko)
+        paasivunOtsikko: intl.formatMessage(education.preAndBasicEducation),
+        jarjestajatOtsikko: intl.formatMessage(education.opetuksenJarjestajat)
       },
       lukiokoulutus: {
         ...constants.koulutusmuodot.lukiokoulutus,
@@ -115,7 +115,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         kortinOtsikko: intl.formatMessage(education.highSchoolEducation),
         kuvausteksti: intl.formatMessage(lukiokoulutus.kuvausteksti),
         lyhytKuvaus: intl.formatMessage(lukiokoulutus.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(lukiokoulutus.paasivunOtsikko)
+        paasivunOtsikko: intl.formatMessage(education.highSchoolEducation),
+        jarjestajatOtsikko: intl.formatMessage(education.koulutuksenJarjestajat)
       },
       vapaaSivistystyo: {
         ...constants.koulutusmuodot.vapaaSivistystyo,
@@ -123,7 +124,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         kortinOtsikko: intl.formatMessage(education.vstEducation),
         kuvausteksti: intl.formatMessage(vapaaSivistystyo.kuvausteksti),
         lyhytKuvaus: intl.formatMessage(vapaaSivistystyo.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(vapaaSivistystyo.paasivunOtsikko)
+        paasivunOtsikko: intl.formatMessage(common.vstTitleName),
+        jarjestajatOtsikko: intl.formatMessage(education.oppilaitostenYllapitajat)
       }
     }),
     [intl]

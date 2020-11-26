@@ -93,5 +93,13 @@ export default defineMessages({
   opetuksenJarjestaja: {
     id: "education.opetuksenJarjestaja",
     defaultMessage: "Opetuksen järjestäjä"
+  },
+  oppilaitostenYllapitajat: {
+    id: "education.oppilaitostenYllapitajat",
+    defaultMessage: "Oppilaitosten ylläpitäjät"
+  },
+  opetuksenJarjestajat: {
+    id: "education.opetuksenJarjestajat",
+    defaultMessage: "Opetuksen järjestäjät"
   }
 });
