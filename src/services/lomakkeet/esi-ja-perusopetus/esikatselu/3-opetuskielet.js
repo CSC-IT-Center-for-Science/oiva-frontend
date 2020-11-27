@@ -1,5 +1,14 @@
 import { __ } from "i18n-for-browser";
-import { append, compose, concat, endsWith, find, map, prop } from "ramda";
+import {
+  append,
+  compose,
+  concat,
+  endsWith,
+  find,
+  map,
+  prop,
+  sortBy
+} from "ramda";
 
 export async function previewOfOpetuskielet({ lomakedata }) {
   let structure = [];
@@ -15,19 +24,25 @@ export async function previewOfOpetuskielet({ lomakedata }) {
   );
 
   const ensisijaisetListItems = !!ensisijaiset
-    ? map(opetuskieli => {
-        return {
-          content: `${opetuskieli.label} (${opetuskieli.value})`
-        };
-      }, ensisijaiset.properties.value).filter(Boolean)
+    ? sortBy(
+        prop("content"),
+        map(opetuskieli => {
+          return {
+            content: opetuskieli.label
+          };
+        }, ensisijaiset.properties.value).filter(Boolean)
+      )
     : [];
 
-  const toissijaisetListItems = !!ensisijaiset
-    ? map(opetuskieli => {
-        return {
-          content: `${opetuskieli.label} (${opetuskieli.value})`
-        };
-      }, toissijaiset.properties.value).filter(Boolean)
+  const toissijaisetListItems = !!toissijaiset
+    ? sortBy(
+        prop("content"),
+        map(opetuskieli => {
+          return {
+            content: opetuskieli.label
+          };
+        }, toissijaiset.properties.value).filter(Boolean)
+      )
     : [];
 
   if (ensisijaisetListItems.length) {

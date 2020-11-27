@@ -14,9 +14,16 @@ const StyledList = withStyles({
   }
 })(MaterialUIList);
 
+const StyledListItemIcon = withStyles({
+  root: {
+    minWidth: "1rem"
+  }
+})(ListItemIcon);
+
 const StyledFiberManualRecordIcon = withStyles({
   root: {
-    transform: "scale(0.5)"
+    color: "#000000",
+    transform: "scale(0.3)",
   }
 })(FiberManualRecordIcon);
 
@@ -24,9 +31,9 @@ const List = ({ items }) => {
   const itemsToRender = addIndex(map)(
     (item, index) => (
       <ListItem disableGutters={true} key={`list-item-${index}`}>
-        <ListItemIcon>
+        <StyledListItemIcon>
           <StyledFiberManualRecordIcon />
-        </ListItemIcon>
+        </StyledListItemIcon>
         {item.content}
       </ListItem>
     ),
