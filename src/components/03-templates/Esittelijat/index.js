@@ -24,19 +24,19 @@ const Esittelijat = ({
   return (
     <React.Fragment>
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}>
-        {formatMessage(commonMessages.asianhallinta)}
+        {formatMessage(commonMessages.asiat) + " " + koulutusmuoto.kortinOtsikko}
       </BreadcrumbsItem>
 
       <article className="flex-1 flex-col flex">
         <div className="mx-auto w-4/5">
           <Typography component="h1" variant="h1">
-            {formatMessage(commonMessages.asianhallinta)}
+            {formatMessage(commonMessages.asiat)}
           </Typography>
           <Typography
             component="h2"
             style={{ fontSize: "1.25rem" }}
             className="pb-4 mt--12">
-            {paasivunOtsikko}
+            {koulutusmuoto.kortinOtsikko}
           </Typography>
         </div>
 
