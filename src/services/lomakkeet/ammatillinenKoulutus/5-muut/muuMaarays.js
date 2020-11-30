@@ -10,7 +10,7 @@ import { isNil, map, reject } from "ramda";
  */
 export function getMuutMuuMaarays(
   { items, maarayksetByKoodiarvo },
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   const localeUpper = locale.toUpperCase();

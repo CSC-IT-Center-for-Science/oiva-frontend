@@ -14,7 +14,7 @@ const Koulutusala = ({ koodiarvo, sectionId, title }) => {
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={sectionId}
       data={tutkintodata[koodiarvo]}
       path={constants.formLocation}

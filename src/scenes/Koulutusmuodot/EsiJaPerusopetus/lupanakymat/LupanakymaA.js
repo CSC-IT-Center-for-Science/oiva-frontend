@@ -36,11 +36,10 @@ const LupanakymaA = ({
   valtakunnallinenMaarays
 }) => {
   const intl = useIntl();
-  console.info(lisatiedot);
   return (
-    <div className="px-12 bg-white">
+    <div className="p-12">
       {isPreviewModeOn ? null : (
-        <div className="xxl:w-1/3">
+        <div className="xxl:w-1/3 p-6 bg-gray-100 mb-12">
           <Lomake
             anchor="paatoksentiedot"
             isInExpandableRow={false}

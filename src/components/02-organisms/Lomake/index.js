@@ -244,13 +244,14 @@ const Lomake = React.memo(
     ]);
 
     if (Array.isArray(lomake) && lomake.length) {
-      console.info("Renderöidään lomake: ", anchor, lomake);
       return (
-        <div className="mb-4">
-          <FormTitle
-            code={isPreviewModeOn || !code ? null : code}
-            title={formTitle}
-          />
+        <div>
+          {code || formTitle ? (
+            <FormTitle
+              code={isPreviewModeOn || !code ? null : code}
+              title={formTitle}
+            />
+          ) : null}
           {isInExpandableRow && !isPreviewModeOn ? (
             <ExpandableRowRoot
               anchor={anchor}

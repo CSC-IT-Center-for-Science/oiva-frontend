@@ -77,7 +77,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
 export default async function getTutkintokieletLomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

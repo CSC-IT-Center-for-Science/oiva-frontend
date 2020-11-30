@@ -174,7 +174,7 @@ function getReasoningForm(
 export default function getToimintaaluePerustelulomake(
   action,
   data,
-  isReadOnly
+  { isReadOnly }
 ) {
   switch (action) {
     case "reasoning":

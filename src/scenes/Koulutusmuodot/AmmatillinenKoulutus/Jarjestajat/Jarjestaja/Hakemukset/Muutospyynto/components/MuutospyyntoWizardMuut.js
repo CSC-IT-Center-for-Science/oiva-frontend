@@ -11,6 +11,7 @@ import Yhteistyo from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lu
 import Yhteistyosopimus from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/08-Yhteistyosopimus";
 import Selvitykset from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/09-Selvitykset";
 import MuuMaarays from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/07-MuuMaarays";
+import { Typography } from "@material-ui/core";
 
 const defaultProps = {
   maaraykset: [],
@@ -18,9 +19,11 @@ const defaultProps = {
 };
 
 const MuutospyyntoWizardMuut = ({
+  code,
   maaraykset = defaultProps.maaraykset,
   muut = defaultProps.muut,
-  sectionId
+  sectionId,
+  title
 }) => {
   const intl = useIntl();
   const localeUpper = toUpper(intl.locale);
@@ -62,6 +65,10 @@ const MuutospyyntoWizardMuut = ({
 
   return (
     <React.Fragment>
+      <Typography component="h2" variant="h2">
+        {code ? `${code}. ` : ""}
+        {title}
+      </Typography>
       {!!items.laajennettu && items.laajennettu.length > 0 ? (
         <Laajennettu
           items={items.laajennettu}

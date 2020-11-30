@@ -390,16 +390,18 @@ const UusiAsiaDialog = ({
                       height: isPreviewModeOn ? "100vh" : "84vh"
                     }}>
                     <section
-                      className={`fixed pt-4 w-full ${
+                      className={`fixed w-full ${
                         isPreviewModeOn ? "border-r border-gray-300" : ""
                       }`}>
-                      <div className={`pl-12 pb-4 border-b border-gray-300`}>
+                      <div
+                        className={`border-b border-gray-300 px-12`}
+                        style={{ backgroundColor: "rgba(255,255,255,0.75)" }}>
                         <Typography component="h2" variant="h2">
                           {intl.formatMessage(common.decisionDetails)}
                         </Typography>
                       </div>
                       <div
-                        className="bg-white overflow-auto"
+                        className="overflow-auto"
                         style={{ height: isPreviewModeOn ? "92vh" : "79vh" }}>
                         <LupanakymaA
                           isPreviewModeOn={false}
@@ -423,10 +425,12 @@ const UusiAsiaDialog = ({
                         height: "100vh"
                       }}>
                       <section
-                        className={`fixed pt-4 w-full ${
+                        className={`fixed w-full ${
                           isPreviewModeOn ? "border-l border-gray-300" : ""
                         }`}>
-                        <div className="pl-12 pb-4 border-b border-gray-300">
+                        <div
+                          className="border-b border-gray-300 px-12"
+                          style={{ backgroundColor: "rgba(255,255,255,0.75)" }}>
                           <Typography component="h2" variant="h2">
                             Esikatselu
                           </Typography>

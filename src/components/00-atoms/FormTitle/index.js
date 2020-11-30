@@ -8,17 +8,19 @@ const defaultProps = {
 
 const FormTitle = ({ code, level = defaultProps.level, title }) => {
   return (
-    <Typography component={`h${level}`} variant={`h${level}`}>
-      {code ? `${code}. ` : ""}
-      {title}
-    </Typography>
+    <div className="px-4" style={{ backgroundColor: "rgba(255,255,255,0.5" }}>
+      <Typography component={`h${level}`} variant={`h${level}`}>
+        {code ? `${code}. ` : ""}
+        {title}
+      </Typography>
+    </div>
   );
 };
 
 FormTitle.propTypes = {
   code: PropTypes.string,
-  title: PropTypes.string,
-  level: PropTypes.number
+  level: PropTypes.number,
+  title: PropTypes.string
 };
 
 export default FormTitle;

@@ -27,7 +27,7 @@ const YhteenvetoYleisettiedot = React.memo(props => {
       onChangesRemove={props.onChangesRemove}
       onUpdate={props.onChangesUpdate}>
       <Lomake
-        action="modification"
+        mode="modification"
         anchor={sectionId}
         changeObjects={props.changeObjects.yhteenveto}
         onChangesUpdate={props.onChangesUpdate}

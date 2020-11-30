@@ -16,7 +16,7 @@ const MuutospyyntoWizardKielet = ({ koulutusalat, tutkinnot }) => {
   return (
     <React.Fragment>
       <Lomake
-        action="modification"
+        mode="modification"
         anchor={"kielet_opetuskielet"}
         isRowExpanded={true}
         path={constants.formLocation.opetuskielet}
