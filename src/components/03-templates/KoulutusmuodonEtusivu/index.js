@@ -118,7 +118,7 @@ export default function KoulutusmuodonEtusivu({
                     <Asianhallinta
                       AsiaDialogContainer={AsiaDialogContainer}
                       koulutusmuoto={koulutusmuoto}
-                      sivunOtsikko={paasivunOtsikko}
+                      paasivunOtsikko={paasivunOtsikko}
                       UusiAsiaDialogContainer={UusiAsiaDialogContainer}
                     />
                   )}

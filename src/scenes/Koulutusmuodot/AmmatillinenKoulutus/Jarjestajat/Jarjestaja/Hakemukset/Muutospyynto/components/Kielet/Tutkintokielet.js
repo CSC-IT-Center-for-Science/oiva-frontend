@@ -5,6 +5,7 @@ import { useLomakedata } from "stores/lomakedata";
 import Koulutusala from "./Koulutusala";
 import { map, toUpper } from "ramda";
 import wizard from "i18n/definitions/wizard";
+import Typography from "@material-ui/core/Typography";
 
 const Tutkintokielet = ({ koulutusalat }) => {
   const sectionId = "kielet_tutkintokielet";
@@ -16,7 +17,7 @@ const Tutkintokielet = ({ koulutusalat }) => {
 
   return (
     <React.Fragment>
-      <h4 className="py-4">{intl.formatMessage(wizard.tutkintokielet)}</h4>
+      <Typography component="h4" variant="h4">{intl.formatMessage(wizard.tutkintokielet)}</Typography>
       {map(koulutusala => {
         if (tutkintodata[koulutusala.koodiarvo]) {
           return (

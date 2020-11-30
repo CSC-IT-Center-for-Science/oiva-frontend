@@ -13,6 +13,7 @@ import MuutospyyntoWizardTopThree from "scenes/Koulutusmuodot/AmmatillinenKoulut
 import Lomake from "components/02-organisms/Lomake";
 import * as R from "ramda";
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
+import Typography from "@material-ui/core/Typography";
 
 const constants = {
   formLocation: {
@@ -130,25 +131,25 @@ const EsittelijatMuutospyynto = ({
       <form onSubmit={handleSubmit}>
         <Section>
           <div className="w-1/3">
-            <h2 className="p-8" style={{ marginLeft: "-2rem" }}>
+            <Typography component="h2" variant="h2">
               {intl.formatMessage(common.decisionDetails)}
-            </h2>
+            </Typography>
             <MuutospyyntoWizardTopThree />
           </div>
         </Section>
-        <h2 className="my-6">{intl.formatMessage(common.changesText)}</h2>
+        <Typography component="h2" variant="h2">{intl.formatMessage(common.changesText)}</Typography>
         <Section
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
           title={sectionHeadings.tutkinnotJaKoulutukset.title}>
-          <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
+          <Typography component="h4" variant="h4">{intl.formatMessage(common.tutkinnot)}</Typography>
           <Tutkinnot
             koulutusalat={koulutusalat}
             koulutustyypit={koulutustyypit}
             tutkinnot={tutkinnot}
           />
-          <h4 className="pt-8 pb-4">
+          <Typography component="h4" variant="h4">
             {intl.formatMessage(common.koulutukset)}
-          </h4>
+          </Typography>
           <MuutospyyntoWizardKoulutukset
             koulutukset={koulutukset}
             maaraykset={maaraykset}
