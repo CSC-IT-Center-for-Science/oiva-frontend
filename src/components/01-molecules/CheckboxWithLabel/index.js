@@ -6,6 +6,7 @@ import green from "@material-ui/core/colors/green";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Check from "@material-ui/icons/CheckBoxOutlined";
+import { equals } from "ramda";
 
 /**
  * @module Components/01-molecules
@@ -102,6 +103,8 @@ const CheckboxWithLabel = React.memo(
   },
   (cp, np) => {
     return (
+      equals(cp.forChangeObject, np.forChangeObject) &&
+      equals(cp.fullAnchor, np.fullAnchor) &&
       cp.isChecked === np.isChecked &&
       cp.isDisabled === np.isDisabled &&
       cp.isIndeterminate === np.isIndeterminate &&

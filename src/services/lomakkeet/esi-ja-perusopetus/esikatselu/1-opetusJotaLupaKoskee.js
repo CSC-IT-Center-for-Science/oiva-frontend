@@ -2,6 +2,10 @@ import { append, endsWith, find, map } from "ramda";
 
 export async function previewOfOpetusJotaLupaKoskee({ lomakedata }) {
   let structure = [];
+
+  if (!lomakedata || !lomakedata.length) {
+    return structure;
+  }
   /**
    * Muodostetaan lista-alkiot hyödyntäen ListItem-komponenttiamme.
    * Huomioidaan vain opetustehtävät, jotka ovat aktivoituina lomakkeella
@@ -39,7 +43,7 @@ export async function previewOfOpetusJotaLupaKoskee({ lomakedata }) {
     lomakedata
   );
 
-  if (lisatiedotNode) {
+  if (lisatiedotNode && lisatiedotNode.properties.value) {
     structure = append(
       {
         anchor: "lisatiedot",

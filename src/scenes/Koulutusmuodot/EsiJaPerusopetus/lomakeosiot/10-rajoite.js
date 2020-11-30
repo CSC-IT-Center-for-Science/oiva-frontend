@@ -9,12 +9,12 @@ import {
 import common from "i18n/definitions/common";
 import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
-import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import Lomake from "../../../../components/02-organisms/Lomake";
 import PropTypes from "prop-types";
 import {
   useChangeObjects,
   useChangeObjectsByMultipleAnchorsWithoutUnderRemoval
-} from "../../../../../../../stores/muutokset";
+} from "../../../../stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "rajoite"]

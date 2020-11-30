@@ -40,7 +40,7 @@ export const defineBackendChangeObjects = async (changeObjects = [], maaraystyyp
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
     lisatiedot || []
   );
-  const lisatiedotChangeObj = find(compose(endsWith(".lisatiedot"), prop("anchor")), changeObjects);
+  const lisatiedotChangeObj = find(compose(endsWith(".lisatiedot.1"), prop("anchor")), changeObjects);
   const lisatiedotBeChangeObj =
     !!lisatiedotChangeObj && !!lisatiedotObj
     ? {

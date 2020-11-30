@@ -75,7 +75,7 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
     lomakedata
   );
 
-  if (lisatiedotNode) {
+  if (lisatiedotNode && lisatiedotNode.properties.value) {
     structure = append(
       {
         anchor: "lisatiedot",

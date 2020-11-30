@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
@@ -54,9 +54,35 @@ class LocalizedUtils extends DateFnsUtils {
   }
 }
 
-const Datepicker = props => {
-  const { classes, messages, locale } = props;
-  const [selectedDate, setSelectedDate] = useState(props.value);
+const Datepicker = ({
+  ariaLabel,
+  classes,
+  clearable,
+  disableFuture,
+  disablePast,
+  error,
+  forChangeObject,
+  fullAnchor,
+  fullWidth,
+  invalidLabel,
+  isDisabled,
+  isHidden,
+  isReadOnly,
+  isRequired,
+  label,
+  locale,
+  minDate,
+  maxDate,
+  messages,
+  onChanges,
+  placeholder,
+  requiredMessage,
+  showTodayButton,
+  showValidationErrors,
+  value,
+  width
+}) => {
+  const [selectedDate, setSelectedDate] = useState(value);
   const [isVisited, setIsVisited] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const localeMap = {
@@ -65,64 +91,64 @@ const Datepicker = props => {
     sv: svLocale
   };
 
-  const handleDateChange = date => {
-    props.onChanges({}, { value: date });
-    setSelectedDate(date);
-  };
+  const handleDateChange = useCallback(
+    date => {
+      console.info(date);
+      onChanges({ forChangeObject, fullAnchor }, { value: date });
+      // setSelectedDate(date);
+    },
+    [forChangeObject, fullAnchor]
+  );
 
   useEffect(() => {
-    if (props.value !== selectedDate || !selectedDate) {
-      setSelectedDate(props.value);
+    if (value !== selectedDate || !selectedDate) {
+      setSelectedDate(value);
     }
-  }, [props.value, selectedDate]);
+  }, [value, selectedDate]);
 
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={localeMap[locale]}>
       <div
         className="flex-col"
-        style={!props.width && props.fullWidth ? { display: "flex" } : {}}>
+        style={!width && fullWidth ? { display: "flex" } : {}}>
         {/* https://material-ui-pickers.dev/api/DatePicker */}
         <DatePicker
           format="d.M.yyyy" // Always is Finnish format
-          aria-label={props.ariaLabel}
-          label={props.label}
-          disabled={props.isDisabled || props.isReadonly}
-          placeholder={
-            props.isDisabled || props.isReadOnly || props.label
-              ? ""
-              : props.placeholder
-          }
+          aria-label={ariaLabel}
+          label={label}
+          disabled={isDisabled || isReadOnly}
+          placeholder={isDisabled || isReadOnly || label ? "" : placeholder}
           margin="dense"
           onChange={handleDateChange}
-          error={props.error}
-          invalidLabel={props.invalidLabel}
-          required={props.isRequired}
-          width={props.width}
-          style={props.width ? { width: props.width } : {}}
-          fullWidth={props.width ? false : props.fullWidth}
+          error={error}
+          invalidLabel={invalidLabel}
+          required={isRequired}
+          width={width}
+          style={width ? { width } : {}}
+          fullWidth={width ? false : fullWidth}
           InputProps={{
             className: classes.input
           }}
           value={selectedDate || null}
           inputVariant="outlined"
-          showTodayButton={props.showTodayButton}
+          showTodayButton={showTodayButton}
           okLabel={messages.ok}
           clearLabel={messages.clear}
           cancelLabel={messages.cancel}
           todayLabel={messages.today}
-          clearable={props.clearable}
+          clearable={clearable}
           maxDateMessage={messages.datemax}
           minDateMessage={messages.datemin}
           invalidDateMessage={messages.dateinvalid}
-          minDate={props.minDate}
-          maxDate={props.maxDate}
-          disablePast={props.disablePast}
-          disableFuture={props.disableFuture}
-          className={`${props.isHidden ? "hidden" : ""} 
+          minDate={minDate}
+          maxDate={maxDate}
+          disablePast={disablePast}
+          disableFuture={disableFuture}
+          className={`${isHidden ? "hidden" : ""} 
             ${
-              (isVisited || props.showValidationErrors) &&
-              props.isRequired &&
-              !props.value &&
+              (isVisited || showValidationErrors) &&
+              isRequired &&
+              !value &&
               !isFocused
                 ? classes.requiredVisited
                 : classes.root
@@ -134,7 +160,7 @@ const Datepicker = props => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
-        {props.showValidationErrors && props.requiredMessage && (
+        {showValidationErrors && requiredMessage && (
           <FormHelperText
             id="component-message-text"
             style={{
@@ -143,7 +169,7 @@ const Datepicker = props => {
               marginBottom: "0.5em",
               color: COLORS.OIVA_ORANGE_TEXT
             }}>
-            {isVisited && !selectedDate && props.requiredMessage}
+            {isVisited && !selectedDate && requiredMessage}
           </FormHelperText>
         )}
       </div>
@@ -160,6 +186,7 @@ Datepicker.defaultProps = {
   isHidden: false,
   error: false,
   width: "",
+  forChangeObject: {},
   fullWidth: true,
   clearable: true,
   showTodayButton: true,
@@ -179,6 +206,8 @@ Datepicker.propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.bool,
   width: PropTypes.string,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   fullWidth: PropTypes.bool,
   value: PropTypes.any,
   clearable: PropTypes.bool,

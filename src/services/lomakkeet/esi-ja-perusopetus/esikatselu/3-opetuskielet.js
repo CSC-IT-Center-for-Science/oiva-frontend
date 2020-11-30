@@ -6,6 +6,7 @@ import {
   endsWith,
   find,
   map,
+  path,
   prop,
   sortBy
 } from "ramda";
@@ -23,6 +24,8 @@ export async function previewOfOpetuskielet({ lomakedata }) {
     lomakedata
   );
 
+  console.info(ensisijaiset, toissijaiset);
+
   const ensisijaisetListItems = !!ensisijaiset
     ? sortBy(
         prop("content"),
@@ -30,7 +33,7 @@ export async function previewOfOpetuskielet({ lomakedata }) {
           return {
             content: opetuskieli.label
           };
-        }, ensisijaiset.properties.value).filter(Boolean)
+        }, path(["properties", "value"], ensisijaiset) || []).filter(Boolean)
       )
     : [];
 
@@ -41,7 +44,7 @@ export async function previewOfOpetuskielet({ lomakedata }) {
           return {
             content: opetuskieli.label
           };
-        }, toissijaiset.properties.value).filter(Boolean)
+        }, path(["properties", "value"], toissijaiset) || []).filter(Boolean)
       )
     : [];
 
@@ -100,7 +103,7 @@ export async function previewOfOpetuskielet({ lomakedata }) {
     lomakedata
   );
 
-  if (lisatiedotNode) {
+  if (lisatiedotNode && lisatiedotNode.properties.value) {
     structure = append(
       {
         anchor: "lisatiedot",

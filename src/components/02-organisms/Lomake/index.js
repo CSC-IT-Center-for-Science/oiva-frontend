@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
@@ -9,13 +9,14 @@ import {
 } from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { has, isEmpty, map, prop } from "ramda";
+import { equals, has, isEmpty, map, prop } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 import {
   getChangeObjByAnchor,
   getReducedStructure
 } from "../CategorizedListRoot/utils";
 import FormTitle from "components/00-atoms/FormTitle";
+import { getReducedStructureIncludingChanges } from "./utils";
 
 const defaultProps = {
   data: {},
@@ -32,157 +33,253 @@ const defaultProps = {
   uncheckParentWithoutActiveChildNodes: false
 };
 
-const Lomake = ({
-  anchor,
-  code,
-  data = defaultProps.data,
-  formTitle,
-  isInExpandableRow = defaultProps.isInExpandableRow,
-  isPreviewModeOn = defaultProps.isPreviewModeOn,
-  isReadOnly = defaultProps.isReadOnly,
-  isRowExpanded = defaultProps.isRowExpanded,
-  mode,
-  path: _path,
-  prefix = defaultProps.prefix,
-  showCategoryTitles = defaultProps.showCategoryTitles,
-  uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
-  hasInvalidFieldsFn,
-  noPadding = defaultProps.noPadding,
-  rowMessages = defaultProps.rowMessages,
-  rowTitle = defaultProps.rowTitle,
-  showValidationErrors = defaultProps.showValidationErrors
-}) => {
-  const intl = useIntl();
-
-  const rowLocalizations = isEmpty(rowMessages)
-    ? {
-        undo: intl.formatMessage(formMessages.undo),
-        changesTest: intl.formatMessage(formMessages.changesText)
-      }
-    : rowMessages;
-  const [{ focusOn }] = useChangeObjects();
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor
-  });
-  const [lomakedata, lomakedataActions] = useLomakedata({ anchor });
-  const [lomake, setLomake] = useState();
-
-  const onChangesRemove = useCallback(
-    anchor => {
-      actions.setChanges([], anchor);
-    },
-    [actions]
-  );
-
-  const onChangesUpdate = useCallback(
-    ({ anchor, changes }) => {
-      actions.setChanges(changes, anchor);
-    },
-    [actions]
-  );
-
-  const onFocus = useCallback(() => {
-    actions.setFocusOn(null);
-  }, [actions]);
-
-  useEffect(() => {
-    async function fetchLomake() {
-      return await getLomake(
-        mode,
-        changeObjects,
-        { ...data, lomakedata },
-        { isPreviewModeOn, isReadOnly },
-        intl.locale,
-        _path,
-        prefix
-      );
-    }
-
-    fetchLomake().then(result => {
-      if (has("isValid", result)) {
-        lomakedataActions.setValidity(result.isValid, anchor);
-      }
-      let reducedStructure = [];
-      if (result.structure) {
-        reducedStructure = getReducedStructure(result.structure);
-        setLomake(result.structure);
-      } else {
-        reducedStructure = getReducedStructure(result);
-        setLomake(result);
-      }
-      lomakedataActions.setLomakedata(
-        map(component => {
-          const changeObj = getChangeObjByAnchor(
-            `${anchor}.${component.fullAnchor}`,
-            changeObjects
-          );
-          return {
-            anchor: `${anchor}.${component.fullAnchor}`,
-            properties: Object.assign(
-              {},
-              component.properties,
-              prop("properties", changeObj) || {}
-            )
-          };
-        }, reducedStructure),
-        anchor
-      );
-    });
-  }, [
+const Lomake = React.memo(
+  ({
     anchor,
-    changeObjects,
-    data,
+    code,
+    data = defaultProps.data,
     formTitle,
-    hasInvalidFieldsFn,
-    isPreviewModeOn,
-    isReadOnly,
-    intl.locale,
-    lomakedataActions,
+    isInExpandableRow = defaultProps.isInExpandableRow,
+    isPreviewModeOn = defaultProps.isPreviewModeOn,
+    isReadOnly = defaultProps.isReadOnly,
+    isRowExpanded = defaultProps.isRowExpanded,
+    lomakedataAnchor,
     mode,
-    _path,
-    prefix
-  ]);
+    path: _path,
+    prefix = defaultProps.prefix,
+    showCategoryTitles = defaultProps.showCategoryTitles,
+    uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
+    hasInvalidFieldsFn,
+    noPadding = defaultProps.noPadding,
+    rowMessages = defaultProps.rowMessages,
+    rowTitle = defaultProps.rowTitle,
+    showValidationErrors = defaultProps.showValidationErrors
+  }) => {
+    const intl = useIntl();
 
-  if (Array.isArray(lomake) && lomake.length) {
-    return (
-      <div
-        className={`${
-          !isPreviewModeOn ? "align-top p-12" : "mx-8"
-        }`}>
-        <FormTitle
-          code={isPreviewModeOn || !code ? null : code}
-          title={formTitle}
-        />
-        {isInExpandableRow && !isPreviewModeOn ? (
-          <ExpandableRowRoot
-            anchor={anchor}
-            changes={changeObjects}
-            key={`expandable-row-root`}
-            hideAmountOfChanges={true}
-            isExpanded={isRowExpanded}
-            onChangesRemove={onChangesRemove}
-            messages={rowLocalizations}
-            sectionId={anchor}
-            title={rowTitle}>
-            <div className={noPadding ? "" : "p-8"}>
-              <CategorizedListRoot
-                anchor={anchor}
-                focusOn={focusOn}
-                categories={lomake}
-                changes={changeObjects}
-                isReadOnly={isReadOnly}
-                onFocus={onFocus}
-                onUpdate={onChangesUpdate}
-                showCategoryTitles={showCategoryTitles}
-                showValidationErrors={showValidationErrors}
-                uncheckParentWithoutActiveChildNodes={
-                  uncheckParentWithoutActiveChildNodes
-                }
-              />
-            </div>
-          </ExpandableRowRoot>
-        ) : (
-          <div className={noPadding ? "" : "py-8"}>
+    const rowLocalizations = isEmpty(rowMessages)
+      ? {
+          undo: intl.formatMessage(formMessages.undo),
+          changesTest: intl.formatMessage(formMessages.changesText)
+        }
+      : rowMessages;
+
+    const [{ focusOn }] = useChangeObjects();
+
+    const [
+      changeObjects,
+      actions
+    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: lomakedataAnchor || anchor
+    });
+
+    const [, lomakedataActions] = useLomakedata({
+      anchor: lomakedataAnchor || anchor
+    });
+
+    const [lomake, setLomake] = useState();
+
+    const onChangesRemove = useCallback(
+      anchor => {
+        actions.setChanges([], anchor);
+      },
+      [actions]
+    );
+
+    // const lomakedata = useMemo(() => {
+    //   if (lomake && lomake.length) {
+    //     return getReducedStructureIncludingChanges(
+    //       lomakedataAnchor || anchor,
+    //       getReducedStructure(lomake),
+    //       changeObjects
+    //     );
+    //   }
+    //   return [];
+    // }, [anchor, lomake, lomakedataAnchor, changeObjects]);
+
+    const onChangesUpdate = useCallback(
+      ({ anchor, changes }) => {
+        actions.setChanges(changes, anchor);
+      },
+      [actions]
+    );
+
+    // const onChangesUpdate = useCallback(
+    //   changeObj => {
+    //     // Target node is the component affected by the change.
+    //     const targetNode = getTargetNode(changeObj, reducedStructure);
+    //     // The array of change objects will be updated.
+    //     const nextChanges = handleNodeMain(
+    //       uncheckParentWithoutActiveChildNodes,
+    //       targetNode,
+    //       anchor,
+    //       reducedStructure,
+    //       changesRef.current
+    //     );
+
+    //     /**
+    //      * The updated array will be sent using the onUpdate callback function.
+    //      * The anchor parameter is the root anchor of the current form. It can
+    //      * be used to bind and store the array of changes correctly.
+    //      **/
+    //     onUpdate({
+    //       anchor,
+    //       changes: nextChanges,
+    //       reducedStructure
+    //     });
+    //   },
+    //   [anchor, onUpdate, reducedStructure, uncheckParentWithoutActiveChildNodes]
+    // );
+
+    //  * KOODISTEPALVELUN DATA
+    //  * LOMAKKEEN NYKYTILA = MÄÄRÄYKSET + MUUTOKSET
+    //  * MUUTOKSET = KÄYTTÄJÄN TEKEMÄT OPERAATIOT LOMAKKEELLE
+    //  * LOMAKEMERKKAUS = JSON, JOKA
+
+    const onFocus = useCallback(() => {
+      actions.setFocusOn(null);
+    }, [actions]);
+
+    useEffect(() => {
+      (async () => {
+        async function fetchLomake(_mode, _changeObjects, _data) {
+          return await getLomake(
+            _mode || mode,
+            _changeObjects || changeObjects,
+            _data || data,
+            { isPreviewModeOn, isReadOnly },
+            intl.locale,
+            _path,
+            prefix
+          );
+        }
+
+        const lomake = await fetchLomake();
+
+        /**
+         * Esikatselulomake tarvitsee lomakerakenteen luontia varten
+         * muokkaustilaisen lomakkeen nykytilan.
+         */
+        if (isPreviewModeOn) {
+          const lomakedata =
+            lomake && lomake.length
+              ? getReducedStructureIncludingChanges(
+                  lomakedataAnchor || anchor,
+                  getReducedStructure(lomake),
+                  changeObjects
+                )
+              : [];
+          const previewLomake = await fetchLomake("preview", [], {
+            lomakedata
+          });
+          setLomake(previewLomake.structure || previewLomake);
+        } else {
+          if (has("isValid", lomake)) {
+            lomakedataActions.setValidity(lomake.isValid, anchor);
+          }
+          setLomake(lomake.structure || lomake);
+        }
+      })();
+    }, [
+      _path,
+      anchor,
+      changeObjects,
+      data,
+      intl.locale,
+      isPreviewModeOn,
+      isReadOnly,
+      lomakedataAnchor,
+      mode,
+      prefix
+    ]);
+
+    useEffect(() => {
+      // fetchLomake().then(result => {
+      // if (has("isValid", result)) {
+      //   lomakedataActions.setValidity(result.isValid, anchor);
+      // }
+      //   let reducedStructure = [];
+      //   if (result.structure) {
+      //     reducedStructure = getReducedStructure(result.structure);
+      //     setLomake(result.structure);
+      //   } else {
+      //     reducedStructure = getReducedStructure(result);
+      //     setLomake(result);
+      //   }
+      //   const nextLomakedata = map(component => {
+      //     const changeObj = getChangeObjByAnchor(
+      //       `${lomakedataAnchor || anchor}.${component.fullAnchor}`,
+      //       changeObjects
+      //     );
+      //     return {
+      //       anchor: `${lomakedataAnchor || anchor}.${component.fullAnchor}`,
+      //       properties: Object.assign(
+      //         {},
+      //         component.properties,
+      //         prop("properties", changeObj) || {}
+      //       )
+      //     };
+      //   }, reducedStructure);
+      //   if (!equals(nextLomakedata, lomakedata)) {
+      //     // lomakedataActions.setLomakedata(
+      //     //   nextLomakedata,
+      //     //   lomakedataAnchor || anchor
+      //     // );
+      //   }
+      // });
+    }, [
+      anchor,
+      data,
+      formTitle,
+      hasInvalidFieldsFn,
+      isPreviewModeOn,
+      isReadOnly,
+      intl.locale,
+      // lomakedata,
+      // lomakedataActions,
+      lomakedataAnchor,
+      mode,
+      _path,
+      prefix
+    ]);
+
+    if (Array.isArray(lomake) && lomake.length) {
+      console.info("Renderöidään lomake: ", anchor, lomake);
+      return (
+        <div className="mb-4">
+          <FormTitle
+            code={isPreviewModeOn || !code ? null : code}
+            title={formTitle}
+          />
+          {isInExpandableRow && !isPreviewModeOn ? (
+            <ExpandableRowRoot
+              anchor={anchor}
+              changes={changeObjects}
+              key={`expandable-row-root`}
+              hideAmountOfChanges={true}
+              isExpanded={isRowExpanded}
+              onChangesRemove={onChangesRemove}
+              messages={rowLocalizations}
+              sectionId={anchor}
+              title={rowTitle}>
+              <div className={noPadding ? "" : "p-8"}>
+                <CategorizedListRoot
+                  anchor={anchor}
+                  focusOn={focusOn}
+                  categories={lomake}
+                  changes={changeObjects}
+                  isReadOnly={isReadOnly}
+                  onFocus={onFocus}
+                  onUpdate={onChangesUpdate}
+                  showCategoryTitles={showCategoryTitles}
+                  showValidationErrors={showValidationErrors}
+                  uncheckParentWithoutActiveChildNodes={
+                    uncheckParentWithoutActiveChildNodes
+                  }
+                />
+              </div>
+            </ExpandableRowRoot>
+          ) : (
             <CategorizedListRoot
               anchor={anchor}
               focusOn={focusOn}
@@ -198,14 +295,14 @@ const Lomake = ({
                 uncheckParentWithoutActiveChildNodes
               }
             />
-          </div>
-        )}
-      </div>
-    );
-  } else {
-    return null;
+          )}
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
-};
+);
 
 Lomake.propTypes = {
   anchor: PropTypes.string,
@@ -215,6 +312,7 @@ Lomake.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRowExpanded: PropTypes.bool,
+  lomakedataAnchor: PropTypes.string,
   metadata: PropTypes.object,
   mode: PropTypes.string,
   path: PropTypes.array,

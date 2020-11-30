@@ -77,7 +77,7 @@ const defaultCategoryStyles = {
    **/
   layoutStrategy: R.find(R.propEq("key", "default"), layoutStrategies),
   margins: {
-    top: categoryStyleMapping.margins.extraSmall
+    top: categoryStyleMapping.margins.none
   }
 };
 
@@ -120,20 +120,6 @@ const CategorizedList = props => {
   const { onChangesUpdate, onFocus, showValidationErrors } = props;
 
   /**
-   * Click of the SimpleButton is handled here.
-   * @param {object} - Object that includes some properties.
-   * @param {object} changeProps - Changed properties with their forthcoming states.
-   */
-  const handleButtonClick = (payload, changeProps) => {
-    /**
-     * SimpleButton component is part of the payload. Its onClick method
-     * will be called. If you like to find the onClick method browse the
-     * current form structure.
-     **/
-    payload.component.onClick(payload, changeProps);
-  };
-
-  /**
    * This is the most common handling function for the components
    * in CategorizedList's scope. Please note that metadata of
    * change objects will be attached to them in this function.
@@ -143,6 +129,7 @@ const CategorizedList = props => {
    */
   const handleChanges = useCallback(
     ({ forChangeObject, fullAnchor }, changeProps) => {
+      console.info(forChangeObject, fullAnchor, changeProps);
       const changeObj = {
         anchor: removeAnchorPart(fullAnchor, 0),
         properties: R.reject(R.isNil)({
@@ -398,7 +385,9 @@ const CategorizedList = props => {
                                 {propsObj.code}
                               </span>
                             ) : null}
-                            <p className={`ml-4 ${leadingClass}`}>{title}</p>
+                            <p className={`p-0 ml-4 ${leadingClass}`}>
+                              {title}
+                            </p>
                           </div>
                         </CheckboxWithLabel>
                       </div>
@@ -434,7 +423,9 @@ const CategorizedList = props => {
                                 {propsObj.code}
                               </span>
                             ) : null}
-                            <p className={`ml-4 ${leadingClass}`}>{title}</p>
+                            <p className={`p-0 ml-4 ${leadingClass}`}>
+                              {title}
+                            </p>
                           </div>
                         </RadioButtonWithLabel>
                       </div>
@@ -804,6 +795,8 @@ const CategorizedList = props => {
                     {component.name === "SimpleButton" && (
                       <div className={`${styleClassesStr} flex-2`}>
                         <SimpleButton
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
                           id={fullAnchor}
                           isReadOnly={propsObj.isReadOnly}
                           text={propsObj.text}
@@ -811,7 +804,7 @@ const CategorizedList = props => {
                           icon={propsObj.icon}
                           iconContainerStyles={propsObj.iconContainerStyles}
                           iconStyles={propsObj.iconStyles}
-                          onClick={handleButtonClick}
+                          onClick={component.onClick}
                           payload={{
                             anchor,
                             categories: category.categories,
@@ -826,36 +819,30 @@ const CategorizedList = props => {
                     {component.name === "Datepicker" && (
                       <div className={`${styleClassesStr} flex-2`}>
                         <Datepicker
-                          label={propsObj.label}
-                          variant={propsObj.variant}
-                          onChanges={handleChanges}
-                          value={propsObj.value}
+                          clearable={propsObj.clearable}
+                          disableFuture={propsObj.disableFuture}
+                          disablePast={propsObj.disablePast}
+                          error={propsObj.error}
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
+                          fullWidth={propsObj.fullWidth}
                           isDisabled={propsObj.isDisabled}
                           isHidden={propsObj.isHidden}
+                          isReadOnly={propsObj.isReadOnly}
                           isRequired={propsObj.isRequired}
-                          clearable={propsObj.clearable}
-                          showTodayButton={propsObj.showTodayButton}
-                          error={propsObj.error}
-                          placeholder={propsObj.placeholder}
-                          fullWidth={propsObj.fullWidth}
-                          width={propsObj.width}
+                          label={propsObj.label}
+                          locale={propsObj.locale}
                           minDate={propsObj.minDate}
                           maxDate={propsObj.maxDate}
-                          disablePast={propsObj.disablePast}
-                          disableFuture={propsObj.disableFuture}
-                          locale={propsObj.locale}
                           messages={propsObj.localizations}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
-                          isReadOnly={propsObj.isReadOnly}
+                          onChanges={handleChanges}
+                          placeholder={propsObj.placeholder}
                           requiredMessage={propsObj.requiredMessage}
+                          showTodayButton={propsObj.showTodayButton}
                           showValidationErrors={showValidationErrors}
+                          value={propsObj.value}
+                          variant={propsObj.variant}
+                          width={propsObj.width}
                         />
                       </div>
                     )}

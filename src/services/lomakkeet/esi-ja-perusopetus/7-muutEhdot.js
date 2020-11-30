@@ -47,66 +47,47 @@ export async function muutEhdot(
 
   const lomakerakenne = flatten([
     map(ehto => {
-      const stateOfComponent = find(
-        compose(
-          endsWith(`.${ehto.koodiarvo}.valintaelementti`),
-          prop("anchor")
-        ),
-        data.lomakedata
-      );
       return {
         anchor: ehto.koodiarvo,
-        components: isPreviewModeOn
-          ? []
-          : [
-              {
-                anchor: "valintaelementti",
-                name: "CheckboxWithLabel",
-                properties: {
-                  isPreviewModeOn,
-                  isReadOnly: _isReadOnly,
-                  title: ehto.metadata[localeUpper].nimi,
-                  labelStyles: {
-                    addition: isAdded,
-                    removal: isRemoved,
-                    custom: Object.assign({}, !!ehto.maarays ? isInLupa : {})
-                  },
-                  isChecked: !!ehto.maarays,
-                  isIndeterminate: false
-                }
-              }
-            ],
+        components: [
+          {
+            anchor: "valintaelementti",
+            name: "CheckboxWithLabel",
+            properties: {
+              isPreviewModeOn,
+              isReadOnly: _isReadOnly,
+              title: ehto.metadata[localeUpper].nimi,
+              labelStyles: {
+                addition: isAdded,
+                removal: isRemoved,
+                custom: Object.assign({}, !!ehto.maarays ? isInLupa : {})
+              },
+              isChecked: !!ehto.maarays,
+              isIndeterminate: false
+            }
+          }
+        ],
         categories: flatten(
           [
-            !isPreviewModeOn ||
-            (isPreviewModeOn &&
-              stateOfComponent &&
-              path(["properties", "isChecked"], stateOfComponent))
-              ? {
-                  anchor: "0",
-                  components: [
-                    {
-                      anchor: "kuvaus",
-                      name: "TextBox",
-                      properties: {
-                        forChangeObject: {
-                          koodiarvo: ehto.koodiarvo
-                        },
-                        isPreviewModeOn,
-                        isReadOnly: _isReadOnly,
-                        placeholder: isPreviewModeOn
-                          ? undefined
-                          : __("common.kuvausPlaceholder"),
-                        title: isPreviewModeOn
-                          ? undefined
-                          : __("common.kuvaus"),
-                        value: ehto.metadata[localeUpper].kuvaus
-                      }
-                    }
-                  ],
-                  layout: isPreviewModeOn ? { indentation: "none" } : {}
+            {
+              anchor: "0",
+              components: [
+                {
+                  anchor: "kuvaus",
+                  name: "TextBox",
+                  properties: {
+                    forChangeObject: {
+                      koodiarvo: ehto.koodiarvo
+                    },
+                    isPreviewModeOn,
+                    isReadOnly: _isReadOnly,
+                    placeholder: __("common.kuvausPlaceholder"),
+                    title: __("common.kuvaus"),
+                    value: ehto.metadata[localeUpper].kuvaus
+                  }
                 }
-              : null,
+              ]
+            },
             /**
              * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
              * 99 = Muu ehto
@@ -182,22 +163,20 @@ export async function muutEhdot(
     }, poMuutEhdot),
     lisatiedotObj
       ? [
-          isPreviewModeOn
-            ? null
-            : {
-                anchor: "lisatiedotTitle",
-                layout: { margins: { top: "large" } },
-                components: [
-                  {
-                    anchor: lisatiedotObj.koodiarvo,
-                    name: "StatusTextRow",
-                    styleClasses: ["pt-8", "border-t"],
-                    properties: {
-                      title: __("common.lisatiedotInfo")
-                    }
-                  }
-                ]
-              },
+          {
+            anchor: "lisatiedotTitle",
+            layout: { margins: { top: "large" } },
+            components: [
+              {
+                anchor: lisatiedotObj.koodiarvo,
+                name: "StatusTextRow",
+                styleClasses: ["pt-8", "border-t"],
+                properties: {
+                  title: __("common.lisatiedotInfo")
+                }
+              }
+            ]
+          },
           {
             anchor: "lisatiedot",
             components: [
@@ -213,9 +192,7 @@ export async function muutEhdot(
                   },
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: isPreviewModeOn
-                    ? undefined
-                    : __("common.lisatiedot")
+                  placeholder: __("common.lisatiedot")
                 }
               }
             ]

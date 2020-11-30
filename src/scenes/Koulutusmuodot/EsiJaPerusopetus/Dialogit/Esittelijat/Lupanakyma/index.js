@@ -5,25 +5,15 @@ import DialogTitle from "components/02-organisms/DialogTitle";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 import wizardMessages from "i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
-import { Button, Dialog, DialogContent } from "@material-ui/core";
+import { Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import { useHistory, useParams } from "react-router-dom";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import Lomake from "components/02-organisms/Lomake";
 import { useMuutospyynto } from "stores/muutospyynto";
-import Opetustehtavat from "./lomakeosiot/1-Opetustehtavat";
-import FormSection from "components/03-templates/FormSection";
-import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
-import OpetustaAntavatKunnat from "./lomakeosiot/2-OpetustaAntavatKunnat";
-import Opetuskieli from "./lomakeosiot/3-Opetuskieli";
-import OpetuksenJarjestamismuoto from "./lomakeosiot/4-OpetuksenJarjestamismuoto";
-import ErityisetKoulutustehtavat from "./lomakeosiot/5-ErityisetKoulutustehtavat";
-import Opiskelijamaarat from "./lomakeosiot/6-Opiskelijamaarat";
-import MuutEhdot from "./lomakeosiot/7-MuutEhdot";
-import Rajoitteet from "./lomakeosiot/9-Rajoitteet";
+import Rajoitteet from "../../../lomakeosiot/9-Rajoitteet";
 import * as R from "ramda";
 import common from "i18n/definitions/common";
-import education from "i18n/definitions/education";
 import { createObjectToSave } from "../../../saving";
 import {
   useChangeObjects,
@@ -34,14 +24,13 @@ import {
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { useValidity } from "stores/lomakedata";
+import LupanakymaA from "../../../lupanakymat/LupanakymaA";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
 const DialogTitleWithStyles = withStyles(() => ({
   root: {
     backgroundColor: "#c8dcc3",
-    paddingBottom: "1rem",
-    paddingTop: "1rem",
     width: "100%"
   }
 }))(props => {
@@ -51,28 +40,26 @@ const DialogTitleWithStyles = withStyles(() => ({
 const DialogContentWithStyles = withStyles(() => ({
   root: {
     backgroundColor: "#ffffff",
-    padding: 0,
     scrollBehavior: "smooth"
   }
 }))(props => {
-  return <DialogContent {...props}>{props.children}</DialogContent>;
+  return (
+    <DialogContent {...props} style={{ padding: 0 }}>
+      {props.children}
+    </DialogContent>
+  );
 });
 
 const FormDialog = withStyles(() => ({
   paper: {
     background: "#ffffff",
     marginLeft: isDebugOn ? "33%" : 0,
-    width: isDebugOn ? "66%" : "100%"
+    width: isDebugOn ? "66%" : "100%",
+    transform: "translate3d(0, 0, 0)" // Tämä on fixed-asetusta varten
   }
 }))(props => {
   return <Dialog {...props}>{props.children}</Dialog>;
 });
-
-const constants = {
-  formLocation: {
-    paatoksenTiedot: ["esiJaPerusopetus", "paatoksenTiedot"]
-  }
-};
 
 const defaultProps = {
   kielet: [],
@@ -138,7 +125,6 @@ const UusiAsiaDialog = ({
     anchor: "muutEhdot"
   });
 
-  const [state] = useEsiJaPerusopetus();
   const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
 
   const intl = useIntl();
@@ -199,6 +185,10 @@ const UusiAsiaDialog = ({
     const hasChangesUnderRemoval = underRemovalChangeObjects
       ? !R.isEmpty(underRemovalChangeObjects)
       : false;
+    console.info(
+      hasUnsavedChanges || hasChangesUnderRemoval,
+      validity.paatoksentiedot
+    );
     return (
       (hasUnsavedChanges || hasChangesUnderRemoval) && validity.paatoksentiedot
     );
@@ -304,7 +294,7 @@ const UusiAsiaDialog = ({
 
   return (
     changeObjects !== null && (
-      <div className="max-w-7xl">
+      <div>
         <FormDialog
           open={isDialogOpen}
           onClose={leaveOrOpenCancelModal}
@@ -333,7 +323,7 @@ const UusiAsiaDialog = ({
           )}
           <DialogContentWithStyles>
             {isPreviewModeOn ? null : (
-              <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
+              <div className="bg-vaalenharmaa px-16 w-full m-auto mb-4 border-b border-xs border-harmaa">
                 <div className="py-4">
                   <h1>
                     {organisation.nimi[intl.locale] ||
@@ -377,103 +367,88 @@ const UusiAsiaDialog = ({
             )}
             <div
               id="wizard-content"
-              className={`xl:w-3/4 max-w-6xl mx-auto mb-32`}>
-              {!isPreviewModeOn ? (
-                <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-                  <h2 className="p-8">
-                    {intl.formatMessage(common.decisionDetails)}
-                  </h2>
-                  <Lomake
-                    isInExpandableRow={false}
-                    isPreviewModeOn={isPreviewModeOn}
-                    anchor="paatoksentiedot"
-                    data={{ formatMessage: intl.formatMessage, uuid }}
-                    path={constants.formLocation.paatoksenTiedot}></Lomake>
-                </div>
-              ) : null}
-
+              className={`mx-auto ${
+                isPreviewModeOn ? "kk:w-4/5 kkk:w-2/3" : "max-w-7xl"
+              }`}>
               <form
                 onSubmit={() => {}}
-                className={
-                  isPreviewModeOn ? "border border-gray-300 p-12" : ""
-                }>
-                {!isPreviewModeOn ? (
+                className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
+                {/* {!isPreviewModeOn ? (
                   <FormSection
                     render={props => <Rajoitteet {...props} />}
                     sectionId="rajoitteet"
                     title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
-                ) : null}
+                ) : null} */}
 
-                <Opetustehtavat
-                  code="1"
-                  isPreviewModeOn={isPreviewModeOn}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  opetustehtavakoodisto={opetustehtavakoodisto}
-                  sectionId="opetustehtavat"
-                  title={
-                    opetustehtavakoodisto.metadata[R.toUpper(intl.locale)]
-                      .kuvaus
-                  }
-                />
-
-                <OpetustaAntavatKunnat
-                  changeObjects={state.changeObjects.toimintaalue}
-                  code="2"
-                  isPreviewModeOn={isPreviewModeOn}
-                  kunnat={kunnat}
-                  lisatiedot={lisatiedot}
-                  lupakohde={lupaKohteet[3]}
-                  maakunnat={maakunnat}
-                  maakuntakunnat={maakuntakunnat}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  sectionId={"toimintaalue"}
-                  title={intl.formatMessage(education.opetustaAntavatKunnat)}
-                  valtakunnallinenMaarays={valtakunnallinenMaarays}
-                />
-
-                <Opetuskieli
-                  code="3"
-                  isPreviewModeOn={isPreviewModeOn}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  sectionId={"opetuskielet"}
-                  title={intl.formatMessage(common.opetuskieli)}
-                />
-
-                <OpetuksenJarjestamismuoto
-                  code="4"
-                  isPreviewModeOn={isPreviewModeOn}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  sectionId={"opetuksenJarjestamismuodot"}
-                  title={intl.formatMessage(
-                    education.opetuksenJarjestamismuoto
-                  )}
-                />
-
-                <ErityisetKoulutustehtavat
-                  code="5"
-                  isPreviewModeOn={isPreviewModeOn}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  sectionId={"erityisetKoulutustehtavat"}
-                  title={intl.formatMessage(
-                    common.VSTLupaSectionTitleSchoolMissionSpecial
-                  )}
-                />
-
-                <Opiskelijamaarat
-                  code="6"
-                  isPreviewModeOn={isPreviewModeOn}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  sectionId={"opiskelijamaarat"}
-                  title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
-                />
-
-                <MuutEhdot
-                  code="7"
-                  isPreviewModeOn={isPreviewModeOn}
-                  mode={isPreviewModeOn ? "preview" : "modification"}
-                  sectionId={"muutEhdot"}
-                  title={intl.formatMessage(education.muutEhdotTitle)}
-                />
+                <div className="flex">
+                  <div
+                    className={`${
+                      isPreviewModeOn ? "hidden xxl:block" : ""
+                    } flex-1`}
+                    style={{
+                      transform: "translate3d(0, 0, 0)",
+                      height: isPreviewModeOn ? "100vh" : "84vh"
+                    }}>
+                    <section
+                      className={`fixed pt-4 w-full ${
+                        isPreviewModeOn ? "border-r border-gray-300" : ""
+                      }`}>
+                      <div className={`pl-12 pb-4 border-b border-gray-300`}>
+                        <Typography component="h2" variant="h2">
+                          {intl.formatMessage(common.decisionDetails)}
+                        </Typography>
+                      </div>
+                      <div
+                        className="bg-white overflow-auto"
+                        style={{ height: isPreviewModeOn ? "92vh" : "79vh" }}>
+                        <LupanakymaA
+                          isPreviewModeOn={false}
+                          kunnat={kunnat}
+                          lisatiedot={lisatiedot}
+                          lupakohteet={lupaKohteet}
+                          maakunnat={maakunnat}
+                          maakuntakunnat={maakuntakunnat}
+                          opetustehtavakoodisto={opetustehtavakoodisto}
+                          uuid={uuid}
+                          valtakunnallinenMaarays={valtakunnallinenMaarays}
+                        />
+                      </div>
+                    </section>
+                  </div>
+                  {isPreviewModeOn ? (
+                    <div
+                      className="flex-1"
+                      style={{
+                        transform: "translate3d(0, 0, 0)",
+                        height: "100vh"
+                      }}>
+                      <section
+                        className={`fixed pt-4 w-full ${
+                          isPreviewModeOn ? "border-l border-gray-300" : ""
+                        }`}>
+                        <div className="pl-12 pb-4 border-b border-gray-300">
+                          <Typography component="h2" variant="h2">
+                            Esikatselu
+                          </Typography>
+                        </div>
+                        <div
+                          className="p-6 bg-gray-100 overflow-auto"
+                          style={{ height: isPreviewModeOn ? "92vh" : "83vh" }}>
+                          <LupanakymaA
+                            isPreviewModeOn={true}
+                            kunnat={kunnat}
+                            lisatiedot={lisatiedot}
+                            lupakohteet={lupaKohteet}
+                            maakunnat={maakunnat}
+                            maakuntakunnat={maakuntakunnat}
+                            opetustehtavakoodisto={opetustehtavakoodisto}
+                            valtakunnallinenMaarays={valtakunnallinenMaarays}
+                          />
+                        </div>
+                      </section>
+                    </div>
+                  ) : null}
+                </div>
               </form>
             </div>
           </DialogContentWithStyles>

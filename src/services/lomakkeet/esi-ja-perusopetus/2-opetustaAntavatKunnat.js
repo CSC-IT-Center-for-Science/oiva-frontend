@@ -14,6 +14,8 @@ export const opetustaAntavatKunnat = (
 
   const _isReadOnly = isPreviewModeOn || isReadOnly;
 
+  console.info(data);
+
   return flatten(
     [
       {

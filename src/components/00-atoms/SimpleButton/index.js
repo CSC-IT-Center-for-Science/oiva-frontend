@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa";
 import ClearIcon from "@material-ui/icons/Clear";
 
 const defaultProps = {
+  forChangeObject: {},
   isReadOnly: false,
   text: "[text is missing]",
   variant: "contained",
@@ -32,22 +33,28 @@ const styles = createStyles(theme => ({
 }));
 
 const SimpleButton = ({
+  ariaLabel,
+  classes,
+  color = defaultProps.color,
+  disabled = defaultProps.disabled,
+  forChangeObject = defaultProps.forChangeObject,
+  fullAnchor,
+  icon = defaultProps.icon,
+  iconContainerStyles = defaultProps.iconContainerStyles,
+  iconStyles = defaultProps.iconStyles,
   id,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
-  text = defaultProps.text,
-  variant = defaultProps.variant,
-  color = defaultProps.color,
-  ariaLabel,
   size = defaultProps.size,
-  classes,
-  disabled = defaultProps.disabled,
-  icon = defaultProps.icon,
-  iconContainerStyles = defaultProps.iconContainerStyles,
-  iconStyles = defaultProps.iconStyles
+  text = defaultProps.text,
+  variant = defaultProps.variant
 }) => {
   const handleClick = event => {
-    onClick({}, {}, event);
+    if (!!onClick) {
+      onClick({ forChangeObject, fullAnchor }, {}, event);
+    } else {
+      console.warn("SimpleButton: käsittelijä 'onClick' puuttuu", fullAnchor);
+    }
   };
 
   return (
@@ -81,9 +88,11 @@ SimpleButton.propTypes = {
   ariaLabel: PropTypes.string,
   color: PropTypes.string,
   disabled: PropTypes.bool,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isReadOnly: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   text: PropTypes.string,
   variant: PropTypes.string,
   icon: PropTypes.string,

@@ -14,12 +14,10 @@ import Slot from "../../../00-atoms/Slot/Slot";
 const Accordion = withStyles({
   root: {
     border: "1px solid rgba(0,0,0,.125)",
+    padding: 0,
     "&:before": {
       display: "none"
     }
-  },
-  expanded: {
-    margin: "auto"
   }
 })(MuiAccordion);
 
@@ -40,7 +38,7 @@ const AccordionSummary = withStyles({
   expanded: {}
 })(props => <MuiAccordionSummary {...props} />);
 
-AccordionSummary.muiName = "AccordionSummary";
+// AccordionSummary.muiName = "AccordionSummary";
 
 const AccordionDetails = withStyles(theme => ({
   root: {
