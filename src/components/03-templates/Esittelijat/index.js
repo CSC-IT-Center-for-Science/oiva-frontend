@@ -6,7 +6,6 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import BaseData from "basedata";
 import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
-import commonMessages from "i18n/definitions/common";
 import { MuutoksetContainer } from "../../../stores/muutokset";
 
 const Esittelijat = ({
@@ -14,7 +13,7 @@ const Esittelijat = ({
   koulutusmuoto,
   UusiAsiaDialogContainer
 }) => {
-  const { formatMessage, locale } = useIntl();
+  const { locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
   const scope = "esittelijan-lupanakyma";
@@ -22,11 +21,10 @@ const Esittelijat = ({
   return (
     <React.Fragment>
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}>
-        {formatMessage(commonMessages.asiat) + " " + koulutusmuoto.kortinOtsikko}
+        {koulutusmuoto.kortinOtsikko}
       </BreadcrumbsItem>
 
       <article className="flex-1 flex-col flex">
-
         <Switch>
           <Route
             authenticated={!!user}

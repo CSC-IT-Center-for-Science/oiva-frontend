@@ -85,8 +85,11 @@ const Jarjestaja = React.memo(
       const basicRoutes = [
         {
           path: "jarjestamislupa",
-          text: intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
-            common.yllapitamisLupaTitle : common.lupaTitle),
+          text: intl.formatMessage(
+            koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
+              ? common.yllapitamisLupaTitle
+              : common.lupaTitle
+          ),
           authenticated: true
         },
         {
@@ -115,7 +118,7 @@ const Jarjestaja = React.memo(
             ]
           : [];
       return R.flatten(R.insert(1, basicRoutes, additionalRoutes));
-    }, [lupa.jarjestaja, user, intl]);
+    }, [koulutusmuoto.koulutustyyppi, lupa.jarjestaja, user, intl]);
 
     const newApplicationRouteItem = useMemo(() => {
       return {
