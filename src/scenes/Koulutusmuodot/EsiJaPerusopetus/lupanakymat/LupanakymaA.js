@@ -37,9 +37,12 @@ const LupanakymaA = ({
 }) => {
   const intl = useIntl();
   return (
-    <div className="p-12">
+    <div
+      className={`p-6 bg-white ${
+        isPreviewModeOn ? "border border-gray-300" : ""
+      }`}>
       {isPreviewModeOn ? null : (
-        <div className="xxl:w-1/3 p-6 bg-gray-100 mb-12">
+        <div className="xxl:w-1/3 px-4 mb-12">
           <Lomake
             anchor="paatoksentiedot"
             isInExpandableRow={false}
@@ -106,6 +109,13 @@ const LupanakymaA = ({
         sectionId={"muutEhdot"}
         title={intl.formatMessage(education.muutEhdotTitle)}
       />
+
+      {/* {!isPreviewModeOn ? (
+        <FormSection
+          render={props => <Rajoitteet {...props} />}
+          sectionId="rajoitteet"
+          title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
+      ) : null} */}
     </div>
   );
 };

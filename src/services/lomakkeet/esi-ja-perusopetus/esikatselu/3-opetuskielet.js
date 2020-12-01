@@ -76,6 +76,7 @@ export async function previewOfOpetuskielet({ lomakedata }) {
             anchor: "otsikko",
             name: "FormTitle",
             properties: {
+              isPreviewModeOn: true,
               level: 3,
               title: __("education.voidaanAntaaMyosSeuraavillaKielilla")
             }

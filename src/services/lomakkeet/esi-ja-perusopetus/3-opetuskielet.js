@@ -85,6 +85,7 @@ export async function getOpetuskieletOPHLomake(
     {
       anchor: "opetuskieli",
       title: __("education.voidaanAntaaMyosSeuraavillaKielilla"),
+      layout: { indentation: "none" },
       components: [
         {
           anchor: "toissijaiset",

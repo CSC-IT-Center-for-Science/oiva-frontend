@@ -101,7 +101,7 @@ const AlertMessage = props => {
             </div>
           }>
           {props.title && <AlertTitle>{props.title}</AlertTitle>}
-          <p>{props.message && props.message}</p>
+          <p className="p-0">{props.message && props.message}</p>
         </Alert>
       </Collapse>
     </div>

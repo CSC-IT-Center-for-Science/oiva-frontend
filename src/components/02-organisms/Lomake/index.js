@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
@@ -9,12 +9,9 @@ import {
 } from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { equals, has, isEmpty, map, prop } from "ramda";
+import { equals, has, isEmpty } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
-import {
-  getChangeObjByAnchor,
-  getReducedStructure
-} from "../CategorizedListRoot/utils";
+import { getReducedStructure } from "../CategorizedListRoot/utils";
 import FormTitle from "components/00-atoms/FormTitle";
 import { getReducedStructureIncludingChanges } from "./utils";
 
@@ -49,7 +46,6 @@ const Lomake = React.memo(
     prefix = defaultProps.prefix,
     showCategoryTitles = defaultProps.showCategoryTitles,
     uncheckParentWithoutActiveChildNodes = defaultProps.uncheckParentWithoutActiveChildNodes,
-    hasInvalidFieldsFn,
     noPadding = defaultProps.noPadding,
     rowMessages = defaultProps.rowMessages,
     rowTitle = defaultProps.rowTitle,
@@ -86,55 +82,12 @@ const Lomake = React.memo(
       [actions]
     );
 
-    // const lomakedata = useMemo(() => {
-    //   if (lomake && lomake.length) {
-    //     return getReducedStructureIncludingChanges(
-    //       lomakedataAnchor || anchor,
-    //       getReducedStructure(lomake),
-    //       changeObjects
-    //     );
-    //   }
-    //   return [];
-    // }, [anchor, lomake, lomakedataAnchor, changeObjects]);
-
     const onChangesUpdate = useCallback(
       ({ anchor, changes }) => {
         actions.setChanges(changes, anchor);
       },
       [actions]
     );
-
-    // const onChangesUpdate = useCallback(
-    //   changeObj => {
-    //     // Target node is the component affected by the change.
-    //     const targetNode = getTargetNode(changeObj, reducedStructure);
-    //     // The array of change objects will be updated.
-    //     const nextChanges = handleNodeMain(
-    //       uncheckParentWithoutActiveChildNodes,
-    //       targetNode,
-    //       anchor,
-    //       reducedStructure,
-    //       changesRef.current
-    //     );
-
-    //     /**
-    //      * The updated array will be sent using the onUpdate callback function.
-    //      * The anchor parameter is the root anchor of the current form. It can
-    //      * be used to bind and store the array of changes correctly.
-    //      **/
-    //     onUpdate({
-    //       anchor,
-    //       changes: nextChanges,
-    //       reducedStructure
-    //     });
-    //   },
-    //   [anchor, onUpdate, reducedStructure, uncheckParentWithoutActiveChildNodes]
-    // );
-
-    //  * KOODISTEPALVELUN DATA
-    //  * LOMAKKEEN NYKYTILA = MÄÄRÄYKSET + MUUTOKSET
-    //  * MUUTOKSET = KÄYTTÄJÄN TEKEMÄT OPERAATIOT LOMAKKEELLE
-    //  * LOMAKEMERKKAUS = JSON, JOKA
 
     const onFocus = useCallback(() => {
       actions.setFocusOn(null);
@@ -188,58 +141,9 @@ const Lomake = React.memo(
       intl.locale,
       isPreviewModeOn,
       isReadOnly,
+      lomakedataActions,
       lomakedataAnchor,
       mode,
-      prefix
-    ]);
-
-    useEffect(() => {
-      // fetchLomake().then(result => {
-      // if (has("isValid", result)) {
-      //   lomakedataActions.setValidity(result.isValid, anchor);
-      // }
-      //   let reducedStructure = [];
-      //   if (result.structure) {
-      //     reducedStructure = getReducedStructure(result.structure);
-      //     setLomake(result.structure);
-      //   } else {
-      //     reducedStructure = getReducedStructure(result);
-      //     setLomake(result);
-      //   }
-      //   const nextLomakedata = map(component => {
-      //     const changeObj = getChangeObjByAnchor(
-      //       `${lomakedataAnchor || anchor}.${component.fullAnchor}`,
-      //       changeObjects
-      //     );
-      //     return {
-      //       anchor: `${lomakedataAnchor || anchor}.${component.fullAnchor}`,
-      //       properties: Object.assign(
-      //         {},
-      //         component.properties,
-      //         prop("properties", changeObj) || {}
-      //       )
-      //     };
-      //   }, reducedStructure);
-      //   if (!equals(nextLomakedata, lomakedata)) {
-      //     // lomakedataActions.setLomakedata(
-      //     //   nextLomakedata,
-      //     //   lomakedataAnchor || anchor
-      //     // );
-      //   }
-      // });
-    }, [
-      anchor,
-      data,
-      formTitle,
-      hasInvalidFieldsFn,
-      isPreviewModeOn,
-      isReadOnly,
-      intl.locale,
-      // lomakedata,
-      // lomakedataActions,
-      lomakedataAnchor,
-      mode,
-      _path,
       prefix
     ]);
 
@@ -249,6 +153,7 @@ const Lomake = React.memo(
           {code || formTitle ? (
             <FormTitle
               code={isPreviewModeOn || !code ? null : code}
+              isPreviewModeOn={isPreviewModeOn}
               title={formTitle}
             />
           ) : null}
@@ -302,6 +207,13 @@ const Lomake = React.memo(
     } else {
       return null;
     }
+  },
+  (cp, np) => {
+    return (
+      equals(cp.data, np.data) &&
+      equals(cp.isPreviewModeOn, np.isPreviewModeOn) &&
+      equals(cp.isReadOnly, np.isReadOnly)
+    );
   }
 );
 
@@ -314,14 +226,12 @@ Lomake.propTypes = {
   isReadOnly: PropTypes.bool,
   isRowExpanded: PropTypes.bool,
   lomakedataAnchor: PropTypes.string,
-  metadata: PropTypes.object,
   mode: PropTypes.string,
   path: PropTypes.array,
   prefix: PropTypes.string,
   rowMessages: PropTypes.object,
   rowTitle: PropTypes.string,
-  uncheckParentWithoutActiveChildNodes: PropTypes.bool,
-  hasInvalidFieldsFn: PropTypes.func
+  uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
 
 export default Lomake;

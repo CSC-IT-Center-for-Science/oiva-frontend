@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
@@ -40,7 +40,6 @@ const defaultProps = {
 };
 
 const EsittelijatMuutospyynto = ({
-  kielet = defaultProps.kielet,
   kohteet: osiokohteet = defaultProps.kohteet,
   koulutukset = defaultProps.koulutukset,
   koulutusalat = defaultProps.koulutusalat,
@@ -93,38 +92,41 @@ const EsittelijatMuutospyynto = ({
     maaraykset
   );
 
-  const sectionHeadings = {
-    tutkinnotJaKoulutukset: {
-      number: R.path(["1", "headingNumber"], lupaKohteet) || "1",
-      title:
-        R.path(["1", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
-    },
-    opetusJaTutkintokieli: {
-      number: R.path(["2", "headingNumber"], lupaKohteet) || "2",
-      title:
-        R.path(["2", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
-    },
-    toimintaalue: {
-      number: R.path(["3", "headingNumber"], lupaKohteet) || "3",
-      title:
-        R.path(["3", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
-    },
-    opiskelijavuodet: {
-      number: R.path(["4", "headingNumber"], lupaKohteet) || "4",
-      title:
-        R.path(["4", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
-    },
-    muut: {
-      number: R.path(["5", "headingNumber"], lupaKohteet) || "5",
-      title:
-        R.path(["5", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionMuutMainTitle)
-    }
-  };
+  const sectionHeadings = useMemo(
+    () => ({
+      tutkinnotJaKoulutukset: {
+        number: R.path(["1", "headingNumber"], lupaKohteet) || "1",
+        title:
+          R.path(["1", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
+      },
+      opetusJaTutkintokieli: {
+        number: R.path(["2", "headingNumber"], lupaKohteet) || "2",
+        title:
+          R.path(["2", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
+      },
+      toimintaalue: {
+        number: R.path(["3", "headingNumber"], lupaKohteet) || "3",
+        title:
+          R.path(["3", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
+      },
+      opiskelijavuodet: {
+        number: R.path(["4", "headingNumber"], lupaKohteet) || "4",
+        title:
+          R.path(["4", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
+      },
+      muut: {
+        number: R.path(["5", "headingNumber"], lupaKohteet) || "5",
+        title:
+          R.path(["5", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionMuutMainTitle)
+      }
+    }),
+    [intl, lupaKohteet]
+  );
 
   return (
     <React.Fragment>

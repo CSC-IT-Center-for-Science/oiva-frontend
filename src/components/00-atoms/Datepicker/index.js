@@ -93,11 +93,10 @@ const Datepicker = ({
 
   const handleDateChange = useCallback(
     date => {
-      console.info(date);
       onChanges({ forChangeObject, fullAnchor }, { value: date });
-      // setSelectedDate(date);
+      setSelectedDate(date);
     },
-    [forChangeObject, fullAnchor]
+    [forChangeObject, fullAnchor, onChanges]
   );
 
   useEffect(() => {

@@ -2,7 +2,6 @@ import { isAdded, isInLupa, isRemoved } from "css/label";
 import { __ } from "i18n-for-browser";
 import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
-  compose,
   endsWith,
   filter,
   find,

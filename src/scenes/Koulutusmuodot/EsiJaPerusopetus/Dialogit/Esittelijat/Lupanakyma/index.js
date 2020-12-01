@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "components/02-organisms/DialogTitle";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 import wizardMessages from "i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
@@ -9,9 +8,7 @@ import { Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import { useHistory, useParams } from "react-router-dom";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
-import Lomake from "components/02-organisms/Lomake";
 import { useMuutospyynto } from "stores/muutospyynto";
-import Rajoitteet from "../../../lomakeosiot/9-Rajoitteet";
 import * as R from "ramda";
 import common from "i18n/definitions/common";
 import { createObjectToSave } from "../../../saving";
@@ -27,15 +24,6 @@ import { useValidity } from "stores/lomakedata";
 import LupanakymaA from "../../../lupanakymat/LupanakymaA";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
-
-const DialogTitleWithStyles = withStyles(() => ({
-  root: {
-    backgroundColor: "#c8dcc3",
-    width: "100%"
-  }
-}))(props => {
-  return <DialogTitle {...props}>{props.children}</DialogTitle>;
-});
 
 const DialogContentWithStyles = withStyles(() => ({
   root: {
@@ -185,10 +173,6 @@ const UusiAsiaDialog = ({
     const hasChangesUnderRemoval = underRemovalChangeObjects
       ? !R.isEmpty(underRemovalChangeObjects)
       : false;
-    console.info(
-      hasUnsavedChanges || hasChangesUnderRemoval,
-      validity.paatoksentiedot
-    );
     return (
       (hasUnsavedChanges || hasChangesUnderRemoval) && validity.paatoksentiedot
     );
@@ -302,23 +286,21 @@ const UusiAsiaDialog = ({
           fullScreen={true}
           aria-labelledby="simple-dialog-title">
           {isPreviewModeOn ? null : (
-            <div className={"w-full m-auto"}>
-              <DialogTitleWithStyles id="customized-dialog-title">
-                <div className="flex">
-                  <div className="flex-1">
-                    {intl.formatMessage(
-                      wizardMessages.esittelijatMuutospyyntoDialogTitle
-                    )}
-                  </div>
-                  <div>
-                    <SimpleButton
-                      text={`${intl.formatMessage(wizardMessages.getOut)} X`}
-                      onClick={leaveOrOpenCancelModal}
-                      variant={"text"}
-                    />
-                  </div>
-                </div>
-              </DialogTitleWithStyles>
+            <div className="flex m-auto items-center w-full px-12 bg-vaalenvihrea">
+              <div className="flex-1">
+                <Typography component="h2" variant="h2">
+                  {intl.formatMessage(
+                    wizardMessages.esittelijatMuutospyyntoDialogTitle
+                  )}
+                </Typography>
+              </div>
+              <div>
+                <SimpleButton
+                  text={`${intl.formatMessage(wizardMessages.getOut)} X`}
+                  onClick={leaveOrOpenCancelModal}
+                  variant={"text"}
+                />
+              </div>
             </div>
           )}
           <DialogContentWithStyles>
@@ -373,13 +355,6 @@ const UusiAsiaDialog = ({
               <form
                 onSubmit={() => {}}
                 className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
-                {/* {!isPreviewModeOn ? (
-                  <FormSection
-                    render={props => <Rajoitteet {...props} />}
-                    sectionId="rajoitteet"
-                    title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
-                ) : null} */}
-
                 <div className="flex">
                   <div
                     className={`${
@@ -393,16 +368,16 @@ const UusiAsiaDialog = ({
                       className={`fixed w-full ${
                         isPreviewModeOn ? "border-r border-gray-300" : ""
                       }`}>
-                      <div
-                        className={`border-b border-gray-300 px-12`}
-                        style={{ backgroundColor: "rgba(255,255,255,0.75)" }}>
+                      <div className={`border-b border-gray-300 px-12`}>
                         <Typography component="h2" variant="h2">
                           {intl.formatMessage(common.decisionDetails)}
                         </Typography>
                       </div>
                       <div
-                        className="overflow-auto"
-                        style={{ height: isPreviewModeOn ? "92vh" : "79vh" }}>
+                        className={`${
+                          isPreviewModeOn ? "overflow-auto" : "pb-32"
+                        }`}
+                        style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                         <LupanakymaA
                           isPreviewModeOn={false}
                           kunnat={kunnat}
@@ -428,16 +403,14 @@ const UusiAsiaDialog = ({
                         className={`fixed w-full ${
                           isPreviewModeOn ? "border-l border-gray-300" : ""
                         }`}>
-                        <div
-                          className="border-b border-gray-300 px-12"
-                          style={{ backgroundColor: "rgba(255,255,255,0.75)" }}>
+                        <div className="border-b border-gray-300 px-12">
                           <Typography component="h2" variant="h2">
-                            Esikatselu
+                            {intl.formatMessage(common.esikatselu)}
                           </Typography>
                         </div>
                         <div
                           className="p-6 bg-gray-100 overflow-auto"
-                          style={{ height: isPreviewModeOn ? "92vh" : "83vh" }}>
+                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                           <LupanakymaA
                             isPreviewModeOn={true}
                             kunnat={kunnat}

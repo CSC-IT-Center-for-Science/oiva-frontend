@@ -57,30 +57,30 @@ export const previewOfMuutEhdot = ({ lomakedata }) => {
         structure
       );
     }
+  }
 
-    const lisatiedotNode = find(
-      // 1 = koodiston koodiarvo
-      node => endsWith(".lisatiedot.1", node.anchor),
-      lomakedata
-    );
+  const lisatiedotNode = find(
+    // 1 = koodiston koodiarvo
+    node => endsWith(".lisatiedot.1", node.anchor),
+    lomakedata
+  );
 
-    if (lisatiedotNode && lisatiedotNode.properties.value) {
-      structure = append(
-        {
-          anchor: "lisatiedot",
-          components: [
-            {
-              anchor: "A",
-              name: "StatusTextRow",
-              properties: {
-                title: lisatiedotNode.properties.value
-              }
+  if (lisatiedotNode && lisatiedotNode.properties.value) {
+    structure = append(
+      {
+        anchor: "lisatiedot",
+        components: [
+          {
+            anchor: "A",
+            name: "StatusTextRow",
+            properties: {
+              title: lisatiedotNode.properties.value
             }
-          ]
-        },
-        structure
-      );
-    }
+          }
+        ]
+      },
+      structure
+    );
   }
 
   return structure;

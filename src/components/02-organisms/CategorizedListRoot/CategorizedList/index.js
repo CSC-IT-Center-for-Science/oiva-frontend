@@ -130,7 +130,6 @@ const CategorizedList = props => {
    */
   const handleChanges = useCallback(
     ({ forChangeObject, fullAnchor }, changeProps) => {
-      console.info(forChangeObject, fullAnchor, changeProps);
       const changeObj = {
         anchor: removeAnchorPart(fullAnchor, 0),
         properties: R.reject(R.isNil)({
@@ -397,6 +396,7 @@ const CategorizedList = props => {
                       <FormTitle
                         code={propsObj.code}
                         id={fullAnchor}
+                        isPreviewModeOn={propsObj.isPreviewModeOn}
                         level={propsObj.level}
                         title={propsObj.title}
                       />
@@ -518,7 +518,7 @@ const CategorizedList = props => {
                         })()
                       : null}
                     {component.name === "Input"
-                      ? (category => {
+                      ? (() => {
                           let parentComponent = null;
                           let isDisabled = false;
                           if (
@@ -568,7 +568,7 @@ const CategorizedList = props => {
                               />
                             </div>
                           );
-                        })(category)
+                        })()
                       : null}
                     {component.name === "Attachments"
                       ? (category => {
@@ -658,17 +658,16 @@ const CategorizedList = props => {
                           return (
                             <div className={`flex-1 mb-2 ${styleClassesStr}`}>
                               <AlertMessage
-                                id={fullAnchor}
                                 ariaLabel={propsObj.ariaLabel}
-                                type={propsObj.type}
-                                title={propsObj.title}
-                                message={propsObj.message}
+                                handleLinkClick={propsObj.handleLinkClick}
+                                id={fullAnchor}
                                 isVisible={isVisible}
                                 link={propsObj.link}
-                                linkUrl={propsObj.linkUrl}
                                 linkText={propsObj.linkText}
-                                handleLinkClick={propsObj.handleLinkClick}
-                                onChanges={handleChanges}
+                                linkUrl={propsObj.linkUrl}
+                                message={propsObj.message}
+                                title={propsObj.title}
+                                type={propsObj.type}
                               />
                             </div>
                           );
@@ -778,17 +777,11 @@ const CategorizedList = props => {
                       <div className="flex-2">
                         <Difference
                           applyForValue={propsObj.applyForValue}
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
                           id={fullAnchor}
                           initialValue={propsObj.initialValue}
                           onChanges={handleChanges}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
                           titles={propsObj.titles}
                         />
                       </div>

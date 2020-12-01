@@ -29,6 +29,8 @@ function isValueValid(isRequired, value) {
 const Difference = ({
   applyForValue = defaultValues.applyForValue,
   delay = defaultValues.delay,
+  forChangeObject,
+  fullAnchor,
   id,
   initialValue = defaultValues.initialValue,
   onChanges,
@@ -57,15 +59,26 @@ const Difference = ({
       }
       setTimeoutHandle(
         setTimeout(() => {
-          onChanges(payload, {
-            isValueSet: !isResultNan,
-            applyForValue: isResultNan ? initialValue : properties.value,
-            isValid: resultIsValid
-          });
+          onChanges(
+            { forChangeObject, fullAnchor },
+            {
+              isValueSet: !isResultNan,
+              applyForValue: isResultNan ? initialValue : properties.value,
+              isValid: resultIsValid
+            }
+          );
         }, delay)
       );
     },
-    [delay, initialValue, onChanges, timeoutHandle, required]
+    [
+      delay,
+      forChangeObject,
+      fullAnchor,
+      initialValue,
+      onChanges,
+      timeoutHandle,
+      required
+    ]
   );
 
   useEffect(() => {
@@ -114,6 +127,8 @@ const Difference = ({
 Difference.propTypes = {
   applyForValue: PropTypes.number,
   delay: PropTypes.number,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   initialValue: PropTypes.number,
   onChanges: PropTypes.func,
