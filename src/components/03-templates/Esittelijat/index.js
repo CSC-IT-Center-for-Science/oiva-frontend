@@ -3,7 +3,6 @@ import { useUser } from "../../../stores/user";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { useIntl } from "react-intl";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { Typography } from "@material-ui/core";
 import BaseData from "basedata";
 import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
@@ -13,7 +12,6 @@ import { MuutoksetContainer } from "../../../stores/muutokset";
 const Esittelijat = ({
   AsiaDialogContainer,
   koulutusmuoto,
-  paasivunOtsikko,
   UusiAsiaDialogContainer
 }) => {
   const { formatMessage, locale } = useIntl();
@@ -28,17 +26,6 @@ const Esittelijat = ({
       </BreadcrumbsItem>
 
       <article className="flex-1 flex-col flex">
-        <div className="mx-auto w-4/5">
-          <Typography component="h1" variant="h1">
-            {formatMessage(commonMessages.asiat)}
-          </Typography>
-          <Typography
-            component="h2"
-            style={{ fontSize: "1.25rem" }}
-            className="pb-4 mt--12">
-            {koulutusmuoto.kortinOtsikko}
-          </Typography>
-        </div>
 
         <Switch>
           <Route
