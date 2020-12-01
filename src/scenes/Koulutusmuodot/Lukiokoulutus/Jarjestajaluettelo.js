@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -393,7 +392,7 @@ function Jarjestajaluettelo({ luvat }) {
       <p className="mt-4 mb-8">
         {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
       </p>
-      <CssBaseline />
+
       <Table
         columns={columns}
         data={data}

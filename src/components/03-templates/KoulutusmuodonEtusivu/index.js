@@ -84,7 +84,7 @@ export default function KoulutusmuodonEtusivu({
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
                 </Typography>
-                <p style={{ width: "60rem" }}>{kuvausteksti}</p>
+                <p className="max-w-213 mb-6">{kuvausteksti}</p>
                 {isEsittelija ? (
                   <NavLink
                     to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
