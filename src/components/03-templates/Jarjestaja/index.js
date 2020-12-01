@@ -15,6 +15,7 @@ import BaseData from "basedata";
 import { Helmet } from "react-helmet";
 import { Tab, Tabs, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import { koulutustyypitMap } from "../../../utils/constants";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -84,7 +85,8 @@ const Jarjestaja = React.memo(
       const basicRoutes = [
         {
           path: "jarjestamislupa",
-          text: intl.formatMessage(common.lupaTitle),
+          text: intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
+            common.yllapitamisLupaTitle : common.lupaTitle),
           authenticated: true
         },
         {
