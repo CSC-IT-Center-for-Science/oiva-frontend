@@ -36,8 +36,8 @@ theme.typography.h1 = {
   fontSize: "2rem",
   fontWeight: 500,
   lineHeight: "1.2",
-  marginBottom: "1rem",
-  marginTop: "1rem",
+  paddingBottom: "1rem",
+  paddingTop: "1rem",
   [theme.breakpoints.down("xs")]: {
     fontSize: "1.875rem"
   },
@@ -48,6 +48,9 @@ theme.typography.h1 = {
 theme.typography.h2 = {
   fontSize: "1.5rem",
   fontWeight: 500,
+  lineHeight: "1.275",
+  paddingBottom: "1rem",
+  paddingTop: "1rem",
   [theme.breakpoints.down("xs")]: {
     fontSize: "1.375rem"
   },
@@ -58,6 +61,7 @@ theme.typography.h2 = {
 theme.typography.h3 = {
   fontSize: "1.2rem",
   fontWeight: 500,
+  lineHeight: "1.3",
   paddingBottom: "1rem",
   paddingTop: "1rem"
 };
@@ -65,8 +69,13 @@ theme.typography.h3 = {
 theme.typography.h4 = {
   fontSize: "1rem",
   fontWeight: 500,
+  lineHeight: "1.5",
   paddingBottom: "1rem",
   paddingTop: "1rem"
+};
+
+theme.typography.p = {
+  marginBottom: "1.5rem"
 };
 
 theme.palette.primary.main = COLORS.OIVA_GREEN;

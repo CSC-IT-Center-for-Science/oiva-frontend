@@ -9,14 +9,14 @@ const Lupapaatokset = ({ koulutusmuoto, jarjestajaOid, tulevatLuvat, voimassaOle
   // Let's fetch LUPAHISTORIA
   useEffect(() => {
     if (jarjestajaOid) {
-      actions.load(jarjestajaOid);
+      actions.load(jarjestajaOid, koulutusmuoto);
     }
-  }, [actions, jarjestajaOid]);
+  }, [actions, jarjestajaOid, koulutusmuoto]);
 
-  return lupahistoria.data ? (
+  return lupahistoria.fetchedAt ? (
     <LupapaatoksetTable
       koulutusmuoto={koulutusmuoto}
-      data={lupahistoria.data}
+      data={lupahistoria.data || []}
       tulevatLuvat={tulevatLuvat}
       voimassaOlevaLupa={voimassaOlevaLupa}></LupapaatoksetTable>
   ) : null;

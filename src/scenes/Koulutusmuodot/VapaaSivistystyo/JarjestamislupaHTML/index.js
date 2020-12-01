@@ -74,8 +74,8 @@ const JarjestamislupaJSX = ({ lupa }) => {
 
   return (
     <div>
-      <Typography variant="h2">{lupaTitle}</Typography>
-      <div className="p-8">
+      <Typography variant="h2" component="h2">{lupaTitle}</Typography>
+      <div>
         {sections.map((sectionData, i) => {
           return <LupaSection key={i} kohde={sectionData || {}} />;
         })}

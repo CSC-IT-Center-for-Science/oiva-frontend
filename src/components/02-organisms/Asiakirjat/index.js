@@ -27,6 +27,7 @@ import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "../ConfirmDialog";
 import * as R from "ramda";
+import Typography from "@material-ui/core/Typography";
 
 const WrapTable = styled.div``;
 
@@ -411,7 +412,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </Link>
           <div className="flex-1 flex items-center pt-8 pb-2">
             <div className="w-full flex flex-col">
-              <h1>{nimi}</h1>
+              <Typography component="h1" variant="h1">{nimi}</Typography>
               <h5 className="text-lg mt-1">{ytunnus}</h5>
             </div>
           </div>
@@ -421,8 +422,10 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             style={{ maxWidth: "90rem" }}
             className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
             <span>
-              <h4 className="mb-2 float-left">{t(common.asianAsiakirjat)}</h4>
-              <h4 className="float-right">
+              <Typography component="h4" variant="h4" className="float-left">
+                {t(common.asianAsiakirjat)}
+              </Typography>
+              <Typography component="h4" variant="h4" className="float-right" style={{margin: 0}}>
                 <SelectAttachment
                   attachmentAdded={handleAddPaatoskirje}
                   messages={{
@@ -445,7 +448,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   }}
                   fileType={"paatosKirje"}
                 />
-              </h4>
+              </Typography>
             </span>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog

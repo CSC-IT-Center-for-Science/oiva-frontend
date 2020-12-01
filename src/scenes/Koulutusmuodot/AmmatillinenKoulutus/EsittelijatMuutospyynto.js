@@ -133,9 +133,9 @@ const EsittelijatMuutospyynto = ({
       <form onSubmit={handleSubmit}>
         <Section>
           <div className="w-1/3">
-            <h2 className="p-8" style={{ marginLeft: "-2rem" }}>
+            <Typography component="h2" variant="h2">
               {intl.formatMessage(common.decisionDetails)}
-            </h2>
+            </Typography>
             <MuutospyyntoWizardTopThree />
           </div>
         </Section>
@@ -151,6 +151,7 @@ const EsittelijatMuutospyynto = ({
           title={sectionHeadings.tutkinnotJaKoulutukset.title}
           tutkinnot={tutkinnot}
         />
+
         <Typography component="h4" variant="h4">
           {intl.formatMessage(common.koulutukset)}
         </Typography>

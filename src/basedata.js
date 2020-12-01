@@ -251,7 +251,9 @@ const fetchBaseData = async (
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     tulevatLuvat: await getRaw(
       "tulevatLuvat",
-      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false`,
+      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false${
+        koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+      }`,
       keys,
       backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
     ),
@@ -596,9 +598,7 @@ const fetchBaseData = async (
         )
       : undefined,
     viimeisinLupa: raw.viimeisinLupa || {},
-    // Noinkohan tämä sijoitus toimii VST-puolella, missä lupa haetaan
-    // uuid:llä...
-    voimassaOlevaLupa: raw.lupaByYtunnus
+    voimassaOlevaLupa: raw.lupaByUuid || raw.lupaByYtunnus
   };
   return result;
 };

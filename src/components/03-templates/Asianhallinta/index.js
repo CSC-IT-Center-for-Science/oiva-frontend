@@ -11,13 +11,11 @@ import {
 import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Esittelijat from "../Esittelijat/index";
 
 const Asianhallinta = ({
   AsiaDialogContainer,
   koulutusmuoto,
-  paasivunOtsikko,
   UusiAsiaDialogContainer
 }) => {
   const history = useHistory();
@@ -26,9 +24,6 @@ const Asianhallinta = ({
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {paasivunOtsikko}
-      </BreadcrumbsItem>
       {location.pathname === "/asianhallinta" ? (
         <div className="flex-1 bg-gray-100">
           <div className="border border-gray-300 max-w-7xl m-auto bg-white mt-12 px-64 py-12">
@@ -72,7 +67,6 @@ const Asianhallinta = ({
               <Esittelijat
                 AsiaDialogContainer={AsiaDialogContainer}
                 koulutusmuoto={koulutusmuoto}
-                paasivunOtsikko={paasivunOtsikko}
                 UusiAsiaDialogContainer={UusiAsiaDialogContainer}
               />
             )}

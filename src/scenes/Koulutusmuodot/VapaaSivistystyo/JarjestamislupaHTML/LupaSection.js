@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 
 const LupaSection = props => {
   const { kohde } = props;
@@ -12,9 +13,9 @@ const LupaSection = props => {
       <div className="flex">
         <div className="w-full">
           {heading && (
-            <h2 className="py-8">
+            <Typography component="h3" variant="h3">
               <span>{heading}</span>
-            </h2>
+            </Typography>
           )}
           <div className="pb-4">{elements}</div>
         </div>

@@ -12,7 +12,9 @@ import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "../UusiAsiaEsidialog";
 import { last, split } from "ramda";
-import { Typography } from "@material-ui/core";
+import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+import commonMessages from "../../../i18n/definitions/common";
+import Typography from "@material-ui/core/Typography";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -56,6 +58,9 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
 
   return (
     <React.Fragment>
+      <BreadcrumbsItem to={`/asianhallinta`}>
+        {intl.formatMessage(commonMessages.asianhallinta)}
+      </BreadcrumbsItem>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>{`Oiva | ${t(common.asiat)}`}</title>
       </Helmet>
@@ -71,12 +76,17 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
           }></UusiAsiaEsidialog>
       )}
 
-      <div className="flex flex-col justify-end h-40 mx-auto w-4/5">
+      <div className="flex flex-col justify-end mx-auto w-4/5">
         <div className="flex items-center">
           <div className="flex-1">
+            <Typography component="h1" variant="h1">
+              {t(common.asianhallinta)}
+            </Typography>
             <div className="w-full flex flex-row justify-between">
-              <Typography component="h2" variant="h2">{t(common.asiat)}</Typography>
-              <div className="pt-3 my-auto">
+              <Typography component="h2" variant="h2" style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400}}>
+                {koulutusmuoto.paasivunOtsikko}
+              </Typography>
+              <div>
                 <SimpleButton
                   aria-label={t(common.luoUusiAsia)}
                   color="primary"

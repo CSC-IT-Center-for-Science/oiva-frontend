@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { filter, find, includes, map, toUpper, isEmpty, propEq } from "ramda";
+import { filter, find, includes, map, toUpper, isEmpty, propEq, path } from "ramda";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
 import education from "../../../../i18n/definitions/education";
 import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
+import Typography from "@material-ui/core/Typography";
 
 export default function PoOpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
@@ -32,27 +33,32 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   return ( (!isEmpty(ensisijaisetOpetuskielet) || !isEmpty(toissijaisetOpetuskielet)) && !isEmpty(kieletOPH)) && (
     <div className="mt-4">
-      <h3 className="font-medium mb-4">{intl.formatMessage(common.opetuskieli)}</h3>
+      <Typography component="h3" variant="h3">
+        {intl.formatMessage(common.opetuskieli)}
+      </Typography>
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
             <li key={opetuskieli.koodiarvo} className="leading-bulletList">
-              {find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH).metadata[locale].nimi}
+              {path(["metadata", locale, "nimi"], find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH))}
             </li>,
           ensisijaisetOpetuskielet || [])
         }
       </ul>
       {!isEmpty(toissijaisetOpetuskielet) &&
-      <h4 className="font-medium mb-4">{intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}</h4>}
+      <Typography component="h4" variant="h4">
+        {intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}
+      </Typography>}
       <ul className="ml-8 list-disc mb-4">
         {
           map(opetuskieli =>
               <li key={opetuskieli.koodiarvo} className="leading-bulletList">
-                {find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH).metadata[locale].nimi}
+                {path(["metadata", locale, "nimi"], find(propEq("koodiarvo", opetuskieli.koodiarvo), kieletOPH))}
               </li>,
             toissijaisetOpetuskielet || [])
         }
       </ul>
+      { lisatietomaarays && (lisatietomaarays.meta.arvo)}
     </div>
   )
 }

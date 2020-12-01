@@ -44,13 +44,13 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
   return !!kielet ? (
     <div>
       {lupaException ? (
-        <TopSectionWrapper className="py-16">
+        <TopSectionWrapper className="pb-4">
           <Typography component="h2" variant="h5">
             {intl.formatMessage(titleMessageKey, { date: "" })}
           </Typography>
         </TopSectionWrapper>
       ) : (
-        <TopSectionWrapper className="py-16">
+        <TopSectionWrapper className="pb-4">
           <Typography component="h2" variant="h5">
             {intl.formatMessage(titleMessageKey, { date: dateString })}
           </Typography>

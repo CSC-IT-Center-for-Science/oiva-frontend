@@ -247,7 +247,8 @@ export default function LupapaatoksetTable({
       paatospvm: lupa.paatospvm,
       jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       urls: {
-        jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
+        jarjestamislupa: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
+          `/api/pebble/resources/liitteet/vst/${lupa.meta.liitetiedosto}` : `${API_BASE_URL}/pdf/${lupa.uuid}`,
         paatoskirje:
           paatoskirje && lupa.asianumero
             ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`

@@ -14,6 +14,7 @@ export default function AmmatillinenKoulutus({ koulutusmuoto }) {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
+      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
       UusiAsiaDialogContainer={UusiAsiaDialogContainer}></KoulutusmuodonEtusivu>
   );
 }

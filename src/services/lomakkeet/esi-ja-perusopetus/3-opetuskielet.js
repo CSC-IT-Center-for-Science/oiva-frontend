@@ -73,7 +73,7 @@ export async function getOpetuskieletOPHLomake(
             isReadOnly: _isReadOnly,
             options: map(kieli => {
               return {
-                label: kieli.metadata[localeUpper].nimi,
+                label: path(["metadata", localeUpper, "nimi"], kieli),
                 value: kieli.koodiarvo
               };
             }, valittavanaOlevatEnsisisijaisetOpetuskielet),
@@ -96,7 +96,7 @@ export async function getOpetuskieletOPHLomake(
             isReadOnly: _isReadOnly,
             options: map(kieli => {
               return {
-                label: kieli.metadata[localeUpper].nimi,
+                label: path(["metadata", localeUpper, "nimi"], kieli),
                 value: kieli.koodiarvo
               };
             }, valittavanaOlevatToissisijaisetOpetuskielet),

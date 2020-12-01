@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 
 const defaultProps = {
   code: "",
@@ -14,7 +15,7 @@ const Section = ({
   const fullTitle = `${code ? `${code}. ` : ""}${title}`;
   return (
     <div>
-      {fullTitle && <h2 className="pt-8 pb-4">{fullTitle}</h2>}
+      {fullTitle && <Typography component="h2" variant="h2" className="pt-8">{fullTitle}</Typography>}
       <div className="pb-4">{children}</div>
     </div>
   );
