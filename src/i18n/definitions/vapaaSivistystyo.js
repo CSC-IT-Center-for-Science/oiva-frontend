@@ -11,7 +11,7 @@ export default defineMessages({
       "Vapaan sivistystyön oppilaitoksia ovat kansalaisopistot, kansanopistot, kesäyliopistot, liikunnan koulutuskeskukset ja opintokeskukset. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan vapaan sivistystyön oppilaitoksen ylläpitämiseen. Tällä sivulla voit tarkastella oppilaitosten ylläpitäjiä ja heidän ylläpitämislupiaan."
   },
   lyhytKuvaus: {
-    id: "lukiokoulutus.lyhytKuvaus",
+    id: "vapaaSivistystyo.lyhytKuvaus",
     defaultMessage:
       "Vapaan sivistystyön oppilaitoksia ovat kansalaisopistot, kansanopistot, kesäyliopistot, liikunnan koulutuskeskukset ja opintokeskukset. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan vapaan sivistystyön oppilaitoksen ylläpitämiseen. Tällä sivulla voit tarkastella oppilaitosten ylläpitäjiä ja heidän ylläpitämislupiaan."
   },
