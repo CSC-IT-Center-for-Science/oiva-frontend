@@ -6,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const ActionList = React.memo(props => {
   const { removalCallback } = props;
@@ -41,8 +41,7 @@ const ActionList = React.memo(props => {
                 aria-label="delete"
                 onClick={() => {
                   return handleRemoval(item);
-                }}
-              >
+                }}>
                 <HighlightOffIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -55,7 +54,11 @@ const ActionList = React.memo(props => {
 
   return (
     <React.Fragment>
-      {props.title && <h4 className="pt-4">{props.title}</h4>}
+      {props.title && (
+        <Typography component="h4" variant="h4">
+          {props.title}
+        </Typography>
+      )}
       {props.info && <p className="pt-4">{props.info}</p>}
       <List dense={true}>{items}</List>
     </React.Fragment>

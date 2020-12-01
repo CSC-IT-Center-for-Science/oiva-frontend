@@ -89,9 +89,13 @@ const MuutospyyntoWizardYhteenveto = ({
 
   return (
     <React.Fragment>
-      <h2 className="my-6">{intl.formatMessage(wizard.pageTitle_4)}</h2>
+      <Typography component="h2" variant="h2">
+        {intl.formatMessage(wizard.pageTitle_4)}
+      </Typography>
 
-      <h4 className="my-6">Organisaation tiedot</h4>
+      <Typography component="h4" variant="h4">
+        Organisaation tiedot
+      </Typography>
 
       <div className="mb-12">{jarjestajaLayout}</div>
 

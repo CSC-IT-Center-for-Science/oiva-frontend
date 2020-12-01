@@ -18,6 +18,7 @@ import Attachments from "../../Attachments";
 import * as R from "ramda";
 import { map } from "lodash";
 import CategoryFilter from "../../CategoryFilter";
+import { Typography } from "@material-ui/core";
 
 /** @namespace components */
 
@@ -311,7 +312,7 @@ const CategorizedList = props => {
             id={anchor}>
             {isCategoryTitleVisible && (
               <div className={categoryTitleClasses}>
-                <h4>
+                <Typography component="h4" variant="h4">
                   {category.code && (
                     <span className="mr-4">{category.code}</span>
                   )}
@@ -319,7 +320,7 @@ const CategorizedList = props => {
                   {!category.isReadOnly && category.isRequired && (
                     <span className="pr-4">*</span>
                   )}
-                </h4>
+                </Typography>
               </div>
             )}
             <div className={R.join(" ", componentContainerClasses)}>

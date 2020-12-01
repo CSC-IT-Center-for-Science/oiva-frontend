@@ -7,7 +7,7 @@ const LupaSection = props => {
 
   if (kohde.heading && kohde.values && kohde.values.length > 0) {
     const { heading, values } = kohde;
-    const elements = values.map((item,i) => (<p key={i}>{item}</p>));
+    const elements = values.map((item, i) => <p key={i}>{item}</p>);
     // TODO: Content inlined from 03-templates/Section and should be replaceable when it is imported to components
     return (
       <div className="flex">
@@ -20,14 +20,14 @@ const LupaSection = props => {
           <div className="pb-4">{elements}</div>
         </div>
       </div>
-    )
+    );
   } else {
-    return (<React.Fragment></React.Fragment>)
+    return <React.Fragment></React.Fragment>;
   }
 };
 
 LupaSection.propTypes = {
   kohde: PropTypes.object
-}
+};
 
 export default LupaSection;

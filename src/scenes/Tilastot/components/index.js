@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import common from "../../../i18n/definitions/common";
-
-import { ContentContainer } from "../../../modules/elements";
 import { useIntl } from "react-intl";
+import SivupohjaA from "components/03-templates/SivupohjaA";
+import { Typography } from "@material-ui/core";
 
 const Linkki = styled.div`
   margin-top: 15px;
@@ -33,10 +33,12 @@ const Tilastot = () => {
   const title = `${pageTitle} - Oiva`;
 
   return (
-    <ContentContainer>
+    <SivupohjaA>
       <Helmet height="50px" title={title}></Helmet>
-      <h1>{pageTitle}</h1>
-      <p>{intl.formatMessage(common.tilastosivunOhje)}</p>
+      <Typography component="h1" variant="h1">
+        {pageTitle}
+      </Typography>
+      <p className="mb-6">{intl.formatMessage(common.tilastosivunOhje)}</p>
       <Linkki>
         <a
           className="underline"
@@ -73,7 +75,7 @@ const Tilastot = () => {
           {intl.formatMessage(common.koulutusJaPaaasiallinenToiminta)}
         </a>
       </Linkki>
-    </ContentContainer>
+    </SivupohjaA>
   );
 };
 

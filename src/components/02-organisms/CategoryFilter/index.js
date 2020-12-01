@@ -15,6 +15,7 @@ import Modify from "./Modify";
 import SimpleButton from "../../00-atoms/SimpleButton";
 import { Province } from "./province";
 import Country from "./country";
+import { Typography } from "@material-ui/core";
 
 const CategoryFilter = ({
   anchor = "no-anchor-defined",
@@ -94,7 +95,9 @@ const CategoryFilter = ({
         return (
           <li key={province.anchor} className={"w-1/2 pt-4 pb-6 pr-6"}>
             <div className="flex items-baseline">
-              <h4>{province.components[0].properties.title}</h4>
+              <Typography component="h4" variant="h4">
+                {province.components[0].properties.title}
+              </Typography>
               <p className="ml-2 text-xs">
                 ({percentage}% {localizations.ofMunicipalities})
               </p>
@@ -166,13 +169,21 @@ const CategoryFilter = ({
 
     /** Esi- ja perusopetuksen layout */
     if (isEsiJaPerusopetus) {
-      return (<React.Fragment>
-          {!nothingInLupa && (<span>
-            <h3 className="mb-4">{localizations.currentAreaOfAction}</h3>
-            {renderToimintaalueList(provinces)}</span>)}
+      return (
+        <React.Fragment>
+          {!nothingInLupa && (
+            <span>
+              <Typography component="h3" variant="h3">
+                {localizations.currentAreaOfAction}
+              </Typography>
+              {renderToimintaalueList(provinces)}
+            </span>
+          )}
           <React.Fragment>
-            {!nothingInLupa && (<hr/>)}
-            <h3 className={`mb-4 ${nothingInLupa ? "" : "mt-8"}`}>{localizations.newAreaOfAction}</h3>
+            {!nothingInLupa && <hr />}
+            <Typography component="h3" variant="h3">
+              {localizations.newAreaOfAction}
+            </Typography>
             {renderToimintaalueList(provinces, changeObjects)}
           </React.Fragment>
           <div className={"pt-6"}>
@@ -183,17 +194,20 @@ const CategoryFilter = ({
           </div>
         </React.Fragment>
       );
-    }
-    else {
+    } else {
       /** Default layout */
       return (
         <React.Fragment>
-          <h3 className="mb-4">{localizations.currentAreaOfAction}</h3>
+          <Typography component="h3" variant="h3">
+            {localizations.currentAreaOfAction}
+          </Typography>
           {renderToimintaalueList(provinces)}
           {flatten(values(changeObjects)).length > 0 && (
             <React.Fragment>
-              <hr/>
-              <h3 className="mt-8 mb-4">{localizations.newAreaOfAction}</h3>
+              <hr />
+              <Typography component="h3" variant="h3">
+                {localizations.newAreaOfAction}
+              </Typography>
               {renderToimintaalueList(provinces, changeObjects)}
             </React.Fragment>
           )}
@@ -207,7 +221,7 @@ const CategoryFilter = ({
       );
     }
   }
-}
+};
 
 CategoryFilter.propTypes = {
   anchor: PropTypes.string,

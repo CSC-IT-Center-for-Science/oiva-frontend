@@ -121,10 +121,12 @@ const MuutospyyntoWizardPerustelut = ({
     isOpiskelijavuodetChanges,
     isMuutChanges
   ]);
-  console.info(changeObjects);
+
   return (
     <React.Fragment>
-      <h2 className="my-6">{intl.formatMessage(wizard.pageTitle_2)}</h2>
+      <Typography component="h2" variant="h2">
+        {intl.formatMessage(wizard.pageTitle_2)}
+      </Typography>
 
       {!isAnyChanges && <p>{intl.formatMessage(wizard.noChanges)}</p>}
       {isAnyChanges && (
@@ -215,29 +217,29 @@ const MuutospyyntoWizardPerustelut = ({
                   onChangesUpdate={onChangesUpdate}
                 />
               ) : null}
-               {isTutkintokieletChanges ? (
-                    <PerustelutTutkintokielet
-                      changeObjects={{
-                        tutkintokielet: changeObjects.kielet.tutkintokielet,
-                        perustelut: {
-                          tutkintokielet: R.path(
-                            ["perustelut", "kielet", "tutkintokielet"],
-                            changeObjects
-                          )
-                        }
-                      }}
-                      kohde={R.find(
-                        R.propEq("tunniste", "opetusjatutkintokieli")
-                      )(kohteet)}
-                      tutkinnot={tutkinnot}
-                      maaraystyyppi={maaraystyypitState.OIKEUS}
-                      maaraykset={lupa.maaraykset}
-                      opetuskielet={kielet.opetuskielet}
-                      koulutusalat={koulutusalat}
-                      onChangesRemove={onChangesRemove}
-                      onChangesUpdate={onChangesUpdate}
-                    />
-                  ) : null}
+              {isTutkintokieletChanges ? (
+                <PerustelutTutkintokielet
+                  changeObjects={{
+                    tutkintokielet: changeObjects.kielet.tutkintokielet,
+                    perustelut: {
+                      tutkintokielet: R.path(
+                        ["perustelut", "kielet", "tutkintokielet"],
+                        changeObjects
+                      )
+                    }
+                  }}
+                  kohde={R.find(R.propEq("tunniste", "opetusjatutkintokieli"))(
+                    kohteet
+                  )}
+                  tutkinnot={tutkinnot}
+                  maaraystyyppi={maaraystyypitState.OIKEUS}
+                  maaraykset={lupa.maaraykset}
+                  opetuskielet={kielet.opetuskielet}
+                  koulutusalat={koulutusalat}
+                  onChangesRemove={onChangesRemove}
+                  onChangesUpdate={onChangesUpdate}
+                />
+              ) : null}
             </Section>
           )}
 

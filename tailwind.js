@@ -357,6 +357,7 @@ module.exports = {
       "7xl": "80rem",
       "8xl": "88rem",
       "9xl": "96rem",
+      "213": "53.125rem",
       full: "100%"
     },
     minHeight: {

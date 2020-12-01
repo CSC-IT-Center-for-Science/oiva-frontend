@@ -55,16 +55,18 @@ const MuutospyyntoWizardMuutokset = React.memo(
 
     return (
       <React.Fragment>
-        <h2 className="my-6">
+        <Typography component="h2" variant="h2">
           {intl.formatMessage(wizardMessages.pageTitle_1)}
-        </h2>
+        </Typography>
         <p>{intl.formatMessage(wizardMessages.info_01)}</p>
 
         <form onSubmit={props.handleSubmit}>
           <Section
             code={props.lupaKohteet[1].headingNumber}
             title={props.lupaKohteet[1].heading}>
-            <h4 className="pb-4">{intl.formatMessage(common.tutkinnot)}</h4>
+            <Typography component="h4" variant="h4">
+              {intl.formatMessage(common.tutkinnot)}
+            </Typography>
             <Tutkinnot
               changeObjects={props.changeObjects.tutkinnot}
               koulutusalat={props.koulutusalat}
@@ -73,9 +75,9 @@ const MuutospyyntoWizardMuutokset = React.memo(
               onChangesUpdate={onChangesUpdate}
               tutkinnot={props.tutkinnot}
             />
-            <h4 className="pt-8 pb-4">
+            <Typography component="h4" variant="h4">
               {intl.formatMessage(common.koulutukset)}
-            </h4>
+            </Typography>
             <MuutospyyntoWizardKoulutukset
               changeObjects={props.changeObjects}
               key="koulutukset"

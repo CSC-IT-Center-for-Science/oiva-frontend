@@ -6,6 +6,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { useIntl } from "react-intl";
 import auth from "../../i18n/definitions/auth";
 import common from "../../i18n/definitions/common";
+import { Typography } from "@material-ui/core";
 
 // import LoginForm from 'routes/Login/components/LoginForm'
 
@@ -36,8 +37,12 @@ const Login = () => {
       <BreadcrumbsItem to="/">
         {intl.formatMessage(common.frontpage)}
       </BreadcrumbsItem>
-      <BreadcrumbsItem to="/kirjaudu">Kirjaudu sisään</BreadcrumbsItem>
-      <h1>Kirjautuminen</h1>
+      <BreadcrumbsItem to="/kirjaudu">
+        {intl.formatMessage(common.logIn)}
+      </BreadcrumbsItem>
+      <Typography component="h1" variant="h1">
+        Kirjautuminen
+      </Typography>
       <FakeButton>
         <Link to="/cas-auth">CAS-Kirjautuminen</Link>
       </FakeButton>

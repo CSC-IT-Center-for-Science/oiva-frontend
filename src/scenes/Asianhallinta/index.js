@@ -6,6 +6,7 @@ import education from "../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { Breadcrumbs, BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { COLORS } from "modules/styles";
+import { Typography } from "@material-ui/core";
 
 const Asianhallinta = () => {
   const intl = useIntl();
@@ -35,11 +36,15 @@ const Asianhallinta = () => {
         {intl.formatMessage(common.asianhallinta)}
       </BreadcrumbsItem>
       {location.pathname === "/asianhallinta" ? (
-        <div className="flex-1 bg-gray-100">
-          <div className="border border-gray-300 max-w-7xl m-auto bg-white mt-12 px-64 py-12">
-            <h1>{intl.formatMessage(common.asianhallinta)}</h1>
-            <p>{intl.formatMessage(common.asianhallintaInfoText)}</p>
-            <div className="grid grid-cols-3 gap-4 justify-items-auto pt-12">
+        <div className="flex-1 bg-gray-100 px-5">
+          <div className="border border-gray-300 max-w-7xl m-auto bg-white mt-12 px-8 xl:px-64 pt-6 pb-12">
+            <Typography component="h1" variant="h1">
+              {intl.formatMessage(common.asianhallinta)}
+            </Typography>
+            <p className="mb-6">
+              {intl.formatMessage(common.asianhallintaInfoText)}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 xxl:grid-cols-3 gap-4 justify-items-auto">
               <NavLink
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
                 to={"/esi-ja-perusopetus/asianhallinta/avoimet"}

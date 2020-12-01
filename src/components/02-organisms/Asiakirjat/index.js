@@ -98,7 +98,10 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const nimi = useMemo(
-    () => muutospyynto.data && (muutospyynto.data.jarjestaja.nimi.fi || muutospyynto.data.jarjestaja.nimi.sv),
+    () =>
+      muutospyynto.data &&
+      (muutospyynto.data.jarjestaja.nimi.fi ||
+        muutospyynto.data.jarjestaja.nimi.sv),
     [muutospyynto.data]
   );
 
@@ -110,7 +113,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(
-      `/${koulutusmuoto.kebabCase}/asianhallinta/avoimet?force=${new Date().getTime()}`
+      `/${
+        koulutusmuoto.kebabCase
+      }/asianhallinta/avoimet?force=${new Date().getTime()}`
     );
   };
 
@@ -140,7 +145,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
     // Let's move to Asiat view.
-    history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet?force=${new Date().getTime()}`);
+    history.push(
+      `/${
+        koulutusmuoto.kebabCase
+      }/asianhallinta/avoimet?force=${new Date().getTime()}`
+    );
   };
 
   const baseRow = [
@@ -387,7 +396,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}>
+        <BreadcrumbsItem
+          to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}>
           {nimi}
         </BreadcrumbsItem>
         <div
@@ -412,8 +422,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </Link>
           <div className="flex-1 flex items-center pt-8 pb-2">
             <div className="w-full flex flex-col">
-              <Typography component="h1" variant="h1">{nimi}</Typography>
-              <h5 className="text-lg mt-1">{ytunnus}</h5>
+              <Typography component="h1" variant="h1">
+                {nimi}
+              </Typography>
+              <Typography component="h5" variant="h5">
+                {ytunnus}
+              </Typography>
             </div>
           </div>
         </div>
@@ -425,7 +439,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               <Typography component="h4" variant="h4" className="float-left">
                 {t(common.asianAsiakirjat)}
               </Typography>
-              <Typography component="h4" variant="h4" className="float-right" style={{margin: 0}}>
+              <Typography
+                component="h4"
+                variant="h4"
+                className="float-right"
+                style={{ margin: 0 }}>
                 <SelectAttachment
                   attachmentAdded={handleAddPaatoskirje}
                   messages={{

@@ -5,7 +5,7 @@ import DialogTitle from "components/02-organisms/DialogTitle";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 import wizardMessages from "i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
-import { Dialog, DialogContent } from "@material-ui/core";
+import { Dialog, DialogContent, Typography } from "@material-ui/core";
 import EsittelijatWizardActions from "../../../EsittelijatWizardActions";
 import { useHistory, useParams } from "react-router-dom";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
@@ -350,10 +350,10 @@ const UusiAsiaDialog = ({
           <DialogContentWithStyles>
             <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
               <div className="py-4">
-                <h1>
+                <Typography component="h1" variant="h1">
                   {organisation.nimi[intl.locale] ||
                     R.last(R.values(organisation.nimi))}
-                </h1>
+                </Typography>
                 <p>
                   {organisation.kayntiosoite.osoite},{" "}
                   {organisation.postiosoite.osoite}{" "}
@@ -393,9 +393,9 @@ const UusiAsiaDialog = ({
               id="wizard-content"
               className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
               <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-                <h2 className="p-8">
+                <Typography component="h2" variant="h2">
                   {intl.formatMessage(common.decisionDetails)}
-                </h2>
+                </Typography>
                 <Lomake
                   isInExpandableRow={false}
                   anchor="paatoksentiedot"
