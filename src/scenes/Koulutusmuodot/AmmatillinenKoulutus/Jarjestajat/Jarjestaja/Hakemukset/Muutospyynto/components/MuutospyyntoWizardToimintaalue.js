@@ -4,7 +4,11 @@ import { useIntl } from "react-intl";
 import common from "../../../../../../../../i18n/definitions/common";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import Lomake from "../../../../../../../../components/02-organisms/Lomake";
-import { isAdded, isRemoved, isInLupa } from "../../../../../../../../css/label";
+import {
+  isAdded,
+  isRemoved,
+  isInLupa
+} from "../../../../../../../../css/label";
 import kuntaProvinceMapping from "../../../../../../../../utils/kuntaProvinceMapping";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import * as R from "ramda";
@@ -286,8 +290,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={props.sectionId}
+      code={props.code}
       data={{
         fiCode,
         isEditViewActive,
@@ -325,6 +330,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         wizard.singularMunicipalitiesOrTheWholeCountry
       )}
       showCategoryTitles={true}
+      formTitle={props.title}
     />
   );
 });

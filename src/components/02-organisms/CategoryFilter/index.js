@@ -21,6 +21,7 @@ const CategoryFilter = ({
   anchor = "no-anchor-defined",
   changeObjectsByProvince = {},
   isEditViewActive = false,
+  isPreviewModeOn,
   localizations = {},
   municipalities = [],
   onChanges,
@@ -186,12 +187,14 @@ const CategoryFilter = ({
             </Typography>
             {renderToimintaalueList(provinces, changeObjects)}
           </React.Fragment>
-          <div className={"pt-6"}>
-            <SimpleButton
-              variant="outlined"
-              onClick={() => toggleEditView(true)}
-              text={localizations.editButtonText}></SimpleButton>
-          </div>
+          {isPreviewModeOn ? null : (
+            <div className={"pt-6"}>
+              <SimpleButton
+                variant="outlined"
+                onClick={() => toggleEditView(true)}
+                text={localizations.editButtonText}></SimpleButton>
+            </div>
+          )}
         </React.Fragment>
       );
     } else {
@@ -211,12 +214,14 @@ const CategoryFilter = ({
               {renderToimintaalueList(provinces, changeObjects)}
             </React.Fragment>
           )}
-          <div className={"pt-6"}>
-            <SimpleButton
-              variant="outlined"
-              onClick={() => toggleEditView(true)}
-              text={localizations.editButtonText}></SimpleButton>
-          </div>
+          {isPreviewModeOn ? null : (
+            <div className={"pt-6"}>
+              <SimpleButton
+                variant="outlined"
+                onClick={() => toggleEditView(true)}
+                text={localizations.editButtonText}></SimpleButton>
+            </div>
+          )}
         </React.Fragment>
       );
     }

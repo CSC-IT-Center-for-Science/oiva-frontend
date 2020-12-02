@@ -14,16 +14,19 @@ const ActionList = React.memo(props => {
   const handleRemoval = useMemo(() => {
     return item => {
       if (removalCallback) {
-        return removalCallback(props.payload, {
-          item,
-          remove: true
-        });
+        return removalCallback(
+          {},
+          {
+            item,
+            remove: true
+          }
+        );
       } else {
         console.error("ActionList: removal callback function is missing.");
       }
       return false;
     };
-  }, [props.payload, removalCallback]);
+  }, [removalCallback]);
 
   const items = useMemo(() => {
     return R.addIndex(R.map)(
@@ -72,7 +75,6 @@ ActionList.defaultProps = {
 ActionList.propTypes = {
   info: PropTypes.string,
   items: PropTypes.array,
-  payload: PropTypes.object,
   removalCallback: PropTypes.func,
   title: PropTypes.string
 };

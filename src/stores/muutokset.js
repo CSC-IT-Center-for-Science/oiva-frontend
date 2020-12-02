@@ -78,7 +78,8 @@ const Store = createStore({
       underRemoval: {}
     },
     focusOn: null,
-    latestChanges: {}
+    latestChanges: {},
+    validity: {}
   },
   actions: {
     /**

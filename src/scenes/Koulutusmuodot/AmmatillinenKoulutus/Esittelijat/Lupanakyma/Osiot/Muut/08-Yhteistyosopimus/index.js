@@ -22,7 +22,7 @@ const Yhteistyosopimus = ({
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={sectionId}
       data={dataLomakepalvelulle}
       isRowExpanded={true}

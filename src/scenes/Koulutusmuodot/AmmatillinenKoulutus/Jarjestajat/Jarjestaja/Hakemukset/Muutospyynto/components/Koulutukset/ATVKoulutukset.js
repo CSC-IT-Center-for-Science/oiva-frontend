@@ -27,9 +27,9 @@ const ATVKoulutukset = ({ koulutukset, maaraykset }) => {
 
   return (
     <Lomake
-      action="modification"
       anchor={sectionId}
       data={lomakedata}
+      mode="modification"
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.vocationalTraining)}
       showCategoryTitles={true}></Lomake>

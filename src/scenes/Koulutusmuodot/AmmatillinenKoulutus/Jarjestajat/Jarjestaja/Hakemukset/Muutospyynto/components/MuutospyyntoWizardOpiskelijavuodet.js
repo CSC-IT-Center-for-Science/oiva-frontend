@@ -25,7 +25,7 @@ export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
 export const sisaoppilaitosCodes = ["4"];
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({ maaraykset, muut, sectionId }) => {
+  ({ code, maaraykset, muut, sectionId, title }) => {
     const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "opiskelijavuodet"
     });
@@ -132,10 +132,12 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake
-        action="modification"
         anchor={sectionId}
+        code={code}
         data={lomakedata}
+        formTitle={title}
         isRowExpanded={true}
+        mode="modification"
         path={constants.formLocation}
         showCategoryTitles={true}></Lomake>
     ) : null;

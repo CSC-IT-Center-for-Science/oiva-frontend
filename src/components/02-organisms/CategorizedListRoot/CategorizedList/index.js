@@ -8,7 +8,7 @@ import Multiselect from "../../../02-organisms/Multiselect";
 import Difference from "../../../02-organisms/Difference";
 import SimpleButton from "../../../00-atoms/SimpleButton";
 import { heights } from "../../../../css/autocomplete";
-import { flattenObj } from "../../../../utils/common";
+import { flattenObj, removeAnchorPart } from "../../../../utils/common";
 import Datepicker from "../../../00-atoms/Datepicker";
 import Dropdown from "../../../00-atoms/Dropdown";
 import AlertMessage from "../../../00-atoms/Alert";
@@ -18,6 +18,8 @@ import Attachments from "../../Attachments";
 import * as R from "ramda";
 import { map } from "lodash";
 import CategoryFilter from "../../CategoryFilter";
+import FormTitle from "components/00-atoms/FormTitle";
+import List from "components/01-molecules/List";
 import { Typography } from "@material-ui/core";
 
 /** @namespace components */
@@ -76,7 +78,7 @@ const defaultCategoryStyles = {
    **/
   layoutStrategy: R.find(R.propEq("key", "default"), layoutStrategies),
   margins: {
-    top: categoryStyleMapping.margins.extraSmall
+    top: categoryStyleMapping.margins.none
   }
 };
 
@@ -119,20 +121,6 @@ const CategorizedList = props => {
   const { onChangesUpdate, onFocus, showValidationErrors } = props;
 
   /**
-   * Click of the SimpleButton is handled here.
-   * @param {object} - Object that includes some properties.
-   * @param {object} changeProps - Changed properties with their forthcoming states.
-   */
-  const handleButtonClick = (payload, changeProps) => {
-    /**
-     * SimpleButton component is part of the payload. It's onClick method
-     * will be called. If you like to find the onClick method browse the
-     * current form structure.
-     **/
-    payload.component.onClick(payload, changeProps);
-  };
-
-  /**
    * This is the most common handling function for the components
    * in CategorizedList's scope. Please note that metadata of
    * change objects will be attached to them in this function.
@@ -141,19 +129,12 @@ const CategorizedList = props => {
    * user has interacted with.
    */
   const handleChanges = useCallback(
-    (payload, changeProps) => {
+    ({ forChangeObject, fullAnchor }, changeProps) => {
       const changeObj = {
-        anchor: `${R.compose(
-          R.join("."),
-          R.tail(),
-          R.split(".")
-        )(payload.anchor)}.${payload.component.anchor}`,
+        anchor: removeAnchorPart(fullAnchor, 0),
         properties: R.reject(R.isNil)({
           ...changeProps,
-          metadata: R.path(
-            ["component", "properties", "forChangeObject"],
-            payload
-          )
+          metadata: forChangeObject
         })
       };
       return onChangesUpdate(changeObj);
@@ -359,6 +340,7 @@ const CategorizedList = props => {
                   (propsObj.labelStyles || {}).custom || {}
                 );
                 const styleClasses = component.styleClasses || [];
+                const styleClassesStr = R.join(" ", styleClasses);
                 const title =
                   propsObj.title +
                   (props.debug
@@ -368,6 +350,10 @@ const CategorizedList = props => {
                 if (propsObj.isVisible === false) {
                   return null;
                 }
+
+                const leadingClass = propsObj.isPreviewModeOn
+                  ? ""
+                  : "leading-none";
 
                 /**
                  * Component is defined in a form structure. There can be
@@ -380,56 +366,67 @@ const CategorizedList = props => {
                 return (
                   <React.Fragment key={`item-${ii}`}>
                     {component.name === "CheckboxWithLabel" && (
-                      <div className={component.styleClasses}>
+                      <div className={styleClassesStr}>
                         <CheckboxWithLabel
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
                           id={fullAnchor}
                           name={component.name}
                           isChecked={propsObj.isChecked}
                           isDisabled={propsObj.isDisabled}
                           isIndeterminate={propsObj.isIndeterminate}
+                          isPreviewModeOn={propsObj.isPreviewModeOn}
                           isReadOnly={propsObj.isReadOnly}
                           onChanges={handleChanges}
-                          payload={{
-                            anchor,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
                           labelStyles={labelStyles}>
                           <div className="flex">
-                            <span className="leading-none">
-                              {propsObj.code}
-                            </span>
-                            <p className="ml-4 leading-none">{title}</p>
+                            {propsObj.code ? (
+                              <span className={`${leadingClass}`}>
+                                {propsObj.code}
+                              </span>
+                            ) : null}
+                            <p className={`p-0 ml-4 ${leadingClass}`}>
+                              {title}
+                            </p>
                           </div>
                         </CheckboxWithLabel>
                       </div>
                     )}
+                    {component.name === "FormTitle" && (
+                      <FormTitle
+                        code={propsObj.code}
+                        id={fullAnchor}
+                        isPreviewModeOn={propsObj.isPreviewModeOn}
+                        level={propsObj.level}
+                        title={propsObj.title}
+                      />
+                    )}
+                    {component.name === "List" && (
+                      <List id={fullAnchor} items={propsObj.items} />
+                    )}
                     {component.name === "RadioButtonWithLabel" && (
                       <div className="flex-2">
                         <RadioButtonWithLabel
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
                           id={fullAnchor}
                           name={propsObj.name}
                           isChecked={propsObj.isChecked}
+                          isPreviewModeOn={propsObj.isPreviewModeOn}
                           isReadOnly={propsObj.isReadOnly}
                           onChanges={handleChanges}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
                           labelStyles={labelStyles}
                           value={propsObj.value}
                           className="flex-row">
                           <div className="flex">
-                            <span className="leading-none">
-                              {propsObj.code}
-                            </span>
-                            <p className="ml-4 leading-none">{title}</p>
+                            {propsObj.code ? (
+                              <span className={`${leadingClass}`}>
+                                {propsObj.code}
+                              </span>
+                            ) : null}
+                            <p className={`p-0 ml-4 ${leadingClass}`}>
+                              {title}
+                            </p>
                           </div>
                         </RadioButtonWithLabel>
                       </div>
@@ -456,26 +453,24 @@ const CategorizedList = props => {
                                 change.properties.isChecked
                               ));
                           return (
-                            <div
-                              className={component.styleClasses || "px-2 mb-1"}>
+                            <div className={styleClassesStr || "px-2 mb-1"}>
                               <Dropdown
+                                forChangeObject={
+                                  component.properties.forChangeObject
+                                }
+                                fullAnchor={fullAnchor}
+                                fullWidth={true}
                                 id={fullAnchor}
+                                isDisabled={isDisabled}
+                                isHidden={propsObj.isHidden}
+                                isPreviewModeOn={propsObj.isPreviewModeOn}
+                                isReadOnly={propsObj.isReadOnly}
                                 onChanges={handleChanges}
                                 options={propsObj.options}
-                                fullWidth={true}
-                                payload={{
-                                  anchor,
-                                  categories: category.categories,
-                                  component,
-                                  fullPath,
-                                  parent: props.parent,
-                                  rootPath: props.rootPath
-                                }}
                                 placeholder={propsObj.placeholder}
-                                value={propsObj.selectedOption}
-                                isDisabled={isDisabled}
-                                showValidationErrors={showValidationErrors}
                                 requiredMessage={propsObj.requiredMessage}
+                                showValidationErrors={showValidationErrors}
+                                value={propsObj.selectedOption}
                               />
                             </div>
                           );
@@ -493,38 +488,37 @@ const CategorizedList = props => {
                               R.isEmpty(parentChangeObj.properties)) ||
                               parentChangeObj.properties.isChecked === false);
                           return (
-                            <TextBox
-                              id={fullAnchor}
-                              isDisabled={isDisabled}
-                              isErroneous={propsObj.isErroneous}
-                              isHidden={isDisabled}
-                              isReadOnly={propsObj.isReadOnly}
-                              isRemovable={propsObj.isRemovable}
-                              isRequired={propsObj.isRequired}
-                              isValid={propsObj.isValid}
-                              onChanges={handleChanges}
-                              onFocus={onFocus}
-                              payload={{
-                                anchor,
-                                categories: category.categories,
-                                component,
-                                fullPath,
-                                parent: props.parent,
-                                rootPath: props.rootPath
-                              }}
-                              placeholder={propsObj.placeholder}
-                              shouldHaveFocus={props.focusOn === fullAnchor}
-                              title={propsObj.title}
-                              tooltip={propsObj.tooltip}
-                              value={propsObj.value}
-                              showValidationErrors={showValidationErrors}
-                              requiredMessage={propsObj.requiredMessage}
-                            />
+                            <div className={styleClassesStr || "w-full"}>
+                              <TextBox
+                                forChangeObject={
+                                  component.properties.forChangeObject
+                                }
+                                fullAnchor={fullAnchor}
+                                id={fullAnchor}
+                                isDisabled={isDisabled}
+                                isErroneous={propsObj.isErroneous}
+                                isHidden={isDisabled}
+                                isPreviewModeOn={propsObj.isPreviewModeOn}
+                                isReadOnly={propsObj.isReadOnly}
+                                isRemovable={propsObj.isRemovable}
+                                isRequired={propsObj.isRequired}
+                                isValid={propsObj.isValid}
+                                onChanges={handleChanges}
+                                onFocus={onFocus}
+                                placeholder={propsObj.placeholder}
+                                shouldHaveFocus={props.focusOn === fullAnchor}
+                                title={propsObj.title}
+                                tooltip={propsObj.tooltip}
+                                value={propsObj.value}
+                                showValidationErrors={showValidationErrors}
+                                requiredMessage={propsObj.requiredMessage}
+                              />
+                            </div>
                           );
                         })()
                       : null}
                     {component.name === "Input"
-                      ? (category => {
+                      ? (() => {
                           let parentComponent = null;
                           let isDisabled = false;
                           if (
@@ -547,24 +541,21 @@ const CategorizedList = props => {
                                 !parentChange.properties.isChecked);
                           }
                           return (
-                            <div className={component.styleClasses}>
+                            <div className={styleClassesStr}>
                               <Input
+                                forChangeObject={
+                                  component.properties.forChangeObject
+                                }
+                                fullAnchor={fullAnchor}
                                 id={fullAnchor}
                                 isDisabled={isDisabled}
-                                isHidden={isDisabled}
+                                isHidden={propsObj.isHidden}
+                                isPreviewModeOn={propsObj.isPreviewModeOn}
                                 isReadOnly={propsObj.isReadOnly}
                                 isRequired={propsObj.isRequired}
                                 isValid={propsObj.isValid}
                                 label={propsObj.label}
                                 onChanges={handleChanges}
-                                payload={{
-                                  anchor,
-                                  categories: category.categories,
-                                  component,
-                                  fullPath,
-                                  parent: props.parent,
-                                  rootPath: props.rootPath
-                                }}
                                 error={propsObj.error}
                                 fullWidth={propsObj.fullWidth}
                                 width={propsObj.width}
@@ -577,7 +568,7 @@ const CategorizedList = props => {
                               />
                             </div>
                           );
-                        })(category)
+                        })()
                       : null}
                     {component.name === "Attachments"
                       ? (category => {
@@ -601,7 +592,7 @@ const CategorizedList = props => {
                             );
                           let attachments = propsObj.attachments || [];
                           return (
-                            <div className={component.styleClasses}>
+                            <div className={styleClassesStr}>
                               <Attachments
                                 id={fullAnchor}
                                 isDisabled={isDisabled}
@@ -665,20 +656,18 @@ const CategorizedList = props => {
                             ? !isHiddenByParentComponent
                             : props.isVisible;
                           return (
-                            <div
-                              className={`flex-1 mb-2 ${component.styleClasses}`}>
+                            <div className={`flex-1 mb-2 ${styleClassesStr}`}>
                               <AlertMessage
-                                id={fullAnchor}
                                 ariaLabel={propsObj.ariaLabel}
-                                type={propsObj.type}
-                                title={propsObj.title}
-                                message={propsObj.message}
+                                handleLinkClick={propsObj.handleLinkClick}
+                                id={fullAnchor}
                                 isVisible={isVisible}
                                 link={propsObj.link}
-                                linkUrl={propsObj.linkUrl}
                                 linkText={propsObj.linkText}
-                                handleLinkClick={propsObj.handleLinkClick}
-                                onChanges={handleChanges}
+                                linkUrl={propsObj.linkUrl}
+                                message={propsObj.message}
+                                title={propsObj.title}
+                                type={propsObj.type}
                               />
                             </div>
                           );
@@ -705,7 +694,7 @@ const CategorizedList = props => {
                               change.properties.isChecked
                             );
                           return (
-                            <div className={`flex-1 ${component.styleClasses}`}>
+                            <div className={`flex-1 ${styleClassesStr}`}>
                               <Multiselect
                                 ariaLabel={propsObj.ariaLabel}
                                 callback={handleChanges}
@@ -756,23 +745,20 @@ const CategorizedList = props => {
                               change.properties.isChecked
                             );
                           return (
-                            <div className={`flex-1 ${component.styleClasses}`}>
+                            <div className={`flex-1 ${styleClassesStr}`}>
                               <Autocomplete
                                 callback={handleChanges}
+                                forChangeObject={
+                                  component.properties.forChangeObject
+                                }
+                                fullAnchor={fullAnchor}
                                 id={fullAnchor}
                                 isMulti={propsObj.isMulti}
+                                isPreviewModeOn={propsObj.isPreviewModeOn}
                                 isRequired={propsObj.isRequired}
                                 isReadOnly={propsObj.isReadOnly}
                                 isValid={propsObj.isValid}
                                 options={propsObj.options}
-                                payload={{
-                                  anchor,
-                                  categories: category.categories,
-                                  component,
-                                  fullPath,
-                                  parent: props.parent,
-                                  rootPath: props.rootPath
-                                }}
                                 placeholder={propsObj.placeholder}
                                 value={R.flatten([propsObj.value])}
                                 isDisabled={isDisabled}
@@ -791,24 +777,20 @@ const CategorizedList = props => {
                       <div className="flex-2">
                         <Difference
                           applyForValue={propsObj.applyForValue}
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
                           id={fullAnchor}
                           initialValue={propsObj.initialValue}
                           onChanges={handleChanges}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
                           titles={propsObj.titles}
                         />
                       </div>
                     )}
                     {component.name === "SimpleButton" && (
-                      <div className={`${component.styleClasses} flex-2`}>
+                      <div className={`${styleClassesStr} flex-2`}>
                         <SimpleButton
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
                           id={fullAnchor}
                           isReadOnly={propsObj.isReadOnly}
                           text={propsObj.text}
@@ -816,7 +798,7 @@ const CategorizedList = props => {
                           icon={propsObj.icon}
                           iconContainerStyles={propsObj.iconContainerStyles}
                           iconStyles={propsObj.iconStyles}
-                          onClick={handleButtonClick}
+                          onClick={component.onClick}
                           payload={{
                             anchor,
                             categories: category.categories,
@@ -829,49 +811,44 @@ const CategorizedList = props => {
                       </div>
                     )}
                     {component.name === "Datepicker" && (
-                      <div className={`${component.styleClasses} flex-2`}>
+                      <div className={`${styleClassesStr} flex-2`}>
                         <Datepicker
-                          label={propsObj.label}
-                          variant={propsObj.variant}
-                          onChanges={handleChanges}
-                          value={propsObj.value}
+                          clearable={propsObj.clearable}
+                          disableFuture={propsObj.disableFuture}
+                          disablePast={propsObj.disablePast}
+                          error={propsObj.error}
+                          forChangeObject={component.properties.forChangeObject}
+                          fullAnchor={fullAnchor}
+                          fullWidth={propsObj.fullWidth}
                           isDisabled={propsObj.isDisabled}
                           isHidden={propsObj.isHidden}
+                          isReadOnly={propsObj.isReadOnly}
                           isRequired={propsObj.isRequired}
-                          clearable={propsObj.clearable}
-                          showTodayButton={propsObj.showTodayButton}
-                          error={propsObj.error}
-                          placeholder={propsObj.placeholder}
-                          fullWidth={propsObj.fullWidth}
-                          width={propsObj.width}
+                          label={propsObj.label}
+                          locale={propsObj.locale}
                           minDate={propsObj.minDate}
                           maxDate={propsObj.maxDate}
-                          disablePast={propsObj.disablePast}
-                          disableFuture={propsObj.disableFuture}
-                          locale={propsObj.locale}
                           messages={propsObj.localizations}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
-                          isReadOnly={propsObj.isReadOnly}
+                          onChanges={handleChanges}
+                          placeholder={propsObj.placeholder}
                           requiredMessage={propsObj.requiredMessage}
+                          showTodayButton={propsObj.showTodayButton}
                           showValidationErrors={showValidationErrors}
+                          value={propsObj.value}
+                          variant={propsObj.variant}
+                          width={propsObj.width}
                         />
                       </div>
                     )}
                     {component.name === "CategoryFilter" && (
-                      <div className={`${component.styleClasses} flex-2`}>
+                      <div className={`${styleClassesStr} flex-2`}>
                         <CategoryFilter
                           anchor={propsObj.anchor}
                           changeObjectsByProvince={
                             propsObj.changeObjectsByProvince
                           }
                           isEditViewActive={propsObj.isEditViewActive}
+                          isPreviewModeOn={propsObj.isPreviewModeOn}
                           localizations={propsObj.localizations}
                           municipalities={propsObj.municipalities}
                           provinces={propsObj.provinces}

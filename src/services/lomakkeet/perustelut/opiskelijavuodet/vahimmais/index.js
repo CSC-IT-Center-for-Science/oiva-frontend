@@ -38,7 +38,7 @@ function getReasoningForm(
 export default function getVahimmaisopiskelijavuodetPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

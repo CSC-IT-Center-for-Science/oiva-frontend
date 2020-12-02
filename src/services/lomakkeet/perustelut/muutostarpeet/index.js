@@ -1,10 +1,6 @@
 import * as R from "ramda";
 
-export const getCheckboxes = (
-  checkboxItems,
-  locale,
-  isReadOnly = false
-) => {
+export const getCheckboxes = (checkboxItems, locale, { isReadOnly }) => {
   return R.map(checkboxItem => {
     const metadata = R.find(R.propEq("kieli", locale))(checkboxItem.metadata);
     return {

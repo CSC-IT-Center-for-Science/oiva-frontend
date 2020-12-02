@@ -39,7 +39,7 @@ function getReasoningForm(
 export default function getSisaoppilaitosOpiskelijavuodetPerustelulomake(
   action,
   data,
-  isReadOnly
+  { isReadOnly }
 ) {
   switch (action) {
     case "reasoning":

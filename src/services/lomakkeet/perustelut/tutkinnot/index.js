@@ -1,9 +1,22 @@
-import {isAdded, isInLupa, isRemoved} from "../../../../css/label";
-import {getMuutostarveCheckboxes} from "../common";
+import { isAdded, isInLupa, isRemoved } from "../../../../css/label";
+import { getMuutostarveCheckboxes } from "../common";
 import "../../i18n-config";
-import {__} from "i18n-for-browser";
-import {compose, filter, find, isEmpty, map, not, prop, propEq, toUpper, reject, isNil, concat} from "ramda";
-import {getAnchorPart} from "../../../../utils/common";
+import { __ } from "i18n-for-browser";
+import {
+  compose,
+  filter,
+  find,
+  isEmpty,
+  map,
+  not,
+  prop,
+  propEq,
+  toUpper,
+  reject,
+  isNil,
+  concat
+} from "ramda";
+import { getAnchorPart } from "../../../../utils/common";
 
 export const getAdditionForm = (checkboxItems, locale, isReadOnly = false) => {
   const checkboxes = getMuutostarveCheckboxes(
@@ -95,13 +108,14 @@ function getCategoriesForPerustelut(
             tutkinnotChangeObjects
           );
 
-         const osaamisalaChangeObjsForTutkinto = reject(isNil)(map(osaamisala => {
-           const anchorOsaamisala =
-             `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.${osaamisala.koodiarvo}.osaamisala`;
-           return find(changeObject => {
-             return changeObject.anchor === anchorOsaamisala
-           }, tutkinnotChangeObjects);
-          } , tutkinto.osaamisalat))
+          const osaamisalaChangeObjsForTutkinto = reject(isNil)(
+            map(osaamisala => {
+              const anchorOsaamisala = `tutkinnot_${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}.${osaamisala.koodiarvo}.osaamisala`;
+              return find(changeObject => {
+                return changeObject.anchor === anchorOsaamisala;
+              }, tutkinnotChangeObjects);
+            }, tutkinto.osaamisalat)
+          );
 
           if (!changeObj && !osaamisalaChangeObjsForTutkinto.length) {
             return null;
@@ -114,10 +128,22 @@ function getCategoriesForPerustelut(
             : getRemovalForm(isReadOnly);
 
           const osaamisalaCategories = map(osaamisalaChangeObj => {
-            const osaamisalaKoodiarvo = getAnchorPart(osaamisalaChangeObj.anchor, 3);
-            const osaamisalaTitle = osaamisalaKoodiarvo + ' ' +
-              find(osaamisala => osaamisalaKoodiarvo === osaamisala.koodiarvo, tutkinto.osaamisalat).metadata[localeUpper].nimi;
-            return getOsaamisalaForm(isReadOnly, osaamisalaTitle, osaamisalaKoodiarvo)[0]
+            const osaamisalaKoodiarvo = getAnchorPart(
+              osaamisalaChangeObj.anchor,
+              3
+            );
+            const osaamisalaTitle =
+              osaamisalaKoodiarvo +
+              " " +
+              find(
+                osaamisala => osaamisalaKoodiarvo === osaamisala.koodiarvo,
+                tutkinto.osaamisalat
+              ).metadata[localeUpper].nimi;
+            return getOsaamisalaForm(
+              isReadOnly,
+              osaamisalaTitle,
+              osaamisalaKoodiarvo
+            )[0];
           }, osaamisalaChangeObjsForTutkinto);
 
           const categories = concat(tutkintoCategory, osaamisalaCategories);
@@ -143,7 +169,7 @@ function getCategoriesForPerustelut(
                     }
                   }
                 ],
-              categories: categories
+                categories: categories
               }
             : null;
         }, tutkinnot).filter(Boolean)
@@ -158,7 +184,7 @@ function getCategoriesForPerustelut(
 export default function getTutkinnotPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale,
   changeObjects
 ) {

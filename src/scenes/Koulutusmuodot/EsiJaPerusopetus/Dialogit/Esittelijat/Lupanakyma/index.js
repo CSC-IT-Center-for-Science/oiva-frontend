@@ -1,30 +1,16 @@
 import React, { useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "components/02-organisms/DialogTitle";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog";
 import wizardMessages from "i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
-import { Dialog, DialogContent, Typography } from "@material-ui/core";
-import EsittelijatWizardActions from "../../../EsittelijatWizardActions";
+import { Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import { useHistory, useParams } from "react-router-dom";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
-import Lomake from "components/02-organisms/Lomake";
 import { useMuutospyynto } from "stores/muutospyynto";
-import Opetustehtavat from "./lomakeosiot/1-Opetustehtavat";
-import FormSection from "components/03-templates/FormSection";
-import { useEsiJaPerusopetus } from "stores/esiJaPerusopetus";
-import OpetustaAntavatKunnat from "./lomakeosiot/2-OpetustaAntavatKunnat";
-import Opetuskieli from "./lomakeosiot/3-Opetuskieli";
-import OpetuksenJarjestamismuoto from "./lomakeosiot/4-OpetuksenJarjestamismuoto";
-import ErityisetKoulutustehtavat from "./lomakeosiot/5-ErityisetKoulutustehtavat";
-import Opiskelijamaarat from "./lomakeosiot/6-Opiskelijamaarat";
-import MuutEhdot from "./lomakeosiot/7-MuutEhdot";
-import Rajoitteet from "./lomakeosiot/9-Rajoitteet";
 import * as R from "ramda";
 import common from "i18n/definitions/common";
-import education from "i18n/definitions/education";
 import { createObjectToSave } from "../../../saving";
 import {
   useChangeObjects,
@@ -35,45 +21,33 @@ import {
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { useValidity } from "stores/lomakedata";
+import LupanakymaA from "../../../lupanakymat/LupanakymaA";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
-
-const DialogTitleWithStyles = withStyles(() => ({
-  root: {
-    backgroundColor: "#c8dcc3",
-    paddingBottom: "1rem",
-    paddingTop: "1rem",
-    width: "100%"
-  }
-}))(props => {
-  return <DialogTitle {...props}>{props.children}</DialogTitle>;
-});
 
 const DialogContentWithStyles = withStyles(() => ({
   root: {
     backgroundColor: "#ffffff",
-    padding: 0,
     scrollBehavior: "smooth"
   }
 }))(props => {
-  return <DialogContent {...props}>{props.children}</DialogContent>;
+  return (
+    <DialogContent {...props} style={{ padding: 0 }}>
+      {props.children}
+    </DialogContent>
+  );
 });
 
 const FormDialog = withStyles(() => ({
   paper: {
     background: "#ffffff",
     marginLeft: isDebugOn ? "33%" : 0,
-    width: isDebugOn ? "66%" : "100%"
+    width: isDebugOn ? "66%" : "100%",
+    transform: "translate3d(0, 0, 0)" // Tämä on fixed-asetusta varten
   }
 }))(props => {
   return <Dialog {...props}>{props.children}</Dialog>;
 });
-
-const constants = {
-  formLocation: {
-    paatoksenTiedot: ["esiJaPerusopetus", "paatoksenTiedot"]
-  }
-};
 
 const defaultProps = {
   kielet: [],
@@ -139,7 +113,6 @@ const UusiAsiaDialog = ({
     anchor: "muutEhdot"
   });
 
-  const [state] = useEsiJaPerusopetus();
   const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
 
   const intl = useIntl();
@@ -148,6 +121,7 @@ const UusiAsiaDialog = ({
   let { uuid } = params;
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
+  const [isPreviewModeOn, setPreviewMode] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
@@ -208,31 +182,9 @@ const UusiAsiaDialog = ({
    * Opens the preview.
    * @param {object} formData
    */
-  const onPreview = useCallback(
-    async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
-      /**
-       * Let's save the form without notification. Notification about saving isn't
-       * needed when we're going to show a notification related to the preview.
-       */
-      const outputs = await procedureHandler.run(
-        "muutospyynto.tallennus.tallennaEsittelijanToimesta",
-        [formData, false] // false = Notification of save success won't be shown.
-      );
-      const muutospyynto =
-        outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
-          .result;
-      // Let's get the path of preview (PDF) document and download the file.
-      const path = await muutospyyntoActions.getLupaPreviewDownloadPath(
-        muutospyynto.uuid
-      );
-      if (path) {
-        muutospyyntoActions.download(path, intl.formatMessage);
-      }
-      return muutospyynto;
-    },
-    [intl.formatMessage, muutospyyntoActions]
-  );
+  const onPreview = useCallback(async () => {
+    setPreviewMode(isPreviewModeOn => !isPreviewModeOn);
+  }, []);
 
   /**
    * Saves the form.
@@ -284,17 +236,21 @@ const UusiAsiaDialog = ({
         muutospyynto = await onPreview(formData);
       }
 
-      if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
-        if (!uuid && !fromDialog) {
-          // Jos kyseessä on ensimmäinen tallennus...
-          onNewDocSave(muutospyynto.uuid);
-        } else {
-          /**
-           * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
-           * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
-           **/
-          const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-          initializeChanges(changeObjectsFromBackend);
+      if (action === "save") {
+        if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
+          if (!uuid && !fromDialog) {
+            // Jos kyseessä on ensimmäinen tallennus...
+            onNewDocSave(muutospyynto.uuid);
+          } else {
+            /**
+             * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
+             * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
+             **/
+            const changeObjectsFromBackend = getSavedChangeObjects(
+              muutospyynto
+            );
+            initializeChanges(changeObjectsFromBackend);
+          }
         }
       }
     },
@@ -322,175 +278,198 @@ const UusiAsiaDialog = ({
 
   return (
     changeObjects !== null && (
-      <div className="max-w-7xl">
+      <div>
         <FormDialog
           open={isDialogOpen}
           onClose={leaveOrOpenCancelModal}
           maxWidth={"lg"}
           fullScreen={true}
           aria-labelledby="simple-dialog-title">
-          <div className={"w-full m-auto"}>
-            <DialogTitleWithStyles id="customized-dialog-title">
-              <div className="flex">
-                <div className="flex-1">
+          {isPreviewModeOn ? null : (
+            <div className="flex m-auto items-center w-full px-12 bg-vaalenvihrea">
+              <div className="flex-1">
+                <Typography component="h2" variant="h2">
                   {intl.formatMessage(
                     wizardMessages.esittelijatMuutospyyntoDialogTitle
                   )}
-                </div>
-                <div>
-                  <SimpleButton
-                    text={`${intl.formatMessage(wizardMessages.getOut)} X`}
-                    onClick={leaveOrOpenCancelModal}
-                    variant={"text"}
-                  />
-                </div>
-              </div>
-            </DialogTitleWithStyles>
-          </div>
-          <DialogContentWithStyles>
-            <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
-              <div className="py-4">
-                <Typography component="h1" variant="h1">
-                  {organisation.nimi[intl.locale] ||
-                    R.last(R.values(organisation.nimi))}
                 </Typography>
-                <p>
-                  {organisation.kayntiosoite.osoite},{" "}
-                  {organisation.postiosoite.osoite}{" "}
-                  {organisation.kayntiosoite.postitoimipaikka}
-                </p>
-                <p>
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a
-                        href={`tel:${organisationPhoneNumber}`}
-                        className="underline">
-                        {organisationPhoneNumber}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisationPhoneNumber && (
-                    <React.Fragment>
-                      <a
-                        href={`mailto:${organisationEmail}`}
-                        className="underline">
-                        {organisationEmail}
-                      </a>{" "}
-                      |{" "}
-                    </React.Fragment>
-                  )}
-                  {organisation.ytunnus} |{" "}
-                  {organisationWebsite && (
-                    <a href={organisationWebsite} className="underline">
-                      {organisationWebsite}
-                    </a>
-                  )}
-                </p>
+              </div>
+              <div>
+                <SimpleButton
+                  text={`${intl.formatMessage(wizardMessages.getOut)} X`}
+                  onClick={leaveOrOpenCancelModal}
+                  variant={"text"}
+                />
               </div>
             </div>
+          )}
+          <DialogContentWithStyles>
+            {isPreviewModeOn ? null : (
+              <div className="bg-vaalenharmaa px-16 w-full m-auto mb-4 border-b border-xs border-harmaa">
+                <div className="py-4">
+                  <h1>
+                    {organisation.nimi[intl.locale] ||
+                      R.last(R.values(organisation.nimi))}
+                  </h1>
+                  <p>
+                    {organisation.kayntiosoite.osoite},{" "}
+                    {organisation.postiosoite.osoite}{" "}
+                    {organisation.kayntiosoite.postitoimipaikka}
+                  </p>
+                  <p>
+                    {organisationPhoneNumber && (
+                      <React.Fragment>
+                        <a
+                          href={`tel:${organisationPhoneNumber}`}
+                          className="underline">
+                          {organisationPhoneNumber}
+                        </a>{" "}
+                        |{" "}
+                      </React.Fragment>
+                    )}
+                    {organisationPhoneNumber && (
+                      <React.Fragment>
+                        <a
+                          href={`mailto:${organisationEmail}`}
+                          className="underline">
+                          {organisationEmail}
+                        </a>{" "}
+                        |{" "}
+                      </React.Fragment>
+                    )}
+                    {organisation.ytunnus} |{" "}
+                    {organisationWebsite && (
+                      <a href={organisationWebsite} className="underline">
+                        {organisationWebsite}
+                      </a>
+                    )}
+                  </p>
+                </div>
+              </div>
+            )}
             <div
               id="wizard-content"
-              className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
-              <div className="w-1/3" style={{ marginLeft: "-2rem" }}>
-                <Typography component="h2" variant="h2">
-                  {intl.formatMessage(common.decisionDetails)}
-                </Typography>
-                <Lomake
-                  isInExpandableRow={false}
-                  anchor="paatoksentiedot"
-                  data={{ formatMessage: intl.formatMessage, uuid }}
-                  path={constants.formLocation.paatoksenTiedot}></Lomake>
-              </div>
-
-              <form onSubmit={() => {}}>
-                <FormSection
-                  render={props => <Rajoitteet {...props} />}
-                  sectionId="rajoitteet"
-                  title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
-
-                <FormSection
-                  code={1}
-                  render={props => (
-                    <Opetustehtavat
-                      opetustehtavakoodisto={opetustehtavakoodisto}
-                      {...props}
-                    />
-                  )}
-                  sectionId="opetustehtavat"
-                  title={
-                    opetustehtavakoodisto.metadata[R.toUpper(intl.locale)]
-                      .kuvaus
-                  }></FormSection>
-
-                <FormSection
-                  code={2}
-                  render={props => (
-                    <OpetustaAntavatKunnat
-                      changeObjects={state.changeObjects.toimintaalue}
-                      lupakohde={lupaKohteet[3]}
-                      kunnat={kunnat}
-                      lisatiedot={lisatiedot}
-                      maakuntakunnat={maakuntakunnat}
-                      maakunnat={maakunnat}
-                      valtakunnallinenMaarays={valtakunnallinenMaarays}
-                      {...props}
-                    />
-                  )}
-                  sectionId={"toimintaalue"}
-                  title={intl.formatMessage(
-                    education.opetustaAntavatKunnat
-                  )}></FormSection>
-
-                <FormSection
-                  code={3}
-                  render={props => <Opetuskieli {...props} />}
-                  sectionId={"opetuskielet"}
-                  title={intl.formatMessage(common.opetuskieli)}></FormSection>
-
-                <FormSection
-                  code={4}
-                  render={props => <OpetuksenJarjestamismuoto {...props} />}
-                  sectionId={"opetuksenJarjestamismuodot"}
-                  title={intl.formatMessage(
-                    education.opetuksenJarjestamismuoto
-                  )}></FormSection>
-
-                <FormSection
-                  code={5}
-                  render={props => <ErityisetKoulutustehtavat {...props} />}
-                  sectionId={"erityisetKoulutustehtavat"}
-                  title={"Erityinen koulutustehtävä"}></FormSection>
-
-                <FormSection
-                  code={6}
-                  render={props => <Opiskelijamaarat {...props} />}
-                  sectionId={"opiskelijamaarat"}
-                  title={intl.formatMessage(
-                    education.oppilasOpiskelijamaarat
-                  )}></FormSection>
-
-                <FormSection
-                  code={7}
-                  render={props => <MuutEhdot {...props} />}
-                  sectionId={"muutEhdot"}
-                  title={intl.formatMessage(
-                    education.muutEhdotTitle
-                  )}></FormSection>
+              className={`mx-auto ${
+                isPreviewModeOn ? "kk:w-4/5 kkk:w-2/3" : "max-w-7xl"
+              }`}>
+              <form
+                onSubmit={() => {}}
+                className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
+                <div className="flex">
+                  <div
+                    className={`${
+                      isPreviewModeOn ? "hidden xxl:block" : ""
+                    } flex-1`}
+                    style={{
+                      transform: "translate3d(0, 0, 0)",
+                      height: isPreviewModeOn ? "100vh" : "84vh"
+                    }}>
+                    <section
+                      className={`fixed w-full ${
+                        isPreviewModeOn ? "border-r border-gray-300" : ""
+                      }`}>
+                      <div className={`border-b border-gray-300 px-12`}>
+                        <Typography component="h2" variant="h2">
+                          {intl.formatMessage(common.decisionDetails)}
+                        </Typography>
+                      </div>
+                      <div
+                        className={`${
+                          isPreviewModeOn ? "overflow-auto" : "pb-32"
+                        }`}
+                        style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
+                        <LupanakymaA
+                          isPreviewModeOn={false}
+                          kunnat={kunnat}
+                          lisatiedot={lisatiedot}
+                          lupakohteet={lupaKohteet}
+                          maakunnat={maakunnat}
+                          maakuntakunnat={maakuntakunnat}
+                          opetustehtavakoodisto={opetustehtavakoodisto}
+                          uuid={uuid}
+                          valtakunnallinenMaarays={valtakunnallinenMaarays}
+                        />
+                      </div>
+                    </section>
+                  </div>
+                  {isPreviewModeOn ? (
+                    <div
+                      className="flex-1"
+                      style={{
+                        transform: "translate3d(0, 0, 0)",
+                        height: "100vh"
+                      }}>
+                      <section
+                        className={`fixed w-full ${
+                          isPreviewModeOn ? "border-l border-gray-300" : ""
+                        }`}>
+                        <div className="border-b border-gray-300 px-12">
+                          <Typography component="h2" variant="h2">
+                            {intl.formatMessage(common.esikatselu)}
+                          </Typography>
+                        </div>
+                        <div
+                          className="p-6 bg-gray-100 overflow-auto"
+                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
+                          <LupanakymaA
+                            isPreviewModeOn={true}
+                            kunnat={kunnat}
+                            lisatiedot={lisatiedot}
+                            lupakohteet={lupaKohteet}
+                            maakunnat={maakunnat}
+                            maakuntakunnat={maakuntakunnat}
+                            opetustehtavakoodisto={opetustehtavakoodisto}
+                            valtakunnallinenMaarays={valtakunnallinenMaarays}
+                          />
+                        </div>
+                      </section>
+                    </div>
+                  ) : null}
+                </div>
               </form>
             </div>
           </DialogContentWithStyles>
           <div className="fixed w-full bg-gray-100 border-t border-gray-300 bottom-0">
-            <EsittelijatWizardActions
-              isSavingEnabled={isSavingEnabled}
-              onClose={leaveOrOpenCancelModal}
-              onPreview={() => {
-                return onAction("preview");
-              }}
-              onSave={() => {
-                return onAction("save");
-              }}
-            />
+            <div
+              className={`flex flex-col md:flex-row justify-between ${
+                isDebugOn ? "w-2/3" : "w-full"
+              }  max-w-5xl p-4 mx-auto`}>
+              <div className="inline-flex">
+                <div className="inline-flex mr-4">
+                  {isPreviewModeOn ? null : (
+                    <Button
+                      color="secondary"
+                      className="save"
+                      onClick={leaveOrOpenCancelModal}
+                      variant="outlined">
+                      {intl.formatMessage(wizardMessages.getOut)}
+                    </Button>
+                  )}
+                </div>
+                <Button
+                  color="secondary"
+                  className="preview"
+                  onClick={() => {
+                    return onAction("preview");
+                  }}
+                  variant="outlined">
+                  {isPreviewModeOn
+                    ? intl.formatMessage(wizardMessages.closePreview)
+                    : intl.formatMessage(wizardMessages.preview)}
+                </Button>
+              </div>
+              {isPreviewModeOn ? null : (
+                <SimpleButton
+                  color="primary"
+                  disabled={!isSavingEnabled}
+                  className="button-right save"
+                  onClick={() => {
+                    return onAction("save");
+                  }}
+                  text={intl.formatMessage(wizardMessages.saveDraft)}
+                />
+              )}
+            </div>
           </div>
         </FormDialog>
         <ConfirmDialog

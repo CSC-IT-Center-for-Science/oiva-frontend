@@ -29,7 +29,7 @@ const Tyovoimakoulutukset = ({ koulutukset, maaraykset }) => {
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={sectionId}
       data={lomakedata}
       path={constants.formLocation}

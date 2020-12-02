@@ -102,7 +102,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
         {intl.formatMessage(common.luoUusiAsia)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <div className="px-2 py-4 relative">
+        <div className="px-8 py-4 relative">
           {isSearchFieldVisible ? (
             <React.Fragment>
               <p className="mb-6">

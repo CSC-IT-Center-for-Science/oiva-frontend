@@ -22,7 +22,7 @@ const MuuMaarays = ({
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={sectionId}
       data={dataLomakepalvelulle}
       path={constants.formLocation}

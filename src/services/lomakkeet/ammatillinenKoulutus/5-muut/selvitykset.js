@@ -9,7 +9,7 @@ import { isNil, map, reject } from "ramda";
  */
 export function getMuutSelvitykset(
   { items, maarayksetByKoodiarvo },
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   const localeUpper = locale.toUpperCase();

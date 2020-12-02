@@ -138,6 +138,12 @@ export const handleNodeMain = (
   reducedStructure,
   changes = []
 ) => {
+  console.info(
+    nodeWithRequestedChanges,
+    rootAnchor,
+    reducedStructure,
+    (changes = [])
+  );
   /**
    * node = definition of a component that user has interacted with. Node
    * is an object that includes a name (e.g. CheckboxWithLabel) and the

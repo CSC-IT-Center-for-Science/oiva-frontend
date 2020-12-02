@@ -8,8 +8,8 @@ const isAsianumeroValid = async (
   uuid,
   formatMessage,
   setLastCheckedAsianumero,
-  lastCheckedAsianumero) => {
-
+  lastCheckedAsianumero
+) => {
   const isValueInValidFormat = /^VN\/[0-9]{1,9}\/[0-9]{4}$/.test(value);
   /**
    * Jos kentän arvo on muodoltaan oikeanlainen, eikä tätä asianumeroa ole viimeksi tarkistettu, tarkistetaan
@@ -25,7 +25,10 @@ const isAsianumeroValid = async (
       outputs.muutospyynto.muutokset.tarkistaDuplikaattiAsianumero.output
         .result;
 
-    setLastCheckedAsianumero({asianumero: value, isDuplicate: isAsianumeroAlreadyInUse});
+    setLastCheckedAsianumero({
+      asianumero: value,
+      isDuplicate: isAsianumeroAlreadyInUse
+    });
     /**
      * Mikäli asianumero ei ole käytössä, on kenttä arvoltaan
      * validi sen sisällön ollessa oikeassa muodossa.
@@ -43,7 +46,7 @@ const isAsianumeroValid = async (
  */
 export default async function getTopThree(
   data,
-  isReadOnly,
+  { isReadOnly },
   locale,
   changeObjects
 ) {
@@ -60,7 +63,8 @@ export default async function getTopThree(
     data.uuid,
     data.formatMessage,
     data.setLastCheckedAsianumero,
-    data.lastCheckedAsianumero);
+    data.lastCheckedAsianumero
+  );
 
   return {
     isValid: validAsianumero,

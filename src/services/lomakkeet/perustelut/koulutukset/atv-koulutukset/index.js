@@ -60,7 +60,7 @@ function getAdditionForm(koulutusdata, changeObjectsPage1 = [], isReadOnly) {
 export default function getATVKoulutuksetPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   prefix
 ) {
   switch (action) {

@@ -756,6 +756,7 @@ const Modify = React.memo(
               ]}
               changes={quickFilterChanges}
               onUpdate={payload => {
+                console.info(payload);
                 let { changes } = payload;
                 let nextChanges = null;
                 const activeChange = find(

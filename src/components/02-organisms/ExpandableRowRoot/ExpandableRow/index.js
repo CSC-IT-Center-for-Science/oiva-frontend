@@ -14,24 +14,16 @@ import Slot from "../../../00-atoms/Slot/Slot";
 const Accordion = withStyles({
   root: {
     border: "1px solid rgba(0,0,0,.125)",
-    boxShadow: "none",
-    "&:not(:last-child)": {
-      borderBottom: 0
-    },
+    padding: 0,
     "&:before": {
       display: "none"
     }
-  },
-  expanded: {
-    margin: "auto"
   }
 })(MuiAccordion);
 
 const AccordionSummary = withStyles({
   root: {
     backgroundColor: "rgba(0,0,0,.03)",
-    borderBottom: "1px solid rgba(0,0,0,.125)",
-    marginBottom: -1,
     minHeight: 56,
     "&$expanded": {
       minHeight: 56
@@ -46,7 +38,7 @@ const AccordionSummary = withStyles({
   expanded: {}
 })(props => <MuiAccordionSummary {...props} />);
 
-AccordionSummary.muiName = "AccordionSummary";
+// AccordionSummary.muiName = "AccordionSummary";
 
 const AccordionDetails = withStyles(theme => ({
   root: {
@@ -61,12 +53,10 @@ const ExpandableRow = props => {
   return (
     <Accordion
       defaultExpanded={props.shouldBeExpanded}
-      onChange={props.onToggle}
-    >
+      onChange={props.onToggle}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        id={`${props.id}-summary`}
-      >
+        id={`${props.id}-summary`}>
         <div className="flex-1">
           <Slot slot="title">{props.children}</Slot>
         </div>

@@ -10,7 +10,7 @@ import { isNil, map, reject, toLower } from "ramda";
  */
 export function getMuutYhteistyosopimus(
   { items, maarayksetByKoodiarvo },
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   const localeUpper = locale.toUpperCase();

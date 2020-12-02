@@ -17,7 +17,7 @@ const Urheilu = ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={sectionId}
       data={dataLomakepalvelulle}
       path={constants.formLocation}

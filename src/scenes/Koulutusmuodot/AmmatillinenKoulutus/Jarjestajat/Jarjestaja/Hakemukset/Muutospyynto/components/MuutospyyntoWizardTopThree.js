@@ -28,10 +28,11 @@ const MuutospyyntoWizardTopThree = React.memo(() => {
 
   return (
     <Lomake
-      action="addition"
       anchor="topthree"
       data={lomakedata}
       isInExpandableRow={false}
+      isReadOnly={false}
+      mode="addition"
       path={formLocations.kolmeEnsimmaistaKenttaa}></Lomake>
   );
 });

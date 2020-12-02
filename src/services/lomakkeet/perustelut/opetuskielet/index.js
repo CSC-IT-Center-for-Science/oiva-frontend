@@ -66,7 +66,7 @@ function getReasoningForm(
 export default function getOpetuskieletPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

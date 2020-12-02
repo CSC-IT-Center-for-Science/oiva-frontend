@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
@@ -13,7 +13,7 @@ import MuutospyyntoWizardTopThree from "scenes/Koulutusmuodot/AmmatillinenKoulut
 import Lomake from "components/02-organisms/Lomake";
 import * as R from "ramda";
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
-import Typography from "@material-ui/core/Typography";
+import { Typography } from "@material-ui/core";
 
 const constants = {
   formLocation: {
@@ -40,7 +40,6 @@ const defaultProps = {
 };
 
 const EsittelijatMuutospyynto = ({
-  kielet = defaultProps.kielet,
   kohteet: osiokohteet = defaultProps.kohteet,
   koulutukset = defaultProps.koulutukset,
   koulutusalat = defaultProps.koulutusalat,
@@ -93,38 +92,41 @@ const EsittelijatMuutospyynto = ({
     maaraykset
   );
 
-  const sectionHeadings = {
-    tutkinnotJaKoulutukset: {
-      number: R.path(["1", "headingNumber"], lupaKohteet) || 1,
-      title:
-        R.path(["1", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
-    },
-    opetusJaTutkintokieli: {
-      number: R.path(["2", "headingNumber"], lupaKohteet) || 2,
-      title:
-        R.path(["2", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
-    },
-    toimintaalue: {
-      number: R.path(["3", "headingNumber"], lupaKohteet) || 3,
-      title:
-        R.path(["3", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
-    },
-    opiskelijavuodet: {
-      number: R.path(["4", "headingNumber"], lupaKohteet) || 4,
-      title:
-        R.path(["4", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
-    },
-    muut: {
-      number: R.path(["5", "headingNumber"], lupaKohteet) || 5,
-      title:
-        R.path(["5", "heading"], lupaKohteet) ||
-        intl.formatMessage(common.lupaSectionMuutMainTitle)
-    }
-  };
+  const sectionHeadings = useMemo(
+    () => ({
+      tutkinnotJaKoulutukset: {
+        number: R.path(["1", "headingNumber"], lupaKohteet) || "1",
+        title:
+          R.path(["1", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
+      },
+      opetusJaTutkintokieli: {
+        number: R.path(["2", "headingNumber"], lupaKohteet) || "2",
+        title:
+          R.path(["2", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
+      },
+      toimintaalue: {
+        number: R.path(["3", "headingNumber"], lupaKohteet) || "3",
+        title:
+          R.path(["3", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
+      },
+      opiskelijavuodet: {
+        number: R.path(["4", "headingNumber"], lupaKohteet) || "4",
+        title:
+          R.path(["4", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
+      },
+      muut: {
+        number: R.path(["5", "headingNumber"], lupaKohteet) || "5",
+        title:
+          R.path(["5", "heading"], lupaKohteet) ||
+          intl.formatMessage(common.lupaSectionMuutMainTitle)
+      }
+    }),
+    [intl, lupaKohteet]
+  );
 
   return (
     <React.Fragment>
@@ -137,76 +139,73 @@ const EsittelijatMuutospyynto = ({
             <MuutospyyntoWizardTopThree />
           </div>
         </Section>
-        <Typography component="h2" variant="h2">{intl.formatMessage(common.changesText)}</Typography>
-        <Section
+
+        <Typography component="h2" variant="h2">
+          {intl.formatMessage(common.changesText)}
+        </Typography>
+
+        <Tutkinnot
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
-          title={sectionHeadings.tutkinnotJaKoulutukset.title}>
-          <Typography component="h4" variant="h4">{intl.formatMessage(common.tutkinnot)}</Typography>
-          <Tutkinnot
-            koulutusalat={koulutusalat}
-            koulutustyypit={koulutustyypit}
-            tutkinnot={tutkinnot}
-          />
-          <Typography component="h4" variant="h4">
-            {intl.formatMessage(common.koulutukset)}
-          </Typography>
-          <MuutospyyntoWizardKoulutukset
-            koulutukset={koulutukset}
-            maaraykset={maaraykset}
-          />
-        </Section>
+          koulutusalat={koulutusalat}
+          koulutustyypit={koulutustyypit}
+          title={sectionHeadings.tutkinnotJaKoulutukset.title}
+          tutkinnot={tutkinnot}
+        />
 
-        <Section
-          code={sectionHeadings.opetusJaTutkintokieli.number}
-          title={sectionHeadings.opetusJaTutkintokieli.title}>
-          <Lomake
-            action="modification"
-            anchor={"kielet_opetuskielet"}
-            isRowExpanded={true}
-            path={constants.formLocation.opetuskielet}
-            rowTitle={intl.formatMessage(wizardMessages.teachingLanguages)}
-            showCategoryTitles={true}
-          />
-          <Tutkintokielet koulutusalat={koulutusalat} tutkinnot={tutkinnot} />
-        </Section>
+        <Typography component="h4" variant="h4">
+          {intl.formatMessage(common.koulutukset)}
+        </Typography>
 
-        <Section
-          code={sectionHeadings.toimintaalue.number}
-          title={sectionHeadings.toimintaalue.title}>
-          <MuutospyyntoWizardToimintaalue
-            lupakohde={lupaKohteet[3]}
-            kunnat={kunnat}
-            maakuntakunnat={maakuntakunnat}
-            maakunnat={maakunnat}
-            sectionId={"toimintaalue"}
-            valtakunnallinenMaarays={valtakunnallinenMaarays}
-          />
-        </Section>
+        <MuutospyyntoWizardKoulutukset
+          koulutukset={koulutukset}
+          maaraykset={maaraykset}
+        />
+
+        <Lomake
+          anchor={"kielet_opetuskielet"}
+          code={String(sectionHeadings.opetusJaTutkintokieli.number)}
+          formTitle={sectionHeadings.opetusJaTutkintokieli.title}
+          isPreviewModeOn={false}
+          isRowExpanded={true}
+          mode="modification"
+          path={constants.formLocation.opetuskielet}
+          rowTitle={intl.formatMessage(wizardMessages.teachingLanguages)}
+          showCategoryTitles={true}
+        />
+
+        <Tutkintokielet koulutusalat={koulutusalat} tutkinnot={tutkinnot} />
+
+        <MuutospyyntoWizardToimintaalue
+          code={String(sectionHeadings.toimintaalue.number)}
+          lupakohde={lupaKohteet[3]}
+          kunnat={kunnat}
+          maakuntakunnat={maakuntakunnat}
+          maakunnat={maakunnat}
+          sectionId={"toimintaalue"}
+          title={sectionHeadings.toimintaalue.title}
+          valtakunnallinenMaarays={valtakunnallinenMaarays}
+        />
 
         {kohteet.opiskelijavuodet && (
-          <Section
-            code={sectionHeadings.opiskelijavuodet.number}
-            title={sectionHeadings.opiskelijavuodet.title}>
-            <MuutospyyntoWizardOpiskelijavuodet
-              lupaKohteet={lupaKohteet}
-              maaraykset={maaraykset}
-              muut={muut}
-              opiskelijavuodet={opiskelijavuodet}
-              sectionId={"opiskelijavuodet"}
-            />
-          </Section>
+          <MuutospyyntoWizardOpiskelijavuodet
+            code={String(sectionHeadings.opiskelijavuodet.number)}
+            lupaKohteet={lupaKohteet}
+            maaraykset={maaraykset}
+            muut={muut}
+            opiskelijavuodet={opiskelijavuodet}
+            sectionId={"opiskelijavuodet"}
+            title={sectionHeadings.opiskelijavuodet.title}
+          />
         )}
 
         {kohteet.muut && muut && maaraystyypit && (
-          <Section
+          <MuutospyyntoWizardMuut
             code={sectionHeadings.muut.number}
-            title={sectionHeadings.muut.title}>
-            <MuutospyyntoWizardMuut
-              maaraykset={maaraykset}
-              muut={muut}
-              sectionId={"muut"}
-            />
-          </Section>
+            maaraykset={maaraykset}
+            muut={muut}
+            sectionId={"muut"}
+            title={sectionHeadings.muut.title}
+          />
         )}
       </form>
     </React.Fragment>

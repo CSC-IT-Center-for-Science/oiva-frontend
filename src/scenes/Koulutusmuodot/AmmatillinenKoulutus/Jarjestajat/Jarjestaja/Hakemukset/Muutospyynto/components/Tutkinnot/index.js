@@ -3,6 +3,8 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import { toUpper, map, groupBy, prop } from "ramda";
 import Koulutusala from "./Koulutusala";
+import { Typography } from "@material-ui/core";
+import common from "i18n/definitions/common";
 
 const Tutkinnot = ({ koulutusalat, koulutustyypit, tutkinnot }) => {
   const intl = useIntl();
@@ -15,6 +17,9 @@ const Tutkinnot = ({ koulutusalat, koulutustyypit, tutkinnot }) => {
 
   return (
     <React.Fragment>
+      <Typography component="h4" variant="h4">
+        {intl.formatMessage(common.tutkinnot)}
+      </Typography>
       {map(koulutusala => {
         if (tutkinnotByKoulutusala[koulutusala.koodiarvo]) {
           const title = koulutusala.metadata[localeUpper].nimi;

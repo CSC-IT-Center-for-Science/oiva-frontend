@@ -43,7 +43,7 @@ const Muu = ({ configObj, koodiarvotLuvassa, sectionId }) => {
 
   return (
     <Lomake
-      action="modification"
+      mode="modification"
       anchor={sectionId}
       data={configObj}
       path={constants.formLocation}
