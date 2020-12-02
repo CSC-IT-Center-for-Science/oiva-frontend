@@ -13,13 +13,12 @@ const getReasoningForm = (
   const currentDate = new Date();
   return R.addIndex(R.map)((changeObj, i) => {
     const anchorParts = R.split(".", changeObj.anchor);
-    const item = R.find(
-      R.propEq("koodiarvo", anchorParts[2]),
-      tutkinnot
-    );
+    const item = R.find(R.propEq("koodiarvo", anchorParts[2]), tutkinnot);
 
-    const koulutusalaMetadata = R.find(R.propEq("koodiarvo", item.koulutusalakoodiarvo),
-      koulutusalat).metadata[R.toUpper(locale)];
+    const koulutusalaMetadata = R.find(
+      R.propEq("koodiarvo", item.koulutusalakoodiarvo),
+      koulutusalat
+    ).metadata[R.toUpper(locale)];
 
     const metadata = item.metadata[R.toUpper(locale)];
 
@@ -117,7 +116,7 @@ const getReasoningForm = (
 export default function getTutkintokieletPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

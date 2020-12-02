@@ -1214,5 +1214,9 @@ export default defineMessages({
   jarjestamisJaYllapitamisluvat: {
     id: "common.jarjestamisJaYllapitamisluvat",
     defaultMessage: "Järjestämis- ja ylläpitämisluvat"
+  },
+  esikatselu: {
+    id: "common.esikatselu",
+    defaultMessage: "Esikatselu"
   }
 });

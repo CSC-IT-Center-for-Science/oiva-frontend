@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import Lomake from "../../../../../../../components/02-organisms/Lomake";
+import Lomake from "../../../../components/02-organisms/Lomake";
 import Rajoite from "./10-rajoite";
-import { useChangeObjects } from "../../../../../../../stores/muutokset";
+import { useChangeObjects } from "../../../../stores/muutokset";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]

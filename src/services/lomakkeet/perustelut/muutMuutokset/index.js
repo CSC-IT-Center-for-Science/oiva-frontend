@@ -327,7 +327,7 @@ function getReasoningForm(
 export default function getMuutPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   console.info(locale);

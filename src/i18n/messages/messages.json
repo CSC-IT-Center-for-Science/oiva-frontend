@@ -2188,5 +2188,10 @@
     "id": "wizard.municipalitiesInNewLupa",
     "defaultMessage": "Uuden luvan kunnat",
     "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.closePreview",
+    "defaultMessage": "Sulje esikatselu",
+    "filepath": "src/i18n/definitions/wizard.js"
   }
 ]

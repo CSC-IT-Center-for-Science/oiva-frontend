@@ -78,305 +78,311 @@ const defaultProps = {
   tutkinnot: []
 };
 
-const UusiAsiaDialog = ({
-  kielet = defaultProps.kielet,
-  kohteet = defaultProps.kohteet,
-  koulutukset = defaultProps.koulutukset,
-  koulutusalat = defaultProps.koulutusalat,
-  koulutustyypit = defaultProps.koulutustyypit,
-  kunnat = defaultProps.kunnat,
-  lupa = defaultProps.lupa,
-  lupaKohteet = defaultProps.lupaKohteet,
-  maakunnat = defaultProps.maakunnat,
-  maakuntakunnat = defaultProps.maakuntakunnat,
-  maaraystyypit = defaultProps.maaraystyypit,
-  muut = defaultProps.muut,
-  onNewDocSave,
-  organisation = defaultProps.organisation,
-  tutkinnot = defaultProps.tutkinnot
-}) => {
-  const intl = useIntl();
-  const params = useParams();
-  let history = useHistory();
-  let { uuid } = params;
+const UusiAsiaDialog = React.memo(
+  ({
+    kielet = defaultProps.kielet,
+    kohteet = defaultProps.kohteet,
+    koulutukset = defaultProps.koulutukset,
+    koulutusalat = defaultProps.koulutusalat,
+    koulutustyypit = defaultProps.koulutustyypit,
+    kunnat = defaultProps.kunnat,
+    lupa = defaultProps.lupa,
+    lupaKohteet = defaultProps.lupaKohteet,
+    maakunnat = defaultProps.maakunnat,
+    maakuntakunnat = defaultProps.maakuntakunnat,
+    maaraystyypit = defaultProps.maaraystyypit,
+    muut = defaultProps.muut,
+    onNewDocSave,
+    organisation = defaultProps.organisation,
+    tutkinnot = defaultProps.tutkinnot
+  }) => {
+    const intl = useIntl();
+    const params = useParams();
+    let history = useHistory();
+    let { uuid } = params;
 
-  const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
-  const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
-  const [unsavedChangeObjects] = useUnsavedChangeObjects();
-  const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
-  const [, muutospyyntoActions] = useMuutospyynto();
+    const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
+    const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(true);
+    const [unsavedChangeObjects] = useUnsavedChangeObjects();
+    const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
+    const [, muutospyyntoActions] = useMuutospyynto();
 
-  // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
-  const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "topthree"
-  });
-  const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "tutkinnot"
-  });
-  const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "koulutukset"
-  });
-  const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "kielet_opetuskielet"
-  });
-  const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "kielet_tutkintokielet"
-  });
-  const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "toimintaalue"
-  });
-  const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "opiskelijavuodet"
-  });
-  const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "muut"
-  });
-  const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "rajoitteet"
-  });
+    // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
+    const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "topthree"
+    });
+    const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "tutkinnot"
+    });
+    const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "koulutukset"
+    });
+    const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "kielet_opetuskielet"
+    });
+    const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "kielet_tutkintokielet"
+    });
+    const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "toimintaalue"
+    });
+    const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opiskelijavuodet"
+    });
+    const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "muut"
+    });
+    const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "rajoitteet"
+    });
 
-  const isSavingEnabled = useMemo(() => {
-    const hasUnsavedChanges = unsavedChangeObjects
-      ? !R.isEmpty(unsavedChangeObjects)
-      : false;
-    const hasChangesUnderRemoval = underRemovalChangeObjects
-      ? !R.isEmpty(underRemovalChangeObjects)
-      : false;
-    return hasUnsavedChanges || hasChangesUnderRemoval;
-  }, [underRemovalChangeObjects, unsavedChangeObjects]);
+    const isSavingEnabled = useMemo(() => {
+      const hasUnsavedChanges = unsavedChangeObjects
+        ? !R.isEmpty(unsavedChangeObjects)
+        : false;
+      const hasChangesUnderRemoval = underRemovalChangeObjects
+        ? !R.isEmpty(underRemovalChangeObjects)
+        : false;
+      return hasUnsavedChanges || hasChangesUnderRemoval;
+    }, [underRemovalChangeObjects, unsavedChangeObjects]);
 
-  const leaveOrOpenCancelModal = () => {
-    !R.isEmpty(unsavedChangeObjects)
-      ? setIsConfirmDialogVisible(true)
-      : history.push(`/ammatillinenkoulutus/asianhallinta/avoimet?force=true`);
-  };
+    const leaveOrOpenCancelModal = () => {
+      !R.isEmpty(unsavedChangeObjects)
+        ? setIsConfirmDialogVisible(true)
+        : history.push(
+            `/ammatillinenkoulutus/asianhallinta/avoimet?force=true`
+          );
+    };
 
-  function handleCancel() {
-    setIsConfirmDialogVisible(false);
-  }
+    function handleCancel() {
+      setIsConfirmDialogVisible(false);
+    }
 
-  /**
-   * User is redirected to the following path when the form is closed.
-   */
-  const closeWizard = useCallback(async () => {
-    setIsDialogOpen(false);
-    setIsConfirmDialogVisible(false);
-    // Let's empty some store content on close.
-    muutospyyntoActions.reset();
-    return history.push(
-      `/ammatillinenkoulutus/asianhallinta/avoimet?force=true`
-    );
-  }, [history, muutospyyntoActions]);
-
-  /**
-   * Opens the preview.
-   * @param {object} formData
-   */
-  const onPreview = useCallback(
-    async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
-      /**
-       * Let's save the form without notification. Notification about saving isn't
-       * needed when we're going to show a notification related to the preview.
-       */
-      const outputs = await procedureHandler.run(
-        "muutospyynto.tallennus.tallennaEsittelijanToimesta",
-        [formData, false] // false = Notification of save success won't be shown.
+    /**
+     * User is redirected to the following path when the form is closed.
+     */
+    const closeWizard = useCallback(async () => {
+      setIsDialogOpen(false);
+      setIsConfirmDialogVisible(false);
+      // Let's empty some store content on close.
+      muutospyyntoActions.reset();
+      return history.push(
+        `/ammatillinenkoulutus/asianhallinta/avoimet?force=true`
       );
-      const muutospyynto =
-        outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
-          .result;
-      // Let's get the path of preview (PDF) document and download the file.
-      const path = await muutospyyntoActions.getLupaPreviewDownloadPath(
-        muutospyynto.uuid
-      );
-      if (path) {
-        muutospyyntoActions.download(path, intl.formatMessage);
-      }
-      return muutospyynto;
-    },
-    [intl.formatMessage, muutospyyntoActions]
-  );
+    }, [history, muutospyyntoActions]);
 
-  /**
-   * Saves the form.
-   * @param {object} formData
-   * @returns {object} - Muutospyyntö
-   */
-  const onSave = useCallback(
-    async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
-      const outputs = await procedureHandler.run(
-        "muutospyynto.tallennus.tallennaEsittelijanToimesta",
-        [formData]
-      );
-      return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
-        .result;
-    },
-    [intl.formatMessage]
-  );
-
-  const onAction = useCallback(
-    async (action, fromDialog = false) => {
-      const formData = createMuutospyyntoOutput(
-        await createObjectToSave(
-          R.toUpper(intl.locale),
-          organisation,
-          lupa,
-          {
-            koulutukset: koulutuksetCO,
-            muut: muutCO,
-            opetuskielet: opetuskieletCO,
-            opiskelijavuodet: opiskelijavuodetCO,
-            toimintaalue: toimintaalueCO,
-            topthree: topThreeCO,
-            tutkinnot: tutkinnotCO,
-            tutkintokielet: tutkintokieletCO,
-            rajoitteet: rajoitteetCO
-          },
-          uuid,
-          kohteet,
-          maaraystyypit,
-          muut,
-          lupaKohteet,
-          "ESITTELIJA"
-        )
-      );
-
-      let muutospyynto = null;
-
-      if (action === "save") {
-        muutospyynto = await onSave(formData);
-      } else if (action === "preview") {
-        muutospyynto = await onPreview(formData);
-      }
-
-      if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
-        if (!uuid && !fromDialog) {
-          // Jos kyseessä on ensimmäinen tallennus...
-          onNewDocSave(muutospyynto.uuid);
-        } else {
-          /**
-           * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
-           * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
-           **/
-          const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-          initializeChanges(changeObjectsFromBackend);
+    /**
+     * Opens the preview.
+     * @param {object} formData
+     */
+    const onPreview = useCallback(
+      async formData => {
+        const procedureHandler = new ProcedureHandler(intl.formatMessage);
+        /**
+         * Let's save the form without notification. Notification about saving isn't
+         * needed when we're going to show a notification related to the preview.
+         */
+        const outputs = await procedureHandler.run(
+          "muutospyynto.tallennus.tallennaEsittelijanToimesta",
+          [formData, false] // false = Notification of save success won't be shown.
+        );
+        const muutospyynto =
+          outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
+            .result;
+        // Let's get the path of preview (PDF) document and download the file.
+        const path = await muutospyyntoActions.getLupaPreviewDownloadPath(
+          muutospyynto.uuid
+        );
+        if (path) {
+          muutospyyntoActions.download(path, intl.formatMessage);
         }
-      }
-    },
-    [
-      kohteet,
-      initializeChanges,
-      intl.locale,
-      koulutuksetCO,
-      lupa,
-      lupaKohteet,
-      maaraystyypit,
-      muut,
-      muutCO,
-      onNewDocSave,
-      onPreview,
-      onSave,
-      opetuskieletCO,
-      opiskelijavuodetCO,
-      organisation,
-      rajoitteetCO,
-      toimintaalueCO,
-      topThreeCO,
-      tutkinnotCO,
-      tutkintokieletCO,
-      uuid
-    ]
-  );
+        return muutospyynto;
+      },
+      [intl.formatMessage, muutospyyntoActions]
+    );
 
-  return (
-    changeObjects !== null && (
-      <div className="max-w-7xl">
-        <FormDialog
-          open={isDialogOpen}
-          onClose={leaveOrOpenCancelModal}
-          maxWidth={"lg"}
-          fullScreen={true}
-          aria-labelledby="simple-dialog-title">
-          <div className={"w-full m-auto"}>
-            <DialogTitleWithStyles id="customized-dialog-title">
-              <div className="flex">
-                <div className="flex-1">
-                  {intl.formatMessage(
-                    wizardMessages.esittelijatMuutospyyntoDialogTitle
-                  )}
+    /**
+     * Saves the form.
+     * @param {object} formData
+     * @returns {object} - Muutospyyntö
+     */
+    const onSave = useCallback(
+      async formData => {
+        const procedureHandler = new ProcedureHandler(intl.formatMessage);
+        const outputs = await procedureHandler.run(
+          "muutospyynto.tallennus.tallennaEsittelijanToimesta",
+          [formData]
+        );
+        return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
+          .result;
+      },
+      [intl.formatMessage]
+    );
+
+    const onAction = useCallback(
+      async (action, fromDialog = false) => {
+        const formData = createMuutospyyntoOutput(
+          await createObjectToSave(
+            R.toUpper(intl.locale),
+            organisation,
+            lupa,
+            {
+              koulutukset: koulutuksetCO,
+              muut: muutCO,
+              opetuskielet: opetuskieletCO,
+              opiskelijavuodet: opiskelijavuodetCO,
+              toimintaalue: toimintaalueCO,
+              topthree: topThreeCO,
+              tutkinnot: tutkinnotCO,
+              tutkintokielet: tutkintokieletCO,
+              rajoitteet: rajoitteetCO
+            },
+            uuid,
+            kohteet,
+            maaraystyypit,
+            muut,
+            lupaKohteet,
+            "ESITTELIJA"
+          )
+        );
+
+        let muutospyynto = null;
+
+        if (action === "save") {
+          muutospyynto = await onSave(formData);
+        } else if (action === "preview") {
+          muutospyynto = await onPreview(formData);
+        }
+
+        if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
+          if (!uuid && !fromDialog) {
+            // Jos kyseessä on ensimmäinen tallennus...
+            onNewDocSave(muutospyynto.uuid);
+          } else {
+            /**
+             * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
+             * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
+             **/
+            const changeObjectsFromBackend = getSavedChangeObjects(
+              muutospyynto
+            );
+            initializeChanges(changeObjectsFromBackend);
+          }
+        }
+      },
+      [
+        kohteet,
+        initializeChanges,
+        intl.locale,
+        koulutuksetCO,
+        lupa,
+        lupaKohteet,
+        maaraystyypit,
+        muut,
+        muutCO,
+        onNewDocSave,
+        onPreview,
+        onSave,
+        opetuskieletCO,
+        opiskelijavuodetCO,
+        organisation,
+        rajoitteetCO,
+        toimintaalueCO,
+        topThreeCO,
+        tutkinnotCO,
+        tutkintokieletCO,
+        uuid
+      ]
+    );
+
+    return (
+      changeObjects !== null && (
+        <div className="max-w-7xl">
+          <FormDialog
+            open={isDialogOpen}
+            onClose={leaveOrOpenCancelModal}
+            maxWidth={"lg"}
+            fullScreen={true}
+            aria-labelledby="simple-dialog-title">
+            <div className={"w-full m-auto"}>
+              <DialogTitleWithStyles id="customized-dialog-title">
+                <div className="flex">
+                  <div className="flex-1">
+                    {intl.formatMessage(
+                      wizardMessages.esittelijatMuutospyyntoDialogTitle
+                    )}
+                  </div>
+                  <div>
+                    <SimpleButton
+                      text={`${intl.formatMessage(wizardMessages.getOut)} X`}
+                      onClick={leaveOrOpenCancelModal}
+                      variant={"text"}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <SimpleButton
-                    text={`${intl.formatMessage(wizardMessages.getOut)} X`}
-                    onClick={leaveOrOpenCancelModal}
-                    variant={"text"}
-                  />
-                </div>
-              </div>
-            </DialogTitleWithStyles>
-          </div>
-          <DialogContentWithStyles>
-            <div className="mb-20">
-              {!R.isEmpty(organisation) ? (
-                <Lupanakyma
-                  history={history}
-                  kielet={kielet}
-                  kohteet={kohteet}
-                  koulutukset={koulutukset}
-                  koulutusalat={koulutusalat}
-                  koulutustyypit={koulutustyypit}
-                  kunnat={kunnat}
-                  maaraykset={lupa.maaraykset}
-                  lupaKohteet={lupaKohteet}
-                  maakunnat={maakunnat}
-                  maakuntakunnat={maakuntakunnat}
-                  maaraystyypit={maaraystyypit}
-                  muut={muut}
-                  onNewDocSave={onNewDocSave}
-                  organisation={organisation}
-                  tutkinnot={tutkinnot}
-                />
-              ) : null}
+              </DialogTitleWithStyles>
             </div>
-            <EsittelijatWizardActions
-              isSavingEnabled={isSavingEnabled}
-              onClose={leaveOrOpenCancelModal}
-              onPreview={() => {
-                return onAction("preview");
-              }}
-              onSave={() => {
-                return onAction("save");
-              }}
-            />
-          </DialogContentWithStyles>
-        </FormDialog>
-        <ConfirmDialog
-          isConfirmDialogVisible={isConfirmDialogVisible}
-          messages={{
-            content: intl.formatMessage(
-              common.confirmExitEsittelijaMuutoshakemusWizard
-            ),
-            ok: intl.formatMessage(common.save),
-            noSave: intl.formatMessage(common.noSave),
-            cancel: intl.formatMessage(common.cancel),
-            title: intl.formatMessage(
-              common.confirmExitEsittelijaMuutoshakemusWizardTitle
-            )
-          }}
-          handleOk={async () => {
-            await onAction("save", true);
-            closeWizard();
-          }}
-          handleCancel={handleCancel}
-          handleExitAndAbandonChanges={closeWizard}
-        />
-      </div>
-    )
-  );
-};
+            <DialogContentWithStyles>
+              <div className="mb-20">
+                {!R.isEmpty(organisation) ? (
+                  <Lupanakyma
+                    history={history}
+                    kielet={kielet}
+                    kohteet={kohteet}
+                    koulutukset={koulutukset}
+                    koulutusalat={koulutusalat}
+                    koulutustyypit={koulutustyypit}
+                    kunnat={kunnat}
+                    maaraykset={lupa.maaraykset}
+                    lupaKohteet={lupaKohteet}
+                    maakunnat={maakunnat}
+                    maakuntakunnat={maakuntakunnat}
+                    maaraystyypit={maaraystyypit}
+                    muut={muut}
+                    onNewDocSave={onNewDocSave}
+                    organisation={organisation}
+                    tutkinnot={tutkinnot}
+                  />
+                ) : null}
+              </div>
+              <EsittelijatWizardActions
+                isSavingEnabled={isSavingEnabled}
+                onClose={leaveOrOpenCancelModal}
+                onPreview={() => {
+                  return onAction("preview");
+                }}
+                onSave={() => {
+                  return onAction("save");
+                }}
+              />
+            </DialogContentWithStyles>
+          </FormDialog>
+          <ConfirmDialog
+            isConfirmDialogVisible={isConfirmDialogVisible}
+            messages={{
+              content: intl.formatMessage(
+                common.confirmExitEsittelijaMuutoshakemusWizard
+              ),
+              ok: intl.formatMessage(common.save),
+              noSave: intl.formatMessage(common.noSave),
+              cancel: intl.formatMessage(common.cancel),
+              title: intl.formatMessage(
+                common.confirmExitEsittelijaMuutoshakemusWizardTitle
+              )
+            }}
+            handleOk={async () => {
+              await onAction("save", true);
+              closeWizard();
+            }}
+            handleCancel={handleCancel}
+            handleExitAndAbandonChanges={closeWizard}
+          />
+        </div>
+      )
+    );
+  }
+);
 
 UusiAsiaDialog.propTypes = {
   history: PropTypes.object,

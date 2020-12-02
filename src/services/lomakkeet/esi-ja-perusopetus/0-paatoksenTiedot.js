@@ -22,7 +22,7 @@ const isFieldEmpty = (anchor, defaultValue, changeObjects) => {
  */
 export default async function getPaatoksenTiedot(
   data,
-  isReadOnly,
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects
 ) {
@@ -71,10 +71,7 @@ export default async function getPaatoksenTiedot(
               isValid,
               label: __("asianumero"),
               type: "text",
-              value: defaultAsianumero,
-              forChangeObject: {
-                uuid: data.uuid
-              }
+              value: defaultAsianumero
             }
           }
         ]
@@ -92,10 +89,7 @@ export default async function getPaatoksenTiedot(
               isValid,
               label: __("diaarinumero"),
               type: "text",
-              value: defaultDiaarinumero,
-              forChangeObject: {
-                uuid: data.uuid
-              }
+              value: defaultDiaarinumero
             }
           }
         ]

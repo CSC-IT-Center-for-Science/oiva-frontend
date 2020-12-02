@@ -28,7 +28,7 @@ const StatusTextRow = React.memo(
     }, [styleClasses]);
 
     useEffect(() => {
-      const paddingClass = layout && layout.dense ? "pt-2" : "py-2";
+      const paddingClass = layout && layout.dense ? "" : "";
       setClassNames(prevValue => {
         return R.append(paddingClass, prevValue);
       });
@@ -45,9 +45,11 @@ const StatusTextRow = React.memo(
             )}
             <div className="flex">
               <div className="flex-1">
-                {code ? <span className="pr-4">{code}</span> : null}
-                <span>{title}</span>
-                {!isReadOnly && isRequired && <span className="pr-4">*</span>}
+                <p>
+                  {code ? <span className="pr-4">{code}</span> : null}
+                  <span>{title}</span>
+                  {!isReadOnly && isRequired && <span className="pr-4">*</span>}
+                </p>
               </div>
             </div>
           </div>

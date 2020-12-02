@@ -190,7 +190,7 @@ async function getModificationForm(
 export default async function getOpiskelijavuodetLomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

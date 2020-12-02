@@ -21,7 +21,7 @@ export function getKuljettajienJatkokoulutuslomake(
 export function getKuljettajienPeruskoulutuslomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   prefix
 ) {
   switch (action) {

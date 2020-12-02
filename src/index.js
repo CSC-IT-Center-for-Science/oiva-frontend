@@ -1,4 +1,4 @@
-// import "./wdyr";
+import "./wdyr";
 import React from "react";
 import { render } from "react-dom";
 import { ThroughProvider } from "react-through";
@@ -40,7 +40,9 @@ theme.typography.h1 = {
   paddingTop: "1rem",
   [theme.breakpoints.down("xs")]: {
     fontSize: "1.875rem"
-  }
+  },
+  paddingBottom: "1rem",
+  paddingTop: "1rem"
 };
 
 theme.typography.h2 = {
@@ -51,7 +53,9 @@ theme.typography.h2 = {
   paddingTop: "1rem",
   [theme.breakpoints.down("xs")]: {
     fontSize: "1.375rem"
-  }
+  },
+  paddingBottom: "1rem",
+  paddingTop: "1rem"
 };
 
 theme.typography.h3 = {
@@ -71,7 +75,7 @@ theme.typography.h4 = {
 };
 
 theme.typography.p = {
-  paddingBottom: "1.5rem"
+  marginBottom: "1.5rem"
 };
 
 theme.palette.primary.main = COLORS.OIVA_GREEN;

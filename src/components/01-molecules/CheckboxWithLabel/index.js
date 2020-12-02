@@ -5,8 +5,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import green from "@material-ui/core/colors/green";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { isEqual } from "lodash";
 import Check from "@material-ui/icons/CheckBoxOutlined";
+import { equals } from "ramda";
+
 /**
  * @module Components/01-molecules
  */
@@ -22,15 +23,17 @@ import Check from "@material-ui/icons/CheckBoxOutlined";
  */
 const CheckboxWithLabel = React.memo(
   ({
+    forChangeObject,
+    fullAnchor,
     children,
     id,
     isChecked,
     isDisabled,
     isIndeterminate,
+    isPreviewModeOn,
     isReadOnly,
     labelStyles,
-    onChanges,
-    payload
+    onChanges
   }) => {
     const styles = makeStyles({
       root: {
@@ -44,11 +47,14 @@ const CheckboxWithLabel = React.memo(
     })();
 
     const handleChanges = useCallback(() => {
-      onChanges(payload, {
-        isChecked: !isChecked,
-        isIndeterminate: isChecked ? true : false
-      });
-    }, [isChecked, onChanges, payload]);
+      onChanges(
+        { forChangeObject, fullAnchor },
+        {
+          isChecked: !isChecked,
+          isIndeterminate: isChecked ? true : false
+        }
+      );
+    }, [forChangeObject, fullAnchor, isChecked, onChanges]);
 
     return (
       <React.Fragment>
@@ -79,8 +85,16 @@ const CheckboxWithLabel = React.memo(
         ) : (
           isChecked && (
             <div className="flex flex-row text-base mb-2">
-              <Check />
-              <span className="my-auto">{children}</span>
+              {isPreviewModeOn ? (
+                <ul className="list-disc leading-none">
+                  <li>{children}</li>
+                </ul>
+              ) : (
+                <React.Fragment>
+                  <Check />
+                  <span className="my-auto">{children}</span>
+                </React.Fragment>
+              )}
             </div>
           )
         )}
@@ -89,11 +103,13 @@ const CheckboxWithLabel = React.memo(
   },
   (cp, np) => {
     return (
+      equals(cp.forChangeObject, np.forChangeObject) &&
+      equals(cp.fullAnchor, np.fullAnchor) &&
       cp.isChecked === np.isChecked &&
       cp.isDisabled === np.isDisabled &&
       cp.isIndeterminate === np.isIndeterminate &&
-      cp.isReadOnly === np.isReadOnly &&
-      isEqual(cp.payload, np.payload)
+      cp.isPreviewModeOn === np.isPreviewModeOn &&
+      cp.isReadOnly === np.isReadOnly
     );
   }
 );
@@ -102,15 +118,18 @@ CheckboxWithLabel.defaultProps = {
   isChecked: false,
   isDisabled: false,
   isIndeterminate: false,
-  isReadOnly: false,
-  payload: {}
+  isReadOnly: false
 };
 
 CheckboxWithLabel.propTypes = {
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isChecked: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isIndeterminate: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   /**
    * Will be called after checking or unchecking the checkbox.
    */
@@ -118,9 +137,7 @@ CheckboxWithLabel.propTypes = {
   /**
    * A parameter of the onChanges function.
    */
-  labelStyles: PropTypes.object,
-  payload: PropTypes.object,
-  isReadOnly: PropTypes.bool
+  labelStyles: PropTypes.object
 };
 
 export default CheckboxWithLabel;

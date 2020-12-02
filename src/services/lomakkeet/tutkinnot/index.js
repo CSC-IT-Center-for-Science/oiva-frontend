@@ -64,8 +64,10 @@ function getModificationForm(
                         removal: isRemoved,
                         custom: Object.assign(
                           {},
-                            // bold text if tutkinto is in lupa, but osaamisalarajoitus is not
-                            !!tutkinto.maarays && !osaamisala.maarays ? isInLupa : {}
+                          // bold text if tutkinto is in lupa, but osaamisalarajoitus is not
+                          !!tutkinto.maarays && !osaamisala.maarays
+                            ? isInLupa
+                            : {}
                         )
                       },
                       isChecked: !!tutkinto.maarays && !osaamisala.maarays
@@ -82,7 +84,12 @@ function getModificationForm(
   }, koulutustyypit).filter(Boolean);
 }
 
-export default function getTutkinnotLomake(action, data, isReadOnly, locale) {
+export default function getTutkinnotLomake(
+  action,
+  data,
+  { isReadOnly },
+  locale
+) {
   switch (action) {
     case "modification":
       return getModificationForm(

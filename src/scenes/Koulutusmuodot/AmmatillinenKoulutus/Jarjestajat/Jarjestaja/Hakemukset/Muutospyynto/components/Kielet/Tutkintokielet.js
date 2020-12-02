@@ -17,7 +17,9 @@ const Tutkintokielet = ({ koulutusalat }) => {
 
   return (
     <React.Fragment>
-      <Typography component="h4" variant="h4">{intl.formatMessage(wizard.tutkintokielet)}</Typography>
+      <Typography component="h4" variant="h4">
+        {intl.formatMessage(wizard.tutkintokielet)}
+      </Typography>
       {map(koulutusala => {
         if (tutkintodata[koulutusala.koodiarvo]) {
           return (

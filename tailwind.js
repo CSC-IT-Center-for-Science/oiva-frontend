@@ -22,7 +22,9 @@ module.exports = {
       md: "768px",
       lg: "992px",
       xl: "1200px",
-      xxl: "1600px"
+      xxl: "1600px",
+      kk: "2160px", // 2k
+      kkk: "3240px" // 3k
     },
     colors: {
       // custom

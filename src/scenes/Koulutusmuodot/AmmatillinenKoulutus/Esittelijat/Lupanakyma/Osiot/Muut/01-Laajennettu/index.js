@@ -15,7 +15,7 @@ const Laajennettu = React.memo(
 
     return (
       <Lomake
-        action="modification"
+        mode="modification"
         anchor={sectionId}
         data={dataLomakepalvelulle}
         path={constants.formLocation}
