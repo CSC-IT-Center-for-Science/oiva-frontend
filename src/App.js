@@ -34,7 +34,6 @@ import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import "@reach/skip-nav/styles.css";
 import SessionDialog from "SessionDialog";
-import Asianhallinta from "scenes/Asianhallinta";
 import AmmatillinenKoulutus from "scenes/Koulutusmuodot/AmmatillinenKoulutus";
 import EsiJaPerusopetus from "scenes/Koulutusmuodot/EsiJaPerusopetus";
 import Lukiokoulutus from "scenes/Koulutusmuodot/Lukiokoulutus";
@@ -168,13 +167,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
     },
     { path: "/tilastot", text: intl.formatMessage(common.statistics) }
   ];
-
-  if (sessionStorage.getItem("role") === ROLE_ESITTELIJA) {
-    pageLinks.push({
-      path: "/asianhallinta",
-      text: intl.formatMessage(common.asianhallinta)
-    });
-  }
 
   const authenticationLink = useMemo(() => {
     return {
@@ -388,14 +380,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                         koulutusmuoto={koulutusmuodot.vapaaSivistystyo}
                       />
                     )}
-                  />
-                  <Route
-                    path="/asianhallinta"
-                    render={() => {
-                      return user && !user.isLoading && organisation ? (
-                        <Asianhallinta />
-                      ) : null;
-                    }}
                   />
                   <Route
                     path="/saavutettavuusseloste"
