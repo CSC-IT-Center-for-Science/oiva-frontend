@@ -14,6 +14,7 @@ import Lomake from "components/02-organisms/Lomake";
 import * as R from "ramda";
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
 import { Typography } from "@material-ui/core";
+import FormTitle from "components/00-atoms/FormTitle";
 
 const constants = {
   formLocation: {
@@ -133,6 +134,11 @@ const EsittelijatMuutospyynto = ({
         <Typography component="h2" variant="h2">
           {intl.formatMessage(common.changesText)}
         </Typography>
+
+        <FormTitle
+          code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          title={sectionHeadings.tutkinnotJaKoulutukset.title}
+        />
 
         <Tutkinnot
           code={sectionHeadings.tutkinnotJaKoulutukset.number}

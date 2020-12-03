@@ -11,7 +11,7 @@ import { compose, filter, not, pathEq } from "ramda";
 import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
-  button: {
+  noPadding: {
     padding: 0
   }
 }));
@@ -67,7 +67,11 @@ const ExpandableRowRoot = ({
           shouldBeExpanded={isExpanded}
           onToggle={onToggle}
           id={anchor}>
-          <Typography component="h4" variant="h4" data-slot="title">
+          <Typography
+            component="h4"
+            variant="h4"
+            classes={{ root: classes.noPadding }}
+            data-slot="title">
             {code && <span className="pr-6">{code}</span>}
             <span>{title}</span>
           </Typography>
@@ -87,7 +91,7 @@ const ExpandableRowRoot = ({
                       <Button
                         component="span"
                         color="primary"
-                        className={classes.button}
+                        className={classes.noPadding}
                         endIcon={<UndoIcon />}
                         onClick={e => {
                           e.stopPropagation();

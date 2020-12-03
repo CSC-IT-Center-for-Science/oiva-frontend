@@ -1,11 +1,13 @@
 import { getKunnatFromStorage } from "helpers/kunnat";
 import { getMaakunnat, getMaakuntakunnat } from "helpers/maakunnat";
 import {
+  compose,
   filter,
   find,
   includes,
   map,
   mapObjIndexed,
+  not,
   pathEq,
   prop,
   propEq,
@@ -57,7 +59,11 @@ export const getToimintaaluelomake = async (
   changeObjects,
   { onChanges, toggleEditView }
 ) => {
-  const kunnat = await getKunnatFromStorage();
+  const kunnat = filter(
+    // 200 = Ulkomaa
+    compose(not, propEq("koodiarvo", "200")),
+    await getKunnatFromStorage()
+  );
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
 

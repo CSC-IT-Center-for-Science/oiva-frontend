@@ -1,6 +1,7 @@
 import { getKunnatFromStorage } from "helpers/kunnat";
 import { getMaakunnat, getMaakuntakunnat } from "helpers/maakunnat";
 import {
+  compose,
   flatten,
   filter,
   find,
@@ -8,6 +9,7 @@ import {
   isEmpty,
   map,
   mapObjIndexed,
+  not,
   pathEq,
   prop,
   propEq,
@@ -65,6 +67,12 @@ export const opetustaAntavatKunnat = async (
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
   const ulkomaa = find(propEq("koodiarvo", "200"), kunnat);
+
+  const kunnatIlmanUlkomaata = filter(
+    // 200 = Ulkomaa
+    compose(not, propEq("koodiarvo", "200")),
+    kunnat
+  );
 
   const localeUpper = toUpper(locale);
   const maaraysUuid = valtakunnallinenMaarays.uuid;
@@ -199,7 +207,7 @@ export const opetustaAntavatKunnat = async (
               changeObjectsByProvince,
               isEditViewActive,
               localizations,
-              municipalities: kunnat,
+              municipalities: kunnatIlmanUlkomaata,
               onChanges,
               toggleEditView,
               provinces: options,

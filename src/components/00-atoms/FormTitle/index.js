@@ -6,25 +6,17 @@ const defaultProps = {
   level: 2
 };
 
-const FormTitle = ({
-  code,
-  isPreviewModeOn,
-  level = defaultProps.level,
-  title
-}) => {
+const FormTitle = ({ code, level = defaultProps.level, title }) => {
   return (
-    <div className={`${isPreviewModeOn ? "" : "px-4"}`}>
-      <Typography component={`h${level}`} variant={`h${level}`}>
-        {code ? `${code}. ` : ""}
-        {title}
-      </Typography>
-    </div>
+    <Typography component={`h${level}`} variant={`h${level}`}>
+      {code ? `${code}. ` : ""}
+      {title}
+    </Typography>
   );
 };
 
 FormTitle.propTypes = {
   code: PropTypes.string,
-  isPreviewModeOn: PropTypes.bool,
   level: PropTypes.number,
   title: PropTypes.string
 };
