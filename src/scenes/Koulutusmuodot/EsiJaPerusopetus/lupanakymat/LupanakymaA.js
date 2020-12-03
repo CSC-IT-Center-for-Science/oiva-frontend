@@ -36,6 +36,7 @@ const LupanakymaA = ({
   valtakunnallinenMaarays
 }) => {
   const intl = useIntl();
+
   return (
     <div
       className={`p-6 bg-white ${

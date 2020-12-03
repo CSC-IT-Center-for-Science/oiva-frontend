@@ -40,9 +40,7 @@ theme.typography.h1 = {
   paddingTop: "1rem",
   [theme.breakpoints.down("xs")]: {
     fontSize: "1.875rem"
-  },
-  paddingBottom: "1rem",
-  paddingTop: "1rem"
+  }
 };
 
 theme.typography.h2 = {
@@ -53,9 +51,7 @@ theme.typography.h2 = {
   paddingTop: "1rem",
   [theme.breakpoints.down("xs")]: {
     fontSize: "1.375rem"
-  },
-  paddingBottom: "1rem",
-  paddingTop: "1rem"
+  }
 };
 
 theme.typography.h3 = {
