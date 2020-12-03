@@ -18,7 +18,7 @@ import getTutkinnotPerustelulomake from "./perustelut/tutkinnot/";
 import getTutkinnotLomake from "./tutkinnot";
 import getOpetuskieletLomake from "./kielet/opetuskielet";
 import getTutkintokieletLomake from "./kielet/tutkintokielet";
-import getToimintaaluelomake from "./toimintaalue";
+import { getToimintaaluelomake } from "./toimintaalue";
 import getOpiskelijavuodetLomake from "./opiskelijavuodet";
 import getPerustelutLiitteetlomake from "./perustelut/liitteet";
 import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
@@ -142,12 +142,12 @@ const lomakkeet = {
     }
   },
   toimintaalue: {
-    modification: (data, booleans, locale) =>
-      getToimintaaluelomake("modification", data, booleans, locale)
+    modification: (data, booleans, locale, changeObjects, functions) =>
+      getToimintaaluelomake(data, booleans, locale, changeObjects, functions)
   },
   opiskelijavuodet: {
     modification: (data, booleans, locale) =>
-      getOpiskelijavuodetLomake("modification", data, booleans, locale)
+      getOpiskelijavuodetLomake(data, booleans, locale)
   },
 
   // Wizard page 2 forms
@@ -159,12 +159,7 @@ const lomakkeet = {
       },
       tutkintokielet: {
         reasoning: (data, booleans, locale) =>
-          getTutkintokieletPerustelulomake(
-            "reasoning",
-            data,
-            booleans,
-            locale
-          )
+          getTutkintokieletPerustelulomake("reasoning", data, booleans, locale)
       }
     },
     koulutukset: {
@@ -336,8 +331,14 @@ const lomakkeet = {
   // Esi- ja perusopetus
   esiJaPerusopetus: {
     erityisetKoulutustehtavat: {
-      modification: (data, booleans, locale, changeObjects) =>
-        erityisetKoulutustehtavat(data, booleans, locale, changeObjects),
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        erityisetKoulutustehtavat(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        ),
       preview: (data, booleans, locale, changeObjects) =>
         previewOfErityisetKoulutustehtavat(
           data,
@@ -347,8 +348,8 @@ const lomakkeet = {
         )
     },
     muutEhdot: {
-      modification: (data, booleans, locale, changeObjects) =>
-        muutEhdot(data, booleans, locale, changeObjects),
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        muutEhdot(data, booleans, locale, changeObjects, functions),
       preview: (data, booleans, locale, changeObjects) =>
         previewOfMuutEhdot(data, booleans, locale, changeObjects)
     },
@@ -385,18 +386,24 @@ const lomakkeet = {
         getPaatoksenTiedot(data, booleans, locale, changeObjects)
     },
     opetustaAntavatKunnat: {
-      modification: (data, booleans, locale) =>
-        opetustaAntavatKunnat(data, booleans, locale),
-      preview: (data, booleans, locale) =>
-        previewOfOpetustaAntavaKunnat(data, booleans, locale)
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        opetustaAntavatKunnat(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects, functions) =>
+        previewOfOpetustaAntavaKunnat(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        )
     },
     rajoite: {
-      addition: (data, booleans, locale, changeObjects) =>
-        rajoitelomake(data, booleans, locale, changeObjects)
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        rajoitelomake(data, booleans, locale, changeObjects, functions)
     },
     rajoitteet: {
-      addition: (data, booleans, locale, changeObjects) =>
-        rajoitteet(data, booleans, locale, changeObjects)
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        rajoitteet(data, booleans, locale, changeObjects, functions)
     }
   }
 };
@@ -405,6 +412,7 @@ export async function getLomake(
   mode = "addition",
   changeObjects = [],
   data = {},
+  functions = {},
   booleans,
   locale,
   _path = [],
@@ -414,7 +422,7 @@ export async function getLomake(
   setLocale(locale);
   const fn = path(append(mode, _path), lomakkeet);
   const lomake = fn
-    ? await fn(data, booleans, locale, changeObjects, prefix)
+    ? await fn(data, booleans, locale, changeObjects, functions, prefix)
     : [];
 
   return lomake;

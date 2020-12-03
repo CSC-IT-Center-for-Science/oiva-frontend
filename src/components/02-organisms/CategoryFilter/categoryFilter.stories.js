@@ -39,11 +39,9 @@ storiesOf("CategoryFilter", module)
         changeObjectsByProvince={{}}
         showCategoryTitles={false}
         onChanges={changeObjectsByMaakunta => {
-          console.info(changeObjectsByMaakunta);
           return changeObjectsByMaakunta;
         }}
         toggleEditView={_isEditViewActive => {
-          console.info(_isEditViewActive);
           store.set({ isEditViewActive: _isEditViewActive });
         }}
       />
@@ -73,11 +71,9 @@ storiesOf("CategoryFilter", module)
         changeObjectsByProvince={{}}
         showCategoryTitles={false}
         onChanges={changeObjectsByMaakunta => {
-          console.info(changeObjectsByMaakunta);
           return changeObjectsByMaakunta;
         }}
         toggleEditView={_isEditViewActive => {
-          console.info(_isEditViewActive);
           store.set({ isEditViewActive: _isEditViewActive });
         }}
       />
@@ -107,11 +103,9 @@ storiesOf("CategoryFilter", module)
         changeObjectsByProvince={{}}
         showCategoryTitles={false}
         onChanges={changeObjectsByMaakunta => {
-          console.info(changeObjectsByMaakunta);
           return changeObjectsByMaakunta;
         }}
         toggleEditView={_isEditViewActive => {
-          console.info(_isEditViewActive);
           store.set({ isEditViewActive: _isEditViewActive });
         }}
       />

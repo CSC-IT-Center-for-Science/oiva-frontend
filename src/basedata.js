@@ -16,7 +16,9 @@ import {
   omit,
   head,
   filter,
-  test
+  test,
+  propEq,
+  find
 } from "ramda";
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
@@ -136,8 +138,11 @@ const fetchBaseData = async (
     lupaByYtunnus: ytunnus
       ? await getRaw(
           "lupaByYtunnus",
-          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false${
-            koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
+          `${
+            backendRoutes.lupaByYtunnus.path
+          }${ytunnus}?with=all&useKoodistoVersions=false${
+            koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+          }`,
           keys,
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
@@ -251,7 +256,9 @@ const fetchBaseData = async (
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     tulevatLuvat: await getRaw(
       "tulevatLuvat",
-      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false${
+      `${backendRoutes.tulevatLuvat.path}${ytunnus}${
+        backendRoutes.tulevatLuvat.postfix
+      }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
       }`,
       keys,
@@ -279,6 +286,21 @@ const fetchBaseData = async (
    * dataa. Samalla noudettu data tallennetaan lokaaliin tietovarastoon
    * (indexedDB / WebSQL / localStorage) myöhempää käyttöä varten.
    */
+  const maakuntakunnat = raw.maakuntakunnat
+    ? await localforage.setItem(
+        "maakuntakunnat",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maakunta => {
+            return initializeMaakunta(maakunta, localeUpper);
+          }, raw.maakuntakunnat).filter(Boolean)
+        )
+      )
+    : undefined;
+
+  const ahvenanmaanKunnat =
+    (find(propEq("koodiarvo", "21"), maakuntakunnat) || {}).kunnat || [];
+
   const result = {
     elykeskukset: raw.elykeskukset,
     kielet: raw.kielet
@@ -292,16 +314,16 @@ const fetchBaseData = async (
           )
         )
       : undefined,
-    kieletOPH: raw.kieletOPH ?
-      await localforage.setItem(
-        "kieletOPH",
-        sortLanguages(
-          map(kieli => {
-            return initializeKieli(kieli);
-          }, raw.kieletOPH),
-        localeUpper
+    kieletOPH: raw.kieletOPH
+      ? await localforage.setItem(
+          "kieletOPH",
+          sortLanguages(
+            map(kieli => {
+              return initializeKieli(kieli);
+            }, raw.kieletOPH),
+            localeUpper
+          )
         )
-      )
       : undefined,
     ensisijaisetOpetuskieletOPH: raw.kieletOPH
       ? await localforage.setItem(
@@ -399,7 +421,7 @@ const fetchBaseData = async (
           sortBy(
             path(["metadata", localeUpper, "nimi"]),
             map(kunta => {
-              return initializeKunta(kunta, localeUpper);
+              return initializeKunta(kunta, ahvenanmaanKunnat);
             }, raw.kunnat).filter(Boolean)
           )
         )
@@ -434,32 +456,23 @@ const fetchBaseData = async (
           "maakunnat",
           sortBy(
             path(["metadata", localeUpper, "nimi"]),
-            map(
-              maakunta =>
-                omit(["koodiArvo"], {
-                  ...maakunta,
-                  koodiarvo: maakunta.koodiArvo,
-                  metadata: mapObjIndexed(
-                    head,
-                    groupBy(prop("kieli"), maakunta.metadata)
-                  )
-                }),
-              raw.maakunnat
-            ).filter(Boolean)
-          )
-        )
-      : undefined,
-    maakuntakunnat: raw.maakuntakunnat
-      ? await localforage.setItem(
-          "maakuntakunnat",
-          sortBy(
-            path(["metadata", localeUpper, "nimi"]),
             map(maakunta => {
-              return initializeMaakunta(maakunta, localeUpper);
-            }, raw.maakuntakunnat).filter(Boolean)
+              // Ahvenanmaan maakuntaa (21) ei tarvita, 99 = Ei tiedossa
+              return maakunta.koodiArvo !== "21" && maakunta.koodiArvo !== "99"
+                ? omit(["koodiArvo"], {
+                    ...maakunta,
+                    koodiarvo: maakunta.koodiArvo,
+                    metadata: mapObjIndexed(
+                      head,
+                      groupBy(prop("kieli"), maakunta.metadata)
+                    )
+                  })
+                : null;
+            }, raw.maakunnat).filter(Boolean)
           )
         )
       : undefined,
+    maakuntakunnat,
     maaraystyypit: raw.maaraystyypit
       ? await localforage.setItem("maaraystyypit", raw.maaraystyypit)
       : undefined,

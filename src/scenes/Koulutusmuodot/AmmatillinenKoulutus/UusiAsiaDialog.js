@@ -23,6 +23,8 @@ import {
 import Lupanakyma from "./Esittelijat/Lupanakyma/index";
 import { createObjectToSave } from "helpers/ammatillinenKoulutus/tallentaminen/esittelijat";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
+import equal from "react-fast-compare";
+import { useAllSections } from "stores/lomakedata";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -58,7 +60,6 @@ const FormDialog = withStyles(() => ({
 });
 
 const defaultProps = {
-  kielet: [],
   kohteet: [],
   koulutukset: {
     muut: {},
@@ -66,35 +67,26 @@ const defaultProps = {
   },
   koulutusalat: {},
   koulutustyypit: {},
-  kunnat: [],
   lupa: {},
   lupaKohteet: {},
-  maakunnat: [],
-  maakuntakunnat: [],
   maaraystyypit: [],
   muut: [],
   opetuskielet: [],
-  organisation: {},
-  tutkinnot: []
+  organisation: {}
 };
 
 const UusiAsiaDialog = React.memo(
   ({
-    kielet = defaultProps.kielet,
     kohteet = defaultProps.kohteet,
     koulutukset = defaultProps.koulutukset,
     koulutusalat = defaultProps.koulutusalat,
     koulutustyypit = defaultProps.koulutustyypit,
-    kunnat = defaultProps.kunnat,
     lupa = defaultProps.lupa,
     lupaKohteet = defaultProps.lupaKohteet,
-    maakunnat = defaultProps.maakunnat,
-    maakuntakunnat = defaultProps.maakuntakunnat,
     maaraystyypit = defaultProps.maaraystyypit,
     muut = defaultProps.muut,
     onNewDocSave,
-    organisation = defaultProps.organisation,
-    tutkinnot = defaultProps.tutkinnot
+    organisation = defaultProps.organisation
   }) => {
     const intl = useIntl();
     const params = useParams();
@@ -107,6 +99,7 @@ const UusiAsiaDialog = React.memo(
     const [unsavedChangeObjects] = useUnsavedChangeObjects();
     const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
     const [, muutospyyntoActions] = useMuutospyynto();
+    const [lomakedata] = useAllSections();
 
     // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
     const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -243,7 +236,7 @@ const UusiAsiaDialog = React.memo(
             maaraystyypit,
             muut,
             lupaKohteet,
-            "ESITTELIJA"
+            lomakedata
           )
         );
 
@@ -256,7 +249,7 @@ const UusiAsiaDialog = React.memo(
         }
 
         if (!!muutospyynto && R.prop("uuid", muutospyynto)) {
-          if (!uuid && !fromDialog) {
+          if (!uuid && !fromDialog && !!onNewDocSave) {
             // Jos kyseessä on ensimmäinen tallennus...
             onNewDocSave(muutospyynto.uuid);
           } else {
@@ -276,6 +269,7 @@ const UusiAsiaDialog = React.memo(
         initializeChanges,
         intl.locale,
         koulutuksetCO,
+        lomakedata,
         lupa,
         lupaKohteet,
         maaraystyypit,
@@ -328,21 +322,16 @@ const UusiAsiaDialog = React.memo(
                 {!R.isEmpty(organisation) ? (
                   <Lupanakyma
                     history={history}
-                    kielet={kielet}
                     kohteet={kohteet}
                     koulutukset={koulutukset}
                     koulutusalat={koulutusalat}
                     koulutustyypit={koulutustyypit}
-                    kunnat={kunnat}
                     maaraykset={lupa.maaraykset}
                     lupaKohteet={lupaKohteet}
-                    maakunnat={maakunnat}
-                    maakuntakunnat={maakuntakunnat}
                     maaraystyypit={maaraystyypit}
                     muut={muut}
                     onNewDocSave={onNewDocSave}
                     organisation={organisation}
-                    tutkinnot={tutkinnot}
                   />
                 ) : null}
               </div>
@@ -381,26 +370,24 @@ const UusiAsiaDialog = React.memo(
         </div>
       )
     );
+  },
+  (cp, np) => {
+    return equal(cp, np);
   }
 );
 
 UusiAsiaDialog.propTypes = {
   history: PropTypes.object,
-  kielet: PropTypes.array,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  kunnat: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
-  maakunnat: PropTypes.array,
-  maakuntakunnat: PropTypes.array,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   onChangeObjectsUpdate: PropTypes.func,
   onNewDocSave: PropTypes.func,
   opetuskielet: PropTypes.array,
-  organisation: PropTypes.object,
-  tutkinnot: PropTypes.array
+  organisation: PropTypes.object
 };
 
 export default UusiAsiaDialog;

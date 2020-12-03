@@ -9,8 +9,6 @@ export default async function getOpetustehtavatLomake(
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const localeUpper = toUpper(locale);
 
-  console.info(changeObjects, opetustehtavat, locale);
-
   if (opetustehtavat.length) {
     return {
       anchor: "rajoitus",
@@ -23,7 +21,6 @@ export default async function getOpetustehtavatLomake(
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `opetustehtavat.opetustehtava.${opetustehtava.koodiarvo}`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
-              console.info(changeObj);
               return (!!maarays &&
                 (!changeObj || changeObj.properties.isChecked)) ||
                 (changeObj && changeObj.properties.isChecked)

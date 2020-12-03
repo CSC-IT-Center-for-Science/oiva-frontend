@@ -134,7 +134,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       <Lomake
         anchor={sectionId}
         code={code}
-        data={lomakedata}
+        data={{ lomakedata: { ...lomakedata, sectionId }, muutLomakedata }}
         formTitle={title}
         isRowExpanded={true}
         mode="modification"

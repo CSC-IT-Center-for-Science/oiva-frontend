@@ -512,7 +512,6 @@ const MuutospyyntoWizard = ({
                     onChangesRemove={onChangesRemove}
                     onChangesUpdate={onChangeObjectsUpdate}
                     opetuskielet={opetuskielet}
-                    tutkinnot={tutkinnot}
                   />
                 </WizardPage>
               )}

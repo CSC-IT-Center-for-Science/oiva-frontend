@@ -49,40 +49,14 @@ const FormDialog = withStyles(() => ({
   return <Dialog {...props}>{props.children}</Dialog>;
 });
 
-const defaultProps = {
-  kielet: [],
-  kohteet: [],
-  koulutukset: {
-    muut: {},
-    poikkeukset: {}
-  },
-  koulutusalat: {},
-  koulutustyypit: {},
-  kunnat: [],
-  lisatiedot: [],
-  lupa: {},
-  lupaKohteet: {},
-  maakunnat: [],
-  maakuntakunnat: [],
-  maaraystyypit: [],
-  opetuskielet: [],
-  opetustehtavakoodisto: {},
-  organisation: {},
-  tutkinnot: []
-};
-
 const UusiAsiaDialog = ({
-  kohteet = defaultProps.kohteet,
-  kunnat = defaultProps.kunnat,
-  lisatiedot = defaultProps.lisatiedot,
-  lupa = defaultProps.lupa,
-  lupaKohteet = defaultProps.lupaKohteet,
-  maakunnat = defaultProps.maakunnat,
-  maakuntakunnat = defaultProps.maakuntakunnat,
-  maaraystyypit = defaultProps.maaraystyypit,
+  kohteet,
+  lisatiedot,
+  lupa,
+  lupakohteet,
+  maaraystyypit,
   onNewDocSave,
-  opetustehtavakoodisto = defaultProps.opetustehtavakoodisto,
-  organisation = defaultProps.organisation
+  organisation
 }) => {
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "paatoksentiedot"
@@ -380,13 +354,8 @@ const UusiAsiaDialog = ({
                         style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                         <LupanakymaA
                           isPreviewModeOn={false}
-                          kunnat={kunnat}
                           lisatiedot={lisatiedot}
-                          lupakohteet={lupaKohteet}
-                          maakunnat={maakunnat}
-                          maakuntakunnat={maakuntakunnat}
-                          opetustehtavakoodisto={opetustehtavakoodisto}
-                          uuid={uuid}
+                          lupakohteet={lupakohteet}
                           valtakunnallinenMaarays={valtakunnallinenMaarays}
                         />
                       </div>
@@ -413,12 +382,8 @@ const UusiAsiaDialog = ({
                           style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                           <LupanakymaA
                             isPreviewModeOn={true}
-                            kunnat={kunnat}
                             lisatiedot={lisatiedot}
-                            lupakohteet={lupaKohteet}
-                            maakunnat={maakunnat}
-                            maakuntakunnat={maakuntakunnat}
-                            opetustehtavakoodisto={opetustehtavakoodisto}
+                            lupakohteet={lupakohteet}
                             valtakunnallinenMaarays={valtakunnallinenMaarays}
                           />
                         </div>
@@ -498,25 +463,13 @@ const UusiAsiaDialog = ({
 };
 
 UusiAsiaDialog.propTypes = {
-  history: PropTypes.object,
-  kielet: PropTypes.array,
-  koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  kunnat: PropTypes.array,
   lisatiedot: PropTypes.array,
   lupa: PropTypes.object,
-  lupaKohteet: PropTypes.object,
-  maakunnat: PropTypes.array,
-  maakuntakunnat: PropTypes.array,
+  lupakohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
-  muut: PropTypes.array,
   onNewDocSave: PropTypes.func,
-  opetuskielet: PropTypes.array,
-  opetustehtavakoodisto: PropTypes.object,
-  organisation: PropTypes.object,
-  poErityisetKoulutustehtavat: PropTypes.array,
-  poMuutEhdot: PropTypes.array,
-  tutkinnot: PropTypes.array
+  organisation: PropTypes.object
 };
 
 export default UusiAsiaDialog;

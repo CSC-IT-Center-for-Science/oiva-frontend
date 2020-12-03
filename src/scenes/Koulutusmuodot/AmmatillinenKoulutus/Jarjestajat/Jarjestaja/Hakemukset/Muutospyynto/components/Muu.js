@@ -17,7 +17,6 @@ const Muu = ({ configObj, koodiarvotLuvassa, sectionId }) => {
   const [, { setLomakedata }] = useLomakedata({ anchor: "muut" });
 
   useEffect(() => {
-    console.info(configObj);
     const muutostenJalkeenAktiivisetKoodiarvot = filter(koodiarvo => {
       const changeObj = find(
         pathEq(["properties", "metadata", "koodiarvo"], koodiarvo),

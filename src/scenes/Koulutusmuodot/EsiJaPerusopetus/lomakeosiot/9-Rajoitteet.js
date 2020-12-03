@@ -5,7 +5,7 @@ import { useChangeObjects } from "../../../../stores/muutokset";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]
-}
+};
 
 const Rajoitteet = ({ onChangesUpdate, sectionId }) => {
   const [state, actions] = useChangeObjects();
@@ -29,9 +29,9 @@ const Rajoitteet = ({ onChangesUpdate, sectionId }) => {
         isInExpandableRow={false}
         anchor={sectionId}
         data={{
-          changeObjects: state.changeObjects,
-          onAddRestriction
+          changeObjects: state.changeObjects
         }}
+        functions={{ onAddRestriction }}
         noPadding={true}
         onChangesUpdate={onChangesUpdate}
         path={constants.formLocations}

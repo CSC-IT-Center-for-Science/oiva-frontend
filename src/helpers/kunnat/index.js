@@ -1,17 +1,20 @@
-import { mapObjIndexed, head, groupBy, prop, omit } from "ramda";
+import { mapObjIndexed, head, groupBy, prop, omit, find, propEq } from "ramda";
 import localforage from "localforage";
 
-export function initializeKunta(kuntadata) {
+export function initializeKunta(kuntadata, ahvenanmaanKunnat = []) {
   const currentDate = new Date();
   if (
     currentDate >= new Date(kuntadata.voimassaAlkuPvm) &&
-    currentDate <= new Date(kuntadata.voimassaLoppuPvm || currentDate)
+    currentDate <= new Date(kuntadata.voimassaLoppuPvm || currentDate) &&
+    // Ahvenanmaata kuntineen ei tarvita tässä sovelluksessa
+    !find(propEq("koodiarvo", kuntadata.koodiArvo), ahvenanmaanKunnat)
   ) {
-    return omit(["koodiArvo"], {
+    const kunta = omit(["koodiArvo"], {
       ...kuntadata,
       koodiarvo: kuntadata.koodiArvo,
       metadata: mapObjIndexed(head, groupBy(prop("kieli"), kuntadata.metadata))
     });
+    return kunta;
   }
   return null;
 }

@@ -32,7 +32,10 @@ const ErityisetKoulutustehtavat = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ onAddButtonClick, sectionId }}
+      data={{ sectionId }}
+      functions={{
+        onAddButtonClick
+      }}
       formTitle={title}
       mode={mode}
       isPreviewModeOn={isPreviewModeOn}

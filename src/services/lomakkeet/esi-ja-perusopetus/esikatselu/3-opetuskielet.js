@@ -24,8 +24,6 @@ export async function previewOfOpetuskielet({ lomakedata }) {
     lomakedata
   );
 
-  console.info(ensisijaiset, toissijaiset);
-
   const ensisijaisetListItems = !!ensisijaiset
     ? sortBy(
         prop("content"),

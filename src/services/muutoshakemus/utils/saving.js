@@ -23,7 +23,6 @@ export async function createObjectToSave(
 ) {
   const { unsaved } = changeObjects;
 
-  console.info("Opiskelijavuosimuutokset", opiskelijavuodetCO);
   // Adds data that has attachements
   const yhteenvetoYleiset = R.path(
     ["yhteenveto", "yleisettiedot"],
@@ -38,7 +37,7 @@ export async function createObjectToSave(
     changeObjects
   );
   const perustelutLiitteet = R.path(["perustelut", "liitteet"], changeObjects);
-  console.info(changeObjects);
+
   //get actual attachment props
 
   const perustelutLiitteetList =
@@ -401,8 +400,6 @@ export async function createObjectToSave(
       ]).filter(Boolean)
     };
   }
-
-  console.info(objectToSave);
 
   return objectToSave;
 }

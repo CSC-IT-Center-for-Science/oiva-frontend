@@ -6,20 +6,15 @@ import { useValidity } from "stores/lomakedata";
 import { Typography } from "@material-ui/core";
 
 const Lupanakyma = ({
-  kielet,
   kohteet,
   koulutukset,
   koulutusalat,
   koulutustyypit,
-  kunnat,
   maaraykset,
   lupaKohteet,
-  maakunnat,
-  maakuntakunnat,
   maaraystyypit,
   muut,
-  organisation,
-  tutkinnot
+  organisation
 }) => {
   const intl = useIntl();
   const [validity] = useValidity();
@@ -86,19 +81,14 @@ const Lupanakyma = ({
         id="wizard-content"
         className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
         <EsittelijatMuutospyynto
-          kielet={kielet}
           kohteet={kohteet}
           koulutukset={koulutukset}
           koulutusalat={koulutusalat}
           koulutustyypit={koulutustyypit}
-          kunnat={kunnat}
-          maakuntakunnat={maakuntakunnat}
-          maakunnat={maakunnat}
           maaraykset={maaraykset}
           lupaKohteet={lupaKohteet}
           maaraystyypit={maaraystyypit}
           muut={muut}
-          tutkinnot={tutkinnot}
         />
       </div>
     </div>

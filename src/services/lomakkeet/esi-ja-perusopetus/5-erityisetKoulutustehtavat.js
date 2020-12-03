@@ -24,7 +24,8 @@ export async function erityisetKoulutustehtavat(
   data,
   { isPreviewModeOn, isReadOnly },
   locale,
-  changeObjects
+  changeObjects,
+  { onAddButtonClick }
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
@@ -139,7 +140,7 @@ export async function erityisetKoulutustehtavat(
                   {
                     anchor: "A",
                     name: "SimpleButton",
-                    onClick: data.onAddButtonClick,
+                    onClick: onAddButtonClick,
                     properties: {
                       isPreviewModeOn,
                       isReadOnly: _isReadOnly,

@@ -1,7 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import { toUpper } from "ramda";
 import common from "i18n/definitions/common";
 import education from "i18n/definitions/education";
 import Opetustehtavat from "../lomakeosiot/1-Opetustehtavat";
@@ -26,13 +25,8 @@ const constants = {
  */
 const LupanakymaA = ({
   isPreviewModeOn,
-  kunnat,
   lisatiedot,
   lupakohteet,
-  maakunnat,
-  maakuntakunnat,
-  opetustehtavakoodisto,
-  uuid,
   valtakunnallinenMaarays
 }) => {
   const intl = useIntl();
@@ -56,19 +50,14 @@ const LupanakymaA = ({
       <Opetustehtavat
         code="1"
         isPreviewModeOn={isPreviewModeOn}
-        opetustehtavakoodisto={opetustehtavakoodisto}
         sectionId="opetustehtavat"
-        title={opetustehtavakoodisto.metadata[toUpper(intl.locale)].kuvaus}
       />
 
       <OpetustaAntavatKunnat
         code="2"
         isPreviewModeOn={isPreviewModeOn}
-        kunnat={kunnat}
         lisatiedot={lisatiedot}
         lupakohde={lupakohteet[3]}
-        maakunnat={maakunnat}
-        maakuntakunnat={maakuntakunnat}
         sectionId="toimintaalue"
         title={intl.formatMessage(education.opetustaAntavatKunnat)}
         valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -125,7 +114,6 @@ LupanakymaA.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
   mode: PropTypes.string,
-  opetustehtavakoodisto: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

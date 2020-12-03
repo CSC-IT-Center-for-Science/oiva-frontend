@@ -15,7 +15,11 @@ export function initializeMaakunta(maakuntadata, localeUpper) {
   const currentDate = new Date();
   if (
     currentDate >= new Date(maakuntadata.voimassaAlkuPvm) &&
-    currentDate <= new Date(maakuntadata.voimassaLoppuPvm || currentDate)
+    currentDate <= new Date(maakuntadata.voimassaLoppuPvm || currentDate) &&
+    // 21 = Ahvenanmaa
+    maakuntadata.koodiArvo !== "21" &&
+    // 99 = Ei tiedossa
+    maakuntadata.koodiArvo !== "99"
   ) {
     // Filter out ulkomaat
     const kunnat = filter(
@@ -47,6 +51,10 @@ export function initializeMaakunta(maakuntadata, localeUpper) {
     });
   }
   return null;
+}
+
+export async function getMaakunnat() {
+  return await localforage.getItem("maakunnat");
 }
 
 export async function getMaakuntakunnat() {

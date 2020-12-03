@@ -12,19 +12,14 @@ import { isEmpty } from "ramda";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const UusiAsiaDialogContainer = ({
-  kielet,
   kohteet,
   koulutukset,
   koulutusalat,
   koulutustyypit,
-  kunnat,
-  maakunnat,
-  maakuntakunnat,
   maaraystyypit,
   muut,
   opetuskielet,
   organisaatio,
-  tutkinnot,
   viimeisinLupa
 }) => {
   const intl = useIntl();
@@ -56,22 +51,17 @@ const UusiAsiaDialogContainer = ({
   return (
     <UusiAsiaDialog
       history={history}
-      kielet={kielet}
       kohteet={kohteet}
       koulutukset={koulutukset}
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
-      kunnat={kunnat}
       lupa={viimeisinLupa}
       lupaKohteet={lupaKohteet}
-      maakunnat={maakunnat}
-      maakuntakunnat={maakuntakunnat}
       maaraystyypit={maaraystyypit}
       muut={muut}
       onNewDocSave={onNewDocSave}
       opetuskielet={opetuskielet}
       organisation={organisaatio}
-      tutkinnot={tutkinnot}
     />
   );
 };

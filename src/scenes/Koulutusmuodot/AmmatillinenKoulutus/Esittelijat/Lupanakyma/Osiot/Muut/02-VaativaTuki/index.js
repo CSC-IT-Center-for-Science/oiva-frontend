@@ -35,10 +35,7 @@ const VaativaTuki = ({
 
   const dataLomakepalvelulle = useMemo(
     () => ({
-      isApplyForValueSet: prop(
-        "isApplyForValueSet",
-        lomakedata.vaativaTuki || {}
-      ),
+      isApplyForValueSet: prop("isApplyForValueSet", lomakedata.vaativaTuki),
       items,
       maarayksetByKoodiarvo,
       koodiarvot: ["2", "16", "17", "18", "19", "20", "21"]
