@@ -485,7 +485,7 @@ const fetchBaseData = async (
       )
     : undefined;
 
-  result.maakuntakunnat = maakunnat;
+  result.maakuntakunnat = maakuntakunnat;
 
   result.maaraystyypit = raw.maaraystyypit
     ? await localforage.setItem("maaraystyypit", raw.maaraystyypit)
