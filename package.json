@@ -40,6 +40,7 @@
     "react-datepicker": "^1.5.0",
     "react-dom": "^16.10.2",
     "react-dropzone": "^11.2.0",
+    "react-fast-compare": "^3.2.0",
     "react-helmet": "^6.0.0-beta",
     "react-icons": "^3.3.0",
     "react-idle-timer": "^4.3.6",

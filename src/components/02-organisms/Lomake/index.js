@@ -9,14 +9,16 @@ import {
 } from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { equals, has, isEmpty } from "ramda";
+import { has, isEmpty, omit } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 import { getReducedStructure } from "../CategorizedListRoot/utils";
 import FormTitle from "components/00-atoms/FormTitle";
 import { getReducedStructureIncludingChanges } from "./utils";
+import equal from "react-fast-compare";
 
 const defaultProps = {
   data: {},
+  functions: {},
   isInExpandableRow: true,
   isPreviewModeOn: false,
   isReadOnly: false,
@@ -36,6 +38,7 @@ const Lomake = React.memo(
     code,
     data = defaultProps.data,
     formTitle,
+    functions = defaultProps.functions,
     isInExpandableRow = defaultProps.isInExpandableRow,
     isPreviewModeOn = defaultProps.isPreviewModeOn,
     isReadOnly = defaultProps.isReadOnly,
@@ -95,11 +98,12 @@ const Lomake = React.memo(
 
     useEffect(() => {
       (async () => {
-        async function fetchLomake(_mode, _changeObjects, _data) {
+        async function fetchLomake(_mode, _changeObjects, _data, _functions) {
           return await getLomake(
             _mode || mode,
             _changeObjects || changeObjects,
             _data || data,
+            _functions || functions,
             { isPreviewModeOn, isReadOnly },
             intl.locale,
             _path,
@@ -138,6 +142,7 @@ const Lomake = React.memo(
       anchor,
       changeObjects,
       data,
+      functions,
       intl.locale,
       isPreviewModeOn,
       isReadOnly,
@@ -209,11 +214,7 @@ const Lomake = React.memo(
     }
   },
   (cp, np) => {
-    return (
-      equals(cp.data, np.data) &&
-      equals(cp.isPreviewModeOn, np.isPreviewModeOn) &&
-      equals(cp.isReadOnly, np.isReadOnly)
-    );
+    return equal(omit(["functions"], cp), omit(["functions"], np));
   }
 );
 
@@ -221,6 +222,7 @@ Lomake.propTypes = {
   anchor: PropTypes.string,
   code: PropTypes.string,
   data: PropTypes.object,
+  functions: PropTypes.object,
   isInExpandableRow: PropTypes.bool,
   isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
