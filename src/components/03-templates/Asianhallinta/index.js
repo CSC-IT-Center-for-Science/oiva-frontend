@@ -12,6 +12,7 @@ import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Esittelijat from "../Esittelijat/index";
+import { Typography } from "@material-ui/core";
 
 const Asianhallinta = ({
   AsiaDialogContainer,
@@ -27,7 +28,9 @@ const Asianhallinta = ({
       {location.pathname === "/asianhallinta" ? (
         <div className="flex-1 bg-gray-100">
           <div className="border border-gray-300 max-w-7xl m-auto bg-white mt-12 px-64 py-12">
-            <h1>{intl.formatMessage(common.asianhallinta)}</h1>
+            <Typography component="h1" variant="h1">
+              {intl.formatMessage(common.asianhallinta)}
+            </Typography>
             <p>{intl.formatMessage(common.asianhallintaInfoText)}</p>
             <div className="grid grid-cols-3 gap-4 justify-items-auto pt-12">
               <NavLink

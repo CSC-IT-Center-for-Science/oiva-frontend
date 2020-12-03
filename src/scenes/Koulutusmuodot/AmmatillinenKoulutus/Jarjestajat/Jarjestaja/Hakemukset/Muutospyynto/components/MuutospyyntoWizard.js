@@ -443,7 +443,9 @@ const MuutospyyntoWizard = ({
   if (!sessionStorage.getItem("role")) {
     return (
       <MessageWrapper>
-        <h3>{intl.formatMessage(wizardMessages.notSignedIn)}</h3>
+        <Typography component="h3" variant="h3">
+          {intl.formatMessage(wizardMessages.notSignedIn)}
+        </Typography>
       </MessageWrapper>
     );
   } else if (
@@ -452,7 +454,9 @@ const MuutospyyntoWizard = ({
   ) {
     return (
       <MessageWrapper>
-        <h3>{intl.formatMessage(wizardMessages.noRights)}</h3>
+        <Typography component="h3" variant="h3">
+          {intl.formatMessage(wizardMessages.noRights)}
+        </Typography>
       </MessageWrapper>
     );
   } else {

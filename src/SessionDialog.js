@@ -66,7 +66,7 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
         {intl.formatMessage(auth.sessionDialogTitle)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <p className="mx-2 mb-2">
+        <p className="mx-2 mb-6">
           {intl.formatMessage(auth.sessionDialogCountdown, {
             time: `${Math.floor(timeLeft / 60)} m ${(timeLeft % 60)
               .toString()

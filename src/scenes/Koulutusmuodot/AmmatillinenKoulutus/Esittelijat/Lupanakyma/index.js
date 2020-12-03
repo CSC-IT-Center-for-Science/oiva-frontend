@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import { find, head, includes, last, prop, values } from "ramda";
 import EsittelijatMuutospyynto from "../../EsittelijatMuutospyynto";
 import { useValidity } from "stores/lomakedata";
+import { Typography } from "@material-ui/core";
 
 const Lupanakyma = ({
   kielet,
@@ -45,9 +46,9 @@ const Lupanakyma = ({
       }`}>
       <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
         <div className="py-4">
-          <h1>
+          <Typography component="h1" variant="h1">
             {organisation.nimi[intl.locale] || last(values(organisation.nimi))}
-          </h1>
+          </Typography>
           <p>
             {organisation.kayntiosoite.osoite},{" "}
             {organisation.postiosoite.osoite}{" "}

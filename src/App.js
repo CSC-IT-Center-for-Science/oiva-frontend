@@ -125,7 +125,9 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         kuvausteksti: intl.formatMessage(vapaaSivistystyo.kuvausteksti),
         lyhytKuvaus: intl.formatMessage(vapaaSivistystyo.lyhytKuvaus),
         paasivunOtsikko: intl.formatMessage(common.vstTitleName),
-        jarjestajatOtsikko: intl.formatMessage(education.oppilaitostenYllapitajat)
+        jarjestajatOtsikko: intl.formatMessage(
+          education.oppilaitostenYllapitajat
+        )
       }
     }),
     [intl]

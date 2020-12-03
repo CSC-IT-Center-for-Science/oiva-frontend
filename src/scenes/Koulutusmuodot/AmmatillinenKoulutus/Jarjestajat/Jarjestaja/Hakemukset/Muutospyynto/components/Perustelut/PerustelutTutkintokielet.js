@@ -25,18 +25,20 @@ const PerustelutTutkintokielet = React.memo(props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   if (isChanges) {
     return (
       <React.Fragment>
-        <h2 className="py-4">
+        <Typography component="h2" variant="h2">
           {intl.formatMessage(wizardMessages.tutkintokielet)}
-        </h2>
+        </Typography>
         {R.addIndex(R.map)((areaCode, index) => {
           const changeObjects = props.changeObjects.tutkintokielet[areaCode];
-          const title = R.find(R.propEq("koodiarvo", areaCode), props.koulutusalat)
-            .metadata[R.toUpper(intl.locale)].nimi;
+          const title = R.find(
+            R.propEq("koodiarvo", areaCode),
+            props.koulutusalat
+          ).metadata[R.toUpper(intl.locale)].nimi;
           if (changeObjects.length > 0) {
             const fullSectionId = `${sectionId}_${areaCode}`;
             return (

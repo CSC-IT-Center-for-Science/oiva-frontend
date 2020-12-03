@@ -18,6 +18,7 @@ import { ROLE_KATSELIJA } from "modules/constants";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import * as R from "ramda";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -242,9 +243,9 @@ const JarjestamislupaAsiatList = ({
 
       {muutospyynto && (
         <div>
-          <h3 className="mt-4 mb-2">
+          <Typography component="h3" variant="h3">
             {intl.formatMessage(common.hakemusAsiakirjat)}
-          </h3>
+          </Typography>
           <Paper className={classes.root}>
             <JarjestamislupaAsiakirjat
               muutospyynto={muutospyynto}
