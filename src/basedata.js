@@ -3,22 +3,22 @@ import PropTypes from "prop-types";
 import { API_BASE_URL } from "modules/constants";
 import Loading from "modules/Loading";
 import {
-  isEmpty,
-  sortBy,
-  prop,
-  map,
-  toUpper,
-  includes,
   assoc,
-  path,
-  mapObjIndexed,
-  groupBy,
-  omit,
-  head,
+  find,
   filter,
-  test,
+  groupBy,
+  head,
+  includes,
+  isEmpty,
+  map,
+  mapObjIndexed,
+  omit,
+  path,
+  prop,
   propEq,
-  find
+  sortBy,
+  test,
+  toUpper
 } from "ramda";
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
@@ -299,7 +299,7 @@ const fetchBaseData = async (
     : undefined;
 
   const ahvenanmaanKunnat =
-    (find(propEq("koodiarvo", "21"), maakuntakunnat) || {}).kunnat || [];
+    (find(propEq("koodiarvo", "21"), maakuntakunnat || []) || {}).kunnat || [];
 
   const result = {
     elykeskukset: raw.elykeskukset,
