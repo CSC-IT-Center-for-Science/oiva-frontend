@@ -15,9 +15,9 @@ const YhteenvetoTaloudelliset = ({
 }) => {
   return (
     <React.Fragment>
-      <h2 className="my-6">
+      <Typography component="h2" variant="h2">
         {MUUTOS_WIZARD_TEKSTIT.TALOUDELLISET.PAAOTSIKKO.FI}
-      </h2>
+      </Typography>
 
       {!changeObjects && (
         <p>{MUUTOS_WIZARD_TEKSTIT.TALOUDELLISET.EI_LISATTYJA_TUTKINTOJA.FI}</p>
@@ -78,7 +78,7 @@ const YhteenvetoTaloudelliset = ({
             render={_props => (
               <React.Fragment>
                 <TaloudellisetLiitteet
-                  sectionId={'taloudelliset_liitteet'}
+                  sectionId={"taloudelliset_liitteet"}
                   changeObjects={R.path(
                     ["taloudelliset", "liitteet"],
                     changeObjects

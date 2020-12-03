@@ -38,7 +38,9 @@ const MuutospyyntoWizardTaloudelliset = ({
 
   return (
     <React.Fragment>
-      <h2 className="my-6">{intl.formatMessage(wizard.pageTitle_3)}</h2>
+      <Typography component="h2" variant="h2">
+        {intl.formatMessage(wizard.pageTitle_3)}
+      </Typography>
 
       {!checkIfIsAdditions(
         R.props(["tutkinnot", "koulutukset"], changeObjects)
@@ -73,7 +75,7 @@ const MuutospyyntoWizardTaloudelliset = ({
           </Section>
           <Section title={intl.formatMessage(wizard.liitteet)}>
             <TaloudellisetLiitteet
-              sectionId={'taloudelliset_liitteet'}
+              sectionId={"taloudelliset_liitteet"}
               changeObjects={changeObjects.taloudelliset.liitteet}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={onChangesUpdate}

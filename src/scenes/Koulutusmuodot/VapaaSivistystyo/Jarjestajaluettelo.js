@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 
-import CssBaseline from "@material-ui/core/CssBaseline";
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -466,7 +465,7 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
       <p className="mt-4 mb-8">
         {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
       </p>
-      <CssBaseline />
+
       <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">
         <Dropdown
           onChanges={onOppilaitostyyppiSelectionChange}

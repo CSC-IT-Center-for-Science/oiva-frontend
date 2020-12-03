@@ -359,7 +359,9 @@ const LupaSection = props => {
   } else {
     return (
       <div className="border-b border-b-gray">
-        <H3>{intl.formatMessage(common.lupaSectionNoInfo)}</H3>
+        <Typography component="h3" variant="h3">
+          {intl.formatMessage(common.lupaSectionNoInfo)}
+        </Typography>
       </div>
     );
   }

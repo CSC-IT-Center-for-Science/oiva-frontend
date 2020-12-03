@@ -57,7 +57,11 @@ const ActionList = React.memo(props => {
 
   return (
     <React.Fragment>
-      {props.title && <h4 className="pt-4">{props.title}</h4>}
+      {props.title && (
+        <Typography component="h4" variant="h4">
+          {props.title}
+        </Typography>
+      )}
       {props.info && <p className="pt-4">{props.info}</p>}
       <List dense={true}>{items}</List>
     </React.Fragment>
