@@ -31,6 +31,15 @@ form .MuiTypography-h2 {
   @apply pt-16;
 }
 
+:focus {
+  outline: none !important;
+}
+
+/* Tämä asetus on voimassa, kun käyttäjä navigoi näppäimistöllä */
+:focus-visible {
+  outline: 2px solid #111f9b !important;
+}
+
 /* User research indicates that number input controls need to go (CSCOIVA-1315) */
 /* Chrome and others */
 input::-webkit-outer-spin-button,

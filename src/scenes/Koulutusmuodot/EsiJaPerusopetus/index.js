@@ -5,10 +5,30 @@ import UusiAsiaDialogContainer from "./Dialogit/Esittelijat/Lupanakyma/Lupanakym
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
 
+/**
+ * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
+ * tietovarastoa. Näiden avaimien mukaista dataa tarvitaan laajasti kyseisen
+ * koulutusmuodon sivuilla.
+ **/
+const hakuavaimet = [
+  "kunnat",
+  "lupaByUuid",
+  "lupaByYtunnus",
+  "maakuntakunnat",
+  "opetustehtavakoodisto",
+  "opetustehtavat",
+  "organisaatio",
+  "poErityisetKoulutustehtavat",
+  "poMuutEhdot",
+  "tulevatLuvat",
+  "kieletOPH"
+];
+
 export default function EsiJaPerusopetus({ koulutusmuoto }) {
   return (
     <KoulutusmuodonEtusivu
       AsiaDialogContainer={AsiaDialogContainer}
+      hakuavaimet={hakuavaimet}
       Jarjestajaluettelo={Jarjestajaluettelo}
       JarjestamislupaJSX={JarjestamislupaJSX}
       koulutusmuoto={koulutusmuoto}

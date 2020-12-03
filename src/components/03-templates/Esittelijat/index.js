@@ -20,7 +20,7 @@ const Esittelijat = ({
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}>
+      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
         {koulutusmuoto.kortinOtsikko}
       </BreadcrumbsItem>
 
