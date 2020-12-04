@@ -22,7 +22,7 @@ import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
-const keys2 = ["organisaatio"];
+const keys2 = ["organisaatio", "tulevatLuvat"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
@@ -164,6 +164,7 @@ export default function KoulutusmuodonEtusivu({
                               <BaseData
                                 keys={keys2}
                                 locale={locale}
+                                koulutustyyppi={koulutusmuoto.koulutustyyppi}
                                 render={_props2 => {
                                   if (_props2.organisaatio) {
                                     return (
@@ -174,7 +175,7 @@ export default function KoulutusmuodonEtusivu({
                                         lupaUuid={_props1.lupaUuid}
                                         organisation={_props2.organisaatio}
                                         path={props.match.path}
-                                        tulevatLuvat={_props1.tulevatLuvat}
+                                        tulevatLuvat={_props2.tulevatLuvat}
                                         voimassaOlevaLupa={
                                           _props1.voimassaOlevaLupa
                                         }
@@ -183,6 +184,7 @@ export default function KoulutusmuodonEtusivu({
                                     );
                                   }
                                 }}
+                                oppilaitostyyppi={_props1.voimassaOlevaLupa ? _props1.voimassaOlevaLupa.oppilaitostyyppi : null}
                                 ytunnus={_props1.lupa.jarjestajaYtunnus}
                               />
                             );
