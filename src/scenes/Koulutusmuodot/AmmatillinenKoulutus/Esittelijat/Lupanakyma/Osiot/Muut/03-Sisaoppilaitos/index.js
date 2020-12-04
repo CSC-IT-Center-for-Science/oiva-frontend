@@ -35,10 +35,7 @@ const Sisaoppilaitos = ({
 
   const dataLomakepalvelulle = useMemo(
     () => ({
-      isApplyForValueSet: prop(
-        "isApplyForValueSet",
-        lomakedata.sisaoppilaitos || {}
-      ),
+      isApplyForValueSet: prop("isApplyForValueSet", lomakedata.sisaoppilaitos),
       items,
       koodiarvot: ["4"],
       maarayksetByKoodiarvo
@@ -65,13 +62,6 @@ const Sisaoppilaitos = ({
       const koodiarvo = path(
         ["properties", "metadata", "koodiarvo"],
         changeObj
-      );
-
-      console.info(
-        koodiarvo,
-        typeof koodiarvo,
-        koodiarvot,
-        includes(koodiarvo, koodiarvot)
       );
 
       return includes(koodiarvo, koodiarvot) &&

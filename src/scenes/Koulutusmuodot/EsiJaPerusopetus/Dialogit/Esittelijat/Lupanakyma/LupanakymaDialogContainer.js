@@ -12,30 +12,13 @@ import { isEmpty } from "ramda";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const UusiAsiaDialogContainer = React.memo(
-  ({
-    kielet,
-    kohteet,
-    koulutukset,
-    koulutusalat,
-    koulutustyypit,
-    kunnat,
-    lisatiedot,
-    maakunnat,
-    maakuntakunnat,
-    maaraystyypit,
-    muut,
-    opetuskielet,
-    opetustehtavakoodisto,
-    organisaatio,
-    tutkinnot,
-    viimeisinLupa
-  }) => {
+  ({ kohteet, lisatiedot, maaraystyypit, organisaatio, viimeisinLupa }) => {
+    const history = useHistory();
     const intl = useIntl();
 
     let { id } = useParams();
-    let history = useHistory();
 
-    const lupaKohteet = useMemo(() => {
+    const lupakohteet = useMemo(() => {
       const result = !isEmpty(viimeisinLupa)
         ? parseLupa(
             { ...viimeisinLupa },
@@ -58,25 +41,13 @@ const UusiAsiaDialogContainer = React.memo(
 
     return (
       <UusiAsiaDialog
-        history={history}
-        kielet={kielet}
         kohteet={kohteet}
-        koulutukset={koulutukset}
-        koulutusalat={koulutusalat}
-        koulutustyypit={koulutustyypit}
-        kunnat={kunnat}
         lisatiedot={lisatiedot}
         lupa={viimeisinLupa}
-        lupaKohteet={lupaKohteet}
-        maakunnat={maakunnat}
-        maakuntakunnat={maakuntakunnat}
+        lupakohteet={lupakohteet}
         maaraystyypit={maaraystyypit}
-        muut={muut}
         onNewDocSave={onNewDocSave}
-        opetuskielet={opetuskielet}
-        opetustehtavakoodisto={opetustehtavakoodisto}
         organisation={organisaatio}
-        tutkinnot={tutkinnot}
       />
     );
   }

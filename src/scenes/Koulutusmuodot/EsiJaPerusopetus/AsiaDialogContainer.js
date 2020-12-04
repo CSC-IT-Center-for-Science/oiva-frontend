@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import Loading from "modules/Loading";
 import UusiAsiaDialog from "./Dialogit/Esittelijat/Lupanakyma/index";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { parseLupa } from "utils/lupaParser";
 import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
@@ -16,25 +16,15 @@ import { useChangeObjects } from "stores/muutokset";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const AsiaDialogContainer = ({
-  kielet,
   kohteet,
-  koulutukset,
   koulutusalat,
   koulutustyypit,
-  kunnat,
   lisatiedot,
-  maakunnat,
-  maakuntakunnat,
   maaraystyypit,
-  muut,
-  opetuskielet,
-  opetustehtavakoodisto,
   organisaatio,
-  tutkinnot,
   viimeisinLupa
 }) => {
   const intl = useIntl();
-  let history = useHistory();
   const { uuid } = useParams();
   const [, { initializeChanges }] = useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
@@ -60,7 +50,7 @@ const AsiaDialogContainer = ({
     }
   }, [muutospyynto, uuid]);
 
-  const lupaKohteet = useMemo(() => {
+  const lupakohteet = useMemo(() => {
     const result = viimeisinLupa
       ? parseLupa(
           { ...viimeisinLupa },
@@ -73,25 +63,14 @@ const AsiaDialogContainer = ({
 
   return muutospyynto ? (
     <UusiAsiaDialog
-      history={history}
-      kielet={kielet}
       kohteet={kohteet}
-      koulutukset={koulutukset}
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
-      kunnat={kunnat}
       lisatiedot={lisatiedot}
       lupa={viimeisinLupa}
-      lupaKohteet={lupaKohteet}
-      maakunnat={maakunnat}
-      maakuntakunnat={maakuntakunnat}
+      lupakohteet={lupakohteet}
       maaraystyypit={maaraystyypit}
-      muut={muut}
-      onNewDocSave={() => {}}
-      opetuskielet={opetuskielet}
-      opetustehtavakoodisto={opetustehtavakoodisto}
       organisation={organisaatio}
-      tutkinnot={tutkinnot}
     />
   ) : (
     <Loading />

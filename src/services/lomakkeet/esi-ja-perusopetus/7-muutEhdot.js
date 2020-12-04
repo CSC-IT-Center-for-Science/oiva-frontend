@@ -22,7 +22,8 @@ export async function muutEhdot(
   data,
   { isPreviewModeOn, isReadOnly },
   locale,
-  changeObjects
+  changeObjects,
+  { onAddButtonClick }
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const poMuutEhdot = await getPOMuutEhdotFromStorage();
@@ -136,7 +137,7 @@ export async function muutEhdot(
                       {
                         anchor: "A",
                         name: "SimpleButton",
-                        onClick: () => data.onAddButtonClick(ehto.koodiarvo),
+                        onClick: () => onAddButtonClick(ehto.koodiarvo),
                         properties: {
                           isPreviewModeOn,
                           isReadOnly: _isReadOnly,

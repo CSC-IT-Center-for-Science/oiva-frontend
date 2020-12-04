@@ -45,8 +45,6 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
     lomakedata
   );
 
-  console.info(lisatiedotNode);
-
   if (lisatiedotNode && lisatiedotNode.properties.value) {
     structure = append(
       {

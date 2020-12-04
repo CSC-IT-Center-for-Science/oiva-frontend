@@ -14,6 +14,7 @@ import Lomake from "components/02-organisms/Lomake";
 import * as R from "ramda";
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
 import { Typography } from "@material-ui/core";
+import FormTitle from "components/00-atoms/FormTitle";
 
 const constants = {
   formLocation: {
@@ -22,21 +23,16 @@ const constants = {
 };
 
 const defaultProps = {
-  kielet: [],
   kohteet: [],
   koulutukset: {},
   koulutusalat: [],
   koulutustyypit: [],
-  kunnat: [],
-  maakuntakunnat: [],
-  maakunnat: [],
   maaraykset: [],
   lupaKohteet: {},
   maaraystyypit: [],
   muut: [],
   opetuskielet: [],
-  opiskelijavuodet: [],
-  tutkinnot: []
+  opiskelijavuodet: []
 };
 
 const EsittelijatMuutospyynto = ({
@@ -44,16 +40,11 @@ const EsittelijatMuutospyynto = ({
   koulutukset = defaultProps.koulutukset,
   koulutusalat = defaultProps.koulutusalat,
   koulutustyypit = defaultProps.koulutustyypit,
-  kunnat = defaultProps.kunnat,
-  maakuntakunnat = defaultProps.maakuntakunnat,
-  maakunnat = defaultProps.maakunnat,
   maaraykset = defaultProps.maaraykset,
   lupaKohteet = defaultProps.lupaKohteet,
   maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
   muut = defaultProps.muut,
   opiskelijavuodet = defaultProps.opiskelijavuodet,
-  tutkinnot = defaultProps.tutkinnot,
-
   // Callback methods
   handleSubmit
 }) => {
@@ -144,12 +135,16 @@ const EsittelijatMuutospyynto = ({
           {intl.formatMessage(common.changesText)}
         </Typography>
 
+        <FormTitle
+          code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          title={sectionHeadings.tutkinnotJaKoulutukset.title}
+        />
+
         <Tutkinnot
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
           koulutusalat={koulutusalat}
           koulutustyypit={koulutustyypit}
           title={sectionHeadings.tutkinnotJaKoulutukset.title}
-          tutkinnot={tutkinnot}
         />
 
         <Typography component="h4" variant="h4">
@@ -173,14 +168,11 @@ const EsittelijatMuutospyynto = ({
           showCategoryTitles={true}
         />
 
-        <Tutkintokielet koulutusalat={koulutusalat} tutkinnot={tutkinnot} />
+        <Tutkintokielet koulutusalat={koulutusalat} />
 
         <MuutospyyntoWizardToimintaalue
           code={String(sectionHeadings.toimintaalue.number)}
           lupakohde={lupaKohteet[3]}
-          kunnat={kunnat}
-          maakuntakunnat={maakuntakunnat}
-          maakunnat={maakunnat}
           sectionId={"toimintaalue"}
           title={sectionHeadings.toimintaalue.title}
           valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -213,20 +205,15 @@ const EsittelijatMuutospyynto = ({
 };
 
 EsittelijatMuutospyynto.propTypes = {
-  kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
-  kunnat: PropTypes.array,
-  maakuntakunnat: PropTypes.array,
   maaraykset: PropTypes.array,
-  maakunnat: PropTypes.array,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
-  opiskelijavuodet: PropTypes.array,
-  tutkinnot: PropTypes.array
+  opiskelijavuodet: PropTypes.array
 };
 
 export default EsittelijatMuutospyynto;

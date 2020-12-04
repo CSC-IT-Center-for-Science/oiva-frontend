@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import { toUpper, map, groupBy, prop } from "ramda";
 import Koulutusala from "./Koulutusala";
 import { Typography } from "@material-ui/core";
+import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 import common from "i18n/definitions/common";
 
-const Tutkinnot = ({ koulutusalat, koulutustyypit, tutkinnot }) => {
+const Tutkinnot = React.memo(({ koulutusalat, koulutustyypit }) => {
   const intl = useIntl();
   const sectionId = "tutkinnot";
   const localeUpper = toUpper(intl.locale);
+  const [tutkinnot, setTutkinnot] = useState([]);
+
+  useEffect(() => {
+    getTutkinnotFromStorage().then(tutkinnot => {
+      setTutkinnot(tutkinnot);
+    });
+  }, []);
+
   const tutkinnotByKoulutusala = groupBy(
     prop("koulutusalakoodiarvo"),
     tutkinnot
@@ -48,12 +57,11 @@ const Tutkinnot = ({ koulutusalat, koulutustyypit, tutkinnot }) => {
       }, koulutusalat)}
     </React.Fragment>
   );
-};
+});
 
 Tutkinnot.propTypes = {
   koulutusalat: PropTypes.array,
-  koulutustyypit: PropTypes.array,
-  tutkinnot: PropTypes.array
+  koulutustyypit: PropTypes.array
 };
 
 export default Tutkinnot;

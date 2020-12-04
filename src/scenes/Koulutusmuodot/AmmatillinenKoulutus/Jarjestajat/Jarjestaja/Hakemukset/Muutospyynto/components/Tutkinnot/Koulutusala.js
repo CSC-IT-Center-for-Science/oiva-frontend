@@ -28,6 +28,7 @@ const Koulutusala = ({ data, sectionId, title, tutkinnot }) => {
     <Lomake
       anchor={sectionId}
       data={data}
+      key={sectionId}
       mode="modification"
       path={constants.formLocation}
       rowTitle={title}

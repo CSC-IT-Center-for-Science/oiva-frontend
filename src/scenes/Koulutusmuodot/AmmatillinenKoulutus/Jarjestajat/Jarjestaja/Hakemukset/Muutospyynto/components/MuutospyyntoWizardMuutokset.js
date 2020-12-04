@@ -73,7 +73,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
               koulutustyypit={props.koulutustyypit}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={onChangesUpdate}
-              tutkinnot={props.tutkinnot}
             />
             <Typography component="h4" variant="h4">
               {intl.formatMessage(common.koulutukset)}
@@ -114,9 +113,6 @@ const MuutospyyntoWizardMuutokset = React.memo(
             <MuutospyyntoWizardToimintaalue
               changeObjects={props.changeObjects}
               lupakohde={props.lupaKohteet[3]}
-              kunnat={props.kunnat}
-              maakuntakunnat={props.maakuntakunnat}
-              maakunnat={props.maakunnat}
               onChangesRemove={onChangesRemove}
               onChangesUpdate={onChangesUpdate}
               sectionId={"toimintaalue"}
@@ -177,9 +173,6 @@ MuutospyyntoWizardMuutokset.propTypes = {
   kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
-  kunnat: PropTypes.array,
-  maakuntakunnat: PropTypes.array,
-  maakunnat: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,

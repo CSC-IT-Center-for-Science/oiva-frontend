@@ -58,7 +58,18 @@ const Esittelijat = ({
                 koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 render={_props => (
                   <MuutoksetContainer scope={scope}>
-                    <UusiAsiaDialogContainer {..._props} />
+                    <UusiAsiaDialogContainer
+                      kohteet={_props.kohteet}
+                      koulutukset={_props.koulutukset}
+                      koulutusalat={_props.koulutusalat}
+                      koulutustyypit={_props.koulutustyypit}
+                      lisatiedot={_props.lisatiedot}
+                      maaraystyypit={_props.maaraystyypit}
+                      muut={_props.muut}
+                      opetuskielet={_props.opetuskielet}
+                      organisaatio={_props.organisaatio}
+                      viimeisinLupa={_props.viimeisinLupa}
+                    />
                   </MuutoksetContainer>
                 )}
               />
@@ -73,11 +84,24 @@ const Esittelijat = ({
                 <BaseData
                   locale={locale}
                   koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                  render={_props => (
-                    <MuutoksetContainer scope={scope}>
-                      <AsiaDialogContainer {..._props} />
-                    </MuutoksetContainer>
-                  )}
+                  render={_props => {
+                    return (
+                      <MuutoksetContainer scope={scope}>
+                        <AsiaDialogContainer
+                          kohteet={_props.kohteet}
+                          koulutukset={_props.koulutukset}
+                          koulutusalat={_props.koulutusalat}
+                          koulutustyypit={_props.koulutustyypit}
+                          lisatiedot={_props.lisatiedot}
+                          maaraystyypit={_props.maaraystyypit}
+                          muut={_props.muut}
+                          opetuskielet={_props.opetuskielet}
+                          organisaatio={_props.organisaatio}
+                          viimeisinLupa={_props.viimeisinLupa}
+                        />
+                      </MuutoksetContainer>
+                    );
+                  }}
                 />
               );
             }}
@@ -89,3 +113,18 @@ const Esittelijat = ({
 };
 
 export default Esittelijat;
+
+// kohteet,
+// koulutukset,
+// koulutusalat,
+// koulutustyypit,
+// maaraystyypit,
+// muut,
+// opetuskielet,
+
+// kielet,
+// kunnat,
+// lisatiedot,
+// maakunnat,
+// maakuntakunnat,
+// tutkinnot,

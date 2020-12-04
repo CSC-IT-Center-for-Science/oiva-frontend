@@ -18,18 +18,21 @@ import {
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "rajoite"]
-}
+};
 
 const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
-  const [changeObjectsByAnchor] = useChangeObjectsByMultipleAnchorsWithoutUnderRemoval({
+  const [
+    changeObjectsByAnchor
+  ] = useChangeObjectsByMultipleAnchorsWithoutUnderRemoval({
     anchors: [
-        "opetustehtavat",
-        "opetuskielet",
-        "toimintaalue",
-        "opetuksenJarjestamismuodot",
-        "erityisetKoulutustehtavat",
-        "opiskelijamaarat",
-        "muutEhdot"]
+      "opetustehtavat",
+      "opetuskielet",
+      "toimintaalue",
+      "opetuksenJarjestamismuodot",
+      "erityisetKoulutustehtavat",
+      "opiskelijamaarat",
+      "muutEhdot"
+    ]
   });
   const [state, actions] = useChangeObjects();
   const intl = useIntl();
@@ -67,10 +70,12 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
           anchor={sectionId}
           data={{
             changeObjects: changeObjectsByAnchor,
-            onAddCriterion,
-            onRemoveCriterion,
             rajoiteId: restrictionId,
             sectionId
+          }}
+          functions={{
+            onAddCriterion,
+            onRemoveCriterion
           }}
           noPadding={true}
           onChangesUpdate={onChangesUpdate}

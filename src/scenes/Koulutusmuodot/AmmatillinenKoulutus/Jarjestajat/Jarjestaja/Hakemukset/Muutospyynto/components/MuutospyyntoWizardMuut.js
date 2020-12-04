@@ -18,132 +18,134 @@ const defaultProps = {
   muut: []
 };
 
-const MuutospyyntoWizardMuut = ({
-  code,
-  maaraykset = defaultProps.maaraykset,
-  muut = defaultProps.muut,
-  sectionId,
-  title
-}) => {
-  const intl = useIntl();
-  const localeUpper = toUpper(intl.locale);
+const MuutospyyntoWizardMuut = React.memo(
+  ({
+    code,
+    maaraykset = defaultProps.maaraykset,
+    muut = defaultProps.muut,
+    sectionId,
+    title
+  }) => {
+    const intl = useIntl();
+    const localeUpper = toUpper(intl.locale);
 
-  const maarayksetByKoodiarvo = useMemo(
-    () =>
-      groupBy(
-        prop("koodiarvo"),
-        filter(
-          propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
-          maaraykset
-        )
-      ),
-    [maaraykset]
-  );
-
-  const items = useMemo(() => {
-    const group = omit(
-      [undefined],
-      groupBy(item => {
-        const kasite = path(["metadata", localeUpper, "kasite"], item);
-        if (item.koodiarvo === "9") {
-          return "selvitykset";
-        } else {
-          return kasite;
-        }
-      }, muut)
+    const maarayksetByKoodiarvo = useMemo(
+      () =>
+        groupBy(
+          prop("koodiarvo"),
+          filter(
+            propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
+            maaraykset
+          )
+        ),
+      [maaraykset]
     );
-    return group;
-  }, [localeUpper, muut]);
 
-  const vaativaTukiItems = useMemo(
-    () => ({
-      vaativa_1: items.vaativa_1,
-      vaativa_2: items.vaativa_2
-    }),
-    [items]
-  );
+    const items = useMemo(() => {
+      const group = omit(
+        [undefined],
+        groupBy(item => {
+          const kasite = path(["metadata", localeUpper, "kasite"], item);
+          if (item.koodiarvo === "9") {
+            return "selvitykset";
+          } else {
+            return kasite;
+          }
+        }, muut)
+      );
+      return group;
+    }, [localeUpper, muut]);
 
-  return (
-    <React.Fragment>
-      <Typography component="h2" variant="h2">
-        {code ? `${code}. ` : ""}
-        {title}
-      </Typography>
-      {!!items.laajennettu && items.laajennettu.length > 0 ? (
-        <Laajennettu
-          items={items.laajennettu}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_01`}></Laajennettu>
-      ) : null}
+    const vaativaTukiItems = useMemo(
+      () => ({
+        vaativa_1: items.vaativa_1,
+        vaativa_2: items.vaativa_2
+      }),
+      [items]
+    );
 
-      {(!!items.vaativa_1 && items.vaativa_1.length > 0) ||
-      (!!items.vaativa_2 && items.vaativa_2.length > 0) ? (
-        <VaativaTuki
-          items={vaativaTukiItems}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_02`}></VaativaTuki>
-      ) : null}
+    return (
+      <React.Fragment>
+        <Typography component="h2" variant="h2">
+          {code ? `${code}. ` : ""}
+          {title}
+        </Typography>
+        {!!items.laajennettu && items.laajennettu.length > 0 ? (
+          <Laajennettu
+            items={items.laajennettu}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_01`}></Laajennettu>
+        ) : null}
 
-      {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
-        <Sisaoppilaitos
-          items={items.sisaoppilaitos}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_03`}></Sisaoppilaitos>
-      ) : null}
+        {(!!items.vaativa_1 && items.vaativa_1.length > 0) ||
+        (!!items.vaativa_2 && items.vaativa_2.length > 0) ? (
+          <VaativaTuki
+            items={vaativaTukiItems}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_02`}></VaativaTuki>
+        ) : null}
 
-      {!!items.vankila && items.vankila.length > 0 ? (
-        <Vankila
-          items={items.vankila}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_04`}></Vankila>
-      ) : null}
+        {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
+          <Sisaoppilaitos
+            items={items.sisaoppilaitos}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_03`}></Sisaoppilaitos>
+        ) : null}
 
-      {!!items.urheilu && items.urheilu.length > 0 ? (
-        <Urheilu
-          items={items.urheilu}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_05`}></Urheilu>
-      ) : null}
+        {!!items.vankila && items.vankila.length > 0 ? (
+          <Vankila
+            items={items.vankila}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_04`}></Vankila>
+        ) : null}
 
-      {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
-        <Yhteistyo
-          items={items.yhteistyo}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_06`}></Yhteistyo>
-      ) : null}
+        {!!items.urheilu && items.urheilu.length > 0 ? (
+          <Urheilu
+            items={items.urheilu}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_05`}></Urheilu>
+        ) : null}
 
-      {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
-        <Yhteistyosopimus
-          items={items.yhteistyosopimus}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_08`}></Yhteistyosopimus>
-      ) : null}
+        {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
+          <Yhteistyo
+            items={items.yhteistyo}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_06`}></Yhteistyo>
+        ) : null}
 
-      {!!items.selvitykset && items.selvitykset.length > 0 ? (
-        <Selvitykset
-          items={items.selvitykset}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_09`}></Selvitykset>
-      ) : null}
+        {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
+          <Yhteistyosopimus
+            items={items.yhteistyosopimus}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_08`}></Yhteistyosopimus>
+        ) : null}
 
-      {!!items.muumaarays && items.muumaarays.length > 0 ? (
-        <MuuMaarays
-          items={items.muumaarays}
-          localeUpper={localeUpper}
-          maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-          sectionId={`${sectionId}_07`}></MuuMaarays>
-      ) : null}
-    </React.Fragment>
-  );
-};
+        {!!items.selvitykset && items.selvitykset.length > 0 ? (
+          <Selvitykset
+            items={items.selvitykset}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_09`}></Selvitykset>
+        ) : null}
+
+        {!!items.muumaarays && items.muumaarays.length > 0 ? (
+          <MuuMaarays
+            items={items.muumaarays}
+            localeUpper={localeUpper}
+            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            sectionId={`${sectionId}_07`}></MuuMaarays>
+        ) : null}
+      </React.Fragment>
+    );
+  }
+);
 
 MuutospyyntoWizardMuut.propTypes = {
   headingNumber: PropTypes.number,

@@ -255,16 +255,21 @@ const isBranchEmpty = obj => {
 const isWholeBranchEmpty = obj => R.isEmpty(isBranchEmpty(obj));
 
 const removeOldLeaves = (p = [], tree) => {
-  return R.assocPath(
-    p,
-    R.without(
-      R.filter(leaf => {
-        return R.pathEq(["properties", "deleteElement"], true, leaf);
-      }, R.path(p, tree)),
-      R.path(p, tree)
-    ),
-    tree
-  );
+  const leavesOnBranch = R.path(p, tree);
+  if (Array.isArray(leavesOnBranch)) {
+    return R.assocPath(
+      p,
+      R.without(
+        R.filter(leaf => {
+          return R.pathEq(["properties", "deleteElement"], true, leaf);
+        }, leavesOnBranch),
+        leavesOnBranch
+      ),
+      tree
+    );
+  } else {
+    return tree;
+  }
 };
 
 const protectedTreeProps = ["unsaved", "underRemoval"];
@@ -276,7 +281,7 @@ const protectedTreeProps = ["unsaved", "underRemoval"];
  * @param {*} p Polku, joka käydään läpi aloittaen polun perältä
  * @param {*} branch Objekti (oksa), joka käydään läpi. Voi olla koko puu.
  */
-export const recursiveTreeShake = (p = [], branch, dispatch) => {
+export const recursiveTreeShake = (p = [], branch) => {
   /**
    * Poistetaan käsiteltävänä olevasta oksasta poistettavaksi merkityt lehdet.
    * Toimenpiteen ohessa lehdestä voi löytyä merkintöjä operaatoista, jotka
@@ -301,5 +306,6 @@ export const recursiveTreeShake = (p = [], branch, dispatch) => {
       }
     }
   }
+
   return updatedBranch;
 };

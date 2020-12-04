@@ -36,7 +36,6 @@ const Navigation = ({
       </a>
     ) : (
       <NavLink
-      className="font-"
         key={`link-${index}`}
         exact={link.isExact}
         activeClassName={`md:bg-${theme.hoverColor} ml-xxs`}

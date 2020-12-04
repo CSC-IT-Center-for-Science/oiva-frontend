@@ -432,7 +432,6 @@ export const getOpiskelijavuodetVahimmaisopiskelijavuosimaaraPerustelulomake = (
     locale,
     isReadOnly
   );
-  console.info(checkboxes);
   return [
     {
       anchor: "vahimmaisopiskelijavuodet",

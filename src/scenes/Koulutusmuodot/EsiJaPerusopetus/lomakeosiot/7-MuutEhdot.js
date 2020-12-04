@@ -31,7 +31,7 @@ const MuutEhdot = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ onAddButtonClick }}
+      functions={{ onAddButtonClick }}
       formTitle={title}
       mode={mode}
       isPreviewModeOn={isPreviewModeOn}

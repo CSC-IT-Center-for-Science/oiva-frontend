@@ -188,7 +188,6 @@ const LupaSection = props => {
         const { kohdeKuvaus, kohdeArvot, tutkintokieletArr } = kohde;
 
         tutkintokieletArr.forEach(tutkintokieli => {
-          console.info(tutkintokieli);
           tutkintokieli.kieli = parseLocalizedField(
             (find(k => k.koodiarvo === tutkintokieli.kieli, kielet) || {})
               .metadata,
