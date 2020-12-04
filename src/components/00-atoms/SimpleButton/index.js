@@ -19,18 +19,24 @@ const defaultProps = {
   iconContainerStyles: {}
 };
 
-const styles = createStyles(theme => ({
-  root: {
-    height: "3rem",
-    fontWeight: "600",
-    fontSize: "0.9375rem",
-    borderRadius: 0,
-    borderColor: "#d1d1d1",
-    "&:focus": {
-      outline: "0.2rem solid #d1d1d1"
+const styles = createStyles(theme => {
+  console.info(theme);
+  return {
+    root: {
+      height: "3rem",
+      fontWeight: "600",
+      fontSize: "0.9375rem",
+      borderRadius: 0,
+      borderColor: "#d1d1d1",
+      "&:focus": {
+        outline: "0.2rem solid #d1d1d1"
+      },
+      "&:hover": {
+        backgroundColor: theme.palette.primary.light
+      }
     }
-  }
-}));
+  };
+});
 
 const SimpleButton = ({
   ariaLabel,

@@ -23,10 +23,9 @@ const CasAuthenticated = ({ organisation }) => {
     return <p>{intl.formatMessage(commonMessages.loginError)}</p>;
   } else if (user.fetchedAt && ytunnus) {
     const role = user.data.roles[1];
-    // TODO: Different roles routing here when applicable
     switch (role) {
       case ROLE_ESITTELIJA: {
-        return <Redirect to="/asianhallinta" />;
+        return <Redirect to="/" />;
       }
       default: {
         return (

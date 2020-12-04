@@ -22,17 +22,11 @@ import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 
-const keys = [
-  "lupaByUuid",
-  "lupaByYtunnus",
-  "organisaatio",
-  "tulevatLuvat",
-  "kieletOPH"
-];
 const keys2 = ["organisaatio"];
 
 export default function KoulutusmuodonEtusivu({
   AsiaDialogContainer,
+  hakuavaimet,
   Jarjestajaluettelo,
   JarjestamislupaJSX,
   koulutusmuoto,
@@ -130,7 +124,7 @@ export default function KoulutusmuodonEtusivu({
                   render={props => {
                     return (
                       <BaseData
-                        keys={keys}
+                        keys={hakuavaimet}
                         locale={locale}
                         koulutustyyppi={koulutusmuoto.koulutustyyppi}
                         render={_props1 => {
@@ -184,72 +178,6 @@ export default function KoulutusmuodonEtusivu({
                                         voimassaOlevaLupa={
                                           _props1.voimassaOlevaLupa
                                         }
-                                        user={user}
-                                      />
-                                    );
-                                  }
-                                }}
-                                ytunnus={_props1.lupa.jarjestajaYtunnus}
-                              />
-                            );
-                          }
-                        }}
-                      />
-                    );
-                  }}
-                />
-                <Route
-                  path={`/${koulutusmuoto.kebabCase}/koulutuksenjarjestajat/:id`}
-                  render={props => {
-                    return (
-                      <BaseData
-                        keys={keys}
-                        locale={locale}
-                        render={_props1 => {
-                          /**
-                           * Tämä toteutus olisi paljon yksinkertaisempi, jos
-                           * kaikkien opetusmuotojen lupatietojen noutamisen
-                           * voisi tehdä samalla tavalla. Vapaa sivistystyo
-                           * on kuitenkin poikkeus, koska VST-luvat noudetaan
-                           * lupaUuid:n avulla. Muiden koulutusmuotojen luvat
-                           * voidaan noutaa y-tunnusta käyttämällä.
-                           *
-                           * Y-tunnuksen ollessa tiedossa, saadaan luvan
-                           * lisäksi noudettua myös organisaation tiedot.
-                           * VST:n tapauksessa täytyy noutaa ensin lupa
-                           * ja käyttää luvalta löytyvää y-tunnusta
-                           * organisaatiotietojen hakemiseen.
-                           */
-                          if (_props1.organisaatio) {
-                            return (
-                              <JarjestajaSwitch
-                                JarjestamislupaJSX={JarjestamislupaJSX}
-                                koulutusmuoto={koulutusmuoto}
-                                lupa={_props1.lupa}
-                                organisation={_props1.organisaatio}
-                                path={props.match.path}
-                                user={user}
-                                ytunnus={_props1.ytunnus}
-                              />
-                            );
-                          } else if (
-                            _props1.lupa &&
-                            _props1.lupa.jarjestajaYtunnus
-                          ) {
-                            return (
-                              <BaseData
-                                keys={keys2}
-                                locale={locale}
-                                render={_props2 => {
-                                  if (_props2.organisaatio) {
-                                    return (
-                                      <JarjestajaSwitch
-                                        JarjestamislupaJSX={JarjestamislupaJSX}
-                                        koulutusmuoto={koulutusmuoto}
-                                        lupa={_props1.lupa}
-                                        lupaUuid={_props1.lupaUuid}
-                                        organisation={_props2.organisaatio}
-                                        path={props.match.path}
                                         user={user}
                                       />
                                     );

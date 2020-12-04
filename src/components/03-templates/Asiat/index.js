@@ -26,10 +26,7 @@ const OivaTab = withStyles(theme => ({
     padding: 0,
     marginRight: "2rem",
     marginLeft: "0.3em",
-    marginTop: "0.3em",
-    "&:focus": {
-      outline: "0.2rem solid #d1d1d1"
-    }
+    marginTop: "0.3em"
   }
 }))(props => <Tab {...props} />);
 
@@ -58,7 +55,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/asianhallinta`}>
+      <BreadcrumbsItem to={`${koulutusmuoto.kebabCase}/asianhallinta`}>
         {intl.formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
@@ -83,7 +80,10 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
               {t(common.asianhallinta)}
             </Typography>
             <div className="w-full flex flex-row justify-between">
-              <Typography component="h2" variant="h2" style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400}}>
+              <Typography
+                component="h2"
+                variant="h2"
+                style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}>
                 {koulutusmuoto.paasivunOtsikko}
               </Typography>
               <div>
