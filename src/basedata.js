@@ -95,13 +95,15 @@ export const getRaw = async (
  * @param lupaUuid
  * @param {string} ytunnus
  * @param koulutustyyppi
+ * @param oppilaitostyyppi
  */
 const fetchBaseData = async (
   keys,
   locale,
   lupaUuid,
   ytunnus,
-  koulutustyyppi
+  koulutustyyppi,
+  oppilaitostyyppi
 ) => {
   const localeUpper = toUpper(locale);
   /**
@@ -260,6 +262,8 @@ const fetchBaseData = async (
         backendRoutes.tulevatLuvat.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+      }${
+        oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""
       }`,
       keys,
       backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
@@ -655,6 +659,7 @@ const BaseData = ({
   locale,
   render,
   koulutustyyppi,
+  oppilaitostyyppi,
   ytunnus
 }) => {
   const { id } = useParams();
@@ -678,7 +683,7 @@ const BaseData = ({
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi).then(
+    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi, oppilaitostyyppi).then(
       result => {
         if (isSubscribed) {
           setBaseData(result);
@@ -686,7 +691,7 @@ const BaseData = ({
       }
     );
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi]);
+  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi, oppilaitostyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
@@ -702,7 +707,8 @@ BaseData.propTypes = {
   keys: PropTypes.array,
   locale: PropTypes.string,
   render: PropTypes.func,
-  koulutustyyppi: PropTypes.string
+  koulutustyyppi: PropTypes.string,
+  oppilaitostyyppi: PropTypes.string
 };
 
 export default BaseData;

@@ -9,9 +9,9 @@ const Lupapaatokset = ({ koulutusmuoto, jarjestajaOid, tulevatLuvat, voimassaOle
   // Let's fetch LUPAHISTORIA
   useEffect(() => {
     if (jarjestajaOid) {
-      actions.load(jarjestajaOid, koulutusmuoto);
+      actions.load(jarjestajaOid, koulutusmuoto, voimassaOlevaLupa ? voimassaOlevaLupa.oppilaitostyyppi : null);
     }
-  }, [actions, jarjestajaOid, koulutusmuoto]);
+  }, [actions, jarjestajaOid, koulutusmuoto, voimassaOlevaLupa]);
 
   return lupahistoria.fetchedAt ? (
     <LupapaatoksetTable
