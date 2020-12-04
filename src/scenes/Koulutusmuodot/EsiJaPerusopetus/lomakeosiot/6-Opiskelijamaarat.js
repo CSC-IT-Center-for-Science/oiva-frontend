@@ -12,6 +12,7 @@ const constants = {
 const Opiskelijamaarat = ({
   code,
   isPreviewModeOn,
+  maaraykset,
   mode = constants.mode,
   sectionId,
   title
@@ -22,6 +23,7 @@ const Opiskelijamaarat = ({
     <Lomake
       anchor={sectionId}
       code={code}
+      data={{ maaraykset }}
       formTitle={title}
       mode={mode}
       isPreviewModeOn={isPreviewModeOn}
@@ -35,6 +37,7 @@ const Opiskelijamaarat = ({
 Opiskelijamaarat.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string

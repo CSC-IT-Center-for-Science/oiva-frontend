@@ -29,6 +29,8 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
     lomakedata
   );
 
+  console.info(lomakedata);
+
   if (changeObjectsByProvinceNode) {
     const kunnat = sortBy(
       prop("content"),

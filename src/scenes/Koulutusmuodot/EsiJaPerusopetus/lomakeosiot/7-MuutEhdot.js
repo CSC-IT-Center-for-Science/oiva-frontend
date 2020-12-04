@@ -13,6 +13,7 @@ const constants = {
 const MuutEhdot = ({
   code,
   isPreviewModeOn,
+  maaraykset,
   mode = constants.mode,
   sectionId,
   title
@@ -31,6 +32,7 @@ const MuutEhdot = ({
     <Lomake
       anchor={sectionId}
       code={code}
+      data={{ maaraykset }}
       functions={{ onAddButtonClick }}
       formTitle={title}
       mode={mode}
@@ -45,6 +47,7 @@ const MuutEhdot = ({
 MuutEhdot.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string

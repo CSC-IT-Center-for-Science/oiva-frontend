@@ -6,11 +6,13 @@ import {
   filter,
   find,
   flatten,
+  hasPath,
   includes,
   map,
   path,
   pathEq,
   prop,
+  propEq,
   sortBy,
   toUpper
 } from "ramda";
@@ -19,7 +21,7 @@ import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 export async function muutEhdot(
-  data,
+  { maaraykset },
   { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects,
@@ -45,8 +47,19 @@ export async function muutEhdot(
     lisatiedot || []
   );
 
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
+
   const lomakerakenne = flatten([
     map(ehto => {
+      const ehtoonLiittyvatMaaraykset = filter(
+        propEq("koodiarvo", ehto.koodiarvo),
+        maaraykset
+      );
+      const kuvausmaarays = find(
+        hasPath(["meta", "kuvaus"]),
+        ehtoonLiittyvatMaaraykset
+      );
+
       return {
         anchor: ehto.koodiarvo,
         components: [
@@ -62,7 +75,7 @@ export async function muutEhdot(
                 removal: isRemoved,
                 custom: Object.assign({}, !!ehto.maarays ? isInLupa : {})
               },
-              isChecked: !!ehto.maarays,
+              isChecked: !!ehtoonLiittyvatMaaraykset.length,
               isIndeterminate: false
             }
           }
@@ -83,7 +96,9 @@ export async function muutEhdot(
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
-                    value: ehto.metadata[localeUpper].kuvaus
+                    value: kuvausmaarays
+                      ? kuvausmaarays.meta.kuvaus
+                      : ehto.metadata[localeUpper].kuvaus
                   }
                 }
               ]
@@ -192,14 +207,15 @@ export async function muutEhdot(
                   },
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: __("common.lisatiedot")
+                  placeholder: __("common.lisatiedot"),
+                  value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                 }
               }
             ]
           }
         ].filter(Boolean)
       : null
-  ]);
+  ]).filter(Boolean);
 
   return lomakerakenne;
 }

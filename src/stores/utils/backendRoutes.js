@@ -7,7 +7,7 @@ export const backendRoutes = {
   elykeskukset: { path: `koodistot/koodit/elykeskukset` },
   kayttaja: { path: `auth/me` },
   kielet: { path: `koodistot/kielet` },
-  kohteet: { path: `kohteet` },
+  kohteet: { path: `kohteet`, minimumTimeBetweenFetchingInMinutes: 0 },
   tutkinnot: { path: `koodistot/ammatillinen/tutkinnot` },
   koulutuksetMuut: { path: `koodistot/koodit/` },
   koulutus: { path: `koodistot/koodi/koulutus/` },

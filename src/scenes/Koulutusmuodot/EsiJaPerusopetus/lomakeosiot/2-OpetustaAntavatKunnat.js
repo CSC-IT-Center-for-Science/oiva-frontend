@@ -12,171 +12,188 @@ const constants = {
   mode: "modification"
 };
 
-const OpetustaAntavatKunnat = React.memo(props => {
-  const intl = useIntl();
-  const [
-    changeObjects,
-    { setChanges }
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "toimintaalue"
-  });
+const OpetustaAntavatKunnat = React.memo(
+  ({
+    code,
+    isPreviewModeOn,
+    lupakohde,
+    maaraykset,
+    sectionId,
+    title,
+    valtakunnallinenMaarays
+  }) => {
+    const intl = useIntl();
+    const [
+      changeObjects,
+      { setChanges }
+    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "toimintaalue"
+    });
 
-  const [isEditViewActive, toggleEditView] = useState(false);
+    const maakuntamaaraykset = R.filter(
+      maarays => maarays.koodisto === "maakunta",
+      maaraykset
+    );
 
-  const kunnatInLupa = useMemo(() => {
-    return R.sortBy(
-      R.path(["metadata", "arvo"]),
-      R.map(kunta => {
-        const maarays = R.find(
-          R.propEq("koodiarvo", kunta.koodiarvo),
-          props.kuntamaaraykset
+    const kuntamaaraykset = R.filter(maarays => {
+      return (
+        maarays.koodisto === "kunta" &&
+        (!maarays.meta.changeObjects ||
+          !R.includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+      );
+    }, maaraykset);
+
+    const [isEditViewActive, toggleEditView] = useState(false);
+
+    // const kunnatInLupa = useMemo(() => {
+    //   console.info(kuntamaaraykset, lupakohde.kunnat);
+    //   return R.sortBy(
+    //     R.path(["metadata", "arvo"]),
+    //     R.map(kunta => {
+    //       const maarays = R.find(
+    //         R.propEq("koodiarvo", kunta.koodiarvo),
+    //         kuntamaaraykset
+    //       );
+    //       return {
+    //         maaraysUuid: maarays ? maarays.uuid : null,
+    //         title: kunta.arvo,
+    //         metadata: kunta
+    //       };
+    //     }, lupakohde.kunnat || [])
+    //   );
+    // }, [kuntamaaraykset, lupakohde.kunnat]);
+
+    // const maakunnatInLupa = useMemo(() => {
+    //   return R.sortBy(
+    //     R.path(["metadata", "arvo"]),
+    //     R.map(maakunta => {
+    //       return {
+    //         title: maakunta.arvo,
+    //         metadata: maakunta
+    //       };
+    //     }, lupakohde.maakunnat || [])
+    //   );
+    // }, [lupakohde.maakunnat]);
+
+    const fiCode = R.view(R.lensPath(["valtakunnallinen", "arvo"]), lupakohde);
+
+    const whenChanges = useCallback(
+      changes => {
+        const withoutCategoryFilterChangeObj = R.filter(
+          R.compose(R.not, R.propEq("anchor", `${sectionId}.categoryFilter`)),
+          changeObjects
         );
-        return {
-          maaraysUuid: maarays ? maarays.uuid : null,
-          title: kunta.arvo,
-          metadata: kunta
-        };
-      }, props.lupakohde.kunnat || [])
+
+        const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
+          .length;
+        const amountOfQuickFilterChanges = R.flatten(
+          R.values(changes.quickFilterChanges)
+        ).length;
+
+        const changesToSet = R.concat(
+          withoutCategoryFilterChangeObj,
+          amountOfChanges || amountOfQuickFilterChanges
+            ? [
+                {
+                  anchor: `${sectionId}.categoryFilter`,
+                  properties: {
+                    changesByProvince: changes.changesByProvince,
+                    quickFilterChanges: changes.quickFilterChanges
+                  }
+                }
+              ]
+            : []
+        );
+
+        return setChanges(changesToSet, sectionId);
+      },
+      [changeObjects, sectionId, setChanges]
     );
-  }, [props.kuntamaaraykset, props.lupakohde.kunnat]);
 
-  const maakunnatInLupa = useMemo(() => {
-    return R.sortBy(
-      R.path(["metadata", "arvo"]),
-      R.map(maakunta => {
-        return {
-          title: maakunta.arvo,
-          metadata: maakunta
-        };
-      }, props.lupakohde.maakunnat || [])
-    );
-  }, [props.lupakohde.maakunnat]);
-
-  const fiCode = R.view(
-    R.lensPath(["valtakunnallinen", "arvo"]),
-    props.lupakohde
-  );
-
-  const whenChanges = useCallback(
-    changes => {
-      const withoutCategoryFilterChangeObj = R.filter(
-        R.compose(
-          R.not,
-          R.propEq("anchor", `${props.sectionId}.categoryFilter`)
-        ),
+    const provinceChanges = useMemo(() => {
+      const changeObj = R.find(
+        R.propEq("anchor", `${sectionId}.categoryFilter`),
         changeObjects
       );
+      return changeObj ? changeObj.properties.changesByProvince : {};
+    }, [changeObjects, sectionId]);
 
-      const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
-        .length;
-      const amountOfQuickFilterChanges = R.flatten(
-        R.values(changes.quickFilterChanges)
-      ).length;
-
-      const changesToSet = R.concat(
-        withoutCategoryFilterChangeObj,
-        amountOfChanges || amountOfQuickFilterChanges
-          ? [
-              {
-                anchor: `${props.sectionId}.categoryFilter`,
-                properties: {
-                  changesByProvince: changes.changesByProvince,
-                  quickFilterChanges: changes.quickFilterChanges
-                }
-              }
-            ]
-          : []
+    const quickFilterChanges = useMemo(() => {
+      const changeObj = R.find(
+        R.propEq("anchor", `${sectionId}.categoryFilter`),
+        changeObjects
       );
+      return changeObj ? changeObj.properties.quickFilterChanges : {};
+    }, [changeObjects, sectionId]);
 
-      return setChanges(changesToSet, props.sectionId);
-    },
-    [changeObjects, props.sectionId, setChanges]
-  );
+    const noSelectionsInLupa =
+      R.isEmpty(maakuntamaaraykset) && R.isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
-  const provinceChanges = useMemo(() => {
-    const changeObj = R.find(
-      R.propEq("anchor", `${props.sectionId}.categoryFilter`),
-      changeObjects
+    return (
+      <Lomake
+        mode={constants.mode}
+        anchor={sectionId}
+        code={code}
+        data={{
+          fiCode,
+          isEditViewActive,
+          isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
+          isValtakunnallinenChecked: fiCode === "FI1",
+          localizations: {
+            accept: intl.formatMessage(common.accept),
+            areaOfActionIsUndefined: intl.formatMessage(
+              wizard.noMunicipalitiesSelected
+            ),
+            cancel: intl.formatMessage(common.cancel),
+            currentAreaOfAction: intl.formatMessage(
+              wizard.municipalitiesInPresentLupa
+            ),
+            newAreaOfAction: noSelectionsInLupa
+              ? intl.formatMessage(wizard.municipalities)
+              : intl.formatMessage(wizard.municipalitiesInNewLupa),
+            ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
+            quickFilter: intl.formatMessage(wizard.quickFilter),
+            editButtonText: intl.formatMessage(wizard.selectMunicipalities),
+            sameAsTheCurrentAreaOfAction: intl.formatMessage(
+              wizard.sameAsTheCurrentAreaOfAction
+            ),
+            wholeCountryWithoutAhvenanmaa: intl.formatMessage(
+              wizard.wholeCountryWithoutAhvenanmaa
+            )
+          },
+          kuntamaaraykset,
+          maakuntamaaraykset,
+          maaraykset,
+          changeObjectsByProvince: Object.assign({}, provinceChanges),
+          quickFilterChanges,
+          valtakunnallinenMaarays
+        }}
+        functions={{
+          onChanges: whenChanges,
+          toggleEditView
+        }}
+        isPreviewModeOn={isPreviewModeOn}
+        isRowExpanded={true}
+        path={constants.formLocation}
+        rowTitle={intl.formatMessage(
+          wizard.singularMunicipalitiesOrTheWholeCountry
+        )}
+        showCategoryTitles={true}
+        formTitle={title}
+      />
     );
-    return changeObj ? changeObj.properties.changesByProvince : {};
-  }, [changeObjects, props.sectionId]);
-
-  const quickFilterChanges = useMemo(() => {
-    const changeObj = R.find(
-      R.propEq("anchor", `${props.sectionId}.categoryFilter`),
-      changeObjects
-    );
-    return changeObj ? changeObj.properties.quickFilterChanges : {};
-  }, [changeObjects, props.sectionId]);
-
-  const noSelectionsInLupa =
-    R.isEmpty(maakunnatInLupa) && R.isEmpty(kunnatInLupa) && fiCode !== "FI1";
-
-  return (
-    <Lomake
-      mode={constants.mode}
-      anchor={props.sectionId}
-      code={props.code}
-      data={{
-        fiCode,
-        isEditViewActive,
-        isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
-        isValtakunnallinenChecked: fiCode === "FI1",
-        lisatiedot: props.lisatiedot,
-        localizations: {
-          accept: intl.formatMessage(common.accept),
-          areaOfActionIsUndefined: intl.formatMessage(
-            wizard.noMunicipalitiesSelected
-          ),
-          cancel: intl.formatMessage(common.cancel),
-          currentAreaOfAction: intl.formatMessage(
-            wizard.municipalitiesInPresentLupa
-          ),
-          newAreaOfAction: noSelectionsInLupa
-            ? intl.formatMessage(wizard.municipalities)
-            : intl.formatMessage(wizard.municipalitiesInNewLupa),
-          ofMunicipalities: intl.formatMessage(wizard.ofMunicipalities),
-          quickFilter: intl.formatMessage(wizard.quickFilter),
-          editButtonText: intl.formatMessage(wizard.selectMunicipalities),
-          sameAsTheCurrentAreaOfAction: intl.formatMessage(
-            wizard.sameAsTheCurrentAreaOfAction
-          ),
-          wholeCountryWithoutAhvenanmaa: intl.formatMessage(
-            wizard.wholeCountryWithoutAhvenanmaa
-          )
-        },
-        kunnatInLupa,
-        maakunnatInLupa,
-        changeObjectsByProvince: Object.assign({}, provinceChanges),
-        quickFilterChanges,
-        valtakunnallinenMaarays: props.valtakunnallinenMaarays
-      }}
-      functions={{
-        onChanges: whenChanges,
-        toggleEditView
-      }}
-      isRowExpanded={true}
-      path={constants.formLocation}
-      rowTitle={intl.formatMessage(
-        wizard.singularMunicipalitiesOrTheWholeCountry
-      )}
-      showCategoryTitles={true}
-      formTitle={props.title}
-    />
-  );
-});
-
-OpetustaAntavatKunnat.defaultProps = {
-  kuntamaaraykset: [],
-  lupakohde: {},
-  valtakunnallinenMaarays: {}
-};
+  }
+);
 
 OpetustaAntavatKunnat.propTypes = {
-  lupakohde: PropTypes.object,
+  code: PropTypes.string,
+  isPreviewModeOn: PropTypes.bool,
   kuntamaaraykset: PropTypes.array,
-  valtakunnallinenMaarays: PropTypes.object,
-  sectionId: PropTypes.string
+  lupakohde: PropTypes.object,
+  maaraykset: PropTypes.array,
+  sectionId: PropTypes.string,
+  title: PropTypes.string,
+  valtakunnallinenMaarays: PropTypes.object
 };
 
 export default OpetustaAntavatKunnat;

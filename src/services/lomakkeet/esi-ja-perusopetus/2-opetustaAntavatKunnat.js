@@ -18,6 +18,7 @@ import {
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import { __ } from "i18n-for-browser";
+import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 const labelStyles = {
   addition: isAdded,
@@ -51,10 +52,10 @@ export const opetustaAntavatKunnat = async (
     fiCode,
     isEditViewActive,
     changeObjectsByProvince = {},
-    lisatiedot,
     localizations,
-    kunnatInLupa,
-    maakunnatInLupa,
+    kuntamaaraykset,
+    maakuntamaaraykset,
+    maaraykset,
     quickFilterChanges = [],
     valtakunnallinenMaarays
   },
@@ -66,6 +67,8 @@ export const opetustaAntavatKunnat = async (
   const kunnat = await getKunnatFromStorage();
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
+  const lisatiedot = await getLisatiedotFromStorage();
+
   const ulkomaa = find(propEq("koodiarvo", "200"), kunnat);
 
   const kunnatIlmanUlkomaata = filter(
@@ -74,12 +77,20 @@ export const opetustaAntavatKunnat = async (
     kunnat
   );
 
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
+
   const localeUpper = toUpper(locale);
-  const maaraysUuid = valtakunnallinenMaarays.uuid;
+  const maaraysUuid = valtakunnallinenMaarays
+    ? valtakunnallinenMaarays.uuid
+    : undefined;
   const options = map(maakunta => {
-    const isMaakuntaInLupa = !!find(province => {
-      return province.metadata.koodiarvo === maakunta.koodiarvo;
-    }, maakunnatInLupa);
+    console.info(maakunta, maakuntamaaraykset);
+    const isMaakuntaInLupa = !!find(
+      propEq("koodiarvo", maakunta.koodiarvo),
+      maakuntamaaraykset
+    );
+
+      console.info(isMaakuntaInLupa, maakunta);
 
     let someMunicipalitiesInLupa = false;
 
@@ -98,7 +109,7 @@ export const opetustaAntavatKunnat = async (
 
       const isKuntaInLupa = !!find(
         pathEq(["metadata", "koodiarvo"], kunta.koodiarvo),
-        kunnatInLupa
+        kuntamaaraykset
       );
 
       if (isKuntaInLupa) {
@@ -131,12 +142,12 @@ export const opetustaAntavatKunnat = async (
 
     const isKuntaOfMaakuntaInLupa = !!find(kunta => {
       let maakuntaCode;
-      const result = find(
-        k =>
-          propEq("kuntaKoodiarvo", kunta.metadata.koodiarvo, k) &&
-          includes(k.kuntaKoodiarvo, map(prop("koodiarvo"), presentKunnat)),
-        kuntaProvinceMapping
-      );
+      const result = find(k => {
+        return (
+          propEq("kuntaKoodiarvo", kunta.koodiarvo, k) &&
+          includes(k.kuntaKoodiarvo, map(prop("koodiarvo"), presentKunnat))
+        );
+      }, kuntaProvinceMapping);
       if (result) {
         mapObjIndexed((value, key) => {
           if (value === result.maakuntaKey) {
@@ -145,7 +156,7 @@ export const opetustaAntavatKunnat = async (
         }, mapping);
       }
       return maakuntaCode === maakunta.koodiarvo;
-    }, kunnatInLupa);
+    }, kuntamaaraykset);
     return {
       anchor: mapping[maakunta.koodiarvo],
       formId: mapping[maakunta.koodiarvo],
@@ -187,13 +198,15 @@ export const opetustaAntavatKunnat = async (
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    lisatiedot
+    lisatiedot || []
   );
 
   const noSelectionsInLupa =
-    isEmpty(maakunnatInLupa) && isEmpty(kunnatInLupa) && fiCode !== "FI1";
+    isEmpty(maakuntamaaraykset) && isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
-  return flatten(
+  console.info(options);
+
+  const lomakerakenne = flatten(
     [
       {
         anchor: "valintakentta",
@@ -303,7 +316,8 @@ export const opetustaAntavatKunnat = async (
                     },
                     isReadOnly,
                     placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
-                      .nimi
+                      .nimi,
+                    value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                   }
                 }
               ]
@@ -312,4 +326,8 @@ export const opetustaAntavatKunnat = async (
         : null
     ].filter(Boolean)
   );
+
+  console.info(lomakerakenne);
+
+  return lomakerakenne;
 };

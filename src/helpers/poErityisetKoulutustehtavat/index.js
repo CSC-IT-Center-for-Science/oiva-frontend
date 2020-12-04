@@ -54,8 +54,7 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
-  const kohde =
-    find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
+  const kohde = find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
 
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
@@ -122,6 +121,7 @@ export const defineBackendChangeObjects = async (
               kuvaus: changeObj.properties.value,
               maaraystyyppi,
               meta: {
+                ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
                 kuvaus: changeObj.properties.value,
                 changeObjects: [changeObj]
               },

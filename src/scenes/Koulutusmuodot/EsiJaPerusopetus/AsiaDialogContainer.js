@@ -19,7 +19,6 @@ const AsiaDialogContainer = ({
   kohteet,
   koulutusalat,
   koulutustyypit,
-  lisatiedot,
   maaraystyypit,
   organisaatio,
   viimeisinLupa
@@ -66,7 +65,6 @@ const AsiaDialogContainer = ({
       kohteet={kohteet}
       koulutusalat={koulutusalat}
       koulutustyypit={koulutustyypit}
-      lisatiedot={lisatiedot}
       lupa={viimeisinLupa}
       lupakohteet={lupakohteet}
       maaraystyypit={maaraystyypit}

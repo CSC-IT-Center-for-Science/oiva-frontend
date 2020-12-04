@@ -16,6 +16,7 @@ import { Helmet } from "react-helmet";
 import { Tab, Tabs, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { koulutustyypitMap } from "../../../utils/constants";
+import equal from "react-fast-compare";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -51,6 +52,7 @@ const OivaTabs = withStyles(() => ({
 const Jarjestaja = React.memo(
   ({
     JarjestamislupaJSX,
+    kohteet,
     koulutusmuoto,
     lupa = {},
     lupakohteet = [],
@@ -192,7 +194,11 @@ const Jarjestaja = React.memo(
               render={() => (
                 <div className="border m-12 p-12 bg-white mx-auto w-4/5">
                   {JarjestamislupaJSX ? (
-                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                    <JarjestamislupaJSX
+                      kohteet={kohteet}
+                      lupa={lupa}
+                      lupakohteet={lupakohteet}
+                    />
                   ) : null}
                 </div>
               )}
@@ -242,7 +248,11 @@ const Jarjestaja = React.memo(
               render={() => (
                 <div className="border my-12 p-12 bg-white mx-auto w-4/5">
                   {JarjestamislupaJSX ? (
-                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                    <JarjestamislupaJSX
+                      kohteet={kohteet}
+                      lupa={lupa}
+                      lupakohteet={lupakohteet}
+                    />
                   ) : null}
                 </div>
               )}
@@ -263,12 +273,15 @@ const Jarjestaja = React.memo(
         )}
       </article>
     );
+  },
+  (cp, np) => {
+    return equal(cp, np);
   }
 );
 
 Jarjestaja.propTypes = {
   koulutusmuoto: PropTypes.object,
-  lupaKohteet: PropTypes.object,
+  lupakohteet: PropTypes.object,
   lupa: PropTypes.object,
   organisation: PropTypes.object,
   path: PropTypes.string,

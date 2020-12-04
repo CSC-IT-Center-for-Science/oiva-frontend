@@ -18,7 +18,7 @@ export async function previewOfOpetuskielet({ lomakedata }) {
     compose(endsWith(".ensisijaiset"), prop("anchor")),
     lomakedata
   );
-
+  
   const toissijaiset = find(
     compose(endsWith(".toissijaiset"), prop("anchor")),
     lomakedata

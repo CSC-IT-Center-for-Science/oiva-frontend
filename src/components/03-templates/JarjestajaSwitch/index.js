@@ -12,6 +12,7 @@ import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaP
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
+  kohteet,
   koulutusmuoto,
   lupa,
   lupaUuid,
@@ -36,6 +37,8 @@ const JarjestajaSwitch = ({
       ? {}
       : parseLupaFn({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
   }, [lupa, intl, parseLupaFn]);
+
+  console.info(lupakohteet);
 
   return (
     <React.Fragment>
@@ -96,6 +99,7 @@ const JarjestajaSwitch = ({
               return (
                 <Jarjestaja
                   JarjestamislupaJSX={JarjestamislupaJSX}
+                  kohteet={kohteet}
                   koulutusmuoto={koulutusmuoto}
                   lupakohteet={lupakohteet}
                   lupa={lupa}

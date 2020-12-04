@@ -14,6 +14,7 @@ const constants = {
 const ErityisetKoulutustehtavat = ({
   code,
   isPreviewModeOn,
+  maaraykset,
   mode = constants.mode,
   sectionId,
   title
@@ -32,7 +33,7 @@ const ErityisetKoulutustehtavat = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ sectionId }}
+      data={{ sectionId, maaraykset }}
       functions={{
         onAddButtonClick
       }}
@@ -49,6 +50,7 @@ const ErityisetKoulutustehtavat = ({
 ErityisetKoulutustehtavat.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string
