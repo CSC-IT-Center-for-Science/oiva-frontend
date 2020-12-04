@@ -86,12 +86,14 @@ export default function KoulutusmuodonEtusivu({
                 </Typography>
                 <p className="max-w-213 mb-6">{kuvausteksti}</p>
                 {isEsittelija ? (
-                  <NavLink
-                    to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
-                    className="block mb-12">
-                    {koulutusmuoto.genetiivi}{" "}
-                    {toLower(formatMessage(common.asianhallinta))}
-                  </NavLink>
+                  <p className="mb-6">
+                    <NavLink
+                      to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
+                      className="block underline">
+                      {koulutusmuoto.genetiivi}{" "}
+                      {toLower(formatMessage(common.asianhallinta))}
+                    </NavLink>
+                  </p>
                 ) : null}
                 <Typography component="h2" variant="h2">
                   {jarjestajatOtsikko}
