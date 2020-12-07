@@ -30,7 +30,6 @@ import {
   getLatestChangesByAnchor,
   recursiveTreeShake
 } from "utils/common";
-import { muutokset } from "../scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -72,7 +71,16 @@ const setSavedChanges = (changeObjects, anchor) => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  initialState: muutokset,
+  initialState: {
+    changeObjects: {
+      saved: {},
+      unsaved: {},
+      underRemoval: {}
+    },
+    focusOn: null,
+    latestChanges: {},
+    validity: {}
+  },
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
