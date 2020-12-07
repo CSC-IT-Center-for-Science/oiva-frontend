@@ -29,7 +29,7 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
     lomakedata
   );
 
-  console.info(lomakedata);
+  console.info(lomakedata, changeObjectsByProvinceNode);
 
   if (changeObjectsByProvinceNode) {
     const kunnat = sortBy(

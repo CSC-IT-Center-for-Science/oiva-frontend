@@ -38,8 +38,6 @@ const JarjestajaSwitch = ({
       : parseLupaFn({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
   }, [lupa, intl, parseLupaFn]);
 
-  console.info(lupakohteet);
-
   return (
     <React.Fragment>
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>

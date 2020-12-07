@@ -84,13 +84,10 @@ export const opetustaAntavatKunnat = async (
     ? valtakunnallinenMaarays.uuid
     : undefined;
   const options = map(maakunta => {
-    console.info(maakunta, maakuntamaaraykset);
     const isMaakuntaInLupa = !!find(
       propEq("koodiarvo", maakunta.koodiarvo),
       maakuntamaaraykset
     );
-
-      console.info(isMaakuntaInLupa, maakunta);
 
     let someMunicipalitiesInLupa = false;
 
@@ -157,6 +154,7 @@ export const opetustaAntavatKunnat = async (
       }
       return maakuntaCode === maakunta.koodiarvo;
     }, kuntamaaraykset);
+
     return {
       anchor: mapping[maakunta.koodiarvo],
       formId: mapping[maakunta.koodiarvo],
@@ -217,7 +215,7 @@ export const opetustaAntavatKunnat = async (
             styleClasses: ["mt-4"],
             properties: {
               anchor: "areaofaction",
-              changeObjectsByProvince,
+              changeObjectsByProvince, 
               isEditViewActive,
               localizations,
               municipalities: kunnatIlmanUlkomaata,

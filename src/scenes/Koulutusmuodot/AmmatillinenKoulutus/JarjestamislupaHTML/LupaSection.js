@@ -21,13 +21,6 @@ const Otsikko = styled.div`
   margin-bottom: 20px;
 `;
 
-const H3 = styled.h3`
-  text-transform: uppercase;
-  margin-left: 30px;
-  font-size: 18px;
-  margin-left: 10px;
-`;
-
 const List = styled.p`
   margin-left: 30px;
   margin-bottom: 20px;
