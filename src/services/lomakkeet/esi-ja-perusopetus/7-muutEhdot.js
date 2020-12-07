@@ -2,6 +2,7 @@ import { isAdded, isInLupa, isRemoved } from "css/label";
 import { __ } from "i18n-for-browser";
 import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
+  compose,
   endsWith,
   filter,
   find,
@@ -55,9 +56,15 @@ export async function muutEhdot(
         propEq("koodiarvo", ehto.koodiarvo),
         maaraykset
       );
-      const kuvausmaarays = find(
+      const kuvausmaaraykset = filter(
         hasPath(["meta", "kuvaus"]),
         ehtoonLiittyvatMaaraykset
+      );
+
+      const kuvausankkuri0 = "0";
+      const kuvausmaarays0 = find(
+        pathEq(["meta", "ankkuri"], kuvausankkuri0),
+        kuvausmaaraykset
       );
 
       return {
@@ -83,26 +90,57 @@ export async function muutEhdot(
         categories: flatten(
           [
             {
-              anchor: "0",
+              anchor: kuvausankkuri0,
               components: [
                 {
                   anchor: "kuvaus",
                   name: "TextBox",
                   properties: {
                     forChangeObject: {
+                      ankkuri: kuvausankkuri0,
                       koodiarvo: ehto.koodiarvo
                     },
                     isPreviewModeOn,
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
-                    value: kuvausmaarays
-                      ? kuvausmaarays.meta.kuvaus
+                    value: kuvausmaarays0
+                      ? kuvausmaarays0.meta.kuvaus
                       : ehto.metadata[localeUpper].kuvaus
                   }
                 }
               ]
             },
+            /**
+             * Luodaan loput tekstikentät määräyksiin perustuen.
+             */
+            sortBy(
+              compose(anchorPart => parseInt(anchorPart, 10), prop("anchor")),
+              map(maarays => {
+                return maarays.meta.ankkuri !== kuvausankkuri0
+                  ? {
+                      anchor: maarays.koodiarvo,
+                      components: [
+                        {
+                          anchor: "kuvaus",
+                          name: "TextBox",
+                          properties: {
+                            forChangeObject: {
+                              ankkuri: maarays.koodiarvo
+                            },
+                            isPreviewModeOn,
+                            isReadOnly: _isReadOnly,
+                            isRemovable: true,
+                            placeholder: __("common.kuvausPlaceholder"),
+                            title: __("common.kuvaus"),
+                            value: maarays.meta.kuvaus
+                          }
+                        }
+                      ]
+                    }
+                  : null;
+              }, kuvausmaaraykset).filter(Boolean)
+            ),
             /**
              * Dynaamiset tekstikentät, joita käyttäjä voi luoda lisää erillisen painikkeen avulla.
              * 99 = Muu ehto
@@ -113,26 +151,49 @@ export async function muutEhdot(
                     prop("anchor"),
                     map(
                       changeObj => {
-                        return {
-                          anchor: getAnchorPart(changeObj.anchor, 2),
-                          components: [
-                            {
-                              anchor: "kuvaus",
-                              name: "TextBox",
-                              properties: {
-                                forChangeObject: {
-                                  koodiarvo: ehto.koodiarvo
-                                },
-                                isPreviewModeOn,
-                                isReadOnly: _isReadOnly,
-                                placeholder: __("common.kuvausPlaceholder"),
-                                title: __("common.kuvaus"),
-                                isRemovable: true,
-                                value: changeObj.properties.value
-                              }
-                            }
-                          ]
-                        };
+                        /**
+                         * Tarkistetaan, onko muutos jo tallennettu tietokantaan
+                         * eli löytyykö määräys. Jos määräys on olemassa, niin ei
+                         * luoda muutosobjektin perusteella enää dynaamista
+                         * tekstikenttää, koska tekstikentttä on luotu jo aiemmin
+                         * vähän ylempänä tässä tiedostossa.
+                         **/
+                        const maarays = find(
+                          pathEq(
+                            ["meta", "ankkuri"],
+                            path(
+                              ["properties", "metadata", "ankkuri"],
+                              changeObj
+                            )
+                          ),
+                          kuvausmaaraykset
+                        );
+
+                        const anchor = getAnchorPart(changeObj.anchor, 2);
+
+                        return !!maarays
+                          ? null
+                          : {
+                              anchor,
+                              components: [
+                                {
+                                  anchor: "kuvaus",
+                                  name: "TextBox",
+                                  properties: {
+                                    forChangeObject: {
+                                      ankkuri: anchor,
+                                      koodiarvo: ehto.koodiarvo
+                                    },
+                                    isPreviewModeOn,
+                                    isReadOnly: _isReadOnly,
+                                    placeholder: __("common.kuvausPlaceholder"),
+                                    title: __("common.kuvaus"),
+                                    isRemovable: true,
+                                    value: changeObj.properties.value
+                                  }
+                                }
+                              ]
+                            };
                       },
                       filter(changeObj => {
                         return (

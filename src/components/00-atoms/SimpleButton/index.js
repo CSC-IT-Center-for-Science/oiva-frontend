@@ -20,7 +20,6 @@ const defaultProps = {
 };
 
 const styles = createStyles(theme => {
-  console.info(theme);
   return {
     root: {
       height: "3rem",

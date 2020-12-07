@@ -202,8 +202,6 @@ export const opetustaAntavatKunnat = async (
   const noSelectionsInLupa =
     isEmpty(maakuntamaaraykset) && isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
-  console.info(options);
-
   const lomakerakenne = flatten(
     [
       {
@@ -324,8 +322,6 @@ export const opetustaAntavatKunnat = async (
         : null
     ].filter(Boolean)
   );
-
-  console.info(lomakerakenne);
 
   return lomakerakenne;
 };
