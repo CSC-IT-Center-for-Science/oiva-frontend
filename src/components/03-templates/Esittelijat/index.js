@@ -3,41 +3,28 @@ import { useUser } from "../../../stores/user";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { useIntl } from "react-intl";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { Typography } from "@material-ui/core";
 import BaseData from "basedata";
 import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
-import commonMessages from "i18n/definitions/common";
-import { MuutoksetContainer } from "../../../scenes/AmmatillinenKoulutus/store";
+import { MuutoksetContainer } from "../../../stores/muutokset";
 
 const Esittelijat = ({
   AsiaDialogContainer,
   koulutusmuoto,
-  sivunOtsikko,
   UusiAsiaDialogContainer
 }) => {
-  const { formatMessage, locale } = useIntl();
+  const { locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
-  const scope = "po-esittelijan-lupanakyma";
+  const scope = "esittelijan-lupanakyma";
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}>
-        {formatMessage(commonMessages.asianhallinta)}
+      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
+        {koulutusmuoto.kortinOtsikko}
       </BreadcrumbsItem>
 
-      <article className="px-16">
-        <Typography component="h1" variant="h1">
-          {formatMessage(commonMessages.asianhallinta)}
-        </Typography>
-        <Typography
-          component="h2"
-          style={{ fontSize: "1.25rem" }}
-          className="pb-4 mt--12">
-          {sivunOtsikko}
-        </Typography>
-
+      <article className="flex-1 flex-col flex">
         <Switch>
           <Route
             authenticated={!!user}
@@ -71,7 +58,18 @@ const Esittelijat = ({
                 koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 render={_props => (
                   <MuutoksetContainer scope={scope}>
-                    <UusiAsiaDialogContainer {..._props} />
+                    <UusiAsiaDialogContainer
+                      kohteet={_props.kohteet}
+                      koulutukset={_props.koulutukset}
+                      koulutusalat={_props.koulutusalat}
+                      koulutustyypit={_props.koulutustyypit}
+                      lisatiedot={_props.lisatiedot}
+                      maaraystyypit={_props.maaraystyypit}
+                      muut={_props.muut}
+                      opetuskielet={_props.opetuskielet}
+                      organisaatio={_props.organisaatio}
+                      viimeisinLupa={_props.viimeisinLupa}
+                    />
                   </MuutoksetContainer>
                 )}
               />
@@ -86,11 +84,24 @@ const Esittelijat = ({
                 <BaseData
                   locale={locale}
                   koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                  render={_props => (
-                    <MuutoksetContainer scope={scope}>
-                      <AsiaDialogContainer {..._props} />
-                    </MuutoksetContainer>
-                  )}
+                  render={_props => {
+                    return (
+                      <MuutoksetContainer scope={scope}>
+                        <AsiaDialogContainer
+                          kohteet={_props.kohteet}
+                          koulutukset={_props.koulutukset}
+                          koulutusalat={_props.koulutusalat}
+                          koulutustyypit={_props.koulutustyypit}
+                          lisatiedot={_props.lisatiedot}
+                          maaraystyypit={_props.maaraystyypit}
+                          muut={_props.muut}
+                          opetuskielet={_props.opetuskielet}
+                          organisaatio={_props.organisaatio}
+                          viimeisinLupa={_props.viimeisinLupa}
+                        />
+                      </MuutoksetContainer>
+                    );
+                  }}
                 />
               );
             }}
@@ -102,3 +113,18 @@ const Esittelijat = ({
 };
 
 export default Esittelijat;
+
+// kohteet,
+// koulutukset,
+// koulutusalat,
+// koulutustyypit,
+// maaraystyypit,
+// muut,
+// opetuskielet,
+
+// kielet,
+// kunnat,
+// lisatiedot,
+// maakunnat,
+// maakuntakunnat,
+// tutkinnot,

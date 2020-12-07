@@ -12,6 +12,9 @@ import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "../UusiAsiaEsidialog";
 import { last, split } from "ramda";
+import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+import commonMessages from "../../../i18n/definitions/common";
+import Typography from "@material-ui/core/Typography";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -23,10 +26,7 @@ const OivaTab = withStyles(theme => ({
     padding: 0,
     marginRight: "2rem",
     marginLeft: "0.3em",
-    marginTop: "0.3em",
-    "&:focus": {
-      outline: "0.2rem solid #d1d1d1"
-    }
+    marginTop: "0.3em"
   }
 }))(props => <Tab {...props} />);
 
@@ -55,6 +55,9 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
 
   return (
     <React.Fragment>
+      <BreadcrumbsItem to={`${koulutusmuoto.kebabCase}/asianhallinta`}>
+        {intl.formatMessage(commonMessages.asianhallinta)}
+      </BreadcrumbsItem>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>{`Oiva | ${t(common.asiat)}`}</title>
       </Helmet>
@@ -70,12 +73,20 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
           }></UusiAsiaEsidialog>
       )}
 
-      <div className="flex flex-col justify-end w-full h-40">
+      <div className="flex flex-col justify-end mx-auto w-4/5">
         <div className="flex items-center">
           <div className="flex-1">
+            <Typography component="h1" variant="h1">
+              {t(common.asianhallinta)}
+            </Typography>
             <div className="w-full flex flex-row justify-between">
-              <h1 className="mb-5">{t(common.asiat)}</h1>
-              <div className="pt-3 my-auto">
+              <Typography
+                component="h2"
+                variant="h2"
+                style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}>
+                {koulutusmuoto.paasivunOtsikko}
+              </Typography>
+              <div>
                 <SimpleButton
                   aria-label={t(common.luoUusiAsia)}
                   color="primary"
@@ -110,13 +121,9 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
         </div>
       </div>
 
-      <div
-        className="flex-1 flex w-full"
-        style={{ borderTop: "0.05rem solid #E3E3E3" }}>
-        <div className="flex-1 flex flex-col w-full mx-auto py-12">
-          <div
-            className="flex-1 bg-white"
-            style={{ border: "0.05rem solid #E3E3E3" }}>
+      <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+        <div className="flex mx-auto w-4/5 py-12">
+          <div className="flex-1 bg-white">
             <Switch>
               <Route
                 authenticated={!!user}

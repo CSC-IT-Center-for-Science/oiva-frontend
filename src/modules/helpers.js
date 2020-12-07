@@ -3,7 +3,7 @@
  */
 
 import _ from "lodash";
-import { find, path } from "ramda";
+import { find, path, includes, any } from "ramda";
 
 export const parseLocalizedField = (
   obj,
@@ -129,3 +129,7 @@ export const resolveKoodiLocalization = (messageObjects, locale = "FI") => {
     ? altObject.nimi
     : undefined;
 };
+
+export const userHasAnyOfRoles = (user, roles) => {
+  return user && any(role => includes(role, user.roles), roles);
+}

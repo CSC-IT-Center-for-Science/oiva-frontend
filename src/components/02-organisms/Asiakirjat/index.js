@@ -27,6 +27,7 @@ import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "../ConfirmDialog";
 import * as R from "ramda";
+import Typography from "@material-ui/core/Typography";
 
 const WrapTable = styled.div``;
 
@@ -97,7 +98,10 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const nimi = useMemo(
-    () => muutospyynto.data && (muutospyynto.data.jarjestaja.nimi.fi || muutospyynto.data.jarjestaja.nimi.sv),
+    () =>
+      muutospyynto.data &&
+      (muutospyynto.data.jarjestaja.nimi.fi ||
+        muutospyynto.data.jarjestaja.nimi.sv),
     [muutospyynto.data]
   );
 
@@ -109,7 +113,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(
-      `/${koulutusmuoto.kebabCase}/asianhallinta/avoimet?force=${new Date().getTime()}`
+      `/${
+        koulutusmuoto.kebabCase
+      }/asianhallinta/avoimet?force=${new Date().getTime()}`
     );
   };
 
@@ -139,7 +145,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       muutospyyntoActions.downloadAndShowInAnotherWindow(path);
     }
     // Let's move to Asiat view.
-    history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet?force=${new Date().getTime()}`);
+    history.push(
+      `/${
+        koulutusmuoto.kebabCase
+      }/asianhallinta/avoimet?force=${new Date().getTime()}`
+    );
   };
 
   const baseRow = [
@@ -159,11 +169,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           uuid: liite.uuid,
           type: "liite",
           items: [
-            intl.formatMessage(
-              liite.salainen ? common.secretAttachment : common.attachment
-            ) +
-              " " +
-              R.prop("nimi", liite),
+            R.prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
             liite.luoja,
             liite.luontipvm ? (
@@ -390,7 +396,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}>
+        <BreadcrumbsItem
+          to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}>
           {nimi}
         </BreadcrumbsItem>
         <div
@@ -415,8 +422,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </Link>
           <div className="flex-1 flex items-center pt-8 pb-2">
             <div className="w-full flex flex-col">
-              <h1>{nimi}</h1>
-              <h5 className="text-lg mt-1">{ytunnus}</h5>
+              <Typography component="h1" variant="h1">
+                {nimi}
+              </Typography>
+              <Typography component="h5" variant="h5">
+                {ytunnus}
+              </Typography>
             </div>
           </div>
         </div>
@@ -425,8 +436,14 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             style={{ maxWidth: "90rem" }}
             className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
             <span>
-              <h4 className="mb-2 float-left">{t(common.asianAsiakirjat)}</h4>
-              <h4 className="float-right">
+              <Typography component="h4" variant="h4" className="float-left">
+                {t(common.asianAsiakirjat)}
+              </Typography>
+              <Typography
+                component="h4"
+                variant="h4"
+                className="float-right"
+                style={{ margin: 0 }}>
                 <SelectAttachment
                   attachmentAdded={handleAddPaatoskirje}
                   messages={{
@@ -449,7 +466,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   }}
                   fileType={"paatosKirje"}
                 />
-              </h4>
+              </Typography>
             </span>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog

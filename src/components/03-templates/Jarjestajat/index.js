@@ -5,7 +5,11 @@ import { Helmet } from "react-helmet";
 import Loading from "modules/Loading";
 import { useIntl } from "react-intl";
 
-const Jarjestajat = ({ koulutusmuoto, Jarjestajaluettelo, sivunOtsikko }) => {
+const Jarjestajat = ({
+  koulutusmuoto,
+  Jarjestajaluettelo,
+  paasivunOtsikko
+}) => {
   const intl = useIntl();
   const [luvat, luvatActions] = useLuvat();
 
@@ -28,16 +32,17 @@ const Jarjestajat = ({ koulutusmuoto, Jarjestajaluettelo, sivunOtsikko }) => {
   return (
     <React.Fragment>
       <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>{sivunOtsikko} - Oiva</title>
+        <title>{paasivunOtsikko} - Oiva</title>
       </Helmet>
 
       <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {sivunOtsikko}
+        {paasivunOtsikko}
       </BreadcrumbsItem>
 
       {luvat.isLoading === false && !luvat.isErroneous && (
         <Jarjestajaluettelo luvat={luvat.data} />
       )}
+
       {luvat.isLoading && <Loading />}
     </React.Fragment>
   );

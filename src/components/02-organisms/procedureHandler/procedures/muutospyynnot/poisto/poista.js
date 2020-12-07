@@ -5,7 +5,6 @@ export const poista = {
   label: "Muutospyynnön poisto",
   input: ["id"],
   run: async ({ id }) => {
-    console.info(id);
     const response = await deleteDocument("poistaMuutospyynto", {
       urlEnding: id
     });

@@ -12,8 +12,8 @@ import DestroyCasAuth from "./scenes/Logout/services/DestroyCasAuth";
 import { createBrowserHistory } from "history";
 import authMessages from "./i18n/definitions/auth";
 import { useIntl } from "react-intl";
-import commonMessages from "./i18n/definitions/common";
-import educationMessages from "./i18n/definitions/education";
+import common from "./i18n/definitions/common";
+import education from "./i18n/definitions/education";
 import langMessages from "./i18n/definitions/languages";
 import { ToastContainer } from "react-toastify";
 import {
@@ -34,13 +34,18 @@ import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import { SkipNavLink, SkipNavContent } from "@reach/skip-nav";
 import "@reach/skip-nav/styles.css";
 import SessionDialog from "SessionDialog";
-import Asianhallinta from "scenes/AmmatillinenKoulutus/Asianhallinta";
-import AmmatillinenKoulutus from "scenes/AmmatillinenKoulutus";
-import EsiJaPerusopetus from "scenes/EsiJaPerusopetus";
-import Lukiokoulutus from "scenes/Lukiokoulutus";
-import VapaaSivistystyo from "scenes/VapaaSivistystyo";
-import BaseData, { getRaw } from "basedata";
+import AmmatillinenKoulutus from "scenes/Koulutusmuodot/AmmatillinenKoulutus";
+import EsiJaPerusopetus from "scenes/Koulutusmuodot/EsiJaPerusopetus";
+import Lukiokoulutus from "scenes/Koulutusmuodot/Lukiokoulutus";
+import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo";
+import { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
+
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import lukiokoulutus from "i18n/definitions/lukiokoulutus";
+import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
+
 import * as R from "ramda";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -48,6 +53,26 @@ import "react-toastify/dist/ReactToastify.css";
 const history = createBrowserHistory();
 
 const logo = { text: "Oiva", path: "/" };
+
+const constants = {
+  koulutusmuodot: {
+    ammatillinenKoulutus: {
+      kebabCase: "ammatillinenkoulutus"
+    },
+    esiJaPerusopetus: {
+      kebabCase: "esi-ja-perusopetus",
+      koulutustyyppi: "1"
+    },
+    lukiokoulutus: {
+      kebabCase: "lukiokoulutus",
+      koulutustyyppi: "2"
+    },
+    vapaaSivistystyo: {
+      kebabCase: "vapaa-sivistystyo",
+      koulutustyyppi: "3"
+    }
+  }
+};
 
 /**
  * App component forms the basic structure of the application and its routing.
@@ -61,6 +86,51 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   const { data: user } = userState;
 
   const [organisation, setOrganisation] = useState();
+
+  const koulutusmuodot = useMemo(
+    () => ({
+      ...constants.koulutusmuodot,
+      ammatillinenKoulutus: {
+        ...constants.koulutusmuodot.ammatillinenKoulutus,
+        genetiivi: intl.formatMessage(ammatillinenKoulutus.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.vocationalEducation),
+        kuvausteksti: intl.formatMessage(ammatillinenKoulutus.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(ammatillinenKoulutus.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(education.vocationalEducation),
+        jarjestajatOtsikko: intl.formatMessage(education.koulutuksenJarjestajat)
+      },
+      esiJaPerusopetus: {
+        ...constants.koulutusmuodot.esiJaPerusopetus,
+        genetiivi: intl.formatMessage(esiJaPerusopetus.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.preAndBasicEducation),
+        kuvausteksti: intl.formatMessage(esiJaPerusopetus.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(esiJaPerusopetus.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(education.preAndBasicEducation),
+        jarjestajatOtsikko: intl.formatMessage(education.opetuksenJarjestajat)
+      },
+      lukiokoulutus: {
+        ...constants.koulutusmuodot.lukiokoulutus,
+        genetiivi: intl.formatMessage(lukiokoulutus.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.highSchoolEducation),
+        kuvausteksti: intl.formatMessage(lukiokoulutus.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(lukiokoulutus.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(education.highSchoolEducation),
+        jarjestajatOtsikko: intl.formatMessage(education.koulutuksenJarjestajat)
+      },
+      vapaaSivistystyo: {
+        ...constants.koulutusmuodot.vapaaSivistystyo,
+        genetiivi: intl.formatMessage(vapaaSivistystyo.genetiivi),
+        kortinOtsikko: intl.formatMessage(education.vstEducation),
+        kuvausteksti: intl.formatMessage(vapaaSivistystyo.kuvausteksti),
+        lyhytKuvaus: intl.formatMessage(vapaaSivistystyo.lyhytKuvaus),
+        paasivunOtsikko: intl.formatMessage(common.vstTitleName),
+        jarjestajatOtsikko: intl.formatMessage(
+          education.oppilaitostenYllapitajat
+        )
+      }
+    }),
+    [intl]
+  );
 
   useEffect(() => {
     if (user && user.oid) {
@@ -81,29 +151,22 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   const pageLinks = [
     {
       path: "/esi-ja-perusopetus",
-      text: intl.formatMessage(educationMessages.preAndBasicEducation)
+      text: intl.formatMessage(education.preAndBasicEducation)
     },
     {
       path: "/lukiokoulutus",
-      text: intl.formatMessage(educationMessages.highSchoolEducation)
+      text: intl.formatMessage(education.highSchoolEducation)
     },
     {
       path: "/ammatillinenkoulutus",
-      text: intl.formatMessage(educationMessages.vocationalEducation)
+      text: intl.formatMessage(education.vocationalEducation)
     },
     {
       path: "/vapaa-sivistystyo",
-      text: intl.formatMessage(educationMessages.vstEducation)
+      text: intl.formatMessage(education.vstEducation)
     },
-    { path: "/tilastot", text: intl.formatMessage(commonMessages.statistics) }
+    { path: "/tilastot", text: intl.formatMessage(common.statistics) }
   ];
-
-  if (sessionStorage.getItem("role") === ROLE_ESITTELIJA) {
-    pageLinks.push({
-      path: "/asianhallinta",
-      text: intl.formatMessage(commonMessages.asianhallinta)
-    });
-  }
 
   const authenticationLink = useMemo(() => {
     return {
@@ -166,7 +229,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   }, [intl, organisation, user]);
 
   const shortDescription = {
-    text: intl.formatMessage(commonMessages.siteShortDescription),
+    text: intl.formatMessage(common.siteShortDescription),
     path: "/"
   };
 
@@ -262,16 +325,17 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         </SideNavigation>
 
         <div className="flex flex-col min-h-screen bg-white">
-          <SkipNavLink>
-            {intl.formatMessage(commonMessages.jumpToContent)}
-          </SkipNavLink>
-
+          <SkipNavLink>{intl.formatMessage(common.jumpToContent)}</SkipNavLink>
           <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <SkipNavContent />
               <main className="flex-1 flex flex-col">
                 <Switch>
-                  <Route exact path="/" component={Home} />
+                  <Route
+                    exact
+                    path="/"
+                    render={() => <Home koulutusmuodot={koulutusmuodot} />}
+                  />
                   <Route path="/logout" component={Logout} />
                   <Route path="/kirjaudu" component={Login} />
                   <Route exact path="/tilastot" component={Tilastot} />
@@ -288,35 +352,34 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                   <Route
                     path="/ammatillinenkoulutus"
                     render={() => (
-                      <AmmatillinenKoulutus organisation={organisation} />
+                      <AmmatillinenKoulutus
+                        koulutusmuoto={koulutusmuodot.ammatillinenKoulutus}
+                      />
                     )}
                   />
                   <Route
                     path="/esi-ja-perusopetus"
-                    component={EsiJaPerusopetus}
+                    render={() => (
+                      <EsiJaPerusopetus
+                        koulutusmuoto={koulutusmuodot.esiJaPerusopetus}
+                      />
+                    )}
                   />
-                  <Route path="/lukiokoulutus" component={Lukiokoulutus} />
+                  <Route
+                    path="/lukiokoulutus"
+                    render={() => (
+                      <Lukiokoulutus
+                        koulutusmuoto={koulutusmuodot.lukiokoulutus}
+                      />
+                    )}
+                  />
                   <Route
                     path="/vapaa-sivistystyo"
-                    render={() => {
-                      return (
-                        <BaseData
-                          keys={["vstLuvat", "vstTyypit"]}
-                          locale={intl.locale}
-                          render={props => {
-                            return <VapaaSivistystyo {...props} />;
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                  <Route
-                    path="/asianhallinta"
-                    render={() => {
-                      return user && !user.isLoading && organisation ? (
-                        <Asianhallinta />
-                      ) : null;
-                    }}
+                    render={() => (
+                      <VapaaSivistystyo
+                        koulutusmuoto={koulutusmuodot.vapaaSivistystyo}
+                      />
+                    )}
                   />
                   <Route
                     path="/saavutettavuusseloste"
@@ -336,11 +399,10 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
               </main>
             </div>
           </div>
+          <footer>
+            <Footer />
+          </footer>
         </div>
-
-        <footer>
-          <Footer />
-        </footer>
       </Router>
 
       {isSessionDialogVisible && !!user ? (

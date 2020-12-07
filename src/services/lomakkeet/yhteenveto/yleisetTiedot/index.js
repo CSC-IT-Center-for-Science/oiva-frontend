@@ -163,7 +163,7 @@ function getModificationForm(locale) {
 export default function getYhteenvetoYleisetTiedotLomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

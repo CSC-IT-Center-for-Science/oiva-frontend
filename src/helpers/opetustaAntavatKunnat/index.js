@@ -48,7 +48,7 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**

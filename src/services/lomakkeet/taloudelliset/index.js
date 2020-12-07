@@ -235,7 +235,7 @@ function getLiitteetForm(isReadOnly) {
   ];
 }
 
-export function getTaloudellisetlomake(action, data, isReadOnly) {
+export function getTaloudellisetlomake(action, data, { isReadOnly }) {
   switch (action) {
     case "yleisettiedot":
       return getYleisetTiedotForm(isReadOnly);

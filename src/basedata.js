@@ -3,20 +3,22 @@ import PropTypes from "prop-types";
 import { API_BASE_URL } from "modules/constants";
 import Loading from "modules/Loading";
 import {
-  isEmpty,
-  sortBy,
-  prop,
-  map,
-  toUpper,
-  includes,
   assoc,
-  path,
-  mapObjIndexed,
-  groupBy,
-  omit,
-  head,
+  find,
   filter,
-  test
+  groupBy,
+  head,
+  includes,
+  isEmpty,
+  map,
+  mapObjIndexed,
+  omit,
+  path,
+  prop,
+  propEq,
+  sortBy,
+  test,
+  toUpper
 } from "ramda";
 import { initializeTutkinnot } from "helpers/tutkinnot";
 import localforage from "localforage";
@@ -93,13 +95,15 @@ export const getRaw = async (
  * @param lupaUuid
  * @param {string} ytunnus
  * @param koulutustyyppi
+ * @param oppilaitostyyppi
  */
 const fetchBaseData = async (
   keys,
   locale,
   lupaUuid,
   ytunnus,
-  koulutustyyppi
+  koulutustyyppi,
+  oppilaitostyyppi
 ) => {
   const localeUpper = toUpper(locale);
   /**
@@ -136,7 +140,11 @@ const fetchBaseData = async (
     lupaByYtunnus: ytunnus
       ? await getRaw(
           "lupaByYtunnus",
-          `${backendRoutes.lupaByYtunnus.path}${ytunnus}?with=all&useKoodistoVersions=false`,
+          `${
+            backendRoutes.lupaByYtunnus.path
+          }${ytunnus}?with=all&useKoodistoVersions=false${
+            koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+          }`,
           keys,
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
@@ -250,7 +258,13 @@ const fetchBaseData = async (
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     tulevatLuvat: await getRaw(
       "tulevatLuvat",
-      `${backendRoutes.tulevatLuvat.path}${ytunnus}${backendRoutes.tulevatLuvat.postfix}?with=all&useKoodistoVersions=false`,
+      `${backendRoutes.tulevatLuvat.path}${ytunnus}${
+        backendRoutes.tulevatLuvat.postfix
+      }?with=all&useKoodistoVersions=false${
+        koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+      }${
+        oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""
+      }`,
       keys,
       backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
     ),
@@ -270,321 +284,369 @@ const fetchBaseData = async (
     (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
       maaraykset: []
     };
+
   /**
    * Varsinainen palautusarvo sisältää sekä muokkaamatonta että muokattua
    * dataa. Samalla noudettu data tallennetaan lokaaliin tietovarastoon
    * (indexedDB / WebSQL / localStorage) myöhempää käyttöä varten.
    */
+  const maakuntakunnat = raw.maakuntakunnat
+    ? await localforage.setItem(
+        "maakuntakunnat",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maakunta => {
+            return initializeMaakunta(maakunta, localeUpper);
+          }, raw.maakuntakunnat).filter(Boolean)
+        )
+      )
+    : undefined;
+
+  const ahvenanmaanKunnat =
+    (find(propEq("koodiarvo", "21"), maakuntakunnat || []) || {}).kunnat || [];
+
   const result = {
-    elykeskukset: raw.elykeskukset,
-    kielet: raw.kielet
-      ? await localforage.setItem(
-          "kielet",
-          sortLanguages(
-            map(kieli => {
-              return initializeKieli(kieli);
-            }, raw.kielet),
-            localeUpper
-          )
-        )
-      : undefined,
-    ensisijaisetOpetuskieletOPH: raw.kieletOPH
-      ? await localforage.setItem(
-          "ensisijaisetOpetuskieletOPH",
-          filterEnsisijaisetOpetuskieletOPH(
-            map(kieli => {
-              return initializeKieli(kieli);
-            }, raw.kieletOPH),
-            localeUpper
-          )
-        )
-      : undefined,
-    kohteet: raw.kohteet
-      ? await localforage.setItem("kohteet", raw.kohteet)
-      : [],
-    koulutukset:
-      raw.ammatilliseentehtavaanvalmistavakoulutus ||
-      raw.kuljettajakoulutus ||
-      raw.oivatyovoimakoulutus ||
-      raw.poikkeus999901 ||
-      raw.poikkeus999903
-        ? await localforage.setItem("koulutukset", {
-            muut: {
-              ammatilliseentehtavaanvalmistavakoulutus: raw.ammatilliseentehtavaanvalmistavakoulutus
-                ? sortBy(
-                    prop("koodiarvo"),
-                    map(koulutus => {
-                      return initializeKoulutus(koulutus);
-                    }, raw.ammatilliseentehtavaanvalmistavakoulutus)
-                  )
-                : undefined,
-              kuljettajakoulutus: raw.kuljettajakoulutus
-                ? sortBy(
-                    prop("koodiarvo"),
-                    map(koulutus => {
-                      return initializeKoulutus(koulutus);
-                    }, raw.kuljettajakoulutus)
-                  )
-                : undefined,
-              oivatyovoimakoulutus: raw.oivatyovoimakoulutus
-                ? sortBy(
-                    prop("koodiarvo"),
-                    map(koulutus => {
-                      return initializeKoulutus(koulutus);
-                    }, raw.oivatyovoimakoulutus)
-                  )
-                : undefined
-            },
-            poikkeukset: {
-              999901: raw.poikkeus999901
-                ? initializeKoulutus(raw.poikkeus999901)
-                : undefined,
-              999903: raw.poikkeus999903
-                ? initializeKoulutus(raw.poikkeus999903)
-                : undefined
-            }
-          })
-        : undefined,
-    koulutusalat: raw.koulutusalat
-      ? await localforage.setItem(
-          "koulutusalat",
-          sortBy(
-            prop("koodiarvo"),
-            map(koulutusala => {
-              return initializeKoulutusala(koulutusala);
-            }, raw.koulutusalat)
-          )
-        )
-      : undefined,
-    koulutustyypit: raw.koulutustyypit
-      ? await localforage.setItem(
-          "koulutustyypit",
-          sortBy(
-            prop("koodiarvo"),
-            map(koulutustyyppi => {
-              return initializeKoulutustyyppi(koulutustyyppi);
-            }, raw.koulutustyypit)
-          )
-        )
-      : undefined,
-    lisamaareet: raw.kujalisamaareet
-      ? await localforage.setItem(
-          "kujalisamaareet",
-          sortBy(
-            prop("koodiarvo"),
-            map(lisamaare => {
-              return initializeLisamaare(lisamaare);
-            }, raw.kujalisamaareet).filter(Boolean)
-          )
-        )
-      : undefined,
-    kunnat: raw.kunnat
-      ? await localforage.setItem(
-          "kunnat",
-          sortBy(
-            path(["metadata", localeUpper, "nimi"]),
-            map(kunta => {
-              return initializeKunta(kunta, localeUpper);
-            }, raw.kunnat).filter(Boolean)
-          )
-        )
-      : undefined,
-    lisatiedot: raw.lisatiedot
-      ? await localforage.setItem(
-          "lisatiedot",
-          initializeLisatiedot(raw.lisatiedot)
-        )
-      : undefined,
-    lupa: lupa ? await localforage.setItem("lupa", lupa) : undefined,
-    vstLuvat: raw.vstLuvat,
-    vstTyypit: raw.vstTyypit
-      ? await localforage.setItem(
-          "vsttyypit",
-          map(
-            vstTyyppi =>
-              omit(["koodiArvo"], {
-                ...vstTyyppi,
-                koodiarvo: vstTyyppi.koodiArvo,
-                metadata: mapObjIndexed(
-                  head,
-                  groupBy(prop("kieli"), vstTyyppi.metadata)
-                )
-              }),
-            raw.vstTyypit
-          )
-        )
-      : undefined,
-    maakunnat: raw.maakuntakunnat
-      ? await localforage.setItem(
-          "maakunnat",
-          sortBy(
-            path(["metadata", localeUpper, "nimi"]),
-            map(
-              maakunta =>
-                omit(["koodiArvo"], {
-                  ...maakunta,
-                  koodiarvo: maakunta.koodiArvo,
-                  metadata: mapObjIndexed(
-                    head,
-                    groupBy(prop("kieli"), maakunta.metadata)
-                  )
-                }),
-              raw.maakunnat
-            ).filter(Boolean)
-          )
-        )
-      : undefined,
-    maakuntakunnat: raw.maakuntakunnat
-      ? await localforage.setItem(
-          "maakuntakunnat",
-          sortBy(
-            path(["metadata", localeUpper, "nimi"]),
-            map(maakunta => {
-              return initializeMaakunta(maakunta, localeUpper);
-            }, raw.maakuntakunnat).filter(Boolean)
-          )
-        )
-      : undefined,
-    maaraystyypit: raw.maaraystyypit
-      ? await localforage.setItem("maaraystyypit", raw.maaraystyypit)
-      : undefined,
-    muut: raw.muut
-      ? await localforage.setItem(
-          "muut",
-          sortArticlesByHuomioitavaKoodi(
-            map(muudata => {
-              return initializeMuu(muudata);
-            }, raw.muut),
-            localeUpper
-          )
-        )
-      : undefined,
-    oivaperustelut: raw.oivaperustelut
-      ? sortBy(
-          prop("koodiarvo"),
-          map(perustelu => {
-            return omit(["koodiArvo"], {
-              ...perustelu,
-              koodiarvo: perustelu.koodiArvo,
-              metadata: mapObjIndexed(
-                head,
-                groupBy(prop("kieli"), perustelu.metadata)
-              )
-            });
-          }, raw.oivaperustelut)
-        )
-      : undefined,
-    opetuksenJarjestamismuodot: raw.opetuksenJarjestamismuodot
-      ? await localforage.setItem(
-          "opetuksenJarjestamismuodot",
-          sortBy(
-            prop("koodiarvo"),
-            initializeOpetuksenJarjestamismuodot(
-              raw.opetuksenJarjestamismuodot,
-              prop("maaraykset", raw.lupa) || []
-            )
-          )
-        )
-      : undefined,
-    opetuskielet: raw.opetuskielet
-      ? await localforage.setItem(
-          "opetuskielet",
-          sortBy(
-            prop("koodiarvo"),
-            initializeOpetuskielet(
-              raw.opetuskielet,
-              filter(
-                maarays => maarays.koodisto === "oppilaitoksenopetuskieli",
-                prop("maaraykset", lupa)
-              ) || []
-            )
-          )
-        )
-      : undefined,
-    opetustehtavakoodisto: raw.opetustehtavakoodisto
-      ? await localforage.setItem("opetustehtavakoodisto", {
-          ...raw.opetustehtavakoodisto,
-          metadata: mapObjIndexed(
-            head,
-            groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
-          )
-        })
-      : undefined,
-    opetustehtavat: raw.opetustehtavat
-      ? await localforage.setItem(
-          "opetustehtavat",
-          initializeOpetustehtavat(raw.opetustehtavat)
-        )
-      : undefined,
-    organisaatio: raw.organisaatio
-      ? await localforage.setItem("organisaatio", raw.organisaatio)
-      : undefined,
-    organisaatiot: raw.organisaatiot
-      ? await localforage.setItem("organisaatiot", raw.organisaatiot)
-      : undefined,
-    poErityisetKoulutustehtavat: raw.poErityisetKoulutustehtavat
-      ? await localforage.setItem(
-          "poErityisetKoulutustehtavat",
-          initializePOErityisetKoulutustehtavat(
-            raw.poErityisetKoulutustehtavat,
-            prop("maaraykset", raw.lupa) || []
-          )
-        )
-      : undefined,
-    poMuutEhdot: raw.poMuutEhdot
-      ? await localforage.setItem(
-          "poMuutEhdot",
-          initializePOMuutEhdot(
-            raw.poMuutEhdot,
-            prop("maaraykset", raw.lupa) || []
-          )
-        )
-      : undefined,
-    toissijaisetOpetuskieletOPH: raw.kieletOPH
-      ? await localforage.setItem(
-          "toissijaisetOpetuskieletOPH",
-          filterToissijaisetOpetuskieletOPH(
-            map(kieli => {
-              return initializeKieli(kieli);
-            }, raw.kieletOPH),
-            localeUpper
-          )
-        )
-      : undefined,
-    tutkinnot: raw.tutkinnot
-      ? await localforage.setItem(
-          "tutkinnot",
-          sortBy(
-            prop("koodiarvo"),
-            initializeTutkinnot(
-              raw.tutkinnot,
-              filter(
-                maarays => maarays.koodisto === "koulutus",
-                prop("maaraykset", lupa)
-              ) || []
-            )
-          )
-        )
-      : undefined,
-    tulevatLuvat: raw.tulevatLuvat || [],
-    vankilat: raw.vankilat
-      ? sortBy(
-          prop("koodiarvo"),
-          map(perustelu => {
-            return omit(["koodiArvo"], {
-              ...perustelu,
-              koodiarvo: perustelu.koodiArvo,
-              metadata: mapObjIndexed(
-                head,
-                groupBy(prop("kieli"), perustelu.metadata)
-              )
-            });
-          }, raw.vankilat)
-        )
-      : undefined,
-    viimeisinLupa: raw.viimeisinLupa || {},
-    voimassaOlevaLupa: raw.lupaByYtunnus
+    elykeskukset: raw.elykeskukset
   };
+
+  result.kielet = raw.kielet
+    ? await localforage.setItem(
+        "kielet",
+        sortLanguages(
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, raw.kielet),
+          localeUpper
+        )
+      )
+    : undefined;
+
+  result.kieletOPH = raw.kieletOPH
+    ? await localforage.setItem(
+        "kieletOPH",
+        sortLanguages(
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, raw.kieletOPH),
+          localeUpper
+        )
+      )
+    : undefined;
+
+  result.ensisijaisetOpetuskieletOPH = raw.kieletOPH
+    ? await localforage.setItem(
+        "ensisijaisetOpetuskieletOPH",
+        filterEnsisijaisetOpetuskieletOPH(
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, raw.kieletOPH),
+          localeUpper
+        )
+      )
+    : undefined;
+
+  result.kohteet = raw.kohteet
+    ? await localforage.setItem("kohteet", raw.kohteet)
+    : [];
+
+  result.koulutukset =
+    raw.ammatilliseentehtavaanvalmistavakoulutus ||
+    raw.kuljettajakoulutus ||
+    raw.oivatyovoimakoulutus ||
+    raw.poikkeus999901 ||
+    raw.poikkeus999903
+      ? await localforage.setItem("koulutukset", {
+          muut: {
+            ammatilliseentehtavaanvalmistavakoulutus: raw.ammatilliseentehtavaanvalmistavakoulutus
+              ? sortBy(
+                  prop("koodiarvo"),
+                  map(koulutus => {
+                    return initializeKoulutus(koulutus);
+                  }, raw.ammatilliseentehtavaanvalmistavakoulutus)
+                )
+              : undefined,
+            kuljettajakoulutus: raw.kuljettajakoulutus
+              ? sortBy(
+                  prop("koodiarvo"),
+                  map(koulutus => {
+                    return initializeKoulutus(koulutus);
+                  }, raw.kuljettajakoulutus)
+                )
+              : undefined,
+            oivatyovoimakoulutus: raw.oivatyovoimakoulutus
+              ? sortBy(
+                  prop("koodiarvo"),
+                  map(koulutus => {
+                    return initializeKoulutus(koulutus);
+                  }, raw.oivatyovoimakoulutus)
+                )
+              : undefined
+          },
+          poikkeukset: {
+            999901: raw.poikkeus999901
+              ? initializeKoulutus(raw.poikkeus999901)
+              : undefined,
+            999903: raw.poikkeus999903
+              ? initializeKoulutus(raw.poikkeus999903)
+              : undefined
+          }
+        })
+      : undefined;
+
+  result.koulutusalat = raw.koulutusalat
+    ? await localforage.setItem(
+        "koulutusalat",
+        sortBy(
+          prop("koodiarvo"),
+          map(koulutusala => {
+            return initializeKoulutusala(koulutusala);
+          }, raw.koulutusalat)
+        )
+      )
+    : undefined;
+
+  result.koulutustyypit = raw.koulutustyypit
+    ? await localforage.setItem(
+        "koulutustyypit",
+        sortBy(
+          prop("koodiarvo"),
+          map(koulutustyyppi => {
+            return initializeKoulutustyyppi(koulutustyyppi);
+          }, raw.koulutustyypit)
+        )
+      )
+    : undefined;
+
+  result.lisamaareet = raw.kujalisamaareet
+    ? await localforage.setItem(
+        "kujalisamaareet",
+        sortBy(
+          prop("koodiarvo"),
+          map(lisamaare => {
+            return initializeLisamaare(lisamaare);
+          }, raw.kujalisamaareet).filter(Boolean)
+        )
+      )
+    : undefined;
+
+  result.kunnat = raw.kunnat
+    ? await localforage.setItem(
+        "kunnat",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(kunta => {
+            return initializeKunta(kunta, localeUpper);
+          }, raw.kunnat).filter(Boolean)
+        )
+      )
+    : undefined;
+
+  result.lisatiedot = raw.lisatiedot
+    ? await localforage.setItem(
+        "lisatiedot",
+        initializeLisatiedot(raw.lisatiedot)
+      )
+    : undefined;
+
+  result.lupa = lupa ? await localforage.setItem("lupa", lupa) : undefined;
+
+  result.vstLuvat = raw.vstLuvat;
+
+  result.vstTyypit = raw.vstTyypit
+    ? await localforage.setItem(
+        "vsttyypit",
+        map(
+          vstTyyppi =>
+            omit(["koodiArvo"], {
+              ...vstTyyppi,
+              koodiarvo: vstTyyppi.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), vstTyyppi.metadata)
+              )
+            }),
+          raw.vstTyypit
+        )
+      )
+    : undefined;
+
+  result.maakunnat = raw.maakunnat
+    ? await localforage.setItem(
+        "maakunnat",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maakunta => {
+            return omit(["koodiArvo"], {
+              ...maakunta,
+              koodiarvo: maakunta.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maakunta.metadata)
+              )
+            });
+          }, raw.maakunnat).filter(Boolean)
+        )
+      )
+    : undefined;
+
+  result.maakuntakunnat = maakuntakunnat;
+
+  result.maaraystyypit = raw.maaraystyypit
+    ? await localforage.setItem("maaraystyypit", raw.maaraystyypit)
+    : undefined;
+
+  result.muut = raw.muut
+    ? await localforage.setItem(
+        "muut",
+        sortArticlesByHuomioitavaKoodi(
+          map(muudata => {
+            return initializeMuu(muudata);
+          }, raw.muut),
+          localeUpper
+        )
+      )
+    : undefined;
+
+  result.oivaperustelut = raw.oivaperustelut
+    ? sortBy(
+        prop("koodiarvo"),
+        map(perustelu => {
+          return omit(["koodiArvo"], {
+            ...perustelu,
+            koodiarvo: perustelu.koodiArvo,
+            metadata: mapObjIndexed(
+              head,
+              groupBy(prop("kieli"), perustelu.metadata)
+            )
+          });
+        }, raw.oivaperustelut)
+      )
+    : undefined;
+
+  result.opetuksenJarjestamismuodot = raw.opetuksenJarjestamismuodot
+    ? await localforage.setItem(
+        "opetuksenJarjestamismuodot",
+        sortBy(
+          prop("koodiarvo"),
+          initializeOpetuksenJarjestamismuodot(
+            raw.opetuksenJarjestamismuodot,
+            prop("maaraykset", raw.lupa) || []
+          )
+        )
+      )
+    : undefined;
+
+  result.opetuskielet = raw.opetuskielet
+    ? await localforage.setItem(
+        "opetuskielet",
+        sortBy(
+          prop("koodiarvo"),
+          initializeOpetuskielet(
+            raw.opetuskielet,
+            filter(
+              maarays => maarays.koodisto === "oppilaitoksenopetuskieli",
+              prop("maaraykset", lupa)
+            ) || []
+          )
+        )
+      )
+    : undefined;
+
+  result.opetustehtavakoodisto = raw.opetustehtavakoodisto
+    ? await localforage.setItem("opetustehtavakoodisto", {
+        ...raw.opetustehtavakoodisto,
+        metadata: mapObjIndexed(
+          head,
+          groupBy(prop("kieli"), prop("metadata", raw.opetustehtavakoodisto))
+        )
+      })
+    : undefined;
+
+  result.opetustehtavat = raw.opetustehtavat
+    ? await localforage.setItem(
+        "opetustehtavat",
+        initializeOpetustehtavat(raw.opetustehtavat)
+      )
+    : undefined;
+
+  result.organisaatio = raw.organisaatio
+    ? await localforage.setItem("organisaatio", raw.organisaatio)
+    : undefined;
+
+  result.organisaatiot = raw.organisaatiot
+    ? await localforage.setItem("organisaatiot", raw.organisaatiot)
+    : undefined;
+
+  result.poErityisetKoulutustehtavat = raw.poErityisetKoulutustehtavat
+    ? await localforage.setItem(
+        "poErityisetKoulutustehtavat",
+        initializePOErityisetKoulutustehtavat(
+          raw.poErityisetKoulutustehtavat,
+          prop("maaraykset", raw.lupa) || []
+        )
+      )
+    : undefined;
+
+  result.poMuutEhdot = raw.poMuutEhdot
+    ? await localforage.setItem(
+        "poMuutEhdot",
+        initializePOMuutEhdot(
+          raw.poMuutEhdot,
+          prop("maaraykset", raw.lupa) || []
+        )
+      )
+    : undefined;
+
+  result.toissijaisetOpetuskieletOPH = raw.kieletOPH
+    ? await localforage.setItem(
+        "toissijaisetOpetuskieletOPH",
+        filterToissijaisetOpetuskieletOPH(
+          map(kieli => {
+            return initializeKieli(kieli);
+          }, raw.kieletOPH),
+          localeUpper
+        )
+      )
+    : undefined;
+
+  result.tutkinnot = raw.tutkinnot
+    ? await localforage.setItem(
+        "tutkinnot",
+        sortBy(
+          prop("koodiarvo"),
+          initializeTutkinnot(
+            raw.tutkinnot,
+            filter(
+              maarays => maarays.koodisto === "koulutus",
+              prop("maaraykset", lupa)
+            ) || []
+          )
+        )
+      )
+    : undefined;
+
+  result.tulevatLuvat = raw.tulevatLuvat || [];
+
+  result.vankilat = raw.vankilat
+    ? sortBy(
+        prop("koodiarvo"),
+        map(perustelu => {
+          return omit(["koodiArvo"], {
+            ...perustelu,
+            koodiarvo: perustelu.koodiArvo,
+            metadata: mapObjIndexed(
+              head,
+              groupBy(prop("kieli"), perustelu.metadata)
+            )
+          });
+        }, raw.vankilat)
+      )
+    : undefined;
+
+  result.viimeisinLupa = raw.viimeisinLupa || {};
+
+  result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByYtunnus;
+
   return result;
 };
 
@@ -596,16 +658,23 @@ const BaseData = ({
   keys = defaultProps.keys,
   locale,
   render,
-  koulutustyyppi
+  koulutustyyppi,
+  oppilaitostyyppi,
+  ytunnus
 }) => {
-  const { lupaUuid, id } = useParams();
+  const { id } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
-  const ytunnus = id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null;
+  const _ytunnus = ytunnus || (id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null);
+  const lupaUuid =
+    id &&
+    test(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/, id)
+      ? id
+      : null;
   /**
    * TO DO: Käytetään hauissa oid:tä, mikäli se on annettu y-tunnuksen sijaan.
    * Organisaation oid on aina muotoa 1.g2.246.562.10.XXXXXXXXXX.
-   * const oid = !!ytunnus ? id : null;
+   * const oid = !!_ytunnus ? id : null;
    **/
 
   /**
@@ -614,7 +683,7 @@ const BaseData = ({
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, ytunnus, koulutustyyppi).then(
+    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi, oppilaitostyyppi).then(
       result => {
         if (isSubscribed) {
           setBaseData(result);
@@ -622,12 +691,12 @@ const BaseData = ({
       }
     );
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, ytunnus, location.pathname, koulutustyyppi]);
+  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi, oppilaitostyyppi]);
 
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData, ytunnus }) : null}
+        {!!render ? render({ ...baseData, lupaUuid, ytunnus: _ytunnus }) : null}
       </React.Fragment>
     );
   }
@@ -638,7 +707,8 @@ BaseData.propTypes = {
   keys: PropTypes.array,
   locale: PropTypes.string,
   render: PropTypes.func,
-  koulutustyyppi: PropTypes.string
+  koulutustyyppi: PropTypes.string,
+  oppilaitostyyppi: PropTypes.string
 };
 
 export default BaseData;

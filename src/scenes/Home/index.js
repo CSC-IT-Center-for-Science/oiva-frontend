@@ -4,13 +4,11 @@ import { Typography } from "@material-ui/core";
 import { useIntl } from "react-intl";
 import common from "../../i18n/definitions/common";
 import homepage from "../../i18n/definitions/homepage";
-import AmmatillinenkoulutusCard from "scenes/AmmatillinenKoulutus/AmmatillinenkoulutusCard";
-import LukiokoulutusCard from "scenes/Lukiokoulutus/LukiokoulutusCard";
-import EsiJaPerusopetusCard from "scenes/EsiJaPerusopetus/EsiJaPerusopetusCard";
 import TilastotCard from "scenes/Tilastot/TilastotCard";
-import VapaaSivistystyoCard from "scenes/VapaaSivistystyo/VapaaSivistystyoCard";
+import { addIndex, map, values } from "ramda";
+import Koulutusmuotokortti from "components/03-templates/Koulutusmuotokortti";
 
-const Home = () => {
+const Home = ({ koulutusmuodot }) => {
   const { formatMessage, locale } = useIntl();
   return (
     <article className="px-8 py-16 md:px-12 lg:px-32 xxl:px-0 xxl:max-w-8xl mx-auto">
@@ -25,13 +23,18 @@ const Home = () => {
       </Typography>
       <section>
         <Typography component="h2" variant="h2" className="py-4">
-          Koulutus
+          {formatMessage(common.jarjestamisJaYllapitamisluvat)}
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-auto">
-          <EsiJaPerusopetusCard></EsiJaPerusopetusCard>
-          <AmmatillinenkoulutusCard></AmmatillinenkoulutusCard>
-          <LukiokoulutusCard></LukiokoulutusCard>
-          <VapaaSivistystyoCard></VapaaSivistystyoCard>
+          {addIndex(map)(
+            (koulutusmuoto, index) => (
+              <Koulutusmuotokortti
+                key={`koulutusmuotokortti-${index}`}
+                koulutusmuoto={koulutusmuoto}
+              />
+            ),
+            values(koulutusmuodot)
+          )}
         </div>
       </section>
       <section className="pt-12">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
@@ -41,71 +41,99 @@ const inputStyles = {
   }
 };
 
-const Input = props => {
+const Input = ({
+  ariaLabel,
+  classes,
+  forChangeObject,
+  fullAnchor,
+  fullWidth,
+  error,
+  id,
+  isDense,
+  isDisabled,
+  isHidden,
+  isReadOnly,
+  isRequired,
+  isValid,
+  label,
+  onChanges,
+  placeholder,
+  requiredMessage,
+  rows,
+  rowsMax,
+  showValidationErrors,
+  tooltip,
+  type,
+  value,
+  width
+}) => {
   const [isVisited, setIsVisited] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const { classes } = props;
 
-  const updateValue = e => {
-    props.onChanges(props.payload, {
-      value:
-        props.type === "number" ? parseInt(e.target.value, 10) : e.target.value
-    });
-  };
+  const updateValue = useCallback(
+    e => {
+      onChanges(
+        {
+          forChangeObject,
+          fullAnchor
+        },
+        {
+          value:
+            type === "number" ? parseInt(e.target.value, 10) : e.target.value
+        }
+      );
+    },
+    [forChangeObject, fullAnchor, onChanges, type]
+  );
 
   return (
     <React.Fragment>
-      <div className="flex items-center">
+      <div className={`flex items-center ${isHidden ? "hidden" : ""}`}>
         <TextField
-          id={props.id}
-          aria-label={props.ariaLabel}
-          value={props.value}
-          label={props.label}
-          disabled={props.isDisabled || props.isReadOnly}
+          id={id}
+          aria-label={ariaLabel}
+          value={value}
+          label={label}
+          disabled={isDisabled || isReadOnly}
           inputprops={{
-            readOnly: props.isReadOnly
+            readOnly: isReadOnly
           }}
-          placeholder={props.placeholder}
-          rows={props.rows}
-          margin={props.isDense ? "dense" : ""}
-          rowsMax={props.rowsMax}
+          placeholder={placeholder}
+          rows={rows}
+          margin={isDense ? "dense" : ""}
+          rowsMax={rowsMax}
           onChange={updateValue}
-          required={props.isRequired && !props.isReadOnly}
+          required={isRequired && !isReadOnly}
           error={
-            !props.isReadOnly && props.error
-              ? props.error
-              : (props.isRequired && props.value && !props.isValid) ||
-                (!props.isRequired && !props.isValid)
+            !isReadOnly && error
+              ? error
+              : (isRequired && value && !isValid) || (!isRequired && !isValid)
           }
           variant="outlined"
-          style={
-            props.fullWidth
-              ? { border: "none" }
-              : { width: props.width, border: "none" }
-          }
-          fullWidth={props.fullWidth}
-          type={props.type}
+          style={fullWidth ? { border: "none" } : { width, border: "none" }}
+          fullWidth={fullWidth}
+          type={type}
           onBlurCapture={
-            !props.value ? () => setIsVisited(true) : () => setIsVisited(false)
+            !value ? () => setIsVisited(true) : () => setIsVisited(false)
           }
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className={`${props.isHidden ? "hidden" : ""} 
+          className={`${isHidden ? "hidden" : ""} 
           ${
-            !props.isReadOnly &&
-            props.value === "" &&
+            !isReadOnly &&
+            value === "" &&
             !isFocused &&
-            props.isRequired &&
-            (isVisited || props.showValidationErrors)
+            isRequired &&
+            (isVisited || showValidationErrors)
               ? classes.requiredVisited
               : classes.root
           } 
-          ${props.isReadOnly && classes.readonlyNoValue}
+          ${isReadOnly && classes.readonlyNoValue}
         `}
         />
-        {!props.isReadOnly && !props.disabled && !isEmpty(props.tooltip) && (
+        {!isReadOnly && !isDisabled && !isEmpty(tooltip) && (
           <div className="ml-8">
-            <Tooltip tooltip={props.tooltip.text} trigger="click">
+            <Tooltip tooltip={tooltip.text} trigger="click">
               <HelpIcon
                 classes={{
                   colorPrimary: styles.tooltipBg
@@ -116,7 +144,7 @@ const Input = props => {
           </div>
         )}
       </div>
-      {props.showValidationErrors && props.requiredMessage && (
+      {showValidationErrors && requiredMessage && (
         <FormHelperText
           id="component-message-text"
           style={{
@@ -125,7 +153,7 @@ const Input = props => {
             marginBottom: "0.5em",
             color: COLORS.OIVA_ORANGE_TEXT
           }}>
-          {props.value !== "" && props.requiredMessage}
+          {value !== "" && requiredMessage}
         </FormHelperText>
       )}
     </React.Fragment>
@@ -140,7 +168,6 @@ Input.defaultProps = {
   isReadOnly: false,
   isRequired: false,
   isValid: true,
-  payload: {},
   placeholder: "",
   rows: 1,
   rowsMax: 1,
@@ -156,17 +183,18 @@ Input.defaultProps = {
 Input.propTypes = {
   ariaLabel: PropTypes.string,
   delay: PropTypes.number,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
   label: PropTypes.string,
   /** Is called with the payload and the value. */
   onChanges: PropTypes.func,
-  /** Custom object defined by user. */
-  payload: PropTypes.object,
   placeholder: PropTypes.string,
   rows: PropTypes.number,
   rowsMax: PropTypes.number,
@@ -179,10 +207,7 @@ Input.propTypes = {
   isDense: PropTypes.bool,
   requiredMessage: PropTypes.string,
   showValidationErrors: PropTypes.bool,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number
-  ])
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default withStyles(inputStyles)(Input);

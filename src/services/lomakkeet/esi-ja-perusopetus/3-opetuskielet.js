@@ -19,10 +19,11 @@ import {
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 export async function getOpetuskieletOPHLomake(
-  isReadOnly,
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects
 ) {
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
   const ensisijaisetOpetuskieletOPH = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const toissijaisetOpetuskieletOPH = await getToissijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
@@ -68,10 +69,11 @@ export async function getOpetuskieletOPHLomake(
           name: "Autocomplete",
           short: true,
           properties: {
-            isReadOnly,
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
             options: map(kieli => {
               return {
-                label: kieli.metadata[localeUpper].nimi,
+                label: path(["metadata", localeUpper, "nimi"], kieli),
                 value: kieli.koodiarvo
               };
             }, valittavanaOlevatEnsisisijaisetOpetuskielet),
@@ -82,17 +84,19 @@ export async function getOpetuskieletOPHLomake(
     },
     {
       anchor: "opetuskieli",
-      title: "Opetusta voidaan antaa myös seuraavilla kielillä",
+      title: __("education.voidaanAntaaMyosSeuraavillaKielilla"),
+      layout: { indentation: "none" },
       components: [
         {
           anchor: "toissijaiset",
           name: "Autocomplete",
           short: true,
           properties: {
-            isReadOnly,
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
             options: map(kieli => {
               return {
-                label: kieli.metadata[localeUpper].nimi,
+                label: path(["metadata", localeUpper, "nimi"], kieli),
                 value: kieli.koodiarvo
               };
             }, valittavanaOlevatToissisijaisetOpetuskielet),
@@ -108,7 +112,7 @@ export async function getOpetuskieletOPHLomake(
         {
           anchor: "lisatiedot-info",
           name: "StatusTextRow",
-          styleClasses: ["pt-8 border-t"],
+          styleClasses: ["pt-8", "border-t"],
           properties: {
             title: __("common.lisatiedotInfo")
           }
@@ -128,11 +132,12 @@ export async function getOpetuskieletOPHLomake(
               versio: lisatiedotObj.versio,
               voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
             },
-            isReadOnly,
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
             placeholder: __("common.lisatiedot")
           }
         }
       ]
     }
-  ];
+  ].filter(Boolean);
 }

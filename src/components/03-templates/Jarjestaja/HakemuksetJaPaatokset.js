@@ -10,6 +10,7 @@ import { HAKEMUS_VIESTI } from "./uusiHakemusFormConstants";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import { useUser } from "stores/user";
 import * as R from "ramda";
+import { Typography } from "@material-ui/core";
 
 const Wrapper = styled.div`
   position: relative;
@@ -41,7 +42,9 @@ const HakemuksetJaPaatokset = ({ match }) => {
   if (sessionStorage.getItem("role") !== ROLE_MUOKKAAJA) {
     return (
       <MessageWrapper>
-        <h3>{HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}</h3>
+        <Typography component="h3" variant="h3">
+          {HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}
+        </Typography>
       </MessageWrapper>
     );
   }
@@ -52,7 +55,9 @@ const HakemuksetJaPaatokset = ({ match }) => {
   ) {
     return (
       <Wrapper>
-        <h2>Hakemukset</h2>
+        <Typography component="h2" variant="h2">
+          Hakemukset
+        </Typography>
         <UusiMuutospyynto to={getMuutospyyntoUrl()}>Luo uusi</UusiMuutospyynto>
         <MuutospyyntoList muutospyynnot={muutospyynnot.data} />
       </Wrapper>
@@ -60,7 +65,9 @@ const HakemuksetJaPaatokset = ({ match }) => {
   } else {
     return (
       <MessageWrapper>
-        <h3>{HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}</h3>
+        <Typography component="h3" variant="h3">
+          {HAKEMUS_VIESTI.KIRJAUTUMINEN.FI}
+        </Typography>
       </MessageWrapper>
     );
   }

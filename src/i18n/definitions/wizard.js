@@ -279,5 +279,9 @@ export default defineMessages({
   municipalitiesInNewLupa: {
     id: "wizard.municipalitiesInNewLupa",
     defaultMessage: "Uuden luvan kunnat"
+  },
+  closePreview: {
+    id: "wizard.closePreview",
+    defaultMessage: "Sulje esikatselu"
   }
 });

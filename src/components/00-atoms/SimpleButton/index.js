@@ -7,8 +7,8 @@ import { FaPlus } from "react-icons/fa";
 import ClearIcon from "@material-ui/icons/Clear";
 
 const defaultProps = {
+  forChangeObject: {},
   isReadOnly: false,
-  payload: {},
   text: "[text is missing]",
   variant: "contained",
   color: "primary",
@@ -19,37 +19,48 @@ const defaultProps = {
   iconContainerStyles: {}
 };
 
-const styles = createStyles(theme => ({
-  root: {
-    height: "3rem",
-    fontWeight: "600",
-    fontSize: "0.9375rem",
-    borderRadius: 0,
-    borderColor: "#d1d1d1",
-    "&:focus": {
-      outline: "0.2rem solid #d1d1d1"
+const styles = createStyles(theme => {
+  console.info(theme);
+  return {
+    root: {
+      height: "3rem",
+      fontWeight: "600",
+      fontSize: "0.9375rem",
+      borderRadius: 0,
+      borderColor: "#d1d1d1",
+      "&:focus": {
+        outline: "0.2rem solid #d1d1d1"
+      },
+      "&:hover": {
+        backgroundColor: theme.palette.primary.light
+      }
     }
-  }
-}));
+  };
+});
 
 const SimpleButton = ({
+  ariaLabel,
+  classes,
+  color = defaultProps.color,
+  disabled = defaultProps.disabled,
+  forChangeObject = defaultProps.forChangeObject,
+  fullAnchor,
+  icon = defaultProps.icon,
+  iconContainerStyles = defaultProps.iconContainerStyles,
+  iconStyles = defaultProps.iconStyles,
   id,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
-  payload = defaultProps.payload,
-  text = defaultProps.text,
-  variant = defaultProps.variant,
-  color = defaultProps.color,
-  ariaLabel,
   size = defaultProps.size,
-  classes,
-  disabled = defaultProps.disabled,
-  icon = defaultProps.icon,
-  iconContainerStyles = defaultProps.iconContainerStyles,
-  iconStyles = defaultProps.iconStyles
+  text = defaultProps.text,
+  variant = defaultProps.variant
 }) => {
   const handleClick = event => {
-    onClick(payload, {}, event);
+    if (!!onClick) {
+      onClick({ forChangeObject, fullAnchor }, {}, event);
+    } else {
+      console.warn("SimpleButton: käsittelijä 'onClick' puuttuu", fullAnchor);
+    }
   };
 
   return (
@@ -83,10 +94,11 @@ SimpleButton.propTypes = {
   ariaLabel: PropTypes.string,
   color: PropTypes.string,
   disabled: PropTypes.bool,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isReadOnly: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
-  payload: PropTypes.object,
+  onClick: PropTypes.func,
   text: PropTypes.string,
   variant: PropTypes.string,
   icon: PropTypes.string,

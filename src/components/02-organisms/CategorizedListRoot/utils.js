@@ -80,13 +80,13 @@ export const getReducedStructure = categories => {
   );
 };
 
-export const getTargetNode = (loopChange, reducedStructure) => {
+export const getTargetNode = (changeObj, reducedStructure) => {
   return {
     original: R.find(
-      R.propEq("fullAnchor", R.prop("anchor", loopChange)),
+      R.propEq("fullAnchor", R.prop("anchor", changeObj)),
       reducedStructure
     ),
-    requestedChanges: loopChange ? loopChange.properties : {}
+    requestedChanges: changeObj ? changeObj.properties : {}
   };
 };
 

@@ -98,7 +98,6 @@ const Multiselect = React.memo(props => {
   // add selected groups from values
   useEffect(() => {
     if (props.options && props.options[0].group) {
-      console.info(props.value);
       const groups =
         props.value &&
         R.filter(option => {

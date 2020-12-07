@@ -22,15 +22,16 @@ const RadioButtonWithLabel = React.memo(
         }
       },
       checked: {}
-    })(props => (
-      <Radio
-        color="default"
-        {...props}
-      />
-    ));
+    })(props => <Radio color="default" {...props} />);
 
     const handleChanges = () => {
-      props.onChanges(props.payload, { isChecked: !props.isChecked });
+      props.onChanges(
+        {
+          forChangeObject: props.forChangeObject,
+          fullAnchor: props.fullAnchor
+        },
+        { isChecked: !props.isChecked }
+      );
     };
 
     return (
@@ -57,8 +58,16 @@ const RadioButtonWithLabel = React.memo(
         ) : (
           props.isChecked && (
             <div className="flex flex-row text-base mb-2">
-              <Check />
-              <span className="my-auto">{props.children}</span>
+              {props.isPreviewModeOn ? (
+                <ul className="list-disc leading-none">
+                  <li>{props.children}</li>
+                </ul>
+              ) : (
+                <React.Fragment>
+                  <Check />
+                  <span className="my-auto">{props.children}</span>
+                </React.Fragment>
+              )}
             </div>
           )
         )}
@@ -68,18 +77,22 @@ const RadioButtonWithLabel = React.memo(
   (cp, np) => {
     return (
       isEqual(cp.isChecked, np.isChecked) &&
+      isEqual(cp.isPreviewModeOn, np.isPreviewModeOn) &&
+      isEqual(cp.isReadOnly, np.isReadOnly) &&
       isEqual(cp.labelStyles, np.labelStyles)
     );
   }
 );
 
 RadioButtonWithLabel.propTypes = {
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isChecked: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   name: PropTypes.string,
   onChanges: PropTypes.func,
-  payload: PropTypes.object,
   labelStyles: PropTypes.object,
   value: PropTypes.string
 };

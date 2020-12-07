@@ -11,11 +11,12 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import common from "i18n/definitions/common";
-import Attachment from "@material-ui/icons/Attachment";
+import GetApp from "@material-ui/icons/GetApp";
 import { map, addIndex, prepend, find, concat, isEmpty } from "ramda";
 import { useIntl } from "react-intl";
 import moment from "moment";
 import { API_BASE_URL } from "modules/constants";
+import { koulutustyypitMap } from "../../../../utils/constants";
 
 /**
  * Function defines how to sort table rows.
@@ -153,6 +154,7 @@ const useStyles = makeStyles(() => ({
  * @param {array} param0 - Base data for table construction.
  */
 export default function LupapaatoksetTable({
+  koulutusmuoto,
   data,
   tulevatLuvat,
   voimassaOlevaLupa
@@ -177,17 +179,23 @@ export default function LupapaatoksetTable({
     },
     {
       id: "paatoskirje",
-      label: intl.formatMessage(common.paatoskirje)
+      label: intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ?
+        common.lupaTitle : common.paatoskirje),
+      hidden: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
     },
     {
       id: "jarjestamislupa",
-      label: intl.formatMessage(common.lupaTitle)
+      label: intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
+        common.yllapitamisLupaTitle : common.lupaTitle),
+      hidden: koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
     },
     {
       id: "kumottu",
-      label: intl.formatMessage(common.lupaHistoriaKumottuDateHeading)
+      label: intl.formatMessage(common.lupaHistoriaKumottuDateHeading),
+      hidden: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ||
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
     }
-  ];
+  ].filter(hc => !hc.hidden);
 
   const historicalRows = map(
     ({
@@ -242,7 +250,8 @@ export default function LupapaatoksetTable({
       paatospvm: lupa.paatospvm,
       jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       urls: {
-        jarjestamislupa: `${API_BASE_URL}/pdf/${lupa.uuid}`,
+        jarjestamislupa: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
+          `/api/pebble/resources/liitteet/vst/${lupa.meta.liitetiedosto}` : `${API_BASE_URL}/pdf/${lupa.uuid}`,
         paatoskirje:
           paatoskirje && lupa.asianumero
             ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`
@@ -264,6 +273,7 @@ export default function LupapaatoksetTable({
   const [page, setPage] = React.useState(0);
   const [dense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [today] = React.useState(moment().startOf("day"));
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -332,56 +342,72 @@ export default function LupapaatoksetTable({
                       onClick={event => handleClick(event, row.diaarinumero)}
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.diaarinumero}>
-                      <TableCell
-                        component="td"
-                        id={labelId}
-                        scope="row"
-                        className={classes.firstCol}>
-                        {row.diaarinumero}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.paatospvm
-                          ? moment(row.paatospvm).format("DD.MM.YYYY")
-                          : null}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.voimassaoloalkupvm
-                          ? moment(row.voimassaoloalkupvm).format("DD.MM.YYYY")
-                          : null}
-                      </TableCell>
-                      <TableCell align="left">
-                        {isEmpty(row.voimassaololoppupvm || "") ? (
-                          <span className="bg-green-250 p-2">
+                      key={`row-${index}`}>
+                      {headCells.some(hc => hc.id === "diaarinumero") && (
+                        <TableCell
+                          component="td"
+                          id={labelId}
+                          scope="row"
+                          className={classes.firstCol}>
+                          {row.diaarinumero}
+                        </TableCell>
+                      )}
+                      {headCells.some(hc => hc.id === "paatospvm") && (
+                        <TableCell align="left">
+                          {row.paatospvm
+                            ? moment(row.paatospvm).format("DD.MM.YYYY")
+                            : null}
+                        </TableCell>
+                      )}
+                      {headCells.some(hc => hc.id === "voimassaoloalkupvm") && (
+                        <TableCell align="left">
+                          {row.voimassaoloalkupvm
+                            ? moment(row.voimassaoloalkupvm).format("DD.MM.YYYY")
+                            : null}
+                        </TableCell>
+                      )}
+                      {headCells.some(hc => hc.id === "voimassaololoppupvm") && (
+                        <TableCell align="left">
+                          {!isEmpty(row.voimassaoleva) && moment(row.voimassaoloalkupvm) <= today && moment(row.voimassaololoppupvm) >= today ? (
+                            <span className="bg-green-250 p-2">
                             {row.voimassaoleva}
                           </span>
-                        ) : (
-                          moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
-                        )}
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.paatoskirje && <Attachment />}
-                        {row.paatoskirje && (
+                          ) : (
+                            row.voimassaololoppupvm && moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
+                          )}
+                        </TableCell>
+                      )}
+                      {headCells.some(hc => hc.id === "paatoskirje") && (
+                        <TableCell align="left">
+                          {row.paatoskirje && <GetApp />}
+                          {row.paatoskirje && (
+                            <a
+                              href={row.urls.paatoskirje}
+                              className="ml-2 underline">
+                              {intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ?
+                                common.jarjestamislupaDownload : common.paatoskirjeDownload)}
+                            </a>
+                          )}
+                        </TableCell>
+                      )}
+                      {headCells.some(hc => hc.id === "jarjestamislupa") && (
+                        <TableCell align="left">
+                          <GetApp />
                           <a
-                            href={row.urls.paatoskirje}
+                            href={row.urls.jarjestamislupa}
                             className="ml-2 underline">
-                            {row.paatoskirje}
+                            {intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
+                              common.yllapitamislupaDownload : common.jarjestamislupaDownload)}
                           </a>
-                        )}
-                      </TableCell>
-                      <TableCell align="left">
-                        <Attachment />
-                        <a
-                          href={row.urls.jarjestamislupa}
-                          className="ml-2 underline">
-                          {row.jarjestamislupa}
-                        </a>
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.kumottupvm
-                          ? moment(row.kumottupvm).format("DD.MM.YYYY")
-                          : ""}
-                      </TableCell>
+                        </TableCell>
+                      )}
+                      {headCells.some(hc => hc.id === "kumottu") && (
+                        <TableCell align="left">
+                          {row.kumottupvm
+                            ? moment(row.kumottupvm).format("DD.MM.YYYY")
+                            : ""}
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}

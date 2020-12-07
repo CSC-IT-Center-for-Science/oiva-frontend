@@ -12,7 +12,8 @@ import {
   FormControl,
   IconButton,
   TextField,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import { useOrganisations } from "stores/organisations";
 import { sortBy, prop, map, find, propEq, trim } from "ramda";
@@ -101,15 +102,15 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
         {intl.formatMessage(common.luoUusiAsia)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <div className="px-2 py-4 relative">
+        <div className="px-8 py-4 relative">
           {isSearchFieldVisible ? (
             <React.Fragment>
               <p className="mb-6">
                 {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
               </p>
-              <h4 className="font-medium mb-4">
+              <Typography component="h4" variant="h4">
                 {intl.formatMessage(common.haeKJYtunnuksella)}
-              </h4>
+              </Typography>
               <div className="flex items-center">
                 <FormControl>
                   <TextField

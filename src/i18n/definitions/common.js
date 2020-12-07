@@ -1194,5 +1194,25 @@ export default defineMessages({
   htmlLuvanOtsikko: {
     id: "common.htmlLuvanOtsikko",
     defaultMessage: "Ajantasainen {koulutusmuodon} järjestämislupa {date}"
+  },
+  yllapitamislupaDownload: {
+    id: "common.yllapitamislupaDownload",
+    defaultMessage: "Lataa ylläpitämislupa"
+  },
+  jarjestamislupaDownload: {
+    id: "common.jarjestamislupaDownload",
+    defaultMessage: "Lataa järjestämislupa"
+  },
+  paatoskirjeDownload: {
+    id: "common.paatoskirjeDownload",
+    defaultMessage: "Lataa päätöskirje"
+  },
+  jarjestamisJaYllapitamisluvat: {
+    id: "common.jarjestamisJaYllapitamisluvat",
+    defaultMessage: "Järjestämis- ja ylläpitämisluvat"
+  },
+  esikatselu: {
+    id: "common.esikatselu",
+    defaultMessage: "Esikatselu"
   }
 });
