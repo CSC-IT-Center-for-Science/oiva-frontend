@@ -253,11 +253,11 @@ export default function LupapaatoksetTable({
         jarjestamislupa: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
           `/api/pebble/resources/liitteet/vst/${lupa.meta.liitetiedosto}` : `${API_BASE_URL}/pdf/${lupa.uuid}`,
         paatoskirje:
-          paatoskirje && lupa.asianumero
+          paatoskirje
             ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`
             : null
       },
-      paatoskirje: paatoskirje && lupa.asianumero ? paatoskirje.nimi : null,
+      paatoskirje: paatoskirje ? paatoskirje.nimi : null,
       voimassaoloalkupvm: lupa.alkupvm,
       voimassaololoppupvm: lupa.loppupvm,
       voimassaoleva: voimassaoleva
