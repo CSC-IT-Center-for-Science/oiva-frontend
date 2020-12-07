@@ -100,7 +100,9 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       { opetustaJarjestetaanUlkomaillaIsChecked && (
         <div className="mb-4">
           <Typography component="h4" variant="h4">
-            {intl.formatMessage(education.opetustaJarjestetaanSuomenUlkopuolella)}
+            {intl.formatMessage(
+              education.opetustaJarjestetaanSuomenUlkopuolella
+            )}
           </Typography>
           {opetustaJarjestetaanUlkomaillaLisatiedotMaarays ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo : ""}
         </div>

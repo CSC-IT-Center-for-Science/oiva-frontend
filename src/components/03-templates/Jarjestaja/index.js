@@ -137,7 +137,7 @@ const Jarjestaja = React.memo(
           </title>
         </Helmet>
         <BreadcrumbsItem to={breadcrumb}>{jarjestaja.nimi}</BreadcrumbsItem>
-        <div className="sm:w-4/5 mx-auto">
+        <div className="sm:w-4/5 mx-auto max-w-8xl">
           <section className="my-8">
             <Typography component="h1" variant="h1">
               {jarjestaja.nimi}
@@ -179,8 +179,10 @@ const Jarjestaja = React.memo(
                   locale={intl.locale}
                   render={_props =>
                     !R.isEmpty(organisation) ? (
-                      <div className="border m-12 p-12 bg-white mx-auto w-4/5">
-                        <OmatTiedot organisation={organisation} {..._props} />
+                      <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
+                        <div className="max-w-5xl m-auto">
+                          <OmatTiedot organisation={organisation} {..._props} />
+                        </div>
                       </div>
                     ) : null
                   }
@@ -190,9 +192,14 @@ const Jarjestaja = React.memo(
             <Route
               path={`${url}/jarjestamislupa`}
               render={() => (
-                <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
                   {JarjestamislupaJSX ? (
-                    <JarjestamislupaJSX lupa={lupa} lupakohteet={lupakohteet} />
+                    <div className="max-w-5xl m-auto">
+                      <JarjestamislupaJSX
+                        lupa={lupa}
+                        lupakohteet={lupakohteet}
+                      />
+                    </div>
                   ) : null}
                 </div>
               )}
@@ -200,7 +207,7 @@ const Jarjestaja = React.memo(
             <Route
               path={`${url}/paatokset`}
               exact
-              render={props => (
+              render={() => (
                 <JulkisetTiedot
                   koulutusmuoto={koulutusmuoto}
                   jarjestaja={jarjestaja}
@@ -213,7 +220,7 @@ const Jarjestaja = React.memo(
               path={`${url}/jarjestamislupa-asiat`}
               exact
               render={props => (
-                <div className="border m-12 p-12 bg-white mx-auto w-4/5">
+                <div className="m-12 mx-auto w-4/5 max-w-8xl">
                   <JarjestamislupaAsiat
                     history={props.history}
                     intl={intl}
