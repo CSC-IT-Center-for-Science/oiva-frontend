@@ -9,7 +9,7 @@ import {
 } from "../../../css/autocomplete";
 import SearchIcon from "@material-ui/icons/Search";
 import InputLabel from "@material-ui/core/InputLabel";
-import { equals } from "ramda";
+import { equals, map } from "ramda";
 
 /**
  * Autocomplete wraps a Select
@@ -118,9 +118,15 @@ const Autocomplete = React.memo(
         default:
           break;
       }
-      props.callback(props.payload, {
-        value: Array.isArray(value) ? orderOptions(value) : value || []
-      });
+      props.callback(
+        {
+          forChangeObject: props.forChangeObject,
+          fullAnchor: props.fullAnchor
+        },
+        {
+          value: Array.isArray(value) ? orderOptions(value) : value || []
+        }
+      );
     };
 
     useEffect(() => {
@@ -154,67 +160,79 @@ const Autocomplete = React.memo(
 
     return (
       <React.Fragment>
-        {props.title && (
-          <InputLabel
-            required={props.isRequired}
-            style={{ marginBottom: "0.2em" }}>
-            {props.title}
-          </InputLabel>
-        )}
-        {props.isSearch ? (
-          <Select
-            autosize={props.autosize}
-            name={props.name}
-            isMulti={props.isMulti}
-            value={value}
-            onChange={handleSelectChange}
-            placeholder={props.placeholder}
-            inputProps={{
-              id: "select-multiple"
-            }}
-            options={isOptionsShown ? options : []}
-            getOptionLabel={option => `${option.label}`}
-            getOptionValue={option => `${option.value}`}
-            isSearchable={true}
-            searchFilter={searchFilter}
-            styles={optionStyles}
-            components={props.isSearch && { DropdownIndicator }}
-            hideSelectedOptions={props.isSearch}
-            onInputChange={onInputChange}
-            menuIsOpen={isOptionsShown}
-            width={props.width}
-            required={props.isRequired}
-          />
+        {props.isPreviewModeOn ? (
+          <ul className="ml-8 list-disc mb-4">
+            {map(
+              value =>
+                value ? <li key={value.value}>{value.label}</li> : null,
+              value || []
+            ).filter(Boolean)}
+          </ul>
         ) : (
-          <Select
-            autosize={props.autosize}
-            name={props.name}
-            isMulti={props.isMulti}
-            value={value}
-            onChange={handleSelectChange}
-            placeholder={props.placeholder}
-            inputProps={{
-              id: "select-multiple"
-            }}
-            options={options}
-            getOptionLabel={option => `${option.label}`}
-            getOptionValue={option => `${option.value}`}
-            isSearchable={true}
-            searchFilter={searchFilter}
-            styles={optionStyles}
-            hideSelectedOptions={props.hideSelectedOptions}
-            width={props.width}
-            required={props.isRequired}
-          />
+          <React.Fragment>
+            {props.title && (
+              <InputLabel
+                required={props.isRequired}
+                style={{ marginBottom: "0.2em" }}>
+                {props.title}
+              </InputLabel>
+            )}
+            {props.isSearch ? (
+              <Select
+                autosize={props.autosize}
+                name={props.name}
+                isMulti={props.isMulti}
+                value={value}
+                onChange={handleSelectChange}
+                placeholder={props.placeholder}
+                inputProps={{
+                  id: "select-multiple"
+                }}
+                options={isOptionsShown ? options : []}
+                getOptionLabel={option => `${option.label}`}
+                getOptionValue={option => `${option.value}`}
+                isSearchable={true}
+                searchFilter={searchFilter}
+                styles={optionStyles}
+                components={props.isSearch && { DropdownIndicator }}
+                hideSelectedOptions={props.isSearch}
+                onInputChange={onInputChange}
+                menuIsOpen={isOptionsShown}
+                width={props.width}
+                required={props.isRequired}
+              />
+            ) : (
+              <Select
+                autosize={props.autosize}
+                name={props.name}
+                isMulti={props.isMulti}
+                value={value}
+                onChange={handleSelectChange}
+                placeholder={props.placeholder}
+                inputProps={{
+                  id: "select-multiple"
+                }}
+                options={options}
+                getOptionLabel={option => `${option.label}`}
+                getOptionValue={option => `${option.value}`}
+                isSearchable={true}
+                searchFilter={searchFilter}
+                styles={optionStyles}
+                hideSelectedOptions={props.hideSelectedOptions}
+                width={props.width}
+                required={props.isRequired}
+              />
+            )}
+          </React.Fragment>
         )}
       </React.Fragment>
     );
   },
   (cp, np) => {
     return (
+      equals(cp.isPreviewModeOn, np.isPreviewModeOn) &&
       equals(cp.isValid, np.isValid) &&
       equals(cp.options, np.options) &&
-      equals(cp.payload, np.payload) &&
       equals(cp.value, np.value) &&
       equals(cp.height, np.height) &&
       equals(cp.width, np.width) &&
@@ -237,13 +255,14 @@ Autocomplete.defaultProps = {
 };
 
 Autocomplete.propTypes = {
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
   isMulti: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
   name: PropTypes.string,
   callback: PropTypes.func,
   options: PropTypes.array,
-  payload: PropTypes.object,
   placeholder: PropTypes.string,
   value: PropTypes.array,
   height: PropTypes.string,

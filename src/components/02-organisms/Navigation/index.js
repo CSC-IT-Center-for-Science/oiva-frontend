@@ -26,9 +26,12 @@ const Navigation = ({
   const classes = useStyles(theme);
 
   const items = R.addIndex(R.map)((link, index) => {
+    const bgColorClass = `bg-${theme.hoverColor}`;
+    const mdBgHoverClass = `md:${bgColorClass}`;
+
     const className = `px-4 font-medium uppercase
       py-2 flex-1 tracking-wider min-w-200 lg:max-w-xxs sm:min-w-initial mx-4
-      hover:bg-${theme.hoverColor} hover:text-${theme.color} visited:text-${theme.color} text-${theme.color} text-center flex-wrap whitespace-no-wrap`;
+      hover-${bgColorClass} hover:text-${theme.color} visited:text-${theme.color} text-${theme.color} text-center flex-wrap whitespace-no-wrap`;
 
     return link.url ? (
       <a href={link.url} key={`link-${index}`} className={className}>
@@ -38,7 +41,7 @@ const Navigation = ({
       <NavLink
         key={`link-${index}`}
         exact={link.isExact}
-        activeClassName={`font-bold md:bg-${theme.hoverColor} md:font-normal ml-xxs`}
+        activeClassName={`${mdBgHoverClass} ml-xxs`}
         to={link.path}
         className={className}>
         {link.text}

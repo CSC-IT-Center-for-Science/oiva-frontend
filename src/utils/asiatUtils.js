@@ -61,7 +61,7 @@ export const generateAsiaTableRows = (row, { formatMessage, locale }) => {
       };
     },
     [
-      { text: row.asianumero },
+      { text: row.asianumero || row.diaarinumero },
       { text: formatMessage(common["asiaTypes.lupaChange"]) }, // Only one type known in system at this juncture
       { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
       { text: getMaakuntaNimiFromHakemus(row, locale) },

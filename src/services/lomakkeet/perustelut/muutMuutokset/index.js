@@ -153,7 +153,6 @@ function divideArticles(
 }
 
 function getCategoryData(dividedArticles, areaCode) {
-  console.info(areaCode, dividedArticles);
   switch (areaCode) {
     case "01":
       return {
@@ -327,10 +326,9 @@ function getReasoningForm(
 export default function getMuutPerustelulomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
-  console.info(locale);
   switch (action) {
     case "reasoning":
       const defaultAdditionForm = getDefaultAdditionForm(isReadOnly);
@@ -341,7 +339,6 @@ export default function getMuutPerustelulomake(
         locale,
         defaultRemovalForm
       );
-      console.info(data);
       return getReasoningForm(
         data.areaCode,
         defaultAdditionForm,

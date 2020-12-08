@@ -1,12 +1,12 @@
 import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map,toUpper } from "ramda";
+import { map, toUpper } from "ramda";
 
 export default async function opetuksenjarjestamismuodot(
   changeObjects = [],
   locale
 ) {
-  const opetuksenjarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const _opetuksenjarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
   const localeUpper = toUpper(locale);
 
   if (opetuksenjarjestamismuodot.length) {
@@ -25,14 +25,15 @@ export default async function opetuksenjarjestamismuodot(
               const anchor = `opetuksenJarjestamismuodot.${opetuksenjarjestamismuodot.koodiarvo}.valinta`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);
               return (!!maarays &&
-              (!changeObj || changeObj.properties.isChecked)) ||
-              (changeObj && changeObj.properties.isChecked)
+                (!changeObj || changeObj.properties.isChecked)) ||
+                (changeObj && changeObj.properties.isChecked)
                 ? {
-                    label: opetuksenjarjestamismuodot.metadata[localeUpper].nimi,
+                    label:
+                      opetuksenjarjestamismuodot.metadata[localeUpper].nimi,
                     value: opetuksenjarjestamismuodot.koodiarvo
                   }
                 : null;
-            }, opetuksenjarjestamismuodot).filter(Boolean),
+            }, _opetuksenjarjestamismuodot).filter(Boolean),
             value: ""
           }
         }

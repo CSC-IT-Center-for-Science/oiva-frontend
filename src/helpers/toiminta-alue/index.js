@@ -46,7 +46,7 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**
@@ -128,7 +128,7 @@ export async function defineBackendChangeObjects(
   }, maakuntakunnat);
 
   // YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN POISTAMINEN
-  const yksittäisetMaaraykset = filter(
+  const yksittaisetMaaraykset = filter(
     compose(not, propEq("koodisto", "nuts1")),
     maaraykset
   );
@@ -193,7 +193,7 @@ export async function defineBackendChangeObjects(
       };
     }
     return null;
-  }, yksittäisetMaaraykset).filter(Boolean);
+  }, yksittaisetMaaraykset).filter(Boolean);
 
   /**
    * YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN LISÄÄMINEN

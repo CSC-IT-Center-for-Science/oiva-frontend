@@ -8,9 +8,10 @@ import UndoIcon from "@material-ui/icons/Undo";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import { compose, filter, not, pathEq } from "ramda";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
-  button: {
+  noPadding: {
     padding: 0
   }
 }));
@@ -66,10 +67,14 @@ const ExpandableRowRoot = ({
           shouldBeExpanded={isExpanded}
           onToggle={onToggle}
           id={anchor}>
-          <h4 data-slot="title" className="opacity-75">
+          <Typography
+            component="h4"
+            variant="h4"
+            classes={{ root: classes.noPadding }}
+            data-slot="title">
             {code && <span className="pr-6">{code}</span>}
             <span>{title}</span>
-          </h4>
+          </Typography>
           <div data-slot="info">
             {amountOfRelevantChanges.length > 0 && (
               <div className="flex items-center">
@@ -86,7 +91,7 @@ const ExpandableRowRoot = ({
                       <Button
                         component="span"
                         color="primary"
-                        className={classes.button}
+                        className={classes.noPadding}
                         endIcon={<UndoIcon />}
                         onClick={e => {
                           e.stopPropagation();

@@ -31,7 +31,8 @@ export async function createObjectToSave(
   kohteet,
   maaraystyypit,
   muut,
-  lupaKohteet
+  lupaKohteet,
+  lomakedata
 ) {
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
@@ -107,7 +108,8 @@ export async function createObjectToSave(
     maaraystyypit,
     muut,
     lupaKohteet,
-    changeObjects.muut
+    changeObjects.muut,
+    lomakedata.muut
   );
 
   // MUUT
@@ -167,8 +169,6 @@ export async function createObjectToSave(
     : "";
   // This helps the frontend to initialize the first three fields on form load.
   objectToSave.meta.topthree = changeObjects.topthree;
-
-  console.info(objectToSave);
 
   return objectToSave;
 }

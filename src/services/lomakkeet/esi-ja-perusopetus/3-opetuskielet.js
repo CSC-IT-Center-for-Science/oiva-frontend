@@ -9,7 +9,8 @@ import {
   path,
   filter,
   uniq,
-  concat
+  concat,
+  propEq
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import {
@@ -19,15 +20,18 @@ import {
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 export async function getOpetuskieletOPHLomake(
-  isReadOnly,
+  { maaraykset },
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects
 ) {
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
   const ensisijaisetOpetuskieletOPH = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const toissijaisetOpetuskieletOPH = await getToissijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
 
-  // TODO: Huomioidaan myöhemmin myös lupaan kuuluvat kielet
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
+
   const valitutEnsisijaisetKoodiarvot = map(
     prop("value"),
     path([0, "properties", "value"], changeObjects) || []
@@ -58,45 +62,76 @@ export async function getOpetuskieletOPHLomake(
   );
 
   const localeUpper = toUpper(locale);
-  return [
+
+  const ensisijaisetAnchor = "ensisijaiset";
+  const toissijaisetAnchor = "toissijaiset";
+
+  const ensisijaisetOpetuskieletOptions = map(kieli => {
+    return {
+      label: path(["metadata", localeUpper, "nimi"], kieli),
+      value: kieli.koodiarvo
+    };
+  }, valittavanaOlevatEnsisisijaisetOpetuskielet);
+
+  const toissijaisetOpetuskieletOptions = map(kieli => {
+    return {
+      label: path(["metadata", localeUpper, "nimi"], kieli),
+      value: kieli.koodiarvo
+    };
+  }, valittavanaOlevatToissisijaisetOpetuskielet);
+
+  const lomakerakenne = [
     {
       anchor: "opetuskieli",
       title: "Opetuskieli",
       components: [
         {
-          anchor: "ensisijaiset",
+          anchor: ensisijaisetAnchor,
           name: "Autocomplete",
           short: true,
           properties: {
-            isReadOnly,
-            options: map(kieli => {
-              return {
-                label: kieli.metadata[localeUpper].nimi,
-                value: kieli.koodiarvo
-              };
-            }, valittavanaOlevatEnsisisijaisetOpetuskielet),
-            title: __("common.valitseYksiTaiUseampi")
+            forChangeObject: {
+              valikko: ensisijaisetAnchor
+            },
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
+            options: ensisijaisetOpetuskieletOptions,
+            title: __("common.valitseYksiTaiUseampi"),
+            value: map(maarays => {
+              const option = find(
+                propEq("value", maarays.koodiarvo),
+                ensisijaisetOpetuskieletOptions
+              );
+              return option;
+            }, filter(pathEq(["meta", "valikko"], ensisijaisetAnchor), maaraykset))
           }
         }
       ]
     },
     {
       anchor: "opetuskieli",
-      title: "Opetusta voidaan antaa myös seuraavilla kielillä",
+      title: __("education.voidaanAntaaMyosSeuraavillaKielilla"),
+      layout: { indentation: "none" },
       components: [
         {
-          anchor: "toissijaiset",
+          anchor: toissijaisetAnchor,
           name: "Autocomplete",
           short: true,
           properties: {
-            isReadOnly,
-            options: map(kieli => {
-              return {
-                label: kieli.metadata[localeUpper].nimi,
-                value: kieli.koodiarvo
-              };
-            }, valittavanaOlevatToissisijaisetOpetuskielet),
-            title: __("common.valitseYksiTaiUseampi")
+            forChangeObject: {
+              valikko: toissijaisetAnchor
+            },
+            isPreviewModeOn,
+            isReadOnly: _isReadOnly,
+            options: toissijaisetOpetuskieletOptions,
+            title: __("common.valitseYksiTaiUseampi"),
+            value: map(maarays => {
+              const option = find(
+                propEq("value", maarays.koodiarvo),
+                toissijaisetOpetuskieletOptions
+              );
+              return option;
+            }, filter(pathEq(["meta", "valikko"], toissijaisetAnchor), maaraykset))
           }
         }
       ]
@@ -108,31 +143,37 @@ export async function getOpetuskieletOPHLomake(
         {
           anchor: "lisatiedot-info",
           name: "StatusTextRow",
-          styleClasses: ["pt-8 border-t"],
+          styleClasses: ["pt-8", "border-t"],
           properties: {
             title: __("common.lisatiedotInfo")
           }
         }
       ]
     },
-    {
-      anchor: "lisatiedot",
-      components: [
-        {
-          anchor: lisatiedotObj.koodiarvo,
-          name: "TextBox",
-          properties: {
-            forChangeObject: {
-              koodiarvo: lisatiedotObj.koodiarvo,
-              koodisto: lisatiedotObj.koodisto,
-              versio: lisatiedotObj.versio,
-              voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
-            },
-            isReadOnly,
-            placeholder: __("common.lisatiedot")
-          }
+    lisatiedotObj
+      ? {
+          anchor: "lisatiedot",
+          components: [
+            {
+              anchor: lisatiedotObj.koodiarvo,
+              name: "TextBox",
+              properties: {
+                forChangeObject: {
+                  koodiarvo: lisatiedotObj.koodiarvo,
+                  koodisto: lisatiedotObj.koodisto,
+                  versio: lisatiedotObj.versio,
+                  voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+                },
+                isPreviewModeOn,
+                isReadOnly: _isReadOnly,
+                placeholder: __("common.lisatiedot"),
+                value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
+              }
+            }
+          ]
         }
-      ]
-    }
-  ];
+      : null
+  ].filter(Boolean);
+
+  return lomakerakenne;
 }

@@ -7,7 +7,6 @@ const Store = createStore({
   initialState: {},
   actions: {
     load: (queryParameters = []) => ({ getState, setState }) => {
-      console.info(queryParameters);
       return execute(
         { getState, setState },
         {

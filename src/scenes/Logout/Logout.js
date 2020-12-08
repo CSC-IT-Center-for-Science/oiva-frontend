@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 import SimpleButton from "../../components/00-atoms/SimpleButton";
 import { useHistory } from "react-router-dom";
 import { sessionTimeoutInMinutes } from "modules/constants";
+import { Typography } from "@material-ui/core";
 
 const Logout = () => {
   const history = useHistory();
@@ -36,9 +37,9 @@ const Logout = () => {
   return (
     <div className="mx-4 sm:mx-24">
       <MessageWrapper>
-        <h1 className="mb-4">
+        <Typography component="h1" variant="h1" className="mb-4">
           {intl.formatMessage(auth[`${localizationKeyPrefix}Title`])}
-        </h1>
+        </Typography>
         <p className="mb-4">
           {intl.formatMessage(auth[`${localizationKeyPrefix}Info`], {
             time: sessionTimeoutInMinutes

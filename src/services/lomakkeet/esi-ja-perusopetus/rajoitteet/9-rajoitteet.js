@@ -25,7 +25,13 @@ const getKohteenTarkenninValue = changeObj => {
   }
 };
 
-export function rajoitteet(data, isReadOnly, locale, changeObjects) {
+export function rajoitteet(
+  data,
+  isReadOnly,
+  locale,
+  changeObjects,
+  { onAddRestriction }
+) {
   // data.restrictions = luvalta tulevat rajoitteet
   const changeObjectsByRajoiteId = groupBy(
     compose(nth(1), split("."), prop("anchor")),
@@ -165,7 +171,7 @@ export function rajoitteet(data, isReadOnly, locale, changeObjects) {
           {
             anchor: "painike",
             name: "SimpleButton",
-            onClick: data.onAddRestriction,
+            onClick: onAddRestriction,
             properties: {
               text: "Lisää rajoite"
             }

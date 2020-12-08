@@ -62,6 +62,7 @@ const CategorizedListRoot = React.memo(
           reducedStructure,
           changesRef.current
         );
+
         /**
          * The updated array will be sent using the onUpdate callback function.
          * The anchor parameter is the root anchor of the current form. It can
@@ -69,7 +70,8 @@ const CategorizedListRoot = React.memo(
          **/
         onUpdate({
           anchor,
-          changes: nextChanges
+          changes: nextChanges,
+          reducedStructure
         });
       },
       [anchor, onUpdate, reducedStructure, uncheckParentWithoutActiveChildNodes]

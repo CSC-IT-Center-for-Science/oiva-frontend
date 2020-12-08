@@ -11,7 +11,7 @@ import { scrollToOpiskelijavuodet } from "services/lomakkeet/muut/utils";
  */
 export function getMuutVaativaTuki(
   { isApplyForValueSet, items, koodiarvot, maarayksetByKoodiarvo },
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   const localeUpper = locale.toUpperCase();

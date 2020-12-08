@@ -4,28 +4,11 @@
 
 p {
   @apply font-sans;
-}
-h1 {
-  @apply text-2xl;
-  @apply font-semibold;
-  @apply font-sans;
-}
-h2 {
-  @apply text-xl;
-  @apply font-semibold;
-  @apply font-sans;
-}
-h3 {
-  @apply text-lg;
-  @apply font-semibold;
-  @apply font-sans;
-}
-h4 {
   @apply text-base;
-  @apply font-semibold;
-  @apply font-sans;
+  @apply leading-normal;
 }
 a {
+  @apply text-base;
   @apply text-green-500;
 }
 a:hover {
@@ -33,6 +16,28 @@ a:hover {
 }
 a.normal:visited {
   @apply text-green-700;
+}
+ul.MuiList-root {
+  @apply pb-6;
+}
+div.MuiAccordion-root.Mui-expanded {
+  margin: 0;
+}
+div.MuiDialogContent-root {
+  padding: 0;
+}
+
+form .MuiTypography-h2 {
+  @apply pt-16;
+}
+
+:focus {
+  outline: none !important;
+}
+
+/* Tämä asetus on voimassa, kun käyttäjä navigoi näppäimistöllä */
+:focus-visible {
+  outline: 2px solid #111f9b !important;
 }
 
 /* User research indicates that number input controls need to go (CSCOIVA-1315) */

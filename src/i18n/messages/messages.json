@@ -1,5 +1,25 @@
 [
   {
+    "id": "ammatillinenKoulutus.genetiivi",
+    "defaultMessage": "Ammatillisen koulutuksen",
+    "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
+  },
+  {
+    "id": "ammatillinenKoulutus.kuvausteksti",
+    "defaultMessage": "Ammatillisten tutkintojen ja koulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää tutkintojen ja koulutuksen järjestämislupaa. Järjestämislupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
+    "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
+  },
+  {
+    "id": "ammatillinenKoulutus.lyhytKuvaus",
+    "defaultMessage": "Ammatillisten tutkintojen ja koulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää tutkintojen ja koulutuksen järjestämislupaa. Järjestämislupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
+    "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
+  },
+  {
+    "id": "ammatillinenKoulutus.paasivunOtsikko",
+    "defaultMessage": "Ammatillisen koulutuksen järjestäjät",
+    "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
+  },
+  {
     "id": "common.dropAreaInfo1",
     "defaultMessage": "Voit raahata tiedostot tähän tai klikata aluetta lisätäksesi liitteitä.",
     "filepath": "src/i18n/definitions/attachments.js"
@@ -1470,6 +1490,51 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.lupaSisaltaaYhteistyosopimuksia",
+    "defaultMessage": "Lupa sisältää yhteistyösopimuksia",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.maarayksenKuvaus",
+    "defaultMessage": "Määräyksen kuvaus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.maarayksenXKuvaus",
+    "defaultMessage": "Määräyksen {nro} kuvaus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.lisaaUusiYhteistyosopimus",
+    "defaultMessage": "Lisää uusi yhteistyösopimus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.htmlLuvanOtsikko",
+    "defaultMessage": "Ajantasainen {koulutusmuodon} järjestämislupa {date}",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.yllapitamislupaDownload",
+    "defaultMessage": "Lataa ylläpitämislupa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.jarjestamislupaDownload",
+    "defaultMessage": "Lataa järjestämislupa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.paatoskirjeDownload",
+    "defaultMessage": "Lataa päätöskirje",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.jarjestamisJaYllapitamisluvat",
+    "defaultMessage": "Järjestämis- ja ylläpitämisluvat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1545,6 +1610,56 @@
     "filepath": "src/i18n/definitions/education.js"
   },
   {
+    "id": "education.erityisetKoulutustehtavat",
+    "defaultMessage": "Erityiset koulutustehtävät",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.voidaanAntaaMyosSeuraavillaKielilla",
+    "defaultMessage": "Opetusta voidaan antaa myös seuraavilla kielillä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.ammatillisenKoulutuksen",
+    "defaultMessage": "Ammatillisen koulutuksen",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.esiJaPerusopetuksen",
+    "defaultMessage": "Esi- ja perusopetuksen",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.lukiokoulutuksen",
+    "defaultMessage": "Lukiokoulutuksen",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.vapaanSivistystyon",
+    "defaultMessage": "Vapaan sivistystyön",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.koulutusmuodot",
+    "defaultMessage": "Koulutusmuodot",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetuksenJarjestaja",
+    "defaultMessage": "Opetuksen järjestäjä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.oppilaitostenYllapitajat",
+    "defaultMessage": "Oppilaitosten ylläpitäjät",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetuksenJarjestajat",
+    "defaultMessage": "Opetuksen järjestäjät",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
     "id": "error.duplicateAsianumero",
     "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
     "filepath": "src/i18n/definitions/error.js"
@@ -1553,6 +1668,26 @@
     "id": "error.muutospyyntoNotFound",
     "defaultMessage": "Muutospyyntöä ei löytynyt",
     "filepath": "src/i18n/definitions/error.js"
+  },
+  {
+    "id": "esiJaPerusopetus.genetiivi",
+    "defaultMessage": "Esi- ja perusopetuksen",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.kuvausteksti",
+    "defaultMessage": "Kunta on perusopetuslain nojalla velvollinen järjestämään sen alueella asuville oppivelvollisuusikäisille esi- ja perusopetusta. Valtioneuvosto voi myöntää opetus- ja kulttuuriministeriön esityksestä myös rekisteröidylle yhteisölle tai säätiölle luvan perusopetuslain mukaisen opetuksen järjestämiseen. Opetusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella opetuksen järjestäjiä ja heidän järjestämislupiaan.",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.lyhytKuvaus",
+    "defaultMessage": "Kunta on perusopetuslain nojalla velvollinen järjestämään sen alueella asuville oppivelvollisuusikäisille esi- ja perusopetusta. Valtioneuvosto voi myöntää opetus- ja kulttuuriministeriön esityksestä myös rekisteröidylle yhteisölle tai säätiölle luvan perusopetuslain mukaisen opetuksen järjestämiseen. Opetusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella opetuksen järjestäjiä ja heidän järjestämislupiaan.",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.paasivunOtsikko",
+    "defaultMessage": "Esi- ja perusopetuksen järjestäjät",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
     "id": "homepage.header",
@@ -1670,9 +1805,49 @@
     "filepath": "src/i18n/definitions/lomake.js"
   },
   {
+    "id": "lukiokoulutus.genetiivi",
+    "defaultMessage": "Lukiokoulutuksen",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "lukiokoulutus.kuvausteksti",
+    "defaultMessage": "Lukiokoulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää koulutuksen järjestämislupaa. Lupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle, säätiölle tai ulkomailla järjestettävää koulutusta varten. Koulutusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "lukiokoulutus.lyhytKuvaus",
+    "defaultMessage": "Lukiokoulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää koulutuksen järjestämislupaa. Lupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle, säätiölle tai ulkomailla järjestettävää koulutusta varten. Koulutusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "lukiokoulutus.paasivunOtsikko",
+    "defaultMessage": "Lukiokoulutuksen järjestäjät",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
     "id": "user.ownOrganisation",
     "defaultMessage": "Oma organisaatio",
     "filepath": "src/i18n/definitions/user.js"
+  },
+  {
+    "id": "vapaaSivistystyo.genetiivi",
+    "defaultMessage": "Vapaan sivistystyön",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.kuvausteksti",
+    "defaultMessage": "Vapaan sivistystyön oppilaitoksia ovat kansalaisopistot, kansanopistot, kesäyliopistot, liikunnan koulutuskeskukset ja opintokeskukset. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan vapaan sivistystyön oppilaitoksen ylläpitämiseen. Tällä sivulla voit tarkastella oppilaitosten ylläpitäjiä ja heidän ylläpitämislupiaan.",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.lyhytKuvaus",
+    "defaultMessage": "Vapaan sivistystyön oppilaitoksia ovat kansalaisopistot, kansanopistot, kesäyliopistot, liikunnan koulutuskeskukset ja opintokeskukset. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan vapaan sivistystyön oppilaitoksen ylläpitämiseen. Tällä sivulla voit tarkastella oppilaitosten ylläpitäjiä ja heidän ylläpitämislupiaan.",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.paasivunOtsikko",
+    "defaultMessage": "Vapaan sivistystyön oppilaitosten ylläpitäjät",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {
     "id": "wizard.info_01",
@@ -2012,6 +2187,11 @@
   {
     "id": "wizard.municipalitiesInNewLupa",
     "defaultMessage": "Uuden luvan kunnat",
+    "filepath": "src/i18n/definitions/wizard.js"
+  },
+  {
+    "id": "wizard.closePreview",
+    "defaultMessage": "Sulje esikatselu",
     "filepath": "src/i18n/definitions/wizard.js"
   }
 ]

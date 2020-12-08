@@ -9,7 +9,7 @@ import { FormHelperText, InputLabel } from "@material-ui/core";
 import "./dropdown.css";
 
 import { withStyles } from "@material-ui/core";
-import { addIndex, map } from "ramda";
+import { addIndex, find, map, propEq } from "ramda";
 
 const selectCustomStyles = {
   root: {
@@ -96,11 +96,14 @@ const Dropdown = props => {
   const [, setIsFocused] = useState(false);
 
   const handleChanges = e => {
-    props.onChanges(props.payload, { selectedOption: e.target.value });
+    props.onChanges(
+      { forChangeObject: props.forChangeObject, fullAnchor: props.fullAnchor },
+      { selectedOption: e.target.value }
+    );
   };
 
   return (
-    <React.Fragment>
+    <div className={`${props.isHidden ? "hidden" : ""}`}>
       <FormControl
         variant="outlined"
         disabled={props.isDisabled}
@@ -111,25 +114,31 @@ const Dropdown = props => {
         {props.label && (
           <InputLabel id="select-label">{props.label}</InputLabel>
         )}
-        <Select
-          labelId="select-label"
-          aria-label={props.label}
-          value={props.value}
-          onChange={handleChanges}
-          onBlurCapture={
-            !props.value ? () => setIsVisited(true) : () => setIsVisited(false)
-          }
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          placeholder={props.placeholder}>
-          {addIndex(map)((item, i) => {
-            return item ? (
-              <MenuItem key={i} value={item.value}>
-                {item.label}
-              </MenuItem>
-            ) : null;
-          }, props.options).filter(Boolean)}
-        </Select>
+        {props.isPreviewModeOn ? (
+          (find(propEq("value", props.value), props.options) || {}).label
+        ) : (
+          <Select
+            labelId="select-label"
+            aria-label={props.label}
+            value={props.value}
+            onChange={handleChanges}
+            onBlurCapture={
+              !props.value
+                ? () => setIsVisited(true)
+                : () => setIsVisited(false)
+            }
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder={props.placeholder}>
+            {addIndex(map)((item, i) => {
+              return item ? (
+                <MenuItem key={i} value={item.value}>
+                  {item.label}
+                </MenuItem>
+              ) : null;
+            }, props.options).filter(Boolean)}
+          </Select>
+        )}
       </FormControl>
       {props.showValidationErrors && props.requiredMessage && (
         <FormHelperText
@@ -143,7 +152,7 @@ const Dropdown = props => {
           {isVisited && !props.value && props.requiredMessage}
         </FormHelperText>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -152,18 +161,22 @@ Dropdown.defaultProps = {
 };
 
 Dropdown.propTypes = {
+  emptyMessage: PropTypes.string,
+  error: PropTypes.bool,
+  forChangeObject: PropTypes.object,
+  fullAnchor: PropTypes.string,
+  fullWidth: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  isHidden: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
+  isRequired: PropTypes.bool,
+  label: PropTypes.string,
   onChanges: PropTypes.func,
   options: PropTypes.array,
   placeholder: PropTypes.string,
-  value: PropTypes.string,
-  fullWidth: PropTypes.bool,
-  isRequired: PropTypes.bool,
   requiredMessage: PropTypes.string,
   showValidationErrors: PropTypes.bool,
-  label: PropTypes.string,
-  error: PropTypes.bool,
-  emptyMessage: PropTypes.string
+  value: PropTypes.string
 };
 
 export default withStyles(selectCustomStyles)(Dropdown);

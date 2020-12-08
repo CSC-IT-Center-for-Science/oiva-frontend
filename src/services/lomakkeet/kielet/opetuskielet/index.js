@@ -42,7 +42,7 @@ async function getModificationForm(locale) {
 export default async function getOpetuskieletLomake(
   action,
   data,
-  isReadOnly,
+  { isReadOnly },
   locale
 ) {
   switch (action) {

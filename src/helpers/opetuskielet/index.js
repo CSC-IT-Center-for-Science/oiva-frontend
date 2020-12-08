@@ -116,7 +116,8 @@ export const defineBackendChangeObjects = async (
           kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
           maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
           meta: {
-            changeObjects: [changeObj]
+            changeObjects: [changeObj],
+            valikko: path(["properties", "metadata", "valikko"], changeObj)
           },
           tila: "LISAYS"
         }
@@ -138,4 +139,8 @@ export function getToissijaisetOpetuskieletOPHFromStorage() {
 
 export function getOpetuskieletFromStorage() {
   return localforage.getItem("opetuskielet");
+}
+
+export function getKieletOPHFromStorage() {
+  return localforage.getItem("kieletOPH");
 }

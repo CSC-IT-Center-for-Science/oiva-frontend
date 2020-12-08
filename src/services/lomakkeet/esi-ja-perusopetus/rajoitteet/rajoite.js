@@ -41,7 +41,7 @@ const localizations = {
 
 const changeObjectMapping = {
   maaraaika: "maaraaika",
-  erityisetKoulutustehtavat:"erityisetKoulutustehtavat",
+  erityisetKoulutustehtavat: "erityisetKoulutustehtavat",
   opetustaAntavatKunnat: "toimintaalue",
   opetuksenJarjestamismuoto: "opetuksenJarjestamismuodot",
   opetuskielet: "opetuskielet",
@@ -229,7 +229,7 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
                   return {
                     label: localizations[key],
                     value: key
-                  }
+                  };
                 }, sections)
               ).filter(Boolean),
               title: "Kohde"
@@ -238,8 +238,8 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
         ]
       },
       rajoitus: {}
-    }
-  }, kohdeChangeObjects || []).filter(Boolean);
+    };
+  }, kohdeChangeObjects || []).filter(Boolean);
 
    const asetukset = {
      [rajoiteId]: addedRajoitteet
@@ -268,19 +268,22 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
 
   console.info(groupedChangeObjects);
 
-  const kohdeChangeObj = find(obj => obj.anchor === `${data.sectionId}.${data.rajoiteId}.asetukset.kohde.A`, changeObjects);
+  const kohdeChangeObj = find(
+    obj =>
+      obj.anchor === `${data.sectionId}.${data.rajoiteId}.asetukset.kohde.A`,
+    changeObjects
+  );
   const rajoitusavain = path(
     ["properties", "value", "value"],
-    kohdeChangeObj || {}
+    kohdeChangeObj || {}
   );
 
-  const rajoitus =
-    rajoitusavain
-      ? await sections[rajoitusavain](
+  const rajoitus = rajoitusavain
+    ? await sections[rajoitusavain](
         data.changeObjects[changeObjectMapping[rajoitusavain]],
-      locale
+        locale
       )
-      : null;
+    : null;
 
   /**
    * Palautettava lomakemerkkaus
@@ -291,26 +294,29 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
       categories: [
         {
           anchor: "asetukset",
-          categories: flatten([{
-            anchor: "kohde",
-            title: "Rajoituksen kohde",
-            components: [{
-              anchor: "A",
-              name: "Autocomplete",
-              properties: {
-                isMulti: false,
-                options: values(
-                  mapObjIndexed((categoryFn, key) => {
-                    return {
-                      label: localizations[key],
-                      value: key
-                    }
-                  }, sections)
-                ).filter(Boolean),
-                title: "Kohde",
-              }
-            }],
-          },
+          categories: flatten([
+            {
+              anchor: "kohde",
+              title: "Rajoituksen kohde",
+              components: [
+                {
+                  anchor: "A",
+                  name: "Autocomplete",
+                  properties: {
+                    isMulti: false,
+                    options: values(
+                      mapObjIndexed((categoryFn, key) => {
+                        return {
+                          label: localizations[key],
+                          value: key
+                        };
+                      }, sections)
+                    ).filter(Boolean),
+                    title: "Kohde"
+                  }
+                }
+              ]
+            },
             rajoitus ? rajoitus : {},
             await defineRajoituksetStructure(
               data.rajoiteId,
@@ -318,7 +324,7 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
               groupedChangeObjects,
               locale,
               data.changeObjects,
-              data.onRemoveCriterion
+              onRemoveCriterion
             ),
             {
               anchor: "asetuksenLisaaminen",
@@ -327,7 +333,7 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
                   anchor: "painike",
                   name: "SimpleButton",
                   onClick: payload =>
-                    data.onAddCriterion({
+                    onAddCriterion({
                       ...payload,
                       metadata: {
                         ...payload.metadata,

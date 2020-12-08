@@ -53,14 +53,17 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
-  const kohde = find(propEq("tunniste", "muutkoulutuksenjarjestamiseenliittyvatehdot"), kohteet);
+  const kohde = find(
+    propEq("tunniste", "muutkoulutuksenjarjestamiseenliittyvatehdot"),
+    kohteet
+  );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const muutEhdot = await getPOMuutEhdotFromStorage();
 
   const muutokset = map(ehto => {
     // Checkbox-kenttien muutokset
     const changeObj = find(
-      compose(endsWith(`${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
+      compose(endsWith(`.${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
       changeObjects
     );
 
@@ -90,7 +93,6 @@ export const defineBackendChangeObjects = async (
 
     const kuvausBEchangeObjects = map(changeObj => {
       return {
-        arvo: changeObj.properties.value,
         generatedId: changeObj.anchor,
         kohde,
         koodiarvo: ehto.koodiarvo,
@@ -98,6 +100,7 @@ export const defineBackendChangeObjects = async (
         kuvaus: changeObj.properties.value,
         maaraystyyppi,
         meta: {
+          ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
           kuvaus: changeObj.properties.value,
           changeObjects: [changeObj]
         },
@@ -120,7 +123,6 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
     ? {
-        arvo: path(["properties", "value"], lisatiedotChangeObj),
         kohde,
         koodiarvo: path(
           ["properties", "metadata", "koodiarvo"],
@@ -132,6 +134,7 @@ export const defineBackendChangeObjects = async (
         ),
         maaraystyyppi,
         meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
           changeObjects: [lisatiedotChangeObj]
         },
         tila: "LISAYS"

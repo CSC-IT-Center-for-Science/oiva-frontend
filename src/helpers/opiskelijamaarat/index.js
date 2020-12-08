@@ -66,12 +66,12 @@ export const defineBackendChangeObjects = async (
   const lisatiedotBEchangeObject =
     !!lisatiedotChangeObj && !!lisatiedotObj
       ? {
-          arvo: path(["properties", "value"], lisatiedotChangeObj),
           kohde,
           koodiarvo: lisatiedotObj.koodiarvo,
           koodisto: lisatiedotObj.koodisto.koodistoUri,
           maaraystyyppi,
           meta: {
+            arvo: path(["properties", "value"], lisatiedotChangeObj),
             changeObjects: [lisatiedotChangeObj]
           },
           tila: "LISAYS"
