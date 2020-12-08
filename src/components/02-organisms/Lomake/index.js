@@ -159,6 +159,7 @@ const Lomake = React.memo(
             <FormTitle
               code={isPreviewModeOn || !code ? null : code}
               isPreviewModeOn={isPreviewModeOn}
+              level={isPreviewModeOn ? 3 : 2}
               title={formTitle}
             />
           ) : null}

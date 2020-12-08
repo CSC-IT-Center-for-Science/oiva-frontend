@@ -73,7 +73,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
           }></UusiAsiaEsidialog>
       )}
 
-      <div className="flex flex-col justify-end mx-auto w-4/5">
+      <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
         <div className="flex items-center">
           <div className="flex-1">
             <Typography component="h1" variant="h1">
@@ -122,7 +122,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
       </div>
 
       <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
-        <div className="flex mx-auto w-4/5 py-12">
+        <div className="flex mx-auto w-4/5 max-w-8xl py-12">
           <div className="flex-1 bg-white">
             <Switch>
               <Route

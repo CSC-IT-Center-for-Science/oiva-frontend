@@ -110,7 +110,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     !isEmpty(maakuntaKunnat) &&
     (!isEmpty(kunnatFromLupa) || opetustaJarjestetaanUlkomaillaIsChecked) ? (
     <div className="mt-4">
-      <Typography component="h2" variant="h2">
+      <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}
       </Typography>
       <ul className="ml-8 list-disc mb-4">
@@ -125,7 +125,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       </ul>
       {opetustaJarjestetaanUlkomaillaIsChecked && (
         <div className="mb-4">
-          <Typography component="h3" variant="h3">
+          <Typography component="h4" variant="h4">
             {intl.formatMessage(
               education.opetustaJarjestetaanSuomenUlkopuolella
             )}
