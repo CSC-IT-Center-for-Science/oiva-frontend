@@ -45,36 +45,6 @@ const OpetustaAntavatKunnat = React.memo(
 
     const [isEditViewActive, toggleEditView] = useState(false);
 
-    // const kunnatInLupa = useMemo(() => {
-    //   console.info(kuntamaaraykset, lupakohde.kunnat);
-    //   return R.sortBy(
-    //     R.path(["metadata", "arvo"]),
-    //     R.map(kunta => {
-    //       const maarays = R.find(
-    //         R.propEq("koodiarvo", kunta.koodiarvo),
-    //         kuntamaaraykset
-    //       );
-    //       return {
-    //         maaraysUuid: maarays ? maarays.uuid : null,
-    //         title: kunta.arvo,
-    //         metadata: kunta
-    //       };
-    //     }, lupakohde.kunnat || [])
-    //   );
-    // }, [kuntamaaraykset, lupakohde.kunnat]);
-
-    // const maakunnatInLupa = useMemo(() => {
-    //   return R.sortBy(
-    //     R.path(["metadata", "arvo"]),
-    //     R.map(maakunta => {
-    //       return {
-    //         title: maakunta.arvo,
-    //         metadata: maakunta
-    //       };
-    //     }, lupakohde.maakunnat || [])
-    //   );
-    // }, [lupakohde.maakunnat]);
-
     const fiCode = R.view(R.lensPath(["valtakunnallinen", "arvo"]), lupakohde);
 
     const whenChanges = useCallback(
