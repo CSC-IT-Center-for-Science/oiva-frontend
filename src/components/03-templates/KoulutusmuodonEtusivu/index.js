@@ -58,7 +58,7 @@ export default function KoulutusmuodonEtusivu({
           <article>
             <nav
               tabIndex="0"
-              className="breadcumbs-nav py-4 border-b pl-8 mb-12"
+              className="breadcumbs-nav py-4 border-b pl-8"
               aria-label={formatMessage(common.breadCrumbs)}>
               <Breadcrumbs
                 hideIfEmpty={true}
@@ -74,7 +74,7 @@ export default function KoulutusmuodonEtusivu({
               />
             </nav>
             {location.pathname === `/${koulutusmuoto.kebabCase}` ? (
-              <div className="mx-auto w-4/5 mt-12">
+              <div className="mx-auto w-4/5 mt-12 max-w-8xl">
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
                 </Typography>

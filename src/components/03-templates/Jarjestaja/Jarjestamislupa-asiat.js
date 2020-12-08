@@ -12,16 +12,14 @@ const JarjestamislupaAsiat = React.memo(
     organisation
   }) => {
     return (
-      <div className="m-8">
-        <JarjestamislupaAsiatList
-          history={history}
-          isForceReloadRequested={isForceReloadRequested}
-          lupa={lupa}
-          match={match}
-          newApplicationRouteItem={newApplicationRouteItem}
-          organisation={organisation}
-        />
-      </div>
+      <JarjestamislupaAsiatList
+        history={history}
+        isForceReloadRequested={isForceReloadRequested}
+        lupa={lupa}
+        match={match}
+        newApplicationRouteItem={newApplicationRouteItem}
+        organisation={organisation}
+      />
     );
   }
 );

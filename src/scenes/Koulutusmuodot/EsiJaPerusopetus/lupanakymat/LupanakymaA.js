@@ -32,12 +32,9 @@ const LupanakymaA = ({
   const intl = useIntl();
 
   return (
-    <div
-      className={`p-6 bg-white ${
-        isPreviewModeOn ? "border border-gray-300" : ""
-      }`}>
+    <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
       {isPreviewModeOn ? null : (
-        <div className="xxl:w-1/3 px-4 mb-12">
+        <div className="xxl:w-1/3 px-6 my-12">
           <Lomake
             anchor="paatoksentiedot"
             isInExpandableRow={false}
