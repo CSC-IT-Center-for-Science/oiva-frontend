@@ -372,7 +372,7 @@ const lomakkeet = {
     },
     opetuskielet: {
       modification: (data, booleans, locale, changeObjects) =>
-        getOpetuskieletOPHLomake(booleans, locale, changeObjects),
+        getOpetuskieletOPHLomake(data, booleans, locale, changeObjects),
       preview: (data, booleans, locale, changeObjects) =>
         previewOfOpetuskielet(data, booleans, locale, changeObjects)
     },

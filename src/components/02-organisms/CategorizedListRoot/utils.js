@@ -70,6 +70,11 @@ export const findCategoryAnchor = (
   return structure;
 };
 
+/**
+ * Funktio palauttaa yksiulotteisen muodon parametrinä saamastaan
+ * lomakerakenteesta.
+ * @param {array} categories
+ */
 export const getReducedStructure = categories => {
   return R.uniq(
     R.flatten(

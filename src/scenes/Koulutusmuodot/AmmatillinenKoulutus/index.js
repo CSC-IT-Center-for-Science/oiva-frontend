@@ -12,7 +12,9 @@ import Jarjestajaluettelo from "./Jarjestajaluettelo";
  **/
 const hakuavaimet = [
   "kielet",
+  "kohteet",
   "kunnat",
+  "lisatietoja",
   "lupaByUuid",
   "lupaByYtunnus",
   "maakuntakunnat",

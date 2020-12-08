@@ -3,7 +3,6 @@ import { replaceAnchorPartWith } from "utils/common";
 
 export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
   let structure = [];
-
   const checkedNode = find(
     pathEq(["properties", "isChecked"], true),
     lomakedata
@@ -17,6 +16,7 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
       ),
       lomakedata
     );
+
     if (kuvausNode) {
       structure = append(
         {

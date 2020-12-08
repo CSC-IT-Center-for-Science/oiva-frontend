@@ -11,12 +11,17 @@ import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtava
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import Lomake from "components/02-organisms/Lomake";
+import { filter, pathEq } from "ramda";
 
 const constants = {
   formLocations: {
     paatoksenTiedot: ["esiJaPerusopetus", "paatoksenTiedot"]
   }
 };
+
+function filterByTunniste(tunniste, maaraykset = []) {
+  return filter(pathEq(["kohde", "tunniste"], tunniste), maaraykset);
+}
 
 /**
  * Tämä lupanäkymä sisältää kaikki PO-lomakkeen osiot soveltuen siksi
@@ -25,12 +30,12 @@ const constants = {
  */
 const LupanakymaA = ({
   isPreviewModeOn,
-  lisatiedot,
   lupakohteet,
+  maaraykset,
+  OpetustaAntavatKunnatJSX,
   valtakunnallinenMaarays
 }) => {
   const intl = useIntl();
-
   return (
     <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
       {isPreviewModeOn ? null : (
@@ -47,22 +52,31 @@ const LupanakymaA = ({
       <Opetustehtavat
         code="1"
         isPreviewModeOn={isPreviewModeOn}
+        maaraykset={filterByTunniste("opetusjotalupakoskee", maaraykset)}
         sectionId="opetustehtavat"
       />
 
-      <OpetustaAntavatKunnat
-        code="2"
-        isPreviewModeOn={isPreviewModeOn}
-        lisatiedot={lisatiedot}
-        lupakohde={lupakohteet[3]}
-        sectionId="toimintaalue"
-        title={intl.formatMessage(education.opetustaAntavatKunnat)}
-        valtakunnallinenMaarays={valtakunnallinenMaarays}
-      />
+      {OpetustaAntavatKunnatJSX ? (
+        <OpetustaAntavatKunnatJSX maaraykset={maaraykset} />
+      ) : (
+        <OpetustaAntavatKunnat
+          code="2"
+          isPreviewModeOn={isPreviewModeOn}
+          lupakohde={lupakohteet[2]}
+          maaraykset={filterByTunniste(
+            "kunnatjoissaopetustajarjestetaan",
+            maaraykset
+          )}
+          sectionId="toimintaalue"
+          title={intl.formatMessage(education.opetustaAntavatKunnat)}
+          valtakunnallinenMaarays={valtakunnallinenMaarays}
+        />
+      )}
 
       <Opetuskieli
         code="3"
         isPreviewModeOn={isPreviewModeOn}
+        maaraykset={filterByTunniste("opetuskieli", maaraykset)}
         sectionId={"opetuskielet"}
         title={intl.formatMessage(common.opetuskieli)}
       />
@@ -70,6 +84,7 @@ const LupanakymaA = ({
       <OpetuksenJarjestamismuoto
         code="4"
         isPreviewModeOn={isPreviewModeOn}
+        maaraykset={filterByTunniste("opetuksenjarjestamismuoto", maaraykset)}
         sectionId={"opetuksenJarjestamismuodot"}
         title={intl.formatMessage(education.opetuksenJarjestamismuoto)}
       />
@@ -77,6 +92,7 @@ const LupanakymaA = ({
       <ErityisetKoulutustehtavat
         code="5"
         isPreviewModeOn={isPreviewModeOn}
+        maaraykset={filterByTunniste("erityinenkoulutustehtava", maaraykset)}
         sectionId={"erityisetKoulutustehtavat"}
         title={intl.formatMessage(
           common.VSTLupaSectionTitleSchoolMissionSpecial
@@ -86,6 +102,7 @@ const LupanakymaA = ({
       <Opiskelijamaarat
         code="6"
         isPreviewModeOn={isPreviewModeOn}
+        maaraykset={filterByTunniste("oppilasopiskelijamaara", maaraykset)}
         sectionId={"opiskelijamaarat"}
         title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
       />
@@ -93,26 +110,23 @@ const LupanakymaA = ({
       <MuutEhdot
         code="7"
         isPreviewModeOn={isPreviewModeOn}
+        maaraykset={filterByTunniste(
+          "muutkoulutuksenjarjestamiseenliittyvatehdot",
+          maaraykset
+        )}
         sectionId={"muutEhdot"}
         title={intl.formatMessage(education.muutEhdotTitle)}
       />
-
-      {/* {!isPreviewModeOn ? (
-        <FormSection
-          render={props => <Rajoitteet {...props} />}
-          sectionId="rajoitteet"
-          title={"Lupaan kohdistuvat rajoitteet"}></FormSection>
-      ) : null} */}
     </div>
   );
 };
 
 LupanakymaA.propTypes = {
-  code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
-  mode: PropTypes.string,
-  sectionId: PropTypes.string,
-  title: PropTypes.string
+  lupakohteet: PropTypes.object,
+  maaraykset: PropTypes.array,
+  OpetustaAntavatKunnatJSX: PropTypes.func,
+  valtakunnallinenMaarays: PropTypes.object
 };
 
 export default LupanakymaA;

@@ -146,6 +146,7 @@ export default function KoulutusmuodonEtusivu({
                             return (
                               <JarjestajaSwitch
                                 JarjestamislupaJSX={JarjestamislupaJSX}
+                                kohteet={_props1.kohteet}
                                 koulutusmuoto={koulutusmuoto}
                                 lupa={_props1.lupa}
                                 organisation={_props1.organisaatio}
@@ -170,6 +171,7 @@ export default function KoulutusmuodonEtusivu({
                                     return (
                                       <JarjestajaSwitch
                                         JarjestamislupaJSX={JarjestamislupaJSX}
+                                        kohteet={_props1.kohteet}
                                         koulutusmuoto={koulutusmuoto}
                                         lupa={_props1.lupa}
                                         lupaUuid={_props1.lupaUuid}
@@ -184,7 +186,11 @@ export default function KoulutusmuodonEtusivu({
                                     );
                                   }
                                 }}
-                                oppilaitostyyppi={_props1.voimassaOlevaLupa ? _props1.voimassaOlevaLupa.oppilaitostyyppi : null}
+                                oppilaitostyyppi={
+                                  _props1.voimassaOlevaLupa
+                                    ? _props1.voimassaOlevaLupa.oppilaitostyyppi
+                                    : null
+                                }
                                 ytunnus={_props1.lupa.jarjestajaYtunnus}
                               />
                             );

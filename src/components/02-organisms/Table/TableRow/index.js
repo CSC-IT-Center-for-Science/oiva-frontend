@@ -16,12 +16,14 @@ const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
     }
   }
 
+  const hoverBgClass = `hover:bg-gray-${tableLevel + 1}00`;
+
   return (
     <div
       key={`key-${Math.random()}`}
       role="row"
       tabIndex={0}
-      className={`hover:bg-gray-${tableLevel + 1}00 cursor-pointer flex`}
+      className={`${hoverBgClass} cursor-pointer flex`}
       onClick={() => {
         onRowClick();
       }}

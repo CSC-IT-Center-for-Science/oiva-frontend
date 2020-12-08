@@ -51,7 +51,6 @@ const FormDialog = withStyles(() => ({
 
 const UusiAsiaDialog = ({
   kohteet,
-  lisatiedot,
   lupa,
   lupakohteet,
   maaraystyypit,
@@ -354,8 +353,8 @@ const UusiAsiaDialog = ({
                         style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                         <LupanakymaA
                           isPreviewModeOn={false}
-                          lisatiedot={lisatiedot}
                           lupakohteet={lupakohteet}
+                          maaraykset={lupa.maaraykset}
                           valtakunnallinenMaarays={valtakunnallinenMaarays}
                         />
                       </div>
@@ -382,8 +381,8 @@ const UusiAsiaDialog = ({
                           style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                           <LupanakymaA
                             isPreviewModeOn={true}
-                            lisatiedot={lisatiedot}
                             lupakohteet={lupakohteet}
+                            maaraykset={lupa.maaraykset}
                             valtakunnallinenMaarays={valtakunnallinenMaarays}
                           />
                         </div>

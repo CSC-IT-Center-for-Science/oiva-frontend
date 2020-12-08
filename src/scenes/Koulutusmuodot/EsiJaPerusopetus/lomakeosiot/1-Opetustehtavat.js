@@ -10,47 +10,46 @@ const constants = {
   formLocation: ["esiJaPerusopetus", "opetusJotaLupaKoskee"]
 };
 
-const Opetustehtavat = ({
-  code,
-  isPreviewModeOn,
-  mode = constants.mode,
-  sectionId
-}) => {
-  const intl = useIntl();
-  const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
-  const title = prop(
-    "kuvaus",
-    path(["metadata", toUpper(intl.locale)], opetustehtavakoodisto)
-  );
+const Opetustehtavat = React.memo(
+  ({ code, isPreviewModeOn, maaraykset, mode = constants.mode, sectionId }) => {
+    const intl = useIntl();
+    const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
+    const title = prop(
+      "kuvaus",
+      path(["metadata", toUpper(intl.locale)], opetustehtavakoodisto)
+    );
 
-  /** Fetch opetustehtavaKoodisto from storage */
-  useEffect(() => {
-    getOpetustehtavaKoodistoFromStorage()
-      .then(opetustehtavaKoodisto => {
-        setOpetustehtavaKoodisto(opetustehtavaKoodisto);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }, []);
+    /** Fetch opetustehtavaKoodisto from storage */
+    useEffect(() => {
+      getOpetustehtavaKoodistoFromStorage()
+        .then(opetustehtavaKoodisto => {
+          setOpetustehtavaKoodisto(opetustehtavaKoodisto);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }, []);
 
-  return opetustehtavakoodisto ? (
-    <Lomake
-      anchor={sectionId}
-      code={code}
-      formTitle={title}
-      mode={mode}
-      isPreviewModeOn={isPreviewModeOn}
-      isRowExpanded={true}
-      path={constants.formLocation}
-      rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
-      showCategoryTitles={true}></Lomake>
-  ) : null;
-};
+    return opetustehtavakoodisto ? (
+      <Lomake
+        anchor={sectionId}
+        code={code}
+        data={{ maaraykset }}
+        formTitle={title}
+        mode={mode}
+        isPreviewModeOn={isPreviewModeOn}
+        isRowExpanded={true}
+        path={constants.formLocation}
+        rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
+        showCategoryTitles={true}></Lomake>
+    ) : null;
+  }
+);
 
 Opetustehtavat.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string
 };

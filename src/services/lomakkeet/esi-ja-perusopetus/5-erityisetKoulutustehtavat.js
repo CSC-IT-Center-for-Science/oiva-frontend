@@ -6,6 +6,7 @@ import {
   filter,
   find,
   flatten,
+  hasPath,
   map,
   path,
   pathEq,
@@ -21,7 +22,7 @@ import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKo
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 
 export async function erityisetKoulutustehtavat(
-  data,
+  { maaraykset, sectionId },
   { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects,
@@ -34,26 +35,36 @@ export async function erityisetKoulutustehtavat(
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    lisatiedot
+    lisatiedot || []
   );
+
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
 
   return flatten(
     [
       map(erityinenKoulutustehtava => {
+        const tehtavaanLiittyvatMaaraykset = filter(
+          propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo),
+          maaraykset
+        );
+        const kuvausmaaraykset = filter(
+          hasPath(["meta", "kuvaus"]),
+          tehtavaanLiittyvatMaaraykset
+        );
         const changeObj = getChangeObjByAnchor(
-          `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
+          `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
           changeObjects
         );
 
         const dynamicTextBoxChangeObjects = filter(
           changeObj =>
             startsWith(
-              `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
+              `${sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
               changeObj.anchor
             ) &&
             endsWith(".kuvaus", changeObj.anchor) &&
             !startsWith(
-              `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0`,
+              `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.0`,
               changeObj.anchor
             ),
           changeObjects
@@ -62,6 +73,12 @@ export async function erityisetKoulutustehtavat(
         const isCheckedByChange = !!path(
           ["properties", "isChecked"],
           changeObj
+        );
+
+        const kuvausankkuri0 = "0";
+        const kuvausmaarays0 = find(
+          pathEq(["meta", "ankkuri"], kuvausankkuri0),
+          kuvausmaaraykset
         );
 
         return {
@@ -73,23 +90,57 @@ export async function erityisetKoulutustehtavat(
                * joten varmistetaan se luomalla se yksi tekstikenttä tässä.
                */
               {
-                anchor: "0",
+                anchor: kuvausankkuri0,
                 components: [
                   {
                     anchor: "kuvaus",
                     name: "TextBox",
                     properties: {
+                      forChangeObject: {
+                        ankkuri: kuvausankkuri0
+                      },
                       isPreviewModeOn,
                       isReadOnly: _isReadOnly,
                       placeholder: __("common.kuvausPlaceholder"),
                       title: __("common.kuvaus"),
-                      value:
-                        erityinenKoulutustehtava.metadata[localeUpper].kuvaus
+                      value: kuvausmaarays0
+                        ? kuvausmaarays0.meta.kuvaus
+                        : erityinenKoulutustehtava.metadata[localeUpper].kuvaus
                     }
                   }
                 ],
                 layout: { indentation: "none" }
               },
+              /**
+               * Luodaan loput tekstikentät määräyksiin perustuen.
+               */
+              sortBy(
+                compose(anchorPart => parseInt(anchorPart, 10), prop("anchor")),
+                map(maarays => {
+                  return maarays.meta.ankkuri !== kuvausankkuri0
+                    ? {
+                        anchor: maarays.koodiarvo,
+                        components: [
+                          {
+                            anchor: "kuvaus",
+                            name: "TextBox",
+                            properties: {
+                              forChangeObject: {
+                                ankkuri: maarays.koodiarvo
+                              },
+                              isPreviewModeOn,
+                              isReadOnly: _isReadOnly,
+                              isRemovable: true,
+                              placeholder: __("common.kuvausPlaceholder"),
+                              title: __("common.kuvaus"),
+                              value: maarays.meta.kuvaus
+                            }
+                          }
+                        ]
+                      }
+                    : null;
+                }, kuvausmaaraykset).filter(Boolean)
+              ),
               /**
                * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
                * erillisen painikkeen avulla.
@@ -97,7 +148,7 @@ export async function erityisetKoulutustehtavat(
               sortBy(
                 compose(anchorPart => parseInt(anchorPart, 10), prop("anchor")),
                 map(changeObj => {
-                  const previousTextBoxAnchor = `${data.sectionId}.${
+                  const previousTextBoxAnchor = `${sectionId}.${
                     erityinenKoulutustehtava.koodiarvo
                   }.${parseInt(getAnchorPart(changeObj.anchor, 2), 10) -
                     1}.kuvaus`;
@@ -107,29 +158,48 @@ export async function erityisetKoulutustehtavat(
                     dynamicTextBoxChangeObjects
                   );
 
-                  return {
-                    anchor: getAnchorPart(changeObj.anchor, 2),
-                    components: [
-                      {
-                        anchor: "kuvaus",
-                        name: "TextBox",
-                        properties: {
-                          forChangeObject: {
-                            focusWhenDeleted: !!previousTextBoxChangeObj
-                              ? previousTextBoxAnchor
-                              : `${data.sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
-                          },
-                          isPreviewModeOn,
-                          isReadOnly: _isReadOnly,
-                          isRemovable: true,
-                          placeholder: __("common.kuvausPlaceholder"),
-                          title: __("common.kuvaus"),
-                          value: changeObj.properties.value
-                        }
-                      }
-                    ]
-                  };
-                }, dynamicTextBoxChangeObjects)
+                  /**
+                   * Tarkistetaan, onko muutos jo tallennettu tietokantaan
+                   * eli löytyykö määräys. Jos määräys on olemassa, niin ei
+                   * luoda muutosobjektin perusteella enää dynaamista
+                   * tekstikenttää, koska tekstikentttä on luotu jo aiemmin
+                   * vähän ylempänä tässä tiedostossa.
+                   **/
+                  const maarays = find(
+                    pathEq(
+                      ["meta", "ankkuri"],
+                      path(["properties", "metadata", "ankkuri"], changeObj)
+                    ),
+                    kuvausmaaraykset
+                  );
+
+                  const anchor = getAnchorPart(changeObj.anchor, 2);
+
+                  return !!maarays
+                    ? null
+                    : {
+                        anchor,
+                        components: [
+                          {
+                            anchor: "kuvaus",
+                            name: "TextBox",
+                            properties: {
+                              forChangeObject: {
+                                ankkuri: anchor,
+                                focusWhenDeleted: !!previousTextBoxChangeObj
+                                  ? previousTextBoxAnchor
+                                  : `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
+                              },
+                              isPreviewModeOn,
+                              isReadOnly: _isReadOnly,
+                              isRemovable: true,
+                              placeholder: __("common.kuvausPlaceholder"),
+                              title: __("common.kuvaus")
+                            }
+                          }
+                        ]
+                      };
+                }, dynamicTextBoxChangeObjects).filter(Boolean)
               ),
               /**
                * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
@@ -165,7 +235,7 @@ export async function erityisetKoulutustehtavat(
               anchor: "valintaelementti",
               name: "CheckboxWithLabel",
               properties: {
-                isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
+                isChecked: !!tehtavaanLiittyvatMaaraykset.length,
                 isIndeterminate: false,
                 isPreviewModeOn,
                 isReadOnly: _isReadOnly,
@@ -193,26 +263,30 @@ export async function erityisetKoulutustehtavat(
           }
         ]
       },
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: lisatiedotObj.koodiarvo,
-            name: "TextBox",
-            properties: {
-              forChangeObject: {
-                koodiarvo: lisatiedotObj.koodiarvo,
-                koodisto: lisatiedotObj.koodisto,
-                versio: lisatiedotObj.versio,
-                voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
-              },
-              isPreviewModeOn,
-              isReadOnly: _isReadOnly,
-              placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {}).nimi
-            }
+      lisatiedotObj
+        ? {
+            anchor: "lisatiedot",
+            components: [
+              {
+                anchor: lisatiedotObj.koodiarvo,
+                name: "TextBox",
+                properties: {
+                  forChangeObject: {
+                    koodiarvo: lisatiedotObj.koodiarvo,
+                    koodisto: lisatiedotObj.koodisto,
+                    versio: lisatiedotObj.versio,
+                    voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+                  },
+                  isPreviewModeOn,
+                  isReadOnly: _isReadOnly,
+                  placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
+                    .nimi,
+                  value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
+                }
+              }
+            ]
           }
-        ]
-      }
+        : null
     ].filter(Boolean)
   );
 }

@@ -11,7 +11,9 @@ import Jarjestajaluettelo from "./Jarjestajaluettelo";
  * koulutusmuodon sivuilla.
  **/
 const hakuavaimet = [
+  "kohteet",
   "kunnat",
+  "lisatietoja",
   "lupaByUuid",
   "lupaByYtunnus",
   "maakuntakunnat",

@@ -1,11 +1,11 @@
 import { isAdded, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, toUpper } from "ramda";
+import { find, flatten, map, pathEq, propEq, toUpper } from "ramda";
 import { __ } from "i18n-for-browser";
-import { getLisatiedotFromStorage } from "../../../helpers/lisatiedot";
-import { getOpetuksenJarjestamismuodotFromStorage } from "../../../helpers/opetuksenJarjestamismuodot";
+import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
 
 export async function opetuksenJarjestamismuoto(
-  data,
+  { maaraykset },
   { isPreviewModeOn, isReadOnly },
   locale
 ) {
@@ -18,9 +18,13 @@ export async function opetuksenJarjestamismuoto(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
     lisatiedot || []
   );
+
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
+
   return flatten(
     [
       map(muoto => {
+        const maarays = find(propEq("koodiarvo", muoto.koodiarvo), maaraykset);
         return {
           anchor: muoto.koodiarvo,
           categories: [
@@ -47,7 +51,7 @@ export async function opetuksenJarjestamismuoto(
               anchor: "valinta",
               name: "RadioButtonWithLabel",
               properties: {
-                isChecked: false, // TODO: Aseta arvo sen mukaan, mitä määräyksiä luvasta löytyy
+                isChecked: !!maarays,
                 isIndeterminate: false,
                 isPreviewModeOn,
                 isReadOnly: _isReadOnly,
@@ -110,7 +114,8 @@ export async function opetuksenJarjestamismuoto(
               },
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
-              placeholder: __("common.lisatiedot")
+              placeholder: __("common.lisatiedot"),
+              value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
             }
           }
         ]
