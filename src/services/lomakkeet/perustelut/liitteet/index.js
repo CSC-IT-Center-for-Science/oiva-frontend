@@ -28,7 +28,7 @@ function getReasoningForm(isReadOnly) {
   ];
 }
 
-export default function getPerustelutLiitteetlomake(action, isReadOnly) {
+export default function getPerustelutLiitteetlomake(action, { isReadOnly }) {
   switch (action) {
     case "reasoning":
       return getReasoningForm(isReadOnly);

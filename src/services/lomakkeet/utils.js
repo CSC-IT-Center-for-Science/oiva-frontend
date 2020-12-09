@@ -163,12 +163,6 @@ export function sortArticlesByHuomioitavaKoodi(articles, locale) {
         return 0;
       }
     } else {
-      console.info(
-        "Huomioitavan koodin mukaan järjestäminen epäonnistui!",
-        a,
-        b,
-        locale
-      );
       return 0;
     }
   }, articles);

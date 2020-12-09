@@ -7,11 +7,24 @@ module.exports = {
   important: false,
   separator: ":",
   theme: {
+    extend: {
+      backgroundImage: theme => ({
+        beigetiles: "url('../static/images/beige-tiles.png')",
+        studying: "url(https://picsum.photos/id/1/1600/400)",
+        typewriter: "url(https://picsum.photos/id/403/1600/400)",
+        castle: "url(https://picsum.photos/id/1040/1600/400)",
+        doublebubbledark: "url('../static/images/double-bubble-dark.png')",
+        repeatedsquare: "url('../static/images/repeated-square.png')"
+      })
+    },
     screens: {
-      sm: "640px",
+      sm: "576px",
       md: "768px",
-      lg: "1024px",
-      xl: "1440px"
+      lg: "992px",
+      xl: "1200px",
+      xxl: "1600px",
+      kk: "2160px", // 2k
+      kkk: "3240px" // 3k
     },
     colors: {
       // custom
@@ -44,41 +57,12 @@ module.exports = {
         900: "#181818"
       },
       red: {
-        100: "#fff5f5",
-        200: "#fed7d7",
-        300: "#feb2b2",
-        400: "#fc8181",
-        500: "#f56565",
-        600: "#e53e3e",
-        700: "#c53030",
-        800: "#9b2c2c",
-        900: "#742a2a"
-      },
-      orange: {
-        100: "#fffaf0",
-        200: "#feebc8",
-        300: "#fbd38d",
-        400: "#f6ad55",
-        500: "#ed8936",
-        600: "#dd6b20",
-        700: "#c05621",
-        800: "#9c4221",
-        900: "#7b341e"
-      },
-      yellow: {
-        100: "#fffff0",
-        200: "#fefcbf",
-        300: "#faf089",
-        400: "#f6e05e",
-        500: "#ecc94b",
-        600: "#d69e2e",
-        700: "#b7791f",
-        800: "#975a16",
-        900: "#744210"
+        500: "#f56565"
       },
       green: {
         100: "#d2ffe8", //#f0fff4 x
         200: "#c8dcc3", //#c6f6d5 form header
+        250: "#CAE4C0",
         300: "#a7ecc5", //#9ae6b4
         400: "#65A884", //#68d391
         500: "#4C7A61", //#48bb78 main green
@@ -86,17 +70,6 @@ module.exports = {
         700: "#355b47", //#2f855a
         800: "#294637", //#276749
         900: "#2355b47" //#22543d x
-      },
-      teal: {
-        100: "#e6fffa",
-        200: "#b2f5ea",
-        300: "#81e6d9",
-        400: "#4fd1c5",
-        500: "#38b2ac",
-        600: "#319795",
-        700: "#2c7a7b",
-        800: "#285e61",
-        900: "#234e52"
       },
       blue: {
         100: "#ebf8ff",
@@ -108,39 +81,6 @@ module.exports = {
         700: "#2b6cb0",
         800: "#2c5282",
         900: "#2a4365"
-      },
-      indigo: {
-        100: "#ebf4ff",
-        200: "#c3dafe",
-        300: "#a3bffa",
-        400: "#7f9cf5",
-        500: "#667eea",
-        600: "#5a67d8",
-        700: "#4c51bf",
-        800: "#434190",
-        900: "#3c366b"
-      },
-      purple: {
-        100: "#faf5ff",
-        200: "#e9d8fd",
-        300: "#d6bcfa",
-        400: "#b794f4",
-        500: "#9f7aea",
-        600: "#805ad5",
-        700: "#6b46c1",
-        800: "#553c9a",
-        900: "#44337a"
-      },
-      pink: {
-        100: "#fff5f7",
-        200: "#fed7e2",
-        300: "#fbb6ce",
-        400: "#f687b3",
-        500: "#ed64a6",
-        600: "#d53f8c",
-        700: "#b83280",
-        800: "#97266d",
-        900: "#702459"
       }
     },
     spacing: {
@@ -311,6 +251,7 @@ module.exports = {
     lineHeight: {
       none: "1",
       tight: "1.25",
+      bulletList: "1.325",
       snug: "1.375",
       normal: "1.5",
       relaxed: "1.625",
@@ -342,6 +283,9 @@ module.exports = {
       "5xl": "64rem",
       "6xl": "72rem",
       "7xl": "80rem",
+      "8xl": "88rem",
+      "9xl": "96rem",
+      "213": "53.125rem",
       full: "100%"
     },
     minHeight: {

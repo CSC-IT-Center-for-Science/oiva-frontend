@@ -1,4 +1,15 @@
-import { concat, flatten, map, find, path, propEq, toUpper } from "ramda";
+import {
+  concat,
+  flatten,
+  find,
+  isEmpty,
+  map,
+  path,
+  pathEq,
+  prop,
+  propEq,
+  toUpper
+} from "ramda";
 
 /**
  * Palauttaa tutkintokieliin liittyvät backend-muotoiset muutosobjektit.
@@ -8,7 +19,7 @@ import { concat, flatten, map, find, path, propEq, toUpper } from "ramda";
  * @param {*} maaraystyypit
  * @param {*} locale
  */
-export function createBEOofTutkintakielet(
+export function createBEOofTutkintokielet(
   tutkinto,
   changeObjects,
   kohde,
@@ -18,22 +29,56 @@ export function createBEOofTutkintakielet(
   let additions = [];
   let removals = [];
   const tutkintoRelatedAnchorString = `${tutkinto.koulutusalakoodiarvo}.${tutkinto.koulutustyyppikoodiarvo}.${tutkinto.koodiarvo}`;
-  const changeObj = find(
+  /**
+   * Jos tutkintoa ollaan poistamassa luvasta, tulee poistaa myös siihen kohdistetut
+   * tutkintokielimuutokset.
+   */
+  const tutkintoChangeObj = find(
+    propEq("anchor", `tutkinnot_${tutkintoRelatedAnchorString}.tutkinto`),
+    changeObjects.tutkinnotJaOsaamisalat.muutokset
+  );
+  const shouldTutkintoBeRemoved =
+    tutkintoChangeObj && tutkintoChangeObj.properties.isChecked === false;
+
+  const isTutkintoActive =
+    (!!tutkinto.maarays && !tutkintoChangeObj) ||
+    (tutkintoChangeObj &&
+      pathEq(["properties", "isChecked"], true, tutkintoChangeObj));
+
+  let changeObj = find(
     propEq(
       "anchor",
       `kielet_tutkintokielet_${tutkintoRelatedAnchorString}.kielet`
     ),
     changeObjects.tutkintokielet.muutokset
   );
+  /**
+   * Tilanteessa, jossa tutkintoa ollaan poistamassa, tai jossa tutkinto on
+   * oletusarvoisesti deaktiivinen luodaan keinotekoisesti
+   * muutosobjekti, joka ei sisällä yhtään tutkintokieltä. Tätä kautta
+   * tietokantaan tallentuu kyseisen tutkinnon tutkintokieliosuutta koskeva
+   * muutosobjekti, joka tyhjentää kohdekentän.
+   */
+  if (
+    shouldTutkintoBeRemoved ||
+    (!isTutkintoActive && !!changeObj && !isEmpty(changeObj.properties.value))
+  ) {
+    changeObj = {
+      anchor: `kielet_tutkintokielet_${tutkintoRelatedAnchorString}.kielet`,
+      properties: {
+        value: []
+      }
+    };
+  }
 
   /**
    * Jos tutkintokieliä on muokattu, käydään muutokset läpi ja muodostetaan
    * niistä backendin tarvitsemat muutosobjektit.
    **/
   if (changeObj) {
-    const { value: listOfActiveLanguages } = changeObj.properties;
-    const perustelut = changeObjects.tutkintokielet.perustelut;
+    const listOfActiveLanguages = prop("value", changeObj.properties);
 
+    const perustelut = changeObjects.tutkintokielet.perustelut;
     /**
      * TUTKINTAKIELIEN POISTAMINEN
      *
@@ -44,10 +89,9 @@ export function createBEOofTutkintakielet(
     removals = tutkinto.tutkintokielet
       ? map(tutkintokielimaarays => {
           const koodiarvoUpper = toUpper(tutkintokielimaarays.koodiarvo);
-          const hasLanguageBeenRemoved = !listOfActiveLanguages || !!!find(
-            propEq("value", koodiarvoUpper),
-            listOfActiveLanguages
-          );
+          const hasLanguageBeenRemoved =
+            !listOfActiveLanguages ||
+            !!!find(propEq("value", koodiarvoUpper), listOfActiveLanguages);
           if (hasLanguageBeenRemoved) {
             return {
               generatedId: `${changeObj.anchor}-${koodiarvoUpper}`,
@@ -135,7 +179,7 @@ export function createBEOofTutkintakielet(
         backendChangeObject.parentMaaraysUuid = tutkinto.maarays.uuid;
       }
       return backendChangeObject;
-    }, listOfActiveLanguages || []);
+    }, listOfActiveLanguages || []);
   }
 
   return concat(additions, removals);

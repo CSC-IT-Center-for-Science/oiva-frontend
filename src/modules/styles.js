@@ -18,7 +18,7 @@ import "static/fonts/GothamNarrow-Light.otf";
 
 // Colors
 export const COLORS = {
-  OIVA_GREEN: "#5A8A70",
+  OIVA_GREEN: "#4C7A61",
   OIVA_RED: "#cc3300",
   OIVA_PURPLE: "#9B26B6",
   DARK_GRAY: "#525252",
@@ -72,12 +72,7 @@ export const TRANSITIONS = {
 };
 
 // Globaalit tyylit
-createGlobalStyle`
-  body {
-    margin: 0;
-    font-family: ${FONT_STACK.GOTHAM_NARROW};
-  } 
-    
+createGlobalStyle`    
   table {
     border: 1px solid #D5D5D5;
   }
@@ -112,11 +107,6 @@ createGlobalStyle`
   
   h4 {
     margin: 18px 0 10px;
-  }
-  
-  a {
-    color: ${COLORS.OIVA_GREEN};
-    text-decoration: none;
   }
   
   @media ${MEDIA_QUERIES.MOBILE} {

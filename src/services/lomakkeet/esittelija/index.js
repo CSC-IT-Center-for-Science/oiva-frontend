@@ -1,15 +1,21 @@
 import "../i18n-config";
 import { __ } from "i18n-for-browser";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
-import { find, propEq, path } from "ramda";
+import { find, path, propEq } from "ramda";
 
-const isAsianumeroValid = async (value, uuid, formatMessage) => {
+const isAsianumeroValid = async (
+  value,
+  uuid,
+  formatMessage,
+  setLastCheckedAsianumero,
+  lastCheckedAsianumero
+) => {
   const isValueInValidFormat = /^VN\/[0-9]{1,9}\/[0-9]{4}$/.test(value);
   /**
-   * Jos kentän arvo on muodoltaan oikeanlainen, tarkistetaan
+   * Jos kentän arvo on muodoltaan oikeanlainen, eikä tätä asianumeroa ole viimeksi tarkistettu, tarkistetaan
    * onko kyseinen asianumero jo käytössä.
    */
-  if (isValueInValidFormat) {
+  if (isValueInValidFormat && value !== lastCheckedAsianumero.asianumero) {
     const procedureHandler = new ProcedureHandler(formatMessage);
     const outputs = await procedureHandler.run(
       "muutospyynto.muutokset.tarkistaDuplikaattiAsianumero",
@@ -18,13 +24,18 @@ const isAsianumeroValid = async (value, uuid, formatMessage) => {
     const isAsianumeroAlreadyInUse =
       outputs.muutospyynto.muutokset.tarkistaDuplikaattiAsianumero.output
         .result;
+
+    setLastCheckedAsianumero({
+      asianumero: value,
+      isDuplicate: isAsianumeroAlreadyInUse
+    });
     /**
      * Mikäli asianumero ei ole käytössä, on kenttä arvoltaan
      * validi sen sisällön ollessa oikeassa muodossa.
      */
     return !isAsianumeroAlreadyInUse;
   } else {
-    return false;
+    return isValueInValidFormat && !lastCheckedAsianumero.isDuplicate;
   }
 };
 
@@ -35,7 +46,7 @@ const isAsianumeroValid = async (value, uuid, formatMessage) => {
  */
 export default async function getTopThree(
   data,
-  isReadOnly,
+  { isReadOnly },
   locale,
   changeObjects
 ) {
@@ -50,7 +61,10 @@ export default async function getTopThree(
   const validAsianumero = await isAsianumeroValid(
     asianumero,
     data.uuid,
-    data.formatMessage);
+    data.formatMessage,
+    data.setLastCheckedAsianumero,
+    data.lastCheckedAsianumero
+  );
 
   return {
     isValid: validAsianumero,

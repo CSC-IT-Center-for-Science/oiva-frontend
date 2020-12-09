@@ -7,16 +7,35 @@ export const backendRoutes = {
   elykeskukset: { path: `koodistot/koodit/elykeskukset` },
   kayttaja: { path: `auth/me` },
   kielet: { path: `koodistot/kielet` },
-  kohteet: { path: `kohteet` },
+  kohteet: { path: `kohteet`, minimumTimeBetweenFetchingInMinutes: 0 },
   tutkinnot: { path: `koodistot/ammatillinen/tutkinnot` },
   koulutuksetMuut: { path: `koodistot/koodit/` },
   koulutus: { path: `koodistot/koodi/koulutus/` },
   koulutusalat: { path: `koodistot/koulutusalat/` },
   koulutustyypit: { path: `koodistot/koulutustyypit/` },
+  kujalisamaareet: { path: `koodistot/koodit/kujalisamaareet` },
   kunnat: { path: `koodistot/kunnat` },
-  lupa: { path: `luvat/jarjestaja/`, minimumTimeBetweenFetchingInMinutes: 0 },
+  lisatietoja: {
+    path: `koodistot/koodit/lisatietoja/`,
+    minimumTimeBetweenFetchingInMinutes: 30
+  },
+  lupaByYtunnus: {
+    path: `luvat/jarjestaja/`,
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
+  lupaByUuid: { path: `luvat/`, minimumTimeBetweenFetchingInMinutes: 0 },
   lupahistoria: { path: `luvat/historia/` },
-  luvat: { path: `luvat/jarjestajilla` },
+  luvat: {
+    path: `luvat/jarjestajilla`,
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
+
+  tulevatLuvat: {
+    path: `luvat/jarjestaja/`,
+    postfix: "/tulevaisuus",
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
+
   maakunnat: { path: `koodistot/maakunnat` },
   maakuntakunnat: { path: `koodistot/maakuntakunta` },
   maaraystyypit: { path: `maaraykset/maaraystyypit` },
@@ -59,5 +78,20 @@ export const backendRoutes = {
   kaannokset: { path: "lokalisaatio" },
 
   organisaatiot: { path: "luvat/organisaatiot" },
-  ytunnushaku: { path: "organisaatiot/" }
+  ytunnushaku: { path: "organisaatiot/" },
+  opetustehtavakoodisto: { path: "koodistot/koodisto/opetustehtava" },
+  opetustehtavat: { path: "koodistot/koodit/opetustehtava" },
+  kieletOPH: { path: "koodistot/koodit/kielikoodistoopetushallinto" },
+  opetuksenJarjestamismuodot: {
+    path: "koodistot/koodit/opetuksenjarjestamismuoto"
+  },
+  poErityisetKoulutustehtavat: {
+    path: "koodistot/koodit/poerityinenkoulutustehtava"
+  },
+  poMuutEhdot: {
+    path: "koodistot/koodit/pomuutkoulutuksenjarjestamiseenliittyvatehdot"
+  },
+  vsttyypit: {
+    path: `koodistot/koodit/vsttyypit`
+  }
 };

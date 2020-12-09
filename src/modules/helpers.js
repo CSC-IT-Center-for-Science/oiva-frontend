@@ -3,7 +3,7 @@
  */
 
 import _ from "lodash";
-import { path } from "ramda";
+import { find, path, includes, any } from "ramda";
 
 export const parseLocalizedField = (
   obj,
@@ -64,11 +64,72 @@ export const parsePostalCode = str => {
  * @param primaryLocale
  * @return {any}
  */
-export const resolveLocalizedOrganizationName = (organization, primaryLocale) => {
-  const altLocale = primaryLocale === 'fi' ? 'sv' : 'fi';
+export const resolveLocalizedOrganizationName = (
+  organization,
+  primaryLocale
+) => {
+  const altLocale = primaryLocale === "fi" ? "sv" : "fi";
   let retval = path(["nimi", primaryLocale])(organization);
-  if(!retval) {
+  if (!retval) {
     retval = path(["nimi", altLocale])(organization);
   }
   return retval;
 };
+
+/**
+ * Resolve name of the VST oppilaitos from an oppilaitosmääräys in lupa.
+ * @param lupa
+ * @param locale
+ * @return {string|*}
+ */
+export const resolveVSTOppilaitosNameFromLupa = (lupa, locale) => {
+  const maarays = lupa.maaraykset.find(item => (item.koodisto = "oppilaitos"));
+  if (maarays) {
+    const fakelupa = {
+      jarjestaja: { nimi: path(["organisaatio", "nimi"])(maarays) }
+    };
+    return resolveLocalizedOrganizerName(fakelupa, locale);
+  } else return "";
+};
+
+/**
+ * Resolve name of the organizer from lupa based on given locale. If it doesn't exist,
+ * resolve into other locale. We assume that only 'fi' and 'sv' locales exist.
+ * @param lupa
+ * @param primaryLocale
+ * @return {any}
+ */
+export const resolveLocalizedOrganizerName = (lupa, primaryLocale) => {
+  const altLocale = primaryLocale === "fi" ? "sv" : "fi";
+  let retval = path(["jarjestaja", "nimi", primaryLocale])(lupa);
+  if (!retval) {
+    retval = path(["jarjestaja", "nimi", altLocale])(lupa);
+  }
+  return retval;
+};
+
+/**
+ * Given a koodisto koodi metadata array, return the localized message contained in given primaryLocale, or
+ * alternative locale when locales are assumed to be either 'fi' or 'sv'.
+ * @param messageObjects
+ * @param primaryLocale
+ * @return {*}
+ */
+export const resolveKoodiLocalization = (messageObjects, locale = "FI") => {
+  const primaryLocale = locale.toUpperCase();
+  const altLocale = primaryLocale === "FI" ? "SV" : "FI";
+  const primaryObject = find(
+    item => item.kieli === primaryLocale,
+    messageObjects
+  );
+  const altObject = find(item => item.kieli === altLocale, messageObjects);
+  return primaryObject
+    ? primaryObject.nimi
+    : altObject
+    ? altObject.nimi
+    : undefined;
+};
+
+export const userHasAnyOfRoles = (user, roles) => {
+  return user && any(role => includes(role, user.roles), roles);
+}

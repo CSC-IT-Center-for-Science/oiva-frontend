@@ -255,5 +255,33 @@ export default defineMessages({
   liitteet: {
     id: "wizard.liitteet",
     defaultMessage: "Liitteet"
+  },
+  municipalitiesAndAreas: {
+    id: "wizard.municipalitiesAndAreas",
+    defaultMessage: "Kunnat ja alueet"
+  },
+  noMunicipalitiesSelected: {
+    id: "wizard.noMunicipalitiesSelected",
+    defaultMessage: "Ei valittuja kuntia"
+  },
+  selectMunicipalities: {
+    id: "wizard.selectMunicipalities",
+    defaultMessage: "Valitse kunnat"
+  },
+  editAreaOfAction: {
+    id: "wizard.editAreaOfAction",
+    defaultMessage: "Muokkaa toiminta-aluetta"
+  },
+  municipalitiesInPresentLupa: {
+    id: "wizard.municipalitiesInPresentLupa",
+    defaultMessage: "Nykyisen luvan kunnat"
+  },
+  municipalitiesInNewLupa: {
+    id: "wizard.municipalitiesInNewLupa",
+    defaultMessage: "Uuden luvan kunnat"
+  },
+  closePreview: {
+    id: "wizard.closePreview",
+    defaultMessage: "Sulje esikatselu"
   }
 });

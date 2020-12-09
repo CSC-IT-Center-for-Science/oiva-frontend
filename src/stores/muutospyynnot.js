@@ -25,7 +25,8 @@ const Store = createStore({
       tilat = [],
       path,
       vainOmat = false,
-      isForceReloadRequested
+      isForceReloadRequested,
+      koulutustyyppi
     ) => ({ getState, setState }) => {
       return execute(
         { getState, setState },
@@ -33,10 +34,10 @@ const Store = createStore({
           key: "muutospyynnot",
           urlEnding: `?tilat=${tilat.map(tila =>
             tila.toUpperCase()
-          )}&vainOmat=${vainOmat}`,
+          )}&vainOmat=${vainOmat}${koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
           path
         },
-        {},
+        {koulutustyyppi},
         isForceReloadRequested ? 0 : undefined
       );
     },

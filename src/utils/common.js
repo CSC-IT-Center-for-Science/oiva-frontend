@@ -228,3 +228,84 @@ export function sortObjectsByProperty(a, b, path) {
   }
   return 0;
 }
+
+export const getLatestChangesByAnchor = (anchor, latestChanges = []) => {
+  return R.filter(
+    R.pipe(R.prop("anchor"), a =>
+      R.or(R.startsWith(`${anchor}_`, a), R.startsWith(`${anchor}.`, a))
+    ),
+    latestChanges
+  );
+};
+
+const isObject = variable => {
+  return Object.prototype.toString.call(variable) === "[object Object]";
+};
+
+/**
+ * Tarkistaa, onko annettu objekti tyhjä.
+ * @param {*} obj
+ */
+const isBranchEmpty = obj => {
+  return Array.isArray(obj) || isObject(obj)
+    ? R.flatten(R.values(R.mapObjIndexed(isBranchEmpty, obj)))
+    : obj;
+};
+
+const isWholeBranchEmpty = obj => R.isEmpty(isBranchEmpty(obj));
+
+const removeOldLeaves = (p = [], tree) => {
+  const leavesOnBranch = R.path(p, tree);
+  if (Array.isArray(leavesOnBranch)) {
+    return R.assocPath(
+      p,
+      R.without(
+        R.filter(leaf => {
+          return R.pathEq(["properties", "deleteElement"], true, leaf);
+        }, leavesOnBranch),
+        leavesOnBranch
+      ),
+      tree
+    );
+  } else {
+    return tree;
+  }
+};
+
+const protectedTreeProps = ["unsaved", "underRemoval"];
+
+/**
+ * Funktiossa ravistellaan moniulotteisesta objektista (tree) pois
+ * tyhjät taulukot ja objektit sekä suoritetaan mahdolliset poistamista
+ * edeltävät operaatiot.
+ * @param {*} p Polku, joka käydään läpi aloittaen polun perältä
+ * @param {*} branch Objekti (oksa), joka käydään läpi. Voi olla koko puu.
+ */
+export const recursiveTreeShake = (p = [], branch) => {
+  /**
+   * Poistetaan käsiteltävänä olevasta oksasta poistettavaksi merkityt lehdet.
+   * Toimenpiteen ohessa lehdestä voi löytyä merkintöjä operaatoista, jotka
+   * on suoritettava ennen lehden poistamista. Esimerkkinä tällaisesta
+   * operaatiosta on fokuksen siirtäminen poistettavasta lehdestä muutospuun
+   * toiseen lehteen. removeOldLeaves hoitaa tällaiset operaatiot ennen kuin
+   * se poistaa poistettavaksi merkityn lehden. Lopuksi se palauttaa
+   * uuden version muutosten puusta.
+   **/
+  let updatedBranch = removeOldLeaves(p, branch);
+
+  /**
+   * Tyhjän oksan voi poistaa, kunhan huomioidaan se, ettei poisteta
+   * puusta pääoksien kiinnityskohtia, jotka on määritelty
+   * protectedTreeProps-muuttujassa.
+   */
+  if (!R.includes(R.last(p), protectedTreeProps)) {
+    if (isWholeBranchEmpty(R.path(p, branch))) {
+      updatedBranch = R.dissocPath(p, branch);
+      if (R.length(p)) {
+        return recursiveTreeShake(R.init(p), updatedBranch);
+      }
+    }
+  }
+
+  return updatedBranch;
+};

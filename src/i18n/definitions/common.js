@@ -1,5 +1,4 @@
 import { defineMessages } from "react-intl";
-import { xor } from "ramda";
 
 export default defineMessages({
   statistics: {
@@ -992,9 +991,232 @@ export default defineMessages({
     id: "common.minimumAmountOfYears",
     defaultMessage: "Nykyinen"
   },
+  asianhallinta: {
+    id: "common.asianhallinta",
+    defaultMessage: "Asianhallinta"
+  },
+  asianhallintaInfoText: {
+    id: "common.asianhallintaInfoText",
+    defaultMessage:
+      "Valitse alla olevista vaihtoehdoista se koulutusmuoto, jonka järjestämislupia haluat käsitellä."
+  },
   KJPassiivinen: {
     id: "common.KJPassiivinen",
     defaultMessage:
       "Tämä koulutuksen järjestäjä on passivoitu Opetushallituksen organisaatiopalvelussa. Ota yhteyttä"
+  },
+  page: {
+    id: "common.page",
+    defaultMessage: "Sivu"
+  },
+  paattymispaivamaara: {
+    id: "common.paattymispaivamaara",
+    defaultMessage: "Päättymispäivämäärä"
+  },
+  lisatiedotInfo: {
+    id: "common.lisatiedotInfo",
+    defaultMessage:
+      "Voit kirjoittaa tähän osioon liittyviä lisätietoja alla olevaan kenttään. Lisätiedot näkyvät luvassa tämän osion valintojen yhteydessä."
+  },
+  lisatiedot: {
+    id: "common.lisatiedot",
+    defaultMessage: "Lisätiedot"
+  },
+  vahintaan: {
+    id: "common.vahintaan",
+    defaultMessage: "Vähintään"
+  },
+  enintaan: {
+    id: "common.enintaan",
+    defaultMessage: "Enintään"
+  },
+  valitseYksiTaiUseampi: {
+    id: "common.valitseYksiTaiUseampi",
+    defaultMessage: "Valitse yksi tai useampi"
+  },
+  opetuskieli: {
+    id: "common.opetuskieli",
+    defaultMessage: "Opetuskieli"
+  },
+  maaJaPaikkakunta: {
+    id: "common.maaJaPaikkakunta",
+    defaultMessage: "Maa ja paikkakunta"
+  },
+  nimi: {
+    id: "common.nimi",
+    defaultMessage: "Nimi"
+  },
+  lisaaUusiNimi: {
+    id: "common.lisaaUusiNimi",
+    defaultMessage: "Lisää uusi nimi"
+  },
+  kielet: {
+    id: "common.kielet",
+    defaultMessage: "kielet"
+  },
+  lisaaUusiKuvaus: {
+    id: "common.lisaaUusiKuvaus",
+    defaultMessage: "Lisää uusi kuvaus"
+  },
+  kuvaus: {
+    id: "common.kuvaus",
+    defaultMessage: "Kuvaus"
+  },
+  kuvausPlaceholder: {
+    id: "common.kuvausPlaceholder",
+    defaultMessage: "Kirjoita kuvaus tähän"
+  },
+  VSTOppilaitosTitle: {
+    id: "common.VSTOppilaitosTitle",
+    defaultMessage: "Oppilaitos"
+  },
+  yllapitaja: {
+    id: "common.yllapitaja",
+    defaultMessage: "Oppilaitoksen ylläpitäjä"
+  },
+  oppilaitostyyppi: {
+    id: "common.oppilaitostyyppi",
+    defaultMessage: "Oppilaitostyyppi"
+  },
+  filterByOppilaitostyyppi: {
+    id: "common.filterByOppilaitostyyppi",
+    defaultMessage: "Rajaa oppilaitostyypin mukaan"
+  },
+  vstYllapitajatHeading: {
+    id: "common.vstYllapitajatHeading",
+    defaultMessage: "Vapaan sivistystyön oppilaitosten ylläpitäjät"
+  },
+  vstActiveLuvatCount: {
+    id: "common.vstActiveLuvatCount",
+    defaultMessage: "Voimassa olevat ylläpitämisluvat ({count} kpl)"
+  },
+  searchByYllapitaja: {
+    id: "common.searchByYllapitaja",
+    defaultMessage: "Hae ylläpitäjän tai oppilaitoksen nimellä"
+  },
+  noSelection: {
+    id: "common.noSelection",
+    defaultMessage: "Ei valintaa"
+  },
+  displayingPortion: {
+    id: "common.displayingPortion",
+    defaultMessage: "Näytetään {selectedCount}/{allCount}"
+  },
+  vstTitleName: {
+    id: "common.vstTitleName",
+    defaultMessage: "Vapaa sivistystyö"
+  },
+  yllapitamisLupaTitle: {
+    id: "common.yllapitamisLupaTitle",
+    defaultMessage: "Ylläpitämislupa"
+  },
+  VSTLupaSectionTitleOrganizer: {
+    id: "common.VSTLupaSectionTitleOrganizer",
+    defaultMessage: "Ylläpitäjän nimi ja kotipaikka"
+  },
+  VSTLupaSectionTitleMunicipality: {
+    id: "common.VSTLupaSectionTitleMunicipality",
+    defaultMessage: "Sopimuskunnat"
+  },
+  VSTLupaSectionTitleSchoolNameAndLocation: {
+    id: "common.VSTLupaSectionTitleSchoolNameAndLocation",
+    defaultMessage: "Oppilaitoksen nimi ja sijainti"
+  },
+  VSTLupaSectionTitleOperationalArea: {
+    id: "common.VSTLupaSectionTitleOperationalArea",
+    defaultMessage: "Oppilaitoksen toiminta-alue"
+  },
+  VSTLupaSectionTitleTeachingLanguage: {
+    id: "common.VSTLupaSectionTitleTeachingLanguage",
+    defaultMessage: "Opetuskieli"
+  },
+  VSTLupaSectionTitleSchoolPurpose: {
+    id: "common.VSTLupaSectionTitleSchoolPurpose",
+    defaultMessage: "Oppilaitoksen tarkoitus"
+  },
+  VSTLupaSectionTitleSchoolMission: {
+    id: "common.VSTLupaSectionTitleSchoolMission",
+    defaultMessage: "Oppilaitoksen koulutustehtävä"
+  },
+  VSTLupaSectionTitleSchoolMissionSpecial: {
+    id: "common.VSTLupaSectionTitleSchoolMissionSpecial",
+    defaultMessage: "Erityinen koulutustehtävä"
+  },
+  VSTLupaSectionTitleOther: {
+    id: "common.VSTLupaSectionTitleOther",
+    defaultMessage: "Muut koulutuksen järjestämiseen liittyvät ehdot"
+  },
+  lupaPageTitleLukio: {
+    id: "common.lupaPageTitleLukio",
+    defaultMessage: "Ajantasainen lukiokoulutuksen järjestämislupa {date}"
+  },
+  lupaPageTitleVSTKansalaisopisto: {
+    id: "common.lupaPageTitleVSTKansalaisopisto",
+    defaultMessage: "Ajantasainen kansalaisopiston ylläpitämislupa {date}"
+  },
+  lupaPageTitleVSTMuut: {
+    id: "common.lupaPageTitleVSTMuut",
+    defaultMessage: "Ajantasainen Snellman-korkeakoulun ylläpitämislupa {date}"
+  },
+  lupaPageTitleVSTOpintokeskus: {
+    id: "common.lupaPageTitleVSTOpintokeskus",
+    defaultMessage: "Ajantasainen opintokeskuksen ylläpitämislupa {date}"
+  },
+  lupaPageTitleVSTKansanopisto: {
+    id: "common.lupaPageTitleVSTKansanopisto",
+    defaultMessage: "Ajantasainen kansanopiston ylläpitämislupa {date}"
+  },
+  lupaPageTitleVSTKesayliopisto: {
+    id: "common.lupaPageTitleVSTKesäyliopisto",
+    defaultMessage: "Ajantasainen kesäyliopiston ylläpitämislupa {date}"
+  },
+  lupaPageTitleVSTLiikunnanKoulutuskeskus: {
+    id: "common.lupaPageTitleVSTLiikunnanKoulutuskeskus",
+    defaultMessage:
+      "Ajantasainen liikunnan koulutuskeskuksen ylläpitämislupa {date}"
+  },
+  voimassaoleva: {
+    id: "common.voimassaoleva",
+    defaultMessage: "Voimassaoleva"
+  },
+  lupaSisaltaaYhteistyosopimuksia: {
+    id: "common.lupaSisaltaaYhteistyosopimuksia",
+    defaultMessage: "Lupa sisältää yhteistyösopimuksia"
+  },
+  maarayksenKuvaus: {
+    id: "common.maarayksenKuvaus",
+    defaultMessage: "Määräyksen kuvaus"
+  },
+  maarayksenXKuvaus: {
+    id: "common.maarayksenXKuvaus",
+    defaultMessage: "Määräyksen {nro} kuvaus"
+  },
+  lisaaUusiYhteistyosopimus: {
+    id: "common.lisaaUusiYhteistyosopimus",
+    defaultMessage: "Lisää uusi yhteistyösopimus"
+  },
+  htmlLuvanOtsikko: {
+    id: "common.htmlLuvanOtsikko",
+    defaultMessage: "Ajantasainen {koulutusmuodon} järjestämislupa {date}"
+  },
+  yllapitamislupaDownload: {
+    id: "common.yllapitamislupaDownload",
+    defaultMessage: "Lataa ylläpitämislupa"
+  },
+  jarjestamislupaDownload: {
+    id: "common.jarjestamislupaDownload",
+    defaultMessage: "Lataa järjestämislupa"
+  },
+  paatoskirjeDownload: {
+    id: "common.paatoskirjeDownload",
+    defaultMessage: "Lataa päätöskirje"
+  },
+  jarjestamisJaYllapitamisluvat: {
+    id: "common.jarjestamisJaYllapitamisluvat",
+    defaultMessage: "Järjestämis- ja ylläpitämisluvat"
+  },
+  esikatselu: {
+    id: "common.esikatselu",
+    defaultMessage: "Esikatselu"
   }
 });

@@ -3,7 +3,7 @@ import {
   getKuljettajienPeruskoulutuslomake
 } from "./perustelut/kuljettajakoulutukset";
 import { getTaloudellisetlomake } from "./taloudelliset";
-import { concat, path } from "ramda";
+import { append, path } from "ramda";
 import getATVKoulutuksetPerustelulomake from "./perustelut/koulutukset/atv-koulutukset";
 import getValmentavatKoulutuksetPerustelulomake from "./perustelut/koulutukset/valmentavatKoulutukset";
 import { setLocale } from "./i18n-config";
@@ -18,8 +18,7 @@ import getTutkinnotPerustelulomake from "./perustelut/tutkinnot/";
 import getTutkinnotLomake from "./tutkinnot";
 import getOpetuskieletLomake from "./kielet/opetuskielet";
 import getTutkintokieletLomake from "./kielet/tutkintokielet";
-import getToimintaaluelomake from "./toimintaalue";
-import getMuutLomake from "./muut";
+import { getToimintaaluelomake } from "./toimintaalue";
 import getOpiskelijavuodetLomake from "./opiskelijavuodet";
 import getPerustelutLiitteetlomake from "./perustelut/liitteet";
 import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
@@ -31,189 +30,239 @@ import getVahimmaisopiskelijavuodetPerustelulomake from "./perustelut/opiskelija
 import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vaativa";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
+import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoskee";
+import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
+import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
+import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
+import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
+import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
+import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
+import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
+import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
+import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
+import { getMuutLaajennettu } from "./ammatillinenKoulutus/5-muut/laajennettu";
+import { getMuutVaativaTuki } from "./ammatillinenKoulutus/5-muut/vaativaTuki";
+import { getMuutSisaoppilaitos } from "./ammatillinenKoulutus/5-muut/sisaoppilaitos";
+import { getMuutVankila } from "./ammatillinenKoulutus/5-muut/vankila";
+import { getMuutUrheilu } from "./ammatillinenKoulutus/5-muut/urheilu";
+import { getMuutYhteistyo } from "./ammatillinenKoulutus/5-muut/yhteistyo";
+import { getMuutYhteistyosopimus } from "./ammatillinenKoulutus/5-muut/yhteistyosopimus";
+import { getMuutSelvitykset } from "./ammatillinenKoulutus/5-muut/selvitykset";
+import { getMuutMuuMaarays } from "./ammatillinenKoulutus/5-muut/muuMaarays";
+
+// Esi- ja perusopetuksen esikatselulomakkeet
+import { previewOfOpetusJotaLupaKoskee } from "./esi-ja-perusopetus/esikatselu/1-opetusJotaLupaKoskee";
+import { previewOfOpetuskielet } from "./esi-ja-perusopetus/esikatselu/3-opetuskielet";
+import { previewOfOpetuksenJarjestamismuoto } from "./esi-ja-perusopetus/esikatselu/4-opetuksenJarjestamismuoto";
+import { previewOfErityisetKoulutustehtavat } from "./esi-ja-perusopetus/esikatselu/5-erityisetKoulutustehtavat";
+import { previewOfOpiskelijamaarat } from "./esi-ja-perusopetus/esikatselu/6-opiskelijamaarat";
+import { previewOfMuutEhdot } from "./esi-ja-perusopetus/esikatselu/7-muutEhdot";
+import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2-opetustaAntavatKunnat";
 
 /**
- * LOMAKEPALVELU - Provider of forms.
- *
- * One big form / wizard is divided into multiple smaller forms. A form is an
- * array of objects. A form includes components (e.g. radio buttons, checkboxes,
- * inputs) and the structure of a form can be nested.
- *
- * E.g.
-    [
-      {
-        anchor: "level0category0",
-        categories: [{}, {}, { anchor: "level1category2", components: [] }]
-      }
-    ];
-* 
-*/
+ * LOMAKEPALVELU
+ */
 const lomakkeet = {
+  /**
+   * AMMATILLINEN KOULUTUS
+   */
+  ammatillinenKoulutus: {
+    muut: {
+      laajennettu: {
+        modification: (data, booleans, locale) =>
+          getMuutLaajennettu(data, booleans, locale)
+      },
+      muuMaarays: {
+        modification: (data, booleans, locale) =>
+          getMuutMuuMaarays(data, booleans, locale)
+      },
+      sisaoppilaitos: {
+        modification: (data, booleans, locale) =>
+          getMuutSisaoppilaitos(data, booleans, locale)
+      },
+      urheilu: {
+        modification: (data, booleans, locale) =>
+          getMuutUrheilu(data, booleans, locale)
+      },
+      selvitykset: {
+        modification: (data, booleans, locale) =>
+          getMuutSelvitykset(data, booleans, locale)
+      },
+      vaativaTuki: {
+        modification: (data, booleans, locale) =>
+          getMuutVaativaTuki(data, booleans, locale)
+      },
+      vankila: {
+        modification: (data, booleans, locale) =>
+          getMuutVankila(data, booleans, locale)
+      },
+      yhteistyo: {
+        modification: (data, booleans, locale) =>
+          getMuutYhteistyo(data, booleans, locale)
+      },
+      yhteistyosopimus: {
+        modification: (data, booleans, locale) =>
+          getMuutYhteistyosopimus(data, booleans, locale)
+      }
+    }
+  },
+
   // Wizard page 1 forms
   tutkinnot: {
-    modification: (data, isReadOnly, locale) =>
-      getTutkinnotLomake("modification", data, isReadOnly, locale)
+    modification: (data, booleans, locale) =>
+      getTutkinnotLomake("modification", data, booleans, locale)
   },
   koulutukset: {
     atvKoulutukset: {
       // atv = ammatilliseen tehtävään valmistavat
-      modification: (data, isReadOnly) =>
-        getATVKoulutuksetLomake("modification", data, isReadOnly)
+      modification: (data, booleans) =>
+        getATVKoulutuksetLomake("modification", data, booleans)
     },
     kuljettajakoulutukset: {
-      modification: (data, isReadOnly) =>
-        getKuljettajakoulutuslomake("modification", data, isReadOnly)
+      modification: (data, booleans) =>
+        getKuljettajakoulutuslomake("modification", data, booleans)
     },
     tyovoimakoulutukset: {
-      modification: (data, isReadOnly) =>
-        getTyovoimakoulutuslomake("modification", data, isReadOnly)
+      modification: (data, booleans) =>
+        getTyovoimakoulutuslomake("modification", data, booleans)
     },
     valmentavatKoulutukset: {
-      modification: (data, isReadOnly) =>
-        getValmentavatKoulutuksetLomake("modification", data, isReadOnly)
+      modification: (data, booleans) =>
+        getValmentavatKoulutuksetLomake("modification", data, booleans)
     }
   },
   kielet: {
     opetuskielet: {
-      modification: (data, isReadOnly, locale) =>
-        getOpetuskieletLomake("modification", data, isReadOnly, locale)
+      modification: (data, booleans, locale) =>
+        getOpetuskieletLomake("modification", data, booleans, locale)
     },
     tutkintokielet: {
-      modification: (data, isReadOnly, locale) =>
-        getTutkintokieletLomake("modification", data, isReadOnly, locale)
+      modification: (data, booleans, locale) =>
+        getTutkintokieletLomake("modification", data, booleans, locale)
     }
   },
   toimintaalue: {
-    modification: (data, isReadOnly, locale) =>
-      getToimintaaluelomake("modification", data, isReadOnly, locale)
+    modification: (data, booleans, locale, changeObjects, functions) =>
+      getToimintaaluelomake(data, booleans, locale, changeObjects, functions)
   },
   opiskelijavuodet: {
-    modification: (data, isReadOnly, locale) =>
-      getOpiskelijavuodetLomake("modification", data, isReadOnly, locale)
-  },
-  muut: {
-    modification: (data, isReadOnly, locale) =>
-      getMuutLomake("modification", data, isReadOnly, locale)
+    modification: (data, booleans, locale) =>
+      getOpiskelijavuodetLomake(data, booleans, locale)
   },
 
   // Wizard page 2 forms
   perustelut: {
     kielet: {
       opetuskielet: {
-        reasoning: (data, isReadOnly, locale) =>
-          getOpetuskieletPerustelulomake("reasoning", data, isReadOnly, locale)
+        reasoning: (data, booleans, locale) =>
+          getOpetuskieletPerustelulomake("reasoning", data, booleans, locale)
       },
       tutkintokielet: {
-        reasoning: (data, isReadOnly, locale) =>
-          getTutkintokieletPerustelulomake(
-            "reasoning",
-            data,
-            isReadOnly,
-            locale
-          )
+        reasoning: (data, booleans, locale) =>
+          getTutkintokieletPerustelulomake("reasoning", data, booleans, locale)
       }
     },
     koulutukset: {
       atvKoulutukset: {
-        addition: (data, isReadOnly, locale, changeObjects, prefix) =>
+        addition: (data, booleans, locale, changeObjects, prefix) =>
           getATVKoulutuksetPerustelulomake(
             "addition",
             data,
-            isReadOnly,
+            booleans,
             locale,
             prefix
           ),
-        removal: (data, isReadOnly, locale, changeObjects, prefix) =>
+        removal: (data, booleans, locale, changeObjects, prefix) =>
           getATVKoulutuksetPerustelulomake(
             "removal",
             data,
-            isReadOnly,
+            booleans,
             locale,
             prefix
           )
       },
       kuljettajakoulutukset: {
         jatkokoulutus: {
-          addition: (data, isReadOnly) =>
-            getKuljettajienJatkokoulutuslomake("addition", data, isReadOnly),
-          removal: (data, isReadOnly, locale, changeObjects, prefix) =>
+          addition: (data, booleans) =>
+            getKuljettajienJatkokoulutuslomake("addition", data, booleans),
+          removal: (data, booleans, locale, changeObjects, prefix) =>
             getKuljettajienJatkokoulutuslomake(
               "removal",
               data,
-              isReadOnly,
+              booleans,
               prefix
             )
         },
         peruskoulutus: {
-          addition: (data, isReadOnly) =>
-            getKuljettajienPeruskoulutuslomake("addition", data, isReadOnly),
-          removal: (data, isReadOnly, locale, changeObjects, prefix) =>
+          addition: (data, booleans) =>
+            getKuljettajienPeruskoulutuslomake("addition", data, booleans),
+          removal: (data, booleans, locale, changeObjects, prefix) =>
             getKuljettajienPeruskoulutuslomake(
               "removal",
               data,
-              isReadOnly,
+              booleans,
               prefix
             )
         }
       },
       tyovoimakoulutukset: {
-        addition: (data, isReadOnly, locale) =>
+        addition: (data, booleans, locale) =>
           getTyovoimakoulutuksetPerustelulomake(
             "addition",
             data,
-            isReadOnly,
+            booleans,
             locale
           ),
-        removal: (data, isReadOnly, locale, changeObjects, prefix) =>
+        removal: (data, booleans, locale, changeObjects, prefix) =>
           getTyovoimakoulutuksetPerustelulomake(
             "removal",
             data,
-            isReadOnly,
+            booleans,
             locale,
             prefix
           )
       },
       valmentavat: {
-        addition: (data, isReadOnly, locale, changeObjects, prefix) =>
+        addition: (data, booleans, locale, changeObjects, prefix) =>
           getValmentavatKoulutuksetPerustelulomake(
             "addition",
             data,
-            isReadOnly,
+            booleans,
             prefix
           ),
-        removal: (data, isReadOnly, locale, changeObjects, prefix) =>
+        removal: (data, booleans, locale, changeObjects, prefix) =>
           getValmentavatKoulutuksetPerustelulomake(
             "removal",
             data,
-            isReadOnly,
+            booleans,
             prefix
           )
       }
     },
     liitteet: {
-      reasoning: (data, isReadOnly) =>
-        getPerustelutLiitteetlomake("reasoning", isReadOnly)
+      reasoning: (data, booleans) =>
+        getPerustelutLiitteetlomake("reasoning", booleans)
     },
     muutostarpeet: {
-      checkboxes: (data, isReadOnly, locale) =>
-        getCheckboxes(data.checkboxItems, locale, isReadOnly)
+      checkboxes: (data, booleans, locale) =>
+        getCheckboxes(data.checkboxItems, locale, booleans)
     },
     toimintaalue: {
-      reasoning: (data, isReadOnly, locale, changeObjects, prefix) =>
+      reasoning: (data, booleans, locale, changeObjects, prefix) =>
         getToimintaaluePerustelulomake(
           "reasoning",
           data,
-          isReadOnly,
+          booleans,
           locale,
           prefix
         )
     },
     tutkinnot: {
-      reasoning: (data, isReadOnly, locale, changeObjects, prefix) =>
+      reasoning: (data, booleans, locale, changeObjects, prefix) =>
         getTutkinnotPerustelulomake(
           "reasoning",
           data,
-          isReadOnly,
+          booleans,
           locale,
           changeObjects,
           prefix
@@ -221,79 +270,159 @@ const lomakkeet = {
     },
     opiskelijavuodet: {
       sisaoppilaitos: {
-        reasoning: (data, isReadOnly) =>
+        reasoning: (data, booleans) =>
           getSisaoppilaitosOpiskelijavuodetPerustelulomake(
             "reasoning",
             data,
-            isReadOnly
+            booleans
           )
       },
       vaativatuki: {
-        reasoning: (data, isReadOnly) =>
+        reasoning: (data, booleans) =>
           getVaativaTukiOpiskelijavuodetPerustelulomake(
             "reasoning",
             data,
-            isReadOnly
+            booleans
           )
       },
       vahimmais: {
-        reasoning: (data, isReadOnly, locale) =>
+        reasoning: (data, booleans, locale) =>
           getVahimmaisopiskelijavuodetPerustelulomake(
             "reasoning",
             data,
-            isReadOnly,
+            booleans,
             locale
           )
       }
     },
     muut: {
-      reasoning: (data, isReadOnly, locale) =>
-        getMuutPerustelulomake("reasoning", data, isReadOnly, locale)
+      reasoning: (data, booleans, locale) =>
+        getMuutPerustelulomake("reasoning", data, booleans, locale)
     }
   },
   taloudelliset: {
-    yleisettiedot: (data, isReadOnly) =>
-      getTaloudellisetlomake("yleisettiedot", data, isReadOnly),
-    investoinnit: (data, isReadOnly) =>
-      getTaloudellisetlomake("investoinnit", data, isReadOnly),
-    tilinpaatostiedot: (data, isReadOnly) =>
-      getTaloudellisetlomake("tilinpaatostiedot", data, isReadOnly),
-    liitteet: (data, isReadOnly) =>
-      getTaloudellisetlomake("liitteet", data, isReadOnly)
+    yleisettiedot: (data, booleans) =>
+      getTaloudellisetlomake("yleisettiedot", data, booleans),
+    investoinnit: (data, booleans) =>
+      getTaloudellisetlomake("investoinnit", data, booleans),
+    tilinpaatostiedot: (data, booleans) =>
+      getTaloudellisetlomake("tilinpaatostiedot", data, booleans),
+    liitteet: (data, booleans) =>
+      getTaloudellisetlomake("liitteet", data, booleans)
   },
   yhteenveto: {
     liitteet: {
       modification: () => getYhteenvetoLiitteetLomake("modification")
     },
     yleisetTiedot: {
-      modification: (data, isReadOnly) =>
-        getYhteenvetoYleisetTiedotLomake("modification", data, isReadOnly)
+      modification: (data, booleans) =>
+        getYhteenvetoYleisetTiedotLomake("modification", data, booleans)
     }
   },
 
   // Esittelija
   esittelija: {
     topThree: {
-      addition: (data, isReadOnly, locale, changeObjects) =>
-        getTopThree(data, isReadOnly, locale, changeObjects)
+      addition: (data, booleans, locale, changeObjects) =>
+        getTopThree(data, booleans, locale, changeObjects)
+    }
+  },
+
+  // Esi- ja perusopetus
+  esiJaPerusopetus: {
+    erityisetKoulutustehtavat: {
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        erityisetKoulutustehtavat(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        ),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfErityisetKoulutustehtavat(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
+    },
+    muutEhdot: {
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        muutEhdot(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfMuutEhdot(data, booleans, locale, changeObjects)
+    },
+    opetuksenJarjestamismuodot: {
+      modification: (data, booleans, locale) =>
+        opetuksenJarjestamismuoto(data, booleans, locale),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetuksenJarjestamismuoto(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
+    },
+    opetusJotaLupaKoskee: {
+      modification: (data, booleans, locale, changeObjects) =>
+        opetusJotaLupaKoskee(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetusJotaLupaKoskee(data, booleans, locale, changeObjects)
+    },
+    opetuskielet: {
+      modification: (data, booleans, locale, changeObjects) =>
+        getOpetuskieletOPHLomake(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetuskielet(data, booleans, locale, changeObjects)
+    },
+    opiskelijamaarat: {
+      modification: (data, booleans) => opiskelijamaarat(data, booleans),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpiskelijamaarat(data, booleans, locale, changeObjects)
+    },
+    paatoksenTiedot: {
+      addition: (data, booleans, locale, changeObjects) =>
+        getPaatoksenTiedot(data, booleans, locale, changeObjects)
+    },
+    opetustaAntavatKunnat: {
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        opetustaAntavatKunnat(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects, functions) =>
+        previewOfOpetustaAntavaKunnat(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        )
+    },
+    rajoite: {
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        rajoitelomake(data, booleans, locale, changeObjects, functions)
+    },
+    rajoitteet: {
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        rajoitteet(data, booleans, locale, changeObjects, functions)
     }
   }
 };
 
 export async function getLomake(
-  action = "addition",
+  mode = "addition",
   changeObjects = [],
   data = {},
-  isReadOnly,
+  functions = {},
+  booleans,
   locale,
   _path = [],
   prefix
 ) {
   // This defines the language of the requested form.
   setLocale(locale);
-  const fn = path(concat(_path, [action]), lomakkeet);
+  const fn = path(append(mode, _path), lomakkeet);
   const lomake = fn
-    ? await fn(data, isReadOnly, locale, changeObjects, prefix)
+    ? await fn(data, booleans, locale, changeObjects, functions, prefix)
     : [];
 
   return lomake;

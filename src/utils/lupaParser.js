@@ -3,10 +3,10 @@ import {
   KOHTEET,
   KOODISTOT,
   LUPA_SECTIONS
-} from "../scenes/Jarjestajat/Jarjestaja/modules/constants";
+} from "./constants";
 import { parseLocalizedField } from "../modules/helpers";
 import common from "../i18n/definitions/common";
-import {length, toUpper} from "ramda";
+import { length, path, toUpper } from "ramda";
 
 /**
  *
@@ -15,6 +15,7 @@ import {length, toUpper} from "ramda";
  * @param {string} locale
  */
 export const parseLupa = (lupa, formatMessage, locale) => {
+  const localeUpper = toUpper(locale);
   if (lupa) {
     let lupaObj = {};
     let tyovoimaMaarays = checkTyovoima(lupa.maaraykset);
@@ -30,7 +31,7 @@ export const parseLupa = (lupa, formatMessage, locale) => {
           headingNumber,
           tyovoimaMaarays,
           formatMessage,
-          locale
+          localeUpper
         );
       }
     }
@@ -260,14 +261,25 @@ const parseSectionData = (
 
             if (alimaarays.koodisto === KOODISTOT.KIELI) {
               const tutkinto = {
-                tutkintokoodi: obj.tutkintokoodi, nimi: obj.nimi
+                tutkintokoodi: obj.tutkintokoodi,
+                nimi: obj.nimi
               };
-              let tutkintokieli = tutkintokieletArr.find(tutkintokieli => tutkintokieli.kieli === toUpper(alimaarays.koodiarvo));
-              tutkintokieli ? tutkintokieli.tutkinnot.push(tutkinto) : tutkintokieletArr.push({kieli: toUpper(alimaarays.koodiarvo), tutkinnot: [tutkinto]});
+              let tutkintokieli = tutkintokieletArr.find(
+                tutkintokieli =>
+                  tutkintokieli.kieli === toUpper(alimaarays.koodiarvo)
+              );
+              tutkintokieli
+                ? tutkintokieli.tutkinnot.push(tutkinto)
+                : tutkintokieletArr.push({
+                    kieli: toUpper(alimaarays.koodiarvo),
+                    tutkinnot: [tutkinto]
+                  });
             }
-           tutkintokieletArr.forEach(tutkintokieli => {
-             tutkintokieli.tutkinnot.sort((a, b) => a.tutkintokoodi - b.tutkintokoodi);
-           });
+            tutkintokieletArr.forEach(tutkintokieli => {
+              tutkintokieli.tutkinnot.sort(
+                (a, b) => a.tutkintokoodi - b.tutkintokoodi
+              );
+            });
           }
         });
       }
@@ -477,10 +489,8 @@ const parseSectionData = (
             break;
           }
           case "8": {
-            // TODO localization
-            const { yhteistyösopimus } = meta;
-            const { fi } = yhteistyösopimus;
-            obj.kuvaus = fi;
+            const { yhteistyosopimus } = meta;
+            obj.kuvaus = yhteistyosopimus.kuvaus;
             yhteistyosopimukset.push(obj);
             break;
           }
@@ -685,17 +695,17 @@ function parseMaaraykset(maaraykset, kohdeTunniste) {
 
   if (kohdeTunniste !== KOHTEET.KIELI) {
     return _.filter(maaraykset, maarays => {
-      return maarays.kohde.tunniste === kohdeTunniste;
+      return path(["kohde", "tunniste"], maarays) === kohdeTunniste;
     });
   } else {
     // oppilaitoksen opetuskieli
     let opetuskielet = _.filter(maaraykset, maarays => {
-      return maarays.kohde.tunniste === KOHTEET.KIELI;
+      return path(["kohde", "tunniste"], maarays) === KOHTEET.KIELI;
     });
 
     // tutkintokielet
     let tutkintokielet = _.filter(maaraykset, maarays => {
-      return maarays.kohde.tunniste === KOHTEET.TUTKINNOT;
+      return path(["kohde", "tunniste"], maarays) === KOHTEET.TUTKINNOT;
     });
 
     return _.concat(opetuskielet, tutkintokielet);
