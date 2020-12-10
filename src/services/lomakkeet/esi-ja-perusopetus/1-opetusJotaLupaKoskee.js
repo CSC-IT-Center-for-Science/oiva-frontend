@@ -23,8 +23,9 @@ export async function opetusJotaLupaKoskee(
 
   return flatten([
     map(opetustehtava => {
-      const maarays = find(
-        propEq("koodiarvo", opetustehtava.koodiarvo),
+      const maarays = find(m =>
+        propEq("koodiarvo", opetustehtava.koodiarvo, m) &&
+        propEq("koodisto", "opetustehtava", m),
         maaraykset
       );
       return {
