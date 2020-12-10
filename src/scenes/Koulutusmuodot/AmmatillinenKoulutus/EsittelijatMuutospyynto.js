@@ -136,7 +136,7 @@ const EsittelijatMuutospyynto = ({
         </Typography>
 
         <FormTitle
-          code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          code={String(sectionHeadings.tutkinnotJaKoulutukset.number)}
           title={sectionHeadings.tutkinnotJaKoulutukset.title}
         />
 
