@@ -21,6 +21,7 @@ import CategoryFilter from "../../CategoryFilter";
 import FormTitle from "components/00-atoms/FormTitle";
 import List from "components/01-molecules/List";
 import { Typography } from "@material-ui/core";
+import RajoitteetList from "components/02-organisms/RajoitteetList";
 
 /** @namespace components */
 
@@ -745,7 +746,7 @@ const CategorizedList = props => {
                               change.properties.isChecked
                             );
                           return (
-                            <div className={`flex-1 ${styleClassesStr}`}>
+                            <div className={styleClassesStr || "flex-1"}>
                               <Autocomplete
                                 callback={handleChanges}
                                 forChangeObject={
@@ -870,6 +871,13 @@ const CategorizedList = props => {
                           }}
                         />
                       </div>
+                    )}
+                    {component.name === "RajoitteetList" && (
+                      <RajoitteetList
+                        rajoitteet={propsObj.rajoitteet}
+                        onModifyRestriction={propsObj.onModifyRestriction}
+                        onRemoveRestriction={propsObj.onRemoveRestriction}
+                      />
                     )}
                   </React.Fragment>
                 );

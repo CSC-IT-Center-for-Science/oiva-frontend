@@ -1,28 +1,30 @@
 import {
   compose,
+  endsWith,
   filter,
+  find,
   flatten,
-  head,
   isNil,
   map,
   not,
   path,
+  prop,
   sortBy,
   values
 } from "ramda";
 
-export default function opetustaAntavatKunnat(changeObjects = []) {
-  const changesByProvince = path(
-    ["properties", "changesByProvince"],
-    head(changeObjects) || {}
+export default function getOpetustaAntavatKunnat(osionData = []) {
+  const changesByProvinceObj = find(
+    compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
+    osionData
   );
 
-  if (changesByProvince) {
+  if (changesByProvinceObj) {
     const listOfMunicipalities = sortBy(
       path(["properties", "metadata", "title"]),
       filter(
         compose(not, isNil, path(["properties", "metadata", "title"])),
-        flatten(values(changesByProvince))
+        flatten(values(changesByProvinceObj.properties.changeObjectsByProvince))
       )
     );
 
@@ -32,6 +34,7 @@ export default function opetustaAntavatKunnat(changeObjects = []) {
         {
           anchor: "opetustaAntavatKunnat",
           name: "Autocomplete",
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
           properties: {
             forChangeObject: {
               section: "opetustaAntavatKunnat"

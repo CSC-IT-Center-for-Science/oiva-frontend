@@ -1,40 +1,42 @@
-import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
-import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map, toUpper } from "ramda";
+import { find, pathEq } from "ramda";
 
-export default async function opetuksenjarjestamismuodot(
-  changeObjects = [],
-  locale
+export default async function getOpetuksenJarjestamismuodotLomake(
+  osionData = []
 ) {
-  const _opetuksenjarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
-  const localeUpper = toUpper(locale);
+  const valittuJarjestamismuoto = find(
+    pathEq(["properties", "isChecked"], true),
+    osionData
+  );
 
-  if (opetuksenjarjestamismuodot.length) {
+  /**
+   * Päälomakkeella valinta tehdään radio button -elementeillä, joista yksi
+   * on hyvin todennäköisesti valittuna, vaikka käyttäjä ei olisi itse valinnut
+   * yhtäkään elementeistä. (oletusvalinta)
+   */
+  if (valittuJarjestamismuoto) {
+    /**
+     * Näytetään valittu arvo autocomplete-kentässä yhdenmukaisuuden vuoksi,
+     * vaikka kenttään tuleekin vain yksi arvo, joka on oletuksena valittuna.
+     */
+    const valittuArvo = {
+      label: valittuJarjestamismuoto.properties.title,
+      value: valittuJarjestamismuoto.anchor
+    };
+
     return {
       anchor: "rajoitus",
       components: [
         {
           anchor: "opetuksenJarjestamismuodot",
           name: "Autocomplete",
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
           properties: {
             forChangeObject: {
-              section: "opetuksenJarjestamismuoto",
+              section: "opetuksenJarjestamismuoto"
             },
-            options: map((opetuksenjarjestamismuodot) => {
-              const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
-              const anchor = `opetuksenJarjestamismuodot.${opetuksenjarjestamismuodot.koodiarvo}.valinta`;
-              const changeObj = getChangeObjByAnchor(anchor, changeObjects);
-              return (!!maarays &&
-                (!changeObj || changeObj.properties.isChecked)) ||
-                (changeObj && changeObj.properties.isChecked)
-                ? {
-                    label:
-                      opetuksenjarjestamismuodot.metadata[localeUpper].nimi,
-                    value: opetuksenjarjestamismuodot.koodiarvo
-                  }
-                : null;
-            }, _opetuksenjarjestamismuodot).filter(Boolean),
-            value: ""
+            isMulti: false,
+            options: [valittuArvo],
+            value: [valittuArvo]
           }
         }
       ]

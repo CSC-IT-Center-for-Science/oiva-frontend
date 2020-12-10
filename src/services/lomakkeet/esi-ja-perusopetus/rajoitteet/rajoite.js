@@ -19,52 +19,48 @@ import {
   includes
 } from "ramda";
 import erityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
-import maaraaika from "./rajoitukset/maaraaika";
-import opetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
-import opetuksenJarjestamismuoto from "./rajoitukset/4-opetuksenjarjestamismuoto";
-import opetuskielet from "./rajoitukset/3-opetuskielet";
+import { getMaaraaikalomake } from "./rajoitukset/maaraaika";
+import getOpetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
+import getOpetuksenJarjestamismuodotLomake from "./rajoitukset/4-opetuksenjarjestamismuoto";
+import getOpetuskieletlomake from "./rajoitukset/3-opetuskielet";
 import muutEhdot from "./rajoitukset/7-muutEhdot";
 import opiskelijamaarat from "./rajoitukset/6-opiskelijamaarat";
-import getOpetustehtavatLomake from "./rajoitukset/1-opetustehtavat";
+import getOpetustehtavatlomake from "./rajoitukset/1-opetustehtavat";
 import { getAnchorPart } from "../../../../utils/common";
 
 const localizations = {
   maaraaika: "Määräaika",
+  opetustehtavat: "1. Opetus, jota lupa koskee",
   erityisetKoulutustehtavat: "5. Erityinen koulutustehtävä",
-  opetustaAntavatKunnat: "2. Kunnat, joissa opetusta järjestetään",
-  opetuksenJarjestamismuoto: "4. Opetuksen järjestämismuoto",
+  toimintaalue: "2. Kunnat, joissa opetusta järjestetään",
+  opetuksenJarjestamismuodot: "4. Opetuksen järjestämismuoto",
   opetuskielet: "3. Opetuskieli",
   muutEhdot: "7. Muut koulutuksen järjestämiseen liittyvät ehdot",
-  opiskelijamaarat: "6. Oppilas-/opiskelijamäärät",
-  getOpetustehtavatLomake: "1. Opetus, jota lupa koskee"
-};
-
-const changeObjectMapping = {
-  maaraaika: "maaraaika",
-  erityisetKoulutustehtavat: "erityisetKoulutustehtavat",
-  opetustaAntavatKunnat: "toimintaalue",
-  opetuksenJarjestamismuoto: "opetuksenJarjestamismuodot",
-  opetuskielet: "opetuskielet",
-  muutEhdot: "muutEhdot",
-  opiskelijamaarat: "opiskelijamaarat",
-  getOpetustehtavatLomake: "opetustehtavat"
+  opiskelijamaarat: "6. Oppilas-/opiskelijamäärät"
 };
 
 const sections = {
-  maaraaika,
-  getOpetustehtavatLomake,
-  opetustaAntavatKunnat,
-  opetuskielet,
+  maaraaika: getMaaraaikalomake,
+  opetustehtavat: getOpetustehtavatlomake,
+  toimintaalue: getOpetustaAntavatKunnat,
+  opetuskielet: getOpetuskieletlomake,
   opiskelijamaarat,
-  opetuksenJarjestamismuoto,
+  opetuksenJarjestamismuodot: getOpetuksenJarjestamismuodotLomake,
   erityisetKoulutustehtavat,
   muutEhdot
 };
 
+/**
+ * Rajoitekriteereiden näyttäminen
+ * @param {*} asetus
+ * @param {*} locale
+ * @param {*} changeObjects
+ * @param {*} onRemoveCriterion
+ */
 async function defineRajoitusStructure(
+  osioidenData,
   asetus,
   locale,
-  changeObjects,
   onRemoveCriterion
 ) {
   /**
@@ -93,23 +89,21 @@ async function defineRajoitusStructure(
     /**
      * Mikäli itse rajoitusta on muokattu, on siitä olemassa muutosobjekti.
      */
-    const rajoitus =
-      rajoitusavain && asetus.rajoitus
-        ? await sections[rajoitusavain](
-            path([changeObjectMapping[rajoitusavain]], changeObjects),
-            locale
-          )
-        : null;
-    console.info(rajoitus, rajoitusavain);
+    const rajoitus = rajoitusavain
+      ? await sections[rajoitusavain](osioidenData[rajoitusavain], locale)
+      : null;
+
     return {
       anchor: asetus.id,
       categories: [
         {
           anchor: "kohde",
+          layout: { indentation: "none" },
           components: [
             {
               anchor: "A",
               name: "Autocomplete",
+              styleClasses: ["mb-6 w-4/5 xl:w-2/3"],
               properties: {
                 isMulti: false,
                 options: values(
@@ -141,18 +135,17 @@ async function defineRajoitusStructure(
 }
 
 async function defineRajoituksetStructure(
+  osioidenData,
   rajoiteId,
   asetukset,
   groupedChangeObjects,
   locale,
-  changeObjects,
   onRemoveCriterion,
   index = 0,
   structure = []
 ) {
-  const initialAsetus = nth(index, asetukset || []);
+  const initialAsetus = nth(index, asetukset || []);
   if (initialAsetus && !isEmpty(groupedChangeObjects)) {
-    console.info(initialAsetus, groupedChangeObjects[rajoiteId].asetukset);
     const asetusChangeObj = groupedChangeObjects[rajoiteId].asetukset
       ? groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id]
       : {};
@@ -160,27 +153,25 @@ async function defineRajoituksetStructure(
 
     const updatedStructure = append(
       await defineRajoitusStructure(
+        osioidenData,
         asetus,
         locale,
-        changeObjects,
         onRemoveCriterion
       ),
       structure
     );
 
     return defineRajoituksetStructure(
+      osioidenData,
       rajoiteId,
       asetukset,
       groupedChangeObjects,
       locale,
-      changeObjects,
       onRemoveCriterion,
       index + 1,
       updatedStructure
     );
   }
-
-  console.info(structure);
 
   return structure;
 }
@@ -208,11 +199,21 @@ async function defineRajoituksetStructure(
  * @param {*} locale
  * @param {*} changeObjects
  */
-export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
+export async function rajoitelomake(
+  data,
+  { isReadOnly },
+  locale,
+  changeObjects,
+  { onAddCriterion, onRemoveCriterion }
+) {
   const rajoiteId = data.rajoiteId;
-  const kohdeChangeObjects = filter(cObj => startsWith(`rajoitelomake.${rajoiteId}.asetukset`, cObj.anchor) &&
-    !startsWith(`rajoitelomake.${rajoiteId}.asetukset.kohde`, cObj.anchor) &&
-    !includes("rajoitus", cObj.anchor), changeObjects)
+  const kohdeChangeObjects = filter(
+    cObj =>
+      startsWith(`rajoitelomake.${rajoiteId}.asetukset`, cObj.anchor) &&
+      !startsWith(`rajoitelomake.${rajoiteId}.asetukset.kohde`, cObj.anchor) &&
+      !includes("rajoitus", cObj.anchor),
+    changeObjects
+  );
 
   const addedRajoitteet = map(cObj => {
     return {
@@ -241,9 +242,9 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
     };
   }, kohdeChangeObjects || []).filter(Boolean);
 
-   const asetukset = {
-     [rajoiteId]: addedRajoitteet
-   };
+  const asetukset = {
+    [rajoiteId]: addedRajoitteet
+  };
 
   function groupChangeObjects(changeObjects, index = 0, result = {}) {
     const changeObj = head(changeObjects);
@@ -266,8 +267,6 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
 
   const groupedChangeObjects = groupChangeObjects(changeObjects);
 
-  console.info(groupedChangeObjects);
-
   const kohdeChangeObj = find(
     obj =>
       obj.anchor === `${data.sectionId}.${data.rajoiteId}.asetukset.kohde.A`,
@@ -279,10 +278,7 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
   );
 
   const rajoitus = rajoitusavain
-    ? await sections[rajoitusavain](
-        data.changeObjects[changeObjectMapping[rajoitusavain]],
-        locale
-      )
+    ? await sections[rajoitusavain](data.osioidenData[rajoitusavain], locale)
     : null;
 
   /**
@@ -302,6 +298,7 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
                 {
                   anchor: "A",
                   name: "Autocomplete",
+                  styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
                   properties: {
                     isMulti: false,
                     options: values(
@@ -319,27 +316,29 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
             },
             rajoitus ? rajoitus : {},
             await defineRajoituksetStructure(
+              data.osioidenData,
               data.rajoiteId,
               asetukset[data.rajoiteId],
               groupedChangeObjects,
               locale,
-              data.changeObjects,
               onRemoveCriterion
             ),
             {
               anchor: "asetuksenLisaaminen",
+              styleClasses: ["mt-6"],
               components: [
                 {
                   anchor: "painike",
                   name: "SimpleButton",
-                  onClick: payload =>
-                    onAddCriterion({
+                  onClick: payload => {
+                    return onAddCriterion({
                       ...payload,
                       metadata: {
                         ...payload.metadata,
                         rajoiteId: data.rajoiteId
                       }
-                    }),
+                    });
+                  },
                   properties: {
                     isVisible: true,
                     text: "Lisää rajoitekriteeri"
@@ -353,8 +352,6 @@ export async function rajoitelomake(data, isReadOnly, locale, changeObjects) {
       ].filter(Boolean)
     }
   ];
-
-  console.info("Lomakkeen rakenne: ", lomakerakenne);
 
   return lomakerakenne;
 }

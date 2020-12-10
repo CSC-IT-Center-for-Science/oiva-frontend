@@ -70,6 +70,14 @@ theme.typography.h4 = {
   paddingTop: "1rem"
 };
 
+theme.typography.h5 = {
+  fontSize: ".875rem",
+  fontWeight: 500,
+  lineHeight: "1.5",
+  paddingBottom: "0.875rem",
+  paddingTop: "0.875rem"
+};
+
 theme.typography.p = {
   marginBottom: "1.5rem"
 };

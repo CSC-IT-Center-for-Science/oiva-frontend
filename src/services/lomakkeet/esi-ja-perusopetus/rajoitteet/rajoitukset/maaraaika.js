@@ -1,11 +1,9 @@
 import { __ } from "i18n-for-browser";
 
-export default function maaraaika(
-  changeObjects,
-  otherChangeObjects = [],
-  tarkentimetChangeObjects = [],
+export const getMaaraaikalomake = async (
+  osionData,
   locale
-) {
+) => {
   return {
     anchor: "rajoitus",
     components: [
@@ -14,7 +12,7 @@ export default function maaraaika(
         name: "Datepicker",
         properties: {
           forChangeObject: {
-            section: "maaraaika",
+            section: "maaraaika"
           },
           label: "Alkamispäivä",
           value: "",
@@ -38,7 +36,7 @@ export default function maaraaika(
         name: "Datepicker",
         properties: {
           forChangeObject: {
-            section: "maaraaika",
+            section: "maaraaika"
           },
           label: "Päättymispäivä",
           value: "",
@@ -59,4 +57,4 @@ export default function maaraaika(
       }
     ]
   };
-}
+};

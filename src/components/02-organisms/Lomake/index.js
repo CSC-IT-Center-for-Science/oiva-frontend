@@ -24,6 +24,7 @@ const defaultProps = {
   isReadOnly: false,
   isRowExpanded: false,
   noPadding: false,
+  isSavingState: true,
   prefix: "",
   rowMessages: {},
   rowTitle: "",
@@ -43,6 +44,7 @@ const Lomake = React.memo(
     isPreviewModeOn = defaultProps.isPreviewModeOn,
     isReadOnly = defaultProps.isReadOnly,
     isRowExpanded = defaultProps.isRowExpanded,
+    isSavingState = defaultProps.isSavingState,
     lomakedataAnchor,
     mode,
     path: _path,
@@ -113,19 +115,33 @@ const Lomake = React.memo(
 
         const lomake = await fetchLomake();
 
+        const lomakedata =
+          lomake && lomake.length
+            ? getReducedStructureIncludingChanges(
+                lomakedataAnchor || anchor,
+                getReducedStructure(lomake),
+                changeObjects
+              )
+            : [];
+
+        /**
+         * Osa lomakkeista voi olla sellaisia, että niiden tilan
+         * tallentaminen aiheuttaa liikaa uudelleen lataamisia.
+         * Esimerkkinä tällaisesta lomakkeesta on rajoitelomake.
+         * Rajoitelomake hyödyntää lomakedataa ja näin ollen
+         * päivittyy datan päivittyessä. Jos rajoitelomakkeen
+         * dataa tallennetaan samaan paikkaan, kuin muiden
+         * lomakkeiden, aiheutuu siitä ikiluuppi.
+         */
+        if (isSavingState) {
+          lomakedataActions.setLomakedata(lomakedata, anchor);
+        }
+
         /**
          * Esikatselulomake tarvitsee lomakerakenteen luontia varten
          * muokkaustilaisen lomakkeen nykytilan.
          */
         if (isPreviewModeOn) {
-          const lomakedata =
-            lomake && lomake.length
-              ? getReducedStructureIncludingChanges(
-                  lomakedataAnchor || anchor,
-                  getReducedStructure(lomake),
-                  changeObjects
-                )
-              : [];
           const previewLomake = await fetchLomake("preview", [], {
             lomakedata
           });
@@ -146,6 +162,7 @@ const Lomake = React.memo(
       intl.locale,
       isPreviewModeOn,
       isReadOnly,
+      isSavingState,
       lomakedataActions,
       lomakedataAnchor,
       mode,
@@ -234,6 +251,7 @@ Lomake.propTypes = {
   prefix: PropTypes.string,
   rowMessages: PropTypes.object,
   rowTitle: PropTypes.string,
+  isSavingState: PropTypes.bool,
   uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
 

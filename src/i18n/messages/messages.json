@@ -1535,6 +1535,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.esikatselu",
+    "defaultMessage": "Esikatselu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1823,6 +1828,16 @@
     "id": "lukiokoulutus.paasivunOtsikko",
     "defaultMessage": "Lukiokoulutuksen järjestäjät",
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "rajoitteet.rajoite",
+    "defaultMessage": "Rajoite",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.rajoitteet",
+    "defaultMessage": "Rajoitteet",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
   },
   {
     "id": "user.ownOrganisation",

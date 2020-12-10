@@ -1,4 +1,6 @@
 export const muutokset = {
+  isRestrictionDialogVisible: false,
+  isPreviewModeOn: false,
   changeObjects: {
     saved: {},
     unsaved: {
@@ -837,6 +839,151 @@ export const muutokset = {
             }
           }
         }
+      ],
+      rajoitelomake: [],
+      rajoitteet: [
+        {
+          anchor:
+            "rajoitelomake.bf8608a6-e0e6-49ba-ab18-09c9e44a568d.asetukset.kohde.A",
+          properties: {
+            value: {
+              label: "Opetus, jota lupa koskee",
+              value: "opetustehtavat"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.bf8608a6-e0e6-49ba-ab18-09c9e44a568d.asetukset.rajoitus.opetustehtavat",
+          properties: {
+            value: [
+              {
+                label: "esiopetus",
+                value: "6"
+              },
+              {
+                label: "perusopetus vuosiluokat 1–6",
+                value: "23"
+              },
+              {
+                label: "kaksivuotinen esikoulu",
+                value: "9"
+              }
+            ],
+            metadata: {
+              section: "getOpetustehtavatLomake"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.kohde.A",
+          properties: {
+            value: {
+              label: "Opetus, jota lupa koskee",
+              value: "opetustehtavat"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.rajoitus.opetustehtavat",
+          properties: {
+            value: [
+              {
+                label: "kaksivuotinen esiopetus (5- ja 6-vuotiaat)",
+                value: "10"
+              },
+              {
+                label: "kaksivuotinen esikoulu",
+                value: "9"
+              }
+            ],
+            metadata: {
+              section: "getOpetustehtavatLomake"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.1.kohde.A",
+          properties: {
+            value: {
+              label: "Opetuskieli",
+              value: "opetuskielet"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.1.rajoitus.opetuskielet",
+          properties: {
+            value: [
+              {
+                label: "abhaasi",
+                value: "AB"
+              },
+              {
+                label: "dzongkha",
+                value: "DZ"
+              },
+              {
+                label: "saksa",
+                value: "DE"
+              }
+            ],
+            metadata: {
+              section: "opetuskielet"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.2.kohde.A",
+          properties: {
+            value: {
+              label: "Kunnat, joissa opetusta järjestetään",
+              value: "toimintaalue"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.2.rajoitus.opetustaAntavatKunnat",
+          properties: {
+            value: [
+              {
+                label: "Keitele",
+                value: "239"
+              },
+              {
+                label: "Keminmaa",
+                value: "241"
+              },
+              {
+                label: "Sonkajärvi",
+                value: "762"
+              },
+              {
+                label: "Virrat",
+                value: "936"
+              }
+            ],
+            metadata: {
+              section: "opetustaAntavatKunnat"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.3.kohde.A",
+          properties: {
+            value: {
+              label: "Opetuksen järjestämismuoto",
+              value: "opetuksenJarjestamismuodot"
+            }
+          }
+        }
       ]
     },
     underRemoval: {}
@@ -846,53 +993,111 @@ export const muutokset = {
     underRemoval: [],
     unsaved: [
       {
-        anchor: "muutEhdot.lisatiedot.1",
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.kohde.A",
         properties: {
-          value: "Lisätiedot osio 7.",
-          metadata: {
-            koodiarvo: "1",
-            koodisto: {
-              koodistoUri: "lisatietoja"
+          value: {
+            label: "Opetus, jota lupa koskee",
+            value: "opetustehtavat"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.rajoitus.opetustehtavat",
+        properties: {
+          value: [
+            {
+              label: "kaksivuotinen esiopetus (5- ja 6-vuotiaat)",
+              value: "10"
             },
-            versio: 1,
-            voimassaAlkuPvm: "2020-10-11"
+            {
+              label: "kaksivuotinen esikoulu",
+              value: "9"
+            }
+          ],
+          metadata: {
+            section: "getOpetustehtavatLomake"
           }
         }
       },
       {
-        anchor: "muutEhdot.1.valintaelementti",
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.1.kohde.A",
         properties: {
-          isChecked: true
-        }
-      },
-      {
-        anchor: "muutEhdot.2.valintaelementti",
-        properties: {
-          isChecked: true
-        }
-      },
-      {
-        anchor: "muutEhdot.2.0.kuvaus",
-        properties: {
-          value:
-            "Muokattu juutalaiskuvaus: Opetus perustuu erityiseen maailmankatsomukselliseen suuntaukseen. Lasta ei perusopetuslain 6 §:n 3 momentin mukaisesti saa ilman huoltajan suostumusta osoittaa tässä päätöksessä tarkoitettuun opetukseen.",
-          metadata: {
-            koodiarvo: "2"
+          value: {
+            label: "Opetuskieli",
+            value: "opetuskielet"
           }
         }
       },
       {
-        anchor: "muutEhdot.7.valintaelementti",
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.1.rajoitus.opetuskielet",
         properties: {
-          isChecked: true
+          value: [
+            {
+              label: "abhaasi",
+              value: "AB"
+            },
+            {
+              label: "dzongkha",
+              value: "DZ"
+            },
+            {
+              label: "saksa",
+              value: "DE"
+            }
+          ],
+          metadata: {
+            section: "opetuskielet"
+          }
         }
       },
       {
-        anchor: "muutEhdot.7.0.kuvaus",
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.2.kohde.A",
         properties: {
-          value: "Reggio Emilia kuvaus.",
+          value: {
+            label: "Kunnat, joissa opetusta järjestetään",
+            value: "toimintaalue"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.2.rajoitus.opetustaAntavatKunnat",
+        properties: {
+          value: [
+            {
+              label: "Keitele",
+              value: "239"
+            },
+            {
+              label: "Keminmaa",
+              value: "241"
+            },
+            {
+              label: "Sonkajärvi",
+              value: "762"
+            },
+            {
+              label: "Virrat",
+              value: "936"
+            }
+          ],
           metadata: {
-            koodiarvo: "7"
+            section: "opetustaAntavatKunnat"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.27acbbf8-548d-4da8-b0a5-970eada04ad1.asetukset.3.kohde.A",
+        properties: {
+          value: {
+            label: "4. Opetuksen järjestämismuoto",
+            value: "opetuksenJarjestamismuodot"
           }
         }
       }
