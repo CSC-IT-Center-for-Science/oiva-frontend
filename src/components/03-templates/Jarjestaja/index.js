@@ -249,13 +249,15 @@ const Jarjestaja = React.memo(
             <Route
               path={`${url}/jarjestamislupa`}
               render={() => (
-                <div className="border my-12 p-12 bg-white mx-auto w-4/5">
+                <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
                   {JarjestamislupaJSX ? (
-                    <JarjestamislupaJSX
-                      kohteet={kohteet}
-                      lupa={lupa}
-                      lupakohteet={lupakohteet}
-                    />
+                    <div className="max-w-5xl m-auto">
+                      <JarjestamislupaJSX
+                        kohteet={kohteet}
+                        lupa={lupa}
+                        lupakohteet={lupakohteet}
+                      />
+                    </div>
                   ) : null}
                 </div>
               )}
