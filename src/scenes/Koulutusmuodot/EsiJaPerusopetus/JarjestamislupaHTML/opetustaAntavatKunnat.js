@@ -29,83 +29,113 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
 
   /** Fetch kunnat and maaKuntaKunnat from storage */
   useEffect(() => {
-    getKunnatFromStorage().then(kunnat =>
-      setKunnat(kunnat)
-    ).catch(err => {
-      console.error(err);
-    });
-    getMaakuntakunnat().then(maakuntaKunnat =>
-      setMaakuntaKunnat(maakuntaKunnat)
-    ).catch(err => {
-      console.error(err);
+    getKunnatFromStorage()
+      .then(kunnat => setKunnat(kunnat))
+      .catch(err => {
+        console.error(err);
+      });
+    getMaakuntakunnat()
+      .then(maakuntaKunnat => setMaakuntaKunnat(maakuntaKunnat))
+      .catch(err => {
+        console.error(err);
       });
   }, []);
 
-  const maakuntaMaaraykset = filter(maarays =>
-    maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan"
-    && maarays.koodisto === "maakunta", maaraykset);
+  const maakuntaMaaraykset = filter(
+    maarays =>
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      maarays.koodisto === "maakunta",
+    maaraykset
+  );
 
   const kuntaMaaraykset = filter(maarays => {
-    return maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan"
-      && maarays.koodisto === "kunta"
-      && (!maarays.meta.changeObjects || !includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+    return (
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      maarays.koodisto === "kunta" &&
+      (!maarays.meta.changeObjects ||
+        !includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+    );
   }, maaraykset);
 
   const kunnatFromMaakuntaMaaraykset = map(maakunta => {
-    return !isEmpty(maakuntaKunnat) ? find(propEq("koodiarvo", maakunta.koodiarvo), maakuntaKunnat).kunnat : null
+    return !isEmpty(maakuntaKunnat)
+      ? find(propEq("koodiarvo", maakunta.koodiarvo), maakuntaKunnat).kunnat
+      : null;
   }, maakuntaMaaraykset);
 
-  const lisatietomaarays = find(maarays =>
-    maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan"
-    && maarays.koodisto === "lisatietoja", maaraykset);
+  const lisatietomaarays = find(
+    maarays =>
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      maarays.koodisto === "lisatietoja",
+    maaraykset
+  );
 
-  const opetustaJarjestetaanUlkomaillaValintaMaarays = find(maarays =>
-    maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-    !isNil(path(["meta", "changeObjects"], maarays)) &&
-    !isEmpty(path(["meta", "changeObjects"], maarays)) &&
-    startsWith("toimintaalue.ulkomaa", maarays.meta.changeObjects[0].anchor) , maaraykset)
+  const opetustaJarjestetaanUlkomaillaValintaMaarays = find(
+    maarays =>
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      !isNil(path(["meta", "changeObjects"], maarays)) &&
+      !isEmpty(path(["meta", "changeObjects"], maarays)) &&
+      startsWith("toimintaalue.ulkomaa", maarays.meta.changeObjects[0].anchor),
+    maaraykset
+  );
 
-  const opetustaJarjestetaanUlkomaillaIsChecked = opetustaJarjestetaanUlkomaillaValintaMaarays &&
-    path(["meta", "changeObjects", "0", "properties", "isChecked"], opetustaJarjestetaanUlkomaillaValintaMaarays);
+  const opetustaJarjestetaanUlkomaillaIsChecked =
+    opetustaJarjestetaanUlkomaillaValintaMaarays &&
+    path(
+      ["meta", "changeObjects", "0", "properties", "isChecked"],
+      opetustaJarjestetaanUlkomaillaValintaMaarays
+    );
 
-  const opetustaJarjestetaanUlkomaillaLisatiedotMaarays = find(maarays =>
-    maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-    !isNil(path(["meta", "changeObjects"], maarays)) &&
-    !isEmpty(path(["meta", "changeObjects"], maarays)) &&
-    includes("ulkomaa", maarays.meta.changeObjects[0].anchor) &&
-    includes("lisatiedot", maarays.meta.changeObjects[0].anchor), maaraykset)
+  const opetustaJarjestetaanUlkomaillaLisatiedotMaarays = find(
+    maarays =>
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      !isNil(path(["meta", "changeObjects"], maarays)) &&
+      !isEmpty(path(["meta", "changeObjects"], maarays)) &&
+      includes("ulkomaa", maarays.meta.changeObjects[0].anchor) &&
+      includes("lisatiedot", maarays.meta.changeObjects[0].anchor),
+    maaraykset
+  );
 
   /** Set nimi property for maarays, and sort maaraykset by nimi **/
-  const kunnatFromLupa = sortBy(prop('nimi'))(
+  const kunnatFromLupa = sortBy(prop("nimi"))(
     map(kunta => {
-      kunta.nimi = kunta.metadata ?
-        kunta.metadata[locale].nimi : find(propEq("kieli", locale), kunta.koodi.metadata).nimi;
-      return kunta
+      kunta.nimi = kunta.metadata
+        ? kunta.metadata[locale].nimi
+        : find(propEq("kieli", locale), kunta.koodi.metadata).nimi;
+      return kunta;
     }, flatten(concat(kunnatFromMaakuntaMaaraykset, kuntaMaaraykset)).filter(Boolean))
   );
 
-  return !isEmpty(kunnat) && !isEmpty(maakuntaKunnat) && (!isEmpty(kunnatFromLupa) || opetustaJarjestetaanUlkomaillaIsChecked) ? (
+  return !isEmpty(kunnat) &&
+    !isEmpty(maakuntaKunnat) &&
+    (!isEmpty(kunnatFromLupa) || opetustaJarjestetaanUlkomaillaIsChecked) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}
       </Typography>
       <ul className="ml-8 list-disc mb-4">
-        {
-          map(kunta =>
+        {map(
+          kunta => (
             <li key={kunta.koodiarvo} className="leading-bulletList">
-            { kunta.nimi }
-          </li>, kunnatFromLupa)
-        }
+              {kunta.nimi}
+            </li>
+          ),
+          kunnatFromLupa
+        )}
       </ul>
-      { opetustaJarjestetaanUlkomaillaIsChecked && (
+      {opetustaJarjestetaanUlkomaillaIsChecked && (
         <div className="mb-4">
           <Typography component="h4" variant="h4">
-            {intl.formatMessage(education.opetustaJarjestetaanSuomenUlkopuolella)}
+            {intl.formatMessage(
+              education.opetustaJarjestetaanSuomenUlkopuolella
+            )}
           </Typography>
-          {opetustaJarjestetaanUlkomaillaLisatiedotMaarays ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo : ""}
+          {opetustaJarjestetaanUlkomaillaLisatiedotMaarays
+            ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo
+            : ""}
         </div>
       )}
-      { lisatietomaarays && (lisatietomaarays.meta.arvo)}
+      <p className="mb-6">{lisatietomaarays && lisatietomaarays.meta.arvo}</p>
     </div>
-  ) : null
+  ) : null;
 }

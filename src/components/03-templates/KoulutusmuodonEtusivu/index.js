@@ -58,7 +58,7 @@ export default function KoulutusmuodonEtusivu({
           <article>
             <nav
               tabIndex="0"
-              className="breadcumbs-nav py-4 border-b pl-8 mb-12"
+              className="breadcumbs-nav py-4 border-b pl-8"
               aria-label={formatMessage(common.breadCrumbs)}>
               <Breadcrumbs
                 hideIfEmpty={true}
@@ -74,7 +74,7 @@ export default function KoulutusmuodonEtusivu({
               />
             </nav>
             {location.pathname === `/${koulutusmuoto.kebabCase}` ? (
-              <div className="mx-auto w-4/5 mt-12">
+              <div className="mx-auto w-4/5 mt-12 max-w-8xl">
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
                 </Typography>
@@ -146,6 +146,7 @@ export default function KoulutusmuodonEtusivu({
                             return (
                               <JarjestajaSwitch
                                 JarjestamislupaJSX={JarjestamislupaJSX}
+                                kohteet={_props1.kohteet}
                                 koulutusmuoto={koulutusmuoto}
                                 lupa={_props1.lupa}
                                 organisation={_props1.organisaatio}
@@ -170,6 +171,7 @@ export default function KoulutusmuodonEtusivu({
                                     return (
                                       <JarjestajaSwitch
                                         JarjestamislupaJSX={JarjestamislupaJSX}
+                                        kohteet={_props1.kohteet}
                                         koulutusmuoto={koulutusmuoto}
                                         lupa={_props1.lupa}
                                         lupaUuid={_props1.lupaUuid}
@@ -184,7 +186,11 @@ export default function KoulutusmuodonEtusivu({
                                     );
                                   }
                                 }}
-                                oppilaitostyyppi={_props1.voimassaOlevaLupa ? _props1.voimassaOlevaLupa.oppilaitostyyppi : null}
+                                oppilaitostyyppi={
+                                  _props1.voimassaOlevaLupa
+                                    ? _props1.voimassaOlevaLupa.oppilaitostyyppi
+                                    : null
+                                }
                                 ytunnus={_props1.lupa.jarjestajaYtunnus}
                               />
                             );

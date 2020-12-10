@@ -12,6 +12,7 @@ const constants = {
 const Opetuskieli = ({
   code,
   isPreviewModeOn,
+  maaraykset,
   mode = constants.mode,
   sectionId,
   title
@@ -21,6 +22,7 @@ const Opetuskieli = ({
     <Lomake
       anchor={sectionId}
       code={code}
+      data={{ maaraykset }}
       formTitle={title}
       isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
@@ -34,6 +36,7 @@ const Opetuskieli = ({
 Opetuskieli.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string

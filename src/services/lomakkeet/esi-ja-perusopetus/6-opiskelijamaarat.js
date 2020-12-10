@@ -1,16 +1,24 @@
 import { __ } from "i18n-for-browser";
-import { find, flatten, pathEq } from "ramda";
+import { find, flatten, pathEq, propEq } from "ramda";
 import { getLisatiedotFromStorage } from "../../../helpers/lisatiedot";
 
-export async function opiskelijamaarat(data, { isPreviewModeOn, isReadOnly }) {
+export async function opiskelijamaarat(
+  { maaraykset },
+  { isPreviewModeOn, isReadOnly }
+) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
-    lisatiedot
+    lisatiedot || []
   );
+  const optionValueMaarays = find(
+    propEq("koodisto", "kujalisamaareet"),
+    maaraykset
+  );
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
 
-  return flatten([
+  const lomakerakenne = flatten([
     {
       anchor: "kenttaotsikko",
       components: [
@@ -45,7 +53,10 @@ export async function opiskelijamaarat(data, { isPreviewModeOn, isReadOnly }) {
                 label: __("common.vahintaan"),
                 value: "2"
               }
-            ]
+            ],
+            selectedOption: optionValueMaarays
+              ? optionValueMaarays.koodiarvo
+              : ""
           }
         },
         {
@@ -56,7 +67,7 @@ export async function opiskelijamaarat(data, { isPreviewModeOn, isReadOnly }) {
             isReadOnly: _isReadOnly,
             placeholder: __("education.oppilastaOpiskelijaa"),
             type: "number",
-            value: ""
+            value: optionValueMaarays ? optionValueMaarays.arvo : ""
           }
         }
       ]
@@ -86,7 +97,8 @@ export async function opiskelijamaarat(data, { isPreviewModeOn, isReadOnly }) {
                 properties: {
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: __("common.lisatiedot")
+                  placeholder: __("common.lisatiedot"),
+                  value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                 }
               }
             ]
@@ -94,4 +106,6 @@ export async function opiskelijamaarat(data, { isPreviewModeOn, isReadOnly }) {
         ]
       : null
   ]).filter(Boolean);
+
+  return lomakerakenne;
 }

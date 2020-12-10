@@ -12,6 +12,7 @@ const constants = {
 const OpetuksenJarjestamismuoto = ({
   code,
   isPreviewModeOn,
+  maaraykset,
   mode = constants.mode,
   sectionId,
   title
@@ -22,6 +23,7 @@ const OpetuksenJarjestamismuoto = ({
     <Lomake
       anchor={sectionId}
       code={code}
+      data={{ maaraykset }}
       formTitle={title}
       isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
@@ -35,6 +37,7 @@ const OpetuksenJarjestamismuoto = ({
 OpetuksenJarjestamismuoto.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string

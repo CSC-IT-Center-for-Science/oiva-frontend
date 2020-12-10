@@ -1,11 +1,11 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, toUpper } from "ramda";
+import { find, flatten, map, pathEq, propEq, toUpper } from "ramda";
 import { getOpetustehtavatFromStorage } from "../../../helpers/opetustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { __ } from "i18n-for-browser";
 
 export async function opetusJotaLupaKoskee(
-  data,
+  { maaraykset },
   { isPreviewModeOn, isReadOnly },
   locale
 ) {
@@ -19,8 +19,15 @@ export async function opetusJotaLupaKoskee(
     lisatiedot || []
   );
 
+  const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
+
   return flatten([
     map(opetustehtava => {
+      const maarays = find(m =>
+        propEq("koodiarvo", opetustehtava.koodiarvo, m) &&
+        propEq("koodisto", "opetustehtava", m),
+        maaraykset
+      );
       return {
         anchor: "opetustehtava",
         components: [
@@ -33,12 +40,9 @@ export async function opetusJotaLupaKoskee(
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
-                custom: Object.assign(
-                  {},
-                  !!opetustehtava.maarays ? isInLupa : {}
-                )
+                custom: Object.assign({}, !!maarays ? isInLupa : {})
               },
-              isChecked: !!opetustehtava.maarays,
+              isChecked: !!maarays,
               isIndeterminate: false,
               isPreviewModeOn,
               isReadOnly: _isReadOnly
@@ -72,7 +76,8 @@ export async function opetusJotaLupaKoskee(
                 properties: {
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: __("common.lisatiedot")
+                  placeholder: __("common.lisatiedot"),
+                  value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                 }
               }
             ]

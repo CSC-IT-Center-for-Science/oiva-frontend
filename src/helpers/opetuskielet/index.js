@@ -116,7 +116,8 @@ export const defineBackendChangeObjects = async (
           kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
           maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
           meta: {
-            changeObjects: [changeObj]
+            changeObjects: [changeObj],
+            valikko: path(["properties", "metadata", "valikko"], changeObj)
           },
           tila: "LISAYS"
         }

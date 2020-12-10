@@ -218,7 +218,7 @@ const JarjestamislupaAsiatList = ({
   let hasRights = sessionStorage.getItem("role") !== ROLE_KATSELIJA;
   return (
     <React.Fragment>
-      <div className="mb-2">
+      <div className="mb-6">
         {muutospyynto && (
           <Button color="primary" onClick={() => setMuutospyynto(null)}>
             <ArrowBack />

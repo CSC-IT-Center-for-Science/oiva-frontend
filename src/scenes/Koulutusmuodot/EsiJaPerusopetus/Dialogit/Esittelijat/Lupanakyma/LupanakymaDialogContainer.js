@@ -12,7 +12,7 @@ import { isEmpty } from "ramda";
  * @param {Object} props.intl - Object of react-intl library.
  */
 const UusiAsiaDialogContainer = React.memo(
-  ({ kohteet, lisatiedot, maaraystyypit, organisaatio, viimeisinLupa }) => {
+  ({ kohteet, maaraystyypit, organisaatio, viimeisinLupa }) => {
     const history = useHistory();
     const intl = useIntl();
 
@@ -42,7 +42,6 @@ const UusiAsiaDialogContainer = React.memo(
     return (
       <UusiAsiaDialog
         kohteet={kohteet}
-        lisatiedot={lisatiedot}
         lupa={viimeisinLupa}
         lupakohteet={lupakohteet}
         maaraystyypit={maaraystyypit}

@@ -113,18 +113,3 @@ const Esittelijat = ({
 };
 
 export default Esittelijat;
-
-// kohteet,
-// koulutukset,
-// koulutusalat,
-// koulutustyypit,
-// maaraystyypit,
-// muut,
-// opetuskielet,
-
-// kielet,
-// kunnat,
-// lisatiedot,
-// maakunnat,
-// maakuntakunnat,
-// tutkinnot,

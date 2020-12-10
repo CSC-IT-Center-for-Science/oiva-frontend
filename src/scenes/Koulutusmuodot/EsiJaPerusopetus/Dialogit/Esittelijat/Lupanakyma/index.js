@@ -51,7 +51,6 @@ const FormDialog = withStyles(() => ({
 
 const UusiAsiaDialog = ({
   kohteet,
-  lisatiedot,
   lupa,
   lupakohteet,
   maaraystyypit,
@@ -342,7 +341,7 @@ const UusiAsiaDialog = ({
                       className={`fixed w-full ${
                         isPreviewModeOn ? "border-r border-gray-300" : ""
                       }`}>
-                      <div className={`border-b border-gray-300 px-12`}>
+                      <div className={`border-b border-gray-300`}>
                         <Typography component="h2" variant="h2">
                           {intl.formatMessage(common.decisionDetails)}
                         </Typography>
@@ -354,8 +353,8 @@ const UusiAsiaDialog = ({
                         style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                         <LupanakymaA
                           isPreviewModeOn={false}
-                          lisatiedot={lisatiedot}
                           lupakohteet={lupakohteet}
+                          maaraykset={lupa.maaraykset}
                           valtakunnallinenMaarays={valtakunnallinenMaarays}
                         />
                       </div>
@@ -372,18 +371,18 @@ const UusiAsiaDialog = ({
                         className={`fixed w-full ${
                           isPreviewModeOn ? "border-l border-gray-300" : ""
                         }`}>
-                        <div className="border-b border-gray-300 px-12">
+                        <div className="border-b border-gray-300 px-6">
                           <Typography component="h2" variant="h2">
                             {intl.formatMessage(common.esikatselu)}
                           </Typography>
                         </div>
                         <div
-                          className="p-6 bg-gray-100 overflow-auto"
+                          className="p-6 overflow-auto"
                           style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                           <LupanakymaA
                             isPreviewModeOn={true}
-                            lisatiedot={lisatiedot}
                             lupakohteet={lupakohteet}
+                            maaraykset={lupa.maaraykset}
                             valtakunnallinenMaarays={valtakunnallinenMaarays}
                           />
                         </div>

@@ -435,7 +435,7 @@ const fetchBaseData = async (
         sortBy(
           path(["metadata", localeUpper, "nimi"]),
           map(kunta => {
-            return initializeKunta(kunta, localeUpper);
+            return initializeKunta(kunta, localeUpper, ahvenanmaanKunnat);
           }, raw.kunnat).filter(Boolean)
         )
       )
