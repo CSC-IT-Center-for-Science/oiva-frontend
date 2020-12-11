@@ -83,7 +83,7 @@ theme.typography.p = {
 };
 
 theme.palette.primary.main = COLORS.OIVA_GREEN;
-theme.palette.primary.light = "#65A884";
+theme.palette.primary.dark = COLORS.OIVA_DARK_GREEN;
 theme.palette.secondary.main = COLORS.DARK_GRAY;
 
 render(

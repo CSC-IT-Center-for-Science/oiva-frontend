@@ -24,7 +24,11 @@ export async function opetuksenJarjestamismuoto(
   return flatten(
     [
       map(muoto => {
-        const maarays = find(propEq("koodiarvo", muoto.koodiarvo), maaraykset);
+        const maarays = find(m =>
+          propEq("koodiarvo", muoto.koodiarvo, m) &&
+          propEq("koodisto", "opetuksenjarjestamismuoto", m),
+          maaraykset
+        );
         return {
           anchor: muoto.koodiarvo,
           categories: [
