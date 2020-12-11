@@ -32,7 +32,6 @@ import {
   getLatestChangesByAnchor,
   recursiveTreeShake
 } from "utils/common";
-import { muutokset } from "../scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -81,7 +80,16 @@ const closeRestrictionDialog = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  initialState: muutokset,
+  initialState: {
+    changeObjects: {
+      saved: {},
+      unsaved: {},
+      underRemoval: {}
+    },
+    focusOn: null,
+    latestChanges: {},
+    validity: {}
+  },
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
@@ -161,11 +169,7 @@ const Store = createStore({
       );
       setState({ ...getState(), changeObjects: nextChangeObjects });
     },
-    closeRestrictionDialog: (initialChangeObjects = [], rajoiteId) => ({
-      getState,
-      dispatch,
-      setState
-    }) => {
+    closeRestrictionDialog: () => ({ dispatch }) => {
       dispatch(closeRestrictionDialog());
     },
     /**
