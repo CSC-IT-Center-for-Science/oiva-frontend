@@ -43,8 +43,9 @@ export async function erityisetKoulutustehtavat(
   return flatten(
     [
       map(erityinenKoulutustehtava => {
-        const tehtavaanLiittyvatMaaraykset = filter(
-          propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo),
+        const tehtavaanLiittyvatMaaraykset = filter(m =>
+          propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
+          propEq("koodisto", "poerityinenkoulutustehtava", m),
           maaraykset
         );
         const kuvausmaaraykset = filter(
