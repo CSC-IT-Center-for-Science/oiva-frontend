@@ -262,9 +262,7 @@ const fetchBaseData = async (
         backendRoutes.tulevatLuvat.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
-      }${
-        oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""
-      }`,
+      }${oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""}`,
       keys,
       backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
     ),
@@ -683,15 +681,28 @@ const BaseData = ({
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi, oppilaitostyyppi).then(
-      result => {
-        if (isSubscribed) {
-          setBaseData(result);
-        }
+    fetchBaseData(
+      keys,
+      locale,
+      lupaUuid,
+      _ytunnus,
+      koulutustyyppi,
+      oppilaitostyyppi
+    ).then(result => {
+      if (isSubscribed) {
+        setBaseData(result);
       }
-    );
+    });
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi, oppilaitostyyppi]);
+  }, [
+    keys,
+    locale,
+    lupaUuid,
+    _ytunnus,
+    location.pathname,
+    koulutustyyppi,
+    oppilaitostyyppi
+  ]);
 
   if (!isEmpty(baseData)) {
     return (

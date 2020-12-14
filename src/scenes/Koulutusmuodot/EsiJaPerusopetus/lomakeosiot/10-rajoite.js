@@ -16,13 +16,17 @@ const constants = {
   formLocation: ["esiJaPerusopetus", "rajoite"]
 };
 
-const Rajoite = ({ osioidenData, parentSectionId, restrictionId }) => {
+const Rajoite = ({
+  osioidenData,
+  sectionId,
+  parentSectionId,
+  restrictionId
+}) => {
   const [state, actions] = useChangeObjects();
   const intl = useIntl();
-  const sectionId = "rajoitelomake";
 
   const [rajoitelomakeChangeObjs] = useChangeObjectsByAnchor({
-    anchor: "rajoitelomake"
+    anchor: sectionId
   });
 
   const onAddCriterion = useCallback(

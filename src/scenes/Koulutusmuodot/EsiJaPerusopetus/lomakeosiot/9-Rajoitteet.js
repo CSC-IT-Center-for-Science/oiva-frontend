@@ -1,14 +1,12 @@
 import React, { useCallback, useState } from "react";
-import Rajoite from "./10-rajoite";
-import { useChangeObjectsByAnchor } from "stores/muutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import { useIntl } from "react-intl";
 import { v4 as uuidv4 } from "uuid";
-import { filter } from "ramda";
 import Lomake from "components/02-organisms/Lomake";
-import { getAnchorPart } from "utils/common";
 import { useAllSections } from "stores/lomakedata";
 import { useChangeObjects } from "../../../../stores/muutokset";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
-import { useIntl } from "react-intl";
+import Rajoite from "./10-rajoite";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]
@@ -20,15 +18,17 @@ const Rajoitteet = ({
   render,
   sectionId
 }) => {
+  const dialogSectionId = "rajoitelomake";
+
   const { formatMessage } = useIntl();
   const [{ isRestrictionDialogVisible }] = useChangeObjects();
   const [osioidenData] = useAllSections();
   const [restrictionId, setRestrictionId] = useState(null);
   const [
-    existingRajoiteChangeObjs,
+    ,
     { removeRajoite, setRajoitelomakeChangeObjects, showNewRestrictionDialog }
-  ] = useChangeObjectsByAnchor({
-    anchor: "rajoitteet"
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
   });
 
   const onAddRestriction = useCallback(() => {
@@ -39,18 +39,10 @@ const Rajoitteet = ({
   const onModifyRestriction = useCallback(
     rajoiteId => {
       setRestrictionId(rajoiteId);
-      const unsavedChangeObjs = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) === rajoiteId,
-        existingRajoiteChangeObjs.unsaved
-      );
-      setRajoitelomakeChangeObjects(unsavedChangeObjs);
+      setRajoitelomakeChangeObjects(rajoiteId, sectionId, dialogSectionId);
       showNewRestrictionDialog();
     },
-    [
-      existingRajoiteChangeObjs,
-      setRajoitelomakeChangeObjects,
-      showNewRestrictionDialog
-    ]
+    [setRajoitelomakeChangeObjects, showNewRestrictionDialog]
   );
 
   const onRemoveRestriction = useCallback(
@@ -67,7 +59,8 @@ const Rajoitteet = ({
           osioidenData={osioidenData}
           onChangesUpdate={onChangesUpdate}
           parentSectionId={sectionId}
-          restrictionId={restrictionId}></Rajoite>
+          restrictionId={restrictionId}
+          sectionId={dialogSectionId}></Rajoite>
       )}
       {isRestrictionsModeOn && (
         <Lomake

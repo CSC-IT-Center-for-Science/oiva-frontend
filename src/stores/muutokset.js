@@ -30,7 +30,8 @@ import {
 import {
   getAnchorPart,
   getLatestChangesByAnchor,
-  recursiveTreeShake
+  recursiveTreeShake,
+  replaceAnchorPartWith
 } from "utils/common";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
@@ -100,7 +101,8 @@ const Store = createStore({
       setState
     }) => {
       const currentChangeObjects = prop("unsaved", getState().changeObjects);
-      // Poistetaan ensin storen changeObjects.rajoitteet kaikki hyväksyttävään rajoitteeseen liittyvät muutos-objektit
+      // Poistetaan ensin storen changeObjects.rajoitteet kaikki
+      // hyväksyttävään rajoitteeseen liittyvät muutos-objektit
       const filteredChangeObjs = filter(
         cObj => getAnchorPart(cObj.anchor, 1) !== restrictionId,
         currentChangeObjects[targetSectionId] || []
@@ -114,7 +116,19 @@ const Store = createStore({
       setState(
         assocPath(
           ["changeObjects", "unsaved", targetSectionId],
-          rajoitelomakeChangeObjs,
+          // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
+          // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
+          // tallennetaan muutosobjektit tilanhallintaan.
+          map(changeObj => {
+            return {
+              ...changeObj,
+              anchor: replaceAnchorPartWith(
+                changeObj.anchor,
+                0,
+                targetSectionId
+              )
+            };
+          }, rajoitelomakeChangeObjs),
           getState()
         )
       );
@@ -358,14 +372,37 @@ const Store = createStore({
     setPreviewMode: value => ({ getState, setState }) => {
       setState(assoc("isPreviewModeOn", value, getState()));
     },
-    setRajoitelomakeChangeObjects: unsavedChangeObjects => ({
+    setRajoitelomakeChangeObjects: (rajoiteId, sectionId, targetSectionId) => ({
       getState,
       setState
     }) => {
+      // Muutosobjektit, jotka rajoitedialogissa on tarkoitus näyttää.
+      const changeObjects = getChangeObjectsByAnchorWithoutUnderRemoval(
+        getState(),
+        { anchor: sectionId }
+      );
+
+      const changeObjectsOfCurrentRestriction = filter(
+        cObj => getAnchorPart(cObj.anchor, 1) === rajoiteId,
+        changeObjects
+      );
+
       setState(
         assocPath(
-          ["changeObjects", "unsaved", "rajoitelomake"],
-          unsavedChangeObjects,
+          ["changeObjects", "unsaved", targetSectionId],
+          // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
+          // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
+          // tallennetaan muutosobjektit tilanhallintaan.
+          map(changeObj => {
+            return {
+              ...changeObj,
+              anchor: replaceAnchorPartWith(
+                changeObj.anchor,
+                0,
+                targetSectionId
+              )
+            };
+          }, changeObjectsOfCurrentRestriction),
           getState()
         )
       );
