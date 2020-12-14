@@ -41,7 +41,8 @@ const Opetustehtavat = React.memo(
         isRowExpanded={true}
         path={constants.formLocation}
         rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
-        showCategoryTitles={true}></Lomake>
+        showCategoryTitles={true}
+      ></Lomake>
     ) : null;
   }
 );
