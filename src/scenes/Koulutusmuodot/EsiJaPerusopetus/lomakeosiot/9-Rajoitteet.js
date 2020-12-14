@@ -42,7 +42,7 @@ const Rajoitteet = ({
       setRajoitelomakeChangeObjects(rajoiteId, sectionId, dialogSectionId);
       showNewRestrictionDialog();
     },
-    [setRajoitelomakeChangeObjects, showNewRestrictionDialog]
+    [sectionId, setRajoitelomakeChangeObjects, showNewRestrictionDialog]
   );
 
   const onRemoveRestriction = useCallback(

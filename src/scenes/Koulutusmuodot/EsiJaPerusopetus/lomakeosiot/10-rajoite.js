@@ -33,14 +33,14 @@ const Rajoite = ({
     payload => {
       actions.addCriterion(sectionId, payload.metadata.rajoiteId);
     },
-    [actions]
+    [actions, sectionId]
   );
 
   const onRemoveCriterion = useCallback(
     anchor => {
       actions.removeCriterion(sectionId, anchor);
     },
-    [actions]
+    [actions, sectionId]
   );
 
   const revertChangesAndCloseDialog = () => {
