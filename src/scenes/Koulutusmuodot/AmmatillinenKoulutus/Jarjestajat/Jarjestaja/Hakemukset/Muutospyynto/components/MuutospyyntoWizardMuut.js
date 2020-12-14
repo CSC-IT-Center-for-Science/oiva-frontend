@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import { filter, groupBy, omit, path, prop, propEq, toUpper } from "ramda";
+import { filter, groupBy, omit, path, pipe, propEq, reduce, toUpper } from "ramda";
 import Laajennettu from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/01-Laajennettu";
 import VaativaTuki from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/02-VaativaTuki";
 import Sisaoppilaitos from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/03-Sisaoppilaitos";
@@ -31,13 +31,15 @@ const MuutospyyntoWizardMuut = React.memo(
 
     const maarayksetByKoodiarvo = useMemo(
       () =>
-        groupBy(
-          prop("koodiarvo"),
+        pipe(
           filter(
-            propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
-            maaraykset
-          )
-        ),
+            propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
+          ),
+          reduce((maaraysByKoodiarvo, maarays) => {
+            maaraysByKoodiarvo[maarays.koodiarvo] = maarays;
+            return maaraysByKoodiarvo;
+          }, {})
+        )(maaraykset),
       [maaraykset]
     );
 
