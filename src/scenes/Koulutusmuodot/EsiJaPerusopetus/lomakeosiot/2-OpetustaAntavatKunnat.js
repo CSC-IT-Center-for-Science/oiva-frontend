@@ -97,7 +97,9 @@ const OpetustaAntavatKunnat = React.memo(
     }, [changeObjects, sectionId]);
 
     const noSelectionsInLupa =
-      R.isEmpty(maakuntamaaraykset) && R.isEmpty(kuntamaaraykset) && fiCode !== "FI1";
+      R.isEmpty(maakuntamaaraykset) &&
+      R.isEmpty(kuntamaaraykset) &&
+      fiCode !== "FI1";
 
     return (
       <Lomake
