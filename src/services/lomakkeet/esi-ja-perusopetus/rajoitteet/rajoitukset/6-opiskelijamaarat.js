@@ -1,17 +1,19 @@
-import {} from "ramda";
 import { __ } from "i18n-for-browser";
 
-export default async function opiskelijaMaarat(changeObjects) {
+export default async function opiskelijaMaarat() {
   const isReadOnly = false;
 
   return {
-    anchor: "maaraaika",
+    anchor: "rajoitus",
     components: [
       {
-        anchor: "dropdown",
+        anchor: "opiskelijamaaratyyppi",
         styleClasses: "mb-0 mr-2 w-1/5",
         name: "Dropdown",
         properties: {
+          forChangeObject: {
+            section: "opiskelijamaarat"
+          },
           options: [
             // 1 = koodiarvo 1, enintään, koodisto: kujalisamaareet
             { label: __("common.enintaan"), value: "1" },
@@ -22,9 +24,12 @@ export default async function opiskelijaMaarat(changeObjects) {
         }
       },
       {
-        anchor: "input",
+        anchor: "opiskelijamaara",
         name: "Input",
         properties: {
+          forChangeObject: {
+            section: "opiskelijamaarat"
+          },
           placeholder: __("education.oppilastaOpiskelijaa"),
           type: "number",
           value: "",

@@ -3,73 +3,79 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Typography
+  DialogTitle
 } from "@material-ui/core";
 import common from "i18n/definitions/common";
 import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
-import Lomake from "../../../../components/02-organisms/Lomake";
+import Lomake from "components/02-organisms/Lomake";
 import PropTypes from "prop-types";
-import {
-  useChangeObjects,
-  useChangeObjectsByMultipleAnchorsWithoutUnderRemoval
-} from "../../../../stores/muutokset";
+import { useChangeObjects, useChangeObjectsByAnchor } from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "rajoite"]
 };
 
-const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
-  const [
-    changeObjectsByAnchor
-  ] = useChangeObjectsByMultipleAnchorsWithoutUnderRemoval({
-    anchors: [
-      "opetustehtavat",
-      "opetuskielet",
-      "toimintaalue",
-      "opetuksenJarjestamismuodot",
-      "erityisetKoulutustehtavat",
-      "opiskelijamaarat",
-      "muutEhdot"
-    ]
-  });
+const Rajoite = ({
+  osioidenData,
+  sectionId,
+  parentSectionId,
+  restrictionId
+}) => {
   const [state, actions] = useChangeObjects();
   const intl = useIntl();
-  const sectionId = "rajoitelomake";
-  const restrictionId = "eka";
+
+  const [rajoitelomakeChangeObjs] = useChangeObjectsByAnchor({
+    anchor: sectionId
+  });
 
   const onAddCriterion = useCallback(
     payload => {
       actions.addCriterion(sectionId, payload.metadata.rajoiteId);
     },
-    [actions]
+    [actions, sectionId]
   );
 
   const onRemoveCriterion = useCallback(
     anchor => {
       actions.removeCriterion(sectionId, anchor);
     },
-    [actions]
+    [actions, sectionId]
   );
+
+  const revertChangesAndCloseDialog = () => {
+    actions.closeRestrictionDialog();
+  };
+
+  const acceptChangesAndCloseDialog = () => {
+    actions.acceptRestriction(sectionId, restrictionId, parentSectionId);
+  };
 
   return (
     <Dialog
       open={state.isRestrictionDialogVisible}
-      PaperProps={{ style: { overflowY: "auto" } }}>
+      PaperProps={{
+        style: {
+          overflowY: "auto",
+          height: "80%",
+          minWidth: "32rem",
+          width: "80%",
+          maxWidth: "88rem"
+        }
+      }}>
       <DialogTitle onClose={actions.closeRestrictionDialog}>
         Lisää rajoite luvalle
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <Typography className="pb-8">
+        {/* <Typography component="p" variant="p">
           Aloita valitsemalla rajoituksen kohde. Valinnan jälkeen voit tehdä
           tarvittavat rajoitukset haluamallasi tavalla
-        </Typography>
+        </Typography> */}
         <Lomake
           isInExpandableRow={false}
           anchor={sectionId}
           data={{
-            changeObjects: changeObjectsByAnchor,
+            osioidenData,
             rajoiteId: restrictionId,
             sectionId
           }}
@@ -77,8 +83,7 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
             onAddCriterion,
             onRemoveCriterion
           }}
-          noPadding={true}
-          onChangesUpdate={onChangesUpdate}
+          isSavingState={false}
           path={constants.formLocation}
           showCategoryTitles={true}></Lomake>
       </DialogContent>
@@ -86,7 +91,7 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
         <div className="flex pr-6 pb-4">
           <div className="mr-4">
             <Button
-              onClick={actions.closeRestrictionDialog}
+              onClick={() => revertChangesAndCloseDialog()}
               color="primary"
               variant="outlined">
               {intl.formatMessage(common.cancel)}
@@ -94,13 +99,7 @@ const Rajoite = ({ onChangesUpdate, parentSectionId }) => {
           </div>
           <Button
             onClick={() => {
-              console.info("Hyväksytään ja suljetaan rajoitedialogi.");
-              actions.acceptRestriction(
-                sectionId,
-                restrictionId,
-                parentSectionId
-              );
-              actions.closeRestrictionDialog();
+              acceptChangesAndCloseDialog(rajoitelomakeChangeObjs);
             }}
             color="primary"
             variant="contained">

@@ -86,7 +86,10 @@ const UusiAsiaDialog = ({
     anchor: "muutEhdot"
   });
 
-  const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
+  const [
+    { changeObjects, isPreviewModeOn },
+    { setPreviewMode, initializeChanges }
+  ] = useChangeObjects();
 
   const intl = useIntl();
   const params = useParams();
@@ -94,7 +97,6 @@ const UusiAsiaDialog = ({
   let { uuid } = params;
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
-  const [isPreviewModeOn, setPreviewMode] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
@@ -157,7 +159,7 @@ const UusiAsiaDialog = ({
    */
   const onPreview = useCallback(async () => {
     setPreviewMode(isPreviewModeOn => !isPreviewModeOn);
-  }, []);
+  }, [setPreviewMode]);
 
   /**
    * Saves the form.
@@ -338,7 +340,7 @@ const UusiAsiaDialog = ({
                       height: isPreviewModeOn ? "100vh" : "84vh"
                     }}>
                     <section
-                      className={`fixed w-full ${
+                      className={`px-12 pb-32 fixed w-full ${
                         isPreviewModeOn ? "border-r border-gray-300" : ""
                       }`}>
                       <div className={`border-b border-gray-300`}>
@@ -353,6 +355,7 @@ const UusiAsiaDialog = ({
                         style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                         <LupanakymaA
                           isPreviewModeOn={false}
+                          isRestrictionsModeOn={true}
                           lupakohteet={lupakohteet}
                           maaraykset={lupa.maaraykset}
                           valtakunnallinenMaarays={valtakunnallinenMaarays}

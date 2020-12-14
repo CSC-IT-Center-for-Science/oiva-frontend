@@ -23,12 +23,15 @@ import {
   reject,
   split,
   startsWith,
-  values
+  values,
+  includes,
+  prop
 } from "ramda";
 import {
   getAnchorPart,
   getLatestChangesByAnchor,
-  recursiveTreeShake
+  recursiveTreeShake,
+  replaceAnchorPartWith
 } from "utils/common";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
@@ -70,6 +73,13 @@ const setSavedChanges = (changeObjects, anchor) => ({ getState, setState }) => {
   }
 };
 
+const closeRestrictionDialog = () => ({ getState, setState }) => {
+  setState(
+    assocPath(["changeObjects", "unsaved", "rajoitelomake"], [], getState())
+  );
+  setState({ ...getState(), isRestrictionDialogVisible: false });
+};
+
 const Store = createStore({
   initialState: {
     changeObjects: {
@@ -85,6 +95,45 @@ const Store = createStore({
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
      */
+    acceptRestriction: (sectionId, restrictionId, targetSectionId) => ({
+      getState,
+      dispatch,
+      setState
+    }) => {
+      const currentChangeObjects = prop("unsaved", getState().changeObjects);
+      // Poistetaan ensin storen changeObjects.rajoitteet kaikki
+      // hyväksyttävään rajoitteeseen liittyvät muutos-objektit
+      const filteredChangeObjs = filter(
+        cObj => getAnchorPart(cObj.anchor, 1) !== restrictionId,
+        currentChangeObjects[targetSectionId] || []
+      );
+      // Yhdistetään rajoitelomake rajoitteisiin
+      const rajoitelomakeChangeObjs = concat(
+        filteredChangeObjs,
+        currentChangeObjects.rajoitelomake
+      );
+
+      setState(
+        assocPath(
+          ["changeObjects", "unsaved", targetSectionId],
+          // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
+          // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
+          // tallennetaan muutosobjektit tilanhallintaan.
+          map(changeObj => {
+            return {
+              ...changeObj,
+              anchor: replaceAnchorPartWith(
+                changeObj.anchor,
+                0,
+                targetSectionId
+              )
+            };
+          }, rajoitelomakeChangeObjs),
+          getState()
+        )
+      );
+      dispatch(closeRestrictionDialog());
+    },
     addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
       const currentChangeObjects = getState().changeObjects;
       const rajoitekriteeritChangeObjects = filter(
@@ -93,7 +142,8 @@ const Store = createStore({
           !startsWith(
             `${sectionId}.${rajoiteId}.asetukset.kohde`,
             changeObj.anchor
-          ),
+          ) &&
+          !includes("rajoitus", changeObj.anchor),
         concat(
           currentChangeObjects.unsaved[sectionId] || [],
           currentChangeObjects.saved[sectionId] || []
@@ -133,8 +183,8 @@ const Store = createStore({
       );
       setState({ ...getState(), changeObjects: nextChangeObjects });
     },
-    closeRestrictionDialog: () => ({ getState, setState }) => {
-      setState({ ...getState(), isRestrictionDialogVisible: false });
+    closeRestrictionDialog: () => ({ dispatch }) => {
+      dispatch(closeRestrictionDialog());
     },
     /**
      * -------------------- DYNAMIC TEXTBOXES --------------------
@@ -215,6 +265,24 @@ const Store = createStore({
         );
         setState(assoc("changeObjects", nextChangeObjects, getState()));
       }
+    },
+    removeRajoite: rajoiteId => ({ getState, setState }) => {
+      const unsavedRajoittetPath = ["changeObjects", "unsaved", "rajoitteet"];
+      const unsavedRajoiteChangeObjects = path(
+        unsavedRajoittetPath,
+        getState()
+      );
+      const filteredRajoiteChangeObjects = filter(
+        cObj => getAnchorPart(cObj.anchor, 1) !== rajoiteId,
+        unsavedRajoiteChangeObjects
+      );
+      setState(
+        assocPath(
+          unsavedRajoittetPath,
+          filteredRajoiteChangeObjects,
+          getState()
+        )
+      );
     },
     setChanges: (changeObjects, anchor = "") => ({
       getState,
@@ -300,6 +368,44 @@ const Store = createStore({
     },
     setFocusOn: anchor => ({ dispatch }) => {
       dispatch(setFocusOn(anchor));
+    },
+    setPreviewMode: value => ({ getState, setState }) => {
+      setState(assoc("isPreviewModeOn", value, getState()));
+    },
+    setRajoitelomakeChangeObjects: (rajoiteId, sectionId, targetSectionId) => ({
+      getState,
+      setState
+    }) => {
+      // Muutosobjektit, jotka rajoitedialogissa on tarkoitus näyttää.
+      const changeObjects = getChangeObjectsByAnchorWithoutUnderRemoval(
+        getState(),
+        { anchor: sectionId }
+      );
+
+      const changeObjectsOfCurrentRestriction = filter(
+        cObj => getAnchorPart(cObj.anchor, 1) === rajoiteId,
+        changeObjects
+      );
+
+      setState(
+        assocPath(
+          ["changeObjects", "unsaved", targetSectionId],
+          // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
+          // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
+          // tallennetaan muutosobjektit tilanhallintaan.
+          map(changeObj => {
+            return {
+              ...changeObj,
+              anchor: replaceAnchorPartWith(
+                changeObj.anchor,
+                0,
+                targetSectionId
+              )
+            };
+          }, changeObjectsOfCurrentRestriction),
+          getState()
+        )
+      );
     },
     showNewRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: true });

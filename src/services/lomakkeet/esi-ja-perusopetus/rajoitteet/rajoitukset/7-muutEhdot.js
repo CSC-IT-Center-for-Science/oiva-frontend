@@ -16,7 +16,10 @@ export default async function muutEhdot(changeObjects = [], locale) {
           anchor: "muutEhdot",
           name: "Autocomplete",
           properties: {
-            options: map(muutEhdot => {
+            forChangeObject: {
+              section: "muutEhdot",
+            },
+            options: map((muutEhdot) => {
               const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
               const anchor = `muutEhdot.${muutEhdot.koodiarvo}.valintaelementti`;
               const changeObj = getChangeObjByAnchor(anchor, changeObjects);

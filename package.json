@@ -60,7 +60,8 @@
     "react-toastify": "^6.1.0",
     "reselect": "^4.0.0",
     "styled-components": "^4.4.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "uuid": "^8.3.1"
   },
   "scripts": {
     "tailwind:css": "tailwind build src/css/tailwind.src.pcss -c tailwind.js -o src/css/tailwind.css",
