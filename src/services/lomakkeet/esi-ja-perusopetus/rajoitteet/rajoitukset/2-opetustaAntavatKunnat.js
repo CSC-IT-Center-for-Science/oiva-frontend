@@ -39,6 +39,7 @@ export default function getOpetustaAntavatKunnat(osionData = []) {
             forChangeObject: {
               section: "opetustaAntavatKunnat"
             },
+            isMulti: false,
             options: map(changeObj => {
               const { koodiarvo, title } = changeObj.properties.metadata;
               return { label: title, value: koodiarvo };

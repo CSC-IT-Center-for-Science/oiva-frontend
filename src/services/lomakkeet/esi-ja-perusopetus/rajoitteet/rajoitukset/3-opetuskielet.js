@@ -40,6 +40,7 @@ export default async function getOpetuskieletlomake(osionData = []) {
               forChangeObject: {
                 section: "opetuskielet"
               },
+              isMulti: false,
               options: valitutKielet,
               value: ""
             }

@@ -36,7 +36,7 @@ const RajoitteetList = ({
       {values(
         addIndex(mapObjIndexed)((rajoite, rajoiteId, ___, index) => {
           const rajoitus = rajoite.elements.asetukset[1];
-
+          const rajoitusPropValue = [rajoitus.properties.value];
           const kriteerit = filter(asetus => {
             const anchorPart = getAnchorPart(asetus.anchor, 3);
             return (
@@ -61,7 +61,7 @@ const RajoitteetList = ({
                         {item.label}
                       </li>
                     );
-                  }, rajoitus.properties.value)}
+                  }, rajoitusPropValue)}
                 </ul>
                 <Typography component="h4" variant="h4">
                   Kohteita rajoitetaan seuraavasti:
@@ -118,15 +118,23 @@ const RajoitteetList = ({
                           </Typography>
                           {kriteerinArvoobjekti && (
                             <ul>
-                              {addIndex(map)((item, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    className="list-disc list-inside">
-                                    {item.label}
-                                  </li>
-                                );
-                              }, kriteerinArvoobjekti.properties.value)}
+                              {addIndex(map)(
+                                (item, index) => {
+                                  return (
+                                    <li
+                                      key={index}
+                                      className="list-disc list-inside"
+                                    >
+                                      {item.label}
+                                    </li>
+                                  );
+                                },
+                                Array.isArray(
+                                  kriteerinArvoobjekti.properties.value
+                                )
+                                  ? kriteerinArvoobjekti.properties.value
+                                  : [kriteerinArvoobjekti.properties.value]
+                              )}
                             </ul>
                           )}
                         </div>

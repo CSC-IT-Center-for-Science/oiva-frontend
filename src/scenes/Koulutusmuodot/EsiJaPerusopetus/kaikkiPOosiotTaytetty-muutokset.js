@@ -445,151 +445,250 @@ export const muutokset = {
       ]
     },
     unsaved: {
-      rajoitelomake: [],
-      rajoitteet: [
-        {
-          anchor:
-            "rajoitteet.870425c9-793d-47ba-8489-e6cf05d21c62.asetukset.kohde.A",
-          properties: {
-            value: {
-              label: "1. Opetus, jota lupa koskee",
-              value: "opetustehtavat"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.870425c9-793d-47ba-8489-e6cf05d21c62.asetukset.rajoitus.opetustehtavat",
-          properties: {
-            value: [
-              {
-                label: "kaksivuotinen esiopetus (5- ja 6-vuotiaat)",
-                value: "10"
-              },
-              {
-                label:
-                  "enintään kaksi vuotta kestävä esiopetus kehitysvammaisille lapsille",
-                value: "4"
-              }
-            ],
-            metadata: {
-              section: "getOpetustehtavatLomake"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.870425c9-793d-47ba-8489-e6cf05d21c62.asetukset.1.kohde.A",
-          properties: {
-            value: {
-              label: "3. Opetuskieli",
-              value: "opetuskielet"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.870425c9-793d-47ba-8489-e6cf05d21c62.asetukset.1.rajoitus.opetuskielet",
-          properties: {
-            value: [
-              {
-                label: "ido",
-                value: "IO"
-              },
-              {
-                label: "ruotsi",
-                value: "SV"
-              }
-            ],
-            metadata: {
-              section: "opetuskielet"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.870425c9-793d-47ba-8489-e6cf05d21c62.asetukset.2.kohde.A",
-          properties: {
-            value: {
-              label: "2. Kunnat, joissa opetusta järjestetään",
-              value: "toimintaalue"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.870425c9-793d-47ba-8489-e6cf05d21c62.asetukset.2.rajoitus.opetustaAntavatKunnat",
-          properties: {
-            value: [
-              {
-                label: "Iisalmi",
-                value: "140"
-              },
-              {
-                label: "Kangasala",
-                value: "211"
-              },
-              {
-                label: "Kittilä",
-                value: "261"
-              }
-            ],
-            metadata: {
-              section: "opetustaAntavatKunnat"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.kohde.A",
-          properties: {
-            value: {
-              label: "1. Opetus, jota lupa koskee",
-              value: "opetustehtavat"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.rajoitus.opetustehtavat",
-          properties: {
-            value: [
-              {
-                label: "esiopetus",
-                value: "6"
-              }
-            ],
-            metadata: {
-              section: "getOpetustehtavatLomake"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.1.kohde.A",
-          properties: {
-            value: {
-              label: "3. Opetuskieli",
-              value: "opetuskielet"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.1.rajoitus.opetuskielet",
-          properties: {
-            value: [
-              {
-                label: "afrikaans",
-                value: "AF"
-              }
-            ],
-            metadata: {
-              section: "opetuskielet"
-            }
-          }
-        }
-      ]
+      rajoitelomake: []
+      // rajoitteet: [
+      //   {
+      //     anchor:
+      //       "rajoitteet.e1343c6c-7aa6-453f-8866-6339b452680d.asetukset.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "1. Opetus, jota lupa koskee",
+      //         value: "opetustehtavat"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.e1343c6c-7aa6-453f-8866-6339b452680d.asetukset.rajoitus.opetustehtavat",
+      //     properties: {
+      //       value: {
+      //         label: "esiopetus",
+      //         value: "6"
+      //       },
+      //       metadata: {
+      //         section: "getOpetustehtavatLomake"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.e1343c6c-7aa6-453f-8866-6339b452680d.asetukset.1.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "2. Kunnat, joissa opetusta järjestetään",
+      //         value: "toimintaalue"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.e1343c6c-7aa6-453f-8866-6339b452680d.asetukset.1.rajoitus.opetustaAntavatKunnat",
+      //     properties: {
+      //       value: {
+      //         label: "Iisalmi",
+      //         value: "140"
+      //       },
+      //       metadata: {
+      //         section: "opetustaAntavatKunnat"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.e1343c6c-7aa6-453f-8866-6339b452680d.asetukset.2.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "3. Opetuskieli",
+      //         value: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.e1343c6c-7aa6-453f-8866-6339b452680d.asetukset.2.rajoitus.opetuskielet",
+      //     properties: {
+      //       value: {
+      //         label: "ruotsi",
+      //         value: "SV"
+      //       },
+      //       metadata: {
+      //         section: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.2ae88bf1-2df2-4237-9371-6c592931c668.asetukset.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "2. Kunnat, joissa opetusta järjestetään",
+      //         value: "toimintaalue"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.2ae88bf1-2df2-4237-9371-6c592931c668.asetukset.rajoitus.opetustaAntavatKunnat",
+      //     properties: {
+      //       value: {
+      //         label: "Kangasala",
+      //         value: "211"
+      //       },
+      //       metadata: {
+      //         section: "opetustaAntavatKunnat"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.2ae88bf1-2df2-4237-9371-6c592931c668.asetukset.1.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "3. Opetuskieli",
+      //         value: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.2ae88bf1-2df2-4237-9371-6c592931c668.asetukset.1.rajoitus.opetuskielet",
+      //     properties: {
+      //       value: {
+      //         label: "dari",
+      //         value: "DR"
+      //       },
+      //       metadata: {
+      //         section: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.62a7fa72-c529-41d3-a1c4-720ed57ffd92.asetukset.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "3. Opetuskieli",
+      //         value: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.62a7fa72-c529-41d3-a1c4-720ed57ffd92.asetukset.rajoitus.opetuskielet",
+      //     properties: {
+      //       value: {
+      //         label: "ido",
+      //         value: "IO"
+      //       },
+      //       metadata: {
+      //         section: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.62a7fa72-c529-41d3-a1c4-720ed57ffd92.asetukset.1.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "4. Opetuksen järjestämismuoto",
+      //         value: "opetuksenJarjestamismuodot"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.62a7fa72-c529-41d3-a1c4-720ed57ffd92.asetukset.2.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "1. Opetus, jota lupa koskee",
+      //         value: "opetustehtavat"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.62a7fa72-c529-41d3-a1c4-720ed57ffd92.asetukset.2.rajoitus.opetustehtavat",
+      //     properties: {
+      //       value: {
+      //         label:
+      //           "enintään kaksi vuotta kestävä esiopetus kehitysvammaisille lapsille",
+      //         value: "4"
+      //       },
+      //       metadata: {
+      //         section: "getOpetustehtavatLomake"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "1. Opetus, jota lupa koskee",
+      //         value: "opetustehtavat"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.rajoitus.opetustehtavat",
+      //     properties: {
+      //       value: {
+      //         label: "kaksivuotinen esiopetus (5- ja 6-vuotiaat)",
+      //         value: "10"
+      //       },
+      //       metadata: {
+      //         section: "getOpetustehtavatLomake"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.1.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "3. Opetuskieli",
+      //         value: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.1.rajoitus.opetuskielet",
+      //     properties: {
+      //       value: {
+      //         label: "afrikaans",
+      //         value: "AF"
+      //       },
+      //       metadata: {
+      //         section: "opetuskielet"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.2.kohde.A",
+      //     properties: {
+      //       value: {
+      //         label: "2. Kunnat, joissa opetusta järjestetään",
+      //         value: "toimintaalue"
+      //       }
+      //     }
+      //   },
+      //   {
+      //     anchor:
+      //       "rajoitteet.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.2.rajoitus.opetustaAntavatKunnat",
+      //     properties: {
+      //       value: {
+      //         label: "Tornio",
+      //         value: "851"
+      //       },
+      //       metadata: {
+      //         section: "opetustaAntavatKunnat"
+      //       }
+      //     }
+      //   }
+      // ]
     },
     underRemoval: {}
   },
@@ -599,7 +698,7 @@ export const muutokset = {
     unsaved: [
       {
         anchor:
-          "rajoitelomake.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.kohde.A",
+          "rajoitelomake.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.kohde.A",
         properties: {
           value: {
             label: "1. Opetus, jota lupa koskee",
@@ -609,14 +708,12 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.rajoitus.opetustehtavat",
+          "rajoitelomake.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.rajoitus.opetustehtavat",
         properties: {
-          value: [
-            {
-              label: "esiopetus",
-              value: "6"
-            }
-          ],
+          value: {
+            label: "kaksivuotinen esiopetus (5- ja 6-vuotiaat)",
+            value: "10"
+          },
           metadata: {
             section: "getOpetustehtavatLomake"
           }
@@ -624,7 +721,7 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.1.kohde.A",
+          "rajoitelomake.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.1.kohde.A",
         properties: {
           value: {
             label: "3. Opetuskieli",
@@ -634,16 +731,37 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.a8ac836c-722c-4df6-8c88-049018fb0d1f.asetukset.1.rajoitus.opetuskielet",
+          "rajoitelomake.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.1.rajoitus.opetuskielet",
         properties: {
-          value: [
-            {
-              label: "afrikaans",
-              value: "AF"
-            }
-          ],
+          value: {
+            label: "afrikaans",
+            value: "AF"
+          },
           metadata: {
             section: "opetuskielet"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.2.kohde.A",
+        properties: {
+          value: {
+            label: "2. Kunnat, joissa opetusta järjestetään",
+            value: "toimintaalue"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.51e65fb2-1e75-49cb-9f5e-60465cabe20e.asetukset.2.rajoitus.opetustaAntavatKunnat",
+        properties: {
+          value: {
+            label: "Tornio",
+            value: "851"
+          },
+          metadata: {
+            section: "opetustaAntavatKunnat"
           }
         }
       }

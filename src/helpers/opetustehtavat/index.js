@@ -1,12 +1,12 @@
 import {
   addIndex,
   compose,
-  concat,
   endsWith,
   find,
   flatten,
   groupBy,
   head,
+  isNil,
   map,
   mapObjIndexed,
   omit,
@@ -14,11 +14,14 @@ import {
   pathEq,
   prop,
   propEq,
-  sort
+  reject,
+  sort,
+  values
 } from "ramda";
 import localforage from "localforage";
 import { getChangeObjByAnchor } from "../../components/02-organisms/CategorizedListRoot/utils";
 import { getLisatiedotFromStorage } from "../lisatiedot";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 export const initializeOpetustehtava = opetustehtava => {
   return omit(["koodiArvo"], {
@@ -55,6 +58,8 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
+  const { rajoitteetByRajoiteId } = changeObjects;
+
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   // Luodaan LISÄYS
@@ -83,18 +88,30 @@ export const defineBackendChangeObjects = async (
       : [];
 
   const opetusMuutokset = addIndex(map)((opetustehtava, index) => {
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq(
+          [1, "properties", "value", "value"],
+          opetustehtava.koodiarvo,
+          rajoite
+        )
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
     const opetustehtavaAnchor = `opetustehtavat.opetustehtava.${opetustehtava.koodiarvo}`;
     const changeObj = getChangeObjByAnchor(
       opetustehtavaAnchor,
       changeObjects.opetustehtavat
     );
-    console.info(kohteet, opetustehtava);
+    // console.info(kohteet, opetustehtava);
     // Muodostetaan muutosobjekti, mikäli käyttöliittymässä on tehty
     // kohtaan muutoksia.
     if (changeObj) {
       const muutosId = `opetustehtava-${Math.random()}`;
       const muutosobjekti = {
-        aliMaaraykset: [],
         generatedId: muutosId,
         kohde: find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
         koodiarvo: opetustehtava.koodiarvo,
@@ -110,22 +127,18 @@ export const defineBackendChangeObjects = async (
       // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
-      const alimaaraysId = `alimaarays-${index}`;
+      const alimaaraykset = values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            muutosobjekti,
+            asetukset
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
 
-      const alimaarays = {
-        generatedId: alimaaraysId,
-        parent: muutosobjekti.generatedId,
-        kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
-        koodiarvo: "3",
-        koodisto: "kielikoodistoopetushallinto",
-        maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
-        meta: {
-          changeObjects: changeObjects.rajoitteet || []
-        }
-      };
-
-      // muutosobjekti.aliMaaraykset = [alimaarays];
-      return [muutosobjekti, alimaarays];
+      return [muutosobjekti, alimaaraykset];
 
       // return [muutosobjekti, alimaarays];
     } else {

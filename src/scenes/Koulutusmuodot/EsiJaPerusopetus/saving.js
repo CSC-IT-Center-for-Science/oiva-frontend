@@ -8,6 +8,7 @@ import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
 import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat";
 import { koulutustyypitMap } from "../../../utils/constants";
+import { getAnchorPart } from "../../../utils/common";
 
 export async function createObjectToSave(
   locale,
@@ -26,13 +27,27 @@ export async function createObjectToSave(
     return R.dissoc("tiedosto", attachment);
   }, allAttachmentsRaw);
 
-  console.info(changeObjects);
+  const rajoitteetByRajoiteId = R.groupBy(
+    rajoite => getAnchorPart(rajoite.anchor, 1),
+    changeObjects.rajoitteet
+  );
 
   // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
     {
       opetustehtavat: changeObjects.opetustehtavat,
-      rajoitteet: changeObjects.rajoitteet
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "opetustehtavat",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      )
     },
     maaraystyypit,
     locale,
@@ -180,8 +195,6 @@ export async function createObjectToSave(
 
   // This helps the frontend to initialize the first four fields on form load.
   objectToSave.meta.paatoksentiedot = changeObjects.paatoksentiedot;
-
-  console.info(objectToSave);
 
   return objectToSave;
 }

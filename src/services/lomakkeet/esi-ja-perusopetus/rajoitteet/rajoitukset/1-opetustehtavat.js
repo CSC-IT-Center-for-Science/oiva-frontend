@@ -18,6 +18,7 @@ export default async function getOpetustehtavatlomake(osionData = [], locale) {
             forChangeObject: {
               section: "getOpetustehtavatLomake"
             },
+            isMulti: false,
             options: map(opetustehtava => {
               /**
                * Tarkistetaan, onko kyseinen opetustehtävä valittuna
