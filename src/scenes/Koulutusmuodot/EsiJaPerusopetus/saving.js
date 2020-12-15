@@ -26,9 +26,14 @@ export async function createObjectToSave(
     return R.dissoc("tiedosto", attachment);
   }, allAttachmentsRaw);
 
+  console.info(changeObjects);
+
   // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
-    changeObjects.opetustehtavat,
+    {
+      opetustehtavat: changeObjects.opetustehtavat,
+      rajoitteet: changeObjects.rajoitteet
+    },
     maaraystyypit,
     locale,
     kohteet
@@ -175,6 +180,8 @@ export async function createObjectToSave(
 
   // This helps the frontend to initialize the first four fields on form load.
   objectToSave.meta.paatoksentiedot = changeObjects.paatoksentiedot;
+
+  console.info(objectToSave);
 
   return objectToSave;
 }
