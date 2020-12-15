@@ -13,6 +13,7 @@ import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Esittelijat from "../Esittelijat/index";
 import { Typography } from "@material-ui/core";
+import { ROLE_ESITTELIJA } from "modules/constants";
 
 const Asianhallinta = ({
   AsiaDialogContainer,
@@ -64,6 +65,7 @@ const Asianhallinta = ({
 
       <Router history={history}>
         <Switch>
+          {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
           <Route
             path={`/${koulutusmuoto.kebabCase}/asianhallinta`}
             render={() => (
@@ -73,7 +75,7 @@ const Asianhallinta = ({
                 UusiAsiaDialogContainer={UusiAsiaDialogContainer}
               />
             )}
-          />
+          />) : null}
         </Switch>
       </Router>
     </React.Fragment>
