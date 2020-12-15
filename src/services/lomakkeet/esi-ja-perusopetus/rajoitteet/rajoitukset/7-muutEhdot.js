@@ -1,12 +1,11 @@
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
-import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map, toUpper } from "ramda";
+import { compose, endsWith, find, map, prop, toUpper } from "ramda";
 
-export default async function muutEhdot(changeObjects = [], locale) {
-  // npm run extract:messages ei ajaudu onnistuneesti, jos funktion otsikko
-  // on sama kuin muuttujan nimi funktiossa.
-  const _muutEhdot = await getPOMuutEhdotFromStorage();
+export default async function getMuutEhdot(osionData = [], locale) {
+  const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
+
+  console.info(osionData);
 
   if (muutEhdot.length) {
     return {
@@ -15,25 +14,32 @@ export default async function muutEhdot(changeObjects = [], locale) {
         {
           anchor: "muutEhdot",
           name: "Autocomplete",
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
           properties: {
             forChangeObject: {
-              section: "muutEhdot",
+              section: "muutEhdot"
             },
-            options: map((muutEhdot) => {
-              const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
-              const anchor = `muutEhdot.${muutEhdot.koodiarvo}.valintaelementti`;
-              const changeObj = getChangeObjByAnchor(anchor, changeObjects);
-              return (!!maarays &&
-                (!changeObj || changeObj.properties.isChecked)) ||
-                (changeObj && changeObj.properties.isChecked)
+            options: map(muuEhto => {
+              console.info(muuEhto.koodiarvo);
+              /**
+               * Tarkistetaan, onko kyseinen muu ehto
+               * valittuna lomakkeella, jota vasten rajoituksia ollaan
+               * tekemässä.
+               **/
+              const stateObj = find(
+                compose(
+                  endsWith(`.${muuEhto.koodiarvo}.valintaelementti`),
+                  prop("anchor")
+                ),
+                osionData
+              );
+              return stateObj && stateObj.properties.isChecked
                 ? {
-                    label: muutEhdot.metadata[localeUpper].kuvaus
-                      ? muutEhdot.metadata[localeUpper].kuvaus
-                      : muutEhdot.metadata[localeUpper].nimi,
-                    value: muutEhdot.koodiarvo
+                    label: muuEhto.metadata[localeUpper].nimi,
+                    value: muuEhto.koodiarvo
                   }
                 : null;
-            }, _muutEhdot).filter(Boolean),
+            }, muutEhdot).filter(Boolean),
             value: ""
           }
         }

@@ -82,16 +82,7 @@ const closeRestrictionDialog = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  initialState: {
-    changeObjects: {
-      saved: {},
-      unsaved: {},
-      underRemoval: {}
-    },
-    focusOn: null,
-    latestChanges: {},
-    validity: {}
-  },
+  initialState: muutokset,
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------

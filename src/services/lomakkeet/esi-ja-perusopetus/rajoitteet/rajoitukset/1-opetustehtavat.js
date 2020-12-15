@@ -13,7 +13,7 @@ export default async function getOpetustehtavatlomake(osionData = [], locale) {
         {
           anchor: "opetustehtavat",
           name: "Autocomplete",
-          styleClasses: ["w-2/3", "mb-6"],
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
           properties: {
             forChangeObject: {
               section: "getOpetustehtavatLomake"

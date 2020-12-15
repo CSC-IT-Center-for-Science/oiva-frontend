@@ -18,15 +18,15 @@ import {
   startsWith,
   includes
 } from "ramda";
-import erityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
 import { getMaaraaikalomake } from "./rajoitukset/maaraaika";
 import getOpetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
 import getOpetuksenJarjestamismuodotLomake from "./rajoitukset/4-opetuksenjarjestamismuoto";
 import getOpetuskieletlomake from "./rajoitukset/3-opetuskielet";
-import muutEhdot from "./rajoitukset/7-muutEhdot";
-import opiskelijamaarat from "./rajoitukset/6-opiskelijamaarat";
 import getOpetustehtavatlomake from "./rajoitukset/1-opetustehtavat";
 import { getAnchorPart } from "../../../../utils/common";
+import getErityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
+import getMuutEhdot from "./rajoitukset/7-muutEhdot";
+import getOpiskelijaMaarat from "./rajoitukset/6-opiskelijamaarat";
 
 const localizations = {
   maaraaika: "Määräaika",
@@ -39,15 +39,19 @@ const localizations = {
   opiskelijamaarat: "6. Oppilas-/opiskelijamäärät"
 };
 
+/**
+ * Tämän objektin järjestyksellä on väliä, vaikka objektin järjestykseen ei
+ * nyrkkisääntönä kannattaisi luottaa.
+ */
 const sections = {
   maaraaika: getMaaraaikalomake,
   opetustehtavat: getOpetustehtavatlomake,
   toimintaalue: getOpetustaAntavatKunnat,
   opetuskielet: getOpetuskieletlomake,
-  opiskelijamaarat,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuodotLomake,
-  erityisetKoulutustehtavat,
-  muutEhdot
+  erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
+  opiskelijamaarat: getOpiskelijaMaarat,
+  muutEhdot: getMuutEhdot
 };
 
 /**
