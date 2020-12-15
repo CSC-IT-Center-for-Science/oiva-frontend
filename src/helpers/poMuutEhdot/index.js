@@ -62,53 +62,65 @@ export const defineBackendChangeObjects = async (
 
   const muutokset = map(ehto => {
     // Checkbox-kenttien muutokset
-    const changeObj = find(
+    const checkboxChangeObj = find(
       compose(endsWith(`.${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
       changeObjects
     );
 
-    // Kuvauskenttien muutokset kohdassa (muu ehto)
-    const kuvausChangeObjects = filter(changeObj => {
-      return (
-        ehto.koodiarvo ===
-          path(["metadata", "koodiarvo"], changeObj.properties) &&
-        endsWith(".kuvaus", changeObj.anchor)
-      );
-    }, changeObjects);
+    const isChecked = // (!!maarays && !checkboxChangeObj) ||
+      checkboxChangeObj && checkboxChangeObj.properties.isChecked === true;
 
-    const checkboxBEchangeObjects = changeObj
-      ? {
-          generatedId: `muuEhto-${Math.random()}`,
+    let checkboxBEchangeObject = null;
+    let kuvausBEchangeObjects = null;
+
+    /**
+     * Jos kuvauskenttiin liittyvä checkbox on ruksattu päälle,
+     * lähetetään backendille kuvauskenttiin tehdyt muutokset.
+     */
+    if (isChecked) {
+      // Kuvauskenttien muutokset kohdassa (muu ehto)
+      const kuvausChangeObjects = filter(changeObj => {
+        return (
+          ehto.koodiarvo ===
+            path(["metadata", "koodiarvo"], changeObj.properties) &&
+          endsWith(".kuvaus", changeObj.anchor)
+        );
+      }, changeObjects);
+
+      checkboxBEchangeObject = checkboxChangeObj
+        ? {
+            generatedId: `muuEhto-${Math.random()}`,
+            kohde,
+            koodiarvo: ehto.koodiarvo,
+            koodisto: ehto.koodisto.koodistoUri,
+            kuvaus: ehto.metadata[locale].kuvaus,
+            maaraystyyppi,
+            meta: {
+              changeObjects: [checkboxChangeObj]
+            },
+            tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+          }
+        : null;
+
+      kuvausBEchangeObjects = map(changeObj => {
+        return {
+          generatedId: changeObj.anchor,
           kohde,
           koodiarvo: ehto.koodiarvo,
           koodisto: ehto.koodisto.koodistoUri,
-          kuvaus: ehto.metadata[locale].kuvaus,
+          kuvaus: changeObj.properties.value,
           maaraystyyppi,
           meta: {
+            ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
+            kuvaus: changeObj.properties.value,
             changeObjects: [changeObj]
           },
-          tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
-        }
-      : null;
+          tila: "LISAYS"
+        };
+      }, kuvausChangeObjects);
+    }
 
-    const kuvausBEchangeObjects = map(changeObj => {
-      return {
-        generatedId: changeObj.anchor,
-        kohde,
-        koodiarvo: ehto.koodiarvo,
-        koodisto: ehto.koodisto.koodistoUri,
-        kuvaus: changeObj.properties.value,
-        maaraystyyppi,
-        meta: {
-          ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
-          kuvaus: changeObj.properties.value,
-          changeObjects: [changeObj]
-        },
-        tila: "LISAYS"
-      };
-    }, kuvausChangeObjects);
-
-    return [checkboxBEchangeObjects, kuvausBEchangeObjects];
+    return [checkboxBEchangeObject, kuvausBEchangeObjects];
   }, muutEhdot);
 
   /**
