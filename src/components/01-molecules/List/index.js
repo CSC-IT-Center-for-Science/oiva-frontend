@@ -1,11 +1,38 @@
 import React from "react";
 import { addIndex, map } from "ramda";
+import Rajoite from "components/02-organisms/Rajoite";
+import StatusTextRow from "../StatusTextRow/index";
 
 const List = ({ items }) => {
-  console.info(items);
-
   const itemsToRender = addIndex(map)(
-    (item, index) => <li key={`list-item-${index}`}>{item.content}</li>,
+    (item, index) => (
+      <li key={`list-item-${index}`}>
+        {map(component => {
+          console.info(component);
+          const { properties } = component;
+          if (properties) {
+            if (component.name === "Rajoite") {
+              return (
+                <Rajoite
+                  areTitlesVisible={properties.areTitlesVisible}
+                  id={properties.id}
+                  isReadOnly={properties.isReadOnly}
+                  kriteerit={properties.kriteerit}
+                  rajoite={properties.rajoite}
+                  rajoitusPropValue={properties.rajoitusPropValue}
+                />
+              );
+            } else if (component.name === "StatuxTextRow") {
+              return <StatusTextRow title={properties.title}></StatusTextRow>;
+            } else {
+              return <div>[komponenttia ei osata käsitellä]</div>;
+            }
+          } else {
+            return <div>[arvoa ei annettu]</div>;
+          }
+        }, item.components || [])}
+      </li>
+    ),
     items
   );
 

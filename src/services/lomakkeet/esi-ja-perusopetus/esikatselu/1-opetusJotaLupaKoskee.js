@@ -70,7 +70,9 @@ export async function previewOfOpetusJotaLupaKoskee(data) {
               anchor: "rajoite",
               name: "Rajoite",
               properties: {
+                areTitlesVisible: false,
                 id: rajoiteId,
+                isReadOnly: true,
                 kriteerit,
                 rajoite,
                 rajoitusPropValue
