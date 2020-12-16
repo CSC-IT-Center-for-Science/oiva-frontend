@@ -1,22 +1,98 @@
-import { append, endsWith, find, map } from "ramda";
+import {
+  append,
+  endsWith,
+  filter,
+  find,
+  groupBy,
+  head,
+  isNil,
+  keys,
+  map,
+  mapObjIndexed,
+  path,
+  pathEq,
+  reject,
+  values
+} from "ramda";
+import { getAnchorPart } from "utils/common";
 
-export async function previewOfOpetusJotaLupaKoskee({ lomakedata }) {
+export const getRajoite = (koodiarvo, rajoitteet) => {
+  const rajoiteId = head(
+    filter(key => {
+      return pathEq(
+        ["elements", "asetukset", 1, "properties", "value", "value"],
+        koodiarvo,
+        rajoitteet[key]
+      )
+        ? rajoitteet[key]
+        : null;
+    }, keys(rajoitteet))
+  );
+
+  return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
+};
+
+export async function previewOfOpetusJotaLupaKoskee(data) {
+  const { lomakedata, rajoitteet } = data;
   let structure = [];
 
   if (!lomakedata || !lomakedata.length) {
     return structure;
   }
+
   /**
    * Muodostetaan lista-alkiot hyödyntäen ListItem-komponenttiamme.
    * Huomioidaan vain opetustehtävät, jotka ovat aktivoituina lomakkeella
    * (!!isChecked = true).
    */
   const listItems = map(opetustehtava => {
-    return opetustehtava.properties.isChecked
-      ? {
-          content: opetustehtava.properties.title
-        }
-      : null;
+    const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
+    const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
+
+    // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
+    // valittuja arvoja (ilman rajoittteita)
+    if (opetustehtava.properties.isChecked) {
+      if (rajoite) {
+        const rajoitus = rajoite.elements.asetukset[1];
+        const rajoitusPropValue = [rajoitus.properties.value];
+        const kriteerit = filter(asetus => {
+          const anchorPart = getAnchorPart(asetus.anchor, 3);
+          return (
+            !isNaN(parseInt(anchorPart, 10)) &&
+            getAnchorPart(asetus.anchor, 4) === "kohde"
+          );
+        }, rajoite.elements.asetukset);
+
+        return {
+          anchor: koodiarvo,
+          components: [
+            {
+              anchor: "rajoite",
+              name: "Rajoite",
+              properties: {
+                id: rajoiteId,
+                kriteerit,
+                rajoite,
+                rajoitusPropValue
+              }
+            }
+          ]
+        };
+      } else {
+        return {
+          anchor: koodiarvo,
+          components: [
+            {
+              anchor: "opetustehtava",
+              name: "StatuxTextRow",
+              properties: {
+                title: opetustehtava.properties.title
+              }
+            }
+          ]
+        };
+      }
+    }
   }, lomakedata).filter(Boolean);
 
   if (listItems.length) {

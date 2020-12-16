@@ -691,5 +691,6 @@ export const muutokset = {
   focusOn: null,
   latestChanges: {},
   validity: {},
+  isPreviewModeOn: true,
   isRestrictionDialogVisible: false
 };

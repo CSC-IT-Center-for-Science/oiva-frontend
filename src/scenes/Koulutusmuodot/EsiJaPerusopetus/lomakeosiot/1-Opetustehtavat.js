@@ -11,7 +11,14 @@ const constants = {
 };
 
 const Opetustehtavat = React.memo(
-  ({ code, isPreviewModeOn, maaraykset, mode = constants.mode, sectionId }) => {
+  ({
+    code,
+    isPreviewModeOn,
+    maaraykset,
+    mode = constants.mode,
+    rajoitteet,
+    sectionId
+  }) => {
     const intl = useIntl();
     const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
     const title = prop(
@@ -34,7 +41,7 @@ const Opetustehtavat = React.memo(
       <Lomake
         anchor={sectionId}
         code={code}
-        data={{ maaraykset }}
+        data={{ maaraykset, rajoitteet }}
         formTitle={title}
         mode={mode}
         isPreviewModeOn={isPreviewModeOn}
@@ -52,6 +59,7 @@ Opetustehtavat.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string
 };
 

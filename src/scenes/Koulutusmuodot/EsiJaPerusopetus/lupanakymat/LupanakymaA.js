@@ -11,9 +11,19 @@ import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtava
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import Lomake from "components/02-organisms/Lomake";
-import { filter, pathEq } from "ramda";
+import {
+  filter,
+  find,
+  isNil,
+  mapObjIndexed,
+  path,
+  pathEq,
+  propEq,
+  reject
+} from "ramda";
 import Rajoitteet from "../lomakeosiot/9-Rajoitteet";
 import equal from "react-fast-compare";
+import { useLomakedata } from "stores/lomakedata";
 
 const constants = {
   formLocations: {
@@ -41,6 +51,18 @@ const LupanakymaA = React.memo(
   }) => {
     const intl = useIntl();
 
+    const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
+
+    const rajoitteetListausChangeObj = find(
+      propEq("anchor", "rajoitteet.listaus.A"),
+      rajoitteetStateObj
+    );
+
+    const rajoitteetByRajoiteId = path(
+      ["properties", "rajoitteet"],
+      rajoitteetListausChangeObj
+    );
+
     const opetustehtavamaaraykset = filterByTunniste(
       "opetusjotalupakoskee",
       maaraykset
@@ -55,6 +77,19 @@ const LupanakymaA = React.memo(
       "opetuksenjarjestamismuoto",
       maaraykset
     );
+    console.info(rajoitteetByRajoiteId, rajoitteetListausChangeObj);
+    const opetustehtavatRajoitteet = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq(
+          ["elements", "asetukset", 0, "properties", "value", "value"],
+          "opetustehtavat",
+          rajoite
+        )
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
@@ -65,7 +100,8 @@ const LupanakymaA = React.memo(
               isInExpandableRow={false}
               isPreviewModeOn={isPreviewModeOn}
               noPadding={true}
-              path={constants.formLocations.paatoksenTiedot}></Lomake>
+              path={constants.formLocations.paatoksenTiedot}
+            ></Lomake>
           </div>
         )}
 
@@ -80,6 +116,7 @@ const LupanakymaA = React.memo(
                   isPreviewModeOn={isPreviewModeOn}
                   maaraykset={opetustehtavamaaraykset}
                   sectionId="opetustehtavat"
+                  rajoitteet={opetustehtavatRajoitteet}
                 />
 
                 {OpetustaAntavatKunnatJSX ? (
