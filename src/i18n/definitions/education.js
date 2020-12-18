@@ -40,7 +40,7 @@ export default defineMessages({
   eiSisaOppilaitosTaiKotikoulumuotoinen: {
     id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
     defaultMessage:
-      "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+      "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä koulukotiopetusmuotoisena"
   },
   oppilastaOpiskelijaa: {
     id: "education.oppilastaOpiskelijaa",

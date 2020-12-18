@@ -57,12 +57,13 @@ const Rajoite = ({
       PaperProps={{
         style: {
           overflowY: "auto",
-          height: "80%",
+          minHeight: "30%",
           minWidth: "32rem",
           width: "80%",
           maxWidth: "88rem"
         }
-      }}>
+      }}
+    >
       <DialogTitle onClose={actions.closeRestrictionDialog}>
         Lisää rajoite luvalle
       </DialogTitle>
@@ -85,7 +86,8 @@ const Rajoite = ({
           }}
           isSavingState={false}
           path={constants.formLocation}
-          showCategoryTitles={true}></Lomake>
+          showCategoryTitles={true}
+        ></Lomake>
       </DialogContent>
       <DialogActions>
         <div className="flex pr-6 pb-4">
@@ -93,7 +95,8 @@ const Rajoite = ({
             <Button
               onClick={() => revertChangesAndCloseDialog()}
               color="primary"
-              variant="outlined">
+              variant="outlined"
+            >
               {intl.formatMessage(common.cancel)}
             </Button>
           </div>
@@ -102,7 +105,8 @@ const Rajoite = ({
               acceptChangesAndCloseDialog(rajoitelomakeChangeObjs);
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(common.accept)}
           </Button>
         </div>

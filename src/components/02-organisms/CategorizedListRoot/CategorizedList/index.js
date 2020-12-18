@@ -625,7 +625,7 @@ const CategorizedList = props => {
                     {component.name === "StatusTextRow"
                       ? (() => {
                           return (
-                            <div className="flex-2">
+                            <div className={styleClassesStr}>
                               <StatusTextRow
                                 code={propsObj.code}
                                 labelStyles={labelStyles}
@@ -817,7 +817,7 @@ const CategorizedList = props => {
                       </div>
                     )}
                     {component.name === "Datepicker" && (
-                      <div className={`${styleClassesStr} flex-2`}>
+                      <div className={styleClassesStr}>
                         <Datepicker
                           clearable={propsObj.clearable}
                           disableFuture={propsObj.disableFuture}
@@ -888,9 +888,10 @@ const CategorizedList = props => {
                         rajoitusPropValue={propsObj.rajoitusPropValue}
                       />
                     )}
-
                     {component.name === "RajoitteetList" && (
                       <RajoitteetList
+                        areTitlesVisible={propsObj.areTitlesVisible}
+                        isBorderVisible={propsObj.isBorderVisible}
                         rajoitteet={propsObj.rajoitteet}
                         onModifyRestriction={propsObj.onModifyRestriction}
                         onRemoveRestriction={propsObj.onRemoveRestriction}

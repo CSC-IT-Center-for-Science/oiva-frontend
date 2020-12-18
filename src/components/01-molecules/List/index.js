@@ -17,15 +17,21 @@ const List = ({ items }) => {
                   areTitlesVisible={properties.areTitlesVisible}
                   id={properties.id}
                   isReadOnly={properties.isReadOnly}
+                  key={index}
                   kriteerit={properties.kriteerit}
                   rajoite={properties.rajoite}
                   rajoitusPropValue={properties.rajoitusPropValue}
                 />
               );
             } else if (component.name === "StatuxTextRow") {
-              return <StatusTextRow title={properties.title}></StatusTextRow>;
+              return (
+                <StatusTextRow
+                  key={index}
+                  title={properties.title}
+                ></StatusTextRow>
+              );
             } else {
-              return <div>[komponenttia ei osata käsitellä]</div>;
+              return <div key={index}>[komponenttia ei osata käsitellä]</div>;
             }
           } else {
             return <div>[arvoa ei annettu]</div>;

@@ -1586,7 +1586,7 @@
   },
   {
     "id": "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä koulukotiopetusmuotoisena",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
@@ -1828,6 +1828,31 @@
     "id": "lukiokoulutus.paasivunOtsikko",
     "defaultMessage": "Lukiokoulutuksen järjestäjät",
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "opiskelijamaara.kokonaismaaraJaSenKohdennukset",
+    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä mahdollisilla kohdennuksilla",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.vainKohdennetutRajoitukset",
+    "defaultMessage": "Vain kohdennetut oppilas-/opiskelijamäärärajoitukset",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.eiRajoiteta",
+    "defaultMessage": "Opiskelijamäärää ei rajoiteta",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "rajoitteet.muokkaaRajoitetta",
+    "defaultMessage": "Muokkaa",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.poistaRajoite",
+    "defaultMessage": "Poista",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
   },
   {
     "id": "rajoitteet.rajoite",

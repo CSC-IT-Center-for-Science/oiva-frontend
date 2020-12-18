@@ -83,6 +83,16 @@ const closeRestrictionDialog = () => ({ getState, setState }) => {
 
 const Store = createStore({
   initialState: muutokset,
+  // initialState: {
+  //   changeObjects: {
+  //     saved: {},
+  //     unsaved: {},
+  //     underRemoval: {}
+  //   },
+  //   focusOn: null,
+  //   latestChanges: {},
+  //   validity: {}
+  // },
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
@@ -258,7 +268,13 @@ const Store = createStore({
         setState(assoc("changeObjects", nextChangeObjects, getState()));
       }
     },
-    removeRajoite: rajoiteId => ({ getState, setState }) => {
+    removeRajoite: (rajoiteId, sectionId) => ({ getState, setState }) => {
+      // Muutosobjektit, jotka rajoitedialogissa on tarkoitus näyttää.
+      const changeObjects = getChangeObjectsByAnchorWithoutUnderRemoval(
+        getState(),
+        { anchor: sectionId }
+      );
+
       const unsavedRajoittetPath = ["changeObjects", "unsaved", "rajoitteet"];
       const unsavedRajoiteChangeObjects = path(
         unsavedRajoittetPath,

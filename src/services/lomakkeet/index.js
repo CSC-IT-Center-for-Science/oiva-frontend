@@ -34,9 +34,9 @@ import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoske
 import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
 import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
+import { getOpiskelijamaaratLomake } from "./esi-ja-perusopetus/6-opiskeliijamaarat";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
-import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
 import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
 import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
@@ -377,7 +377,8 @@ const lomakkeet = {
         previewOfOpetuskielet(data, booleans, locale, changeObjects)
     },
     opiskelijamaarat: {
-      modification: (data, booleans) => opiskelijamaarat(data, booleans),
+      modification: (data, booleans, locale) =>
+        getOpiskelijamaaratLomake(data, booleans, locale),
       preview: (data, booleans, locale, changeObjects) =>
         previewOfOpiskelijamaarat(data, booleans, locale, changeObjects)
     },
