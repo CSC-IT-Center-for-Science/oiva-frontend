@@ -171,10 +171,10 @@ export const muutokset = {
           }
         }
       ],
-      rajoitteet: [
+      rajoitelomake: [
         {
           anchor:
-            "rajoitteet.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.kohde.valikko",
+            "rajoitelomake.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.kohde.valikko",
           properties: {
             value: {
               label: "Opiskelijamäärät",
@@ -184,7 +184,7 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.kohde.tarkennin.opiskelijamaarat",
+            "rajoitelomake.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.kohde.tarkennin.opiskelijamaarat",
           properties: {
             value: {
               value: "kokonaismaara",
@@ -197,7 +197,7 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.asetukset.0.kohde",
+            "rajoitelomake.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.asetukset.0.kohde",
           properties: {
             value: {
               value: "enintaan",
@@ -207,9 +207,16 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.asetukset.0.tarkennin.lukumaara",
+            "rajoitelomake.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.asetukset.0.tarkennin.lukumaara",
           properties: {
             value: "400"
+          }
+        },
+        {
+          anchor:
+            "rajoitelomake.9a3a1a6b-bab9-48d3-ae07-6ca43ef1faee.kohdennukset.1.kohde.A",
+          properties: {
+            value: ""
           }
         }
       ]

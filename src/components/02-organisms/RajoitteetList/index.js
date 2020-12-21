@@ -23,9 +23,10 @@ const RajoitteetList = ({
           return (
             <Rajoite
               areTitlesVisible={areTitlesVisible}
-              isBorderVisible={isBorderVisible}
+              canHaveAlirajoite={true}
               id={rajoiteId}
               index={index}
+              isBorderVisible={isBorderVisible}
               key={rajoiteId}
               onModifyRestriction={onModifyRestriction}
               onRemoveRestriction={onRemoveRestriction}

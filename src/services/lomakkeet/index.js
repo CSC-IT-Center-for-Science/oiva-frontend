@@ -58,6 +58,7 @@ import { previewOfErityisetKoulutustehtavat } from "./esi-ja-perusopetus/esikats
 import { previewOfOpiskelijamaarat } from "./esi-ja-perusopetus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot } from "./esi-ja-perusopetus/esikatselu/7-muutEhdot";
 import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2-opetustaAntavatKunnat";
+import { getAlirajoitelomake } from "./esi-ja-perusopetus/rajoitteet/alirajoite";
 
 /**
  * LOMAKEPALVELU
@@ -330,6 +331,10 @@ const lomakkeet = {
 
   // Esi- ja perusopetus
   esiJaPerusopetus: {
+    alirajoite: {
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        getAlirajoitelomake(data, booleans, locale, changeObjects, functions)
+    },
     erityisetKoulutustehtavat: {
       modification: (data, booleans, locale, changeObjects, functions) =>
         erityisetKoulutustehtavat(

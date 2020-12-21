@@ -81,6 +81,13 @@ const closeRestrictionDialog = () => ({ getState, setState }) => {
   setState({ ...getState(), isRestrictionDialogVisible: false });
 };
 
+const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
+  setState(
+    assocPath(["changeObjects", "unsaved", "alirajoitelomake"], [], getState())
+  );
+  setState({ ...getState(), isAlirajoitedialogiVisible: false });
+};
+
 const Store = createStore({
   initialState: muutokset,
   // initialState: {
@@ -250,6 +257,58 @@ const Store = createStore({
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
+    lisaaKohdennus: (sectionId, rajoiteId) => ({ getState, setState }) => {
+      const currentChangeObjects = getState().changeObjects;
+      const kohdennusChangeObjects = filter(
+        changeObj =>
+          startsWith(
+            `${sectionId}.${rajoiteId}.kohdennukset`,
+            changeObj.anchor
+          ) &&
+          !startsWith(
+            `${sectionId}.${rajoiteId}.kohdennukset.kohde`,
+            changeObj.anchor
+          ) &&
+          !includes("kohdennus", changeObj.anchor),
+        concat(
+          currentChangeObjects.unsaved[sectionId] || [],
+          currentChangeObjects.saved[sectionId] || []
+        ) || []
+      );
+
+      /**
+       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
+       * numero lisäämällä lukuun yksi.
+       */
+      const nextKohdennusAnchorPart =
+        length(kohdennusChangeObjects) > 0
+          ? reduce(
+              max,
+              -Infinity,
+              map(changeObj => {
+                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+              }, kohdennusChangeObjects)
+            ) + 1
+          : 1;
+
+      /**
+       * Luodaan
+       */
+      const nextChangeObjects = assocPath(
+        ["unsaved", sectionId],
+        append(
+          {
+            anchor: `${sectionId}.${rajoiteId}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
+            properties: {
+              value: ""
+            }
+          },
+          currentChangeObjects.unsaved[sectionId] || []
+        ),
+        currentChangeObjects
+      );
+      setState({ ...getState(), changeObjects: nextChangeObjects });
+    },
     removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
       const allCurrentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", getAnchorPart(anchor, 0));
@@ -417,6 +476,12 @@ const Store = createStore({
     },
     showNewRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: true });
+    },
+    showAlirajoitedialogi: () => ({ getState, setState }) => {
+      setState({ ...getState(), isAlirajoitedialogiVisible: true });
+    },
+    suljeAlirajoitedialogi: () => ({ dispatch }) => {
+      dispatch(suljeAlirajoitedialogi());
     }
   },
   name: "Muutokset"

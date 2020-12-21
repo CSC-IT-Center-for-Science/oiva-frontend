@@ -16,5 +16,9 @@ export default defineMessages({
   rajoitteet: {
     id: "rajoitteet.rajoitteet",
     defaultMessage: "Rajoitteet"
+  },
+  lisaaAlirajoite: {
+    id: "rajoitteet.lisaaAlirajoite",
+    defaultMessage: "Lisää alirajoite"
   }
 });

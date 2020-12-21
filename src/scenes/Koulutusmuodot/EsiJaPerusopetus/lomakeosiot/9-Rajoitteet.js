@@ -6,9 +6,10 @@ import Lomake from "components/02-organisms/Lomake";
 import { useAllSections } from "stores/lomakedata";
 import { useChangeObjects } from "../../../../stores/muutokset";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
-import Rajoite from "./10-rajoite";
+import Rajoite from "./10-Rajoite";
 import { getAnchorPart } from "utils/common";
 import { filter } from "ramda";
+import Alirajoitedialogi from "./11-Alirajoitedialogi";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]
@@ -23,15 +24,17 @@ const Rajoitteet = ({
   const dialogSectionId = "rajoitelomake";
 
   const { formatMessage } = useIntl();
-  const [{ isRestrictionDialogVisible }] = useChangeObjects();
+  const [
+    { isAlirajoitedialogiVisible, isRestrictionDialogVisible }
+  ] = useChangeObjects();
   const [osioidenData] = useAllSections();
   const [restrictionId, setRestrictionId] = useState(null);
   const [
     changeObjects,
     {
-      removeRajoite,
       setChanges,
       setRajoitelomakeChangeObjects,
+      showAlirajoitedialogi,
       showNewRestrictionDialog
     }
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -44,12 +47,21 @@ const Rajoitteet = ({
   }, [setRestrictionId, showNewRestrictionDialog]);
 
   const onModifyRestriction = useCallback(
-    rajoiteId => {
+    (rajoiteId, ollaankoAikeissaMuokataAlirajoitteita) => {
       setRestrictionId(rajoiteId);
       setRajoitelomakeChangeObjects(rajoiteId, sectionId, dialogSectionId);
-      showNewRestrictionDialog();
+      if (ollaankoAikeissaMuokataAlirajoitteita) {
+        showAlirajoitedialogi();
+      } else {
+        showNewRestrictionDialog();
+      }
     },
-    [sectionId, setRajoitelomakeChangeObjects, showNewRestrictionDialog]
+    [
+      sectionId,
+      setRajoitelomakeChangeObjects,
+      showAlirajoitedialogi,
+      showNewRestrictionDialog
+    ]
   );
 
   const onRemoveRestriction = useCallback(
@@ -59,12 +71,21 @@ const Rajoitteet = ({
       }, changeObjects);
       setChanges(updatedChangeObjects, sectionId);
     },
-    [removeRajoite, sectionId]
+    [changeObjects, sectionId, setChanges]
   );
 
   return (
     <React.Fragment>
       {render ? render() : null}
+      {isAlirajoitedialogiVisible && (
+        <Alirajoitedialogi
+          osioidenData={osioidenData}
+          onChangesUpdate={onChangesUpdate}
+          parentSectionId={sectionId}
+          restrictionId={restrictionId}
+          sectionId={dialogSectionId}
+        ></Alirajoitedialogi>
+      )}
       {isRestrictionDialogVisible && (
         <Rajoite
           osioidenData={osioidenData}

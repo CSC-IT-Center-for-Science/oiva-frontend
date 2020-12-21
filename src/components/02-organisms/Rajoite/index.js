@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
 import { Typography } from "@material-ui/core";
@@ -6,8 +6,9 @@ import SimpleButton from "components/00-atoms/SimpleButton";
 import { __ as translate } from "i18n-for-browser";
 import { getAnchorPart, isDate } from "utils/common";
 import { useIntl } from "react-intl";
-import { useLomakedata } from "stores/lomakedata";
+import { useAllSections, useLomakedata } from "stores/lomakedata";
 import { moment } from "moment";
+import Lomake from "components/02-organisms/Lomake";
 import {
   addIndex,
   compose,
@@ -29,12 +30,18 @@ const indexEven = (__, idx) => isEven(idx);
 
 const defaultProps = {
   areTitlesVisible: true,
+  canHaveAlirajoite: false,
   isBorderVisible: true,
   isReadOnly: false
 };
 
+const constants = {
+  alirajoitelomakkeenSijainti: ["esiJaPerusopetus", "alirajoite"]
+};
+
 const Rajoite = ({
   areTitlesVisible = defaultProps.areTitlesVisible,
+  canHaveAlirajoite = defaultProps.canHaveAlirajoite,
   id,
   index,
   isBorderVisible = defaultProps.isBorderVisible,
@@ -45,7 +52,9 @@ const Rajoite = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const asetukset = path(["elements", "asetukset"], rajoite);
+  const asetukset = path(["elements", "asetukset"], rajoite) || [];
+
+  const [osioidenData] = useAllSections();
 
   const kohteenTarkennin = path(
     ["elements", "kohde", 1, "properties", "value"],
@@ -55,6 +64,10 @@ const Rajoite = ({
   const asetuskohteet = addIndex(filter)(indexEven, asetukset);
 
   const asetustenTarkentimet = addIndex(reject)(indexEven, asetukset);
+
+  const lisaaAlirajoitteenKriteeri = useCallback(alirajoitteenId => {
+    console.info("Testing....", alirajoitteenId);
+  }, []);
 
   // const asetukset = filter(asetus => {
   //   const anchorPart = getAnchorPart(asetus.anchor, 3);
@@ -165,6 +178,28 @@ const Rajoite = ({
             );
           }, asetuskohteet)}
         </ul>
+
+        {/* <section className="bg-gray-100 border-gray-300 px-6">
+          <Typography component="h4" variant="h4">
+            Alirajoite 1
+          </Typography>
+          <Lomake
+            isInExpandableRow={false}
+            anchor={"rajoitelomake"}
+            data={{
+              osioidenData,
+              rajoiteId: id,
+              sectionId: "rajoitelomake"
+            }}
+            functions={{
+              lisaaKriteeri: lisaaAlirajoitteenKriteeri
+            }}
+            isSavingState={false}
+            path={constants.alirajoitelomakkeenSijainti}
+            showCategoryTitles={true}
+          ></Lomake>
+        </section> */}
+
         {!isReadOnly && (
           <div className="flex justify-between pt-8">
             <SimpleButton
@@ -178,6 +213,14 @@ const Rajoite = ({
               text={translate("rajoitteet.muokkaaRajoitetta")}
               variant={"outlined"}
             />
+            {canHaveAlirajoite && (
+              <SimpleButton
+                onClick={() => onModifyRestriction(id, true)}
+                size="small"
+                text={translate("rajoitteet.lisaaAlirajoite")}
+                variant={"outlined"}
+              />
+            )}
           </div>
         )}
       </div>
@@ -186,6 +229,7 @@ const Rajoite = ({
 };
 
 Rajoite.propTypes = {
+  canHaveAlirajoite: PropTypes.bool,
   id: PropTypes.string,
   index: PropTypes.number,
   isReadOnly: PropTypes.bool,

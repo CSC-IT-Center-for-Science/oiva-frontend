@@ -13,10 +13,10 @@ import PropTypes from "prop-types";
 import { useChangeObjects, useChangeObjectsByAnchor } from "stores/muutokset";
 
 const constants = {
-  formLocation: ["esiJaPerusopetus", "rajoite"]
+  formLocation: ["esiJaPerusopetus", "alirajoite"]
 };
 
-const Rajoite = ({
+const Alirajoitedialogi = ({
   osioidenData,
   sectionId,
   parentSectionId,
@@ -28,13 +28,6 @@ const Rajoite = ({
   const [rajoitelomakeChangeObjs] = useChangeObjectsByAnchor({
     anchor: sectionId
   });
-
-  const lisaaKohdennus = useCallback(
-    payload => {
-      actions.lisaaKohdennus(sectionId, payload.metadata.rajoiteId);
-    },
-    [actions, sectionId]
-  );
 
   const onAddCriterion = useCallback(
     payload => {
@@ -51,7 +44,7 @@ const Rajoite = ({
   );
 
   const revertChangesAndCloseDialog = () => {
-    actions.closeRestrictionDialog();
+    actions.suljeAlirajoitedialogi();
   };
 
   const acceptChangesAndCloseDialog = () => {
@@ -60,7 +53,7 @@ const Rajoite = ({
 
   return (
     <Dialog
-      open={state.isRestrictionDialogVisible}
+      open={state.isAlirajoitedialogiVisible}
       PaperProps={{
         style: {
           overflowY: "auto",
@@ -72,32 +65,30 @@ const Rajoite = ({
       }}
     >
       <DialogTitle onClose={actions.closeRestrictionDialog}>
-        Lisää rajoite luvalle
+        Muokkaa rajoitteen alirajoitteita
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
         {/* <Typography component="p" variant="p">
           Aloita valitsemalla rajoituksen kohde. Valinnan jälkeen voit tehdä
           tarvittavat rajoitukset haluamallasi tavalla
         </Typography> */}
-        <div className="p-0">
-          <Lomake
-            isInExpandableRow={false}
-            anchor={sectionId}
-            data={{
-              osioidenData,
-              rajoiteId: restrictionId,
-              sectionId
-            }}
-            functions={{
-              lisaaKohdennus,
-              onAddCriterion,
-              onRemoveCriterion
-            }}
-            isSavingState={false}
-            path={constants.formLocation}
-            showCategoryTitles={true}
-          ></Lomake>
-        </div>
+
+        <Lomake
+          isInExpandableRow={false}
+          anchor={sectionId}
+          data={{
+            osioidenData,
+            rajoiteId: restrictionId,
+            sectionId
+          }}
+          functions={{
+            onAddCriterion,
+            onRemoveCriterion
+          }}
+          isSavingState={false}
+          path={constants.formLocation}
+          showCategoryTitles={true}
+        ></Lomake>
       </DialogContent>
       <DialogActions>
         <div className="flex pr-6 pb-4">
@@ -125,8 +116,8 @@ const Rajoite = ({
   );
 };
 
-Rajoite.propTypes = {
+Alirajoitedialogi.propTypes = {
   parentSectionId: PropTypes.string
 };
 
-export default Rajoite;
+export default Alirajoitedialogi;

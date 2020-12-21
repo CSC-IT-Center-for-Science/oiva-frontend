@@ -232,7 +232,8 @@ const CategorizedList = props => {
             }`,
             margins: {
               top: `pt-${categoryLayout.margins.top}`
-            }
+            },
+            custom: R.join(" ", category.styleClasses || [])
           }
         };
 
