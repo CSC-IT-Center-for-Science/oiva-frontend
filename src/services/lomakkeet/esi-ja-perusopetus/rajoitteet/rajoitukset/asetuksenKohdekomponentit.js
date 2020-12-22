@@ -67,10 +67,6 @@ const getKomponentti = key => {
   }
 };
 
-export const getAsetuksenKohdekomponentti = (
-  kohteenTarkenninavain,
-  kohdeavain
-) => {
-  const komponentti = getKomponentti(kohteenTarkenninavain || kohdeavain);
-  return komponentti;
+export const getAsetuksenKohdekomponentti = asetuksenKohdeavain => {
+  return getKomponentti(asetuksenKohdeavain);
 };

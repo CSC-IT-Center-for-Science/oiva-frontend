@@ -533,18 +533,27 @@ const CategorizedList = props => {
                           ) {
                             parentComponent =
                               props.parent.category.components[0];
-                            const parentChange = getChangeObjByAnchor(
-                              `${props.parent.anchor}.${parentComponent.anchor}`,
-                              props.changes
-                            );
-                            isDisabled =
-                              R.includes(parentComponent.name, [
-                                "CheckboxWithLabel",
-                                "RadioButtonWithLabel"
-                              ]) &&
-                              ((!parentComponent.properties.isChecked &&
-                                R.isEmpty(parentChange.properties)) ||
-                                !parentChange.properties.isChecked);
+                            if (parentComponent) {
+                              const parentChange = getChangeObjByAnchor(
+                                `${props.parent.anchor}.${parentComponent.anchor}`,
+                                props.changes
+                              );
+                              isDisabled =
+                                R.includes(parentComponent.name, [
+                                  "CheckboxWithLabel",
+                                  "RadioButtonWithLabel"
+                                ]) &&
+                                ((!parentComponent.properties.isChecked &&
+                                  R.isEmpty(parentChange.properties)) ||
+                                  !parentChange.properties.isChecked);
+                            } else {
+                              console.warn(
+                                "Inputilla",
+                                component,
+                                propsObj,
+                                "ei ole parenttia."
+                              );
+                            }
                           }
                           return (
                             <div className={styleClassesStr}>

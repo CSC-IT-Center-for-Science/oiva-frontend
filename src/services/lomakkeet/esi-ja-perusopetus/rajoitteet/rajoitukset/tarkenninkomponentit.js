@@ -6,19 +6,21 @@ yksittäisen asetuksen (rajoitekriteerin), tarkenninkentän/-kentät.
 On olennaista, että palautettavilla lomakerakenteilla on sama ankkuri,
 koska siihen luotetaan, kun rajoitteen rakennetta käydään läpi.
  */
-export const getLukumaaralomake = () => {
-  return {
-    anchor: "lukumaara",
-    name: "Input",
-    styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-    properties: {
-      placeholder: "Lukumäärä",
-      value: ""
+export const getLukumaarakomponentit = () => {
+  return [
+    {
+      anchor: "lukumaara",
+      name: "Input",
+      styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+      properties: {
+        placeholder: "Lukumäärä",
+        value: ""
+      }
     }
-  };
+  ];
 };
 
-export const getMaaraaikalomake = locale => {
+export const getMaaraaikakomponentit = locale => {
   return [
     {
       anchor: "tarkennin",

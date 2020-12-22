@@ -1,5 +1,5 @@
-const getKomponentti = key => {
-  if (key === "kokonaismaara") {
+export const getKohdistuksenKohdekomponentti = kohdistuksenKohdeavain => {
+  if (kohdistuksenKohdeavain === "kokonaismaara") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -28,12 +28,4 @@ const getKomponentti = key => {
       }
     };
   }
-};
-
-export const getKohdistuksenKohdekomponentti = (
-  kohteenTarkenninavain,
-  kohdeavain
-) => {
-  const komponentti = getKomponentti(kohteenTarkenninavain || kohdeavain);
-  return komponentti;
 };

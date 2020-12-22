@@ -1,5 +1,5 @@
 import { getAsetuksenKohdekomponentti } from "./rajoitukset/asetuksenKohdekomponentit";
-import { getAsetuksenTarkenninlomake } from "./rajoitukset/asetuksenTarkenninlomake";
+import { getAsetuksenTarkenninkomponentit } from "./rajoitukset/asetuksenTarkenninkomponentit";
 import { path } from "ramda";
 
 export async function getAlirajoitelomake(
@@ -18,7 +18,7 @@ export async function getAlirajoitelomake(
   );
 
   const tarkenninkomponentti = tarkenninavain
-    ? await getAsetuksenTarkenninlomake(tarkenninavain, locale)
+    ? await getAsetuksenTarkenninkomponentit(tarkenninavain, locale)
     : null;
 
   console.info(tarkenninavain, tarkenninkomponentti);
@@ -44,14 +44,3 @@ export async function getAlirajoitelomake(
     }
   ];
 }
-
-// const rajoite = {
-//   id,
-//   asetukset,
-//   toiminnot: ["lisää kriteeri"]
-// }
-
-// RAJOITE -> kohdevaihtoehdot, tarkenninvaihtoehdot
-// + lisää kriteeri
-// ALIRAJOITE -> kohdevaihtoehdot, tarkenninvaihtoehdot
-// + lisää kriteeri

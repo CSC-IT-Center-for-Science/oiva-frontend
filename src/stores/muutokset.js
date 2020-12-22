@@ -257,7 +257,10 @@ const Store = createStore({
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
-    lisaaKohdennus: (sectionId, rajoiteId) => ({ getState, setState }) => {
+    lisaaKohdennus: (sectionId, kohdennusId, rajoiteId) => ({
+      getState,
+      setState
+    }) => {
       const currentChangeObjects = getState().changeObjects;
       const kohdennusChangeObjects = filter(
         changeObj =>
@@ -298,7 +301,7 @@ const Store = createStore({
         ["unsaved", sectionId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
+            anchor: `${sectionId}.${rajoiteId}.kohdennukset.${kohdennusId}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
             properties: {
               value: ""
             }

@@ -30,8 +30,12 @@ const Rajoite = ({
   });
 
   const lisaaKohdennus = useCallback(
-    payload => {
-      actions.lisaaKohdennus(sectionId, payload.metadata.rajoiteId);
+    ({ metadata }) => {
+      actions.lisaaKohdennus(
+        sectionId,
+        metadata.kohdennusId,
+        metadata.rajoiteId
+      );
     },
     [actions, sectionId]
   );
