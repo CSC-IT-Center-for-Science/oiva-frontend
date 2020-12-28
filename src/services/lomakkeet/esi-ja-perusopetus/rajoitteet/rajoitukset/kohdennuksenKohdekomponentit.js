@@ -1,5 +1,5 @@
-export const getKohdistuksenKohdekomponentti = kohdistuksenKohdeavain => {
-  if (kohdistuksenKohdeavain === "kokonaismaara") {
+export const getKohdennuksenKohdekomponentti = kohdennuksenKohdeavain => {
+  if (kohdennuksenKohdeavain === "kokonaismaara") {
     return {
       anchor: "kohde",
       name: "Autocomplete",

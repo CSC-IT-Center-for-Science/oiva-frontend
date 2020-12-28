@@ -4,7 +4,7 @@ import {
   getMaaraaikakomponentit
 } from "./tarkenninkomponentit";
 
-const kohdistuksenTarkenninkomponentit = {
+const kohdennuksenTarkenninkomponentit = {
   enintaan: getLukumaarakomponentit,
   joistaEnintaan: getLukumaarakomponentit,
   joistaVahintaan: getLukumaarakomponentit,
@@ -14,16 +14,16 @@ const kohdistuksenTarkenninkomponentit = {
   vahintaan: getLukumaarakomponentit
 };
 
-export const getKohdistuksenTarkenninkomponentit = (
-  kohdistuksenKohdeavain,
+export const getKohdennuksenTarkenninkomponentit = (
+  kohdennuksenKohdeavain,
   locale
 ) => {
-  if (!kohdistuksenKohdeavain) {
+  if (!kohdennuksenKohdeavain) {
     return false;
   }
   const tarkenninFn = prop(
-    kohdistuksenKohdeavain,
-    kohdistuksenTarkenninkomponentit
+    kohdennuksenKohdeavain,
+    kohdennuksenTarkenninkomponentit
   );
   return tarkenninFn(locale) || [];
 };

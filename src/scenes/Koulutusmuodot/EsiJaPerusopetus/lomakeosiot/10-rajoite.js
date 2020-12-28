@@ -34,7 +34,8 @@ const Rajoite = ({
       actions.lisaaKohdennus(
         sectionId,
         metadata.kohdennusId,
-        metadata.rajoiteId
+        metadata.rajoiteId,
+        metadata.kohdennusindeksipolku
       );
     },
     [actions, sectionId]
@@ -83,7 +84,7 @@ const Rajoite = ({
           Aloita valitsemalla rajoituksen kohde. Valinnan jälkeen voit tehdä
           tarvittavat rajoitukset haluamallasi tavalla
         </Typography> */}
-        <div className="p-0">
+        <div className="m-10">
           <Lomake
             isInExpandableRow={false}
             anchor={sectionId}

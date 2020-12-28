@@ -5,12 +5,16 @@ import {
   assocPath,
   compose,
   concat,
+  countBy,
   difference,
   endsWith,
+  equals,
   filter,
   flatten,
   head,
+  includes,
   isNil,
+  join,
   length,
   map,
   max,
@@ -18,14 +22,13 @@ import {
   not,
   path,
   prepend,
+  prop,
   propEq,
   reduce,
   reject,
   split,
   startsWith,
-  values,
-  includes,
-  prop
+  values
 } from "ramda";
 import {
   getAnchorPart,
@@ -33,6 +36,7 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
+import { v4 as uuidv4 } from "uuid";
 import { muutokset } from "scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
@@ -257,42 +261,54 @@ const Store = createStore({
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
-    lisaaKohdennus: (sectionId, kohdennusId, rajoiteId) => ({
-      getState,
-      setState
-    }) => {
-      const currentChangeObjects = getState().changeObjects;
-      const kohdennusChangeObjects = filter(
-        changeObj =>
-          startsWith(
-            `${sectionId}.${rajoiteId}.kohdennukset`,
-            changeObj.anchor
-          ) &&
-          !startsWith(
-            `${sectionId}.${rajoiteId}.kohdennukset.kohde`,
-            changeObj.anchor
-          ) &&
-          !includes("kohdennus", changeObj.anchor),
-        concat(
-          currentChangeObjects.unsaved[sectionId] || [],
-          currentChangeObjects.saved[sectionId] || []
-        ) || []
+    lisaaKohdennus: (
+      sectionId,
+      kohdennusId,
+      rajoiteId,
+      kohdennusindeksipolku
+    ) => ({ getState, setState }) => {
+      const kohdennuspolku = join(
+        ".",
+        map(kohdennustaso => {
+          return `kohdennukset.${kohdennustaso}`;
+        }, kohdennusindeksipolku)
       );
+
+      const currentChangeObjects = getState().changeObjects;
+      const kohdennusChangeObjects = filter(changeObj => {
+        const amountOfKohdistuksetKeyword = prop(
+          "true",
+          countBy(equals("kohdennukset"))(split(".", changeObj.anchor))
+        );
+
+        return (
+          startsWith(
+            `${sectionId}.${rajoiteId}.${kohdennuspolku}.kohdennukset`,
+            changeObj.anchor
+          ) && amountOfKohdistuksetKeyword === length(kohdennusindeksipolku) + 1
+        );
+      }, concat(currentChangeObjects.unsaved[sectionId] || [], currentChangeObjects.saved[sectionId] || []) || []);
 
       /**
        * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
        * numero lisäämällä lukuun yksi.
        */
-      const nextKohdennusAnchorPart =
-        length(kohdennusChangeObjects) > 0
-          ? reduce(
-              max,
-              -Infinity,
-              map(changeObj => {
-                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-              }, kohdennusChangeObjects)
-            ) + 1
-          : 1;
+      const nextKohdennusAnchorPart = length(kohdennusChangeObjects);
+      // length(kohdennusChangeObjects) > 0
+      //   ? reduce(
+      //       max,
+      //       -Infinity,
+      //       map(changeObj => {
+      //         return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+      //       }, kohdennusChangeObjects)
+      //     ) + 1
+      //   : 1;
+
+      console.group();
+      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
+      console.info("kohdennuspolku", kohdennuspolku);
+      console.info("Seuraava ankkuritaso", nextKohdennusAnchorPart);
+      console.groupEnd();
 
       /**
        * Luodaan
@@ -301,7 +317,7 @@ const Store = createStore({
         ["unsaved", sectionId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.kohdennukset.${kohdennusId}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
+            anchor: `${sectionId}.${rajoiteId}.${kohdennuspolku}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
             properties: {
               value: ""
             }
