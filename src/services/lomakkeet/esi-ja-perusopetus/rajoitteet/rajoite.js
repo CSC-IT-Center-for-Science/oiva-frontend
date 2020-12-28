@@ -368,6 +368,7 @@ const getKohdennuksetRecursively = async (
   console.info("Index", index);
   console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
   console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
+  console.info("RajoiteChangeObjects", rajoiteChangeObjects);
   console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
   console.info("kohdennuksen kohdekomponentti", kohdennuksenKohdekomponentti);
   console.info(
@@ -377,7 +378,6 @@ const getKohdennuksetRecursively = async (
   console.info("Kohteen tarkenninavain", kohteenTarkenninavain);
   console.info("Kohdevaihtoehdot", kohdevaihtoehdot);
   console.info("Kohteen tarkenninkomponentit", kohteenTarkenninkomponentit);
-  console.info("RajoiteChangeObjects", rajoiteChangeObjects);
   console.info("1. asetuksen kohdeavain", ensimmaisenAsetuksenKohdeavain);
   console.info(
     "1. kohdennuksen kohteen tarkenninavain",
@@ -402,7 +402,7 @@ const getKohdennuksetRecursively = async (
           components: kohdennuksenKohdekomponentti
             ? [kohdennuksenKohdekomponentti]
             : [],
-          categories: [
+          categories: prepend(
             {
               anchor: "tarkennin",
               layout: { indentation: "none" },
@@ -455,22 +455,6 @@ const getKohdennuksetRecursively = async (
                       : null
                   ].filter(Boolean)
                 },
-                alikohdennuksetChangeObjects
-                  ? {
-                      anchor: "kohdennukset",
-                      categories: await getKohdennuksetRecursively(
-                        kohdennustaso + 1,
-                        ensimmaisenAsetuksenKohdeavain,
-                        data,
-                        { isReadOnly },
-                        locale,
-                        changeObjects,
-                        { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
-                        alikohdennuksetChangeObjects,
-                        append("0", kohdennusindeksipolku)
-                      )
-                    }
-                  : null,
                 {
                   anchor: "kohdennuksenLisaaminen",
                   styleClasses: ["flex justify-end my-6 pr-8"],
@@ -502,8 +486,21 @@ const getKohdennuksetRecursively = async (
                   ]
                 }
               ].filter(Boolean)
-            }
-          ]
+            },
+            alikohdennuksetChangeObjects
+              ? await getKohdennuksetRecursively(
+                  kohdennustaso + 1,
+                  ensimmaisenAsetuksenKohdeavain,
+                  data,
+                  { isReadOnly },
+                  locale,
+                  changeObjects,
+                  { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
+                  alikohdennuksetChangeObjects,
+                  append("0", kohdennusindeksipolku)
+                )
+              : []
+          )
         }
       ]
     },

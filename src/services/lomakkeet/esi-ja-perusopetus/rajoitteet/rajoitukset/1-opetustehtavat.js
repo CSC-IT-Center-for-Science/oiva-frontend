@@ -8,48 +8,39 @@ export default async function getOpetustehtavatlomake(osionData = [], locale) {
   if (opetustehtavat.length) {
     return [
       {
-        anchor: "tarkennin",
-        layout: { indentation: "none" },
-        components: [
-          {
-            anchor: "opetustehtavat",
-            name: "Autocomplete",
-            styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-            properties: {
-              forChangeObject: {
-                section: "getOpetustehtavatLomake"
-              },
-              isMulti: false,
-              options: map(opetustehtava => {
-                /**
-                 * Tarkistetaan, onko kyseinen opetustehtävä valittuna
-                 * lomakkeella, jota vasten rajoituksia ollaan tekemässä.
-                 **/
-                const stateObj = find(
-                  compose(
-                    endsWith(`.${opetustehtava.koodiarvo}`),
-                    prop("anchor")
-                  ),
-                  osionData
-                );
+        anchor: "opetustehtavat",
+        name: "Autocomplete",
+        styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+        properties: {
+          forChangeObject: {
+            section: "getOpetustehtavatLomake"
+          },
+          isMulti: false,
+          options: map(opetustehtava => {
+            /**
+             * Tarkistetaan, onko kyseinen opetustehtävä valittuna
+             * lomakkeella, jota vasten rajoituksia ollaan tekemässä.
+             **/
+            const stateObj = find(
+              compose(endsWith(`.${opetustehtava.koodiarvo}`), prop("anchor")),
+              osionData
+            );
 
-                /**
-                 * Jos valinnan tilasta kertova objekti on olemassa ja sen
-                 * isChecked-arvo on true, tarkoittaa se sitä, että kyseinen
-                 * opetustehtävä on päälomakkeella valitttuna. Tällöin
-                 * mahdollistetaan sen valitseminen yhdeksi rajoitteista.
-                 */
-                return stateObj && stateObj.properties.isChecked
-                  ? {
-                      label: opetustehtava.metadata[localeUpper].nimi,
-                      value: opetustehtava.koodiarvo
-                    }
-                  : null;
-              }, opetustehtavat).filter(Boolean),
-              value: ""
-            }
-          }
-        ]
+            /**
+             * Jos valinnan tilasta kertova objekti on olemassa ja sen
+             * isChecked-arvo on true, tarkoittaa se sitä, että kyseinen
+             * opetustehtävä on päälomakkeella valitttuna. Tällöin
+             * mahdollistetaan sen valitseminen yhdeksi rajoitteista.
+             */
+            return stateObj && stateObj.properties.isChecked
+              ? {
+                  label: opetustehtava.metadata[localeUpper].nimi,
+                  value: opetustehtava.koodiarvo
+                }
+              : null;
+          }, opetustehtavat).filter(Boolean),
+          value: ""
+        }
       }
     ];
   } else {

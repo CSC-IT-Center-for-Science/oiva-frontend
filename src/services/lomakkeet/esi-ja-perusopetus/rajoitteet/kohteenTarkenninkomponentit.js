@@ -18,7 +18,7 @@ export const getKohteenTarkenninkomponentit = async (
   kohdeavain,
   locale
 ) => {
-  console.info(kohdeavain);
+  console.info(kohdeavain, osioidenData, prop(kohdeavain, osioidenData));
   const komponentitByKey = {
     maaraaika: getMaaraaikalomake,
     opetustehtavat: getOpetustehtavatlomake,
@@ -55,5 +55,5 @@ export const getKohteenTarkenninkomponentit = async (
 
   const fn = prop(kohdeavain, komponentitByKey);
 
-  return fn ? await fn(osioidenData, locale) : [];
+  return fn ? await fn(prop(kohdeavain, osioidenData), locale) : [];
 };
