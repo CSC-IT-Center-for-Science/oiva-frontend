@@ -1,4 +1,4 @@
-import getOpetustehtavatlomake from "./rajoitukset/1-opetustehtavat";
+import getOpetustehtavakomponentit from "./rajoitukset/1-opetustehtavat";
 import getOpetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
 import getOpetuskieletlomake from "./rajoitukset/3-opetuskielet";
 import getOpetuksenJarjestamismuodotLomake from "./rajoitukset/4-opetuksenjarjestamismuoto";
@@ -21,7 +21,7 @@ export const getKohteenTarkenninkomponentit = async (
   console.info(kohdeavain, osioidenData, prop(kohdeavain, osioidenData));
   const komponentitByKey = {
     maaraaika: getMaaraaikalomake,
-    opetustehtavat: getOpetustehtavatlomake,
+    opetustehtavat: getOpetustehtavakomponentit,
     toimintaalue: getOpetustaAntavatKunnat,
     opetuskielet: getOpetuskieletlomake,
     opetuksenJarjestamismuodot: getOpetuksenJarjestamismuodotLomake,

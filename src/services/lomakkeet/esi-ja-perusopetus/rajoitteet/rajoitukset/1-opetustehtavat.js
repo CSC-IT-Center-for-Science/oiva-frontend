@@ -1,7 +1,10 @@
 import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
 import { compose, endsWith, find, map, prop, toUpper } from "ramda";
 
-export default async function getOpetustehtavatlomake(osionData = [], locale) {
+export default async function getOpetustehtavakomponentit(
+  osionData = [],
+  locale
+) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const localeUpper = toUpper(locale);
 
@@ -46,16 +49,11 @@ export default async function getOpetustehtavatlomake(osionData = [], locale) {
   } else {
     return [
       {
-        anchor: "ei-valintamahdollisuutta",
-        components: [
-          {
-            anchor: "teksti",
-            name: "StatusTextRow",
-            properties: {
-              title: "Ei valintamahdollisuutta."
-            }
-          }
-        ]
+        anchor: "teksti",
+        name: "StatusTextRow",
+        properties: {
+          title: "Ei valintamahdollisuutta."
+        }
       }
     ];
   }

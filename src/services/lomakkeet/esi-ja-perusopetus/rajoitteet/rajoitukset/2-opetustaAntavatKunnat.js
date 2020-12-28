@@ -28,39 +28,33 @@ export default function getOpetustaAntavatKunnat(osionData = []) {
       )
     );
 
-    return {
-      anchor: "rajoitus",
-      components: [
-        {
-          anchor: "opetustaAntavatKunnat",
-          name: "Autocomplete",
-          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-          properties: {
-            forChangeObject: {
-              section: "opetustaAntavatKunnat"
-            },
-            isMulti: false,
-            options: map(changeObj => {
-              const { koodiarvo, title } = changeObj.properties.metadata;
-              return { label: title, value: koodiarvo };
-            }, listOfMunicipalities).filter(Boolean),
-            value: ""
-          }
+    return [
+      {
+        anchor: "opetustaAntavatKunnat",
+        name: "Autocomplete",
+        styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+        properties: {
+          forChangeObject: {
+            section: "opetustaAntavatKunnat"
+          },
+          isMulti: false,
+          options: map(changeObj => {
+            const { koodiarvo, title } = changeObj.properties.metadata;
+            return { label: title, value: koodiarvo };
+          }, listOfMunicipalities).filter(Boolean),
+          value: ""
         }
-      ]
-    };
+      }
+    ];
   } else {
-    return {
-      anchor: "ei-valintamahdollisuutta",
-      components: [
-        {
-          anchor: "teksti",
-          name: "StatusTextRow",
-          properties: {
-            title: "Ei valintamahdollisuutta."
-          }
+    return [
+      {
+        anchor: "teksti",
+        name: "StatusTextRow",
+        properties: {
+          title: "Ei valintamahdollisuutta."
         }
-      ]
-    };
+      }
+    ];
   }
 }

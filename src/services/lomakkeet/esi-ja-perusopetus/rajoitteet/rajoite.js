@@ -35,8 +35,25 @@ const kohdevaihtoehdot = [
   {
     label: "Opiskelijamäärät",
     value: "opiskelijamaarat"
+  },
+  {
+    label: "Kunnat, joissa opetusta järjestetään",
+    value: "toimintaalue"
+  },
+  {
+    label: "Erityinen koulutustehtävä",
+    value: "erityisetKoulutustehtavat"
   }
 ];
+
+const bgColorClassesByIndex = {
+  "0": "bg-gray-100",
+  "1": "bg-blue-100",
+  "2": "bg-green-100",
+  "3": "bg-gray-200",
+  "4": "bg-blue-200",
+  "5": "bg-green-200"
+};
 
 const asetuslomakkeet = {
   opiskelijamaarastrategia: getKokonaisopiskelijamaaralomake
@@ -287,6 +304,7 @@ const getKohdennuksetRecursively = async (
   changeObjects,
   { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
   kohdennuksetChangeObjects = [],
+  parentKohdennuksetChangeObjects = [],
   kohdennusindeksipolku = ["0"],
   index = 0,
   ensimmaisenKohdennuksenKohteenTarkenninavain,
@@ -305,23 +323,6 @@ const getKohdennuksetRecursively = async (
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
     ? getKohdennuksenKohdekomponentti(kohdennuksenKohdeavain)
     : null;
-
-  // const kohdennuksenTarkenninavain = path(
-  //   [
-  //     rajoiteId,
-  //     "kohdennukset",
-  //     index,
-  //     "tarkennin",
-  //     "rajoite",
-  //     "kohde",
-  //     "tarkennin",
-  //     kohteenTarkenninavain,
-  //     "properties",
-  //     "value",
-  //     "value"
-  //   ],
-  //   groupedChangeObjects
-  // );
 
   const kohdennuksenTarkenninKomponentit = kohdennuksenKohdekomponentti
     ? getKohdennuksenTarkenninkomponentit("joistaEnintaan", locale)
@@ -347,26 +348,51 @@ const getKohdennuksetRecursively = async (
     locale
   );
 
-  const ensimmaisenAsetuksenKohdeavain = path(
-    [
-      "kohde",
-      "tarkennin",
-      kohteenTarkenninavain,
-      "properties",
-      "value",
-      "value"
-    ],
-    rajoiteChangeObjects
-  );
+  //   const kohdennuksenTarkenninavain = path(
+  //   [
+  //     "0",
+  //     "tarkennin",
+  //     "rajoite",
+  //     "kohde",
+  //     "tarkennin",
+  //     kohteenTarkenninavain,
+  //     "properties",
+  //     "value",
+  //     "value"
+  //   ],
+  //   parentKohdennuksetChangeObjects
+  // );
+
+  const ensimmaisenAsetuksenKohdeavain =
+    kohdennuksenKohdeavain ||
+    path(
+      [
+        "kohde",
+        "tarkennin",
+        kohteenTarkenninavain,
+        "properties",
+        "value",
+        "value"
+      ],
+      rajoiteChangeObjects
+    );
 
   const alikohdennuksetChangeObjects = path(
     [index, "kohdennukset"],
     kohdennuksetChangeObjects
   );
 
+  // parentKohdennuksetChangeObjects = kohdennuksetChangeObjects
+  //   ? Object.assign({}, kohdennuksetChangeObjects)
+  //   : {};
+
   console.group();
   console.info("Index", index);
   console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
+  console.info(
+    "Muutosobjektit tasoa ylempänä:",
+    parentKohdennuksetChangeObjects
+  );
   console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
   console.info("RajoiteChangeObjects", rajoiteChangeObjects);
   console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
@@ -391,13 +417,19 @@ const getKohdennuksetRecursively = async (
       anchor: "kohdennukset",
       // title: "Kohdennukset",
       layout: { indentation: "none" },
-      styleClasses: ["bg-white"],
+      styleClasses: [
+        bgColorClassesByIndex[String(length(kohdennusindeksipolku) - 1)]
+      ].filter(Boolean),
       components: [],
       categories: [
         {
           // index on kohdennuksen juokseva järjestysnumero
           anchor: String(index),
-          styleClasses: ["border-b border-gray-300"],
+          styleClasses: [
+            "border-t",
+            length(kohdennusindeksipolku) === 1 ? "border-b" : "",
+            "border-gray-300"
+          ],
           title: `Kohdennus ${join(".", kohdennusindeksipolku)}`,
           components: kohdennuksenKohdekomponentti
             ? [kohdennuksenKohdekomponentti]
@@ -410,9 +442,7 @@ const getKohdennuksetRecursively = async (
               categories: [
                 {
                   anchor: "rajoite",
-                  styleClasses: [
-                    "bg-green-100 border-t border-b border-gray-300"
-                  ],
+                  layout: { indentation: "none" },
                   categories: [
                     {
                       anchor: "kohde",
@@ -457,7 +487,7 @@ const getKohdennuksetRecursively = async (
                 },
                 {
                   anchor: "kohdennuksenLisaaminen",
-                  styleClasses: ["flex justify-end my-6 pr-8"],
+                  styleClasses: ["flex justify-end py-6 pr-8"],
                   components: [
                     {
                       anchor: "painike",
@@ -497,6 +527,7 @@ const getKohdennuksetRecursively = async (
                   changeObjects,
                   { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
                   alikohdennuksetChangeObjects,
+                  kohdennuksetChangeObjects,
                   append("0", kohdennusindeksipolku)
                 )
               : []
@@ -510,21 +541,25 @@ const getKohdennuksetRecursively = async (
   // Jos kohdennuksia on luotu lisää, otetaan nekin mukaan lopulliseeen
   // palautettavaan lomakerakenteeseen.
   if (prop(index + 1, kohdennuksetChangeObjects)) {
-    const kohdennuksenKohdeavain = path(
-      [
-        0,
-        "tarkennin",
-        "rajoite",
-        "kohde",
-        "tarkennin",
-        ensimmaisenKohdennuksenKohteenTarkenninavain || kohteenTarkenninavain,
-        "properties",
-        "value",
-        "value"
-      ],
-      kohdennuksetChangeObjects
-    );
-    console.warn("kohdennuksen kohdeavain: (0-taso)", kohdennuksenKohdeavain);
+    // const kohdennuksenKohdeavain = path(
+    //   [
+    //     0,
+    //     "tarkennin",
+    //     "rajoite",
+    //     "kohde",
+    //     "tarkennin",
+    //     ensimmaisenKohdennuksenKohteenTarkenninavain || kohteenTarkenninavain,
+    //     "properties",
+    //     "value",
+    //     "value"
+    //   ],
+    //   kohdennuksetChangeObjects
+    // );
+    // console.warn(
+    //   "kohdennuksen kohdeavain: (0-taso)",
+    //   ensimmaisenKohdennuksenKohteenTarkenninavain,
+    //   kohdennuksenKohdeavain
+    // );
     return getKohdennuksetRecursively(
       kohdennustaso,
       ensimmaisenAsetuksenKohdeavain,
@@ -534,6 +569,7 @@ const getKohdennuksetRecursively = async (
       changeObjects,
       { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
       kohdennuksetChangeObjects,
+      parentKohdennuksetChangeObjects,
       append(String(index + 1), init(kohdennusindeksipolku)),
       index + 1,
       ensimmaisenKohdennuksenKohteenTarkenninavain || kohteenTarkenninavain,
