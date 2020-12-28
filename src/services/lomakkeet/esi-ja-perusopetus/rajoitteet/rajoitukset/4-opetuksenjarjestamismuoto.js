@@ -1,6 +1,6 @@
 import { find, pathEq } from "ramda";
 
-export default async function getOpetuksenJarjestamismuodotLomake(
+export default async function getOpetuksenJarjestamismuotokomponentit(
   osionData = []
 ) {
   const valittuJarjestamismuoto = find(
@@ -23,36 +23,30 @@ export default async function getOpetuksenJarjestamismuodotLomake(
       value: valittuJarjestamismuoto.anchor
     };
 
-    return {
-      anchor: "rajoitus",
-      components: [
-        {
-          anchor: "opetuksenJarjestamismuodot",
-          name: "Autocomplete",
-          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-          properties: {
-            forChangeObject: {
-              section: "opetuksenJarjestamismuoto"
-            },
-            isMulti: false,
-            options: [valittuArvo],
-            value: [valittuArvo]
-          }
+    return [
+      {
+        anchor: "opetuksenJarjestamismuodot",
+        name: "Autocomplete",
+        styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+        properties: {
+          forChangeObject: {
+            section: "opetuksenJarjestamismuoto"
+          },
+          isMulti: false,
+          options: [valittuArvo],
+          value: [valittuArvo]
         }
-      ]
-    };
+      }
+    ];
   } else {
-    return {
-      anchor: "ei-valintamahdollisuutta",
-      components: [
-        {
-          anchor: "teksti",
-          name: "StatusTextRow",
-          properties: {
-            title: "Ei valintamahdollisuutta."
-          }
+    return [
+      {
+        anchor: "teksti",
+        name: "StatusTextRow",
+        properties: {
+          title: "Ei valintamahdollisuutta."
         }
-      ]
-    };
+      }
+    ];
   }
 }

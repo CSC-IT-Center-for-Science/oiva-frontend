@@ -1,7 +1,7 @@
 import getOpetustehtavakomponentit from "./rajoitukset/1-opetustehtavat";
 import getOpetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
-import getOpetuskieletlomake from "./rajoitukset/3-opetuskielet";
-import getOpetuksenJarjestamismuodotLomake from "./rajoitukset/4-opetuksenjarjestamismuoto";
+import getOpetuskielikomponentit from "./rajoitukset/3-opetuskielet";
+import getOpetuksenJarjestamismuotokomponentit from "./rajoitukset/4-opetuksenjarjestamismuoto";
 import getErityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
 import getMuutEhdot from "./rajoitukset/7-muutEhdot";
 import { getMaaraaikalomake } from "./rajoitukset/maaraaika";
@@ -23,8 +23,8 @@ export const getKohteenTarkenninkomponentit = async (
     maaraaika: getMaaraaikalomake,
     opetustehtavat: getOpetustehtavakomponentit,
     toimintaalue: getOpetustaAntavatKunnat,
-    opetuskielet: getOpetuskieletlomake,
-    opetuksenJarjestamismuodot: getOpetuksenJarjestamismuodotLomake,
+    opetuskielet: getOpetuskielikomponentit,
+    opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
     erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
     opiskelijamaarat: () => [
       {

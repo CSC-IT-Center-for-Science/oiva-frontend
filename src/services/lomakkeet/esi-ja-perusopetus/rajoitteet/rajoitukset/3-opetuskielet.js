@@ -10,7 +10,7 @@ import { flatten, map, path, prop, sortBy } from "ramda";
  * @param {array} osionData - Sisältää päälomakkeen opetuskieliosion
  * lomakerakenteen täydennettyinä siihen tehdyillä muutoksilla.
  */
-export default async function getOpetuskieletlomake(osionData = []) {
+export default async function getOpetuskielikomponentit(osionData = []) {
   // Yhdistetään päälomakkkeella valittuina olevat ensisijaiset ja toissijaiset
   // opetuskielet yhdeksi taulukoksi, koska tällä tietoa ei ole syystä
   // luoda omaa pudotusvalikkoa molemmille.
@@ -29,36 +29,28 @@ export default async function getOpetuskieletlomake(osionData = []) {
 
   // Palautettava lomakerakenne
   return osionData.length
-    ? {
-        anchor: "rajoitus",
-        components: [
-          {
-            anchor: "opetuskielet",
-            name: "Autocomplete",
-            styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-            properties: {
-              forChangeObject: {
-                section: "opetuskielet"
-              },
-              isMulti: false,
-              options: valitutKielet,
-              value: ""
-            }
+    ? [
+        {
+          anchor: "opetuskielet",
+          name: "Autocomplete",
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+          properties: {
+            forChangeObject: {
+              section: "opetuskielet"
+            },
+            isMulti: false,
+            options: valitutKielet,
+            value: ""
           }
-        ]
-      }
+        }
+      ]
     : [
         {
-          anchor: "ei-valintamahdollisuutta",
-          components: [
-            {
-              anchor: "teksti",
-              name: "StatusTextRow",
-              properties: {
-                title: "Valitse ensin opetuskieliä päälomakkeelta."
-              }
-            }
-          ]
+          anchor: "teksti",
+          name: "StatusTextRow",
+          properties: {
+            title: "Valitse ensin opetuskieliä päälomakkeelta."
+          }
         }
       ];
 }

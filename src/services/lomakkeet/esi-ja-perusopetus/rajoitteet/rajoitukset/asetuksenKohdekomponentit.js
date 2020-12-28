@@ -1,3 +1,6 @@
+import { kohdevaihtoehdot } from "../rajoite";
+import { find, propEq } from "ramda";
+
 const maaraaikaOption = {
   value: "maaraaika",
   label: "Määräaika"
@@ -50,6 +53,21 @@ const getKomponentti = key => {
             label: "Lisäksi vähintään"
           }
         ]
+      }
+    };
+  } else if (key === "opetuskielet") {
+    return {
+      anchor: "kohde",
+      name: "Autocomplete",
+      layout: { indentation: "none" },
+      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
+      properties: {
+        isMulti: false,
+        options: [
+          find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
+          maaraaikaOption
+        ],
+        value: ""
       }
     };
   } else if (key === "opetustehtavat") {

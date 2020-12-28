@@ -20,70 +20,64 @@ export const getLukumaarakomponentit = () => {
   ];
 };
 
-export const getMaaraaikakomponentit = locale => {
+export const getMaaraaikakomponentit = (osionData, locale) => {
   return [
     {
-      anchor: "tarkennin",
-      layout: { components: { justification: "start" }, indentation: "none" },
-      components: [
-        {
-          anchor: "alkamispaiva",
-          name: "Datepicker",
-          styleClasses: ["mr-2"],
-          properties: {
-            forChangeObject: {
-              section: "maaraaika"
-            },
-            label: "Alkamispäivä",
-            value: "",
-            onChanges: () => {},
-            clearable: true,
-            showTodayButton: false,
-            localizations: {
-              ok: __("common.ok"),
-              clear: __("common.clear"),
-              cancel: __("common.cancel"),
-              today: __("common.today"),
-              datemax: __("common.datemax"),
-              datemin: __("common.datemin"),
-              dateinvalid: __("common.dateinvalid")
-            },
-            locale
-          }
+      anchor: "alkamispaiva",
+      name: "Datepicker",
+      styleClasses: ["mr-2"],
+      properties: {
+        forChangeObject: {
+          section: "maaraaika"
         },
-        {
-          anchor: "valiviiva",
-          name: "StatusTextRow",
-          properties: {
-            title: "-"
-          }
+        label: "Alkamispäivä",
+        value: "",
+        onChanges: () => {},
+        clearable: true,
+        showTodayButton: false,
+        localizations: {
+          ok: __("common.ok"),
+          clear: __("common.clear"),
+          cancel: __("common.cancel"),
+          today: __("common.today"),
+          datemax: __("common.datemax"),
+          datemin: __("common.datemin"),
+          dateinvalid: __("common.dateinvalid")
         },
-        {
-          anchor: "paattymispaiva",
-          name: "Datepicker",
-          styleClasses: ["ml-2"],
-          properties: {
-            forChangeObject: {
-              section: "maaraaika"
-            },
-            label: "Päättymispäivä",
-            value: "",
-            onChanges: () => {},
-            clearable: true,
-            showTodayButton: false,
-            localizations: {
-              ok: __("common.ok"),
-              clear: __("common.clear"),
-              cancel: __("common.cancel"),
-              today: __("common.today"),
-              datemax: __("common.datemax"),
-              datemin: __("common.datemin"),
-              dateinvalid: __("common.dateinvalid")
-            },
-            locale
-          }
-        }
-      ]
+        locale
+      }
+    },
+    {
+      anchor: "valiviiva",
+      name: "StatusTextRow",
+      properties: {
+        title: "-"
+      }
+    },
+    {
+      anchor: "paattymispaiva",
+      name: "Datepicker",
+      styleClasses: ["ml-2"],
+      properties: {
+        forChangeObject: {
+          section: "maaraaika"
+        },
+        label: "Päättymispäivä",
+        value: "",
+        onChanges: () => {},
+        clearable: true,
+        showTodayButton: false,
+        localizations: {
+          ok: __("common.ok"),
+          clear: __("common.clear"),
+          cancel: __("common.cancel"),
+          today: __("common.today"),
+          datemax: __("common.datemax"),
+          datemin: __("common.datemin"),
+          dateinvalid: __("common.dateinvalid")
+        },
+        locale
+      }
     }
   ];
 };

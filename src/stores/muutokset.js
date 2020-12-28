@@ -147,36 +147,39 @@ const Store = createStore({
       );
       dispatch(closeRestrictionDialog());
     },
-    addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
-      const currentChangeObjects = getState().changeObjects;
-      const rajoitekriteeritChangeObjects = filter(
-        changeObj =>
-          startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
-          !startsWith(
-            `${sectionId}.${rajoiteId}.asetukset.kohde`,
-            changeObj.anchor
-          ) &&
-          !includes("rajoitus", changeObj.anchor),
-        concat(
-          currentChangeObjects.unsaved[sectionId] || [],
-          currentChangeObjects.saved[sectionId] || []
-        ) || []
+    addCriterion: (
+      sectionId,
+      kohdennusId,
+      rajoiteId,
+      kohdennusindeksipolku
+    ) => ({ getState, setState }) => {
+      const kohdennuspolku = join(
+        ".",
+        map(kohdennustaso => {
+          return `kohdennukset.${kohdennustaso}`;
+        }, kohdennusindeksipolku)
       );
 
+      const currentChangeObjects = getState().changeObjects;
+      const asetuksetChangeObjects = filter(changeObj => {
+        return startsWith(
+          `${sectionId}.${rajoiteId}.${kohdennuspolku}.tarkennin.rajoite.asetukset`,
+          changeObj.anchor
+        );
+      }, concat(currentChangeObjects.unsaved[sectionId] || [], currentChangeObjects.saved[sectionId] || []) || []);
+
       /**
-       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
-       * numero lisäämällä lukuun yksi.
+        Seuraavan kriteerin id saadaan jakamalla asetuksia koskevien muutos-
+        objektien määrä kahdella, koska yksi asetus sisältää sekä kohteen että
+        tarkentimen.
        */
-      const nextCriterionAnchorPart =
-        length(rajoitekriteeritChangeObjects) > 0
-          ? reduce(
-              max,
-              -Infinity,
-              map(changeObj => {
-                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-              }, rajoitekriteeritChangeObjects)
-            ) + 1
-          : 1;
+      const nextAsetuksetIndex = length(asetuksetChangeObjects) / 2;
+
+      console.group();
+      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
+      console.info("kohdennuspolku", kohdennuspolku);
+      console.info("Seuraava ankkuritaso", nextAsetuksetIndex);
+      console.groupEnd();
 
       /**
        * Luodaan
@@ -185,7 +188,7 @@ const Store = createStore({
         ["unsaved", sectionId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.asetukset.${nextCriterionAnchorPart}.kohde.A`,
+            anchor: `${sectionId}.${rajoiteId}.${kohdennuspolku}.tarkennin.rajoite.asetukset.${nextAsetuksetIndex}.kohde`,
             properties: {
               value: ""
             }

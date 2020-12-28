@@ -128,13 +128,622 @@ export const muutokset = {
         }
       ]
     },
-    unsaved: {},
+    unsaved: {
+      rajoitelomake: [],
+      toimintaalue: [
+        {
+          anchor: "toimintaalue.categoryFilter",
+          properties: {
+            changesByProvince: {
+              "FI-15": [
+                {
+                  anchor: "areaofaction.FI-15.kunnat.140",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "140",
+                      title: "Iisalmi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.204",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "204",
+                      title: "Kaavi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.239",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "239",
+                      title: "Keitele",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.263",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "263",
+                      title: "Kiuruvesi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.297",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "297",
+                      title: "Kuopio",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.402",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "402",
+                      title: "Lapinlahti",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.420",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "420",
+                      title: "Leppävirta",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.595",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "595",
+                      title: "Pielavesi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.686",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "686",
+                      title: "Rautalampi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.687",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "687",
+                      title: "Rautavaara",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.749",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "749",
+                      title: "Siilinjärvi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.762",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "762",
+                      title: "Sonkajärvi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.778",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "778",
+                      title: "Suonenjoki",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.844",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "844",
+                      title: "Tervo",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.857",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "857",
+                      title: "Tuusniemi",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.915",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "915",
+                      title: "Varkaus",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.921",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "921",
+                      title: "Vesanto",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.kunnat.925",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "925",
+                      title: "Vieremä",
+                      maakuntaKey: "FI-15",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-15.A",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "11",
+                      maakuntaKey: "FI-15",
+                      title: undefined,
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true
+                  }
+                }
+              ],
+              "FI-06": [
+                {
+                  anchor: "areaofaction.FI-06.kunnat.169",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "169",
+                      title: "Jokioinen",
+                      maakuntaKey: "FI-06",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true,
+                    isIndeterminate: undefined
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-06.A",
+                  properties: {
+                    isChecked: true,
+                    isIndeterminate: true,
+                    metadata: {
+                      koodiarvo: "05",
+                      maakuntaKey: "FI-06",
+                      title: undefined,
+                      maaraysUuid: undefined
+                    }
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-06.kunnat.694",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "694",
+                      title: "Riihimäki",
+                      maakuntaKey: "FI-06",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true,
+                    isIndeterminate: undefined
+                  }
+                },
+                {
+                  anchor: "areaofaction.FI-06.kunnat.834",
+                  properties: {
+                    metadata: {
+                      koodiarvo: "834",
+                      title: "Tammela",
+                      maakuntaKey: "FI-06",
+                      maaraysUuid: undefined
+                    },
+                    isChecked: true,
+                    isIndeterminate: undefined
+                  }
+                }
+              ]
+            },
+            quickFilterChanges: [
+              {
+                anchor: "areaofaction-radios.quick-filters.ei-alueita",
+                properties: {
+                  isChecked: false,
+                  metadata: {
+                    koodiarvo: "FI2"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
     underRemoval: {}
   },
   focusOn: null,
   latestChanges: {
     underRemoval: [],
-    unsaved: []
+    unsaved: [
+      {
+        anchor: "toimintaalue.categoryFilter",
+        properties: {
+          changesByProvince: {
+            "FI-15": [
+              {
+                anchor: "areaofaction.FI-15.kunnat.140",
+                properties: {
+                  metadata: {
+                    koodiarvo: "140",
+                    title: "Iisalmi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.204",
+                properties: {
+                  metadata: {
+                    koodiarvo: "204",
+                    title: "Kaavi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.239",
+                properties: {
+                  metadata: {
+                    koodiarvo: "239",
+                    title: "Keitele",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.263",
+                properties: {
+                  metadata: {
+                    koodiarvo: "263",
+                    title: "Kiuruvesi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.297",
+                properties: {
+                  metadata: {
+                    koodiarvo: "297",
+                    title: "Kuopio",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.402",
+                properties: {
+                  metadata: {
+                    koodiarvo: "402",
+                    title: "Lapinlahti",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.420",
+                properties: {
+                  metadata: {
+                    koodiarvo: "420",
+                    title: "Leppävirta",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.595",
+                properties: {
+                  metadata: {
+                    koodiarvo: "595",
+                    title: "Pielavesi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.686",
+                properties: {
+                  metadata: {
+                    koodiarvo: "686",
+                    title: "Rautalampi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.687",
+                properties: {
+                  metadata: {
+                    koodiarvo: "687",
+                    title: "Rautavaara",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.749",
+                properties: {
+                  metadata: {
+                    koodiarvo: "749",
+                    title: "Siilinjärvi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.762",
+                properties: {
+                  metadata: {
+                    koodiarvo: "762",
+                    title: "Sonkajärvi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.778",
+                properties: {
+                  metadata: {
+                    koodiarvo: "778",
+                    title: "Suonenjoki",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.844",
+                properties: {
+                  metadata: {
+                    koodiarvo: "844",
+                    title: "Tervo",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.857",
+                properties: {
+                  metadata: {
+                    koodiarvo: "857",
+                    title: "Tuusniemi",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.915",
+                properties: {
+                  metadata: {
+                    koodiarvo: "915",
+                    title: "Varkaus",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.921",
+                properties: {
+                  metadata: {
+                    koodiarvo: "921",
+                    title: "Vesanto",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.kunnat.925",
+                properties: {
+                  metadata: {
+                    koodiarvo: "925",
+                    title: "Vieremä",
+                    maakuntaKey: "FI-15",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              },
+              {
+                anchor: "areaofaction.FI-15.A",
+                properties: {
+                  metadata: {
+                    koodiarvo: "11",
+                    maakuntaKey: "FI-15",
+                    title: undefined,
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true
+                }
+              }
+            ],
+            "FI-06": [
+              {
+                anchor: "areaofaction.FI-06.kunnat.169",
+                properties: {
+                  metadata: {
+                    koodiarvo: "169",
+                    title: "Jokioinen",
+                    maakuntaKey: "FI-06",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true,
+                  isIndeterminate: undefined
+                }
+              },
+              {
+                anchor: "areaofaction.FI-06.A",
+                properties: {
+                  isChecked: true,
+                  isIndeterminate: true,
+                  metadata: {
+                    koodiarvo: "05",
+                    maakuntaKey: "FI-06",
+                    title: undefined,
+                    maaraysUuid: undefined
+                  }
+                }
+              },
+              {
+                anchor: "areaofaction.FI-06.kunnat.694",
+                properties: {
+                  metadata: {
+                    koodiarvo: "694",
+                    title: "Riihimäki",
+                    maakuntaKey: "FI-06",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true,
+                  isIndeterminate: undefined
+                }
+              },
+              {
+                anchor: "areaofaction.FI-06.kunnat.834",
+                properties: {
+                  metadata: {
+                    koodiarvo: "834",
+                    title: "Tammela",
+                    maakuntaKey: "FI-06",
+                    maaraysUuid: undefined
+                  },
+                  isChecked: true,
+                  isIndeterminate: undefined
+                }
+              }
+            ]
+          },
+          quickFilterChanges: [
+            {
+              anchor: "areaofaction-radios.quick-filters.ei-alueita",
+              properties: {
+                isChecked: false,
+                metadata: {
+                  koodiarvo: "FI2"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   },
   validity: {},
   isRestrictionDialogVisible: false

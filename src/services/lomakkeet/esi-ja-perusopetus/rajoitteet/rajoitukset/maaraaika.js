@@ -1,9 +1,6 @@
 import { __ } from "i18n-for-browser";
 
-export const getMaaraaikalomake = async (
-  osionData,
-  locale
-) => {
+export const getMaaraaikalomake = async locale => {
   return {
     anchor: "rajoitus",
     components: [

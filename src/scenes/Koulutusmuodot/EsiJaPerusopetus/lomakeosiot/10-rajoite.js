@@ -42,8 +42,13 @@ const Rajoite = ({
   );
 
   const onAddCriterion = useCallback(
-    payload => {
-      actions.addCriterion(sectionId, payload.metadata.rajoiteId);
+    ({ metadata }) => {
+      actions.addCriterion(
+        sectionId,
+        metadata.kohdennusId,
+        metadata.rajoiteId,
+        metadata.kohdennusindeksipolku
+      );
     },
     [actions, sectionId]
   );
