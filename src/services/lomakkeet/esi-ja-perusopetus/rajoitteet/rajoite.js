@@ -4,6 +4,7 @@ import {
   compose,
   drop,
   filter,
+  find,
   head,
   includes,
   init,
@@ -15,6 +16,7 @@ import {
   path,
   prepend,
   prop,
+  propEq,
   split,
   startsWith
 } from "ramda";
@@ -166,7 +168,7 @@ async function getAsetuslomakekokonaisuus(
     ) || path(["properties", "value", "value"], asetuksenKohdekomponentti);
 
   const asetuksenTarkenninkomponentit = asetuksenTarkenninlomakkeenAvain
-    ? getAsetuksenTarkenninkomponentit(
+    ? await getAsetuksenTarkenninkomponentit(
         asetuksenTarkenninlomakkeenAvain,
         locale,
         osioidenData
@@ -188,25 +190,30 @@ async function getAsetuslomakekokonaisuus(
   console.info("rajoiteChangeObjects:", rajoiteChangeObjects);
   console.groupEnd();
 
-  const updatedLomakerakenne = append(
-    {
-      anchor: index,
-      title: `${index + 1})`,
-      layout: { indentation: "none" },
-      components: asetuksenKohdekomponentti ? [asetuksenKohdekomponentti] : [],
-      categories: [
-        {
-          anchor: "tarkennin",
-          layout: {
-            components: { justification: "start" },
-            indentation: "none"
+  const updatedLomakerakenne =
+    asetuksenKohdekomponentti || !!length(asetuksenTarkenninkomponentit)
+      ? append(
+          {
+            anchor: index,
+            title: `${index + 1})`,
+            layout: { indentation: "none" },
+            components: asetuksenKohdekomponentti
+              ? [asetuksenKohdekomponentti]
+              : [],
+            categories: [
+              {
+                anchor: "tarkennin",
+                layout: {
+                  components: { justification: "start" },
+                  indentation: "none"
+                },
+                components: asetuksenTarkenninkomponentit
+              }
+            ]
           },
-          components: asetuksenTarkenninkomponentit
-        }
-      ]
-    },
-    lomakerakenne
-  );
+          lomakerakenne
+        )
+      : lomakerakenne;
 
   const asetuksetLength = Object.keys(
     prop("asetukset", rajoiteChangeObjects) || {}
@@ -372,18 +379,19 @@ const getKohdennuksetRecursively = async (
   );
 
   let ensimmaisenAsetuksenKohdeavain =
-    kohdennuksenKohdeavain ||
-    path(
-      [
-        "kohde",
-        "tarkennin",
-        kohteenTarkenninavain,
-        "properties",
-        "value",
-        "value"
-      ],
-      rajoiteChangeObjects
-    );
+    length(kohdennusindeksipolku) % 2
+      ? kohdennuksenKohdeavain
+      : path(
+          [
+            "kohde",
+            "tarkennin",
+            kohteenTarkenninavain,
+            "properties",
+            "value",
+            "value"
+          ],
+          rajoiteChangeObjects
+        );
 
   // Usein rajoituksen tarkentimen arvo on numeerinen, jolloin
   // 1. asetuksen kohdeavaimena tulee käyttäärajoitteen kohteen
@@ -402,12 +410,45 @@ const getKohdennuksetRecursively = async (
     kohdennuksetChangeObjects
   );
 
-  // parentKohdennuksetChangeObjects = kohdennuksetChangeObjects
-  //   ? Object.assign({}, kohdennuksetChangeObjects)
-  //   : {};
+  const asetuslomakekokonaisuus = await getAsetuslomakekokonaisuus(
+    rajoiteId,
+    rajoiteChangeObjects,
+    ensimmaisenAsetuksenKohdeavain,
+    osioidenData,
+    locale,
+    onRemoveCriterion
+  );
+
+  const asetusvaihtoehdot = path(
+    ["0", "components", "0", "properties", "options"],
+    asetuslomakekokonaisuus
+  );
+
+  let lukumaarakomponentit = [];
+
+  // Yksi ehto kohdistuksen lisäyspainikkeen näkymiseen on se, onko
+  // kriteereiden joukossa vähintään yksi lukumääräkenttä. Se selvitetään
+  // tässä.
+  for (let i = 0; i < asetuslomakekokonaisuus.length; i += 1) {
+    lukumaarakomponentit = map(category => {
+      return (
+        category.anchor === "tarkennin" &&
+        find(propEq("anchor", "lukumaara"), category.components)
+      );
+    }, asetuslomakekokonaisuus[i].categories).filter(Boolean);
+    if (length(lukumaarakomponentit)) {
+      break;
+    }
+  }
 
   console.group();
   console.info("Index", index);
+  console.info("Lukumaarakomponentit:", lukumaarakomponentit);
+  console.info(
+    "Asetuslomakekokonaisuus:",
+    JSON.stringify(asetuslomakekokonaisuus)
+  );
+  console.info("Asetusvaihtoehdot (1. asetus)", asetusvaihtoehdot);
   console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
   console.info(
     "Muutosobjektit tasoa ylempänä:",
@@ -450,7 +491,12 @@ const getKohdennuksetRecursively = async (
             length(kohdennusindeksipolku) === 1 ? "border-b" : "",
             "border-gray-300"
           ],
-          title: `Kohdennus ${join(".", kohdennusindeksipolku)}`,
+          title: `Kohdennus ${join(
+            ".",
+            map(value => {
+              return String(parseInt(value, 10) + 1);
+            }, kohdennusindeksipolku)
+          )}`,
           components: kohdennuksenKohdekomponentti
             ? [kohdennuksenKohdekomponentti]
             : [],
@@ -493,14 +539,7 @@ const getKohdennuksetRecursively = async (
                       ? {
                           anchor: "asetukset",
                           title: "Rajoitekriteerit",
-                          categories: await getAsetuslomakekokonaisuus(
-                            rajoiteId,
-                            rajoiteChangeObjects,
-                            ensimmaisenAsetuksenKohdeavain,
-                            osioidenData,
-                            locale,
-                            onRemoveCriterion
-                          )
+                          categories: asetuslomakekokonaisuus
                         }
                       : null
                   ].filter(Boolean)
@@ -529,42 +568,50 @@ const getKohdennuksetRecursively = async (
                         });
                       },
                       properties: {
-                        isVisible: true,
+                        isVisible:
+                          kohdennuksenKohdeavain === "kokonaismaara" ||
+                          kohdennuksenKohdeavain === "opiskelijamaarat" ||
+                          !!length(lukumaarakomponentit),
                         text: "Lisää kohdennus"
                       }
                     },
-                    {
-                      anchor: "lisaa-asetus",
-                      name: "SimpleButton",
-                      onClick: payload => {
-                        console.info(payload.fullAnchor);
-                        const kohdennusId = getAnchorPart(
-                          payload.fullAnchor,
-                          3
-                        );
-                        return onAddCriterion({
-                          ...payload,
-                          metadata: {
-                            ...payload.metadata,
-                            rajoiteId: data.rajoiteId,
-                            kohdennusId,
-                            kohdennusindeksipolku
+                    !!length(asetusvaihtoehdot) &&
+                    length(asetuslomakekokonaisuus) <
+                      length(asetusvaihtoehdot) &&
+                    ensimmaisenAsetuksenKohdeavain !== "kokonaismaara"
+                      ? {
+                          anchor: "lisaa-asetus",
+                          name: "SimpleButton",
+                          styleClasses: ["ml-4"],
+                          onClick: payload => {
+                            console.info(payload.fullAnchor);
+                            const kohdennusId = getAnchorPart(
+                              payload.fullAnchor,
+                              3
+                            );
+                            return onAddCriterion({
+                              ...payload,
+                              metadata: {
+                                ...payload.metadata,
+                                rajoiteId: data.rajoiteId,
+                                kohdennusId,
+                                kohdennusindeksipolku
+                              }
+                            });
+                          },
+                          properties: {
+                            text: "Lisää kriteeri"
                           }
-                        });
-                      },
-                      properties: {
-                        isVisible: true,
-                        text: "Lisää kriteeri"
-                      }
-                    }
-                  ]
+                        }
+                      : null
+                  ].filter(Boolean)
                 }
               ].filter(Boolean)
             },
             alikohdennuksetChangeObjects
               ? await getKohdennuksetRecursively(
                   kohdennustaso + 1,
-                  ensimmaisenAsetuksenKohdeavain,
+                  ensimmaisenAsetuksenKohdeavain || kohdennuksenKohdeavain,
                   data,
                   { isReadOnly },
                   locale,
@@ -585,28 +632,9 @@ const getKohdennuksetRecursively = async (
   // Jos kohdennuksia on luotu lisää, otetaan nekin mukaan lopulliseeen
   // palautettavaan lomakerakenteeseen.
   if (prop(index + 1, kohdennuksetChangeObjects)) {
-    // const kohdennuksenKohdeavain = path(
-    //   [
-    //     0,
-    //     "tarkennin",
-    //     "rajoite",
-    //     "kohde",
-    //     "tarkennin",
-    //     ensimmaisenKohdennuksenKohteenTarkenninavain || kohteenTarkenninavain,
-    //     "properties",
-    //     "value",
-    //     "value"
-    //   ],
-    //   kohdennuksetChangeObjects
-    // );
-    // console.warn(
-    //   "kohdennuksen kohdeavain: (0-taso)",
-    //   ensimmaisenKohdennuksenKohteenTarkenninavain,
-    //   kohdennuksenKohdeavain
-    // );
     return getKohdennuksetRecursively(
       kohdennustaso,
-      ensimmaisenAsetuksenKohdeavain,
+      kohdennuksenKohdeavain,
       data,
       { isReadOnly },
       locale,
@@ -616,7 +644,7 @@ const getKohdennuksetRecursively = async (
       parentKohdennuksetChangeObjects,
       append(String(index + 1), init(kohdennusindeksipolku)),
       index + 1,
-      ensimmaisenKohdennuksenKohteenTarkenninavain || kohteenTarkenninavain,
+      ensimmaisenKohdennuksenKohteenTarkenninavain,
       paivitettyLomakerakenne
     );
   }

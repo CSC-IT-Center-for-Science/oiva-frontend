@@ -1,5 +1,8 @@
 export const getKohdennuksenKohdekomponentti = kohdennuksenKohdeavain => {
-  if (kohdennuksenKohdeavain === "kokonaismaara") {
+  if (
+    kohdennuksenKohdeavain === "kokonaismaara" ||
+    kohdennuksenKohdeavain === "opiskelijamaarat"
+  ) {
     return {
       anchor: "kohde",
       name: "Autocomplete",
