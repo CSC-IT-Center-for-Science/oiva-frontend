@@ -463,6 +463,51 @@ export const muutokset = {
             }
           }
         }
+      ],
+      rajoitteet: [
+        {
+          anchor:
+            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+          properties: {
+            value: {
+              label: "Opetus, jota lupa koskee",
+              value: "opetustehtavat"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetustehtavat",
+          properties: {
+            value: {
+              label: "esiopetus",
+              value: "6"
+            },
+            metadata: {
+              section: "getOpetustehtavatLomake"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.alkamispaiva",
+          properties: {
+            value: new Date(1609162920000),
+            metadata: {
+              section: "maaraaika"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.paattymispaiva",
+          properties: {
+            value: new Date(1622378520000),
+            metadata: {
+              section: "maaraaika"
+            }
+          }
+        }
       ]
     },
     underRemoval: {}
@@ -472,30 +517,45 @@ export const muutokset = {
     underRemoval: [],
     unsaved: [
       {
-        anchor: "muutEhdot.1.valintaelementti",
+        anchor:
+          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
         properties: {
-          isChecked: true
+          value: {
+            label: "Opetus, jota lupa koskee",
+            value: "opetustehtavat"
+          }
         }
       },
       {
-        anchor: "muutEhdot.3.valintaelementti",
+        anchor:
+          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetustehtavat",
         properties: {
-          isChecked: true
-        }
-      },
-      {
-        anchor: "muutEhdot.9.valintaelementti",
-        properties: {
-          isChecked: true
-        }
-      },
-      {
-        anchor: "muutEhdot.9.0.kuvaus",
-        properties: {
-          value: "Kielikylvyn kuvaus",
+          value: {
+            label: "esiopetus",
+            value: "6"
+          },
           metadata: {
-            ankkuri: "0",
-            koodiarvo: "9"
+            section: "getOpetustehtavatLomake"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.alkamispaiva",
+        properties: {
+          value: new Date(1609162920000),
+          metadata: {
+            section: "maaraaika"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.paattymispaiva",
+        properties: {
+          value: new Date(1622378520000),
+          metadata: {
+            section: "maaraaika"
           }
         }
       }

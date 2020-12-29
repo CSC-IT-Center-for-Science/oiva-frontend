@@ -16,7 +16,8 @@ nyrkkisääntönä kannattaisi luottaa.
 export const getKohteenTarkenninkomponentit = async (
   osioidenData,
   kohdeavain,
-  locale
+  locale,
+  isReadOnly = false
 ) => {
   console.info(kohdeavain, osioidenData, prop(kohdeavain, osioidenData));
   const komponentitByKey = {
@@ -55,5 +56,5 @@ export const getKohteenTarkenninkomponentit = async (
 
   const fn = prop(kohdeavain, komponentitByKey);
 
-  return fn ? await fn(prop(kohdeavain, osioidenData), locale) : [];
+  return fn ? await fn(isReadOnly, prop(kohdeavain, osioidenData), locale) : [];
 };

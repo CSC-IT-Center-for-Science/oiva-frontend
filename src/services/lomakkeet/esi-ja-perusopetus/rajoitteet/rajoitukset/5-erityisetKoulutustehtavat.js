@@ -2,6 +2,7 @@ import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKo
 import { compose, endsWith, find, map, prop, toUpper } from "ramda";
 
 export default async function getErityisetKoulutustehtavat(
+  isReadOnly,
   osionData = [],
   locale
 ) {
@@ -19,6 +20,7 @@ export default async function getErityisetKoulutustehtavat(
             section: "erityisetKoulutustehtavat"
           },
           isMulti: false,
+          isReadOnly,
           options: map(erityinenKoulutustehtava => {
             /**
              * Tarkistetaan, onko kyseinen erityinen koulutustehtävä

@@ -26,7 +26,8 @@ const asetuksenTarkenninlomakkeet = {
 export const getAsetuksenTarkenninkomponentit = async (
   asetuksenKohdeavain,
   locale,
-  osioidenData
+  osioidenData,
+  isReadOnly = false
 ) => {
   if (!asetuksenKohdeavain) {
     return false;
@@ -34,6 +35,10 @@ export const getAsetuksenTarkenninkomponentit = async (
   console.info(asetuksenKohdeavain, osioidenData);
   const tarkenninFn = prop(asetuksenKohdeavain, asetuksenTarkenninlomakkeet);
   return (
-    (await tarkenninFn(prop(asetuksenKohdeavain, osioidenData), locale)) || []
+    (await tarkenninFn(
+      isReadOnly,
+      prop(asetuksenKohdeavain, osioidenData),
+      locale
+    )) || []
   );
 };

@@ -105,7 +105,6 @@ async function getYksittainenAsetuslomake(
       asetus
     );
 
-    console.info(asetus.id, rajoitusavain);
     /**
      * Mikäli itse rajoitusta on muokattu, on siitä olemassa muutosobjekti.
      */
@@ -152,14 +151,14 @@ async function getAsetuslomakekokonaisuus(
   osioidenData,
   locale,
   onRemoveCriterion,
+  isReadOnly = false,
   index = 0,
   lomakerakenne = []
 ) {
   const asetuksenKohdekomponentti = getAsetuksenKohdekomponentti(
-    asetuksenKohdeavain
+    asetuksenKohdeavain,
+    isReadOnly
   );
-
-  console.info(asetuksenKohdekomponentti, rajoiteChangeObjects);
 
   const asetuksenTarkenninlomakkeenAvain =
     path(
@@ -171,7 +170,8 @@ async function getAsetuslomakekokonaisuus(
     ? await getAsetuksenTarkenninkomponentit(
         asetuksenTarkenninlomakkeenAvain,
         locale,
-        osioidenData
+        osioidenData,
+        isReadOnly
       )
     : [];
 
@@ -236,6 +236,7 @@ async function getAsetuslomakekokonaisuus(
       osioidenData,
       locale,
       onRemoveCriterion,
+      isReadOnly,
       index + 1,
       updatedLomakerakenne
     );
@@ -245,85 +246,6 @@ async function getAsetuslomakekokonaisuus(
 
   return updatedLomakerakenne;
 }
-
-// async function getKohdennuslomakekokonaisuus(
-//   rajoiteId,
-//   kohdeavain,
-//   kohteenTarkenninavain,
-//   groupedChangeObjects,
-//   osioidenData,
-//   locale,
-//   onRemoveCriterion,
-//   index = 0,
-//   lomakerakenne = []
-// ) {
-//   const asetuksenKohdeavain = path(
-//     [
-//       rajoiteId,
-//       "kohdennukset",
-//       `${index}`,
-//       "kohde",
-//       "properties",
-//       "value",
-//       "value"
-//     ],
-//     groupedChangeObjects
-//   );
-//   const asetuksenKohdekomponentti = getKohdennuksenKohdekomponentti(
-//     kohteenTarkenninavain,
-//     kohdeavain
-//   );
-
-//   const asetuksenTarkenninlomakkeenAvain =
-//     asetuksenKohdeavain ||
-//     path(["properties", "value", "value"], asetuksenKohdekomponentti);
-
-//   console.info("Kohdennuksen kohdekomponentti: ", asetuksenKohdekomponentti);
-
-//   const asetuksenTarkenninlomake = asetuksenTarkenninlomakkeenAvain
-//     ? getAsetuksenTarkenninkomponentit(asetuksenTarkenninlomakkeenAvain, locale)
-//     : [];
-
-//   console.info(
-//     `Kohdennus ${index}`,
-//     asetuksenKohdekomponentti,
-//     asetuksenKohdeavain,
-//     asetuksenTarkenninlomake
-//   );
-
-//   const updatedLomakerakenne = append(
-//     {
-//       anchor: index,
-//       title: `${index + 1})`,
-//       layout: { indentation: "none" },
-//       components: asetuksenKohdekomponentti ? [asetuksenKohdekomponentti] : [],
-//       categories: asetuksenTarkenninlomake
-//     },
-//     lomakerakenne
-//   );
-
-//   const asetuksetLength = Object.keys(
-//     path([rajoiteId, "kohdennukset"], groupedChangeObjects) || {}
-//   ).length;
-
-//   console.info(index, asetuksetLength);
-
-//   // if (index < asetuksetLength - 1) {
-//   //   return getAsetuslomakekokonaisuus(
-//   //     rajoiteId,
-//   //     kohdeavain,
-//   //     kohteenTarkenninavain,
-//   //     groupedChangeObjects,
-//   //     osioidenData,
-//   //     locale,
-//   //     onRemoveCriterion,
-//   //     index + 1,
-//   //     updatedLomakerakenne
-//   //   );
-//   // }
-
-//   return updatedLomakerakenne;
-// }
 
 const getKohdennuksetRecursively = async (
   kohdennustaso = 0,
@@ -341,14 +263,6 @@ const getKohdennuksetRecursively = async (
   lomakerakenne = []
 ) => {
   const { lomakedata, osioidenData, rajoiteId } = data;
-
-  // const asetuksetChangeObjects = filter(
-  //   cObj =>
-  //     startsWith(`rajoitelomake.${rajoiteId}.asetukset`, cObj.anchor) &&
-  //     !startsWith(`rajoitelomake.${rajoiteId}.asetukset.kohde`, cObj.anchor) &&
-  //     !includes("rajoitus", cObj.anchor),
-  //   changeObjects
-  // );
 
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
     ? getKohdennuksenKohdekomponentti(kohdennuksenKohdeavain)
@@ -375,7 +289,8 @@ const getKohdennuksetRecursively = async (
   const kohteenTarkenninkomponentit = await getKohteenTarkenninkomponentit(
     osioidenData,
     kohteenTarkenninavain,
-    locale
+    locale,
+    isReadOnly
   );
 
   let ensimmaisenAsetuksenKohdeavain =
@@ -416,7 +331,8 @@ const getKohdennuksetRecursively = async (
     ensimmaisenAsetuksenKohdeavain,
     osioidenData,
     locale,
-    onRemoveCriterion
+    onRemoveCriterion,
+    isReadOnly
   );
 
   const asetusvaihtoehdot = path(
@@ -520,6 +436,7 @@ const getKohdennuksetRecursively = async (
                           styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
                           properties: {
                             isMulti: false,
+                            isReadOnly,
                             options: kohdevaihtoehdot
                           }
                         }
@@ -569,16 +486,18 @@ const getKohdennuksetRecursively = async (
                       },
                       properties: {
                         isVisible:
-                          kohdennuksenKohdeavain === "kokonaismaara" ||
-                          kohdennuksenKohdeavain === "opiskelijamaarat" ||
-                          !!length(lukumaarakomponentit),
+                          !isReadOnly &&
+                          (kohdennuksenKohdeavain === "kokonaismaara" ||
+                            kohdennuksenKohdeavain === "opiskelijamaarat" ||
+                            !!length(lukumaarakomponentit)),
                         text: "Lisää kohdennus"
                       }
                     },
                     !!length(asetusvaihtoehdot) &&
                     length(asetuslomakekokonaisuus) <
                       length(asetusvaihtoehdot) &&
-                    ensimmaisenAsetuksenKohdeavain !== "kokonaismaara"
+                    ensimmaisenAsetuksenKohdeavain !== "kokonaismaara" &&
+                    !isReadOnly
                       ? {
                           anchor: "lisaa-asetus",
                           name: "SimpleButton",
@@ -649,8 +568,6 @@ const getKohdennuksetRecursively = async (
     );
   }
 
-  console.info(paivitettyLomakerakenne);
-
   return paivitettyLomakerakenne;
 };
 
@@ -710,12 +627,6 @@ export async function rajoitelomake(
     groupedChangeObjects
   );
 
-  console.info(
-    groupedChangeObjects,
-    kohdennuksetChangeObjects,
-    groupedChangeObjects
-  );
-
   /**
    * Palautettava lomakemerkkaus
    */
@@ -734,8 +645,6 @@ export async function rajoitelomake(
       )
     }
   ];
-
-  console.info("LOMAKERAKENNE:", lomakerakenne);
 
   return lomakerakenne;
 }

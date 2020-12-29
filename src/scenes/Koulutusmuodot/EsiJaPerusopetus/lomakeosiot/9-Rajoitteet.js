@@ -9,7 +9,6 @@ import rajoitteetMessages from "i18n/definitions/rajoitteet";
 import Rajoite from "./10-Rajoite";
 import { getAnchorPart } from "utils/common";
 import { filter } from "ramda";
-import Alirajoitedialogi from "./11-Alirajoitedialogi";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]
@@ -47,14 +46,10 @@ const Rajoitteet = ({
   }, [setRestrictionId, showNewRestrictionDialog]);
 
   const onModifyRestriction = useCallback(
-    (rajoiteId, ollaankoAikeissaMuokataAlirajoitteita) => {
+    rajoiteId => {
       setRestrictionId(rajoiteId);
       setRajoitelomakeChangeObjects(rajoiteId, sectionId, dialogSectionId);
-      if (ollaankoAikeissaMuokataAlirajoitteita) {
-        showAlirajoitedialogi();
-      } else {
-        showNewRestrictionDialog();
-      }
+      showNewRestrictionDialog();
     },
     [
       sectionId,
@@ -77,15 +72,6 @@ const Rajoitteet = ({
   return (
     <React.Fragment>
       {render ? render() : null}
-      {isAlirajoitedialogiVisible && (
-        <Alirajoitedialogi
-          osioidenData={osioidenData}
-          onChangesUpdate={onChangesUpdate}
-          parentSectionId={sectionId}
-          restrictionId={restrictionId}
-          sectionId={dialogSectionId}
-        ></Alirajoitedialogi>
-      )}
       {isRestrictionDialogVisible && (
         <Rajoite
           osioidenData={osioidenData}

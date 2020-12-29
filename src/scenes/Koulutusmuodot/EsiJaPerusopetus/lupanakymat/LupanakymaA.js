@@ -77,7 +77,7 @@ const LupanakymaA = React.memo(
       "opetuksenjarjestamismuoto",
       maaraykset
     );
-    console.info(rajoitteetByRajoiteId, rajoitteetListausChangeObj);
+
     const opetustehtavatRajoitteet = reject(
       isNil,
       mapObjIndexed(rajoite => {

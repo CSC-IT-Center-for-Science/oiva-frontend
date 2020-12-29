@@ -1,7 +1,7 @@
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { compose, endsWith, find, map, prop, toUpper } from "ramda";
 
-export default async function getMuutEhdot(osionData = [], locale) {
+export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
   const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
 
@@ -16,6 +16,7 @@ export default async function getMuutEhdot(osionData = [], locale) {
             section: "muutEhdot"
           },
           isMulti: false,
+          isReadOnly,
           options: map(muuEhto => {
             /**
              * Tarkistetaan, onko kyseinen muu ehto

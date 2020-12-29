@@ -10,7 +10,10 @@ import { flatten, map, path, prop, sortBy } from "ramda";
  * @param {array} osionData - Sisältää päälomakkeen opetuskieliosion
  * lomakerakenteen täydennettyinä siihen tehdyillä muutoksilla.
  */
-export default async function getOpetuskielikomponentit(osionData = []) {
+export default async function getOpetuskielikomponentit(
+  isReadOnly,
+  osionData = []
+) {
   // Yhdistetään päälomakkkeella valittuina olevat ensisijaiset ja toissijaiset
   // opetuskielet yhdeksi taulukoksi, koska tällä tietoa ei ole syystä
   // luoda omaa pudotusvalikkoa molemmille.
@@ -28,7 +31,7 @@ export default async function getOpetuskielikomponentit(osionData = []) {
   );
 
   // Palautettava lomakerakenne
-  return osionData.length
+  return osionData.length || valitutKielet.length
     ? [
         {
           anchor: "opetuskielet",
@@ -39,6 +42,7 @@ export default async function getOpetuskielikomponentit(osionData = []) {
               section: "opetuskielet"
             },
             isMulti: false,
+            isReadOnly,
             options: valitutKielet,
             value: ""
           }

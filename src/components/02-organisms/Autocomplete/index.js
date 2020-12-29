@@ -160,7 +160,7 @@ const Autocomplete = React.memo(
 
     return (
       <React.Fragment>
-        {props.isPreviewModeOn ? (
+        {props.isPreviewModeOn || props.isReadOnly ? (
           <ul className="ml-8 list-disc mb-4">
             {map(
               value =>

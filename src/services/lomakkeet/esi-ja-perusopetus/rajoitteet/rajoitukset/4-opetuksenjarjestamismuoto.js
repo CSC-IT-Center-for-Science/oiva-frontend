@@ -1,6 +1,7 @@
 import { find, pathEq } from "ramda";
 
 export default async function getOpetuksenJarjestamismuotokomponentit(
+  isReadOnly,
   osionData = []
 ) {
   const valittuJarjestamismuoto = find(
@@ -33,6 +34,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
             section: "opetuksenJarjestamismuoto"
           },
           isMulti: false,
+          isReadOnly,
           options: [valittuArvo],
           value: [valittuArvo]
         }

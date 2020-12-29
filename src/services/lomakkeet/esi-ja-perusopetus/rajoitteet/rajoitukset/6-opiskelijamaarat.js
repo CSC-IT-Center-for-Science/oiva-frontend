@@ -1,7 +1,11 @@
 import { __ } from "i18n-for-browser";
 import { find, path, pathEq } from "ramda";
 
-export async function getKokonaisopiskelijamaaralomake(osionData = [], locale) {
+export async function getKokonaisopiskelijamaaralomake(
+  isReadOnly,
+  osionData = [],
+  locale
+) {
   return {
     anchor: "rajoitus",
     layout: { components: { justification: "start" } },
@@ -14,6 +18,7 @@ export async function getKokonaisopiskelijamaaralomake(osionData = [], locale) {
           forChangeObject: {
             section: "opiskelijamaarat"
           },
+          isReadOnly,
           placeholder: __("education.oppilastaOpiskelijaa"),
           type: "number",
           value: ""
@@ -23,7 +28,10 @@ export async function getKokonaisopiskelijamaaralomake(osionData = [], locale) {
   };
 }
 
-export async function getOpiskelijamaaranRajausvaihtoehdot(osionData) {
+export async function getOpiskelijamaaranRajausvaihtoehdot(
+  isReadOnly,
+  osionData
+) {
   // Opiskelijamääriä koskeva päälomakkeen valinta on huomioitava siten, että
   // valitusta radio button -vaihtoehdosta riippuen piilotetaan kohdevalikosta
   // joko osa tai kaikki opiskelijamääriä koskevat vaihtoehdot. Selvitetään
@@ -50,6 +58,7 @@ export async function getOpiskelijamaaranRajausvaihtoehdot(osionData) {
               section: "opiskelijamaarat"
             },
             isMulti: false,
+            isReadOnly,
             options: [
               {
                 label: __("opiskelijamaara.kokonaisopiskelijamaara"),
@@ -68,7 +77,11 @@ export async function getOpiskelijamaaranRajausvaihtoehdot(osionData) {
   ];
 }
 
-export default async function getOpiskelijaMaarat(osionData = [], locale) {
+export default async function getOpiskelijaMaarat(
+  isReadOnly,
+  osionData = [],
+  locale
+) {
   return {
     anchor: "rajoitus",
     layout: { components: { justification: "start" } },
@@ -82,6 +95,7 @@ export default async function getOpiskelijaMaarat(osionData = [], locale) {
             section: "opiskelijamaarat"
           },
           isMulti: false,
+          isReadOnly,
           options: [
             // 1 = koodiarvo 1, enintään, koodisto: kujalisamaareet
             { label: __("common.enintaan"), value: "1" },

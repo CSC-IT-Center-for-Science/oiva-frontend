@@ -31,6 +31,8 @@ export function rajoitteet(
     };
   }, changeObjectsByRajoiteId);
 
+  console.info(rajoitteetGrouped);
+
   const lomake = flatten(
     [
       {

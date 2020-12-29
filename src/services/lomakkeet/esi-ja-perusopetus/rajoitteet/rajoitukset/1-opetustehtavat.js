@@ -2,6 +2,7 @@ import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
 import { compose, endsWith, find, map, prop, toUpper } from "ramda";
 
 export default async function getOpetustehtavakomponentit(
+  isReadOnly,
   osionData = [],
   locale
 ) {
@@ -19,6 +20,7 @@ export default async function getOpetustehtavakomponentit(
             section: "getOpetustehtavatLomake"
           },
           isMulti: false,
+          isReadOnly,
           options: map(opetustehtava => {
             /**
              * Tarkistetaan, onko kyseinen opetustehtävä valittuna

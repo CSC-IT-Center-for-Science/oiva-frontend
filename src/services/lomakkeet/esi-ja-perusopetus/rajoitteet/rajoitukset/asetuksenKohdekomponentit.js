@@ -11,8 +11,11 @@ const maaraaikaOption = {
   label: "Määräaika"
 };
 
-const getKomponentti = key => {
-  if (key === "erityisetKoulutustehtavat") {
+export const getAsetuksenKohdekomponentti = (
+  asetuksenKohdeavain,
+  isReadOnly = false
+) => {
+  if (asetuksenKohdeavain === "erityisetKoulutustehtavat") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -20,6 +23,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -30,7 +34,7 @@ const getKomponentti = key => {
         value: ""
       }
     };
-  } else if (key === "kokonaismaara") {
+  } else if (asetuksenKohdeavain === "kokonaismaara") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -38,6 +42,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           {
             value: "enintaan",
@@ -50,7 +55,7 @@ const getKomponentti = key => {
         ]
       }
     };
-  } else if (key === "lukumaara") {
+  } else if (asetuksenKohdeavain === "lukumaara") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -58,6 +63,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           {
             value: "joistaEnintaan",
@@ -78,7 +84,7 @@ const getKomponentti = key => {
         ]
       }
     };
-  } else if (key === "muutEhdot") {
+  } else if (asetuksenKohdeavain === "muutEhdot") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -86,6 +92,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -97,7 +104,7 @@ const getKomponentti = key => {
         value: ""
       }
     };
-  } else if (key === "opetuksenJarjestamismuodot") {
+  } else if (asetuksenKohdeavain === "opetuksenJarjestamismuodot") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -105,6 +112,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -114,7 +122,7 @@ const getKomponentti = key => {
         value: ""
       }
     };
-  } else if (key === "opetuskielet") {
+  } else if (asetuksenKohdeavain === "opetuskielet") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -122,6 +130,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -130,7 +139,7 @@ const getKomponentti = key => {
         value: ""
       }
     };
-  } else if (key === "opetustehtavat") {
+  } else if (asetuksenKohdeavain === "opetustehtavat") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -138,11 +147,12 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [maaraaikaOption],
         value: maaraaikaOption
       }
     };
-  } else if (key === "opiskelijamaarat") {
+  } else if (asetuksenKohdeavain === "opiskelijamaarat") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -150,6 +160,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           {
             value: "enintaan",
@@ -162,7 +173,7 @@ const getKomponentti = key => {
         ]
       }
     };
-  } else if (key === "toimintaalue") {
+  } else if (asetuksenKohdeavain === "toimintaalue") {
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -170,6 +181,7 @@ const getKomponentti = key => {
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
         isMulti: false,
+        isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           maaraaikaOption
@@ -178,8 +190,4 @@ const getKomponentti = key => {
       }
     };
   }
-};
-
-export const getAsetuksenKohdekomponentti = asetuksenKohdeavain => {
-  return getKomponentti(asetuksenKohdeavain);
 };

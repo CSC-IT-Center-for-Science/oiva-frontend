@@ -2,7 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { addIndex, filter, mapObjIndexed, path, values } from "ramda";
 import { getAnchorPart } from "utils/common";
-import Rajoite from "../Rajoite";
+import Lomake from "components/02-organisms/Lomake";
+import SimpleButton from "components/00-atoms/SimpleButton";
+import { Typography } from "@material-ui/core";
+
+const constants = {
+  formLocation: ["esiJaPerusopetus", "rajoite"]
+};
 
 const defaultProps = {
   areTitlesVisible: true,
@@ -21,17 +27,38 @@ const RajoitteetList = ({
       {values(
         addIndex(mapObjIndexed)((rajoite, rajoiteId, ___, index) => {
           return (
-            <Rajoite
-              areTitlesVisible={areTitlesVisible}
-              canHaveAlirajoite={true}
-              id={rajoiteId}
-              index={index}
-              isBorderVisible={isBorderVisible}
-              key={rajoiteId}
-              onModifyRestriction={onModifyRestriction}
-              onRemoveRestriction={onRemoveRestriction}
-              rajoite={rajoite}
-            />
+            <div className="p-6 border border-gray-300">
+              <Typography component="h3" variant="h3">
+                Rajoite {index + 1}
+              </Typography>
+              <Lomake
+                anchor={"rajoitteet"}
+                data={{
+                  rajoiteId,
+                  sectionId: "rajoitelomake"
+                }}
+                isInExpandableRow={false}
+                isReadOnly={true}
+                isSavingState={false}
+                key={rajoiteId}
+                path={constants.formLocation}
+                showCategoryTitles={areTitlesVisible}
+              ></Lomake>
+              <div className="flex justify-between pt-6">
+                <div>
+                  <SimpleButton
+                    text="poista"
+                    onClick={() => onRemoveRestriction(rajoiteId)}
+                  />
+                </div>
+                <div>
+                  <SimpleButton
+                    text="Muokkaa"
+                    onClick={() => onModifyRestriction(rajoiteId)}
+                  />
+                </div>
+              </div>
+            </div>
           );
         }, rajoitteet)
       )}

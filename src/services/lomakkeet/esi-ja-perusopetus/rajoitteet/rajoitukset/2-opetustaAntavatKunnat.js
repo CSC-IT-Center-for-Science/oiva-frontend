@@ -13,7 +13,7 @@ import {
   values
 } from "ramda";
 
-export default function getOpetustaAntavatKunnat(osionData = []) {
+export default function getOpetustaAntavatKunnat(isReadOnly, osionData = []) {
   const changesByProvinceObj = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
@@ -38,6 +38,7 @@ export default function getOpetustaAntavatKunnat(osionData = []) {
             section: "opetustaAntavatKunnat"
           },
           isMulti: false,
+          isReadOnly,
           options: map(changeObj => {
             const { koodiarvo, title } = changeObj.properties.metadata;
             return { label: title, value: koodiarvo };
