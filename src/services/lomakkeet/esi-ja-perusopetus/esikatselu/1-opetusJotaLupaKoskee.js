@@ -32,8 +32,10 @@ export const getRajoite = (koodiarvo, rajoitteet) => {
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
 };
 
-export async function previewOfOpetusJotaLupaKoskee(data) {
-  const { lomakedata, rajoitteet } = data;
+export async function previewOfOpetusJotaLupaKoskee({
+  lomakedata,
+  rajoitteet
+}) {
   let structure = [];
 
   if (!lomakedata || !lomakedata.length) {

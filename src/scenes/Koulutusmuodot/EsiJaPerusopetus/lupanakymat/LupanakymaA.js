@@ -25,6 +25,22 @@ import Rajoitteet from "../lomakeosiot/9-Rajoitteet";
 import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
 
+export const getRajoitteetBySection = (sectionId, rajoitteetByRajoiteId) => {
+  const rajoitteet = reject(
+    isNil,
+    mapObjIndexed(rajoite => {
+      return pathEq(
+        ["elements", "kohdennukset", 0, "properties", "value", "value"],
+        sectionId,
+        rajoite
+      )
+        ? rajoite
+        : null;
+    }, rajoitteetByRajoiteId)
+  );
+  return rajoitteet;
+};
+
 const constants = {
   formLocations: {
     paatoksenTiedot: ["esiJaPerusopetus", "paatoksenTiedot"]
@@ -78,17 +94,17 @@ const LupanakymaA = React.memo(
       maaraykset
     );
 
-    const opetustehtavatRajoitteet = reject(
-      isNil,
-      mapObjIndexed(rajoite => {
-        return pathEq(
-          ["elements", "asetukset", 0, "properties", "value", "value"],
-          "opetustehtavat",
-          rajoite
-        )
-          ? rajoite
-          : null;
-      }, rajoitteetByRajoiteId)
+    console.info("rajoitteetByRajoiteId", rajoitteetByRajoiteId);
+
+    // Rajoitteet
+    const opetustehtavatRajoitteet = getRajoitteetBySection(
+      "opetustehtavat",
+      rajoitteetByRajoiteId
+    );
+
+    const opetuskieletRajoitteet = getRajoitteetBySection(
+      "opetuskielet",
+      rajoitteetByRajoiteId
     );
 
     return (
@@ -137,6 +153,7 @@ const LupanakymaA = React.memo(
                   code="3"
                   isPreviewModeOn={isPreviewModeOn}
                   maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+                  rajoitteet={opetuskieletRajoitteet}
                   sectionId={"opetuskielet"}
                   title={intl.formatMessage(common.opetuskieli)}
                 />

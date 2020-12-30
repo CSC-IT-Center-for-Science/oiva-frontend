@@ -8,7 +8,6 @@ const List = ({ items }) => {
     (item, index) => (
       <li key={`list-item-${index}`}>
         {map(component => {
-          console.info(component);
           const { properties } = component;
           if (properties) {
             if (component.name === "Rajoite") {
@@ -18,9 +17,7 @@ const List = ({ items }) => {
                   id={properties.id}
                   isReadOnly={properties.isReadOnly}
                   key={index}
-                  kriteerit={properties.kriteerit}
-                  rajoite={properties.rajoite}
-                  rajoitusPropValue={properties.rajoitusPropValue}
+                  rajoiteId={properties.rajoiteId}
                 />
               );
             } else if (component.name === "StatuxTextRow") {
