@@ -13,10 +13,14 @@ import {
   compose,
   includes,
   flatten,
-  pathEq
+  pathEq,
+  reject,
+  isNil,
+  values
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 export const initializeMaarays = (tutkinto, maarays) => {
   return { ...tutkinto, maarays: head(dissoc("aliMaaraykset", maarays)) };
@@ -57,13 +61,14 @@ export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
 };
 
 export const defineBackendChangeObjects = async (
-  changeObjects = [],
+  changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
   const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
+  const { rajoitteetByRajoiteId } = changeObjects;
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -72,13 +77,13 @@ export const defineBackendChangeObjects = async (
 
   const opetuskieletChangeObjs = filter(
     compose(startsWith("opetuskielet.opetuskieli"), prop("anchor")),
-    changeObjects
+    changeObjects.opetuskielet
   );
 
   /** Lisätietokentän käsittely */
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.opetuskielet
   );
 
   const lisatiedotBeChangeObj = lisatiedotChangeObj
@@ -107,7 +112,20 @@ export const defineBackendChangeObjects = async (
       opetuskieletChangeObjs
     );
 
-    return changeObj
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq(
+          [1, "properties", "value", "value"],
+          opetuskieli.koodiarvo,
+          rajoite
+        )
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
+    const muutosobjekti = changeObj
       ? {
           generatedId: `opetuskielet-${Math.random()}`,
           kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
@@ -122,6 +140,22 @@ export const defineBackendChangeObjects = async (
           tila: "LISAYS"
         }
       : null;
+
+    // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+    // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+    // loput toisiinsa "alenevassa polvessa".
+    const alimaaraykset = values(
+      mapObjIndexed(asetukset => {
+        return createAlimaarayksetBEObjects(
+          kohteet,
+          maaraystyypit,
+          muutosobjekti,
+          asetukset
+        );
+      }, rajoitteetByRajoiteIdAndKoodiarvo)
+    );
+
+    return [muutosobjekti, alimaaraykset];
   }, opetuskielet);
 
   return flatten([opetuskieliBeChangeObjects, lisatiedotBeChangeObj]).filter(

@@ -9,6 +9,9 @@ export const getMaaraaikalomake = async locale => {
         name: "Datepicker",
         properties: {
           forChangeObject: {
+            // TODO: Aseta koodisto ja koodiarvo ei-kovakoodatusti
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
             section: "maaraaika"
           },
           label: "Alkamispäivä",
@@ -33,6 +36,8 @@ export const getMaaraaikalomake = async locale => {
         name: "Datepicker",
         properties: {
           forChangeObject: {
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
             section: "maaraaika"
           },
           label: "Päättymispäivä",

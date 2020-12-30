@@ -29,6 +29,8 @@ export const getMaaraaikakomponentit = (isReadOnly, osionData, locale) => {
       styleClasses: ["mr-2"],
       properties: {
         forChangeObject: {
+          koodiarvo: "3",
+          koodisto: "kujalisamaareet",
           section: "maaraaika"
         },
         isReadOnly,
@@ -62,6 +64,8 @@ export const getMaaraaikakomponentit = (isReadOnly, osionData, locale) => {
       styleClasses: ["ml-2"],
       properties: {
         forChangeObject: {
+          koodiarvo: "3",
+          koodisto: "kujalisamaareet",
           section: "maaraaika"
         },
         isReadOnly,

@@ -467,7 +467,30 @@ export const muutokset = {
       rajoitteet: [
         {
           anchor:
-            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+          properties: {
+            value: {
+              label: "Opetuskieli",
+              value: "opetuskielet"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetuskielet",
+          properties: {
+            value: {
+              label: "ranska",
+              value: "FR"
+            },
+            metadata: {
+              section: "opetuskielet"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.kohde",
           properties: {
             value: {
               label: "Opetus, jota lupa koskee",
@@ -477,7 +500,7 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetustehtavat",
+            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.opetustehtavat",
           properties: {
             value: {
               label: "esiopetus",
@@ -485,26 +508,6 @@ export const muutokset = {
             },
             metadata: {
               section: "getOpetustehtavatLomake"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.alkamispaiva",
-          properties: {
-            value: new Date(1609162920000),
-            metadata: {
-              section: "maaraaika"
-            }
-          }
-        },
-        {
-          anchor:
-            "rajoitteet.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.paattymispaiva",
-          properties: {
-            value: new Date(1622378520000),
-            metadata: {
-              section: "maaraaika"
             }
           }
         }
@@ -518,7 +521,30 @@ export const muutokset = {
     unsaved: [
       {
         anchor:
-          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+        properties: {
+          value: {
+            label: "Opetuskieli",
+            value: "opetuskielet"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetuskielet",
+        properties: {
+          value: {
+            label: "ranska",
+            value: "FR"
+          },
+          metadata: {
+            section: "opetuskielet"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.kohde",
         properties: {
           value: {
             label: "Opetus, jota lupa koskee",
@@ -528,7 +554,7 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetustehtavat",
+          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.opetustehtavat",
         properties: {
           value: {
             label: "esiopetus",
@@ -536,26 +562,6 @@ export const muutokset = {
           },
           metadata: {
             section: "getOpetustehtavatLomake"
-          }
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.alkamispaiva",
-        properties: {
-          value: new Date(1609162920000),
-          metadata: {
-            section: "maaraaika"
-          }
-        }
-      },
-      {
-        anchor:
-          "rajoitelomake.295ef620-1a27-4ada-be0f-6e68011ee8a4.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.paattymispaiva",
-        properties: {
-          value: new Date(1622378520000),
-          metadata: {
-            section: "maaraaika"
           }
         }
       }

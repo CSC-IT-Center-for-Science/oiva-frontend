@@ -39,7 +39,8 @@ export async function defineBackendChangeObjects(
   const {
     quickFilterChanges = [],
     changesByProvince,
-    perustelut
+    perustelut,
+    rajoitteetByRajoiteId
   } = changeObjects;
 
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);
@@ -48,7 +49,10 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = await getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste(
+    "toimintaalue",
+    lupaMaaraykset
+  );
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**

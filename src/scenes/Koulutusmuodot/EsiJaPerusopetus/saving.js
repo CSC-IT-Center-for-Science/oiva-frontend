@@ -32,6 +32,9 @@ export async function createObjectToSave(
     changeObjects.rajoitteet
   );
 
+  console.info("changeObjects", changeObjects);
+  console.info("rajoitteetByRajoiteId", rajoitteetByRajoiteId);
+
   // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
     {
@@ -78,6 +81,18 @@ export async function createObjectToSave(
       ulkomaa: R.filter(
         R.compose(R.includes(".ulkomaa."), R.prop("anchor")),
         changeObjects.toimintaalue || []
+      ),
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "toimintaalue",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
       )
     },
     R.find(R.propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
@@ -87,7 +102,21 @@ export async function createObjectToSave(
 
   // 3. OPETUSKIELET
   const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
-    changeObjects.opetuskielet,
+    {
+      opetuskielet: changeObjects.opetuskielet,
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "opetuskielet",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      )
+    },
     maaraystyypit,
     locale,
     kohteet

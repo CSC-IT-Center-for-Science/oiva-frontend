@@ -154,6 +154,10 @@ const Lomake = React.memo(
           setLomake(lomake.structure || lomake);
         }
       })();
+
+      return function cancel() {
+        // Asynkronisten toimintojen keskeyttäminen
+      };
     }, [
       _path,
       anchor,

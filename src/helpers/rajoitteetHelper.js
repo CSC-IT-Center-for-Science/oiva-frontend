@@ -1,6 +1,7 @@
 import { append, find, last, nth, path, prop, propEq } from "ramda";
 
 const koodistoMapping = {
+  maaraaika: "kujalisamaareet",
   opetustehtavat: "opetustehtava",
   toimintaalue: "opetustaAntavatKunnat",
   opetuskielet: "opetuskieli"
@@ -26,8 +27,29 @@ export const createAlimaarayksetBEObjects = (
     ["properties", "value", "value"],
     asetusChangeObj
   );
+  const sectionOfAsetusChangeObj = path(
+    ["properties", "metadata", "section"],
+    asetusChangeObj
+  );
 
-  const koodisto = prop(valueValueOfAsetusChangeObj, koodistoMapping);
+  let koodiarvo =
+    path(["properties", "value", "value"], valueChangeObj) ||
+    path(["properties", "metadata", "koodiarvo"], asetusChangeObj);
+
+  let koodisto = "";
+
+  if (valueValueOfAsetusChangeObj) {
+    // Kyseessä voi olla pudotusvalikko, jolloin koodiston arvo löytyy
+    // pudotusvalikosta valitun arvon perusteella { label: ..., value: X }
+    koodisto = prop(valueValueOfAsetusChangeObj, koodistoMapping);
+  } else if (sectionOfAsetusChangeObj) {
+    // Esim. määräajan tapauksessa elementti ei ole pudotusvalikko, joten
+    // koodistoarvo tulee etsiä toisella tavalla. Tällaisissa tapauksissa
+    // voidaan hyödyntää muutosobjektin metadataa, jonne tieto on kenties
+    // laitettu talteen.
+    koodisto = prop(sectionOfAsetusChangeObj, koodistoMapping);
+  }
+
   const tunniste = prop(valueValueOfAsetusChangeObj, tunnisteMapping);
 
   const alimaarays = {
@@ -37,7 +59,7 @@ export const createAlimaarayksetBEObjects = (
         ? paalomakkeenBEMuutos.generatedId
         : last(muutosobjektit).generatedId,
     kohde: find(propEq("tunniste", tunniste), kohteet),
-    koodiarvo: path(["properties", "value", "value"], valueChangeObj),
+    koodiarvo,
     koodisto,
     maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
     meta: {

@@ -1,4 +1,5 @@
-import { flatten, map, path, prop, sortBy } from "ramda";
+import { getKieletOPHFromStorage } from "helpers/opetuskielet";
+import { find, flatten, map, path, prop, propEq, sortBy, toUpper } from "ramda";
 
 /**
  * Mikäli päälomakkeella on valittuna opetuskieliä, tämä funktio määrittää
@@ -14,6 +15,8 @@ export default async function getOpetuskielikomponentit(
   isReadOnly,
   osionData = []
 ) {
+  const kielet = await getKieletOPHFromStorage();
+
   // Yhdistetään päälomakkkeella valittuina olevat ensisijaiset ja toissijaiset
   // opetuskielet yhdeksi taulukoksi, koska tällä tietoa ei ole syystä
   // luoda omaa pudotusvalikkoa molemmille.
@@ -31,7 +34,7 @@ export default async function getOpetuskielikomponentit(
   );
 
   // Palautettava lomakerakenne
-  return osionData.length || valitutKielet.length
+  return kielet.length
     ? [
         {
           anchor: "opetuskielet",
@@ -43,7 +46,16 @@ export default async function getOpetuskielikomponentit(
             },
             isMulti: false,
             isReadOnly,
-            options: valitutKielet,
+            options: map(opetuskieli => {
+              /**
+               * Tarkistetaan, onko kyseinen opetuskieli valittuna
+               * lomakkeella, jota vasten rajoituksia ollaan tekemässä.
+               **/
+              return find(
+                propEq("value", opetuskieli.koodiarvo),
+                valitutKielet
+              );
+            }, kielet).filter(Boolean),
             value: ""
           }
         }
@@ -53,7 +65,7 @@ export default async function getOpetuskielikomponentit(
           anchor: "teksti",
           name: "StatusTextRow",
           properties: {
-            title: "Valitse ensin opetuskieliä päälomakkeelta."
+            title: "Ongelma kielien näyttämisessä."
           }
         }
       ];
