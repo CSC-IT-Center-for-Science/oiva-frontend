@@ -24,6 +24,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -43,6 +44,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           {
             value: "enintaan",
@@ -64,6 +66,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           {
             value: "joistaEnintaan",
@@ -93,6 +96,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -113,6 +117,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -131,6 +136,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
@@ -148,6 +154,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [maaraaikaOption],
         value: maaraaikaOption
       }
@@ -161,6 +168,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           {
             value: "enintaan",
@@ -182,6 +190,7 @@ export const getAsetuksenKohdekomponentti = (
       properties: {
         isMulti: false,
         isReadOnly,
+        isVisible: !isReadOnly,
         options: [
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           maaraaikaOption

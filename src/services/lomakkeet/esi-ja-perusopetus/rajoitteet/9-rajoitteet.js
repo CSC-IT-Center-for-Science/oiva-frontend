@@ -69,8 +69,8 @@ export function rajoitteet(
             anchor: "A",
             name: "RajoitteetList",
             properties: {
-              areTitlesVisible: true,
-              isBorderVisible: true,
+              areTitlesVisible: false,
+              isBorderVisible: false,
               onModifyRestriction,
               onRemoveRestriction,
               rajoitteet: rajoitteetGrouped

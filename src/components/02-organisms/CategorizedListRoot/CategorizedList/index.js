@@ -774,6 +774,7 @@ const CategorizedList = props => {
                                 isRequired={propsObj.isRequired}
                                 isReadOnly={propsObj.isReadOnly}
                                 isValid={propsObj.isValid}
+                                isVisible={propsObj.isVisible}
                                 options={propsObj.options}
                                 placeholder={propsObj.placeholder}
                                 value={R.flatten([propsObj.value])}

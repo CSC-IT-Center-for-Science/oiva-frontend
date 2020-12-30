@@ -2,6 +2,7 @@ import {
   append,
   assocPath,
   compose,
+  concat,
   drop,
   filter,
   find,
@@ -277,7 +278,7 @@ const getKohdennuksetRecursively = async (
    * voi olla esim. maaraaika tai opetustaAntavatKunnat.
    */
   const rajoiteChangeObjects = path(
-    [index, "tarkennin", "rajoite"],
+    [index, "rajoite"],
     kohdennuksetChangeObjects
   );
 
@@ -394,19 +395,24 @@ const getKohdennuksetRecursively = async (
       anchor: "kohdennukset",
       // title: "Kohdennukset",
       layout: { indentation: "none" },
-      styleClasses: [
-        bgColorClassesByIndex[String(length(kohdennusindeksipolku) - 1)]
-      ].filter(Boolean),
+      styleClasses: isReadOnly
+        ? []
+        : [
+            bgColorClassesByIndex[String(length(kohdennusindeksipolku) - 1)]
+          ].filter(Boolean),
       components: [],
       categories: [
         {
           // index on kohdennuksen juokseva järjestysnumero
           anchor: String(index),
-          styleClasses: [
-            "border-t",
-            length(kohdennusindeksipolku) === 1 ? "border-b" : "",
-            "border-gray-300"
-          ],
+          layout: { indentation: isReadOnly ? "none" : undefined },
+          styleClasses: isReadOnly
+            ? []
+            : [
+                "border-t",
+                length(kohdennusindeksipolku) === 1 ? "border-b" : "",
+                "border-gray-300"
+              ],
           title: `Kohdennus ${join(
             ".",
             map(value => {
@@ -416,117 +422,115 @@ const getKohdennuksetRecursively = async (
           components: kohdennuksenKohdekomponentti
             ? [kohdennuksenKohdekomponentti]
             : [],
-          categories: prepend(
-            {
-              anchor: "tarkennin",
-              layout: { indentation: "none" },
-              components: kohdennuksenTarkenninKomponentit,
-              categories: [
-                {
-                  anchor: "rajoite",
-                  layout: { indentation: "none" },
-                  categories: [
-                    {
-                      anchor: "kohde",
-                      title: "Rajoituksen kohde",
-                      components: [
-                        {
-                          anchor: "valikko",
-                          name: "Autocomplete",
-                          styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
-                          properties: {
-                            isMulti: false,
-                            isReadOnly,
-                            options: kohdevaihtoehdot
-                          }
+          categories: concat(
+            [
+              {
+                anchor: "tarkennin",
+                layout: { indentation: "none" },
+                components: kohdennuksenTarkenninKomponentit
+              },
+              {
+                anchor: "rajoite",
+                layout: { indentation: "none" },
+                categories: [
+                  {
+                    anchor: "kohde",
+                    layout: { indentation: "none" },
+                    title: "Rajoituksen kohde",
+                    components: [
+                      {
+                        anchor: "valikko",
+                        name: "Autocomplete",
+                        styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
+                        properties: {
+                          isMulti: false,
+                          isReadOnly,
+                          isVisible: !isReadOnly,
+                          options: kohdevaihtoehdot
                         }
-                      ],
-                      categories:
-                        length(kohteenTarkenninkomponentit) > 0
-                          ? [
-                              {
-                                anchor: "tarkennin",
-                                layout: { indentation: "none" },
-                                components: kohteenTarkenninkomponentit
-                              }
-                            ]
-                          : []
-                    },
-                    ensimmaisenAsetuksenKohdeavain
-                      ? {
-                          anchor: "asetukset",
-                          title: "Rajoitekriteerit",
-                          categories: asetuslomakekokonaisuus
-                        }
-                      : null
-                  ].filter(Boolean)
-                },
-                {
-                  anchor: "kohdennuksenLisaaminen",
-                  styleClasses: ["flex justify-end py-6 pr-8"],
-                  components: [
-                    {
-                      anchor: "painike",
-                      name: "SimpleButton",
-                      onClick: payload => {
-                        console.info(payload.fullAnchor);
-                        const kohdennusId = getAnchorPart(
-                          payload.fullAnchor,
-                          3
-                        );
-                        return lisaaKohdennus({
-                          ...payload,
-                          metadata: {
-                            ...payload.metadata,
-                            rajoiteId: data.rajoiteId,
-                            kohdennusId,
-                            kohdennusindeksipolku
-                          }
-                        });
-                      },
-                      properties: {
-                        isVisible:
-                          !isReadOnly &&
-                          (kohdennuksenKohdeavain === "kokonaismaara" ||
-                            kohdennuksenKohdeavain === "opiskelijamaarat" ||
-                            !!length(lukumaarakomponentit)),
-                        text: "Lisää kohdennus"
                       }
-                    },
-                    !!length(asetusvaihtoehdot) &&
-                    length(asetuslomakekokonaisuus) <
-                      length(asetusvaihtoehdot) &&
-                    ensimmaisenAsetuksenKohdeavain !== "kokonaismaara" &&
-                    !isReadOnly
-                      ? {
-                          anchor: "lisaa-asetus",
-                          name: "SimpleButton",
-                          styleClasses: ["ml-4"],
-                          onClick: payload => {
-                            console.info(payload.fullAnchor);
-                            const kohdennusId = getAnchorPart(
-                              payload.fullAnchor,
-                              3
-                            );
-                            return onAddCriterion({
-                              ...payload,
-                              metadata: {
-                                ...payload.metadata,
-                                rajoiteId: data.rajoiteId,
-                                kohdennusId,
-                                kohdennusindeksipolku
-                              }
-                            });
-                          },
-                          properties: {
-                            text: "Lisää kriteeri"
-                          }
+                    ],
+                    categories:
+                      length(kohteenTarkenninkomponentit) > 0
+                        ? [
+                            {
+                              anchor: "tarkennin",
+                              layout: { indentation: "none" },
+                              components: kohteenTarkenninkomponentit
+                            }
+                          ]
+                        : []
+                  },
+                  ensimmaisenAsetuksenKohdeavain
+                    ? {
+                        anchor: "asetukset",
+                        title: "Rajoitekriteerit",
+                        categories: asetuslomakekokonaisuus
+                      }
+                    : null
+                ].filter(Boolean)
+              },
+              {
+                anchor: "kohdennuksenLisaaminen",
+                styleClasses: ["flex justify-end py-6 pr-8"],
+                components: [
+                  {
+                    anchor: "painike",
+                    name: "SimpleButton",
+                    onClick: payload => {
+                      console.info(payload.fullAnchor);
+                      const kohdennusId = getAnchorPart(payload.fullAnchor, 3);
+                      return lisaaKohdennus({
+                        ...payload,
+                        metadata: {
+                          ...payload.metadata,
+                          rajoiteId: data.rajoiteId,
+                          kohdennusId,
+                          kohdennusindeksipolku
                         }
-                      : null
-                  ].filter(Boolean)
-                }
-              ].filter(Boolean)
-            },
+                      });
+                    },
+                    properties: {
+                      isVisible:
+                        !isReadOnly &&
+                        (kohdennuksenKohdeavain === "kokonaismaara" ||
+                          kohdennuksenKohdeavain === "opiskelijamaarat" ||
+                          !!length(lukumaarakomponentit)),
+                      text: "Lisää kohdennus"
+                    }
+                  },
+                  !!length(asetusvaihtoehdot) &&
+                  length(asetuslomakekokonaisuus) < length(asetusvaihtoehdot) &&
+                  ensimmaisenAsetuksenKohdeavain !== "kokonaismaara" &&
+                  !isReadOnly
+                    ? {
+                        anchor: "lisaa-asetus",
+                        name: "SimpleButton",
+                        styleClasses: ["ml-4"],
+                        onClick: payload => {
+                          console.info(payload.fullAnchor);
+                          const kohdennusId = getAnchorPart(
+                            payload.fullAnchor,
+                            3
+                          );
+                          return onAddCriterion({
+                            ...payload,
+                            metadata: {
+                              ...payload.metadata,
+                              rajoiteId: data.rajoiteId,
+                              kohdennusId,
+                              kohdennusindeksipolku
+                            }
+                          });
+                        },
+                        properties: {
+                          text: "Lisää kriteeri"
+                        }
+                      }
+                    : null
+                ].filter(Boolean)
+              }
+            ],
             alikohdennuksetChangeObjects
               ? await getKohdennuksetRecursively(
                   kohdennustaso + 1,

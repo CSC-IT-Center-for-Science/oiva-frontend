@@ -158,7 +158,7 @@ const Autocomplete = React.memo(
         : setIsOptionsShown(false);
     };
 
-    return (
+    return props.isVisible ? (
       <React.Fragment>
         {props.isPreviewModeOn || props.isReadOnly ? (
           <ul className="ml-8 list-disc mb-4">
@@ -227,12 +227,13 @@ const Autocomplete = React.memo(
           </React.Fragment>
         )}
       </React.Fragment>
-    );
+    ) : null;
   },
   (cp, np) => {
     return (
       equals(cp.isPreviewModeOn, np.isPreviewModeOn) &&
       equals(cp.isValid, np.isValid) &&
+      equals(cp.isVisible, np.isVisible) &&
       equals(cp.options, np.options) &&
       equals(cp.value, np.value) &&
       equals(cp.height, np.height) &&
@@ -246,6 +247,7 @@ Autocomplete.defaultProps = {
   isMulti: true,
   isRequired: false,
   isValid: true,
+  isVisible: true,
   placeholder: "Valitse...",
   value: [],
   isSearch: false,
@@ -261,6 +263,7 @@ Autocomplete.propTypes = {
   isMulti: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
+  isVisible: PropTypes.bool,
   name: PropTypes.string,
   callback: PropTypes.func,
   options: PropTypes.array,

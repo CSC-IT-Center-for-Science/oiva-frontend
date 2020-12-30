@@ -1,124 +1,7 @@
 export const muutokset = {
   changeObjects: {
-    saved: {
-      opetuskielet: [
-        {
-          anchor: "opetuskielet.opetuskieli.ensisijaiset",
-          properties: {
-            value: [
-              {
-                label: "ruotsi",
-                value: "SV"
-              },
-              {
-                label: "suomi",
-                value: "FI"
-              },
-              {
-                label: "baski, euskara",
-                value: "EU"
-              }
-            ],
-            metadata: {
-              valikko: "ensisijaiset"
-            }
-          }
-        },
-        {
-          anchor: "opetuskielet.opetuskieli.toissijaiset",
-          properties: {
-            value: [
-              {
-                label: "ranska",
-                value: "FR"
-              },
-              {
-                label: "bretoni",
-                value: "BR"
-              }
-            ],
-            metadata: {
-              valikko: "toissijaiset"
-            }
-          }
-        }
-      ],
-      erityisetKoulutustehtavat: [
-        {
-          anchor: "erityisetKoulutustehtavat.1.valintaelementti",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "erityisetKoulutustehtavat.2.valintaelementti",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "erityisetKoulutustehtavat.2.0.kuvaus",
-          properties: {
-            value: "Testikuvaus",
-            metadata: {
-              ankkuri: "0"
-            }
-          }
-        }
-      ],
-      opetuksenJarjestamismuodot: [
-        {
-          anchor: "opetuksenJarjestamismuodot.1.valinta",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "opetuksenJarjestamismuodot.0.valinta",
-          properties: {
-            isChecked: false
-          }
-        }
-      ],
-      opetustehtavat: [
-        {
-          anchor: "opetustehtavat.opetustehtava.6",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "opetustehtavat.opetustehtava.3",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "opetustehtavat.opetustehtava.4",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "opetustehtavat.opetustehtava.27",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "opetustehtavat.opetustehtava.28",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "opetustehtavat.opetustehtava.18",
-          properties: {
-            isChecked: true
-          }
-        }
-      ],
-      topthree: [],
+    saved: {},
+    unsaved: {
       paatoksentiedot: [
         {
           anchor: "paatoksentiedot.asianumero.A",
@@ -126,348 +9,96 @@ export const muutokset = {
             value: "VN/1111/2000"
           }
         }
-      ]
-    },
-    unsaved: {
+      ],
+      opetustehtavat: [
+        {
+          anchor: "opetustehtavat.opetustehtava.23",
+          properties: {
+            isChecked: true
+          }
+        },
+        {
+          anchor: "opetustehtavat.opetustehtava.25",
+          properties: {
+            isChecked: true
+          }
+        },
+        {
+          anchor: "opetustehtavat.opetustehtava.24",
+          properties: {
+            isChecked: true
+          }
+        }
+      ],
       rajoitelomake: [],
-      toimintaalue: [
-        {
-          anchor: "toimintaalue.categoryFilter",
-          properties: {
-            changesByProvince: {
-              "FI-15": [
-                {
-                  anchor: "areaofaction.FI-15.kunnat.140",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "140",
-                      title: "Iisalmi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.204",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "204",
-                      title: "Kaavi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.239",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "239",
-                      title: "Keitele",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.263",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "263",
-                      title: "Kiuruvesi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.297",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "297",
-                      title: "Kuopio",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.402",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "402",
-                      title: "Lapinlahti",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.420",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "420",
-                      title: "Leppävirta",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.595",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "595",
-                      title: "Pielavesi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.686",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "686",
-                      title: "Rautalampi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.687",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "687",
-                      title: "Rautavaara",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.749",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "749",
-                      title: "Siilinjärvi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.762",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "762",
-                      title: "Sonkajärvi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.778",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "778",
-                      title: "Suonenjoki",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.844",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "844",
-                      title: "Tervo",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.857",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "857",
-                      title: "Tuusniemi",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.915",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "915",
-                      title: "Varkaus",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.921",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "921",
-                      title: "Vesanto",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.kunnat.925",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "925",
-                      title: "Vieremä",
-                      maakuntaKey: "FI-15",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-15.A",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "11",
-                      maakuntaKey: "FI-15",
-                      title: undefined,
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true
-                  }
-                }
-              ],
-              "FI-06": [
-                {
-                  anchor: "areaofaction.FI-06.kunnat.169",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "169",
-                      title: "Jokioinen",
-                      maakuntaKey: "FI-06",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true,
-                    isIndeterminate: undefined
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-06.A",
-                  properties: {
-                    isChecked: true,
-                    isIndeterminate: true,
-                    metadata: {
-                      koodiarvo: "05",
-                      maakuntaKey: "FI-06",
-                      title: undefined,
-                      maaraysUuid: undefined
-                    }
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-06.kunnat.694",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "694",
-                      title: "Riihimäki",
-                      maakuntaKey: "FI-06",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true,
-                    isIndeterminate: undefined
-                  }
-                },
-                {
-                  anchor: "areaofaction.FI-06.kunnat.834",
-                  properties: {
-                    metadata: {
-                      koodiarvo: "834",
-                      title: "Tammela",
-                      maakuntaKey: "FI-06",
-                      maaraysUuid: undefined
-                    },
-                    isChecked: true,
-                    isIndeterminate: undefined
-                  }
-                }
-              ]
-            },
-            quickFilterChanges: [
-              {
-                anchor: "areaofaction-radios.quick-filters.ei-alueita",
-                properties: {
-                  isChecked: false,
-                  metadata: {
-                    koodiarvo: "FI2"
-                  }
-                }
-              }
-            ]
-          }
-        }
-      ],
-      muutEhdot: [
-        {
-          anchor: "muutEhdot.1.valintaelementti",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "muutEhdot.3.valintaelementti",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "muutEhdot.9.valintaelementti",
-          properties: {
-            isChecked: true
-          }
-        },
-        {
-          anchor: "muutEhdot.9.0.kuvaus",
-          properties: {
-            value: "Kielikylvyn kuvaus",
-            metadata: {
-              ankkuri: "0",
-              koodiarvo: "9"
-            }
-          }
-        }
-      ],
       rajoitteet: [
         {
           anchor:
-            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.kohde.valikko",
+          properties: {
+            value: {
+              label: "Opiskelijamäärät",
+              value: "opiskelijamaarat"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.kohde.tarkennin.opiskelijamaarat",
+          properties: {
+            value: {
+              value: "kokonaismaara",
+              label: "Kokonaisoppilas-/opiskelijamäärä"
+            },
+            metadata: {
+              section: "opiskelijamaarat"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.asetukset.0.kohde",
+          properties: {
+            value: {
+              value: "enintaan",
+              label: "Enintään"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.asetukset.0.tarkennin.lukumaara",
+          properties: {
+            value: "10000"
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.kohde.A",
+          properties: {
+            value: ""
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.kohde",
+          properties: {
+            value: {
+              value: "joistaVahintaan",
+              label: "Joista vähintään"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.tarkennin.lukumaara",
+          properties: {
+            value: "2042"
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.kohde.valikko",
           properties: {
             value: {
               label: "Opetuskieli",
@@ -477,11 +108,11 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetuskielet",
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.kohde.tarkennin.opetuskielet",
           properties: {
             value: {
-              label: "ranska",
-              value: "FR"
+              label: "bosnia",
+              value: "BS"
             },
             metadata: {
               section: "opetuskielet"
@@ -490,7 +121,7 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.kohde",
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.0.kohde",
           properties: {
             value: {
               label: "Opetus, jota lupa koskee",
@@ -500,14 +131,48 @@ export const muutokset = {
         },
         {
           anchor:
-            "rajoitteet.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.opetustehtavat",
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.0.tarkennin.opetustehtavat",
           properties: {
             value: {
-              label: "esiopetus",
-              value: "6"
+              label: "perusopetus vuosiluokat 1–6",
+              value: "23"
             },
             metadata: {
               section: "getOpetustehtavatLomake"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.1.kohde",
+          properties: {
+            value: {
+              value: "maaraaika",
+              label: "Määräaika"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.1.tarkennin.alkamispaiva",
+          properties: {
+            value: new Date(1609355823549),
+            metadata: {
+              koodiarvo: "3",
+              koodisto: "kujalisamaareet",
+              section: "maaraaika"
+            }
+          }
+        },
+        {
+          anchor:
+            "rajoitteet.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.1.tarkennin.paattymispaiva",
+          properties: {
+            value: new Date(1617214620000),
+            metadata: {
+              koodiarvo: "3",
+              koodisto: "kujalisamaareet",
+              section: "maaraaika"
             }
           }
         }
@@ -521,7 +186,71 @@ export const muutokset = {
     unsaved: [
       {
         anchor:
-          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.valikko",
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.kohde.valikko",
+        properties: {
+          value: {
+            label: "Opiskelijamäärät",
+            value: "opiskelijamaarat"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.kohde.tarkennin.opiskelijamaarat",
+        properties: {
+          value: {
+            value: "kokonaismaara",
+            label: "Kokonaisoppilas-/opiskelijamäärä"
+          },
+          metadata: {
+            section: "opiskelijamaarat"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.asetukset.0.kohde",
+        properties: {
+          value: {
+            value: "enintaan",
+            label: "Enintään"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.rajoite.asetukset.0.tarkennin.lukumaara",
+        properties: {
+          value: "10000"
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.kohde.A",
+        properties: {
+          value: ""
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.kohde",
+        properties: {
+          value: {
+            value: "joistaVahintaan",
+            label: "Joista vähintään"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.tarkennin.lukumaara",
+        properties: {
+          value: "2042"
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.kohde.valikko",
         properties: {
           value: {
             label: "Opetuskieli",
@@ -531,11 +260,11 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.kohde.tarkennin.opetuskielet",
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.kohde.tarkennin.opetuskielet",
         properties: {
           value: {
-            label: "ranska",
-            value: "FR"
+            label: "bosnia",
+            value: "BS"
           },
           metadata: {
             section: "opetuskielet"
@@ -544,7 +273,7 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.kohde",
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.0.kohde",
         properties: {
           value: {
             label: "Opetus, jota lupa koskee",
@@ -554,14 +283,48 @@ export const muutokset = {
       },
       {
         anchor:
-          "rajoitelomake.ef7335af-17d4-4b41-9601-4351e181a0fb.kohdennukset.0.tarkennin.rajoite.asetukset.0.tarkennin.opetustehtavat",
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.0.tarkennin.opetustehtavat",
         properties: {
           value: {
-            label: "esiopetus",
-            value: "6"
+            label: "perusopetus vuosiluokat 1–6",
+            value: "23"
           },
           metadata: {
             section: "getOpetustehtavatLomake"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.1.kohde",
+        properties: {
+          value: {
+            value: "maaraaika",
+            label: "Määräaika"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.1.tarkennin.alkamispaiva",
+        properties: {
+          value: new Date(1609355823549),
+          metadata: {
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
+            section: "maaraaika"
+          }
+        }
+      },
+      {
+        anchor:
+          "rajoitelomake.c6faeb52-cdee-4d37-a2eb-5cfea362cfc9.kohdennukset.0.kohdennukset.0.rajoite.asetukset.1.tarkennin.paattymispaiva",
+        properties: {
+          value: new Date(1617214620000),
+          metadata: {
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
+            section: "maaraaika"
           }
         }
       }

@@ -93,17 +93,17 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  // initialState: muutokset,
-  initialState: {
-    changeObjects: {
-      saved: {},
-      unsaved: {},
-      underRemoval: {}
-    },
-    focusOn: null,
-    latestChanges: {},
-    validity: {}
-  },
+  initialState: muutokset,
+  // initialState: {
+  //   changeObjects: {
+  //     saved: {},
+  //     unsaved: {},
+  //     underRemoval: {}
+  //   },
+  //   focusOn: null,
+  //   latestChanges: {},
+  //   validity: {}
+  // },
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
@@ -163,7 +163,7 @@ const Store = createStore({
       const currentChangeObjects = getState().changeObjects;
       const asetuksetChangeObjects = filter(changeObj => {
         return startsWith(
-          `${sectionId}.${rajoiteId}.${kohdennuspolku}.tarkennin.rajoite.asetukset`,
+          `${sectionId}.${rajoiteId}.${kohdennuspolku}.rajoite.asetukset`,
           changeObj.anchor
         );
       }, concat(currentChangeObjects.unsaved[sectionId] || [], currentChangeObjects.saved[sectionId] || []) || []);
@@ -188,7 +188,7 @@ const Store = createStore({
         ["unsaved", sectionId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.${kohdennuspolku}.tarkennin.rajoite.asetukset.${nextAsetuksetIndex}.kohde`,
+            anchor: `${sectionId}.${rajoiteId}.${kohdennuspolku}.rajoite.asetukset.${nextAsetuksetIndex}.kohde`,
             properties: {
               value: ""
             }
