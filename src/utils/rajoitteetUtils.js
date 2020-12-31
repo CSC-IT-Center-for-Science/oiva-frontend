@@ -6,6 +6,7 @@ import {
   join,
   map,
   path,
+  prop,
   split,
   toLower,
   values
@@ -44,7 +45,9 @@ function kayLapiKohdennus(kohdennus, lista = []) {
     " ",
     flatten(
       map(asetus => {
-        const tarkenninkomponentit = Object.keys(asetus.tarkennin);
+        const tarkenninkomponentit = Object.keys(
+          prop("tarkennin", asetus) || {}
+        );
         return map(tarkenninavain => {
           const tarkenninValue = asetus.kohde.properties.value.value;
           const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
