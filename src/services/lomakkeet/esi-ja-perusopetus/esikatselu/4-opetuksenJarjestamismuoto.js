@@ -28,7 +28,14 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
               properties: {
                 items: [
                   {
-                    content: kuvausNode.properties.value
+                    anchor: "muoto",
+                    components: [
+                      {
+                        anchor: "kuvaus",
+                        name: "HtmlContent",
+                        properties: { content: kuvausNode.properties.value }
+                      }
+                    ]
                   }
                 ]
               }

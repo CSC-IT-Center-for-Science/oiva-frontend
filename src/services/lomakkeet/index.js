@@ -58,6 +58,7 @@ import { previewOfErityisetKoulutustehtavat } from "./esi-ja-perusopetus/esikats
 import { previewOfOpiskelijamaarat } from "./esi-ja-perusopetus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot } from "./esi-ja-perusopetus/esikatselu/7-muutEhdot";
 import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2-opetustaAntavatKunnat";
+import { previewOfRajoite } from "./esi-ja-perusopetus/esikatselu/10-rajoite";
 
 /**
  * LOMAKEPALVELU
@@ -400,7 +401,9 @@ const lomakkeet = {
     },
     rajoite: {
       addition: (data, booleans, locale, changeObjects, functions) =>
-        rajoitelomake(data, booleans, locale, changeObjects, functions)
+        rajoitelomake(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfRajoite(data, booleans, locale, changeObjects)
     },
     rajoitteet: {
       addition: (data, booleans, locale, changeObjects, functions) =>

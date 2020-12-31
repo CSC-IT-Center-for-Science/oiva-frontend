@@ -23,6 +23,7 @@ import List from "components/01-molecules/List";
 import { Typography } from "@material-ui/core";
 import RajoitteetList from "components/02-organisms/RajoitteetList";
 import Rajoite from "components/02-organisms/Rajoite";
+import HtmlContent from "components/01-molecules/HtmlContent";
 
 /** @namespace components */
 
@@ -802,6 +803,9 @@ const CategorizedList = props => {
                           titles={propsObj.titles}
                         />
                       </div>
+                    )}
+                    {component.name === "HtmlContent" && (
+                      <HtmlContent content={propsObj.content} />
                     )}
                     {component.name === "SimpleButton" && (
                       <div className={`${styleClassesStr} flex-2`}>

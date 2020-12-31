@@ -176,20 +176,20 @@ async function getAsetuslomakekokonaisuus(
       )
     : [];
 
-  console.group();
-  console.info("Index:", index);
-  console.info("Asetuksen kohdeavain:", asetuksenKohdeavain);
-  console.info("Asetuksen kohdekomponentti:", asetuksenKohdekomponentti);
-  console.info(
-    "Asetuksen tarkentimen avain:",
-    asetuksenTarkenninlomakkeenAvain
-  );
-  console.info(
-    "Asetuksen tarkenninkomponentit:",
-    asetuksenTarkenninkomponentit
-  );
-  console.info("rajoiteChangeObjects:", rajoiteChangeObjects);
-  console.groupEnd();
+  // console.group();
+  // console.info("Index:", index);
+  // console.info("Asetuksen kohdeavain:", asetuksenKohdeavain);
+  // console.info("Asetuksen kohdekomponentti:", asetuksenKohdekomponentti);
+  // console.info(
+  //   "Asetuksen tarkentimen avain:",
+  //   asetuksenTarkenninlomakkeenAvain
+  // );
+  // console.info(
+  //   "Asetuksen tarkenninkomponentit:",
+  //   asetuksenTarkenninkomponentit
+  // );
+  // console.info("rajoiteChangeObjects:", rajoiteChangeObjects);
+  // console.groupEnd();
 
   const updatedLomakerakenne =
     asetuksenKohdekomponentti || !!length(asetuksenTarkenninkomponentit)
@@ -358,37 +358,37 @@ const getKohdennuksetRecursively = async (
     }
   }
 
-  console.group();
-  console.info("Index", index);
-  console.info("Lukumaarakomponentit:", lukumaarakomponentit);
-  console.info(
-    "Asetuslomakekokonaisuus:",
-    JSON.stringify(asetuslomakekokonaisuus)
-  );
-  console.info("Asetusvaihtoehdot (1. asetus)", asetusvaihtoehdot);
-  console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
-  console.info(
-    "Muutosobjektit tasoa ylempänä:",
-    parentKohdennuksetChangeObjects
-  );
-  console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
-  console.info("RajoiteChangeObjects", rajoiteChangeObjects);
-  console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
-  console.info("kohdennuksen kohdekomponentti", kohdennuksenKohdekomponentti);
-  console.info(
-    "kohdennuksen tarkenninkomponentit",
-    kohdennuksenTarkenninKomponentit
-  );
-  console.info("Kohteen tarkenninavain", kohteenTarkenninavain);
-  console.info("Kohdevaihtoehdot", kohdevaihtoehdot);
-  console.info("Kohteen tarkenninkomponentit", kohteenTarkenninkomponentit);
-  console.info("1. asetuksen kohdeavain", ensimmaisenAsetuksenKohdeavain);
-  console.info(
-    "1. kohdennuksen kohteen tarkenninavain",
-    ensimmaisenKohdennuksenKohteenTarkenninavain
-  );
-  console.info("alikohdennuksetChangeObjects", alikohdennuksetChangeObjects);
-  console.groupEnd();
+  // console.group();
+  // console.info("Index", index);
+  // console.info("Lukumaarakomponentit:", lukumaarakomponentit);
+  // console.info(
+  //   "Asetuslomakekokonaisuus:",
+  //   JSON.stringify(asetuslomakekokonaisuus)
+  // );
+  // console.info("Asetusvaihtoehdot (1. asetus)", asetusvaihtoehdot);
+  // console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
+  // console.info(
+  //   "Muutosobjektit tasoa ylempänä:",
+  //   parentKohdennuksetChangeObjects
+  // );
+  // console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
+  // console.info("RajoiteChangeObjects", rajoiteChangeObjects);
+  // console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
+  // console.info("kohdennuksen kohdekomponentti", kohdennuksenKohdekomponentti);
+  // console.info(
+  //   "kohdennuksen tarkenninkomponentit",
+  //   kohdennuksenTarkenninKomponentit
+  // );
+  // console.info("Kohteen tarkenninavain", kohteenTarkenninavain);
+  // console.info("Kohdevaihtoehdot", kohdevaihtoehdot);
+  // console.info("Kohteen tarkenninkomponentit", kohteenTarkenninkomponentit);
+  // console.info("1. asetuksen kohdeavain", ensimmaisenAsetuksenKohdeavain);
+  // console.info(
+  //   "1. kohdennuksen kohteen tarkenninavain",
+  //   ensimmaisenKohdennuksenKohteenTarkenninavain
+  // );
+  // console.info("alikohdennuksetChangeObjects", alikohdennuksetChangeObjects);
+  // console.groupEnd();
 
   const paivitettyLomakerakenne = append(
     {
@@ -478,7 +478,6 @@ const getKohdennuksetRecursively = async (
                     anchor: "painike",
                     name: "SimpleButton",
                     onClick: payload => {
-                      console.info(payload.fullAnchor);
                       const kohdennusId = getAnchorPart(payload.fullAnchor, 3);
                       return lisaaKohdennus({
                         ...payload,
@@ -649,6 +648,8 @@ export async function rajoitelomake(
       )
     }
   ];
+
+  console.info("PALAUTTETTAVA: ", lomakerakenne);
 
   return lomakerakenne;
 }

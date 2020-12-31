@@ -1,11 +1,15 @@
 import {
   append,
   assocPath,
+  filter,
   flatten,
+  head,
   includes,
   join,
+  keys,
   map,
   path,
+  pathEq,
   prop,
   split,
   toLower,
@@ -13,8 +17,21 @@ import {
 } from "ramda";
 import moment from "moment";
 
+function getAmountOfInstances(substring, string) {
+  const re = new RegExp(substring, "g");
+  return (string.match(re) || []).length;
+}
+
+function addEnding(ending, string, amountOfEndings = 0, index = 0) {
+  const updatedString = string + ending;
+  if (index < amountOfEndings) {
+    return addEnding(ending, updatedString, amountOfEndings, index + 1);
+  }
+  return string;
+}
+
 function getTaydennyssana(key) {
-  console.info(key);
+  // console.info(key);
   const taydennyssanat = {
     alkamispaiva: {
       pre: "ajalla",
@@ -40,7 +57,7 @@ function getTaydennyssana(key) {
 
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
-function kayLapiKohdennus(kohdennus, lista = []) {
+function kayLapiKohdennus(kohdennus, lista = [], format) {
   const asetukset = join(
     " ",
     flatten(
@@ -48,37 +65,47 @@ function kayLapiKohdennus(kohdennus, lista = []) {
         const tarkenninkomponentit = Object.keys(
           prop("tarkennin", asetus) || {}
         );
-        return map(tarkenninavain => {
-          const tarkenninValue = asetus.kohde.properties.value.value;
-          const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
-            ? {
-                pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
-                post: "henkilöä"
-              }
-            : getTaydennyssana(tarkenninavain);
-          const tarkentimenArvo =
-            path(
-              ["properties", "value", "label"],
-              asetus.tarkennin[tarkenninavain]
-            ) ||
-            path(["properties", "value"], asetus.tarkennin[tarkenninavain]);
-          const muokattuTarkentimenArvo = moment.isDate(tarkentimenArvo)
-            ? moment(tarkentimenArvo).format("DD.MM.YYYY")
-            : tarkentimenArvo;
+        return `${join(
+          " ",
+          map(tarkenninavain => {
+            const tarkenninValue = asetus.kohde.properties.value.value;
+            const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
+              ? {
+                  pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
+                  post: "henkilöä"
+                }
+              : getTaydennyssana(tarkenninavain);
+            const tarkentimenArvo =
+              path(
+                ["properties", "value", "label"],
+                asetus.tarkennin[tarkenninavain]
+              ) ||
+              path(["properties", "value"], asetus.tarkennin[tarkenninavain]);
+            const muokattuTarkentimenArvo = moment.isDate(tarkentimenArvo)
+              ? moment(tarkentimenArvo).format("DD.MM.YYYY")
+              : tarkentimenArvo;
 
-          if (taydennyssana) {
-            return join(
-              " ",
-              [
-                taydennyssana.pre,
-                `<strong>${muokattuTarkentimenArvo}</strong>`,
-                taydennyssana.post
-              ].filter(Boolean)
-            );
-          } else {
-            return `<strong>${muokattuTarkentimenArvo}</strong>`;
-          }
-        }, tarkenninkomponentit);
+            if (taydennyssana) {
+              const item = join(
+                " ",
+                [
+                  taydennyssana.pre,
+                  `<strong>${muokattuTarkentimenArvo}</strong>`,
+                  taydennyssana.post
+                ].filter(Boolean)
+              );
+              if (format === "list") {
+                return `<ul><li>${item}`;
+              } else {
+                return item;
+              }
+            } else if (muokattuTarkentimenArvo) {
+              return format === "list"
+                ? `<strong>${muokattuTarkentimenArvo}</strong>`
+                : muokattuTarkentimenArvo;
+            }
+          }, tarkenninkomponentit)
+        )}`;
       }, values(kohdennus.rajoite.asetukset) || [])
     )
   );
@@ -90,48 +117,74 @@ function kayLapiKohdennus(kohdennus, lista = []) {
     ? values(kohdennus.tarkennin)[0].properties.value
     : null;
 
-  let paivitettyLista = joista
-    ? append(toLower(`, ${joista} <strong>${kohdennuslukema}</strong>`), lista)
-    : lista;
+  let paivitettyLista = lista;
+  if (joista) {
+    paivitettyLista = append(
+      `<ul><li>${format === "list" ? toLower(joista) : `, ${toLower(joista)}`}`,
+      paivitettyLista
+    );
+    paivitettyLista = append(
+      `<ul><li><strong>${kohdennuslukema}</strong>`,
+      paivitettyLista
+    );
+  }
   const tarkenninavain = Object.keys(kohdennus.rajoite.kohde.tarkennin)[0];
   const tarkentimenArvo = path(
     ["properties", "value", "label"],
     kohdennus.rajoite.kohde.tarkennin[tarkenninavain]
   );
   const taydennyssana = getTaydennyssana(tarkenninavain);
+
+  let item = tarkentimenArvo;
+
   if (taydennyssana) {
-    paivitettyLista = append(
-      join(
-        " ",
-        [
-          taydennyssana.pre,
-          `<strong>${tarkentimenArvo}</strong>`,
-          taydennyssana.post
-        ].filter(Boolean)
-      ),
-      paivitettyLista
+    item = join(
+      " ",
+      [
+        taydennyssana.pre,
+        `<strong>${tarkentimenArvo}</strong>`,
+        taydennyssana.post
+      ].filter(Boolean)
     );
-  } else {
-    paivitettyLista = append(tarkentimenArvo, paivitettyLista);
   }
+
+  paivitettyLista = append(
+    format === "list" ? `<ul><li>${item}` : item,
+    paivitettyLista
+  );
+
+  // console.info("Asetukset:", asetukset);
+
   paivitettyLista = append(asetukset, paivitettyLista);
 
   if (kohdennus.kohdennukset) {
-    return kayLapiKohdennukset(kohdennus.kohdennukset, paivitettyLista);
+    return kayLapiKohdennukset(kohdennus.kohdennukset, paivitettyLista, format);
   }
 
   return paivitettyLista;
 }
 
-export function kayLapiKohdennukset(kohdennukset, lista = []) {
-  return values(
-    map(kohdennus => {
-      return kayLapiKohdennus(kohdennus, lista);
-    }, kohdennukset)
+export function kayLapiKohdennukset(kohdennukset, lista = [], format) {
+  return join(
+    " ",
+    values(
+      map(kohdennus => {
+        return kayLapiKohdennus(kohdennus, lista, format);
+      }, kohdennukset)
+    )
   );
+  // return `<ul>${values(
+  //   map(kohdennus => {
+  //     return `<li>${kayLapiKohdennus(kohdennus, lista, format)}`;
+  //   }, kohdennukset)
+  // )}`;
 }
 
-export function getRajoiteSelkokielella(rajoiteId, rajoiteChangeObjects) {
+export function getRajoiteSelkokielella(
+  rajoiteId,
+  rajoiteChangeObjects,
+  format
+) {
   let rakenne = {};
 
   for (
@@ -150,12 +203,64 @@ export function getRajoiteSelkokielella(rajoiteId, rajoiteChangeObjects) {
     " ",
     flatten(
       kayLapiKohdennukset(
-        path(["rajoitteet", rajoiteId, "kohdennukset"], rakenne)
+        path(["rajoitteet", rajoiteId, "kohdennukset"], rakenne, [], format)
       )
     )
   );
 
-  console.info(selkokielinenTeksti);
+  // console.info(selkokielinenTeksti);
 
   return selkokielinenTeksti;
 }
+
+export function getRajoiteListamuodossa(rajoiteId, changeObjects = [], format) {
+  let rakenne = {};
+
+  for (let i = 0; i < changeObjects.length; i += 1) {
+    rakenne = assocPath(
+      split(".", changeObjects[i].anchor),
+      changeObjects[i],
+      rakenne
+    );
+  }
+
+  // console.info(rakenne);
+
+  const lapikaydytKohdennukset = kayLapiKohdennukset(
+    path(["rajoitteet", rajoiteId, "kohdennukset"], rakenne),
+    [],
+    format
+  );
+
+  // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+  const amountOfInstances = getAmountOfInstances(
+    "<ul>",
+    lapikaydytKohdennukset
+  );
+
+  const listamuotoWithEndings = addEnding(
+    "</li></ul>",
+    lapikaydytKohdennukset,
+    amountOfInstances
+  );
+
+  // console.info(lapikaydytKohdennukset, listamuotoWithEndings);
+
+  return listamuotoWithEndings;
+}
+
+export const getRajoite = (value, rajoitteet) => {
+  const rajoiteId = head(
+    filter(key => {
+      return pathEq(
+        ["elements", "kohdennukset", 1, "properties", "value", "value"],
+        value,
+        rajoitteet[key]
+      )
+        ? rajoitteet[key]
+        : null;
+    }, keys(rajoitteet))
+  );
+
+  return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
+};

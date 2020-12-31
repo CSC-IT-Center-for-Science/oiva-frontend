@@ -1,7 +1,7 @@
 import React from "react";
 import { addIndex, map } from "ramda";
 import Rajoite from "components/02-organisms/Rajoite";
-import StatusTextRow from "../StatusTextRow/index";
+import HtmlContent from "../HtmlContent";
 
 const List = ({ items }) => {
   const itemsToRender = addIndex(map)(
@@ -20,12 +20,12 @@ const List = ({ items }) => {
                   rajoiteId={properties.rajoiteId}
                 />
               );
-            } else if (component.name === "StatuxTextRow") {
+            } else if (component.name === "HtmlContent") {
               return (
-                <StatusTextRow
+                <HtmlContent
                   key={index}
-                  title={properties.title}
-                ></StatusTextRow>
+                  content={properties.content}
+                ></HtmlContent>
               );
             } else {
               return <div key={index}>[komponenttia ei osata käsitellä]</div>;

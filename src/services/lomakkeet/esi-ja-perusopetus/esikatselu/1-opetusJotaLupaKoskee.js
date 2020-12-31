@@ -15,22 +15,7 @@ import {
   values
 } from "ramda";
 import { getAnchorPart } from "utils/common";
-
-export const getRajoite = (koodiarvo, rajoitteet) => {
-  const rajoiteId = head(
-    filter(key => {
-      return pathEq(
-        ["elements", "asetukset", 1, "properties", "value", "value"],
-        koodiarvo,
-        rajoitteet[key]
-      )
-        ? rajoitteet[key]
-        : null;
-    }, keys(rajoitteet))
-  );
-
-  return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
-};
+import { getRajoite } from "utils/rajoitteetUtils";
 
 export async function previewOfOpetusJotaLupaKoskee({
   lomakedata,
@@ -48,6 +33,7 @@ export async function previewOfOpetusJotaLupaKoskee({
    * (!!isChecked = true).
    */
   const listItems = map(opetustehtava => {
+    console.info(rajoitteet, rajoiteId, koodiarvo);
     const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
     const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
 
@@ -55,16 +41,6 @@ export async function previewOfOpetusJotaLupaKoskee({
     // valittuja arvoja (ilman rajoittteita)
     if (opetustehtava.properties.isChecked) {
       if (rajoite) {
-        const rajoitus = rajoite.elements.asetukset[1];
-        const rajoitusPropValue = [rajoitus.properties.value];
-        const kriteerit = filter(asetus => {
-          const anchorPart = getAnchorPart(asetus.anchor, 3);
-          return (
-            !isNaN(parseInt(anchorPart, 10)) &&
-            getAnchorPart(asetus.anchor, 4) === "kohde"
-          );
-        }, rajoite.elements.asetukset);
-
         return {
           anchor: koodiarvo,
           components: [
@@ -73,24 +49,22 @@ export async function previewOfOpetusJotaLupaKoskee({
               name: "Rajoite",
               properties: {
                 areTitlesVisible: false,
-                id: rajoiteId,
                 isReadOnly: true,
-                kriteerit,
-                rajoite,
-                rajoitusPropValue
+                rajoiteId
               }
             }
           ]
         };
       } else {
+        console.info("ASETETAAN NORMISTI", opetustehtava);
         return {
           anchor: koodiarvo,
           components: [
             {
               anchor: "opetustehtava",
-              name: "StatuxTextRow",
+              name: "HtmlContent",
               properties: {
-                title: opetustehtava.properties.title
+                content: opetustehtava.properties.title
               }
             }
           ]
@@ -98,6 +72,8 @@ export async function previewOfOpetusJotaLupaKoskee({
       }
     }
   }, lomakedata).filter(Boolean);
+
+  console.info(listItems);
 
   if (listItems.length) {
     structure = append(

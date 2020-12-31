@@ -7,6 +7,7 @@ import {
   includes,
   map,
   mapObjIndexed,
+  path,
   prop,
   sortBy,
   values
@@ -29,8 +30,6 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
     lomakedata
   );
 
-  console.info(lomakedata, changeObjectsByProvinceNode);
-
   if (changeObjectsByProvinceNode) {
     const kunnat = sortBy(
       prop("content"),
@@ -41,7 +40,19 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
               // Haluamme listata vain kunnat, emme maakuntia.
               return includes(".kunnat.", node.anchor)
                 ? {
-                    content: node.properties.metadata.title
+                    anchor: "kunta",
+                    components: [
+                      {
+                        anchor: path(
+                          ["properties", "metadata", "koodiarvo"],
+                          node
+                        ),
+                        name: "HtmlContent",
+                        properties: {
+                          content: node.properties.metadata.title
+                        }
+                      }
+                    ]
                   }
                 : null;
             }, arrayOfLocationNodes).filter(Boolean);

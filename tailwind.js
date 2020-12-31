@@ -331,7 +331,10 @@ module.exports = {
       "11": "11",
       "12": "12"
     },
-    padding: theme => theme("spacing"),
+    padding: theme => ({
+      revert: "revert",
+      ...theme("spacing")
+    }),
     stroke: {
       current: "currentColor"
     },

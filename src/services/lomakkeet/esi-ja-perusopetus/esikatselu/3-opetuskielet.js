@@ -14,23 +14,7 @@ import {
   prop,
   sortBy
 } from "ramda";
-
-export const getRajoite = (value, rajoitteet) => {
-  console.info(value, rajoitteet);
-  const rajoiteId = head(
-    filter(key => {
-      return pathEq(
-        ["elements", "kohdennukset", 1, "properties", "value", "value"],
-        value,
-        rajoitteet[key]
-      )
-        ? rajoitteet[key]
-        : null;
-    }, keys(rajoitteet))
-  );
-
-  return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
-};
+import { getRajoite } from "utils/rajoitteetUtils";
 
 export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   let structure = [];
@@ -54,18 +38,36 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
             rajoitteet
           );
           console.info(rajoiteId, rajoite);
-          return {
-            anchor: "opetuskieli",
-            components: [
-              {
-                anchor: opetuskieli.value,
-                name: "StatuxTextRow",
-                properties: {
-                  title: opetuskieli.label
+          if (rajoiteId) {
+            return {
+              anchor: opetuskieli.value,
+              components: [
+                {
+                  anchor: "rajoite",
+                  name: "Rajoite",
+                  properties: {
+                    areTitlesVisible: false,
+                    isReadOnly: true,
+                    rajoiteId
+                  }
                 }
-              }
-            ]
-          };
+              ]
+            };
+          } else {
+            console.info("Ei rajoitetta.", opetuskieli.label);
+            return {
+              anchor: "opetuskieli",
+              components: [
+                {
+                  anchor: opetuskieli.value,
+                  name: "HtmlContent",
+                  properties: {
+                    content: opetuskieli.label
+                  }
+                }
+              ]
+            };
+          }
         }, path(["properties", "value"], ensisijaiset) || []).filter(Boolean)
       )
     : [];
@@ -87,7 +89,6 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
                   name: "Rajoite",
                   properties: {
                     areTitlesVisible: false,
-                    id: rajoiteId,
                     isReadOnly: true,
                     rajoiteId
                   }
@@ -100,9 +101,9 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
               components: [
                 {
                   anchor: opetuskieli.value,
-                  name: "StatuxTextRow",
+                  name: "HtmlContent",
                   properties: {
-                    title: opetuskieli.label
+                    content: opetuskieli.label
                   }
                 }
               ]
@@ -185,6 +186,8 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
       structure
     );
   }
+
+  console.info(structure);
 
   return structure;
 }
