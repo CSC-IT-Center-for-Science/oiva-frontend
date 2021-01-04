@@ -10,7 +10,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
   return map(koulutustyyppi => {
     const tutkinnot = filter(
       propEq("koulutustyyppikoodiarvo", koulutustyyppi.koodiarvo),
-      aktiivisetTutkinnot
+      aktiivisetTutkinnot || []
     );
     if (tutkinnot.length) {
       return {

@@ -122,6 +122,7 @@ const LupanakymaA = React.memo(
         )}
 
         <Rajoitteet
+          isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           sectionId="rajoitteet"
           render={() => {

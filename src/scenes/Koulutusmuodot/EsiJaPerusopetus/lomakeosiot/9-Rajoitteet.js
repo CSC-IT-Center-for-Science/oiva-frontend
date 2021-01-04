@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import PropTypes from "prop-types";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useIntl } from "react-intl";
 import { v4 as uuidv4 } from "uuid";
@@ -15,6 +16,7 @@ const constants = {
 };
 
 const Rajoitteet = ({
+  isPreviewModeOn,
   isRestrictionsModeOn,
   onChangesUpdate,
   render,
@@ -23,9 +25,7 @@ const Rajoitteet = ({
   const dialogSectionId = "rajoitelomake";
 
   const { formatMessage } = useIntl();
-  const [
-    { isAlirajoitedialogiVisible, isRestrictionDialogVisible }
-  ] = useChangeObjects();
+  const [{ isRestrictionDialogVisible }] = useChangeObjects();
   const [osioidenData] = useAllSections();
   const [restrictionId, setRestrictionId] = useState(null);
   const [
@@ -71,7 +71,7 @@ const Rajoitteet = ({
 
   return (
     <React.Fragment>
-      {isRestrictionDialogVisible && (
+      {isRestrictionDialogVisible && !isPreviewModeOn && (
         <Rajoite
           osioidenData={osioidenData}
           onChangesUpdate={onChangesUpdate}
@@ -101,6 +101,8 @@ const Rajoitteet = ({
   );
 };
 
-Rajoitteet.propTypes = {};
+Rajoitteet.propTypes = {
+  isPreviewModeOn: PropTypes.bool
+};
 
 export default Rajoitteet;
