@@ -19,7 +19,6 @@ export const getKohteenTarkenninkomponentit = async (
   locale,
   isReadOnly = false
 ) => {
-  console.info(kohdeavain, osioidenData, prop(kohdeavain, osioidenData));
   const komponentitByKey = {
     maaraaika: getMaaraaikalomake,
     opetustehtavat: getOpetustehtavakomponentit,

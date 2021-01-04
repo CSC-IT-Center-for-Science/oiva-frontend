@@ -1,19 +1,4 @@
-import {
-  append,
-  endsWith,
-  filter,
-  find,
-  groupBy,
-  head,
-  isNil,
-  keys,
-  map,
-  mapObjIndexed,
-  path,
-  pathEq,
-  reject,
-  values
-} from "ramda";
+import { append, endsWith, find, map } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getRajoite } from "utils/rajoitteetUtils";
 
@@ -33,47 +18,36 @@ export async function previewOfOpetusJotaLupaKoskee({
    * (!!isChecked = true).
    */
   const listItems = map(opetustehtava => {
-    console.info(rajoitteet, rajoiteId, koodiarvo);
     const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
     const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
 
     // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
     // valittuja arvoja (ilman rajoittteita)
     if (opetustehtava.properties.isChecked) {
-      if (rajoite) {
-        return {
-          anchor: koodiarvo,
-          components: [
-            {
-              anchor: "rajoite",
-              name: "Rajoite",
-              properties: {
-                areTitlesVisible: false,
-                isReadOnly: true,
-                rajoiteId
+      return {
+        anchor: koodiarvo,
+        components: [
+          rajoite
+            ? {
+                anchor: "rajoite",
+                name: "Rajoite",
+                properties: {
+                  areTitlesVisible: false,
+                  isReadOnly: true,
+                  rajoiteId
+                }
               }
-            }
-          ]
-        };
-      } else {
-        console.info("ASETETAAN NORMISTI", opetustehtava);
-        return {
-          anchor: koodiarvo,
-          components: [
-            {
-              anchor: "opetustehtava",
-              name: "HtmlContent",
-              properties: {
-                content: opetustehtava.properties.title
+            : {
+                anchor: "opetustehtava",
+                name: "HtmlContent",
+                properties: {
+                  content: opetustehtava.properties.title
+                }
               }
-            }
-          ]
-        };
-      }
+        ]
+      };
     }
   }, lomakedata).filter(Boolean);
-
-  console.info(listItems);
 
   if (listItems.length) {
     structure = append(

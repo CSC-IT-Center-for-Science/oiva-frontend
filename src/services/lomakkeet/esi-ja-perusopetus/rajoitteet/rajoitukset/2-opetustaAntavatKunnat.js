@@ -4,29 +4,46 @@ import {
   filter,
   find,
   flatten,
+  includes,
   isNil,
   map,
   not,
   path,
   prop,
   sortBy,
+  toUpper,
   values
 } from "ramda";
+import { getKunnatFromStorage } from "helpers/kunnat";
 
-export default function getOpetustaAntavatKunnat(isReadOnly, osionData = []) {
+export default async function getOpetustaAntavatKunnat(
+  isReadOnly,
+  osionData = [],
+  locale
+) {
+  const localeUpper = toUpper(locale);
+  const kunnat = await getKunnatFromStorage();
+
+  console.info("osion data", osionData);
+
   const changesByProvinceObj = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
   );
 
-  if (changesByProvinceObj) {
-    const listOfMunicipalities = sortBy(
-      path(["properties", "metadata", "title"]),
-      filter(
-        compose(not, isNil, path(["properties", "metadata", "title"])),
-        flatten(values(changesByProvinceObj.properties.changeObjectsByProvince))
-      )
-    );
+  console.info(changesByProvinceObj);
+
+  if (kunnat) {
+    const valitutKunnat = changesByProvinceObj
+      ? map(
+          path(["properties", "metadata", "koodiarvo"]),
+          flatten(
+            values(changesByProvinceObj.properties.changeObjectsByProvince)
+          )
+        )
+      : [];
+
+    console.info(valitutKunnat);
 
     return [
       {
@@ -39,10 +56,12 @@ export default function getOpetustaAntavatKunnat(isReadOnly, osionData = []) {
           },
           isMulti: false,
           isReadOnly,
-          options: map(changeObj => {
-            const { koodiarvo, title } = changeObj.properties.metadata;
-            return { label: title, value: koodiarvo };
-          }, listOfMunicipalities).filter(Boolean),
+          options: map(kunta => {
+            const { koodiarvo, metadata } = kunta;
+            return includes(koodiarvo, valitutKunnat)
+              ? { label: metadata[localeUpper].nimi, value: koodiarvo }
+              : null;
+          }, kunnat).filter(Boolean),
           value: ""
         }
       }
@@ -50,7 +69,7 @@ export default function getOpetustaAntavatKunnat(isReadOnly, osionData = []) {
   } else {
     return [
       {
-        anchor: "teksti",
+        anchor: "ei-kuntia",
         name: "StatusTextRow",
         properties: {
           title: "Ei valintamahdollisuutta."

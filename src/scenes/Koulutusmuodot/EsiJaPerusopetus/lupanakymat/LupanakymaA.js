@@ -107,6 +107,16 @@ const LupanakymaA = React.memo(
       rajoitteetByRajoiteId
     );
 
+    const opetuksenJarjestamismuodotRajoitteet = getRajoitteetBySection(
+      "opetuksenJarjestamismuodot",
+      rajoitteetByRajoiteId
+    );
+
+    const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
+      "erityisetKoulutustehtavat",
+      rajoitteetByRajoiteId
+    );
+
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
         {isPreviewModeOn ? null : (
@@ -163,6 +173,7 @@ const LupanakymaA = React.memo(
                   code="4"
                   isPreviewModeOn={isPreviewModeOn}
                   maaraykset={opetuksenJarjestamismuotomaaraykset}
+                  rajoitteet={opetuksenJarjestamismuodotRajoitteet}
                   sectionId={"opetuksenJarjestamismuodot"}
                   title={intl.formatMessage(
                     education.opetuksenJarjestamismuoto
@@ -176,6 +187,7 @@ const LupanakymaA = React.memo(
                     "erityinenkoulutustehtava",
                     maaraykset
                   )}
+                  rajoitteet={erityisetKoulutustehtavatRajoitteet}
                   sectionId={"erityisetKoulutustehtavat"}
                   title={intl.formatMessage(
                     common.VSTLupaSectionTitleSchoolMissionSpecial

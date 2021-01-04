@@ -31,7 +31,7 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 }
 
 function getTaydennyssana(key) {
-  // console.info(key);
+  console.info(key);
   const taydennyssanat = {
     alkamispaiva: {
       pre: "ajalla",
@@ -49,6 +49,9 @@ function getTaydennyssana(key) {
     },
     opetustehtavat: {
       pre: "opetustehtävänä"
+    },
+    teksti: {
+      pre: "heus"
     }
   };
 
@@ -224,7 +227,7 @@ export function getRajoiteListamuodossa(rajoiteId, changeObjects = [], format) {
     );
   }
 
-  // console.info(rakenne);
+  console.info(rajoiteId, changeObjects);
 
   const lapikaydytKohdennukset = kayLapiKohdennukset(
     path(["rajoitteet", rajoiteId, "kohdennukset"], rakenne),

@@ -11,15 +11,21 @@ import {
   split,
   startsWith
 } from "ramda";
-import { removeAnchorPart } from "utils/common";
+import { getAnchorPart, removeAnchorPart } from "utils/common";
+import { getRajoite } from "utils/rajoitteetUtils";
 
-export const previewOfErityisetKoulutustehtavat = ({ lomakedata }) => {
+export const previewOfErityisetKoulutustehtavat = ({
+  lomakedata,
+  rajoitteet
+}) => {
   let structure = [];
 
   const checkedNodes = filter(
     pathEq(["properties", "isChecked"], true),
     lomakedata
   );
+
+  console.info("rajoitteet: ", rajoitteet);
 
   const anchorsOfCheckedNodes = map(prop("anchor"), checkedNodes);
 
@@ -50,10 +56,23 @@ export const previewOfErityisetKoulutustehtavat = ({ lomakedata }) => {
               properties: {
                 items: map(node => {
                   const anchorParts = split(".", node.anchor);
+                  const koodiarvo = getAnchorPart(node.anchor, 1);
+                  const { rajoiteId, rajoite } = getRajoite(
+                    koodiarvo,
+                    rajoitteet
+                  );
                   return {
-                    anchor: nth(1, anchorParts),
+                    anchor: koodiarvo,
                     components: [
-                      {
+                      rajoite ? {
+                        anchor: "rajoite",
+                        name: "Rajoite",
+                        properties: {
+                          areTitlesVisible: false,
+                          isReadOnly: true,
+                          rajoiteId
+                        }
+                      } : {
                         anchor: nth(2, anchorParts),
                         name: "HtmlContent",
                         properties: { content: node.properties.value }
