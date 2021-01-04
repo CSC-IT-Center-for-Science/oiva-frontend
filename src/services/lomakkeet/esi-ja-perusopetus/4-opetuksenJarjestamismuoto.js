@@ -1,5 +1,5 @@
 import { isAdded, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, propEq, toUpper } from "ramda";
+import { find, flatten, map, pathEq, propEq, toUpper, path } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
@@ -43,7 +43,7 @@ export async function opetuksenJarjestamismuoto(
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
-                    value: muoto.metadata[localeUpper].kuvaus
+                    value: path(["metadata", localeUpper, "kuvaus"], muoto)
                   }
                 }
               ],
@@ -63,7 +63,7 @@ export async function opetuksenJarjestamismuoto(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: muoto.metadata[localeUpper].nimi
+                title: path(["metadata", localeUpper, "nimi"], muoto)
               }
             }
           ]

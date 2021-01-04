@@ -1,6 +1,6 @@
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map, toUpper } from "ramda";
+import { map, toUpper, path } from "ramda";
 
 export default async function muutEhdot(changeObjects = [], locale) {
   // npm run extract:messages ei ajaudu onnistuneesti, jos funktion otsikko
@@ -27,9 +27,9 @@ export default async function muutEhdot(changeObjects = [], locale) {
                 (!changeObj || changeObj.properties.isChecked)) ||
                 (changeObj && changeObj.properties.isChecked)
                 ? {
-                    label: muutEhdot.metadata[localeUpper].kuvaus
-                      ? muutEhdot.metadata[localeUpper].kuvaus
-                      : muutEhdot.metadata[localeUpper].nimi,
+                    label: path(["metadata", localeUpper, "kuvaus"], muutEhdot)
+                      ? path(["metadata", localeUpper, "kuvaus"], muutEhdot)
+                      : path(["metadata", localeUpper, "nimi"], muutEhdot),
                     value: muutEhdot.koodiarvo
                   }
                 : null;

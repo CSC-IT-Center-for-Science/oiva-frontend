@@ -13,7 +13,8 @@ import {
   pathEq,
   prop,
   propEq,
-  toUpper
+  toUpper,
+  path
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
@@ -180,7 +181,7 @@ export const opetustaAntavatKunnat = async (
               custom: isInLupa
             }),
             name: maakunta.koodiarvo,
-            title: maakunta.metadata[localeUpper].nimi
+            title: path(["metadata", localeUpper, "nimi"], maakunta)
           }
         }
       ],
@@ -213,7 +214,7 @@ export const opetustaAntavatKunnat = async (
             styleClasses: ["mt-4"],
             properties: {
               anchor: "areaofaction",
-              changeObjectsByProvince, 
+              changeObjectsByProvince,
               isEditViewActive,
               localizations,
               municipalities: kunnatIlmanUlkomaata,

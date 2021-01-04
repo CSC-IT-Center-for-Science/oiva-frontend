@@ -106,7 +106,7 @@ export async function erityisetKoulutustehtavat(
                       title: __("common.kuvaus"),
                       value: kuvausmaarays0
                         ? kuvausmaarays0.meta.kuvaus
-                        : erityinenKoulutustehtava.metadata[localeUpper].kuvaus
+                        : path(["metadata", localeUpper, "kuvaus"], erityinenKoulutustehtava)
                     }
                   }
                 ],
@@ -244,7 +244,7 @@ export async function erityisetKoulutustehtavat(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: erityinenKoulutustehtava.metadata[localeUpper].nimi
+                title: path(["metadata", localeUpper, "nimi"], erityinenKoulutustehtava)
               }
             }
           ]

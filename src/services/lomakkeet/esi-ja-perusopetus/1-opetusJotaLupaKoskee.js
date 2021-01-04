@@ -1,5 +1,5 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, propEq, toUpper } from "ramda";
+import { find, flatten, map, pathEq, propEq, toUpper, path } from "ramda";
 import { getOpetustehtavatFromStorage } from "../../../helpers/opetustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { __ } from "i18n-for-browser";
@@ -36,7 +36,7 @@ export async function opetusJotaLupaKoskee(
             name: "CheckboxWithLabel",
             styleClasses: isPreviewModeOn ? ["pl-4"] : [],
             properties: {
-              title: opetustehtava.metadata[localeUpper].nimi,
+              title: path(["metadata", localeUpper, "nimi"], opetustehtava),
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,

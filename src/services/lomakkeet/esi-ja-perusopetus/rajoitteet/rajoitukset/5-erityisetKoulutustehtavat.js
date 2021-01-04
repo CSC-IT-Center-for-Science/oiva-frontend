@@ -1,6 +1,6 @@
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map,toUpper } from "ramda";
+import { map, toUpper, path } from "ramda";
 
 export default async function opetuksenjarjestamismuodot(
   changeObjects = [],
@@ -31,7 +31,7 @@ export default async function opetuksenjarjestamismuodot(
                 (!changeObj || changeObj.properties.isChecked)) ||
                 (changeObj && changeObj.properties.isChecked)
                 ? {
-                    label: erityisetKoulutustehtavat.metadata[localeUpper].nimi,
+                    label: path(["metadata", localeUpper, "nimi"], erityisetKoulutustehtavat),
                     value: erityisetKoulutustehtavat.koodiarvo
                   }
                 : null;

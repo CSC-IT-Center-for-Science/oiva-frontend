@@ -77,7 +77,7 @@ export async function muutEhdot(
             properties: {
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
-              title: ehto.metadata[localeUpper].nimi,
+              title: path(["metadata", localeUpper, "nimi"], ehto),
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
@@ -107,7 +107,7 @@ export async function muutEhdot(
                     title: __("common.kuvaus"),
                     value: kuvausmaarays0
                       ? kuvausmaarays0.meta.kuvaus
-                      : ehto.metadata[localeUpper].kuvaus
+                      : path(["metadata", localeUpper, "kuvaus"], ehto)
                   }
                 }
               ]

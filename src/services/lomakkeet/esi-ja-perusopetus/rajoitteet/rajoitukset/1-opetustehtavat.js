@@ -1,5 +1,5 @@
 import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
-import { compose, endsWith, find, map, prop, toUpper } from "ramda";
+import { compose, endsWith, find, map, prop, toUpper, path } from "ramda";
 
 export default async function getOpetustehtavatlomake(osionData = [], locale) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
@@ -39,7 +39,7 @@ export default async function getOpetustehtavatlomake(osionData = [], locale) {
                */
               return stateObj && stateObj.properties.isChecked
                 ? {
-                    label: opetustehtava.metadata[localeUpper].nimi,
+                    label: path(["metadata", localeUpper, "nimi"], opetustehtava),
                     value: opetustehtava.koodiarvo
                   }
                 : null;
