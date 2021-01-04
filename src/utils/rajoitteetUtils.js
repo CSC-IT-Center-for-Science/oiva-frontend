@@ -95,7 +95,7 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
                 ].filter(Boolean)
               );
               if (format === "list") {
-                return `<ul><li>${item}`;
+                return `<ul className="p-0"><li>${item}`;
               } else {
                 return item;
               }
