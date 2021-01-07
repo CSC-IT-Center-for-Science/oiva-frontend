@@ -1,8 +1,9 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, propEq, toUpper, path } from "ramda";
+import { find, flatten, map, pathEq, propEq } from "ramda";
 import { getOpetustehtavatFromStorage } from "../../../helpers/opetustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { __ } from "i18n-for-browser";
+import { getLocalizedProperty } from "../utils";
 
 export async function opetusJotaLupaKoskee(
   { maaraykset },
@@ -11,7 +12,6 @@ export async function opetusJotaLupaKoskee(
 ) {
   const _isReadOnly = isReadOnly || isPreviewModeOn;
   const lisatiedot = await getLisatiedotFromStorage();
-  const localeUpper = toUpper(locale);
   const opetustehtavat = await getOpetustehtavatFromStorage();
 
   const lisatiedotObj = find(
@@ -36,7 +36,7 @@ export async function opetusJotaLupaKoskee(
             name: "CheckboxWithLabel",
             styleClasses: isPreviewModeOn ? ["pl-4"] : [],
             properties: {
-              title: path(["metadata", localeUpper, "nimi"], opetustehtava),
+              title: getLocalizedProperty(opetustehtava.metadata, locale, "nimi"),
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,

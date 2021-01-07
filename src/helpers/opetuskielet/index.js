@@ -17,6 +17,7 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
+import { getLocalizedProperty } from "../../services/lomakkeet/utils";
 
 export const initializeMaarays = (tutkinto, maarays) => {
   return { ...tutkinto, maarays: head(dissoc("aliMaaraykset", maarays)) };
@@ -86,7 +87,7 @@ export const defineBackendChangeObjects = async (
         kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
         koodiarvo: lisatiedotObj.koodiarvo,
         koodisto: lisatiedotObj.koodisto.koodistoUri,
-        kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
+        kuvaus: getLocalizedProperty(lisatiedotChangeObj.metadata, locale, "kuvaus"),
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
           arvo: path(["properties", "value"], lisatiedotChangeObj),
@@ -113,7 +114,7 @@ export const defineBackendChangeObjects = async (
           kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
           koodiarvo: opetuskieli.koodiarvo,
           koodisto: opetuskieli.koodisto.koodistoUri,
-          kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
+          kuvaus: getLocalizedProperty(changeObj.metadata, locale, "kuvaus"),
           maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
           meta: {
             changeObjects: [changeObj],

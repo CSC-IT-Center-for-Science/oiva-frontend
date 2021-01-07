@@ -20,6 +20,7 @@ import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getLocalizedProperty } from "../utils";
 
 const labelStyles = {
   addition: isAdded,
@@ -80,7 +81,6 @@ export const opetustaAntavatKunnat = async (
 
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
 
-  const localeUpper = toUpper(locale);
   const maaraysUuid = valtakunnallinenMaarays
     ? valtakunnallinenMaarays.uuid
     : undefined;
@@ -103,7 +103,7 @@ export const opetustaAntavatKunnat = async (
     );
 
     const municipalitiesOfProvince = map(kunta => {
-      const kunnanNimi = kunta.metadata[localeUpper].nimi;
+      const kunnanNimi = getLocalizedProperty(kunta.metadata, locale, "nimi");
 
       const isKuntaInLupa = !!find(
         pathEq(["metadata", "koodiarvo"], kunta.koodiarvo),
@@ -181,7 +181,7 @@ export const opetustaAntavatKunnat = async (
               custom: isInLupa
             }),
             name: maakunta.koodiarvo,
-            title: path(["metadata", localeUpper, "nimi"], maakunta)
+            title: getLocalizedProperty(maakunta.metadata, locale, "nimi")
           }
         }
       ],

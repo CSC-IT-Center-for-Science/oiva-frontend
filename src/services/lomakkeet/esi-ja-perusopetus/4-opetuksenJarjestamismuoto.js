@@ -1,8 +1,9 @@
 import { isAdded, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, propEq, toUpper, path } from "ramda";
+import { find, flatten, map, pathEq, propEq } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
+import { getLocalizedProperty } from "../utils";
 
 export async function opetuksenJarjestamismuoto(
   { maaraykset },
@@ -10,7 +11,6 @@ export async function opetuksenJarjestamismuoto(
   locale
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
-  const localeUpper = toUpper(locale);
   const lisatiedot = await getLisatiedotFromStorage();
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
@@ -43,7 +43,7 @@ export async function opetuksenJarjestamismuoto(
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
-                    value: path(["metadata", localeUpper, "kuvaus"], muoto)
+                    value: getLocalizedProperty(muoto.metadata, locale, "kuvaus")
                   }
                 }
               ],
@@ -63,7 +63,7 @@ export async function opetuksenJarjestamismuoto(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: path(["metadata", localeUpper, "nimi"], muoto)
+                title: getLocalizedProperty(muoto.metadata, locale, "nimi")
               }
             }
           ]
