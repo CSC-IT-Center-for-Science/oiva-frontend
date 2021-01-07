@@ -39,8 +39,7 @@ export async function defineBackendChangeObjects(
   const {
     quickFilterChanges = [],
     changesByProvince,
-    perustelut,
-    rajoitteetByRajoiteId
+    perustelut
   } = changeObjects;
 
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);

@@ -124,7 +124,21 @@ export async function createObjectToSave(
 
   // 4. OPETUKSEN JÄRJESTÄMISMUOTO
   const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
-    changeObjects.opetuksenJarjestamismuodot,
+    {
+      opetuksenJarjestamismuodot: changeObjects.opetuksenJarjestamismuodot,
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "opetuksenJarjestamismuodot",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      )
+    },
     maaraystyypit,
     locale,
     kohteet
@@ -132,7 +146,21 @@ export async function createObjectToSave(
 
   // 5. ERITYINEN KOULUTUSTEHTÄVÄ
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
-    changeObjects.erityisetKoulutustehtavat,
+    {
+      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "erityisetKoulutustehtavat",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      )
+    },
     maaraystyypit,
     locale,
     kohteet
@@ -148,7 +176,21 @@ export async function createObjectToSave(
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
   const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
-    changeObjects.muutEhdot,
+    {
+      muutEhdot: changeObjects.muutEhdot,
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "muutEhdot",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      )
+    },
     maaraystyypit,
     locale,
     kohteet

@@ -53,6 +53,8 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
+  const { rajoitteetByRajoiteId } = changeObjects;
+
   const kohde = find(
     propEq("tunniste", "muutkoulutuksenjarjestamiseenliittyvatehdot"),
     kohteet
@@ -64,7 +66,7 @@ export const defineBackendChangeObjects = async (
     // Checkbox-kenttien muutokset
     const changeObj = find(
       compose(endsWith(`.${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
-      changeObjects
+      changeObjects.muutEhdot
     );
 
     // Kuvauskenttien muutokset kohdassa (muu ehto)
@@ -74,7 +76,7 @@ export const defineBackendChangeObjects = async (
           path(["metadata", "koodiarvo"], changeObj.properties) &&
         endsWith(".kuvaus", changeObj.anchor)
       );
-    }, changeObjects);
+    }, changeObjects.muutEhdot);
 
     const checkboxBEchangeObjects = changeObj
       ? {

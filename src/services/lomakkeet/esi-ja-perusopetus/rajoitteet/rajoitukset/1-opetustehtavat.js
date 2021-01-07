@@ -8,7 +8,7 @@ export default async function getOpetustehtavakomponentit(
 ) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const localeUpper = toUpper(locale);
-  console.info(opetustehtavat, osionData);
+
   if (opetustehtavat.length) {
     return [
       {

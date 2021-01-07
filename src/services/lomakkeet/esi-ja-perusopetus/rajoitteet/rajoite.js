@@ -4,25 +4,18 @@ import {
   compose,
   concat,
   drop,
-  filter,
   find,
   head,
-  includes,
   init,
-  isEmpty,
   join,
   length,
   map,
-  nth,
   path,
-  prepend,
   prop,
   propEq,
-  split,
-  startsWith
+  split
 } from "ramda";
 
-import { getKokonaisopiskelijamaaralomake } from "./rajoitukset/6-opiskelijamaarat";
 import { getAsetuksenKohdekomponentti } from "./rajoitukset/asetuksenKohdekomponentit";
 import { getKohdennuksenKohdekomponentti } from "./rajoitukset/kohdennuksenKohdekomponentit";
 import { getKohteenTarkenninkomponentit } from "./kohteenTarkenninkomponentit";
@@ -63,87 +56,6 @@ const bgColorClassesByIndex = {
   "4": "bg-blue-200",
   "5": "bg-green-200"
 };
-
-const asetuslomakkeet = {
-  opiskelijamaarastrategia: getKokonaisopiskelijamaaralomake
-};
-
-/**
- * Rajoitekriteereiden näyttäminen
- * @param {*} asetus
- * @param {*} locale
- * @param {*} changeObjects
- * @param {*} onRemoveCriterion
- */
-async function getYksittainenAsetuslomake(
-  osioidenData,
-  asetus,
-  locale,
-  onRemoveCriterion,
-  asetusvaihtoehdot
-) {
-  /**
-   * Ensimmäistä asetusta ei voi käyttäliittymässä poistaa. Kun uutta
-   * rajoitetta luodaan, näytetään käyttäjälle 1. asetuksen kohdekenttä, joka
-   * on pudotusvalikko. Kun käyttäjä on valinnut kohteen, hänelle näytetään
-   * ensimmäisen asetuksen rajoituskenttä. Rajoituskentän tyyppi ja sisältö
-   * määrittyvät sen mukaan, mikä on tai mitkä ovat:
-   *
-   * 1. Asetuksen kohde.
-   * 2. Käyttäjän lomakkeella tekemät muutokset.
-   * 3. Lupaan kuuluvat määritykset (toteutetaan myöhemmin).
-   *
-   * Määritetään asetuksen rajoitusosaa vastaava lomakerakenne, mikäli
-   * kohde on tiedossa.
-   */
-  if (asetus.kohde) {
-    /**
-     * Käydään noutamassa lomakerakenne rajoitusavaimen avulla. Rajoitusavain
-     * voi olla esim. maaraaika tai opetustaAntavatKunnat.
-     */
-    const rajoitusavain = path(
-      ["kohde", "A", "properties", "value", "value"],
-      asetus
-    );
-
-    /**
-     * Mikäli itse rajoitusta on muokattu, on siitä olemassa muutosobjekti.
-     */
-    const rajoitus = rajoitusavain
-      ? await asetuslomakkeet[asetus.id](osioidenData[rajoitusavain], locale)
-      : null;
-
-    return {
-      anchor: asetus.id,
-      categories: [
-        {
-          anchor: "kohde",
-          layout: { indentation: "none" },
-          components: [
-            {
-              anchor: "A",
-              name: "Autocomplete",
-              styleClasses: ["mb-6 w-4/5 xl:w-2/3"],
-              properties: {
-                isMulti: false,
-                options: asetusvaihtoehdot,
-                title: "Rajoitekriteeri"
-              }
-            }
-          ]
-        },
-        // Lisätään lomakerakenteeseen rajoituskenttä, jonka sisältö määrittyy sitä edeltävän kohdekentän perusteella
-        rajoitusavain && asetus.rajoitus ? rajoitus : null
-      ].filter(Boolean),
-      isRemovable: asetus.id !== "0",
-      onRemove: category => {
-        onRemoveCriterion(asetus.id);
-      },
-      title: `Rajoitekriteeri ${asetus.id}`
-    };
-  }
-  return null;
-}
 
 async function getAsetuslomakekokonaisuus(
   rajoiteId,
@@ -220,8 +132,6 @@ async function getAsetuslomakekokonaisuus(
     prop("asetukset", rajoiteChangeObjects) || {}
   ).length;
 
-  console.info(index, asetuksetLength);
-
   if (index < asetuksetLength - 1) {
     // const asetuksenKohdeavain = prop("asetukset", rajoiteChangeObjects)
     //   ? path(
@@ -263,7 +173,7 @@ const getKohdennuksetRecursively = async (
   ensimmaisenKohdennuksenKohteenTarkenninavain,
   lomakerakenne = []
 ) => {
-  const { lomakedata, osioidenData, rajoiteId } = data;
+  const { osioidenData, rajoiteId } = data;
 
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
     ? getKohdennuksenKohdekomponentti(kohdennuksenKohdeavain)
@@ -427,6 +337,7 @@ const getKohdennuksetRecursively = async (
               {
                 anchor: "tarkennin",
                 layout: { indentation: "none" },
+                isRemovable: true,
                 components: kohdennuksenTarkenninKomponentit
               },
               {
@@ -648,8 +559,6 @@ export async function rajoitelomake(
       )
     }
   ];
-
-  console.info("PALAUTTETTAVA: ", lomakerakenne);
 
   return lomakerakenne;
 }

@@ -14,10 +14,18 @@ import {
   propEq,
   endsWith,
   filter,
-  append
+  append,
+  isNil,
+  pathEq,
+  reject,
+  concat,
+  take,
+  values,
+  drop
 } from "ramda";
 import localforage from "localforage";
 import { getAnchorPart } from "../../utils/common";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 export const initializePOErityinenKoulutustehtava = erityinenKoulutustehtava => {
   return omit(["koodiArvo"], {
@@ -49,24 +57,39 @@ export const initializePOErityisetKoulutustehtavat = erityisetKoulutustehtavat =
 };
 
 export const defineBackendChangeObjects = async (
-  changeObjects = [],
+  changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
+  const { rajoitteetByRajoiteId } = changeObjects;
+  console.info(changeObjects);
   const kohde = find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
 
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
 
   const muutokset = map(koulutustehtava => {
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq(
+          [1, "properties", "value", "value"],
+          koulutustehtava.koodiarvo,
+          rajoite
+        )
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
     // Checkbox-kentän muutos
     const checkboxChangeObj = find(
       compose(
         endsWith(`${koulutustehtava.koodiarvo}.valintaelementti`),
         prop("anchor")
       ),
-      changeObjects
+      changeObjects.erityisetKoulutustehtavat
     );
 
     const isChecked = // (!!maarays && !checkboxChangeObj) ||
@@ -74,6 +97,7 @@ export const defineBackendChangeObjects = async (
 
     let checkboxBEchangeObject = null;
     let kuvausBEchangeObjects = null;
+    let alimaaraykset = null;
 
     /**
      * Jos kuvauskenttiin liittyvä checkbox on ruksattu päälle,
@@ -85,7 +109,7 @@ export const defineBackendChangeObjects = async (
         cObj =>
           cObj.anchor ===
           `erityisetKoulutustehtavat.${koulutustehtava.koodiarvo}.0.A`,
-        changeObjects
+        changeObjects.erityisetKoulutustehtavat
       );
 
       // Dynaamisten kuvauskenttien muutokset
@@ -94,7 +118,7 @@ export const defineBackendChangeObjects = async (
           koulutustehtava.koodiarvo === getAnchorPart(changeObj.anchor, 1) &&
           endsWith(".kuvaus", changeObj.anchor)
         );
-      }, changeObjects);
+      }, changeObjects.erityisetKoulutustehtavat);
 
       checkboxBEchangeObject = checkboxChangeObj
         ? {
@@ -105,11 +129,28 @@ export const defineBackendChangeObjects = async (
             kuvaus: koulutustehtava.metadata[locale].kuvaus,
             maaraystyyppi,
             meta: {
-              changeObjects: [checkboxChangeObj]
+              changeObjects: concat(
+                [checkboxChangeObj],
+                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+              )
             },
             tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
           }
         : null;
+
+      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+      // loput toisiinsa "alenevassa polvessa".
+      alimaaraykset = values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            checkboxBEchangeObject,
+            drop(2, asetukset)
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
 
       kuvausBEchangeObjects = map(changeObj => {
         return changeObj
@@ -131,7 +172,11 @@ export const defineBackendChangeObjects = async (
       }, append(firstNameChangeObject, kuvausChangeObjects));
     }
 
-    return [checkboxBEchangeObject, kuvausBEchangeObjects].filter(Boolean);
+    return [
+      checkboxBEchangeObject,
+      kuvausBEchangeObjects,
+      alimaaraykset
+    ].filter(Boolean);
   }, erityisetKoulutustehtavat);
 
   const lisatiedotChangeObj = find(

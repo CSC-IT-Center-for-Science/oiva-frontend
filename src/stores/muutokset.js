@@ -12,7 +12,6 @@ import {
   filter,
   flatten,
   head,
-  includes,
   isNil,
   join,
   length,
@@ -36,7 +35,6 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
-import { v4 as uuidv4 } from "uuid";
 import { muutokset } from "scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
@@ -93,17 +91,17 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  initialState: muutokset,
-  // initialState: {
-  //   changeObjects: {
-  //     saved: {},
-  //     unsaved: {},
-  //     underRemoval: {}
-  //   },
-  //   focusOn: null,
-  //   latestChanges: {},
-  //   validity: {}
-  // },
+  // initialState: muutokset,
+  initialState: {
+    changeObjects: {
+      saved: {},
+      unsaved: {},
+      underRemoval: {}
+    },
+    focusOn: null,
+    latestChanges: {},
+    validity: {}
+  },
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
@@ -348,30 +346,6 @@ const Store = createStore({
         );
         setState(assoc("changeObjects", nextChangeObjects, getState()));
       }
-    },
-    removeRajoite: (rajoiteId, sectionId) => ({ getState, setState }) => {
-      // Muutosobjektit, jotka rajoitedialogissa on tarkoitus näyttää.
-      const changeObjects = getChangeObjectsByAnchorWithoutUnderRemoval(
-        getState(),
-        { anchor: sectionId }
-      );
-
-      const unsavedRajoittetPath = ["changeObjects", "unsaved", "rajoitteet"];
-      const unsavedRajoiteChangeObjects = path(
-        unsavedRajoittetPath,
-        getState()
-      );
-      const filteredRajoiteChangeObjects = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) !== rajoiteId,
-        unsavedRajoiteChangeObjects
-      );
-      setState(
-        assocPath(
-          unsavedRajoittetPath,
-          filteredRajoiteChangeObjects,
-          getState()
-        )
-      );
     },
     setChanges: (changeObjects, anchor = "") => ({
       getState,

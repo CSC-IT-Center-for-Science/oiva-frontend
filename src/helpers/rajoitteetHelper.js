@@ -23,10 +23,9 @@ export const createAlimaarayksetBEObjects = (
 ) => {
   const asetusChangeObj = nth(index, asetukset);
   const valueChangeObj = nth(index + 1, asetukset);
-  const valueValueOfAsetusChangeObj = path(
-    ["properties", "value", "value"],
-    asetusChangeObj
-  );
+  const valueValueOfAsetusChangeObj =
+    path(["properties", "value", "value"], asetusChangeObj) ||
+    path(["properties", "value"], asetusChangeObj);
   const sectionOfAsetusChangeObj = path(
     ["properties", "metadata", "section"],
     asetusChangeObj
@@ -51,13 +50,14 @@ export const createAlimaarayksetBEObjects = (
   }
 
   const tunniste = prop(valueValueOfAsetusChangeObj, tunnisteMapping);
+  const alimaarayksenParent =
+    index === 0
+      ? paalomakkeenBEMuutos.generatedId
+      : prop("generatedId", last(muutosobjektit));
 
   const alimaarays = {
     generatedId: `alimaarays-${index}`,
-    parent:
-      index === 0
-        ? paalomakkeenBEMuutos.generatedId
-        : last(muutosobjektit).generatedId,
+    parent: alimaarayksenParent,
     kohde: find(propEq("tunniste", tunniste), kohteet),
     koodiarvo,
     koodisto,

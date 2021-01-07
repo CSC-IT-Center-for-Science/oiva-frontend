@@ -30,12 +30,7 @@ const Rajoitteet = ({
   const [restrictionId, setRestrictionId] = useState(null);
   const [
     changeObjects,
-    {
-      setChanges,
-      setRajoitelomakeChangeObjects,
-      showAlirajoitedialogi,
-      showNewRestrictionDialog
-    }
+    { setChanges, setRajoitelomakeChangeObjects, showNewRestrictionDialog }
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
@@ -51,12 +46,7 @@ const Rajoitteet = ({
       setRajoitelomakeChangeObjects(rajoiteId, sectionId, dialogSectionId);
       showNewRestrictionDialog();
     },
-    [
-      sectionId,
-      setRajoitelomakeChangeObjects,
-      showAlirajoitedialogi,
-      showNewRestrictionDialog
-    ]
+    [sectionId, setRajoitelomakeChangeObjects, showNewRestrictionDialog]
   );
 
   const onRemoveRestriction = useCallback(

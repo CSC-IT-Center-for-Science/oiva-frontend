@@ -94,8 +94,6 @@ const LupanakymaA = React.memo(
       maaraykset
     );
 
-    console.info("rajoitteetByRajoiteId", rajoitteetByRajoiteId);
-
     // Rajoitteet
     const opetustehtavatRajoitteet = getRajoitteetBySection(
       "opetustehtavat",
@@ -114,6 +112,16 @@ const LupanakymaA = React.memo(
 
     const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
       "erityisetKoulutustehtavat",
+      rajoitteetByRajoiteId
+    );
+
+    const toimintaalueRajoitteet = getRajoitteetBySection(
+      "toimintaalue",
+      rajoitteetByRajoiteId
+    );
+
+    const muutEhdotRajoitteet = getRajoitteetBySection(
+      "muutEhdot",
       rajoitteetByRajoiteId
     );
 
@@ -154,6 +162,7 @@ const LupanakymaA = React.memo(
                     isPreviewModeOn={isPreviewModeOn}
                     lupakohde={lupakohteet[2]}
                     maaraykset={toimintaaaluemaaraykset}
+                    rajoitteet={toimintaalueRajoitteet}
                     sectionId="toimintaalue"
                     title={intl.formatMessage(education.opetustaAntavatKunnat)}
                     valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -212,6 +221,7 @@ const LupanakymaA = React.memo(
                     "muutkoulutuksenjarjestamiseenliittyvatehdot",
                     maaraykset
                   )}
+                  rajoitteet={muutEhdotRajoitteet}
                   sectionId={"muutEhdot"}
                   title={intl.formatMessage(education.muutEhdotTitle)}
                 />

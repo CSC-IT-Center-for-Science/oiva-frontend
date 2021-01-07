@@ -1,16 +1,12 @@
 import {
   compose,
   endsWith,
-  filter,
   find,
   flatten,
   includes,
-  isNil,
   map,
-  not,
   path,
   prop,
-  sortBy,
   toUpper,
   values
 } from "ramda";
@@ -24,14 +20,10 @@ export default async function getOpetustaAntavatKunnat(
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
 
-  console.info("osion data", osionData);
-
   const changesByProvinceObj = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
   );
-
-  console.info(changesByProvinceObj);
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj
@@ -42,8 +34,6 @@ export default async function getOpetustaAntavatKunnat(
           )
         )
       : [];
-
-    console.info(valitutKunnat);
 
     return [
       {

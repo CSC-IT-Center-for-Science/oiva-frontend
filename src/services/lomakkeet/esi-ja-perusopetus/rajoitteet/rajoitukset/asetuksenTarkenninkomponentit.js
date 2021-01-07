@@ -32,7 +32,6 @@ export const getAsetuksenTarkenninkomponentit = async (
   if (!asetuksenKohdeavain) {
     return false;
   }
-  console.info(asetuksenKohdeavain, osioidenData);
   const tarkenninFn = prop(asetuksenKohdeavain, asetuksenTarkenninlomakkeet);
   return (
     (await tarkenninFn(

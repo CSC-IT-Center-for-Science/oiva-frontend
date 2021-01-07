@@ -1,5 +1,5 @@
 import { getKieletOPHFromStorage } from "helpers/opetuskielet";
-import { find, flatten, map, path, prop, propEq, sortBy, toUpper } from "ramda";
+import { find, flatten, map, path, prop, propEq, sortBy } from "ramda";
 
 /**
  * Mikäli päälomakkeella on valittuna opetuskieliä, tämä funktio määrittää

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { path, prop, toUpper } from "ramda";
+import { omit, path, prop, toUpper } from "ramda";
 import { getOpetustehtavaKoodistoFromStorage } from "helpers/opetustehtavat";
+import equal from "react-fast-compare";
 
 const constants = {
   mode: "modification",
@@ -51,6 +52,9 @@ const Opetustehtavat = React.memo(
         showCategoryTitles={true}
       ></Lomake>
     ) : null;
+  },
+  (cp, np) => {
+    return equal(omit(["functions"], cp), omit(["functions"], np));
   }
 );
 

@@ -12,6 +12,7 @@ import {
   sortBy,
   values
 } from "ramda";
+import { getRajoite } from "utils/rajoitteetUtils";
 
 /**
  * Funktio luo lomakerakenteen, jonka myötä käyttäjälle näytetään lista
@@ -22,7 +23,10 @@ import {
  * lista-alkoita.
  * @param {*} param0
  */
-export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
+export async function previewOfOpetustaAntavaKunnat({
+  lomakedata,
+  rajoitteet
+}) {
   let structure = [];
 
   const changeObjectsByProvinceNode = find(
@@ -37,21 +41,36 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
         values(
           mapObjIndexed(arrayOfLocationNodes => {
             const kuntienNimet = map(node => {
+              const koodiarvo = path(
+                ["properties", "metadata", "koodiarvo"],
+                node
+              );
+              const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
               // Haluamme listata vain kunnat, emme maakuntia.
               return includes(".kunnat.", node.anchor)
                 ? {
                     anchor: "kunta",
                     components: [
-                      {
-                        anchor: path(
-                          ["properties", "metadata", "koodiarvo"],
-                          node
-                        ),
-                        name: "HtmlContent",
-                        properties: {
-                          content: node.properties.metadata.title
-                        }
-                      }
+                      rajoite
+                        ? {
+                            anchor: "rajoite",
+                            name: "Rajoite",
+                            properties: {
+                              areTitlesVisible: false,
+                              isReadOnly: true,
+                              rajoiteId
+                            }
+                          }
+                        : {
+                            anchor: path(
+                              ["properties", "metadata", "koodiarvo"],
+                              node
+                            ),
+                            name: "HtmlContent",
+                            properties: {
+                              content: node.properties.metadata.title
+                            }
+                          }
                     ]
                   }
                 : null;

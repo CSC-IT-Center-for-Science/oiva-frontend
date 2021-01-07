@@ -16,7 +16,10 @@ import {
   pathEq,
   reject,
   isNil,
-  values
+  values,
+  concat,
+  take,
+  drop
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
@@ -134,7 +137,10 @@ export const defineBackendChangeObjects = async (
           kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
           maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
           meta: {
-            changeObjects: [changeObj],
+            changeObjects: concat(
+              [changeObj],
+              take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+            ),
             valikko: path(["properties", "metadata", "valikko"], changeObj)
           },
           tila: "LISAYS"
@@ -150,7 +156,7 @@ export const defineBackendChangeObjects = async (
           kohteet,
           maaraystyypit,
           muutosobjekti,
-          asetukset
+          drop(2, asetukset)
         );
       }, rajoitteetByRajoiteIdAndKoodiarvo)
     );

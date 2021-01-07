@@ -49,9 +49,6 @@ function getTaydennyssana(key) {
     },
     opetustehtavat: {
       pre: "opetustehtävänä"
-    },
-    teksti: {
-      pre: "heus"
     }
   };
 
@@ -131,10 +128,11 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
       paivitettyLista
     );
   }
-  const tarkenninavain = Object.keys(kohdennus.rajoite.kohde.tarkennin)[0];
+  const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
+  const tarkenninavain = head(keys(tarkennin || {}));
   const tarkentimenArvo = path(
     ["properties", "value", "label"],
-    kohdennus.rajoite.kohde.tarkennin[tarkenninavain]
+    prop(tarkenninavain, tarkennin)
   );
   const taydennyssana = getTaydennyssana(tarkenninavain);
 
@@ -217,6 +215,7 @@ export function getRajoiteSelkokielella(
 }
 
 export function getRajoiteListamuodossa(rajoiteId, changeObjects = [], format) {
+  console.info(rajoiteId, changeObjects);
   let rakenne = {};
 
   for (let i = 0; i < changeObjects.length; i += 1) {
@@ -227,7 +226,7 @@ export function getRajoiteListamuodossa(rajoiteId, changeObjects = [], format) {
     );
   }
 
-  console.info(rajoiteId, changeObjects);
+  // console.info(rajoiteId, changeObjects);
 
   const lapikaydytKohdennukset = kayLapiKohdennukset(
     path(["rajoitteet", rajoiteId, "kohdennukset"], rakenne),
@@ -246,8 +245,6 @@ export function getRajoiteListamuodossa(rajoiteId, changeObjects = [], format) {
     lapikaydytKohdennukset,
     amountOfInstances
   );
-
-  // console.info(lapikaydytKohdennukset, listamuotoWithEndings);
 
   return listamuotoWithEndings;
 }

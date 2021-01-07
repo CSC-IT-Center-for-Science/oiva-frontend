@@ -82,7 +82,7 @@ const Rajoite = ({
       }}
     >
       <DialogTitle onClose={actions.closeRestrictionDialog}>
-        Lisää rajoite luvalle!
+        Lisää rajoite luvalle
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
         {/* <Typography component="p" variant="p">

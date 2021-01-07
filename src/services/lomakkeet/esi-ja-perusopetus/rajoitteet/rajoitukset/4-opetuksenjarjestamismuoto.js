@@ -8,7 +8,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
     pathEq(["properties", "isChecked"], true),
     osionData
   );
-  console.info(valittuJarjestamismuoto);
+  console.info(valittuJarjestamismuoto, osionData);
   /**
    * Päälomakkeella valinta tehdään radio button -elementeillä, joista yksi
    * on hyvin todennäköisesti valittuna, vaikka käyttäjä ei olisi itse valinnut
@@ -36,7 +36,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
           isMulti: false,
           isReadOnly,
           options: [valittuArvo],
-          value: [valittuArvo]
+          value: ""
         }
       }
     ];
@@ -46,7 +46,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
         anchor: "teksti",
         name: "StatusTextRow",
         properties: {
-          title: "Ei valintamahdollisuutta."
+          title: "Ei valittuja opetuksen järjestämismuotoja."
         }
       }
     ];

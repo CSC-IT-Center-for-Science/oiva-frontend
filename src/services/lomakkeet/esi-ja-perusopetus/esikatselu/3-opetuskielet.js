@@ -4,13 +4,9 @@ import {
   compose,
   concat,
   endsWith,
-  filter,
   find,
-  head,
-  keys,
   map,
   path,
-  pathEq,
   prop,
   sortBy
 } from "ramda";
@@ -33,11 +29,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const { rajoiteId, rajoite } = getRajoite(
-            opetuskieli.value,
-            rajoitteet
-          );
-          console.info(rajoiteId, rajoite);
+          const { rajoiteId } = getRajoite(opetuskieli.value, rajoitteet);
           if (rajoiteId) {
             return {
               anchor: opetuskieli.value,
@@ -76,10 +68,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const { rajoiteId, rajoite } = getRajoite(
-            opetuskieli.value,
-            rajoitteet
-          );
+          const { rajoiteId } = getRajoite(opetuskieli.value, rajoitteet);
           if (rajoiteId) {
             return {
               anchor: opetuskieli.value,
@@ -186,8 +175,6 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
       structure
     );
   }
-
-  console.info(structure);
 
   return structure;
 }

@@ -155,7 +155,10 @@ export const getAsetuksenKohdekomponentti = (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [maaraaikaOption],
+        options: [
+          find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
+          maaraaikaOption
+        ],
         value: maaraaikaOption
       }
     };

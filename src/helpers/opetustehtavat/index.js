@@ -1,6 +1,9 @@
 import {
   addIndex,
+  assocPath,
   compose,
+  concat,
+  drop,
   endsWith,
   find,
   flatten,
@@ -16,6 +19,7 @@ import {
   propEq,
   reject,
   sort,
+  take,
   values
 } from "ramda";
 import localforage from "localforage";
@@ -59,6 +63,8 @@ export const defineBackendChangeObjects = async (
   kohteet
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
+
+  console.info(changeObjects);
 
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
@@ -111,7 +117,7 @@ export const defineBackendChangeObjects = async (
     // kohtaan muutoksia.
     if (changeObj) {
       const muutosId = `opetustehtava-${Math.random()}`;
-      const muutosobjekti = {
+      let muutosobjekti = {
         generatedId: muutosId,
         kohde: find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
         koodiarvo: opetustehtava.koodiarvo,
@@ -119,7 +125,10 @@ export const defineBackendChangeObjects = async (
         kuvaus: opetustehtava.metadata[locale].kuvaus,
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
-          changeObjects: [changeObj]
+          changeObjects: concat(
+            [changeObj],
+            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+          )
         },
         tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
       };
@@ -133,14 +142,12 @@ export const defineBackendChangeObjects = async (
             kohteet,
             maaraystyypit,
             muutosobjekti,
-            asetukset
+            drop(2, asetukset)
           );
         }, rajoitteetByRajoiteIdAndKoodiarvo)
       );
 
       return [muutosobjekti, alimaaraykset];
-
-      // return [muutosobjekti, alimaarays];
     } else {
       return false;
     }

@@ -1,5 +1,4 @@
 import { __ } from "i18n-for-browser";
-import { find, path, pathEq } from "ramda";
 
 export async function getKokonaisopiskelijamaaralomake(
   isReadOnly,
@@ -42,9 +41,9 @@ export async function getOpiskelijamaaranRajausvaihtoehdot(
   //   find(pathEq(["properties", "isChecked"], true), osionData) || {}
   // );
 
-  const valittuOpiskelijamaarastrategia = "kokonaismaara";
+  // const valittuOpiskelijamaarastrategia = "kokonaismaara";
 
-  console.info(osionData, valittuOpiskelijamaarastrategia);
+  // console.info(osionData, valittuOpiskelijamaarastrategia);
   return [
     {
       anchor: "opiskelijamaarastrategia",
