@@ -97,7 +97,9 @@ export async function createObjectToSave(
     },
     R.find(R.propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
     maaraystyypit,
-    lupa.maaraykset
+    lupa.maaraykset,
+    locale,
+    kohteet
   );
 
   // 3. OPETUSKIELET
