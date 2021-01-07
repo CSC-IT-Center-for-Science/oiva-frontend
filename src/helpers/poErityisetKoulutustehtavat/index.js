@@ -1,27 +1,27 @@
 import {
-  mapObjIndexed,
-  groupBy,
-  prop,
-  head,
-  omit,
-  map,
-  sort,
-  find,
+  append,
   compose,
-  includes,
-  path,
-  flatten,
-  propEq,
+  concat,
+  drop,
   endsWith,
   filter,
-  append,
+  find,
+  flatten,
+  groupBy,
+  head,
+  includes,
   isNil,
-  pathEq,
+  map,
+  mapObjIndexed,
+  omit,
+  path,
+  prop,
+  propEq,
   reject,
-  concat,
+  sort,
+  startsWith,
   take,
-  values,
-  drop
+  values
 } from "ramda";
 import localforage from "localforage";
 import { getAnchorPart } from "../../utils/common";
@@ -70,19 +70,6 @@ export const defineBackendChangeObjects = async (
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
 
   const muutokset = map(koulutustehtava => {
-    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
-      isNil,
-      mapObjIndexed(rajoite => {
-        return pathEq(
-          [1, "properties", "value", "value"],
-          koulutustehtava.koodiarvo,
-          rajoite
-        )
-          ? rajoite
-          : null;
-      }, rajoitteetByRajoiteId)
-    );
-
     // Checkbox-kentän muutos
     const checkboxChangeObj = find(
       compose(
@@ -95,9 +82,7 @@ export const defineBackendChangeObjects = async (
     const isChecked = // (!!maarays && !checkboxChangeObj) ||
       checkboxChangeObj && checkboxChangeObj.properties.isChecked === true;
 
-    let checkboxBEchangeObject = null;
     let kuvausBEchangeObjects = null;
-    let alimaaraykset = null;
 
     /**
      * Jos kuvauskenttiin liittyvä checkbox on ruksattu päälle,
@@ -120,63 +105,59 @@ export const defineBackendChangeObjects = async (
         );
       }, changeObjects.erityisetKoulutustehtavat);
 
-      checkboxBEchangeObject = checkboxChangeObj
-        ? {
-            generatedId: `erityinenKoulutustehtava-${Math.random()}`,
+      kuvausBEchangeObjects = map(changeObj => {
+        if (changeObj) {
+          const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+            isNil,
+            mapObjIndexed(rajoite => {
+              return startsWith(
+                `${koulutustehtava.koodiarvo}-`,
+                path([1, "properties", "value", "value"], rajoite)
+              )
+                ? rajoite
+                : null;
+            }, rajoitteetByRajoiteId)
+          );
+
+          const kuvausBEChangeObject = {
+            generatedId: changeObj.anchor,
             kohde,
             koodiarvo: koulutustehtava.koodiarvo,
             koodisto: koulutustehtava.koodisto.koodistoUri,
-            kuvaus: koulutustehtava.metadata[locale].kuvaus,
+            kuvaus: changeObj.properties.value,
             maaraystyyppi,
             meta: {
+              ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
+              kuvaus: changeObj.properties.value,
               changeObjects: concat(
-                [checkboxChangeObj],
-                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
-              )
+                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+                [checkboxChangeObj, changeObj]
+              ).filter(Boolean)
             },
             tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
-          }
-        : null;
+          };
 
-      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
-      // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
-      // loput toisiinsa "alenevassa polvessa".
-      alimaaraykset = values(
-        mapObjIndexed(asetukset => {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            checkboxBEchangeObject,
-            drop(2, asetukset)
+          // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+          // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+          // loput toisiinsa "alenevassa polvessa".
+          const alimaaraykset = values(
+            mapObjIndexed(asetukset => {
+              return createAlimaarayksetBEObjects(
+                kohteet,
+                maaraystyypit,
+                kuvausBEChangeObject,
+                drop(2, asetukset)
+              );
+            }, rajoitteetByRajoiteIdAndKoodiarvo)
           );
-        }, rajoitteetByRajoiteIdAndKoodiarvo)
-      );
 
-      kuvausBEchangeObjects = map(changeObj => {
-        return changeObj
-          ? {
-              generatedId: changeObj.anchor,
-              kohde,
-              koodiarvo: koulutustehtava.koodiarvo,
-              koodisto: koulutustehtava.koodisto.koodistoUri,
-              kuvaus: changeObj.properties.value,
-              maaraystyyppi,
-              meta: {
-                ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
-                kuvaus: changeObj.properties.value,
-                changeObjects: [changeObj]
-              },
-              tila: "LISAYS"
-            }
-          : null;
+          return [kuvausBEChangeObject, alimaaraykset];
+        }
+        return null;
       }, append(firstNameChangeObject, kuvausChangeObjects));
     }
 
-    return [
-      checkboxBEchangeObject,
-      kuvausBEchangeObjects,
-      alimaaraykset
-    ].filter(Boolean);
+    return [kuvausBEchangeObjects].filter(Boolean);
   }, erityisetKoulutustehtavat);
 
   const lisatiedotChangeObj = find(

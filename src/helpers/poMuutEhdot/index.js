@@ -13,9 +13,17 @@ import {
   filter,
   path,
   flatten,
-  includes
+  includes,
+  reject,
+  isNil,
+  pathEq,
+  drop,
+  take,
+  values,
+  concat
 } from "ramda";
 import localforage from "localforage";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 export const initializePOMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -63,6 +71,19 @@ export const defineBackendChangeObjects = async (
   const muutEhdot = await getPOMuutEhdotFromStorage();
 
   const muutokset = map(ehto => {
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq(
+          [1, "properties", "value", "value"],
+          ehto.koodiarvo,
+          rajoite
+        )
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
     // Checkbox-kenttien muutokset
     const changeObj = find(
       compose(endsWith(`.${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
@@ -94,7 +115,7 @@ export const defineBackendChangeObjects = async (
       : null;
 
     const kuvausBEchangeObjects = map(changeObj => {
-      return {
+      const kuvausBEChangeObject = {
         generatedId: changeObj.anchor,
         kohde,
         koodiarvo: ehto.koodiarvo,
@@ -104,10 +125,29 @@ export const defineBackendChangeObjects = async (
         meta: {
           ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
           kuvaus: changeObj.properties.value,
-          changeObjects: [changeObj]
+          changeObjects: concat(
+            changeObj,
+            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+          )
         },
-        tila: "LISAYS"
+        tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
       };
+
+      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+      // loput toisiinsa "alenevassa polvessa".
+      const alimaaraykset = values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            kuvausBEChangeObject,
+            drop(2, asetukset)
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
+
+      return [kuvausBEChangeObject, alimaaraykset];
     }, kuvausChangeObjects);
 
     return [checkboxBEchangeObjects, kuvausBEchangeObjects];

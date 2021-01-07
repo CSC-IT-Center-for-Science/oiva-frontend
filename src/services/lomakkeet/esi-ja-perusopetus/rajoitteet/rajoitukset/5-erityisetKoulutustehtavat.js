@@ -1,13 +1,12 @@
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
-import { compose, endsWith, find, map, prop, toUpper } from "ramda";
+import { compose, endsWith, filter, find, flatten, map, prop } from "ramda";
+import { getAnchorPart } from "utils/common";
 
 export default async function getErityisetKoulutustehtavat(
   isReadOnly,
-  osionData = [],
-  locale
+  osionData = []
 ) {
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
-  const localeUpper = toUpper(locale);
 
   if (erityisetKoulutustehtavat.length) {
     return [
@@ -21,29 +20,48 @@ export default async function getErityisetKoulutustehtavat(
           },
           isMulti: false,
           isReadOnly,
-          options: map(erityinenKoulutustehtava => {
-            /**
-             * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
-             * valittuna lomakkeella, jota vasten rajoituksia ollaan
-             * tekemässä.
-             **/
-            const stateObj = find(
-              compose(
-                endsWith(
-                  `.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`
+          options: flatten(
+            map(erityinenKoulutustehtava => {
+              /**
+               * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
+               * valittuna lomakkeella, jota vasten rajoituksia ollaan
+               * tekemässä.
+               **/
+              const stateObj = find(
+                compose(
+                  endsWith(
+                    `.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`
+                  ),
+                  prop("anchor")
                 ),
-                prop("anchor")
-              ),
-              osionData
-            );
+                osionData
+              );
 
-            return stateObj && stateObj.properties.isChecked
-              ? {
-                  label: erityinenKoulutustehtava.metadata[localeUpper].nimi,
-                  value: erityinenKoulutustehtava.koodiarvo
-                }
-              : null;
-          }, erityisetKoulutustehtavat).filter(Boolean),
+              if (stateObj && stateObj.properties.isChecked) {
+                // Vaihtoehtoina näytetään kuvaukset, joten ne
+                // on kaivettava osion datasta koodiarvolla.
+                const kuvausStateObjects = filter(stateObj => {
+                  return (
+                    getAnchorPart(stateObj.anchor, 1) ===
+                      erityinenKoulutustehtava.koodiarvo &&
+                    endsWith(".kuvaus", stateObj.anchor)
+                  );
+                }, osionData);
+
+                return map(stateObj => {
+                  return {
+                    value: `${getAnchorPart(
+                      stateObj.anchor,
+                      1
+                    )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                    label: stateObj.properties.value
+                  };
+                }, kuvausStateObjects);
+              }
+
+              return null;
+            }, erityisetKoulutustehtavat).filter(Boolean)
+          ),
           value: ""
         }
       }
