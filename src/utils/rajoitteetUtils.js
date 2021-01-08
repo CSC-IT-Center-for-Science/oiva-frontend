@@ -31,7 +31,7 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 }
 
 function getTaydennyssana(key) {
-  // console.info(key);
+  console.info(key);
   const taydennyssanat = {
     alkamispaiva: {
       pre: "ajalla",

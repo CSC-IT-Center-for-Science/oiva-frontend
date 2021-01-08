@@ -1,5 +1,4 @@
 import {
-  append,
   compose,
   concat,
   drop,
@@ -28,7 +27,6 @@ import {
   values
 } from "ramda";
 import localforage from "localforage";
-import { getAnchorPart } from "../../utils/common";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 export const initializePOErityinenKoulutustehtava = erityinenKoulutustehtava => {

@@ -1,9 +1,12 @@
-import { find, pathEq } from "ramda";
+import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
+import { find, length, map, path, pathEq } from "ramda";
 
 export default async function getOpetuksenJarjestamismuotokomponentit(
   isReadOnly,
   osionData = []
 ) {
+  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+
   const valittuJarjestamismuoto = find(
     pathEq(["properties", "isChecked"], true),
     osionData
@@ -14,16 +17,11 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
    * on hyvin todennäköisesti valittuna, vaikka käyttäjä ei olisi itse valinnut
    * yhtäkään elementeistä. (oletusvalinta)
    */
-  if (valittuJarjestamismuoto) {
+  if (length(opetuksenJarjestamismuodot)) {
     /**
      * Näytetään valittu arvo autocomplete-kentässä yhdenmukaisuuden vuoksi,
      * vaikka kenttään tuleekin vain yksi arvo, joka on oletuksena valittuna.
      */
-    const valittuArvo = {
-      label: valittuJarjestamismuoto.properties.title,
-      value: valittuJarjestamismuoto.anchor
-    };
-
     return [
       {
         anchor: "opetuksenJarjestamismuodot",
@@ -35,7 +33,23 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
           },
           isMulti: false,
           isReadOnly,
-          options: [valittuArvo],
+          options: map(muoto => {
+            /**
+             * Tarkistetaan, onko kyseinen opetuksen järjestämismuoto
+             * valittuna lomakkeella, jota vasten rajoituksia ollaan
+             * tekemässä.
+             **/
+            console.info(muoto, valittuJarjestamismuoto);
+            return path(
+              ["properties", "forChangeObject", "koodiarvo"],
+              valittuJarjestamismuoto
+            ) === muoto.koodiarvo
+              ? {
+                  label: valittuJarjestamismuoto.properties.title,
+                  value: valittuJarjestamismuoto.anchor
+                }
+              : null;
+          }, opetuksenJarjestamismuodot).filter(Boolean),
           value: ""
         }
       }
@@ -43,7 +57,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
   } else {
     return [
       {
-        anchor: "teksti",
+        anchor: "ei-järjestamismuotoja",
         name: "StatusTextRow",
         properties: {
           title: "Ei valittuja opetuksen järjestämismuotoja."
