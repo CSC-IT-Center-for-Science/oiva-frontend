@@ -1,12 +1,24 @@
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
-import { compose, endsWith, filter, find, flatten, map, prop } from "ramda";
+import {
+  compose,
+  endsWith,
+  filter,
+  find,
+  flatten,
+  length,
+  map,
+  prop,
+  toUpper
+} from "ramda";
 import { getAnchorPart } from "utils/common";
 
 export default async function getErityisetKoulutustehtavat(
   isReadOnly,
-  osionData = []
+  osionData = [],
+  locale
 ) {
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const localeUpper = toUpper(locale);
 
   if (erityisetKoulutustehtavat.length) {
     return [
@@ -48,15 +60,25 @@ export default async function getErityisetKoulutustehtavat(
                   );
                 }, osionData);
 
-                return map(stateObj => {
-                  return {
-                    value: `${getAnchorPart(
-                      stateObj.anchor,
-                      1
-                    )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                    label: stateObj.properties.value
-                  };
-                }, kuvausStateObjects);
+                const options =
+                  length(kuvausStateObjects) > 1
+                    ? map(stateObj => {
+                        const option = {
+                          value: `${getAnchorPart(
+                            stateObj.anchor,
+                            1
+                          )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                          label: stateObj.properties.value
+                        };
+                        return option;
+                      }, kuvausStateObjects)
+                    : {
+                        label:
+                          erityinenKoulutustehtava.metadata[localeUpper].nimi,
+                        value: `${erityinenKoulutustehtava.koodiarvo}-`
+                      };
+
+                return options;
               }
 
               return null;

@@ -68,8 +68,6 @@ export const defineBackendChangeObjects = async (
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
 
-  console.info(rajoitteetByRajoiteId);
-
   const kohde = find(
     propEq("tunniste", "muutkoulutuksenjarjestamiseenliittyvatehdot"),
     kohteet

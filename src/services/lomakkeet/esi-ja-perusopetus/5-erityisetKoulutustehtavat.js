@@ -43,9 +43,10 @@ export async function erityisetKoulutustehtavat(
   return flatten(
     [
       map(erityinenKoulutustehtava => {
-        const tehtavaanLiittyvatMaaraykset = filter(m =>
-          propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
-          propEq("koodisto", "poerityinenkoulutustehtava", m),
+        const tehtavaanLiittyvatMaaraykset = filter(
+          m =>
+            propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
+            propEq("koodisto", "poerityinenkoulutustehtava", m),
           maaraykset
         );
         const kuvausmaaraykset = filter(
@@ -98,7 +99,8 @@ export async function erityisetKoulutustehtavat(
                     name: "TextBox",
                     properties: {
                       forChangeObject: {
-                        ankkuri: kuvausankkuri0
+                        ankkuri: kuvausankkuri0,
+                        koodiarvo: erityinenKoulutustehtava.koodiarvo
                       },
                       isPreviewModeOn,
                       isReadOnly: _isReadOnly,
@@ -127,7 +129,8 @@ export async function erityisetKoulutustehtavat(
                             name: "TextBox",
                             properties: {
                               forChangeObject: {
-                                ankkuri: maarays.koodiarvo
+                                ankkuri: maarays.koodiarvo,
+                                koodiarvo: maarays.koodiarvo
                               },
                               isPreviewModeOn,
                               isReadOnly: _isReadOnly,
@@ -189,7 +192,8 @@ export async function erityisetKoulutustehtavat(
                                 ankkuri: anchor,
                                 focusWhenDeleted: !!previousTextBoxChangeObj
                                   ? previousTextBoxAnchor
-                                  : `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
+                                  : `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`,
+                                koodiarvo: erityinenKoulutustehtava.koodiarvo
                               },
                               isPreviewModeOn,
                               isReadOnly: _isReadOnly,
@@ -205,30 +209,32 @@ export async function erityisetKoulutustehtavat(
               /**
                * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
                */
-              {
-                anchor: "lisaaPainike",
-                components: [
-                  {
-                    anchor: "A",
-                    name: "SimpleButton",
-                    onClick: onAddButtonClick,
-                    properties: {
-                      isPreviewModeOn,
-                      isReadOnly: _isReadOnly,
-                      isVisible: isCheckedByChange,
-                      icon: "FaPlus",
-                      iconContainerStyles: {
-                        width: "15px"
-                      },
-                      iconStyles: {
-                        fontSize: 10
-                      },
-                      text: __("common.lisaaUusiKuvaus"),
-                      variant: "text"
-                    }
+              erityinenKoulutustehtava.koodiarvo !== "1"
+                ? {
+                    anchor: "lisaaPainike",
+                    components: [
+                      {
+                        anchor: "A",
+                        name: "SimpleButton",
+                        onClick: onAddButtonClick,
+                        properties: {
+                          isPreviewModeOn,
+                          isReadOnly: _isReadOnly,
+                          isVisible: isCheckedByChange,
+                          icon: "FaPlus",
+                          iconContainerStyles: {
+                            width: "15px"
+                          },
+                          iconStyles: {
+                            fontSize: 10
+                          },
+                          text: __("common.lisaaUusiKuvaus"),
+                          variant: "text"
+                        }
+                      }
+                    ]
                   }
-                ]
-              }
+                : null
             ].filter(Boolean)
           ]),
           components: [
