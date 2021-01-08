@@ -34,7 +34,7 @@ import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoske
 import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
 import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
 import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
-import { getOpiskelijamaaratLomake } from "./esi-ja-perusopetus/6-opiskeliijamaarat";
+import { getOpiskelijamaaratLomake } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";

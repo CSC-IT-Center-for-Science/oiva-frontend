@@ -29,24 +29,29 @@ const RajoitteetList = ({
         {values(
           addIndex(mapObjIndexed)((rajoite, rajoiteId, ___, index) => {
             return (
-              <div className="p-6 border border-gray-300" key={rajoiteId}>
+              <div
+                className="flex flex-col p-6 border border-gray-300"
+                key={rajoiteId}
+              >
                 <Typography component="h3" variant="h3">
                   Rajoite {index + 1}
                 </Typography>
-                <Lomake
-                  anchor={"rajoitteet"}
-                  data={{
-                    rajoiteId,
-                    sectionId: "rajoitelomake",
-                    rajoiteChangeObjects: rajoite.changeObjects
-                  }}
-                  isInExpandableRow={false}
-                  isPreviewModeOn={true}
-                  isReadOnly={true}
-                  isSavingState={false}
-                  path={constants.formLocation}
-                  showCategoryTitles={areTitlesVisible}
-                ></Lomake>
+                <div className="flex-1">
+                  <Lomake
+                    anchor={"rajoitteet"}
+                    data={{
+                      rajoiteId,
+                      sectionId: "rajoitelomake",
+                      rajoiteChangeObjects: rajoite.changeObjects
+                    }}
+                    isInExpandableRow={false}
+                    isPreviewModeOn={true}
+                    isReadOnly={true}
+                    isSavingState={false}
+                    path={constants.formLocation}
+                    showCategoryTitles={areTitlesVisible}
+                  ></Lomake>
+                </div>
                 <div className="flex justify-between pt-6">
                   <div>
                     <SimpleButton

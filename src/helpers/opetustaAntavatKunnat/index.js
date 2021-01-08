@@ -22,8 +22,7 @@ import {
   reject,
   take,
   uniq,
-  values,
-  isEmpty
+  values
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";

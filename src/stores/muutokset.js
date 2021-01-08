@@ -35,7 +35,6 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
-import { muutokset } from "scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -91,7 +90,6 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  // initialState: muutokset,
   initialState: {
     changeObjects: {
       saved: {},

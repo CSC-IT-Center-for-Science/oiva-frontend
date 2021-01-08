@@ -20,7 +20,8 @@ import {
   drop,
   take,
   values,
-  concat
+  concat,
+  startsWith
 } from "ramda";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
@@ -71,21 +72,8 @@ export const defineBackendChangeObjects = async (
   const muutEhdot = await getPOMuutEhdotFromStorage();
 
   const muutokset = map(ehto => {
-    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
-      isNil,
-      mapObjIndexed(rajoite => {
-        return pathEq(
-          [1, "properties", "value", "value"],
-          ehto.koodiarvo,
-          rajoite
-        )
-          ? rajoite
-          : null;
-      }, rajoitteetByRajoiteId)
-    );
-
     // Checkbox-kenttien muutokset
-    const changeObj = find(
+    const checkboxChangeObj = find(
       compose(endsWith(`.${ehto.koodiarvo}.valintaelementti`), prop("anchor")),
       changeObjects.muutEhdot
     );
@@ -99,22 +87,23 @@ export const defineBackendChangeObjects = async (
       );
     }, changeObjects.muutEhdot);
 
-    const checkboxBEchangeObjects = changeObj
-      ? {
-          generatedId: `muuEhto-${Math.random()}`,
-          kohde,
-          koodiarvo: ehto.koodiarvo,
-          koodisto: ehto.koodisto.koodistoUri,
-          kuvaus: ehto.metadata[locale].kuvaus,
-          maaraystyyppi,
-          meta: {
-            changeObjects: [changeObj]
-          },
-          tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
-        }
-      : null;
+    console.info(rajoitteetByRajoiteId, ehto);
 
     const kuvausBEchangeObjects = map(changeObj => {
+      const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return startsWith(
+            `${ehto.koodiarvo}-`,
+            path([1, "properties", "value", "value"], rajoite)
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      );
+
+      console.info(rajoitteetByRajoiteIdAndKoodiarvo);
+
       const kuvausBEChangeObject = {
         generatedId: changeObj.anchor,
         kohde,
@@ -126,11 +115,11 @@ export const defineBackendChangeObjects = async (
           ankkuri: path(["properties", "metadata", "ankkuri"], changeObj),
           kuvaus: changeObj.properties.value,
           changeObjects: concat(
-            changeObj,
-            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
-          )
+            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+            [checkboxChangeObj, changeObj]
+          ).filter(Boolean)
         },
-        tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
+        tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
       };
 
       // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
@@ -138,6 +127,7 @@ export const defineBackendChangeObjects = async (
       // loput toisiinsa "alenevassa polvessa".
       const alimaaraykset = values(
         mapObjIndexed(asetukset => {
+          console.info(asetukset);
           return createAlimaarayksetBEObjects(
             kohteet,
             maaraystyypit,
@@ -147,10 +137,12 @@ export const defineBackendChangeObjects = async (
         }, rajoitteetByRajoiteIdAndKoodiarvo)
       );
 
+      console.info([kuvausBEChangeObject, alimaaraykset]);
+
       return [kuvausBEChangeObject, alimaaraykset];
     }, kuvausChangeObjects);
 
-    return [checkboxBEchangeObjects, kuvausBEchangeObjects];
+    return kuvausBEchangeObjects;
   }, muutEhdot);
 
   /**

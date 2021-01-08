@@ -1,6 +1,5 @@
 import {
   addIndex,
-  assocPath,
   compose,
   concat,
   drop,
