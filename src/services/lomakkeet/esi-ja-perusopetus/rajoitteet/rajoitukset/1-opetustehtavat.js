@@ -1,9 +1,9 @@
 import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
-import { compose, endsWith, find, map, prop, toUpper } from "ramda";
+import { compose, endsWith, find, map, prop } from "ramda";
+import { getLocalizedProperty } from "../../../utils";
 
 export default async function getOpetustehtavatlomake(osionData = [], locale) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
-  const localeUpper = toUpper(locale);
 
   if (opetustehtavat.length) {
     return {
@@ -39,7 +39,7 @@ export default async function getOpetustehtavatlomake(osionData = [], locale) {
                */
               return stateObj && stateObj.properties.isChecked
                 ? {
-                    label: opetustehtava.metadata[localeUpper].nimi,
+                    label: getLocalizedProperty(opetustehtava.metadata, locale, "nimi"),
                     value: opetustehtava.koodiarvo
                   }
                 : null;

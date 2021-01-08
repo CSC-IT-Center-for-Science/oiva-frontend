@@ -16,6 +16,7 @@ import {
   includes
 } from "ramda";
 import localforage from "localforage";
+import { getLocalizedProperty } from "../../services/lomakkeet/utils";
 
 export const initializePOMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -93,7 +94,7 @@ export const defineBackendChangeObjects = async (
             kohde,
             koodiarvo: ehto.koodiarvo,
             koodisto: ehto.koodisto.koodistoUri,
-            kuvaus: ehto.metadata[locale].kuvaus,
+            kuvaus: getLocalizedProperty(ehto.metadata, locale, "kuvaus"),
             maaraystyyppi,
             meta: {
               changeObjects: [checkboxChangeObj]
