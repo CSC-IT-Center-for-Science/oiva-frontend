@@ -161,8 +161,8 @@ const UusiAsiaDialog = ({
    * @param {object} formData
    */
   const onPreview = useCallback(async () => {
-    setPreviewMode(isPreviewModeOn => !isPreviewModeOn);
-  }, [setPreviewMode]);
+    return setPreviewMode(!isPreviewModeOn);
+  }, [isPreviewModeOn, setPreviewMode]);
 
   /**
    * Saves the form.
