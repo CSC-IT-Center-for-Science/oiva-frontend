@@ -67,10 +67,8 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
                       }, kuvausStateObjects)
                     : {
                         label: muuEhto.metadata[localeUpper].nimi,
-                        value: muuEhto.koodiarvo
+                        value: `${muuEhto.koodiarvo}-`
                       };
-
-                console.info(options);
 
                 return options;
               }
@@ -78,27 +76,6 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
               return null;
             }, muutEhdot).filter(Boolean)
           ),
-
-          // options: map(muuEhto => {
-          //   /**
-          //    * Tarkistetaan, onko kyseinen muu ehto
-          //    * valittuna lomakkeella, jota vasten rajoituksia ollaan
-          //    * tekemässä.
-          //    **/
-          //   const stateObj = find(
-          //     compose(
-          //       endsWith(`.${muuEhto.koodiarvo}.valintaelementti`),
-          //       prop("anchor")
-          //     ),
-          //     osionData
-          //   );
-          //   return stateObj && stateObj.properties.isChecked
-          //     ? {
-          //         label: muuEhto.metadata[localeUpper].nimi,
-          //         value: muuEhto.koodiarvo
-          //       }
-          //     : null;
-          // }, muutEhdot).filter(Boolean),
           value: ""
         }
       }

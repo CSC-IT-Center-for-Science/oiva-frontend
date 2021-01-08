@@ -53,13 +53,13 @@ const RajoitteetList = ({
                   ></Lomake>
                 </div>
                 <div className="flex justify-between pt-6">
-                  <div>
+                  <div className="mr-2">
                     <SimpleButton
                       text="Poista"
                       onClick={() => onRemoveRestriction(rajoiteId)}
                     />
                   </div>
-                  <div>
+                  <div className="ml-2">
                     <SimpleButton
                       text="Muokkaa"
                       onClick={() => onModifyRestriction(rajoiteId)}
