@@ -28,6 +28,7 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { getLocalizedProperty } from "../../services/lomakkeet/utils";
 
 export const initializePOMuuEhto = ehto => {
   return omit(["koodiArvo"], {

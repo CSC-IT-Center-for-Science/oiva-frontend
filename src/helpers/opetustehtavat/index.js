@@ -25,6 +25,7 @@ import localforage from "localforage";
 import { getChangeObjByAnchor } from "../../components/02-organisms/CategorizedListRoot/utils";
 import { getLisatiedotFromStorage } from "../lisatiedot";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { getLocalizedProperty } from "../../services/lomakkeet/utils";
 
 export const initializeOpetustehtava = opetustehtava => {
   return omit(["koodiArvo"], {
@@ -121,7 +122,7 @@ export const defineBackendChangeObjects = async (
         kohde: find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
         koodiarvo: opetustehtava.koodiarvo,
         koodisto: opetustehtava.koodisto.koodistoUri,
-        kuvaus: opetustehtava.metadata[locale].kuvaus,
+        kuvaus: getLocalizedProperty(opetustehtava.metadata, locale, "kuvaus"),
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
           changeObjects: concat(

@@ -20,6 +20,7 @@ import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getLocalizedProperty } from "../utils";
 
 export async function erityisetKoulutustehtavat(
   { maaraykset, sectionId },
@@ -31,7 +32,6 @@ export async function erityisetKoulutustehtavat(
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
-  const localeUpper = toUpper(locale);
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -108,7 +108,7 @@ export async function erityisetKoulutustehtavat(
                       title: __("common.kuvaus"),
                       value: kuvausmaarays0
                         ? kuvausmaarays0.meta.kuvaus
-                        : erityinenKoulutustehtava.metadata[localeUpper].kuvaus
+                        : getLocalizedProperty(erityinenKoulutustehtava.metadata, locale, "kuvaus")
                     }
                   }
                 ],
@@ -250,7 +250,7 @@ export async function erityisetKoulutustehtavat(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: erityinenKoulutustehtava.metadata[localeUpper].nimi
+                title: getLocalizedProperty(erityinenKoulutustehtava.metadata, locale, "nimi")
               }
             }
           ]

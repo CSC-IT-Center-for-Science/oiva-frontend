@@ -11,6 +11,10 @@ import {
   toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
+import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
+import { map } from "ramda";
+import { getLocalizedProperty } from "../../../utils";
+
 
 export default async function getErityisetKoulutustehtavat(
   isReadOnly,
@@ -18,7 +22,6 @@ export default async function getErityisetKoulutustehtavat(
   locale
 ) {
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
-  const localeUpper = toUpper(locale);
 
   if (erityisetKoulutustehtavat.length) {
     return [
@@ -68,7 +71,7 @@ export default async function getErityisetKoulutustehtavat(
                             stateObj.anchor,
                             1
                           )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                          label: stateObj.properties.value
+                          label: getLocalizedProperty(erityisetKoulutustehtavat.metadata, locale, "nimi"),
                         };
                         return option;
                       }, kuvausStateObjects)

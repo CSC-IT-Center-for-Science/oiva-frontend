@@ -5,6 +5,7 @@ import Lomake from "components/02-organisms/Lomake";
 import { omit, path, prop, toUpper } from "ramda";
 import { getOpetustehtavaKoodistoFromStorage } from "helpers/opetustehtavat";
 import equal from "react-fast-compare";
+import { getLocalizedProperty } from "../../../../services/lomakkeet/utils";
 
 const constants = {
   mode: "modification",
@@ -22,10 +23,7 @@ const Opetustehtavat = React.memo(
   }) => {
     const intl = useIntl();
     const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
-    const title = prop(
-      "kuvaus",
-      path(["metadata", toUpper(intl.locale)], opetustehtavakoodisto)
-    );
+    const title = opetustehtavakoodisto ? getLocalizedProperty(opetustehtavakoodisto.metadata, intl.locale, "kuvaus") : "";
 
     /** Fetch opetustehtavaKoodisto from storage */
     useEffect(() => {
@@ -48,7 +46,7 @@ const Opetustehtavat = React.memo(
         isPreviewModeOn={isPreviewModeOn}
         isRowExpanded={true}
         path={constants.formLocation}
-        rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
+        rowTitle={getLocalizedProperty(opetustehtavakoodisto.metadata, intl.locale, "nimi")}
         showCategoryTitles={true}
       ></Lomake>
     ) : null;

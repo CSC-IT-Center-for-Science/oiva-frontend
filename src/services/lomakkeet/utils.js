@@ -313,3 +313,17 @@ export const ifOneTerm = async function(terms, lomake, changeObjects) {
   return validationResult;
 };
 export const ifTerm = R.compose(R.includes(true), checkTerm);
+
+export const getLocalizedProperty = (metadata, locale, propertyName) => {
+const localeUpper = R.toUpper(locale);
+  if (R.path([localeUpper, propertyName], metadata)) {
+    return R.path([localeUpper, propertyName], metadata);
+  }
+  /** If localization is not found, try to return localization in finnish **/
+  else {
+    if (R.path(["FI", propertyName], metadata)) {
+      return R.path(["FI", propertyName], metadata);
+    }
+    return "";
+  }
+}
