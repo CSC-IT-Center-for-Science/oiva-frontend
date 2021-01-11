@@ -81,9 +81,8 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
                 asetus.tarkennin[tarkenninavain]
               ) ||
               path(["properties", "value"], asetus.tarkennin[tarkenninavain]);
-            const muokattuTarkentimenArvo = moment.isDate(tarkentimenArvo)
-              ? moment(tarkentimenArvo).format("DD.MM.YYYY")
-              : tarkentimenArvo;
+            const muokattuTarkentimenArvo = moment(tarkentimenArvo, "YYYY-MM-DDTHH:mm:ss.SSSZ", true).isValid() 
+              ? moment(tarkentimenArvo).format("DD.MM.YYYY") : tarkentimenArvo;
 
             if (taydennyssana) {
               const item = join(

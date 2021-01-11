@@ -156,10 +156,9 @@ export const getAsetuksenKohdekomponentti = (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           maaraaikaOption
         ],
-        value: maaraaikaOption
+        value: ""
       }
     };
   } else if (asetuksenKohdeavain === "opiskelijamaarat") {
