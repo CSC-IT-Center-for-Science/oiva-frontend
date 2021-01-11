@@ -7,6 +7,7 @@ import {
   flatten,
   length,
   map,
+  path,
   prop,
   toUpper
 } from "ramda";
