@@ -176,7 +176,7 @@ const getKohdennuksetRecursively = async (
   const { osioidenData, rajoiteId } = data;
 
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
-    ? getKohdennuksenKohdekomponentti(kohdennuksenKohdeavain)
+    ? getKohdennuksenKohdekomponentti()
     : null;
 
   const kohdennuksenTarkenninKomponentit = kohdennuksenKohdekomponentti
@@ -268,37 +268,37 @@ const getKohdennuksetRecursively = async (
     }
   }
 
-  // console.group();
-  // console.info("Index", index);
-  // console.info("Lukumaarakomponentit:", lukumaarakomponentit);
-  // console.info(
-  //   "Asetuslomakekokonaisuus:",
-  //   JSON.stringify(asetuslomakekokonaisuus)
-  // );
-  // console.info("Asetusvaihtoehdot (1. asetus)", asetusvaihtoehdot);
-  // console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
-  // console.info(
-  //   "Muutosobjektit tasoa ylempänä:",
-  //   parentKohdennuksetChangeObjects
-  // );
-  // console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
-  // console.info("RajoiteChangeObjects", rajoiteChangeObjects);
-  // console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
-  // console.info("kohdennuksen kohdekomponentti", kohdennuksenKohdekomponentti);
-  // console.info(
-  //   "kohdennuksen tarkenninkomponentit",
-  //   kohdennuksenTarkenninKomponentit
-  // );
-  // console.info("Kohteen tarkenninavain", kohteenTarkenninavain);
-  // console.info("Kohdevaihtoehdot", kohdevaihtoehdot);
-  // console.info("Kohteen tarkenninkomponentit", kohteenTarkenninkomponentit);
-  // console.info("1. asetuksen kohdeavain", ensimmaisenAsetuksenKohdeavain);
-  // console.info(
-  //   "1. kohdennuksen kohteen tarkenninavain",
-  //   ensimmaisenKohdennuksenKohteenTarkenninavain
-  // );
-  // console.info("alikohdennuksetChangeObjects", alikohdennuksetChangeObjects);
-  // console.groupEnd();
+  console.group();
+  console.info("Index", index);
+  console.info("Lukumaarakomponentit:", lukumaarakomponentit);
+  console.info(
+    "Asetuslomakekokonaisuus:",
+    JSON.stringify(asetuslomakekokonaisuus)
+  );
+  console.info("Asetusvaihtoehdot (1. asetus)", asetusvaihtoehdot);
+  console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
+  console.info(
+    "Muutosobjektit tasoa ylempänä:",
+    parentKohdennuksetChangeObjects
+  );
+  console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
+  console.info("RajoiteChangeObjects", rajoiteChangeObjects);
+  console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
+  console.info("kohdennuksen kohdekomponentti", kohdennuksenKohdekomponentti);
+  console.info(
+    "kohdennuksen tarkenninkomponentit",
+    kohdennuksenTarkenninKomponentit
+  );
+  console.info("Kohteen tarkenninavain", kohteenTarkenninavain);
+  console.info("Kohdevaihtoehdot", kohdevaihtoehdot);
+  console.info("Kohteen tarkenninkomponentit", kohteenTarkenninkomponentit);
+  console.info("1. asetuksen kohdeavain", ensimmaisenAsetuksenKohdeavain);
+  console.info(
+    "1. kohdennuksen kohteen tarkenninavain",
+    ensimmaisenKohdennuksenKohteenTarkenninavain
+  );
+  console.info("alikohdennuksetChangeObjects", alikohdennuksetChangeObjects);
+  console.groupEnd();
 
   const paivitettyLomakerakenne = append(
     {
