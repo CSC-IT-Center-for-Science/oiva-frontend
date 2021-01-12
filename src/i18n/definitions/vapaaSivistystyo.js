@@ -19,8 +19,8 @@ export default defineMessages({
     id: "vapaaSivistystyo.paasivunOtsikko",
     defaultMessage: "Vapaan sivistystyön oppilaitosten ylläpitäjät"
   },
-  esittelyTeksti: {
-    id: "vapaaSivistystyo.esittelyTeksti",
+  esittelyteksti: {
+    id: "vapaaSivistystyo.esittelyteksti",
     defaultMessage: "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä."
   }
 });

@@ -1875,7 +1875,7 @@
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {
-    "id": "vapaaSivistystyo.esittelyTeksti",
+    "id": "vapaaSivistystyo.esittelyteksti",
     "defaultMessage": "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä.",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },

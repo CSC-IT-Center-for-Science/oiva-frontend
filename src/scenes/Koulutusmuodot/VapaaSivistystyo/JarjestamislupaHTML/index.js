@@ -76,7 +76,7 @@ const JarjestamislupaJSX = ({ lupa }) => {
   return (
     <div>
       <Typography variant="h2" component="h2">{lupaTitle}</Typography>
-      <p className="mb-4">{formatMessage(vapaaSivistystyo.esittelyTeksti)}</p>
+      <p className="mb-4">{formatMessage(vapaaSivistystyo.esittelyteksti)}</p>
       <div>
         {sections.map((sectionData, i) => {
           return <LupaSection key={i} kohde={sectionData || {}} />;
