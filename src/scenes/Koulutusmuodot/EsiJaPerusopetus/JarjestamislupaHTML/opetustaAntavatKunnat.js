@@ -122,19 +122,12 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
           ),
           kunnatFromLupa
         )}
+        {opetustaJarjestetaanUlkomaillaIsChecked && opetustaJarjestetaanUlkomaillaLisatiedotMaarays ?
+          <li>
+            {opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo}
+          </li>
+          : ""}
       </ul>
-      {opetustaJarjestetaanUlkomaillaIsChecked && (
-        <div className="mb-4">
-          <Typography component="h4" variant="h4">
-            {intl.formatMessage(
-              education.opetustaJarjestetaanSuomenUlkopuolella
-            )}
-          </Typography>
-          {opetustaJarjestetaanUlkomaillaLisatiedotMaarays
-            ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo
-            : ""}
-        </div>
-      )}
       <p className="mb-6">{lisatietomaarays && lisatietomaarays.meta.arvo}</p>
     </div>
   ) : null;
