@@ -19,8 +19,8 @@ export default defineMessages({
     id: "esiJaPerusopetus.paasivunOtsikko",
     defaultMessage: "Esi- ja perusopetuksen järjestäjät"
   },
-  esittelyTeksti: {
-    id: "esiJaPerusopetus.esittelyTeksti",
+  esittelyteksti: {
+    id: "esiJaPerusopetus.esittelyteksti",
     defaultMessage: "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia esi- ja perusopetuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä."
   }
 });

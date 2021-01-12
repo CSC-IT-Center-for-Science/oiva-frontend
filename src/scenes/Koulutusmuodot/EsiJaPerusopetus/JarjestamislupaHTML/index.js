@@ -29,7 +29,7 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
           koulutusmuodon: "esi- ja perusopetuksen"
         })}
       </Typography>
-      <p className="mb-4">{formatMessage(esiJaPerusopetus.esittelyTeksti)}</p>
+      <p className="mb-4">{formatMessage(esiJaPerusopetus.esittelyteksti)}</p>
 
       <LupanakymaA
         isPreviewModeOn={true}
