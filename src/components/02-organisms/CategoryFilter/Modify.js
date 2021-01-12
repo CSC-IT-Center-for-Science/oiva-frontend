@@ -35,7 +35,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_finland from "@amcharts/amcharts4-geodata/finlandHigh";
 import am4geodata_lang_FI from "@amcharts/amcharts4-geodata/lang/FI";
-import kuntaProvinceMapping from "./storydata/kuntaProvinceMapping";
+import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import SimpleButton from "../../00-atoms/SimpleButton";
 import { isEqual } from "lodash";
 
