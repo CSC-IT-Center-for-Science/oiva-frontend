@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
+import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
 import { Typography } from "@material-ui/core";
 import { parseGenericKujaLupa, parseVSTLupa } from "../utils/lupaParser";
 import LupaSection from "./LupaSection";
@@ -75,6 +76,7 @@ const JarjestamislupaJSX = ({ lupa }) => {
   return (
     <div>
       <Typography variant="h2" component="h2">{lupaTitle}</Typography>
+      <p className="mb-4">{formatMessage(vapaaSivistystyo.esittelyteksti)}</p>
       <div>
         {sections.map((sectionData, i) => {
           return <LupaSection key={i} kohde={sectionData || {}} />;
