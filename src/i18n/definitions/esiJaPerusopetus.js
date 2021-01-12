@@ -18,5 +18,9 @@ export default defineMessages({
   paasivunOtsikko: {
     id: "esiJaPerusopetus.paasivunOtsikko",
     defaultMessage: "Esi- ja perusopetuksen järjestäjät"
+  },
+  poOpetustehtava: {
+    id: "esiJaPerusopetus.poOpetustehtava",
+    defaultMessage: "PO Opetustehtävä"
   }
 });

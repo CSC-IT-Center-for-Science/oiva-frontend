@@ -1218,5 +1218,9 @@ export default defineMessages({
   esikatselu: {
     id: "common.esikatselu",
     defaultMessage: "Esikatselu"
+  },
+  opetusJotaLupaKoskee: {
+    id: "common.opetusJotaLupaKoskee",
+    defaultMessage: "Opetus, jota lupa koskee"
   }
 });
