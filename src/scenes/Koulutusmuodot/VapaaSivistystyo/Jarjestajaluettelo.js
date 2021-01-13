@@ -342,8 +342,8 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
           const localeUpper = toUpper(intl.locale);
           return {
             yllapitaja:
-              lupa.jarjestaja.nimi[intl.locale] ||
-              head(values(lupa.jarjestaja.nimi)),
+              lupa.jarjestaja ? lupa.jarjestaja.nimi[intl.locale] ||
+              head(values(lupa.jarjestaja.nimi)) : "",
             oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, intl.locale),
             oppilaitostyyppi: oppilaitostyyppiKoodistosta
               ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi

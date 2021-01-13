@@ -6,6 +6,8 @@ import { omit, path, prop, toUpper } from "ramda";
 import { getOpetustehtavaKoodistoFromStorage } from "helpers/opetustehtavat";
 import equal from "react-fast-compare";
 import { getLocalizedProperty } from "../../../../services/lomakkeet/utils";
+import common from "../../../../i18n/definitions/common";
+import esiJaPerusopetus from "../../../../i18n/definitions/esiJaPerusopetus";
 
 const constants = {
   mode: "modification",
@@ -23,8 +25,7 @@ const Opetustehtavat = React.memo(
   }) => {
     const intl = useIntl();
     const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
-    const title = opetustehtavakoodisto ? getLocalizedProperty(opetustehtavakoodisto.metadata, intl.locale, "kuvaus") : "";
-
+    const title = intl.formatMessage(common.opetusJotaLupaKoskee)
     /** Fetch opetustehtavaKoodisto from storage */
     useEffect(() => {
       getOpetustehtavaKoodistoFromStorage()
@@ -46,7 +47,7 @@ const Opetustehtavat = React.memo(
         isPreviewModeOn={isPreviewModeOn}
         isRowExpanded={true}
         path={constants.formLocation}
-        rowTitle={getLocalizedProperty(opetustehtavakoodisto.metadata, intl.locale, "nimi")}
+        rowTitle={intl.formatMessage(esiJaPerusopetus.poOpetustehtava)}
         showCategoryTitles={true}
       ></Lomake>
     ) : null;

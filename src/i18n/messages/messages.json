@@ -1695,6 +1695,11 @@
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
+    "id": "esiJaPerusopetus.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia esi- ja perusopetuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä.",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
     "id": "homepage.header",
     "defaultMessage": "Oiva - Opetushallinnon ohjaus- ja säätelypalvelu",
     "filepath": "src/i18n/definitions/homepage.js"
@@ -1830,21 +1835,6 @@
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
-    "id": "opiskelijamaara.kokonaismaaraJaSenKohdennukset",
-    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä mahdollisilla kohdennuksilla",
-    "filepath": "src/i18n/definitions/opiskelijamaara.js"
-  },
-  {
-    "id": "opiskelijamaara.vainKohdennetutRajoitukset",
-    "defaultMessage": "Vain kohdennetut oppilas-/opiskelijamäärärajoitukset",
-    "filepath": "src/i18n/definitions/opiskelijamaara.js"
-  },
-  {
-    "id": "opiskelijamaara.eiRajoiteta",
-    "defaultMessage": "Opiskelijamäärää ei rajoiteta",
-    "filepath": "src/i18n/definitions/opiskelijamaara.js"
-  },
-  {
     "id": "rajoitteet.muokkaaRajoitetta",
     "defaultMessage": "Muokkaa",
     "filepath": "src/i18n/definitions/rajoitteet.js"
@@ -1887,6 +1877,11 @@
   {
     "id": "vapaaSivistystyo.paasivunOtsikko",
     "defaultMessage": "Vapaan sivistystyön oppilaitosten ylläpitäjät",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä.",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {
