@@ -44,6 +44,7 @@ const RajoitteetList = ({
                       sectionId: "rajoitelomake",
                       rajoiteChangeObjects: rajoite.changeObjects
                     }}
+                    lomakedataAnchor={`rajoitteet_${rajoiteId}`}
                     isInExpandableRow={false}
                     isPreviewModeOn={true}
                     isReadOnly={true}
@@ -79,7 +80,8 @@ RajoitteetList.propTypes = {
   areTitlesVisible: PropTypes.bool,
   isBorderVisible: PropTypes.bool,
   onModifyRestriction: PropTypes.func,
-  onRemoveRestriction: PropTypes.func
+  onRemoveRestriction: PropTypes.func,
+  rajoitteet: PropTypes.object
 };
 
 export default RajoitteetList;

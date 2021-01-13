@@ -12,6 +12,7 @@ import {
   filter,
   flatten,
   head,
+  includes,
   isNil,
   join,
   length,
@@ -110,21 +111,11 @@ const Store = createStore({
       setState
     }) => {
       const currentChangeObjects = prop("unsaved", getState().changeObjects);
-      // Poistetaan ensin storen changeObjects.rajoitteet kaikki
-      // hyväksyttävään rajoitteeseen liittyvät muutos-objektit
-      const filteredChangeObjs = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) !== restrictionId,
-        currentChangeObjects[targetSectionId] || []
-      );
-      // Yhdistetään rajoitelomake rajoitteisiin
-      const rajoitelomakeChangeObjs = concat(
-        filteredChangeObjs,
-        currentChangeObjects.rajoitelomake
-      );
+      const newRestrictionChangeObjs = currentChangeObjects.rajoitelomake[restrictionId];
 
       setState(
         assocPath(
-          ["changeObjects", "unsaved", targetSectionId],
+          ["changeObjects", "unsaved", targetSectionId, restrictionId],
           // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
           // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
           // tallennetaan muutosobjektit tilanhallintaan.
@@ -134,10 +125,10 @@ const Store = createStore({
               anchor: replaceAnchorPartWith(
                 changeObj.anchor,
                 0,
-                targetSectionId
+                `${targetSectionId}_${restrictionId}`
               )
             };
-          }, rajoitelomakeChangeObjs),
+          }, newRestrictionChangeObjs),
           getState()
         )
       );
@@ -437,6 +428,7 @@ const Store = createStore({
       getState,
       setState
     }) => {
+
       // Muutosobjektit, jotka rajoitedialogissa on tarkoitus näyttää.
       const changeObjects = getChangeObjectsByAnchorWithoutUnderRemoval(
         getState(),
@@ -444,13 +436,13 @@ const Store = createStore({
       );
 
       const changeObjectsOfCurrentRestriction = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) === rajoiteId,
+        cObj => includes(rajoiteId, getAnchorPart(cObj.anchor, 0)),
         changeObjects
       );
 
       setState(
         assocPath(
-          ["changeObjects", "unsaved", targetSectionId],
+          ["changeObjects", "unsaved", targetSectionId, rajoiteId],
           // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
           // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
           // tallennetaan muutosobjektit tilanhallintaan.
@@ -460,7 +452,7 @@ const Store = createStore({
               anchor: replaceAnchorPartWith(
                 changeObj.anchor,
                 0,
-                targetSectionId
+                `${targetSectionId}_${rajoiteId}`
               )
             };
           }, changeObjectsOfCurrentRestriction),

@@ -208,26 +208,21 @@ export function getRajoiteSelkokielella(
     )
   );
 
-  // console.info(selkokielinenTeksti);
-
   return selkokielinenTeksti;
 }
 
-export function getRajoiteListamuodossa(rajoiteId, changeObjects = [], format) {
+export function getRajoiteListamuodossa(rajoiteId, stateObjects = [], format) {
   let rakenne = {};
-
-  for (let i = 0; i < changeObjects.length; i += 1) {
+  for (let i = 0; i < stateObjects.length; i += 1) {
     rakenne = assocPath(
-      split(".", changeObjects[i].anchor),
-      changeObjects[i],
+      split(".", stateObjects[i].anchor),
+      stateObjects[i],
       rakenne
     );
   }
 
-  // console.info(rajoiteId, changeObjects);
-
   const lapikaydytKohdennukset = kayLapiKohdennukset(
-    path(["rajoitteet", rajoiteId, "kohdennukset"], rakenne),
+    path([`rajoitteet_${rajoiteId}`, "kohdennukset"], rakenne),
     [],
     format
   );

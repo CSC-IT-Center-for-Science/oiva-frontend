@@ -2,6 +2,7 @@ import {
   compose,
   flatten,
   groupBy,
+  last,
   mapObjIndexed,
   nth,
   prop,
@@ -17,7 +18,7 @@ export function rajoitteet(
 ) {
   // data.restrictions = luvalta tulevat rajoitteet
   const changeObjectsByRajoiteId = groupBy(
-    compose(nth(1), split("."), prop("anchor")),
+    compose(last, split("_"), nth(0), split("."), prop("anchor")),
     changeObjects
   );
 

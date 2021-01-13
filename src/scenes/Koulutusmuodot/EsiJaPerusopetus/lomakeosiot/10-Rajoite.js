@@ -92,7 +92,7 @@ const Rajoite = ({
         <div className="m-10">
           <Lomake
             isInExpandableRow={false}
-            anchor={sectionId}
+            anchor={`${sectionId}_${restrictionId}`}
             data={{
               osioidenData,
               rajoiteId: restrictionId,

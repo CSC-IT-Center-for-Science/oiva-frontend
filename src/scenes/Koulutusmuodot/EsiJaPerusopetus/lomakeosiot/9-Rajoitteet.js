@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import {
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 import { useIntl } from "react-intl";
 import { v4 as uuidv4 } from "uuid";
 import Lomake from "components/02-organisms/Lomake";
@@ -8,8 +10,6 @@ import { useAllSections } from "stores/lomakedata";
 import { useChangeObjects } from "../../../../stores/muutokset";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
 import Rajoite from "./10-Rajoite";
-import { getAnchorPart } from "utils/common";
-import { filter } from "ramda";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]
@@ -51,10 +51,7 @@ const Rajoitteet = ({
 
   const onRemoveRestriction = useCallback(
     rajoiteId => {
-      const updatedChangeObjects = filter(changeObj => {
-        return getAnchorPart(changeObj.anchor, 1) !== rajoiteId;
-      }, changeObjects);
-      setChanges(updatedChangeObjects, sectionId);
+      setChanges([], `${sectionId}_${rajoiteId}`);
     },
     [changeObjects, sectionId, setChanges]
   );
