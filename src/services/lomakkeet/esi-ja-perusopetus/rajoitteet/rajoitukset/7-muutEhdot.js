@@ -53,13 +53,11 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
                     endsWith(".kuvaus", stateObj.anchor)
                   );
                 }, osionData);
-                /** Näytetään kuvaus/kuvaukset seuraaville koodiarvoille:
-                 * 3 - Muu maailmankatsomuksellinen suuntaus
-                 * 8 - Muu kasvatusopillinen järjestelmä
-                 * 99 - Muu Ehto **/
+                /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
+                 * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                 */
                 const options =
-                  (muuEhto.koodiarvo === "3" || muuEhto.koodiarvo === "8" || muuEhto.koodiarvo === "99")
-                  && length(kuvausStateObjects) > 0 && path(["properties", "value"], kuvausStateObjects[0])
+                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(

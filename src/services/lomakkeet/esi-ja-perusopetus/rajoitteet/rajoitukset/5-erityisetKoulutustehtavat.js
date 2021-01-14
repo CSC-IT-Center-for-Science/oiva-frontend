@@ -61,12 +61,11 @@ export default async function getErityisetKoulutustehtavat(
                   );
                 }, osionData);
 
-                /** Näytetään kuvaus/kuvaukset seuraaville koodiarvoille (Jos ensimmäiseen kuvaukseen on kirjoitettu jotain)
-                 * 2 - Kieliin ja kulttuuriin painottuva opetus
-                 * 3 - Muu erityinen koulutustehtävä */
+                /** Näytetään kuvaukset erityisille koulutustehtäville, joilla on koodistossa
+                 * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                 */
                 const options =
-                  (erityinenKoulutustehtava.koodiarvo === "2" || erityinenKoulutustehtava.koodiarvo === "3")
-                  && length(kuvausStateObjects) > 0 && path(["properties", "value"], kuvausStateObjects[0])
+                  path(["metadata", "FI", "kayttoohje"], erityinenKoulutustehtava) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
