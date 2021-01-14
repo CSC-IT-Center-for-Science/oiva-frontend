@@ -19,6 +19,7 @@ const RajoitteetList = ({
   onRemoveRestriction,
   rajoitteet
 }) => {
+  console.info(rajoitteet);
   if (isEmpty(rajoitteet)) {
     return <p>Ei rajoitteita.</p>;
   } else {

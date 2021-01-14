@@ -64,7 +64,7 @@ export const defineBackendChangeObjects = async (
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
 
-  console.info(changeObjects);
+  console.info(JSON.stringify(changeObjects));
 
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();

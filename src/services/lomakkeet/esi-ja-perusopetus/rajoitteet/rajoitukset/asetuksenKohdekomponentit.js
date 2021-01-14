@@ -11,7 +11,7 @@ const maaraaikaOption = {
   label: "Määräaika"
 };
 
-export const getAsetuksenKohdekomponentti = (
+export const getAsetuksenKohdekomponentti = async (
   asetuksenKohdeavain,
   isReadOnly = false
 ) => {
@@ -155,9 +155,7 @@ export const getAsetuksenKohdekomponentti = (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [
-          maaraaikaOption
-        ],
+        options: [maaraaikaOption],
         value: ""
       }
     };

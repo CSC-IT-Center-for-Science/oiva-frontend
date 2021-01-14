@@ -1855,6 +1855,11 @@
     "filepath": "src/i18n/definitions/rajoitteet.js"
   },
   {
+    "id": "rajoitteet.lisaaAlirajoite",
+    "defaultMessage": "Lisää alirajoite",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
     "id": "user.ownOrganisation",
     "defaultMessage": "Oma organisaatio",
     "filepath": "src/i18n/definitions/user.js"

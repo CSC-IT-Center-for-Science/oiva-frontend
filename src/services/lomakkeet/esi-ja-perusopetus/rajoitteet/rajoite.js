@@ -68,7 +68,7 @@ async function getAsetuslomakekokonaisuus(
   index = 0,
   lomakerakenne = []
 ) {
-  const asetuksenKohdekomponentti = getAsetuksenKohdekomponentti(
+  const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
     asetuksenKohdeavain,
     isReadOnly
   );

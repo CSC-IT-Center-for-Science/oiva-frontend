@@ -3,6 +3,7 @@ import { append, find, includes, last, nth, path, prop, propEq } from "ramda";
 const koodistoMapping = {
   maaraaika: "kujalisamaareet",
   opetustehtavat: "opetustehtava",
+  opiskelijamaarat: "oppilasopiskelijamaara",
   toimintaalue: "opetustaAntavatKunnat",
   opetuskielet: "opetuskieli"
 };
@@ -22,20 +23,26 @@ export const createAlimaarayksetBEObjects = (
   muutosobjektit = [],
   index = 0
 ) => {
-  const isMaaraAikaRajoite = !!find(asetus => includes(".alkamispaiva", asetus.anchor), asetukset);
+  const isMaaraAikaRajoite = false;
+  // !!find(
+  //   asetus => includes(".alkamispaiva", asetus.anchor),
+  //   asetukset
+  // );
   const asetusChangeObj = nth(index, asetukset);
   const valueChangeObj = nth(index + 1, asetukset);
-  const valueValueOfAsetusChangeObj = path(["properties", "value", "value"], asetusChangeObj);
-  const sectionOfAsetusChangeObj = path(
-    ["properties", "metadata", "section"],
+  const valueValueOfAsetusChangeObj = path(
+    ["properties", "value", "value"],
     asetusChangeObj
   );
+  const sectionOfAsetusChangeObj =
+    path(["properties", "metadata", "section"], asetusChangeObj) ||
+    valueValueOfAsetusChangeObj;
 
   let koodiarvo =
     path(["properties", "value", "value"], valueChangeObj) ||
     path(["properties", "metadata", "koodiarvo"], asetusChangeObj);
 
-  if(isMaaraAikaRajoite) {
+  if (isMaaraAikaRajoite) {
     koodiarvo = "3";
   }
 
@@ -53,11 +60,11 @@ export const createAlimaarayksetBEObjects = (
     koodisto = prop(sectionOfAsetusChangeObj, koodistoMapping);
   }
 
-  const tunniste = paalomakkeenBEMuutos.kohde.tunniste
+  const tunniste = path(["kohde", "tunniste"], paalomakkeenBEMuutos);
 
   const alimaarayksenParent =
     index === 0
-      ? paalomakkeenBEMuutos.generatedId
+      ? prop("generatedId", paalomakkeenBEMuutos)
       : prop("generatedId", last(muutosobjektit));
 
   const alimaarays = {

@@ -16,6 +16,7 @@ export default defineMessages({
   },
   osionInfoteksti: {
     id: "opiskelijamaara.osionInfoteksti",
-    defaultMessage: "Tässä on kuvaus"
+    defaultMessage:
+      "Opiskelijamäärää ei ole oletusarvoisesti rajoitettu. Ole hyvä ja tarkista rajoitteet lomakkeen lopusta."
   }
 });

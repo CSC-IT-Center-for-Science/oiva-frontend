@@ -30,6 +30,7 @@ import {
   startsWith,
   values
 } from "ramda";
+import { muutokset } from "../scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 import {
   getAnchorPart,
   getLatestChangesByAnchor,
@@ -91,16 +92,7 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  initialState: {
-    changeObjects: {
-      saved: {},
-      unsaved: {},
-      underRemoval: {}
-    },
-    focusOn: null,
-    latestChanges: {},
-    validity: {}
-  },
+  initialState: muutokset,
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------

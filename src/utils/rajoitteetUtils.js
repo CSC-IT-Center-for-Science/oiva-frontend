@@ -8,14 +8,54 @@ import {
   join,
   keys,
   map,
+  mapObjIndexed,
+  nth,
   path,
   pathEq,
   prop,
+  sortBy,
   split,
   toLower,
   values
 } from "ramda";
 import moment from "moment";
+
+const pisteytys = {
+  rajoite: 0,
+  kohde: 1,
+  valikko: 2,
+  tarkennin: 3,
+  kohdennukset: 1000,
+  asetukset: 5
+};
+
+const calculateAnchorValue = (anchorParts, index = 0, score = 0) => {
+  const anchorPart = nth(index, anchorParts);
+  if (anchorPart) {
+    const uudetPisteet = pisteytys[anchorPart] || parseInt(anchorPart, 10);
+    return calculateAnchorValue(
+      anchorParts,
+      index + 1,
+      pisteytys[anchorPart] ? score + uudetPisteet * Math.pow(2, index) : score
+    );
+  }
+  return score;
+};
+
+export function sortRestrictions(rajoitteetByRajoiteId) {
+  return mapObjIndexed(rajoite => {
+    return sortBy(
+      prop("score"),
+      map(changeObj => {
+        const { anchor } = changeObj;
+        return {
+          ...changeObj,
+          score: calculateAnchorValue(split(".", anchor))
+        };
+      }, rajoite)
+    );
+  }, rajoitteetByRajoiteId);
+}
 
 function getAmountOfInstances(substring, string) {
   const re = new RegExp(substring, "g");

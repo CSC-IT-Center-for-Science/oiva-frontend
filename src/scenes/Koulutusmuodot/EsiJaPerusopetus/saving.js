@@ -44,7 +44,7 @@ export async function createObjectToSave(
         R.mapObjIndexed(rajoite => {
           return R.pathEq(
             ["0", "properties", "value", "value"],
-            "opetustehtavat",
+            "opiskelijamaarat",
             rajoite
           )
             ? rajoite
@@ -170,7 +170,21 @@ export async function createObjectToSave(
 
   // 6. OPPILAS-/OPISKELIJAMÄÄRÄT
   const opiskelijamaarat = await opiskelijamaaratHelper.defineBackendChangeObjects(
-    changeObjects.opiskelijamaarat,
+    {
+      opiskelijamaarat: changeObjects.opiskelijamaarat,
+      rajoitteetByRajoiteId: R.reject(
+        R.isNil,
+        R.mapObjIndexed(rajoite => {
+          return R.pathEq(
+            ["0", "properties", "value", "value"],
+            "opiskelijamaarat",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      )
+    },
     maaraystyypit,
     locale,
     kohteet
