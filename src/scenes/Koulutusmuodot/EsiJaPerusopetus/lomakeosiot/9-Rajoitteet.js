@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
-import {
-  useChangeObjectsByAnchorWithoutUnderRemoval
-} from "stores/muutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useIntl } from "react-intl";
 import { v4 as uuidv4 } from "uuid";
 import Lomake from "components/02-organisms/Lomake";
@@ -83,7 +81,6 @@ const Rajoitteet = ({
           showCategoryTitles={true}
         ></Lomake>
       )}
-      {render ? render() : null}
     </React.Fragment>
   );
 };

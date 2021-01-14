@@ -4,10 +4,8 @@ import { addIndex, isEmpty, mapObjIndexed, values } from "ramda";
 import Lomake from "components/02-organisms/Lomake";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { Typography } from "@material-ui/core";
-
-const constants = {
-  formLocation: ["esiJaPerusopetus", "rajoite"]
-};
+import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";
+import HtmlContent from "components/01-molecules/HtmlContent";
 
 const defaultProps = {
   areTitlesVisible: true,
@@ -27,31 +25,23 @@ const RajoitteetList = ({
     return (
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
         {values(
-          addIndex(mapObjIndexed)((rajoite, rajoiteId, ___, index) => {
+          mapObjIndexed((rajoite, rajoiteId) => {
+            console.info(rajoite, rajoiteId);
+            const rajoiteListamuodossa = getRajoiteListamuodossa(
+              rajoiteId,
+              rajoite.changeObjects,
+              "list"
+            );
             return (
               <div
                 className="flex flex-col p-6 border border-gray-300"
                 key={rajoiteId}
               >
                 <Typography component="h3" variant="h3">
-                  Rajoite {index + 1}
+                  Rajoite {rajoiteId}
                 </Typography>
                 <div className="flex-1">
-                  <Lomake
-                    anchor={"rajoitteet"}
-                    data={{
-                      rajoiteId,
-                      sectionId: "rajoitelomake",
-                      rajoiteChangeObjects: rajoite.changeObjects
-                    }}
-                    lomakedataAnchor={`rajoitteet_${rajoiteId}`}
-                    isInExpandableRow={false}
-                    isPreviewModeOn={true}
-                    isReadOnly={true}
-                    isSavingState={false}
-                    path={constants.formLocation}
-                    showCategoryTitles={areTitlesVisible}
-                  ></Lomake>
+                  <HtmlContent content={rajoiteListamuodossa} />
                 </div>
                 <div className="flex justify-between pt-6">
                   <div className="mr-2">

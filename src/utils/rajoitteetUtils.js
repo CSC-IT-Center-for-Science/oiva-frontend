@@ -31,7 +31,6 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 }
 
 function getTaydennyssana(key) {
-  console.info(key);
   const taydennyssanat = {
     alkamispaiva: {
       pre: "ajalla",
@@ -81,8 +80,13 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
                 asetus.tarkennin[tarkenninavain]
               ) ||
               path(["properties", "value"], asetus.tarkennin[tarkenninavain]);
-            const muokattuTarkentimenArvo = moment(tarkentimenArvo, "YYYY-MM-DDTHH:mm:ss.SSSZ", true).isValid() 
-              ? moment(tarkentimenArvo).format("DD.MM.YYYY") : tarkentimenArvo;
+            const muokattuTarkentimenArvo = moment(
+              tarkentimenArvo,
+              "YYYY-MM-DDTHH:mm:ss.SSSZ",
+              true
+            ).isValid()
+              ? moment(tarkentimenArvo).format("DD.MM.YYYY")
+              : tarkentimenArvo;
 
             if (taydennyssana) {
               const item = join(
@@ -165,6 +169,7 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
 }
 
 export function kayLapiKohdennukset(kohdennukset, lista = [], format) {
+  console.info(kohdennukset, lista, format);
   return join(
     " ",
     values(
@@ -173,11 +178,6 @@ export function kayLapiKohdennukset(kohdennukset, lista = [], format) {
       }, kohdennukset)
     )
   );
-  // return `<ul>${values(
-  //   map(kohdennus => {
-  //     return `<li>${kayLapiKohdennus(kohdennus, lista, format)}`;
-  //   }, kohdennukset)
-  // )}`;
 }
 
 export function getRajoiteSelkokielella(
@@ -212,6 +212,12 @@ export function getRajoiteSelkokielella(
 }
 
 export function getRajoiteListamuodossa(rajoiteId, stateObjects = [], format) {
+  console.info(
+    "PALAUTETAAN RAJOITE LISTAMUODOSSA",
+    rajoiteId,
+    stateObjects,
+    format
+  );
   let rakenne = {};
   for (let i = 0; i < stateObjects.length; i += 1) {
     rakenne = assocPath(

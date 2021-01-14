@@ -138,97 +138,88 @@ const LupanakymaA = React.memo(
             ></Lomake>
           </div>
         )}
-
         <Rajoitteet
           isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           sectionId="rajoitteet"
-          render={() => {
-            return (
-              <React.Fragment>
-                <Opetustehtavat
-                  code="1"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={opetustehtavamaaraykset}
-                  sectionId="opetustehtavat"
-                  rajoitteet={opetustehtavatRajoitteet}
-                />
-
-                {OpetustaAntavatKunnatJSX ? (
-                  <OpetustaAntavatKunnatJSX maaraykset={maaraykset} />
-                ) : (
-                  <OpetustaAntavatKunnat
-                    code="2"
-                    isPreviewModeOn={isPreviewModeOn}
-                    lupakohde={lupakohteet[2]}
-                    maaraykset={toimintaaaluemaaraykset}
-                    rajoitteet={toimintaalueRajoitteet}
-                    sectionId="toimintaalue"
-                    title={intl.formatMessage(education.opetustaAntavatKunnat)}
-                    valtakunnallinenMaarays={valtakunnallinenMaarays}
-                  />
-                )}
-
-                <Opetuskieli
-                  code="3"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste("opetuskieli", maaraykset)}
-                  rajoitteet={opetuskieletRajoitteet}
-                  sectionId={"opetuskielet"}
-                  title={intl.formatMessage(common.opetuskieli)}
-                />
-
-                <OpetuksenJarjestamismuoto
-                  code="4"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={opetuksenJarjestamismuotomaaraykset}
-                  rajoitteet={opetuksenJarjestamismuodotRajoitteet}
-                  sectionId={"opetuksenJarjestamismuodot"}
-                  title={intl.formatMessage(
-                    education.opetuksenJarjestamismuoto
-                  )}
-                />
-
-                <ErityisetKoulutustehtavat
-                  code="5"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste(
-                    "erityinenkoulutustehtava",
-                    maaraykset
-                  )}
-                  rajoitteet={erityisetKoulutustehtavatRajoitteet}
-                  sectionId={"erityisetKoulutustehtavat"}
-                  title={intl.formatMessage(
-                    common.VSTLupaSectionTitleSchoolMissionSpecial
-                  )}
-                />
-
-                <Opiskelijamaarat
-                  code="6"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste(
-                    "oppilasopiskelijamaara",
-                    maaraykset
-                  )}
-                  sectionId={"opiskelijamaarat"}
-                  title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
-                />
-
-                <MuutEhdot
-                  code="7"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste(
-                    "muutkoulutuksenjarjestamiseenliittyvatehdot",
-                    maaraykset
-                  )}
-                  rajoitteet={muutEhdotRajoitteet}
-                  sectionId={"muutEhdot"}
-                  title={intl.formatMessage(education.muutEhdotTitle)}
-                />
-              </React.Fragment>
-            );
-          }}
         />
+
+        <React.Fragment>
+          <Opetustehtavat
+            code="1"
+            isPreviewModeOn={isPreviewModeOn}
+            maaraykset={opetustehtavamaaraykset}
+            sectionId="opetustehtavat"
+            rajoitteet={opetustehtavatRajoitteet}
+          />
+
+          {OpetustaAntavatKunnatJSX ? (
+            <OpetustaAntavatKunnatJSX maaraykset={maaraykset} />
+          ) : (
+            <OpetustaAntavatKunnat
+              code="2"
+              isPreviewModeOn={isPreviewModeOn}
+              lupakohde={lupakohteet[2]}
+              maaraykset={toimintaaaluemaaraykset}
+              rajoitteet={toimintaalueRajoitteet}
+              sectionId="toimintaalue"
+              title={intl.formatMessage(education.opetustaAntavatKunnat)}
+              valtakunnallinenMaarays={valtakunnallinenMaarays}
+            />
+          )}
+
+          <Opetuskieli
+            code="3"
+            isPreviewModeOn={isPreviewModeOn}
+            maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+            rajoitteet={opetuskieletRajoitteet}
+            sectionId={"opetuskielet"}
+            title={intl.formatMessage(common.opetuskieli)}
+          />
+
+          <OpetuksenJarjestamismuoto
+            code="4"
+            isPreviewModeOn={isPreviewModeOn}
+            maaraykset={opetuksenJarjestamismuotomaaraykset}
+            rajoitteet={opetuksenJarjestamismuodotRajoitteet}
+            sectionId={"opetuksenJarjestamismuodot"}
+            title={intl.formatMessage(education.opetuksenJarjestamismuoto)}
+          />
+
+          <ErityisetKoulutustehtavat
+            code="5"
+            isPreviewModeOn={isPreviewModeOn}
+            maaraykset={filterByTunniste(
+              "erityinenkoulutustehtava",
+              maaraykset
+            )}
+            rajoitteet={erityisetKoulutustehtavatRajoitteet}
+            sectionId={"erityisetKoulutustehtavat"}
+            title={intl.formatMessage(
+              common.VSTLupaSectionTitleSchoolMissionSpecial
+            )}
+          />
+
+          <Opiskelijamaarat
+            code="6"
+            isPreviewModeOn={isPreviewModeOn}
+            maaraykset={filterByTunniste("oppilasopiskelijamaara", maaraykset)}
+            sectionId={"opiskelijamaarat"}
+            title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
+          />
+
+          <MuutEhdot
+            code="7"
+            isPreviewModeOn={isPreviewModeOn}
+            maaraykset={filterByTunniste(
+              "muutkoulutuksenjarjestamiseenliittyvatehdot",
+              maaraykset
+            )}
+            rajoitteet={muutEhdotRajoitteet}
+            sectionId={"muutEhdot"}
+            title={intl.formatMessage(education.muutEhdotTitle)}
+          />
+        </React.Fragment>
       </div>
     );
   },
