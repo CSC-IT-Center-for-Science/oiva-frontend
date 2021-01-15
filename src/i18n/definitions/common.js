@@ -1222,5 +1222,21 @@ export default defineMessages({
   opetusJotaLupaKoskee: {
     id: "common.opetusJotaLupaKoskee",
     defaultMessage: "Opetus, jota lupa koskee"
+  },
+  autocompleteValitse: {
+    id: "common.autocompleteValitse",
+    defaultMessage: "Valitse..."
+  },
+  asianumero: {
+    id: "common.asianumero",
+    defaultMessage: "asianumero"
+  },
+  paatospaiva: {
+    id: "common.paatospaiva",
+    defaultMessage: "Päätöspäivä"
+  },
+  voimaantulopaiva: {
+    id: "common.voimaantulopaiva",
+    defaultMessage: "Voimaantulopäivä"
   }
 });
