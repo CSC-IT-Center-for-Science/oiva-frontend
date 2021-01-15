@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
+import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
 import {
   useChangeObjects,
@@ -8,15 +9,12 @@ import {
 } from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { isEmpty, length, prop } from "ramda";
+import { has, isEmpty, omit } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 import { getReducedStructure } from "../CategorizedListRoot/utils";
 import FormTitle from "components/00-atoms/FormTitle";
 import { getReducedStructureIncludingChanges } from "./utils";
-import { useGetLomake } from "../../../hooks/useGetLomake";
-import { useEffect } from "react";
 import equal from "react-fast-compare";
-import Loading from "modules/Loading";
 
 const defaultProps = {
   data: {},
@@ -60,6 +58,15 @@ const Lomake = React.memo(
   }) => {
     const intl = useIntl();
 
+    const rowLocalizations = isEmpty(rowMessages)
+      ? {
+          undo: intl.formatMessage(formMessages.undo),
+          changesTest: intl.formatMessage(formMessages.changesText)
+        }
+      : rowMessages;
+
+    const [{ focusOn }] = useChangeObjects();
+
     const [
       changeObjects,
       actions
@@ -71,50 +78,7 @@ const Lomake = React.memo(
       anchor: lomakedataAnchor || anchor
     });
 
-    // Lomakkeen noutaminen
-    const [lomake, isLoading] = useGetLomake(
-      isPreviewModeOn ? "preview" : mode,
-      isPreviewModeOn ? [] : changeObjects,
-      data,
-      functions,
-      { isPreviewModeOn, isReadOnly },
-      intl.locale,
-      _path,
-      prefix
-    );
-
-    // Lomakkeen oikeellisuuden asettaminen
-    useEffect(() => {
-      if (lomake) {
-        lomakedataActions.setValidity(lomake.isValid, anchor);
-      }
-    }, [lomake]);
-
-    // Lomakedatan asettaminen
-    useEffect(() => {
-      if (lomake) {
-        const lomakedata = lomake.structure
-          ? getReducedStructureIncludingChanges(
-              lomakedataAnchor || anchor,
-              getReducedStructure(lomake.structure),
-              changeObjects
-            )
-          : [];
-        console.info(_path, isSavingState);
-        if (isSavingState) {
-          lomakedataActions.setLomakedata(lomakedata, anchor);
-        }
-      }
-    }, [changeObjects, isSavingState, lomake]);
-
-    const rowLocalizations = isEmpty(rowMessages)
-      ? {
-          undo: intl.formatMessage(formMessages.undo),
-          changesTest: intl.formatMessage(formMessages.changesText)
-        }
-      : rowMessages;
-
-    const [{ focusOn }] = useChangeObjects();
+    const [lomake, setLomake] = useState();
 
     const onChangesRemove = useCallback(
       anchor => {
@@ -134,7 +98,83 @@ const Lomake = React.memo(
       actions.setFocusOn(null);
     }, [actions]);
 
-    if (length(prop("structure", lomake))) {
+    useEffect(() => {
+      (async () => {
+        async function fetchLomake(_mode, _changeObjects, _data, _functions) {
+          return await getLomake(
+            _mode || mode,
+            _changeObjects || changeObjects,
+            _data || data,
+            _functions || functions,
+            { isPreviewModeOn, isReadOnly },
+            intl.locale,
+            _path,
+            prefix
+          );
+        }
+
+        const lomake = await fetchLomake();
+
+        const lomakedata =
+          lomake && lomake.length
+            ? getReducedStructureIncludingChanges(
+                lomakedataAnchor || anchor,
+                getReducedStructure(lomake),
+                changeObjects
+              )
+            : [];
+
+        /**
+         * Osa lomakkeista voi olla sellaisia, että niiden tilan
+         * tallentaminen aiheuttaa liikaa uudelleen lataamisia.
+         * Esimerkkinä tällaisesta lomakkeesta on rajoitelomake.
+         * Rajoitelomake hyödyntää lomakedataa ja näin ollen
+         * päivittyy datan päivittyessä. Jos rajoitelomakkeen
+         * dataa tallennetaan samaan paikkaan, kuin muiden
+         * lomakkeiden, aiheutuu siitä ikiluuppi.
+         */
+        if (isSavingState) {
+          lomakedataActions.setLomakedata(lomakedata, anchor);
+        }
+
+        /**
+         * Esikatselulomake tarvitsee lomakerakenteen luontia varten
+         * muokkaustilaisen lomakkeen nykytilan.
+         */
+        if (isPreviewModeOn) {
+          const previewLomake = await fetchLomake("preview", [], {
+            ...data,
+            lomakedata
+          });
+          setLomake(previewLomake.structure || previewLomake);
+        } else {
+          if (has("isValid", lomake)) {
+            lomakedataActions.setValidity(lomake.isValid, anchor);
+          }
+          setLomake(lomake.structure || lomake);
+        }
+      })();
+
+      return function cancel() {
+        // Asynkronisten toimintojen keskeyttäminen
+      };
+    }, [
+      _path,
+      anchor,
+      changeObjects,
+      data,
+      functions,
+      intl.locale,
+      isPreviewModeOn,
+      isReadOnly,
+      isSavingState,
+      lomakedataActions,
+      lomakedataAnchor,
+      mode,
+      prefix
+    ]);
+
+    if (Array.isArray(lomake) && lomake.length) {
       return (
         <div>
           {code || formTitle ? (
@@ -161,7 +201,7 @@ const Lomake = React.memo(
                 <CategorizedListRoot
                   anchor={anchor}
                   focusOn={focusOn}
-                  categories={lomake.structure}
+                  categories={lomake}
                   changes={changeObjects}
                   isReadOnly={isReadOnly}
                   onFocus={onFocus}
@@ -178,7 +218,7 @@ const Lomake = React.memo(
             <CategorizedListRoot
               anchor={anchor}
               focusOn={focusOn}
-              categories={lomake.structure}
+              categories={lomake}
               isPreviewModeOn={isPreviewModeOn}
               isReadOnly={isReadOnly}
               changes={changeObjects}
@@ -193,15 +233,12 @@ const Lomake = React.memo(
           )}
         </div>
       );
-    } else if (isLoading) {
-      return <Loading />;
     } else {
-      console.info(_path, "Tyhjä lomake");
-      return <p>Tyhjä lomake</p>;
+      return null;
     }
   },
   (cp, np) => {
-    return equal(cp, np);
+    return equal(omit(["functions"], cp), omit(["functions"], np));
   }
 );
 

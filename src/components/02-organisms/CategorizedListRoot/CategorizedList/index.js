@@ -899,7 +899,7 @@ const CategorizedList = props => {
                         kriteerit={propsObj.kriteerit}
                         onModifyRestriction={component.onModifyRestriction}
                         onRemoveRestriction={component.onRemoveRestriction}
-                        rajoite={props.rajoite}
+                        rajoite={propsObj.rajoite}
                         rajoitusPropValue={propsObj.rajoitusPropValue}
                       />
                     )}

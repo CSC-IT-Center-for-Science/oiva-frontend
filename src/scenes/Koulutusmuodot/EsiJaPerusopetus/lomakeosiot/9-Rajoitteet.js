@@ -81,6 +81,7 @@ const Rajoitteet = ({
           showCategoryTitles={true}
         ></Lomake>
       )}
+      {render ? render() : null}
     </React.Fragment>
   );
 };

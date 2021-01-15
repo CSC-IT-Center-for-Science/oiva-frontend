@@ -63,9 +63,6 @@ export const defineBackendChangeObjects = async (
   kohteet
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
-
-  console.info(JSON.stringify(changeObjects));
-
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   // Luodaan LISÄYS
@@ -133,7 +130,7 @@ export const defineBackendChangeObjects = async (
         tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
       };
 
-      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Muodostetaan tehdyistä rajoituksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
       const alimaaraykset = values(

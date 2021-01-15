@@ -70,7 +70,8 @@ async function getAsetuslomakekokonaisuus(
 ) {
   const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
     asetuksenKohdeavain,
-    isReadOnly
+    isReadOnly,
+    locale
   );
 
   const asetuksenTarkenninlomakkeenAvain =
@@ -535,25 +536,21 @@ export async function rajoitelomake(
   }
 
   const groupedChangeObjects = groupChangeObjects(changeObjects);
-  const kohdennuksetChangeObjects = prop(
-    "kohdennukset",
-    groupedChangeObjects
-  );
+  const kohdennuksetChangeObjects = prop("kohdennukset", groupedChangeObjects);
 
   /**
    * Palautettava lomakemerkkaus
    */
-  let lomakerakenne =
-    await getKohdennuksetRecursively(
-      0,
-      null,
-      data,
-      booleans,
-      locale,
-      changeObjects,
-      functions,
-      kohdennuksetChangeObjects
-    )
+  let lomakerakenne = await getKohdennuksetRecursively(
+    0,
+    null,
+    data,
+    booleans,
+    locale,
+    changeObjects,
+    functions,
+    kohdennuksetChangeObjects
+  );
 
   return lomakerakenne;
 }

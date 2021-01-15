@@ -110,6 +110,7 @@ const fetchBaseData = async (
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
    */
   const raw = {
+    ajalla: await getRaw("ajalla", backendRoutes.ajalla.path, keys),
     elykeskukset: await getRaw(
       "elykeskukset",
       backendRoutes.elykeskukset.path,
@@ -195,6 +196,11 @@ const fetchBaseData = async (
     kujalisamaareet: await getRaw(
       "kujalisamaareet",
       backendRoutes.kujalisamaareet.path,
+      keys
+    ),
+    joistalisaksi: await getRaw(
+      "joistalisaksi",
+      backendRoutes.joistalisaksi.path,
       keys
     ),
     kunnat: await getRaw("kunnat", backendRoutes.kunnat.path, keys),
@@ -307,6 +313,25 @@ const fetchBaseData = async (
     elykeskukset: raw.elykeskukset
   };
 
+  result.ajalla = raw.ajalla
+    ? await localforage.setItem(
+        "ajalla",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maare => {
+            return omit(["koodiArvo"], {
+              ...maare,
+              koodiarvo: maare.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maare.metadata)
+              )
+            });
+          }, raw.ajalla).filter(Boolean)
+        )
+      )
+    : undefined;
+
   result.kielet = raw.kielet
     ? await localforage.setItem(
         "kielet",
@@ -411,6 +436,25 @@ const fetchBaseData = async (
           map(koulutustyyppi => {
             return initializeKoulutustyyppi(koulutustyyppi);
           }, raw.koulutustyypit)
+        )
+      )
+    : undefined;
+
+  result.joistaLisaksi = raw.joistalisaksi
+    ? await localforage.setItem(
+        "joistaLisaksi",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maare => {
+            return omit(["koodiArvo"], {
+              ...maare,
+              koodiarvo: maare.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maare.metadata)
+              )
+            });
+          }, raw.joistalisaksi).filter(Boolean)
         )
       )
     : undefined;

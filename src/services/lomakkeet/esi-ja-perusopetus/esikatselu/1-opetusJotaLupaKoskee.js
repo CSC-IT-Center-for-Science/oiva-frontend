@@ -11,7 +11,6 @@ export async function previewOfOpetusJotaLupaKoskee({
   if (!lomakedata || !lomakedata.length) {
     return structure;
   }
-
   /**
    * Muodostetaan lista-alkiot hyödyntäen ListItem-komponenttiamme.
    * Huomioidaan vain opetustehtävät, jotka ovat aktivoituina lomakkeella
@@ -34,7 +33,8 @@ export async function previewOfOpetusJotaLupaKoskee({
                 properties: {
                   areTitlesVisible: false,
                   isReadOnly: true,
-                  rajoiteId
+                  rajoiteId,
+                  rajoite
                 }
               }
             : {

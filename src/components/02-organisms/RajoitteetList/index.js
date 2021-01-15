@@ -19,7 +19,6 @@ const RajoitteetList = ({
   onRemoveRestriction,
   rajoitteet
 }) => {
-  console.info(rajoitteet);
   if (isEmpty(rajoitteet)) {
     return <p>Ei rajoitteita.</p>;
   } else {
@@ -27,10 +26,9 @@ const RajoitteetList = ({
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
         {values(
           mapObjIndexed((rajoite, rajoiteId) => {
-            console.info(rajoite, rajoiteId);
             const rajoiteListamuodossa = getRajoiteListamuodossa(
-              rajoiteId,
               rajoite.changeObjects,
+              rajoiteId,
               "list"
             );
             return (

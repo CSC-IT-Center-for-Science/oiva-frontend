@@ -24,11 +24,7 @@ export function rajoitteet(
 
   const rajoitteetGrouped = mapObjIndexed(changeObjects => {
     return {
-      changeObjects,
-      elements: groupBy(
-        compose(nth(2), split("."), prop("anchor")),
-        changeObjects
-      )
+      changeObjects
     };
   }, changeObjectsByRajoiteId);
 

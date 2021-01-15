@@ -53,8 +53,6 @@ export const getKohteenTarkenninkomponentit = async (
     muutEhdot: getMuutEhdot
   };
 
-  console.info(osioidenData);
-
   const fn = prop(kohdeavain, komponentitByKey);
 
   return fn ? await fn(isReadOnly, prop(kohdeavain, osioidenData), locale) : [];

@@ -11,16 +11,20 @@ import getErityisetKoulutustehtavat from "./5-erityisetKoulutustehtavat";
 import getMuutEhdot from "./7-muutEhdot";
 
 const asetuksenTarkenninlomakkeet = {
-  enintaan: getLukumaarakomponentit,
+  // Enintään
+  kujalisamaareet_1: getLukumaarakomponentit,
+  // Vähintään
+  kujalisamaareet_2: getLukumaarakomponentit,
+  // Ajalla
+  kujalisamaareetlisaksiajalla_1: getMaaraaikakomponentit,
+
   erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
-  maaraaika: getMaaraaikakomponentit,
   muutEhdot: getMuutEhdot,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
   opetuskielet: getOpetuskielikomponentit,
   opetustehtavat: getOpetustehtavakomponentit,
   opiskelijamaarat: getLukumaarakomponentit,
-  toimintaalue: getOpetustaAntavatKunnat,
-  vahintaan: getLukumaarakomponentit
+  toimintaalue: getOpetustaAntavatKunnat
 };
 
 export const getAsetuksenTarkenninkomponentit = async (
@@ -33,11 +37,16 @@ export const getAsetuksenTarkenninkomponentit = async (
     return false;
   }
   const tarkenninFn = prop(asetuksenKohdeavain, asetuksenTarkenninlomakkeet);
-  return (
-    (await tarkenninFn(
-      isReadOnly,
-      prop(asetuksenKohdeavain, osioidenData),
-      locale
-    )) || []
-  );
+  if (tarkenninFn) {
+    return (
+      (await tarkenninFn(
+        isReadOnly,
+        prop(asetuksenKohdeavain, osioidenData),
+        locale
+      )) || []
+    );
+  } else {
+    console.warn(asetuksenKohdeavain, "tarkenninkomponentteja ei löytynyt");
+    return [];
+  }
 };

@@ -21,7 +21,12 @@ export const useGetLomake = (
 
     async function fetchLomake() {
       try {
-        console.info("Noudetaan lomake", _path);
+        console.info(
+          isPreviewModeOn ? "Preview mode: " : "Edit mode: ",
+          "Noudetaan lomake",
+          _path,
+          mode
+        );
         setIsLoading(true);
         const lomakerakenne = await getLomake(
           mode,
@@ -43,17 +48,12 @@ export const useGetLomake = (
           : lomakerakenne;
 
         if (!equal(lomakeJaSenMetadata, lomake)) {
-          console.info(
-            "Asetetaan lomake ja sen metadata.",
-            _path,
-            "Vanha lomake: ",
-            lomake,
-            lomakeJaSenMetadata
-          );
+          // console.info("Asetetaan lomake", _path, isPreviewModeOn);
           setLomake(lomakeJaSenMetadata);
+        } else {
+          // console.info("Sama lomake", _path, isPreviewModeOn, lomake);
         }
       } catch (err) {
-        console.info(err);
         setIsLoading(null);
         if (axios.isCancel(err)) {
           return console.info(err);
@@ -64,8 +64,6 @@ export const useGetLomake = (
     fetchLomake();
 
     return () => {
-      console.log("Calling cleanup", _path);
-
       // here we cancel preveous http request that did not complete yet
       cancelTokenSource.cancel(
         "Cancelling previous http call because a new one was made ;-)"

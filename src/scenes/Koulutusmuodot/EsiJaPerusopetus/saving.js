@@ -1,5 +1,24 @@
 import moment from "moment";
-import * as R from "ramda";
+import {
+  compose,
+  dissoc,
+  filter,
+  find,
+  flatten,
+  groupBy,
+  includes,
+  isNil,
+  last,
+  map,
+  mapObjIndexed,
+  nth,
+  path,
+  pathEq,
+  prop,
+  propEq,
+  reject,
+  split
+} from "ramda";
 import * as muutEhdotHelper from "helpers/poMuutEhdot";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
 import * as opetusHelper from "helpers/opetustehtavat";
@@ -8,7 +27,6 @@ import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
 import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat";
 import { koulutustyypitMap } from "../../../utils/constants";
-import { getAnchorPart } from "../../../utils/common";
 
 export async function createObjectToSave(
   locale,
@@ -23,12 +41,12 @@ export async function createObjectToSave(
   const allAttachmentsRaw = [];
 
   // ... without tiedosto-property
-  const allAttachments = R.map(attachment => {
-    return R.dissoc("tiedosto", attachment);
+  const allAttachments = map(attachment => {
+    return dissoc("tiedosto", attachment);
   }, allAttachmentsRaw);
 
-  const rajoitteetByRajoiteId = R.groupBy(
-    rajoite => getAnchorPart(rajoite.anchor, 1),
+  const rajoitteetByRajoiteId = groupBy(
+    compose(last, split("_"), nth(0), split("."), prop("anchor")),
     changeObjects.rajoitteet
   );
 
@@ -39,12 +57,12 @@ export async function createObjectToSave(
   const opetus = await opetusHelper.defineBackendChangeObjects(
     {
       opetustehtavat: changeObjects.opetustehtavat,
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
-            "opiskelijamaarat",
+            "opetustehtavat",
             rajoite
           )
             ? rajoite
@@ -59,33 +77,33 @@ export async function createObjectToSave(
 
   // 2. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
   const categoryFilterChangeObj =
-    R.find(
-      R.propEq("anchor", "toimintaalue.categoryFilter"),
+    find(
+      propEq("anchor", "toimintaalue.categoryFilter"),
       changeObjects.toimintaalue || []
     ) || {};
 
   const opetustaAntavatKunnat = await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
     {
-      quickFilterChanges: R.path(
+      quickFilterChanges: path(
         ["properties", "quickFilterChanges"],
         categoryFilterChangeObj
       ),
-      changesByProvince: R.path(
+      changesByProvince: path(
         ["properties", "changesByProvince"],
         categoryFilterChangeObj
       ),
-      lisatiedot: R.find(
-        R.compose(R.includes(".lisatiedot."), R.prop("anchor")),
+      lisatiedot: find(
+        compose(includes(".lisatiedot."), prop("anchor")),
         changeObjects.toimintaalue || []
       ),
-      ulkomaa: R.filter(
-        R.compose(R.includes(".ulkomaa."), R.prop("anchor")),
+      ulkomaa: filter(
+        compose(includes(".ulkomaa."), prop("anchor")),
         changeObjects.toimintaalue || []
       ),
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
             "toimintaalue",
             rajoite
@@ -95,7 +113,7 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
-    R.find(R.propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
+    find(propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
     maaraystyypit,
     lupa.maaraykset,
     locale,
@@ -106,10 +124,10 @@ export async function createObjectToSave(
   const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
     {
       opetuskielet: changeObjects.opetuskielet,
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
             "opetuskielet",
             rajoite
@@ -128,10 +146,10 @@ export async function createObjectToSave(
   const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
     {
       opetuksenJarjestamismuodot: changeObjects.opetuksenJarjestamismuodot,
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
             "opetuksenJarjestamismuodot",
             rajoite
@@ -150,10 +168,10 @@ export async function createObjectToSave(
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
     {
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
             "erityisetKoulutustehtavat",
             rajoite
@@ -172,10 +190,10 @@ export async function createObjectToSave(
   const opiskelijamaarat = await opiskelijamaaratHelper.defineBackendChangeObjects(
     {
       opiskelijamaarat: changeObjects.opiskelijamaarat,
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
             "opiskelijamaarat",
             rajoite
@@ -194,10 +212,10 @@ export async function createObjectToSave(
   const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
     {
       muutEhdot: changeObjects.muutEhdot,
-      rajoitteetByRajoiteId: R.reject(
-        R.isNil,
-        R.mapObjIndexed(rajoite => {
-          return R.pathEq(
+      rajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
             ["0", "properties", "value", "value"],
             "muutEhdot",
             rajoite
@@ -230,7 +248,7 @@ export async function createObjectToSave(
     voimassaloppupvm: null, // TODO: find the correct value somehow,
     liitteet: allAttachments,
     meta: {},
-    muutokset: R.flatten([
+    muutokset: flatten([
       erityisetKoulutustehtavat,
       muutEhdot,
       opetuksenJarjestamismuodot,
@@ -242,15 +260,15 @@ export async function createObjectToSave(
     uuid
   };
 
-  const asianumeroObj = R.find(
-    R.propEq("anchor", "paatoksentiedot.asianumero.A"),
+  const asianumeroObj = find(
+    propEq("anchor", "paatoksentiedot.asianumero.A"),
     changeObjects.paatoksentiedot || []
   );
 
   objectToSave.asianumero = asianumeroObj ? asianumeroObj.properties.value : "";
 
-  const diaarinumeroObj = R.find(
-    R.propEq("anchor", "paatoksentiedot.diaarinumero.A"),
+  const diaarinumeroObj = find(
+    propEq("anchor", "paatoksentiedot.diaarinumero.A"),
     changeObjects.paatoksentiedot || []
   );
 
@@ -258,22 +276,22 @@ export async function createObjectToSave(
     ? diaarinumeroObj.properties.value
     : "";
 
-  const paatospaivaObj = R.find(
-    R.propEq("anchor", "paatoksentiedot.paatospaiva.A"),
+  const paatospaivaObj = find(
+    propEq("anchor", "paatoksentiedot.paatospaiva.A"),
     changeObjects.paatoksentiedot || []
   );
   objectToSave.paatospvm = paatospaivaObj
     ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
     : "";
-  const voimaantulopaivaObj = R.find(
-    R.propEq("anchor", "paatoksentiedot.voimaantulopaiva.A"),
+  const voimaantulopaivaObj = find(
+    propEq("anchor", "paatoksentiedot.voimaantulopaiva.A"),
     changeObjects.paatoksentiedot || []
   );
   objectToSave.voimassaalkupvm = voimaantulopaivaObj
     ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
     : "";
-  const paattymispaivamaaraObj = R.find(
-    R.propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
+  const paattymispaivamaaraObj = find(
+    propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
     changeObjects.paatoksentiedot || []
   );
   objectToSave.paattymispaivamaara = paattymispaivamaaraObj

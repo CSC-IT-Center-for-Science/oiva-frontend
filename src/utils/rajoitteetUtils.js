@@ -209,7 +209,6 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
 }
 
 export function kayLapiKohdennukset(kohdennukset, lista = [], format) {
-  console.info(kohdennukset, lista, format);
   return join(
     " ",
     values(
@@ -251,39 +250,46 @@ export function getRajoiteSelkokielella(
   return selkokielinenTeksti;
 }
 
-export function getRajoiteListamuodossa(rajoiteId, stateObjects = [], format) {
-  console.info(
-    "PALAUTETAAN RAJOITE LISTAMUODOSSA",
-    rajoiteId,
-    stateObjects,
-    format
-  );
+export function getRajoiteListamuodossa(
+  changeObjects = [],
+  rajoiteId,
+  format = "list"
+) {
+  let listamuotoWithEndings = "";
+
   let rakenne = {};
-  for (let i = 0; i < stateObjects.length; i += 1) {
+
+  for (let i = 0; i < changeObjects.length; i += 1) {
     rakenne = assocPath(
-      split(".", stateObjects[i].anchor),
-      stateObjects[i],
+      split(".", changeObjects[i].anchor),
+      changeObjects[i],
       rakenne
     );
   }
 
-  const lapikaydytKohdennukset = kayLapiKohdennukset(
-    path([`rajoitteet_${rajoiteId}`, "kohdennukset"], rakenne),
-    [],
-    format
-  );
+  const baseAnchor = rajoiteId ? `rajoitteet_${rajoiteId}` : "rajoitteet";
 
-  // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
-  const amountOfInstances = getAmountOfInstances(
-    "<ul>",
-    lapikaydytKohdennukset
-  );
+  const kohdennukset = path([baseAnchor, "kohdennukset"], rakenne);
 
-  const listamuotoWithEndings = addEnding(
-    "</li></ul>",
-    lapikaydytKohdennukset,
-    amountOfInstances
-  );
+  if (kohdennukset) {
+    const lapikaydytKohdennukset = kayLapiKohdennukset(
+      kohdennukset,
+      [],
+      format
+    );
+
+    // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+    const amountOfInstances = getAmountOfInstances(
+      "<ul>",
+      lapikaydytKohdennukset
+    );
+
+    listamuotoWithEndings = addEnding(
+      "</li></ul>",
+      lapikaydytKohdennukset,
+      amountOfInstances
+    );
+  }
 
   return listamuotoWithEndings;
 }
@@ -292,7 +298,7 @@ export const getRajoite = (value, rajoitteet) => {
   const rajoiteId = head(
     filter(key => {
       return pathEq(
-        ["elements", "kohdennukset", 1, "properties", "value", "value"],
+        ["changeObjects", 1, "properties", "value", "value"],
         value,
         rajoitteet[key]
       )

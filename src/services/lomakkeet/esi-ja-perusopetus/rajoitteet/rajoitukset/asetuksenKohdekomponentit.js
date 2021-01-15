@@ -1,20 +1,26 @@
 import { kohdevaihtoehdot } from "../rajoite";
-import { find, propEq } from "ramda";
+import { find, head, map, path, propEq, toUpper } from "ramda";
+import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 
 /**
  Tässä tiedostossa määritellään, mitä asetuksia/kriteerejä kullekin
  rajoitteen kohteelle on valittavissa.
  */
 
-const maaraaikaOption = {
-  value: "maaraaika",
-  label: "Määräaika"
-};
-
 export const getAsetuksenKohdekomponentti = async (
   asetuksenKohdeavain,
-  isReadOnly = false
+  isReadOnly = false,
+  locale
 ) => {
+  const localeUpper = toUpper(locale);
+
+  const ajalla = head(await getKujalisamaareetFromStorage("ajalla"));
+
+  const maaraaikaOption = {
+    value: `${path(["koodisto", "koodistoUri"], ajalla)}_${ajalla.koodiarvo}`,
+    label: ajalla.metadata[localeUpper].nimi
+  };
+
   if (asetuksenKohdeavain === "erityisetKoulutustehtavat") {
     return {
       anchor: "kohde",
@@ -35,7 +41,11 @@ export const getAsetuksenKohdekomponentti = async (
         value: ""
       }
     };
-  } else if (asetuksenKohdeavain === "kokonaismaara") {
+  } else if (
+    asetuksenKohdeavain === "kokonaismaara" ||
+    asetuksenKohdeavain === "opiskelijamaarat"
+  ) {
+    const kujalisamaareet = await getKujalisamaareetFromStorage();
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -45,19 +55,19 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [
-          {
-            value: "enintaan",
-            label: "Enintään"
-          },
-          {
-            value: "vahintaan",
-            label: "Vähintään"
-          }
-        ]
+        options: map(maare => {
+          const koodistoUri = path(["koodisto", "koodistoUri"], maare);
+          return {
+            value: `${koodistoUri}_${maare.koodiarvo}`,
+            label: maare.metadata[localeUpper].nimi
+          };
+        }, kujalisamaareet)
       }
     };
   } else if (asetuksenKohdeavain === "lukumaara") {
+    const kujalisamaareet = await getKujalisamaareetFromStorage(
+      "joistaLisaksi"
+    );
     return {
       anchor: "kohde",
       name: "Autocomplete",
@@ -67,24 +77,13 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [
-          {
-            value: "joistaEnintaan",
-            label: "Joista enintään"
-          },
-          {
-            value: "joistaVahintaan",
-            label: "Joista vähintään"
-          },
-          {
-            value: "lisaksiEnintaan",
-            label: "Lisäksi enintään"
-          },
-          {
-            value: "lisaksiVahintaan",
-            label: "Lisäksi vähintään"
-          }
-        ]
+        options: map(maare => {
+          const koodistoUri = path(["koodisto", "koodistoUri"], maare);
+          return {
+            value: `${koodistoUri}_${maare.koodiarvo}`,
+            label: maare.metadata[localeUpper].nimi
+          };
+        }, kujalisamaareet)
       }
     };
   } else if (asetuksenKohdeavain === "muutEhdot") {
@@ -155,30 +154,11 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [maaraaikaOption],
-        value: ""
-      }
-    };
-  } else if (asetuksenKohdeavain === "opiskelijamaarat") {
-    return {
-      anchor: "kohde",
-      name: "Autocomplete",
-      layout: { indentation: "none" },
-      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
-      properties: {
-        isMulti: false,
-        isReadOnly,
-        isVisible: !isReadOnly,
         options: [
-          {
-            value: "enintaan",
-            label: "Enintään"
-          },
-          {
-            value: "vahintaan",
-            label: "Vähintään"
-          }
-        ]
+          maaraaikaOption,
+          find(propEq("value", "opetuskielet"), kohdevaihtoehdot)
+        ],
+        value: ""
       }
     };
   } else if (asetuksenKohdeavain === "toimintaalue") {

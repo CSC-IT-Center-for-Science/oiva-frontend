@@ -1,4 +1,15 @@
-import { append, find, includes, last, nth, path, prop, propEq } from "ramda";
+import {
+  append,
+  find,
+  head,
+  includes,
+  last,
+  nth,
+  path,
+  prop,
+  propEq,
+  split
+} from "ramda";
 
 const koodistoMapping = {
   maaraaika: "kujalisamaareet",
@@ -51,7 +62,10 @@ export const createAlimaarayksetBEObjects = (
   if (valueValueOfAsetusChangeObj) {
     // Kyseessä voi olla pudotusvalikko, jolloin koodiston arvo löytyy
     // pudotusvalikosta valitun arvon perusteella { label: ..., value: X }
-    koodisto = prop(valueValueOfAsetusChangeObj, koodistoMapping);
+    koodisto =
+      prop(valueValueOfAsetusChangeObj, koodistoMapping) ||
+      head(split("_", valueValueOfAsetusChangeObj));
+    koodiarvo = koodiarvo || last(split("_", valueValueOfAsetusChangeObj));
   } else if (sectionOfAsetusChangeObj) {
     // Esim. määräajan tapauksessa elementti ei ole pudotusvalikko, joten
     // koodistoarvo tulee etsiä toisella tavalla. Tällaisissa tapauksissa

@@ -106,13 +106,13 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    console.info(
-      "rajoitteetByRajoiteIdAndKoodiarvo",
-      rajoitteetByRajoiteIdAndKoodiarvo,
-      head(values(rajoitteetByRajoiteIdAndKoodiarvo)),
-      ehto.koodiarvo,
-      ehto
-    );
+    // console.info(
+    //   "rajoitteetByRajoiteIdAndKoodiarvo",
+    //   rajoitteetByRajoiteIdAndKoodiarvo,
+    //   head(values(rajoitteetByRajoiteIdAndKoodiarvo)),
+    //   ehto.koodiarvo,
+    //   ehto
+    // );
 
     if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {

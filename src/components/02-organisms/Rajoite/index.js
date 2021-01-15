@@ -14,14 +14,17 @@ const constants = {
 const Rajoite = ({
   areTitlesVisible = defaultProps.areTitlesVisible,
   isReadOnly = defaultProps.isReadOnly,
-  rajoiteId
+  rajoiteId,
+  rajoite
 }) => {
-  return (
+  console.info(rajoite.changeObjects);
+  return rajoite ? (
     <Lomake
       anchor={"rajoitteet"}
       data={{
         rajoiteId,
-        sectionId: "rajoitelomake"
+        sectionId: "rajoitelomake",
+        changeObjects: rajoite.changeObjects
       }}
       isInExpandableRow={false}
       isPreviewModeOn={isReadOnly}
@@ -30,13 +33,16 @@ const Rajoite = ({
       path={constants.formLocation}
       showCategoryTitles={areTitlesVisible}
     ></Lomake>
+  ) : (
+    <p>Jokin meni pieleen rajoitteen näyttämisessä.</p>
   );
 };
 
 Rajoite.propTypes = {
   isReadOnly: PropTypes.bool,
   areTitlesVisible: PropTypes.bool,
-  rajoiteId: PropTypes.string.isRequired
+  rajoiteId: PropTypes.string.isRequired,
+  rajoite: PropTypes.object
 };
 
 export default Rajoite;
