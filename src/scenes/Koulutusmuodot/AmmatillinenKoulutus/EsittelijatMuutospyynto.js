@@ -178,7 +178,7 @@ const EsittelijatMuutospyynto = ({
           valtakunnallinenMaarays={valtakunnallinenMaarays}
         />
 
-        {kohteet.opiskelijavuodet && (
+        {/* {kohteet.opiskelijavuodet && (
           <MuutospyyntoWizardOpiskelijavuodet
             code={String(sectionHeadings.opiskelijavuodet.number)}
             lupaKohteet={lupaKohteet}
@@ -188,7 +188,7 @@ const EsittelijatMuutospyynto = ({
             sectionId={"opiskelijavuodet"}
             title={sectionHeadings.opiskelijavuodet.title}
           />
-        )}
+        )} */}
 
         {kohteet.muut && muut && maaraystyypit && (
           <MuutospyyntoWizardMuut
