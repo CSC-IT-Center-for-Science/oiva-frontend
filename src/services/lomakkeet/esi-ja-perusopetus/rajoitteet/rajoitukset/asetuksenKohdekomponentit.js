@@ -155,8 +155,7 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          maaraaikaOption,
-          find(propEq("value", "opetuskielet"), kohdevaihtoehdot)
+          maaraaikaOption
         ],
         value: ""
       }
