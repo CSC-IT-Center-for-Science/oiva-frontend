@@ -95,7 +95,7 @@ function getTaydennyssana(key, locale) {
     sv: {
       alkamispaiva: {
         pre: __("rajoitteet.ajalla"),
-        post: __("common.viiva")
+        post: " - "
       },
       lukumaara: {
         pre: __("common.is"),
