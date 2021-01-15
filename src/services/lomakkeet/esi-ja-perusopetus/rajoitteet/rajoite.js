@@ -389,7 +389,7 @@ const getKohdennuksetRecursively = async (
                     anchor: "painike",
                     name: "SimpleButton",
                     onClick: payload => {
-                      const kohdennusId = getAnchorPart(payload.fullAnchor, 3);
+                      const kohdennusId = getAnchorPart(payload.fullAnchor, 2);
                       return lisaaKohdennus({
                         ...payload,
                         metadata: {
@@ -421,7 +421,7 @@ const getKohdennuksetRecursively = async (
                           console.info(payload.fullAnchor);
                           const kohdennusId = getAnchorPart(
                             payload.fullAnchor,
-                            3
+                            2
                           );
                           return onAddCriterion({
                             ...payload,

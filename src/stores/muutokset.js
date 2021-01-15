@@ -142,11 +142,10 @@ const Store = createStore({
       const currentChangeObjects = getState().changeObjects;
       const asetuksetChangeObjects = filter(changeObj => {
         return startsWith(
-          `${sectionId}.${rajoiteId}.${kohdennuspolku}.rajoite.asetukset`,
+          `${sectionId}_${rajoiteId}.${kohdennuspolku}.rajoite.asetukset`,
           changeObj.anchor
         );
-      }, concat(currentChangeObjects.unsaved[sectionId] || [], currentChangeObjects.saved[sectionId] || []) || []);
-
+      }, concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
       /**
         Seuraavan kriteerin id saadaan jakamalla asetuksia koskevien muutos-
         objektien määrä kahdella, koska yksi asetus sisältää sekä kohteen että
@@ -164,15 +163,15 @@ const Store = createStore({
        * Luodaan
        */
       const nextChangeObjects = assocPath(
-        ["unsaved", sectionId],
+        ["unsaved", sectionId, rajoiteId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.${kohdennuspolku}.rajoite.asetukset.${nextAsetuksetIndex}.kohde`,
+            anchor: `${sectionId}_${rajoiteId}.${kohdennuspolku}.rajoite.asetukset.${nextAsetuksetIndex}.kohde`,
             properties: {
               value: ""
             }
           },
-          currentChangeObjects.unsaved[sectionId] || []
+          currentChangeObjects.unsaved[sectionId][rajoiteId] || []
         ),
         currentChangeObjects
       );
@@ -265,11 +264,11 @@ const Store = createStore({
 
         return (
           startsWith(
-            `${sectionId}.${rajoiteId}.${kohdennuspolku}.kohdennukset`,
+            `${sectionId}_${rajoiteId}.${kohdennuspolku}.kohdennukset`,
             changeObj.anchor
           ) && amountOfKohdistuksetKeyword === length(kohdennusindeksipolku) + 1
         );
-      }, concat(currentChangeObjects.unsaved[sectionId] || [], currentChangeObjects.saved[sectionId] || []) || []);
+      }, concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
 
       /**
        * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
@@ -296,15 +295,15 @@ const Store = createStore({
        * Luodaan
        */
       const nextChangeObjects = assocPath(
-        ["unsaved", sectionId],
+        ["unsaved", sectionId, rajoiteId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.${kohdennuspolku}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
+            anchor: `${sectionId}_${rajoiteId}.${kohdennuspolku}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
             properties: {
               value: ""
             }
           },
-          currentChangeObjects.unsaved[sectionId] || []
+          currentChangeObjects.unsaved[sectionId][rajoiteId] || []
         ),
         currentChangeObjects
       );
