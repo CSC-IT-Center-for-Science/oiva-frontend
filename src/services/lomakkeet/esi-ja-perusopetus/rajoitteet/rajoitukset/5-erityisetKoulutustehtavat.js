@@ -8,10 +8,10 @@ import {
   length,
   map,
   prop,
-  toUpper
+  toUpper,
+  path
 } from "ramda";
 import { getAnchorPart } from "utils/common";
-import { getLocalizedProperty } from "../../../utils";
 
 export default async function getErityisetKoulutustehtavat(
   isReadOnly,
@@ -61,19 +61,18 @@ export default async function getErityisetKoulutustehtavat(
                   );
                 }, osionData);
 
+                /** Näytetään kuvaukset erityisille koulutustehtäville, joilla on koodistossa
+                 * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                 */
                 const options =
-                  length(kuvausStateObjects) > 1
+                  path(["metadata", "FI", "kayttoohje"], erityinenKoulutustehtava) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
                             stateObj.anchor,
                             1
                           )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                          label: getLocalizedProperty(
-                            erityisetKoulutustehtavat.metadata,
-                            locale,
-                            "nimi"
-                          )
+                          label: stateObj.properties.value
                         };
                         return option;
                       }, kuvausStateObjects)

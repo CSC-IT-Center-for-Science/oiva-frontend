@@ -53,9 +53,11 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
                     endsWith(".kuvaus", stateObj.anchor)
                   );
                 }, osionData);
-
+                /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
+                 * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                 */
                 const options =
-                  length(kuvausStateObjects) > 1
+                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
