@@ -1,18 +1,7 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useLomakedata } from "stores/lomakedata";
-import {
-  concat,
-  filter,
-  find,
-  includes,
-  keys,
-  map,
-  path,
-  pathEq,
-  prop
-} from "ramda";
+import { prop } from "ramda";
 import Lomake from "components/02-organisms/Lomake";
 
 const constants = {
@@ -25,11 +14,7 @@ const VaativaTuki = ({
   maarayksetByKoodiarvo,
   sectionId
 }) => {
-  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "muut"
-  });
-
-  const [lomakedata, { setLomakedata }] = useLomakedata({
+  const [lomakedata] = useLomakedata({
     anchor: "opiskelijavuodet"
   });
 
@@ -42,49 +27,6 @@ const VaativaTuki = ({
     }),
     [items, lomakedata.vaativaTuki, maarayksetByKoodiarvo]
   );
-
-  const koodiarvot = concat(
-    map(prop("koodiarvo"), items.vaativa_1),
-    map(prop("koodiarvo"), items.vaativa_2)
-  );
-
-  useEffect(() => {
-    const muutostenJalkeenAktiivisetKoodiarvot = filter(koodiarvo => {
-      const changeObj = find(
-        pathEq(["properties", "metadata", "koodiarvo"], koodiarvo),
-        changeObjects
-      );
-      return (
-        includes(koodiarvo, koodiarvot) &&
-        (!changeObj || pathEq(["properties", "isChecked"], true, changeObj))
-      );
-    }, keys(maarayksetByKoodiarvo)).filter(Boolean);
-
-    const muutostenMyotaAktiivisetKoodiarvot = map(changeObj => {
-      const koodiarvo = path(
-        ["properties", "metadata", "koodiarvo"],
-        changeObj
-      );
-      return includes(koodiarvo, koodiarvot) &&
-        pathEq(["properties", "isChecked"], true, changeObj)
-        ? path(["properties", "metadata", "koodiarvo"], changeObj)
-        : null;
-    }, changeObjects).filter(Boolean);
-
-    setLomakedata(
-      concat(
-        muutostenJalkeenAktiivisetKoodiarvot,
-        muutostenMyotaAktiivisetKoodiarvot
-      ),
-      `${sectionId}_valitutKoodiarvot`
-    );
-  }, [
-    changeObjects,
-    koodiarvot,
-    maarayksetByKoodiarvo,
-    sectionId,
-    setLomakedata
-  ]);
 
   return (
     <Lomake

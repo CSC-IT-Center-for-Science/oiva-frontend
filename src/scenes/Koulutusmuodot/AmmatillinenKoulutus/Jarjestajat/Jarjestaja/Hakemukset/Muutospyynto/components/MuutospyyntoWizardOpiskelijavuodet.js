@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "helpers/lupa";
-import { difference, find, length, path, pathEq, propEq } from "ramda";
+import { difference, find, length, map, path, pathEq, propEq } from "ramda";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useLomakedata } from "stores/lomakedata";
 
@@ -50,13 +50,18 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       // Mikäli Muut-osion lomakkeelta 02 (vaativa tuki) on valittu jokin
       // listatuista koodiarvoista, on vaativaa tukea koskeva tietue näytettävä
       // opiskelijavuosiosiossa.
+      const valitutKoodiarvot = map(stateObj => {
+        const isChecked = pathEq(["properties", "isChecked"], true, stateObj);
+        return isChecked
+          ? path(["properties", "forChangeObject", "koodiarvo"], stateObj)
+          : false;
+      }, path(["02"], muutLomakedata) || []).filter(Boolean);
+
       const visibilityOfVaativaTuki =
-        length(
-          difference(
-            vaativatCodes,
-            path(["02", "valitutKoodiarvot"], muutLomakedata) || []
-          )
-        ) < length(vaativatCodes);
+        length(difference(vaativatCodes, valitutKoodiarvot)) <
+        length(vaativatCodes);
+
+      console.info(visibilityOfVaativaTuki);
 
       // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
       // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
@@ -81,13 +86,13 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
           lomakedata
         )
       ) {
-        setLomakedata(
-          {
-            sisaoppilaitos: visibilityOfSisaoppilaitos,
-            vaativaTuki: visibilityOfVaativaTuki
-          },
-          `${sectionId}_visibility`
-        );
+        // setLomakedata(
+        //   {
+        //     sisaoppilaitos: visibilityOfSisaoppilaitos,
+        //     vaativaTuki: visibilityOfVaativaTuki
+        //   },
+        //   `${sectionId}_visibility`
+        // );
       }
     }, [lomakedata, muutLomakedata, sectionId, setLomakedata]);
 
@@ -139,7 +144,8 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         isRowExpanded={true}
         mode="modification"
         path={constants.formLocation}
-        showCategoryTitles={true}></Lomake>
+        showCategoryTitles={true}
+      ></Lomake>
     ) : null;
   }
 );
