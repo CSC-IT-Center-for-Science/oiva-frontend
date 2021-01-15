@@ -17,7 +17,6 @@ const Rajoite = ({
   rajoiteId,
   rajoite
 }) => {
-  console.info(rajoite.changeObjects);
   return rajoite ? (
     <Lomake
       anchor={"rajoitteet"}

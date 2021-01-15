@@ -19,6 +19,7 @@ import {
   values
 } from "ramda";
 import moment from "moment";
+import { __ } from "i18n-for-browser";
 
 const pisteytys = {
   rajoite: 0,
@@ -70,33 +71,54 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
   return string;
 }
 
-function getTaydennyssana(key) {
+function getTaydennyssana(key, locale) {
   const taydennyssanat = {
-    alkamispaiva: {
-      pre: "ajalla",
-      post: " - "
+    fi: {
+      alkamispaiva: {
+        pre: __("rajoitteet.ajalla"),
+        post: " - "
+      },
+      lukumaara: {
+        pre: __("common.is"),
+        post: __("common.henkiloa")
+      },
+      opetuskielet: {
+        pre: __("education.opetetaanKielella")
+      },
+      opetustaAntavatKunnat: {
+        pre: __("common.kunnassa")
+      },
+      opetustehtavat: {
+        pre: __("education.opetustehtavana")
+      }
     },
-    lukumaara: {
-      pre: "on",
-      post: "henkilöä"
-    },
-    opetuskielet: {
-      pre: "opetetaan kielellä"
-    },
-    opetustaAntavatKunnat: {
-      pre: "kunnassa"
-    },
-    opetustehtavat: {
-      pre: "opetustehtävänä"
+    sv: {
+      alkamispaiva: {
+        pre: __("rajoitteet.ajalla"),
+        post: __("common.viiva")
+      },
+      lukumaara: {
+        pre: __("common.is"),
+        post: __("common.henkiloa")
+      },
+      opetuskielet: {
+        pre: __("education.opetetaanKielella")
+      },
+      opetustaAntavatKunnat: {
+        pre: __("common.kunnassa")
+      },
+      opetustehtavat: {
+        pre: __("education.opetustehtavana")
+      }
     }
   };
 
-  return taydennyssanat[key];
+  return path([locale, key], taydennyssanat);
 }
 
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
-function kayLapiKohdennus(kohdennus, lista = [], format) {
+function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
   const asetukset = join(
     " ",
     flatten(
@@ -113,7 +135,7 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
                   pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
                   post: "henkilöä"
                 }
-              : getTaydennyssana(tarkenninavain);
+              : getTaydennyssana(tarkenninavain, locale);
             const tarkentimenArvo =
               path(
                 ["properties", "value", "label"],
@@ -177,7 +199,7 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
     ["properties", "value", "label"],
     prop(tarkenninavain, tarkennin)
   );
-  const taydennyssana = getTaydennyssana(tarkenninavain);
+  const taydennyssana = getTaydennyssana(tarkenninavain, locale);
 
   let item = tarkentimenArvo;
 
@@ -202,18 +224,23 @@ function kayLapiKohdennus(kohdennus, lista = [], format) {
   paivitettyLista = append(asetukset, paivitettyLista);
 
   if (kohdennus.kohdennukset) {
-    return kayLapiKohdennukset(kohdennus.kohdennukset, paivitettyLista, format);
+    return kayLapiKohdennukset(
+      kohdennus.kohdennukset,
+      locale,
+      paivitettyLista,
+      format
+    );
   }
 
   return paivitettyLista;
 }
 
-export function kayLapiKohdennukset(kohdennukset, lista = [], format) {
+export function kayLapiKohdennukset(kohdennukset, locale, lista = [], format) {
   return join(
     " ",
     values(
       map(kohdennus => {
-        return kayLapiKohdennus(kohdennus, lista, format);
+        return kayLapiKohdennus(kohdennus, locale, lista, format);
       }, kohdennukset)
     )
   );
@@ -252,9 +279,11 @@ export function getRajoiteSelkokielella(
 
 export function getRajoiteListamuodossa(
   changeObjects = [],
+  locale,
   rajoiteId,
   format = "list"
 ) {
+  console.info(changeObjects, locale, rajoiteId);
   let listamuotoWithEndings = "";
 
   let rakenne = {};
@@ -274,6 +303,7 @@ export function getRajoiteListamuodossa(
   if (kohdennukset) {
     const lapikaydytKohdennukset = kayLapiKohdennukset(
       kohdennukset,
+      locale,
       [],
       format
     );

@@ -1222,5 +1222,17 @@ export default defineMessages({
   opetusJotaLupaKoskee: {
     id: "common.opetusJotaLupaKoskee",
     defaultMessage: "Opetus, jota lupa koskee"
+  },
+  is: {
+    id: "common.is",
+    defaultMessage: "on"
+  },
+  henkiloa: {
+    id: "common.henkiloa",
+    defaultMessage: "henkiloa"
+  },
+  kunnassa: {
+    id: "common.kunnassa",
+    defaultMessage: "kunnassa"
   }
 });

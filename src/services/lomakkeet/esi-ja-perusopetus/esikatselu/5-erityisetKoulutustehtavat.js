@@ -64,19 +64,22 @@ export const previewOfErityisetKoulutustehtavat = ({
                   return {
                     anchor: koodiarvo,
                     components: [
-                      rajoite ? {
-                        anchor: "rajoite",
-                        name: "Rajoite",
-                        properties: {
-                          areTitlesVisible: false,
-                          isReadOnly: true,
-                          rajoiteId
-                        }
-                      } : {
-                        anchor: nth(2, anchorParts),
-                        name: "HtmlContent",
-                        properties: { content: node.properties.value }
-                      }
+                      rajoite
+                        ? {
+                            anchor: "rajoite",
+                            name: "Rajoite",
+                            properties: {
+                              areTitlesVisible: false,
+                              isReadOnly: true,
+                              rajoiteId,
+                              rajoite
+                            }
+                          }
+                        : {
+                            anchor: nth(2, anchorParts),
+                            name: "HtmlContent",
+                            properties: { content: node.properties.value }
+                          }
                     ]
                   };
                 }, kuvausNodes)

@@ -29,7 +29,10 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const { rajoiteId } = getRajoite(opetuskieli.value, rajoitteet);
+          const { rajoiteId, rajoite } = getRajoite(
+            opetuskieli.value,
+            rajoitteet
+          );
           if (rajoiteId) {
             return {
               anchor: opetuskieli.value,
@@ -40,7 +43,8 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
                   properties: {
                     areTitlesVisible: false,
                     isReadOnly: true,
-                    rajoiteId
+                    rajoiteId,
+                    rajoite
                   }
                 }
               ]
@@ -68,7 +72,10 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const { rajoiteId } = getRajoite(opetuskieli.value, rajoitteet);
+          const { rajoiteId, rajoite } = getRajoite(
+            opetuskieli.value,
+            rajoitteet
+          );
           if (rajoiteId) {
             return {
               anchor: opetuskieli.value,
@@ -79,7 +86,8 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
                   properties: {
                     areTitlesVisible: false,
                     isReadOnly: true,
-                    rajoiteId
+                    rajoiteId,
+                    rajoite
                   }
                 }
               ]

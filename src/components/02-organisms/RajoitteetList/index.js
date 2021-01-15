@@ -15,10 +15,12 @@ const defaultProps = {
 const RajoitteetList = ({
   areTitlesVisible = defaultProps.areTitlesVisible,
   isBorderVisible = defaultProps.isBorderVisible,
+  locale,
   onModifyRestriction,
   onRemoveRestriction,
   rajoitteet
 }) => {
+  console.info(locale);
   if (isEmpty(rajoitteet)) {
     return <p>Ei rajoitteita.</p>;
   } else {
@@ -28,6 +30,7 @@ const RajoitteetList = ({
           mapObjIndexed((rajoite, rajoiteId) => {
             const rajoiteListamuodossa = getRajoiteListamuodossa(
               rajoite.changeObjects,
+              locale,
               rajoiteId,
               "list"
             );

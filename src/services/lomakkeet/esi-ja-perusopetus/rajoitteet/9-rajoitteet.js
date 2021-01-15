@@ -66,6 +66,7 @@ export function rajoitteet(
             properties: {
               areTitlesVisible: false,
               isBorderVisible: false,
+              locale,
               onModifyRestriction,
               onRemoveRestriction,
               rajoitteet: rajoitteetGrouped

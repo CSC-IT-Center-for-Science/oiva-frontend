@@ -18,6 +18,7 @@ const List = ({ items }) => {
                   id={properties.id}
                   isReadOnly={properties.isReadOnly}
                   key={index}
+                  locale={properties.locale}
                   rajoiteId={properties.rajoiteId}
                   rajoite={properties.rajoite}
                 />

@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  ajalla: {
+    id: "rajoitteet.ajalla",
+    defaultMessage: "ajalla"
+  },
   muokkaaRajoitetta: {
     id: "rajoitteet.muokkaaRajoitetta",
     defaultMessage: "Muokkaa"

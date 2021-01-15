@@ -1,11 +1,13 @@
 import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";
 
-export const previewOfRajoite = ({
-  changeObjects: rajoiteChangeObjects,
-  rajoiteId
-}) => {
+export const previewOfRajoite = (
+  { changeObjects: rajoiteChangeObjects, rajoiteId },
+  booleans,
+  locale
+) => {
   const rajoiteListamuodossa = getRajoiteListamuodossa(
     rajoiteChangeObjects,
+    locale,
     rajoiteId
   );
 

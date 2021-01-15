@@ -101,5 +101,13 @@ export default defineMessages({
   opetuksenJarjestajat: {
     id: "education.opetuksenJarjestajat",
     defaultMessage: "Opetuksen järjestäjät"
+  },
+  opetetaanKielilla: {
+    id: "education.opetetaanKielilla",
+    defaultMessage: "opetetaan kielillä"
+  },
+  opetustehtavana: {
+    id: "education.opetustehtavana",
+    defaultMessage: "opetustehtavana"
   }
 });

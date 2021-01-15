@@ -58,7 +58,8 @@ export async function previewOfOpetustaAntavaKunnat({
                             properties: {
                               areTitlesVisible: false,
                               isReadOnly: true,
-                              rajoiteId
+                              rajoiteId,
+                              rajoite
                             }
                           }
                         : {
