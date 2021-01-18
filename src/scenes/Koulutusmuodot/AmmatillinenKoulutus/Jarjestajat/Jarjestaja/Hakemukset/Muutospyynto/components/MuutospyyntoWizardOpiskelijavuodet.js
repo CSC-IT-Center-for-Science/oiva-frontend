@@ -19,45 +19,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
 
-    /**
-     * Tässä reagoidaan opiskelijavuosiosion muutoksiin ja tarkastellaan sitä,
-     * onko sisäoppilaitosta ja vaativaa tukea koskevat kentät täytetty.
-     * Tieto asetetaan jaettuun tilaan, josta sitä tarvitseva osio voi sen
-     * lukea.
-     */
-    // useEffect(() => {
-    //   const vahimmaisopiskelijavuodetChangeObj = find(
-    //     propEq("anchor", `${sectionId}.vahimmaisopiskelijavuodet.A`),
-    //     changeObjects
-    //   );
-    //   if (!!vahimmaisopiskelijavuodetChangeObj) {
-    //     setLomakedata(
-    //       vahimmaisopiskelijavuodetChangeObj.properties.isValueSet,
-    //       `${sectionId}_vahimmaisopiskelijavuodet_isApplyForValueSet`
-    //     );
-    //   }
-    //   const sisaoppilaitosChangeObj = find(
-    //     propEq("anchor", `${sectionId}.sisaoppilaitos.A`),
-    //     changeObjects
-    //   );
-    //   if (!!sisaoppilaitosChangeObj) {
-    //     setLomakedata(
-    //       sisaoppilaitosChangeObj.properties.isValueSet,
-    //       `${sectionId}_sisaoppilaitos_isApplyForValueSet`
-    //     );
-    //   }
-    //   const vaativaTukiChangeObj = find(
-    //     propEq("anchor", `${sectionId}.vaativatuki.A`),
-    //     changeObjects
-    //   );
-    //   if (!!vaativaTukiChangeObj) {
-    //     setLomakedata(
-    //       vaativaTukiChangeObj.properties.isValueSet,
-    //       `${sectionId}_vaativaTuki_isApplyForValueSet`
-    //     );
-    //   }
-    // }, [changeObjects, sectionId, setLomakedata]);
-
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake
         anchor={sectionId}
