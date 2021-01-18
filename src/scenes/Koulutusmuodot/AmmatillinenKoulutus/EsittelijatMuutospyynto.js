@@ -43,6 +43,7 @@ const EsittelijatMuutospyynto = ({
   maaraykset = defaultProps.maaraykset,
   lupaKohteet = defaultProps.lupaKohteet,
   maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
+  mode,
   muut = defaultProps.muut,
   opiskelijavuodet = defaultProps.opiskelijavuodet,
   // Callback methods
@@ -144,6 +145,7 @@ const EsittelijatMuutospyynto = ({
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
           koulutusalat={koulutusalat}
           koulutustyypit={koulutustyypit}
+          mode={mode}
           title={sectionHeadings.tutkinnotJaKoulutukset.title}
         />
 

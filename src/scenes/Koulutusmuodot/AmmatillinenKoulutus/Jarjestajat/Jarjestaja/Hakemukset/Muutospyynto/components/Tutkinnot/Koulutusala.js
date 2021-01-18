@@ -6,13 +6,13 @@ const constants = {
   formLocation: ["tutkinnot"]
 };
 
-const Koulutusala = ({ data, sectionId, title }) => {
+const Koulutusala = ({ data, mode = "modification", sectionId, title }) => {
   return (
     <Lomake
       anchor={sectionId}
       data={data}
       key={sectionId}
-      mode="modification"
+      mode={mode}
       path={constants.formLocation}
       rowTitle={title}
       showCategoryTitles={true}

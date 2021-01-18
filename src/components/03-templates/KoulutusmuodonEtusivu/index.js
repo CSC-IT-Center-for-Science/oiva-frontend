@@ -59,7 +59,8 @@ export default function KoulutusmuodonEtusivu({
             <nav
               tabIndex="0"
               className="breadcumbs-nav py-4 border-b pl-8"
-              aria-label={formatMessage(common.breadCrumbs)}>
+              aria-label={formatMessage(common.breadCrumbs)}
+            >
               <Breadcrumbs
                 hideIfEmpty={true}
                 separator={<b> / </b>}
@@ -83,7 +84,8 @@ export default function KoulutusmuodonEtusivu({
                   <p className="mb-6">
                     <NavLink
                       to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
-                      className="block underline">
+                      className="block underline"
+                    >
                       {koulutusmuoto.genetiivi}{" "}
                       {toLower(formatMessage(common.asianhallinta))}
                     </NavLink>
@@ -153,6 +155,9 @@ export default function KoulutusmuodonEtusivu({
                                 path={props.match.path}
                                 user={user}
                                 tulevatLuvat={_props1.tulevatLuvat}
+                                UusiAsiaDialogContainer={
+                                  UusiAsiaDialogContainer
+                                }
                                 voimassaOlevaLupa={_props1.voimassaOlevaLupa}
                                 ytunnus={_props1.ytunnus}
                               />
@@ -178,6 +183,9 @@ export default function KoulutusmuodonEtusivu({
                                         organisation={_props2.organisaatio}
                                         path={props.match.path}
                                         tulevatLuvat={_props2.tulevatLuvat}
+                                        UusiAsiaDialogContainer={
+                                          UusiAsiaDialogContainer
+                                        }
                                         voimassaOlevaLupa={
                                           _props1.voimassaOlevaLupa
                                         }

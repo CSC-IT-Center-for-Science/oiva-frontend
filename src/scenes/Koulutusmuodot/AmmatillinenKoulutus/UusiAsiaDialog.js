@@ -25,6 +25,8 @@ import { createObjectToSave } from "helpers/ammatillinenKoulutus/tallentaminen/e
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import equal from "react-fast-compare";
 import { useAllSections } from "stores/lomakedata";
+import StepperNavigation from "components/01-molecules/Stepper";
+import MuutospyyntoWizardPerustelut from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardPerustelut";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -91,8 +93,9 @@ const UusiAsiaDialog = React.memo(
     const intl = useIntl();
     const params = useParams();
     let history = useHistory();
-    let { uuid } = params;
+    let { page: pageParam, uuid } = params;
 
+    const [page] = useState(parseInt(pageParam, 10));
     const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(true);
@@ -100,6 +103,20 @@ const UusiAsiaDialog = React.memo(
     const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
     const [, muutospyyntoActions] = useMuutospyynto();
     const [lomakedata] = useAllSections();
+    const [steps] = useState([
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_1)
+      },
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_2)
+      },
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_3)
+      },
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_4)
+      }
+    ]);
 
     // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
     const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -129,6 +146,13 @@ const UusiAsiaDialog = React.memo(
     const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "rajoitteet"
     });
+
+    const handleStep = useCallback(
+      pageNumber => {
+        history.push(String(pageNumber));
+      },
+      [history]
+    );
 
     const isSavingEnabled = useMemo(() => {
       const hasUnsavedChanges = unsavedChangeObjects
@@ -298,7 +322,8 @@ const UusiAsiaDialog = React.memo(
             onClose={leaveOrOpenCancelModal}
             maxWidth={"lg"}
             fullScreen={true}
-            aria-labelledby="simple-dialog-title">
+            aria-labelledby="simple-dialog-title"
+          >
             <div className={"w-full m-auto"}>
               <DialogTitleWithStyles id="customized-dialog-title">
                 <div className="flex">
@@ -319,20 +344,53 @@ const UusiAsiaDialog = React.memo(
             </div>
             <DialogContentWithStyles>
               <div className="mb-20">
+                <StepperNavigation
+                  activeStep={page - 1}
+                  stepProps={steps}
+                  handleStepChange={handleStep}
+                />
                 {!R.isEmpty(organisation) ? (
-                  <Lupanakyma
-                    history={history}
-                    kohteet={kohteet}
-                    koulutukset={koulutukset}
-                    koulutusalat={koulutusalat}
-                    koulutustyypit={koulutustyypit}
-                    maaraykset={lupa.maaraykset}
-                    lupaKohteet={lupaKohteet}
-                    maaraystyypit={maaraystyypit}
-                    muut={muut}
-                    onNewDocSave={onNewDocSave}
-                    organisation={organisation}
-                  />
+                  <React.Fragment>
+                    {page === 1 && (
+                      <Lupanakyma
+                        history={history}
+                        kohteet={kohteet}
+                        koulutukset={koulutukset}
+                        koulutusalat={koulutusalat}
+                        koulutustyypit={koulutustyypit}
+                        maaraykset={lupa.maaraykset}
+                        lupaKohteet={lupaKohteet}
+                        maaraystyypit={maaraystyypit}
+                        muut={muut}
+                        onNewDocSave={onNewDocSave}
+                        organisation={organisation}
+                      />
+                    )}
+                    {page === 2 && (
+                      <Lupanakyma
+                        history={history}
+                        kohteet={kohteet}
+                        koulutukset={koulutukset}
+                        koulutusalat={koulutusalat}
+                        koulutustyypit={koulutustyypit}
+                        maaraykset={lupa.maaraykset}
+                        lupaKohteet={lupaKohteet}
+                        maaraystyypit={maaraystyypit}
+                        mode="reasoning"
+                        muut={muut}
+                        onNewDocSave={onNewDocSave}
+                        organisation={organisation}
+                      />
+                      // <MuutospyyntoWizardPerustelut
+                      //   koulutusalat={koulutusalat}
+                      //   lupa={lupa}
+                      //   lupaKohteet={lupaKohteet}
+                      //   maaraystyypit={maaraystyypit}
+                      //   tutkinnotCO
+                      //   // visits={visitsPerPage[2]}
+                      // />
+                    )}
+                  </React.Fragment>
                 ) : null}
               </div>
               <EsittelijatWizardActions

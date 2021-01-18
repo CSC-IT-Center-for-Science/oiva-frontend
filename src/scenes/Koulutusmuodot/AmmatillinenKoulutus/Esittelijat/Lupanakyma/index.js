@@ -13,6 +13,7 @@ const Lupanakyma = ({
   maaraykset,
   lupaKohteet,
   maaraystyypit,
+  mode,
   muut,
   organisation
 }) => {
@@ -38,7 +39,8 @@ const Lupanakyma = ({
     <div
       className={`border-8 ${
         isLupaValid ? "border-green-500" : "border-red-500"
-      }`}>
+      }`}
+    >
       <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
         <div className="py-4">
           <Typography component="h1" variant="h1">
@@ -54,7 +56,8 @@ const Lupanakyma = ({
               <React.Fragment>
                 <a
                   href={`tel:${organisationPhoneNumber}`}
-                  className="underline">
+                  className="underline"
+                >
                   {organisationPhoneNumber}
                 </a>{" "}
                 |{" "}
@@ -79,7 +82,8 @@ const Lupanakyma = ({
       </div>
       <div
         id="wizard-content"
-        className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20">
+        className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20"
+      >
         <EsittelijatMuutospyynto
           kohteet={kohteet}
           koulutukset={koulutukset}
@@ -88,6 +92,7 @@ const Lupanakyma = ({
           maaraykset={maaraykset}
           lupaKohteet={lupaKohteet}
           maaraystyypit={maaraystyypit}
+          mode={mode}
           muut={muut}
         />
       </div>

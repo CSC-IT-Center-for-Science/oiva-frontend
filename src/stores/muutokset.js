@@ -36,6 +36,7 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
+import { muutokset } from "scenes/Koulutusmuodot/AmmatillinenKoulutus/sivun1tietojaTaytettyKattavasti";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -91,16 +92,17 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  initialState: {
-    changeObjects: {
-      saved: {},
-      unsaved: {},
-      underRemoval: {}
-    },
-    focusOn: null,
-    latestChanges: {},
-    validity: {}
-  },
+  initialState: muutokset,
+  // initialState: {
+  //   changeObjects: {
+  //     saved: {},
+  //     unsaved: {},
+  //     underRemoval: {}
+  //   },
+  //   focusOn: null,
+  //   latestChanges: {},
+  //   validity: {}
+  // },
   actions: {
     /**
      * -------------------- CRITERIONS OF LIMITATIONS --------------------
