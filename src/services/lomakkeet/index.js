@@ -146,8 +146,8 @@ const lomakkeet = {
       getToimintaaluelomake(data, booleans, locale, changeObjects, functions)
   },
   opiskelijavuodet: {
-    modification: (data, booleans, locale) =>
-      getOpiskelijavuodetLomake(data, booleans, locale)
+    modification: (data, booleans, locale, changeObjects) =>
+      getOpiskelijavuodetLomake(data, booleans, locale, changeObjects)
   },
 
   // Wizard page 2 forms

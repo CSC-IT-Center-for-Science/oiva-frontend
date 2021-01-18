@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { prop } from "ramda";
+import { find, path, propEq } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 
 const constants = {
@@ -18,14 +18,22 @@ const Sisaoppilaitos = ({
     anchor: "opiskelijavuodet"
   });
 
+  const sisaoppilaitosStateObj = find(
+    propEq("anchor", "opiskelijavuodet.sisaoppilaitos.A"),
+    lomakedata
+  );
+
   const dataLomakepalvelulle = useMemo(
     () => ({
-      isApplyForValueSet: prop("isApplyForValueSet", lomakedata.sisaoppilaitos),
+      isApplyForValueSet: !!path(
+        ["properties", "applyForValue"],
+        sisaoppilaitosStateObj
+      ),
       items,
       koodiarvot: ["4"],
       maarayksetByKoodiarvo
     }),
-    [items, lomakedata.sisaoppilaitos, maarayksetByKoodiarvo]
+    [items, sisaoppilaitosStateObj, maarayksetByKoodiarvo]
   );
 
   return (
