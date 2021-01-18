@@ -190,7 +190,8 @@ const Lomake = React.memo(
               onChangesRemove={onChangesRemove}
               messages={rowLocalizations}
               sectionId={anchor}
-              title={rowTitle}>
+              title={rowTitle}
+            >
               <div className={noPadding ? "" : "p-8"}>
                 <CategorizedListRoot
                   anchor={anchor}

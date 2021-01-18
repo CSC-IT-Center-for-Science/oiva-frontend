@@ -248,6 +248,7 @@ const Autocomplete = React.memo(
 
 Autocomplete.defaultProps = {
   isMulti: true,
+  isReadOnly: false,
   isRequired: false,
   isValid: true,
   placeholder: null,
@@ -263,6 +264,7 @@ Autocomplete.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   isMulti: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
   name: PropTypes.string,

@@ -291,7 +291,8 @@ const CategorizedList = props => {
             key={i}
             className={R.join(" ", categoryClasses)}
             data-level={props.level}
-            id={anchor}>
+            id={anchor}
+          >
             {isCategoryTitleVisible && (
               <div className={categoryTitleClasses}>
                 <Typography component="h4" variant="h4">
@@ -379,7 +380,8 @@ const CategorizedList = props => {
                           isPreviewModeOn={propsObj.isPreviewModeOn}
                           isReadOnly={propsObj.isReadOnly}
                           onChanges={handleChanges}
-                          labelStyles={labelStyles}>
+                          labelStyles={labelStyles}
+                        >
                           <div className="flex">
                             {propsObj.code ? (
                               <span className={`${leadingClass}`}>
@@ -418,7 +420,8 @@ const CategorizedList = props => {
                           onChanges={handleChanges}
                           labelStyles={labelStyles}
                           value={propsObj.value}
-                          className="flex-row">
+                          className="flex-row"
+                        >
                           <div className="flex">
                             {propsObj.code ? (
                               <span className={`${leadingClass}`}>
@@ -635,7 +638,8 @@ const CategorizedList = props => {
                                 isReadOnly={propsObj.isReadOnly}
                                 isRequired={propsObj.isRequired}
                                 isValid={propsObj.isValid}
-                                title={propsObj.title}></StatusTextRow>
+                                title={propsObj.title}
+                              ></StatusTextRow>
                             </div>
                           );
                         })(category)
@@ -782,6 +786,7 @@ const CategorizedList = props => {
                           fullAnchor={fullAnchor}
                           id={fullAnchor}
                           initialValue={propsObj.initialValue}
+                          isRequired={propsObj.isRequired}
                           onChanges={handleChanges}
                           titles={propsObj.titles}
                         />

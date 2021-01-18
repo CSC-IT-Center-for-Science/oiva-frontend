@@ -7,7 +7,7 @@ import { Typography } from "@material-ui/core";
 import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 import common from "i18n/definitions/common";
 
-const Tutkinnot = React.memo(({ koulutusalat, koulutustyypit }) => {
+const Tutkinnot = ({ koulutusalat, koulutustyypit }) => {
   const intl = useIntl();
   const sectionId = "tutkinnot";
   const localeUpper = toUpper(intl.locale);
@@ -48,16 +48,15 @@ const Tutkinnot = React.memo(({ koulutusalat, koulutustyypit }) => {
               data={lomakedata}
               key={koulutusala.koodiarvo}
               title={title}
-              tutkinnot={
-                tutkinnotByKoulutusala[koulutusala.koodiarvo]
-              }></Koulutusala>
+              tutkinnot={tutkinnotByKoulutusala[koulutusala.koodiarvo]}
+            ></Koulutusala>
           );
         }
         return null;
       }, koulutusalat)}
     </React.Fragment>
   );
-});
+};
 
 Tutkinnot.propTypes = {
   koulutusalat: PropTypes.array,
