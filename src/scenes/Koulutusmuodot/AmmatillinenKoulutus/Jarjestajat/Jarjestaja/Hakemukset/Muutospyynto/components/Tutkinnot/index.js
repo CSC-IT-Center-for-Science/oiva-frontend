@@ -7,7 +7,7 @@ import { Typography } from "@material-ui/core";
 import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 import common from "i18n/definitions/common";
 
-const Tutkinnot = ({ koulutusalat, koulutustyypit }) => {
+const Tutkinnot = ({ koulutusalat, koulutustyypit, mode }) => {
   const intl = useIntl();
   const sectionId = "tutkinnot";
   const localeUpper = toUpper(intl.locale);
@@ -44,9 +44,10 @@ const Tutkinnot = ({ koulutusalat, koulutustyypit }) => {
           };
           return (
             <Koulutusala
-              sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
               data={lomakedata}
               key={koulutusala.koodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
               title={title}
               tutkinnot={tutkinnotByKoulutusala[koulutusala.koodiarvo]}
             ></Koulutusala>

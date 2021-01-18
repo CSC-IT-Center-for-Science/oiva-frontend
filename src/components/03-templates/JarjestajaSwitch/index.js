@@ -9,6 +9,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { parseLupa } from "utils/lupaParser";
 import Jarjestaja from "components/03-templates/Jarjestaja";
 import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaParser";
+import { MuutoksetContainer } from "stores/muutokset";
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
@@ -22,9 +23,11 @@ const JarjestajaSwitch = ({
   ytunnus,
   kielet,
   tulevatLuvat,
+  UusiAsiaDialogContainer,
   voimassaOlevaLupa
 }) => {
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
+  const scope = "kj-lupanakyma";
 
   /**
    * Vapaan sivistystyön luvat täytyy parsia eri tavalla. Siksi tämä ehto.
@@ -35,8 +38,8 @@ const JarjestajaSwitch = ({
   const lupakohteet = useMemo(() => {
     return !lupa
       ? {}
-      : parseLupaFn({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
-  }, [lupa, intl, parseLupaFn]);
+      : parseLupaFn({ ...lupa }, formatMessage, locale.toUpperCase());
+  }, [lupa, formatMessage, locale, parseLupaFn]);
 
   return (
     <React.Fragment>
@@ -45,36 +48,33 @@ const JarjestajaSwitch = ({
       </BreadcrumbsItem>
       <Switch>
         <Route
+          authenticated={!!user}
           exact
           path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
-          render={props => {
-            if (!isEmpty(lupakohteet) && lupa) {
-              return (
-                <BaseData
-                  locale={intl.locale}
-                  render={_props => (
-                    <div>TODO: Avataan uusi tyhjä KJ-puolen lomake</div>
-                  )}
-                />
-              );
-            }
-            return <Loading />;
-          }}
-        />
-        <Route
-          exact
-          path={`${path}/hakemukset-ja-paatokset/:uuid/:page`}
-          render={props => {
-            if (lupakohteet && lupa) {
-              return (
-                <BaseData
-                  locale={intl.locale}
-                  render={_props => <div>TODO: Avataan KJ-puolen lomake</div>}
-                />
-              );
-            }
-            return <Loading />;
-          }}
+          render={() => (
+            <BaseData
+              locale={locale}
+              koulutustyyppi={koulutusmuoto.koulutustyyppi}
+              render={_props => {
+                return (
+                  <MuutoksetContainer scope={scope}>
+                    <UusiAsiaDialogContainer
+                      kohteet={_props.kohteet}
+                      koulutukset={_props.koulutukset}
+                      koulutusalat={_props.koulutusalat}
+                      koulutustyypit={_props.koulutustyypit}
+                      lisatiedot={_props.lisatiedot}
+                      maaraystyypit={_props.maaraystyypit}
+                      muut={_props.muut}
+                      opetuskielet={_props.opetuskielet}
+                      organisaatio={_props.organisaatio}
+                      viimeisinLupa={_props.viimeisinLupa}
+                    />
+                  </MuutoksetContainer>
+                );
+              }}
+            />
+          )}
         />
         <Route
           path={`${path}`}

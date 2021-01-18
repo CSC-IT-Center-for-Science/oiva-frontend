@@ -83,9 +83,8 @@ const iconStyles = makeStyles({
   }
 });
 
-function StepIcons(props) {
+function StepIcons({ active, completed, error, icon }) {
   const classes = iconStyles();
-  const { active, completed, error, icon } = props;
 
   return (
     <div
@@ -93,7 +92,8 @@ function StepIcons(props) {
         [classes.active]: active,
         [classes.error]: error,
         [classes.completed]: completed
-      })}>
+      })}
+    >
       {error ? (
         <Incomplete style={{ fontSize: 30 }} className={classes.error} />
       ) : completed ? (
@@ -108,7 +108,8 @@ function StepIcons(props) {
               marginTop: "0.25em",
               color: "#fff",
               font: "1.1em Inconsolata, monospace"
-            }}>
+            }}
+          >
             {icon}
           </span>
         </div>
@@ -117,57 +118,54 @@ function StepIcons(props) {
   );
 }
 
-const StepperNavigation = React.memo(props => {
-  const classes = useStyles();
-  return (
-    <div className={classes.root}>
-      <Stepper
-        nonLinear
-        activeStep={props.activeStep}
-        orientation={window.innerWidth >= 768 ? "horizontal" : "vertical"}
-        style={{
-          backgroundColor: "transparent",
-          paddingLeft: 0,
-          paddingRight: 0
-        }}>
-        {props.stepProps.map((item, index) => {
-          const labelProps = {};
+const StepperNavigation = React.memo(
+  ({ activeStep, handleStepChange, stepProps }) => {
+    const classes = useStyles();
+    return (
+      <div className={classes.root}>
+        <Stepper
+          nonLinear
+          activeStep={activeStep}
+          orientation={window.innerWidth >= 768 ? "horizontal" : "vertical"}
+          style={{
+            backgroundColor: "transparent",
+            paddingLeft: 0,
+            paddingRight: 0
+          }}
+        >
+          {stepProps.map((item, index) => {
+            const labelProps = {};
 
-          if (item.isFailed === true) {
-            labelProps.error = true;
-          }
-          if (item.isCompleted === true) {
-            labelProps.completed = true;
-          }
+            if (item.isFailed === true) {
+              labelProps.error = true;
+            }
+            if (item.isCompleted === true) {
+              labelProps.completed = true;
+            }
 
-          return (
-            <Step key={item.title}>
-              <StepButton
-                onClick={() => props.handleStepChange(index + 1)}
-                disabled={index === props.activeStep}
-                completed={item.isCompleted}>
-                <StepLabel
-                  style={{ marginBottom: "0.1em" }}
-                  StepIconComponent={StepIcons}
-                  {...labelProps}>
-                  {item.title}
-                </StepLabel>
-              </StepButton>
-            </Step>
-          );
-        })}
-      </Stepper>
-    </div>
-  );
-});
-
-StepperNavigation.defaultProps = {
-  stepProps: [
-    { title: "Phase 1" },
-    { title: "Phase 2", isFailed: true },
-    { title: "Phase 3", isCompleted: true }
-  ]
-};
+            return (
+              <Step key={item.title}>
+                <StepButton
+                  onClick={() => handleStepChange(index + 1)}
+                  disabled={index === activeStep}
+                  completed={item.isCompleted}
+                >
+                  <StepLabel
+                    style={{ marginBottom: "0.1em" }}
+                    StepIconComponent={StepIcons}
+                    {...labelProps}
+                  >
+                    {item.title}
+                  </StepLabel>
+                </StepButton>
+              </Step>
+            );
+          })}
+        </Stepper>
+      </div>
+    );
+  }
+);
 
 StepperNavigation.propTypes = {
   stepProps: PropTypes.array,

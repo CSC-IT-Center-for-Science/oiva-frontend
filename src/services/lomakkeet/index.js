@@ -14,7 +14,6 @@ import getKuljettajakoulutuslomake from "./koulutukset/kuljettajakoulutukset";
 import getTyovoimakoulutuslomake from "./koulutukset/tyovoimakoulutukset";
 import getATVKoulutuksetLomake from "./koulutukset/atvKoulutukset";
 import getValmentavatKoulutuksetLomake from "./koulutukset/valmentavatKoulutukset";
-import getTutkinnotPerustelulomake from "./perustelut/tutkinnot/";
 import getTutkinnotLomake from "./tutkinnot";
 import getOpetuskieletLomake from "./kielet/opetuskielet";
 import getTutkintokieletLomake from "./kielet/tutkintokielet";
@@ -110,7 +109,9 @@ const lomakkeet = {
   // Wizard page 1 forms
   tutkinnot: {
     modification: (data, booleans, locale) =>
-      getTutkinnotLomake("modification", data, booleans, locale)
+      getTutkinnotLomake("modification", data, booleans, locale),
+    reasoning: (data, booleans, locale, changeObjects) =>
+      getTutkinnotLomake("reasoning", data, booleans, locale, changeObjects)
   },
   koulutukset: {
     atvKoulutukset: {
@@ -257,17 +258,17 @@ const lomakkeet = {
           prefix
         )
     },
-    tutkinnot: {
-      reasoning: (data, booleans, locale, changeObjects, prefix) =>
-        getTutkinnotPerustelulomake(
-          "reasoning",
-          data,
-          booleans,
-          locale,
-          changeObjects,
-          prefix
-        )
-    },
+    // tutkinnot: {
+    //   reasoning: (data, booleans, locale, changeObjects, prefix) =>
+    //     getTutkinnotPerustelulomake(
+    //       "reasoning",
+    //       data,
+    //       booleans,
+    //       locale,
+    //       changeObjects,
+    //       prefix
+    //     )
+    // },
     opiskelijavuodet: {
       sisaoppilaitos: {
         reasoning: (data, booleans) =>

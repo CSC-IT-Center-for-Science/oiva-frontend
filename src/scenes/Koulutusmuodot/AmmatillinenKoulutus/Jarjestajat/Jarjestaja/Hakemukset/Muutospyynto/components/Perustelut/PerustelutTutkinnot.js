@@ -45,6 +45,7 @@ const PerustelutTutkinnot = React.memo(
     return (
       <React.Fragment>
         {map(koulutusala => {
+          console.info(tutkinnotByKoulutusala, koulutusala);
           if (tutkinnotByKoulutusala[koulutusala.koodiarvo]) {
             const fullSectionId = `${sectionId}_${koulutusala.koodiarvo}`;
             const title = koulutusala.metadata[localeUpper].nimi;
@@ -52,6 +53,7 @@ const PerustelutTutkinnot = React.memo(
               prop("koulutustyyppikoodiarvo"),
               tutkinnotByKoulutusala[koulutusala.koodiarvo]
             );
+            console.info(koulutusala, changeObjects);
             if (changeObjects.tutkinnot[koulutusala.koodiarvo]) {
               return (
                 <ExpandableRowRoot
@@ -68,7 +70,8 @@ const PerustelutTutkinnot = React.memo(
                   onUpdate={onChangesUpdate}
                   sectionId={fullSectionId}
                   showCategoryTitles={true}
-                  title={title}>
+                  title={title}
+                >
                   <Lomake
                     action="reasoning"
                     anchor={fullSectionId}
@@ -87,7 +90,8 @@ const PerustelutTutkinnot = React.memo(
                     isReadOnly={isReadOnly}
                     onChangesUpdate={onChangesUpdate}
                     path={["perustelut", "tutkinnot"]}
-                    showCategoryTitles={true}></Lomake>
+                    showCategoryTitles={true}
+                  ></Lomake>
                 </ExpandableRowRoot>
               );
             }

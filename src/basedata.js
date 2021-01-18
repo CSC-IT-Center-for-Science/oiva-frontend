@@ -506,18 +506,21 @@ const fetchBaseData = async (
     : undefined;
 
   result.oivaperustelut = raw.oivaperustelut
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.oivaperustelut)
+    ? await localforage.setItem(
+        "oivaperustelut",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.oivaperustelut)
+        )
       )
     : undefined;
 
