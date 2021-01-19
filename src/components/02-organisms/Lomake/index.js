@@ -9,7 +9,7 @@ import {
 } from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
-import { has, isEmpty, omit } from "ramda";
+import { has, isEmpty, length, omit } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 import { getReducedStructure } from "../CategorizedListRoot/utils";
 import FormTitle from "components/00-atoms/FormTitle";
@@ -175,6 +175,7 @@ const Lomake = React.memo(
     ]);
 
     if (Array.isArray(lomake) && lomake.length) {
+      console.info(anchor, changeObjects);
       return (
         <div>
           {code || formTitle ? (
@@ -185,7 +186,9 @@ const Lomake = React.memo(
               title={formTitle}
             />
           ) : null}
-          {isInExpandableRow && !isPreviewModeOn ? (
+          {isInExpandableRow &&
+          !isPreviewModeOn &&
+          (mode !== "reasoning" || length(changeObjects)) ? (
             <ExpandableRowRoot
               anchor={anchor}
               changes={changeObjects}
@@ -214,7 +217,7 @@ const Lomake = React.memo(
                 />
               </div>
             </ExpandableRowRoot>
-          ) : (
+          ) : mode !== "reasoning" || length(changeObjects) ? (
             <CategorizedListRoot
               anchor={anchor}
               focusOn={focusOn}
@@ -230,7 +233,7 @@ const Lomake = React.memo(
                 uncheckParentWithoutActiveChildNodes
               }
             />
-          )}
+          ) : null}
         </div>
       );
     } else {
