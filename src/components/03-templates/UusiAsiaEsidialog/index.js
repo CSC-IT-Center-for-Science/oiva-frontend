@@ -106,16 +106,17 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
           {isSearchFieldVisible ? (
             <React.Fragment>
               <p className="mb-6">
-                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
+                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
               </p>
               <Typography component="h4" variant="h4">
-                {intl.formatMessage(common.haeKJYtunnuksella)}
+                {intl.formatMessage(common.haeKJ)}
               </Typography>
               <div className="flex items-center">
-                <FormControl>
+                <FormControl
+                  style={{flexGrow: "1"}}>
                   <TextField
                     id="search-field"
-                    label={intl.formatMessage(common.syotaYtunnus)}
+                    label={intl.formatMessage(common.syotaHaettavaTunniste)}
                     InputProps={{
                       endAdornment: isLoading ? (
                         <CircularProgress style={{ height: "auto" }} />
@@ -143,7 +144,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                     setOrganisation(null);
                     setIsSearchFieldVisible(false);
                   }}
-                  style={{ marginLeft: "1rem" }}>
+                  style={{ marginLeft: "auto" }}>
                   {intl.formatMessage(common.suljeHaku)}
                 </StyledButton>
               </div>
@@ -225,7 +226,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                 value={[selectedKJ]}
               />
               <p className="my-4">
-                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
+                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
               </p>
               <StyledButton
                 onClick={() => {
@@ -233,7 +234,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                   setIsSearchFieldVisible(true);
                 }}
                 startIcon={<SearchIcon />}>
-                {intl.formatMessage(common.haeKJYtunnuksella)}
+                {intl.formatMessage(common.haeKJ)}
               </StyledButton>
               {isKJMissing && !selectedKJ ? (
                 <p className="mt-2">
