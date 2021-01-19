@@ -1,13 +1,8 @@
-import {
-  getKuljettajienJatkokoulutuslomake,
-  getKuljettajienPeruskoulutuslomake
-} from "./perustelut/kuljettajakoulutukset";
 import { getTaloudellisetlomake } from "./taloudelliset";
 import { append, path } from "ramda";
 import { setLocale } from "./i18n-config";
 import { getCheckboxes } from "./perustelut/muutostarpeet";
 import getToimintaaluePerustelulomake from "./perustelut/toiminta-alue";
-import getOpetuskieletPerustelulomake from "./perustelut/opetuskielet";
 import getKuljettajakoulutuslomake from "./koulutukset/kuljettajakoulutukset";
 import getTyovoimakoulutuslomake from "./koulutukset/tyovoimakoulutukset";
 import getATVKoulutuksetLomake from "./koulutukset/atvKoulutukset";
@@ -173,7 +168,15 @@ const lomakkeet = {
   kielet: {
     opetuskielet: {
       modification: (data, booleans, locale) =>
-        getOpetuskieletLomake("modification", data, booleans, locale)
+        getOpetuskieletLomake("modification", data, booleans, locale),
+      reasoning: (data, booleans, locale, changeObjects) =>
+        getOpetuskieletLomake(
+          "reasoning",
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
     },
     tutkintokielet: {
       modification: (data, booleans, locale) =>
@@ -192,10 +195,6 @@ const lomakkeet = {
   // Wizard page 2 forms
   perustelut: {
     kielet: {
-      opetuskielet: {
-        reasoning: (data, booleans, locale) =>
-          getOpetuskieletPerustelulomake("reasoning", data, booleans, locale)
-      },
       tutkintokielet: {
         reasoning: (data, booleans, locale) =>
           getTutkintokieletPerustelulomake("reasoning", data, booleans, locale)
@@ -372,6 +371,7 @@ export async function getLomake(
   _path = [],
   prefix
 ) {
+  console.info(_path, mode);
   // This defines the language of the requested form.
   setLocale(locale);
   const fn = path(append(mode, _path), lomakkeet);

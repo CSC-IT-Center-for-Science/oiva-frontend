@@ -17,8 +17,6 @@ function getReasoningForm(koulutusdata, changeObjects, { isReadOnly }, prefix) {
       return null;
     }
 
-    console.info(item, changeObj);
-
     let kuljettajienLomake = [];
 
     const action = path(["properties", "isChecked"], changeObj)

@@ -26,7 +26,6 @@ import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils"
 import equal from "react-fast-compare";
 import { useAllSections } from "stores/lomakedata";
 import StepperNavigation from "components/01-molecules/Stepper";
-import MuutospyyntoWizardPerustelut from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardPerustelut";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -361,6 +360,7 @@ const UusiAsiaDialog = React.memo(
                         maaraykset={lupa.maaraykset}
                         lupaKohteet={lupaKohteet}
                         maaraystyypit={maaraystyypit}
+                        mode={"modification"}
                         muut={muut}
                         onNewDocSave={onNewDocSave}
                         organisation={organisation}
