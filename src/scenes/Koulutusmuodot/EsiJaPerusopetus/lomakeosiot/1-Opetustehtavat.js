@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { omit, path, prop, toUpper } from "ramda";
+import { omit } from "ramda";
 import { getOpetustehtavaKoodistoFromStorage } from "helpers/opetustehtavat";
 import equal from "react-fast-compare";
-import { getLocalizedProperty } from "../../../../services/lomakkeet/utils";
 import common from "../../../../i18n/definitions/common";
 import esiJaPerusopetus from "../../../../i18n/definitions/esiJaPerusopetus";
 

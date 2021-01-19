@@ -14,8 +14,7 @@ import {
   pathEq,
   prop,
   propEq,
-  sortBy,
-  toUpper
+  sortBy
 } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";

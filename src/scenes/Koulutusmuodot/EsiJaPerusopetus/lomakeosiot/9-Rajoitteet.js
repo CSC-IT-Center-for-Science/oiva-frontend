@@ -51,7 +51,7 @@ const Rajoitteet = ({
     rajoiteId => {
       setChanges([], `${sectionId}_${rajoiteId}`);
     },
-    [changeObjects, sectionId, setChanges]
+    [sectionId, setChanges]
   );
 
   return (
