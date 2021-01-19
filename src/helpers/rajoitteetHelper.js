@@ -82,7 +82,7 @@ export const createAlimaarayksetBEObjects = (
       : prop("generatedId", last(muutosobjektit));
 
   const alimaarays = {
-    generatedId: `alimaarays-${index}`,
+    generatedId: `alimaarays-${Math.random()}`,
     parent: alimaarayksenParent,
     kohde: find(propEq("tunniste", tunniste), kohteet),
     koodiarvo,

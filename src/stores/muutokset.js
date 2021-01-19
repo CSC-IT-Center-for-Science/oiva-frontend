@@ -5,10 +5,8 @@ import {
   assocPath,
   compose,
   concat,
-  countBy,
   difference,
   endsWith,
-  equals,
   filter,
   flatten,
   head,
@@ -30,7 +28,6 @@ import {
   startsWith,
   values
 } from "ramda";
-import { muutokset } from "../scenes/Koulutusmuodot/EsiJaPerusopetus/kaikkiPOosiotTaytetty-muutokset";
 import {
   getAnchorPart,
   getLatestChangesByAnchor,
@@ -266,34 +263,26 @@ const Store = createStore({
       );
 
       const currentChangeObjects = getState().changeObjects;
-      const kohdennusChangeObjects = filter(changeObj => {
-        const amountOfKohdistuksetKeyword = prop(
-          "true",
-          countBy(equals("kohdennukset"))(split(".", changeObj.anchor))
-        );
-
-        return (
-          startsWith(
-            `${sectionId}_${rajoiteId}.${kohdennuspolku}.kohdennukset`,
-            changeObj.anchor
-          ) && amountOfKohdistuksetKeyword === length(kohdennusindeksipolku) + 1
-        );
-      }, concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
 
       /**
-       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
-       * numero lisäämällä lukuun yksi.
+       * Filteröidään muutosobjektit, joiden ankkuri alkaa kohdennuspolulla,
+       * sekä seuraava ankkurin osa on kohdennukset
        */
-      const nextKohdennusAnchorPart = length(kohdennusChangeObjects);
-      // length(kohdennusChangeObjects) > 0
-      //   ? reduce(
-      //       max,
-      //       -Infinity,
-      //       map(changeObj => {
-      //         return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-      //       }, kohdennusChangeObjects)
-      //     ) + 1
-      //   : 1;
+
+      const kohdennusChangeObjects = filter(cObj =>
+        startsWith(`${sectionId}_${rajoiteId}.${kohdennuspolku}`, cObj.anchor) &&
+        getAnchorPart(cObj.anchor, 1 + 2*length(kohdennusindeksipolku)) === "kohdennukset",
+        concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
+
+      const nextKohdennusAnchorPart = length(kohdennusChangeObjects) > 0
+        ? reduce(
+          max,
+        -Infinity,
+        map(changeObj => {
+          return parseInt(getAnchorPart(changeObj.anchor, 2 + 2 * length(kohdennusindeksipolku)), 10);
+        }, kohdennusChangeObjects)
+      ) + 1
+        : 0;
 
       console.group();
       console.info("kohdennusindeksipolku", kohdennusindeksipolku);
