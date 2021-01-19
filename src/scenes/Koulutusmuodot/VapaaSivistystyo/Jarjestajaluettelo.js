@@ -50,6 +50,7 @@ import {
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
+import vapaaSivistystyo from "../../../i18n/definitions/vapaaSivistystyo";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -169,7 +170,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
         {...getTableProps()}
         className="border border-solid border-gray-400">
         <caption>
-          {intl.formatMessage(common.voimassaOlevatJarjestamisluvat, {
+          {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa, {
             amount: `${rows.length} / ${luvat.length}`
           })}
         </caption>
@@ -463,7 +464,7 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
   return (
     <div className="mx-auto w-full mb-16">
       <p className="mt-4 mb-8">
-        {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
+        {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvat, { count: luvat.length })}
       </p>
 
       <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">
