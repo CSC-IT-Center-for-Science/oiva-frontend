@@ -153,7 +153,6 @@ async function getModificationForm(
               tutkintoCategory,
               osaamisalaCategories
             );
-            console.info(isAddition, reasoningLomakeosio);
           }
 
           return {

@@ -170,7 +170,6 @@ const Lomake = React.memo(
     ]);
 
     if (Array.isArray(lomake) && lomake.length) {
-      console.info(anchor, changeObjects);
       return (
         <div>
           {code || formTitle ? (
