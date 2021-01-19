@@ -10,6 +10,8 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import InputLabel from "@material-ui/core/InputLabel";
 import { equals, map } from "ramda";
+import { useIntl } from "react-intl";
+import commonMessages from "i18n/definitions/common";
 
 /**
  * Autocomplete wraps a Select
@@ -28,6 +30,7 @@ const Autocomplete = React.memo(
     const [value, setValue] = useState([]);
     const [, setMinCharacters] = useState(3);
     const [isOptionsShown, setIsOptionsShown] = useState(false);
+    const intl = useIntl();
 
     useEffect(() => {
       setValue(props.value);
@@ -185,7 +188,8 @@ const Autocomplete = React.memo(
                 isMulti={props.isMulti}
                 value={value}
                 onChange={handleSelectChange}
-                placeholder={props.placeholder}
+                placeholder={props.placeholder ? props.placeholder :
+                  intl.formatMessage(commonMessages.autocompleteValitse)}
                 inputProps={{
                   id: "select-multiple"
                 }}
@@ -209,7 +213,8 @@ const Autocomplete = React.memo(
                 isMulti={props.isMulti}
                 value={value}
                 onChange={handleSelectChange}
-                placeholder={props.placeholder}
+                placeholder={props.placeholder ? props.placeholder :
+                  intl.formatMessage(commonMessages.autocompleteValitse)}
                 inputProps={{
                   id: "select-multiple"
                 }}
@@ -245,10 +250,11 @@ const Autocomplete = React.memo(
 
 Autocomplete.defaultProps = {
   isMulti: true,
+  isReadOnly: false,
   isRequired: false,
   isValid: true,
   isVisible: true,
-  placeholder: "Valitse...",
+  placeholder: null,
   value: [],
   isSearch: false,
   minChars: 3,
@@ -261,6 +267,7 @@ Autocomplete.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   isMulti: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
   isVisible: PropTypes.bool,

@@ -69,7 +69,7 @@ export default async function getPaatoksenTiedot(
               isReadOnly,
               isRequired: isDiaarinumeroFieldEmpty,
               isValid,
-              label: __("asianumero"),
+              label: __("common.asianumero"),
               type: "text",
               value: defaultAsianumero
             }
@@ -87,7 +87,7 @@ export default async function getPaatoksenTiedot(
               isReadOnly,
               isRequired: isAsianumeroFieldEmpty,
               isValid,
-              label: __("diaarinumero"),
+              label: __("common.diaarinumero"),
               type: "text",
               value: defaultDiaarinumero
             }
@@ -103,7 +103,7 @@ export default async function getPaatoksenTiedot(
             styleClasses: [""],
             properties: {
               fullWidth: true,
-              label: __("paatospaiva"),
+              label: __("common.paatospaiva"),
               placeholder: __("common.date"),
               locale: locale,
               localizations: {
@@ -129,7 +129,7 @@ export default async function getPaatoksenTiedot(
             styleClasses: [""],
             properties: {
               fullWidth: true,
-              label: __("voimaantulopaiva"),
+              label: __("common.voimaantulopaiva"),
               placeholder: __("common.date"),
               locale: locale,
               localizations: {

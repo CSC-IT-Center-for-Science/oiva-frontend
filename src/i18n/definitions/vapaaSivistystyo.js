@@ -22,5 +22,13 @@ export default defineMessages({
   esittelyteksti: {
     id: "vapaaSivistystyo.esittelyteksti",
     defaultMessage: "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä."
-  }
+  },
+  voimassaOlevatYllapitamisluvat: {
+    id: "vapaaSivistystyo.voimassaOlevatYllapitamisluvat",
+    defaultMessage: "Voimassa olevat ylläpitämisluvat {count} kpl"
+  },
+  voimassaOlevatYllapitamisluvatSuluissa: {
+    id: "vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa",
+    defaultMessage: "Voimassa olevat ylläpitämisluvat ({amount} kpl)"
+  },
 });

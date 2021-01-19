@@ -139,7 +139,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
             name: "FormTitle",
             properties: {
               isPreviewModeOn: true,
-              level: 3,
+              level: 4,
               title: __("education.voidaanAntaaMyosSeuraavillaKielilla")
             }
           }

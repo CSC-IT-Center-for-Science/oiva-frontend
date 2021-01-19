@@ -1,31 +1,36 @@
-import { find, filter, map, propEq, toUpper } from "ramda";
+import { find, filter, map, toUpper, equals } from "ramda";
 import { getKieletFromStorage } from "helpers/kielet";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
+import { getAnchorPart } from "utils/common";
 
-async function getModificationForm(aktiivisetTutkinnot, locale) {
+async function getModificationForm(
+  aktiivisetTutkinnot = [],
+  isReadOnly,
+  locale
+) {
   const kielet = await getKieletFromStorage();
   const koulutustyypit = await getKoulutustyypitFromStorage();
   const localeUpper = toUpper(locale);
   const currentDate = new Date();
   return map(koulutustyyppi => {
-    const tutkinnot = filter(
-      propEq("koulutustyyppikoodiarvo", koulutustyyppi.koodiarvo),
-      aktiivisetTutkinnot || []
-    );
+    const tutkinnot = filter(tutkinto => {
+      const koulutustyyppikoodiarvo = getAnchorPart(tutkinto.anchor, 1);
+      return equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo);
+    }, aktiivisetTutkinnot);
     if (tutkinnot.length) {
       return {
         anchor: koulutustyyppi.koodiarvo,
         title: koulutustyyppi.metadata[localeUpper].nimi,
         categories: map(tutkinto => {
           return {
-            anchor: tutkinto.koodiarvo,
+            anchor: getAnchorPart(tutkinto.anchor, 2),
             components: [
               {
                 anchor: "nimi",
                 name: "StatusTextRow",
                 properties: {
                   code: tutkinto.koodiarvo,
-                  title: tutkinto.metadata[localeUpper].nimi,
+                  title: tutkinto.properties.title,
                   statusTextStyleClasses: [],
                   styleClasses: []
                 }
@@ -34,6 +39,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
                 anchor: "kielet",
                 name: "Autocomplete",
                 properties: {
+                  isReadOnly,
                   options: map(kieli => {
                     return {
                       label: kieli.metadata[localeUpper].nimi,
@@ -62,7 +68,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
                       };
                     }
                     return null;
-                  }, tutkinto.tutkintokielet).filter(Boolean)
+                  }, tutkinto.tutkintokielet || []).filter(Boolean)
                 }
               }
             ]
@@ -82,7 +88,7 @@ export default async function getTutkintokieletLomake(
 ) {
   switch (action) {
     case "modification":
-      return await getModificationForm(data.aktiiviset, locale);
+      return await getModificationForm(data.aktiiviset, isReadOnly, locale);
     default:
       return [];
   }

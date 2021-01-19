@@ -1,18 +1,7 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
-import {
-  concat,
-  filter,
-  find,
-  includes,
-  keys,
-  map,
-  path,
-  pathEq,
-  prop
-} from "ramda";
+import { find, path, propEq } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 
 const constants = {
@@ -25,65 +14,27 @@ const Sisaoppilaitos = ({
   maarayksetByKoodiarvo,
   sectionId
 }) => {
-  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "muut"
-  });
-
-  const [lomakedata, { setLomakedata }] = useLomakedata({
+  const [lomakedata] = useLomakedata({
     anchor: "opiskelijavuodet"
   });
 
+  const sisaoppilaitosStateObj = find(
+    propEq("anchor", "opiskelijavuodet.sisaoppilaitos.A"),
+    lomakedata
+  );
+
   const dataLomakepalvelulle = useMemo(
     () => ({
-      isApplyForValueSet: prop("isApplyForValueSet", lomakedata.sisaoppilaitos),
+      isApplyForValueSet: !!path(
+        ["properties", "applyForValue"],
+        sisaoppilaitosStateObj
+      ),
       items,
       koodiarvot: ["4"],
       maarayksetByKoodiarvo
     }),
-    [items, lomakedata.sisaoppilaitos, maarayksetByKoodiarvo]
+    [items, sisaoppilaitosStateObj, maarayksetByKoodiarvo]
   );
-
-  const koodiarvot = map(prop("koodiarvo"), items);
-
-  useEffect(() => {
-    const muutostenJalkeenAktiivisetKoodiarvot = filter(koodiarvo => {
-      const changeObj = find(
-        pathEq(["properties", "metadata", "koodiarvo"], koodiarvo),
-        changeObjects
-      );
-      return (
-        includes(koodiarvo, koodiarvot) &&
-        (!changeObj ||
-          (changeObj && pathEq(["properties", "isChecked"], true, changeObj)))
-      );
-    }, keys(maarayksetByKoodiarvo)).filter(Boolean);
-
-    const muutostenMyotaAktiivisetKoodiarvot = map(changeObj => {
-      const koodiarvo = path(
-        ["properties", "metadata", "koodiarvo"],
-        changeObj
-      );
-
-      return includes(koodiarvo, koodiarvot) &&
-        pathEq(["properties", "isChecked"], true, changeObj)
-        ? path(["properties", "metadata", "koodiarvo"], changeObj)
-        : null;
-    }, changeObjects).filter(Boolean);
-
-    setLomakedata(
-      concat(
-        muutostenJalkeenAktiivisetKoodiarvot,
-        muutostenMyotaAktiivisetKoodiarvot
-      ),
-      `${sectionId}_valitutKoodiarvot`
-    );
-  }, [
-    changeObjects,
-    koodiarvot,
-    maarayksetByKoodiarvo,
-    sectionId,
-    setLomakedata
-  ]);
 
   return (
     <Lomake
