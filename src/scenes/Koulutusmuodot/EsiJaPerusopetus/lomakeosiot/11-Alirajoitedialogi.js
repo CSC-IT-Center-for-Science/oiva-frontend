@@ -13,10 +13,10 @@ import PropTypes from "prop-types";
 import { useChangeObjects, useChangeObjectsByAnchor } from "stores/muutokset";
 
 const constants = {
-  formLocation: ["esiJaPerusopetus", "rajoite"]
+  formLocation: ["esiJaPerusopetus", "alirajoite"]
 };
 
-const Rajoite = ({
+const Alirajoitedialogi = ({
   osioidenData,
   sectionId,
   parentSectionId,
@@ -44,7 +44,7 @@ const Rajoite = ({
   );
 
   const revertChangesAndCloseDialog = () => {
-    actions.closeRestrictionDialog();
+    actions.suljeAlirajoitedialogi();
   };
 
   const acceptChangesAndCloseDialog = () => {
@@ -53,24 +53,26 @@ const Rajoite = ({
 
   return (
     <Dialog
-      open={state.isRestrictionDialogVisible}
+      open={state.isAlirajoitedialogiVisible}
       PaperProps={{
         style: {
           overflowY: "auto",
-          height: "80%",
+          minHeight: "30%",
           minWidth: "32rem",
           width: "80%",
           maxWidth: "88rem"
         }
-      }}>
+      }}
+    >
       <DialogTitle onClose={actions.closeRestrictionDialog}>
-        Lisää rajoite luvalle
+        Muokkaa rajoitteen alirajoitteita
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
         {/* <Typography component="p" variant="p">
           Aloita valitsemalla rajoituksen kohde. Valinnan jälkeen voit tehdä
           tarvittavat rajoitukset haluamallasi tavalla
         </Typography> */}
+
         <Lomake
           isInExpandableRow={false}
           anchor={sectionId}
@@ -85,7 +87,8 @@ const Rajoite = ({
           }}
           isSavingState={false}
           path={constants.formLocation}
-          showCategoryTitles={true}></Lomake>
+          showCategoryTitles={true}
+        ></Lomake>
       </DialogContent>
       <DialogActions>
         <div className="flex pr-6 pb-4">
@@ -93,7 +96,8 @@ const Rajoite = ({
             <Button
               onClick={() => revertChangesAndCloseDialog()}
               color="primary"
-              variant="outlined">
+              variant="outlined"
+            >
               {intl.formatMessage(common.cancel)}
             </Button>
           </div>
@@ -102,7 +106,8 @@ const Rajoite = ({
               acceptChangesAndCloseDialog(rajoitelomakeChangeObjs);
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(common.accept)}
           </Button>
         </div>
@@ -111,8 +116,8 @@ const Rajoite = ({
   );
 };
 
-Rajoite.propTypes = {
+Alirajoitedialogi.propTypes = {
   parentSectionId: PropTypes.string
 };
 
-export default Rajoite;
+export default Alirajoitedialogi;

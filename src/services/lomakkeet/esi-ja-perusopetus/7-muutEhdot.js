@@ -52,9 +52,14 @@ export async function muutEhdot(
 
   const lomakerakenne = flatten([
     map(ehto => {
-      const ehtoonLiittyvatMaaraykset = filter(m =>
-        propEq("koodiarvo", ehto.koodiarvo, m) &&
-        propEq("koodisto", "pomuutkoulutuksenjarjestamiseenliittyvatehdot", m),
+      const ehtoonLiittyvatMaaraykset = filter(
+        m =>
+          propEq("koodiarvo", ehto.koodiarvo, m) &&
+          propEq(
+            "koodisto",
+            "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
+            m
+          ),
         maaraykset
       );
       const kuvausmaaraykset = filter(

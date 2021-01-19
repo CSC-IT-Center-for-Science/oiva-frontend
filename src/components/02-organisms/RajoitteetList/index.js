@@ -1,159 +1,79 @@
 import React from "react";
-import {
-  addIndex,
-  compose,
-  filter,
-  find,
-  includes,
-  map,
-  mapObjIndexed,
-  path,
-  pathEq,
-  prop,
-  values
-} from "ramda";
-import { Typography } from "@material-ui/core";
-import rajoitteetMessages from "i18n/definitions/rajoitteet";
-import { useIntl } from "react-intl";
-import { getAnchorPart } from "utils/common";
+import PropTypes from "prop-types";
+import { addIndex, isEmpty, mapObjIndexed, values } from "ramda";
+import Lomake from "components/02-organisms/Lomake";
 import SimpleButton from "components/00-atoms/SimpleButton";
-import { __ as translate } from "i18n-for-browser";
-import { useLomakedata } from "stores/lomakedata";
+import { Typography } from "@material-ui/core";
+import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";
+import HtmlContent from "components/01-molecules/HtmlContent";
+
+const defaultProps = {
+  areTitlesVisible: true,
+  isBorderVisible: true
+};
 
 const RajoitteetList = ({
+  areTitlesVisible = defaultProps.areTitlesVisible,
+  isBorderVisible = defaultProps.isBorderVisible,
+  locale,
   onModifyRestriction,
   onRemoveRestriction,
   rajoitteet
 }) => {
-  const { formatMessage } = useIntl();
-
-  const [opetuksenJarjestamismuodot] = useLomakedata({
-    anchor: "opetuksenJarjestamismuodot"
-  });
-
-  return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
-      {values(
-        addIndex(mapObjIndexed)((rajoite, rajoiteId, ___, index) => {
-          const rajoitus = rajoite.elements.asetukset[1];
-
-          const kriteerit = filter(asetus => {
-            const anchorPart = getAnchorPart(asetus.anchor, 3);
-            return (
-              !isNaN(parseInt(anchorPart, 10)) &&
-              getAnchorPart(asetus.anchor, 4) === "kohde"
+  console.info(locale);
+  if (isEmpty(rajoitteet)) {
+    return <p>Ei rajoitteita.</p>;
+  } else {
+    return (
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
+        {values(
+          mapObjIndexed((rajoite, rajoiteId) => {
+            const rajoiteListamuodossa = getRajoiteListamuodossa(
+              rajoite.changeObjects,
+              locale,
+              rajoiteId,
+              "list"
             );
-          }, rajoite.elements.asetukset);
-
-          return (
-            <section key={rajoiteId}>
-              <Typography component="h3" variant="h3">
-                {`${formatMessage(rajoitteetMessages.rajoite)} ${index + 1}`}
-              </Typography>
-              <div className="border p-12 shadow-md">
-                <Typography component="h4" variant="h4">
-                  Kohteet:
+            return (
+              <div
+                className="flex flex-col p-6 border border-gray-300"
+                key={rajoiteId}
+              >
+                <Typography component="h3" variant="h3">
+                  Rajoite {rajoiteId}
                 </Typography>
-                <ul>
-                  {addIndex(map)((item, index) => {
-                    return (
-                      <li key={index} className="list-disc list-inside">
-                        {item.label}
-                      </li>
-                    );
-                  }, rajoitus.properties.value)}
-                </ul>
-                <Typography component="h4" variant="h4">
-                  Kohteita rajoitetaan seuraavasti:
-                </Typography>
-                <ul>
-                  {addIndex(map)((item, index) => {
-                    const anchorPart = getAnchorPart(item.anchor, 3);
-                    let kriteerinArvoobjekti = find(
-                      compose(
-                        includes(`.asetukset.${anchorPart}.rajoitus`),
-                        prop("anchor")
-                      ),
-                      rajoite.elements.asetukset
-                    );
-                    if (!kriteerinArvoobjekti) {
-                      // Opetuksen järjestämismuodot on poikkeustapaus,
-                      // koska päälomakkeella valittu arvo valikoituu
-                      // rajoitteeksi automaattisesti. Tällöin muutosobjekti
-                      // jää kuitenkin syntymättä, mistä johtuen tieto
-                      // päälomakkeella valitttuna olevasta arvosta täytyy
-                      // etsiä päälomakkeen osiokohtaisesta datasta, johon
-                      // on laskettu mukaan osioon tehdyt muutokset.
-                      if (
-                        item.properties.value.value ===
-                        "opetuksenJarjestamismuodot"
-                      ) {
-                        const checkedRadio = find(
-                          pathEq(["properties", "isChecked"], true),
-                          opetuksenJarjestamismuodot
-                        );
-                        if (checkedRadio) {
-                          const koodiarvo = getAnchorPart(
-                            checkedRadio.anchor,
-                            1
-                          );
-                          const title = path(
-                            ["properties", "title"],
-                            checkedRadio
-                          );
-
-                          kriteerinArvoobjekti = {
-                            properties: {
-                              value: [{ label: title, value: koodiarvo }]
-                            }
-                          };
-                        }
-                      }
-                    }
-                    return (
-                      <li key={index}>
-                        <div className="ml-12">
-                          <Typography component="h5" variant="h5">
-                            {item.properties.value.label}:
-                          </Typography>
-                          {kriteerinArvoobjekti && (
-                            <ul>
-                              {addIndex(map)((item, index) => {
-                                return (
-                                  <li
-                                    key={index}
-                                    className="list-disc list-inside">
-                                    {item.label}
-                                  </li>
-                                );
-                              }, kriteerinArvoobjekti.properties.value)}
-                            </ul>
-                          )}
-                        </div>
-                      </li>
-                    );
-                  }, kriteerit)}
-                </ul>
-                <div className="flex justify-between pt-8">
-                  <SimpleButton
-                    onClick={() => onRemoveRestriction(rajoiteId)}
-                    text={translate("rajoitteet.poistaRajoite")}
-                    variant={"outlined"}
-                  />{" "}
-                  <SimpleButton
-                    onClick={() => onModifyRestriction(rajoiteId)}
-                    size="small"
-                    text={translate("rajoitteet.muokkaaRajoitetta")}
-                    variant={"outlined"}
-                  />
+                <div className="flex-1">
+                  <HtmlContent content={rajoiteListamuodossa} />
+                </div>
+                <div className="flex justify-between pt-6">
+                  <div className="mr-2">
+                    <SimpleButton
+                      text="Poista"
+                      onClick={() => onRemoveRestriction(rajoiteId)}
+                    />
+                  </div>
+                  <div className="ml-2">
+                    <SimpleButton
+                      text="Muokkaa"
+                      onClick={() => onModifyRestriction(rajoiteId)}
+                    />
+                  </div>
                 </div>
               </div>
-            </section>
-          );
-        }, rajoitteet)
-      )}
-    </div>
-  );
+            );
+          }, rajoitteet)
+        )}
+      </div>
+    );
+  }
+};
+
+RajoitteetList.propTypes = {
+  areTitlesVisible: PropTypes.bool,
+  isBorderVisible: PropTypes.bool,
+  onModifyRestriction: PropTypes.func,
+  onRemoveRestriction: PropTypes.func,
+  rajoitteet: PropTypes.object
 };
 
 export default RajoitteetList;

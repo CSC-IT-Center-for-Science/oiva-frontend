@@ -24,9 +24,10 @@ export async function opetuksenJarjestamismuoto(
   return flatten(
     [
       map(muoto => {
-        const maarays = find(m =>
-          propEq("koodiarvo", muoto.koodiarvo, m) &&
-          propEq("koodisto", "opetuksenjarjestamismuoto", m),
+        const maarays = find(
+          m =>
+            propEq("koodiarvo", muoto.koodiarvo, m) &&
+            propEq("koodisto", "opetuksenjarjestamismuoto", m),
           maaraykset
         );
         return {
@@ -39,6 +40,9 @@ export async function opetuksenJarjestamismuoto(
                   anchor: "A",
                   name: "TextBox",
                   properties: {
+                    forChangeObject: {
+                      koodiarvo: muoto.koodiarvo
+                    },
                     isPreviewModeOn,
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
@@ -55,6 +59,9 @@ export async function opetuksenJarjestamismuoto(
               anchor: "valinta",
               name: "RadioButtonWithLabel",
               properties: {
+                forChangeObject: {
+                  koodiarvo: muoto.koodiarvo
+                },
                 isChecked: !!maarays,
                 isIndeterminate: false,
                 isPreviewModeOn,

@@ -1611,7 +1611,7 @@
   },
   {
     "id": "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä koulukotiopetusmuotoisena",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
@@ -1882,6 +1882,11 @@
   {
     "id": "rajoitteet.rajoitteet",
     "defaultMessage": "Rajoitteet",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.lisaaAlirajoite",
+    "defaultMessage": "Lisää alirajoite",
     "filepath": "src/i18n/definitions/rajoitteet.js"
   },
   {

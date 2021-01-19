@@ -22,6 +22,8 @@ import FormTitle from "components/00-atoms/FormTitle";
 import List from "components/01-molecules/List";
 import { Typography } from "@material-ui/core";
 import RajoitteetList from "components/02-organisms/RajoitteetList";
+import Rajoite from "components/02-organisms/Rajoite";
+import HtmlContent from "components/01-molecules/HtmlContent";
 
 /** @namespace components */
 
@@ -231,7 +233,8 @@ const CategorizedList = props => {
             }`,
             margins: {
               top: `pt-${categoryLayout.margins.top}`
-            }
+            },
+            custom: R.join(" ", category.styleClasses || [])
           }
         };
 
@@ -531,18 +534,27 @@ const CategorizedList = props => {
                           ) {
                             parentComponent =
                               props.parent.category.components[0];
-                            const parentChange = getChangeObjByAnchor(
-                              `${props.parent.anchor}.${parentComponent.anchor}`,
-                              props.changes
-                            );
-                            isDisabled =
-                              R.includes(parentComponent.name, [
-                                "CheckboxWithLabel",
-                                "RadioButtonWithLabel"
-                              ]) &&
-                              ((!parentComponent.properties.isChecked &&
-                                R.isEmpty(parentChange.properties)) ||
-                                !parentChange.properties.isChecked);
+                            if (parentComponent) {
+                              const parentChange = getChangeObjByAnchor(
+                                `${props.parent.anchor}.${parentComponent.anchor}`,
+                                props.changes
+                              );
+                              isDisabled =
+                                R.includes(parentComponent.name, [
+                                  "CheckboxWithLabel",
+                                  "RadioButtonWithLabel"
+                                ]) &&
+                                ((!parentComponent.properties.isChecked &&
+                                  R.isEmpty(parentChange.properties)) ||
+                                  !parentChange.properties.isChecked);
+                            } else {
+                              console.warn(
+                                "Inputilla",
+                                component,
+                                propsObj,
+                                "ei ole parenttia."
+                              );
+                            }
                           }
                           return (
                             <div className={styleClassesStr}>
@@ -624,7 +636,7 @@ const CategorizedList = props => {
                     {component.name === "StatusTextRow"
                       ? (() => {
                           return (
-                            <div className="flex-2">
+                            <div className={styleClassesStr}>
                               <StatusTextRow
                                 code={propsObj.code}
                                 labelStyles={labelStyles}
@@ -763,6 +775,7 @@ const CategorizedList = props => {
                                 isRequired={propsObj.isRequired}
                                 isReadOnly={propsObj.isReadOnly}
                                 isValid={propsObj.isValid}
+                                isVisible={propsObj.isVisible}
                                 options={propsObj.options}
                                 placeholder={propsObj.placeholder}
                                 value={R.flatten([propsObj.value])}
@@ -792,6 +805,9 @@ const CategorizedList = props => {
                         />
                       </div>
                     )}
+                    {component.name === "HtmlContent" && (
+                      <HtmlContent content={propsObj.content} />
+                    )}
                     {component.name === "SimpleButton" && (
                       <div className={`${styleClassesStr} flex-2`}>
                         <SimpleButton
@@ -817,7 +833,7 @@ const CategorizedList = props => {
                       </div>
                     )}
                     {component.name === "Datepicker" && (
-                      <div className={`${styleClassesStr} flex-2`}>
+                      <div className={styleClassesStr}>
                         <Datepicker
                           clearable={propsObj.clearable}
                           disableFuture={propsObj.disableFuture}
@@ -877,8 +893,22 @@ const CategorizedList = props => {
                         />
                       </div>
                     )}
+                    {component.name === "Rajoite" && (
+                      <Rajoite
+                        id={propsObj.id}
+                        index={propsObj.index}
+                        kriteerit={propsObj.kriteerit}
+                        onModifyRestriction={component.onModifyRestriction}
+                        onRemoveRestriction={component.onRemoveRestriction}
+                        rajoite={propsObj.rajoite}
+                        rajoitusPropValue={propsObj.rajoitusPropValue}
+                      />
+                    )}
                     {component.name === "RajoitteetList" && (
                       <RajoitteetList
+                        areTitlesVisible={propsObj.areTitlesVisible}
+                        isBorderVisible={propsObj.isBorderVisible}
+                        locale={propsObj.locale}
                         rajoitteet={propsObj.rajoitteet}
                         onModifyRestriction={propsObj.onModifyRestriction}
                         onRemoveRestriction={propsObj.onRemoveRestriction}

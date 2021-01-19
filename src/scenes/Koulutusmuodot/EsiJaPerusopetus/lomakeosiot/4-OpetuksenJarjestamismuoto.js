@@ -15,6 +15,7 @@ const OpetuksenJarjestamismuoto = ({
   maaraykset,
   mode = constants.mode,
   sectionId,
+  rajoitteet,
   title
 }) => {
   const intl = useIntl();
@@ -23,14 +24,15 @@ const OpetuksenJarjestamismuoto = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ maaraykset }}
+      data={{ maaraykset, rajoitteet }}
       formTitle={title}
       isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.opetuksenJarjestamismuodot)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 
@@ -39,6 +41,7 @@ OpetuksenJarjestamismuoto.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };
