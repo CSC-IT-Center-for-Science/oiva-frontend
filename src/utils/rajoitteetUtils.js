@@ -90,6 +90,8 @@ function getTaydennyssana(key, locale) {
       },
       opetustehtavat: {
         pre: __("education.opetustehtavana")
+      },
+      opetuksenJarjestamismuodot: {
       }
     },
     sv: {
@@ -109,6 +111,8 @@ function getTaydennyssana(key, locale) {
       },
       opetustehtavat: {
         pre: __("education.opetustehtavana")
+      },
+      opetuksenJarjestamismuoto: {
       }
     }
   };
