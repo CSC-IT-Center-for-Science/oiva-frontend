@@ -11,10 +11,10 @@ import MuutospyyntoWizardToimintaalue from "scenes/Koulutusmuodot/AmmatillinenKo
 import Section from "components/03-templates/Section";
 import MuutospyyntoWizardTopThree from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTopThree";
 import Lomake from "components/02-organisms/Lomake";
-import * as R from "ramda";
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
 import { Typography } from "@material-ui/core";
 import FormTitle from "components/00-atoms/FormTitle";
+import * as R from "ramda";
 
 const constants = {
   formLocation: {
@@ -156,6 +156,7 @@ const EsittelijatMuutospyynto = ({
         <MuutospyyntoWizardKoulutukset
           koulutukset={koulutukset}
           maaraykset={maaraykset}
+          mode={mode}
         />
 
         <Lomake

@@ -85,7 +85,6 @@ async function getModificationForm(
   changeObjects = []
 ) {
   const oivaperustelut = await getOivaPerustelutFromStorage();
-  console.info(mode);
   const localeUpper = toUpper(locale);
   return map(koulutustyyppi => {
     const tutkinnot = tutkinnotByKoulutustyyppi[koulutustyyppi.koodiarvo];

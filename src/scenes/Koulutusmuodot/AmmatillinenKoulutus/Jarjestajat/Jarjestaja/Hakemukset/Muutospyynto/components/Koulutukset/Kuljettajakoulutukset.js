@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import wizardMessages from "../../../../../../../../../i18n/definitions/wizard";
-import { getDataForKoulutusList } from "../../../../../../../../../utils/koulutusUtil";
-import Lomake from "../../../../../../../../../components/02-organisms/Lomake";
+import wizardMessages from "i18n/definitions/wizard";
+import { getDataForKoulutusList } from "utils/koulutusUtil";
+import Lomake from "components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import { toUpper } from "ramda";
 
@@ -10,7 +10,7 @@ const constants = {
   formLocation: ["koulutukset", "kuljettajakoulutukset"]
 };
 
-const Kuljettajakoulutukset = ({ koulutukset, maaraykset }) => {
+const Kuljettajakoulutukset = ({ koulutukset, maaraykset, mode }) => {
   const intl = useIntl();
   const sectionId = "koulutukset_kuljettajakoulutukset";
   const koodisto = "kuljettajakoulutus";
@@ -29,12 +29,13 @@ const Kuljettajakoulutukset = ({ koulutukset, maaraykset }) => {
 
   return (
     <Lomake
-      mode="modification"
+      mode={mode}
       anchor={sectionId}
       data={lomakedata}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.driverTraining)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 
