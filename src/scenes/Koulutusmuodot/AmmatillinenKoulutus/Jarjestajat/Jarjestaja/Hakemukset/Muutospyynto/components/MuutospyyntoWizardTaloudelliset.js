@@ -8,15 +8,16 @@ import Lomake from "components/02-organisms/Lomake";
 
 const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
   const intl = useIntl();
+  const headerLevel = isReadOnly ? "h3" : "h2";
 
   const isUusiaTutkintolisayksia = includes(
     true,
-    map(pathEq(["properties", "isChecked"], true), tutkinnotCO)
+    map(pathEq(["properties", "isChecked"], true), tutkinnotCO || [])
   );
 
   return (
-    <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
-      <Typography component="h2" variant="h2">
+    <div className={`bg-vaalenharmaa ${isReadOnly ? "" : "px-16"} pt-8 w-full m-auto mb-20 border-b border-xs border-harmaa`}>
+      <Typography component={headerLevel} variant={headerLevel}>
         {intl.formatMessage(wizard.pageTitle_3)}
       </Typography>
 
@@ -24,9 +25,9 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
         <p>{intl.formatMessage(wizard.noAddedTutkinnot)}</p>
       ) : (
         <div className="mb-20">
-          <p className={"mb-10"}>
+          {!isReadOnly && <p className={"mb-10"}>
             {intl.formatMessage(wizard.allFieldsRequired)}
-          </p>
+          </p>}
 
           <Lomake
             mode="yleisettiedot"

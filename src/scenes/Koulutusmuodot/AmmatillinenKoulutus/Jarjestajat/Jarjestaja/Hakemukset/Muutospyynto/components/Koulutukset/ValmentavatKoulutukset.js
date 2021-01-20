@@ -10,7 +10,12 @@ const constants = {
   formLocation: ["koulutukset", "valmentavatKoulutukset"]
 };
 
-const ValmentavatKoulutukset = ({ koulutukset, maaraykset, mode }) => {
+const ValmentavatKoulutukset = ({
+  isReadOnly,
+  koulutukset,
+  maaraykset,
+  mode
+}) => {
   const intl = useIntl();
   const sectionId = "koulutukset_valmentavatKoulutukset";
 
@@ -29,6 +34,8 @@ const ValmentavatKoulutukset = ({ koulutukset, maaraykset, mode }) => {
     <Lomake
       anchor={sectionId}
       data={lomakedata}
+      isReadOnly={isReadOnly}
+      isRowExpanded={mode === "reasoning"}
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.preparatoryTraining)}

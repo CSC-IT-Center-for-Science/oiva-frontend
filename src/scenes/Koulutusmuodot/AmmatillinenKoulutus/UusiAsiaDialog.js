@@ -393,14 +393,18 @@ const UusiAsiaDialog = React.memo(
                     )}
                     {page === 4 && (
                       <MuutospyyntoWizardYhteenveto
+                        history={history}
                         kohteet={kohteet}
                         koulutukset={koulutukset}
                         koulutusalat={koulutusalat}
                         koulutustyypit={koulutustyypit}
                         lupa={lupa}
                         lupaKohteet={lupaKohteet}
+                        maaraykset={lupa.maaraykset}
                         maaraystyypit={maaraystyypit}
+                        mode="reasoning"
                         muut={muut}
+                        tutkinnotCO={tutkinnotCO}
                         // isFirstVisit={visitsPerPage[4] === 1}
                       />
                     )}

@@ -13,11 +13,8 @@ export function getKuljettajienJatkokoulutuslomake(action, isReadOnly, prefix) {
   }
 }
 
-export function getKuljettajienPeruskoulutuslomake(
-  action,
-  { isReadOnly },
-  prefix
-) {
+export function getKuljettajienPeruskoulutuslomake(action, isReadOnly, prefix) {
+  console.info(isReadOnly);
   switch (action) {
     case "addition":
       return getAdditionFormPeruskoulutus(isReadOnly);

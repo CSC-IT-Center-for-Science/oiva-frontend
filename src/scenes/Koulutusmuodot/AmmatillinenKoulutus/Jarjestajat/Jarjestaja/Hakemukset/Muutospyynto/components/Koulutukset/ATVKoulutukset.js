@@ -10,7 +10,7 @@ const constants = {
   formLocation: ["koulutukset", "atvKoulutukset"]
 };
 
-const ATVKoulutukset = ({ koulutukset, maaraykset, mode }) => {
+const ATVKoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
   const intl = useIntl();
   const sectionId = "koulutukset_atvKoulutukset";
 
@@ -29,6 +29,8 @@ const ATVKoulutukset = ({ koulutukset, maaraykset, mode }) => {
     <Lomake
       anchor={sectionId}
       data={lomakedata}
+      isReadOnly={isReadOnly}
+      isRowExpanded={mode === "reasoning"}
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.vocationalTraining)}
@@ -39,7 +41,8 @@ const ATVKoulutukset = ({ koulutukset, maaraykset, mode }) => {
 
 ATVKoulutukset.propTypes = {
   koulutukset: PropTypes.object,
-  maaraykset: PropTypes.array
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default ATVKoulutukset;

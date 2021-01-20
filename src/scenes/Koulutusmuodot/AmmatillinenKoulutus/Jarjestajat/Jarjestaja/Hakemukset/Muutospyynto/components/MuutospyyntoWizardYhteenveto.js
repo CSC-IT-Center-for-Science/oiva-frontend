@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import YhteenvetoKooste from "./Yhteenveto/YhteenvetoKooste";
-import wizard from "../../../../../../../../i18n/definitions/wizard";
-import Section from "components/03-templates/Section";
-import * as R from "ramda";
+import wizard from "i18n/definitions/wizard";
 import { Typography } from "@material-ui/core";
 import Lomake from "components/02-organisms/Lomake";
+import { find, prop, mapObjIndexed, values } from "ramda";
+import MuutospyyntoWizardTaloudelliset from "./MuutospyyntoWizardTaloudelliset";
+import EsittelijatMuutospyynto from "scenes/Koulutusmuodot/AmmatillinenKoulutus/EsittelijatMuutospyynto";
 
 const MuutospyyntoWizardYhteenveto = ({
   kohteet,
@@ -15,10 +15,11 @@ const MuutospyyntoWizardYhteenveto = ({
   koulutustyypit,
   lupa,
   lupaKohteet,
+  maaraykset,
   maaraystyypit,
+  mode,
   muut,
-  muutoshakemus,
-  muutosperusteluList
+  tutkinnotCO
 }) => {
   const intl = useIntl();
   const jarjestaja = useMemo(() => {
@@ -40,21 +41,18 @@ const MuutospyyntoWizardYhteenveto = ({
     const sahkopostiosoite = {
       label: "Sähköpostiosoite",
       value:
-        (R.find(R.prop("email"))(lupa.jarjestaja.yhteystiedot) || {}).email ||
-        "-"
+        (find(prop("email"))(lupa.jarjestaja.yhteystiedot) || {}).email || "-"
     };
 
     const www = {
       label: "WWW-osoite",
-      value:
-        (R.find(R.prop("www"))(lupa.jarjestaja.yhteystiedot) || {}).www || "-"
+      value: (find(prop("www"))(lupa.jarjestaja.yhteystiedot) || {}).www || "-"
     };
 
     const puhelinnumero = {
       label: "Puhelinnumero",
       value:
-        (R.find(R.prop("numero"))(lupa.jarjestaja.yhteystiedot) || {}).numero ||
-        "-"
+        (find(prop("numero"))(lupa.jarjestaja.yhteystiedot) || {}).numero || "-"
     };
 
     return {
@@ -68,8 +66,8 @@ const MuutospyyntoWizardYhteenveto = ({
   }, [intl.locale, lupa.jarjestaja]);
 
   const jarjestajaLayout = useMemo(() => {
-    return R.values(
-      R.mapObjIndexed((obj, key) => {
+    return values(
+      mapObjIndexed((obj, key) => {
         return (
           <div className="flex" key={key}>
             <div className="w-1/2 sm:w-1/4 border-b px-6 py-2">{obj.label}</div>
@@ -101,25 +99,23 @@ const MuutospyyntoWizardYhteenveto = ({
         showCategoryTitles={true}
       ></Lomake>
 
-      {/* <YhteenvetoKooste
-          changeObjects={changeObjects}
-          elykeskukset={elykeskukset}
-          kielet={kielet}
-          kohteet={kohteet}
-          koulutukset={koulutukset}
-          koulutusalat={koulutusalat}
-          koulutustyypit={koulutustyypit}
-          lupa={lupa}
-          lupaKohteet={lupaKohteet}
-          maaraystyypit={maaraystyypit}
-          muutosperusteluList={muutosperusteluList}
-          muut={muut}
-          muutoshakemus={muutoshakemus}
-          onChangesRemove={onChangesRemove}
-          onChangesUpdate={onChangesUpdate}
-          opetuskielet={opetuskielet}
-          tutkinnot={tutkinnot}
-        ></YhteenvetoKooste> */}
+      <EsittelijatMuutospyynto
+        isReadOnly={true}
+        kohteet={kohteet}
+        koulutukset={koulutukset}
+        koulutusalat={koulutusalat}
+        koulutustyypit={koulutustyypit}
+        maaraykset={maaraykset}
+        lupaKohteet={lupaKohteet}
+        maaraystyypit={maaraystyypit}
+        mode={mode}
+        muut={muut}
+      />
+
+      <MuutospyyntoWizardTaloudelliset
+        isReadOnly={true}
+        tutkinnotCO={tutkinnotCO}
+      />
 
       <Lomake
         anchor={"yhteenveto_hakemuksenLiitteet"}
@@ -134,6 +130,7 @@ const MuutospyyntoWizardYhteenveto = ({
 };
 
 MuutospyyntoWizardYhteenveto.propTypes = {
+  history: PropTypes.object,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
@@ -142,7 +139,8 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   muutoshakemus: PropTypes.object,
-  muutosperusteluList: PropTypes.array
+  muutosperusteluList: PropTypes.array,
+  tutkinnotCO: PropTypes.array
 };
 
 export default MuutospyyntoWizardYhteenveto;

@@ -209,6 +209,7 @@ function getTilinpaatostiedotForm(isReadOnly) {
 }
 
 function getLiitteetForm(isReadOnly) {
+  console.info(isReadOnly);
   return [
     {
       anchor: "liitteet",
@@ -224,9 +225,10 @@ function getLiitteetForm(isReadOnly) {
         },
         {
           anchor: "A",
-          styleClasses: ["w-full"],
+          isReadOnly,
           name: "Attachments",
-          messages: getMessages("attachments")
+          messages: getMessages("attachments"),
+          styleClasses: ["w-full"]
         }
       ]
     }

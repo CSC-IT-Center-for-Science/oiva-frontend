@@ -5,28 +5,37 @@ import ATVKoulutukset from "./Koulutukset/ATVKoulutukset";
 import Tyovoimakoulutukset from "./Koulutukset/Tyovoimakoulutukset";
 import Kuljettajakoulutukset from "./Koulutukset/Kuljettajakoulutukset";
 
-const MuutospyyntoWizardKoulutukset = ({ koulutukset, maaraykset, mode }) => {
+const MuutospyyntoWizardKoulutukset = ({
+  isReadOnly,
+  koulutukset,
+  maaraykset,
+  mode
+}) => {
   return (
     <div>
       <ValmentavatKoulutukset
+        isReadOnly={isReadOnly}
         koulutukset={koulutukset}
         maaraykset={maaraykset}
         mode={mode}
       />
 
       <ATVKoulutukset
+        isReadOnly={isReadOnly}
         koulutukset={koulutukset}
         maaraykset={maaraykset}
         mode={mode}
       />
 
       <Tyovoimakoulutukset
+        isReadOnly={isReadOnly}
         koulutukset={koulutukset}
         maaraykset={maaraykset}
         mode={mode}
       />
 
       <Kuljettajakoulutukset
+        isReadOnly={isReadOnly}
         koulutukset={koulutukset}
         maaraykset={maaraykset}
         mode={mode}

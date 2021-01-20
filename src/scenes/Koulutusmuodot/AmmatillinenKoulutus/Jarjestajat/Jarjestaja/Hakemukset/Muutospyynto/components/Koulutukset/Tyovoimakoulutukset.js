@@ -10,7 +10,7 @@ const constants = {
   formLocation: ["koulutukset", "tyovoimakoulutukset"]
 };
 
-const Tyovoimakoulutukset = ({ koulutukset, maaraykset, mode }) => {
+const Tyovoimakoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
   const intl = useIntl();
   const sectionId = "koulutukset_tyovoimakoulutukset";
   const koodisto = "oivatyovoimakoulutus";
@@ -29,9 +29,11 @@ const Tyovoimakoulutukset = ({ koulutukset, maaraykset, mode }) => {
 
   return (
     <Lomake
-      mode={mode}
       anchor={sectionId}
       data={lomakedata}
+      isReadOnly={isReadOnly}
+      isRowExpanded={mode === "reasoning"}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.workforceTraining)}
       showCategoryTitles={true}

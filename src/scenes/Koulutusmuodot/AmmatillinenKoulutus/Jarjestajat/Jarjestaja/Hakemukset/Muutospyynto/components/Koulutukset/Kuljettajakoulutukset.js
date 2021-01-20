@@ -10,7 +10,12 @@ const constants = {
   formLocation: ["koulutukset", "kuljettajakoulutukset"]
 };
 
-const Kuljettajakoulutukset = ({ koulutukset, maaraykset, mode }) => {
+const Kuljettajakoulutukset = ({
+  isReadOnly,
+  koulutukset,
+  maaraykset,
+  mode
+}) => {
   const intl = useIntl();
   const sectionId = "koulutukset_kuljettajakoulutukset";
   const koodisto = "kuljettajakoulutus";
@@ -29,9 +34,11 @@ const Kuljettajakoulutukset = ({ koulutukset, maaraykset, mode }) => {
 
   return (
     <Lomake
-      mode={mode}
       anchor={sectionId}
       data={lomakedata}
+      isReadOnly={isReadOnly}
+      isRowExpanded={mode === "reasoning"}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.driverTraining)}
       showCategoryTitles={true}

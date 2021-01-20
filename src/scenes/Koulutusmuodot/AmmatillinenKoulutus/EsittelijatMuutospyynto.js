@@ -23,6 +23,7 @@ const constants = {
 };
 
 const defaultProps = {
+  isReadOnly: false,
   kohteet: [],
   koulutukset: {},
   koulutusalat: [],
@@ -36,6 +37,7 @@ const defaultProps = {
 };
 
 const EsittelijatMuutospyynto = ({
+  isReadOnly = defaultProps.isReadOnly,
   kohteet: osiokohteet = defaultProps.kohteet,
   koulutukset = defaultProps.koulutukset,
   koulutusalat = defaultProps.koulutusalat,
@@ -143,6 +145,7 @@ const EsittelijatMuutospyynto = ({
 
         <Tutkinnot
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          isReadOnly={isReadOnly}
           koulutusalat={koulutusalat}
           koulutustyypit={koulutustyypit}
           mode={mode}
@@ -154,6 +157,7 @@ const EsittelijatMuutospyynto = ({
         </Typography>
 
         <MuutospyyntoWizardKoulutukset
+          isReadOnly={isReadOnly}
           koulutukset={koulutukset}
           maaraykset={maaraykset}
           mode={mode}
