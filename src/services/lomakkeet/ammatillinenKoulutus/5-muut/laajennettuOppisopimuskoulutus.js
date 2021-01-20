@@ -61,8 +61,8 @@ export function getModificationForm(
 }
 
 /**
- * Ammatillinen koulutus - Esittelijän lomakenäkymä - Osio 5
- * Laajennettu - Perustelulomakkeen muodostaminen.
+ * Ammatillinen koulutus - Osio 5
+ * Laajennettu oppisopimuskoulutus - Perustelulomakkeen muodostaminen.
  * @param {*} data
  * @param {*} isReadOnly
  * @param {*} locale

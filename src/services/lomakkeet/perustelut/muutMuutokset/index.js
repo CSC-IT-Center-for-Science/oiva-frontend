@@ -38,7 +38,7 @@ function getStructureByKoodiarvo(
   return structure;
 }
 
-function getDefaultAdditionForm(isReadOnly) {
+export function getDefaultAdditionForm(isReadOnly) {
   return [
     {
       anchor: "perustelut",
