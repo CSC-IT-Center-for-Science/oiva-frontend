@@ -1,98 +1,82 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import TaloudellisetYleisettiedot from "./Taloudelliset/TaloudellisetYleisettiedot";
-import TaloudellisetInvestoinnit from "./Taloudelliset/TaloudellisetInvestoinnit";
-import TaloudellisetTilinpaatostiedot from "./Taloudelliset/TaloudellisetTilinpaatostiedot";
-import TaloudellisetLiitteet from "./Taloudelliset/TaloudellisetLiitteet";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import PropTypes from "prop-types";
-import Section from "components/03-templates/Section";
-import * as R from "ramda";
+import { includes, map, pathEq } from "ramda";
+import { Typography } from "@material-ui/core";
+import Lomake from "components/02-organisms/Lomake";
 
-const MuutospyyntoWizardTaloudelliset = ({
-  changeObjects,
-  onChangesRemove,
-  onChangesUpdate
-}) => {
+const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
   const intl = useIntl();
 
-  const checkIfIsAdditions = changeObjects => {
-    const findIsChecked = obj => {
-      if (obj instanceof Array) {
-        return R.any(findIsChecked, obj);
-      } else if (obj instanceof Object) {
-        const isChecked = R.prop("isChecked", obj);
-        return (
-          isChecked ||
-          R.compose(
-            R.any(([k, v]) => findIsChecked(v)),
-            R.toPairs
-          )(obj)
-        );
-      }
-      return false;
-    };
-
-    return findIsChecked(changeObjects);
-  };
+  const isUusiaTutkintolisayksia = includes(
+    true,
+    map(pathEq(["properties", "isChecked"], true), tutkinnotCO)
+  );
 
   return (
-    <React.Fragment>
+    <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
       <Typography component="h2" variant="h2">
         {intl.formatMessage(wizard.pageTitle_3)}
       </Typography>
 
-      {!checkIfIsAdditions(
-        R.props(["tutkinnot", "koulutukset"], changeObjects)
-      ) ? (
+      {!isUusiaTutkintolisayksia ? (
         <p>{intl.formatMessage(wizard.noAddedTutkinnot)}</p>
       ) : (
-        <React.Fragment>
+        <div className="mb-20">
           <p className={"mb-10"}>
             {intl.formatMessage(wizard.allFieldsRequired)}
           </p>
-          <Section title={intl.formatMessage(wizard.yleisetTiedot)}>
-            <TaloudellisetYleisettiedot
-              changeObjects={changeObjects.taloudelliset.yleisettiedot}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-          <Section title={intl.formatMessage(wizard.taloudellisetInvestoinnit)}>
-            <TaloudellisetInvestoinnit
-              changeObjects={changeObjects.taloudelliset.investoinnit}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-          <Section
-            title={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}>
-            <TaloudellisetTilinpaatostiedot
-              changeObjects={changeObjects.taloudelliset.tilinpaatostiedot}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-          <Section title={intl.formatMessage(wizard.liitteet)}>
-            <TaloudellisetLiitteet
-              sectionId={"taloudelliset_liitteet"}
-              changeObjects={changeObjects.taloudelliset.liitteet}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-        </React.Fragment>
+
+          <Lomake
+            mode="yleisettiedot"
+            anchor="taloudelliset_yleisettiedot"
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
+            showCategoryTitles={true}
+          ></Lomake>
+
+          <Lomake
+            mode="investoinnit"
+            anchor="taloudelliset_investoinnit"
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
+            showCategoryTitles={true}
+          ></Lomake>
+
+          <Lomake
+            mode="tilinpaatostiedot"
+            anchor="taloudelliset_tilinpaatostiedot"
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}
+            showCategoryTitles={true}
+          ></Lomake>
+
+          <Lomake
+            mode="liitteet"
+            anchor={"taloudelliset_liitteet"}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.liitteet)}
+            showCategoryTitles={true}
+          ></Lomake>
+        </div>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
 MuutospyyntoWizardTaloudelliset.propTypes = {
-  changeObjects: PropTypes.object,
-  muutoshakemus: PropTypes.object,
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
-  isReadOnly: PropTypes.bool
+  isReadOnly: PropTypes.bool,
+  mode: PropTypes.string,
+  muutoshakemus: PropTypes.object
 };
 
 export default MuutospyyntoWizardTaloudelliset;

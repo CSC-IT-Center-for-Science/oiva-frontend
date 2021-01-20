@@ -26,6 +26,7 @@ import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils"
 import equal from "react-fast-compare";
 import { useAllSections } from "stores/lomakedata";
 import StepperNavigation from "components/01-molecules/Stepper";
+import MuutospyyntoWizardTaloudelliset from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTaloudelliset";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -360,7 +361,7 @@ const UusiAsiaDialog = React.memo(
                         maaraykset={lupa.maaraykset}
                         lupaKohteet={lupaKohteet}
                         maaraystyypit={maaraystyypit}
-                        mode={"modification"}
+                        mode="modification"
                         muut={muut}
                         onNewDocSave={onNewDocSave}
                         organisation={organisation}
@@ -381,14 +382,13 @@ const UusiAsiaDialog = React.memo(
                         onNewDocSave={onNewDocSave}
                         organisation={organisation}
                       />
-                      // <MuutospyyntoWizardPerustelut
-                      //   koulutusalat={koulutusalat}
-                      //   lupa={lupa}
-                      //   lupaKohteet={lupaKohteet}
-                      //   maaraystyypit={maaraystyypit}
-                      //   tutkinnotCO
-                      //   // visits={visitsPerPage[2]}
-                      // />
+                    )}
+                    {page === 3 && (
+                      <MuutospyyntoWizardTaloudelliset
+                        isReadOnly={false}
+                        tutkinnotCO={tutkinnotCO}
+                        // isFirstVisit={visitsPerPage[3] === 1}
+                      />
                     )}
                   </React.Fragment>
                 ) : null}
