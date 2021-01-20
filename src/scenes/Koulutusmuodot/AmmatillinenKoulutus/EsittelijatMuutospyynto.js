@@ -171,11 +171,12 @@ const EsittelijatMuutospyynto = ({
           showCategoryTitles={true}
         />
 
-        <Tutkintokielet koulutusalat={koulutusalat} />
+        <Tutkintokielet koulutusalat={koulutusalat} mode={mode} />
 
         <MuutospyyntoWizardToimintaalue
           code={String(sectionHeadings.toimintaalue.number)}
           lupakohde={lupaKohteet[3]}
+          mode={mode}
           sectionId={"toimintaalue"}
           title={sectionHeadings.toimintaalue.title}
           valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -186,6 +187,7 @@ const EsittelijatMuutospyynto = ({
             code={String(sectionHeadings.opiskelijavuodet.number)}
             lupaKohteet={lupaKohteet}
             maaraykset={maaraykset}
+            mode={mode}
             muut={muut}
             opiskelijavuodet={opiskelijavuodet}
             sectionId={"opiskelijavuodet"}
@@ -197,6 +199,7 @@ const EsittelijatMuutospyynto = ({
           <MuutospyyntoWizardMuut
             code={sectionHeadings.muut.number}
             maaraykset={maaraykset}
+            mode={mode}
             muut={muut}
             sectionId={"muut"}
             title={sectionHeadings.muut.title}

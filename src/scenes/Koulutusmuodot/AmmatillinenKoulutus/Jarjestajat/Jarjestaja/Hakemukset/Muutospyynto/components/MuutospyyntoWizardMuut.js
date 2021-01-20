@@ -31,6 +31,7 @@ const MuutospyyntoWizardMuut = React.memo(
   ({
     code,
     maaraykset = defaultProps.maaraykset,
+    mode,
     muut = defaultProps.muut,
     sectionId,
     title
@@ -86,6 +87,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.laajennettu}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_01`}
           ></Laajennettu>
         ) : null}
@@ -96,6 +98,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={vaativaTukiItems}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_02`}
           ></VaativaTuki>
         ) : null}
@@ -105,6 +108,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.sisaoppilaitos}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_03`}
           ></Sisaoppilaitos>
         ) : null}
@@ -114,6 +118,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.vankila}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_04`}
           ></Vankila>
         ) : null}
@@ -123,6 +128,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.urheilu}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_05`}
           ></Urheilu>
         ) : null}
@@ -132,6 +138,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.yhteistyo}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_06`}
           ></Yhteistyo>
         ) : null}
@@ -141,6 +148,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.yhteistyosopimus}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_08`}
           ></Yhteistyosopimus>
         ) : null}
@@ -150,6 +158,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.selvitykset}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_09`}
           ></Selvitykset>
         ) : null}
@@ -159,6 +168,7 @@ const MuutospyyntoWizardMuut = React.memo(
             items={items.muumaarays}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_07`}
           ></MuuMaarays>
         ) : null}
@@ -170,6 +180,7 @@ const MuutospyyntoWizardMuut = React.memo(
 MuutospyyntoWizardMuut.propTypes = {
   headingNumber: PropTypes.number,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array
 };
 
