@@ -71,7 +71,15 @@ const lomakkeet = {
       },
       sisaoppilaitos: {
         modification: (data, booleans, locale) =>
-          getMuutSisaoppilaitos(data, booleans, locale)
+          getMuutSisaoppilaitos("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutSisaoppilaitos(
+            "reasoning",
+            data,
+            booleans,
+            locale,
+            changeObjects
+          )
       },
       urheilu: {
         modification: (data, booleans, locale) =>
@@ -83,7 +91,9 @@ const lomakkeet = {
       },
       vaativaTuki: {
         modification: (data, booleans, locale) =>
-          getMuutVaativaTuki(data, booleans, locale)
+          getMuutVaativaTuki("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutVaativaTuki("reasoning", data, booleans, locale, changeObjects)
       },
       vankila: {
         modification: (data, booleans, locale) =>

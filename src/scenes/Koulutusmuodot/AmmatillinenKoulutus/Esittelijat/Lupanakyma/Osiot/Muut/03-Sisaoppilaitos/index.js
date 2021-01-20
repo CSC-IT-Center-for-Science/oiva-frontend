@@ -12,6 +12,7 @@ const Sisaoppilaitos = ({
   items,
   localeUpper,
   maarayksetByKoodiarvo,
+  mode,
   sectionId
 }) => {
   const [lomakedata] = useLomakedata({
@@ -38,7 +39,7 @@ const Sisaoppilaitos = ({
 
   return (
     <Lomake
-      mode="modification"
+      mode={mode}
       anchor={sectionId}
       data={dataLomakepalvelulle}
       path={constants.formLocation}

@@ -12,6 +12,7 @@ const VaativaTuki = ({
   items,
   localeUpper,
   maarayksetByKoodiarvo,
+  mode,
   sectionId
 }) => {
   const [lomakedata] = useLomakedata({
@@ -38,9 +39,9 @@ const VaativaTuki = ({
 
   return (
     <Lomake
-      mode="modification"
       anchor={sectionId}
       data={dataLomakepalvelulle}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={items.vaativa_1[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}
