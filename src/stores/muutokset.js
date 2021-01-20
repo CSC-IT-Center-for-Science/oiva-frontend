@@ -9,6 +9,7 @@ import {
   endsWith,
   filter,
   flatten,
+  groupBy,
   head,
   includes,
   isNil,
@@ -19,6 +20,7 @@ import {
   mergeAll,
   not,
   path,
+  pipe,
   prepend,
   prop,
   propEq,
@@ -501,7 +503,12 @@ const getChangeObjectsByAnchorWithoutUnderRemoval = (state, { anchor }) => {
       values(getChangeObjectsByKeyAndAnchor("unsaved", anchor, changeObjects))
     )
   );
-  return difference(concat(saved, unsaved), underRemoval);
+  const mergedChanges = pipe(
+    groupBy(prop("anchor")),
+    values,
+    map(groupedChanges => mergeAll(groupedChanges))
+  )(concat(saved, unsaved));
+  return difference(mergedChanges, underRemoval);
 };
 
 const getLatestChangesByAnchorByKey = (state, { anchor }) => {
