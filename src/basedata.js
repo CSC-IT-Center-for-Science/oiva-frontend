@@ -629,18 +629,21 @@ const fetchBaseData = async (
   result.tulevatLuvat = raw.tulevatLuvat || [];
 
   result.vankilat = raw.vankilat
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.vankilat)
+    ? await localforage.setItem(
+        "vankilat",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.vankilat)
+        )
       )
     : undefined;
 

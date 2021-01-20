@@ -3,11 +3,15 @@ import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 
 const constants = {
-  formLocation: ["ammatillinenKoulutus", "muut", "laajennettu"]
+  formLocation: [
+    "ammatillinenKoulutus",
+    "muut",
+    "laajennettuOppisopimuskoulutus"
+  ]
 };
 
 const Laajennettu = React.memo(
-  ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
+  ({ items, localeUpper, maarayksetByKoodiarvo, mode, sectionId }) => {
     const dataLomakepalvelulle = {
       items,
       maarayksetByKoodiarvo
@@ -15,7 +19,7 @@ const Laajennettu = React.memo(
 
     return (
       <Lomake
-        mode="modification"
+        mode={mode}
         anchor={sectionId}
         data={dataLomakepalvelulle}
         path={constants.formLocation}
@@ -28,6 +32,7 @@ const Laajennettu = React.memo(
 
 Laajennettu.propTypes = {
   koodiarvo: PropTypes.string,
+  mode: PropTypes.string,
   opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string

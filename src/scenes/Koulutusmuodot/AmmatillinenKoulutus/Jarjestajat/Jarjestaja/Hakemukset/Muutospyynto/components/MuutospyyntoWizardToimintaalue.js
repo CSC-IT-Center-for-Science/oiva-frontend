@@ -107,7 +107,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
 
   return (
     <Lomake
-      mode="modification"
+      mode={props.mode}
       anchor={props.sectionId}
       code={props.code}
       data={{
@@ -134,6 +134,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           )
         },
         kunnatInLupa,
+        lupakohde: props.lupakohde,
         maakunnatInLupa,
         changeObjectsByProvince: Object.assign({}, provinceChanges),
         quickFilterChanges,

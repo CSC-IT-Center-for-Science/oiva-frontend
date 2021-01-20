@@ -2,19 +2,26 @@ import { getKunnatFromStorage } from "helpers/kunnat";
 import { getMaakunnat, getMaakuntakunnat } from "helpers/maakunnat";
 import {
   compose,
+  concat,
   filter,
   find,
+  flatten,
   includes,
+  join,
   map,
   mapObjIndexed,
   not,
+  path,
   pathEq,
   prop,
   propEq,
-  toUpper
+  sort,
+  toUpper,
+  values
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
+import { __ } from "i18n-for-browser";
 
 const labelStyles = {
   addition: isAdded,
@@ -43,7 +50,7 @@ const mapping = {
   "21": "FI-01"
 };
 
-export const getToimintaaluelomake = async (
+const getModificationForm = async (
   {
     fiCode,
     isEditViewActive,
@@ -204,3 +211,191 @@ export const getToimintaaluelomake = async (
     }
   ];
 };
+
+async function getReasoningForm({ isReadOnly }, lupakohde, _changeObjects) {
+  const mapping = {
+    "FI-18": "01",
+    "FI-19": "02",
+    "FI-17": "04",
+    "FI-06": "05",
+    "FI-11": "06",
+    "FI-16": "07",
+    "FI-09": "08",
+    "FI-02": "09",
+    "FI-04": "10",
+    "FI-15": "11",
+    "FI-13": "12",
+    "FI-03": "14",
+    "FI-07": "16",
+    "FI-08": "13",
+    "FI-12": "15",
+    "FI-14": "17",
+    "FI-05": "18",
+    "FI-10": "19"
+  };
+
+  const maakuntakunnat = await getMaakuntakunnat();
+
+  function getChangeObjects(isCheckedVal) {
+    return mapObjIndexed((changeObjects, provinceKey) => {
+      const province = find(
+        propEq("koodiarvo", mapping[provinceKey]),
+        maakuntakunnat
+      );
+
+      const relevantChangeObjects = filter(
+        pathEq(["properties", "isChecked"], isCheckedVal),
+        changeObjects
+      );
+      if (province) {
+        if (relevantChangeObjects.length - 1 === province.kunnat.length) {
+          return filter(
+            compose(not, includes(".kunnat."), prop("anchor")),
+            relevantChangeObjects
+          );
+        } else {
+          return filter(
+            compose(includes(".kunnat."), prop("anchor")),
+            relevantChangeObjects
+          );
+        }
+      }
+    }, byProvince);
+  }
+
+  const current = {
+    maakunnat: map(prop("arvo"), lupakohde.maakunnat),
+    kunnat: map(prop("arvo"), lupakohde.kunnat)
+  };
+
+  const categoryFilterChangeObj = find(
+    propEq("anchor", "categoryFilter"),
+    _changeObjects
+  );
+
+  const byProvince = categoryFilterChangeObj
+    ? categoryFilterChangeObj.properties.changesByProvince
+    : {};
+
+  const removalsByProvince = getChangeObjects(false);
+  const additionsByProvince = getChangeObjects(true);
+
+  const diff = (a, b) => {
+    if (a < b) {
+      return -1;
+    } else if (a > b) {
+      return 1;
+    }
+    return 0;
+  };
+
+  return [
+    {
+      anchor: "changes",
+      layout: { indentation: "none", margins: { top: "none" } },
+      categories: [
+        {
+          anchor: "current",
+          layout: { indentation: "none", margins: { top: "none" } },
+          title: __("current"),
+          components: [
+            {
+              name: "StatusTextRow",
+              properties: {
+                title: join(
+                  ", ",
+                  sort(diff, concat(current.maakunnat, current.kunnat))
+                )
+              }
+            }
+          ]
+        },
+        {
+          anchor: "removed",
+          layout: {
+            indentation: "none"
+          },
+          title: __("toBeRemoved"),
+          components: [
+            {
+              name: "StatusTextRow",
+              properties: {
+                title: join(
+                  ", ",
+                  sort(
+                    diff,
+                    map(
+                      path(["properties", "metadata", "title"]),
+                      flatten(values(removalsByProvince))
+                    ).filter(Boolean)
+                  )
+                )
+              }
+            }
+          ]
+        },
+        {
+          anchor: "added",
+          layout: {
+            indentation: "none"
+          },
+          title: __("toBeAdded"),
+          components: [
+            {
+              name: "StatusTextRow",
+              properties: {
+                title: join(
+                  ", ",
+                  sort(
+                    diff,
+                    map(
+                      path(["properties", "metadata", "title"]),
+                      flatten(values(additionsByProvince))
+                    ).filter(Boolean)
+                  )
+                )
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      anchor: "reasoning",
+      components: [
+        {
+          anchor: "A",
+          name: "TextBox",
+          properties: {
+            isReadOnly,
+            isRequired: true,
+            title: "Perustelut",
+            value: ""
+          }
+        }
+      ]
+    }
+  ];
+}
+
+export default async function getToimintaaluelomake(
+  mode,
+  data,
+  booleans,
+  locale,
+  changeObjects = [],
+  functions
+) {
+  switch (mode) {
+    case "modification":
+      return await getModificationForm(
+        data,
+        booleans,
+        locale,
+        changeObjects,
+        functions
+      );
+    case "reasoning":
+      return await getReasoningForm(booleans, data.lupakohde, changeObjects);
+  }
+}

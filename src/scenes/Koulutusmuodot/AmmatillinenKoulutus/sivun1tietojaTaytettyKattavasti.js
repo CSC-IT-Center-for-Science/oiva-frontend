@@ -775,7 +775,7 @@ export const muutokset = {
       muut: {
         "01": [
           {
-            anchor: "muut_01.laajennettu.1.A",
+            anchor: "muut_01.laajennettuOppisopimuskoulutus.1.A",
             properties: {
               metadata: {
                 koodiarvo: "1",

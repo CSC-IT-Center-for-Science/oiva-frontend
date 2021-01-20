@@ -16,7 +16,7 @@ import {
 import wizard from "i18n/definitions/wizard";
 import Typography from "@material-ui/core/Typography";
 
-const Tutkintokielet = ({ koulutusalat }) => {
+const Tutkintokielet = ({ koulutusalat, mode }) => {
   const sectionId = "kielet_tutkintokielet";
   const intl = useIntl();
 
@@ -40,6 +40,7 @@ const Tutkintokielet = ({ koulutusalat }) => {
               aktiivisetTutkinnot={aktiivisetTutkinnot}
               key={koulutusala.koodiarvo}
               koodiarvo={koulutusala.koodiarvo}
+              mode={mode}
               sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
               title={`${koulutusala.metadata[toUpper(intl.locale)].nimi}`}
             />

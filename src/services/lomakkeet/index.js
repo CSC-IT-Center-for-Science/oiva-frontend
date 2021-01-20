@@ -2,7 +2,6 @@ import { getTaloudellisetlomake } from "./taloudelliset";
 import { append, path } from "ramda";
 import { setLocale } from "./i18n-config";
 import { getCheckboxes } from "./perustelut/muutostarpeet";
-import getToimintaaluePerustelulomake from "./perustelut/toiminta-alue";
 import getKuljettajakoulutuslomake from "./koulutukset/kuljettajakoulutukset";
 import getTyovoimakoulutuslomake from "./koulutukset/tyovoimakoulutukset";
 import getATVKoulutuksetLomake from "./koulutukset/atvKoulutukset";
@@ -10,7 +9,7 @@ import getValmentavatKoulutuksetLomake from "./koulutukset/valmentavatKoulutukse
 import getTutkinnotLomake from "./tutkinnot";
 import getOpetuskieletLomake from "./kielet/opetuskielet";
 import getTutkintokieletLomake from "./kielet/tutkintokielet";
-import { getToimintaaluelomake } from "./toimintaalue";
+import getToimintaaluelomake from "./toimintaalue";
 import getOpiskelijavuodetLomake from "./opiskelijavuodet";
 import getPerustelutLiitteetlomake from "./perustelut/liitteet";
 import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
@@ -31,7 +30,7 @@ import { opiskelijamaarat } from "./esi-ja-perusopetus/6-opiskelijamaarat";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
 import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
 import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
-import { getMuutLaajennettu } from "./ammatillinenKoulutus/5-muut/laajennettu";
+import { getMuutLaajennettu } from "./ammatillinenKoulutus/5-muut/laajennettuOppisopimuskoulutus";
 import { getMuutVaativaTuki } from "./ammatillinenKoulutus/5-muut/vaativaTuki";
 import { getMuutSisaoppilaitos } from "./ammatillinenKoulutus/5-muut/sisaoppilaitos";
 import { getMuutVankila } from "./ammatillinenKoulutus/5-muut/vankila";
@@ -59,9 +58,11 @@ const lomakkeet = {
    */
   ammatillinenKoulutus: {
     muut: {
-      laajennettu: {
+      laajennettuOppisopimuskoulutus: {
         modification: (data, booleans, locale) =>
-          getMuutLaajennettu(data, booleans, locale)
+          getMuutLaajennettu("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutLaajennettu("reasoning", data, booleans, locale, changeObjects)
       },
       muuMaarays: {
         modification: (data, booleans, locale) =>
@@ -184,7 +185,24 @@ const lomakkeet = {
   },
   toimintaalue: {
     modification: (data, booleans, locale, changeObjects, functions) =>
-      getToimintaaluelomake(data, booleans, locale, changeObjects, functions)
+      getToimintaaluelomake(
+        "modification",
+        data,
+        booleans,
+        locale,
+        changeObjects,
+        functions
+      ),
+    reasoning: (data, booleans, locale, changeObjects, functions, prefix) =>
+      getToimintaaluelomake(
+        "reasoning",
+        data,
+        booleans,
+        locale,
+        changeObjects,
+        functions,
+        prefix
+      )
   },
   opiskelijavuodet: {
     modification: (data, booleans, locale, changeObjects) =>
@@ -206,16 +224,6 @@ const lomakkeet = {
     muutostarpeet: {
       checkboxes: (data, booleans, locale) =>
         getCheckboxes(data.checkboxItems, locale, booleans)
-    },
-    toimintaalue: {
-      reasoning: (data, booleans, locale, changeObjects, prefix) =>
-        getToimintaaluePerustelulomake(
-          "reasoning",
-          data,
-          booleans,
-          locale,
-          prefix
-        )
     },
     opiskelijavuodet: {
       sisaoppilaitos: {
@@ -367,7 +375,6 @@ export async function getLomake(
   _path = [],
   prefix
 ) {
-  console.info(_path, mode);
   // This defines the language of the requested form.
   setLocale(locale);
   const fn = path(append(mode, _path), lomakkeet);
