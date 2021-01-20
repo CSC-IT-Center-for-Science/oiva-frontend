@@ -844,6 +844,64 @@ export const muutokset = {
               isChecked: true
             }
           }
+        ],
+        "04": [
+          {
+            anchor: "muut_04.vankila.13.A",
+            properties: {
+              metadata: {
+                koodiarvo: "13",
+                koodisto: {
+                  koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+                },
+                maaraysUuid: "08f7cfa4-afc2-11ea-a6cb-005056aa03c8"
+              },
+              isChecked: false,
+              isIndeterminate: false
+            }
+          }
+        ],
+        "05": [
+          {
+            anchor: "muut_05.urheilu.6.A",
+            properties: {
+              metadata: {
+                koodiarvo: "6",
+                koodisto: {
+                  koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+                },
+                maaraysUuid: "08f7d06c-afc2-11ea-a6cb-005056aa03c8"
+              },
+              isChecked: false,
+              isIndeterminate: false
+            }
+          }
+        ],
+        "08": [
+          {
+            anchor: "muut_08.yhteistyosopimus.8.A",
+            properties: {
+              metadata: {
+                koodiarvo: "8",
+                koodisto: {
+                  koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+                }
+              },
+              isChecked: true
+            }
+          },
+          {
+            anchor: "muut_08.yhteistyosopimus.8.tekstikentta.A",
+            properties: {
+              value: "Yhteistyön kuvaus",
+              metadata: {
+                koodiarvo: "8",
+                koodisto: {
+                  koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+                }
+              }
+            }
+          }
         ]
       }
     },
@@ -854,15 +912,27 @@ export const muutokset = {
     underRemoval: [],
     unsaved: [
       {
-        anchor: "muut_09.selvitykset.9.A",
+        anchor: "muut_08.yhteistyosopimus.8.A",
         properties: {
           metadata: {
-            koodiarvo: "9",
+            koodiarvo: "8",
             koodisto: {
               koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
             }
           },
           isChecked: true
+        }
+      },
+      {
+        anchor: "muut_08.yhteistyosopimus.8.tekstikentta.A",
+        properties: {
+          value: "Yhteistyön kuvaus",
+          metadata: {
+            koodiarvo: "8",
+            koodisto: {
+              koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+            }
+          }
         }
       }
     ]

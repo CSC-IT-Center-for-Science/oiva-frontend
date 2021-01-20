@@ -87,7 +87,9 @@ const lomakkeet = {
       },
       selvitykset: {
         modification: (data, booleans, locale) =>
-          getMuutSelvitykset(data, booleans, locale)
+          getMuutSelvitykset("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutSelvitykset("reasoning", data, booleans, locale, changeObjects)
       },
       vaativaTuki: {
         modification: (data, booleans, locale) =>
