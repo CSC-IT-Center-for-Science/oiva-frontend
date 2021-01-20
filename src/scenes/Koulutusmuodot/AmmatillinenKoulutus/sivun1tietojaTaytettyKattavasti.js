@@ -903,6 +903,84 @@ export const muutokset = {
             }
           }
         ]
+      },
+      taloudelliset: {
+        yleisettiedot: [
+          {
+            anchor: "taloudelliset_yleisettiedot.edellytykset-tekstikentta.A",
+            properties: {
+              value: "a"
+            }
+          },
+          {
+            anchor: "taloudelliset_yleisettiedot.vaikutukset-tekstikentta.A",
+            properties: {
+              value: "b"
+            }
+          },
+          {
+            anchor: "taloudelliset_yleisettiedot.sopeuttaminen-tekstikentta.A",
+            properties: {
+              value: "c"
+            }
+          }
+        ],
+        investoinnit: [
+          {
+            anchor: "taloudelliset_investoinnit.investoinnit-tekstikentta.A",
+            properties: {
+              value: "d"
+            }
+          },
+          {
+            anchor: "taloudelliset_investoinnit.kustannukset-Input.A",
+            properties: {
+              value: 12424
+            }
+          },
+          {
+            anchor: "taloudelliset_investoinnit.rahoitus-tekstikentta.A",
+            properties: {
+              value: "e"
+            }
+          }
+        ],
+        tilinpaatostiedot: [
+          {
+            anchor:
+              "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste",
+            properties: {
+              value: 124
+            }
+          },
+          {
+            anchor:
+              "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius",
+            properties: {
+              value: 34666
+            }
+          },
+          {
+            anchor:
+              "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus",
+            properties: {
+              value: 34534
+            }
+          },
+          {
+            anchor:
+              "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus",
+            properties: {
+              value: 236
+            }
+          },
+          {
+            anchor: "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama",
+            properties: {
+              value: 324666
+            }
+          }
+        ]
       }
     },
     underRemoval: {}
@@ -912,27 +990,37 @@ export const muutokset = {
     underRemoval: [],
     unsaved: [
       {
-        anchor: "muut_08.yhteistyosopimus.8.A",
+        anchor:
+          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste",
         properties: {
-          metadata: {
-            koodiarvo: "8",
-            koodisto: {
-              koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
-            }
-          },
-          isChecked: true
+          value: 124
         }
       },
       {
-        anchor: "muut_08.yhteistyosopimus.8.tekstikentta.A",
+        anchor:
+          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius",
         properties: {
-          value: "Yhteistyön kuvaus",
-          metadata: {
-            koodiarvo: "8",
-            koodisto: {
-              koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
-            }
-          }
+          value: 34666
+        }
+      },
+      {
+        anchor:
+          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus",
+        properties: {
+          value: 34534
+        }
+      },
+      {
+        anchor:
+          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus",
+        properties: {
+          value: 236
+        }
+      },
+      {
+        anchor: "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama",
+        properties: {
+          value: 324666
         }
       }
     ]

@@ -1,17 +1,14 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import YhteenvetoYleisetTiedot from "./Yhteenveto/YhteenvetoYleisetTiedot";
 import YhteenvetoKooste from "./Yhteenveto/YhteenvetoKooste";
-import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import Section from "components/03-templates/Section";
 import * as R from "ramda";
+import { Typography } from "@material-ui/core";
+import Lomake from "components/02-organisms/Lomake";
 
 const MuutospyyntoWizardYhteenveto = ({
-  changeObjects,
-  elykeskukset,
-  kielet,
   kohteet,
   koulutukset,
   koulutusalat,
@@ -21,11 +18,7 @@ const MuutospyyntoWizardYhteenveto = ({
   maaraystyypit,
   muut,
   muutoshakemus,
-  muutosperusteluList,
-  onChangesRemove,
-  onChangesUpdate,
-  opetuskielet,
-  tutkinnot
+  muutosperusteluList
 }) => {
   const intl = useIntl();
   const jarjestaja = useMemo(() => {
@@ -88,7 +81,7 @@ const MuutospyyntoWizardYhteenveto = ({
   }, [jarjestaja]);
 
   return (
-    <React.Fragment>
+    <div className="bg-vaalenharmaa px-16 pb-20 w-full m-auto mb-20 border-b border-xs border-harmaa">
       <Typography component="h2" variant="h2">
         {intl.formatMessage(wizard.pageTitle_4)}
       </Typography>
@@ -99,15 +92,16 @@ const MuutospyyntoWizardYhteenveto = ({
 
       <div className="mb-12">{jarjestajaLayout}</div>
 
-      <Section title={"Hakemuksen yleiset tiedot"} className="my-0">
-        <YhteenvetoYleisetTiedot
-          changeObjects={{
-            yhteenveto: changeObjects.yhteenveto.yleisettiedot
-          }}
-          onChangesRemove={onChangesRemove}
-          onChangesUpdate={onChangesUpdate}
-        />
-        <YhteenvetoKooste
+      <Lomake
+        anchor="yhteenveto_yleisettiedot"
+        isRowExpanded={true}
+        mode="modification"
+        path={["yhteenveto", "yleisetTiedot"]}
+        rowTitle="Hakemuksen yleiset tiedot"
+        showCategoryTitles={true}
+      ></Lomake>
+
+      {/* <YhteenvetoKooste
           changeObjects={changeObjects}
           elykeskukset={elykeskukset}
           kielet={kielet}
@@ -124,26 +118,22 @@ const MuutospyyntoWizardYhteenveto = ({
           onChangesRemove={onChangesRemove}
           onChangesUpdate={onChangesUpdate}
           opetuskielet={opetuskielet}
-          tutkinnot={tutkinnot}></YhteenvetoKooste>
-      </Section>
+          tutkinnot={tutkinnot}
+        ></YhteenvetoKooste> */}
 
-      <Section className="my-0">
-        <YhteenvetoLiitteet
-          changeObjects={{
-            hakemuksenLiitteet: changeObjects.yhteenveto.hakemuksenLiitteet
-          }}
-          onChangesRemove={onChangesRemove}
-          onChangesUpdate={onChangesUpdate}
-        />
-      </Section>
-    </React.Fragment>
+      <Lomake
+        anchor={"yhteenveto_hakemuksenLiitteet"}
+        isRowExpanded={true}
+        mode="modification"
+        path={["yhteenveto", "liitteet"]}
+        rowTitle={intl.formatMessage(wizard.otherAttachments)}
+        showCategoryTitles={true}
+      ></Lomake>
+    </div>
   );
 };
 
 MuutospyyntoWizardYhteenveto.propTypes = {
-  changeObjects: PropTypes.object,
-  elykeskukset: PropTypes.array,
-  kielet: PropTypes.array,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
@@ -152,11 +142,7 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,
   muutoshakemus: PropTypes.object,
-  muutosperusteluList: PropTypes.array,
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
-  opetuskielet: PropTypes.array,
-  tutkinnot: PropTypes.array
+  muutosperusteluList: PropTypes.array
 };
 
 export default MuutospyyntoWizardYhteenveto;

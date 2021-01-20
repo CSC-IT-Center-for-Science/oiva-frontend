@@ -27,6 +27,7 @@ import equal from "react-fast-compare";
 import { useAllSections } from "stores/lomakedata";
 import StepperNavigation from "components/01-molecules/Stepper";
 import MuutospyyntoWizardTaloudelliset from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTaloudelliset";
+import MuutospyyntoWizardYhteenveto from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardYhteenveto";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -388,6 +389,19 @@ const UusiAsiaDialog = React.memo(
                         isReadOnly={false}
                         tutkinnotCO={tutkinnotCO}
                         // isFirstVisit={visitsPerPage[3] === 1}
+                      />
+                    )}
+                    {page === 4 && (
+                      <MuutospyyntoWizardYhteenveto
+                        kohteet={kohteet}
+                        koulutukset={koulutukset}
+                        koulutusalat={koulutusalat}
+                        koulutustyypit={koulutustyypit}
+                        lupa={lupa}
+                        lupaKohteet={lupaKohteet}
+                        maaraystyypit={maaraystyypit}
+                        muut={muut}
+                        // isFirstVisit={visitsPerPage[4] === 1}
                       />
                     )}
                   </React.Fragment>

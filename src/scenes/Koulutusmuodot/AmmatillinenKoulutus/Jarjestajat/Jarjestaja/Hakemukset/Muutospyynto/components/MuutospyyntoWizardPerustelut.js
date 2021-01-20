@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import PerustelutToimintaalue from "./Perustelut/PerustelutToimintaalue";
 import PerustelutOpiskelijavuodet from "./Perustelut/PerustelutOpiskelijavuodet";
-import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import PerustelutLiitteet from "./Perustelut/PerustelutLiitteet";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
@@ -298,6 +297,7 @@ const MuutospyyntoWizardPerustelut = ({
           {/* Common attachments, the same also in Yhteenveto */}
           {/* {isAnyChanges && (
             <Section className="my-0">
+            KATSO, MITEN TOTEUTETTU YHTEENVETOSIVULLA
               <YhteenvetoLiitteet
                 changeObjects={{
                   hakemuksenLiitteet:
