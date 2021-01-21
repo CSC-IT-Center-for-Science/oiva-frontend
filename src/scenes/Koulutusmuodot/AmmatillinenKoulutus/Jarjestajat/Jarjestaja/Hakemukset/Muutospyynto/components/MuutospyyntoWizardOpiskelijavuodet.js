@@ -9,7 +9,7 @@ const constants = {
 };
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({ code, maaraykset, muut, sectionId, title }) => {
+  ({ code, maaraykset, mode, muut, sectionId, title }) => {
     const [muutLomakedata] = useLomakedata({
       anchor: "muut"
     });
@@ -18,7 +18,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
       maaraykset
     );
     const muutMaaraykset = getMaarayksetByTunniste("muut", maaraykset);
-
+    console.info(mode);
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake
         anchor={sectionId}
@@ -26,7 +26,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         data={{ muutLomakedata, sectionId }}
         formTitle={title}
         isRowExpanded={true}
-        mode="modification"
+        mode={mode}
         path={constants.formLocation}
         showCategoryTitles={true}
       ></Lomake>
@@ -41,6 +41,7 @@ MuutospyyntoWizardOpiskelijavuodet.defaultProps = {
 MuutospyyntoWizardOpiskelijavuodet.propTypes = {
   lupaKohteet: PropTypes.object,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array,
   sectionId: PropTypes.string
 };

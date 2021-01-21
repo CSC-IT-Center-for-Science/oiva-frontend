@@ -16,7 +16,8 @@ import {
   map,
   length,
   difference,
-  prop
+  prop,
+  compose
 } from "ramda";
 import {
   findSisaoppilaitosRajoitus,
@@ -24,6 +25,9 @@ import {
 } from "../../../helpers/opiskelijavuodet";
 import { getMaarayksetByTunniste } from "helpers/lupa";
 import { getMuutFromStorage } from "helpers/muut";
+import { generateDifferenceComponent } from "../perustelut/muut";
+import { getMuutostarveCheckboxes } from "../perustelut/common";
+import { getOivaPerustelutFromStorage } from "helpers/oivaperustelut";
 
 const getValitutKoodiarvot = (stateObjects = []) => {
   return map(stateObj => {
@@ -66,7 +70,7 @@ const radioButtonKoodiarvotVaativaTuki = [
   "21"
 ];
 
-export default async function getOpiskelijavuodetLomake(
+async function getModificationForm(
   { muutLomakedata, sectionId },
   { isReadOnly },
   locale,
@@ -284,4 +288,124 @@ export default async function getOpiskelijavuodetLomake(
         : null
     ].filter(Boolean)
   };
+}
+
+async function getReasoningForm({ isReadOnly }, locale, changeObjects) {
+  const oivaperustelut = await getOivaPerustelutFromStorage();
+
+  const vahimmaisopiskelijavuodetChangeObj = find(
+    compose(includes(`.vahimmaisopiskelijavuodet.`), prop("anchor")),
+    changeObjects
+  );
+  const sisaoppilaitosChangeObj = find(
+    compose(includes(`.sisaoppilaitos.`), prop("anchor")),
+    changeObjects
+  );
+  const vaativaTukiChangeObj = find(
+    compose(includes(`.vaativatuki.`), prop("anchor")),
+    changeObjects
+  );
+  const checkboxes = getMuutostarveCheckboxes(
+    oivaperustelut,
+    toUpper(locale),
+    isReadOnly
+  );
+
+  const differenceTitles = [
+    translate("common.current"),
+    translate("common.applyFor"),
+    translate("common.difference")
+  ];
+
+  return [
+    {
+      anchor: "vahimmaisopiskelijavuodet",
+      title: translate("minimumAmountOfYears"),
+      components: [
+        generateDifferenceComponent({
+          vahimmaisopiskelijavuodetChangeObj,
+          titles: differenceTitles,
+          isReadOnly: true
+        })
+      ]
+    },
+    {
+      anchor: "perustelut",
+      title: "Mikä on aiheuttanut muutostarpeen?",
+      categories: checkboxes
+    },
+    {
+      anchor: "vaativatuki",
+      title: translate("limitForSpecialSupport"),
+      components: [
+        generateDifferenceComponent({
+          vaativaTukiChangeObj,
+          titles: differenceTitles,
+          isReadOnly: true
+        })
+      ]
+    },
+    {
+      anchor: "perustelut",
+      title: "Mikä on aiheuttanut muutostarpeen?",
+      styleClasses: ["px-10 py-10"],
+      components: [
+        {
+          anchor: "A",
+          name: "TextBox",
+          properties: {
+            isReadOnly,
+            title: "Perustele lyhyesti miksi tälle muutokselle on tarvetta",
+            value: ""
+          }
+        }
+      ]
+    },
+    {
+      anchor: "sisaoppilaitos",
+      title: translate("limitForBoardingSchool"),
+      components: [
+        generateDifferenceComponent({
+          sisaoppilaitosChangeObj,
+          titles: differenceTitles,
+          isReadOnly: true
+        })
+      ]
+    },
+    {
+      anchor: "perustelut",
+      title: "Mikä on aiheuttanut muutostarpeen?",
+      styleClasses: ["px-10 py-10"],
+      components: [
+        {
+          anchor: "A",
+          name: "TextBox",
+          properties: {
+            isReadOnly,
+            title: "Perustele lyhyesti miksi tälle muutokselle on tarvetta",
+            value: ""
+          }
+        }
+      ]
+    }
+  ];
+}
+
+export default async function getOpiskelijavuodetLomake(
+  mode,
+  data,
+  booleans,
+  locale,
+  changeObjects,
+  functions,
+  prefix
+) {
+  switch (mode) {
+    case "modification":
+      return await getModificationForm(data, booleans, locale, changeObjects);
+    case "reasoning":
+      return await getReasoningForm(booleans, locale, changeObjects, prefix);
+    default:
+      return [];
+  }
 }

@@ -219,7 +219,21 @@ const lomakkeet = {
   },
   opiskelijavuodet: {
     modification: (data, booleans, locale, changeObjects) =>
-      getOpiskelijavuodetLomake(data, booleans, locale, changeObjects)
+      getOpiskelijavuodetLomake(
+        "modification",
+        data,
+        booleans,
+        locale,
+        changeObjects
+      ),
+    reasoning: (data, booleans, locale, changeObjects) =>
+      getOpiskelijavuodetLomake(
+        "reasoning",
+        data,
+        booleans,
+        locale,
+        changeObjects
+      )
   },
 
   // Wizard page 2 forms
@@ -397,6 +411,5 @@ export async function getLomake(
   const lomake = fn
     ? await fn(data, booleans, locale, changeObjects, functions, prefix)
     : [];
-
   return lomake;
 }
