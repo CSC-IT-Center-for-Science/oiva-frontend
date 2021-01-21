@@ -26,6 +26,8 @@ import Normal from "@material-ui/icons/Lens";
 
 const useStyles = makeStyles(() => ({
   root: {
+    paddingLeft: "2rem",
+    paddingRight: "2rem",
     width: "100%",
     "& .MuiStepLabel-label ": {
       fontFamily: "inherit",

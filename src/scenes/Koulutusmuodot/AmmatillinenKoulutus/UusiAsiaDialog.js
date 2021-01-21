@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "../../../components/02-organisms/DialogTitle";
@@ -96,7 +96,12 @@ const UusiAsiaDialog = React.memo(
     let history = useHistory();
     let { page: pageParam, uuid } = params;
 
-    const [page] = useState(parseInt(pageParam, 10));
+    const [page, setPage] = useState();
+
+    useEffect(() => {
+      setPage(parseInt(pageParam, 10));
+    }, [pageParam]);
+
     const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(true);
@@ -344,7 +349,7 @@ const UusiAsiaDialog = React.memo(
               </DialogTitleWithStyles>
             </div>
             <DialogContentWithStyles>
-              <div className="mb-20">
+              <div className="w-full xxl:w-4/5 max-w-8xl m-auto mb-32">
                 <StepperNavigation
                   activeStep={page - 1}
                   stepProps={steps}

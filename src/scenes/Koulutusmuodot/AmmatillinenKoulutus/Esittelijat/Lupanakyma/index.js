@@ -37,11 +37,11 @@ const Lupanakyma = ({
 
   return (
     <div
-      className={`border-8 ${
+      className={`border ${
         isLupaValid ? "border-green-500" : "border-red-500"
       }`}
     >
-      <div className="bg-vaalenharmaa px-16 w-full m-auto mb-20 border-b border-xs border-harmaa">
+      <div className="bg-vaalenharmaa px-16 w-full m-auto border-b border-xs border-harmaa">
         <div className="py-4">
           <Typography component="h1" variant="h1">
             {organisation.nimi[intl.locale] || last(values(organisation.nimi))}
@@ -80,10 +80,7 @@ const Lupanakyma = ({
           </p>
         </div>
       </div>
-      <div
-        id="wizard-content"
-        className="px-16 xl:w-3/4 max-w-7xl m-auto mb-20"
-      >
+      <div id="wizard-content" className="px-16 max-w-7xl m-auto mb-20">
         <EsittelijatMuutospyynto
           kohteet={kohteet}
           koulutukset={koulutukset}
