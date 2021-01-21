@@ -1,4 +1,4 @@
-import { find, filter, map, toUpper, equals } from "ramda";
+import { find, filter, map, toUpper, equals, last } from "ramda";
 import { getKieletFromStorage } from "helpers/kielet";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
 import { getAnchorPart } from "utils/common";
@@ -15,7 +15,8 @@ async function getModificationForm(
   return map(koulutustyyppi => {
     const tutkinnot = filter(tutkinto => {
       const koulutustyyppikoodiarvo = getAnchorPart(tutkinto.anchor, 1);
-      return equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo);
+      if(last(tutkinto.anchor.split('.')) !== 'osaamisala')
+        return equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo);
     }, aktiivisetTutkinnot);
     if (tutkinnot.length) {
       return {
@@ -28,6 +29,7 @@ async function getModificationForm(
               {
                 anchor: "nimi",
                 name: "StatusTextRow",
+                styleClasses: ['flex-2'],
                 properties: {
                   code: tutkinto.koodiarvo,
                   title: tutkinto.properties.title,
