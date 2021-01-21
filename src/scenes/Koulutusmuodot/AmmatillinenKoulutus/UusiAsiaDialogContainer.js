@@ -47,7 +47,7 @@ const UusiAsiaDialogContainer = ({
     },
     [history, id]
   );
-
+  // console.info("Rendering UusiAsiaDialogContainer.js...");
   return (
     <UusiAsiaDialog
       history={history}

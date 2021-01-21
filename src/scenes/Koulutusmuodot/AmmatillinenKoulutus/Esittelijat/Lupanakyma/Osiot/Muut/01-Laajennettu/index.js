@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
 
 const constants = {
   formLocation: [
@@ -17,11 +18,20 @@ const Laajennettu = React.memo(
       maarayksetByKoodiarvo
     };
 
+    const [
+      changeObjects,
+      actions
+    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: sectionId
+    });
+
     return (
       <Lomake
-        mode={mode}
+        actions={actions}
         anchor={sectionId}
+        changeObjects={changeObjects}
         data={dataLomakepalvelulle}
+        mode={mode}
         path={constants.formLocation}
         rowTitle={items[0].metadata[localeUpper].nimi}
         showCategoryTitles={true}

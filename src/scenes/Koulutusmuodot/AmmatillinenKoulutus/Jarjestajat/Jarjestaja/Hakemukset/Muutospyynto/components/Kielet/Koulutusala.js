@@ -1,15 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
 
 const constants = {
   formLocation: ["kielet", "tutkintokielet"]
 };
 
 const Koulutusala = ({ aktiivisetTutkinnot, mode, sectionId, title }) => {
+  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
   return (
     <Lomake
+      actions={actions}
       anchor={sectionId}
+      changeObjects={changeObjects}
       data={{ aktiiviset: aktiivisetTutkinnot }}
       mode={mode}
       path={constants.formLocation}

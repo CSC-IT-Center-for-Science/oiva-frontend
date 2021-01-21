@@ -19,13 +19,14 @@ const MuutospyyntoWizardTopThree = React.memo(() => {
   const lomakedata = useMemo(
     () => ({
       formatMessage: intl.formatMessage,
-      uuid,
-      setLastCheckedAsianumero,
-      lastCheckedAsianumero
+      uuid
     }),
     [intl, uuid, lastCheckedAsianumero]
   );
-
+  console.info(
+    "Rendering MuutospyyntoWizardTopThree.js...",
+    lastCheckedAsianumero
+  );
   return (
     <Lomake
       anchor="topthree"
@@ -33,7 +34,8 @@ const MuutospyyntoWizardTopThree = React.memo(() => {
       isInExpandableRow={false}
       isReadOnly={false}
       mode="addition"
-      path={formLocations.kolmeEnsimmaistaKenttaa}></Lomake>
+      path={formLocations.kolmeEnsimmaistaKenttaa}
+    ></Lomake>
   );
 });
 

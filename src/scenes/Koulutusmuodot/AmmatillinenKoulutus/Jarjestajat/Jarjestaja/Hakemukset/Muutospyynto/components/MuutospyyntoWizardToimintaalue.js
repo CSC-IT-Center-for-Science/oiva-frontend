@@ -1,10 +1,10 @@
 import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import common from "../../../../../../../../i18n/definitions/common";
-import wizard from "../../../../../../../../i18n/definitions/wizard";
-import Lomake from "../../../../../../../../components/02-organisms/Lomake";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import common from "i18n/definitions/common";
+import wizard from "i18n/definitions/wizard";
+import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
 import * as R from "ramda";
 
 const constants = {

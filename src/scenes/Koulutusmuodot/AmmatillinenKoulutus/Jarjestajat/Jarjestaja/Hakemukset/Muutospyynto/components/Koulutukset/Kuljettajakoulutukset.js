@@ -5,6 +5,7 @@ import { getDataForKoulutusList } from "utils/koulutusUtil";
 import Lomake from "components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import { toUpper } from "ramda";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
 
 const constants = {
   formLocation: ["koulutukset", "kuljettajakoulutukset"]
@@ -20,6 +21,10 @@ const Kuljettajakoulutukset = ({
   const sectionId = "koulutukset_kuljettajakoulutukset";
   const koodisto = "kuljettajakoulutus";
 
+  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
   const lomakedata = useMemo(() => {
     return {
       koulutusdata: getDataForKoulutusList(
@@ -34,7 +39,9 @@ const Kuljettajakoulutukset = ({
 
   return (
     <Lomake
+      actions={actions}
       anchor={sectionId}
+      changeObjects={changeObjects}
       data={lomakedata}
       isReadOnly={isReadOnly}
       isRowExpanded={mode === "reasoning"}

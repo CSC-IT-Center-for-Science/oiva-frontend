@@ -15,12 +15,8 @@ import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestaj
 import { Typography } from "@material-ui/core";
 import FormTitle from "components/00-atoms/FormTitle";
 import * as R from "ramda";
-
-const constants = {
-  formLocation: {
-    opetuskielet: ["kielet", "opetuskielet"]
-  }
-};
+import MuutospyyntoWizardOpetuskielet from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardOpetuskielet";
+import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
 
 const defaultProps = {
   isReadOnly: false,
@@ -36,183 +32,180 @@ const defaultProps = {
   opiskelijavuodet: []
 };
 
-const EsittelijatMuutospyynto = ({
-  isReadOnly = defaultProps.isReadOnly,
-  kohteet: osiokohteet = defaultProps.kohteet,
-  koulutukset = defaultProps.koulutukset,
-  koulutusalat = defaultProps.koulutusalat,
-  koulutustyypit = defaultProps.koulutustyypit,
-  maaraykset = defaultProps.maaraykset,
-  lupaKohteet = defaultProps.lupaKohteet,
-  maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
-  mode,
-  muut = defaultProps.muut,
-  opiskelijavuodet = defaultProps.opiskelijavuodet,
-  // Callback methods
-  handleSubmit
-}) => {
-  const intl = useIntl();
-  const [kohteet, setKohteet] = useState({});
-  const [maaraystyypit, setMaaraystyypit] = useState(null);
+const EsittelijatMuutospyynto = React.memo(
+  ({
+    isReadOnly = defaultProps.isReadOnly,
+    kohteet: osiokohteet = defaultProps.kohteet,
+    koulutukset = defaultProps.koulutukset,
+    koulutusalat = defaultProps.koulutusalat,
+    koulutustyypit = defaultProps.koulutustyypit,
+    maaraykset = defaultProps.maaraykset,
+    lupaKohteet = defaultProps.lupaKohteet,
+    maaraystyypit: maaraystyypitRaw = defaultProps.maaraystyypit,
+    mode,
+    muut = defaultProps.muut,
+    opiskelijavuodet = defaultProps.opiskelijavuodet,
+    // Callback methods
+    handleSubmit
+  }) => {
+    const intl = useIntl();
+    const [kohteet, setKohteet] = useState({});
+    const [maaraystyypit, setMaaraystyypit] = useState(null);
 
-  useEffect(() => {
-    const _kohteet = R.mergeAll(
-      R.flatten(
-        R.map(item => {
-          return {
-            [R.props(["tunniste"], item)]: item
-          };
-        }, osiokohteet)
-      )
+    useEffect(() => {
+      const _kohteet = R.mergeAll(
+        R.flatten(
+          R.map(item => {
+            return {
+              [R.props(["tunniste"], item)]: item
+            };
+          }, osiokohteet)
+        )
+      );
+      setKohteet(_kohteet);
+    }, [osiokohteet]);
+
+    useEffect(() => {
+      const _maaraystyypit = R.mergeAll(
+        R.flatten(
+          R.map(item => {
+            return {
+              [R.props(["tunniste"], item)]: item
+            };
+          }, maaraystyypitRaw)
+        )
+      );
+      setMaaraystyypit(_maaraystyypit);
+    }, [maaraystyypitRaw]);
+
+    const valtakunnallinenMaarays = R.find(
+      R.propEq("koodisto", "nuts1"),
+      maaraykset
     );
-    setKohteet(_kohteet);
-  }, [osiokohteet]);
 
-  useEffect(() => {
-    const _maaraystyypit = R.mergeAll(
-      R.flatten(
-        R.map(item => {
-          return {
-            [R.props(["tunniste"], item)]: item
-          };
-        }, maaraystyypitRaw)
-      )
+    const sectionHeadings = useMemo(
+      () => ({
+        tutkinnotJaKoulutukset: {
+          number: R.path(["1", "headingNumber"], lupaKohteet) || "1",
+          title:
+            R.path(["1", "heading"], lupaKohteet) ||
+            intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
+        },
+        opetusJaTutkintokieli: {
+          number: R.path(["2", "headingNumber"], lupaKohteet) || "2",
+          title:
+            R.path(["2", "heading"], lupaKohteet) ||
+            intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
+        },
+        toimintaalue: {
+          number: R.path(["3", "headingNumber"], lupaKohteet) || "3",
+          title:
+            R.path(["3", "heading"], lupaKohteet) ||
+            intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
+        },
+        opiskelijavuodet: {
+          number: R.path(["4", "headingNumber"], lupaKohteet) || "4",
+          title:
+            R.path(["4", "heading"], lupaKohteet) ||
+            intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
+        },
+        muut: {
+          number: R.path(["5", "headingNumber"], lupaKohteet) || "5",
+          title:
+            R.path(["5", "heading"], lupaKohteet) ||
+            intl.formatMessage(common.lupaSectionMuutMainTitle)
+        }
+      }),
+      [intl, lupaKohteet]
     );
-    setMaaraystyypit(_maaraystyypit);
-  }, [maaraystyypitRaw]);
-
-  const valtakunnallinenMaarays = R.find(
-    R.propEq("koodisto", "nuts1"),
-    maaraykset
-  );
-
-  const sectionHeadings = useMemo(
-    () => ({
-      tutkinnotJaKoulutukset: {
-        number: R.path(["1", "headingNumber"], lupaKohteet) || "1",
-        title:
-          R.path(["1", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
-      },
-      opetusJaTutkintokieli: {
-        number: R.path(["2", "headingNumber"], lupaKohteet) || "2",
-        title:
-          R.path(["2", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
-      },
-      toimintaalue: {
-        number: R.path(["3", "headingNumber"], lupaKohteet) || "3",
-        title:
-          R.path(["3", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
-      },
-      opiskelijavuodet: {
-        number: R.path(["4", "headingNumber"], lupaKohteet) || "4",
-        title:
-          R.path(["4", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
-      },
-      muut: {
-        number: R.path(["5", "headingNumber"], lupaKohteet) || "5",
-        title:
-          R.path(["5", "heading"], lupaKohteet) ||
-          intl.formatMessage(common.lupaSectionMuutMainTitle)
-      }
-    }),
-    [intl, lupaKohteet]
-  );
-
-  return (
-    <React.Fragment>
-      <form onSubmit={handleSubmit}>
-        <Section>
-          <div className="w-1/3">
-            <Typography component="h2" variant="h2">
-              {intl.formatMessage(common.decisionDetails)}
-            </Typography>
-            <MuutospyyntoWizardTopThree />
-          </div>
-        </Section>
-
-        <Typography component="h2" variant="h2">
-          {intl.formatMessage(common.changesText)}
-        </Typography>
-
-        <FormTitle
-          code={String(sectionHeadings.tutkinnotJaKoulutukset.number)}
-          title={sectionHeadings.tutkinnotJaKoulutukset.title}
-        />
-
-        <Tutkinnot
-          code={sectionHeadings.tutkinnotJaKoulutukset.number}
-          isReadOnly={isReadOnly}
-          koulutusalat={koulutusalat}
-          koulutustyypit={koulutustyypit}
-          mode={mode}
-          title={sectionHeadings.tutkinnotJaKoulutukset.title}
-        />
-
-        <Typography component="h4" variant="h4">
-          {intl.formatMessage(common.koulutukset)}
-        </Typography>
-
-        <MuutospyyntoWizardKoulutukset
-          isReadOnly={isReadOnly}
-          koulutukset={koulutukset}
-          maaraykset={maaraykset}
-          mode={mode}
-        />
-
-        <Lomake
-          anchor={"kielet_opetuskielet"}
-          code={String(sectionHeadings.opetusJaTutkintokieli.number)}
-          formTitle={sectionHeadings.opetusJaTutkintokieli.title}
-          isPreviewModeOn={false}
-          isRowExpanded={true}
-          mode={mode}
-          path={constants.formLocation.opetuskielet}
-          rowTitle={intl.formatMessage(wizardMessages.teachingLanguages)}
-          showCategoryTitles={true}
-        />
-
-        <Tutkintokielet koulutusalat={koulutusalat} mode={mode} />
-
-        <MuutospyyntoWizardToimintaalue
-          code={String(sectionHeadings.toimintaalue.number)}
-          lupakohde={lupaKohteet[3]}
-          mode={mode}
-          sectionId={"toimintaalue"}
-          title={sectionHeadings.toimintaalue.title}
-          valtakunnallinenMaarays={valtakunnallinenMaarays}
-        />
-
-        {kohteet.opiskelijavuodet && (
-          <MuutospyyntoWizardOpiskelijavuodet
-            code={String(sectionHeadings.opiskelijavuodet.number)}
-            lupaKohteet={lupaKohteet}
+    console.info("Rendering EsittelijatMuutospyynto.js...");
+    return (
+      <React.Fragment>
+        <form onSubmit={handleSubmit}>
+          <Section>
+            <div className="w-1/3">
+              <Typography component="h2" variant="h2">
+                {intl.formatMessage(common.decisionDetails)}
+              </Typography>
+              {/* <MuutospyyntoWizardTopThree /> */}
+            </div>
+          </Section>
+          <Typography component="h2" variant="h2">
+            {intl.formatMessage(common.changesText)}
+          </Typography>
+          <FormTitle
+            code={String(sectionHeadings.tutkinnotJaKoulutukset.number)}
+            title={sectionHeadings.tutkinnotJaKoulutukset.title}
+          />
+          <Tutkinnot
+            code={sectionHeadings.tutkinnotJaKoulutukset.number}
+            isReadOnly={isReadOnly}
+            koulutusalat={koulutusalat}
+            koulutustyypit={koulutustyypit}
+            mode={mode}
+            title={sectionHeadings.tutkinnotJaKoulutukset.title}
+          />
+          <Typography component="h4" variant="h4">
+            {intl.formatMessage(common.koulutukset)}
+          </Typography>
+          <MuutospyyntoWizardKoulutukset
+            isReadOnly={isReadOnly}
+            koulutukset={koulutukset}
             maaraykset={maaraykset}
             mode={mode}
-            muut={muut}
-            opiskelijavuodet={opiskelijavuodet}
-            sectionId={"opiskelijavuodet"}
-            title={sectionHeadings.opiskelijavuodet.title}
           />
-        )}
+          <TutkintomuutoksetContainer scope="opetuskielet">
+            <MuutospyyntoWizardOpetuskielet
+              isReadOnly={isReadOnly}
+              mode={mode}
+              sectionHeadingsOpetusJaTutkintokieli={
+                sectionHeadings.opetusJaTutkintokieli
+              }
+            ></MuutospyyntoWizardOpetuskielet>
+          </TutkintomuutoksetContainer>
 
-        {kohteet.muut && muut && maaraystyypit && (
-          <MuutospyyntoWizardMuut
-            code={sectionHeadings.muut.number}
-            maaraykset={maaraykset}
-            mode={mode}
-            muut={muut}
-            sectionId={"muut"}
-            title={sectionHeadings.muut.title}
-          />
-        )}
-      </form>
-    </React.Fragment>
-  );
-};
+          <Tutkintokielet koulutusalat={koulutusalat} mode={mode} />
+
+          <TutkintomuutoksetContainer scope="toimintaalue">
+            <MuutospyyntoWizardToimintaalue
+              code={String(sectionHeadings.toimintaalue.number)}
+              lupakohde={lupaKohteet[3]}
+              mode={mode}
+              sectionId={"toimintaalue"}
+              title={sectionHeadings.toimintaalue.title}
+              valtakunnallinenMaarays={valtakunnallinenMaarays}
+            />
+          </TutkintomuutoksetContainer>
+
+          {kohteet.opiskelijavuodet && (
+            <TutkintomuutoksetContainer scope="opiskelijavuodet">
+              <MuutospyyntoWizardOpiskelijavuodet
+                code={String(sectionHeadings.opiskelijavuodet.number)}
+                lupaKohteet={lupaKohteet}
+                maaraykset={maaraykset}
+                mode={mode}
+                muut={muut}
+                opiskelijavuodet={opiskelijavuodet}
+                sectionId={"opiskelijavuodet"}
+                title={sectionHeadings.opiskelijavuodet.title}
+              />
+            </TutkintomuutoksetContainer>
+          )}
+          {kohteet.muut && muut && maaraystyypit && (
+            <MuutospyyntoWizardMuut
+              code={sectionHeadings.muut.number}
+              maaraykset={maaraykset}
+              mode={mode}
+              muut={muut}
+              sectionId={"muut"}
+              title={sectionHeadings.muut.title}
+            />
+          )}
+        </form>
+      </React.Fragment>
+    );
+  }
+);
 
 EsittelijatMuutospyynto.propTypes = {
   kohteet: PropTypes.array,

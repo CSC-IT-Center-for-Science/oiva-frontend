@@ -21,6 +21,7 @@ import Yhteistyosopimus from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittel
 import Selvitykset from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/09-Selvitykset";
 import MuuMaarays from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/07-MuuMaarays";
 import { Typography } from "@material-ui/core";
+import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
 
 const defaultProps = {
   maaraykset: [],
@@ -83,94 +84,112 @@ const MuutospyyntoWizardMuut = React.memo(
           {title}
         </Typography>
         {!!items.laajennettu && items.laajennettu.length > 0 ? (
-          <Laajennettu
-            items={items.laajennettu}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_01`}
-          ></Laajennettu>
+          <TutkintomuutoksetContainer scope="laajennettu">
+            <Laajennettu
+              items={items.laajennettu}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_01`}
+            ></Laajennettu>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {(!!items.vaativa_1 && items.vaativa_1.length > 0) ||
         (!!items.vaativa_2 && items.vaativa_2.length > 0) ? (
-          <VaativaTuki
-            items={vaativaTukiItems}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_02`}
-          ></VaativaTuki>
+          <TutkintomuutoksetContainer scope="vaativaTuki">
+            <VaativaTuki
+              items={vaativaTukiItems}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_02`}
+            ></VaativaTuki>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
-          <Sisaoppilaitos
-            items={items.sisaoppilaitos}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_03`}
-          ></Sisaoppilaitos>
+          <TutkintomuutoksetContainer scope="sisaoppilaitos">
+            <Sisaoppilaitos
+              items={items.sisaoppilaitos}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_03`}
+            ></Sisaoppilaitos>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.vankila && items.vankila.length > 0 ? (
-          <Vankila
-            items={items.vankila}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_04`}
-          ></Vankila>
+          <TutkintomuutoksetContainer scope="vankila">
+            <Vankila
+              items={items.vankila}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_04`}
+            ></Vankila>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.urheilu && items.urheilu.length > 0 ? (
-          <Urheilu
-            items={items.urheilu}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_05`}
-          ></Urheilu>
+          <TutkintomuutoksetContainer scope="urheilu">
+            <Urheilu
+              items={items.urheilu}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_05`}
+            ></Urheilu>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
-          <Yhteistyo
-            items={items.yhteistyo}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_06`}
-          ></Yhteistyo>
+          <TutkintomuutoksetContainer scope="yhteistyo">
+            <Yhteistyo
+              items={items.yhteistyo}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_06`}
+            ></Yhteistyo>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
-          <Yhteistyosopimus
-            items={items.yhteistyosopimus}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_08`}
-          ></Yhteistyosopimus>
+          <TutkintomuutoksetContainer scope="yhteistyosopimus">
+            <Yhteistyosopimus
+              items={items.yhteistyosopimus}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_08`}
+            ></Yhteistyosopimus>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.selvitykset && items.selvitykset.length > 0 ? (
-          <Selvitykset
-            items={items.selvitykset}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_09`}
-          ></Selvitykset>
+          <TutkintomuutoksetContainer scope="selvitykset">
+            <Selvitykset
+              items={items.selvitykset}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_09`}
+            ></Selvitykset>
+          </TutkintomuutoksetContainer>
         ) : null}
 
         {!!items.muumaarays && items.muumaarays.length > 0 ? (
-          <MuuMaarays
-            items={items.muumaarays}
-            localeUpper={localeUpper}
-            maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            mode={mode}
-            sectionId={`${sectionId}_07`}
-          ></MuuMaarays>
+          <TutkintomuutoksetContainer scope="muuMaarays">
+            <MuuMaarays
+              items={items.muumaarays}
+              localeUpper={localeUpper}
+              maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+              mode={mode}
+              sectionId={`${sectionId}_07`}
+            ></MuuMaarays>
+          </TutkintomuutoksetContainer>
         ) : null}
       </React.Fragment>
     );

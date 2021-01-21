@@ -27,7 +27,6 @@ const JarjestajaSwitch = ({
   voimassaOlevaLupa
 }) => {
   const { formatMessage, locale } = useIntl();
-  const scope = "kj-lupanakyma";
 
   /**
    * Vapaan sivistystyön luvat täytyy parsia eri tavalla. Siksi tämä ehto.
@@ -57,20 +56,18 @@ const JarjestajaSwitch = ({
               koulutustyyppi={koulutusmuoto.koulutustyyppi}
               render={_props => {
                 return (
-                  <MuutoksetContainer scope={scope}>
-                    <UusiAsiaDialogContainer
-                      kohteet={_props.kohteet}
-                      koulutukset={_props.koulutukset}
-                      koulutusalat={_props.koulutusalat}
-                      koulutustyypit={_props.koulutustyypit}
-                      lisatiedot={_props.lisatiedot}
-                      maaraystyypit={_props.maaraystyypit}
-                      muut={_props.muut}
-                      opetuskielet={_props.opetuskielet}
-                      organisaatio={_props.organisaatio}
-                      viimeisinLupa={_props.viimeisinLupa}
-                    />
-                  </MuutoksetContainer>
+                  <UusiAsiaDialogContainer
+                    kohteet={_props.kohteet}
+                    koulutukset={_props.koulutukset}
+                    koulutusalat={_props.koulutusalat}
+                    koulutustyypit={_props.koulutustyypit}
+                    lisatiedot={_props.lisatiedot}
+                    maaraystyypit={_props.maaraystyypit}
+                    muut={_props.muut}
+                    opetuskielet={_props.opetuskielet}
+                    organisaatio={_props.organisaatio}
+                    viimeisinLupa={_props.viimeisinLupa}
+                  />
                 );
               }}
             />

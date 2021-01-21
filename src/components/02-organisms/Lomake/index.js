@@ -3,10 +3,6 @@ import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
-import {
-  useChangeObjects,
-  useChangeObjectsByAnchorWithoutUnderRemoval
-} from "stores/muutokset";
 import ExpandableRowRoot from "../ExpandableRowRoot";
 import formMessages from "i18n/definitions/lomake";
 import { has, isEmpty, length, omit } from "ramda";
@@ -17,6 +13,7 @@ import { getReducedStructureIncludingChanges } from "./utils";
 import equal from "react-fast-compare";
 
 const defaultProps = {
+  changeObjects: [],
   data: {},
   functions: {},
   isInExpandableRow: true,
@@ -35,7 +32,9 @@ const defaultProps = {
 
 const Lomake = React.memo(
   ({
+    actions,
     anchor,
+    changeObjects = defaultProps.changeObjects,
     code,
     data = defaultProps.data,
     formTitle,
@@ -65,14 +64,7 @@ const Lomake = React.memo(
         }
       : rowMessages;
 
-    const [{ focusOn }] = useChangeObjects();
-
-    const [
-      changeObjects,
-      actions
-    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: lomakedataAnchor || anchor
-    });
+    // const [{ focusOn }] = useChangeObjects();
 
     const [, lomakedataActions] = useLomakedata({
       anchor: lomakedataAnchor || anchor
@@ -94,14 +86,15 @@ const Lomake = React.memo(
       [actions]
     );
 
-    const onFocus = useCallback(() => {
-      actions.setFocusOn(null);
-    }, [actions]);
+    // const onFocus = useCallback(() => {
+    //   actions.setFocusOn(null);
+    // }, [actions]);
 
     useEffect(() => {
       (async () => {
         async function fetchLomake(_mode, _changeObjects, _data, _functions) {
-          return await getLomake(
+          console.info("NOUDETAAN LOMAKE...", anchor, _path);
+          const lomake = await getLomake(
             _mode || mode,
             _changeObjects || changeObjects,
             _data || data,
@@ -111,19 +104,20 @@ const Lomake = React.memo(
             _path,
             prefix
           );
+
+          return lomake;
         }
 
-        const lomake = await fetchLomake();
+        const juuriHaettuLomake = await fetchLomake();
 
         const lomakedata =
-          lomake && lomake.length
+          juuriHaettuLomake && juuriHaettuLomake.length
             ? getReducedStructureIncludingChanges(
                 lomakedataAnchor || anchor,
-                getReducedStructure(lomake),
+                getReducedStructure(juuriHaettuLomake),
                 changeObjects
               )
             : [];
-
         /**
          * Osa lomakkeista voi olla sellaisia, että niiden tilan
          * tallentaminen aiheuttaa liikaa uudelleen lataamisia.
@@ -136,7 +130,6 @@ const Lomake = React.memo(
         if (isSavingState) {
           lomakedataActions.setLomakedata(lomakedata, anchor);
         }
-
         /**
          * Esikatselulomake tarvitsee lomakerakenteen luontia varten
          * muokkaustilaisen lomakkeen nykytilan.
@@ -148,16 +141,14 @@ const Lomake = React.memo(
           });
           setLomake(previewLomake.structure || previewLomake);
         } else {
-          if (has("isValid", lomake)) {
-            lomakedataActions.setValidity(lomake.isValid, anchor);
+          if (has("isValid", juuriHaettuLomake)) {
+            lomakedataActions.setValidity(juuriHaettuLomake.isValid, anchor);
           }
-          setLomake(lomake.structure || lomake);
+          if (!equal(juuriHaettuLomake, lomake)) {
+            setLomake(juuriHaettuLomake.structure || juuriHaettuLomake);
+          }
         }
       })();
-
-      return function cancel() {
-        // Asynkronisten toimintojen keskeyttäminen
-      };
     }, [
       _path,
       anchor,
@@ -175,6 +166,7 @@ const Lomake = React.memo(
     ]);
 
     if (Array.isArray(lomake) && lomake.length) {
+      // console.info("Rendering LOMAKE", anchor, _path, changeObjects);
       return (
         <div>
           {code || formTitle ? (
@@ -202,11 +194,11 @@ const Lomake = React.memo(
               <div className={noPadding ? "" : "p-8"}>
                 <CategorizedListRoot
                   anchor={anchor}
-                  focusOn={focusOn}
+                  // focusOn={focusOn}
                   categories={lomake}
                   changes={changeObjects}
                   isReadOnly={isReadOnly}
-                  onFocus={onFocus}
+                  // onFocus={onFocus}
                   onUpdate={onChangesUpdate}
                   showCategoryTitles={showCategoryTitles}
                   showValidationErrors={showValidationErrors}
@@ -219,12 +211,12 @@ const Lomake = React.memo(
           ) : mode !== "reasoning" || length(changeObjects) ? (
             <CategorizedListRoot
               anchor={anchor}
-              focusOn={focusOn}
+              // focusOn={focusOn}
               categories={lomake}
               isPreviewModeOn={isPreviewModeOn}
               isReadOnly={isReadOnly}
               changes={changeObjects}
-              onFocus={onFocus}
+              // onFocus={onFocus}
               onUpdate={onChangesUpdate}
               showCategoryTitles={showCategoryTitles}
               showValidationErrors={showValidationErrors}

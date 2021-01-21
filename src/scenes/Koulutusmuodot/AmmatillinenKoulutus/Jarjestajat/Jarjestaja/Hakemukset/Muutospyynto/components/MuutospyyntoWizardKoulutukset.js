@@ -4,6 +4,7 @@ import ValmentavatKoulutukset from "./Koulutukset/ValmentavatKoulutukset";
 import ATVKoulutukset from "./Koulutukset/ATVKoulutukset";
 import Tyovoimakoulutukset from "./Koulutukset/Tyovoimakoulutukset";
 import Kuljettajakoulutukset from "./Koulutukset/Kuljettajakoulutukset";
+import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
 
 const MuutospyyntoWizardKoulutukset = ({
   isReadOnly,
@@ -13,33 +14,41 @@ const MuutospyyntoWizardKoulutukset = ({
 }) => {
   return (
     <div>
-      <ValmentavatKoulutukset
-        isReadOnly={isReadOnly}
-        koulutukset={koulutukset}
-        maaraykset={maaraykset}
-        mode={mode}
-      />
+      <TutkintomuutoksetContainer scope="valmentavatKoulutukset">
+        <ValmentavatKoulutukset
+          isReadOnly={isReadOnly}
+          koulutukset={koulutukset}
+          maaraykset={maaraykset}
+          mode={mode}
+        />
+      </TutkintomuutoksetContainer>
 
-      <ATVKoulutukset
-        isReadOnly={isReadOnly}
-        koulutukset={koulutukset}
-        maaraykset={maaraykset}
-        mode={mode}
-      />
+      <TutkintomuutoksetContainer scope="atvKoulutukset">
+        <ATVKoulutukset
+          isReadOnly={isReadOnly}
+          koulutukset={koulutukset}
+          maaraykset={maaraykset}
+          mode={mode}
+        />
+      </TutkintomuutoksetContainer>
 
-      <Tyovoimakoulutukset
-        isReadOnly={isReadOnly}
-        koulutukset={koulutukset}
-        maaraykset={maaraykset}
-        mode={mode}
-      />
+      <TutkintomuutoksetContainer scope="tyovoimakoulutukset">
+        <Tyovoimakoulutukset
+          isReadOnly={isReadOnly}
+          koulutukset={koulutukset}
+          maaraykset={maaraykset}
+          mode={mode}
+        />
+      </TutkintomuutoksetContainer>
 
-      <Kuljettajakoulutukset
-        isReadOnly={isReadOnly}
-        koulutukset={koulutukset}
-        maaraykset={maaraykset}
-        mode={mode}
-      />
+      <TutkintomuutoksetContainer scope="kuljettajakoulutukset">
+        <Kuljettajakoulutukset
+          isReadOnly={isReadOnly}
+          koulutukset={koulutukset}
+          maaraykset={maaraykset}
+          mode={mode}
+        />
+      </TutkintomuutoksetContainer>
     </div>
   );
 };

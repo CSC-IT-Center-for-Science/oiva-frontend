@@ -6,6 +6,7 @@ import Koulutusala from "./Koulutusala";
 import { Typography } from "@material-ui/core";
 import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 import common from "i18n/definitions/common";
+import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
 
 const Tutkinnot = ({
   isReadOnly = false,
@@ -48,15 +49,19 @@ const Tutkinnot = ({
             tutkinnotByKoulutustyyppi
           };
           return (
-            <Koulutusala
-              data={lomakedata}
-              isReadOnly={isReadOnly}
+            <TutkintomuutoksetContainer
               key={koulutusala.koodiarvo}
-              mode={mode}
-              sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
-              title={title}
-              tutkinnot={tutkinnotByKoulutusala[koulutusala.koodiarvo]}
-            ></Koulutusala>
+              scope={`tutkinnot_${koulutusala.koodiarvo}`}
+            >
+              <Koulutusala
+                data={lomakedata}
+                isReadOnly={isReadOnly}
+                mode={mode}
+                sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
+                title={title}
+                tutkinnot={tutkinnotByKoulutusala[koulutusala.koodiarvo]}
+              ></Koulutusala>
+            </TutkintomuutoksetContainer>
           );
         }
         return null;

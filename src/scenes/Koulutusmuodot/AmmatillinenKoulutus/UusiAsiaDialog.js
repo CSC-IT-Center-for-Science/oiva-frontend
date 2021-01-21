@@ -125,33 +125,33 @@ const UusiAsiaDialog = React.memo(
     ]);
 
     // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
-    const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "topthree"
-    });
+    // const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "topthree"
+    // });
     const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "tutkinnot"
     });
-    const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "koulutukset"
-    });
-    const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "kielet_opetuskielet"
-    });
-    const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "kielet_tutkintokielet"
-    });
-    const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "toimintaalue"
-    });
-    const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "opiskelijavuodet"
-    });
-    const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "muut"
-    });
-    const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "rajoitteet"
-    });
+    // const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "koulutukset"
+    // });
+    // const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "kielet_opetuskielet"
+    // });
+    // const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "kielet_tutkintokielet"
+    // });
+    // const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "toimintaalue"
+    // });
+    // const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "opiskelijavuodet"
+    // });
+    // const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "muut"
+    // });
+    // const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "rajoitteet"
+    // });
 
     const handleStep = useCallback(
       pageNumber => {
@@ -251,15 +251,15 @@ const UusiAsiaDialog = React.memo(
             organisation,
             lupa,
             {
-              koulutukset: koulutuksetCO,
-              muut: muutCO,
-              opetuskielet: opetuskieletCO,
-              opiskelijavuodet: opiskelijavuodetCO,
-              toimintaalue: toimintaalueCO,
-              topthree: topThreeCO,
-              tutkinnot: tutkinnotCO,
-              tutkintokielet: tutkintokieletCO,
-              rajoitteet: rajoitteetCO
+              // koulutukset: koulutuksetCO,
+              // muut: muutCO,
+              // opetuskielet: opetuskieletCO,
+              // opiskelijavuodet: opiskelijavuodetCO,
+              // toimintaalue: toimintaalueCO,
+              // topthree: topThreeCO,
+              // tutkinnot: tutkinnotCO,
+              // tutkintokielet: tutkintokieletCO,
+              // rajoitteet: rajoitteetCO
             },
             uuid,
             kohteet,
@@ -298,28 +298,28 @@ const UusiAsiaDialog = React.memo(
         kohteet,
         initializeChanges,
         intl.locale,
-        koulutuksetCO,
+        // koulutuksetCO,
         lomakedata,
         lupa,
         lupaKohteet,
         maaraystyypit,
         muut,
-        muutCO,
+        // muutCO,
         onNewDocSave,
         onPreview,
         onSave,
-        opetuskieletCO,
-        opiskelijavuodetCO,
-        organisation,
-        rajoitteetCO,
-        toimintaalueCO,
-        topThreeCO,
-        tutkinnotCO,
-        tutkintokieletCO,
+        // opetuskieletCO,
+        // opiskelijavuodetCO,
+        // organisation,
+        // rajoitteetCO,
+        // toimintaalueCO,
+        // topThreeCO,
+        // tutkinnotCO,
+        // tutkintokieletCO,
         uuid
       ]
     );
-
+    // console.info("Rendering UusiAsiaDialog.js...");
     return (
       changeObjects !== null && (
         <div className="max-w-7xl">
