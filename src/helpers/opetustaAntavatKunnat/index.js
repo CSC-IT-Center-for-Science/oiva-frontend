@@ -1,24 +1,28 @@
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import {
-  find,
-  map,
-  propEq,
-  filter,
-  compose,
-  flatten,
-  values,
-  not,
-  pathEq,
-  assocPath,
   append,
-  path,
-  head,
-  uniq,
-  reject,
-  isNil,
-  includes,
+  assocPath,
+  compose,
   concat,
+  drop,
   endsWith,
-  prop
+  filter,
+  find,
+  flatten,
+  head,
+  includes,
+  isNil,
+  map,
+  mapObjIndexed,
+  not,
+  path,
+  prop,
+  pathEq,
+  propEq,
+  reject,
+  take,
+  uniq,
+  values
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";
@@ -34,12 +38,15 @@ export async function defineBackendChangeObjects(
   changeObjects = {},
   kohde,
   maaraystyypit,
-  lupaMaaraykset
+  lupaMaaraykset,
+  locale,
+  kohteet
 ) {
   const {
     quickFilterChanges = [],
     changesByProvince,
-    perustelut
+    perustelut,
+    rajoitteetByRajoiteId
   } = changeObjects;
 
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);
@@ -48,7 +55,10 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = await getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste(
+    "toimintaalue",
+    lupaMaaraykset
+  );
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**
@@ -346,6 +356,19 @@ export async function defineBackendChangeObjects(
                * muotoiset muutosobjektit.
                */
               muutosobjektit = map(kunta => {
+                const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+                  isNil,
+                  mapObjIndexed(rajoite => {
+                    return pathEq(
+                      [1, "properties", "value", "value"],
+                      kunta.koodiarvo,
+                      rajoite
+                    )
+                      ? rajoite
+                      : null;
+                  }, rajoitteetByRajoiteId)
+                );
+
                 const kuntaChangeObj = find(
                   pathEq(
                     ["properties", "metadata", "koodiarvo"],
@@ -365,10 +388,13 @@ export async function defineBackendChangeObjects(
                   ((kuntaChangeObj && kuntaChangeObj.properties.isChecked) ||
                     (!!maakuntaMaarays && !kuntaChangeObj))
                 ) {
-                  return {
+                  const kuntamuutosobjekti = {
                     tila: "LISAYS",
                     meta: {
-                      changeObjects: perustelut,
+                      changeObjects: concat(
+                        perustelut || [],
+                        take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+                      ),
                       perusteluteksti: [
                         {
                           value:
@@ -383,6 +409,22 @@ export async function defineBackendChangeObjects(
                     koodiarvo: kunta.koodiarvo,
                     maaraystyyppi
                   };
+
+                  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+                  // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+                  // loput toisiinsa "alenevassa polvessa".
+                  const alimaaraykset = values(
+                    mapObjIndexed(asetukset => {
+                      return createAlimaarayksetBEObjects(
+                        kohteet,
+                        maaraystyypit,
+                        kuntamuutosobjekti,
+                        drop(2, asetukset)
+                      );
+                    }, rajoitteetByRajoiteIdAndKoodiarvo)
+                  );
+
+                  return [kuntamuutosobjekti, alimaaraykset];
                 }
                 return null;
               }, maakunta.kunnat).filter(Boolean);

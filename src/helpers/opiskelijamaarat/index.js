@@ -1,55 +1,51 @@
 import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
-import { compose, endsWith, find, includes, path, prop, propEq } from "ramda";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import {
+  compose,
+  drop,
+  endsWith,
+  find,
+  includes,
+  mapObjIndexed,
+  path,
+  prop,
+  propEq,
+  values
+} from "ramda";
+import { sortRestrictions } from "utils/rajoitteetUtils";
 
 export const defineBackendChangeObjects = async (
-  changeObjects = [],
+  changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
+  const { rajoitteetByRajoiteId } = changeObjects;
   const lisamaareet = await getKujalisamaareetFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
 
-  /**
-   * Dropdown-kentän ja input-kentän yhdistelmästä muodostetaan
-   * backend-muotoinen muutosobjekti.
-   */
-  const dropdownChangeObj = find(
-    compose(endsWith(".dropdown"), prop("anchor")),
-    changeObjects
+  const restrictionsSorted = sortRestrictions(rajoitteetByRajoiteId);
+
+  console.info(restrictionsSorted, lisamaareet);
+
+  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+  // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+  // loput toisiinsa "alenevassa polvessa".
+  const alimaaraykset = values(
+    mapObjIndexed(changeObjects => {
+      return createAlimaarayksetBEObjects(
+        kohteet,
+        maaraystyypit,
+        null,
+        drop(2, changeObjects)
+      );
+    }, rajoitteetByRajoiteId)
   );
 
-  const inputChangeObj = find(
-    compose(endsWith(".input"), prop("anchor")),
-    changeObjects
-  );
-
-  const { selectedOption: dropdownKoodiarvo } = !!dropdownChangeObj
-    ? dropdownChangeObj.properties
-    : {};
-
-  const lisamaareObj = find(
-    propEq("koodiarvo", dropdownKoodiarvo),
-    lisamaareet
-  );
-
-  const dropdownInputBEchangeObject =
-    !!dropdownKoodiarvo && !!inputChangeObj && !!lisamaareObj
-      ? {
-          arvo: path(["properties", "value"], inputChangeObj),
-          kohde,
-          koodiarvo: dropdownKoodiarvo,
-          koodisto: lisamaareObj.koodisto.koodistoUri,
-          maaraystyyppi,
-          meta: {
-            changeObjects: [dropdownChangeObj, inputChangeObj]
-          },
-          tila: "LISAYS"
-        }
-      : null;
+  console.info(alimaaraykset);
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -60,7 +56,7 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.opiskelijamaarat
   );
 
   const lisatiedotBEchangeObject =
@@ -78,10 +74,7 @@ export const defineBackendChangeObjects = async (
         }
       : null;
 
-  const allBEchangeObjects = [
-    dropdownInputBEchangeObject,
-    lisatiedotBEchangeObject
-  ].filter(Boolean);
+  const allBEchangeObjects = [lisatiedotBEchangeObject].filter(Boolean);
 
-  return allBEchangeObjects;
+  return [allBEchangeObjects, alimaaraykset];
 };

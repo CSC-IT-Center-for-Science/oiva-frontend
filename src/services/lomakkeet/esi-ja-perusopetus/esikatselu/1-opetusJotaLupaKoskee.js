@@ -1,6 +1,11 @@
 import { append, endsWith, find, map } from "ramda";
+import { getAnchorPart } from "utils/common";
+import { getRajoite } from "utils/rajoitteetUtils";
 
-export async function previewOfOpetusJotaLupaKoskee({ lomakedata }) {
+export async function previewOfOpetusJotaLupaKoskee({
+  lomakedata,
+  rajoitteet
+}) {
   let structure = [];
 
   if (!lomakedata || !lomakedata.length) {
@@ -12,11 +17,36 @@ export async function previewOfOpetusJotaLupaKoskee({ lomakedata }) {
    * (!!isChecked = true).
    */
   const listItems = map(opetustehtava => {
-    return opetustehtava.properties.isChecked
-      ? {
-          content: opetustehtava.properties.title
-        }
-      : null;
+    const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
+    const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
+
+    // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
+    // valittuja arvoja (ilman rajoittteita)
+    if (opetustehtava.properties.isChecked) {
+      return {
+        anchor: koodiarvo,
+        components: [
+          rajoite
+            ? {
+                anchor: "rajoite",
+                name: "Rajoite",
+                properties: {
+                  areTitlesVisible: false,
+                  isReadOnly: true,
+                  rajoiteId,
+                  rajoite
+                }
+              }
+            : {
+                anchor: "opetustehtava",
+                name: "HtmlContent",
+                properties: {
+                  content: opetustehtava.properties.title
+                }
+              }
+        ]
+      };
+    }
   }, lomakedata).filter(Boolean);
 
   if (listItems.length) {

@@ -1,4 +1,5 @@
-import { flatten, map, path, prop, sortBy } from "ramda";
+import { getKieletOPHFromStorage } from "helpers/opetuskielet";
+import { find, flatten, map, path, prop, propEq, sortBy } from "ramda";
 
 /**
  * Mikäli päälomakkeella on valittuna opetuskieliä, tämä funktio määrittää
@@ -10,7 +11,12 @@ import { flatten, map, path, prop, sortBy } from "ramda";
  * @param {array} osionData - Sisältää päälomakkeen opetuskieliosion
  * lomakerakenteen täydennettyinä siihen tehdyillä muutoksilla.
  */
-export default async function getOpetuskieletlomake(osionData = []) {
+export default async function getOpetuskielikomponentit(
+  isReadOnly,
+  osionData = []
+) {
+  const kielet = await getKieletOPHFromStorage();
+
   // Yhdistetään päälomakkkeella valittuina olevat ensisijaiset ja toissijaiset
   // opetuskielet yhdeksi taulukoksi, koska tällä tietoa ei ole syystä
   // luoda omaa pudotusvalikkoa molemmille.
@@ -28,36 +34,39 @@ export default async function getOpetuskieletlomake(osionData = []) {
   );
 
   // Palautettava lomakerakenne
-  return osionData.length
-    ? {
-        anchor: "rajoitus",
-        components: [
-          {
-            anchor: "opetuskielet",
-            name: "Autocomplete",
-            styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-            properties: {
-              forChangeObject: {
-                section: "opetuskielet"
-              },
-              options: valitutKielet,
-              value: ""
-            }
+  return kielet.length
+    ? [
+        {
+          anchor: "opetuskielet",
+          name: "Autocomplete",
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+          properties: {
+            forChangeObject: {
+              section: "opetuskielet"
+            },
+            isMulti: false,
+            isReadOnly,
+            options: map(opetuskieli => {
+              /**
+               * Tarkistetaan, onko kyseinen opetuskieli valittuna
+               * lomakkeella, jota vasten rajoituksia ollaan tekemässä.
+               **/
+              return find(
+                propEq("value", opetuskieli.koodiarvo),
+                valitutKielet
+              );
+            }, kielet).filter(Boolean),
+            value: ""
           }
-        ]
-      }
+        }
+      ]
     : [
         {
-          anchor: "ei-valintamahdollisuutta",
-          components: [
-            {
-              anchor: "teksti",
-              name: "StatusTextRow",
-              properties: {
-                title: "Valitse ensin opetuskieliä päälomakkeelta."
-              }
-            }
-          ]
+          anchor: "teksti",
+          name: "StatusTextRow",
+          properties: {
+            title: "Ongelma kielien näyttämisessä."
+          }
         }
       ];
 }

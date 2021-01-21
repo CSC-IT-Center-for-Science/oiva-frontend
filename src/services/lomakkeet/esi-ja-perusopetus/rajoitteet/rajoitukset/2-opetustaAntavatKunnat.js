@@ -1,65 +1,70 @@
 import {
   compose,
   endsWith,
-  filter,
   find,
   flatten,
-  isNil,
+  includes,
   map,
-  not,
   path,
   prop,
-  sortBy,
+  toUpper,
   values
 } from "ramda";
+import { getKunnatFromStorage } from "helpers/kunnat";
 
-export default function getOpetustaAntavatKunnat(osionData = []) {
+export default async function getOpetustaAntavatKunnat(
+  isReadOnly,
+  osionData = [],
+  locale
+) {
+  const localeUpper = toUpper(locale);
+  const kunnat = await getKunnatFromStorage();
+
   const changesByProvinceObj = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
   );
 
-  if (changesByProvinceObj) {
-    const listOfMunicipalities = sortBy(
-      path(["properties", "metadata", "title"]),
-      filter(
-        compose(not, isNil, path(["properties", "metadata", "title"])),
-        flatten(values(changesByProvinceObj.properties.changeObjectsByProvince))
-      )
-    );
+  if (kunnat) {
+    const valitutKunnat = changesByProvinceObj
+      ? map(
+          path(["properties", "metadata", "koodiarvo"]),
+          flatten(
+            values(changesByProvinceObj.properties.changeObjectsByProvince)
+          )
+        )
+      : [];
 
-    return {
-      anchor: "rajoitus",
-      components: [
-        {
-          anchor: "opetustaAntavatKunnat",
-          name: "Autocomplete",
-          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
-          properties: {
-            forChangeObject: {
-              section: "opetustaAntavatKunnat"
-            },
-            options: map(changeObj => {
-              const { koodiarvo, title } = changeObj.properties.metadata;
-              return { label: title, value: koodiarvo };
-            }, listOfMunicipalities).filter(Boolean),
-            value: ""
-          }
+    return [
+      {
+        anchor: "opetustaAntavatKunnat",
+        name: "Autocomplete",
+        styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+        properties: {
+          forChangeObject: {
+            section: "opetustaAntavatKunnat"
+          },
+          isMulti: false,
+          isReadOnly,
+          options: map(kunta => {
+            const { koodiarvo, metadata } = kunta;
+            return includes(koodiarvo, valitutKunnat)
+              ? { label: metadata[localeUpper].nimi, value: koodiarvo }
+              : null;
+          }, kunnat).filter(Boolean),
+          value: ""
         }
-      ]
-    };
+      }
+    ];
   } else {
-    return {
-      anchor: "ei-valintamahdollisuutta",
-      components: [
-        {
-          anchor: "teksti",
-          name: "StatusTextRow",
-          properties: {
-            title: "Ei valintamahdollisuutta."
-          }
+    return [
+      {
+        anchor: "ei-kuntia",
+        name: "StatusTextRow",
+        properties: {
+          title: "Ei valintamahdollisuutta."
         }
-      ]
-    };
+      }
+    ];
   }
 }

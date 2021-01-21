@@ -1,9 +1,6 @@
 import { __ } from "i18n-for-browser";
 
-export const getMaaraaikalomake = async (
-  osionData,
-  locale
-) => {
+export const getMaaraaikalomake = async locale => {
   return {
     anchor: "rajoitus",
     components: [
@@ -12,6 +9,9 @@ export const getMaaraaikalomake = async (
         name: "Datepicker",
         properties: {
           forChangeObject: {
+            // TODO: Aseta koodisto ja koodiarvo ei-kovakoodatusti
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
             section: "maaraaika"
           },
           label: "Alkamispäivä",
@@ -36,6 +36,8 @@ export const getMaaraaikalomake = async (
         name: "Datepicker",
         properties: {
           forChangeObject: {
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
             section: "maaraaika"
           },
           label: "Päättymispäivä",

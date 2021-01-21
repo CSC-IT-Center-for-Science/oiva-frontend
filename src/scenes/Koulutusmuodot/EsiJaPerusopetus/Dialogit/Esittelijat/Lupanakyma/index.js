@@ -85,6 +85,9 @@ const UusiAsiaDialog = ({
   const [muutEhdotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "muutEhdot"
   });
+  const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitteet"
+  });
 
   const [
     { changeObjects, isPreviewModeOn },
@@ -158,8 +161,8 @@ const UusiAsiaDialog = ({
    * @param {object} formData
    */
   const onPreview = useCallback(async () => {
-    setPreviewMode(isPreviewModeOn => !isPreviewModeOn);
-  }, [setPreviewMode]);
+    return setPreviewMode(!isPreviewModeOn);
+  }, [isPreviewModeOn, setPreviewMode]);
 
   /**
    * Saves the form.
@@ -194,6 +197,7 @@ const UusiAsiaDialog = ({
             opetustehtavat: opetustehtavatCo,
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
+            rajoitteet: rajoitteetCO,
             toimintaalue: toimintaalueCO
           },
           uuid,
@@ -203,9 +207,15 @@ const UusiAsiaDialog = ({
         )
       );
 
+      console.info(formData);
+      if (!formData) {
+        console.info("NO FORM DATA: ");
+      }
+
       let muutospyynto = null;
 
       if (action === "save") {
+        // console.info("TALLENNUSTOIMINTO ON KOMMENTOITU VÄLIAIKAISESTI POIS.");
         muutospyynto = await onSave(formData);
       } else if (action === "preview") {
         muutospyynto = await onPreview(formData);
@@ -246,6 +256,7 @@ const UusiAsiaDialog = ({
       opiskelijamaaratCo,
       organisation,
       paatoksentiedotCo,
+      rajoitteetCO,
       toimintaalueCO,
       uuid
     ]
@@ -389,8 +400,7 @@ const UusiAsiaDialog = ({
                             {intl.formatMessage(common.esikatselu)}
                           </Typography>
                         </div>
-                        <div
-                          className="pt-6 px-6 pb-32 overflow-auto"
+                        <div className="pt-6 px-6 pb-32 overflow-auto"
                           style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
                         >
                           <LupanakymaA

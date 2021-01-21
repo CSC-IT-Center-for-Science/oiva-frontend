@@ -9,23 +9,26 @@ import {
   endsWith,
   filter,
   flatten,
+  groupBy,
   head,
+  includes,
   isNil,
+  join,
   length,
   map,
   max,
   mergeAll,
   not,
   path,
+  pipe,
   prepend,
+  prop,
   propEq,
   reduce,
   reject,
   split,
   startsWith,
-  values,
-  includes,
-  prop
+  values
 } from "ramda";
 import {
   getAnchorPart,
@@ -80,6 +83,13 @@ const closeRestrictionDialog = () => ({ getState, setState }) => {
   setState({ ...getState(), isRestrictionDialogVisible: false });
 };
 
+const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
+  setState(
+    assocPath(["changeObjects", "unsaved", "alirajoitelomake"], [], getState())
+  );
+  setState({ ...getState(), isAlirajoitedialogiVisible: false });
+};
+
 const Store = createStore({
   initialState: {
     changeObjects: {
@@ -101,21 +111,12 @@ const Store = createStore({
       setState
     }) => {
       const currentChangeObjects = prop("unsaved", getState().changeObjects);
-      // Poistetaan ensin storen changeObjects.rajoitteet kaikki
-      // hyväksyttävään rajoitteeseen liittyvät muutos-objektit
-      const filteredChangeObjs = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) !== restrictionId,
-        currentChangeObjects[targetSectionId] || []
-      );
-      // Yhdistetään rajoitelomake rajoitteisiin
-      const rajoitelomakeChangeObjs = concat(
-        filteredChangeObjs,
-        currentChangeObjects.rajoitelomake
-      );
+      const newRestrictionChangeObjs =
+        currentChangeObjects.rajoitelomake[restrictionId];
 
       setState(
         assocPath(
-          ["changeObjects", "unsaved", targetSectionId],
+          ["changeObjects", "unsaved", targetSectionId, restrictionId],
           // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
           // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
           // tallennetaan muutosobjektit tilanhallintaan.
@@ -125,59 +126,61 @@ const Store = createStore({
               anchor: replaceAnchorPartWith(
                 changeObj.anchor,
                 0,
-                targetSectionId
+                `${targetSectionId}_${restrictionId}`
               )
             };
-          }, rajoitelomakeChangeObjs),
+          }, newRestrictionChangeObjs),
           getState()
         )
       );
       dispatch(closeRestrictionDialog());
     },
-    addCriterion: (sectionId, rajoiteId) => ({ getState, setState }) => {
-      const currentChangeObjects = getState().changeObjects;
-      const rajoitekriteeritChangeObjects = filter(
-        changeObj =>
-          startsWith(`${sectionId}.${rajoiteId}.asetukset`, changeObj.anchor) &&
-          !startsWith(
-            `${sectionId}.${rajoiteId}.asetukset.kohde`,
-            changeObj.anchor
-          ) &&
-          !includes("rajoitus", changeObj.anchor),
-        concat(
-          currentChangeObjects.unsaved[sectionId] || [],
-          currentChangeObjects.saved[sectionId] || []
-        ) || []
+    addCriterion: (
+      sectionId,
+      kohdennusId,
+      rajoiteId,
+      kohdennusindeksipolku
+    ) => ({ getState, setState }) => {
+      const kohdennuspolku = join(
+        ".",
+        map(kohdennustaso => {
+          return `kohdennukset.${kohdennustaso}`;
+        }, kohdennusindeksipolku)
       );
 
+      const currentChangeObjects = getState().changeObjects;
+      const asetuksetChangeObjects = filter(changeObj => {
+        return startsWith(
+          `${sectionId}_${rajoiteId}.${kohdennuspolku}.rajoite.asetukset`,
+          changeObj.anchor
+        );
+      }, concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
       /**
-       * Etsitään suurin käytössä oleva kriteerin numero ja muodostetaan seuraava
-       * numero lisäämällä lukuun yksi.
+        Seuraavan kriteerin id saadaan jakamalla asetuksia koskevien muutos-
+        objektien määrä kahdella, koska yksi asetus sisältää sekä kohteen että
+        tarkentimen.
        */
-      const nextCriterionAnchorPart =
-        length(rajoitekriteeritChangeObjects) > 0
-          ? reduce(
-              max,
-              -Infinity,
-              map(changeObj => {
-                return parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-              }, rajoitekriteeritChangeObjects)
-            ) + 1
-          : 1;
+      const nextAsetuksetIndex = length(asetuksetChangeObjects) / 2;
+
+      console.group();
+      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
+      console.info("kohdennuspolku", kohdennuspolku);
+      console.info("Seuraava ankkuritaso", nextAsetuksetIndex);
+      console.groupEnd();
 
       /**
        * Luodaan
        */
       const nextChangeObjects = assocPath(
-        ["unsaved", sectionId],
+        ["unsaved", sectionId, rajoiteId],
         append(
           {
-            anchor: `${sectionId}.${rajoiteId}.asetukset.${nextCriterionAnchorPart}.kohde.A`,
+            anchor: `${sectionId}_${rajoiteId}.${kohdennuspolku}.rajoite.asetukset.${nextAsetuksetIndex}.kohde`,
             properties: {
               value: ""
             }
           },
-          currentChangeObjects.unsaved[sectionId] || []
+          currentChangeObjects.unsaved[sectionId][rajoiteId] || []
         ),
         currentChangeObjects
       );
@@ -248,6 +251,65 @@ const Store = createStore({
       dispatch(removeUnderRemoval());
       dispatch(removeUnsavedChanges());
     },
+    lisaaKohdennus: (
+      sectionId,
+      kohdennusId,
+      rajoiteId,
+      kohdennusindeksipolku
+    ) => ({ getState, setState }) => {
+      const kohdennuspolku = join(
+        ".",
+        map(kohdennustaso => {
+          return `kohdennukset.${kohdennustaso}`;
+        }, kohdennusindeksipolku)
+      );
+
+      const currentChangeObjects = getState().changeObjects;
+
+      /**
+       * Filteröidään muutosobjektit, joiden ankkuri alkaa kohdennuspolulla,
+       * sekä seuraava ankkurin osa on kohdennukset
+       */
+
+      const kohdennusChangeObjects = filter(cObj =>
+        startsWith(`${sectionId}_${rajoiteId}.${kohdennuspolku}`, cObj.anchor) &&
+        getAnchorPart(cObj.anchor, 1 + 2*length(kohdennusindeksipolku)) === "kohdennukset",
+        concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
+
+      const nextKohdennusAnchorPart = length(kohdennusChangeObjects) > 0
+        ? reduce(
+          max,
+        -Infinity,
+        map(changeObj => {
+          return parseInt(getAnchorPart(changeObj.anchor, 2 + 2 * length(kohdennusindeksipolku)), 10);
+        }, kohdennusChangeObjects)
+      ) + 1
+        : 0;
+
+      console.group();
+      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
+      console.info("kohdennuspolku", kohdennuspolku);
+      console.info("Seuraava ankkuritaso", nextKohdennusAnchorPart);
+      console.groupEnd();
+
+      /**
+       * Luodaan
+       */
+      const nextChangeObjects = assocPath(
+        ["unsaved", sectionId, rajoiteId],
+        append(
+          {
+            anchor: `${sectionId}_${rajoiteId}.${kohdennuspolku}.kohdennukset.${nextKohdennusAnchorPart}.kohde.A`,
+            properties: {
+              value: ""
+            }
+          },
+          currentChangeObjects.unsaved[sectionId][rajoiteId] || []
+        ),
+        currentChangeObjects
+      );
+      setState({ ...getState(), changeObjects: nextChangeObjects });
+    },
     removeChangeObjectByAnchor: anchor => ({ getState, setState }) => {
       const allCurrentChangeObjects = getState().changeObjects;
       const anchorParts = split("_", getAnchorPart(anchor, 0));
@@ -265,24 +327,6 @@ const Store = createStore({
         );
         setState(assoc("changeObjects", nextChangeObjects, getState()));
       }
-    },
-    removeRajoite: rajoiteId => ({ getState, setState }) => {
-      const unsavedRajoittetPath = ["changeObjects", "unsaved", "rajoitteet"];
-      const unsavedRajoiteChangeObjects = path(
-        unsavedRajoittetPath,
-        getState()
-      );
-      const filteredRajoiteChangeObjects = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) !== rajoiteId,
-        unsavedRajoiteChangeObjects
-      );
-      setState(
-        assocPath(
-          unsavedRajoittetPath,
-          filteredRajoiteChangeObjects,
-          getState()
-        )
-      );
     },
     setChanges: (changeObjects, anchor = "") => ({
       getState,
@@ -383,13 +427,13 @@ const Store = createStore({
       );
 
       const changeObjectsOfCurrentRestriction = filter(
-        cObj => getAnchorPart(cObj.anchor, 1) === rajoiteId,
+        cObj => includes(rajoiteId, getAnchorPart(cObj.anchor, 0)),
         changeObjects
       );
 
       setState(
         assocPath(
-          ["changeObjects", "unsaved", targetSectionId],
+          ["changeObjects", "unsaved", targetSectionId, rajoiteId],
           // Vaihdetaan ankkurien ensimmäiseksi osaksi targetSectionId:n arvo,
           // jolloin muutokset siirtyvät sen mukaiselle lomakkeelle ja
           // tallennetaan muutosobjektit tilanhallintaan.
@@ -399,7 +443,7 @@ const Store = createStore({
               anchor: replaceAnchorPartWith(
                 changeObj.anchor,
                 0,
-                targetSectionId
+                `${targetSectionId}_${rajoiteId}`
               )
             };
           }, changeObjectsOfCurrentRestriction),
@@ -409,6 +453,12 @@ const Store = createStore({
     },
     showNewRestrictionDialog: () => ({ getState, setState }) => {
       setState({ ...getState(), isRestrictionDialogVisible: true });
+    },
+    showAlirajoitedialogi: () => ({ getState, setState }) => {
+      setState({ ...getState(), isAlirajoitedialogiVisible: true });
+    },
+    suljeAlirajoitedialogi: () => ({ dispatch }) => {
+      dispatch(suljeAlirajoitedialogi());
     }
   },
   name: "Muutokset"
@@ -453,7 +503,12 @@ const getChangeObjectsByAnchorWithoutUnderRemoval = (state, { anchor }) => {
       values(getChangeObjectsByKeyAndAnchor("unsaved", anchor, changeObjects))
     )
   );
-  return difference(concat(saved, unsaved), underRemoval);
+  const mergedChanges = pipe(
+    groupBy(prop("anchor")),
+    values,
+    map(groupedChanges => mergeAll(groupedChanges))
+  )(concat(saved, unsaved));
+  return difference(mergedChanges, underRemoval);
 };
 
 const getLatestChangesByAnchorByKey = (state, { anchor }) => {

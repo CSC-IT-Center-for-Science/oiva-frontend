@@ -157,14 +157,14 @@ export async function createObjectToSave(
     R.propEq("anchor", "topthree.paatospaiva.A"),
     changeObjects.topthree || []
   );
-  objectToSave.paatospvm = paatospaivaObj
+  objectToSave.paatospvm = paatospaivaObj && paatospaivaObj.properties.value
     ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
     : "";
   const voimaantulopaivaObj = R.find(
     R.propEq("anchor", "topthree.voimaantulopaiva.A"),
     changeObjects.topthree || []
   );
-  objectToSave.voimassaalkupvm = voimaantulopaivaObj
+  objectToSave.voimassaalkupvm = voimaantulopaivaObj && voimaantulopaivaObj.properties.value
     ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
     : "";
   // This helps the frontend to initialize the first three fields on form load.

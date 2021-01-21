@@ -2,179 +2,489 @@ import {
   append,
   assocPath,
   compose,
+  concat,
   drop,
-  flatten,
+  find,
   head,
-  isEmpty,
-  mapObjIndexed,
-  nth,
+  init,
+  join,
+  length,
+  map,
   path,
   prop,
-  split,
-  values,
-  find,
-  map,
-  filter,
-  startsWith,
-  includes
+  propEq,
+  split
 } from "ramda";
-import erityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
-import { getMaaraaikalomake } from "./rajoitukset/maaraaika";
-import getOpetustaAntavatKunnat from "./rajoitukset/2-opetustaAntavatKunnat";
-import getOpetuksenJarjestamismuodotLomake from "./rajoitukset/4-opetuksenjarjestamismuoto";
-import getOpetuskieletlomake from "./rajoitukset/3-opetuskielet";
-import muutEhdot from "./rajoitukset/7-muutEhdot";
-import opiskelijamaarat from "./rajoitukset/6-opiskelijamaarat";
-import getOpetustehtavatlomake from "./rajoitukset/1-opetustehtavat";
-import { getAnchorPart } from "../../../../utils/common";
 
-const localizations = {
-  maaraaika: "Määräaika",
-  opetustehtavat: "1. Opetus, jota lupa koskee",
-  erityisetKoulutustehtavat: "5. Erityinen koulutustehtävä",
-  toimintaalue: "2. Kunnat, joissa opetusta järjestetään",
-  opetuksenJarjestamismuodot: "4. Opetuksen järjestämismuoto",
-  opetuskielet: "3. Opetuskieli",
-  muutEhdot: "7. Muut koulutuksen järjestämiseen liittyvät ehdot",
-  opiskelijamaarat: "6. Oppilas-/opiskelijamäärät"
-};
+import { getAsetuksenKohdekomponentti } from "./rajoitukset/asetuksenKohdekomponentit";
+import { getKohdennuksenKohdekomponentti } from "./rajoitukset/kohdennuksenKohdekomponentit";
+import { getKohteenTarkenninkomponentit } from "./kohteenTarkenninkomponentit";
+import { getAsetuksenTarkenninkomponentit } from "./rajoitukset/asetuksenTarkenninkomponentit";
+import { getKohdennuksenTarkenninkomponentit } from "./rajoitukset/kohdennuksenTarkenninkomponentit";
+import { getAnchorPart } from "utils/common";
 
-const sections = {
-  maaraaika: getMaaraaikalomake,
-  opetustehtavat: getOpetustehtavatlomake,
-  toimintaalue: getOpetustaAntavatKunnat,
-  opetuskielet: getOpetuskieletlomake,
-  opiskelijamaarat,
-  opetuksenJarjestamismuodot: getOpetuksenJarjestamismuodotLomake,
-  erityisetKoulutustehtavat,
-  muutEhdot
-};
-
-/**
- * Rajoitekriteereiden näyttäminen
- * @param {*} asetus
- * @param {*} locale
- * @param {*} changeObjects
- * @param {*} onRemoveCriterion
- */
-async function defineRajoitusStructure(
-  osioidenData,
-  asetus,
-  locale,
-  onRemoveCriterion
-) {
-  /**
-   * Ensimmäistä asetusta ei voi käyttäliittymässä poistaa. Kun uutta
-   * rajoitetta luodaan, näytetään käyttäjälle 1. asetuksen kohdekenttä, joka
-   * on pudotusvalikko. Kun käyttäjä on valinnut kohteen, hänelle näytetään
-   * ensimmäisen asetuksen rajoituskenttä. Rajoituskentän tyyppi ja sisältö
-   * määrittyvät sen mukaan, mikä on tai mitkä ovat:
-   *
-   * 1. Asetuksen kohde.
-   * 2. Käyttäjän lomakkeella tekemät muutokset.
-   * 3. Lupaan kuuluvat määritykset (toteutetaan myöhemmin).
-   *
-   * Määritetään asetuksen rajoitusosaa vastaava lomakerakenne, mikäli
-   * kohde on tiedossa.
-   */
-  if (asetus.kohde) {
-    /**
-     * Käydään noutamassa lomakerakenne rajoitusavaimen avulla. Rajoitusavain
-     * voi olla esim. maaraaika tai opetustaAntavatKunnat.
-     */
-    const rajoitusavain = path(
-      ["kohde", "A", "properties", "value", "value"],
-      asetus
-    );
-    /**
-     * Mikäli itse rajoitusta on muokattu, on siitä olemassa muutosobjekti.
-     */
-    const rajoitus = rajoitusavain
-      ? await sections[rajoitusavain](osioidenData[rajoitusavain], locale)
-      : null;
-
-    return {
-      anchor: asetus.id,
-      categories: [
-        {
-          anchor: "kohde",
-          layout: { indentation: "none" },
-          components: [
-            {
-              anchor: "A",
-              name: "Autocomplete",
-              styleClasses: ["mb-6 w-4/5 xl:w-2/3"],
-              properties: {
-                isMulti: false,
-                options: values(
-                  mapObjIndexed((categoryFn, key) => {
-                    return key !== rajoitusavain
-                      ? {
-                          label: localizations[key],
-                          value: key
-                        }
-                      : null;
-                  }, sections)
-                ).filter(Boolean),
-                title: "Rajoitekriteeri"
-              }
-            }
-          ]
-        },
-        // Lisätään lomakerakenteeseen rajoituskenttä, jonka sisältö määrittyy sitä edeltävän kohdekentän perusteella
-        rajoitusavain && asetus.rajoitus ? rajoitus : null
-      ].filter(Boolean),
-      isRemovable: asetus.id !== "0",
-      onRemove: category => {
-        onRemoveCriterion(asetus.id);
-      },
-      title: `Rajoitekriteeri ${asetus.id}`
-    };
+export const kohdevaihtoehdot = [
+  {
+    label: "Opetus, jota lupa koskee",
+    value: "opetustehtavat"
+  },
+  {
+    label: "Kunnat, joissa opetusta järjestetään",
+    value: "toimintaalue"
+  },
+  { label: "Opetuskieli", value: "opetuskielet" },
+  { label: "Opetuksen järjestämismuodot", value: "opetuksenJarjestamismuodot" },
+  {
+    label: "Erityinen koulutustehtävä",
+    value: "erityisetKoulutustehtavat"
+  },
+  {
+    label: "Opiskelijamäärät",
+    value: "opiskelijamaarat"
+  },
+  {
+    label: "Muut koulutuksen järjestämiseen liittyvät ehdot",
+    value: "muutEhdot"
   }
-  return null;
-}
+];
 
-async function defineRajoituksetStructure(
-  osioidenData,
+const bgColorClassesByIndex = {
+  "0": "bg-gray-100",
+  "1": "bg-blue-100",
+  "2": "bg-green-100",
+  "3": "bg-gray-200",
+  "4": "bg-blue-200",
+  "5": "bg-green-200"
+};
+
+async function getAsetuslomakekokonaisuus(
   rajoiteId,
-  asetukset,
-  groupedChangeObjects,
+  rajoiteChangeObjects,
+  asetuksenKohdeavain,
+  osioidenData,
   locale,
   onRemoveCriterion,
+  isReadOnly = false,
   index = 0,
-  structure = []
+  lomakerakenne = []
 ) {
-  const initialAsetus = nth(index, asetukset || []);
-  if (initialAsetus && !isEmpty(groupedChangeObjects)) {
-    const asetusChangeObj = groupedChangeObjects[rajoiteId].asetukset
-      ? groupedChangeObjects[rajoiteId].asetukset[initialAsetus.id]
-      : {};
-    const asetus = Object.assign({}, initialAsetus, asetusChangeObj);
+  const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
+    asetuksenKohdeavain,
+    isReadOnly,
+    locale
+  );
 
-    const updatedStructure = append(
-      await defineRajoitusStructure(
-        osioidenData,
-        asetus,
+  const asetuksenTarkenninlomakkeenAvain =
+    path(
+      ["asetukset", index, "kohde", "properties", "value", "value"],
+      rajoiteChangeObjects
+    ) || path(["properties", "value", "value"], asetuksenKohdekomponentti);
+
+  const asetuksenTarkenninkomponentit = asetuksenTarkenninlomakkeenAvain
+    ? await getAsetuksenTarkenninkomponentit(
+        asetuksenTarkenninlomakkeenAvain,
         locale,
-        onRemoveCriterion
-      ),
-      structure
-    );
+        osioidenData,
+        isReadOnly
+      )
+    : [];
 
-    return defineRajoituksetStructure(
-      osioidenData,
+  // console.group();
+  // console.info("Index:", index);
+  // console.info("Asetuksen kohdeavain:", asetuksenKohdeavain);
+  // console.info("Asetuksen kohdekomponentti:", asetuksenKohdekomponentti);
+  // console.info(
+  //   "Asetuksen tarkentimen avain:",
+  //   asetuksenTarkenninlomakkeenAvain
+  // );
+  // console.info(
+  //   "Asetuksen tarkenninkomponentit:",
+  //   asetuksenTarkenninkomponentit
+  // );
+  // console.info("rajoiteChangeObjects:", rajoiteChangeObjects);
+  // console.groupEnd();
+
+  const updatedLomakerakenne =
+    asetuksenKohdekomponentti || !!length(asetuksenTarkenninkomponentit)
+      ? append(
+          {
+            anchor: index,
+            title: `${index + 1})`,
+            layout: { indentation: "none" },
+            components: asetuksenKohdekomponentti
+              ? [asetuksenKohdekomponentti]
+              : [],
+            categories: [
+              {
+                anchor: "tarkennin",
+                layout: {
+                  components: { justification: "start" },
+                  indentation: "none"
+                },
+                components: asetuksenTarkenninkomponentit
+              }
+            ]
+          },
+          lomakerakenne
+        )
+      : lomakerakenne;
+
+  const asetuksetLength = Object.keys(
+    prop("asetukset", rajoiteChangeObjects) || {}
+  ).length;
+
+  if (index < asetuksetLength - 1) {
+    // const asetuksenKohdeavain = prop("asetukset", rajoiteChangeObjects)
+    //   ? path(
+    //       ["asetukset", `${index}`, "kohde", "properties", "value", "value"],
+    //       rajoiteChangeObjects
+    //     )
+    //   : asetuksenKohdeavain;
+
+    return getAsetuslomakekokonaisuus(
       rajoiteId,
-      asetukset,
-      groupedChangeObjects,
+      rajoiteChangeObjects,
+      asetuksenKohdeavain,
+      osioidenData,
       locale,
       onRemoveCriterion,
+      isReadOnly,
       index + 1,
-      updatedStructure
+      updatedLomakerakenne
     );
   }
 
-  return structure;
+  // console.info(updatedLomakerakenne);
+
+  return updatedLomakerakenne;
 }
+
+const getKohdennuksetRecursively = async (
+  kohdennustaso = 0,
+  kohdennuksenKohdeavain,
+  data,
+  { isReadOnly },
+  locale,
+  changeObjects,
+  { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
+  kohdennuksetChangeObjects = [],
+  parentKohdennuksetChangeObjects = [],
+  kohdennusindeksipolku = ["0"],
+  index = 0,
+  ensimmaisenKohdennuksenKohteenTarkenninavain,
+  lomakerakenne = []
+) => {
+  const { osioidenData, rajoiteId } = data;
+
+  const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
+    ? getKohdennuksenKohdekomponentti()
+    : null;
+
+  const kohdennuksenTarkenninKomponentit = kohdennuksenKohdekomponentti
+    ? getKohdennuksenTarkenninkomponentit("joistaEnintaan", locale)
+    : [];
+
+  /**
+   * Käydään noutamassa lomakerakenne rajoitusavaimen avulla. Rajoitusavain
+   * voi olla esim. maaraaika tai opetustaAntavatKunnat.
+   */
+  const rajoiteChangeObjects = path(
+    [index, "rajoite"],
+    kohdennuksetChangeObjects
+  );
+
+  const kohteenTarkenninavain = path(
+    ["kohde", "valikko", "properties", "value", "value"],
+    rajoiteChangeObjects
+  );
+
+  const kohteenTarkenninkomponentit = await getKohteenTarkenninkomponentit(
+    osioidenData,
+    kohteenTarkenninavain,
+    locale,
+    isReadOnly
+  );
+
+  let ensimmaisenAsetuksenKohdeavain =
+    length(kohdennusindeksipolku) % 2
+      ? kohdennuksenKohdeavain
+      : path(
+          [
+            "kohde",
+            "tarkennin",
+            kohteenTarkenninavain,
+            "properties",
+            "value",
+            "value"
+          ],
+          rajoiteChangeObjects
+        );
+
+  // Usein rajoituksen tarkentimen arvo on numeerinen, jolloin
+  // 1. asetuksen kohdeavaimena tulee käyttäärajoitteen kohteen
+  // arvoa. Esim. esiopetus = 6 (koodiarvo). Koodiarvolla ei
+  // löydy asetuskomponentteja, mutta opetustehtavat (edellinen
+  // pudotusvalikko) -avaimella löytyy.
+  if (ensimmaisenAsetuksenKohdeavain !== "kokonaismaara") {
+    ensimmaisenAsetuksenKohdeavain = path(
+      ["kohde", "valikko", "properties", "value", "value"],
+      rajoiteChangeObjects
+    );
+  }
+
+  const alikohdennuksetChangeObjects = path(
+    [index, "kohdennukset"],
+    kohdennuksetChangeObjects
+  );
+
+  const asetuslomakekokonaisuus = await getAsetuslomakekokonaisuus(
+    rajoiteId,
+    rajoiteChangeObjects,
+    ensimmaisenAsetuksenKohdeavain,
+    osioidenData,
+    locale,
+    onRemoveCriterion,
+    isReadOnly
+  );
+
+  const asetusvaihtoehdot = path(
+    ["0", "components", "0", "properties", "options"],
+    asetuslomakekokonaisuus
+  );
+
+  let lukumaarakomponentit = [];
+
+  // Yksi ehto kohdistuksen lisäyspainikkeen näkymiseen on se, onko
+  // kriteereiden joukossa vähintään yksi lukumääräkenttä. Se selvitetään
+  // tässä.
+  for (let i = 0; i < asetuslomakekokonaisuus.length; i += 1) {
+    lukumaarakomponentit = map(category => {
+      return (
+        category.anchor === "tarkennin" &&
+        find(propEq("anchor", "lukumaara"), category.components)
+      );
+    }, asetuslomakekokonaisuus[i].categories).filter(Boolean);
+    if (length(lukumaarakomponentit)) {
+      break;
+    }
+  }
+
+  // console.group();
+  // console.info("Index", index);
+  // console.info("Lukumaarakomponentit:", lukumaarakomponentit);
+  // console.info(
+  //   "Asetuslomakekokonaisuus:",
+  //   JSON.stringify(asetuslomakekokonaisuus)
+  // );
+  // console.info("Asetusvaihtoehdot (1. asetus)", asetusvaihtoehdot);
+  // console.info("Kohdennusindeksipolku", kohdennusindeksipolku);
+  // console.info(
+  //   "Muutosobjektit tasoa ylempänä:",
+  //   parentKohdennuksetChangeObjects
+  // );
+  // console.info("kohdennuksetChangeObjects", kohdennuksetChangeObjects);
+  // console.info("RajoiteChangeObjects", rajoiteChangeObjects);
+  // console.info("kohdennuksen kohdeavain", kohdennuksenKohdeavain);
+  // console.info("kohdennuksen kohdekomponentti", kohdennuksenKohdekomponentti);
+  // console.info(
+  //   "kohdennuksen tarkenninkomponentit",
+  //   kohdennuksenTarkenninKomponentit
+  // );
+  // console.info("Kohteen tarkenninavain", kohteenTarkenninavain);
+  // console.info("Kohdevaihtoehdot", kohdevaihtoehdot);
+  // console.info("Kohteen tarkenninkomponentit", kohteenTarkenninkomponentit);
+  // console.info("1. asetuksen kohdeavain", ensimmaisenAsetuksenKohdeavain);
+  // console.info(
+  //   "1. kohdennuksen kohteen tarkenninavain",
+  //   ensimmaisenKohdennuksenKohteenTarkenninavain
+  // );
+  // console.info("alikohdennuksetChangeObjects", alikohdennuksetChangeObjects);
+  // console.groupEnd();
+
+  const paivitettyLomakerakenne = append(
+    {
+      anchor: "kohdennukset",
+      // title: "Kohdennukset",
+      layout: { indentation: "none" },
+      styleClasses: isReadOnly
+        ? []
+        : [
+            bgColorClassesByIndex[String(length(kohdennusindeksipolku) - 1)]
+          ].filter(Boolean),
+      components: [],
+      categories: [
+        {
+          // index on kohdennuksen juokseva järjestysnumero
+          anchor: String(index),
+          layout: { indentation: isReadOnly ? "none" : undefined },
+          styleClasses: isReadOnly
+            ? []
+            : [
+                "border-t",
+                length(kohdennusindeksipolku) === 1 ? "border-b" : "",
+                "border-gray-300"
+              ],
+          title: `Kohdennus ${join(
+            ".",
+            map(value => {
+              return String(parseInt(value, 10) + 1);
+            }, kohdennusindeksipolku)
+          )}`,
+          components: kohdennuksenKohdekomponentti
+            ? [kohdennuksenKohdekomponentti]
+            : [],
+          categories: concat(
+            [
+              {
+                anchor: "tarkennin",
+                layout: { indentation: "none" },
+                isRemovable: true,
+                components: kohdennuksenTarkenninKomponentit
+              },
+              {
+                anchor: "rajoite",
+                layout: { indentation: "none" },
+                categories: [
+                  {
+                    anchor: "kohde",
+                    layout: { indentation: "none" },
+                    title: "Rajoituksen kohde",
+                    components: [
+                      {
+                        anchor: "valikko",
+                        name: "Autocomplete",
+                        styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
+                        properties: {
+                          isMulti: false,
+                          isReadOnly,
+                          isVisible: !isReadOnly,
+                          options: kohdevaihtoehdot
+                        }
+                      }
+                    ],
+                    categories:
+                      length(kohteenTarkenninkomponentit) > 0
+                        ? [
+                            {
+                              anchor: "tarkennin",
+                              layout: { indentation: "none" },
+                              components: kohteenTarkenninkomponentit
+                            }
+                          ]
+                        : []
+                  },
+                  ensimmaisenAsetuksenKohdeavain
+                    ? {
+                        anchor: "asetukset",
+                        title: "Rajoitekriteerit",
+                        categories: asetuslomakekokonaisuus
+                      }
+                    : null
+                ].filter(Boolean)
+              },
+              {
+                anchor: "kohdennuksenLisaaminen",
+                styleClasses: ["flex justify-end py-6 pr-8"],
+                components: [
+                  {
+                    anchor: "painike",
+                    name: "SimpleButton",
+                    onClick: payload => {
+                      const kohdennusId = getAnchorPart(payload.fullAnchor, 2);
+                      return lisaaKohdennus({
+                        ...payload,
+                        metadata: {
+                          ...payload.metadata,
+                          rajoiteId: data.rajoiteId,
+                          kohdennusId,
+                          kohdennusindeksipolku
+                        }
+                      });
+                    },
+                    properties: {
+                      isVisible:
+                        !isReadOnly &&
+                        (kohdennuksenKohdeavain === "kokonaismaara" ||
+                          kohdennuksenKohdeavain === "opiskelijamaarat" ||
+                          !!length(lukumaarakomponentit)),
+                      text: "Lisää kohdennus"
+                    }
+                  },
+                  !!length(asetusvaihtoehdot) &&
+                  length(asetuslomakekokonaisuus) < length(asetusvaihtoehdot) &&
+                  ensimmaisenAsetuksenKohdeavain !== "kokonaismaara" &&
+                  !isReadOnly
+                    ? {
+                        anchor: "lisaa-asetus",
+                        name: "SimpleButton",
+                        styleClasses: ["ml-4"],
+                        onClick: payload => {
+                          console.info(payload.fullAnchor);
+                          const kohdennusId = getAnchorPart(
+                            payload.fullAnchor,
+                            2
+                          );
+                          return onAddCriterion({
+                            ...payload,
+                            metadata: {
+                              ...payload.metadata,
+                              rajoiteId: data.rajoiteId,
+                              kohdennusId,
+                              kohdennusindeksipolku
+                            }
+                          });
+                        },
+                        properties: {
+                          text: "Lisää kriteeri"
+                        }
+                      }
+                    : null
+                ].filter(Boolean)
+              }
+            ],
+            alikohdennuksetChangeObjects
+              ? await getKohdennuksetRecursively(
+                  kohdennustaso + 1,
+                  ensimmaisenAsetuksenKohdeavain || kohdennuksenKohdeavain,
+                  data,
+                  { isReadOnly },
+                  locale,
+                  changeObjects,
+                  { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
+                  alikohdennuksetChangeObjects,
+                  kohdennuksetChangeObjects,
+                  append("0", kohdennusindeksipolku)
+                )
+              : []
+          )
+        }
+      ]
+    },
+    lomakerakenne
+  );
+
+  // Jos kohdennuksia on luotu lisää, otetaan nekin mukaan lopulliseeen
+  // palautettavaan lomakerakenteeseen.
+  if (prop(index + 1, kohdennuksetChangeObjects)) {
+    return getKohdennuksetRecursively(
+      kohdennustaso,
+      kohdennuksenKohdeavain,
+      data,
+      { isReadOnly },
+      locale,
+      changeObjects,
+      { lisaaKohdennus, onAddCriterion, onRemoveCriterion },
+      kohdennuksetChangeObjects,
+      parentKohdennuksetChangeObjects,
+      append(String(index + 1), init(kohdennusindeksipolku)),
+      index + 1,
+      ensimmaisenKohdennuksenKohteenTarkenninavain,
+      paivitettyLomakerakenne
+    );
+  }
+
+  return paivitettyLomakerakenne;
+};
 
 /**
  * Lomake, joka funktion palauttaman rakenteen myötä muodostetaan, mahdollistaa
@@ -201,51 +511,11 @@ async function defineRajoituksetStructure(
  */
 export async function rajoitelomake(
   data,
-  { isReadOnly },
+  booleans,
   locale,
   changeObjects,
-  { onAddCriterion, onRemoveCriterion }
+  functions
 ) {
-  const rajoiteId = data.rajoiteId;
-  const kohdeChangeObjects = filter(
-    cObj =>
-      startsWith(`rajoitelomake.${rajoiteId}.asetukset`, cObj.anchor) &&
-      !startsWith(`rajoitelomake.${rajoiteId}.asetukset.kohde`, cObj.anchor) &&
-      !includes("rajoitus", cObj.anchor),
-    changeObjects
-  );
-
-  const addedRajoitteet = map(cObj => {
-    return {
-      id: getAnchorPart(cObj.anchor, 3),
-      kohde: {
-        components: [
-          {
-            anchor: "A",
-            name: "Autocomplete",
-            properties: {
-              isMulti: false,
-              options: values(
-                mapObjIndexed((categoryFn, key) => {
-                  return {
-                    label: localizations[key],
-                    value: key
-                  };
-                }, sections)
-              ).filter(Boolean),
-              title: "Kohde"
-            }
-          }
-        ]
-      },
-      rajoitus: {}
-    };
-  }, kohdeChangeObjects || []).filter(Boolean);
-
-  const asetukset = {
-    [rajoiteId]: addedRajoitteet
-  };
-
   function groupChangeObjects(changeObjects, index = 0, result = {}) {
     const changeObj = head(changeObjects);
     if (changeObj) {
@@ -266,92 +536,21 @@ export async function rajoitelomake(
   }
 
   const groupedChangeObjects = groupChangeObjects(changeObjects);
-
-  const kohdeChangeObj = find(
-    obj =>
-      obj.anchor === `${data.sectionId}.${data.rajoiteId}.asetukset.kohde.A`,
-    changeObjects
-  );
-  const rajoitusavain = path(
-    ["properties", "value", "value"],
-    kohdeChangeObj || {}
-  );
-
-  const rajoitus = rajoitusavain
-    ? await sections[rajoitusavain](data.osioidenData[rajoitusavain], locale)
-    : null;
+  const kohdennuksetChangeObjects = prop("kohdennukset", groupedChangeObjects);
 
   /**
    * Palautettava lomakemerkkaus
    */
-  const lomakerakenne = [
-    {
-      anchor: data.rajoiteId,
-      categories: [
-        {
-          anchor: "asetukset",
-          categories: flatten([
-            {
-              anchor: "kohde",
-              title: "Rajoituksen kohde",
-              components: [
-                {
-                  anchor: "A",
-                  name: "Autocomplete",
-                  styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
-                  properties: {
-                    isMulti: false,
-                    options: values(
-                      mapObjIndexed((categoryFn, key) => {
-                        return {
-                          label: localizations[key],
-                          value: key
-                        };
-                      }, sections)
-                    ).filter(Boolean),
-                    title: "Kohde"
-                  }
-                }
-              ]
-            },
-            rajoitus ? rajoitus : {},
-            await defineRajoituksetStructure(
-              data.osioidenData,
-              data.rajoiteId,
-              asetukset[data.rajoiteId],
-              groupedChangeObjects,
-              locale,
-              onRemoveCriterion
-            ),
-            {
-              anchor: "asetuksenLisaaminen",
-              styleClasses: ["mt-6"],
-              components: [
-                {
-                  anchor: "painike",
-                  name: "SimpleButton",
-                  onClick: payload => {
-                    return onAddCriterion({
-                      ...payload,
-                      metadata: {
-                        ...payload.metadata,
-                        rajoiteId: data.rajoiteId
-                      }
-                    });
-                  },
-                  properties: {
-                    isVisible: true,
-                    text: "Lisää rajoitekriteeri"
-                  }
-                }
-              ]
-            }
-          ]),
-          title: "Asetukset"
-        }
-      ].filter(Boolean)
-    }
-  ];
+  let lomakerakenne = await getKohdennuksetRecursively(
+    0,
+    null,
+    data,
+    booleans,
+    locale,
+    changeObjects,
+    functions,
+    kohdennuksetChangeObjects
+  );
 
   return lomakerakenne;
 }

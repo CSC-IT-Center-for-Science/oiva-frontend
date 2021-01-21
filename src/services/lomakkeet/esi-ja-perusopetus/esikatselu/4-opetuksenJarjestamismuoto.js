@@ -1,7 +1,10 @@
 import { append, endsWith, find, pathEq, propEq } from "ramda";
 import { replaceAnchorPartWith } from "utils/common";
 
-export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
+export const previewOfOpetuksenJarjestamismuoto = ({
+  lomakedata,
+  rajoitteet
+}) => {
   let structure = [];
   const checkedNode = find(
     pathEq(["properties", "isChecked"], true),
@@ -18,6 +21,7 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
     );
 
     if (kuvausNode) {
+      console.info(kuvausNode);
       structure = append(
         {
           anchor: "valittu",
@@ -28,7 +32,14 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
               properties: {
                 items: [
                   {
-                    content: kuvausNode.properties.value
+                    anchor: "muoto",
+                    components: [
+                      {
+                        anchor: "kuvaus",
+                        name: "HtmlContent",
+                        properties: { content: kuvausNode.properties.value }
+                      }
+                    ]
                   }
                 ]
               }
