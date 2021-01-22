@@ -35,6 +35,7 @@ export async function previewOfOpetustaAntavaKunnat({
     lomakedata
   );
 
+
   const ulkomaaCheckbox = find(
     compose(endsWith("ulkomaa.200"), prop("anchor")),
     lomakedata
