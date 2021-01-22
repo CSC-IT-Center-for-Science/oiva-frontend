@@ -5,8 +5,10 @@ import {
   find,
   flatten,
   map,
+  nth,
   pathEq,
   prop,
+  split,
   startsWith
 } from "ramda";
 import { removeAnchorPart } from "utils/common";
@@ -46,10 +48,20 @@ export const previewOfMuutEhdot = ({ lomakedata }) => {
               anchor: "A",
               name: "List",
               properties: {
-                items: map(
-                  node => ({ content: node.properties.value }),
-                  kuvausNodes
-                )
+                items: map(node => {
+                  console.info("node", node);
+                  const anchorParts = split(".", node.anchor);
+                  return {
+                    anchor: nth(1, anchorParts),
+                    components: [
+                      {
+                        anchor: nth(2, anchorParts),
+                        name: "HtmlContent",
+                        properties: { content: node.properties.value }
+                      }
+                    ]
+                  };
+                }, kuvausNodes)
               }
             }
           ]

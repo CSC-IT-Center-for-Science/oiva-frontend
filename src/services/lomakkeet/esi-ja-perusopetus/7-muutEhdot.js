@@ -14,12 +14,12 @@ import {
   pathEq,
   prop,
   propEq,
-  sortBy,
-  toUpper
+  sortBy
 } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getLocalizedProperty } from "../utils";
 
 export async function muutEhdot(
   { maaraykset },
@@ -31,7 +31,6 @@ export async function muutEhdot(
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const poMuutEhdot = await getPOMuutEhdotFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
-  const localeUpper = toUpper(locale);
 
   const muuEhtoChangeObj = getChangeObjByAnchor(
     `muutEhdot.99.valintaelementti`,
@@ -52,9 +51,14 @@ export async function muutEhdot(
 
   const lomakerakenne = flatten([
     map(ehto => {
-      const ehtoonLiittyvatMaaraykset = filter(m =>
-        propEq("koodiarvo", ehto.koodiarvo, m) &&
-        propEq("koodisto", "pomuutkoulutuksenjarjestamiseenliittyvatehdot", m),
+      const ehtoonLiittyvatMaaraykset = filter(
+        m =>
+          propEq("koodiarvo", ehto.koodiarvo, m) &&
+          propEq(
+            "koodisto",
+            "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
+            m
+          ),
         maaraykset
       );
       const kuvausmaaraykset = filter(
@@ -77,7 +81,7 @@ export async function muutEhdot(
             properties: {
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
-              title: ehto.metadata[localeUpper].nimi,
+              title: getLocalizedProperty(ehto.metadata, locale, "nimi"),
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
@@ -107,7 +111,7 @@ export async function muutEhdot(
                     title: __("common.kuvaus"),
                     value: kuvausmaarays0
                       ? kuvausmaarays0.meta.kuvaus
-                      : ehto.metadata[localeUpper].kuvaus
+                      : getLocalizedProperty(ehto.metadata, locale, "kuvaus")
                   }
                 }
               ]

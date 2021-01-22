@@ -12,7 +12,11 @@ import {
   pathEq,
   propEq,
   reject,
-  toUpper
+  toUpper,
+  map,
+  length,
+  difference,
+  prop
 } from "ramda";
 import {
   findSisaoppilaitosRajoitus,
@@ -20,6 +24,37 @@ import {
 } from "../../../helpers/opiskelijavuodet";
 import { getMaarayksetByTunniste } from "helpers/lupa";
 import { getMuutFromStorage } from "helpers/muut";
+
+const getValitutKoodiarvot = (stateObjects = []) => {
+  return map(stateObj => {
+    const isChecked = pathEq(["properties", "isChecked"], true, stateObj);
+    return isChecked
+      ? path(["properties", "forChangeObject", "koodiarvo"], stateObj)
+      : false;
+  }, stateObjects).filter(Boolean);
+};
+
+const getCurrentApplyForValue = (initialValue, changeObjects, anchor) => {
+  const changeObj = find(propEq("anchor", anchor), changeObjects);
+
+  return changeObj
+    ? path(["properties", "applyForValue"], changeObj)
+    : initialValue;
+};
+
+/**
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 03
+ * (sisäoppilaitos), näytetään sisäoppilaitosta koskevat kentät tässä osiossa
+ * (Opiskelijavuodet).
+ **/
+export const sisaoppilaitosCodes = ["4"];
+
+/**
+ * Mikäli jokin näistä koodeista on valittuna osion 5 (Muut) kohdassa 02
+ * (vaativa tuki), näytetään vaativaa tukea koskevat kentät tässä osiossa
+ * (Opiskelijavuodet).
+ **/
+export const vaativatCodes = ["2", "16", "17", "18", "19", "20", "21"];
 
 const radioButtonKoodiarvotVaativaTuki = [
   "2",
@@ -32,27 +67,47 @@ const radioButtonKoodiarvotVaativaTuki = [
 ];
 
 export default async function getOpiskelijavuodetLomake(
-  { lomakedata, muutLomakedata },
+  { muutLomakedata, sectionId },
   { isReadOnly },
-  locale
+  locale,
+  changeObjects
 ) {
-  const {
-    visibility = {},
-    isSisaoppilaitosValueRequired,
-    isVaativaTukiValueRequired,
-    sectionId
-  } = lomakedata;
+  // Mikäli Muut-osion lomakkeelta 02 (vaativa tuki) on valittu jokin
+  // listatuista koodiarvoista, on vaativaa tukea koskeva tietue näytettävä
+  // opiskelijavuosiosiossa.
+  const amountOfUnselectedVaativaTukiRadioButtons = length(
+    difference(vaativatCodes, getValitutKoodiarvot(prop("02", muutLomakedata)))
+  );
+
+  const amountOfUnselectedSisaoppilaitosCheckboxes = length(
+    difference(
+      sisaoppilaitosCodes,
+      getValitutKoodiarvot(prop("03", muutLomakedata))
+    )
+  );
+
+  const visibility = {
+    // Mikäli Muut-osion lomakkeelta 03 (sisäoppilaitos) on valittu mitä
+    // tahansa, on sisäoppilaitosta koskeva tietue näytettävä
+    // opiskelijavuosiosiossa.
+    sisaoppilaitos:
+      amountOfUnselectedSisaoppilaitosCheckboxes < length(sisaoppilaitosCodes),
+    vaativaTuki:
+      amountOfUnselectedVaativaTukiRadioButtons < length(vaativatCodes)
+  };
 
   const titles = [
     translate("current"),
     translate("applyFor"),
     translate("difference")
   ];
+
   const titlesSisaoppilaitosAndVaativa = [
     translate("current"),
     translate("applyForVaativaAndSisaoppilaitos"),
     translate("difference")
   ];
+
   const currentDate = new Date();
 
   const maaraykset = await getMaarayksetByTunniste("opiskelijavuodet");
@@ -81,6 +136,16 @@ export default async function getOpiskelijavuodetLomake(
     ? find(propEq("koodiarvo", sisaoppilaitosmaarays.koodiarvo), maaraykset)
     : null;
 
+  const applyForValueSisaoppilaitos = opiskelijavuosimaaraysSisaoppilaitos
+    ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
+    : undefined;
+
+  const currentSisaoppilaitosApplyForValue = getCurrentApplyForValue(
+    applyForValueSisaoppilaitos,
+    changeObjects,
+    `${sectionId}.sisaoppilaitos.A`
+  );
+
   /**
    * VAATIVAA ERITYISTUKEA KOSKEVAN TIETUEEN NÄYTTÄMISEN MÄÄRITTÄMINEN
    *
@@ -101,6 +166,16 @@ export default async function getOpiskelijavuodetLomake(
     ? find(propEq("koodiarvo", vaativaTukiMaarays.koodiarvo), maaraykset)
     : null;
 
+  const applyForValueVaativaTuki = opiskelijavuosimaaraysVaativaTuki
+    ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
+    : undefined;
+
+  const currentVaativaTukiApplyForValue = getCurrentApplyForValue(
+    applyForValueVaativaTuki,
+    changeObjects,
+    `${sectionId}.vaativatuki.A`
+  );
+
   /**
    * VÄHIMMÄISOPISKELIJAVUODET
    */
@@ -109,96 +184,104 @@ export default async function getOpiskelijavuodetLomake(
     maaraykset
   );
 
-  return [
-    {
-      anchor: "vahimmaisopiskelijavuodet",
-      title: translate("minimumAmountOfYears"),
-      components: [
-        {
-          anchor: "A",
-          name: "Difference",
-          properties: {
-            forChangeObject: reject(isNil, {
-              koodiarvo: helper.vahimmaisopiskelijamaaraKoodiarvo,
-              maaraysUuid: (vahimmaisopiskelijavuodetMaarays || {}).uuid
-            }),
-            applyForValue: vahimmaisopiskelijavuodetMaarays
-              ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
-              : undefined,
-            initialValue: vahimmaisopiskelijavuodetMaarays
-              ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
-              : 0,
-            isReadOnly,
-            name: `${sectionId}-difference-1`,
-            titles
+  const isSisaoppilaitosApplyForValueValid =
+    !visibility.sisaoppilaitos || !isNil(currentSisaoppilaitosApplyForValue);
+
+  const isVaativaTukiApplyForValueValid =
+    !visibility.vaativaTuki || !isNil(currentVaativaTukiApplyForValue);
+
+  return {
+    isValid:
+      isSisaoppilaitosApplyForValueValid && isVaativaTukiApplyForValueValid,
+    structure: [
+      {
+        anchor: "vahimmaisopiskelijavuodet",
+        title: translate("minimumAmountOfYears"),
+        components: [
+          {
+            anchor: "A",
+            name: "Difference",
+            properties: {
+              forChangeObject: reject(isNil, {
+                koodiarvo: helper.vahimmaisopiskelijamaaraKoodiarvo,
+                maaraysUuid: (vahimmaisopiskelijavuodetMaarays || {}).uuid
+              }),
+              applyForValue: vahimmaisopiskelijavuodetMaarays
+                ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
+                : undefined,
+              initialValue: vahimmaisopiskelijavuodetMaarays
+                ? parseInt(vahimmaisopiskelijavuodetMaarays.arvo, 10)
+                : 0,
+              isReadOnly,
+              name: `${sectionId}-difference-1`,
+              titles
+            }
           }
-        }
-      ]
-    },
-    visibility.vaativaTuki === true
-      ? {
-          anchor: "vaativatuki",
-          title: translate("limitForSpecialSupport"),
-          components: [
-            {
-              anchor: "A",
-              name: "Difference",
-              properties: {
-                forChangeObject: reject(isNil, {
-                  koodiarvo: head(
-                    filter(
-                      includes(
-                        __,
-                        path(["02", "valitutKoodiarvot"], muutLomakedata) || []
-                      ),
-                      radioButtonKoodiarvotVaativaTuki
-                    )
-                  ),
-                  maaraysUuid: (findVaativatukiRajoitus(maaraykset) || {}).uuid
-                }),
-                isReadOnly,
-                isRequired: isVaativaTukiValueRequired,
-                applyForValue: opiskelijavuosimaaraysVaativaTuki
-                  ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
-                  : undefined,
-                initialValue: opiskelijavuosimaaraysVaativaTuki
-                  ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
-                  : 0,
-                name: `${sectionId}-difference-2`,
-                titles: titlesSisaoppilaitosAndVaativa
+        ]
+      },
+      visibility.vaativaTuki
+        ? {
+            anchor: "vaativatuki",
+            title: translate("limitForSpecialSupport"),
+            components: [
+              {
+                anchor: "A",
+                name: "Difference",
+                properties: {
+                  forChangeObject: reject(isNil, {
+                    koodiarvo: head(
+                      filter(
+                        includes(
+                          __,
+                          path(["02", "valitutKoodiarvot"], muutLomakedata) ||
+                            []
+                        ),
+                        radioButtonKoodiarvotVaativaTuki
+                      )
+                    ),
+                    maaraysUuid: (findVaativatukiRajoitus(maaraykset) || {})
+                      .uuid
+                  }),
+                  isReadOnly,
+                  isRequired: true,
+                  applyForValueVaativaTuki,
+                  initialValue: opiskelijavuosimaaraysVaativaTuki
+                    ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
+                    : 0,
+                  name: `${sectionId}-difference-2`,
+                  titles: titlesSisaoppilaitosAndVaativa
+                }
               }
-            }
-          ]
-        }
-      : null,
-    visibility.sisaoppilaitos === true
-      ? {
-          anchor: "sisaoppilaitos",
-          title: translate("limitForBoardingSchool"),
-          components: [
-            {
-              anchor: "A",
-              name: "Difference",
-              properties: {
-                forChangeObject: reject(isNil, {
-                  koodiarvo: helper.sisaoppilaitosOpiskelijamaaraKoodiarvo,
-                  maaraysUuid: (findSisaoppilaitosRajoitus(maaraykset) || {})
-                    .uuid
-                }),
-                isReadOnly,
-                isRequired: isSisaoppilaitosValueRequired,
-                applyForValue: opiskelijavuosimaaraysSisaoppilaitos
-                  ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
-                  : undefined,
-                initialValue: opiskelijavuosimaaraysSisaoppilaitos
-                  ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
-                  : 0,
-                name: `${sectionId}-difference-3`,
-                titles: titlesSisaoppilaitosAndVaativa
+            ]
+          }
+        : null,
+      visibility.sisaoppilaitos
+        ? {
+            anchor: "sisaoppilaitos",
+            title: translate("limitForBoardingSchool"),
+            components: [
+              {
+                anchor: "A",
+                name: "Difference",
+                properties: {
+                  forChangeObject: reject(isNil, {
+                    koodiarvo: helper.sisaoppilaitosOpiskelijamaaraKoodiarvo,
+                    maaraysUuid: (findSisaoppilaitosRajoitus(maaraykset) || {})
+                      .uuid
+                  }),
+                  isReadOnly,
+                  isRequired: true,
+                  applyForValueSisaoppilaitos,
+                  initialValue: opiskelijavuosimaaraysSisaoppilaitos
+                    ? parseInt(opiskelijavuosimaaraysSisaoppilaitos.arvo, 10)
+                    : 0,
+                  name: `${sectionId}-difference-3`,
+                  titles: titlesSisaoppilaitosAndVaativa
+                }
               }
-            }
-          ]
-        }
-      : null
-  ].filter(Boolean);
+            ]
+          }
+        : null
+    ].filter(Boolean)
+  };
 }

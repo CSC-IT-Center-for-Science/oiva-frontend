@@ -143,6 +143,7 @@ const Lomake = React.memo(
          */
         if (isPreviewModeOn) {
           const previewLomake = await fetchLomake("preview", [], {
+            ...data,
             lomakedata
           });
           setLomake(previewLomake.structure || previewLomake);
@@ -153,6 +154,10 @@ const Lomake = React.memo(
           setLomake(lomake.structure || lomake);
         }
       })();
+
+      return function cancel() {
+        // Asynkronisten toimintojen keskeyttäminen
+      };
     }, [
       _path,
       anchor,
@@ -190,7 +195,8 @@ const Lomake = React.memo(
               onChangesRemove={onChangesRemove}
               messages={rowLocalizations}
               sectionId={anchor}
-              title={rowTitle}>
+              title={rowTitle}
+            >
               <div className={noPadding ? "" : "p-8"}>
                 <CategorizedListRoot
                   anchor={anchor}

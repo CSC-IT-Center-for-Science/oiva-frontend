@@ -309,3 +309,7 @@ export const recursiveTreeShake = (p = [], branch) => {
 
   return updatedBranch;
 };
+
+export const isDate = input => {
+  return Object.prototype.toString.call(input) === "[object Date]";
+};

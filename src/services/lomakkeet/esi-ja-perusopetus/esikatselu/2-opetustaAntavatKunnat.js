@@ -7,12 +7,14 @@ import {
   includes,
   map,
   mapObjIndexed,
+  path,
   prop,
   sortBy,
   values,
   path,
   concat
 } from "ramda";
+import { getRajoite } from "utils/rajoitteetUtils";
 
 /**
  * Funktio luo lomakerakenteen, jonka myötä käyttäjälle näytetään lista
@@ -23,13 +25,17 @@ import {
  * lista-alkoita.
  * @param {*} param0
  */
-export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
+export async function previewOfOpetustaAntavaKunnat({
+  lomakedata,
+  rajoitteet
+}) {
   let structure = [];
 
   const changeObjectsByProvinceNode = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     lomakedata
   );
+
 
   const ulkomaaCheckbox = find(
     compose(endsWith("ulkomaa.200"), prop("anchor")),
@@ -44,18 +50,44 @@ export async function previewOfOpetustaAntavaKunnat({ lomakedata }) {
   const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox) ?
     path(["properties", "value"], ulkomaaTextBox) : null
 
-  console.info(lomakedata, changeObjectsByProvinceNode);
-
   if (changeObjectsByProvinceNode) {
     const kunnat =
       flatten(
         values(
           mapObjIndexed(arrayOfLocationNodes => {
             const kuntienNimet = map(node => {
+              const koodiarvo = path(
+                ["properties", "metadata", "koodiarvo"],
+                node
+              );
+              const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
               // Haluamme listata vain kunnat, emme maakuntia.
               return includes(".kunnat.", node.anchor)
                 ? {
-                    content: node.properties.metadata.title
+                    anchor: "kunta",
+                    components: [
+                      rajoite
+                        ? {
+                            anchor: "rajoite",
+                            name: "Rajoite",
+                            properties: {
+                              areTitlesVisible: false,
+                              isReadOnly: true,
+                              rajoiteId,
+                              rajoite
+                            }
+                          }
+                        : {
+                            anchor: path(
+                              ["properties", "metadata", "koodiarvo"],
+                              node
+                            ),
+                            name: "HtmlContent",
+                            properties: {
+                              content: node.properties.metadata.title
+                            }
+                          }
+                    ]
                   }
                 : null;
             }, arrayOfLocationNodes).filter(Boolean);

@@ -16,6 +16,7 @@ const ErityisetKoulutustehtavat = ({
   isPreviewModeOn,
   maaraykset,
   mode = constants.mode,
+  rajoitteet,
   sectionId,
   title
 }) => {
@@ -33,7 +34,7 @@ const ErityisetKoulutustehtavat = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ sectionId, maaraykset }}
+      data={{ maaraykset, rajoitteet, sectionId }}
       functions={{
         onAddButtonClick
       }}
@@ -43,7 +44,8 @@ const ErityisetKoulutustehtavat = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.erityisetKoulutustehtavat)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 
@@ -52,6 +54,7 @@ ErityisetKoulutustehtavat.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

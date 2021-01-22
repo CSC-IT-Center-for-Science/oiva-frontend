@@ -11,9 +11,45 @@ import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtava
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import Lomake from "components/02-organisms/Lomake";
-import { filter, pathEq } from "ramda";
+import {
+  compose,
+  filter,
+  find,
+  flatten,
+  groupBy, isEmpty,
+  isNil,
+  last,
+  length,
+  map,
+  mapObjIndexed,
+  nth,
+  path,
+  pathEq,
+  prop,
+  propEq,
+  reject,
+  split,
+  startsWith
+} from "ramda";
 import Rajoitteet from "../lomakeosiot/9-Rajoitteet";
 import equal from "react-fast-compare";
+import { useLomakedata } from "stores/lomakedata";
+
+export const getRajoitteetBySection = (sectionId, rajoitteetByRajoiteId) => {
+  const rajoitteet = reject(
+    isNil,
+    mapObjIndexed(rajoite => {
+      return pathEq(
+        ["changeObjects", 0, "properties", "value", "value"],
+        sectionId,
+        rajoite
+      )
+        ? rajoite
+        : null;
+    }, rajoitteetByRajoiteId)
+  );
+  return rajoitteet;
+};
 
 const constants = {
   formLocations: {
@@ -41,6 +77,36 @@ const LupanakymaA = React.memo(
   }) => {
     const intl = useIntl();
 
+    const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
+
+    // TODO: Näytetään rajoitteet oikein, jos on sekä määräyksiä että muutosobjekteja.
+    // TODO: Näytetään rajoitteet oikein, jos sama asia on usean rajoitteen kohteena?
+    const rajoitteetFromMaarayksetByRajoiteId =
+      map(cObjs => {
+          return {changeObjects: cObjs}
+        },
+        groupBy(
+          compose(last, split("_"), nth(0), split("."), prop("anchor")),
+          filter(
+            changeObj => startsWith("rajoitteet_", changeObj.anchor),
+            flatten(map(cObj =>
+                path(["meta", "changeObjects"], cObj),
+              filter(
+                maarays => length(maarays.aliMaaraykset), maaraykset || [])
+            )))
+        )
+      );
+
+    const rajoitteetListausChangeObj = find(
+      propEq("anchor", "rajoitteet.listaus.A"),
+      rajoitteetStateObj
+    );
+
+    const rajoitteetByRajoiteId = path(
+      ["properties", "rajoitteet"],
+      rajoitteetListausChangeObj
+    );
+
     const opetustehtavamaaraykset = filterByTunniste(
       "opetusjotalupakoskee",
       maaraykset
@@ -56,6 +122,43 @@ const LupanakymaA = React.memo(
       maaraykset
     );
 
+    // Rajoitteet
+    // TODO: Toistaiseksi näytetään määräyksiltä saadut rajoitteet, jos niitä on. Muutoin
+    // TODO: näytetään muutosobjekteilta saadut rajoitteet. Tämä pitää korjata kun lupamuutoksia
+    // TODO: aletaan tekemään esi- ja perusopetukselle.
+    const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId) ?
+      rajoitteetFromMaarayksetByRajoiteId : rajoitteetByRajoiteId;
+
+    const opetustehtavatRajoitteet = getRajoitteetBySection(
+      "opetustehtavat",
+      rajoitteet
+    );
+
+    const opetuskieletRajoitteet = getRajoitteetBySection(
+      "opetuskielet",
+      rajoitteet
+    );
+
+    const opetuksenJarjestamismuodotRajoitteet = getRajoitteetBySection(
+      "opetuksenJarjestamismuodot",
+      rajoitteet
+    );
+
+    const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
+      "erityisetKoulutustehtavat",
+      rajoitteet
+    );
+
+    const toimintaalueRajoitteet = getRajoitteetBySection(
+      "toimintaalue",
+      rajoitteet
+    );
+
+    const muutEhdotRajoitteet = getRajoitteetBySection(
+      "muutEhdot",
+      rajoitteet
+    );
+
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
         {isPreviewModeOn ? null : (
@@ -65,11 +168,13 @@ const LupanakymaA = React.memo(
               isInExpandableRow={false}
               isPreviewModeOn={isPreviewModeOn}
               noPadding={true}
-              path={constants.formLocations.paatoksenTiedot}></Lomake>
+              path={constants.formLocations.paatoksenTiedot}
+            ></Lomake>
           </div>
         )}
 
         <Rajoitteet
+          isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           sectionId="rajoitteet"
           render={() => {
@@ -80,6 +185,7 @@ const LupanakymaA = React.memo(
                   isPreviewModeOn={isPreviewModeOn}
                   maaraykset={opetustehtavamaaraykset}
                   sectionId="opetustehtavat"
+                  rajoitteet={opetustehtavatRajoitteet}
                 />
 
                 {OpetustaAntavatKunnatJSX ? (
@@ -90,6 +196,7 @@ const LupanakymaA = React.memo(
                     isPreviewModeOn={isPreviewModeOn}
                     lupakohde={lupakohteet[2]}
                     maaraykset={toimintaaaluemaaraykset}
+                    rajoitteet={toimintaalueRajoitteet}
                     sectionId="toimintaalue"
                     title={intl.formatMessage(education.opetustaAntavatKunnat)}
                     valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -100,6 +207,7 @@ const LupanakymaA = React.memo(
                   code="3"
                   isPreviewModeOn={isPreviewModeOn}
                   maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+                  rajoitteet={opetuskieletRajoitteet}
                   sectionId={"opetuskielet"}
                   title={intl.formatMessage(common.opetuskieli)}
                 />
@@ -108,6 +216,7 @@ const LupanakymaA = React.memo(
                   code="4"
                   isPreviewModeOn={isPreviewModeOn}
                   maaraykset={opetuksenJarjestamismuotomaaraykset}
+                  rajoitteet={opetuksenJarjestamismuodotRajoitteet}
                   sectionId={"opetuksenJarjestamismuodot"}
                   title={intl.formatMessage(
                     education.opetuksenJarjestamismuoto
@@ -121,6 +230,7 @@ const LupanakymaA = React.memo(
                     "erityinenkoulutustehtava",
                     maaraykset
                   )}
+                  rajoitteet={erityisetKoulutustehtavatRajoitteet}
                   sectionId={"erityisetKoulutustehtavat"}
                   title={intl.formatMessage(
                     common.VSTLupaSectionTitleSchoolMissionSpecial
@@ -145,6 +255,7 @@ const LupanakymaA = React.memo(
                     "muutkoulutuksenjarjestamiseenliittyvatehdot",
                     maaraykset
                   )}
+                  rajoitteet={muutEhdotRajoitteet}
                   sectionId={"muutEhdot"}
                   title={intl.formatMessage(education.muutEhdotTitle)}
                 />

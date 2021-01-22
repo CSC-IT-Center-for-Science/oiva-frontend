@@ -61,7 +61,7 @@ const parseSectionData = (
         case KOODISTOT.KOULUTUS: {
           const { koodi, ylaKoodit, aliMaaraykset } = maarays;
           const { koodiArvo, metadata } = koodi;
-          const tutkintoNimi = parseLocalizedField(metadata);
+          const tutkintoNimi = parseLocalizedField(metadata, locale);
           let tutkinto = {
             kohde,
             maaraystyyppi
@@ -101,7 +101,7 @@ const parseSectionData = (
               const { koodi, kohde, koodisto } = alimaarays;
               if (koodi) {
                 const { koodiArvo, metadata } = koodi;
-                const nimi = parseLocalizedField(metadata);
+                const nimi = parseLocalizedField(metadata, locale);
                 tutkinto.rajoitteet.push({
                   koodi: koodiArvo,
                   nimi,
@@ -118,7 +118,7 @@ const parseSectionData = (
           _.forEach(ylaKoodit, ylaKoodi => {
             const ylaKoodiKoodiArvo = ylaKoodi.koodiArvo;
             const ylaKoodiMetadata = ylaKoodi.metadata;
-            const ylakoodiMetadataArvo = parseLocalizedField(ylaKoodiMetadata);
+            const ylakoodiMetadataArvo = parseLocalizedField(ylaKoodiMetadata, locale);
 
             if (ylaKoodi.koodisto.koodistoUri === "isced2011koulutusalataso1") {
               tutkinto.koodi = koodiArvo;
@@ -147,7 +147,7 @@ const parseSectionData = (
 
           const ammatillinenNimi = parseLocalizedField(
             maarays.koodi.metadata,
-            "FI",
+            locale,
             "nimi",
             "kieli"
           );
