@@ -17,7 +17,7 @@ import wizard from "i18n/definitions/wizard";
 import Typography from "@material-ui/core/Typography";
 import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
 
-const Tutkintokielet = ({ koulutusalat, mode }) => {
+const Tutkintokielet = ({ koulutusalat, maaraykset, mode }) => {
   const sectionId = "kielet_tutkintokielet";
   const intl = useIntl();
 
@@ -25,6 +25,7 @@ const Tutkintokielet = ({ koulutusalat, mode }) => {
     anchor: "tutkinnot"
   });
 
+  console.info(sectionId, mode, tutkintodata);
   return (
     <React.Fragment>
       <Typography component="h4" variant="h4">
@@ -35,7 +36,7 @@ const Tutkintokielet = ({ koulutusalat, mode }) => {
           compose(where({ isChecked: equals(true) }), prop("properties")),
           prop(koulutusala.koodiarvo, tutkintodata) || []
         );
-        if (length(aktiivisetTutkinnot)) {
+        if (length(aktiivisetTutkinnot) || mode === "reasoning") {
           return (
             <TutkintomuutoksetContainer
               key={koulutusala.koodiarvo}
@@ -44,6 +45,8 @@ const Tutkintokielet = ({ koulutusalat, mode }) => {
               <Koulutusala
                 aktiivisetTutkinnot={aktiivisetTutkinnot}
                 koodiarvo={koulutusala.koodiarvo}
+                koulutusalakoodiarvo={koulutusala.koodiarvo}
+                maaraykset={maaraykset}
                 mode={mode}
                 sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
                 title={`${koulutusala.metadata[toUpper(intl.locale)].nimi}`}

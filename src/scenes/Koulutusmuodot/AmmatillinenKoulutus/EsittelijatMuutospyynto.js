@@ -164,7 +164,11 @@ const EsittelijatMuutospyynto = React.memo(
           ></MuutospyyntoWizardOpetuskielet>
         </TutkintomuutoksetContainer>
 
-        <Tutkintokielet koulutusalat={koulutusalat} mode={mode} />
+        <Tutkintokielet
+          koulutusalat={koulutusalat}
+          maaraykset={maaraykset}
+          mode={mode}
+        />
 
         <TutkintomuutoksetContainer scope="toimintaalue">
           <MuutospyyntoWizardToimintaalue

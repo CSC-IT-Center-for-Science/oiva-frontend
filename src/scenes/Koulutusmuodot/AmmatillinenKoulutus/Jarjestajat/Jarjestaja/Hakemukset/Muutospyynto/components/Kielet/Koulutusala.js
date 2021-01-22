@@ -7,17 +7,30 @@ const constants = {
   formLocation: ["kielet", "tutkintokielet"]
 };
 
-const Koulutusala = ({ aktiivisetTutkinnot, mode, sectionId, title }) => {
+const Koulutusala = ({
+  aktiivisetTutkinnot,
+  koulutusalakoodiarvo,
+  maaraykset,
+  mode,
+  sectionId,
+  title
+}) => {
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
+
+  const lomakedata =
+    mode === "modification"
+      ? { aktiiviset: aktiivisetTutkinnot }
+      : { koulutusalakoodiarvo, maaraykset };
 
   return (
     <Lomake
       actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
-      data={{ aktiiviset: aktiivisetTutkinnot }}
+      data={lomakedata}
+      isRowExpanded={mode === "reasoning"}
       mode={mode}
       path={constants.formLocation}
       rowTitle={title}

@@ -13,11 +13,6 @@ import getToimintaaluelomake from "./toimintaalue";
 import getOpiskelijavuodetLomake from "./opiskelijavuodet";
 import getPerustelutLiitteetlomake from "./perustelut/liitteet";
 import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
-import getTutkintokieletPerustelulomake from "./perustelut/kielet/tutkintokielet";
-import getMuutPerustelulomake from "./perustelut/muutMuutokset";
-import getSisaoppilaitosOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/sisaoppilaitos";
-import getVahimmaisopiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vahimmais";
-import getVaativaTukiOpiskelijavuodetPerustelulomake from "./perustelut/opiskelijavuodet/vaativa";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
 import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoskee";
@@ -209,7 +204,15 @@ const lomakkeet = {
     },
     tutkintokielet: {
       modification: (data, booleans, locale) =>
-        getTutkintokieletLomake("modification", data, booleans, locale)
+        getTutkintokieletLomake("modification", data, booleans, locale),
+      reasoning: (data, booleans, locale, changeObjects) =>
+        getTutkintokieletLomake(
+          "reasoning",
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
     }
   },
   toimintaalue: {
@@ -254,12 +257,6 @@ const lomakkeet = {
 
   // Wizard page 2 forms
   perustelut: {
-    kielet: {
-      tutkintokielet: {
-        reasoning: (data, booleans, locale) =>
-          getTutkintokieletPerustelulomake("reasoning", data, booleans, locale)
-      }
-    },
     liitteet: {
       reasoning: (data, booleans) =>
         getPerustelutLiitteetlomake("reasoning", booleans)
@@ -267,37 +264,6 @@ const lomakkeet = {
     muutostarpeet: {
       checkboxes: (data, booleans, locale) =>
         getCheckboxes(data.checkboxItems, locale, booleans)
-    },
-    opiskelijavuodet: {
-      sisaoppilaitos: {
-        reasoning: (data, booleans) =>
-          getSisaoppilaitosOpiskelijavuodetPerustelulomake(
-            "reasoning",
-            data,
-            booleans
-          )
-      },
-      vaativatuki: {
-        reasoning: (data, booleans) =>
-          getVaativaTukiOpiskelijavuodetPerustelulomake(
-            "reasoning",
-            data,
-            booleans
-          )
-      },
-      vahimmais: {
-        reasoning: (data, booleans, locale) =>
-          getVahimmaisopiskelijavuodetPerustelulomake(
-            "reasoning",
-            data,
-            booleans,
-            locale
-          )
-      }
-    },
-    muut: {
-      reasoning: (data, booleans, locale) =>
-        getMuutPerustelulomake("reasoning", data, booleans, locale)
     }
   },
   taloudelliset: {
