@@ -7,7 +7,8 @@ import {
   propEq,
   addIndex,
   split,
-  flatten
+  flatten,
+  last
 } from "ramda";
 import { getKieletFromStorage } from "helpers/kielet";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
@@ -26,7 +27,7 @@ async function getModificationForm(
   return map(koulutustyyppi => {
     const tutkinnot = filter(tutkinto => {
       const koulutustyyppikoodiarvo = getAnchorPart(tutkinto.anchor, 1);
-      if(last(tutkinto.anchor.split('.')) !== 'osaamisala')
+      if (last(tutkinto.anchor.split(".")) !== "osaamisala")
         return equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo);
     }, aktiivisetTutkinnot);
     if (tutkinnot.length) {
@@ -40,7 +41,7 @@ async function getModificationForm(
               {
                 anchor: "nimi",
                 name: "StatusTextRow",
-                styleClasses: ['flex-2'],
+                styleClasses: ["flex-2"],
                 properties: {
                   code: tutkinto.koodiarvo,
                   title: tutkinto.properties.title,
@@ -107,11 +108,6 @@ const getReasoningForm = async (
   return addIndex(map)((changeObj, i) => {
     const anchorParts = split(".", changeObj.anchor);
     const item = find(propEq("koodiarvo", anchorParts[2]), tutkinnot);
-
-    // const koulutusalaMetadata = find(
-    //   propEq("koodiarvo", item.koulutusalakoodiarvo),
-    //   koulutusalat
-    // ).metadata[toUpper(locale)];
 
     const metadata = item.metadata[toUpper(locale)];
 
@@ -188,8 +184,7 @@ const getReasoningForm = async (
                       name: "TextBox",
                       properties: {
                         forChangeObject: {
-                          koulutusalakoodiarvo,
-                          title: "[Koulutusalan nimi tähän]"
+                          koulutusalakoodiarvo
                         },
                         isReadOnly: isReadOnly,
                         title: "Perustele muutos tähän, kiitos.",
