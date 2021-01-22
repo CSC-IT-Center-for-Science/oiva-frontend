@@ -217,7 +217,8 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
     ["properties", "value", "label"],
     prop(tarkenninavain, tarkennin)
   );
-  const taydennyssana = getTaydennyssana(tarkenninavain, locale);
+  const taydennyssana = null;
+  //const taydennyssana = getTaydennyssana(tarkenninavain, locale);
 
   let item = tarkentimenArvo;
 
