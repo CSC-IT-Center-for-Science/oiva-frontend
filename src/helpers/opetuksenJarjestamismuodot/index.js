@@ -17,7 +17,8 @@ import {
   values,
   reject,
   isNil,
-  pathEq
+  pathEq,
+  take
 } from "ramda";
 import localforage from "localforage";
 import { __ } from "i18n-for-browser";
@@ -100,7 +101,7 @@ export const defineBackendChangeObjects = async (
             kuvaus: changeObj.properties.value,
             maaraystyyppi,
             meta: {
-              changeObjects: [changeObj, kuvausChangeObj].filter(Boolean),
+              changeObjects: [changeObj, kuvausChangeObj, take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))].filter(Boolean),
               kuvaus: changeObj.properties.value
             },
             tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"

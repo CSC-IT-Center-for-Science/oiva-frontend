@@ -106,7 +106,7 @@ const Datepicker = ({
     } else if (value !== selectedDate) {
       setSelectedDate(value);
     }
-  }, [value, selectedDate]);
+  }, [value, selectedDate, forChangeObject, fullAnchor, onChanges]);
 
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={localeMap[locale]}>

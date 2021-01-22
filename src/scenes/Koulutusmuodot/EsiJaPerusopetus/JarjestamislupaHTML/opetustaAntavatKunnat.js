@@ -53,7 +53,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
       maarays.koodisto === "kunta" &&
       (!maarays.meta.changeObjects ||
-        !includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+        !includes("ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || ""))
     );
   }, maaraykset);
 
