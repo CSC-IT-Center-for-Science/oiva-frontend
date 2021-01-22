@@ -400,8 +400,7 @@ const UusiAsiaDialog = ({
                             {intl.formatMessage(common.esikatselu)}
                           </Typography>
                         </div>
-                        <div
-                          className="p-6 overflow-auto"
+                        <div className="pt-6 px-6 pb-32 overflow-auto"
                           style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
                         >
                           <LupanakymaA

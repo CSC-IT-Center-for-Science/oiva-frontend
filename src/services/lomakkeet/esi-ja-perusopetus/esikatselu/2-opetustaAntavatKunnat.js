@@ -10,7 +10,8 @@ import {
   path,
   prop,
   sortBy,
-  values
+  values,
+  concat
 } from "ramda";
 import { getRajoite } from "utils/rajoitteetUtils";
 
@@ -34,9 +35,22 @@ export async function previewOfOpetustaAntavaKunnat({
     lomakedata
   );
 
+
+  const ulkomaaCheckbox = find(
+    compose(endsWith("ulkomaa.200"), prop("anchor")),
+    lomakedata
+  );
+
+  const ulkomaaTextBox = find(
+    compose(endsWith("ulkomaa.200.lisatiedot"), prop("anchor")),
+    lomakedata
+  );
+
+  const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox) ?
+    path(["properties", "value"], ulkomaaTextBox) : null
+
   if (changeObjectsByProvinceNode) {
-    const kunnat = sortBy(
-      prop("content"),
+    const kunnat =
       flatten(
         values(
           mapObjIndexed(arrayOfLocationNodes => {
@@ -79,10 +93,12 @@ export async function previewOfOpetustaAntavaKunnat({
             return kuntienNimet;
           }, changeObjectsByProvinceNode.properties.changeObjectsByProvince)
         )
-      )
-    );
+      );
 
-    if (kunnat.length) {
+    const kunnatUlkomaatAdded = ulkomaaTextBoxValue ?
+      sortBy(path(["components", "0", "properties", "content"]),
+        concat([{components: [{name: "HtmlContent", properties: {content: ulkomaaTextBoxValue}}]}], kunnat)) : kunnat;
+    if (kunnatUlkomaatAdded.length) {
       structure = append(
         {
           anchor: "valitut",
@@ -92,7 +108,7 @@ export async function previewOfOpetustaAntavaKunnat({
               name: "List",
               properties: {
                 isDense: true,
-                items: kunnat
+                items: kunnatUlkomaatAdded
               }
             }
           ]

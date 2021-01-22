@@ -280,21 +280,22 @@ export async function createObjectToSave(
     propEq("anchor", "paatoksentiedot.paatospaiva.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.paatospvm = paatospaivaObj
+
+  objectToSave.paatospvm = paatospaivaObj && paatospaivaObj.properties.value
     ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
     : "";
   const voimaantulopaivaObj = find(
     propEq("anchor", "paatoksentiedot.voimaantulopaiva.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.voimassaalkupvm = voimaantulopaivaObj
+  objectToSave.voimassaalkupvm = voimaantulopaivaObj && voimaantulopaivaObj.properties.value
     ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
     : "";
   const paattymispaivamaaraObj = find(
     propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.paattymispaivamaara = paattymispaivamaaraObj
+  objectToSave.paattymispaivamaara = paattymispaivamaaraObj && paattymispaivamaaraObj.properties.value
     ? moment(paattymispaivamaaraObj.properties.value).format("YYYY-MM-DD")
     : "";
 

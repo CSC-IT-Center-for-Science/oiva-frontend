@@ -12,14 +12,24 @@ import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import Lomake from "components/02-organisms/Lomake";
 import {
+  compose,
   filter,
   find,
+  flatten,
+  groupBy, isEmpty,
   isNil,
+  last,
+  length,
+  map,
   mapObjIndexed,
+  nth,
   path,
   pathEq,
+  prop,
   propEq,
-  reject
+  reject,
+  split,
+  startsWith
 } from "ramda";
 import Rajoitteet from "../lomakeosiot/9-Rajoitteet";
 import equal from "react-fast-compare";
@@ -69,6 +79,24 @@ const LupanakymaA = React.memo(
 
     const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
 
+    // TODO: Näytetään rajoitteet oikein, jos on sekä määräyksiä että muutosobjekteja.
+    // TODO: Näytetään rajoitteet oikein, jos sama asia on usean rajoitteen kohteena?
+    const rajoitteetFromMaarayksetByRajoiteId =
+      map(cObjs => {
+          return {changeObjects: cObjs}
+        },
+        groupBy(
+          compose(last, split("_"), nth(0), split("."), prop("anchor")),
+          filter(
+            changeObj => startsWith("rajoitteet_", changeObj.anchor),
+            flatten(map(cObj =>
+                path(["meta", "changeObjects"], cObj),
+              filter(
+                maarays => length(maarays.aliMaaraykset), maaraykset || [])
+            )))
+        )
+      );
+
     const rajoitteetListausChangeObj = find(
       propEq("anchor", "rajoitteet.listaus.A"),
       rajoitteetStateObj
@@ -95,34 +123,40 @@ const LupanakymaA = React.memo(
     );
 
     // Rajoitteet
+    // TODO: Toistaiseksi näytetään määräyksiltä saadut rajoitteet, jos niitä on. Muutoin
+    // TODO: näytetään muutosobjekteilta saadut rajoitteet. Tämä pitää korjata kun lupamuutoksia
+    // TODO: aletaan tekemään esi- ja perusopetukselle.
+    const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId) ?
+      rajoitteetFromMaarayksetByRajoiteId : rajoitteetByRajoiteId;
+
     const opetustehtavatRajoitteet = getRajoitteetBySection(
       "opetustehtavat",
-      rajoitteetByRajoiteId
+      rajoitteet
     );
 
     const opetuskieletRajoitteet = getRajoitteetBySection(
       "opetuskielet",
-      rajoitteetByRajoiteId
+      rajoitteet
     );
 
     const opetuksenJarjestamismuodotRajoitteet = getRajoitteetBySection(
       "opetuksenJarjestamismuodot",
-      rajoitteetByRajoiteId
+      rajoitteet
     );
 
     const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
       "erityisetKoulutustehtavat",
-      rajoitteetByRajoiteId
+      rajoitteet
     );
 
     const toimintaalueRajoitteet = getRajoitteetBySection(
       "toimintaalue",
-      rajoitteetByRajoiteId
+      rajoitteet
     );
 
     const muutEhdotRajoitteet = getRajoitteetBySection(
       "muutEhdot",
-      rajoitteetByRajoiteId
+      rajoitteet
     );
 
     return (
