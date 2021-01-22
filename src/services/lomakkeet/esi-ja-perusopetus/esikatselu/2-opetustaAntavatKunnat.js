@@ -48,8 +48,6 @@ export async function previewOfOpetustaAntavaKunnat({
   const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox) ?
     path(["properties", "value"], ulkomaaTextBox) : null
 
-  console.info(lomakedata, changeObjectsByProvinceNode);
-
   if (changeObjectsByProvinceNode) {
     const kunnat =
       flatten(
@@ -97,8 +95,8 @@ export async function previewOfOpetustaAntavaKunnat({
       );
 
     const kunnatUlkomaatAdded = ulkomaaTextBoxValue ?
-      sortBy(prop("content"), concat([{content: ulkomaaTextBoxValue}], kunnat)) : kunnat;
-
+      sortBy(path(["components", "0", "properties", "content"]),
+        concat([{components: [{name: "HtmlContent", properties: {content: ulkomaaTextBoxValue}}]}], kunnat)) : kunnat;
     if (kunnatUlkomaatAdded.length) {
       structure = append(
         {
