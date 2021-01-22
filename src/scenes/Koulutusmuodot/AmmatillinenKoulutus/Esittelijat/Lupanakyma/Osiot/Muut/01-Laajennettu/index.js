@@ -25,8 +25,6 @@ const Laajennettu = React.memo(
       maarayksetByKoodiarvo
     };
 
-    console.info(sectionId);
-
     const [
       changeObjects,
       actions

@@ -15,7 +15,6 @@ const Vankila = ({
   mode,
   sectionId
 }) => {
-  console.info(sectionId);
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
@@ -26,8 +25,6 @@ const Vankila = ({
     }),
     [items, maarayksetByKoodiarvo]
   );
-
-  console.info(changeObjects);
 
   return (
     <Lomake

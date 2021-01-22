@@ -134,7 +134,6 @@ export function getMuutUrheilu(
   functions,
   prefix
 ) {
-  console.info(mode, changeObjects);
   switch (mode) {
     case "modification":
       return getModificationForm(data, booleans, locale);

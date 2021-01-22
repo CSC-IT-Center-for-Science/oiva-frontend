@@ -25,7 +25,6 @@ const Tutkintokielet = ({ koulutusalat, maaraykset, mode }) => {
     anchor: "tutkinnot"
   });
 
-  console.info(sectionId, mode, tutkintodata);
   return (
     <React.Fragment>
       <Typography component="h4" variant="h4">
