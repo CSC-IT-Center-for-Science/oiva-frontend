@@ -8,9 +8,11 @@ const constants = {
 };
 
 const MuuMaarays = ({
+  isReadOnly,
   items,
   localeUpper,
   maarayksetByKoodiarvo,
+  mode,
   sectionId
 }) => {
   const dataLomakepalvelulle = useMemo(
@@ -31,7 +33,8 @@ const MuuMaarays = ({
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}
-      mode="modification"
+      isReadOnly={isReadOnly}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}

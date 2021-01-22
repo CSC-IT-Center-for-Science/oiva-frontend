@@ -67,7 +67,9 @@ const lomakkeet = {
       },
       muuMaarays: {
         modification: (data, booleans, locale) =>
-          getMuutMuuMaarays(data, booleans, locale)
+          getMuutMuuMaarays("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutMuuMaarays("reasoning", data, booleans, locale, changeObjects)
       },
       sisaoppilaitos: {
         modification: (data, booleans, locale) =>
@@ -83,7 +85,9 @@ const lomakkeet = {
       },
       urheilu: {
         modification: (data, booleans, locale) =>
-          getMuutUrheilu(data, booleans, locale)
+          getMuutUrheilu("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutUrheilu("reasoning", data, booleans, locale, changeObjects)
       },
       selvitykset: {
         modification: (data, booleans, locale) =>
@@ -99,15 +103,27 @@ const lomakkeet = {
       },
       vankila: {
         modification: (data, booleans, locale) =>
-          getMuutVankila(data, booleans, locale)
+          getMuutVankila("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutVankila("reasoning", data, booleans, locale, changeObjects)
       },
       yhteistyo: {
         modification: (data, booleans, locale) =>
-          getMuutYhteistyo(data, booleans, locale)
+          getMuutYhteistyo("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutYhteistyo("reasoning", data, booleans, locale, changeObjects)
       },
       yhteistyosopimus: {
         modification: (data, booleans, locale) =>
-          getMuutYhteistyosopimus(data, booleans, locale)
+          getMuutYhteistyosopimus("modification", data, booleans, locale),
+        reasoning: (data, booleans, locale, changeObjects) =>
+          getMuutYhteistyosopimus(
+            "reasoning",
+            data,
+            booleans,
+            locale,
+            changeObjects
+          )
       }
     }
   },

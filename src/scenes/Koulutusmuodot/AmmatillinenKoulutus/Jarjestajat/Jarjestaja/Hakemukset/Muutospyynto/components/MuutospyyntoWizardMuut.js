@@ -24,6 +24,7 @@ import { Typography } from "@material-ui/core";
 import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
 
 const defaultProps = {
+  isReadOnly: false,
   maaraykset: [],
   muut: []
 };
@@ -31,6 +32,7 @@ const defaultProps = {
 const MuutospyyntoWizardMuut = React.memo(
   ({
     code,
+    isReadOnly = defaultProps.isReadOnly,
     maaraykset = defaultProps.maaraykset,
     mode,
     muut = defaultProps.muut,
@@ -86,6 +88,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.laajennettu && items.laajennettu.length > 0 ? (
           <TutkintomuutoksetContainer scope="laajennettu">
             <Laajennettu
+              isReadOnly={isReadOnly}
               items={items.laajennettu}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -99,6 +102,7 @@ const MuutospyyntoWizardMuut = React.memo(
         (!!items.vaativa_2 && items.vaativa_2.length > 0) ? (
           <TutkintomuutoksetContainer scope="vaativaTuki">
             <VaativaTuki
+              isReadOnly={isReadOnly}
               items={vaativaTukiItems}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -111,6 +115,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
           <TutkintomuutoksetContainer scope="sisaoppilaitos">
             <Sisaoppilaitos
+              isReadOnly={isReadOnly}
               items={items.sisaoppilaitos}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -123,6 +128,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.vankila && items.vankila.length > 0 ? (
           <TutkintomuutoksetContainer scope="vankila">
             <Vankila
+              isReadOnly={isReadOnly}
               items={items.vankila}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -135,6 +141,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.urheilu && items.urheilu.length > 0 ? (
           <TutkintomuutoksetContainer scope="urheilu">
             <Urheilu
+              isReadOnly={isReadOnly}
               items={items.urheilu}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -147,6 +154,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
           <TutkintomuutoksetContainer scope="yhteistyo">
             <Yhteistyo
+              isReadOnly={isReadOnly}
               items={items.yhteistyo}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -159,6 +167,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
           <TutkintomuutoksetContainer scope="yhteistyosopimus">
             <Yhteistyosopimus
+              isReadOnly={isReadOnly}
               items={items.yhteistyosopimus}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -171,6 +180,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.selvitykset && items.selvitykset.length > 0 ? (
           <TutkintomuutoksetContainer scope="selvitykset">
             <Selvitykset
+              isReadOnly={isReadOnly}
               items={items.selvitykset}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -183,6 +193,7 @@ const MuutospyyntoWizardMuut = React.memo(
         {!!items.muumaarays && items.muumaarays.length > 0 ? (
           <TutkintomuutoksetContainer scope="muuMaarays">
             <MuuMaarays
+              isReadOnly={isReadOnly}
               items={items.muumaarays}
               localeUpper={localeUpper}
               maarayksetByKoodiarvo={maarayksetByKoodiarvo}
@@ -198,6 +209,7 @@ const MuutospyyntoWizardMuut = React.memo(
 
 MuutospyyntoWizardMuut.propTypes = {
   headingNumber: PropTypes.number,
+  isReadOnly: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
   muut: PropTypes.array

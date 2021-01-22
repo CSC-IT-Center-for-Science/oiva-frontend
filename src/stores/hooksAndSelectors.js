@@ -1,16 +1,11 @@
 import {
-  assoc,
-  assocPath,
-  compose,
   concat,
   difference,
   flatten,
   groupBy,
   isNil,
-  head,
   map,
   mergeAll,
-  not,
   path,
   pipe,
   prepend,
@@ -19,7 +14,6 @@ import {
   split,
   values
 } from "ramda";
-import { createHook } from "react-sweet-state";
 import { getLatestChangesByAnchor } from "utils/common";
 
 const getChangeObjectsByKeyAndAnchor = (key, anchor, changeObjects = {}) => {

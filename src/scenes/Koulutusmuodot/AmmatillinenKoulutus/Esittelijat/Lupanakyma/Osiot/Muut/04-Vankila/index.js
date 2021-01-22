@@ -7,7 +7,15 @@ const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "vankila"]
 };
 
-const Vankila = ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
+const Vankila = ({
+  isReadOnly,
+  items,
+  localeUpper,
+  maarayksetByKoodiarvo,
+  mode,
+  sectionId
+}) => {
+  console.info(sectionId);
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
@@ -19,13 +27,16 @@ const Vankila = ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
     [items, maarayksetByKoodiarvo]
   );
 
+  console.info(changeObjects);
+
   return (
     <Lomake
       actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}
-      mode="modification"
+      isReadOnly={isReadOnly}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}

@@ -8,9 +8,11 @@ const constants = {
 };
 
 const Yhteistyosopimus = ({
+  isReadOnly,
   items,
   localeUpper,
   maarayksetByKoodiarvo,
+  mode,
   sectionId
 }) => {
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -30,7 +32,8 @@ const Yhteistyosopimus = ({
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}
-      mode="modification"
+      mode={mode}
+      isReadOnly={isReadOnly}
       isRowExpanded={false}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}

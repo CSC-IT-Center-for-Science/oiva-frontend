@@ -107,8 +107,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
 
   return (
     <Lomake
-      mode={props.mode}
       anchor={props.sectionId}
+      changeObjects={changeObjects}
       code={props.code}
       data={{
         fiCode,
@@ -144,7 +144,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         onChanges: whenChanges,
         toggleEditView
       }}
+      isReadOnly={true}
       isRowExpanded={true}
+      mode={props.mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(
         wizard.singularMunicipalitiesOrTheWholeCountry

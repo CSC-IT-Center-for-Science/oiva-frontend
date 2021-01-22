@@ -1,6 +1,5 @@
 import { isAdded, isRemoved, isInLupa } from "../../../../css/label";
 import { compose, find, includes, map, path, prop } from "ramda";
-import { __ } from "i18n-for-browser";
 import {
   getKuljettajienJatkokoulutuslomake,
   getKuljettajienPeruskoulutuslomake

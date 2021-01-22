@@ -397,5 +397,7 @@ export default async function getToimintaaluelomake(
       );
     case "reasoning":
       return await getReasoningForm(booleans, data.lupakohde, changeObjects);
+    default:
+      return [];
   }
 }

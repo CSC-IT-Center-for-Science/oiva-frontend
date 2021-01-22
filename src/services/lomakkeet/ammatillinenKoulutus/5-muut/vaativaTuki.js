@@ -148,7 +148,6 @@ export function getReasoningForm(
   changeObjects,
   prefix
 ) {
-  console.info(items);
   const localeUpper = locale.toUpperCase();
   return map(item => {
     const maarays = maarayksetByKoodiarvo[item.koodiarvo];
@@ -207,7 +206,6 @@ export function getMuutVaativaTuki(
   functions,
   prefix
 ) {
-  console.info(data);
   switch (mode) {
     case "modification":
       return getModificationForm(data, booleans, locale);

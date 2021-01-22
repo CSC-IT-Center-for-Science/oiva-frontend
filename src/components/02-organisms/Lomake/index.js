@@ -93,8 +93,8 @@ const Lomake = React.memo(
     useEffect(() => {
       (async () => {
         async function fetchLomake(_mode, _changeObjects, _data, _functions) {
-          console.info("NOUDETAAN LOMAKE...", anchor, _path);
-          const lomake = await getLomake(
+          // console.info("NOUDETAAN LOMAKE...", anchor, _path);
+          return await getLomake(
             _mode || mode,
             _changeObjects || changeObjects,
             _data || data,
@@ -104,8 +104,6 @@ const Lomake = React.memo(
             _path,
             prefix
           );
-
-          return lomake;
         }
 
         const juuriHaettuLomake = await fetchLomake();
@@ -144,9 +142,8 @@ const Lomake = React.memo(
           if (has("isValid", juuriHaettuLomake)) {
             lomakedataActions.setValidity(juuriHaettuLomake.isValid, anchor);
           }
-          if (!equal(juuriHaettuLomake, lomake)) {
-            setLomake(juuriHaettuLomake.structure || juuriHaettuLomake);
-          }
+
+          setLomake(juuriHaettuLomake.structure || juuriHaettuLomake);
         }
       })();
     }, [

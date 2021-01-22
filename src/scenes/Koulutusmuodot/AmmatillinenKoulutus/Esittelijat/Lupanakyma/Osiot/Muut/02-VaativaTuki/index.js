@@ -10,6 +10,7 @@ const constants = {
 };
 
 const VaativaTuki = ({
+  isReadOnly,
   items,
   localeUpper,
   maarayksetByKoodiarvo,
@@ -48,6 +49,7 @@ const VaativaTuki = ({
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}
+      isReadOnly={isReadOnly}
       mode={mode}
       path={constants.formLocation}
       rowTitle={items.vaativa_1[0].metadata[localeUpper].nimi}

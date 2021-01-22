@@ -131,7 +131,7 @@ export function getMuutLaajennettu(
   data,
   booleans,
   locale,
-  changeObjects,
+  changeObjects = [],
   functions,
   prefix
 ) {

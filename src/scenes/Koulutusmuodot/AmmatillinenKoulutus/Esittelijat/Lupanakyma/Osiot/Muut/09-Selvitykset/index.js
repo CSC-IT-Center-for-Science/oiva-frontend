@@ -8,6 +8,7 @@ const constants = {
 };
 
 const Selvitykset = ({
+  isReadOnly,
   items,
   localeUpper,
   maarayksetByKoodiarvo,
@@ -29,10 +30,11 @@ const Selvitykset = ({
   return (
     <Lomake
       actions={actions}
-      mode={mode}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}
+      isReadOnly={isReadOnly}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}

@@ -10,6 +10,7 @@ const constants = {
 };
 
 const Sisaoppilaitos = ({
+  isReadOnly,
   items,
   localeUpper,
   maarayksetByKoodiarvo,
@@ -48,6 +49,7 @@ const Sisaoppilaitos = ({
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}
+      isReadOnly={isReadOnly}
       mode={mode}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}

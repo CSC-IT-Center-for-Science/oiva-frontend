@@ -4,7 +4,6 @@ import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import {
   compose,
   drop,
-  endsWith,
   find,
   includes,
   mapObjIndexed,

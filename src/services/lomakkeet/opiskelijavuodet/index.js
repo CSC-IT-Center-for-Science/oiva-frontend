@@ -351,7 +351,7 @@ async function getReasoningForm({ isReadOnly }, locale, changeObjects) {
       styleClasses: ["px-10 py-10"],
       components: [
         {
-          anchor: "A",
+          anchor: "vaativatuki",
           name: "TextBox",
           properties: {
             isReadOnly,
@@ -378,7 +378,7 @@ async function getReasoningForm({ isReadOnly }, locale, changeObjects) {
       styleClasses: ["px-10 py-10"],
       components: [
         {
-          anchor: "A",
+          anchor: "sisaoppilaitos",
           name: "TextBox",
           properties: {
             isReadOnly,

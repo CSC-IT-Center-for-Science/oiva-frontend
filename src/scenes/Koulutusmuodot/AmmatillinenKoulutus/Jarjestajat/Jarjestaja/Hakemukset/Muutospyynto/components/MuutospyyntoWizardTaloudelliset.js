@@ -1,10 +1,19 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import wizard from "../../../../../../../../i18n/definitions/wizard";
+import wizard from "i18n/definitions/wizard";
 import PropTypes from "prop-types";
 import { includes, map, pathEq } from "ramda";
 import { Typography } from "@material-ui/core";
 import Lomake from "components/02-organisms/Lomake";
+import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+
+const sectionIds = [
+  "taloudelliset_yleisettiedot",
+  "taloudelliset_investoinnit",
+  "taloudelliset_tilinpaatostiedot",
+  "taloudelliset_liitteet"
+];
 
 const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
   const intl = useIntl();
@@ -12,11 +21,27 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
 
   const isUusiaTutkintolisayksia = includes(
     true,
-    map(pathEq(["properties", "isChecked"], true), tutkinnotCO || [])
+    map(pathEq(["properties", "isChecked"], true), tutkinnotCO || [])
   );
 
+  const [
+    yleisetTiedotCO,
+    actions
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[0]
+  });
+  const [investoinnitCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[1]
+  });
+  const [tilinpaatostiedotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[2]
+  });
+  const [liitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[3]
+  });
+
   return (
-    <div className={`bg-vaalenharmaa ${isReadOnly ? "" : "px-16"} pt-8 w-full m-auto mb-20 border-b border-xs border-harmaa`}>
+    <form>
       <Typography component={headerLevel} variant={headerLevel}>
         {intl.formatMessage(wizard.pageTitle_3)}
       </Typography>
@@ -25,52 +50,72 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
         <p>{intl.formatMessage(wizard.noAddedTutkinnot)}</p>
       ) : (
         <div className="mb-20">
-          {!isReadOnly && <p className={"mb-10"}>
-            {intl.formatMessage(wizard.allFieldsRequired)}
-          </p>}
+          {!isReadOnly && (
+            <p className={"mb-10"}>
+              {intl.formatMessage(wizard.allFieldsRequired)}
+            </p>
+          )}
 
-          <Lomake
-            mode="yleisettiedot"
-            anchor="taloudelliset_yleisettiedot"
-            isReadOnly={isReadOnly}
-            isRowExpanded={true}
-            path={["taloudelliset"]}
-            rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
-            showCategoryTitles={true}
-          ></Lomake>
+          <TutkintomuutoksetContainer scope="taloudellisetYleisetTiedot">
+            <Lomake
+              actions={actions}
+              anchor={sectionIds[0]}
+              changeObjects={yleisetTiedotCO}
+              isReadOnly={isReadOnly}
+              isRowExpanded={true}
+              mode="yleisettiedot"
+              path={["taloudelliset"]}
+              rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
+              showCategoryTitles={true}
+            ></Lomake>
+          </TutkintomuutoksetContainer>
 
-          <Lomake
-            mode="investoinnit"
-            anchor="taloudelliset_investoinnit"
-            isReadOnly={isReadOnly}
-            isRowExpanded={true}
-            path={["taloudelliset"]}
-            rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
-            showCategoryTitles={true}
-          ></Lomake>
+          <TutkintomuutoksetContainer scope="taloudellisetInvestoinnit">
+            <Lomake
+              actions={actions}
+              anchor={sectionIds[1]}
+              changeObjects={investoinnitCO}
+              isReadOnly={isReadOnly}
+              isRowExpanded={true}
+              mode="investoinnit"
+              path={["taloudelliset"]}
+              rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
+              showCategoryTitles={true}
+            ></Lomake>
+          </TutkintomuutoksetContainer>
 
-          <Lomake
-            mode="tilinpaatostiedot"
-            anchor="taloudelliset_tilinpaatostiedot"
-            isReadOnly={isReadOnly}
-            isRowExpanded={true}
-            path={["taloudelliset"]}
-            rowTitle={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}
-            showCategoryTitles={true}
-          ></Lomake>
+          <TutkintomuutoksetContainer scope="taloudellisetTilinpaatostiedot">
+            <Lomake
+              actions={actions}
+              anchor={sectionIds[2]}
+              changeObjects={tilinpaatostiedotCO}
+              isReadOnly={isReadOnly}
+              isRowExpanded={true}
+              mode="tilinpaatostiedot"
+              path={["taloudelliset"]}
+              rowTitle={intl.formatMessage(
+                wizard.taloudellisetTilinpaatostiedot
+              )}
+              showCategoryTitles={true}
+            ></Lomake>
+          </TutkintomuutoksetContainer>
 
-          <Lomake
-            mode="liitteet"
-            anchor={"taloudelliset_liitteet"}
-            isReadOnly={isReadOnly}
-            isRowExpanded={true}
-            path={["taloudelliset"]}
-            rowTitle={intl.formatMessage(wizard.liitteet)}
-            showCategoryTitles={true}
-          ></Lomake>
+          <TutkintomuutoksetContainer scope="taloudellisetLiitteet">
+            <Lomake
+              actions={actions}
+              anchor={sectionIds[3]}
+              changeObjects={liitteetCO}
+              isReadOnly={isReadOnly}
+              isRowExpanded={true}
+              mode="liitteet"
+              path={["taloudelliset"]}
+              rowTitle={intl.formatMessage(wizard.liitteet)}
+              showCategoryTitles={true}
+            ></Lomake>
+          </TutkintomuutoksetContainer>
         </div>
       )}
-    </div>
+    </form>
   );
 };
 

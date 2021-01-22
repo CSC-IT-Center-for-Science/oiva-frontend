@@ -9,7 +9,6 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { parseLupa } from "utils/lupaParser";
 import Jarjestaja from "components/03-templates/Jarjestaja";
 import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaParser";
-import { MuutoksetContainer } from "stores/muutokset";
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
@@ -67,6 +66,7 @@ const JarjestajaSwitch = ({
                     opetuskielet={_props.opetuskielet}
                     organisaatio={_props.organisaatio}
                     viimeisinLupa={_props.viimeisinLupa}
+                    role="KJ"
                   />
                 );
               }}

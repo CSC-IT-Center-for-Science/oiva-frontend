@@ -20,6 +20,7 @@ const UusiAsiaDialogContainer = ({
   muut,
   opetuskielet,
   organisaatio,
+  role,
   viimeisinLupa
 }) => {
   const intl = useIntl();
@@ -47,7 +48,7 @@ const UusiAsiaDialogContainer = ({
     },
     [history, id]
   );
-  // console.info("Rendering UusiAsiaDialogContainer.js...");
+
   return (
     <UusiAsiaDialog
       history={history}
@@ -62,6 +63,7 @@ const UusiAsiaDialogContainer = ({
       onNewDocSave={onNewDocSave}
       opetuskielet={opetuskielet}
       organisation={organisaatio}
+      role={role}
     />
   );
 };

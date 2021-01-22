@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
-import wizardMessages from "i18n/definitions/wizard";
 import Tutkinnot from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Tutkinnot";
 import MuutospyyntoWizardKoulutukset from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardKoulutukset";
 import MuutospyyntoWizardMuut from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardMuut";
@@ -10,7 +9,6 @@ import MuutospyyntoWizardOpiskelijavuodet from "scenes/Koulutusmuodot/Ammatillin
 import MuutospyyntoWizardToimintaalue from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardToimintaalue";
 import Section from "components/03-templates/Section";
 import MuutospyyntoWizardTopThree from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTopThree";
-import Lomake from "components/02-organisms/Lomake";
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
 import { Typography } from "@material-ui/core";
 import FormTitle from "components/00-atoms/FormTitle";
@@ -45,8 +43,8 @@ const EsittelijatMuutospyynto = React.memo(
     mode,
     muut = defaultProps.muut,
     opiskelijavuodet = defaultProps.opiskelijavuodet,
-    // Callback methods
-    handleSubmit
+    role,
+    title
   }) => {
     const intl = useIntl();
     const [kohteet, setKohteet] = useState({});
@@ -118,91 +116,94 @@ const EsittelijatMuutospyynto = React.memo(
       }),
       [intl, lupaKohteet]
     );
-    console.info("Rendering EsittelijatMuutospyynto.js...");
+
     return (
-      <React.Fragment>
-        <form onSubmit={handleSubmit}>
+      <form>
+        {role === "ESITTELIJA" && (
           <Section>
             <div className="w-1/3">
               <Typography component="h2" variant="h2">
                 {intl.formatMessage(common.decisionDetails)}
               </Typography>
-              {/* <MuutospyyntoWizardTopThree /> */}
+              <MuutospyyntoWizardTopThree />
             </div>
           </Section>
-          <Typography component="h2" variant="h2">
-            {intl.formatMessage(common.changesText)}
-          </Typography>
-          <FormTitle
-            code={String(sectionHeadings.tutkinnotJaKoulutukset.number)}
-            title={sectionHeadings.tutkinnotJaKoulutukset.title}
-          />
-          <Tutkinnot
-            code={sectionHeadings.tutkinnotJaKoulutukset.number}
+        )}
+        <Typography component="h2" variant="h2">
+          {title}
+        </Typography>
+        <FormTitle
+          code={String(sectionHeadings.tutkinnotJaKoulutukset.number)}
+          level={isReadOnly ? 3 : 2}
+          title={sectionHeadings.tutkinnotJaKoulutukset.title}
+        />
+        <Tutkinnot
+          code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          isReadOnly={isReadOnly}
+          koulutusalat={koulutusalat}
+          koulutustyypit={koulutustyypit}
+          mode={mode}
+          title={sectionHeadings.tutkinnotJaKoulutukset.title}
+        />
+        <Typography component="h4" variant="h4">
+          {intl.formatMessage(common.koulutukset)}
+        </Typography>
+        <MuutospyyntoWizardKoulutukset
+          isReadOnly={isReadOnly}
+          koulutukset={koulutukset}
+          maaraykset={maaraykset}
+          mode={mode}
+        />
+        <TutkintomuutoksetContainer scope="opetuskielet">
+          <MuutospyyntoWizardOpetuskielet
             isReadOnly={isReadOnly}
-            koulutusalat={koulutusalat}
-            koulutustyypit={koulutustyypit}
             mode={mode}
-            title={sectionHeadings.tutkinnotJaKoulutukset.title}
-          />
-          <Typography component="h4" variant="h4">
-            {intl.formatMessage(common.koulutukset)}
-          </Typography>
-          <MuutospyyntoWizardKoulutukset
+            sectionHeadingsOpetusJaTutkintokieli={
+              sectionHeadings.opetusJaTutkintokieli
+            }
+          ></MuutospyyntoWizardOpetuskielet>
+        </TutkintomuutoksetContainer>
+
+        <Tutkintokielet koulutusalat={koulutusalat} mode={mode} />
+
+        <TutkintomuutoksetContainer scope="toimintaalue">
+          <MuutospyyntoWizardToimintaalue
+            code={String(sectionHeadings.toimintaalue.number)}
             isReadOnly={isReadOnly}
-            koulutukset={koulutukset}
-            maaraykset={maaraykset}
+            lupakohde={lupaKohteet[3]}
             mode={mode}
+            sectionId={"toimintaalue"}
+            title={sectionHeadings.toimintaalue.title}
+            valtakunnallinenMaarays={valtakunnallinenMaarays}
           />
-          <TutkintomuutoksetContainer scope="opetuskielet">
-            <MuutospyyntoWizardOpetuskielet
-              isReadOnly={isReadOnly}
-              mode={mode}
-              sectionHeadingsOpetusJaTutkintokieli={
-                sectionHeadings.opetusJaTutkintokieli
-              }
-            ></MuutospyyntoWizardOpetuskielet>
-          </TutkintomuutoksetContainer>
+        </TutkintomuutoksetContainer>
 
-          <Tutkintokielet koulutusalat={koulutusalat} mode={mode} />
-
-          <TutkintomuutoksetContainer scope="toimintaalue">
-            <MuutospyyntoWizardToimintaalue
-              code={String(sectionHeadings.toimintaalue.number)}
-              lupakohde={lupaKohteet[3]}
-              mode={mode}
-              sectionId={"toimintaalue"}
-              title={sectionHeadings.toimintaalue.title}
-              valtakunnallinenMaarays={valtakunnallinenMaarays}
-            />
-          </TutkintomuutoksetContainer>
-
-          {kohteet.opiskelijavuodet && (
-            <TutkintomuutoksetContainer scope="opiskelijavuodet">
-              <MuutospyyntoWizardOpiskelijavuodet
-                code={String(sectionHeadings.opiskelijavuodet.number)}
-                lupaKohteet={lupaKohteet}
-                maaraykset={maaraykset}
-                mode={mode}
-                muut={muut}
-                opiskelijavuodet={opiskelijavuodet}
-                sectionId={"opiskelijavuodet"}
-                title={sectionHeadings.opiskelijavuodet.title}
-              />
-            </TutkintomuutoksetContainer>
-          )}
-          {kohteet.muut && muut && maaraystyypit && (
-            <MuutospyyntoWizardMuut
-              code={sectionHeadings.muut.number}
+        {kohteet.opiskelijavuodet && (
+          <TutkintomuutoksetContainer scope="opiskelijavuodet">
+            <MuutospyyntoWizardOpiskelijavuodet
+              code={String(sectionHeadings.opiskelijavuodet.number)}
+              lupaKohteet={lupaKohteet}
               maaraykset={maaraykset}
               mode={mode}
               muut={muut}
-              sectionId={"muut"}
-              title={sectionHeadings.muut.title}
+              opiskelijavuodet={opiskelijavuodet}
+              sectionId={"opiskelijavuodet"}
+              title={sectionHeadings.opiskelijavuodet.title}
             />
-          )}
-        </form>
-      </React.Fragment>
+          </TutkintomuutoksetContainer>
+        )}
+        {kohteet.muut && muut && maaraystyypit && (
+          <MuutospyyntoWizardMuut
+            code={sectionHeadings.muut.number}
+            isReadOnly={isReadOnly}
+            maaraykset={maaraykset}
+            mode={mode}
+            muut={muut}
+            sectionId={"muut"}
+            title={sectionHeadings.muut.title}
+          />
+        )}
+      </form>
     );
   }
 );
@@ -216,7 +217,8 @@ EsittelijatMuutospyynto.propTypes = {
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
-  opiskelijavuodet: PropTypes.array
+  opiskelijavuodet: PropTypes.array,
+  role: PropTypes.string
 };
 
 export default EsittelijatMuutospyynto;

@@ -902,6 +902,32 @@ export const muutokset = {
               }
             }
           }
+        ],
+        "07": [
+          {
+            anchor: "muut_07.muumaarays.22.A",
+            properties: {
+              metadata: {
+                koodiarvo: "22",
+                koodisto: {
+                  koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+                }
+              },
+              isChecked: true
+            }
+          },
+          {
+            anchor: "muut_07.muumaarays.22.other.A",
+            properties: {
+              value: "Terveppä terve!",
+              metadata: {
+                koodiarvo: "22",
+                koodisto: {
+                  koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+                }
+              }
+            }
+          }
         ]
       },
       taloudelliset: {
@@ -990,37 +1016,27 @@ export const muutokset = {
     underRemoval: [],
     unsaved: [
       {
-        anchor:
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.omavaraisuusaste",
+        anchor: "muut_07.muumaarays.22.A",
         properties: {
-          value: 124
+          metadata: {
+            koodiarvo: "22",
+            koodisto: {
+              koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+            }
+          },
+          isChecked: true
         }
       },
       {
-        anchor:
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.maksuvalmius",
+        anchor: "muut_07.muumaarays.22.other.A",
         properties: {
-          value: 34666
-        }
-      },
-      {
-        anchor:
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.velkaantuneisuus",
-        properties: {
-          value: 34534
-        }
-      },
-      {
-        anchor:
-          "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.kannattavuus",
-        properties: {
-          value: 236
-        }
-      },
-      {
-        anchor: "taloudelliset_tilinpaatostiedot.tilinpaatostiedot.jaama",
-        properties: {
-          value: 324666
+          value: "Terveppä terve!",
+          metadata: {
+            koodiarvo: "22",
+            koodisto: {
+              koodistoUri: "oivamuutoikeudetvelvollisuudetehdotjatehtavat"
+            }
+          }
         }
       }
     ]

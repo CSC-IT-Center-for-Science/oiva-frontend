@@ -79,10 +79,12 @@ const MuutospyyntoWizardYhteenveto = ({
   }, [jarjestaja]);
 
   return (
-    <div className="bg-vaalenharmaa px-16 pb-20 w-full m-auto mb-20 border-b border-xs border-harmaa">
-      <Typography component="h2" variant="h2">
-        {intl.formatMessage(wizard.pageTitle_4)}
-      </Typography>
+    <React.Fragment>
+      <div className="mt-12">
+        <Typography component="h2" variant="h2">
+          {intl.formatMessage(wizard.pageTitle_4)}
+        </Typography>
+      </div>
 
       <Typography component="h4" variant="h4">
         Organisaation tiedot
@@ -112,10 +114,12 @@ const MuutospyyntoWizardYhteenveto = ({
         muut={muut}
       />
 
-      <MuutospyyntoWizardTaloudelliset
-        isReadOnly={true}
-        tutkinnotCO={tutkinnotCO}
-      />
+      <div className="mt-20">
+        <MuutospyyntoWizardTaloudelliset
+          isReadOnly={true}
+          tutkinnotCO={tutkinnotCO}
+        />
+      </div>
 
       <Lomake
         anchor={"yhteenveto_hakemuksenLiitteet"}
@@ -125,7 +129,7 @@ const MuutospyyntoWizardYhteenveto = ({
         rowTitle={intl.formatMessage(wizard.otherAttachments)}
         showCategoryTitles={true}
       ></Lomake>
-    </div>
+    </React.Fragment>
   );
 };
 

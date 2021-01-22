@@ -12,11 +12,20 @@ const constants = {
 };
 
 const Laajennettu = React.memo(
-  ({ items, localeUpper, maarayksetByKoodiarvo, mode, sectionId }) => {
+  ({
+    isReadOnly,
+    items,
+    localeUpper,
+    maarayksetByKoodiarvo,
+    mode,
+    sectionId
+  }) => {
     const dataLomakepalvelulle = {
       items,
       maarayksetByKoodiarvo
     };
+
+    console.info(sectionId);
 
     const [
       changeObjects,
@@ -31,6 +40,7 @@ const Laajennettu = React.memo(
         anchor={sectionId}
         changeObjects={changeObjects}
         data={dataLomakepalvelulle}
+        isReadOnly={isReadOnly}
         mode={mode}
         path={constants.formLocation}
         rowTitle={items[0].metadata[localeUpper].nimi}

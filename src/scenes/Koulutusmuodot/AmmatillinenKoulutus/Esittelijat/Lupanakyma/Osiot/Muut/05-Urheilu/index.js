@@ -7,7 +7,14 @@ const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "urheilu"]
 };
 
-const Urheilu = ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
+const Urheilu = ({
+  isReadOnly,
+  items,
+  localeUpper,
+  maarayksetByKoodiarvo,
+  mode,
+  sectionId
+}) => {
   const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
@@ -24,8 +31,9 @@ const Urheilu = ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
       actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
-      mode="modification"
       data={dataLomakepalvelulle}
+      isReadOnly={isReadOnly}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={items[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}
