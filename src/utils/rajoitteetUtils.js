@@ -133,13 +133,27 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
         return `${join(
           " ",
           map(tarkenninavain => {
+            /** Skipataan päättymispäiväobjekti, ja käsitellään se yhdessä alkamispäiväobjektin kanssa **/
+            if (tarkenninavain === "paattymispaiva") {
+              return null;
+            }
+            if (tarkenninavain === "alkamispaiva") {
+              const alkamispaivaValue = path(["tarkennin", tarkenninavain, "properties", "value"], asetus) ? 
+                moment(path(["tarkennin", tarkenninavain, "properties", "value"], asetus)).format("DD.MM.YYYY") : "";
+              
+              const paattymispaivaValue = path(["tarkennin", "paattymispaiva", "properties", "value"], asetus) ? 
+                moment(path(["tarkennin", "paattymispaiva", "properties", "value"], asetus)).format("DD.MM.YYYY") : "";
+              
+              return `<ul className="p-0"><li className="p-0">${alkamispaivaValue} - ${paattymispaivaValue}`
+            }
             const tarkenninValue = asetus.kohde.properties.value.value;
             const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
               ? {
                   pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
                   post: "henkilöä"
                 }
-              : getTaydennyssana(tarkenninavain, locale);
+                : null
+              //: getTaydennyssana(tarkenninavain, locale);
             const tarkentimenArvo =
               path(
                 ["properties", "value", "label"],
@@ -170,7 +184,7 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
               }
             } else if (muokattuTarkentimenArvo) {
               return format === "list"
-                ? `<strong>${muokattuTarkentimenArvo}</strong>`
+                ? `<ul className="p-0"><li>${muokattuTarkentimenArvo}`
                 : muokattuTarkentimenArvo;
             }
           }, tarkenninkomponentit)
@@ -242,12 +256,12 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
 export function kayLapiKohdennukset(kohdennukset, locale, lista = [], format) {
   return join(
     " ",
-    values(
+    flatten(values(
       map(kohdennus => {
         return kayLapiKohdennus(kohdennus, locale, lista, format);
       }, kohdennukset)
     )
-  );
+  ));
 }
 
 export function getRajoiteSelkokielella(
