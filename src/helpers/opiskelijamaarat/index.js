@@ -4,13 +4,18 @@ import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import {
   compose,
   drop,
-  endsWith,
   find,
+  hasPath,
   includes,
   mapObjIndexed,
+  not,
   path,
+  pathEq,
+  pipe,
   prop,
   propEq,
+  reject,
+  unnest,
   values
 } from "ramda";
 import { sortRestrictions } from "utils/rajoitteetUtils";
@@ -35,17 +40,29 @@ export const defineBackendChangeObjects = async (
   // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
   // loput toisiinsa "alenevassa polvessa".
   const alimaaraykset = values(
-    mapObjIndexed(changeObjects => {
+    mapObjIndexed(asetukset => {
       return createAlimaarayksetBEObjects(
         kohteet,
         maaraystyypit,
-        null,
-        drop(2, changeObjects)
+        { kohde },
+        // Poista kaksi ensimmäistä asetusta ja asetukset joissa ei ole
+        // value arvoa (kohdennuksenkohdennus).
+        drop(2, reject(pathEq(["properties", "value"], ""),
+          asetukset)
+        )
       );
     }, rajoitteetByRajoiteId)
   );
 
   console.info(alimaaraykset);
+
+  // Lisää kaikki rajoitus muutosobjektit parent muutokselle
+  const paaMuutos = pipe(unnest,
+    find(v => not(path(["parent"], v)))
+  )(alimaaraykset);
+  if (paaMuutos) {
+    paaMuutos.meta = { changeObjects: values(rajoitteetByRajoiteId) };
+  }
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
