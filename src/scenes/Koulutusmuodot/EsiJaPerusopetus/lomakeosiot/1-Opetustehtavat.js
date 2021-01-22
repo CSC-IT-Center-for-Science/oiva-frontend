@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { path, prop, toUpper } from "ramda";
+import { omit } from "ramda";
 import { getOpetustehtavaKoodistoFromStorage } from "helpers/opetustehtavat";
+import equal from "react-fast-compare";
+import common from "../../../../i18n/definitions/common";
+import esiJaPerusopetus from "../../../../i18n/definitions/esiJaPerusopetus";
 
 const constants = {
   mode: "modification",
@@ -11,14 +14,17 @@ const constants = {
 };
 
 const Opetustehtavat = React.memo(
-  ({ code, isPreviewModeOn, maaraykset, mode = constants.mode, sectionId }) => {
+  ({
+    code,
+    isPreviewModeOn,
+    maaraykset,
+    mode = constants.mode,
+    rajoitteet,
+    sectionId
+  }) => {
     const intl = useIntl();
     const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
-    const title = prop(
-      "kuvaus",
-      path(["metadata", toUpper(intl.locale)], opetustehtavakoodisto)
-    );
-
+    const title = intl.formatMessage(common.opetusJotaLupaKoskee)
     /** Fetch opetustehtavaKoodisto from storage */
     useEffect(() => {
       getOpetustehtavaKoodistoFromStorage()
@@ -34,16 +40,19 @@ const Opetustehtavat = React.memo(
       <Lomake
         anchor={sectionId}
         code={code}
-        data={{ maaraykset }}
+        data={{ maaraykset, rajoitteet }}
         formTitle={title}
         mode={mode}
         isPreviewModeOn={isPreviewModeOn}
         isRowExpanded={true}
         path={constants.formLocation}
-        rowTitle={opetustehtavakoodisto.metadata[toUpper(intl.locale)].nimi}
+        rowTitle={intl.formatMessage(esiJaPerusopetus.poOpetustehtava)}
         showCategoryTitles={true}
       ></Lomake>
     ) : null;
+  },
+  (cp, np) => {
+    return equal(omit(["functions"], cp), omit(["functions"], np));
   }
 );
 
@@ -52,6 +61,7 @@ Opetustehtavat.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string
 };
 

@@ -12,6 +12,6 @@ export function initializeLisamaare(lisamaaredata) {
   });
 }
 
-export function getKujalisamaareetFromStorage() {
-  return localforage.getItem("kujalisamaareet");
+export function getKujalisamaareetFromStorage(key) {
+  return localforage.getItem(key || "kujalisamaareet");
 }

@@ -251,7 +251,7 @@ module.exports = {
     lineHeight: {
       none: "1",
       tight: "1.25",
-      bulletList: "1.325",
+      bulletList: "1.3125",
       snug: "1.375",
       normal: "1.5",
       relaxed: "1.625",
@@ -331,7 +331,10 @@ module.exports = {
       "11": "11",
       "12": "12"
     },
-    padding: theme => theme("spacing"),
+    padding: theme => ({
+      revert: "revert",
+      ...theme("spacing")
+    }),
     stroke: {
       current: "currentColor"
     },

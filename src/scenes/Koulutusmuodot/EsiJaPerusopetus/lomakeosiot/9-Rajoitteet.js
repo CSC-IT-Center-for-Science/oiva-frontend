@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import PropTypes from "prop-types";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useIntl } from "react-intl";
 import { v4 as uuidv4 } from "uuid";
@@ -6,13 +7,14 @@ import Lomake from "components/02-organisms/Lomake";
 import { useAllSections } from "stores/lomakedata";
 import { useChangeObjects } from "../../../../stores/muutokset";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
-import Rajoite from "./10-rajoite";
+import Rajoite from "./10-Rajoite";
 
 const constants = {
   formLocations: ["esiJaPerusopetus", "rajoitteet"]
 };
 
 const Rajoitteet = ({
+  isPreviewModeOn,
   isRestrictionsModeOn,
   onChangesUpdate,
   render,
@@ -25,8 +27,8 @@ const Rajoitteet = ({
   const [osioidenData] = useAllSections();
   const [restrictionId, setRestrictionId] = useState(null);
   const [
-    ,
-    { removeRajoite, setRajoitelomakeChangeObjects, showNewRestrictionDialog }
+    changeObjects,
+    { setChanges, setRajoitelomakeChangeObjects, showNewRestrictionDialog }
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
@@ -47,20 +49,21 @@ const Rajoitteet = ({
 
   const onRemoveRestriction = useCallback(
     rajoiteId => {
-      removeRajoite(rajoiteId);
+      setChanges([], `${sectionId}_${rajoiteId}`);
     },
-    [removeRajoite]
+    [sectionId, setChanges]
   );
 
   return (
     <React.Fragment>
-      {isRestrictionDialogVisible && (
+      {isRestrictionDialogVisible && !isPreviewModeOn && (
         <Rajoite
           osioidenData={osioidenData}
           onChangesUpdate={onChangesUpdate}
           parentSectionId={sectionId}
           restrictionId={restrictionId}
-          sectionId={dialogSectionId}></Rajoite>
+          sectionId={dialogSectionId}
+        ></Rajoite>
       )}
       {isRestrictionsModeOn && (
         <Lomake
@@ -75,13 +78,16 @@ const Rajoitteet = ({
           noPadding={true}
           onChangesUpdate={onChangesUpdate}
           path={constants.formLocations}
-          showCategoryTitles={true}></Lomake>
+          showCategoryTitles={true}
+        ></Lomake>
       )}
       {render ? render() : null}
     </React.Fragment>
   );
 };
 
-Rajoitteet.propTypes = {};
+Rajoitteet.propTypes = {
+  isPreviewModeOn: PropTypes.bool
+};
 
 export default Rajoitteet;

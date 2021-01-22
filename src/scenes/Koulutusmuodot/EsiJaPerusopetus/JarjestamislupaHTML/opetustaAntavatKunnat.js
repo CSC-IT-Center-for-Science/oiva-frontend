@@ -53,7 +53,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
       maarays.koodisto === "kunta" &&
       (!maarays.meta.changeObjects ||
-        !includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+        !includes("ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || ""))
     );
   }, maaraykset);
 
@@ -122,19 +122,12 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
           ),
           kunnatFromLupa
         )}
+        {opetustaJarjestetaanUlkomaillaIsChecked && opetustaJarjestetaanUlkomaillaLisatiedotMaarays ?
+          <li>
+            {opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo}
+          </li>
+          : ""}
       </ul>
-      {opetustaJarjestetaanUlkomaillaIsChecked && (
-        <div className="mb-4">
-          <Typography component="h4" variant="h4">
-            {intl.formatMessage(
-              education.opetustaJarjestetaanSuomenUlkopuolella
-            )}
-          </Typography>
-          {opetustaJarjestetaanUlkomaillaLisatiedotMaarays
-            ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo
-            : ""}
-        </div>
-      )}
       <p className="mb-6">{lisatietomaarays && lisatietomaarays.meta.arvo}</p>
     </div>
   ) : null;

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import moment from "moment";
 import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 import Typography from "@material-ui/core/Typography";
@@ -28,6 +29,7 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
           koulutusmuodon: "esi- ja perusopetuksen"
         })}
       </Typography>
+      <p className="mb-4">{formatMessage(esiJaPerusopetus.esittelyteksti)}</p>
 
       <LupanakymaA
         isPreviewModeOn={true}

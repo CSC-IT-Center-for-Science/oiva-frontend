@@ -100,10 +100,13 @@ const Datepicker = ({
   );
 
   useEffect(() => {
-    if (value !== selectedDate || !selectedDate) {
+    if(!selectedDate) {
+      setSelectedDate("")
+      onChanges({ forChangeObject, fullAnchor }, { value: "" });
+    } else if (value !== selectedDate) {
       setSelectedDate(value);
     }
-  }, [value, selectedDate]);
+  }, [value, selectedDate, forChangeObject, fullAnchor, onChanges]);
 
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={localeMap[locale]}>

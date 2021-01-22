@@ -1,22 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Lomake from "../../../../../../../../../components/02-organisms/Lomake";
-import { useLomakedata } from "stores/lomakedata";
 
 const constants = {
   formLocation: ["kielet", "tutkintokielet"]
 };
 
-const Koulutusala = ({ koodiarvo, sectionId, title }) => {
-  const [tutkintodata] = useLomakedata({
-    anchor: "tutkinnot"
-  });
-
+const Koulutusala = ({ aktiivisetTutkinnot, sectionId, title }) => {
   return (
     <Lomake
       mode="modification"
       anchor={sectionId}
-      data={tutkintodata[koodiarvo]}
+      data={{ aktiiviset: aktiivisetTutkinnot }}
       path={constants.formLocation}
       rowTitle={title}
       showCategoryTitles={true}

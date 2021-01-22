@@ -1540,6 +1540,31 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.opetusJotaLupaKoskee",
+    "defaultMessage": "Opetus, jota lupa koskee",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.autocompleteValitse",
+    "defaultMessage": "Valitse...",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asianumero",
+    "defaultMessage": "asianumero",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.paatospaiva",
+    "defaultMessage": "Päätöspäivä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.voimaantulopaiva",
+    "defaultMessage": "Voimaantulopäivä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1586,7 +1611,7 @@
   },
   {
     "id": "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä koulukotiopetusmuotoisena",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
@@ -1692,6 +1717,16 @@
   {
     "id": "esiJaPerusopetus.paasivunOtsikko",
     "defaultMessage": "Esi- ja perusopetuksen järjestäjät",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.poOpetustehtava",
+    "defaultMessage": "PO Opetustehtävä",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia esi- ja perusopetuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä.",
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
@@ -1830,6 +1865,16 @@
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
+    "id": "rajoitteet.muokkaaRajoitetta",
+    "defaultMessage": "Muokkaa",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.poistaRajoite",
+    "defaultMessage": "Poista",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
     "id": "rajoitteet.rajoite",
     "defaultMessage": "Rajoite",
     "filepath": "src/i18n/definitions/rajoitteet.js"
@@ -1837,6 +1882,11 @@
   {
     "id": "rajoitteet.rajoitteet",
     "defaultMessage": "Rajoitteet",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.lisaaAlirajoite",
+    "defaultMessage": "Lisää alirajoite",
     "filepath": "src/i18n/definitions/rajoitteet.js"
   },
   {
@@ -1862,6 +1912,11 @@
   {
     "id": "vapaaSivistystyo.paasivunOtsikko",
     "defaultMessage": "Vapaan sivistystyön oppilaitosten ylläpitäjät",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä.",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {

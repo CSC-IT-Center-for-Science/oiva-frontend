@@ -2,6 +2,7 @@ import {
   compose,
   flatten,
   groupBy,
+  last,
   mapObjIndexed,
   nth,
   prop,
@@ -17,17 +18,13 @@ export function rajoitteet(
 ) {
   // data.restrictions = luvalta tulevat rajoitteet
   const changeObjectsByRajoiteId = groupBy(
-    compose(nth(1), split("."), prop("anchor")),
+    compose(last, split("_"), nth(0), split("."), prop("anchor")),
     changeObjects
   );
 
   const rajoitteetGrouped = mapObjIndexed(changeObjects => {
     return {
-      changeObjects,
-      elements: groupBy(
-        compose(nth(2), split("."), prop("anchor")),
-        changeObjects
-      )
+      changeObjects
     };
   }, changeObjectsByRajoiteId);
 
@@ -67,6 +64,9 @@ export function rajoitteet(
             anchor: "A",
             name: "RajoitteetList",
             properties: {
+              areTitlesVisible: false,
+              isBorderVisible: false,
+              locale,
               onModifyRestriction,
               onRemoveRestriction,
               rajoitteet: rajoitteetGrouped

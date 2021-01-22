@@ -5,6 +5,7 @@ import common from "i18n/definitions/common";
 import wizard from "i18n/definitions/wizard";
 import Lomake from "components/02-organisms/Lomake";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import equal from "react-fast-compare";
 import * as R from "ramda";
 
 const constants = {
@@ -18,6 +19,7 @@ const OpetustaAntavatKunnat = React.memo(
     isPreviewModeOn,
     lupakohde,
     maaraykset,
+    rajoitteet,
     sectionId,
     title,
     valtakunnallinenMaarays
@@ -107,6 +109,7 @@ const OpetustaAntavatKunnat = React.memo(
         anchor={sectionId}
         code={code}
         data={{
+          changeObjectsByProvince: Object.assign({}, provinceChanges),
           fiCode,
           isEditViewActive,
           isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
@@ -136,8 +139,8 @@ const OpetustaAntavatKunnat = React.memo(
           kuntamaaraykset,
           maakuntamaaraykset,
           maaraykset,
-          changeObjectsByProvince: Object.assign({}, provinceChanges),
           quickFilterChanges,
+          rajoitteet,
           valtakunnallinenMaarays
         }}
         functions={{
@@ -154,6 +157,9 @@ const OpetustaAntavatKunnat = React.memo(
         formTitle={title}
       />
     );
+  },
+  (cp, np) => {
+    return equal(R.omit(["functions"], cp), R.omit(["functions"], np));
   }
 );
 
@@ -163,6 +169,7 @@ OpetustaAntavatKunnat.propTypes = {
   kuntamaaraykset: PropTypes.array,
   lupakohde: PropTypes.object,
   maaraykset: PropTypes.array,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string,
   valtakunnallinenMaarays: PropTypes.object
