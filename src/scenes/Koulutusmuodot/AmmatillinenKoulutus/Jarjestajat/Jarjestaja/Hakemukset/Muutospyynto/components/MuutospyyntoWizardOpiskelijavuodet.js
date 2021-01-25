@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "helpers/lupa";
 import { useLomakedata } from "stores/lomakedata";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
@@ -14,10 +14,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     const [muutLomakedata] = useLomakedata({
       anchor: "muut"
     });
-    const [
-      changeObjects,
-      actions
-    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: sectionId
     });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
@@ -28,7 +25,6 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
 
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake
-        actions={actions}
         anchor={sectionId}
         changeObjects={changeObjects}
         code={code}

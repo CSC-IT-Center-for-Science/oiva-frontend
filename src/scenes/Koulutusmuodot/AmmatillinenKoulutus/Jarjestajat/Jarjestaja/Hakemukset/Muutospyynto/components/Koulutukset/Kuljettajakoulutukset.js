@@ -5,7 +5,7 @@ import { getDataForKoulutusList } from "utils/koulutusUtil";
 import Lomake from "components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import { toUpper } from "ramda";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["koulutukset", "kuljettajakoulutukset"]
@@ -21,7 +21,7 @@ const Kuljettajakoulutukset = ({
   const sectionId = "koulutukset_kuljettajakoulutukset";
   const koodisto = "kuljettajakoulutus";
 
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
 
@@ -39,7 +39,6 @@ const Kuljettajakoulutukset = ({
 
   return (
     <Lomake
-      actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={lomakedata}

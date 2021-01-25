@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import Lomake from "components/02-organisms/Lomake";
 import { useIntl } from "react-intl";
 import wizardMessages from "i18n/definitions/wizard";
@@ -16,13 +16,12 @@ const MuutospyyntoWizardOpetuskielet = ({
 }) => {
   const intl = useIntl();
   const sectionId = "kielet_opetuskielet";
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
 
   return (
     <Lomake
-      actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       code={String(sectionHeadingsOpetusJaTutkintokieli.number)}

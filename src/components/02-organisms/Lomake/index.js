@@ -11,6 +11,7 @@ import { getReducedStructure } from "../CategorizedListRoot/utils";
 import FormTitle from "components/00-atoms/FormTitle";
 import { getReducedStructureIncludingChanges } from "./utils";
 import equal from "react-fast-compare";
+import { useChangeObjects } from "stores/muutokset";
 
 const defaultProps = {
   changeObjects: [],
@@ -32,7 +33,6 @@ const defaultProps = {
 
 const Lomake = React.memo(
   ({
-    actions,
     anchor,
     changeObjects = defaultProps.changeObjects,
     code,
@@ -64,7 +64,7 @@ const Lomake = React.memo(
         }
       : rowMessages;
 
-    // const [{ focusOn }] = useChangeObjects();
+    const [{ focusOn }, { setFocusOn, setChanges }] = useChangeObjects();
 
     const [, lomakedataActions] = useLomakedata({
       anchor: lomakedataAnchor || anchor
@@ -74,26 +74,25 @@ const Lomake = React.memo(
 
     const onChangesRemove = useCallback(
       anchor => {
-        actions.setChanges([], anchor);
+        setChanges([], anchor);
       },
-      [actions]
+      [setChanges]
     );
 
     const onChangesUpdate = useCallback(
       ({ anchor, changes }) => {
-        actions.setChanges(changes, anchor);
+        setChanges(changes, anchor);
       },
-      [actions]
+      [setChanges]
     );
 
-    // const onFocus = useCallback(() => {
-    //   actions.setFocusOn(null);
-    // }, [actions]);
+    const onFocus = useCallback(() => {
+      setFocusOn(null);
+    }, [setFocusOn]);
 
     useEffect(() => {
       (async () => {
         async function fetchLomake(_mode, _changeObjects, _data, _functions) {
-          // console.info("NOUDETAAN LOMAKE...", anchor, _path);
           return await getLomake(
             _mode || mode,
             _changeObjects || changeObjects,
@@ -163,7 +162,6 @@ const Lomake = React.memo(
     ]);
 
     if (Array.isArray(lomake) && lomake.length) {
-      // console.info("Rendering LOMAKE", anchor, _path, changeObjects);
       return (
         <div>
           {code || formTitle ? (
@@ -191,11 +189,11 @@ const Lomake = React.memo(
               <div className={noPadding ? "" : "p-8"}>
                 <CategorizedListRoot
                   anchor={anchor}
-                  // focusOn={focusOn}
+                  focusOn={focusOn}
                   categories={lomake}
                   changes={changeObjects}
                   isReadOnly={isReadOnly}
-                  // onFocus={onFocus}
+                  onFocus={onFocus}
                   onUpdate={onChangesUpdate}
                   showCategoryTitles={showCategoryTitles}
                   showValidationErrors={showValidationErrors}
@@ -208,12 +206,12 @@ const Lomake = React.memo(
           ) : mode !== "reasoning" || length(changeObjects) ? (
             <CategorizedListRoot
               anchor={anchor}
-              // focusOn={focusOn}
+              focusOn={focusOn}
               categories={lomake}
               isPreviewModeOn={isPreviewModeOn}
               isReadOnly={isReadOnly}
               changes={changeObjects}
-              // onFocus={onFocus}
+              onFocus={onFocus}
               onUpdate={onChangesUpdate}
               showCategoryTitles={showCategoryTitles}
               showValidationErrors={showValidationErrors}

@@ -19,7 +19,7 @@ import {
   useChangeObjectsByAnchorWithoutUnderRemoval,
   useUnderRemovalChangeObjects,
   useUnsavedChangeObjects
-} from "../../../stores/muutokset";
+} from "stores/muutokset";
 import { createObjectToSave } from "helpers/ammatillinenKoulutus/tallentaminen/esittelijat";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import equal from "react-fast-compare";
@@ -133,30 +133,30 @@ const UusiAsiaDialog = React.memo(
     ]);
 
     // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
-    // const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "topthree"
-    // });
+    const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "topthree"
+    });
     const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "tutkinnot"
     });
-    // const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "koulutukset"
-    // });
-    // const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "kielet_opetuskielet"
-    // });
-    // const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "kielet_tutkintokielet"
-    // });
-    // const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "toimintaalue"
-    // });
-    // const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "opiskelijavuodet"
-    // });
-    // const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    //   anchor: "muut"
-    // });
+    const [koulutuksetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "koulutukset"
+    });
+    const [opetuskieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "kielet_opetuskielet"
+    });
+    const [tutkintokieletCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "kielet_tutkintokielet"
+    });
+    const [toimintaalueCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "toimintaalue"
+    });
+    const [opiskelijavuodetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opiskelijavuodet"
+    });
+    const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "muut"
+    });
     // const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     //   anchor: "rajoitteet"
     // });
@@ -259,14 +259,14 @@ const UusiAsiaDialog = React.memo(
             organisation,
             lupa,
             {
-              // koulutukset: koulutuksetCO,
-              // muut: muutCO,
-              // opetuskielet: opetuskieletCO,
-              // opiskelijavuodet: opiskelijavuodetCO,
-              // toimintaalue: toimintaalueCO,
-              // topthree: topThreeCO,
-              // tutkinnot: tutkinnotCO,
-              // tutkintokielet: tutkintokieletCO,
+              koulutukset: koulutuksetCO,
+              muut: muutCO,
+              opetuskielet: opetuskieletCO,
+              opiskelijavuodet: opiskelijavuodetCO,
+              toimintaalue: toimintaalueCO,
+              topthree: topThreeCO,
+              tutkinnot: tutkinnotCO,
+              tutkintokielet: tutkintokieletCO
               // rajoitteet: rajoitteetCO
             },
             uuid,
@@ -306,29 +306,28 @@ const UusiAsiaDialog = React.memo(
         kohteet,
         initializeChanges,
         intl.locale,
-        // koulutuksetCO,
+        koulutuksetCO,
         lomakedata,
         lupa,
         lupaKohteet,
         maaraystyypit,
         muut,
-        // muutCO,
+        muutCO,
         onNewDocSave,
         onPreview,
         onSave,
+        opetuskieletCO,
+        opiskelijavuodetCO,
         organisation,
-        // opetuskieletCO,
-        // opiskelijavuodetCO,
-        // organisation,
         // rajoitteetCO,
-        // toimintaalueCO,
-        // topThreeCO,
-        // tutkinnotCO,
-        // tutkintokieletCO,
+        toimintaalueCO,
+        topThreeCO,
+        tutkinnotCO,
+        tutkintokieletCO,
         uuid
       ]
     );
-    // console.info("Rendering UusiAsiaDialog.js...");
+
     return (
       changeObjects !== null && (
         <div className="max-w-7xl">
@@ -360,11 +359,13 @@ const UusiAsiaDialog = React.memo(
             <DialogContentWithStyles>
               <OrganisationInfo organisation={organisation} />
               <div className="w-full xxl:w-4/5 max-w-8xl m-auto mb-32">
-                <StepperNavigation
-                  activeStep={page - 1}
-                  stepProps={steps}
-                  handleStepChange={handleStep}
-                />
+                {role === "KJ" && (
+                  <StepperNavigation
+                    activeStep={page - 1}
+                    stepProps={steps}
+                    handleStepChange={handleStep}
+                  />
+                )}
                 {!R.isEmpty(organisation) ? (
                   <div
                     className={`border-t-2 ${

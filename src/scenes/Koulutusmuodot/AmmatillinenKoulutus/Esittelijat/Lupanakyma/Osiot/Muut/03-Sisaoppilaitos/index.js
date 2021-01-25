@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import { find, path, propEq } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "sisaoppilaitos"]
@@ -21,7 +21,7 @@ const Sisaoppilaitos = ({
     anchor: "opiskelijavuodet"
   });
 
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
 
@@ -45,7 +45,6 @@ const Sisaoppilaitos = ({
 
   return (
     <Lomake
-      actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}

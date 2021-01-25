@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Lomake from "components/02-organisms/Lomake";
 import { useParams } from "react-router-dom";
 import { useIntl } from "react-intl";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const MuutospyyntoWizardTopThree = React.memo(() => {
   const { uuid } = useParams();
@@ -12,7 +12,7 @@ const MuutospyyntoWizardTopThree = React.memo(() => {
   };
   const sectionId = "topthree";
 
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
 
@@ -26,7 +26,6 @@ const MuutospyyntoWizardTopThree = React.memo(() => {
 
   return (
     <Lomake
-      actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={lomakedata}

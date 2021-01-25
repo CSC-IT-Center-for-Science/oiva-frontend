@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import wizard from "i18n/definitions/wizard";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import * as R from "ramda";
 
 const constants = {

@@ -15,7 +15,7 @@ import {
 } from "ramda";
 import wizard from "i18n/definitions/wizard";
 import Typography from "@material-ui/core/Typography";
-import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
+import { TutkintomuutoksetContainer } from "stores/muutokset";
 
 const Tutkintokielet = ({ koulutusalat, maaraykset, mode }) => {
   const sectionId = "kielet_tutkintokielet";
@@ -37,20 +37,16 @@ const Tutkintokielet = ({ koulutusalat, maaraykset, mode }) => {
         );
         if (length(aktiivisetTutkinnot) || mode === "reasoning") {
           return (
-            <TutkintomuutoksetContainer
+            <Koulutusala
+              aktiivisetTutkinnot={aktiivisetTutkinnot}
               key={koulutusala.koodiarvo}
-              scope={`tutkintokielet_${koulutusala.koodiarvo}`}
-            >
-              <Koulutusala
-                aktiivisetTutkinnot={aktiivisetTutkinnot}
-                koodiarvo={koulutusala.koodiarvo}
-                koulutusalakoodiarvo={koulutusala.koodiarvo}
-                maaraykset={maaraykset}
-                mode={mode}
-                sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
-                title={`${koulutusala.metadata[toUpper(intl.locale)].nimi}`}
-              />
-            </TutkintomuutoksetContainer>
+              koodiarvo={koulutusala.koodiarvo}
+              koulutusalakoodiarvo={koulutusala.koodiarvo}
+              maaraykset={maaraykset}
+              mode={mode}
+              sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
+              title={`${koulutusala.metadata[toUpper(intl.locale)].nimi}`}
+            />
           );
         } else {
           return null;

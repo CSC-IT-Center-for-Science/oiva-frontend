@@ -5,8 +5,7 @@ import PropTypes from "prop-types";
 import { includes, map, pathEq } from "ramda";
 import { Typography } from "@material-ui/core";
 import Lomake from "components/02-organisms/Lomake";
-import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const sectionIds = [
   "taloudelliset_yleisettiedot",
@@ -24,10 +23,7 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
     map(pathEq(["properties", "isChecked"], true), tutkinnotCO || [])
   );
 
-  const [
-    yleisetTiedotCO,
-    actions
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [yleisetTiedotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionIds[0]
   });
   const [investoinnitCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -56,63 +52,49 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
             </p>
           )}
 
-          <TutkintomuutoksetContainer scope="taloudellisetYleisetTiedot">
-            <Lomake
-              actions={actions}
-              anchor={sectionIds[0]}
-              changeObjects={yleisetTiedotCO}
-              isReadOnly={isReadOnly}
-              isRowExpanded={true}
-              mode="yleisettiedot"
-              path={["taloudelliset"]}
-              rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
-              showCategoryTitles={true}
-            ></Lomake>
-          </TutkintomuutoksetContainer>
+          <Lomake
+            anchor={sectionIds[0]}
+            changeObjects={yleisetTiedotCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="yleisettiedot"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
+            showCategoryTitles={true}
+          ></Lomake>
 
-          <TutkintomuutoksetContainer scope="taloudellisetInvestoinnit">
-            <Lomake
-              actions={actions}
-              anchor={sectionIds[1]}
-              changeObjects={investoinnitCO}
-              isReadOnly={isReadOnly}
-              isRowExpanded={true}
-              mode="investoinnit"
-              path={["taloudelliset"]}
-              rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
-              showCategoryTitles={true}
-            ></Lomake>
-          </TutkintomuutoksetContainer>
+          <Lomake
+            anchor={sectionIds[1]}
+            changeObjects={investoinnitCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="investoinnit"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
+            showCategoryTitles={true}
+          ></Lomake>
 
-          <TutkintomuutoksetContainer scope="taloudellisetTilinpaatostiedot">
-            <Lomake
-              actions={actions}
-              anchor={sectionIds[2]}
-              changeObjects={tilinpaatostiedotCO}
-              isReadOnly={isReadOnly}
-              isRowExpanded={true}
-              mode="tilinpaatostiedot"
-              path={["taloudelliset"]}
-              rowTitle={intl.formatMessage(
-                wizard.taloudellisetTilinpaatostiedot
-              )}
-              showCategoryTitles={true}
-            ></Lomake>
-          </TutkintomuutoksetContainer>
+          <Lomake
+            anchor={sectionIds[2]}
+            changeObjects={tilinpaatostiedotCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="tilinpaatostiedot"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}
+            showCategoryTitles={true}
+          ></Lomake>
 
-          <TutkintomuutoksetContainer scope="taloudellisetLiitteet">
-            <Lomake
-              actions={actions}
-              anchor={sectionIds[3]}
-              changeObjects={liitteetCO}
-              isReadOnly={isReadOnly}
-              isRowExpanded={true}
-              mode="liitteet"
-              path={["taloudelliset"]}
-              rowTitle={intl.formatMessage(wizard.liitteet)}
-              showCategoryTitles={true}
-            ></Lomake>
-          </TutkintomuutoksetContainer>
+          <Lomake
+            anchor={sectionIds[3]}
+            changeObjects={liitteetCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="liitteet"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.liitteet)}
+            showCategoryTitles={true}
+          ></Lomake>
         </div>
       )}
     </form>

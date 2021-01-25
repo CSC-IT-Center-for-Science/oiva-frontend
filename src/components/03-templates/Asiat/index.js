@@ -68,9 +68,10 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
           onClose={() => setIsEsidialogVisible(false)}
           onSelect={selectedItem =>
             history.push(
-              `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi`
+              `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi/1`
             )
-          }></UusiAsiaEsidialog>
+          }
+        ></UusiAsiaEsidialog>
       )}
 
       <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
@@ -83,7 +84,8 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
               <Typography
                 component="h2"
                 variant="h2"
-                style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}>
+                style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}
+              >
                 {koulutusmuoto.paasivunOtsikko}
               </Typography>
               <div>
@@ -103,7 +105,8 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
               textColor="primary"
               onChange={(e, val) => {
                 history.push(val);
-              }}>
+              }}
+            >
               <OivaTab
                 label={t(common.asiatOpen)}
                 aria-label={t(common.asiatReady)}

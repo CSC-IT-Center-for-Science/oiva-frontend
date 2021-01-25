@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "urheilu"]
@@ -15,7 +15,7 @@ const Urheilu = ({
   mode,
   sectionId
 }) => {
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
   const dataLomakepalvelulle = useMemo(
@@ -28,7 +28,6 @@ const Urheilu = ({
 
   return (
     <Lomake
-      actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={dataLomakepalvelulle}

@@ -12,9 +12,8 @@ import MuutospyyntoWizardTopThree from "scenes/Koulutusmuodot/AmmatillinenKoulut
 import Tutkintokielet from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/Kielet/Tutkintokielet";
 import { Typography } from "@material-ui/core";
 import FormTitle from "components/00-atoms/FormTitle";
-import * as R from "ramda";
 import MuutospyyntoWizardOpetuskielet from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardOpetuskielet";
-import { TutkintomuutoksetContainer } from "stores/tutkintomuutokset";
+import * as R from "ramda";
 
 const defaultProps = {
   isReadOnly: false,
@@ -154,15 +153,14 @@ const EsittelijatMuutospyynto = React.memo(
           maaraykset={maaraykset}
           mode={mode}
         />
-        <TutkintomuutoksetContainer scope="opetuskielet">
-          <MuutospyyntoWizardOpetuskielet
-            isReadOnly={isReadOnly}
-            mode={mode}
-            sectionHeadingsOpetusJaTutkintokieli={
-              sectionHeadings.opetusJaTutkintokieli
-            }
-          ></MuutospyyntoWizardOpetuskielet>
-        </TutkintomuutoksetContainer>
+
+        <MuutospyyntoWizardOpetuskielet
+          isReadOnly={isReadOnly}
+          mode={mode}
+          sectionHeadingsOpetusJaTutkintokieli={
+            sectionHeadings.opetusJaTutkintokieli
+          }
+        ></MuutospyyntoWizardOpetuskielet>
 
         <Tutkintokielet
           koulutusalat={koulutusalat}
@@ -170,31 +168,27 @@ const EsittelijatMuutospyynto = React.memo(
           mode={mode}
         />
 
-        <TutkintomuutoksetContainer scope="toimintaalue">
-          <MuutospyyntoWizardToimintaalue
-            code={String(sectionHeadings.toimintaalue.number)}
-            isReadOnly={isReadOnly}
-            lupakohde={lupaKohteet[3]}
-            mode={mode}
-            sectionId={"toimintaalue"}
-            title={sectionHeadings.toimintaalue.title}
-            valtakunnallinenMaarays={valtakunnallinenMaarays}
-          />
-        </TutkintomuutoksetContainer>
+        <MuutospyyntoWizardToimintaalue
+          code={String(sectionHeadings.toimintaalue.number)}
+          isReadOnly={isReadOnly}
+          lupakohde={lupaKohteet[3]}
+          mode={mode}
+          sectionId={"toimintaalue"}
+          title={sectionHeadings.toimintaalue.title}
+          valtakunnallinenMaarays={valtakunnallinenMaarays}
+        />
 
         {kohteet.opiskelijavuodet && (
-          <TutkintomuutoksetContainer scope="opiskelijavuodet">
-            <MuutospyyntoWizardOpiskelijavuodet
-              code={String(sectionHeadings.opiskelijavuodet.number)}
-              lupaKohteet={lupaKohteet}
-              maaraykset={maaraykset}
-              mode={mode}
-              muut={muut}
-              opiskelijavuodet={opiskelijavuodet}
-              sectionId={"opiskelijavuodet"}
-              title={sectionHeadings.opiskelijavuodet.title}
-            />
-          </TutkintomuutoksetContainer>
+          <MuutospyyntoWizardOpiskelijavuodet
+            code={String(sectionHeadings.opiskelijavuodet.number)}
+            lupaKohteet={lupaKohteet}
+            maaraykset={maaraykset}
+            mode={mode}
+            muut={muut}
+            opiskelijavuodet={opiskelijavuodet}
+            sectionId={"opiskelijavuodet"}
+            title={sectionHeadings.opiskelijavuodet.title}
+          />
         )}
         {kohteet.muut && muut && maaraystyypit && (
           <MuutospyyntoWizardMuut

@@ -38,7 +38,8 @@ const Asianhallinta = ({
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
                 to={"/asianhallinta/esijaperusopetus"}
                 exact={true}
-                style={{ textDecoration: "none", color: "inherit" }}>
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 {intl.formatMessage(education.preAndBasicEducation)}
                 <ArrowForwardIcon className="ml-4" />
               </NavLink>
@@ -46,7 +47,8 @@ const Asianhallinta = ({
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
                 to={"/asianhallinta/lukio"}
                 exact={true}
-                style={{ textDecoration: "none", color: "inherit" }}>
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 {intl.formatMessage(education.highSchoolEducation)}
                 <ArrowForwardIcon className="ml-4" />
               </NavLink>
@@ -54,7 +56,8 @@ const Asianhallinta = ({
                 className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
                 to={"/asianhallinta/ammatillinen"}
                 exact={true}
-                style={{ textDecoration: "none", color: "inherit" }}>
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 {intl.formatMessage(education.vocationalEducation)}
                 <ArrowForwardIcon className="ml-4" />
               </NavLink>
@@ -66,16 +69,17 @@ const Asianhallinta = ({
       <Router history={history}>
         <Switch>
           {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
-          <Route
-            path={`/${koulutusmuoto.kebabCase}/asianhallinta`}
-            render={() => (
-              <Esittelijat
-                AsiaDialogContainer={AsiaDialogContainer}
-                koulutusmuoto={koulutusmuoto}
-                UusiAsiaDialogContainer={UusiAsiaDialogContainer}
-              />
-            )}
-          />) : null}
+            <Route
+              path={`/${koulutusmuoto.kebabCase}/asianhallinta`}
+              render={() => (
+                <Esittelijat
+                  AsiaDialogContainer={AsiaDialogContainer}
+                  koulutusmuoto={koulutusmuoto}
+                  UusiAsiaDialogContainer={UusiAsiaDialogContainer}
+                />
+              )}
+            />
+          ) : null}
         </Switch>
       </Router>
     </React.Fragment>

@@ -24,6 +24,7 @@ const AsiaDialogContainer = ({
   muut,
   opetuskielet,
   organisaatio,
+  role,
   viimeisinLupa
 }) => {
   const intl = useIntl();
@@ -77,8 +78,9 @@ const AsiaDialogContainer = ({
       lupaKohteet={lupaKohteet}
       maaraystyypit={maaraystyypit}
       muut={muut}
-      opetuskielet={opetuskielet}
       organisation={organisaatio}
+      opetuskielet={opetuskielet}
+      role={role}
     />
   ) : (
     <Loading />

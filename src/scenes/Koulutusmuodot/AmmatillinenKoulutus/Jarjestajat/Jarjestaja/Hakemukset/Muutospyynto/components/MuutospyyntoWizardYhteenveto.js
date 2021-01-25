@@ -7,6 +7,7 @@ import Lomake from "components/02-organisms/Lomake";
 import { find, prop, mapObjIndexed, values } from "ramda";
 import MuutospyyntoWizardTaloudelliset from "./MuutospyyntoWizardTaloudelliset";
 import EsittelijatMuutospyynto from "scenes/Koulutusmuodot/AmmatillinenKoulutus/EsittelijatMuutospyynto";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const MuutospyyntoWizardYhteenveto = ({
   kohteet,
@@ -21,6 +22,17 @@ const MuutospyyntoWizardYhteenveto = ({
   muut,
   tutkinnotCO
 }) => {
+  const [
+    changeObjectsYleisetTiedot
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "yhteenveto_yleisettiedot"
+  });
+  const [
+    changeObjectsHakemuksenLiiteet
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "yhteenveto_hakemuksenLiitteet"
+  });
+
   const intl = useIntl();
   const jarjestaja = useMemo(() => {
     const nimi = {
@@ -94,6 +106,7 @@ const MuutospyyntoWizardYhteenveto = ({
 
       <Lomake
         anchor="yhteenveto_yleisettiedot"
+        changeObjects={changeObjectsYleisetTiedot}
         isRowExpanded={true}
         mode="modification"
         path={["yhteenveto", "yleisetTiedot"]}
@@ -107,8 +120,8 @@ const MuutospyyntoWizardYhteenveto = ({
         koulutukset={koulutukset}
         koulutusalat={koulutusalat}
         koulutustyypit={koulutustyypit}
-        maaraykset={maaraykset}
         lupaKohteet={lupaKohteet}
+        maaraykset={maaraykset}
         maaraystyypit={maaraystyypit}
         mode={mode}
         muut={muut}
@@ -123,6 +136,8 @@ const MuutospyyntoWizardYhteenveto = ({
 
       <Lomake
         anchor={"yhteenveto_hakemuksenLiitteet"}
+        changeObjects={changeObjectsHakemuksenLiiteet}
+        isReadOnly={true}
         isRowExpanded={true}
         mode="modification"
         path={["yhteenveto", "liitteet"]}

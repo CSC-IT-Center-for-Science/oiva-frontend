@@ -5,7 +5,7 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import { toUpper } from "ramda";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/tutkintomuutokset";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["koulutukset", "atvKoulutukset"]
@@ -15,7 +15,7 @@ const ATVKoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
   const intl = useIntl();
   const sectionId = "koulutukset_atvKoulutukset";
 
-  const [changeObjects, actions] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
 
@@ -32,7 +32,6 @@ const ATVKoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
 
   return (
     <Lomake
-      actions={actions}
       anchor={sectionId}
       changeObjects={changeObjects}
       data={lomakedata}

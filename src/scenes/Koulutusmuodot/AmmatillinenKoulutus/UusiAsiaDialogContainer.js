@@ -44,7 +44,7 @@ const UusiAsiaDialogContainer = ({
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(`/ammatillinenkoulutus/asianhallinta/${id}/${uuid}`);
+      history.push(`/ammatillinenkoulutus/asianhallinta/${id}/${uuid}/1`);
     },
     [history, id]
   );

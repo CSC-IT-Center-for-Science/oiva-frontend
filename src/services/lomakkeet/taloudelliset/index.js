@@ -209,7 +209,6 @@ function getTilinpaatostiedotForm(isReadOnly) {
 }
 
 function getLiitteetForm(isReadOnly) {
-  console.info(isReadOnly);
   return [
     {
       anchor: "liitteet",
