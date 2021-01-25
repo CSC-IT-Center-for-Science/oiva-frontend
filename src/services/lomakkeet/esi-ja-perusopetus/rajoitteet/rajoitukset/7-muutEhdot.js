@@ -5,7 +5,6 @@ import {
   filter,
   find,
   flatten,
-  length,
   map,
   path,
   prop,
@@ -20,7 +19,7 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
   if (muutEhdot.length) {
     return [
       {
-        anchor: "muutEhdot",
+        anchor: "komponentti",
         name: "Autocomplete",
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
