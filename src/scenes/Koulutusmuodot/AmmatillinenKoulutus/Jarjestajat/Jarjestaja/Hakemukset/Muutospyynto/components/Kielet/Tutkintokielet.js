@@ -15,7 +15,6 @@ import {
 } from "ramda";
 import wizard from "i18n/definitions/wizard";
 import Typography from "@material-ui/core/Typography";
-import { TutkintomuutoksetContainer } from "stores/muutokset";
 
 const Tutkintokielet = ({ koulutusalat, maaraykset, mode }) => {
   const sectionId = "kielet_tutkintokielet";

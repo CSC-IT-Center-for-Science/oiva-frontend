@@ -16,7 +16,8 @@ import {
   filter,
   find,
   flatten,
-  groupBy, isEmpty,
+  groupBy,
+  isEmpty,
   isNil,
   last,
   length,
@@ -34,6 +35,7 @@ import {
 import Rajoitteet from "../lomakeosiot/9-Rajoitteet";
 import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
+import AsianumeroYmsKentat from "../lomakeosiot/0-AsianumeroYmsKentat";
 
 export const getRajoitteetBySection = (sectionId, rajoitteetByRajoiteId) => {
   const rajoitteet = reject(
@@ -49,12 +51,6 @@ export const getRajoitteetBySection = (sectionId, rajoitteetByRajoiteId) => {
     }, rajoitteetByRajoiteId)
   );
   return rajoitteet;
-};
-
-const constants = {
-  formLocations: {
-    paatoksenTiedot: ["esiJaPerusopetus", "paatoksenTiedot"]
-  }
 };
 
 function filterByTunniste(tunniste, maaraykset = []) {
@@ -81,21 +77,23 @@ const LupanakymaA = React.memo(
 
     // TODO: Näytetään rajoitteet oikein, jos on sekä määräyksiä että muutosobjekteja.
     // TODO: Näytetään rajoitteet oikein, jos sama asia on usean rajoitteen kohteena?
-    const rajoitteetFromMaarayksetByRajoiteId =
-      map(cObjs => {
-          return {changeObjects: cObjs}
-        },
-        groupBy(
-          compose(last, split("_"), nth(0), split("."), prop("anchor")),
-          filter(
-            changeObj => startsWith("rajoitteet_", changeObj.anchor),
-            flatten(map(cObj =>
-                path(["meta", "changeObjects"], cObj),
-              filter(
-                maarays => length(maarays.aliMaaraykset), maaraykset || [])
-            )))
+    const rajoitteetFromMaarayksetByRajoiteId = map(
+      cObjs => {
+        return { changeObjects: cObjs };
+      },
+      groupBy(
+        compose(last, split("_"), nth(0), split("."), prop("anchor")),
+        filter(
+          changeObj => startsWith("rajoitteet_", changeObj.anchor),
+          flatten(
+            map(
+              cObj => path(["meta", "changeObjects"], cObj),
+              filter(maarays => length(maarays.aliMaaraykset), maaraykset || [])
+            )
+          )
         )
-      );
+      )
+    );
 
     const rajoitteetListausChangeObj = find(
       propEq("anchor", "rajoitteet.listaus.A"),
@@ -126,8 +124,9 @@ const LupanakymaA = React.memo(
     // TODO: Toistaiseksi näytetään määräyksiltä saadut rajoitteet, jos niitä on. Muutoin
     // TODO: näytetään muutosobjekteilta saadut rajoitteet. Tämä pitää korjata kun lupamuutoksia
     // TODO: aletaan tekemään esi- ja perusopetukselle.
-    const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId) ?
-      rajoitteetFromMaarayksetByRajoiteId : rajoitteetByRajoiteId;
+    const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId)
+      ? rajoitteetFromMaarayksetByRajoiteId
+      : rajoitteetByRajoiteId;
 
     const opetustehtavatRajoitteet = getRajoitteetBySection(
       "opetustehtavat",
@@ -154,22 +153,13 @@ const LupanakymaA = React.memo(
       rajoitteet
     );
 
-    const muutEhdotRajoitteet = getRajoitteetBySection(
-      "muutEhdot",
-      rajoitteet
-    );
+    const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
         {isPreviewModeOn ? null : (
           <div className="xxl:w-1/3 px-6 my-12">
-            <Lomake
-              anchor="paatoksentiedot"
-              isInExpandableRow={false}
-              isPreviewModeOn={isPreviewModeOn}
-              noPadding={true}
-              path={constants.formLocations.paatoksenTiedot}
-            ></Lomake>
+            <AsianumeroYmsKentat />
           </div>
         )}
 
