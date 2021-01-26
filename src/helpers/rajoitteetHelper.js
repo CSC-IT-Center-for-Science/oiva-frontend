@@ -1,15 +1,19 @@
 import {
   append,
+  endsWith,
   find,
   head,
   includes,
   last,
   nth,
   path,
+  pipe,
   prop,
   propEq,
-  split
+  split,
+  test
 } from "ramda";
+import moment from "moment";
 
 const koodistoMapping = {
   maaraaika: "kujalisamaareet",
@@ -34,11 +38,7 @@ export const createAlimaarayksetBEObjects = (
   muutosobjektit = [],
   index = 0
 ) => {
-  const isMaaraAikaRajoite = false;
-  // !!find(
-  //   asetus => includes(".alkamispaiva", asetus.anchor),
-  //   asetukset
-  // );
+  let offset = 2;
   const asetusChangeObj = nth(index, asetukset);
   const valueChangeObj = nth(index + 1, asetukset);
   const valueValueOfAsetusChangeObj = path(
@@ -53,8 +53,13 @@ export const createAlimaarayksetBEObjects = (
     path(["properties", "value", "value"], valueChangeObj) ||
     path(["properties", "metadata", "koodiarvo"], asetusChangeObj);
 
-  if (isMaaraAikaRajoite) {
-    koodiarvo = "3";
+  // Käsittele aikamääre rajoite
+  let alkupvm = null;
+  let loppupvm = null;
+  if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
+    offset = 3;
+    alkupvm = path(["properties", "value"], valueChangeObj);
+    loppupvm = pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
   }
 
   let koodisto = "";
@@ -67,7 +72,7 @@ export const createAlimaarayksetBEObjects = (
       head(split("_", valueValueOfAsetusChangeObj));
     koodiarvo = koodiarvo || last(split("_", valueValueOfAsetusChangeObj));
   } else if (sectionOfAsetusChangeObj) {
-    // Esim. määräajan tapauksessa elementti ei ole pudotusvalikko, joten
+    // Jossain tapauksessa elementti ei ole pudotusvalikko, joten
     // koodistoarvo tulee etsiä toisella tavalla. Tällaisissa tapauksissa
     // voidaan hyödyntää muutosobjektin metadataa, jonne tieto on kenties
     // laitettu talteen.
@@ -79,30 +84,37 @@ export const createAlimaarayksetBEObjects = (
   const alimaarayksenParent =
     index === 0
       ? prop("generatedId", paalomakkeenBEMuutos)
+      : test(/^.+kohdennukset\.\d\.kohdennukset\.\d\.kohde/, prop("anchor", asetusChangeObj)) ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
+  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj)) ?
+    path(["properties", "value"], valueChangeObj) : null;
   const alimaarays = {
     generatedId: `alimaarays-${Math.random()}`,
     parent: alimaarayksenParent,
     kohde: find(propEq("tunniste", tunniste), kohteet),
     koodiarvo,
     koodisto,
+    tila: "LISAYS",
+    arvo,
     maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
     meta: {
+      ...(alkupvm ? {alkupvm: moment(alkupvm).format("YYYY-MM-DD")} : null),
+      ...(loppupvm ? {loppupvm: moment(loppupvm).format("YYYY-MM-DD")} : null),
       changeObjects: [asetusChangeObj, nth(index + 1, asetukset)]
     }
   };
 
   const updatedMuutosobjektit = append(alimaarays, muutosobjektit);
 
-  if (index + 2 <= asetukset.length - 2) {
+  if (index + offset <= asetukset.length - offset) {
     return createAlimaarayksetBEObjects(
       kohteet,
       maaraystyypit,
       paalomakkeenBEMuutos,
       asetukset,
       updatedMuutosobjektit,
-      index + 2
+      index + offset
     );
   }
 

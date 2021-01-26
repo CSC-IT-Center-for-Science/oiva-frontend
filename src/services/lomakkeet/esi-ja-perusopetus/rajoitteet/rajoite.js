@@ -177,7 +177,7 @@ const getKohdennuksetRecursively = async (
   const { osioidenData, rajoiteId } = data;
 
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
-    ? getKohdennuksenKohdekomponentti()
+    ? await getKohdennuksenKohdekomponentti(isReadOnly, locale)
     : null;
 
   const kohdennuksenTarkenninKomponentit = kohdennuksenKohdekomponentti
