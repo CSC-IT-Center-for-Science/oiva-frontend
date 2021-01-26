@@ -1,40 +1,53 @@
-import { append, endsWith, find, propEq } from "ramda";
+import {
+  append,
+  endsWith,
+  find,
+  keys,
+  map,
+  pipe
+} from "ramda";
 
-export const previewOfOpiskelijamaarat = ({ lomakedata }) => {
+export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
   let structure = [];
 
-  const dropdownNode = find(
-    node => endsWith(".kentat.dropdown", node.anchor),
-    lomakedata
-  );
-
-  const inputNode = find(
-    node => endsWith(".kentat.input", node.anchor),
-    lomakedata
-  );
-
-  if (dropdownNode && inputNode) {
-    const option = find(
-      propEq("value", dropdownNode.properties.selectedOption),
-      dropdownNode.properties.options
-    );
-    if (option) {
-      structure = append(
-        {
-          anchor: "vahenint", // vähintään tai enintään
-          components: [
-            {
-              anchor: "A",
-              name: "StatusTextRow",
-              properties: {
-                title: `${option.label} ${inputNode.properties.value}`
-              }
+  const opiskelijaMaaraRajoitteet = pipe(keys,
+    map(rajoiteId => {
+      const rajoite = rajoitteet[rajoiteId];
+      return {
+        anchor: rajoiteId,
+        components: [
+          {
+            anchor: "rajoite",
+            name: "Rajoite",
+            properties: {
+              areTitlesVisible: false,
+              isReadOnly: true,
+              rajoiteId,
+              rajoite
             }
-          ]
-        },
-        structure
-      );
-    }
+          }
+        ]
+      };
+    })
+  )(rajoitteet);
+
+  if (opiskelijaMaaraRajoitteet) {
+    structure = append({
+        anchor: "opiskelijamaarat",
+        components: [
+          {
+            anchor: "listaus",
+            name: "List",
+            properties: {
+              isDense: true,
+              items: opiskelijaMaaraRajoitteet
+            }
+          }
+        ]
+      }
+      ,
+      structure
+    );
   }
 
   const lisatiedotNode = find(
