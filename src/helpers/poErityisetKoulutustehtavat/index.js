@@ -222,7 +222,7 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.erityisetKoulutustehtavat
   );
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
