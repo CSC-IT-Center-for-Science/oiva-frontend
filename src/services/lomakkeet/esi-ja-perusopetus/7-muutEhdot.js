@@ -124,14 +124,15 @@ export async function muutEhdot(
               map(maarays => {
                 return maarays.meta.ankkuri !== kuvausankkuri0
                   ? {
-                      anchor: maarays.koodiarvo,
+                      anchor: maarays.meta.ankkuri,
                       components: [
                         {
                           anchor: "kuvaus",
                           name: "TextBox",
                           properties: {
                             forChangeObject: {
-                              ankkuri: maarays.koodiarvo
+                              ankkuri: path(["meta", "ankkuri"], maarays),
+                              koodiarvo: maarays.koodiarvo
                             },
                             isPreviewModeOn,
                             isReadOnly: _isReadOnly,
@@ -208,7 +209,7 @@ export async function muutEhdot(
                         );
                       }, changeObjects)
                     )
-                  ),
+                  ).filter(Boolean),
                   /**
                    * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
                    */
@@ -236,7 +237,7 @@ export async function muutEhdot(
                       }
                     ]
                   }
-                ]
+                ].filter(Boolean)
               : []
           ].filter(Boolean)
         )

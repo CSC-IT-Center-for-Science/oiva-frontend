@@ -71,7 +71,7 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale) {
                       }, kuvausStateObjects)
                     : {
                         label: muuEhto.metadata[localeUpper].nimi,
-                        value: `${muuEhto.koodiarvo}-`
+                        value: `${muuEhto.koodiarvo}-0`
                       };
 
                 return options;

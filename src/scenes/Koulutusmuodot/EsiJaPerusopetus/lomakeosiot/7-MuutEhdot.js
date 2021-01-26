@@ -33,7 +33,7 @@ const MuutEhdot = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ maaraykset }}
+      data={{ maaraykset, rajoitteet }}
       functions={{ onAddButtonClick }}
       formTitle={title}
       mode={mode}
