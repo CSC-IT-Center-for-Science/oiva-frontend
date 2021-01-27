@@ -14,6 +14,7 @@ const Opiskelijamaarat = ({
   isPreviewModeOn,
   maaraykset,
   mode = constants.mode,
+  rajoitteet,
   sectionId,
   title
 }) => {
@@ -23,7 +24,7 @@ const Opiskelijamaarat = ({
     <Lomake
       anchor={sectionId}
       code={code}
-      data={{ maaraykset }}
+      data={{ maaraykset, rajoitteet }}
       formTitle={title}
       mode={mode}
       isPreviewModeOn={isPreviewModeOn}
