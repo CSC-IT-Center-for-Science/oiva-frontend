@@ -23,9 +23,10 @@ export async function opetusJotaLupaKoskee(
 
   return flatten([
     map(opetustehtava => {
-      const maarays = find(m =>
-        propEq("koodiarvo", opetustehtava.koodiarvo, m) &&
-        propEq("koodisto", "opetustehtava", m),
+      const maarays = find(
+        m =>
+          propEq("koodiarvo", opetustehtava.koodiarvo, m) &&
+          propEq("koodisto", "opetustehtava", m),
         maaraykset
       );
       return {
@@ -36,7 +37,11 @@ export async function opetusJotaLupaKoskee(
             name: "CheckboxWithLabel",
             styleClasses: isPreviewModeOn ? ["pl-4"] : [],
             properties: {
-              title: getLocalizedProperty(opetustehtava.metadata, locale, "nimi"),
+              title: getLocalizedProperty(
+                opetustehtava.metadata,
+                locale,
+                "nimi"
+              ),
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
@@ -76,7 +81,7 @@ export async function opetusJotaLupaKoskee(
                 properties: {
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: __("common.lisatiedot"),
+                  title: __("common.lisatiedot"),
                   value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                 }
               }

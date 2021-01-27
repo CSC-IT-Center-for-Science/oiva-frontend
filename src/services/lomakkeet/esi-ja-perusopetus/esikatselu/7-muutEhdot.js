@@ -11,15 +11,17 @@ import {
   split,
   startsWith
 } from "ramda";
-import { removeAnchorPart } from "utils/common";
+import { getAnchorPart, removeAnchorPart } from "utils/common";
+import { getRajoite } from "utils/rajoitteetUtils";
 
-export const previewOfMuutEhdot = ({ lomakedata }) => {
+export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   let structure = [];
 
   const checkedNodes = filter(
     pathEq(["properties", "isChecked"], true),
     lomakedata
   );
+
 
   const anchorsOfCheckedNodes = map(prop("anchor"), checkedNodes);
 
@@ -51,14 +53,31 @@ export const previewOfMuutEhdot = ({ lomakedata }) => {
                 items: map(node => {
                   console.info("node", node);
                   const anchorParts = split(".", node.anchor);
+                  const koodiarvo = getAnchorPart(node.anchor, 1);
+                  const index = getAnchorPart(node.anchor, 2);
+                  const { rajoiteId, rajoite } = getRajoite(
+                    `${koodiarvo}-${index}`,
+                    rajoitteet
+                  );
                   return {
-                    anchor: nth(1, anchorParts),
+                    anchor: koodiarvo,
                     components: [
-                      {
-                        anchor: nth(2, anchorParts),
-                        name: "HtmlContent",
-                        properties: { content: node.properties.value }
-                      }
+                      rajoite
+                        ? {
+                            anchor: "rajoite",
+                            name: "Rajoite",
+                            properties: {
+                              areTitlesVisible: false,
+                              isReadOnly: true,
+                              rajoiteId,
+                              rajoite
+                            }
+                          }
+                        : {
+                            anchor: nth(2, anchorParts),
+                            name: "HtmlContent",
+                            properties: { content: node.properties.value }
+                          }
                     ]
                   };
                 }, kuvausNodes)

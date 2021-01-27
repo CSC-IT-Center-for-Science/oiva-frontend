@@ -152,7 +152,15 @@ const LupanakymaA = React.memo(
       rajoitteet
     );
 
-    const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
+    const opiskelijamaaraRajoitteet = getRajoitteetBySection(
+      "opiskelijamaarat",
+      rajoitteet
+    )
+
+    const muutEhdotRajoitteet = getRajoitteetBySection(
+      "muutEhdot",
+      rajoitteet
+    );
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
@@ -233,6 +241,7 @@ const LupanakymaA = React.memo(
                     "oppilasopiskelijamaara",
                     maaraykset
                   )}
+                  rajoitteet={opiskelijamaaraRajoitteet}
                   sectionId={"opiskelijamaarat"}
                   title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
                 />

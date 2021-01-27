@@ -1,33 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { addIndex, isEmpty, mapObjIndexed, values } from "ramda";
-import Lomake from "components/02-organisms/Lomake";
+import { __, addIndex, isEmpty, mapObjIndexed, values } from "ramda";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { Typography } from "@material-ui/core";
 import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";
 import HtmlContent from "components/01-molecules/HtmlContent";
 
-const defaultProps = {
-  areTitlesVisible: true,
-  isBorderVisible: true
-};
-
 const RajoitteetList = ({
-  areTitlesVisible = defaultProps.areTitlesVisible,
-  isBorderVisible = defaultProps.isBorderVisible,
   locale,
   onModifyRestriction,
   onRemoveRestriction,
   rajoitteet
 }) => {
-  console.info(locale);
   if (isEmpty(rajoitteet)) {
     return <p>Ei rajoitteita.</p>;
   } else {
     return (
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
         {values(
-          mapObjIndexed((rajoite, rajoiteId) => {
+          addIndex(mapObjIndexed)((rajoite, rajoiteId, __, index) => {
             const rajoiteListamuodossa = getRajoiteListamuodossa(
               rajoite.changeObjects,
               locale,
@@ -40,7 +31,7 @@ const RajoitteetList = ({
                 key={rajoiteId}
               >
                 <Typography component="h3" variant="h3">
-                  Rajoite {rajoiteId}
+                  Rajoite {index + 1}
                 </Typography>
                 <div className="flex-1">
                   <HtmlContent content={rajoiteListamuodossa} />
@@ -69,8 +60,6 @@ const RajoitteetList = ({
 };
 
 RajoitteetList.propTypes = {
-  areTitlesVisible: PropTypes.bool,
-  isBorderVisible: PropTypes.bool,
   onModifyRestriction: PropTypes.func,
   onRemoveRestriction: PropTypes.func,
   rajoitteet: PropTypes.object
