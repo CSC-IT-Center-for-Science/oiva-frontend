@@ -3,13 +3,20 @@ import PropTypes from "prop-types";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import css from "./header.module.css";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
-import {AppBar, Button, IconButton, Toolbar, Typography, useMediaQuery} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+  useMediaQuery
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import HorizontalLayout from "./HorizontalLayout";
 import VerticalLayout from "./VerticalLayout";
-import {equals} from "ramda";
+import { equals } from "ramda";
 
 const MEDIA_QUERIES = {
   MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
@@ -36,25 +43,31 @@ const useStylesForTypography = makeStyles(() => ({
 
 const Header = React.memo(
   ({
-     inFinnish,
-     inSwedish,
-     isAuthenticated,
-     locale,
-     logIn,
-     logo,
-     authenticationLink,
-     onLocaleChange,
-     onLoginButtonClick,
-     onMenuClick,
-     organisationLink,
-     shortDescription,
-     template = "A",
-     languageSelectionAriaLabel = "Kielivalinta"
-   }) => {
+    inFinnish,
+    inSwedish,
+    isAuthenticated,
+    locale,
+    logIn,
+    logo,
+    authenticationLink,
+    onLocaleChange,
+    onLoginButtonClick,
+    onMenuClick,
+    organisationLink,
+    shortDescription,
+    template = "A",
+    languageSelectionAriaLabel = "Kielivalinta"
+  }) => {
+    const selectedLangStyles =
+      "border rounded-full p-2 text-sm bg-white text-green-500 leading-none font-medium mr-1";
+    const commonLangStyles = "";
     const classes = useStyles();
     const typographyClasses = useStylesForTypography();
     const items = [
-      <a href={logo.path} className="inline-block no-underline text-gray-800">
+      <a
+        href={logo.path}
+        className="inline-block no-underline text-white hover:text-gray-100"
+      >
         <Typography variant="h6" classes={typographyClasses}>
           {logo.text}
         </Typography>
@@ -64,7 +77,8 @@ const Header = React.memo(
         <NavLink
           to={authenticationLink.path}
           exact={false}
-          className="inline-block no-underline text-gray-800 hover:underline">
+          className="inline-block no-underline text-white hover:underline hover:text-gray-100"
+        >
           <span>{authenticationLink.text[0]} </span>
           {authenticationLink.text[1] && (
             <span className="font-bold">{authenticationLink.text[1]}</span>
@@ -75,13 +89,14 @@ const Header = React.memo(
       ),
       organisationLink.path ? (
         <NavLink
-          className="link-to-own-organisation"
+          className="link-to-own-organisation text-white"
           to={organisationLink.path}
-          exact={false}>
-          <span className="text-gray-600">{organisationLink.text}</span>
+          exact={false}
+        >
+          <span className="text-white">{organisationLink.text}</span>
         </NavLink>
       ) : (
-        <span className="text-gray-800">{organisationLink.text}</span>
+        <span className="text-white">{organisationLink.text}</span>
       )
     ];
 
@@ -98,7 +113,8 @@ const Header = React.memo(
                   size="small"
                   onChange={onLocaleChange}
                   value={locale}
-                  exclusive>
+                  exclusive
+                >
                   <ToggleButton
                     aria-label={languageSelectionAriaLabel + inFinnish}
                     key={1}
@@ -109,7 +125,8 @@ const Header = React.memo(
                       selected: css["locale-selected"],
                       sizeSmall: css["locale-button"]
                     }}
-                    disabled={locale === "fi"}>
+                    disabled={locale === "fi"}
+                  >
                     {inFinnish}
                   </ToggleButton>
                   <ToggleButton
@@ -122,7 +139,8 @@ const Header = React.memo(
                       selected: css["locale-selected"],
                       sizeSmall: css["locale-button"]
                     }}
-                    disabled={locale === "sv"}>
+                    disabled={locale === "sv"}
+                  >
                     {inSwedish}
                   </ToggleButton>
                 </ToggleButtonGroup>
@@ -137,13 +155,15 @@ const Header = React.memo(
                       className={classes.menuButton}
                       color="inherit"
                       aria-label="menu"
-                      onClick={onMenuClick}>
+                      onClick={onMenuClick}
+                    >
                       <MenuIcon />
                     </IconButton>
                     <NavLink
                       to={logo.path}
                       exact={true}
-                      className="inline-block no-underline text-white flex-grow">
+                      className="inline-block no-underline text-white flex-grow"
+                    >
                       <Typography variant="h6" className={classes.title}>
                         {logo.text}
                       </Typography>
@@ -164,41 +184,26 @@ const Header = React.memo(
         {/* Layout for bigger screens */}
         {breakpointTabletMin && (
           <AppBar elevation={0} position="static">
-            <Toolbar className="bg-white px-4 border border-gray-300">
+            <Toolbar className="bg-green-500 px-4 border border-gray-300">
               {(template === "A" || !template) && (
                 <HorizontalLayout items={items}>
-                  <ToggleButtonGroup
-                    size="small"
-                    onChange={onLocaleChange}
-                    value={locale}
-                    exclusive>
-                    <ToggleButton
-                      aria-label={languageSelectionAriaLabel + inFinnish}
-                      key={1}
-                      value="fi"
-                      className="whitespace-no-wrap"
-                      classes={{
-                        label: css["locale-label"],
-                        selected: css["locale-selected"],
-                        sizeSmall: css["locale-button"]
-                      }}
-                      disabled={locale === "fi"}>
-                      {inFinnish}
-                    </ToggleButton>
-                    <ToggleButton
-                      aria-label={languageSelectionAriaLabel + inSwedish}
-                      key={2}
-                      value="sv"
-                      className="whitespace-no-wrap"
-                      classes={{
-                        label: css["locale-label"],
-                        selected: css["locale-selected"],
-                        sizeSmall: css["locale-button"]
-                      }}
-                      disabled={locale === "sv"}>
-                      {inSwedish}
-                    </ToggleButton>
-                  </ToggleButtonGroup>
+                  <button
+                    className={`${
+                      locale === "fi" ? selectedLangStyles : ""
+                    } ${commonLangStyles} mr-2`}
+                    onClick={() => onLocaleChange("fi")}
+                  >
+                    {inFinnish}
+                  </button>
+
+                  <button
+                    className={`${
+                      locale === "sv" ? selectedLangStyles : ""
+                    } ${commonLangStyles}`}
+                    onClick={() => onLocaleChange("sv")}
+                  >
+                    {inSwedish}
+                  </button>
                 </HorizontalLayout>
               )}
             </Toolbar>
