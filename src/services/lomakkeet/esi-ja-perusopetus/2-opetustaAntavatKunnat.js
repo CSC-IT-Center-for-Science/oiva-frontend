@@ -311,8 +311,7 @@ export const opetustaAntavatKunnat = async (
                       voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
                     },
                     isReadOnly,
-                    placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
-                      .nimi,
+                    title: __("common.lisatiedot"),
                     value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                   }
                 }
