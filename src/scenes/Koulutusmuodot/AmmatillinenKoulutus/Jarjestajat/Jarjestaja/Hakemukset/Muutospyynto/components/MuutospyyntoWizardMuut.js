@@ -21,7 +21,6 @@ import Yhteistyosopimus from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittel
 import Selvitykset from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/09-Selvitykset";
 import MuuMaarays from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/07-MuuMaarays";
 import { Typography } from "@material-ui/core";
-import { TutkintomuutoksetContainer } from "stores/muutokset";
 
 const defaultProps = {
   isReadOnly: false,

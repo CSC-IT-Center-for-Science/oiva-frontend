@@ -6,7 +6,6 @@ import Koulutusala from "./Koulutusala";
 import { Typography } from "@material-ui/core";
 import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 import common from "i18n/definitions/common";
-import { TutkintomuutoksetContainer } from "stores/muutokset";
 
 const Tutkinnot = ({
   isReadOnly = false,

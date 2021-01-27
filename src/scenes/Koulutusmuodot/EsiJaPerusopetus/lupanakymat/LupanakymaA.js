@@ -10,7 +10,6 @@ import OpetuksenJarjestamismuoto from "../lomakeosiot/4-OpetuksenJarjestamismuot
 import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtavat";
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
-import Lomake from "components/02-organisms/Lomake";
 import {
   compose,
   filter,
