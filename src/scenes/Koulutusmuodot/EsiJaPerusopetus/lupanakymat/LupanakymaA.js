@@ -154,6 +154,11 @@ const LupanakymaA = React.memo(
       rajoitteet
     );
 
+    const opiskelijamaaraRajoitteet = getRajoitteetBySection(
+      "opiskelijamaarat",
+      rajoitteet
+    )
+
     const muutEhdotRajoitteet = getRajoitteetBySection(
       "muutEhdot",
       rajoitteet
@@ -244,6 +249,7 @@ const LupanakymaA = React.memo(
                     "oppilasopiskelijamaara",
                     maaraykset
                   )}
+                  rajoitteet={opiskelijamaaraRajoitteet}
                   sectionId={"opiskelijamaarat"}
                   title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
                 />

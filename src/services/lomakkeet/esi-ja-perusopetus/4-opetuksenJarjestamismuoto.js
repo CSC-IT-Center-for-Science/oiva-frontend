@@ -47,7 +47,11 @@ export async function opetuksenJarjestamismuoto(
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
-                    value: getLocalizedProperty(muoto.metadata, locale, "kuvaus")
+                    value: getLocalizedProperty(
+                      muoto.metadata,
+                      locale,
+                      "kuvaus"
+                    )
                   }
                 }
               ],
@@ -125,7 +129,7 @@ export async function opetuksenJarjestamismuoto(
               },
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
-              placeholder: __("common.lisatiedot"),
+              title: __("common.lisatiedot"),
               value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
             }
           }

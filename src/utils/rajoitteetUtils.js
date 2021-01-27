@@ -1,4 +1,5 @@
 import {
+  addIndex,
   append,
   assocPath,
   filter,
@@ -12,10 +13,12 @@ import {
   nth,
   path,
   pathEq,
+  pipe,
   prop,
   sortBy,
   split,
   toLower,
+  unnest,
   values
 } from "ramda";
 import moment from "moment";
@@ -163,6 +166,8 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
               return `<ul className="p-0"><li className="p-0">${alkamispaivaValue} - ${paattymispaivaValue}`;
             }
             const tarkenninValue = asetus.kohde.properties.value.value;
+            // TODO: Label pitäisi hakea koodistosta tarkenninValue arvon avulla jos koodistossa on muutettu tekstiä.
+            const tarkenninLabel = tarkenninavain === "lukumaara" ? asetus.kohde.properties.value.label : "";
             const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
               ? {
                   pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
@@ -200,7 +205,7 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
               }
             } else if (muokattuTarkentimenArvo) {
               return format === "list"
-                ? `<ul className="p-0"><li>${muokattuTarkentimenArvo}`
+                ? `<ul className="p-0"><li>${tarkenninLabel} <strong>${muokattuTarkentimenArvo}</strong>`
                 : muokattuTarkentimenArvo;
             }
           }, tarkenninkomponentit)
@@ -223,7 +228,7 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
       paivitettyLista
     );
     paivitettyLista = append(
-      `<ul><li><strong>${kohdennuslukema}</strong>`,
+      ` <strong>${kohdennuslukema}</strong>`,
       paivitettyLista
     );
   }
@@ -271,16 +276,10 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
 }
 
 export function kayLapiKohdennukset(kohdennukset, locale, lista = [], format) {
-  return join(
-    " ",
-    flatten(
-      values(
-        map(kohdennus => {
-          return kayLapiKohdennus(kohdennus, locale, lista, format);
-        }, kohdennukset)
-      )
-    )
-  );
+  const indexedMap = addIndex(map);
+  return indexedMap((kohdennus, index) => {
+    return kayLapiKohdennus(kohdennus, locale, index > 0 ? [] : lista, format);
+  }, kohdennukset);
 }
 
 export function getRajoiteSelkokielella(
@@ -344,17 +343,23 @@ export function getRajoiteListamuodossa(
       format
     );
 
-    // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
-    const amountOfInstances = getAmountOfInstances(
-      "<ul>",
-      lapikaydytKohdennukset
-    );
+    const kohdennusLista = pipe(values,
+      map(kohdennus => Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)),
+      unnest)(lapikaydytKohdennukset);
+    listamuotoWithEndings = join("", map(kohdennus => {
+      // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+      const s = join("", kohdennus);
+      const amountOfInstances = getAmountOfInstances(
+        "<ul>",
+        s
+      );
 
-    listamuotoWithEndings = addEnding(
-      "</li></ul>",
-      lapikaydytKohdennukset,
-      amountOfInstances
-    );
+      return addEnding(
+        "</li></ul>",
+        s,
+        amountOfInstances
+      );
+    }, kohdennusLista))
   }
 
   return listamuotoWithEndings;

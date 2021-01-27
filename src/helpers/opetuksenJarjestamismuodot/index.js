@@ -101,7 +101,11 @@ export const defineBackendChangeObjects = async (
             kuvaus: changeObj.properties.value,
             maaraystyyppi,
             meta: {
-              changeObjects: [changeObj, kuvausChangeObj, take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))].filter(Boolean),
+              changeObjects: [
+                changeObj,
+                kuvausChangeObj,
+                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+              ].filter(Boolean),
               kuvaus: changeObj.properties.value
             },
             tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
@@ -141,7 +145,7 @@ export const defineBackendChangeObjects = async (
    */
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.opetuksenJarjestamismuodot
   );
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
