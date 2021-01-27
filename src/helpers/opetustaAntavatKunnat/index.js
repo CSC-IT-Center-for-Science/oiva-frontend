@@ -497,27 +497,51 @@ export async function defineBackendChangeObjects(
     compose(endsWith(".200.lisatiedot"), prop("anchor")),
     changeObjects.ulkomaa
   );
+
   const ulkomaaBEchangeObjectTextBox = changeObjUlkomaaTextBox
-    ? [
-        {
-          tila: "LISAYS",
-          meta: {
-            arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
-            changeObjects: [changeObjUlkomaaTextBox]
-          },
-          kohde,
-          koodiarvo: path(
-            ["properties", "metadata", "koodiarvo"],
-            changeObjUlkomaaTextBox
-          ),
-          koodisto: path(
-            ["properties", "metadata", "koodisto", "koodistoUri"],
-            changeObjUlkomaaTextBox
-          ),
-          maaraystyyppi
-        }
-      ]
+    ? {
+        generatedId: `ulkomaa-${Math.random()}`,
+        tila: "LISAYS",
+        meta: {
+          arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
+          changeObjects: [changeObjUlkomaaTextBox]
+        },
+        kohde,
+        koodiarvo: path(
+          ["properties", "metadata", "koodiarvo"],
+          changeObjUlkomaaTextBox
+        ),
+        koodisto: path(
+          ["properties", "metadata", "koodisto", "koodistoUri"],
+          changeObjUlkomaaTextBox
+        ),
+        maaraystyyppi
+      }
     : null;
+
+  let alimaarayksetUlkomaa = [];
+
+  if (ulkomaaBEchangeObjectTextBox) {
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq([1, "properties", "value", "value"], "200", rajoite)
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
+    alimaarayksetUlkomaa = values(
+      mapObjIndexed(asetukset => {
+        return createAlimaarayksetBEObjects(
+          kohteet,
+          maaraystyypit,
+          ulkomaaBEchangeObjectTextBox,
+          asetukset
+        );
+      }, rajoitteetByRajoiteIdAndKoodiarvo)
+    );
+  }
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -547,6 +571,7 @@ export async function defineBackendChangeObjects(
     : null;
 
   let allBEobjects = flatten([
+    alimaarayksetUlkomaa,
     quickFilterBEchangeObjects,
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,
