@@ -28,6 +28,7 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { getAnchorPart } from "../../utils/common";
 
 export const initializePOErityinenKoulutustehtava = erityinenKoulutustehtava => {
   return omit(["koodiArvo"], {
@@ -135,11 +136,14 @@ export const defineBackendChangeObjects = async (
         };
 
         let alimaaraykset = [];
+        const kuvausnro = getAnchorPart(changeObj.anchor, 2);
+        const rajoitteetForKuvaus = filter(rajoiteCobjs => {
+         return nth(1, split("-", path([1, "properties", "value", "value"], rajoiteCobjs) || "")) === kuvausnro },
+          values(rajoitteetByRajoiteIdAndKoodiarvo));
 
-        const kohteenTarkentimenArvo = path(
-          [1, "properties", "value", "value"],
-          head(values(rajoitteetByRajoiteIdAndKoodiarvo))
-        );
+        // TODO: Tässä pitäisi käydä kaikki rajoitteet läpi, jos halutaan useampia
+        // TODO: rajoitteita samalle asialle. (nyt haetaan vain ensimmäisen rajoitteen arvo)
+        const kohteenTarkentimenArvo = path([1, "properties", "value", "value"], head(rajoitteetForKuvaus));
 
         const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
           ? nth(1, split("-", kohteenTarkentimenArvo))
@@ -168,7 +172,7 @@ export const defineBackendChangeObjects = async (
                 kuvausBEChangeObject,
                 drop(2, asetukset)
               );
-            }, rajoitteetByRajoiteIdAndKoodiarvo)
+            }, rajoitteetForKuvaus)
           );
         }
 

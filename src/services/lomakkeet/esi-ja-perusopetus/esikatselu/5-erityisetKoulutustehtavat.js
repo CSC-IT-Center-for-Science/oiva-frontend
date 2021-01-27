@@ -57,8 +57,9 @@ export const previewOfErityisetKoulutustehtavat = ({
                 items: map(node => {
                   const anchorParts = split(".", node.anchor);
                   const koodiarvo = getAnchorPart(node.anchor, 1);
+                  const kuvausnumero = getAnchorPart(node.anchor, 2);
                   const { rajoiteId, rajoite } = getRajoite(
-                    koodiarvo,
+                    `${koodiarvo}-${kuvausnumero}`,
                     rajoitteet
                   );
                   return {

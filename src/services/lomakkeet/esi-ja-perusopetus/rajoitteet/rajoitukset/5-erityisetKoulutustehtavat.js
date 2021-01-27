@@ -78,7 +78,7 @@ export default async function getErityisetKoulutustehtavat(
                     : {
                         label:
                           erityinenKoulutustehtava.metadata[localeUpper].nimi,
-                        value: `${erityinenKoulutustehtava.koodiarvo}`
+                        value: `${erityinenKoulutustehtava.koodiarvo}-0`
                       };
 
                 return options;
