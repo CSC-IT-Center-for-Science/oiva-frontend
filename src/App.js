@@ -272,7 +272,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
             template={template}
             languageSelectionAriaLabel={intl.formatMessage(
               langMessages.selection
-            )}></Header>
+            )}
+          ></Header>
         );
       }
       return null;
@@ -297,7 +298,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         <div
           className={`relative lg:fixed z-50 ${
             appState.isDebugModeOn ? "w-2/3" : "w-full"
-          }`}>
+          }`}
+        >
           {getHeader()}
 
           <div className="hidden md:block">
@@ -309,7 +311,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
           isVisible={isSideMenuVisible}
           handleDrawerToggle={isVisible => {
             setSideMenuVisibility(isVisible);
-          }}>
+          }}
+        >
           {getHeader("C")}
 
           <div className="p-4 max-w-xl">
@@ -320,7 +323,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                 backgroundColor: "white",
                 color: "black",
                 hoverColor: "white"
-              }}></Navigation>
+              }}
+            ></Navigation>
           </div>
         </SideNavigation>
 
