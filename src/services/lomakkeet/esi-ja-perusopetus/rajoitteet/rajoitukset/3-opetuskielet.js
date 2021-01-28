@@ -37,7 +37,7 @@ export default async function getOpetuskielikomponentit(
   return kielet.length
     ? [
         {
-          anchor: "opetuskielet",
+          anchor: "komponentti",
           name: "Autocomplete",
           styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
           properties: {

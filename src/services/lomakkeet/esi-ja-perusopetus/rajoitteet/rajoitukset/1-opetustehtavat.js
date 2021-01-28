@@ -12,7 +12,7 @@ export default async function getOpetustehtavakomponentit(
   if (opetustehtavat.length) {
     return [
       {
-        anchor: "opetustehtavat",
+        anchor: "komponentti",
         name: "Autocomplete",
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
@@ -39,7 +39,11 @@ export default async function getOpetustehtavakomponentit(
              */
             return stateObj && stateObj.properties.isChecked
               ? {
-                  label: getLocalizedProperty(opetustehtava.metadata, locale, "nimi"),
+                  label: getLocalizedProperty(
+                    opetustehtava.metadata,
+                    locale,
+                    "nimi"
+                  ),
                   value: opetustehtava.koodiarvo
                 }
               : null;
