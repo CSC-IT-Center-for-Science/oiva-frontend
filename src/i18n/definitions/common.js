@@ -1263,5 +1263,9 @@ export default defineMessages({
   voimaantulopaiva: {
     id: "common.voimaantulopaiva",
     defaultMessage: "Voimaantulopäivä"
+  },
+  eiValittaviaKohteita: {
+    id: "common.eiValittaviaKohteita",
+    defaultMessage: "Ei valittavia kohteita"
   }
 });

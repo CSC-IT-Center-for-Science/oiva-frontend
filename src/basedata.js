@@ -248,7 +248,9 @@ const fetchBaseData = async (
     ),
     organisaatiot: await getRaw(
       "organisaatiot",
-      backendRoutes.organisaatiot.path,
+      koulutustyyppi
+        ? `${backendRoutes.organisaatiot.path}?koulutustyyppi=${koulutustyyppi}`
+        : backendRoutes.organisaatiot.path,
       keys
     ),
     poErityisetKoulutustehtavat: await getRaw(
