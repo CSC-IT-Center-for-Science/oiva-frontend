@@ -1,5 +1,4 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { __ } from "i18n-for-browser";
 import {
   compose,
   find,
@@ -8,14 +7,13 @@ import {
   isNil,
   map,
   prop,
-  reject,
-  toLower
+  reject
 } from "ramda";
-import { getDefaultAdditionForm } from "../../perustelut/muutMuutokset/index";
-import getDefaultRemovalForm from "../../perustelut/lomakeosiot/poistolomake";
+import { getOppisopimusPerusteluLomake } from "../../perustelut/muut";
+import getDefaultRemovalForm from "services/lomakkeet/perustelut/lomakeosiot/poistolomake";
 
 /**
- * Ammatillinen koulutus - Esittelijän lomakenäkymä - Osio 5 - Yhteistyosopimukset.
+ * Ammatillinen koulutus - Esittelijän lomakenäkymä - Osio 5 - Laajennettu.
  * @param {*} data
  * @param {*} isReadOnly
  * @param {*} locale
@@ -26,46 +24,10 @@ export function getModificationForm(
   locale
 ) {
   const localeUpper = locale.toUpperCase();
-
   return map(item => {
     const maarays = maarayksetByKoodiarvo[item.koodiarvo];
-    let title =
-      item.metadata[localeUpper].kuvaus || item.metadata[localeUpper].nimi;
-    let mitaHaluatHakea = [];
-
-    /**
-     * Koodi 8 on erikoistapaus. Sen kohdalla, ei käytetä koodistosta tulevaa
-     * kuvaustekstiä, vaan kuvausteksti kaivetaan koodiarvoa 8 koskevan
-     * määräyksen alta. Tämä johtuu siitä, että eri koulutuksen
-     * järjestäjillä on koodiarvolla 8 erilaisia kuvaustekstejä.
-     **/
-    if (item.koodiarvo === "8") {
-      title = maarays
-        ? maarays.meta["yhteistyösopimus"][toLower(locale)]
-        : title;
-      mitaHaluatHakea = [
-        {
-          anchor: "tekstikentta",
-          components: [
-            {
-              anchor: "A",
-              name: "TextBox",
-              properties: {
-                forChangeObject: reject(isNil, {
-                  koodiarvo: item.koodiarvo,
-                  koodisto: item.koodisto,
-                  maaraysUuid: (maarays || {}).uuid
-                }),
-                placeholder: __("other.placeholder")
-              }
-            }
-          ]
-        }
-      ];
-    }
-
     return {
-      anchor: "yhteistyosopimus",
+      anchor: "laajennettuOppisopimuskoulutus",
       categories: [
         {
           anchor: item.koodiarvo,
@@ -86,11 +48,12 @@ export function getModificationForm(
                   removal: isRemoved,
                   custom: !!maarays ? isInLupa : {}
                 },
-                title
+                title:
+                  item.metadata[localeUpper].kuvaus ||
+                  item.metadata[localeUpper].nimi
               }
             }
-          ],
-          categories: mitaHaluatHakea
+          ]
         }
       ]
     };
@@ -99,7 +62,7 @@ export function getModificationForm(
 
 /**
  * Ammatillinen koulutus - Osio 5
- * Yhteistyö - Perustelulomakkeen muodostaminen.
+ * Laajennettu oppisopimuskoulutus - Perustelulomakkeen muodostaminen.
  * @param {*} data
  * @param {*} isReadOnly
  * @param {*} locale
@@ -115,7 +78,10 @@ export function getReasoningForm(
   return map(item => {
     const maarays = maarayksetByKoodiarvo[item.koodiarvo];
     const changeObj = find(
-      compose(includes(`.yhteistyosopimus.${item.koodiarvo}.`), prop("anchor")),
+      compose(
+        includes(`.laajennettuOppisopimuskoulutus.${item.koodiarvo}.`),
+        prop("anchor")
+      ),
       changeObjects
     );
     if (!changeObj) {
@@ -125,7 +91,7 @@ export function getReasoningForm(
     const isAddition = changeObj.properties.isChecked;
 
     return {
-      anchor: "yhteistyosopimus",
+      anchor: "laajennettuOppisopimuskoulutus",
       categories: flatten([
         {
           anchor: item.koodiarvo,
@@ -153,14 +119,14 @@ export function getReasoningForm(
           ]
         },
         isAddition
-          ? getDefaultAdditionForm(isReadOnly)
+          ? getOppisopimusPerusteluLomake(isReadOnly)
           : getDefaultRemovalForm(isReadOnly, prefix)
       ])
     };
   }, items).filter(Boolean);
 }
 
-export function getMuutYhteistyosopimus(
+export function getMuutLaajennettu(
   mode,
   data,
   booleans,

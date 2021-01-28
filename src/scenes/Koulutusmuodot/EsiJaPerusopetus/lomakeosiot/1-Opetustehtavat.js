@@ -5,8 +5,9 @@ import Lomake from "components/02-organisms/Lomake";
 import { omit } from "ramda";
 import { getOpetustehtavaKoodistoFromStorage } from "helpers/opetustehtavat";
 import equal from "react-fast-compare";
-import common from "../../../../i18n/definitions/common";
-import esiJaPerusopetus from "../../../../i18n/definitions/esiJaPerusopetus";
+import common from "i18n/definitions/common";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   mode: "modification",
@@ -23,8 +24,11 @@ const Opetustehtavat = React.memo(
     sectionId
   }) => {
     const intl = useIntl();
+    const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: sectionId
+    });
     const [opetustehtavakoodisto, setOpetustehtavaKoodisto] = useState();
-    const title = intl.formatMessage(common.opetusJotaLupaKoskee)
+    const title = intl.formatMessage(common.opetusJotaLupaKoskee);
     /** Fetch opetustehtavaKoodisto from storage */
     useEffect(() => {
       getOpetustehtavaKoodistoFromStorage()
@@ -39,6 +43,7 @@ const Opetustehtavat = React.memo(
     return opetustehtavakoodisto ? (
       <Lomake
         anchor={sectionId}
+        changeObjects={changeObjects}
         code={code}
         data={{ maaraykset, rajoitteet }}
         formTitle={title}

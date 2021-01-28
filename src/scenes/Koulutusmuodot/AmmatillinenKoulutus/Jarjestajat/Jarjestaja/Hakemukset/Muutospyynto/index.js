@@ -1,16 +1,16 @@
-import MuutospyyntoContainer from './containers/MuutospyyntoContainer'
-import MuutospyyntoWizard from './components/MuutospyyntoWizard'
+import MuutospyyntoContainer from "./containers/MuutospyyntoContainer";
+import MuutospyyntoWizard from "./components/MuutospyyntoWizard";
 
 const routes = [
   {
-    path: '/jarjestajat/:id/hakemukset/uusi',
+    path: "/jarjestajat/:id/hakemukset/uusi/:page",
     exact: true,
     component: MuutospyyntoWizard
   },
   {
-    path: '/jarjestajat/:id/hakemukset-ja-paatokset/:diaarinumero',
+    path: "/jarjestajat/:id/hakemukset-ja-paatokset/:diaarinumero",
     component: MuutospyyntoContainer
   }
-]
+];
 
-export default routes
+export default routes;

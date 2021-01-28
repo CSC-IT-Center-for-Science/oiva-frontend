@@ -6,6 +6,7 @@ export default function getDefaultRemovalForm(isReadOnly, prefix) {
         {
           anchor: "textbox",
           name: "TextBox",
+          styleClasses: ["mb-6 w-full"],
           properties: {
             isReadOnly,
             isRequired: true,

@@ -1,98 +1,110 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import TaloudellisetYleisettiedot from "./Taloudelliset/TaloudellisetYleisettiedot";
-import TaloudellisetInvestoinnit from "./Taloudelliset/TaloudellisetInvestoinnit";
-import TaloudellisetTilinpaatostiedot from "./Taloudelliset/TaloudellisetTilinpaatostiedot";
-import TaloudellisetLiitteet from "./Taloudelliset/TaloudellisetLiitteet";
-import wizard from "../../../../../../../../i18n/definitions/wizard";
+import wizard from "i18n/definitions/wizard";
 import PropTypes from "prop-types";
-import Section from "components/03-templates/Section";
-import * as R from "ramda";
+import { includes, map, pathEq } from "ramda";
+import { Typography } from "@material-ui/core";
+import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
-const MuutospyyntoWizardTaloudelliset = ({
-  changeObjects,
-  onChangesRemove,
-  onChangesUpdate
-}) => {
+const sectionIds = [
+  "taloudelliset_yleisettiedot",
+  "taloudelliset_investoinnit",
+  "taloudelliset_tilinpaatostiedot",
+  "taloudelliset_liitteet"
+];
+
+const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
   const intl = useIntl();
+  const headerLevel = isReadOnly ? "h3" : "h2";
 
-  const checkIfIsAdditions = changeObjects => {
-    const findIsChecked = obj => {
-      if (obj instanceof Array) {
-        return R.any(findIsChecked, obj);
-      } else if (obj instanceof Object) {
-        const isChecked = R.prop("isChecked", obj);
-        return (
-          isChecked ||
-          R.compose(
-            R.any(([k, v]) => findIsChecked(v)),
-            R.toPairs
-          )(obj)
-        );
-      }
-      return false;
-    };
+  const isUusiaTutkintolisayksia = includes(
+    true,
+    map(pathEq(["properties", "isChecked"], true), tutkinnotCO || [])
+  );
 
-    return findIsChecked(changeObjects);
-  };
+  const [yleisetTiedotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[0]
+  });
+  const [investoinnitCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[1]
+  });
+  const [tilinpaatostiedotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[2]
+  });
+  const [liitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionIds[3]
+  });
 
   return (
-    <React.Fragment>
-      <Typography component="h2" variant="h2">
+    <form>
+      <Typography component={headerLevel} variant={headerLevel}>
         {intl.formatMessage(wizard.pageTitle_3)}
       </Typography>
 
-      {!checkIfIsAdditions(
-        R.props(["tutkinnot", "koulutukset"], changeObjects)
-      ) ? (
+      {!isUusiaTutkintolisayksia ? (
         <p>{intl.formatMessage(wizard.noAddedTutkinnot)}</p>
       ) : (
-        <React.Fragment>
-          <p className={"mb-10"}>
-            {intl.formatMessage(wizard.allFieldsRequired)}
-          </p>
-          <Section title={intl.formatMessage(wizard.yleisetTiedot)}>
-            <TaloudellisetYleisettiedot
-              changeObjects={changeObjects.taloudelliset.yleisettiedot}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-          <Section title={intl.formatMessage(wizard.taloudellisetInvestoinnit)}>
-            <TaloudellisetInvestoinnit
-              changeObjects={changeObjects.taloudelliset.investoinnit}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-          <Section
-            title={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}>
-            <TaloudellisetTilinpaatostiedot
-              changeObjects={changeObjects.taloudelliset.tilinpaatostiedot}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-          <Section title={intl.formatMessage(wizard.liitteet)}>
-            <TaloudellisetLiitteet
-              sectionId={"taloudelliset_liitteet"}
-              changeObjects={changeObjects.taloudelliset.liitteet}
-              onChangesRemove={onChangesRemove}
-              onChangesUpdate={onChangesUpdate}
-            />
-          </Section>
-        </React.Fragment>
+        <div className="mb-20">
+          {!isReadOnly && (
+            <p className={"mb-10"}>
+              {intl.formatMessage(wizard.allFieldsRequired)}
+            </p>
+          )}
+
+          <Lomake
+            anchor={sectionIds[0]}
+            changeObjects={yleisetTiedotCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="yleisettiedot"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
+            showCategoryTitles={true}
+          ></Lomake>
+
+          <Lomake
+            anchor={sectionIds[1]}
+            changeObjects={investoinnitCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="investoinnit"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
+            showCategoryTitles={true}
+          ></Lomake>
+
+          <Lomake
+            anchor={sectionIds[2]}
+            changeObjects={tilinpaatostiedotCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="tilinpaatostiedot"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}
+            showCategoryTitles={true}
+          ></Lomake>
+
+          <Lomake
+            anchor={sectionIds[3]}
+            changeObjects={liitteetCO}
+            isReadOnly={isReadOnly}
+            isRowExpanded={true}
+            mode="liitteet"
+            path={["taloudelliset"]}
+            rowTitle={intl.formatMessage(wizard.liitteet)}
+            showCategoryTitles={true}
+          ></Lomake>
+        </div>
       )}
-    </React.Fragment>
+    </form>
   );
 };
 
 MuutospyyntoWizardTaloudelliset.propTypes = {
-  changeObjects: PropTypes.object,
-  muutoshakemus: PropTypes.object,
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
-  isReadOnly: PropTypes.bool
+  isReadOnly: PropTypes.bool,
+  mode: PropTypes.string,
+  muutoshakemus: PropTypes.object
 };
 
 export default MuutospyyntoWizardTaloudelliset;

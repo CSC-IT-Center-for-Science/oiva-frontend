@@ -1,9 +1,9 @@
 import React, { useMemo, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import common from "../../../../../../../../i18n/definitions/common";
-import wizard from "../../../../../../../../i18n/definitions/wizard";
-import Lomake from "../../../../../../../../components/02-organisms/Lomake";
+import common from "i18n/definitions/common";
+import wizard from "i18n/definitions/wizard";
+import Lomake from "components/02-organisms/Lomake";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import * as R from "ramda";
 
@@ -107,8 +107,8 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
 
   return (
     <Lomake
-      mode="modification"
       anchor={props.sectionId}
+      changeObjects={changeObjects}
       code={props.code}
       data={{
         fiCode,
@@ -134,6 +134,7 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
           )
         },
         kunnatInLupa,
+        lupakohde: props.lupakohde,
         maakunnatInLupa,
         changeObjectsByProvince: Object.assign({}, provinceChanges),
         quickFilterChanges,
@@ -143,7 +144,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         onChanges: whenChanges,
         toggleEditView
       }}
+      isReadOnly={true}
       isRowExpanded={true}
+      mode={props.mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(
         wizard.singularMunicipalitiesOrTheWholeCountry

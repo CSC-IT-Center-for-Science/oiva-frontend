@@ -24,9 +24,9 @@ const Accordion = withStyles({
 const AccordionSummary = withStyles({
   root: {
     backgroundColor: "rgba(0,0,0,.03)",
-    minHeight: 56,
+    minHeight: 76,
     "&$expanded": {
-      minHeight: 56
+      minHeight: 76
     }
   },
   content: {
@@ -53,10 +53,12 @@ const ExpandableRow = props => {
   return (
     <Accordion
       defaultExpanded={props.shouldBeExpanded}
-      onChange={props.onToggle}>
+      onChange={props.onToggle}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        id={`${props.id}-summary`}>
+        id={`${props.id}-summary`}
+      >
         <div className="flex-1">
           <Slot slot="title">{props.children}</Slot>
         </div>
