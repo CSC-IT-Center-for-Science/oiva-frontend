@@ -108,7 +108,11 @@ export async function erityisetKoulutustehtavat(
                       title: __("common.kuvaus"),
                       value: kuvausmaarays0
                         ? kuvausmaarays0.meta.kuvaus
-                        : getLocalizedProperty(erityinenKoulutustehtava.metadata, locale, "kuvaus")
+                        : getLocalizedProperty(
+                            erityinenKoulutustehtava.metadata,
+                            locale,
+                            "kuvaus"
+                          )
                     }
                   }
                 ],
@@ -250,7 +254,11 @@ export async function erityisetKoulutustehtavat(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: getLocalizedProperty(erityinenKoulutustehtava.metadata, locale, "nimi")
+                title: getLocalizedProperty(
+                  erityinenKoulutustehtava.metadata,
+                  locale,
+                  "nimi"
+                )
               }
             }
           ]
@@ -286,8 +294,7 @@ export async function erityisetKoulutustehtavat(
                   },
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
-                    .nimi,
+                  title: __("common.lisatiedot"),
                   value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                 }
               }

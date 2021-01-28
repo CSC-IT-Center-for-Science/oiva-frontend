@@ -6,6 +6,8 @@ import {
   getOppisopimusPerusteluLomake
 } from "../muut";
 import { sortArticlesByHuomioitavaKoodi } from "../../utils";
+import { getVankilatFromStorage } from "helpers/vankilat";
+import { getMuutFromStorage } from "helpers/muut";
 
 function getStructureByKoodiarvo(
   perusteltavaTeksti,
@@ -36,7 +38,7 @@ function getStructureByKoodiarvo(
   return structure;
 }
 
-function getDefaultAdditionForm(isReadOnly) {
+export function getDefaultAdditionForm(isReadOnly) {
   return [
     {
       anchor: "perustelut",
@@ -61,7 +63,7 @@ function getDefaultAdditionForm(isReadOnly) {
   ];
 }
 
-function getDefaultRemovalForm(isReadOnly) {
+export function getDefaultRemovalForm(isReadOnly) {
   return getDefaultAdditionForm(isReadOnly);
 }
 
@@ -156,7 +158,7 @@ function getCategoryData(dividedArticles, areaCode) {
   switch (areaCode) {
     case "01":
       return {
-        key: "laajennettu",
+        key: "laajennettuOppisopimuskoulutus",
         articles: dividedArticles.laajennettu || [],
         componentName: "StatusTextRow"
       };
@@ -323,34 +325,28 @@ function getReasoningForm(
     : [];
 }
 
-export default function getMuutPerustelulomake(
-  action,
+export default async function getMuutPerustelulomake(
   data,
   { isReadOnly },
-  locale
+  locale,
+  changeObjects = []
 ) {
-  switch (action) {
-    case "reasoning":
-      const defaultAdditionForm = getDefaultAdditionForm(isReadOnly);
-      const defaultRemovalForm = getDefaultRemovalForm(isReadOnly);
-      const mapping = getMapping(
-        data.vankilat,
-        isReadOnly,
-        locale,
-        defaultRemovalForm
-      );
-      return getReasoningForm(
-        data.areaCode,
-        defaultAdditionForm,
-        defaultRemovalForm,
-        data.changeObjectsPage1,
-        data.maaraykset,
-        mapping,
-        data.muut,
-        isReadOnly,
-        R.toUpper(locale)
-      );
-    default:
-      return [];
-  }
+  const muut = await getMuutFromStorage();
+  const vankilat = await getVankilatFromStorage();
+  console.info(data, vankilat, muut);
+  const defaultAdditionForm = getDefaultAdditionForm(isReadOnly);
+  const defaultRemovalForm = getDefaultRemovalForm(isReadOnly);
+  const mapping = getMapping(vankilat, isReadOnly, locale, defaultRemovalForm);
+  console.info(mapping, changeObjects);
+  return getReasoningForm(
+    data.areaCode,
+    defaultAdditionForm,
+    defaultRemovalForm,
+    changeObjects,
+    data.maarayksetByKoodiarvo,
+    mapping,
+    muut,
+    isReadOnly,
+    R.toUpper(locale)
+  );
 }

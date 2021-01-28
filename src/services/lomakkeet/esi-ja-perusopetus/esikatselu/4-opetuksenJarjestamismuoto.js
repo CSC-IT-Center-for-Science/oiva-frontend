@@ -22,7 +22,6 @@ export const previewOfOpetuksenJarjestamismuoto = ({
     );
 
     if (kuvausNode) {
-      console.info(kuvausNode);
       const { rajoiteId, rajoite } = getRajoite(path(["properties", "forChangeObject", "koodiarvo"], kuvausNode), rajoitteet);
       structure = append(
         {

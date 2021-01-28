@@ -56,6 +56,7 @@ const Rajoitteet = ({
 
   return (
     <React.Fragment>
+      {render ? render() : null}
       {isRestrictionDialogVisible && !isPreviewModeOn && (
         <Rajoite
           osioidenData={osioidenData}
@@ -69,6 +70,7 @@ const Rajoitteet = ({
         <Lomake
           isInExpandableRow={false}
           anchor={sectionId}
+          changeObjects={changeObjects}
           formTitle={formatMessage(rajoitteetMessages.rajoitteet)}
           functions={{
             onAddRestriction,
@@ -81,7 +83,6 @@ const Rajoitteet = ({
           showCategoryTitles={true}
         ></Lomake>
       )}
-      {render ? render() : null}
     </React.Fragment>
   );
 };

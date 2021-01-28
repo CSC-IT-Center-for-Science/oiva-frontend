@@ -24,7 +24,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
      */
     return [
       {
-        anchor: "opetuksenJarjestamismuodot",
+        anchor: "komponentti",
         name: "Autocomplete",
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
@@ -46,7 +46,10 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
             ) === muoto.koodiarvo
               ? {
                   label: valittuJarjestamismuoto.properties.title,
-                  value: path(["properties", "metadata", "koodiarvo"], valittuJarjestamismuoto)
+                  value: path(
+                    ["properties", "metadata", "koodiarvo"],
+                    valittuJarjestamismuoto
+                  )
                 }
               : null;
           }, opetuksenJarjestamismuodot).filter(Boolean),

@@ -28,7 +28,6 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
-import { getLocalizedProperty } from "../../services/lomakkeet/utils";
 
 export const initializePOMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -127,9 +126,11 @@ export const defineBackendChangeObjects = async (
           meta: {
             ankkuri,
             kuvaus: changeObj.properties.value,
-            changeObjects: concat(
-              take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
-              [checkboxChangeObj, changeObj]
+            changeObjects: flatten(
+              concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
+                checkboxChangeObj,
+                changeObj
+              ])
             ).filter(Boolean)
           },
           tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
@@ -183,9 +184,10 @@ export const defineBackendChangeObjects = async (
             kuvaus: ehto.metadata[locale].kuvaus,
             maaraystyyppi,
             meta: {
-              changeObjects: concat(
-                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
-                [checkboxChangeObj]
+              changeObjects: flatten(
+                concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
+                  checkboxChangeObj
+                ])
               ).filter(Boolean)
             },
             tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
@@ -199,7 +201,6 @@ export const defineBackendChangeObjects = async (
         checkboxBEchangeObject && !isEmpty(rajoitteetByRajoiteIdAndKoodiarvo)
           ? values(
               mapObjIndexed(asetukset => {
-                console.info(asetukset);
                 return createAlimaarayksetBEObjects(
                   kohteet,
                   maaraystyypit,
@@ -223,7 +224,7 @@ export const defineBackendChangeObjects = async (
    */
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.muutEhdot
   );
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
@@ -246,5 +247,9 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  return flatten([muutokset, lisatiedotBEchangeObject]).filter(Boolean);
+  const objects = flatten([muutokset, lisatiedotBEchangeObject]).filter(
+    Boolean
+  );
+
+  return objects;
 };

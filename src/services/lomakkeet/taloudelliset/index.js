@@ -91,12 +91,11 @@ export function getInvestoinnitForm(isReadOnly) {
     },
     {
       anchor: "kustannukset-Input",
-      styleClasses: ["flex"],
       components: [
         {
           anchor: "A",
           name: "Input",
-          styleClasses: ["w-full sm:w-1/2 md:w-1/3"],
+          styleClasses: ["w-full sm:w-4/5 md:w-2/3"],
           properties: {
             isReadOnly: isReadOnly,
             isRequired: true,
@@ -113,7 +112,6 @@ export function getInvestoinnitForm(isReadOnly) {
     },
     {
       anchor: "rahoitus-tekstikentta",
-      styleClasses: ["flex sm:row"],
       components: [
         {
           anchor: "A",
@@ -226,17 +224,18 @@ function getLiitteetForm(isReadOnly) {
         },
         {
           anchor: "A",
-          styleClasses: ["w-full"],
+          isReadOnly,
           name: "Attachments",
-          messages: getMessages("attachments")
+          messages: getMessages("attachments"),
+          styleClasses: ["w-full"]
         }
       ]
     }
   ];
 }
 
-export function getTaloudellisetlomake(action, data, { isReadOnly }) {
-  switch (action) {
+export function getTaloudellisetlomake(mode, data, { isReadOnly }) {
+  switch (mode) {
     case "yleisettiedot":
       return getYleisetTiedotForm(isReadOnly);
     case "investoinnit":

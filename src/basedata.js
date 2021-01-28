@@ -550,18 +550,21 @@ const fetchBaseData = async (
     : undefined;
 
   result.oivaperustelut = raw.oivaperustelut
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.oivaperustelut)
+    ? await localforage.setItem(
+        "oivaperustelut",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.oivaperustelut)
+        )
       )
     : undefined;
 
@@ -670,18 +673,21 @@ const fetchBaseData = async (
   result.tulevatLuvat = raw.tulevatLuvat || [];
 
   result.vankilat = raw.vankilat
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.vankilat)
+    ? await localforage.setItem(
+        "vankilat",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.vankilat)
+        )
       )
     : undefined;
 

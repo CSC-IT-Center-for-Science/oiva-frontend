@@ -58,7 +58,7 @@ export async function getOpiskelijamaaratLomake(
             },
             isPreviewModeOn,
             isReadOnly: _isReadOnly,
-            placeholder: __("common.lisatiedot"),
+            title: __("common.lisatiedot"),
             value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
           }
         }

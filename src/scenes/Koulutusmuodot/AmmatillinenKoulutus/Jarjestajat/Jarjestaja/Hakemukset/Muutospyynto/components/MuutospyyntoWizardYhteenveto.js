@@ -1,32 +1,38 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import YhteenvetoYleisetTiedot from "./Yhteenveto/YhteenvetoYleisetTiedot";
-import YhteenvetoKooste from "./Yhteenveto/YhteenvetoKooste";
-import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
-import wizard from "../../../../../../../../i18n/definitions/wizard";
-import Section from "components/03-templates/Section";
-import * as R from "ramda";
+import wizard from "i18n/definitions/wizard";
+import { Typography } from "@material-ui/core";
+import Lomake from "components/02-organisms/Lomake";
+import { find, prop, mapObjIndexed, values } from "ramda";
+import MuutospyyntoWizardTaloudelliset from "./MuutospyyntoWizardTaloudelliset";
+import EsittelijatMuutospyynto from "scenes/Koulutusmuodot/AmmatillinenKoulutus/EsittelijatMuutospyynto";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const MuutospyyntoWizardYhteenveto = ({
-  changeObjects,
-  elykeskukset,
-  kielet,
   kohteet,
   koulutukset,
   koulutusalat,
   koulutustyypit,
   lupa,
   lupaKohteet,
+  maaraykset,
   maaraystyypit,
+  mode,
   muut,
-  muutoshakemus,
-  muutosperusteluList,
-  onChangesRemove,
-  onChangesUpdate,
-  opetuskielet,
-  tutkinnot
+  tutkinnotCO
 }) => {
+  const [
+    changeObjectsYleisetTiedot
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "yhteenveto_yleisettiedot"
+  });
+  const [
+    changeObjectsHakemuksenLiiteet
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "yhteenveto_hakemuksenLiitteet"
+  });
+
   const intl = useIntl();
   const jarjestaja = useMemo(() => {
     const nimi = {
@@ -47,21 +53,18 @@ const MuutospyyntoWizardYhteenveto = ({
     const sahkopostiosoite = {
       label: "Sähköpostiosoite",
       value:
-        (R.find(R.prop("email"))(lupa.jarjestaja.yhteystiedot) || {}).email ||
-        "-"
+        (find(prop("email"))(lupa.jarjestaja.yhteystiedot) || {}).email || "-"
     };
 
     const www = {
       label: "WWW-osoite",
-      value:
-        (R.find(R.prop("www"))(lupa.jarjestaja.yhteystiedot) || {}).www || "-"
+      value: (find(prop("www"))(lupa.jarjestaja.yhteystiedot) || {}).www || "-"
     };
 
     const puhelinnumero = {
       label: "Puhelinnumero",
       value:
-        (R.find(R.prop("numero"))(lupa.jarjestaja.yhteystiedot) || {}).numero ||
-        "-"
+        (find(prop("numero"))(lupa.jarjestaja.yhteystiedot) || {}).numero || "-"
     };
 
     return {
@@ -75,8 +78,8 @@ const MuutospyyntoWizardYhteenveto = ({
   }, [intl.locale, lupa.jarjestaja]);
 
   const jarjestajaLayout = useMemo(() => {
-    return R.values(
-      R.mapObjIndexed((obj, key) => {
+    return values(
+      mapObjIndexed((obj, key) => {
         return (
           <div className="flex" key={key}>
             <div className="w-1/2 sm:w-1/4 border-b px-6 py-2">{obj.label}</div>
@@ -89,9 +92,11 @@ const MuutospyyntoWizardYhteenveto = ({
 
   return (
     <React.Fragment>
-      <Typography component="h2" variant="h2">
-        {intl.formatMessage(wizard.pageTitle_4)}
-      </Typography>
+      <div className="mt-12">
+        <Typography component="h2" variant="h2">
+          {intl.formatMessage(wizard.pageTitle_4)}
+        </Typography>
+      </div>
 
       <Typography component="h4" variant="h4">
         Organisaation tiedot
@@ -99,51 +104,52 @@ const MuutospyyntoWizardYhteenveto = ({
 
       <div className="mb-12">{jarjestajaLayout}</div>
 
-      <Section title={"Hakemuksen yleiset tiedot"} className="my-0">
-        <YhteenvetoYleisetTiedot
-          changeObjects={{
-            yhteenveto: changeObjects.yhteenveto.yleisettiedot
-          }}
-          onChangesRemove={onChangesRemove}
-          onChangesUpdate={onChangesUpdate}
-        />
-        <YhteenvetoKooste
-          changeObjects={changeObjects}
-          elykeskukset={elykeskukset}
-          kielet={kielet}
-          kohteet={kohteet}
-          koulutukset={koulutukset}
-          koulutusalat={koulutusalat}
-          koulutustyypit={koulutustyypit}
-          lupa={lupa}
-          lupaKohteet={lupaKohteet}
-          maaraystyypit={maaraystyypit}
-          muutosperusteluList={muutosperusteluList}
-          muut={muut}
-          muutoshakemus={muutoshakemus}
-          onChangesRemove={onChangesRemove}
-          onChangesUpdate={onChangesUpdate}
-          opetuskielet={opetuskielet}
-          tutkinnot={tutkinnot}></YhteenvetoKooste>
-      </Section>
+      <Lomake
+        anchor="yhteenveto_yleisettiedot"
+        changeObjects={changeObjectsYleisetTiedot}
+        isRowExpanded={true}
+        mode="modification"
+        path={["yhteenveto", "yleisetTiedot"]}
+        rowTitle="Hakemuksen yleiset tiedot"
+        showCategoryTitles={true}
+      ></Lomake>
 
-      <Section className="my-0">
-        <YhteenvetoLiitteet
-          changeObjects={{
-            hakemuksenLiitteet: changeObjects.yhteenveto.hakemuksenLiitteet
-          }}
-          onChangesRemove={onChangesRemove}
-          onChangesUpdate={onChangesUpdate}
+      <EsittelijatMuutospyynto
+        isReadOnly={true}
+        kohteet={kohteet}
+        koulutukset={koulutukset}
+        koulutusalat={koulutusalat}
+        koulutustyypit={koulutustyypit}
+        lupaKohteet={lupaKohteet}
+        maaraykset={maaraykset}
+        maaraystyypit={maaraystyypit}
+        mode={mode}
+        muut={muut}
+      />
+
+      <div className="mt-20">
+        <MuutospyyntoWizardTaloudelliset
+          isReadOnly={true}
+          tutkinnotCO={tutkinnotCO}
         />
-      </Section>
+      </div>
+
+      <Lomake
+        anchor={"yhteenveto_hakemuksenLiitteet"}
+        changeObjects={changeObjectsHakemuksenLiiteet}
+        isReadOnly={true}
+        isRowExpanded={true}
+        mode="modification"
+        path={["yhteenveto", "liitteet"]}
+        rowTitle={intl.formatMessage(wizard.otherAttachments)}
+        showCategoryTitles={true}
+      ></Lomake>
     </React.Fragment>
   );
 };
 
 MuutospyyntoWizardYhteenveto.propTypes = {
-  changeObjects: PropTypes.object,
-  elykeskukset: PropTypes.array,
-  kielet: PropTypes.array,
+  history: PropTypes.object,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
@@ -153,10 +159,7 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   lupaKohteet: PropTypes.object,
   muutoshakemus: PropTypes.object,
   muutosperusteluList: PropTypes.array,
-  onChangesRemove: PropTypes.func,
-  onChangesUpdate: PropTypes.func,
-  opetuskielet: PropTypes.array,
-  tutkinnot: PropTypes.array
+  tutkinnotCO: PropTypes.array
 };
 
 export default MuutospyyntoWizardYhteenveto;

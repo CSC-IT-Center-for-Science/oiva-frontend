@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import education from "i18n/definitions/education";
 import { getAnchorPart } from "utils/common";
-import { useChangeObjects } from "stores/muutokset";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "erityisetKoulutustehtavat"],
@@ -23,6 +26,10 @@ const ErityisetKoulutustehtavat = ({
   const intl = useIntl();
   const [, { createTextBoxChangeObject }] = useChangeObjects();
 
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
   const onAddButtonClick = useCallback(
     addBtn => {
       createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.fullAnchor, 1));
@@ -33,6 +40,7 @@ const ErityisetKoulutustehtavat = ({
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       code={code}
       data={{ maaraykset, rajoitteet, sectionId }}
       functions={{

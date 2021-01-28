@@ -1,23 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
-  formLocation: ["ammatillinenKoulutus", "muut", "laajennettu"]
+  formLocation: [
+    "ammatillinenKoulutus",
+    "muut",
+    "laajennettuOppisopimuskoulutus"
+  ]
 };
 
 const Laajennettu = React.memo(
-  ({ items, localeUpper, maarayksetByKoodiarvo, sectionId }) => {
+  ({
+    isReadOnly,
+    items,
+    localeUpper,
+    maarayksetByKoodiarvo,
+    mode,
+    sectionId
+  }) => {
     const dataLomakepalvelulle = {
       items,
       maarayksetByKoodiarvo
     };
 
+    const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: sectionId
+    });
+
     return (
       <Lomake
-        mode="modification"
         anchor={sectionId}
+        changeObjects={changeObjects}
         data={dataLomakepalvelulle}
+        isReadOnly={isReadOnly}
+        mode={mode}
         path={constants.formLocation}
         rowTitle={items[0].metadata[localeUpper].nimi}
         showCategoryTitles={true}
@@ -28,6 +46,7 @@ const Laajennettu = React.memo(
 
 Laajennettu.propTypes = {
   koodiarvo: PropTypes.string,
+  mode: PropTypes.string,
   opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string

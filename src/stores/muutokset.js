@@ -36,6 +36,7 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
+// import { muutokset } from "scenes/Koulutusmuodot/AmmatillinenKoulutus/sivun1tietojaTaytettyKattavasti";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -91,6 +92,7 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
+  // initialState: muutokset,
   initialState: {
     changeObjects: {
       saved: {},
@@ -271,20 +273,36 @@ const Store = createStore({
        * sekä seuraava ankkurin osa on kohdennukset
        */
 
-      const kohdennusChangeObjects = filter(cObj =>
-        startsWith(`${sectionId}_${rajoiteId}.${kohdennuspolku}`, cObj.anchor) &&
-        getAnchorPart(cObj.anchor, 1 + 2*length(kohdennusindeksipolku)) === "kohdennukset",
-        concat(path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [], path(["saved", sectionId, rajoiteId], currentChangeObjects) || []) || []);
+      const kohdennusChangeObjects = filter(
+        cObj =>
+          startsWith(
+            `${sectionId}_${rajoiteId}.${kohdennuspolku}`,
+            cObj.anchor
+          ) &&
+          getAnchorPart(cObj.anchor, 1 + 2 * length(kohdennusindeksipolku)) ===
+            "kohdennukset",
+        concat(
+          path(["unsaved", sectionId, rajoiteId], currentChangeObjects) || [],
+          path(["saved", sectionId, rajoiteId], currentChangeObjects) || []
+        ) || []
+      );
 
-      const nextKohdennusAnchorPart = length(kohdennusChangeObjects) > 0
-        ? reduce(
-          max,
-        -Infinity,
-        map(changeObj => {
-          return parseInt(getAnchorPart(changeObj.anchor, 2 + 2 * length(kohdennusindeksipolku)), 10);
-        }, kohdennusChangeObjects)
-      ) + 1
-        : 0;
+      const nextKohdennusAnchorPart =
+        length(kohdennusChangeObjects) > 0
+          ? reduce(
+              max,
+              -Infinity,
+              map(changeObj => {
+                return parseInt(
+                  getAnchorPart(
+                    changeObj.anchor,
+                    2 + 2 * length(kohdennusindeksipolku)
+                  ),
+                  10
+                );
+              }, kohdennusChangeObjects)
+            ) + 1
+          : 0;
 
       console.group();
       console.info("kohdennusindeksipolku", kohdennusindeksipolku);

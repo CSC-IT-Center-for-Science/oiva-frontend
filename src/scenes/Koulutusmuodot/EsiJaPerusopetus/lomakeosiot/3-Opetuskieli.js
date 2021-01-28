@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import common from "i18n/definitions/common";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   mode: "modification",
@@ -19,9 +20,13 @@ const Opetuskieli = ({
   title
 }) => {
   const intl = useIntl();
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       code={code}
       data={{ maaraykset, rajoitteet }}
       formTitle={title}

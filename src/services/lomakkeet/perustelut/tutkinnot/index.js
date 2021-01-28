@@ -17,6 +17,7 @@ import {
   concat
 } from "ramda";
 import { getAnchorPart } from "../../../../utils/common";
+import { getOivaPerustelutFromStorage } from "helpers/oivaperustelut";
 
 export const getAdditionForm = (checkboxItems, locale, isReadOnly = false) => {
   const checkboxes = getMuutostarveCheckboxes(
@@ -78,17 +79,19 @@ export const getOsaamisalaForm = (isReadOnly, osaamisalaTitle, koodiarvo) => {
   ];
 };
 
-function getCategoriesForPerustelut(
+async function getCategoriesForPerustelut(
   isReadOnly,
   changeObjects,
-  tutkinnotChangeObjects,
   koulutusala,
   koulutustyypit,
-  oivaperustelut,
   title,
   tutkinnotByKoulutustyyppi,
   locale
 ) {
+  const oivaperustelut = await getOivaPerustelutFromStorage();
+
+  console.info(changeObjects, oivaperustelut);
+
   const localeUpper = toUpper(locale);
   const currentDate = new Date();
   const structure = map(koulutustyyppi => {
@@ -181,7 +184,7 @@ function getCategoriesForPerustelut(
   return filter(compose(not, isEmpty, prop("categories")), structure);
 }
 
-export default function getTutkinnotPerustelulomake(
+export default async function getTutkinnotPerustelulomake(
   action,
   data,
   { isReadOnly },
@@ -194,13 +197,11 @@ export default function getTutkinnotPerustelulomake(
     case "osaamisala":
       return getOsaamisalaForm(isReadOnly);
     case "reasoning":
-      return getCategoriesForPerustelut(
+      return await getCategoriesForPerustelut(
         isReadOnly,
         changeObjects,
-        data.tutkinnotChangeObjects,
         data.koulutusala,
         data.koulutustyypit,
-        data.oivaperustelut,
         data.title,
         data.tutkinnotByKoulutustyyppi,
         locale

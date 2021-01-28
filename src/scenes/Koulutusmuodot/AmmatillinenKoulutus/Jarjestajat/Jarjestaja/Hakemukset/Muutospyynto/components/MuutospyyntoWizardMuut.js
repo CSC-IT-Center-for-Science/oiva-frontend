@@ -23,6 +23,7 @@ import MuuMaarays from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/L
 import { Typography } from "@material-ui/core";
 
 const defaultProps = {
+  isReadOnly: false,
   maaraykset: [],
   muut: []
 };
@@ -30,7 +31,9 @@ const defaultProps = {
 const MuutospyyntoWizardMuut = React.memo(
   ({
     code,
+    isReadOnly = defaultProps.isReadOnly,
     maaraykset = defaultProps.maaraykset,
+    mode,
     muut = defaultProps.muut,
     sectionId,
     title
@@ -83,9 +86,11 @@ const MuutospyyntoWizardMuut = React.memo(
         </Typography>
         {!!items.laajennettu && items.laajennettu.length > 0 ? (
           <Laajennettu
+            isReadOnly={isReadOnly}
             items={items.laajennettu}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_01`}
           ></Laajennettu>
         ) : null}
@@ -93,72 +98,88 @@ const MuutospyyntoWizardMuut = React.memo(
         {(!!items.vaativa_1 && items.vaativa_1.length > 0) ||
         (!!items.vaativa_2 && items.vaativa_2.length > 0) ? (
           <VaativaTuki
+            isReadOnly={isReadOnly}
             items={vaativaTukiItems}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_02`}
           ></VaativaTuki>
         ) : null}
 
         {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
           <Sisaoppilaitos
+            isReadOnly={isReadOnly}
             items={items.sisaoppilaitos}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_03`}
           ></Sisaoppilaitos>
         ) : null}
 
         {!!items.vankila && items.vankila.length > 0 ? (
           <Vankila
+            isReadOnly={isReadOnly}
             items={items.vankila}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_04`}
           ></Vankila>
         ) : null}
 
         {!!items.urheilu && items.urheilu.length > 0 ? (
           <Urheilu
+            isReadOnly={isReadOnly}
             items={items.urheilu}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_05`}
           ></Urheilu>
         ) : null}
 
         {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
           <Yhteistyo
+            isReadOnly={isReadOnly}
             items={items.yhteistyo}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_06`}
           ></Yhteistyo>
         ) : null}
 
         {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
           <Yhteistyosopimus
+            isReadOnly={isReadOnly}
             items={items.yhteistyosopimus}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_08`}
           ></Yhteistyosopimus>
         ) : null}
 
         {!!items.selvitykset && items.selvitykset.length > 0 ? (
           <Selvitykset
+            isReadOnly={isReadOnly}
             items={items.selvitykset}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_09`}
           ></Selvitykset>
         ) : null}
 
         {!!items.muumaarays && items.muumaarays.length > 0 ? (
           <MuuMaarays
+            isReadOnly={isReadOnly}
             items={items.muumaarays}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
+            mode={mode}
             sectionId={`${sectionId}_07`}
           ></MuuMaarays>
         ) : null}
@@ -169,7 +190,9 @@ const MuutospyyntoWizardMuut = React.memo(
 
 MuutospyyntoWizardMuut.propTypes = {
   headingNumber: PropTypes.number,
+  isReadOnly: PropTypes.bool,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array
 };
 

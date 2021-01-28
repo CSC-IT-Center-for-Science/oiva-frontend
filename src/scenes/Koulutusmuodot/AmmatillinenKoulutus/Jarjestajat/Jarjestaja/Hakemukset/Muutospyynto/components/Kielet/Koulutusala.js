@@ -1,17 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Lomake from "../../../../../../../../../components/02-organisms/Lomake";
+import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["kielet", "tutkintokielet"]
 };
 
-const Koulutusala = ({ aktiivisetTutkinnot, sectionId, title }) => {
+const Koulutusala = ({
+  aktiivisetTutkinnot,
+  koulutusalakoodiarvo,
+  maaraykset,
+  mode,
+  sectionId,
+  title
+}) => {
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
+  const lomakedata =
+    mode === "modification"
+      ? { aktiiviset: aktiivisetTutkinnot }
+      : { koulutusalakoodiarvo, maaraykset };
+
   return (
     <Lomake
-      mode="modification"
       anchor={sectionId}
-      data={{ aktiiviset: aktiivisetTutkinnot }}
+      changeObjects={changeObjects}
+      data={lomakedata}
+      isRowExpanded={mode === "reasoning"}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={title}
       showCategoryTitles={true}
@@ -20,7 +39,9 @@ const Koulutusala = ({ aktiivisetTutkinnot, sectionId, title }) => {
 };
 
 Koulutusala.propTypes = {
+  aktiivisetTutkinnot: PropTypes.array,
   koodiarvo: PropTypes.string,
+  mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

@@ -281,23 +281,26 @@ export async function createObjectToSave(
     changeObjects.paatoksentiedot || []
   );
 
-  objectToSave.paatospvm = paatospaivaObj && paatospaivaObj.properties.value
-    ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
-    : "";
+  objectToSave.paatospvm =
+    paatospaivaObj && paatospaivaObj.properties.value
+      ? moment(paatospaivaObj.properties.value).format("YYYY-MM-DD")
+      : "";
   const voimaantulopaivaObj = find(
     propEq("anchor", "paatoksentiedot.voimaantulopaiva.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.voimassaalkupvm = voimaantulopaivaObj && voimaantulopaivaObj.properties.value
-    ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
-    : "";
+  objectToSave.voimassaalkupvm =
+    voimaantulopaivaObj && voimaantulopaivaObj.properties.value
+      ? moment(voimaantulopaivaObj.properties.value).format("YYYY-MM-DD")
+      : "";
   const paattymispaivamaaraObj = find(
     propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.paattymispaivamaara = paattymispaivamaaraObj && paattymispaivamaaraObj.properties.value
-    ? moment(paattymispaivamaaraObj.properties.value).format("YYYY-MM-DD")
-    : "";
+  objectToSave.paattymispaivamaara =
+    paattymispaivamaaraObj && paattymispaivamaaraObj.properties.value
+      ? moment(paattymispaivamaaraObj.properties.value).format("YYYY-MM-DD")
+      : "";
 
   // This helps the frontend to initialize the first four fields on form load.
   objectToSave.meta.paatoksentiedot = changeObjects.paatoksentiedot;

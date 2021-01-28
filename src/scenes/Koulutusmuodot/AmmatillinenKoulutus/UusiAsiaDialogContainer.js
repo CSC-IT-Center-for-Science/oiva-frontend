@@ -20,6 +20,7 @@ const UusiAsiaDialogContainer = ({
   muut,
   opetuskielet,
   organisaatio,
+  role,
   viimeisinLupa
 }) => {
   const intl = useIntl();
@@ -43,7 +44,7 @@ const UusiAsiaDialogContainer = ({
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(`/ammatillinenkoulutus/asianhallinta/${id}/${uuid}`);
+      history.push(`/ammatillinenkoulutus/asianhallinta/${id}/${uuid}/1`);
     },
     [history, id]
   );
@@ -62,6 +63,7 @@ const UusiAsiaDialogContainer = ({
       onNewDocSave={onNewDocSave}
       opetuskielet={opetuskielet}
       organisation={organisaatio}
+      role={role}
     />
   );
 };
