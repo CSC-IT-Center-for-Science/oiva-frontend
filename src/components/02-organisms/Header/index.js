@@ -58,9 +58,9 @@ const Header = React.memo(
     template = "A",
     languageSelectionAriaLabel = "Kielivalinta"
   }) => {
-    const selectedLangStyles =
-      "border rounded-full p-2 text-sm bg-white text-green-500 leading-none font-medium mr-1";
-    const commonLangStyles = "";
+    const selectedLangStyles = "border bg-white text-green-500 mr-1";
+    const commonLangStyles =
+      "leading-none font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
     const classes = useStyles();
     const typographyClasses = useStylesForTypography();
     const items = [
@@ -192,6 +192,7 @@ const Header = React.memo(
                       locale === "fi" ? selectedLangStyles : ""
                     } ${commonLangStyles} mr-2`}
                     onClick={() => onLocaleChange("fi")}
+                    style={{ width: "1.625rem", height: "1.625rem" }}
                   >
                     {inFinnish}
                   </button>
@@ -201,6 +202,7 @@ const Header = React.memo(
                       locale === "sv" ? selectedLangStyles : ""
                     } ${commonLangStyles}`}
                     onClick={() => onLocaleChange("sv")}
+                    style={{ width: "1.625rem", height: "1.625rem" }}
                   >
                     {inSwedish}
                   </button>
