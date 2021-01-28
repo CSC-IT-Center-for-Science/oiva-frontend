@@ -101,7 +101,7 @@ const UusiAsiaDialog = React.memo(
     const [page, setPage] = useState();
 
     useEffect(() => {
-      setPage(parseInt(pageParam, 10));
+      setPage(pageParam ? parseInt(pageParam, 10) : 1);
     }, [pageParam]);
 
     const [validity] = useValidity();
