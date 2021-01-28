@@ -50,7 +50,7 @@ const Esittelijat = ({
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:id/uusi/:page`}
+            path={`${path}/:id/uusi/:page?`}
             render={() => (
               <BaseData
                 locale={locale}
@@ -80,7 +80,7 @@ const Esittelijat = ({
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:id/:uuid/:page`}
+            path={`${path}/:id/:uuid/:page?`}
             render={() => {
               return (
                 <BaseData
