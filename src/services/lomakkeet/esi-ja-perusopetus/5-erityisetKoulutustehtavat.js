@@ -126,14 +126,14 @@ export async function erityisetKoulutustehtavat(
                 map(maarays => {
                   return maarays.meta.ankkuri !== kuvausankkuri0
                     ? {
-                        anchor: maarays.koodiarvo,
+                        anchor: path(["meta", "ankkuri"], maarays),
                         components: [
                           {
                             anchor: "kuvaus",
                             name: "TextBox",
                             properties: {
                               forChangeObject: {
-                                ankkuri: maarays.koodiarvo,
+                                ankkuri: path(["meta", "ankkuri"], maarays),
                                 koodiarvo: maarays.koodiarvo
                               },
                               isPreviewModeOn,
