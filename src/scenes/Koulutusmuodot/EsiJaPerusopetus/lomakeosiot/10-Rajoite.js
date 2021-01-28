@@ -10,7 +10,11 @@ import React, { useCallback } from "react";
 import { useIntl } from "react-intl";
 import Lomake from "components/02-organisms/Lomake";
 import PropTypes from "prop-types";
-import { useChangeObjects, useChangeObjectsByAnchor } from "stores/muutokset";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchor,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "rajoite"]
@@ -28,6 +32,12 @@ const Rajoite = ({
   const [rajoitelomakeChangeObjs] = useChangeObjectsByAnchor({
     anchor: sectionId
   });
+
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
+  console.info(rajoitelomakeChangeObjs, sectionId, changeObjects);
 
   const lisaaKohdennus = useCallback(
     ({ metadata }) => {
@@ -91,8 +101,8 @@ const Rajoite = ({
         </Typography> */}
         <div className="m-10">
           <Lomake
-            isInExpandableRow={false}
             anchor={`${sectionId}_${restrictionId}`}
+            changeObjects={changeObjects}
             data={{
               osioidenData,
               rajoiteId: restrictionId,
@@ -103,6 +113,7 @@ const Rajoite = ({
               onAddCriterion,
               onRemoveCriterion
             }}
+            isInExpandableRow={false}
             isSavingState={false}
             path={constants.formLocation}
             showCategoryTitles={true}

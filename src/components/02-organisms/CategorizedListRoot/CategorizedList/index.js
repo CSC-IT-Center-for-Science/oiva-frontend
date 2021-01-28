@@ -799,6 +799,7 @@ const CategorizedList = props => {
                           fullAnchor={fullAnchor}
                           id={fullAnchor}
                           initialValue={propsObj.initialValue}
+                          isReadOnly={propsObj.isReadOnly}
                           isRequired={propsObj.isRequired}
                           onChanges={handleChanges}
                           titles={propsObj.titles}

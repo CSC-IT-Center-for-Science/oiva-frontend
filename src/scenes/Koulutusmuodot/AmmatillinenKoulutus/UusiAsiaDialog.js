@@ -1,30 +1,34 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
-import DialogTitle from "../../../components/02-organisms/DialogTitle";
-import ConfirmDialog from "../../../components/02-organisms/ConfirmDialog";
-import wizardMessages from "../../../i18n/definitions/wizard";
+import DialogTitle from "components/02-organisms/DialogTitle";
+import ConfirmDialog from "components/02-organisms/ConfirmDialog";
+import wizardMessages from "i18n/definitions/wizard";
 import { withStyles } from "@material-ui/styles";
 import { DialogContent, Dialog } from "@material-ui/core";
 import EsittelijatWizardActions from "./EsittelijatWizardActions";
 import { useHistory, useParams } from "react-router-dom";
-import SimpleButton from "../../../components/00-atoms/SimpleButton";
-import { createMuutospyyntoOutput } from "../../../services/muutoshakemus/utils/common";
-import ProcedureHandler from "../../../components/02-organisms/procedureHandler";
-import { useMuutospyynto } from "../../../stores/muutospyynto";
-import common from "../../../i18n/definitions/common";
+import SimpleButton from "components/00-atoms/SimpleButton";
+import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
+import ProcedureHandler from "components/02-organisms/procedureHandler";
+import { useMuutospyynto } from "stores/muutospyynto";
+import common from "i18n/definitions/common";
 import * as R from "ramda";
 import {
   useChangeObjects,
   useChangeObjectsByAnchorWithoutUnderRemoval,
   useUnderRemovalChangeObjects,
   useUnsavedChangeObjects
-} from "../../../stores/muutokset";
-import Lupanakyma from "./Esittelijat/Lupanakyma/index";
+} from "stores/muutokset";
 import { createObjectToSave } from "helpers/ammatillinenKoulutus/tallentaminen/esittelijat";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import equal from "react-fast-compare";
-import { useAllSections } from "stores/lomakedata";
+import { useAllSections, useValidity } from "stores/lomakedata";
+import StepperNavigation from "components/01-molecules/Stepper";
+import MuutospyyntoWizardTaloudelliset from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardTaloudelliset";
+import MuutospyyntoWizardYhteenveto from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardYhteenveto";
+import OrganisationInfo from "components/02-organisms/OrganisationInfo";
+import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -86,12 +90,25 @@ const UusiAsiaDialog = React.memo(
     maaraystyypit = defaultProps.maaraystyypit,
     muut = defaultProps.muut,
     onNewDocSave,
-    organisation = defaultProps.organisation
+    organisation = defaultProps.organisation,
+    role
   }) => {
     const intl = useIntl();
     const params = useParams();
     let history = useHistory();
-    let { uuid } = params;
+    let { page: pageParam, uuid } = params;
+
+    const [page, setPage] = useState();
+
+    useEffect(() => {
+      setPage(parseInt(pageParam, 10));
+    }, [pageParam]);
+
+    const [validity] = useValidity();
+
+    const isLupaValid = useMemo(() => {
+      return !R.includes(false, R.values(validity));
+    }, [validity]);
 
     const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
     const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
@@ -100,6 +117,20 @@ const UusiAsiaDialog = React.memo(
     const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
     const [, muutospyyntoActions] = useMuutospyynto();
     const [lomakedata] = useAllSections();
+    const [steps] = useState([
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_1)
+      },
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_2)
+      },
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_3)
+      },
+      {
+        title: intl.formatMessage(wizardMessages.pageTitle_4)
+      }
+    ]);
 
     // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
     const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -126,9 +157,16 @@ const UusiAsiaDialog = React.memo(
     const [muutCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "muut"
     });
-    const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "rajoitteet"
-    });
+    // const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    //   anchor: "rajoitteet"
+    // });
+
+    const handleStep = useCallback(
+      pageNumber => {
+        history.push(String(pageNumber));
+      },
+      [history]
+    );
 
     const isSavingEnabled = useMemo(() => {
       const hasUnsavedChanges = unsavedChangeObjects
@@ -228,8 +266,8 @@ const UusiAsiaDialog = React.memo(
               toimintaalue: toimintaalueCO,
               topthree: topThreeCO,
               tutkinnot: tutkinnotCO,
-              tutkintokielet: tutkintokieletCO,
-              rajoitteet: rajoitteetCO
+              tutkintokielet: tutkintokieletCO
+              // rajoitteet: rajoitteetCO
             },
             uuid,
             kohteet,
@@ -281,7 +319,7 @@ const UusiAsiaDialog = React.memo(
         opetuskieletCO,
         opiskelijavuodetCO,
         organisation,
-        rajoitteetCO,
+        // rajoitteetCO,
         toimintaalueCO,
         topThreeCO,
         tutkinnotCO,
@@ -298,7 +336,8 @@ const UusiAsiaDialog = React.memo(
             onClose={leaveOrOpenCancelModal}
             maxWidth={"lg"}
             fullScreen={true}
-            aria-labelledby="simple-dialog-title">
+            aria-labelledby="simple-dialog-title"
+          >
             <div className={"w-full m-auto"}>
               <DialogTitleWithStyles id="customized-dialog-title">
                 <div className="flex">
@@ -318,21 +357,81 @@ const UusiAsiaDialog = React.memo(
               </DialogTitleWithStyles>
             </div>
             <DialogContentWithStyles>
-              <div className="mb-20">
-                {!R.isEmpty(organisation) ? (
-                  <Lupanakyma
-                    history={history}
-                    kohteet={kohteet}
-                    koulutukset={koulutukset}
-                    koulutusalat={koulutusalat}
-                    koulutustyypit={koulutustyypit}
-                    maaraykset={lupa.maaraykset}
-                    lupaKohteet={lupaKohteet}
-                    maaraystyypit={maaraystyypit}
-                    muut={muut}
-                    onNewDocSave={onNewDocSave}
-                    organisation={organisation}
+              <OrganisationInfo organisation={organisation} />
+              <div className="w-full xxl:w-4/5 max-w-8xl m-auto mb-32">
+                {role === "KJ" && (
+                  <StepperNavigation
+                    activeStep={page - 1}
+                    stepProps={steps}
+                    handleStepChange={handleStep}
                   />
+                )}
+                {!R.isEmpty(organisation) ? (
+                  <div
+                    className={`border-t-2 ${
+                      isLupaValid ? "border-green-500" : "border-red-500"
+                    }`}
+                  >
+                    <div
+                      id="wizard-content"
+                      className="px-8 xxl:p-0 max-w-7xl m-auto mb-20"
+                    >
+                      {page === 1 && (
+                        <EsittelijatMuutospyynto
+                          kohteet={kohteet}
+                          koulutukset={koulutukset}
+                          koulutusalat={koulutusalat}
+                          koulutustyypit={koulutustyypit}
+                          maaraykset={lupa.maaraykset}
+                          lupaKohteet={lupaKohteet}
+                          maaraystyypit={maaraystyypit}
+                          mode={"modification"}
+                          muut={muut}
+                          role={role}
+                          title={intl.formatMessage(common.changesText)}
+                        />
+                      )}
+                      {page === 2 && (
+                        <EsittelijatMuutospyynto
+                          kohteet={kohteet}
+                          koulutukset={koulutukset}
+                          koulutusalat={koulutusalat}
+                          koulutustyypit={koulutustyypit}
+                          maaraykset={lupa.maaraykset}
+                          lupaKohteet={lupaKohteet}
+                          maaraystyypit={maaraystyypit}
+                          mode={"reasoning"}
+                          muut={muut}
+                          role={role}
+                          title={intl.formatMessage(wizardMessages.pageTitle_2)}
+                        />
+                      )}
+                      {page === 3 && (
+                        <MuutospyyntoWizardTaloudelliset
+                          isReadOnly={false}
+                          tutkinnotCO={tutkinnotCO}
+                          // isFirstVisit={visitsPerPage[3] === 1}
+                        />
+                      )}
+                      {page === 4 && (
+                        <MuutospyyntoWizardYhteenveto
+                          history={history}
+                          kohteet={kohteet}
+                          koulutukset={koulutukset}
+                          koulutusalat={koulutusalat}
+                          koulutustyypit={koulutustyypit}
+                          lupa={lupa}
+                          lupaKohteet={lupaKohteet}
+                          maaraykset={lupa.maaraykset}
+                          maaraystyypit={maaraystyypit}
+                          mode="reasoning"
+                          muut={muut}
+                          tutkinnotCO={tutkinnotCO}
+                          // isFirstVisit={visitsPerPage[4] === 1}
+                        />
+                      )}
+                    </div>
+                  </div>
                 ) : null}
               </div>
               <EsittelijatWizardActions
@@ -387,7 +486,8 @@ UusiAsiaDialog.propTypes = {
   onChangeObjectsUpdate: PropTypes.func,
   onNewDocSave: PropTypes.func,
   opetuskielet: PropTypes.array,
-  organisation: PropTypes.object
+  organisation: PropTypes.object,
+  role: PropTypes.string
 };
 
 export default UusiAsiaDialog;

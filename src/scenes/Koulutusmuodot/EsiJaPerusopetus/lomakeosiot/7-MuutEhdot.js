@@ -3,7 +3,10 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import education from "i18n/definitions/education";
-import { useChangeObjects } from "stores/muutokset";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "muutEhdot"],
@@ -22,6 +25,10 @@ const MuutEhdot = ({
   const intl = useIntl();
   const [, { createTextBoxChangeObject }] = useChangeObjects();
 
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
   const onAddButtonClick = useCallback(
     koodiarvo => {
       createTextBoxChangeObject(sectionId, koodiarvo);
@@ -32,6 +39,7 @@ const MuutEhdot = ({
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       code={code}
       data={{ maaraykset, rajoitteet }}
       functions={{ onAddButtonClick }}

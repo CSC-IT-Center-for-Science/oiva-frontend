@@ -11,7 +11,7 @@ export function getRules(_lomake) {
   let opiskelijavuodetRules = [];
 
   switch (_lomake[0].anchor) {
-    case "laajennettu":
+    case "laajennettuOppisopimuskoulutus":
     case "vaativatuki":
     case "vankila":
       opiskelijavuodetCategories = R.uniq(
@@ -21,7 +21,7 @@ export function getRules(_lomake) {
     default:
       break;
   }
- 
+
   if (opiskelijavuodetCategories) {
     // Rules for opiskelijavuodet fields
     opiskelijavuodetRules = R.map(category => {

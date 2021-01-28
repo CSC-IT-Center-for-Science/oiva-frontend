@@ -23,7 +23,7 @@ export default async function getErityisetKoulutustehtavat(
   if (erityisetKoulutustehtavat.length) {
     return [
       {
-        anchor: "erityisetKoulutustehtavat",
+        anchor: "komponentti",
         name: "Autocomplete",
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
@@ -64,7 +64,10 @@ export default async function getErityisetKoulutustehtavat(
                  * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
-                  path(["metadata", "FI", "kayttoohje"], erityinenKoulutustehtava) === "Kuvaus"
+                  path(
+                    ["metadata", "FI", "kayttoohje"],
+                    erityinenKoulutustehtava
+                  ) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
@@ -78,7 +81,7 @@ export default async function getErityisetKoulutustehtavat(
                     : {
                         label:
                           erityinenKoulutustehtava.metadata[localeUpper].nimi,
-                        value: `${erityinenKoulutustehtava.koodiarvo}`
+                        value: `${erityinenKoulutustehtava.koodiarvo}-0`
                       };
 
                 return options;

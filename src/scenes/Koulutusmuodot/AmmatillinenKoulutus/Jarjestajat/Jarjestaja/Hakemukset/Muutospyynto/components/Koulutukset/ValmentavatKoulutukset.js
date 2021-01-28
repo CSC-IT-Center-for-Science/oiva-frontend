@@ -1,18 +1,28 @@
 import React, { useMemo } from "react";
-import { getDataForKoulutusList } from "../../../../../../../../../utils/koulutusUtil";
-import wizardMessages from "../../../../../../../../../i18n/definitions/wizard";
+import { getDataForKoulutusList } from "utils/koulutusUtil";
+import wizardMessages from "i18n/definitions/wizard";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import Lomake from "../../../../../../../../../components/02-organisms/Lomake";
+import Lomake from "components/02-organisms/Lomake";
 import { toUpper, values } from "ramda";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["koulutukset", "valmentavatKoulutukset"]
 };
 
-const ValmentavatKoulutukset = ({ koulutukset, maaraykset }) => {
+const ValmentavatKoulutukset = ({
+  isReadOnly,
+  koulutukset,
+  maaraykset,
+  mode
+}) => {
   const intl = useIntl();
   const sectionId = "koulutukset_valmentavatKoulutukset";
+
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
 
   const lomakedata = useMemo(() => {
     return {
@@ -28,11 +38,15 @@ const ValmentavatKoulutukset = ({ koulutukset, maaraykset }) => {
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       data={lomakedata}
-      mode="modification"
+      isReadOnly={isReadOnly}
+      isRowExpanded={mode === "reasoning"}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.preparatoryTraining)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 

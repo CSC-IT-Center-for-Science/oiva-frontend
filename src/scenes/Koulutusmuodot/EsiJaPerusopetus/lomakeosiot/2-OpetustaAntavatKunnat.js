@@ -107,6 +107,7 @@ const OpetustaAntavatKunnat = React.memo(
       <Lomake
         mode={constants.mode}
         anchor={sectionId}
+        changeObjects={changeObjects}
         code={code}
         data={{
           changeObjectsByProvince: Object.assign({}, provinceChanges),

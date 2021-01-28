@@ -78,7 +78,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
                 organisations={_props.organisaatiot}
                 onSelect={selectedItem =>
                   history.push(
-                    `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi`
+                    `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi/1`
                   )
                 }
               ></UusiAsiaEsidialog>

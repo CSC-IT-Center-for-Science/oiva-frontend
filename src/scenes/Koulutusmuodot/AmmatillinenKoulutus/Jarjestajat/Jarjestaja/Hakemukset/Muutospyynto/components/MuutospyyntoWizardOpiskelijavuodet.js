@@ -3,15 +3,19 @@ import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "helpers/lupa";
 import { useLomakedata } from "stores/lomakedata";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
 };
 
 const MuutospyyntoWizardOpiskelijavuodet = React.memo(
-  ({ code, maaraykset, muut, sectionId, title }) => {
+  ({ code, maaraykset, mode, muut, sectionId, title }) => {
     const [muutLomakedata] = useLomakedata({
       anchor: "muut"
+    });
+    const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: sectionId
     });
     const opiskelijavuosiMaaraykset = getMaarayksetByTunniste(
       "opiskelijavuodet",
@@ -22,11 +26,12 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
     return muut && muutMaaraykset && opiskelijavuosiMaaraykset ? (
       <Lomake
         anchor={sectionId}
+        changeObjects={changeObjects}
         code={code}
         data={{ muutLomakedata, sectionId }}
         formTitle={title}
         isRowExpanded={true}
-        mode="modification"
+        mode={mode}
         path={constants.formLocation}
         showCategoryTitles={true}
       ></Lomake>
@@ -41,6 +46,7 @@ MuutospyyntoWizardOpiskelijavuodet.defaultProps = {
 MuutospyyntoWizardOpiskelijavuodet.propTypes = {
   lupaKohteet: PropTypes.object,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array,
   sectionId: PropTypes.string
 };

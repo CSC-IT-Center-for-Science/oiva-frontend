@@ -70,6 +70,7 @@ const Rajoitteet = ({
         <Lomake
           isInExpandableRow={false}
           anchor={sectionId}
+          changeObjects={changeObjects}
           formTitle={formatMessage(rajoitteetMessages.rajoitteet)}
           functions={{
             onAddRestriction,

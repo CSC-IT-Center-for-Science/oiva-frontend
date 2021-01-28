@@ -6,7 +6,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import BaseData from "basedata";
 import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
-import { MuutoksetContainer } from "../../../stores/muutokset";
+import { MuutoksetContainer } from "stores/muutokset";
 
 const Esittelijat = ({
   AsiaDialogContainer,
@@ -16,7 +16,6 @@ const Esittelijat = ({
   const { locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
-  const scope = "esittelijan-lupanakyma";
 
   return (
     <React.Fragment>
@@ -51,14 +50,14 @@ const Esittelijat = ({
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:id/uusi`}
+            path={`${path}/:id/uusi/:page`}
             render={() => (
               <BaseData
                 locale={locale}
                 koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 render={_props => {
                   return (
-                    <MuutoksetContainer scope={scope}>
+                    <MuutoksetContainer>
                       <UusiAsiaDialogContainer
                         kohteet={_props.kohteet}
                         koulutukset={_props.koulutukset}
@@ -69,6 +68,7 @@ const Esittelijat = ({
                         muut={_props.muut}
                         opetuskielet={_props.opetuskielet}
                         organisaatio={_props.organisaatio}
+                        role={"ESITTELIJA"}
                         viimeisinLupa={_props.viimeisinLupa}
                       />
                     </MuutoksetContainer>
@@ -80,7 +80,7 @@ const Esittelijat = ({
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/:id/:uuid`}
+            path={`${path}/:id/:uuid/:page`}
             render={() => {
               return (
                 <BaseData
@@ -88,7 +88,7 @@ const Esittelijat = ({
                   koulutustyyppi={koulutusmuoto.koulutustyyppi}
                   render={_props => {
                     return (
-                      <MuutoksetContainer scope={scope}>
+                      <MuutoksetContainer>
                         <AsiaDialogContainer
                           kohteet={_props.kohteet}
                           koulutukset={_props.koulutukset}
@@ -99,6 +99,7 @@ const Esittelijat = ({
                           muut={_props.muut}
                           opetuskielet={_props.opetuskielet}
                           organisaatio={_props.organisaatio}
+                          role={"ESITTELIJA"}
                           viimeisinLupa={_props.viimeisinLupa}
                         />
                       </MuutoksetContainer>
