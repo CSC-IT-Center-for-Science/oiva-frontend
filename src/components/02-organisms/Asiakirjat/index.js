@@ -392,25 +392,29 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         style={{
           borderTop: "0.05rem solid #E3E3E3",
           background: "#FAFAFA"
-        }}>
+        }}
+      >
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
         <BreadcrumbsItem
-          to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}>
+          to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}
+        >
           {nimi}
         </BreadcrumbsItem>
         <div
           className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8"
           style={{
             maxWidth: "90rem"
-          }}>
+          }}
+        >
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
             onClick={() => {
               history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`);
-            }}>
+            }}
+          >
             <BackIcon
               style={{
                 fontSize: 14,
@@ -434,7 +438,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <div className="flex-1 flex w-full">
           <div
             style={{ maxWidth: "90rem" }}
-            className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
+            className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12"
+          >
             <span>
               <Typography component="h4" variant="h4" className="float-left">
                 {t(common.asianAsiakirjat)}
@@ -443,7 +448,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 component="h4"
                 variant="h4"
                 className="float-right"
-                style={{ margin: 0 }}>
+                style={{ margin: 0 }}
+              >
                 <SelectAttachment
                   attachmentAdded={handleAddPaatoskirje}
                   messages={{
@@ -486,7 +492,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 isVisible={isRemovalDialogVisible}
                 removeAsia={rows.length === 1}
                 onClose={() => setIsRemovalDialogVisible(false)}
-                onOK={removeAsiakirja}></RemovalDialogOfAsiakirja>
+                onOK={removeAsiakirja}
+              ></RemovalDialogOfAsiakirja>
             )}
             {isDownloadPDFAndChangeStateDialogVisible && (
               <PDFAndStateDialog
@@ -494,11 +501,13 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 onClose={() =>
                   setIsDownloadPDFAndChangeStateDialogVisible(false)
                 }
-                onOK={setStateOfMuutospyyntoAsEsittelyssa}></PDFAndStateDialog>
+                onOK={setStateOfMuutospyyntoAsEsittelyssa}
+              ></PDFAndStateDialog>
             )}
             <div
               className="flex-1 bg-white"
-              style={{ border: "0.05rem solid #E3E3E3" }}>
+              style={{ border: "0.05rem solid #E3E3E3" }}
+            >
               <WrapTable>
                 <Media
                   query={MEDIA_QUERIES.MOBILE}
@@ -514,7 +523,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                     <div
                       style={{
                         borderBottom: "0.05rem solid #E3E3E3"
-                      }}>
+                      }}
+                    >
                       <Table
                         structure={table}
                         sortedBy={{ columnIndex: 3, order: "descending" }}
