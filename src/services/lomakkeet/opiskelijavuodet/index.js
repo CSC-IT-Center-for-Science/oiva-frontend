@@ -29,7 +29,7 @@ import { generateDifferenceComponent } from "../perustelut/muut";
 import { getMuutostarveCheckboxes } from "../perustelut/common";
 import { getOivaPerustelutFromStorage } from "helpers/oivaperustelut";
 
-const getValitutKoodiarvot = (stateObjects = []) => {
+export const getValitutKoodiarvot = (stateObjects = []) => {
   return map(stateObj => {
     const isChecked = pathEq(["properties", "isChecked"], true, stateObj);
     return isChecked
@@ -234,14 +234,20 @@ async function getModificationForm(
                 properties: {
                   forChangeObject: reject(isNil, {
                     koodiarvo: head(
-                      filter(
-                        includes(
-                          __,
-                          path(["02", "valitutKoodiarvot"], muutLomakedata) ||
-                            []
-                        ),
-                        radioButtonKoodiarvotVaativaTuki
-                      )
+                      map(stateObj => {
+                        const koodiarvo = path(
+                          ["properties", "forChangeObject", "koodiarvo"],
+                          stateObj
+                        );
+                        const isInKoodiarvot = includes(
+                          koodiarvo,
+                          radioButtonKoodiarvotVaativaTuki
+                        );
+                        return isInKoodiarvot &&
+                          pathEq(["properties", "isChecked"], true, stateObj)
+                          ? koodiarvo
+                          : false;
+                      }, prop("02", muutLomakedata) || []).filter(Boolean)
                     ),
                     maaraysUuid: (findVaativatukiRajoitus(maaraykset) || {})
                       .uuid
