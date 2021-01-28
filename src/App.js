@@ -178,10 +178,10 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   }, [intl, user]);
 
   const onLocaleChange = useCallback(
-    (...props) => {
-      appActions.setLocale(props[1]);
-      if (props[1]) {
-        sessionStorage.setItem("locale", props[1]);
+    locale => {
+      appActions.setLocale(locale);
+      if (locale) {
+        sessionStorage.setItem("locale", locale);
       } else {
         sessionStorage.removeItem("locale");
       }
@@ -257,8 +257,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       if (appState.locale) {
         return (
           <Header
-            inFinnish={intl.formatMessage(langMessages.inFinnish)}
-            inSwedish={intl.formatMessage(langMessages.inSwedish)}
+            inFinnish={"FI"}
+            inSwedish={"SV"}
             isAuthenticated={!!user}
             locale={appState.locale}
             logIn={intl.formatMessage(authMessages.logIn)}
@@ -272,7 +272,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
             template={template}
             languageSelectionAriaLabel={intl.formatMessage(
               langMessages.selection
-            )}></Header>
+            )}
+          ></Header>
         );
       }
       return null;
@@ -297,7 +298,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
         <div
           className={`relative lg:fixed z-50 ${
             appState.isDebugModeOn ? "w-2/3" : "w-full"
-          }`}>
+          }`}
+        >
           {getHeader()}
 
           <div className="hidden md:block">
@@ -309,7 +311,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
           isVisible={isSideMenuVisible}
           handleDrawerToggle={isVisible => {
             setSideMenuVisibility(isVisible);
-          }}>
+          }}
+        >
           {getHeader("C")}
 
           <div className="p-4 max-w-xl">
@@ -320,7 +323,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                 backgroundColor: "white",
                 color: "black",
                 hoverColor: "white"
-              }}></Navigation>
+              }}
+            ></Navigation>
           </div>
         </SideNavigation>
 
