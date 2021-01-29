@@ -5,6 +5,7 @@ import {
   find,
   flatten,
   includes,
+  isEmpty,
   map,
   mapObjIndexed,
   path,
@@ -13,7 +14,7 @@ import {
   values,
   concat
 } from "ramda";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
 /**
  * Funktio luo lomakerakenteen, jonka myötä käyttäjälle näytetään lista
@@ -35,7 +36,6 @@ export async function previewOfOpetustaAntavaKunnat({
     lomakedata
   );
 
-
   const ulkomaaCheckbox = find(
     compose(endsWith("ulkomaa.200"), prop("anchor")),
     lomakedata
@@ -46,58 +46,72 @@ export async function previewOfOpetustaAntavaKunnat({
     lomakedata
   );
 
-  const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox) ?
-    path(["properties", "value"], ulkomaaTextBox) : null
+  const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox)
+    ? path(["properties", "value"], ulkomaaTextBox)
+    : null;
 
   if (changeObjectsByProvinceNode) {
-    const kunnat =
-      flatten(
-        values(
-          mapObjIndexed(arrayOfLocationNodes => {
-            const kuntienNimet = map(node => {
-              const koodiarvo = path(
-                ["properties", "metadata", "koodiarvo"],
-                node
-              );
-              const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
-              // Haluamme listata vain kunnat, emme maakuntia.
-              return includes(".kunnat.", node.anchor)
-                ? {
-                    anchor: "kunta",
-                    components: [
-                      rajoite
-                        ? {
-                            anchor: "rajoite",
-                            name: "Rajoite",
-                            properties: {
-                              areTitlesVisible: false,
-                              isReadOnly: true,
-                              rajoiteId,
-                              rajoite
-                            }
+    const kunnat = flatten(
+      values(
+        mapObjIndexed(arrayOfLocationNodes => {
+          const kuntienNimet = map(node => {
+            const koodiarvo = path(
+              ["properties", "metadata", "koodiarvo"],
+              node
+            );
+            const kohdistuvatRajoitteet = getRajoitteet(koodiarvo, rajoitteet);
+            // Haluamme listata vain kunnat, emme maakuntia.
+            return includes(".kunnat.", node.anchor)
+              ? {
+                  anchor: "kunta",
+                  components: [
+                    !isEmpty(kohdistuvatRajoitteet)
+                      ? {
+                          anchor: "rajoite",
+                          name: "Rajoite",
+                          properties: {
+                            areTitlesVisible: false,
+                            isReadOnly: true,
+                            rajoite: kohdistuvatRajoitteet
                           }
-                        : {
-                            anchor: path(
-                              ["properties", "metadata", "koodiarvo"],
-                              node
-                            ),
-                            name: "HtmlContent",
-                            properties: {
-                              content: node.properties.metadata.title
-                            }
+                        }
+                      : {
+                          anchor: path(
+                            ["properties", "metadata", "koodiarvo"],
+                            node
+                          ),
+                          name: "HtmlContent",
+                          properties: {
+                            content: node.properties.metadata.title
                           }
-                    ]
-                  }
-                : null;
-            }, arrayOfLocationNodes).filter(Boolean);
-            return kuntienNimet;
-          }, changeObjectsByProvinceNode.properties.changeObjectsByProvince)
-        )
-      );
+                        }
+                  ]
+                }
+              : null;
+          }, arrayOfLocationNodes).filter(Boolean);
+          return kuntienNimet;
+        }, changeObjectsByProvinceNode.properties.changeObjectsByProvince)
+      )
+    );
 
-    const kunnatUlkomaatAdded = ulkomaaTextBoxValue ?
-      sortBy(path(["components", "0", "properties", "content"]),
-        concat([{components: [{name: "HtmlContent", properties: {content: ulkomaaTextBoxValue}}]}], kunnat)) : kunnat;
+    const kunnatUlkomaatAdded = ulkomaaTextBoxValue
+      ? sortBy(
+          path(["components", "0", "properties", "content"]),
+          concat(
+            [
+              {
+                components: [
+                  {
+                    name: "HtmlContent",
+                    properties: { content: ulkomaaTextBoxValue }
+                  }
+                ]
+              }
+            ],
+            kunnat
+          )
+        )
+      : kunnat;
     if (kunnatUlkomaatAdded.length) {
       structure = append(
         {

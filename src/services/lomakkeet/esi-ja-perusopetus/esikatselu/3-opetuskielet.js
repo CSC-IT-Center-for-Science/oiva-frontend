@@ -5,12 +5,13 @@ import {
   concat,
   endsWith,
   find,
+  isEmpty,
   map,
   path,
   prop,
   sortBy
 } from "ramda";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
 export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   let structure = [];
@@ -29,11 +30,11 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const { rajoiteId, rajoite } = getRajoite(
+          const kohdistuvatRajoitteet = getRajoitteet(
             opetuskieli.value,
             rajoitteet
           );
-          if (rajoiteId) {
+          if (!isEmpty(kohdistuvatRajoitteet)) {
             return {
               anchor: opetuskieli.value,
               components: [
@@ -43,8 +44,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
                   properties: {
                     areTitlesVisible: false,
                     isReadOnly: true,
-                    rajoiteId,
-                    rajoite
+                    rajoite: kohdistuvatRajoitteet
                   }
                 }
               ]
@@ -72,11 +72,11 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const { rajoiteId, rajoite } = getRajoite(
+          const kohdistuvatRajoitteet = getRajoitteet(
             opetuskieli.value,
             rajoitteet
           );
-          if (rajoiteId) {
+          if (!isEmpty(kohdistuvatRajoitteet)) {
             return {
               anchor: opetuskieli.value,
               components: [
@@ -86,8 +86,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
                   properties: {
                     areTitlesVisible: false,
                     isReadOnly: true,
-                    rajoiteId,
-                    rajoite
+                    rajoite: rajoitteet
                   }
                 }
               ]

@@ -155,12 +155,9 @@ const LupanakymaA = React.memo(
     const opiskelijamaaraRajoitteet = getRajoitteetBySection(
       "opiskelijamaarat",
       rajoitteet
-    )
-
-    const muutEhdotRajoitteet = getRajoitteetBySection(
-      "muutEhdot",
-      rajoitteet
     );
+
+    const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>

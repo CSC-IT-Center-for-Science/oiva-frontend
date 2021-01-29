@@ -4,6 +4,7 @@ import {
   filter,
   find,
   flatten,
+  isEmpty,
   map,
   nth,
   pathEq,
@@ -12,7 +13,7 @@ import {
   startsWith
 } from "ramda";
 import { getAnchorPart, removeAnchorPart } from "utils/common";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
 export const previewOfErityisetKoulutustehtavat = ({
   lomakedata,
@@ -58,22 +59,21 @@ export const previewOfErityisetKoulutustehtavat = ({
                   const anchorParts = split(".", node.anchor);
                   const koodiarvo = getAnchorPart(node.anchor, 1);
                   const kuvausnumero = getAnchorPart(node.anchor, 2);
-                  const { rajoiteId, rajoite } = getRajoite(
+                  const kohdistuvatRajoitteet = getRajoitteet(
                     `${koodiarvo}-${kuvausnumero}`,
                     rajoitteet
                   );
                   return {
                     anchor: koodiarvo,
                     components: [
-                      rajoite
+                      !isEmpty(kohdistuvatRajoitteet)
                         ? {
                             anchor: "rajoite",
                             name: "Rajoite",
                             properties: {
                               areTitlesVisible: false,
                               isReadOnly: true,
-                              rajoiteId,
-                              rajoite
+                              rajoite: kohdistuvatRajoitteet
                             }
                           }
                         : {

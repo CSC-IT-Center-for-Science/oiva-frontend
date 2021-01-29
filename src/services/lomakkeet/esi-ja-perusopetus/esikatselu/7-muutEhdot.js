@@ -4,6 +4,7 @@ import {
   filter,
   find,
   flatten,
+  isEmpty,
   map,
   nth,
   pathEq,
@@ -12,7 +13,7 @@ import {
   startsWith
 } from "ramda";
 import { getAnchorPart, removeAnchorPart } from "utils/common";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
 export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   let structure = [];
@@ -21,7 +22,6 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
     pathEq(["properties", "isChecked"], true),
     lomakedata
   );
-
 
   const anchorsOfCheckedNodes = map(prop("anchor"), checkedNodes);
 
@@ -55,22 +55,21 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
                   const anchorParts = split(".", node.anchor);
                   const koodiarvo = getAnchorPart(node.anchor, 1);
                   const index = getAnchorPart(node.anchor, 2);
-                  const { rajoiteId, rajoite } = getRajoite(
+                  const kohdistuvatRajoitteet = getRajoitteet(
                     `${koodiarvo}-${index}`,
                     rajoitteet
                   );
                   return {
                     anchor: koodiarvo,
                     components: [
-                      rajoite
+                      !isEmpty(kohdistuvatRajoitteet)
                         ? {
                             anchor: "rajoite",
                             name: "Rajoite",
                             properties: {
                               areTitlesVisible: false,
                               isReadOnly: true,
-                              rajoiteId,
-                              rajoite
+                              rajoite: kohdistuvatRajoitteet
                             }
                           }
                         : {

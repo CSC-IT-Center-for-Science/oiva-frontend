@@ -1,5 +1,6 @@
 import { createContainer, createHook, createStore } from "react-sweet-state";
 import {
+  add,
   append,
   assoc,
   assocPath,
@@ -160,9 +161,24 @@ const Store = createStore({
       /**
         Seuraavan kriteerin id saadaan jakamalla asetuksia koskevien muutos-
         objektien määrä kahdella, koska yksi asetus sisältää sekä kohteen että
-        tarkentimen.
+        tarkentimen. Määräajan tapauksessa asetus sisältää kohteen sekä kaksi tarkenninta.
+        Täytyy siis vähentää yksi per määräaikaasetus asetuksetChangeObjectsin pituudesta.
        */
-      const nextAsetuksetIndex = length(asetuksetChangeObjects) / 2;
+      const maaraAikaAsetustenLkm = reduce(
+        add,
+        0,
+        map(
+          asetus =>
+            path(["properties", "value", "value"], asetus) ===
+            "kujalisamaareetlisaksiajalla_1"
+              ? 1
+              : 0,
+          asetuksetChangeObjects
+        )
+      );
+
+      const nextAsetuksetIndex =
+        (length(asetuksetChangeObjects) - maaraAikaAsetustenLkm) / 2;
 
       console.group();
       console.info("kohdennusindeksipolku", kohdennusindeksipolku);
