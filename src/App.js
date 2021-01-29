@@ -178,10 +178,10 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   }, [intl, user]);
 
   const onLocaleChange = useCallback(
-    (...props) => {
-      appActions.setLocale(props[1]);
-      if (props[1]) {
-        sessionStorage.setItem("locale", props[1]);
+    locale => {
+      appActions.setLocale(locale);
+      if (locale) {
+        sessionStorage.setItem("locale", locale);
       } else {
         sessionStorage.removeItem("locale");
       }
@@ -257,8 +257,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       if (appState.locale) {
         return (
           <Header
-            inFinnish={intl.formatMessage(langMessages.inFinnish)}
-            inSwedish={intl.formatMessage(langMessages.inSwedish)}
+            inFinnish={"FI"}
+            inSwedish={"SV"}
             isAuthenticated={!!user}
             locale={appState.locale}
             logIn={intl.formatMessage(authMessages.logIn)}
