@@ -1,14 +1,14 @@
 import {
-  find,
-  filter,
-  map,
-  toUpper,
-  equals,
-  propEq,
   addIndex,
-  split,
+  equals,
+  find,
   flatten,
-  last
+  last,
+  map,
+  path,
+  propEq,
+  split,
+  toUpper
 } from "ramda";
 import { getKieletFromStorage } from "helpers/kielet";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
@@ -22,21 +22,27 @@ async function getModificationForm(
 ) {
   const kielet = await getKieletFromStorage();
   const koulutustyypit = await getKoulutustyypitFromStorage();
+  const tutkinnotFromStorage = await getTutkinnotFromStorage();
   const localeUpper = toUpper(locale);
   const currentDate = new Date();
   return map(koulutustyyppi => {
-    const tutkinnot = filter(tutkinto => {
+    const tutkinnot = map(tutkinto => {
+      const koodiarvo = path(["properties", "code"], tutkinto);
       const koulutustyyppikoodiarvo = getAnchorPart(tutkinto.anchor, 1);
-      if (last(tutkinto.anchor.split(".")) !== "osaamisala")
-        return equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo);
-    }, aktiivisetTutkinnot);
+      if (last(tutkinto.anchor.split(".")) !== "osaamisala") {
+        if (equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo)) {
+          return find(propEq("koodiarvo", koodiarvo), tutkinnotFromStorage);
+        }
+      }
+      return false;
+    }, aktiivisetTutkinnot).filter(Boolean);
     if (tutkinnot.length) {
       return {
         anchor: koulutustyyppi.koodiarvo,
         title: koulutustyyppi.metadata[localeUpper].nimi,
         categories: map(tutkinto => {
           return {
-            anchor: getAnchorPart(tutkinto.anchor, 2),
+            anchor: tutkinto.koodiarvo,
             components: [
               {
                 anchor: "nimi",
@@ -44,7 +50,7 @@ async function getModificationForm(
                 styleClasses: ["flex-2"],
                 properties: {
                   code: tutkinto.koodiarvo,
-                  title: tutkinto.properties.title,
+                  title: tutkinto.metadata[localeUpper].nimi,
                   statusTextStyleClasses: [],
                   styleClasses: []
                 }
