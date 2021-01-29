@@ -29,8 +29,8 @@ const Footer = () => {
   );
 
   return (
-    <div className="flex justify-center lg:justify-start bg-white border-green-600 border-t-2 pt-12 pl-12 pr-12 pb-16">
-      <div className="flex flex-col items-baseline lg:flex-1 lg:flex-row">
+    <div className="flex justify-center lg:justify-start bg-white border-gray-300 border-t pt-12 pl-12 pr-12 pb-16">
+      <div className="flex flex-col items-baseline lg:flex-1 lg:flex-row max-w-8xl mx-auto">
         <div className="flex flex-1 flex-col justify-center text-center lg:text-left lg:pr-8">
           <img
             alt={`${intl.formatMessage(
@@ -46,7 +46,8 @@ const Footer = () => {
               {intl.formatMessage(common.phoneNumber)} |{" "}
               <a
                 href={intl.formatMessage(common.okmLinkUrl)}
-                className="text-green-500">
+                className="text-green-500"
+              >
                 www.minedu.fi
               </a>
             </p>
@@ -58,7 +59,8 @@ const Footer = () => {
               {intl.formatMessage(common.phoneNumber)} |{" "}
               <a
                 href={intl.formatMessage(common.okmLinkUrl)}
-                className="text-green-500 underline">
+                className="text-green-500 underline"
+              >
                 {intl.formatMessage(common.okmLinkText)}
               </a>
             </p>
