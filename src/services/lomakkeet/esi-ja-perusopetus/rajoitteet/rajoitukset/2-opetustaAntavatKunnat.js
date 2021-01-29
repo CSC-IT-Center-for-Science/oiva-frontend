@@ -1,4 +1,5 @@
 import {
+  append,
   compose,
   endsWith,
   find,
@@ -7,6 +8,7 @@ import {
   map,
   path,
   prop,
+  propEq,
   toUpper,
   values
 } from "ramda";
@@ -24,6 +26,24 @@ export default async function getOpetustaAntavatKunnat(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
   );
+
+  // Ulkomaiden eri kunnat, jotka käyttäjä on syöttänyt vapaasti
+  // päälomakkeella, halutaan samaan luetteloon Suomen kuntien kanssa.
+  // Päälomakkeella on syöttämistä varten yksi textarea-elementti, joten
+  // tilaobjekteja on 0 - 1 kappale(tta).
+  const ulkomaaStateObj = find(
+    propEq("anchor", "toimintaalue.ulkomaa.200.lisatiedot"),
+    osionData
+  );
+
+  // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
+  // alempana koodissa luotavaa pudostusvalikkoa varten.
+  const ulkomaaOption = ulkomaaStateObj
+    ? {
+        label: ulkomaaStateObj.properties.value,
+        value: ulkomaaStateObj.properties.metadata.koodiarvo
+      }
+    : null;
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj
@@ -46,12 +66,15 @@ export default async function getOpetustaAntavatKunnat(
           },
           isMulti: false,
           isReadOnly,
-          options: map(kunta => {
-            const { koodiarvo, metadata } = kunta;
-            return includes(koodiarvo, valitutKunnat)
-              ? { label: metadata[localeUpper].nimi, value: koodiarvo }
-              : null;
-          }, kunnat).filter(Boolean),
+          options: append(
+            ulkomaaOption,
+            map(kunta => {
+              const { koodiarvo, metadata } = kunta;
+              return includes(koodiarvo, valitutKunnat)
+                ? { label: metadata[localeUpper].nimi, value: koodiarvo }
+                : null;
+            }, kunnat)
+          ).filter(Boolean),
           value: ""
         }
       }
