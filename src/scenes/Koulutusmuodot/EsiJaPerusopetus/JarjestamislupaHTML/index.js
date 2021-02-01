@@ -4,7 +4,6 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import moment from "moment";
-import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 import Typography from "@material-ui/core/Typography";
 import LupanakymaA from "../lupanakymat/LupanakymaA";
 import { find, prop, propEq } from "ramda";
@@ -36,7 +35,6 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
         kohteet={kohteet}
         lupakohteet={lupakohteet}
         maaraykset={lupa.maaraykset}
-        OpetustaAntavatKunnatJSX={PoOpetustaAntavatKunnatHtml}
         valtakunnallinenMaarays={valtakunnallinenMaarays}
       />
     </React.Fragment>

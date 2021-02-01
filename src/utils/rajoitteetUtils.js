@@ -171,7 +171,7 @@ function kayLapiKohdennus(
                   ).format("DD.MM.YYYY")
                 : "";
 
-              return `<ul><li>${alkamispaivaValue} - ${paattymispaivaValue}`;
+              return `<ul><li>${__('rajoitteet.ajalla')} ${alkamispaivaValue} - ${paattymispaivaValue}`;
             }
             const tarkenninValue = asetus.kohde.properties.value.value;
             // TODO: Label pitäisi hakea koodistosta tarkenninValue arvon avulla jos koodistossa on muutettu tekstiä.

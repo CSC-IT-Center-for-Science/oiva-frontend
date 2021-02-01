@@ -15,6 +15,7 @@ import { last, split } from "ramda";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import commonMessages from "../../../i18n/definitions/common";
 import Typography from "@material-ui/core/Typography";
+import BaseData from "basedata";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -44,6 +45,8 @@ const OivaTabs = withStyles(() => ({
   }
 }))(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />);
 
+const esidialoginHakuavaimet = ["organisaatiot"];
+
 const Asiat = ({ koulutusmuoto, path, user }) => {
   const history = useHistory();
   const intl = useIntl();
@@ -63,15 +66,25 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
       </Helmet>
 
       {isEsidialogVisible && (
-        <UusiAsiaEsidialog
-          isVisible={isEsidialogVisible}
-          onClose={() => setIsEsidialogVisible(false)}
-          onSelect={selectedItem =>
-            history.push(
-              `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi/1`
-            )
-          }
-        ></UusiAsiaEsidialog>
+        <BaseData
+          keys={esidialoginHakuavaimet}
+          locale={intl.locale}
+          koulutustyyppi={koulutusmuoto.koulutustyyppi}
+          render={_props => {
+            return (
+              <UusiAsiaEsidialog
+                isVisible={isEsidialogVisible}
+                onClose={() => setIsEsidialogVisible(false)}
+                organisations={_props.organisaatiot}
+                onSelect={selectedItem =>
+                  history.push(
+                    `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi/1`
+                  )
+                }
+              ></UusiAsiaEsidialog>
+            );
+          }}
+        />
       )}
 
       <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
