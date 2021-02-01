@@ -71,7 +71,8 @@ async function getAsetuslomakekokonaisuus(
   const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
     asetuksenKohdeavain,
     isReadOnly,
-    locale
+    locale,
+    index
   );
 
   const asetuksenTarkenninlomakkeenAvain =
@@ -198,6 +199,18 @@ const getKohdennuksetRecursively = async (
     rajoiteChangeObjects
   );
 
+  const kohteenAvain = path(
+    [
+      "kohde",
+      "tarkennin",
+      kohteenTarkenninavain,
+      "properties",
+      "value",
+      "value"
+    ],
+    rajoiteChangeObjects
+  );
+
   const kohteenTarkenninkomponentit = await getKohteenTarkenninkomponentit(
     osioidenData,
     kohteenTarkenninavain,
@@ -208,17 +221,7 @@ const getKohdennuksetRecursively = async (
   let ensimmaisenAsetuksenKohdeavain =
     length(kohdennusindeksipolku) % 2
       ? kohdennuksenKohdeavain
-      : path(
-          [
-            "kohde",
-            "tarkennin",
-            kohteenTarkenninavain,
-            "properties",
-            "value",
-            "value"
-          ],
-          rajoiteChangeObjects
-        );
+      : kohteenAvain;
 
   // Usein rajoituksen tarkentimen arvo on numeerinen, jolloin
   // 1. asetuksen kohdeavaimena tulee käyttäärajoitteen kohteen
@@ -403,16 +406,16 @@ const getKohdennuksetRecursively = async (
                     },
                     properties: {
                       isVisible:
-                        !isReadOnly &&
+                        !isReadOnly && kohteenAvain !== "yksittainen" &&
                         (kohdennuksenKohdeavain === "kokonaismaara" ||
                           kohdennuksenKohdeavain === "opiskelijamaarat" ||
                           !!length(lukumaarakomponentit)),
                       text: "Lisää kohdennus"
                     }
                   },
-                  !!length(asetusvaihtoehdot) &&
-                  length(asetuslomakekokonaisuus) < length(asetusvaihtoehdot) &&
-                  ensimmaisenAsetuksenKohdeavain !== "kokonaismaara" &&
+                  ((!!length(asetusvaihtoehdot) &&
+                  length(asetuslomakekokonaisuus) < length(asetusvaihtoehdot)) ||
+                    kohteenAvain === "yksittainen") &&
                   !isReadOnly
                     ? {
                         anchor: "lisaa-asetus",
