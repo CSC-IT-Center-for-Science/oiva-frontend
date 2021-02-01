@@ -12,8 +12,7 @@ import {
   not,
   pathEq,
   prop,
-  propEq,
-  toUpper
+  propEq
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";

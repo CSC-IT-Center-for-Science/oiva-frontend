@@ -15,11 +15,7 @@ import Esittelijat from "../Esittelijat/index";
 import { Typography } from "@material-ui/core";
 import { ROLE_ESITTELIJA } from "modules/constants";
 
-const Asianhallinta = ({
-  AsiaDialogContainer,
-  koulutusmuoto,
-  UusiAsiaDialogContainer
-}) => {
+const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -73,9 +69,8 @@ const Asianhallinta = ({
               path={`/${koulutusmuoto.kebabCase}/asianhallinta`}
               render={() => (
                 <Esittelijat
-                  AsiaDialogContainer={AsiaDialogContainer}
                   koulutusmuoto={koulutusmuoto}
-                  UusiAsiaDialogContainer={UusiAsiaDialogContainer}
+                  WizardContainer={WizardContainer}
                 />
               )}
             />

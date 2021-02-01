@@ -22,7 +22,6 @@ import {
   values
 } from "ramda";
 import moment from "moment";
-import { __ } from "i18n-for-browser";
 
 const pisteytys = {
   rajoite: 0,
@@ -74,53 +73,6 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
   return string;
 }
 
-function getTaydennyssana(key, locale) {
-  const taydennyssanat = {
-    fi: {
-      alkamispaiva: {
-        pre: __("rajoitteet.ajalla"),
-        post: " - "
-      },
-      lukumaara: {
-        pre: __("common.is"),
-        post: __("common.henkiloa")
-      },
-      opetuskielet: {
-        pre: __("education.opetetaanKielella")
-      },
-      opetustaAntavatKunnat: {
-        pre: __("common.kunnassa")
-      },
-      opetustehtavat: {
-        pre: __("education.opetustehtavana")
-      },
-      opetuksenJarjestamismuodot: {}
-    },
-    sv: {
-      alkamispaiva: {
-        pre: __("rajoitteet.ajalla"),
-        post: " - "
-      },
-      lukumaara: {
-        pre: __("common.is"),
-        post: __("common.henkiloa")
-      },
-      opetuskielet: {
-        pre: __("education.opetetaanKielella")
-      },
-      opetustaAntavatKunnat: {
-        pre: __("common.kunnassa")
-      },
-      opetustehtavat: {
-        pre: __("education.opetustehtavana")
-      },
-      opetuksenJarjestamismuoto: {}
-    }
-  };
-
-  return path([locale, key], taydennyssanat);
-}
-
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
 function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
@@ -167,7 +119,10 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
             }
             const tarkenninValue = asetus.kohde.properties.value.value;
             // TODO: Label pitäisi hakea koodistosta tarkenninValue arvon avulla jos koodistossa on muutettu tekstiä.
-            const tarkenninLabel = tarkenninavain === "lukumaara" ? asetus.kohde.properties.value.label : "";
+            const tarkenninLabel =
+              tarkenninavain === "lukumaara"
+                ? asetus.kohde.properties.value.label
+                : "";
             const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
               ? {
                   pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
@@ -239,7 +194,6 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
     prop(tarkenninavain, tarkennin)
   );
   const taydennyssana = null;
-  //const taydennyssana = getTaydennyssana(tarkenninavain, locale);
 
   let item = tarkentimenArvo;
 
@@ -258,8 +212,6 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
     format === "list" ? `<ul><li>${item}` : item,
     paivitettyLista
   );
-
-  // console.info("Asetukset:", asetukset);
 
   paivitettyLista = append(asetukset, paivitettyLista);
 
@@ -343,23 +295,23 @@ export function getRajoiteListamuodossa(
       format
     );
 
-    const kohdennusLista = pipe(values,
-      map(kohdennus => Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)),
-      unnest)(lapikaydytKohdennukset);
-    listamuotoWithEndings = join("", map(kohdennus => {
-      // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
-      const s = join("", kohdennus);
-      const amountOfInstances = getAmountOfInstances(
-        "<ul>",
-        s
-      );
+    const kohdennusLista = pipe(
+      values,
+      map(kohdennus =>
+        Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
+      ),
+      unnest
+    )(lapikaydytKohdennukset);
+    listamuotoWithEndings = join(
+      "",
+      map(kohdennus => {
+        // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+        const s = join("", kohdennus);
+        const amountOfInstances = getAmountOfInstances("<ul>", s);
 
-      return addEnding(
-        "</li></ul>",
-        s,
-        amountOfInstances
-      );
-    }, kohdennusLista))
+        return addEnding("</li></ul>", s, amountOfInstances);
+      }, kohdennusLista)
+    );
   }
 
   return listamuotoWithEndings;

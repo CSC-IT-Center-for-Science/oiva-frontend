@@ -35,6 +35,9 @@ import { getMuutYhteistyosopimus } from "./ammatillinenKoulutus/5-muut/yhteistyo
 import { getMuutSelvitykset } from "./ammatillinenKoulutus/5-muut/selvitykset";
 import { getMuutMuuMaarays } from "./ammatillinenKoulutus/5-muut/muuMaarays";
 
+// Ammatillisen koulutuksen esikatselulomakkeet
+import previewOfTutkinnot from "./ammatillinenKoulutus/esikatselu/1-tutkinnot";
+
 // Esi- ja perusopetuksen esikatselulomakkeet
 import { previewOfOpetusJotaLupaKoskee } from "./esi-ja-perusopetus/esikatselu/1-opetusJotaLupaKoskee";
 import { previewOfOpetuskielet } from "./esi-ja-perusopetus/esikatselu/3-opetuskielet";
@@ -127,6 +130,8 @@ const lomakkeet = {
   tutkinnot: {
     modification: (data, booleans, locale) =>
       getTutkinnotLomake("modification", data, booleans, locale),
+    preview: (data, booleans, locale) =>
+      previewOfTutkinnot(data, booleans, locale),
     reasoning: (data, booleans, locale, changeObjects) =>
       getTutkinnotLomake("reasoning", data, booleans, locale, changeObjects)
   },

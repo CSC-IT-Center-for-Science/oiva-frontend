@@ -19,8 +19,7 @@ const MuutospyyntoWizardYhteenveto = ({
   maaraykset,
   maaraystyypit,
   mode,
-  muut,
-  tutkinnotCO
+  muut
 }) => {
   const [
     changeObjectsYleisetTiedot
@@ -31,6 +30,10 @@ const MuutospyyntoWizardYhteenveto = ({
     changeObjectsHakemuksenLiiteet
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "yhteenveto_hakemuksenLiitteet"
+  });
+
+  const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "tutkinnot"
   });
 
   const intl = useIntl();

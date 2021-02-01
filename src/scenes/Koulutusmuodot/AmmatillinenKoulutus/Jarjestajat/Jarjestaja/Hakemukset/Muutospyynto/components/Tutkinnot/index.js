@@ -7,8 +7,13 @@ import { Typography } from "@material-ui/core";
 import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 import common from "i18n/definitions/common";
 
+const defaultProps = {
+  isReadOnly: false
+};
+
 const Tutkinnot = ({
-  isReadOnly = false,
+  isPreviewModeOn,
+  isReadOnly = defaultProps.isReadOnly,
   koulutusalat,
   koulutustyypit,
   mode
@@ -50,6 +55,7 @@ const Tutkinnot = ({
           return (
             <Koulutusala
               data={lomakedata}
+              isPreviewModeOn={isPreviewModeOn}
               isReadOnly={isReadOnly}
               key={koulutusala.koodiarvo}
               mode={mode}

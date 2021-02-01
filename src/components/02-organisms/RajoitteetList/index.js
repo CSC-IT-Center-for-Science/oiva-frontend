@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { __, addIndex, isEmpty, mapObjIndexed, values } from "ramda";
+import { addIndex, isEmpty, mapObjIndexed, values } from "ramda";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { Typography } from "@material-ui/core";
 import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";

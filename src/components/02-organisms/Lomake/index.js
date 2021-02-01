@@ -107,14 +107,13 @@ const Lomake = React.memo(
 
         const juuriHaettuLomake = await fetchLomake();
 
-        const lomakedata =
-          juuriHaettuLomake && juuriHaettuLomake.length
-            ? getReducedStructureIncludingChanges(
-                lomakedataAnchor || anchor,
-                getReducedStructure(juuriHaettuLomake),
-                changeObjects
-              )
-            : [];
+        const lomakedata = juuriHaettuLomake
+          ? getReducedStructureIncludingChanges(
+              lomakedataAnchor || anchor,
+              getReducedStructure(juuriHaettuLomake),
+              changeObjects
+            )
+          : [];
         /**
          * Osa lomakkeista voi olla sellaisia, että niiden tilan
          * tallentaminen aiheuttaa liikaa uudelleen lataamisia.

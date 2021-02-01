@@ -9,8 +9,9 @@ const constants = {
 
 const Koulutusala = ({
   data,
+  isPreviewModeOn,
   isReadOnly,
-  mode = "modification",
+  mode,
   sectionId,
   title
 }) => {
@@ -23,6 +24,7 @@ const Koulutusala = ({
       anchor={sectionId}
       changeObjects={changeObjects}
       data={data}
+      isPreviewModeOn={isPreviewModeOn}
       isReadOnly={isReadOnly}
       isRowExpanded={mode === "reasoning"}
       key={sectionId}

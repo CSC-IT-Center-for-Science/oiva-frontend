@@ -13,8 +13,7 @@ import {
   prop,
   propEq,
   sortBy,
-  startsWith,
-  toUpper
+  startsWith
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
