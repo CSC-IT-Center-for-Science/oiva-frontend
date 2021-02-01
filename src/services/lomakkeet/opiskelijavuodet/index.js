@@ -254,7 +254,9 @@ async function getModificationForm(
                   }),
                   isReadOnly,
                   isRequired: true,
-                  applyForValueVaativaTuki,
+                  applyForValue: opiskelijavuosimaaraysVaativaTuki
+                    ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
+                    : undefined,
                   initialValue: opiskelijavuosimaaraysVaativaTuki
                     ? parseInt(opiskelijavuosimaaraysVaativaTuki.arvo, 10)
                     : 0,
