@@ -1195,8 +1195,18 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.haeKJ",
+    "defaultMessage": "Hae koulutuksen järjestäjää (Y-tunnus, OID, Virastotunnus)",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.luoUusiAsiaEsidialogiInfo2",
     "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.luoUusiAsiaEsidialogiInfo3",
+    "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää hakutoiminnolla.",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1227,6 +1237,11 @@
   {
     "id": "common.syotaYtunnus",
     "defaultMessage": "Syötä Y-tunnus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.syotaHaettavaTunniste",
+    "defaultMessage": "Syötä haettava tunniste",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1545,6 +1560,21 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.is",
+    "defaultMessage": "on",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.henkiloa",
+    "defaultMessage": "henkiloa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kunnassa",
+    "defaultMessage": "kunnassa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.autocompleteValitse",
     "defaultMessage": "Valitse...",
     "filepath": "src/i18n/definitions/common.js"
@@ -1562,6 +1592,16 @@
   {
     "id": "common.voimaantulopaiva",
     "defaultMessage": "Voimaantulopäivä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.eiValittaviaKohteita",
+    "defaultMessage": "Ei valittavia kohteita",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.eiAvoimiaAsioita",
+    "defaultMessage": "Taulukossa ei ole yhtään avoinna olevaa asiaa",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1687,6 +1727,16 @@
   {
     "id": "education.opetuksenJarjestajat",
     "defaultMessage": "Opetuksen järjestäjät",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetetaanKielilla",
+    "defaultMessage": "opetetaan kielillä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetustehtavana",
+    "defaultMessage": "opetustehtavana",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
@@ -1865,6 +1915,31 @@
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
+    "id": "opiskelijamaara.kokonaismaaraJaSenKohdennukset",
+    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä mahdollisilla kohdennuksilla",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.vainKohdennetutRajoitukset",
+    "defaultMessage": "Vain kohdennetut oppilas-/opiskelijamäärärajoitukset",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.eiRajoiteta",
+    "defaultMessage": "Opiskelijamäärää ei rajoiteta",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.osionInfoteksti",
+    "defaultMessage": "Opiskelijamäärää ei ole oletusarvoisesti rajoitettu. Ole hyvä ja tarkista rajoitteet lomakkeen lopusta.",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "rajoitteet.ajalla",
+    "defaultMessage": "ajalla",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
     "id": "rajoitteet.muokkaaRajoitetta",
     "defaultMessage": "Muokkaa",
     "filepath": "src/i18n/definitions/rajoitteet.js"
@@ -1917,6 +1992,16 @@
   {
     "id": "vapaaSivistystyo.esittelyteksti",
     "defaultMessage": "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä.",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.voimassaOlevatYllapitamisluvat",
+    "defaultMessage": "Voimassa olevat ylläpitämisluvat {count} kpl",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa",
+    "defaultMessage": "Voimassa olevat ylläpitämisluvat ({amount} kpl)",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {

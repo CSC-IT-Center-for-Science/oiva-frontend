@@ -1267,5 +1267,9 @@ export default defineMessages({
   eiValittaviaKohteita: {
     id: "common.eiValittaviaKohteita",
     defaultMessage: "Ei valittavia kohteita"
+  },
+  eiAvoimiaAsioita: {
+    id: "common.eiAvoimiaAsioita",
+    defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
   }
 });
