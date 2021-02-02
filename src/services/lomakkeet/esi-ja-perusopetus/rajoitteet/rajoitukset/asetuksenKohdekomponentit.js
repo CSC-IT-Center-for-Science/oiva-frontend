@@ -10,7 +10,8 @@ import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 export const getAsetuksenKohdekomponentti = async (
   asetuksenKohdeavain,
   isReadOnly = false,
-  locale
+  locale,
+  index
 ) => {
   const localeUpper = toUpper(locale);
 
@@ -55,13 +56,20 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: map(maare => {
+        options: index === 0 ? map(maare => {
           const koodistoUri = path(["koodisto", "koodistoUri"], maare);
           return {
             value: `${koodistoUri}_${maare.koodiarvo}`,
             label: maare.metadata[localeUpper].nimi
           };
-        }, kujalisamaareet)
+        }, kujalisamaareet) : [
+          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
+          find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
+          find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
+          find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
+          find(propEq("value", "erityisetKoulutustehtavat"), kohdevaihtoehdot),
+          maaraaikaOption
+        ]
       }
     };
   } else if (asetuksenKohdeavain === "lukumaara") {

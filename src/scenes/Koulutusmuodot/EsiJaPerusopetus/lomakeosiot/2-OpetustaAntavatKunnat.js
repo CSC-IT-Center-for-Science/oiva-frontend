@@ -39,9 +39,7 @@ const OpetustaAntavatKunnat = React.memo(
 
     const kuntamaaraykset = R.filter(maarays => {
       return (
-        maarays.koodisto === "kunta" &&
-        (!maarays.meta.changeObjects ||
-          !R.includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+        maarays.koodisto === "kunta"
       );
     }, maaraykset);
 
