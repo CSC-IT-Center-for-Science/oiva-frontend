@@ -319,7 +319,7 @@ export async function defineBackendChangeObjects(
             pathEq(["properties", "metadata", "koodiarvo"], maakunta.koodiarvo),
             provinceChangeObjects
           );
-          let muutosobjektit = [];
+          let muutosobjektit = null;
 
           if (maakuntaChangeObj && maakuntaChangeObj.properties.isChecked) {
             if (!maakuntaChangeObj.properties.isIndeterminate) {
@@ -350,18 +350,14 @@ export async function defineBackendChangeObjects(
                 muutosobjektit
               );
             } else {
-              /**
-               * Jos maakunnan kunnista vain osaa ollaan lisäämässä lupaan,
-               * käydään kunnat läpi ja muodostetaan lisättävistä backend-
-               * muotoiset muutosobjektit.
-               */
-              muutosobjektit = map(kunta => {
+              muutosobjektit = []
+              if(changeObj.anchor.indexOf('.kunnat.' + changeObj.properties.metadata.koodiarvo) !== -1) {
                 const rajoitteetByRajoiteIdAndKoodiarvo = reject(
                   isNil,
                   mapObjIndexed(rajoite => {
                     return pathEq(
                       [1, "properties", "value", "value"],
-                      kunta.koodiarvo,
+                      changeObj.properties.metadata.koodiarvo,
                       rajoite
                     )
                       ? rajoite
@@ -372,14 +368,14 @@ export async function defineBackendChangeObjects(
                 const kuntaChangeObj = find(
                   pathEq(
                     ["properties", "metadata", "koodiarvo"],
-                    kunta.koodiarvo
+                    changeObj.properties.metadata.koodiarvo
                   ),
                   provinceChangeObjects
                 );
                 const kuntaMaarays = find(
                   maarays =>
                     maarays.koodisto === "kunta" &&
-                    maarays.koodiarvo === kunta.koodiarvo,
+                    maarays.koodiarvo === changeObj.properties.metadata.koodiarvo,
                   maaraykset
                 );
 
@@ -406,7 +402,7 @@ export async function defineBackendChangeObjects(
                     },
                     kohde,
                     koodisto: "kunta",
-                    koodiarvo: kunta.koodiarvo,
+                    koodiarvo: changeObj.properties.metadata.koodiarvo,
                     maaraystyyppi
                   };
 
@@ -424,10 +420,9 @@ export async function defineBackendChangeObjects(
                     }, rajoitteetByRajoiteIdAndKoodiarvo)
                   );
 
-                  return [kuntamuutosobjekti, alimaaraykset];
+                  muutosobjektit = [kuntamuutosobjekti, alimaaraykset];
                 }
-                return null;
-              }, maakunta.kunnat).filter(Boolean);
+              }
             }
           } else if (!isMaakunta && changeObj.properties.isChecked) {
             /**
@@ -455,7 +450,7 @@ export async function defineBackendChangeObjects(
               }
             ];
           }
-          return muutosobjektit;
+          return muutosobjektit.filter(Boolean);
         }, provinceChangeObjects)
       )
     ).filter(Boolean);
