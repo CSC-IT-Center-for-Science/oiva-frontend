@@ -132,7 +132,7 @@ export async function previewOfOpetustaAntavaKunnat({
   }
 
   if (currentMunicipalities) {
-    const existingMunicipalities = filter(allPass([compose(not, propEq("koodiarvo", "200")), compose(not, propEq("koodiarvo", "1"))]), currentMunicipalities);
+    const existingMunicipalities = filter(allPass([propEq("koodisto", "kunta") ,compose(not, propEq("koodiarvo", "200")), compose(not, propEq("koodiarvo", "1"))]), currentMunicipalities);
     const existingForeignMunicipalities = filter(propEq("koodiarvo", "200"), currentMunicipalities);
 
     const municipalities = sortBy(
