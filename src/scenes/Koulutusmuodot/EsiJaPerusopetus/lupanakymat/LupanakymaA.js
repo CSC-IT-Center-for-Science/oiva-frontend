@@ -155,17 +155,14 @@ const LupanakymaA = React.memo(
     const opiskelijamaaraRajoitteet = getRajoitteetBySection(
       "opiskelijamaarat",
       rajoitteet
-    )
-
-    const muutEhdotRajoitteet = getRajoitteetBySection(
-      "muutEhdot",
-      rajoitteet
     );
+
+    const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
         {isPreviewModeOn ? null : (
-          <div className="xxl:w-1/3 px-6 my-12">
+          <div className="md:w-1/2 xxl:w-1/3 px-6 my-12">
             <AsianumeroYmsKentat />
           </div>
         )}
@@ -188,75 +185,91 @@ const LupanakymaA = React.memo(
                 {OpetustaAntavatKunnatJSX ? (
                   <OpetustaAntavatKunnatJSX maaraykset={maaraykset} />
                 ) : (
-                  <OpetustaAntavatKunnat
-                    code="2"
-                    isPreviewModeOn={isPreviewModeOn}
-                    lupakohde={lupakohteet[2]}
-                    maaraykset={toimintaaaluemaaraykset}
-                    rajoitteet={toimintaalueRajoitteet}
-                    sectionId="toimintaalue"
-                    title={intl.formatMessage(education.opetustaAntavatKunnat)}
-                    valtakunnallinenMaarays={valtakunnallinenMaarays}
-                  />
+                  <div className="pt-8">
+                    <OpetustaAntavatKunnat
+                      code="2"
+                      isPreviewModeOn={isPreviewModeOn}
+                      lupakohde={lupakohteet[2]}
+                      maaraykset={toimintaaaluemaaraykset}
+                      rajoitteet={toimintaalueRajoitteet}
+                      sectionId="toimintaalue"
+                      title={intl.formatMessage(
+                        education.opetustaAntavatKunnat
+                      )}
+                      valtakunnallinenMaarays={valtakunnallinenMaarays}
+                    />
+                  </div>
                 )}
 
-                <Opetuskieli
-                  code="3"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste("opetuskieli", maaraykset)}
-                  rajoitteet={opetuskieletRajoitteet}
-                  sectionId={"opetuskielet"}
-                  title={intl.formatMessage(common.opetuskieli)}
-                />
+                <div className="pt-8">
+                  <Opetuskieli
+                    code="3"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+                    rajoitteet={opetuskieletRajoitteet}
+                    sectionId={"opetuskielet"}
+                    title={intl.formatMessage(common.opetuskieli)}
+                  />
+                </div>
 
-                <OpetuksenJarjestamismuoto
-                  code="4"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={opetuksenJarjestamismuotomaaraykset}
-                  rajoitteet={opetuksenJarjestamismuodotRajoitteet}
-                  sectionId={"opetuksenJarjestamismuodot"}
-                  title={intl.formatMessage(
-                    education.opetuksenJarjestamismuoto
-                  )}
-                />
+                <div className="pt-8">
+                  <OpetuksenJarjestamismuoto
+                    code="4"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={opetuksenJarjestamismuotomaaraykset}
+                    rajoitteet={opetuksenJarjestamismuodotRajoitteet}
+                    sectionId={"opetuksenJarjestamismuodot"}
+                    title={intl.formatMessage(
+                      education.opetuksenJarjestamismuoto
+                    )}
+                  />
+                </div>
 
-                <ErityisetKoulutustehtavat
-                  code="5"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste(
-                    "erityinenkoulutustehtava",
-                    maaraykset
-                  )}
-                  rajoitteet={erityisetKoulutustehtavatRajoitteet}
-                  sectionId={"erityisetKoulutustehtavat"}
-                  title={intl.formatMessage(
-                    common.VSTLupaSectionTitleSchoolMissionSpecial
-                  )}
-                />
+                <div className="pt-8">
+                  <ErityisetKoulutustehtavat
+                    code="5"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste(
+                      "erityinenkoulutustehtava",
+                      maaraykset
+                    )}
+                    rajoitteet={erityisetKoulutustehtavatRajoitteet}
+                    sectionId={"erityisetKoulutustehtavat"}
+                    title={intl.formatMessage(
+                      common.VSTLupaSectionTitleSchoolMissionSpecial
+                    )}
+                  />
+                </div>
 
-                <Opiskelijamaarat
-                  code="6"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste(
-                    "oppilasopiskelijamaara",
-                    maaraykset
-                  )}
-                  rajoitteet={opiskelijamaaraRajoitteet}
-                  sectionId={"opiskelijamaarat"}
-                  title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
-                />
+                <div className="pt-8">
+                  <Opiskelijamaarat
+                    code="6"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste(
+                      "oppilasopiskelijamaara",
+                      maaraykset
+                    )}
+                    rajoitteet={opiskelijamaaraRajoitteet}
+                    sectionId={"opiskelijamaarat"}
+                    title={intl.formatMessage(
+                      education.oppilasOpiskelijamaarat
+                    )}
+                  />
+                </div>
 
-                <MuutEhdot
-                  code="7"
-                  isPreviewModeOn={isPreviewModeOn}
-                  maaraykset={filterByTunniste(
-                    "muutkoulutuksenjarjestamiseenliittyvatehdot",
-                    maaraykset
-                  )}
-                  rajoitteet={muutEhdotRajoitteet}
-                  sectionId={"muutEhdot"}
-                  title={intl.formatMessage(education.muutEhdotTitle)}
-                />
+                <div className="pt-8">
+                  <MuutEhdot
+                    code="7"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste(
+                      "muutkoulutuksenjarjestamiseenliittyvatehdot",
+                      maaraykset
+                    )}
+                    rajoitteet={muutEhdotRajoitteet}
+                    sectionId={"muutEhdot"}
+                    title={intl.formatMessage(education.muutEhdotTitle)}
+                  />
+                </div>
               </React.Fragment>
             );
           }}

@@ -125,10 +125,7 @@ const EsittelijatMuutospyynto = React.memo(
       <form>
         {role === "ESITTELIJA" && (
           <Section>
-            <div className="w-1/3">
-              <Typography component="h2" variant="h2">
-                {intl.formatMessage(common.decisionDetails)}
-              </Typography>
+            <div className="w-1/3 pt-12">
               <MuutospyyntoWizardTopThree />
             </div>
           </Section>

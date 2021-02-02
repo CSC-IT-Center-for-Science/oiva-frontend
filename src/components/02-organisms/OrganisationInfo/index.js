@@ -5,7 +5,7 @@ import { Typography } from "@material-ui/core";
 import isEqual from "react-fast-compare";
 
 const OrganisationInfo = React.memo(
-  ({ organisation }) => {
+  ({ isPreviewModeOn, organisation }) => {
     const intl = useIntl();
     const organisationPhoneNumber = head(
       values(find(prop("numero"), organisation.yhteystiedot))
@@ -21,7 +21,11 @@ const OrganisationInfo = React.memo(
 
     return (
       <div className="bg-vaalenharmaa w-full m-auto border-b border-xs border-harmaa">
-        <div className="pt-4 pb-12 max-w-7xl m-auto px-8 xxl:px-0">
+        <div
+          className={`pt-4 pb-12 ${
+            isPreviewModeOn ? "xxl:w-4/5 xxl:max-w-9/10" : "max-w-7xl"
+          } m-auto px-8 xxl:px-0`}
+        >
           <Typography component="h1" variant="h1">
             {organisation.nimi[intl.locale] || last(values(organisation.nimi))}
           </Typography>

@@ -173,7 +173,6 @@ const WizardContainer = ({
         )
       );
 
-      console.info(formData);
       if (!formData) {
         console.info("NO FORM DATA: ");
       }

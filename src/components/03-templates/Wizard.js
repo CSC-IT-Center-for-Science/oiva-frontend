@@ -154,14 +154,15 @@ export const Wizard = ({
           </DialogTitleWithStyles>
         </div>
         <DialogContentWithStyles>
-          <OrganisationInfo organisation={organisation} />
+          <OrganisationInfo
+            isPreviewModeOn={isPreviewModeOn}
+            organisation={organisation}
+          />
           <div className="w-full xxl:w-4/5 xxl:max-w-9/10 m-auto mb-32">
             {!isEmpty(organisation) ? (
               <div
                 id="wizard-content"
-                className={`mx-auto ${
-                  isPreviewModeOn ? "kk:w-4/5 kkk:w-2/3" : "max-w-7xl"
-                }`}
+                className={`mx-auto ${isPreviewModeOn ? "" : "max-w-7xl"}`}
               >
                 <div className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
                   {steps && (

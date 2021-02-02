@@ -66,22 +66,24 @@ const Rajoitteet = ({
           sectionId={dialogSectionId}
         ></Rajoite>
       )}
-      {isRestrictionsModeOn && (
-        <Lomake
-          isInExpandableRow={false}
-          anchor={sectionId}
-          changeObjects={changeObjects}
-          formTitle={formatMessage(rajoitteetMessages.rajoitteet)}
-          functions={{
-            onAddRestriction,
-            onModifyRestriction,
-            onRemoveRestriction
-          }}
-          noPadding={true}
-          onChangesUpdate={onChangesUpdate}
-          path={constants.formLocations}
-          showCategoryTitles={true}
-        ></Lomake>
+      {isRestrictionsModeOn && !isPreviewModeOn && (
+        <div className="pt-8">
+          <Lomake
+            isInExpandableRow={false}
+            anchor={sectionId}
+            changeObjects={changeObjects}
+            formTitle={formatMessage(rajoitteetMessages.rajoitteet)}
+            functions={{
+              onAddRestriction,
+              onModifyRestriction,
+              onRemoveRestriction
+            }}
+            noPadding={true}
+            onChangesUpdate={onChangesUpdate}
+            path={constants.formLocations}
+            showCategoryTitles={true}
+          ></Lomake>
+        </div>
       )}
     </React.Fragment>
   );

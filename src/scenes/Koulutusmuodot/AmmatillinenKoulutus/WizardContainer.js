@@ -89,10 +89,7 @@ const WizardContainer = ({
     }
   }, [muutospyynto, uuid]);
 
-  const [
-    { isPreviewModeOn },
-    { initializeChanges, setPreviewMode }
-  ] = useChangeObjects();
+  const [, { initializeChanges }] = useChangeObjects();
 
   const [, muutospyyntoActions] = useMuutospyynto();
 
@@ -126,7 +123,7 @@ const WizardContainer = ({
    * Opens the preview.
    * @param {object} formData
    */
-  const onPreview2 = useCallback(
+  const onPreview = useCallback(
     async formData => {
       const procedureHandler = new ProcedureHandler(intl.formatMessage);
       /**
@@ -151,14 +148,6 @@ const WizardContainer = ({
     },
     [intl.formatMessage, muutospyyntoActions]
   );
-
-  /**
-   * Opens the preview.
-   * @param {object} formData
-   */
-  const onPreview = useCallback(async () => {
-    return setPreviewMode(!isPreviewModeOn);
-  }, [isPreviewModeOn, setPreviewMode]);
 
   /**
    * Saves the form.
@@ -216,7 +205,6 @@ const WizardContainer = ({
             topthree: topThreeCO,
             tutkinnot: tutkinnotCO,
             tutkintokielet: tutkintokieletCO
-            // rajoitteet: rajoitteetCO
           },
           uuid,
           kohteet,
@@ -245,7 +233,6 @@ const WizardContainer = ({
            * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
            **/
           const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-          console.info(initializeChanges);
           initializeChanges(changeObjectsFromBackend);
         }
       }
@@ -267,7 +254,6 @@ const WizardContainer = ({
       opetuskieletCO,
       opiskelijavuodetCO,
       organisaatio,
-      // rajoitteetCO,
       toimintaalueCO,
       topThreeCO,
       tutkinnotCO,
