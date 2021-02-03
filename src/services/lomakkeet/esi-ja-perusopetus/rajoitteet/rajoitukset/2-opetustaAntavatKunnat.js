@@ -36,14 +36,20 @@ export default async function getOpetustaAntavatKunnat(
     osionData
   );
 
+  const ulkomaaOptionChecked = !!path(
+    ["properties", "isChecked"],
+    find(propEq("anchor", "toimintaalue.ulkomaa.200"), osionData)
+  );
+
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
-  const ulkomaaOption = ulkomaaStateObj
-    ? {
-        label: ulkomaaStateObj.properties.value,
-        value: ulkomaaStateObj.properties.metadata.koodiarvo
-      }
-    : null;
+  const ulkomaaOption =
+    ulkomaaStateObj && ulkomaaOptionChecked
+      ? {
+          label: path(["properties", "value"], ulkomaaStateObj),
+          value: path(["properties", "metadata", "koodiarvo"], ulkomaaStateObj)
+        }
+      : null;
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj

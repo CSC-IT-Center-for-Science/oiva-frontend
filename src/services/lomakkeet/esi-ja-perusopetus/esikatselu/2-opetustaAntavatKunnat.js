@@ -18,7 +18,6 @@ import {
   propEq,
   allPass
 } from "ramda";
-import { getRajoite } from "utils/rajoitteetUtils";
 import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
 import { getLocalizedProperty } from "../../utils";
 import { getRajoitteet } from "utils/rajoitteetUtils";
@@ -60,102 +59,64 @@ export async function previewOfOpetustaAntavaKunnat({
     ? path(["properties", "value"], ulkomaaTextBox)
     : null;
 
+  const getStructure = kunta => {
+    const koodiarvo =
+      kunta.koodiarvo || path(["properties", "metadata", "koodiarvo"], kunta);
+    const kohdistuvatRajoitteet = getRajoitteet(
+      koodiarvo,
+      rajoitteet || kunta.meta
+    );
+    return {
+      anchor: "kunta",
+      components: [
+        !isEmpty(kohdistuvatRajoitteet)
+          ? {
+              anchor: "rajoite",
+              name: "Rajoite",
+              properties: {
+                areTitlesVisible: false,
+                isReadOnly: true,
+                rajoite: kohdistuvatRajoitteet
+              }
+            }
+          : {
+              anchor: koodiarvo,
+              name: "HtmlContent",
+              properties: {
+                content:
+                  (kunta.metadata &&
+                    getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
+                  (kunta.koodi &&
+                    find(
+                      propEq("kieli", locale.toUpperCase()),
+                      kunta.koodi.metadata
+                    ).nimi) ||
+                  (kunta.properties && kunta.properties.metadata.title)
+              }
+            }
+      ]
+    };
+  };
+
+  const currentMunicipalities = path(
+    ["properties", "currentMunicipalities"],
+    changeObjectsByProvinceNode
+  );
+
   if (changeObjectsByProvinceNode) {
     const kunnat = flatten(
       values(
         mapObjIndexed(arrayOfLocationNodes => {
           const kuntienNimet = map(node => {
-            const koodiarvo = path(
-              ["properties", "metadata", "koodiarvo"],
-              node
-            );
-            const kohdistuvatRajoitteet = getRajoitteet(koodiarvo, rajoitteet);
             // Haluamme listata vain kunnat, emme maakuntia.
             return includes(".kunnat.", node.anchor)
-              ? {
-                  anchor: "kunta",
-                  components: [
-                    !isEmpty(kohdistuvatRajoitteet)
-                      ? {
-                          anchor: "rajoite",
-                          name: "Rajoite",
-                          properties: {
-                            areTitlesVisible: false,
-                            isReadOnly: true,
-                            rajoite: kohdistuvatRajoitteet
-                          }
-                        }
-                      : {
-                          anchor: path(
-                            ["properties", "metadata", "koodiarvo"],
-                            node
-                          ),
-                          name: "HtmlContent",
-                          properties: {
-                            content: node.properties.metadata.title
-                          }
-                        }
-                  ]
-                }
+              ? getStructure(node)
               : null;
           }, arrayOfLocationNodes).filter(Boolean);
           return kuntienNimet;
         }, changeObjectsByProvinceNode.properties.changeObjectsByProvince)
       )
     );
-  const getStructure = (kunta) => {
-    const koodiarvo = kunta.koodiarvo || path(
-      ["properties", "metadata", "koodiarvo"],
-      kunta
-    );
-    const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet || kunta.meta);
-    return {
-      anchor: "kunta",
-      components: [
-        rajoite
-          ? {
-            anchor: "rajoite",
-            name: "Rajoite",
-            properties: {
-              areTitlesVisible: false,
-              isReadOnly: true,
-              rajoiteId,
-              rajoite
-            }
-          }
-          : {
-            anchor: koodiarvo,
-            name: "HtmlContent",
-            properties: {
-              content: kunta.metadata && getLocalizedProperty(kunta.metadata, locale, "nimi") ||
-                kunta.koodi && find(propEq("kieli", locale.toUpperCase()), kunta.koodi.metadata).nimi ||
-                kunta.properties && kunta.properties.metadata.title
-            }
-          }
-      ]
-    };
-  };
-
-  const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox) ?
-    path(["properties", "value"], ulkomaaTextBox) : null
-
-  const currentMunicipalities = path(["properties", "currentMunicipalities"], changeObjectsByProvinceNode);
-
-  if (changeObjectsByProvinceNode) {
-    const kunnat =
-      flatten(
-        values(
-          mapObjIndexed(arrayOfLocationNodes => {
-            const kuntienNimet = map(node => {
-              // Haluamme listata vain kunnat, emme maakuntia.
-              return includes(".kunnat.", node.anchor) ?
-                getStructure(node)
-                : null;
-            }, arrayOfLocationNodes).filter(Boolean);
-            return kuntienNimet;
-          }, changeObjectsByProvinceNode.properties.changeObjectsByProvince)
-        )
-      );
 
     const kunnatUlkomaatAdded = ulkomaaTextBoxValue
       ? sortBy(
@@ -196,8 +157,18 @@ export async function previewOfOpetustaAntavaKunnat({
   }
 
   if (currentMunicipalities) {
-    const existingMunicipalities = filter(allPass([compose(not, propEq("koodiarvo", "200")), compose(not, propEq("koodiarvo", "1"))]), currentMunicipalities);
-    const existingForeignMunicipalities = filter(propEq("koodiarvo", "200"), currentMunicipalities);
+    const existingMunicipalities = filter(
+      allPass([
+        propEq("koodisto", "kunta"),
+        compose(not, propEq("koodiarvo", "200")),
+        compose(not, propEq("koodiarvo", "1"))
+      ]),
+      currentMunicipalities
+    );
+    const existingForeignMunicipalities = filter(
+      propEq("koodiarvo", "200"),
+      currentMunicipalities
+    );
 
     const municipalities = sortBy(
       prop("content"),
@@ -207,7 +178,10 @@ export async function previewOfOpetustaAntavaKunnat({
             if (node.koodisto !== "maakunta") {
               return getStructure(node);
             } else {
-              const province = find(propEq("koodiarvo", node.koodiarvo), maakunnat);
+              const province = find(
+                propEq("koodiarvo", node.koodiarvo),
+                maakunnat
+              );
               return map(node2 => {
                 return getStructure(node2);
               }, province.kunnat);
@@ -250,7 +224,10 @@ export async function previewOfOpetustaAntavaKunnat({
             name: "List",
             properties: {
               isDense: true,
-              items: concat(municipalities.filter(Boolean), foreignMunicipalities.filter(Boolean))
+              items: concat(
+                municipalities.filter(Boolean),
+                foreignMunicipalities.filter(Boolean)
+              )
             }
           }
         ]
