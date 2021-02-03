@@ -1,6 +1,13 @@
 import { API_BASE_URL } from "../modules/constants";
 import moment from "moment";
 import * as R from "ramda";
+import localforage from "localforage";
+import common from "i18n/definitions/common";
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import lukiokoulutus from "i18n/definitions/lukiokoulutus";
+import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
+import education from "i18n/definitions/education";
 
 /**
  * Utility functions are listed here.
@@ -313,3 +320,74 @@ export const recursiveTreeShake = (p = [], branch) => {
 export const isDate = input => {
   return Object.prototype.toString.call(input) === "[object Date]";
 };
+
+export function localizeRouteKey(locale, path, formatMessage) {
+  console.info(locale);
+  return `/${locale}` + formatMessage({ id: path });
+}
+
+export function getMatchingRoute(
+  locale,
+  language,
+  pathName,
+  messages = [],
+  localesByLang = {}
+) {
+  // Selvitetään aktiivinen polku (route).
+  const [, route] = pathName.split(locale);
+  // console.info(messages, route);
+  const routeKey = Object.keys(messages).find(key => {
+    return messages[key] === route;
+  });
+  // Etsitään vastaava polku juuri aktiiviseksi valittua kieltä hyödyntäen.
+  const matchingRoute = localesByLang[language][routeKey];
+  // console.info("route", route);
+  console.info(pathName, locale, language, routeKey);
+
+  // Palautetaan lokalisoitu polku (route).
+  return `/${language}` + matchingRoute;
+}
+
+export function getKoulutusmuodot(formatMessage) {
+  return {
+    ammatillinenKoulutus: {
+      kebabCase: "ammatillinenkoulutus",
+      genetiivi: formatMessage(ammatillinenKoulutus.genetiivi),
+      kortinOtsikko: formatMessage(education.vocationalEducation),
+      kuvausteksti: formatMessage(ammatillinenKoulutus.kuvausteksti),
+      lyhytKuvaus: formatMessage(ammatillinenKoulutus.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(education.vocationalEducation),
+      jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
+    },
+    esiJaPerusopetus: {
+      kebabCase: "esi-ja-perusopetus",
+      koulutustyyppi: "1",
+      genetiivi: formatMessage(esiJaPerusopetus.genetiivi),
+      kortinOtsikko: formatMessage(education.preAndBasicEducation),
+      kuvausteksti: formatMessage(esiJaPerusopetus.kuvausteksti),
+      lyhytKuvaus: formatMessage(esiJaPerusopetus.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(education.preAndBasicEducation),
+      jarjestajatOtsikko: formatMessage(education.opetuksenJarjestajat)
+    },
+    lukiokoulutus: {
+      kebabCase: "lukiokoulutus",
+      koulutustyyppi: "2",
+      genetiivi: formatMessage(lukiokoulutus.genetiivi),
+      kortinOtsikko: formatMessage(education.highSchoolEducation),
+      kuvausteksti: formatMessage(lukiokoulutus.kuvausteksti),
+      lyhytKuvaus: formatMessage(lukiokoulutus.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(education.highSchoolEducation),
+      jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
+    },
+    vapaaSivistystyo: {
+      kebabCase: "vapaa-sivistystyo",
+      koulutustyyppi: "3",
+      genetiivi: formatMessage(vapaaSivistystyo.genetiivi),
+      kortinOtsikko: formatMessage(education.vstEducation),
+      kuvausteksti: formatMessage(vapaaSivistystyo.kuvausteksti),
+      lyhytKuvaus: formatMessage(vapaaSivistystyo.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(common.vstTitleName),
+      jarjestajatOtsikko: formatMessage(education.oppilaitostenYllapitajat)
+    }
+  };
+}

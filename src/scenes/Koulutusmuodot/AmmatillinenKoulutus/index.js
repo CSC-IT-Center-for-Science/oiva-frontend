@@ -4,6 +4,8 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 import UusiAsiaDialogContainer from "./UusiAsiaDialogContainer";
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
+import { useIntl } from "react-intl";
+import { getKoulutusmuodot } from "utils/common";
 
 /**
  * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
@@ -22,7 +24,11 @@ const hakuavaimet = [
   "tulevatLuvat"
 ];
 
-export default function AmmatillinenKoulutus({ koulutusmuoto }) {
+export default function AmmatillinenKoulutus() {
+  const { formatMessage } = useIntl();
+
+  const koulutusmuoto = getKoulutusmuodot(formatMessage).ammatillinenKoulutus;
+
   return (
     <KoulutusmuodonEtusivu
       AsiaDialogContainer={AsiaDialogContainer}
@@ -33,6 +39,7 @@ export default function AmmatillinenKoulutus({ koulutusmuoto }) {
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
       jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
-      UusiAsiaDialogContainer={UusiAsiaDialogContainer}></KoulutusmuodonEtusivu>
+      UusiAsiaDialogContainer={UusiAsiaDialogContainer}
+    ></KoulutusmuodonEtusivu>
   );
 }

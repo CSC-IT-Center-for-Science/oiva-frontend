@@ -74,7 +74,7 @@ export default function KoulutusmuodonEtusivu({
                 }}
               />
             </nav>
-            {location.pathname === `/${koulutusmuoto.kebabCase}` ? (
+            {location.pathname === `/${locale}/${koulutusmuoto.kebabCase}` ? (
               <div className="mx-auto w-4/5 mt-12 max-w-8xl">
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}

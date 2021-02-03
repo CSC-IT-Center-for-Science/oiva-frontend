@@ -7,6 +7,12 @@ import VerticalLayout from "./VerticalLayout";
 import { NavLink } from "react-router-dom";
 import * as R from "ramda";
 import "../../../css/tailwind.css";
+import { useIntl } from "react-intl";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
+import education from "i18n/definitions/education";
+import common from "i18n/definitions/common";
+import { LanguageSwitcher } from "modules/i18n/index";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -14,16 +20,49 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Navigation = ({
-  direction = "horizontal",
-  links,
-  theme = {
+const defaultProps = {
+  direction: "horizontal",
+  theme: {
     backgroundColor: "vihrea",
     color: "white",
     hoverColor: "green-600"
   }
+};
+
+const Navigation = ({
+  direction = defaultProps.direction,
+  localesByLang,
+  theme = defaultProps.theme
 }) => {
+  const { formatMessage, locale } = useIntl();
   const classes = useStyles(theme);
+
+  const level1Links = [
+    {
+      path: AppRoute.JarjestamisJaYllapitamisluvat,
+      text: formatMessage(education.preAndBasicEducation)
+    }
+  ];
+
+  const links = [
+    {
+      path: AppRoute.EsiJaPerusopetus,
+      text: formatMessage(education.preAndBasicEducation)
+    },
+    {
+      path: AppRoute.Lukiokoulutus,
+      text: formatMessage(education.highSchoolEducation)
+    },
+    {
+      path: AppRoute.AmmatillinenKoulutus,
+      text: formatMessage(education.vocationalEducation)
+    },
+    {
+      path: AppRoute.VapaaSivistystyo,
+      text: formatMessage(education.vstEducation)
+    },
+    { path: AppRoute.Tilastot, text: formatMessage(common.statistics) }
+  ];
 
   const items = R.addIndex(R.map)((link, index) => {
     const bgColorClass = `bg-${theme.hoverColor}`;
@@ -42,8 +81,9 @@ const Navigation = ({
         key={`link-${index}`}
         exact={link.isExact}
         activeClassName={`${mdBgHoverClass} ml-xxs`}
-        to={link.path}
-        className={className}>
+        to={localizeRouteKey(locale, link.path, formatMessage)}
+        className={className}
+      >
         {link.text}
       </NavLink>
     );
@@ -53,14 +93,17 @@ const Navigation = ({
     <React.Fragment>
       {(!direction || direction === "horizontal") && (
         <AppBar position="static" classes={classes}>
-          <nav className="border border-gray-300">
-            <Toolbar
-              variant="dense"
-              className={`flex flex-wrap text-black text-sm overflow-auto hide-scrollbar bg-${theme.backgroundColor}`}
-              disableGutters={true}>
-              <HorizontalLayout items={items}></HorizontalLayout>
-            </Toolbar>
-          </nav>
+          <Toolbar
+            variant="dense"
+            className={`flex flex-wrap text-black text-sm overflow-auto hide-scrollbar bg-${theme.backgroundColor}`}
+            disableGutters={true}
+          >
+            <HorizontalLayout items={items}></HorizontalLayout>
+          </Toolbar>
+
+          <div className="">
+            <LanguageSwitcher localesByLang={localesByLang} />
+          </div>
         </AppBar>
       )}
       {direction === "vertical" && (

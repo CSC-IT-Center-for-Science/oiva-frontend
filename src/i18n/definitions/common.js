@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  oiva: {
+    id: "common.oiva",
+    defaultMessage: "Oiva"
+  },
   statistics: {
     id: "common.statistics",
     defaultMessage: "Tilastot"
@@ -1267,5 +1271,9 @@ export default defineMessages({
   eiValittaviaKohteita: {
     id: "common.eiValittaviaKohteita",
     defaultMessage: "Ei valittavia kohteita"
+  },
+  jarjestamisJaYllapitamisluvat: {
+    id: "common.jarjestamisJaYllapitamisluvat",
+    defaultMessage: "Järjestämis- ja ylläpitämisluvat"
   }
 });

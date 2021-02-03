@@ -4,6 +4,8 @@ import AsiaDialogContainer from "./AsiaDialogContainer";
 import UusiAsiaDialogContainer from "./Dialogit/Esittelijat/Lupanakyma/LupanakymaDialogContainer";
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
+import { getKoulutusmuodot } from "utils/common";
+import { useIntl } from "react-intl";
 
 /**
  * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
@@ -27,7 +29,11 @@ const hakuavaimet = [
   "kieletOPH"
 ];
 
-export default function EsiJaPerusopetus({ koulutusmuoto }) {
+export default function EsiJaPerusopetus() {
+  const { formatMessage } = useIntl();
+
+  const koulutusmuoto = getKoulutusmuodot(formatMessage).esiJaPerusopetus;
+
   return (
     <KoulutusmuodonEtusivu
       AsiaDialogContainer={AsiaDialogContainer}
@@ -38,6 +44,7 @@ export default function EsiJaPerusopetus({ koulutusmuoto }) {
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
       jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
-      UusiAsiaDialogContainer={UusiAsiaDialogContainer}></KoulutusmuodonEtusivu>
+      UusiAsiaDialogContainer={UusiAsiaDialogContainer}
+    ></KoulutusmuodonEtusivu>
   );
 }

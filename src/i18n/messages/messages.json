@@ -85,6 +85,11 @@
     "filepath": "src/i18n/definitions/auth.js"
   },
   {
+    "id": "common.oiva",
+    "defaultMessage": "Oiva",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.statistics",
     "defaultMessage": "Tilastot",
     "filepath": "src/i18n/definitions/common.js"
@@ -1195,8 +1200,18 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.haeKJ",
+    "defaultMessage": "Hae koulutuksen järjestäjää (Y-tunnus, OID, Virastotunnus)",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.luoUusiAsiaEsidialogiInfo2",
     "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.luoUusiAsiaEsidialogiInfo3",
+    "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää hakutoiminnolla.",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1227,6 +1242,11 @@
   {
     "id": "common.syotaYtunnus",
     "defaultMessage": "Syötä Y-tunnus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.syotaHaettavaTunniste",
+    "defaultMessage": "Syötä haettava tunniste",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1545,6 +1565,21 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.is",
+    "defaultMessage": "on",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.henkiloa",
+    "defaultMessage": "henkiloa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kunnassa",
+    "defaultMessage": "kunnassa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.autocompleteValitse",
     "defaultMessage": "Valitse...",
     "filepath": "src/i18n/definitions/common.js"
@@ -1562,6 +1597,11 @@
   {
     "id": "common.voimaantulopaiva",
     "defaultMessage": "Voimaantulopäivä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.eiValittaviaKohteita",
+    "defaultMessage": "Ei valittavia kohteita",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1687,6 +1727,16 @@
   {
     "id": "education.opetuksenJarjestajat",
     "defaultMessage": "Opetuksen järjestäjät",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetetaanKielilla",
+    "defaultMessage": "opetetaan kielillä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetustehtavana",
+    "defaultMessage": "opetustehtavana",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
@@ -1865,6 +1915,31 @@
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
+    "id": "opiskelijamaara.kokonaismaaraJaSenKohdennukset",
+    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä mahdollisilla kohdennuksilla",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.vainKohdennetutRajoitukset",
+    "defaultMessage": "Vain kohdennetut oppilas-/opiskelijamäärärajoitukset",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.eiRajoiteta",
+    "defaultMessage": "Opiskelijamäärää ei rajoiteta",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.osionInfoteksti",
+    "defaultMessage": "Opiskelijamäärää ei ole oletusarvoisesti rajoitettu. Ole hyvä ja tarkista rajoitteet lomakkeen lopusta.",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "rajoitteet.ajalla",
+    "defaultMessage": "ajalla",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
     "id": "rajoitteet.muokkaaRajoitetta",
     "defaultMessage": "Muokkaa",
     "filepath": "src/i18n/definitions/rajoitteet.js"
@@ -1888,6 +1963,81 @@
     "id": "rajoitteet.lisaaAlirajoite",
     "defaultMessage": "Lisää alirajoite",
     "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "routes.ammatillinenKoulutus",
+    "defaultMessage": "/ammatillinenkoulutus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.casAuth",
+    "defaultMessage": "/cas-auth",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.casLogOut",
+    "defaultMessage": "/cas-logout",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.casReady",
+    "defaultMessage": "/cas-ready",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.esiJaPerusopetus",
+    "defaultMessage": "/esi-ja-perusopetus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.home",
+    "defaultMessage": "/",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.jarjestamisJaYllapitamisluvat",
+    "defaultMessage": "/jarjestamisJaYllapitamisluvat",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.logIn",
+    "defaultMessage": "/kirjaudu",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.logOut",
+    "defaultMessage": "/logout",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.lukiokoulutus",
+    "defaultMessage": "/lukiokoulutus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.saavutettavuusseloste",
+    "defaultMessage": "/saavutettavuusseloste",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.tietosuojailmoitus",
+    "defaultMessage": "/tietosuojailmoitus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.tilastot",
+    "defaultMessage": "/tilastot",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.vapaaSivistystyo",
+    "defaultMessage": "/vapaa-sivistystyo",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.yhteydenotto",
+    "defaultMessage": "/yhteydenotto",
+    "filepath": "src/i18n/definitions/routes.js"
   },
   {
     "id": "user.ownOrganisation",
@@ -1917,6 +2067,16 @@
   {
     "id": "vapaaSivistystyo.esittelyteksti",
     "defaultMessage": "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä.",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.voimassaOlevatYllapitamisluvat",
+    "defaultMessage": "Voimassa olevat ylläpitämisluvat {count} kpl",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa",
+    "defaultMessage": "Voimassa olevat ylläpitämisluvat ({amount} kpl)",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {

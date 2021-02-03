@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { Route, Router, Switch } from "react-router-dom";
+import { NavLink, Route, Router, useLocation } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import Login from "scenes/Login/Login";
 import Logout from "scenes/Logout/Logout";
@@ -24,7 +24,7 @@ import {
   ROLE_YLLAPITAJA
 } from "./modules/constants";
 import Header from "./components/02-organisms/Header";
-import Navigation from "./components/02-organisms/Navigation";
+// import Navigation from "./components/02-organisms/Navigation";
 import SideNavigation from "./components/02-organisms/SideNavigation";
 import { useGlobalSettings } from "./stores/appStore";
 import { useUser } from "./stores/user";
@@ -40,19 +40,22 @@ import Lukiokoulutus from "scenes/Koulutusmuodot/Lukiokoulutus";
 import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo";
 import { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
-
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import lukiokoulutus from "i18n/definitions/lukiokoulutus";
 import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
-
+import * as views from "views";
 import * as R from "ramda";
 
 import "react-toastify/dist/ReactToastify.css";
+import { LocalizedSwitch } from "modules/i18n/index";
+import { AppLanguage, AppRoute } from "const/index";
+import { LanguageSwitcher } from "modules/i18n";
+import { Navigation } from "modules/navigation";
 
 const history = createBrowserHistory();
 
-const logo = { text: "Oiva", path: "/" };
+const logo = { text: "Oiva", path: AppRoute.Home };
 
 const constants = {
   koulutusmuodot: {
@@ -79,58 +82,19 @@ const constants = {
  *
  * @param {props} - Properties object.
  */
-const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
+const App = ({
+  children,
+  isSessionDialogVisible,
+  localesByLang,
+  onLogout,
+  onSessionDialogOK
+}) => {
   const intl = useIntl();
   const [userState] = useUser();
-
+  console.info(intl.locale);
   const { data: user } = userState;
 
   const [organisation, setOrganisation] = useState();
-
-  const koulutusmuodot = useMemo(
-    () => ({
-      ...constants.koulutusmuodot,
-      ammatillinenKoulutus: {
-        ...constants.koulutusmuodot.ammatillinenKoulutus,
-        genetiivi: intl.formatMessage(ammatillinenKoulutus.genetiivi),
-        kortinOtsikko: intl.formatMessage(education.vocationalEducation),
-        kuvausteksti: intl.formatMessage(ammatillinenKoulutus.kuvausteksti),
-        lyhytKuvaus: intl.formatMessage(ammatillinenKoulutus.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(education.vocationalEducation),
-        jarjestajatOtsikko: intl.formatMessage(education.koulutuksenJarjestajat)
-      },
-      esiJaPerusopetus: {
-        ...constants.koulutusmuodot.esiJaPerusopetus,
-        genetiivi: intl.formatMessage(esiJaPerusopetus.genetiivi),
-        kortinOtsikko: intl.formatMessage(education.preAndBasicEducation),
-        kuvausteksti: intl.formatMessage(esiJaPerusopetus.kuvausteksti),
-        lyhytKuvaus: intl.formatMessage(esiJaPerusopetus.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(education.preAndBasicEducation),
-        jarjestajatOtsikko: intl.formatMessage(education.opetuksenJarjestajat)
-      },
-      lukiokoulutus: {
-        ...constants.koulutusmuodot.lukiokoulutus,
-        genetiivi: intl.formatMessage(lukiokoulutus.genetiivi),
-        kortinOtsikko: intl.formatMessage(education.highSchoolEducation),
-        kuvausteksti: intl.formatMessage(lukiokoulutus.kuvausteksti),
-        lyhytKuvaus: intl.formatMessage(lukiokoulutus.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(education.highSchoolEducation),
-        jarjestajatOtsikko: intl.formatMessage(education.koulutuksenJarjestajat)
-      },
-      vapaaSivistystyo: {
-        ...constants.koulutusmuodot.vapaaSivistystyo,
-        genetiivi: intl.formatMessage(vapaaSivistystyo.genetiivi),
-        kortinOtsikko: intl.formatMessage(education.vstEducation),
-        kuvausteksti: intl.formatMessage(vapaaSivistystyo.kuvausteksti),
-        lyhytKuvaus: intl.formatMessage(vapaaSivistystyo.lyhytKuvaus),
-        paasivunOtsikko: intl.formatMessage(common.vstTitleName),
-        jarjestajatOtsikko: intl.formatMessage(
-          education.oppilaitostenYllapitajat
-        )
-      }
-    }),
-    [intl]
-  );
 
   useEffect(() => {
     if (user && user.oid) {
@@ -145,27 +109,26 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
   }, [setOrganisation, user]);
 
   const [isSideMenuVisible, setSideMenuVisibility] = useState(false);
-
-  const [appState, appActions] = useGlobalSettings();
+  const [appState] = useGlobalSettings();
 
   const pageLinks = [
     {
-      path: "/esi-ja-perusopetus",
+      path: AppRoute.EsiJaPerusopetus,
       text: intl.formatMessage(education.preAndBasicEducation)
     },
     {
-      path: "/lukiokoulutus",
+      path: AppRoute.Lukiokoulutus,
       text: intl.formatMessage(education.highSchoolEducation)
     },
     {
-      path: "/ammatillinenkoulutus",
+      path: AppRoute.AmmatillinenKoulutus,
       text: intl.formatMessage(education.vocationalEducation)
     },
     {
-      path: "/vapaa-sivistystyo",
+      path: AppRoute.VapaaSivistystyo,
       text: intl.formatMessage(education.vstEducation)
     },
-    { path: "/tilastot", text: intl.formatMessage(common.statistics) }
+    { path: AppRoute.Tilastot, text: intl.formatMessage(common.statistics) }
   ];
 
   const authenticationLink = useMemo(() => {
@@ -176,18 +139,6 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
       path: !user ? "/cas-auth" : "/cas-logout"
     };
   }, [intl, user]);
-
-  const onLocaleChange = useCallback(
-    locale => {
-      appActions.setLocale(locale);
-      if (locale) {
-        sessionStorage.setItem("locale", locale);
-      } else {
-        sessionStorage.removeItem("locale");
-      }
-    },
-    [appActions]
-  );
 
   const onLoginButtonClick = useCallback(() => history.push("/cas-auth"), []);
 
@@ -254,35 +205,31 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
   const getHeader = useCallback(
     template => {
-      if (appState.locale) {
-        return (
-          <Header
-            inFinnish={"FI"}
-            inSwedish={"SV"}
-            isAuthenticated={!!user}
-            locale={appState.locale}
-            logIn={intl.formatMessage(authMessages.logIn)}
-            logo={logo}
-            authenticationLink={authenticationLink}
-            onLocaleChange={onLocaleChange}
-            onLoginButtonClick={onLoginButtonClick}
-            onMenuClick={onMenuClick}
-            organisationLink={organisationLink}
-            shortDescription={shortDescription}
-            template={template}
-            languageSelectionAriaLabel={intl.formatMessage(
-              langMessages.selection
-            )}
-          ></Header>
-        );
-      }
-      return null;
+      return (
+        <Header
+          inFinnish={"FI"}
+          inSwedish={"SV"}
+          isAuthenticated={!!user}
+          locale={intl.locale}
+          localesByLang={localesByLang}
+          logIn={intl.formatMessage(authMessages.logIn)}
+          logo={logo}
+          authenticationLink={authenticationLink}
+          onLoginButtonClick={onLoginButtonClick}
+          onMenuClick={onMenuClick}
+          organisationLink={organisationLink}
+          shortDescription={shortDescription}
+          template={template}
+          languageSelectionAriaLabel={intl.formatMessage(
+            langMessages.selection
+          )}
+        ></Header>
+      );
     },
     [
-      appState.locale,
       authenticationLink,
       intl,
-      onLocaleChange,
+      localesByLang,
       onLoginButtonClick,
       onMenuClick,
       organisationLink,
@@ -333,28 +280,49 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
           <div className="flex flex-1 flex-col justify-between md:mt-0 lg:mt-32">
             <div className="flex flex-col flex-1 bg-white">
               <SkipNavContent />
-              <main className="flex-1 flex flex-col">
-                <Switch>
+              <div>
+                <header>
+                  <nav>
+                    <Navigation />
+                    <LanguageSwitcher localesByLang={localesByLang} />
+                  </nav>
+                </header>
+                <main>{children}</main>
+              </div>
+              {/* <main className="flex-1 flex flex-col"> */}
+              {/* <LanguageSwitcher localesByLang={localesByLang} />
+                {children} */}
+              {/* <LocalizedSwitch>
                   <Route
                     exact
-                    path="/"
+                    path={AppRoute.Home}
                     render={() => <Home koulutusmuodot={koulutusmuodot} />}
                   />
-                  <Route path="/logout" component={Logout} />
-                  <Route path="/kirjaudu" component={Login} />
-                  <Route exact path="/tilastot" component={Tilastot} />
-                  <Route path="/cas-auth" component={RequireCasAuth} />
-                  <Route path="/cas-logout" component={DestroyCasAuth} />
+                  <Route exact path={AppRoute.LogOut} component={Logout} />
+                  <Route exact path={AppRoute.LogIn} component={Login} />
+                  <Route exact path={AppRoute.Tilastot} component={Tilastot} />
+                  <Route
+                    exact
+                    path={AppRoute.CasAuth}
+                    component={RequireCasAuth}
+                  />
+                  <Route
+                    exact
+                    path={AppRoute.CasLogOut}
+                    component={DestroyCasAuth}
+                  />
                   {!!organisation && (
                     <Route
-                      path="/cas-ready"
+                      exact
+                      path={AppRoute.CasReady}
                       render={() => (
                         <CasAuthenticated organisation={organisation} />
                       )}
                     />
                   )}
                   <Route
-                    path="/ammatillinenkoulutus"
+                    exact
+                    path={AppRoute.AmmatillinenKoulutus}
                     render={() => (
                       <AmmatillinenKoulutus
                         koulutusmuoto={koulutusmuodot.ammatillinenKoulutus}
@@ -362,7 +330,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     )}
                   />
                   <Route
-                    path="/esi-ja-perusopetus"
+                    exact
+                    path={AppRoute.EsiJaPerusopetus}
                     render={() => (
                       <EsiJaPerusopetus
                         koulutusmuoto={koulutusmuodot.esiJaPerusopetus}
@@ -370,7 +339,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     )}
                   />
                   <Route
-                    path="/lukiokoulutus"
+                    exact
+                    path={AppRoute.Lukiokoulutus}
                     render={() => (
                       <Lukiokoulutus
                         koulutusmuoto={koulutusmuodot.lukiokoulutus}
@@ -378,7 +348,8 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     )}
                   />
                   <Route
-                    path="/vapaa-sivistystyo"
+                    exact
+                    path={AppRoute.VapaaSivistystyo}
                     render={() => (
                       <VapaaSivistystyo
                         koulutusmuoto={koulutusmuodot.vapaaSivistystyo}
@@ -386,21 +357,27 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
                     )}
                   />
                   <Route
-                    path="/saavutettavuusseloste"
+                    exact
+                    path={AppRoute.Saavutettavuusseloste}
                     render={() => (
                       <Saavutettavuusseloste locale={intl.locale} />
                     )}
                   />
                   <Route
-                    path="/tietosuojailmoitus"
+                    exact
+                    path={AppRoute.Tietosuojailmoitus}
                     render={() => <Tietosuojailmoitus locale={intl.locale} />}
                   />
                   <Route
-                    path="/yhteydenotto"
+                    exact
+                    path={AppRoute.Yhteydenotto}
                     render={() => <Yhteydenotto locale={intl.locale} />}
                   />
-                </Switch>
-              </main>
+                  <Route path="*">
+                    <views.GeneralError />
+                  </Route>
+                </LocalizedSwitch> */}
+              {/* </main> */}
             </div>
           </div>
           <footer>
@@ -422,6 +399,7 @@ const App = ({ isSessionDialogVisible, onLogout, onSessionDialogOK }) => {
 
 App.propTypes = {
   isSessionDialogVisible: PropTypes.bool,
+  localesByLang: PropTypes.object,
   onLogout: PropTypes.func,
   onSessionDialogOK: PropTypes.func
 };
