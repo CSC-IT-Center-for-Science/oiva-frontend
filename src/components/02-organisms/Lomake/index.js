@@ -106,12 +106,13 @@ const Lomake = React.memo(
         }
 
         const juuriHaettuLomake = await fetchLomake();
+        const lomakerakenne = juuriHaettuLomake.structure || juuriHaettuLomake;
 
         const lomakedata =
-          juuriHaettuLomake && juuriHaettuLomake.length
+          lomakerakenne && lomakerakenne.length
             ? getReducedStructureIncludingChanges(
                 lomakedataAnchor || anchor,
-                getReducedStructure(juuriHaettuLomake),
+                getReducedStructure(lomakerakenne),
                 changeObjects
               )
             : [];
@@ -142,7 +143,7 @@ const Lomake = React.memo(
             lomakedataActions.setValidity(juuriHaettuLomake.isValid, anchor);
           }
 
-          setLomake(juuriHaettuLomake.structure || juuriHaettuLomake);
+          setLomake(lomakerakenne);
         }
       })();
     }, [
