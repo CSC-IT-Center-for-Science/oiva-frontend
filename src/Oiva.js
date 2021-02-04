@@ -10,12 +10,6 @@ import translations from "i18n/locales";
 import { AppLayout } from "modules/layout";
 import Tilastot from "scenes/Tilastot/components/index";
 import JarjestamisJaYllapitamisluvat from "scenes/JarjestamisJaYllapitamisluvat/index";
-
-// Koulutusmuodot
-import AmmatillinenKoulutus from "scenes/Koulutusmuodot/AmmatillinenKoulutus/index";
-import EsiJaPerusopetus from "scenes/Koulutusmuodot/EsiJaPerusopetus/index";
-import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo/index";
-import Lukio from "scenes/Koulutusmuodot/Lukiokoulutus/index";
 import Login from "scenes/Login/Login";
 import Logout from "scenes/Logout/Logout";
 import DestroyCasAuth from "scenes/Logout/services/DestroyCasAuth";
@@ -94,26 +88,19 @@ export const Oiva = () => {
             <Route
               exact
               path={AppRoute.CasReady}
-              render={() => <CasAuthenticated organisation={organisation} />}
+              render={() => (
+                <CasAuthenticated organisation={organisation} user={user} />
+              )}
             />
           )}
           <Route exact path={AppRoute.Home}>
             <Home />
           </Route>
-          <Route exact path={AppRoute.EsiJaPerusopetus}>
-            <EsiJaPerusopetus />
-          </Route>
-          <Route exact path={AppRoute.Lukiokoulutus}>
-            <Lukio />
-          </Route>
-          <Route exact path={AppRoute.AmmatillinenKoulutus}>
-            <AmmatillinenKoulutus />
-          </Route>
-          <Route exact path={AppRoute.VapaaSivistystyo}>
-            <VapaaSivistystyo />
-          </Route>
-          <Route exact path={AppRoute.JarjestamisJaYllapitamisluvat}>
-            <JarjestamisJaYllapitamisluvat />
+          <Route path={AppRoute.JarjestamisJaYllapitamisluvat}>
+            <JarjestamisJaYllapitamisluvat
+              localesByLang={messages}
+              organisation={organisation}
+            />
           </Route>
           <Route exact path={AppRoute.Tilastot}>
             <Tilastot />

@@ -1,11 +1,13 @@
 export const AppRoute = {
   AmmatillinenKoulutus: "routes.ammatillinenKoulutus",
+  Asianhallinta: "routes.asianhallinta",
   CasAuth: "routes.casAuth",
   CasLogOut: "routes.casLogOut",
   CasReady: "routes.casReady",
   EsiJaPerusopetus: "routes.esiJaPerusopetus",
   Home: "routes.home",
   JarjestamisJaYllapitamisluvat: "routes.jarjestamisJaYllapitamisluvat",
+  KoulutuksenJarjestajat: "routes.koulutuksenJarjestajat",
   LogIn: "routes.logIn",
   LogOut: "routes.logOut",
   Lukiokoulutus: "routes.lukiokoulutus",

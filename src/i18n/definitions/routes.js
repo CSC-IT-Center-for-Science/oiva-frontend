@@ -3,7 +3,12 @@ import { defineMessages } from "react-intl";
 export default defineMessages({
   ammatillinenKoulutus: {
     id: "routes.ammatillinenKoulutus",
-    defaultMessage: "/ammatillinenkoulutus"
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/ammatillinenkoulutus"
+  },
+  asianhallinta: {
+    id: "routes.asianhallinta",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta"
   },
   casAuth: {
     id: "routes.casAuth",
@@ -19,7 +24,7 @@ export default defineMessages({
   },
   esiJaPerusopetus: {
     id: "routes.esiJaPerusopetus",
-    defaultMessage: "/esi-ja-perusopetus"
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/esi-ja-perusopetus"
   },
   home: {
     id: "routes.home",
@@ -27,7 +32,12 @@ export default defineMessages({
   },
   jarjestamisJaYllapitamisluvat: {
     id: "routes.jarjestamisJaYllapitamisluvat",
-    defaultMessage: "/jarjestamisJaYllapitamisluvat"
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat"
+  },
+  koulutuksenJarjestajat: {
+    id: "routes.koulutuksenJarjestajat",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutuksenjarjestajat/{id}"
   },
   logIn: {
     id: "routes.logIn",
@@ -39,7 +49,7 @@ export default defineMessages({
   },
   lukiokoulutus: {
     id: "routes.lukiokoulutus",
-    defaultMessage: "/lukiokoulutus"
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/lukiokoulutus"
   },
   saavutettavuusseloste: {
     id: "routes.saavutettavuusseloste",
@@ -55,7 +65,7 @@ export default defineMessages({
   },
   vapaaSivistystyo: {
     id: "routes.vapaaSivistystyo",
-    defaultMessage: "/vapaa-sivistystyo"
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/vapaa-sivistystyo"
   },
   yhteydenotto: {
     id: "routes.yhteydenotto",

@@ -28,7 +28,7 @@ export default function AmmatillinenKoulutus() {
   const { formatMessage } = useIntl();
 
   const koulutusmuoto = getKoulutusmuodot(formatMessage).ammatillinenKoulutus;
-
+  console.info("ammatillinen koulutus");
   return (
     <KoulutusmuodonEtusivu
       AsiaDialogContainer={AsiaDialogContainer}

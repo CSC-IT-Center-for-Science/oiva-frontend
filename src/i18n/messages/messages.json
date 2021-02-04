@@ -5,6 +5,11 @@
     "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
   },
   {
+    "id": "ammatillinenKoulutus.kebabCase",
+    "defaultMessage": "ammatillinen-koulutus",
+    "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
+  },
+  {
     "id": "ammatillinenKoulutus.kuvausteksti",
     "defaultMessage": "Ammatillisten tutkintojen ja koulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää tutkintojen ja koulutuksen järjestämislupaa. Järjestämislupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
     "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
@@ -1971,7 +1976,12 @@
   },
   {
     "id": "routes.ammatillinenKoulutus",
-    "defaultMessage": "/ammatillinenkoulutus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinenkoulutus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallinta",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -1991,7 +2001,7 @@
   },
   {
     "id": "routes.esiJaPerusopetus",
-    "defaultMessage": "/esi-ja-perusopetus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/esi-ja-perusopetus",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2001,7 +2011,12 @@
   },
   {
     "id": "routes.jarjestamisJaYllapitamisluvat",
-    "defaultMessage": "/jarjestamisJaYllapitamisluvat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.koulutuksenJarjestajat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutuksenjarjestajat/{id}",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2016,7 +2031,7 @@
   },
   {
     "id": "routes.lukiokoulutus",
-    "defaultMessage": "/lukiokoulutus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/lukiokoulutus",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2036,7 +2051,7 @@
   },
   {
     "id": "routes.vapaaSivistystyo",
-    "defaultMessage": "/vapaa-sivistystyo",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/vapaa-sivistystyo",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {

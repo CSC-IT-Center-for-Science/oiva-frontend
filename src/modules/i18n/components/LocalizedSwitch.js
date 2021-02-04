@@ -2,6 +2,10 @@ import React from "react";
 import { Switch } from "react-router";
 import { useIntl } from "react-intl";
 
+const routeParams = {
+  "routes.asianhallinta": "ammatillinen-koulutus"
+};
+
 /**
  *
  * @param path can be string, undefined or string array
@@ -9,6 +13,7 @@ import { useIntl } from "react-intl";
  */
 export function localizeRoutePath(path, locale, formatMessage) {
   let localizedPath = "";
+  console.info(path);
   switch (typeof path) {
     case "undefined":
       localizedPath = undefined;
@@ -22,7 +27,11 @@ export function localizeRoutePath(path, locale, formatMessage) {
       const isFallbackRoute = path === "*";
       localizedPath = isFallbackRoute
         ? path
-        : `/${locale}` + formatMessage({ id: path });
+        : `/${locale}` +
+          formatMessage(
+            { id: path },
+            { koulutusmuoto: "ammatillinen-koulutus" }
+          );
   }
 
   return localizedPath;
@@ -42,13 +51,15 @@ export const LocalizedSwitch = ({ children }) => {
     <Switch>
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
-          // const _path =
-          //   child.props.path !== "routes.logIn"
-          //     ?
-          //     : CAS_BASE_URL;
+          const _path = localizeRoutePath(
+            child.props.path,
+            locale,
+            formatMessage
+          );
+          // console.info(child, _path);
           return React.cloneElement(child, {
             ...child.props,
-            path: localizeRoutePath(child.props.path, locale, formatMessage)
+            path: _path
           });
         } else {
           return child;

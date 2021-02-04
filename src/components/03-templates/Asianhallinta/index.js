@@ -65,7 +65,6 @@ const Asianhallinta = ({
           </div>
         </div>
       ) : null}
-
       <Router history={history}>
         <Switch>
           {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (

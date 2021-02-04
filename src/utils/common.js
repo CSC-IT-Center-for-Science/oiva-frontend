@@ -322,7 +322,7 @@ export const isDate = input => {
 };
 
 export function localizeRouteKey(locale, path, formatMessage) {
-  console.info(locale);
+  console.info(locale, path);
   return `/${locale}` + formatMessage({ id: path });
 }
 
@@ -351,7 +351,7 @@ export function getMatchingRoute(
 export function getKoulutusmuodot(formatMessage) {
   return {
     ammatillinenKoulutus: {
-      kebabCase: "ammatillinenkoulutus",
+      kebabCase: formatMessage(ammatillinenKoulutus.kebabCase),
       genetiivi: formatMessage(ammatillinenKoulutus.genetiivi),
       kortinOtsikko: formatMessage(education.vocationalEducation),
       kuvausteksti: formatMessage(ammatillinenKoulutus.kuvausteksti),

@@ -112,13 +112,19 @@ const Header = ({
 
   const homeRouteKey = AppRouteTitles.home.get(AppRoute.Home) || "";
 
-  console.info(authenticationLink);
+  const is2ndNavVisible =
+    pathname ===
+    localizeRouteKey(
+      locale,
+      AppRoute.JarjestamisJaYllapitamisluvat,
+      formatMessage
+    );
 
   return (
     <React.Fragment>
       {breakpointTabletMin && (
         <AppBar elevation={0} position="static">
-          <Toolbar className="bg-green-500 px-4 justify-between">
+          <Toolbar className="bg-green-500 px-4 justify-between overflow-hidden">
             <NavLink
               to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
               className="flex items-center no-underline text-white hover:text-gray-100 pr-4"
@@ -140,10 +146,10 @@ const Header = ({
             <div id="navigation-level-1">
               <Navigation level={1} />
             </div>
-            <div className="flex-1 flex justify-end mr-4">
-              {organisationLink.path ? (
+            <div className="flex-1 flex justify-end items-center">
+              {/* {organisationLink.path ? (
                 <NavLink
-                  className="link-to-own-organisation text-white border p-2 rounded-lg"
+                  className="link-to-own-organisation text-white border p-2 rounded-lg mr-4"
                   to={localizeRouteKey(
                     organisationLink.path,
                     locale,
@@ -157,9 +163,7 @@ const Header = ({
                 </NavLink>
               ) : (
                 <span className="text-white">{organisationLink.text}</span>
-              )}
-            </div>
-            <div className="flex-1 flex justify-end items-center">
+              )} */}
               {!!authenticationLink && (
                 <NavLink
                   to={authenticationLink.path}
@@ -177,9 +181,13 @@ const Header = ({
               <LanguageSwitcher localesByLang={localesByLang} />
             </div>
           </Toolbar>
-          <Toolbar className="bg-green-600" style={{ minHeight: "3rem" }}>
-            <Navigation level={2} />
-          </Toolbar>
+          {is2ndNavVisible && (
+            <AppBar elevation={0} position="static">
+              <Toolbar className="bg-green-600" style={{ minHeight: "3rem" }}>
+                <Navigation level={2} />
+              </Toolbar>
+            </AppBar>
+          )}
         </AppBar>
       )}
     </React.Fragment>

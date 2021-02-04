@@ -28,16 +28,13 @@ export const Navigation = ({ level }) => {
             AppRouteTitles.navigation[`level${level}`].get(AppRoute[elem]) ||
             "";
           return (
-            <li
-              key={elem}
-              className={`inline-block h-full ${
-                level === 1 ? "p-5" : index !== 0 ? "pl-4" : ""
-              } pr-4`}
-            >
+            <li key={elem} className={`inline-block h-full`}>
               <NavLink
-                exact
                 to={localizeRouteKey(AppRoute[elem])}
-                className={`text-white ${level === 1 ? "uppercase" : ""}`}
+                activeClassName="bg-green-700 hover:text-white border"
+                className={`text-white px-4 ${level === 1 ? "p-6" : ""} ${
+                  level === 1 ? "uppercase" : "py-2"
+                }`}
               >
                 {routeTitleKey
                   ? formatMessage({ id: routeTitleKey })

@@ -21,6 +21,8 @@ import { includes, toLower } from "ramda";
 import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
+import { LocalizedSwitch } from "modules/i18n/index";
+import { AppRoute } from "const/index";
 
 const keys2 = ["organisaatio", "tulevatLuvat"];
 
@@ -56,25 +58,7 @@ export default function KoulutusmuodonEtusivu({
       ) : (
         <div className="flex-1 flex flex-col bg-white">
           <article>
-            <nav
-              tabIndex="0"
-              className="breadcumbs-nav py-4 border-b pl-8"
-              aria-label={formatMessage(common.breadCrumbs)}
-            >
-              <Breadcrumbs
-                hideIfEmpty={true}
-                separator={<b> / </b>}
-                item={NavLink}
-                finalItem={"b"}
-                finalProps={{
-                  style: {
-                    fontWeight: 400,
-                    color: COLORS.BLACK
-                  }
-                }}
-              />
-            </nav>
-            {location.pathname === `/${locale}/${koulutusmuoto.kebabCase}` ? (
+            {includes(`/${koulutusmuoto.kebabCase}`, location.pathname) ? (
               <div className="mx-auto w-4/5 mt-12 max-w-8xl">
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
@@ -106,12 +90,11 @@ export default function KoulutusmuodonEtusivu({
               </div>
             ) : null}
           </article>
-
           <div className="flex-1 flex flex-col">
             <Router history={history}>
-              <Switch>
+              <LocalizedSwitch>
                 <Route
-                  path={`/${koulutusmuoto.kebabCase}/asianhallinta`}
+                  path={AppRoute.Asianhallinta}
                   render={() => (
                     <Asianhallinta
                       AsiaDialogContainer={AsiaDialogContainer}
@@ -121,8 +104,8 @@ export default function KoulutusmuodonEtusivu({
                     />
                   )}
                 />
-                <Route
-                  path={`/${koulutusmuoto.kebabCase}/koulutuksenjarjestajat/:id`}
+                {/* <Route
+                  path={AppRoute.KoulutuksenJarjestajat}
                   render={props => {
                     return (
                       <BaseData
@@ -130,20 +113,18 @@ export default function KoulutusmuodonEtusivu({
                         locale={locale}
                         koulutustyyppi={koulutusmuoto.koulutustyyppi}
                         render={_props1 => {
-                          /**
-                           * Tämä toteutus olisi paljon yksinkertaisempi, jos
-                           * kaikkien opetusmuotojen lupatietojen noutamisen
-                           * voisi tehdä samalla tavalla. Vapaa sivistystyo
-                           * on kuitenkin poikkeus, koska VST-luvat noudetaan
-                           * lupaUuid:n avulla. Muiden koulutusmuotojen luvat
-                           * voidaan noutaa y-tunnusta käyttämällä.
-                           *
-                           * Y-tunnuksen ollessa tiedossa, saadaan luvan
-                           * lisäksi noudettua myös organisaation tiedot.
-                           * VST:n tapauksessa täytyy noutaa ensin lupa
-                           * ja käyttää luvalta löytyvää y-tunnusta
-                           * organisaatiotietojen hakemiseen.
-                           */
+                          //  Tämä toteutus olisi paljon yksinkertaisempi, jos
+                          //  kaikkien opetusmuotojen lupatietojen noutamisen
+                          //  voisi tehdä samalla tavalla. Vapaa sivistystyo
+                          //  on kuitenkin poikkeus, koska VST-luvat noudetaan
+                          //  lupaUuid:n avulla. Muiden koulutusmuotojen luvat
+                          //  voidaan noutaa y-tunnusta käyttämällä.
+                          //
+                          //  Y-tunnuksen ollessa tiedossa, saadaan luvan
+                          //  lisäksi noudettua myös organisaation tiedot.
+                          //  VST:n tapauksessa täytyy noutaa ensin lupa
+                          //  ja käyttää luvalta löytyvää y-tunnusta
+                          //  organisaatiotietojen hakemiseen.
                           if (_props1.organisaatio) {
                             return (
                               <JarjestajaSwitch
@@ -207,8 +188,11 @@ export default function KoulutusmuodonEtusivu({
                       />
                     );
                   }}
-                />
-              </Switch>
+                /> */}
+                <Route path="*">
+                  <div>Error view level 3</div>
+                </Route>
+              </LocalizedSwitch>
             </Router>
           </div>
         </div>

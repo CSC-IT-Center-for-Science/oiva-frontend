@@ -10,9 +10,14 @@ import { backendRoutes } from "stores/utils/backendRoutes";
 import common from "i18n/definitions/common";
 import { AppRoute } from "const/index";
 import { localizeRoutePath } from "modules/i18n/components/LocalizedSwitch";
+import { Breadcrumbs, BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+import { NavLink, useLocation } from "react-router-dom";
+import { COLORS } from "modules/styles";
+import { localizeRouteKey } from "utils/common";
 
 export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   const { formatMessage, locale } = useIntl();
+  const { pathname } = useLocation();
   // const [userState, userActions] = useUser();
 
   // const { data: user } = userState;
@@ -77,6 +82,9 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
     path: "/"
   };
 
+  const isBreadcrumbVisible =
+    pathname !== `${localizeRouteKey(locale, AppRoute.Home, formatMessage)}`;
+
   const getHeader = useCallback(
     template => {
       const organisationLink = getOrganisationLink();
@@ -104,6 +112,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
       localesByLang,
       // onLoginButtonClick,
       // onMenuClick,
+      formatMessage,
       getOrganisationLink,
       shortDescription,
       user
@@ -112,8 +121,35 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
 
   return (
     <React.Fragment>
+      <BreadcrumbsItem
+        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
+      >
+        Oiva
+      </BreadcrumbsItem>
       {getHeader()}
-      <main>{children}</main>
+      <main>
+        {isBreadcrumbVisible && (
+          <nav
+            tabIndex="0"
+            className="breadcumbs-nav py-4 border-b pl-8"
+            aria-label={formatMessage(common.breadCrumbs)}
+          >
+            <Breadcrumbs
+              hideIfEmpty={true}
+              separator={<b> / </b>}
+              item={NavLink}
+              finalItem={"b"}
+              finalProps={{
+                style: {
+                  fontWeight: 400,
+                  color: COLORS.BLACK
+                }
+              }}
+            />
+          </nav>
+        )}
+        {children}
+      </main>
     </React.Fragment>
   );
 };

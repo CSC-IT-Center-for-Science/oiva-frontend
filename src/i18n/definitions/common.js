@@ -1272,10 +1272,6 @@ export default defineMessages({
     id: "common.eiValittaviaKohteita",
     defaultMessage: "Ei valittavia kohteita"
   },
-  jarjestamisJaYllapitamisluvat: {
-    id: "common.jarjestamisJaYllapitamisluvat",
-    defaultMessage: "Järjestämis- ja ylläpitämisluvat"
-  },
   omaSivu: {
     id: "common.omaSivu",
     defaultMessage: "Oma sivu"
