@@ -1,11 +1,9 @@
-import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import {
   compose,
   drop,
   find,
-  hasPath,
   includes,
   mapObjIndexed,
   not,
@@ -18,7 +16,6 @@ import {
   unnest,
   values
 } from "ramda";
-import { sortRestrictions } from "utils/rajoitteetUtils";
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
@@ -27,14 +24,9 @@ export const defineBackendChangeObjects = async (
   kohteet
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
-  const lisamaareet = await getKujalisamaareetFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
-
-  const restrictionsSorted = sortRestrictions(rajoitteetByRajoiteId);
-
-  console.info(restrictionsSorted, lisamaareet);
 
   // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
   // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
@@ -47,17 +39,14 @@ export const defineBackendChangeObjects = async (
         { kohde },
         // Poista kaksi ensimmäistä asetusta ja asetukset joissa ei ole
         // value arvoa (kohdennuksenkohdennus).
-        drop(2, reject(pathEq(["properties", "value"], ""),
-          asetukset)
-        )
+        drop(2, reject(pathEq(["properties", "value"], ""), asetukset))
       );
     }, rajoitteetByRajoiteId)
   );
 
-  console.info(alimaaraykset);
-
   // Lisää kaikki rajoitus muutosobjektit parent muutokselle
-  const paaMuutos = pipe(unnest,
+  const paaMuutos = pipe(
+    unnest,
     find(v => not(path(["parent"], v)))
   )(alimaaraykset);
   if (paaMuutos) {

@@ -14,8 +14,10 @@ import { Typography } from "@material-ui/core";
 import FormTitle from "components/00-atoms/FormTitle";
 import MuutospyyntoWizardOpetuskielet from "./Jarjestajat/Jarjestaja/Hakemukset/Muutospyynto/components/MuutospyyntoWizardOpetuskielet";
 import * as R from "ramda";
+import isEqual from "react-fast-compare";
 
 const defaultProps = {
+  isPreviewModeOn: false,
   isReadOnly: false,
   kohteet: [],
   koulutukset: {},
@@ -31,6 +33,7 @@ const defaultProps = {
 
 const EsittelijatMuutospyynto = React.memo(
   ({
+    isPreviewModeOn = defaultProps.isPreviewModeOn,
     isReadOnly = defaultProps.isReadOnly,
     kohteet: osiokohteet = defaultProps.kohteet,
     koulutukset = defaultProps.koulutukset,
@@ -116,14 +119,13 @@ const EsittelijatMuutospyynto = React.memo(
       [intl, lupaKohteet]
     );
 
-    return (
+    return isPreviewModeOn ? (
+      <div>Esikatselua ei ole toteutettu, kuin PDF:nä.</div>
+    ) : (
       <form>
         {role === "ESITTELIJA" && (
           <Section>
-            <div className="w-1/3">
-              <Typography component="h2" variant="h2">
-                {intl.formatMessage(common.decisionDetails)}
-              </Typography>
+            <div className="w-1/3 pt-12">
               <MuutospyyntoWizardTopThree />
             </div>
           </Section>
@@ -138,6 +140,7 @@ const EsittelijatMuutospyynto = React.memo(
         />
         <Tutkinnot
           code={sectionHeadings.tutkinnotJaKoulutukset.number}
+          isPreviewModeOn={isPreviewModeOn}
           isReadOnly={isReadOnly}
           koulutusalat={koulutusalat}
           koulutustyypit={koulutustyypit}
@@ -203,7 +206,8 @@ const EsittelijatMuutospyynto = React.memo(
         )}
       </form>
     );
-  }
+  },
+  (cp, np) => isEqual(cp, np)
 );
 
 EsittelijatMuutospyynto.propTypes = {

@@ -26,8 +26,6 @@ import Normal from "@material-ui/icons/Lens";
 
 const useStyles = makeStyles(() => ({
   root: {
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
     width: "100%",
     "& .MuiStepLabel-label ": {
       fontFamily: "inherit",
@@ -85,7 +83,18 @@ const iconStyles = makeStyles({
   }
 });
 
-function StepIcons({ active, completed, error, icon }) {
+const styles0 = { marginRight: "1.8em", marginBottom: "1.8em" };
+const styles1 = { position: "absolute", fontSize: 30 };
+const styles2 = {
+  position: "absolute",
+  marginLeft: "0.55em",
+  marginTop: "0.25em",
+  color: "#fff",
+  font: "1.1em Inconsolata, monospace"
+};
+const styles4 = { fontSize: 30 };
+
+const StepIcons = React.memo(({ active, completed, error, icon }) => {
   const classes = iconStyles();
 
   return (
@@ -97,28 +106,18 @@ function StepIcons({ active, completed, error, icon }) {
       })}
     >
       {error ? (
-        <Incomplete style={{ fontSize: 30 }} className={classes.error} />
+        <Incomplete style={styles4} className={classes.error} />
       ) : completed ? (
         <Completed className={classes.completed} />
       ) : (
-        <div style={{ marginRight: "1.8em", marginBottom: "1.8em" }}>
-          <Normal style={{ position: "absolute", fontSize: 30 }} />
-          <span
-            style={{
-              position: "absolute",
-              marginLeft: "0.55em",
-              marginTop: "0.25em",
-              color: "#fff",
-              font: "1.1em Inconsolata, monospace"
-            }}
-          >
-            {icon}
-          </span>
+        <div style={styles0}>
+          <Normal style={styles1} />
+          <span style={styles2}>{icon}</span>
         </div>
       )}
     </div>
   );
-}
+});
 
 const StepperNavigation = React.memo(
   ({ activeStep, handleStepChange, stepProps }) => {

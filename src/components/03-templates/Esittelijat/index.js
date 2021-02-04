@@ -8,11 +8,7 @@ import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
 import { MuutoksetContainer } from "stores/muutokset";
 
-const Esittelijat = ({
-  AsiaDialogContainer,
-  koulutusmuoto,
-  UusiAsiaDialogContainer
-}) => {
+const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
   const { locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
@@ -58,7 +54,8 @@ const Esittelijat = ({
                 render={_props => {
                   return (
                     <MuutoksetContainer>
-                      <UusiAsiaDialogContainer
+                      {/* UusiAsiaDialogContainer */}
+                      <WizardContainer
                         kohteet={_props.kohteet}
                         koulutukset={_props.koulutukset}
                         koulutusalat={_props.koulutusalat}
@@ -89,7 +86,8 @@ const Esittelijat = ({
                   render={_props => {
                     return (
                       <MuutoksetContainer>
-                        <AsiaDialogContainer
+                        {/* AsiaDialogContainer */}
+                        <WizardContainer
                           kohteet={_props.kohteet}
                           koulutukset={_props.koulutukset}
                           koulutusalat={_props.koulutusalat}

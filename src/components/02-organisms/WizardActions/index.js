@@ -8,7 +8,7 @@ import { WizardBottom } from "components/03-templates/Jarjestaja/MuutospyyntoWiz
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
-const EsittelijatWizardActions = ({
+const WizardActions = ({
   isSavingEnabled = false,
   onClose,
   onPreview,
@@ -55,7 +55,7 @@ const EsittelijatWizardActions = ({
   );
 };
 
-EsittelijatWizardActions.propTypes = {
+WizardActions.propTypes = {
   // Default: false
   isSavingEnabled: PropTypes.bool,
   // Will be called when user wants to close the dialog
@@ -66,4 +66,4 @@ EsittelijatWizardActions.propTypes = {
   onSave: PropTypes.func.isRequired
 };
 
-export default EsittelijatWizardActions;
+export default WizardActions;

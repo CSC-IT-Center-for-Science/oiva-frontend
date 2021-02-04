@@ -14,9 +14,13 @@ const sectionIds = [
   "taloudelliset_liitteet"
 ];
 
-const MuutospyyntoWizardTaloudelliset = ({ isReadOnly, tutkinnotCO }) => {
+const MuutospyyntoWizardTaloudelliset = ({ isReadOnly }) => {
   const intl = useIntl();
   const headerLevel = isReadOnly ? "h3" : "h2";
+
+  const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "tutkinnot"
+  });
 
   const isUusiaTutkintolisayksia = includes(
     true,

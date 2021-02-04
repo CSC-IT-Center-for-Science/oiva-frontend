@@ -50,7 +50,6 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
               ]
             };
           } else {
-            console.info("Ei rajoitetta.", opetuskieli.label);
             return {
               anchor: "opetuskieli",
               components: [

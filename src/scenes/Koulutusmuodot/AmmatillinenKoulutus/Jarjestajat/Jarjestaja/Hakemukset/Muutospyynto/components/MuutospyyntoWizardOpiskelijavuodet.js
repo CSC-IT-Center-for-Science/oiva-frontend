@@ -4,6 +4,7 @@ import Lomake from "components/02-organisms/Lomake";
 import { getMaarayksetByTunniste } from "helpers/lupa";
 import { useLomakedata } from "stores/lomakedata";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import isEqual from "react-fast-compare";
 
 const constants = {
   formLocation: ["opiskelijavuodet"]
@@ -36,7 +37,8 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         showCategoryTitles={true}
       ></Lomake>
     ) : null;
-  }
+  },
+  (cp, np) => isEqual(cp, np)
 );
 
 MuutospyyntoWizardOpiskelijavuodet.defaultProps = {
