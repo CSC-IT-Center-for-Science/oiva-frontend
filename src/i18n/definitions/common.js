@@ -291,6 +291,10 @@ export default defineMessages({
     id: "asiaTable.headers.saapunut",
     defaultMessage: "Saapunut/luotu"
   },
+  "asiaTable.headers.paatospvm": {
+    id: "asiaTable.headers.paatospvm",
+    defaultMessage: "Päätöspäivämäärä"
+  },
   "asiaTable.headers.hakupvm": {
     id: "asiaTable.headers.hakupvm",
     defaultMessage: "Haettu voimaantulo"

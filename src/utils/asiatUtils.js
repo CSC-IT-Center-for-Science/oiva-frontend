@@ -4,21 +4,28 @@ import moment from "moment";
 import ProcedureHandler from "../components/02-organisms/procedureHandler";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
 
-const asiatTableColumnSetup = [
-  { titleKey: common["asiaTable.headers.asianumero"], widthClass: "w-2/12" },
-  { titleKey: common["asiaTable.headers.asia"], widthClass: "w-2/12" },
-  { titleKey: common["asiaTable.headers.asiakas"], widthClass: "w-3/12" },
-  { titleKey: common["asiaTable.headers.maakunta"], widthClass: "w-2/12" },
-  { titleKey: common["asiaTable.headers.tila"], widthClass: "w-1/12" },
-  { titleKey: common["asiaTable.headers.saapunut"], widthClass: "w-1/12" },
-  {
-    titleKey: common["asiaTable.headers.actions"],
-    widthClass: "w-1/12",
-    isSortable: false
-  }
-];
+const asiatTableColumnSetup = avoimet => {
+  return [
+    { titleKey: common["asiaTable.headers.asianumero"], widthClass: "w-2/12" },
+    { titleKey: common["asiaTable.headers.asia"], widthClass: "w-2/12" },
+    { titleKey: common["asiaTable.headers.asiakas"], widthClass: "w-3/12" },
+    { titleKey: common["asiaTable.headers.maakunta"], widthClass: "w-2/12" },
+    { titleKey: common["asiaTable.headers.tila"], widthClass: "w-1/12" },
+    {
+      titleKey: avoimet
+        ? common["asiaTable.headers.saapunut"]
+        : common["asiaTable.headers.paatospvm"],
+      widthClass: "w-1/12"
+    },
+    {
+      titleKey: common["asiaTable.headers.actions"],
+      widthClass: "w-1/12",
+      isSortable: false
+    }
+  ];
+};
 
-const generateAsiatTableHeaderStructure = t => {
+const generateAsiatTableHeaderStructure = (t, tableColumnSetup) => {
   return {
     role: "thead",
     rowGroups: [
@@ -32,7 +39,7 @@ const generateAsiatTableHeaderStructure = t => {
                 styleClasses: [item.widthClass],
                 text: t(item.titleKey)
               };
-            })(asiatTableColumnSetup)
+            })(tableColumnSetup)
           }
         ]
       }
@@ -48,15 +55,23 @@ const getMaakuntaNimiFromHakemus = (hakemus, locale) => {
 };
 
 // Generates common row data for all Asiat-tables
-export const generateAsiaTableRows = (row, { formatMessage, locale }) => {
+export const generateAsiaTableRows = (
+  row,
+  { formatMessage, locale },
+  avoimet
+) => {
+  const tableColumnSetup = asiatTableColumnSetup(avoimet);
   const paivityspvm = row.paivityspvm
     ? moment(row.paivityspvm).format("D.M.YYYY")
+    : "";
+  const paatospvm = row.paatospvm
+    ? moment(row.paatospvm).format("D.M.YYYY")
     : "";
   return R.addIndex(R.map)(
     (col, j) => {
       return {
         truncate: true,
-        styleClasses: [asiatTableColumnSetup[j].widthClass],
+        styleClasses: [tableColumnSetup[j].widthClass],
         text: col.text
       };
     },
@@ -68,7 +83,7 @@ export const generateAsiaTableRows = (row, { formatMessage, locale }) => {
       {
         text: formatMessage(common[`asiaStates.esittelija.${row.tila}`]) || ""
       },
-      { text: paivityspvm }
+      { text: avoimet ? paivityspvm : paatospvm }
     ]
   );
 };
@@ -81,8 +96,9 @@ export const generateAvoimetAsiatTableStructure = (
   koulutustyyppi
 ) => {
   const formatMessage = intl.formatMessage;
+  const tableColumnSetup = asiatTableColumnSetup(true);
   return [
-    generateAsiatTableHeaderStructure(formatMessage),
+    generateAsiatTableHeaderStructure(formatMessage, tableColumnSetup),
     {
       role: "tbody",
       rowGroups: [
@@ -127,15 +143,14 @@ export const generateAvoimetAsiatTableStructure = (
                   history.push(`/${koulutustyyppi}/asianhallinta/${row.id}`);
                 }
               },
-              cells: generateAsiaTableRows(row, intl).concat([
+              cells: generateAsiaTableRows(row, intl, true).concat([
                 {
                   menu: {
                     id: `simple-menu-${i}`,
                     actions
                   },
                   styleClasses: [
-                    asiatTableColumnSetup[asiatTableColumnSetup.length - 1]
-                      .widthClass
+                    tableColumnSetup[tableColumnSetup.length - 1].widthClass
                   ]
                 }
               ])
@@ -151,8 +166,9 @@ export const generateAvoimetAsiatTableStructure = (
 };
 
 export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
+  const tableColumnSetup = asiatTableColumnSetup(false);
   return [
-    generateAsiatTableHeaderStructure(intl.formatMessage),
+    generateAsiatTableHeaderStructure(intl.formatMessage, tableColumnSetup),
     {
       role: "tbody",
       rowGroups: [
@@ -170,7 +186,8 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
                     [row.id]
                   );
                   const filePath =
-                    output.muutospyynto.esittelijanEsikatselu.latauspolku.output;
+                    output.muutospyynto.esittelijanEsikatselu.latauspolku
+                      .output;
                   procedureHandler.run(
                     "muutospyynto.lataaminen.downloadAndShow",
                     [filePath, true]
@@ -179,7 +196,7 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
                   console.log("Avaa asian asiakirjat", row);
                 }
               },
-              cells: generateAsiaTableRows(row, intl).concat({
+              cells: generateAsiaTableRows(row, intl, false).concat({
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
@@ -192,12 +209,11 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
                   ]
                 },
                 styleClasses: [
-                  asiatTableColumnSetup[asiatTableColumnSetup.length - 1]
-                    .widthClass
+                  tableColumnSetup[tableColumnSetup.length - 1].widthClass
                 ]
               })
             };
-          }, hakemusList || [])
+          }, hakemusList || [])
         }
       ]
     },
