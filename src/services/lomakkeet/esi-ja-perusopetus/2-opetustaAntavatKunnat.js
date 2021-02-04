@@ -59,11 +59,12 @@ export const opetustaAntavatKunnat = async (
     quickFilterChanges = [],
     valtakunnallinenMaarays
   },
-  { isReadOnly },
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects,
   { onChanges, toggleEditView }
 ) => {
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
   const kunnat = await getKunnatFromStorage();
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
@@ -211,12 +212,16 @@ export const opetustaAntavatKunnat = async (
             name: "CategoryFilter",
             styleClasses: ["mt-4"],
             properties: {
+              locale,
+              isPreviewModeOn,
+              isReadOnly: _isReadOnly,
               anchor: "areaofaction",
               changeObjectsByProvince,
               isEditViewActive,
               localizations,
               municipalities: kunnatIlmanUlkomaata,
               onChanges,
+              currentMunicipalities: maaraykset,
               toggleEditView,
               provinces: options,
               provincesWithoutMunicipalities: maakunnat,

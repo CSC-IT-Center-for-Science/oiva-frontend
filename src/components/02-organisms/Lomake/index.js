@@ -106,14 +106,16 @@ const Lomake = React.memo(
         }
 
         const juuriHaettuLomake = await fetchLomake();
+        const lomakerakenne = juuriHaettuLomake.structure || juuriHaettuLomake;
 
-        const lomakedata = juuriHaettuLomake
-          ? getReducedStructureIncludingChanges(
-              lomakedataAnchor || anchor,
-              getReducedStructure(juuriHaettuLomake),
-              changeObjects
-            )
-          : [];
+        const lomakedata =
+          lomakerakenne && lomakerakenne.length
+            ? getReducedStructureIncludingChanges(
+                lomakedataAnchor || anchor,
+                getReducedStructure(lomakerakenne),
+                changeObjects
+              )
+            : [];
         /**
          * Osa lomakkeista voi olla sellaisia, että niiden tilan
          * tallentaminen aiheuttaa liikaa uudelleen lataamisia.
@@ -141,7 +143,7 @@ const Lomake = React.memo(
             lomakedataActions.setValidity(juuriHaettuLomake.isValid, anchor);
           }
 
-          setLomake(juuriHaettuLomake.structure || juuriHaettuLomake);
+          setLomake(lomakerakenne);
         }
       })();
     }, [

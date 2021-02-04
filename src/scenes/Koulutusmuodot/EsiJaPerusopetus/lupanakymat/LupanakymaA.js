@@ -67,7 +67,6 @@ const LupanakymaA = React.memo(
     isRestrictionsModeOn,
     lupakohteet,
     maaraykset,
-    OpetustaAntavatKunnatJSX,
     valtakunnallinenMaarays
   }) => {
     const intl = useIntl();
@@ -85,9 +84,14 @@ const LupanakymaA = React.memo(
         filter(
           changeObj => startsWith("rajoitteet_", changeObj.anchor),
           flatten(
-            map(
-              cObj => path(["meta", "changeObjects"], cObj),
-              filter(maarays => length(maarays.aliMaaraykset), maaraykset || [])
+            map(cObj => {
+                return path(["meta", "changeObjects"], cObj);
+              },
+              // maaraykset || []
+              filter(
+                maarays => length(maarays.meta.changeObjects),
+                maaraykset || []
+              )
             )
           )
         )
@@ -182,35 +186,16 @@ const LupanakymaA = React.memo(
                   rajoitteet={opetustehtavatRajoitteet}
                 />
 
-                {OpetustaAntavatKunnatJSX ? (
-                  <OpetustaAntavatKunnatJSX maaraykset={maaraykset} />
-                ) : (
-                  <div className="pt-8">
-                    <OpetustaAntavatKunnat
-                      code="2"
-                      isPreviewModeOn={isPreviewModeOn}
-                      lupakohde={lupakohteet[2]}
-                      maaraykset={toimintaaaluemaaraykset}
-                      rajoitteet={toimintaalueRajoitteet}
-                      sectionId="toimintaalue"
-                      title={intl.formatMessage(
-                        education.opetustaAntavatKunnat
-                      )}
-                      valtakunnallinenMaarays={valtakunnallinenMaarays}
-                    />
-                  </div>
-                )}
-
-                <div className="pt-8">
-                  <Opetuskieli
-                    code="3"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste("opetuskieli", maaraykset)}
-                    rajoitteet={opetuskieletRajoitteet}
-                    sectionId={"opetuskielet"}
-                    title={intl.formatMessage(common.opetuskieli)}
-                  />
-                </div>
+                <OpetustaAntavatKunnat
+                  code="2"
+                  isPreviewModeOn={isPreviewModeOn}
+                  lupakohde={lupakohteet[2]}
+                  maaraykset={toimintaaaluemaaraykset}
+                  rajoitteet={toimintaalueRajoitteet}
+                  sectionId="toimintaalue"
+                  title={intl.formatMessage(education.opetustaAntavatKunnat)}
+                  valtakunnallinenMaarays={valtakunnallinenMaarays}
+                />
 
                 <div className="pt-8">
                   <OpetuksenJarjestamismuoto

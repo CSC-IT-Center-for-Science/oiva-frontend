@@ -73,7 +73,8 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
   if (
     muutospyynnot.avoimet &&
     muutospyynnot.avoimet.isLoading === false &&
-    muutospyynnot.avoimet.fetchedAt
+    muutospyynnot.avoimet.fetchedAt &&
+    muutospyynnot.avoimet.data.length
   ) {
     return (
       <div
@@ -102,6 +103,20 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
           }}
           loadingSpinner={isLoading}
         />
+      </div>
+    );
+  } else if (
+    muutospyynnot.avoimet &&
+    muutospyynnot.avoimet.isLoading === false &&
+    muutospyynnot.avoimet.fetchedAt &&
+    muutospyynnot.avoimet.data.length === 0
+  ) {
+    return (
+      <div
+        className="flex justify-center text-tummanharmaa text-base items-center"
+        style={{ height: "100%" }}
+      >
+        {intl.formatMessage(common.eiAvoimiaAsioita)}
       </div>
     );
   } else {
