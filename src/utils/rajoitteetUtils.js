@@ -22,6 +22,7 @@ import {
   values
 } from "ramda";
 import moment from "moment";
+import { __ } from "i18n-for-browser";
 
 const pisteytys = {
   rajoite: 0,
@@ -115,7 +116,9 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
                   ).format("DD.MM.YYYY")
                 : "";
 
-              return `<ul className="p-0"><li className="p-0">${__('rajoitteet.ajalla')} ${alkamispaivaValue} - ${paattymispaivaValue}`;
+              return `<ul className="p-0"><li className="p-0">${__(
+                "rajoitteet.ajalla"
+              )} ${alkamispaivaValue} - ${paattymispaivaValue}`;
             }
             const tarkenninValue = asetus.kohde.properties.value.value;
             // TODO: Label pitäisi hakea koodistosta tarkenninValue arvon avulla jos koodistossa on muutettu tekstiä.
