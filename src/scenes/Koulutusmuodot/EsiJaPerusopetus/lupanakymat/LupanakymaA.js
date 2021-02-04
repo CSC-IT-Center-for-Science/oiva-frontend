@@ -186,16 +186,18 @@ const LupanakymaA = React.memo(
                   rajoitteet={opetustehtavatRajoitteet}
                 />
 
-                <OpetustaAntavatKunnat
-                  code="2"
-                  isPreviewModeOn={isPreviewModeOn}
-                  lupakohde={lupakohteet[2]}
-                  maaraykset={toimintaaaluemaaraykset}
-                  rajoitteet={toimintaalueRajoitteet}
-                  sectionId="toimintaalue"
-                  title={intl.formatMessage(education.opetustaAntavatKunnat)}
-                  valtakunnallinenMaarays={valtakunnallinenMaarays}
-                />
+                <div className="pt-8">
+                  <OpetustaAntavatKunnat
+                    code="2"
+                    isPreviewModeOn={isPreviewModeOn}
+                    lupakohde={lupakohteet[2]}
+                    maaraykset={toimintaaaluemaaraykset}
+                    rajoitteet={toimintaalueRajoitteet}
+                    sectionId="toimintaalue"
+                    title={intl.formatMessage(education.opetustaAntavatKunnat)}
+                    valtakunnallinenMaarays={valtakunnallinenMaarays}
+                  />
+                </div>
 
                 <div className="pt-8">
                   <OpetuksenJarjestamismuoto
