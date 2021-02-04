@@ -4,13 +4,15 @@ import { useLuvat } from "stores/luvat";
 import { Helmet } from "react-helmet";
 import Loading from "modules/Loading";
 import { useIntl } from "react-intl";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 const Jarjestajat = ({
   koulutusmuoto,
   Jarjestajaluettelo,
   paasivunOtsikko
 }) => {
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
   const [luvat, luvatActions] = useLuvat();
 
   // Let's fetch LUVAT
@@ -29,15 +31,19 @@ const Jarjestajat = ({
     };
   }, [koulutusmuoto.koulutustyyppi, luvatActions]);
 
+  const koulutusmuotoUrl = localizeRouteKey(
+    locale,
+    AppRoute[koulutusmuoto.pascalCase],
+    formatMessage
+  );
+
   return (
     <React.Fragment>
-      <Helmet htmlAttributes={{ lang: intl.locale }}>
+      <Helmet htmlAttributes={{ lang: locale }}>
         <title>{paasivunOtsikko} - Oiva</title>
       </Helmet>
 
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {paasivunOtsikko}
-      </BreadcrumbsItem>
+      <BreadcrumbsItem to={koulutusmuotoUrl}>{paasivunOtsikko}</BreadcrumbsItem>
 
       {luvat.isLoading === false && !luvat.isErroneous && (
         <Jarjestajaluettelo luvat={luvat.data} />

@@ -48,63 +48,22 @@ export default function KoulutusmuodonEtusivu({
     : false;
 
   return (
-    <React.Fragment>
-      <BreadcrumbsItem to="/">Oiva</BreadcrumbsItem>
-      {koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO &&
-      !userHasAnyOfRoles(user, [ROLE_YLLAPITAJA, ROLE_ESITTELIJA]) ? (
-        <div style={{ position: "absolute", top: "40%", left: "43%" }}>
-          {formatMessage(common.tietoaTulevanJulkaisunAjankohdasta)}
-        </div>
-      ) : (
-        <div className="flex-1 flex flex-col bg-white">
-          <article>
-            {includes(`/${koulutusmuoto.kebabCase}`, location.pathname) ? (
-              <div className="mx-auto w-4/5 mt-12 max-w-8xl">
-                <Typography component="h1" variant="h1">
-                  {paasivunOtsikko}
-                </Typography>
-                <p className="max-w-213 mb-6">{kuvausteksti}</p>
-                {isEsittelija ? (
-                  <p className="mb-6">
-                    <NavLink
-                      to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
-                      className="block underline"
-                    >
-                      {koulutusmuoto.genetiivi}{" "}
-                      {toLower(formatMessage(common.asianhallinta))}
-                    </NavLink>
-                  </p>
-                ) : null}
-                <Typography component="h2" variant="h2">
-                  {jarjestajatOtsikko}
-                </Typography>
-                <section>
-                  {Jarjestajaluettelo ? (
-                    <Jarjestajat
-                      koulutusmuoto={koulutusmuoto}
-                      Jarjestajaluettelo={Jarjestajaluettelo}
-                      paasivunOtsikko={paasivunOtsikko}
-                    />
-                  ) : null}
-                </section>
-              </div>
-            ) : null}
-          </article>
-          <div className="flex-1 flex flex-col">
-            <Router history={history}>
-              <LocalizedSwitch>
-                <Route
-                  path={AppRoute.Asianhallinta}
-                  render={() => (
-                    <Asianhallinta
-                      AsiaDialogContainer={AsiaDialogContainer}
-                      koulutusmuoto={koulutusmuoto}
-                      paasivunOtsikko={paasivunOtsikko}
-                      UusiAsiaDialogContainer={UusiAsiaDialogContainer}
-                    />
-                  )}
+    <div className="flex-1 flex flex-col bg-white">
+      <div className="flex-1 flex flex-col">
+        <Router history={history}>
+          <LocalizedSwitch>
+            <Route
+              path={AppRoute.Asianhallinta}
+              render={() => (
+                <Asianhallinta
+                  AsiaDialogContainer={AsiaDialogContainer}
+                  koulutusmuoto={koulutusmuoto}
+                  paasivunOtsikko={paasivunOtsikko}
+                  UusiAsiaDialogContainer={UusiAsiaDialogContainer}
                 />
-                {/* <Route
+              )}
+            />
+            {/* <Route
                   path={AppRoute.KoulutuksenJarjestajat}
                   render={props => {
                     return (
@@ -189,14 +148,40 @@ export default function KoulutusmuodonEtusivu({
                     );
                   }}
                 /> */}
-                <Route path="*">
-                  <div>Error view level 3</div>
-                </Route>
-              </LocalizedSwitch>
-            </Router>
-          </div>
-        </div>
-      )}
-    </React.Fragment>
+            <Route path="*">
+              <article className="mx-auto w-4/5 mt-12 max-w-8xl">
+                <Typography component="h1" variant="h1">
+                  {paasivunOtsikko}
+                </Typography>
+                <p className="max-w-213 mb-6">{kuvausteksti}</p>
+                {isEsittelija ? (
+                  <p className="mb-6">
+                    <NavLink
+                      to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
+                      className="block underline"
+                    >
+                      {koulutusmuoto.genetiivi}{" "}
+                      {toLower(formatMessage(common.asianhallinta))}
+                    </NavLink>
+                  </p>
+                ) : null}
+                <Typography component="h2" variant="h2">
+                  {jarjestajatOtsikko}
+                </Typography>
+                <section>
+                  {Jarjestajaluettelo ? (
+                    <Jarjestajat
+                      koulutusmuoto={koulutusmuoto}
+                      Jarjestajaluettelo={Jarjestajaluettelo}
+                      paasivunOtsikko={paasivunOtsikko}
+                    />
+                  ) : null}
+                </section>
+              </article>
+            </Route>
+          </LocalizedSwitch>
+        </Router>
+      </div>
+    </div>
   );
 }

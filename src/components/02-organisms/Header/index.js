@@ -16,7 +16,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import HorizontalLayout from "./HorizontalLayout";
 import VerticalLayout from "./VerticalLayout";
-import { equals } from "ramda";
+import { equals, includes } from "ramda";
 import { getMatchingRoute, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { AppLanguage } from "const";
@@ -112,13 +112,14 @@ const Header = ({
 
   const homeRouteKey = AppRouteTitles.home.get(AppRoute.Home) || "";
 
-  const is2ndNavVisible =
-    pathname ===
+  const is2ndNavVisible = includes(
     localizeRouteKey(
       locale,
       AppRoute.JarjestamisJaYllapitamisluvat,
       formatMessage
-    );
+    ),
+    pathname
+  );
 
   return (
     <React.Fragment>

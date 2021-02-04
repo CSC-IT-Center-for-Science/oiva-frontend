@@ -322,7 +322,6 @@ export const isDate = input => {
 };
 
 export function localizeRouteKey(locale, path, formatMessage) {
-  console.info(locale, path);
   return `/${locale}` + formatMessage({ id: path });
 }
 
@@ -335,14 +334,12 @@ export function getMatchingRoute(
 ) {
   // Selvitetään aktiivinen polku (route).
   const [, route] = pathName.split(locale);
-  // console.info(messages, route);
+
   const routeKey = Object.keys(messages).find(key => {
     return messages[key] === route;
   });
   // Etsitään vastaava polku juuri aktiiviseksi valittua kieltä hyödyntäen.
   const matchingRoute = localesByLang[language][routeKey];
-  // console.info("route", route);
-  console.info(pathName, locale, language, routeKey);
 
   // Palautetaan lokalisoitu polku (route).
   return `/${language}` + matchingRoute;
@@ -357,6 +354,7 @@ export function getKoulutusmuodot(formatMessage) {
       kuvausteksti: formatMessage(ammatillinenKoulutus.kuvausteksti),
       lyhytKuvaus: formatMessage(ammatillinenKoulutus.lyhytKuvaus),
       paasivunOtsikko: formatMessage(education.vocationalEducation),
+      pascalCase: "AmmatillinenKoulutus",
       jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
     },
     esiJaPerusopetus: {
@@ -367,6 +365,7 @@ export function getKoulutusmuodot(formatMessage) {
       kuvausteksti: formatMessage(esiJaPerusopetus.kuvausteksti),
       lyhytKuvaus: formatMessage(esiJaPerusopetus.lyhytKuvaus),
       paasivunOtsikko: formatMessage(education.preAndBasicEducation),
+      pascalCase: "EsiJaPerusopetus",
       jarjestajatOtsikko: formatMessage(education.opetuksenJarjestajat)
     },
     lukiokoulutus: {
@@ -377,6 +376,7 @@ export function getKoulutusmuodot(formatMessage) {
       kuvausteksti: formatMessage(lukiokoulutus.kuvausteksti),
       lyhytKuvaus: formatMessage(lukiokoulutus.lyhytKuvaus),
       paasivunOtsikko: formatMessage(education.highSchoolEducation),
+      pascalCase: "Lukiokoulutus",
       jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
     },
     vapaaSivistystyo: {
@@ -387,6 +387,7 @@ export function getKoulutusmuodot(formatMessage) {
       kuvausteksti: formatMessage(vapaaSivistystyo.kuvausteksti),
       lyhytKuvaus: formatMessage(vapaaSivistystyo.lyhytKuvaus),
       paasivunOtsikko: formatMessage(common.vstTitleName),
+      pascalCase: "VapaaSivistystyo",
       jarjestajatOtsikko: formatMessage(education.oppilaitostenYllapitajat)
     }
   };
