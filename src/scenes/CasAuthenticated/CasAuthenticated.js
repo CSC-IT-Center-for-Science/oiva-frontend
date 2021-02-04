@@ -14,6 +14,7 @@ const Successful = styled.div`
 `;
 
 const CasAuthenticated = ({ organisation }) => {
+  console.info("ORGANISAATIO:", organisation);
   const intl = useIntl();
   const [user] = useUser();
 

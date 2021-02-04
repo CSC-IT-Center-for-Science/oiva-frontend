@@ -1605,6 +1605,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.omaSivu",
+    "defaultMessage": "Oma sivu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"

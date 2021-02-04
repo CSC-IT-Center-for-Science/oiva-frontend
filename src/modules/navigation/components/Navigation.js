@@ -20,8 +20,6 @@ export const Navigation = ({ level }) => {
           VapaaSivistystyo: AppRoute.VapaaSivistystyo
         };
 
-  console.info(level, routes);
-
   return (
     !isEmpty(routes) && (
       <ul className={`block h-full ${level === 2 ? "bg-green-600" : ""}`}>

@@ -1275,5 +1275,9 @@ export default defineMessages({
   jarjestamisJaYllapitamisluvat: {
     id: "common.jarjestamisJaYllapitamisluvat",
     defaultMessage: "Järjestämis- ja ylläpitämisluvat"
+  },
+  omaSivu: {
+    id: "common.omaSivu",
+    defaultMessage: "Oma sivu"
   }
 });

@@ -23,6 +23,7 @@ import { AppLanguage } from "const";
 import { AppRoute, AppRouteTitles } from "const/index";
 import common from "i18n/definitions/common";
 import { Navigation } from "modules/navigation/index";
+import { LanguageSwitcher } from "modules/i18n/index";
 
 const MEDIA_QUERIES = {
   MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
@@ -43,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 
 const useStylesForTypography = makeStyles(() => ({
   root: {
+    textTransform: "uppercase",
     lineHeight: 1
   }
 }));
@@ -79,18 +81,18 @@ const Header = ({
   //     </Typography>
   //     {shortDescription.text}
   //   </NavLink>,
-  //   !!authenticationLink ? (
-  //     <NavLink
-  //       to={authenticationLink.path}
-  //       exact={false}
-  //       className="inline-block no-underline text-white hover:underline hover:text-gray-100"
-  //     >
-  //       <span>{authenticationLink.text[0]} </span>
-  //       {authenticationLink.text[1] && (
-  //         <span className="font-bold">{authenticationLink.text[1]}</span>
-  //       )}
-  //     </NavLink>
-  //   ) : (
+  // !!authenticationLink ? (
+  //   <NavLink
+  //     to={authenticationLink.path}
+  //     exact={false}
+  //     className="inline-block no-underline text-white hover:underline hover:text-gray-100"
+  //   >
+  //     <span>{authenticationLink.text[0]} </span>
+  //     {authenticationLink.text[1] && (
+  //       <span className="font-bold">{authenticationLink.text[1]}</span>
+  //     )}
+  //   </NavLink>
+  // ) : (
   //     <React.Fragment />
   //   ),
   //   organisationLink.path ? (
@@ -110,28 +112,69 @@ const Header = ({
 
   const homeRouteKey = AppRouteTitles.home.get(AppRoute.Home) || "";
 
-  console.info(AppRoute.Home);
+  console.info(authenticationLink);
 
   return (
     <React.Fragment>
       {breakpointTabletMin && (
         <AppBar elevation={0} position="static">
-          <Toolbar className="bg-green-500 px-4">
+          <Toolbar className="bg-green-500 px-4 justify-between">
             <NavLink
               to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-              className="inline-block no-underline text-white hover:text-gray-100 pr-4"
+              className="flex items-center no-underline text-white hover:text-gray-100 pr-4"
             >
-              <Typography variant="h6" classes={typographyClasses}>
+              <Typography variant="h1" classes={typographyClasses}>
                 {homeRouteKey
                   ? formatMessage({
                       id: AppRouteTitles.home.get(AppRoute.Home) || ""
                     })
                   : "KÄÄNNÖS PUUTTUU"}
               </Typography>
-              {formatMessage(common.siteShortDescription)}
+              <span
+                className="ml-4 text-sm leading-tight"
+                style={{ width: "11rem" }}
+              >
+                {formatMessage(common.siteShortDescription)}
+              </span>
             </NavLink>
             <div id="navigation-level-1">
               <Navigation level={1} />
+            </div>
+            <div className="flex-1 flex justify-end mr-4">
+              {organisationLink.path ? (
+                <NavLink
+                  className="link-to-own-organisation text-white border p-2 rounded-lg"
+                  to={localizeRouteKey(
+                    organisationLink.path,
+                    locale,
+                    formatMessage
+                  )}
+                  exact={false}
+                >
+                  <span className="text-white">
+                    {formatMessage(common.omaSivu)}
+                  </span>
+                </NavLink>
+              ) : (
+                <span className="text-white">{organisationLink.text}</span>
+              )}
+            </div>
+            <div className="flex-1 flex justify-end items-center">
+              {!!authenticationLink && (
+                <NavLink
+                  to={authenticationLink.path}
+                  exact={false}
+                  className="inline-block no-underline text-white hover:underline hover:text-gray-100"
+                >
+                  <span>{authenticationLink.text[0]} </span>
+                  {authenticationLink.text[1] && (
+                    <span className="font-bold">
+                      {authenticationLink.text[1]}
+                    </span>
+                  )}
+                </NavLink>
+              )}
+              <LanguageSwitcher localesByLang={localesByLang} />
             </div>
           </Toolbar>
           <Toolbar className="bg-green-600" style={{ minHeight: "3rem" }}>

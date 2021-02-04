@@ -11,7 +11,7 @@ import { Typography } from "@material-ui/core";
 const Logout = () => {
   const history = useHistory();
   const intl = useIntl();
-
+  console.info("Logging out...");
   useEffect(() => {
     sessionStorage.removeItem("username");
     sessionStorage.removeItem("oid");
@@ -48,7 +48,8 @@ const Logout = () => {
         <div>
           <SimpleButton
             text={intl.formatMessage(auth.logIn)}
-            onClick={() => history.push("/cas-auth")}></SimpleButton>
+            onClick={() => history.push("/cas-auth")}
+          ></SimpleButton>
         </div>
       </MessageWrapper>
     </div>

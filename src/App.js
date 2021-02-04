@@ -146,7 +146,7 @@ const App = ({
     () => setSideMenuVisibility(isVisible => !isVisible),
     []
   );
-
+  console.info("hasd");
   const onSessionDialogLogout = useCallback(() => {
     onLogout();
     history.push("/cas-logout");
