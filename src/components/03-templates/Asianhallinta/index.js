@@ -1,13 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import {
-  NavLink,
-  Route,
-  Router,
-  Switch,
-  useHistory,
-  useLocation
-} from "react-router-dom";
+import { NavLink, Route, Router, useHistory } from "react-router-dom";
 import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -20,7 +13,6 @@ import { LocalizedSwitch } from "modules/i18n/index";
 const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
   const history = useHistory();
   const intl = useIntl();
-  const location = useLocation();
 
   return (
     <React.Fragment>
@@ -28,6 +20,9 @@ const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
         <LocalizedSwitch>
           {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
             <Route
+              params={{
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }}
               path={AppRoute.Asianhallinta}
               render={() => (
                 <Esittelijat

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
-import AvoimetAsiat from "../AvoimetAsiat";
 import PaatetytAsiat from "../PaatetytAsiat";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import Tabs from "@material-ui/core/Tabs";
@@ -18,6 +17,8 @@ import Typography from "@material-ui/core/Typography";
 import BaseData from "basedata";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { LocalizedSwitch } from "modules/i18n/index";
+import AvoimetAsiat from "../AvoimetAsiat/index";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -54,7 +55,22 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
-  const tabKey = last(split("/", location.pathname));
+  const avoimetUrl = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaAvoimet,
+    formatMessage,
+    {
+      koulutusmuoto: koulutusmuoto.kebabCase
+    }
+  );
+  const paatetytUrl = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaPaatetyt,
+    formatMessage,
+    {
+      koulutusmuoto: koulutusmuoto.kebabCase
+    }
+  );
 
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = intl.formatMessage;
@@ -71,6 +87,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
       <BreadcrumbsItem to={asianhallintaUrl}>
         {intl.formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
+
       <Helmet htmlAttributes={{ lang: intl.locale }}>
         <title>{`Oiva | ${t(common.asiat)}`}</title>
       </Helmet>
@@ -123,7 +140,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
               </div>
             </div>
             <OivaTabs
-              value={tabKey}
+              value={location.pathname}
               indicatorColor="primary"
               textColor="primary"
               onChange={(e, val) => {
@@ -133,14 +150,14 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
               <OivaTab
                 label={t(common.asiatOpen)}
                 aria-label={t(common.asiatReady)}
-                to={"avoimet"}
-                value={"avoimet"}
+                to={avoimetUrl}
+                value={avoimetUrl}
               />
               <OivaTab
                 label={t(common.asiatReady)}
                 aria-label={t(common.asiatReady)}
-                to={"paatetyt"}
-                value={"paatetyt"}
+                to={paatetytUrl}
+                value={paatetytUrl}
               />
             </OivaTabs>
           </div>
@@ -150,18 +167,24 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
       <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
         <div className="flex mx-auto w-4/5 max-w-8xl py-12">
           <div className="flex-1 bg-white">
-            <Switch>
+            <LocalizedSwitch>
               <Route
                 authenticated={!!user}
-                path={`${path}/avoimet`}
+                params={{
+                  koulutusmuoto: koulutusmuoto.kebabCase
+                }}
+                path={AppRoute.AsianhallintaAvoimet}
                 render={() => <AvoimetAsiat koulutusmuoto={koulutusmuoto} />}
               />
               <Route
                 authenticated={!!user}
-                path={`${path}/paatetyt`}
+                params={{
+                  koulutusmuoto: koulutusmuoto.kebabCase
+                }}
+                path={AppRoute.AsianhallintaPaatetyt}
                 render={() => <PaatetytAsiat koulutusmuoto={koulutusmuoto} />}
               />
-            </Switch>
+            </LocalizedSwitch>
           </div>
         </div>
       </div>

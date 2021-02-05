@@ -348,8 +348,8 @@ export function getMatchingRoute(
 export function getKoulutusmuodot(formatMessage) {
   return {
     ammatillinenKoulutus: {
-      kebabCase: formatMessage(ammatillinenKoulutus.kebabCase),
       genetiivi: formatMessage(ammatillinenKoulutus.genetiivi),
+      kebabCase: formatMessage(ammatillinenKoulutus.kebabCase),
       kortinOtsikko: formatMessage(education.vocationalEducation),
       kuvausteksti: formatMessage(ammatillinenKoulutus.kuvausteksti),
       lyhytKuvaus: formatMessage(ammatillinenKoulutus.lyhytKuvaus),
@@ -358,10 +358,10 @@ export function getKoulutusmuodot(formatMessage) {
       jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
     },
     esiJaPerusopetus: {
-      kebabCase: "esi-ja-perusopetus",
-      koulutustyyppi: "1",
       genetiivi: formatMessage(esiJaPerusopetus.genetiivi),
+      kebabCase: formatMessage(esiJaPerusopetus.kebabCase),
       kortinOtsikko: formatMessage(education.preAndBasicEducation),
+      koulutustyyppi: "1",
       kuvausteksti: formatMessage(esiJaPerusopetus.kuvausteksti),
       lyhytKuvaus: formatMessage(esiJaPerusopetus.lyhytKuvaus),
       paasivunOtsikko: formatMessage(education.preAndBasicEducation),
@@ -369,10 +369,10 @@ export function getKoulutusmuodot(formatMessage) {
       jarjestajatOtsikko: formatMessage(education.opetuksenJarjestajat)
     },
     lukiokoulutus: {
-      kebabCase: "lukiokoulutus",
-      koulutustyyppi: "2",
       genetiivi: formatMessage(lukiokoulutus.genetiivi),
+      kebabCase: formatMessage(lukiokoulutus.kebabCase),
       kortinOtsikko: formatMessage(education.highSchoolEducation),
+      koulutustyyppi: "2",
       kuvausteksti: formatMessage(lukiokoulutus.kuvausteksti),
       lyhytKuvaus: formatMessage(lukiokoulutus.lyhytKuvaus),
       paasivunOtsikko: formatMessage(education.highSchoolEducation),
@@ -380,10 +380,10 @@ export function getKoulutusmuodot(formatMessage) {
       jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
     },
     vapaaSivistystyo: {
-      kebabCase: "vapaa-sivistystyo",
-      koulutustyyppi: "3",
       genetiivi: formatMessage(vapaaSivistystyo.genetiivi),
+      kebabCase: formatMessage(vapaaSivistystyo.kebabCase),
       kortinOtsikko: formatMessage(education.vstEducation),
+      koulutustyyppi: "3",
       kuvausteksti: formatMessage(vapaaSivistystyo.kuvausteksti),
       lyhytKuvaus: formatMessage(vapaaSivistystyo.lyhytKuvaus),
       paasivunOtsikko: formatMessage(common.vstTitleName),

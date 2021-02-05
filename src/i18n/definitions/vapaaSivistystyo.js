@@ -5,6 +5,10 @@ export default defineMessages({
     id: "vapaaSivistystyo.genetiivi",
     defaultMessage: "Vapaan sivistystyön"
   },
+  kebabCase: {
+    id: "vapaaSivistystyo.kebabCase",
+    defaultMessage: "vapaa-sivistystyo"
+  },
   kuvausteksti: {
     id: "vapaaSivistystyo.kuvausteksti",
     defaultMessage:
@@ -21,7 +25,8 @@ export default defineMessages({
   },
   esittelyteksti: {
     id: "vapaaSivistystyo.esittelyteksti",
-    defaultMessage: "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä."
+    defaultMessage:
+      "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä."
   },
   voimassaOlevatYllapitamisluvat: {
     id: "vapaaSivistystyo.voimassaOlevatYllapitamisluvat",
@@ -30,5 +35,5 @@ export default defineMessages({
   voimassaOlevatYllapitamisluvatSuluissa: {
     id: "vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa",
     defaultMessage: "Voimassa olevat ylläpitämisluvat ({amount} kpl)"
-  },
+  }
 });

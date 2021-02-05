@@ -2,6 +2,7 @@ export const AppRoute = {
   AmmatillinenKoulutus: "routes.ammatillinenKoulutus",
   Asianhallinta: "routes.asianhallinta",
   AsianhallintaAvoimet: "routes.asianhallintaAvoimet",
+  AsianhallintaPaatetyt: "routes.asianhallintaPaatetyt",
   CasAuth: "routes.casAuth",
   CasLogOut: "routes.casLogOut",
   CasReady: "routes.casReady",

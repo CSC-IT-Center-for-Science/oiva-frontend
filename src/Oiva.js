@@ -66,8 +66,6 @@ export const Oiva = () => {
     };
   }, [userActions]);
 
-  console.info(organisation, user);
-
   return (
     <LocalizedRouter
       RouterComponent={BrowserRouter}

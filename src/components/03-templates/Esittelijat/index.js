@@ -1,14 +1,15 @@
 import React from "react";
 import { useUser } from "../../../stores/user";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, useRouteMatch } from "react-router-dom";
 import { useIntl } from "react-intl";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import BaseData from "basedata";
-import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
 import { MuutoksetContainer } from "stores/muutokset";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { LocalizedSwitch } from "modules/i18n/index";
+import Asiat from "../Asiat/index";
 
 const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
   const { formatMessage, locale } = useIntl();
@@ -29,10 +30,13 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
       </BreadcrumbsItem>
 
       <article className="flex-1 flex-col flex">
-        <Switch>
+        <LocalizedSwitch>
           <Route
             authenticated={!!user}
             exact
+            params={{
+              koulutusmuoto: koulutusmuoto.kebabCase
+            }}
             path={AppRoute.AsianhallintaAvoimet}
             render={() => (
               <Asiat koulutusmuoto={koulutusmuoto} path={path} user={user} />
@@ -41,18 +45,21 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/paatetyt`}
+            params={{
+              koulutusmuoto: koulutusmuoto.kebabCase
+            }}
+            path={AppRoute.AsianhallintaPaatetyt}
             render={() => (
               <Asiat koulutusmuoto={koulutusmuoto} path={path} user={user} />
             )}
           />
-          <Route
+          {/* <Route
             authenticated={!!user}
             exact
             path={`${path}/:uuid`}
             render={() => <Asiakirjat koulutusmuoto={koulutusmuoto} />}
-          />
-          <Route
+          /> */}
+          {/* <Route
             authenticated={!!user}
             exact
             path={`${path}/:id/uusi/:page?`}
@@ -63,7 +70,6 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
                 render={_props => {
                   return (
                     <MuutoksetContainer>
-                      {/* UusiAsiaDialogContainer */}
                       <WizardContainer
                         kohteet={_props.kohteet}
                         koulutukset={_props.koulutukset}
@@ -95,7 +101,6 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
                   render={_props => {
                     return (
                       <MuutoksetContainer>
-                        {/* AsiaDialogContainer */}
                         <WizardContainer
                           kohteet={_props.kohteet}
                           koulutukset={_props.koulutukset}
@@ -115,11 +120,11 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
                 />
               );
             }}
-          />
+          /> */}
           <Route path="*">
             <div>Asianhallintapuolen oletuspolku</div>
           </Route>
-        </Switch>
+        </LocalizedSwitch>
       </article>
     </React.Fragment>
   );

@@ -1770,6 +1770,11 @@
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
+    "id": "esiJaPerusopetus.kebabCase",
+    "defaultMessage": "esi-ja-perusopetus",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
     "id": "esiJaPerusopetus.kuvausteksti",
     "defaultMessage": "Kunta on perusopetuslain nojalla velvollinen järjestämään sen alueella asuville oppivelvollisuusikäisille esi- ja perusopetusta. Valtioneuvosto voi myöntää opetus- ja kulttuuriministeriön esityksestä myös rekisteröidylle yhteisölle tai säätiölle luvan perusopetuslain mukaisen opetuksen järjestämiseen. Opetusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella opetuksen järjestäjiä ja heidän järjestämislupiaan.",
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
@@ -1885,6 +1890,26 @@
     "filepath": "src/i18n/definitions/informUser.js"
   },
   {
+    "id": "kebabCase.asianhallinta",
+    "defaultMessage": "asianhallinta",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.avoimet",
+    "defaultMessage": "avoimet",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.jarjestamisJaYllapitamisluvat",
+    "defaultMessage": "jarjestamis-ja-yllapitamisluvat",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.tilastot",
+    "defaultMessage": "tilastot",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
     "id": "languages.inFinnish",
     "defaultMessage": "Suomeksi",
     "filepath": "src/i18n/definitions/languages.js"
@@ -1912,6 +1937,11 @@
   {
     "id": "lukiokoulutus.genetiivi",
     "defaultMessage": "Lukiokoulutuksen",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "lukiokoulutus.kebabCase",
+    "defaultMessage": "lukiokoulutus",
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
@@ -1992,6 +2022,11 @@
   {
     "id": "routes.asianhallintaAvoimet",
     "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallintaPaatetyt",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/paatetyt",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2077,6 +2112,11 @@
   {
     "id": "vapaaSivistystyo.genetiivi",
     "defaultMessage": "Vapaan sivistystyön",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.kebabCase",
+    "defaultMessage": "vapaa-sivistystyo",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {

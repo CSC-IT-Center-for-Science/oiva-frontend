@@ -15,6 +15,11 @@ export default defineMessages({
     defaultMessage:
       "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet"
   },
+  asianhallintaPaatetyt: {
+    id: "routes.asianhallintaPaatetyt",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/paatetyt"
+  },
   casAuth: {
     id: "routes.casAuth",
     defaultMessage: "/cas-auth"

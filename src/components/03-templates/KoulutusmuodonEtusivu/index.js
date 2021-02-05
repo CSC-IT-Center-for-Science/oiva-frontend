@@ -46,13 +46,19 @@ export default function KoulutusmuodonEtusivu({
   const isEsittelija = user
     ? includes("OIVA_APP_ESITTELIJA", user.roles)
     : false;
-  console.info(koulutusmuoto);
+  // console.info(
+  //   koulutusmuoto,
+  //   localizeRouteKey(locale, AppRoute.Asianhallinta, formatMessage)
+  // );
   return (
     <div className="flex-1 flex flex-col bg-white">
       <div className="flex-1 flex flex-col">
         <Router history={history}>
           <LocalizedSwitch>
             <Route
+              params={{
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }}
               path={AppRoute.Asianhallinta}
               render={() => (
                 <Asianhallinta

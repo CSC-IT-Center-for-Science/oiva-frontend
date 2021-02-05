@@ -5,6 +5,10 @@ export default defineMessages({
     id: "lukiokoulutus.genetiivi",
     defaultMessage: "Lukiokoulutuksen"
   },
+  kebabCase: {
+    id: "lukiokoulutus.kebabCase",
+    defaultMessage: "lukiokoulutus"
+  },
   kuvausteksti: {
     id: "lukiokoulutus.kuvausteksti",
     defaultMessage:
