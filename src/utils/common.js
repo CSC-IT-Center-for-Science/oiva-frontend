@@ -321,8 +321,8 @@ export const isDate = input => {
   return Object.prototype.toString.call(input) === "[object Date]";
 };
 
-export function localizeRouteKey(locale, path, formatMessage) {
-  return `/${locale}` + formatMessage({ id: path });
+export function localizeRouteKey(locale, path, formatMessage, params) {
+  return `/${locale}` + formatMessage({ id: path }, params);
 }
 
 export function getMatchingRoute(

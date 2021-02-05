@@ -197,7 +197,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   ]);
 
   const muutospyyntoRowItem = useMemo(() => {
-    if (!muutospyynto.fetchedAt) {
+    if (!muutospyynto.fetchedAt || !muutospyynto.data) {
       return { items: [] };
     }
     return {
@@ -397,11 +397,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <BreadcrumbsItem
+        {/* <BreadcrumbsItem
           to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}
         >
           {nimi}
-        </BreadcrumbsItem>
+        </BreadcrumbsItem> */}
         <div
           className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8"
           style={{

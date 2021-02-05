@@ -138,7 +138,7 @@ const Jarjestaja = React.memo(
             {intl.formatMessage(education.vocationalEducation)} - Oiva
           </title>
         </Helmet>
-        <BreadcrumbsItem to={breadcrumb}>{jarjestaja.nimi}</BreadcrumbsItem>
+        {/* <BreadcrumbsItem to={breadcrumb}>{jarjestaja.nimi}</BreadcrumbsItem> */}
         <div className="sm:w-4/5 mx-auto max-w-8xl">
           <section className="my-8">
             <Typography component="h1" variant="h1">
@@ -154,7 +154,8 @@ const Jarjestaja = React.memo(
             textColor="primary"
             onChange={(e, val) => {
               history.push(val);
-            }}>
+            }}
+          >
             {tabNavRoutes
               ? R.addIndex(R.map)((route, index) => {
                   return (

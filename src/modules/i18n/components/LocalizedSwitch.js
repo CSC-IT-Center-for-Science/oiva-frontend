@@ -13,7 +13,6 @@ const routeParams = {
  */
 export function localizeRoutePath(path, locale, formatMessage) {
   let localizedPath = "";
-  console.info(path);
   switch (typeof path) {
     case "undefined":
       localizedPath = undefined;

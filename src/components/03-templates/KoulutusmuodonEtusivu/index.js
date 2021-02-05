@@ -23,6 +23,7 @@ import { userHasAnyOfRoles } from "../../../modules/helpers";
 import { ROLE_ESITTELIJA, ROLE_YLLAPITAJA } from "../../../modules/constants";
 import { LocalizedSwitch } from "modules/i18n/index";
 import { AppRoute } from "const/index";
+import { localizeRouteKey } from "utils/common";
 
 const keys2 = ["organisaatio", "tulevatLuvat"];
 
@@ -46,7 +47,7 @@ export default function KoulutusmuodonEtusivu({
   const isEsittelija = user
     ? includes("OIVA_APP_ESITTELIJA", user.roles)
     : false;
-
+  console.info(koulutusmuoto);
   return (
     <div className="flex-1 flex flex-col bg-white">
       <div className="flex-1 flex flex-col">
@@ -157,11 +158,17 @@ export default function KoulutusmuodonEtusivu({
                 {isEsittelija ? (
                   <p className="mb-6">
                     <NavLink
-                      to={`${koulutusmuoto.kebabCase}/asianhallinta/avoimet`}
+                      to={localizeRouteKey(
+                        locale,
+                        AppRoute.AsianhallintaAvoimet,
+                        formatMessage,
+                        {
+                          koulutusmuoto: koulutusmuoto.kebabCase
+                        }
+                      )}
                       className="block underline"
                     >
-                      {koulutusmuoto.genetiivi}{" "}
-                      {toLower(formatMessage(common.asianhallinta))}
+                      {formatMessage(common.asianhallinta)}
                     </NavLink>
                   </p>
                 ) : null}

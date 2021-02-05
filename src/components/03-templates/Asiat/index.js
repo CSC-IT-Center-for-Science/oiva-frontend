@@ -16,6 +16,8 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import commonMessages from "../../../i18n/definitions/common";
 import Typography from "@material-ui/core/Typography";
 import BaseData from "basedata";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -48,6 +50,7 @@ const OivaTabs = withStyles(() => ({
 const esidialoginHakuavaimet = ["organisaatiot"];
 
 const Asiat = ({ koulutusmuoto, path, user }) => {
+  const { formatMessage, locale } = useIntl();
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -56,9 +59,16 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = intl.formatMessage;
 
+  const asianhallintaUrl = localizeRouteKey(
+    locale,
+    AppRoute.Asianhallinta,
+    formatMessage,
+    { koulutusmuoto: koulutusmuoto.kebabCase }
+  );
+
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`${koulutusmuoto.kebabCase}/asianhallinta`}>
+      <BreadcrumbsItem to={asianhallintaUrl}>
         {intl.formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
       <Helmet htmlAttributes={{ lang: intl.locale }}>

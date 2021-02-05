@@ -7,19 +7,28 @@ import BaseData from "basedata";
 import Asiat from "../Asiat";
 import Asiakirjat from "components/02-organisms/Asiakirjat";
 import { MuutoksetContainer } from "stores/muutokset";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 const Esittelijat = ({
   AsiaDialogContainer,
   koulutusmuoto,
   UusiAsiaDialogContainer
 }) => {
-  const { locale } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
 
+  const koulutusmuotoUrl = localizeRouteKey(
+    locale,
+    AppRoute[koulutusmuoto.pascalCase],
+    formatMessage
+  );
+
+  console.info(koulutusmuotoUrl);
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
+      <BreadcrumbsItem to={koulutusmuotoUrl}>
         {koulutusmuoto.kortinOtsikko}
       </BreadcrumbsItem>
 
@@ -28,7 +37,7 @@ const Esittelijat = ({
           <Route
             authenticated={!!user}
             exact
-            path={`${path}/avoimet`}
+            path={AppRoute.AsianhallintaAvoimet}
             render={() => (
               <Asiat koulutusmuoto={koulutusmuoto} path={path} user={user} />
             )}
@@ -109,6 +118,9 @@ const Esittelijat = ({
               );
             }}
           />
+          <Route path="*">
+            <div>Asianhallintapuolen oletuspolku</div>
+          </Route>
         </Switch>
       </article>
     </React.Fragment>

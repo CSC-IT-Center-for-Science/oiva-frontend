@@ -10,6 +10,11 @@ export default defineMessages({
     defaultMessage:
       "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta"
   },
+  asianhallintaAvoimet: {
+    id: "routes.asianhallintaAvoimet",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet"
+  },
   casAuth: {
     id: "routes.casAuth",
     defaultMessage: "/cas-auth"

@@ -394,6 +394,7 @@
   "rajoitteet.rajoitteet": "Rajoitteet",
   "routes.ammatillinenKoulutus": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus",
   "routes.asianhallinta": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta",
+  "routes.asianhallintaAvoimet": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet",
   "routes.casAuth": "/cas-auth",
   "routes.casLogOut": "/cas-logout",
   "routes.casReady": "/cas-ready",

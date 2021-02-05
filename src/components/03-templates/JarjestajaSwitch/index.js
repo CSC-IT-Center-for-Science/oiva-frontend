@@ -41,9 +41,9 @@ const JarjestajaSwitch = ({
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
+      {/* <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
         {koulutusmuoto.paasivunOtsikko}
-      </BreadcrumbsItem>
+      </BreadcrumbsItem> */}
       <Switch>
         <Route
           authenticated={!!user}

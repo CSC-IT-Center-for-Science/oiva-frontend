@@ -1985,6 +1985,11 @@
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
+    "id": "routes.asianhallintaAvoimet",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
     "id": "routes.casAuth",
     "defaultMessage": "/cas-auth",
     "filepath": "src/i18n/definitions/routes.js"
