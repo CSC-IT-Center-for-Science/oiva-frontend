@@ -1,5 +1,5 @@
 import {
-  append,
+  append, compose,
   endsWith,
   find,
   head,
@@ -51,8 +51,15 @@ export const createAlimaarayksetBEObjects = (
   let loppupvm = null;
   if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
-    alkupvm = path(["properties", "value"], valueChangeObj);
-    loppupvm = pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
+    alkupvm = path(['properties', 'value'], find(
+      compose(endsWith(".alkamispaiva"), prop("anchor")),
+      asetukset
+    )) || path(["properties", "value"], valueChangeObj);
+
+    loppupvm = path(['properties', 'value'], find(
+      compose(endsWith(".paattymispaiva"), prop("anchor")),
+      asetukset
+    )) || pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
   }
 
   let koodisto = "";
@@ -101,7 +108,7 @@ export const createAlimaarayksetBEObjects = (
       ...(loppupvm
         ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
         : null),
-      changeObjects: [asetusChangeObj, nth(index + 1, asetukset)]
+      changeObjects: [asetusChangeObj, asetukset]
     }
   };
 
