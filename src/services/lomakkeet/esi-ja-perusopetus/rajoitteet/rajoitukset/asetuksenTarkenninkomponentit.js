@@ -29,6 +29,7 @@ const asetuksenTarkenninlomakkeet = {
 
 export const getAsetuksenTarkenninkomponentit = async (
   asetuksenKohdeavain,
+  useMultiselect,
   locale,
   osioidenData,
   isReadOnly = false
@@ -42,7 +43,8 @@ export const getAsetuksenTarkenninkomponentit = async (
       (await tarkenninFn(
         isReadOnly,
         prop(asetuksenKohdeavain, osioidenData),
-        locale
+        locale,
+        useMultiselect
       )) || []
     );
   } else {

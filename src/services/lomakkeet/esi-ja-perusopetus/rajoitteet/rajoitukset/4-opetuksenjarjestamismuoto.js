@@ -3,7 +3,9 @@ import { find, length, map, path, pathEq } from "ramda";
 
 export default async function getOpetuksenJarjestamismuotokomponentit(
   isReadOnly,
-  osionData = []
+  osionData = [],
+  locale,
+  useMultiselect = false
 ) {
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
@@ -31,7 +33,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
           forChangeObject: {
             section: "opetuksenJarjestamismuoto"
           },
-          isMulti: false,
+          isMulti: useMultiselect,
           isReadOnly,
           options: map(muoto => {
             /**
