@@ -1615,6 +1615,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.eiAvoimiaAsioita",
+    "defaultMessage": "Taulukossa ei ole yhtään avoinna olevaa asiaa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"

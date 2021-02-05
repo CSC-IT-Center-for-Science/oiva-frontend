@@ -10,11 +10,7 @@ import { MuutoksetContainer } from "stores/muutokset";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 
-const Esittelijat = ({
-  AsiaDialogContainer,
-  koulutusmuoto,
-  UusiAsiaDialogContainer
-}) => {
+const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
   const { formatMessage, locale } = useIntl();
   const { path } = useRouteMatch();
   const [user] = useUser();
@@ -67,7 +63,8 @@ const Esittelijat = ({
                 render={_props => {
                   return (
                     <MuutoksetContainer>
-                      <UusiAsiaDialogContainer
+                      {/* UusiAsiaDialogContainer */}
+                      <WizardContainer
                         kohteet={_props.kohteet}
                         koulutukset={_props.koulutukset}
                         koulutusalat={_props.koulutusalat}
@@ -98,7 +95,8 @@ const Esittelijat = ({
                   render={_props => {
                     return (
                       <MuutoksetContainer>
-                        <AsiaDialogContainer
+                        {/* AsiaDialogContainer */}
+                        <WizardContainer
                           kohteet={_props.kohteet}
                           koulutukset={_props.koulutukset}
                           koulutusalat={_props.koulutusalat}

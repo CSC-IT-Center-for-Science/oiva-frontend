@@ -50,9 +50,6 @@ export async function createObjectToSave(
     changeObjects.rajoitteet
   );
 
-  console.info("changeObjects", changeObjects);
-  console.info("rajoitteetByRajoiteId", rajoitteetByRajoiteId);
-
   // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
     {

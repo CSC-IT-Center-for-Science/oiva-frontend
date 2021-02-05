@@ -1,13 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import Loading from "../../../modules/Loading";
-import UusiAsiaDialog from "./UusiAsiaDialog";
-import { useHistory, useParams } from "react-router-dom";
+import common from "i18n/definitions/common";
+import wizard from "i18n/definitions/wizard";
+import { useParams } from "react-router-dom";
 import { parseLupa } from "../../../utils/lupaParser";
 import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useChangeObjects } from "../../../stores/muutokset";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
+import { Wizard } from "components/03-templates/Wizard";
+import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -28,10 +31,7 @@ const AsiaDialogContainer = ({
   viimeisinLupa
 }) => {
   const intl = useIntl();
-  let history = useHistory();
-
   const { uuid } = useParams();
-
   const [, { initializeChanges }] = useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
@@ -68,19 +68,26 @@ const AsiaDialogContainer = ({
   }, [muutospyynto, initializeChanges]);
 
   return muutospyynto ? (
-    <UusiAsiaDialog
-      history={history}
-      kohteet={kohteet}
-      koulutukset={koulutukset}
-      koulutusalat={koulutusalat}
-      koulutustyypit={koulutustyypit}
-      lupa={viimeisinLupa}
-      lupaKohteet={lupaKohteet}
-      maaraystyypit={maaraystyypit}
-      muut={muut}
+    <Wizard
+      page1={
+        <EsittelijatMuutospyynto
+          kohteet={kohteet}
+          koulutukset={koulutukset}
+          koulutusalat={koulutusalat}
+          koulutustyypit={koulutustyypit}
+          maaraykset={viimeisinLupa.maaraykset}
+          lupaKohteet={lupaKohteet}
+          maaraystyypit={maaraystyypit}
+          mode={"modification"}
+          muut={muut}
+          role={role}
+          title={intl.formatMessage(common.changesText)}
+        />
+      }
       organisation={organisaatio}
-      opetuskielet={opetuskielet}
       role={role}
+      title={intl.formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
+      urlOnClose={"/ammatillinenkoulutus/asianhallinta/avoimet?force=true"}
     />
   ) : (
     <Loading />

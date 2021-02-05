@@ -16,7 +16,7 @@ import Jarjestajat from "../Jarjestajat";
 import BaseData from "basedata";
 import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
-import Asianhallinta from "../Asianhallinta";
+import Asianhallinta from "components/03-templates/Asianhallinta";
 import { includes, toLower } from "ramda";
 import { koulutustyypitMap } from "../../../utils/constants";
 import { userHasAnyOfRoles } from "../../../modules/helpers";
@@ -28,15 +28,14 @@ import { localizeRouteKey } from "utils/common";
 const keys2 = ["organisaatio", "tulevatLuvat"];
 
 export default function KoulutusmuodonEtusivu({
-  AsiaDialogContainer,
   hakuavaimet,
   Jarjestajaluettelo,
+  jarjestajatOtsikko,
   JarjestamislupaJSX,
   koulutusmuoto,
   kuvausteksti,
   paasivunOtsikko,
-  jarjestajatOtsikko,
-  UusiAsiaDialogContainer
+  WizardContainer
 }) {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
@@ -57,10 +56,9 @@ export default function KoulutusmuodonEtusivu({
               path={AppRoute.Asianhallinta}
               render={() => (
                 <Asianhallinta
-                  AsiaDialogContainer={AsiaDialogContainer}
+                  WizardContainer={WizardContainer}
                   koulutusmuoto={koulutusmuoto}
                   paasivunOtsikko={paasivunOtsikko}
-                  UusiAsiaDialogContainer={UusiAsiaDialogContainer}
                 />
               )}
             />
@@ -96,10 +94,8 @@ export default function KoulutusmuodonEtusivu({
                                 path={props.match.path}
                                 user={user}
                                 tulevatLuvat={_props1.tulevatLuvat}
-                                UusiAsiaDialogContainer={
-                                  UusiAsiaDialogContainer
-                                }
                                 voimassaOlevaLupa={_props1.voimassaOlevaLupa}
+                                WizardContainer={WizardContainer}
                                 ytunnus={_props1.ytunnus}
                               />
                             );
@@ -124,12 +120,10 @@ export default function KoulutusmuodonEtusivu({
                                         organisation={_props2.organisaatio}
                                         path={props.match.path}
                                         tulevatLuvat={_props2.tulevatLuvat}
-                                        UusiAsiaDialogContainer={
-                                          UusiAsiaDialogContainer
-                                        }
                                         voimassaOlevaLupa={
                                           _props1.voimassaOlevaLupa
                                         }
+                                        WizardContainer={WizardContainer}
                                         user={user}
                                       />
                                     );

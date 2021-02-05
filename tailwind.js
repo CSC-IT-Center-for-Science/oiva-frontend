@@ -212,7 +212,7 @@ module.exports = {
       xs: "0.75rem",
       sm: "0.875rem",
       base: "1rem",
-      lg: "1.2rem",
+      lg: "1.25rem",
       xl: "1.5rem",
       "2xl": "2rem",
       "3xl": "1.875rem",
@@ -287,6 +287,7 @@ module.exports = {
       "8xl": "88rem",
       "9xl": "96rem",
       "213": "53.125rem",
+      "9/10": "90%",
       full: "100%"
     },
     minHeight: {

@@ -1,9 +1,8 @@
 import React from "react";
 import KoulutusmuodonEtusivu from "components/03-templates/KoulutusmuodonEtusivu";
-import AsiaDialogContainer from "./AsiaDialogContainer";
-import UusiAsiaDialogContainer from "./Dialogit/Esittelijat/Lupanakyma/LupanakymaDialogContainer";
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
+import WizardContainer from "./WizardContainer";
 import { getKoulutusmuodot } from "utils/common";
 import { useIntl } from "react-intl";
 
@@ -36,15 +35,14 @@ export default function EsiJaPerusopetus() {
 
   return (
     <KoulutusmuodonEtusivu
-      AsiaDialogContainer={AsiaDialogContainer}
       hakuavaimet={hakuavaimet}
       Jarjestajaluettelo={Jarjestajaluettelo}
+      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
       JarjestamislupaJSX={JarjestamislupaJSX}
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
-      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
-      UusiAsiaDialogContainer={UusiAsiaDialogContainer}
+      WizardContainer={WizardContainer}
     ></KoulutusmuodonEtusivu>
   );
 }

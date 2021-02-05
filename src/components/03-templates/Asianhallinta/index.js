@@ -17,11 +17,7 @@ import { ROLE_ESITTELIJA } from "modules/constants";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
 
-const Asianhallinta = ({
-  AsiaDialogContainer,
-  koulutusmuoto,
-  UusiAsiaDialogContainer
-}) => {
+const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
   const history = useHistory();
   const intl = useIntl();
   const location = useLocation();
@@ -35,9 +31,8 @@ const Asianhallinta = ({
               path={AppRoute.Asianhallinta}
               render={() => (
                 <Esittelijat
-                  AsiaDialogContainer={AsiaDialogContainer}
                   koulutusmuoto={koulutusmuoto}
-                  UusiAsiaDialogContainer={UusiAsiaDialogContainer}
+                  WizardContainer={WizardContainer}
                 />
               )}
             />

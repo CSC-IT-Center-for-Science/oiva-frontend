@@ -23,13 +23,6 @@ const koodistoMapping = {
   opetuskielet: "opetuskieli"
 };
 
-const tunnisteMapping = {
-  maaraaika: "maaraaika",
-  opetustehtavat: "opetusjotalupakoskee",
-  toimintaalue: "kunnatjoissaopetustajarjestetaan",
-  opetuskielet: "opetuskieli"
-};
-
 export const createAlimaarayksetBEObjects = (
   kohteet,
   maaraystyypit,
@@ -84,11 +77,16 @@ export const createAlimaarayksetBEObjects = (
   const alimaarayksenParent =
     index === 0
       ? prop("generatedId", paalomakkeenBEMuutos)
-      : test(/^.+kohdennukset\.\d\.kohdennukset\.\d\.kohde/, prop("anchor", asetusChangeObj)) ? prop("generatedId", head(muutosobjektit))
+      : test(
+          /^.+kohdennukset\.\d\.kohdennukset\.\d\.kohde/,
+          prop("anchor", asetusChangeObj)
+        )
+      ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
-  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj)) ?
-    path(["properties", "value"], valueChangeObj) : null;
+  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj))
+    ? path(["properties", "value"], valueChangeObj)
+    : null;
   const alimaarays = {
     generatedId: `alimaarays-${Math.random()}`,
     parent: alimaarayksenParent,
@@ -99,8 +97,10 @@ export const createAlimaarayksetBEObjects = (
     arvo,
     maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
     meta: {
-      ...(alkupvm ? {alkupvm: moment(alkupvm).format("YYYY-MM-DD")} : null),
-      ...(loppupvm ? {loppupvm: moment(loppupvm).format("YYYY-MM-DD")} : null),
+      ...(alkupvm ? { alkupvm: moment(alkupvm).format("YYYY-MM-DD") } : null),
+      ...(loppupvm
+        ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
+        : null),
       changeObjects: [asetusChangeObj, nth(index + 1, asetukset)]
     }
   };

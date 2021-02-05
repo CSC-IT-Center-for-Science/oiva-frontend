@@ -1275,5 +1275,9 @@ export default defineMessages({
   omaSivu: {
     id: "common.omaSivu",
     defaultMessage: "Oma sivu"
+  },
+  eiAvoimiaAsioita: {
+    id: "common.eiAvoimiaAsioita",
+    defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
   }
 });

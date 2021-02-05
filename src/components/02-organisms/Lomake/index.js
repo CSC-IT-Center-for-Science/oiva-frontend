@@ -116,6 +116,7 @@ const Lomake = React.memo(
                 changeObjects
               )
             : [];
+
         /**
          * Osa lomakkeista voi olla sellaisia, että niiden tilan
          * tallentaminen aiheuttaa liikaa uudelleen lataamisia.

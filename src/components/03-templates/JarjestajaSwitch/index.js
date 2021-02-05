@@ -22,8 +22,8 @@ const JarjestajaSwitch = ({
   ytunnus,
   kielet,
   tulevatLuvat,
-  UusiAsiaDialogContainer,
-  voimassaOlevaLupa
+  voimassaOlevaLupa,
+  WizardContainer
 }) => {
   const { formatMessage, locale } = useIntl();
 
@@ -55,7 +55,7 @@ const JarjestajaSwitch = ({
               koulutustyyppi={koulutusmuoto.koulutustyyppi}
               render={_props => {
                 return (
-                  <UusiAsiaDialogContainer
+                  <WizardContainer
                     kohteet={_props.kohteet}
                     koulutukset={_props.koulutukset}
                     koulutusalat={_props.koulutusalat}
@@ -63,7 +63,6 @@ const JarjestajaSwitch = ({
                     lisatiedot={_props.lisatiedot}
                     maaraystyypit={_props.maaraystyypit}
                     muut={_props.muut}
-                    opetuskielet={_props.opetuskielet}
                     organisaatio={_props.organisaatio}
                     viimeisinLupa={_props.viimeisinLupa}
                     role="KJ"
