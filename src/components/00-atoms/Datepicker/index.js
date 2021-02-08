@@ -93,15 +93,20 @@ const Datepicker = ({
 
   const handleDateChange = useCallback(
     date => {
-      onChanges({ forChangeObject, fullAnchor }, { value: date });
-      setSelectedDate(date);
+      if (date) {
+        onChanges({ forChangeObject, fullAnchor }, { value: date });
+        setSelectedDate(date);
+      } else {
+        onChanges({ forChangeObject, fullAnchor }, { value: "" });
+        setSelectedDate(null);
+      }
     },
     [forChangeObject, fullAnchor, onChanges]
   );
 
   useEffect(() => {
-    if(!selectedDate) {
-      setSelectedDate("")
+    if (!value) {
+      setSelectedDate("");
       onChanges({ forChangeObject, fullAnchor }, { value: "" });
     } else if (value !== selectedDate) {
       setSelectedDate(value);
@@ -112,7 +117,8 @@ const Datepicker = ({
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={localeMap[locale]}>
       <div
         className="flex-col"
-        style={!width && fullWidth ? { display: "flex" } : {}}>
+        style={!width && fullWidth ? { display: "flex" } : {}}
+      >
         {/* https://material-ui-pickers.dev/api/DatePicker */}
         <DatePicker
           format="d.M.yyyy" // Always is Finnish format
@@ -170,7 +176,8 @@ const Datepicker = ({
               paddingLeft: "1.2em",
               marginBottom: "0.5em",
               color: COLORS.OIVA_ORANGE_TEXT
-            }}>
+            }}
+          >
             {isVisited && !selectedDate && requiredMessage}
           </FormHelperText>
         )}
