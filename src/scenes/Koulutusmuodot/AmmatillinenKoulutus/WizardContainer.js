@@ -21,7 +21,10 @@ import { useMuutospyynto } from "stores/muutospyynto";
 import { getSavedChangeObjects } from "helpers/ammatillinenKoulutus/commonUtils";
 import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
-
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
+//localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/0208201-1/jarjestamislupa-asiat
+// https: //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/0208201-1/jarjestamislupa-asiat
 /**
  * Container component of Wizard.
  *
@@ -32,6 +35,7 @@ const WizardContainer = ({
   kohteet,
   koulutukset,
   koulutusalat,
+  koulutusmuoto,
   koulutustyypit,
   maaraystyypit,
   muut,
@@ -39,7 +43,7 @@ const WizardContainer = ({
   role,
   viimeisinLupa
 }) => {
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   let { id, uuid } = useParams();
   let history = useHistory();
@@ -95,14 +99,10 @@ const WizardContainer = ({
 
   const lupaKohteet = useMemo(() => {
     const result = !isEmpty(viimeisinLupa)
-      ? parseLupa(
-          { ...viimeisinLupa },
-          intl.formatMessage,
-          intl.locale.toUpperCase()
-        )
+      ? parseLupa({ ...viimeisinLupa }, formatMessage, locale.toUpperCase())
       : {};
     return result;
-  }, [viimeisinLupa, intl]);
+  }, [formatMessage, locale, viimeisinLupa]);
 
   useEffect(() => {
     const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
@@ -125,7 +125,7 @@ const WizardContainer = ({
    */
   const onPreview = useCallback(
     async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
+      const procedureHandler = new ProcedureHandler(formatMessage);
       /**
        * Let's save the form without notification. Notification about saving isn't
        * needed when we're going to show a notification related to the preview.
@@ -142,11 +142,11 @@ const WizardContainer = ({
         muutospyynto.uuid
       );
       if (path) {
-        muutospyyntoActions.download(path, intl.formatMessage);
+        muutospyyntoActions.download(path, formatMessage);
       }
       return muutospyynto;
     },
-    [intl.formatMessage, muutospyyntoActions]
+    [formatMessage, muutospyyntoActions]
   );
 
   /**
@@ -156,7 +156,7 @@ const WizardContainer = ({
    */
   const onSave = useCallback(
     async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
+      const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallennaEsittelijanToimesta",
         [formData]
@@ -164,7 +164,7 @@ const WizardContainer = ({
       return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
         .result;
     },
-    [intl.formatMessage]
+    [formatMessage]
   );
 
   // KJ eli koulutuksen järjestäjä on velvolliinen perustelemaan hakemansa
@@ -174,16 +174,16 @@ const WizardContainer = ({
     role === "KJ"
       ? [
           {
-            title: intl.formatMessage(wizard.pageTitle_1)
+            title: formatMessage(wizard.pageTitle_1)
           },
           {
-            title: intl.formatMessage(wizard.pageTitle_2)
+            title: formatMessage(wizard.pageTitle_2)
           },
           {
-            title: intl.formatMessage(wizard.pageTitle_3)
+            title: formatMessage(wizard.pageTitle_3)
           },
           {
-            title: intl.formatMessage(wizard.pageTitle_4)
+            title: formatMessage(wizard.pageTitle_4)
           }
         ]
       : null
@@ -193,7 +193,7 @@ const WizardContainer = ({
     async (action, fromDialog = false) => {
       const formData = createMuutospyyntoOutput(
         await createObjectToSave(
-          toUpper(intl.locale),
+          toUpper(locale),
           organisaatio,
           viimeisinLupa,
           {
@@ -240,7 +240,7 @@ const WizardContainer = ({
     [
       kohteet,
       initializeChanges,
-      intl.locale,
+      locale,
       koulutuksetCO,
       lomakedata,
       viimeisinLupa,
@@ -276,7 +276,7 @@ const WizardContainer = ({
           mode={"modification"}
           muut={muut}
           role={role}
-          title={intl.formatMessage(common.changesText)}
+          title={formatMessage(common.changesText)}
         />
       }
       page2={
@@ -292,7 +292,7 @@ const WizardContainer = ({
             mode={"reasoning"}
             muut={muut}
             role={role}
-            title={intl.formatMessage(wizard.pageTitle_2)}
+            title={formatMessage(wizard.pageTitle_2)}
           />
         ) : null
       }
@@ -325,11 +325,26 @@ const WizardContainer = ({
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}
-      title={intl.formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
+      title={formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
       urlOnClose={
         role === "KJ"
-          ? `../../../${id}/jarjestamislupa-asiat`
-          : "/ammatillinen-koulutus/asianhallinta/avoimet?force=true"
+          ? localizeRouteKey(
+              locale,
+              AppRoute.Jarjestamislupaasiat,
+              formatMessage,
+              {
+                id: organisaatio.ytunnus,
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }
+            )
+          : localizeRouteKey(
+              locale,
+              AppRoute.AsianhallintaAvoimet,
+              formatMessage,
+              {
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }
+            )
       }
     />
   );

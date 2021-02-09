@@ -9,6 +9,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { parseLupa } from "utils/lupaParser";
 import Jarjestaja from "components/03-templates/Jarjestaja";
 import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaParser";
+import { AppRoute } from "const/index";
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
@@ -48,7 +49,7 @@ const JarjestajaSwitch = ({
         <Route
           authenticated={!!user}
           exact
-          path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
+          path={AppRoute.UusiHakemus}
           render={() => (
             <BaseData
               locale={locale}
@@ -59,6 +60,7 @@ const JarjestajaSwitch = ({
                     kohteet={_props.kohteet}
                     koulutukset={_props.koulutukset}
                     koulutusalat={_props.koulutusalat}
+                    koulutusmuoto={koulutusmuoto}
                     koulutustyypit={_props.koulutustyypit}
                     lisatiedot={_props.lisatiedot}
                     maaraystyypit={_props.maaraystyypit}

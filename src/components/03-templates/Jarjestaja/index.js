@@ -132,13 +132,20 @@ const Jarjestaja = React.memo(
       return R.flatten(R.insert(1, basicRoutes, additionalRoutes));
     }, [koulutusmuoto.koulutustyyppi, lupa.jarjestaja, user, intl]);
 
-    const newApplicationRouteItem = useMemo(() => {
-      return {
-        path: `${url}/hakemukset-ja-paatokset/uusi/1`,
-        text: intl.formatMessage(common.newHakemus),
-        authenticated: !!user
-      };
-    }, [intl, url, user]);
+    const newApplicationRouteItem = {
+      path: localizeRouteKey(
+        intl.locale,
+        AppRoute.UusiHakemus,
+        intl.formatMessage,
+        {
+          id: organisation.ytunnus,
+          koulutusmuoto: koulutusmuoto.kebabCase,
+          page: 1
+        }
+      ),
+      text: intl.formatMessage(common.newHakemus),
+      authenticated: !!user
+    };
 
     return (
       <article className="flex flex-1 flex-col">
@@ -257,15 +264,15 @@ const Jarjestaja = React.memo(
                 )}
               />
             )}
+            {/* {!!user && (
+              <Route
+                path={`${path}/hakemukset-ja-paatokset`}
+                exact
+                render={props => <HakemuksetJaPaatokset match={props.match} />}
+              />
+            )} */}
           </LocalizedSwitch>
         </div>
-        {/* {!!user && ( */}
-        {/* // <Route
-            //   path={`${path}/hakemukset-ja-paatokset`}
-            //   exact
-            //   render={props => <HakemuksetJaPaatokset match={props.match} />}
-            // /> */}
-        {/* )} */}
       </article>
     );
   },

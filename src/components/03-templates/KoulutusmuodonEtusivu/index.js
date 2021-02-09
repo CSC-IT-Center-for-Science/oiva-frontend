@@ -53,18 +53,16 @@ export default function KoulutusmuodonEtusivu({
         </BreadcrumbsItem>
         <Router history={history}>
           <LocalizedSwitch>
-            {sessionStorage.getItem("role") === ROLE_ESITTELIJA && (
-              <Route
-                path={AppRoute.Asianhallinta}
-                render={() => (
-                  <Asianhallinta
-                    koulutusmuoto={koulutusmuoto}
-                    user={user}
-                    WizardContainer={WizardContainer}
-                  />
-                )}
-              />
-            )}
+            <Route
+              path={AppRoute.Asianhallinta}
+              render={() => (
+                <Asianhallinta
+                  koulutusmuoto={koulutusmuoto}
+                  user={user}
+                  WizardContainer={WizardContainer}
+                />
+              )}
+            />
             <Route
               path={AppRoute.Koulutustoimijat}
               render={props => {
