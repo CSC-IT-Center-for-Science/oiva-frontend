@@ -32,16 +32,20 @@ export const calculateRouteParts = (
     let routePartInLocale = routePart;
     let keyOfRoutePartInLocale = undefined;
     let routePartInLocaleInGivenLanguage = undefined;
-    if (startsWith("{", routePart)) {
+    const startsWithBracket = startsWith("{", routePart);
+    if (startsWithBracket) {
       routePartInLocale = pathnamePartsWithoutLocale[ii];
+      routePartInLocaleInGivenLanguage = routePartInLocale;
     }
 
     keyOfRoutePartInLocale = Object.keys(localesByLang[language]).find(
       key => localesByLang[locale][key] === routePartInLocale
     );
+
     if (keyOfRoutePartInLocale) {
       routePartInLocaleInGivenLanguage =
-        localesByLang[language][keyOfRoutePartInLocale];
+        localesByLang[language][keyOfRoutePartInLocale] ||
+        routePartInLocaleInGivenLanguage;
     }
 
     return reject(isNil, {
@@ -88,12 +92,6 @@ export function getMatchingRoute(
           pathnamePartsWithoutLocale
         )
       ) {
-        // console.info(key, language, localesByLang[language][key]);
-        // console.info(
-        //   pathnamePartsWithoutLocale,
-        //   routeParts,
-        //   calculatedRouteParts
-        // );
         return `/${language}/${join(
           "/",
           map(prop("routePartInLocaleInGivenLanguage"), calculatedRouteParts)

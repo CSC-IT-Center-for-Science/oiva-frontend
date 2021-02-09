@@ -114,7 +114,7 @@ const WizardContainer = ({
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(`/ammatillinenkoulutus/asianhallinta/${id}/${uuid}/1`);
+      history.push(`/ammatillinen-koulutus/asianhallinta/${id}/${uuid}/1`);
     },
     [history, id]
   );
@@ -329,7 +329,7 @@ const WizardContainer = ({
       urlOnClose={
         role === "KJ"
           ? `../../../${id}/jarjestamislupa-asiat`
-          : "/ammatillinenkoulutus/asianhallinta/avoimet?force=true"
+          : "/ammatillinen-koulutus/asianhallinta/avoimet?force=true"
       }
     />
   );

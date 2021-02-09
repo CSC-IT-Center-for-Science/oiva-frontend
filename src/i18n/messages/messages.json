@@ -1905,13 +1905,43 @@
     "filepath": "src/i18n/definitions/kebabCase.js"
   },
   {
+    "id": "kebabCase.jarjestamislupa",
+    "defaultMessage": "jarjestamislupa",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.jarjestamislupaasiat",
+    "defaultMessage": "jarjestamislupa-asiat",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.koulutustoimijat",
+    "defaultMessage": "koulutustoimijat",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.omatTiedot",
+    "defaultMessage": "omat-tiedot",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
     "id": "kebabCase.paatetyt",
     "defaultMessage": "paatetyt",
     "filepath": "src/i18n/definitions/kebabCase.js"
   },
   {
+    "id": "kebabCase.paatokset",
+    "defaultMessage": "paatokset",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
     "id": "kebabCase.tilastot",
     "defaultMessage": "tilastot",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.uusi",
+    "defaultMessage": "uusi",
     "filepath": "src/i18n/definitions/kebabCase.js"
   },
   {
@@ -2075,8 +2105,18 @@
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
-    "id": "routes.koulutuksenJarjestajat",
-    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutuksenjarjestajat/{id}",
+    "id": "routes.jarjestamislupa",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/jarjestamislupa",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.jarjestamislupaasiat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/jarjestamislupa-asiat",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.koulutustoimijat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2097,6 +2137,16 @@
   {
     "id": "routes.lukiokoulutus",
     "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/lukiokoulutus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.omatTiedot",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/omat-tiedot",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.paatokset",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/paatokset",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {

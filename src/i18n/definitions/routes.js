@@ -54,10 +54,20 @@ export default defineMessages({
     id: "routes.jarjestamisJaYllapitamisluvat",
     defaultMessage: "/jarjestamis-ja-yllapitamisluvat"
   },
-  koulutuksenJarjestajat: {
-    id: "routes.koulutuksenJarjestajat",
+  jarjestamislupa: {
+    id: "routes.jarjestamislupa",
     defaultMessage:
-      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutuksenjarjestajat/{id}"
+      "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/jarjestamislupa"
+  },
+  jarjestamislupaasiat: {
+    id: "routes.jarjestamislupaasiat",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/jarjestamislupa-asiat"
+  },
+  koulutustoimijat: {
+    id: "routes.koulutustoimijat",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}"
   },
   koulutusmuodonEtusivu: {
     id: "routes.koulutusmuodonEtusivu",
@@ -74,6 +84,16 @@ export default defineMessages({
   lukiokoulutus: {
     id: "routes.lukiokoulutus",
     defaultMessage: "/jarjestamis-ja-yllapitamisluvat/lukiokoulutus"
+  },
+  omatTiedot: {
+    id: "routes.omatTiedot",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/omat-tiedot"
+  },
+  paatokset: {
+    id: "routes.paatokset",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/paatokset"
   },
   saavutettavuusseloste: {
     id: "routes.saavutettavuusseloste",

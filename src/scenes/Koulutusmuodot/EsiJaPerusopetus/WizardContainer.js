@@ -122,7 +122,7 @@ const WizardContainer = ({
       console.info(url);
       history.push(url);
     },
-    [history, id]
+    [formatMessage, history, id, koulutusmuoto.kebabCase, locale]
   );
 
   /**

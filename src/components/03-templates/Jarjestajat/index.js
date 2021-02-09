@@ -46,7 +46,7 @@ const Jarjestajat = ({
       <BreadcrumbsItem to={koulutusmuotoUrl}>{paasivunOtsikko}</BreadcrumbsItem>
 
       {luvat.isLoading === false && !luvat.isErroneous && (
-        <Jarjestajaluettelo luvat={luvat.data} />
+        <Jarjestajaluettelo koulutusmuoto={koulutusmuoto} luvat={luvat.data} />
       )}
 
       {luvat.isLoading && <Loading />}

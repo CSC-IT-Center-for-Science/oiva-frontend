@@ -65,93 +65,92 @@ export default function KoulutusmuodonEtusivu({
                 )}
               />
             )}
-            {/* <Route
-                  path={AppRoute.KoulutuksenJarjestajat}
-                  render={props => {
-                    return (
-                      <BaseData
-                        keys={hakuavaimet}
-                        locale={locale}
-                        koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                        render={_props1 => {
-                          //  Tämä toteutus olisi paljon yksinkertaisempi, jos
-                          //  kaikkien opetusmuotojen lupatietojen noutamisen
-                          //  voisi tehdä samalla tavalla. Vapaa sivistystyo
-                          //  on kuitenkin poikkeus, koska VST-luvat noudetaan
-                          //  lupaUuid:n avulla. Muiden koulutusmuotojen luvat
-                          //  voidaan noutaa y-tunnusta käyttämällä.
-                          //
-                          //  Y-tunnuksen ollessa tiedossa, saadaan luvan
-                          //  lisäksi noudettua myös organisaation tiedot.
-                          //  VST:n tapauksessa täytyy noutaa ensin lupa
-                          //  ja käyttää luvalta löytyvää y-tunnusta
-                          //  organisaatiotietojen hakemiseen.
-                          if (_props1.organisaatio) {
-                            return (
-                              <JarjestajaSwitch
-                                JarjestamislupaJSX={JarjestamislupaJSX}
-                                kohteet={_props1.kohteet}
-                                koulutusmuoto={koulutusmuoto}
-                                lupa={_props1.lupa}
-                                organisation={_props1.organisaatio}
-                                path={props.match.path}
-                                user={user}
-                                tulevatLuvat={_props1.tulevatLuvat}
-                                voimassaOlevaLupa={_props1.voimassaOlevaLupa}
-                                WizardContainer={WizardContainer}
-                                ytunnus={_props1.ytunnus}
-                              />
-                            );
-                          } else if (
-                            _props1.lupa &&
-                            _props1.lupa.jarjestajaYtunnus
-                          ) {
-                            return (
-                              <BaseData
-                                keys={keys2}
-                                locale={locale}
-                                koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                                render={_props2 => {
-                                  if (_props2.organisaatio) {
-                                    return (
-                                      <JarjestajaSwitch
-                                        JarjestamislupaJSX={JarjestamislupaJSX}
-                                        kohteet={_props1.kohteet}
-                                        koulutusmuoto={koulutusmuoto}
-                                        lupa={_props1.lupa}
-                                        lupaUuid={_props1.lupaUuid}
-                                        organisation={_props2.organisaatio}
-                                        path={props.match.path}
-                                        tulevatLuvat={_props2.tulevatLuvat}
-                                        voimassaOlevaLupa={
-                                          _props1.voimassaOlevaLupa
-                                        }
-                                        WizardContainer={WizardContainer}
-                                        user={user}
-                                      />
-                                    );
-                                  }
-                                }}
-                                oppilaitostyyppi={
-                                  _props1.voimassaOlevaLupa
-                                    ? _props1.voimassaOlevaLupa.oppilaitostyyppi
-                                    : null
-                                }
-                                ytunnus={_props1.lupa.jarjestajaYtunnus}
-                              />
-                            );
-                          }
-                        }}
-                      />
-                    );
-                  }}
-                /> */}
+            <Route
+              path={AppRoute.Koulutustoimijat}
+              render={props => {
+                return (
+                  <BaseData
+                    keys={hakuavaimet}
+                    locale={locale}
+                    koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                    render={_props1 => {
+                      //  Tämä toteutus olisi paljon yksinkertaisempi, jos
+                      //  kaikkien opetusmuotojen lupatietojen noutamisen
+                      //  voisi tehdä samalla tavalla. Vapaa sivistystyo
+                      //  on kuitenkin poikkeus, koska VST-luvat noudetaan
+                      //  lupaUuid:n avulla. Muiden koulutusmuotojen luvat
+                      //  voidaan noutaa y-tunnusta käyttämällä.
+                      //
+                      //  Y-tunnuksen ollessa tiedossa, saadaan luvan
+                      //  lisäksi noudettua myös organisaation tiedot.
+                      //  VST:n tapauksessa täytyy noutaa ensin lupa
+                      //  ja käyttää luvalta löytyvää y-tunnusta
+                      //  organisaatiotietojen hakemiseen.
+                      if (_props1.organisaatio) {
+                        return (
+                          <JarjestajaSwitch
+                            JarjestamislupaJSX={JarjestamislupaJSX}
+                            kohteet={_props1.kohteet}
+                            koulutusmuoto={koulutusmuoto}
+                            lupa={_props1.lupa}
+                            organisation={_props1.organisaatio}
+                            path={props.match.path}
+                            user={user}
+                            tulevatLuvat={_props1.tulevatLuvat}
+                            voimassaOlevaLupa={_props1.voimassaOlevaLupa}
+                            WizardContainer={WizardContainer}
+                            ytunnus={_props1.ytunnus}
+                          />
+                        );
+                      } else if (
+                        _props1.lupa &&
+                        _props1.lupa.jarjestajaYtunnus
+                      ) {
+                        return (
+                          <BaseData
+                            keys={keys2}
+                            locale={locale}
+                            koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                            render={_props2 => {
+                              if (_props2.organisaatio) {
+                                return (
+                                  <JarjestajaSwitch
+                                    JarjestamislupaJSX={JarjestamislupaJSX}
+                                    kohteet={_props1.kohteet}
+                                    koulutusmuoto={koulutusmuoto}
+                                    lupa={_props1.lupa}
+                                    lupaUuid={_props1.lupaUuid}
+                                    organisation={_props2.organisaatio}
+                                    path={props.match.path}
+                                    tulevatLuvat={_props2.tulevatLuvat}
+                                    voimassaOlevaLupa={
+                                      _props1.voimassaOlevaLupa
+                                    }
+                                    WizardContainer={WizardContainer}
+                                    user={user}
+                                  />
+                                );
+                              }
+                            }}
+                            oppilaitostyyppi={
+                              _props1.voimassaOlevaLupa
+                                ? _props1.voimassaOlevaLupa.oppilaitostyyppi
+                                : null
+                            }
+                            ytunnus={_props1.lupa.jarjestajaYtunnus}
+                          />
+                        );
+                      }
+                    }}
+                  />
+                );
+              }}
+            />
             <Route path="*">
               <article className="mx-auto w-4/5 mt-12 max-w-8xl">
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
                 </Typography>
-                Koulutusmuodon oletussivu
                 <p className="max-w-213 mb-6">{kuvausteksti}</p>
                 {isEsittelija ? (
                   <p className="mb-6">

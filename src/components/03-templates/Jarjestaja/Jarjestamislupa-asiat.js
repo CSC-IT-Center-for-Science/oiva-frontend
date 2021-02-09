@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import JarjestamislupaAsiatList from "./JarjestamislupaAsiatList";
+import equal from "react-fast-compare";
 
 const JarjestamislupaAsiat = React.memo(
   ({
@@ -21,6 +22,9 @@ const JarjestamislupaAsiat = React.memo(
         organisation={organisation}
       />
     );
+  },
+  (cp, np) => {
+    return equal(cp, np);
   }
 );
 

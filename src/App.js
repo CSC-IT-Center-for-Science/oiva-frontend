@@ -60,7 +60,7 @@ const logo = { text: "Oiva", path: AppRoute.Home };
 const constants = {
   koulutusmuodot: {
     ammatillinenKoulutus: {
-      kebabCase: "ammatillinenkoulutus"
+      kebabCase: "ammatillinen-koulutus"
     },
     esiJaPerusopetus: {
       kebabCase: "esi-ja-perusopetus",
@@ -169,7 +169,7 @@ const App = ({
         ? result
         : R.assoc(
             "path",
-            `/ammatillinenkoulutus/koulutuksenjarjestajat/${R.prop(
+            `/ammatillinen-koulutus/koulutuksenjarjestajat/${R.prop(
               "ytunnus",
               organisation
             )}/jarjestamislupa`,

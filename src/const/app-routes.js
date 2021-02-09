@@ -10,7 +10,10 @@ export const AppRoute = {
   EsiJaPerusopetus: "routes.esiJaPerusopetus",
   Home: "routes.home",
   JarjestamisJaYllapitamisluvat: "routes.jarjestamisJaYllapitamisluvat",
-  KoulutuksenJarjestajat: "routes.koulutuksenJarjestajat",
+  Jarjestamislupa: "routes.jarjestamislupa",
+  Jarjestamislupaasiat: "routes.jarjestamislupaasiat",
+  Koulutustoimijat: "routes.koulutustoimijat",
+  KoulutusmuodonEtusivu: "routes.koulutusmuodonEtusivu",
   getKoulutusmuodonEtusivu: params => ({
     key: "routes.koulutusmuodonEtusivu",
     params
@@ -18,6 +21,8 @@ export const AppRoute = {
   LogIn: "routes.logIn",
   LogOut: "routes.logOut",
   Lukiokoulutus: "routes.lukiokoulutus",
+  OmatTiedot: "routes.omatTiedot",
+  Paatokset: "routes.paatokset",
   Saavutettavuusseloste: "routes.saavutettavuusseloste",
   Tietosuojailmoitus: "routes.tietosuojailmoitus",
   Tilastot: "routes.tilastot",

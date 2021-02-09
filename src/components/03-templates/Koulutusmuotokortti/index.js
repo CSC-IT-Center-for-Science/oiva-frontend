@@ -20,7 +20,14 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
     <Card>
       <CardActionArea
         onClick={() => {
-          history.push(`/${koulutusmuoto.kebabCase}`);
+          history.push(
+            localizeRouteKey(
+              locale,
+              AppRoute.KoulutusmuodonEtusivu,
+              formatMessage,
+              { koulutusmuoto: koulutusmuoto.kebabCase }
+            )
+          );
         }}
       >
         <CardContent>

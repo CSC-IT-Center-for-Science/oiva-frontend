@@ -14,6 +14,7 @@ import { Breadcrumbs, BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { NavLink, useLocation } from "react-router-dom";
 import { COLORS } from "modules/styles";
 import { localizeRouteKey } from "utils/common";
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 
 export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   const { formatMessage, locale } = useIntl();
@@ -54,27 +55,31 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   // }, [userActions]);
 
   const getOrganisationLink = useCallback(() => {
+    let result = {};
     if (user && user.oid && organisation) {
       const orgNimi = user && organisation ? prop("nimi", organisation) : "";
       const isEsittelija = user
         ? includes("OIVA_APP_ESITTELIJA", user.roles)
         : false;
-      const result = {
+      result = assoc(
+        "text",
         // Select name by locale or first in nimi object
-        text: or(prop(locale, orgNimi), tail(head(toPairs(orgNimi)) || []))
-      };
-      return isEsittelija
-        ? result
-        : assoc(
-            "path",
-            `/ammatillinenkoulutus/koulutuksenjarjestajat/${prop(
-              "ytunnus",
-              organisation
-            )}/jarjestamislupa`,
-            result
-          );
+        or(prop(locale, orgNimi), tail(head(toPairs(orgNimi)) || [])),
+        result
+      );
+
+      if (!isEsittelija) {
+        result = assoc(
+          "path",
+          localizeRouteKey(locale, AppRoute.Jarjestamislupa, formatMessage, {
+            id: organisation.ytunnus,
+            koulutusmuoto: formatMessage(ammatillinenKoulutus.kebabCase)
+          }),
+          result
+        );
+      }
     }
-    return {};
+    return result;
   }, [locale, organisation, user]);
 
   const shortDescription = {

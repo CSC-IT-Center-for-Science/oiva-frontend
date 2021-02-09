@@ -1,7 +1,6 @@
 import { API_BASE_URL } from "../modules/constants";
 import moment from "moment";
 import * as R from "ramda";
-import localforage from "localforage";
 import common from "i18n/definitions/common";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
