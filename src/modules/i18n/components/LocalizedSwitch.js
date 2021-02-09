@@ -1,8 +1,7 @@
 import React from "react";
 import { Switch } from "react-router";
 import { useIntl } from "react-intl";
-import { indexOf, map, pickBy, replace, split, startsWith } from "ramda";
-import { calculateRouteParts, getMatchingRoute } from "./LanguageSwitcher";
+import { replace } from "ramda";
 
 function getLocalizedPath(path, locale, formatMessage) {
   let localizedPath = "";
@@ -33,8 +32,8 @@ function getLocalizedPath(path, locale, formatMessage) {
 
 /**
  *
- * @param path can be string, undefined or string array
- * @returns Localized string path or path array
+ * @param path
+ * @returns Lokalisoitu merkkijono tai taulukko
  */
 export function localizeRoutePath(path, locale, formatMessage, params) {
   let localizedPath = "";
@@ -58,14 +57,12 @@ export function localizeRoutePath(path, locale, formatMessage, params) {
 }
 
 export const LocalizedSwitch = ({ children }) => {
-  /**
-   * inject params and formatMessage through hooks, so we can localize the route
-   */
   const { formatMessage, locale, messages } = useIntl();
 
   /**
-   * Apply localization to all routes
-   * Also checks if all children elements are <Route /> components
+   * Lokalisoidaan kaikki reitit tarkastaen samalla, ovatko kaikki
+   * lapsielementit <Route /> -komponentteja, koska vain niiden
+   * osalta lokalisointi on olennaista.
    */
   return (
     <Switch>
@@ -76,8 +73,6 @@ export const LocalizedSwitch = ({ children }) => {
             locale,
             formatMessage
           );
-
-          console.info(_path);
           return React.cloneElement(child, {
             ...child.props,
             path: _path

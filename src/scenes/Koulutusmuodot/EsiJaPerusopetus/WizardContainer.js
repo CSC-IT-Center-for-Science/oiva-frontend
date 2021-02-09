@@ -16,24 +16,24 @@ import ProcedureHandler from "components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
 import { createObjectToSave } from "./saving";
 import { find, prop, propEq, toUpper } from "ramda";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 /**
  * Container component of UusiaAsiaDialog.
  *
  * @param {Object} props - Props object.
- * @param {Object} props.intl - Object of react-intl library.
  */
 const WizardContainer = ({
   kohteet,
-  koulutusalat,
-  koulutustyypit,
+  koulutusmuoto,
   maaraystyypit,
   organisaatio,
   role,
   viimeisinLupa
 }) => {
   let history = useHistory();
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
   const { id, uuid } = useParams();
   const [
     { isPreviewModeOn },
@@ -96,14 +96,10 @@ const WizardContainer = ({
 
   const lupakohteet = useMemo(() => {
     const result = viimeisinLupa
-      ? parseLupa(
-          { ...viimeisinLupa },
-          intl.formatMessage,
-          intl.locale.toUpperCase()
-        )
+      ? parseLupa({ ...viimeisinLupa }, formatMessage, locale.toUpperCase())
       : {};
     return result;
-  }, [viimeisinLupa, intl]);
+  }, [formatMessage, locale, viimeisinLupa]);
 
   const valtakunnallinenMaarays = find(
     propEq("koodisto", "nuts1"),
@@ -117,7 +113,14 @@ const WizardContainer = ({
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(`/esi-ja-perusopetus/asianhallinta/${id}/${uuid}`);
+      const url = localizeRouteKey(locale, AppRoute.Hakemus, formatMessage, {
+        id,
+        koulutusmuoto: koulutusmuoto.kebabCase,
+        page: 1,
+        uuid
+      });
+      console.info(url);
+      history.push(url);
     },
     [history, id]
   );
@@ -137,7 +140,7 @@ const WizardContainer = ({
    */
   const onSave = useCallback(
     async formData => {
-      const procedureHandler = new ProcedureHandler(intl.formatMessage);
+      const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallennaEsittelijanToimesta",
         [formData]
@@ -145,14 +148,14 @@ const WizardContainer = ({
       return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
         .result;
     },
-    [intl.formatMessage]
+    [formatMessage]
   );
 
   const onAction = useCallback(
     async (action, fromDialog = false) => {
       const formData = createMuutospyyntoOutput(
         await createObjectToSave(
-          toUpper(intl.locale),
+          toUpper(locale),
           organisaatio,
           viimeisinLupa,
           {
@@ -207,7 +210,7 @@ const WizardContainer = ({
     [
       erityisetKoulutustehtavatCO,
       initializeChanges,
-      intl.locale,
+      locale,
       kohteet,
       viimeisinLupa,
       maaraystyypit,
@@ -241,11 +244,18 @@ const WizardContainer = ({
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}
-      title={intl.formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
+      title={formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
       urlOnClose={
         role === "KJ"
           ? `../../../${id}/jarjestamislupa-asiat`
-          : "/esi-ja-perusopetus/asianhallinta/avoimet?force=true"
+          : `${localizeRouteKey(
+              locale,
+              AppRoute.AsianhallintaAvoimet,
+              formatMessage,
+              {
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }
+            )}?force=true`
       }
     />
   );

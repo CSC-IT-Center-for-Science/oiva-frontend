@@ -22,6 +22,7 @@ export const AppRoute = {
   Tietosuojailmoitus: "routes.tietosuojailmoitus",
   Tilastot: "routes.tilastot",
   UusiHakemus: "routes.uusiHakemus",
+  Hakemus: "routes.hakemus",
   VapaaSivistystyo: "routes.vapaaSivistystyo",
   Yhteydenotto: "routes.yhteydenotto"
 };

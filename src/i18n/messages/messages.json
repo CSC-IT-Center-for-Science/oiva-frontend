@@ -2060,6 +2060,11 @@
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
+    "id": "routes.hakemus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
     "id": "routes.home",
     "defaultMessage": "/",
     "filepath": "src/i18n/definitions/routes.js"

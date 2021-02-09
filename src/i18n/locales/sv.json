@@ -409,6 +409,7 @@
   "routes.casLogOut": "/cas-logout",
   "routes.casReady": "/cas-ready",
   "routes.esiJaPerusopetus": "/tillstånd/for-och-grundutbildning",
+  "routes.hakemus": "/tillstånd/{koulutusmuoto}/arendehantering/{id}/{uuid}/{page}",
   "routes.home": "/",
   "routes.jarjestamisJaYllapitamisluvat": "/tillstånd",
   "routes.koulutuksenJarjestajat": "/tillstånd/{koulutusmuoto}/utbildningsanordnare/{id}",

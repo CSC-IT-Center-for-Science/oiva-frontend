@@ -9,17 +9,20 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import { ROLE_ESITTELIJA } from "modules/constants";
 import { useHistory } from "react-router-dom";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const";
 
 export default function Koulutusmuotokortti({ koulutusmuoto }) {
   const history = useHistory();
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   return (
     <Card>
       <CardActionArea
         onClick={() => {
           history.push(`/${koulutusmuoto.kebabCase}`);
-        }}>
+        }}
+      >
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {koulutusmuoto.kortinOtsikko}
@@ -35,9 +38,19 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
             size="small"
             color="primary"
             onClick={() => {
-              history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`);
-            }}>
-            {intl.formatMessage(common.asianhallinta)}
+              history.push(
+                localizeRouteKey(
+                  locale,
+                  AppRoute.AsianhallintaAvoimet,
+                  formatMessage,
+                  {
+                    koulutusmuoto: koulutusmuoto.kebabCase
+                  }
+                )
+              );
+            }}
+          >
+            {formatMessage(common.asianhallinta)}
           </Button>
         </CardActions>
       ) : null}

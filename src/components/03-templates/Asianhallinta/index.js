@@ -70,13 +70,13 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
                 locale={locale}
                 koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 render={_props => {
-                  console.info(_props, "_props");
                   return (
                     <MuutoksetContainer>
                       <WizardContainer
                         kohteet={_props.kohteet}
                         koulutukset={_props.koulutukset}
                         koulutusalat={_props.koulutusalat}
+                        koulutusmuoto={koulutusmuoto}
                         koulutustyypit={_props.koulutustyypit}
                         lisatiedot={_props.lisatiedot}
                         maaraystyypit={_props.maaraystyypit}
@@ -92,16 +92,39 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
               />
             )}
           />
-          {/* <Route
+          <Route
+            authenticated={!!user}
             exact
-            path={AppRoute.AsianhallintaAvoimet}
-            render={() => (
-              <Esittelijat
-                koulutusmuoto={koulutusmuoto}
-                WizardContainer={WizardContainer}
-              />
-            )}
-          /> */}
+            path={AppRoute.Hakemus}
+            render={() => {
+              return (
+                <BaseData
+                  locale={locale}
+                  koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                  render={_props => {
+                    return (
+                      <MuutoksetContainer>
+                        <WizardContainer
+                          kohteet={_props.kohteet}
+                          koulutukset={_props.koulutukset}
+                          koulutusalat={_props.koulutusalat}
+                          koulutusmuoto={koulutusmuoto}
+                          koulutustyypit={_props.koulutustyypit}
+                          lisatiedot={_props.lisatiedot}
+                          maaraystyypit={_props.maaraystyypit}
+                          muut={_props.muut}
+                          opetuskielet={_props.opetuskielet}
+                          organisaatio={_props.organisaatio}
+                          role={"ESITTELIJA"}
+                          viimeisinLupa={_props.viimeisinLupa}
+                        />
+                      </MuutoksetContainer>
+                    );
+                  }}
+                />
+              );
+            }}
+          />
           <Route path="*">
             <div className="flex-1 bg-gray-100">
               <div className="border border-gray-300 max-w-7xl m-auto bg-white mt-12 px-64 py-12">

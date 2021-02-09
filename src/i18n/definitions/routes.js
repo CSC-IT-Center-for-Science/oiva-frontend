@@ -41,6 +41,11 @@ export default defineMessages({
     id: "routes.esiJaPerusopetus",
     defaultMessage: "/jarjestamis-ja-yllapitamisluvat/esi-ja-perusopetus"
   },
+  hakemus: {
+    id: "routes.hakemus",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}"
+  },
   home: {
     id: "routes.home",
     defaultMessage: "/"

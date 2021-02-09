@@ -409,6 +409,7 @@
   "routes.casLogOut": "/cas-logout",
   "routes.casReady": "/cas-ready",
   "routes.esiJaPerusopetus": "/jarjestamis-ja-yllapitamisluvat/esi-ja-perusopetus",
+  "routes.hakemus": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}",
   "routes.home": "/",
   "routes.jarjestamisJaYllapitamisluvat": "/jarjestamis-ja-yllapitamisluvat",
   "routes.koulutuksenJarjestajat": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutuksenjarjestajat/{id}",
