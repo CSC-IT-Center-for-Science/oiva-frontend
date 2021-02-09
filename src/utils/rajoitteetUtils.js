@@ -76,6 +76,19 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
+function getTarkentimenArvo(tarkennin) {
+  let tarkentimenArvo =
+    path(
+      ["properties", "value", "label"],
+      tarkennin
+    ) ||
+    path(["properties", "value"],
+      tarkennin);
+  return Array.isArray(tarkentimenArvo) ?
+    pipe(map(arvo => arvo.label), join(",<br/>"))(tarkentimenArvo) :
+    tarkentimenArvo;
+}
+
 function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
   const asetukset = join(
     " ",
@@ -133,12 +146,9 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
                 }
               : null;
             //: getTaydennyssana(tarkenninavain, locale);
-            const tarkentimenArvo =
-              path(
-                ["properties", "value", "label"],
-                asetus.tarkennin[tarkenninavain]
-              ) ||
-              path(["properties", "value"], asetus.tarkennin[tarkenninavain]);
+            
+            const tarkentimenArvo = getTarkentimenArvo(asetus.tarkennin[tarkenninavain]);
+            
             const muokattuTarkentimenArvo = moment(
               tarkentimenArvo,
               "YYYY-MM-DDTHH:mm:ss.SSSZ",
@@ -192,10 +202,7 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
-  const tarkentimenArvo = path(
-    ["properties", "value", "label"],
-    prop(tarkenninavain, tarkennin)
-  );
+  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin));
   const taydennyssana = null;
 
   let item = tarkentimenArvo;
@@ -205,14 +212,14 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
       " ",
       [
         taydennyssana.pre,
-        `<strong>${tarkentimenArvo}</strong>`,
+        `<strong>${item}</strong>`,
         taydennyssana.post
       ].filter(Boolean)
     );
   }
 
   paivitettyLista = append(
-    format === "list" ? `<ul><li>${item}` : item,
+    format === "list" ? `<ul><li><strong>${item}</strong>` : item,
     paivitettyLista
   );
 
@@ -305,18 +312,20 @@ export function getRajoiteListamuodossa(
       ),
       unnest
     )(lapikaydytKohdennukset);
+    const indexMap = addIndex(map);
     listamuotoWithEndings = join(
       "",
-      map(kohdennus => {
+      indexMap((kohdennus, index)=> {
         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
         const s = join("", kohdennus);
-        const amountOfInstances = getAmountOfInstances("<ul>", s);
-
-        return addEnding("</li></ul>", s, amountOfInstances);
+        const amountOfInstances = getAmountOfInstances("<ul", s);
+        return addEnding("</li></ul>", s, index === 0
+          ? amountOfInstances - 2
+          : amountOfInstances);
       }, kohdennusLista)
     );
+    listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
   }
-
   return listamuotoWithEndings;
 }
 

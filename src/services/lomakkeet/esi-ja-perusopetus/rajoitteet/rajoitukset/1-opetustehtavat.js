@@ -5,7 +5,8 @@ import { getLocalizedProperty } from "../../../utils";
 export default async function getOpetustehtavakomponentit(
   isReadOnly,
   osionData = [],
-  locale
+  locale,
+  useMultiselect = false
 ) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
 
@@ -19,7 +20,7 @@ export default async function getOpetustehtavakomponentit(
           forChangeObject: {
             section: "getOpetustehtavatLomake"
           },
-          isMulti: false,
+          isMulti: useMultiselect,
           isReadOnly,
           options: map(opetustehtava => {
             /**
