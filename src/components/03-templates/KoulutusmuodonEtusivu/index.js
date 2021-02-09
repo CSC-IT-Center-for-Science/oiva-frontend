@@ -3,14 +3,7 @@ import { Typography } from "@material-ui/core";
 import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { Breadcrumbs, BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import {
-  NavLink,
-  Route,
-  Router,
-  Switch,
-  useHistory,
-  useLocation
-} from "react-router-dom";
+import { NavLink, Route, Router, useHistory } from "react-router-dom";
 import { COLORS } from "modules/styles";
 import Jarjestajat from "../Jarjestajat";
 import BaseData from "basedata";
@@ -39,35 +32,39 @@ export default function KoulutusmuodonEtusivu({
 }) {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
-  const location = useLocation();
   const [userState] = useUser();
   const { data: user } = userState;
 
   const isEsittelija = user
     ? includes("OIVA_APP_ESITTELIJA", user.roles)
     : false;
-  // console.info(
-  //   koulutusmuoto,
-  //   localizeRouteKey(locale, AppRoute.Asianhallinta, formatMessage)
-  // );
+
+  const koulutusmuotoUrl = localizeRouteKey(
+    locale,
+    AppRoute[koulutusmuoto.pascalCase],
+    formatMessage
+  );
+
   return (
     <div className="flex-1 flex flex-col bg-white">
       <div className="flex-1 flex flex-col">
+        <BreadcrumbsItem to={koulutusmuotoUrl}>
+          {koulutusmuoto.paasivunOtsikko}
+        </BreadcrumbsItem>
         <Router history={history}>
           <LocalizedSwitch>
-            <Route
-              params={{
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }}
-              path={AppRoute.Asianhallinta}
-              render={() => (
-                <Asianhallinta
-                  WizardContainer={WizardContainer}
-                  koulutusmuoto={koulutusmuoto}
-                  paasivunOtsikko={paasivunOtsikko}
-                />
-              )}
-            />
+            {sessionStorage.getItem("role") === ROLE_ESITTELIJA && (
+              <Route
+                path={AppRoute.Asianhallinta}
+                render={() => (
+                  <Asianhallinta
+                    koulutusmuoto={koulutusmuoto}
+                    user={user}
+                    WizardContainer={WizardContainer}
+                  />
+                )}
+              />
+            )}
             {/* <Route
                   path={AppRoute.KoulutuksenJarjestajat}
                   render={props => {
@@ -154,6 +151,7 @@ export default function KoulutusmuodonEtusivu({
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
                 </Typography>
+                Koulutusmuodon oletussivu
                 <p className="max-w-213 mb-6">{kuvausteksti}</p>
                 {isEsittelija ? (
                   <p className="mb-6">

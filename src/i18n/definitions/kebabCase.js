@@ -13,6 +13,10 @@ export default defineMessages({
     id: "kebabCase.jarjestamisJaYllapitamisluvat",
     defaultMessage: "jarjestamis-ja-yllapitamisluvat"
   },
+  paatetyt: {
+    id: "kebabCase.paatetyt",
+    defaultMessage: "paatetyt"
+  },
   tilastot: {
     id: "kebabCase.tilastot",
     defaultMessage: "tilastot"

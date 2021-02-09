@@ -84,7 +84,8 @@ const LupanakymaA = React.memo(
         filter(
           changeObj => startsWith("rajoitteet_", changeObj.anchor),
           flatten(
-            map(cObj => {
+            map(
+              cObj => {
                 return path(["meta", "changeObjects"], cObj);
               },
               // maaraykset || []

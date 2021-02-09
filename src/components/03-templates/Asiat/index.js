@@ -50,10 +50,9 @@ const OivaTabs = withStyles(() => ({
 
 const esidialoginHakuavaimet = ["organisaatiot"];
 
-const Asiat = ({ koulutusmuoto, path, user }) => {
-  const { formatMessage, locale } = useIntl();
+const Asiat = ({ koulutusmuoto, user }) => {
   const history = useHistory();
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
   const location = useLocation();
   const avoimetUrl = localizeRouteKey(
     locale,
@@ -73,7 +72,7 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
   );
 
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
-  const t = intl.formatMessage;
+  const t = formatMessage;
 
   const asianhallintaUrl = localizeRouteKey(
     locale,
@@ -85,17 +84,17 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
   return (
     <React.Fragment>
       <BreadcrumbsItem to={asianhallintaUrl}>
-        {intl.formatMessage(commonMessages.asianhallinta)}
+        {formatMessage(commonMessages.asianhallinta)}
       </BreadcrumbsItem>
 
-      <Helmet htmlAttributes={{ lang: intl.locale }}>
+      <Helmet htmlAttributes={{ lang: locale }}>
         <title>{`Oiva | ${t(common.asiat)}`}</title>
       </Helmet>
 
       {isEsidialogVisible && (
         <BaseData
           keys={esidialoginHakuavaimet}
-          locale={intl.locale}
+          locale={locale}
           koulutustyyppi={koulutusmuoto.koulutustyyppi}
           render={_props => {
             return (
@@ -105,7 +104,16 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
                 organisations={_props.organisaatiot}
                 onSelect={selectedItem =>
                   history.push(
-                    `/${koulutusmuoto.kebabCase}/asianhallinta/${selectedItem.value}/uusi/1`
+                    localizeRouteKey(
+                      locale,
+                      AppRoute.UusiHakemus,
+                      formatMessage,
+                      {
+                        id: selectedItem.value,
+                        koulutusmuoto: koulutusmuoto.kebabCase,
+                        page: 1
+                      }
+                    )
                   )
                 }
               ></UusiAsiaEsidialog>
@@ -193,7 +201,6 @@ const Asiat = ({ koulutusmuoto, path, user }) => {
 };
 
 Asiat.propTypes = {
-  path: PropTypes.string,
   user: PropTypes.object
 };
 

@@ -3,7 +3,7 @@ import { defineMessages } from "react-intl";
 export default defineMessages({
   ammatillinenKoulutus: {
     id: "routes.ammatillinenKoulutus",
-    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/ammatillinenkoulutus"
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus"
   },
   asianhallinta: {
     id: "routes.asianhallinta",
@@ -14,6 +14,11 @@ export default defineMessages({
     id: "routes.asianhallintaAvoimet",
     defaultMessage:
       "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet"
+  },
+  AsianhallintaAvoimetPath: {
+    id: "routes.asianhallintaAvoimetPath",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/:koulutusmuoto/asianhallinta/avoimet"
   },
   asianhallintaPaatetyt: {
     id: "routes.asianhallintaPaatetyt",
@@ -49,6 +54,10 @@ export default defineMessages({
     defaultMessage:
       "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutuksenjarjestajat/{id}"
   },
+  koulutusmuodonEtusivu: {
+    id: "routes.koulutusmuodonEtusivu",
+    defaultMessage: "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}"
+  },
   logIn: {
     id: "routes.logIn",
     defaultMessage: "/kirjaudu"
@@ -72,6 +81,11 @@ export default defineMessages({
   tilastot: {
     id: "routes.tilastot",
     defaultMessage: "/tilastot"
+  },
+  uusiHakemus: {
+    id: "routes.uusiHakemus",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}"
   },
   vapaaSivistystyo: {
     id: "routes.vapaaSivistystyo",

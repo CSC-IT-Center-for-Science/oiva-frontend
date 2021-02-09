@@ -22,7 +22,6 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
     formatMessage
   );
 
-  console.info(koulutusmuotoUrl);
   return (
     <React.Fragment>
       <BreadcrumbsItem to={koulutusmuotoUrl}>
@@ -34,9 +33,6 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
           <Route
             authenticated={!!user}
             exact
-            params={{
-              koulutusmuoto: koulutusmuoto.kebabCase
-            }}
             path={AppRoute.AsianhallintaAvoimet}
             render={() => (
               <Asiat koulutusmuoto={koulutusmuoto} path={path} user={user} />
@@ -45,9 +41,6 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
           <Route
             authenticated={!!user}
             exact
-            params={{
-              koulutusmuoto: koulutusmuoto.kebabCase
-            }}
             path={AppRoute.AsianhallintaPaatetyt}
             render={() => (
               <Asiat koulutusmuoto={koulutusmuoto} path={path} user={user} />
@@ -59,15 +52,16 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
             path={`${path}/:uuid`}
             render={() => <Asiakirjat koulutusmuoto={koulutusmuoto} />}
           /> */}
-          {/* <Route
+          <Route
             authenticated={!!user}
             exact
-            path={`${path}/:id/uusi/:page?`}
+            path={AppRoute.UusiHakemusPath}
             render={() => (
               <BaseData
                 locale={locale}
                 koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 render={_props => {
+                  console.info(_props, "_props");
                   return (
                     <MuutoksetContainer>
                       <WizardContainer
@@ -89,7 +83,7 @@ const Esittelijat = ({ koulutusmuoto, WizardContainer }) => {
               />
             )}
           />
-          <Route
+          {/* <Route
             authenticated={!!user}
             exact
             path={`${path}/:id/:uuid/:page?`}

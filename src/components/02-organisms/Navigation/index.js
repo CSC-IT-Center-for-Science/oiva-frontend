@@ -5,14 +5,14 @@ import { Toolbar, makeStyles } from "@material-ui/core";
 import HorizontalLayout from "./HorizontalLayout";
 import VerticalLayout from "./VerticalLayout";
 import { NavLink } from "react-router-dom";
-import * as R from "ramda";
 import "../../../css/tailwind.css";
 import { useIntl } from "react-intl";
-import { localizeRouteKey } from "utils/common";
+import { getKoulutusmuodot, localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import education from "i18n/definitions/education";
 import common from "i18n/definitions/common";
 import { LanguageSwitcher } from "modules/i18n/index";
+import { addIndex, map } from "ramda";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -35,6 +35,7 @@ const Navigation = ({
   theme = defaultProps.theme
 }) => {
   const { formatMessage, locale } = useIntl();
+  const koulutusmuodot = getKoulutusmuodot(formatMessage);
   const classes = useStyles(theme);
 
   const level1Links = [
@@ -44,27 +45,36 @@ const Navigation = ({
     }
   ];
 
-  const links = [
-    {
-      path: AppRoute.EsiJaPerusopetus,
-      text: formatMessage(education.preAndBasicEducation)
-    },
-    {
-      path: AppRoute.Lukiokoulutus,
-      text: formatMessage(education.highSchoolEducation)
-    },
-    {
-      path: AppRoute.AmmatillinenKoulutus,
-      text: formatMessage(education.vocationalEducation)
-    },
-    {
-      path: AppRoute.VapaaSivistystyo,
-      text: formatMessage(education.vstEducation)
-    },
-    { path: AppRoute.Tilastot, text: formatMessage(common.statistics) }
-  ];
+  const links = map(koulutusmuoto => {
+    return {
+      path: AppRoute.getKoulutusmuodonEtusivu(koulutusmuoto.kebabCase),
+      text: koulutusmuoto.paasivunOtsikko
+    };
+  }, koulutusmuodot);
 
-  const items = R.addIndex(R.map)((link, index) => {
+  console.info(links);
+
+  // [
+  //   {
+  //     path: AppRoute.getKoulutusmuodonEtusivu(),
+  //     text: formatMessage(education.preAndBasicEducation)
+  //   },
+  //   {
+  //     path: AppRoute.KoulutusmuodonEtusivu,
+  //     text: formatMessage(education.highSchoolEducation)
+  //   },
+  //   {
+  //     path: AppRoute.KoulutusmuodonEtusivu,
+  //     text: formatMessage(education.vocationalEducation)
+  //   },
+  //   {
+  //     path: AppRoute.VapaaSKoulutusmuodonEtusivuivistystyo,
+  //     text: formatMessage(education.vstEducation)
+  //   },
+  //   { path: AppRoute.Tilastot, text: formatMessage(common.statistics) }
+  // ];
+
+  const items = addIndex(map)((link, index) => {
     const bgColorClass = `bg-${theme.hoverColor}`;
     const mdBgHoverClass = `md:${bgColorClass}`;
 

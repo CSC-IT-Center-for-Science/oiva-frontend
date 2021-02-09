@@ -18,6 +18,94 @@ import {
   startsWith
 } from "ramda";
 
+export const calculateRouteParts = (
+  locale,
+  language,
+  key,
+  pathnamePartsWithoutLocale,
+  messages,
+  localesByLang
+) => {
+  const routeParts = drop(1, split("/", messages[key]));
+
+  const calculatedRouteParts = addIndex(map)((routePart, ii) => {
+    let routePartInLocale = routePart;
+    let keyOfRoutePartInLocale = undefined;
+    let routePartInLocaleInGivenLanguage = undefined;
+    if (startsWith("{", routePart)) {
+      routePartInLocale = pathnamePartsWithoutLocale[ii];
+    }
+
+    keyOfRoutePartInLocale = Object.keys(localesByLang[language]).find(
+      key => localesByLang[locale][key] === routePartInLocale
+    );
+    if (keyOfRoutePartInLocale) {
+      routePartInLocaleInGivenLanguage =
+        localesByLang[language][keyOfRoutePartInLocale];
+    }
+
+    return reject(isNil, {
+      routePart,
+      routePartInLocale,
+      keyOfRoutePartInLocale,
+      routePartInLocaleInGivenLanguage
+    });
+  }, routeParts);
+
+  return calculatedRouteParts;
+};
+
+export function getMatchingRoute(
+  locale,
+  language,
+  messages,
+  pathname,
+  localesByLang
+) {
+  /**
+   * Get the key of the route the user is currently on
+   */
+  const pathnamePartsWithoutLocale = drop(2, split("/", pathname));
+
+  const routeMessages = pickBy((val, key) => {
+    return startsWith("routes", key);
+  }, messages);
+
+  const localizedRoute = head(
+    map(key => {
+      const calculatedRouteParts = calculateRouteParts(
+        locale,
+        language,
+        key,
+        pathnamePartsWithoutLocale,
+        messages,
+        localesByLang
+      );
+
+      if (
+        equals(
+          map(prop("routePartInLocale"), calculatedRouteParts),
+          pathnamePartsWithoutLocale
+        )
+      ) {
+        // console.info(key, language, localesByLang[language][key]);
+        // console.info(
+        //   pathnamePartsWithoutLocale,
+        //   routeParts,
+        //   calculatedRouteParts
+        // );
+        return `/${language}/${join(
+          "/",
+          map(prop("routePartInLocaleInGivenLanguage"), calculatedRouteParts)
+        )}`;
+      }
+      return null;
+    }, keys(routeMessages)).filter(Boolean)
+  );
+
+  return localizedRoute;
+}
+
 export const LanguageSwitcher = ({ localesByLang }) => {
   const { pathname } = useLocation();
   const { locale, messages } = useIntl();
@@ -26,12 +114,6 @@ export const LanguageSwitcher = ({ localesByLang }) => {
     Swedish: "sv"
   };
 
-  const pathnamePartsWithoutLocale = drop(2, split("/", pathname));
-
-  const routeMessages = pickBy((val, key) => {
-    return startsWith("routes", key);
-  }, messages);
-
   const selectedLangStyles = "border bg-white text-green-500";
   const commonLangStyles =
     "font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
@@ -39,10 +121,22 @@ export const LanguageSwitcher = ({ localesByLang }) => {
   return (
     <ul className="flex border-l ml-4 pl-4">
       {Object.keys(AppLanguage).map(lang => {
-        return getMatchingRoute(AppLanguage[lang]) ? (
+        return getMatchingRoute(
+          locale,
+          AppLanguage[lang],
+          messages,
+          pathname,
+          localesByLang
+        ) ? (
           <li key={lang} className="mr-2">
             <NavLink
-              to={getMatchingRoute(AppLanguage[lang])}
+              to={getMatchingRoute(
+                locale,
+                AppLanguage[lang],
+                messages,
+                pathname,
+                localesByLang
+              )}
               className={`${
                 langMap[lang] === locale ? selectedLangStyles : "text-white"
               } ${commonLangStyles} uppercase flex justify-center items-center`}
@@ -58,59 +152,4 @@ export const LanguageSwitcher = ({ localesByLang }) => {
       })}
     </ul>
   );
-
-  function getMatchingRoute(language) {
-    /**
-     * Get the key of the route the user is currently on
-     */
-    const localizedRoute = head(
-      map(key => {
-        const routeParts = drop(1, split("/", routeMessages[key]));
-
-        const calculatedRouteParts = addIndex(map)((routePart, ii) => {
-          let routePartInLocale = routePart;
-          let keyOfRoutePartInLocale = undefined;
-          let routePartInLocaleInGivenLanguage = undefined;
-          if (startsWith("{", routePart)) {
-            routePartInLocale = pathnamePartsWithoutLocale[ii];
-          }
-
-          keyOfRoutePartInLocale = Object.keys(localesByLang[language]).find(
-            key => localesByLang[locale][key] === routePartInLocale
-          );
-          if (keyOfRoutePartInLocale) {
-            routePartInLocaleInGivenLanguage =
-              localesByLang[language][keyOfRoutePartInLocale];
-          }
-
-          return reject(isNil, {
-            routePart,
-            routePartInLocale,
-            keyOfRoutePartInLocale,
-            routePartInLocaleInGivenLanguage
-          });
-        }, routeParts);
-
-        if (
-          equals(
-            map(prop("routePartInLocale"), calculatedRouteParts),
-            pathnamePartsWithoutLocale
-          )
-        ) {
-          // console.info(key, language, localesByLang[language][key]);
-          // console.info(
-          //   pathnamePartsWithoutLocale,
-          //   routeParts,
-          //   calculatedRouteParts
-          // );
-          return `/${language}/${join(
-            "/",
-            map(prop("routePartInLocaleInGivenLanguage"), calculatedRouteParts)
-          )}`;
-        }
-      }, keys(routeMessages)).filter(Boolean)
-    );
-
-    return localizedRoute;
-  }
 };

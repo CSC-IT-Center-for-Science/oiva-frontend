@@ -17,6 +17,15 @@ import RequireCasAuth from "scenes/Login/services/RequireCasAuth";
 import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
 
 import { useUser } from "stores/user";
+import {
+  ROLE_ESITTELIJA,
+  ROLE_KATSELIJA,
+  ROLE_MUOKKAAJA,
+  ROLE_NIMENKIRJOITTAJA,
+  ROLE_YLLAPITAJA
+} from "modules/constants";
+import { indexOf, isEmpty } from "ramda";
+import { setLocalizations } from "services/lomakkeet/i18n-config";
 
 export const Oiva = () => {
   const [{ isDebugModeOn }] = useGlobalSettings();
@@ -38,8 +47,6 @@ export const Oiva = () => {
       getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(result => {
         const combinedMessages = Object.assign({}, result, translations);
         setMessages(combinedMessages);
-        // localforage.setItem("lokalisaatio", combinedMessages).then(result => {
-        // });
       });
     } else {
       setMessages(translations);
@@ -57,6 +64,31 @@ export const Oiva = () => {
       });
     }
   }, [setOrganisation, user]);
+
+  useEffect(() => {
+    if (!isEmpty(messages)) {
+      setLocalizations(messages);
+    }
+  }, [messages]);
+
+  /**
+   * If user has authenticated save some of his/her information into the
+   * session storage.
+   */
+  useEffect(() => {
+    if (user && user.username !== sessionStorage.getItem("username")) {
+      sessionStorage.setItem("username", user.username);
+      sessionStorage.setItem("oid", user.oid);
+      const role = [
+        ROLE_YLLAPITAJA,
+        ROLE_ESITTELIJA,
+        ROLE_MUOKKAAJA,
+        ROLE_NIMENKIRJOITTAJA,
+        ROLE_KATSELIJA
+      ].find(role => indexOf(role, user.roles) > -1);
+      sessionStorage.setItem("role", role || "");
+    }
+  }, [user]);
 
   useEffect(() => {
     // Let's fetch the current user from backend
@@ -104,7 +136,7 @@ export const Oiva = () => {
             <Tilastot />
           </Route>
           <Route path="*">
-            <div>Error view</div>
+            <div>Juuritason oletusnäkymä</div>
           </Route>
         </LocalizedSwitch>
       </AppLayout>

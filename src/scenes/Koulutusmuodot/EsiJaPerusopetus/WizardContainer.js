@@ -89,7 +89,7 @@ const WizardContainer = ({
       return muutospyynto;
     }
 
-    if (!muutospyynto) {
+    if (!muutospyynto && uuid) {
       fetchMuutospyynto();
     }
   }, [muutospyynto, uuid]);

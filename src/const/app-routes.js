@@ -2,6 +2,7 @@ export const AppRoute = {
   AmmatillinenKoulutus: "routes.ammatillinenKoulutus",
   Asianhallinta: "routes.asianhallinta",
   AsianhallintaAvoimet: "routes.asianhallintaAvoimet",
+  AsianhallintaAvoimetPath: "routes.asianhallintaAvoimetPath",
   AsianhallintaPaatetyt: "routes.asianhallintaPaatetyt",
   CasAuth: "routes.casAuth",
   CasLogOut: "routes.casLogOut",
@@ -10,12 +11,17 @@ export const AppRoute = {
   Home: "routes.home",
   JarjestamisJaYllapitamisluvat: "routes.jarjestamisJaYllapitamisluvat",
   KoulutuksenJarjestajat: "routes.koulutuksenJarjestajat",
+  getKoulutusmuodonEtusivu: params => ({
+    key: "routes.koulutusmuodonEtusivu",
+    params
+  }),
   LogIn: "routes.logIn",
   LogOut: "routes.logOut",
   Lukiokoulutus: "routes.lukiokoulutus",
   Saavutettavuusseloste: "routes.saavutettavuusseloste",
   Tietosuojailmoitus: "routes.tietosuojailmoitus",
   Tilastot: "routes.tilastot",
+  UusiHakemus: "routes.uusiHakemus",
   VapaaSivistystyo: "routes.vapaaSivistystyo",
   Yhteydenotto: "routes.yhteydenotto"
 };
@@ -31,10 +37,10 @@ export const AppRouteTitles = {
       [AppRoute.Tilastot, "common.statistics"]
     ]),
     level2: new Map([
-      [AppRoute.EsiJaPerusopetus, "education.preAndBasicEducation"],
-      [AppRoute.Lukiokoulutus, "education.highSchoolEducation"],
-      [AppRoute.AmmatillinenKoulutus, "education.vocationalEducation"],
-      [AppRoute.VapaaSivistystyo, "common.vstTitleName"]
+      [AppRoute.KoulutusmuodonEtusivu, "education.preAndBasicEducation"],
+      [AppRoute.KoulutusmuodonEtusivu, "education.highSchoolEducation"],
+      [AppRoute.KoulutusmuodonEtusivu, "education.vocationalEducation"],
+      [AppRoute.KoulutusmuodonEtusivu, "common.vstTitleName"]
     ])
   }
 };

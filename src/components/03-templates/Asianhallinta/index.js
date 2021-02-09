@@ -4,41 +4,111 @@ import { NavLink, Route, Router, useHistory } from "react-router-dom";
 import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import Esittelijat from "../Esittelijat/index";
 import { Typography } from "@material-ui/core";
-import { ROLE_ESITTELIJA } from "modules/constants";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
+import Asiat from "../Asiat/index";
+import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
+import { localizeRouteKey } from "utils/common";
+import BaseData from "basedata";
+import { MuutoksetContainer } from "stores/muutokset";
 
-const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
+const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
   const history = useHistory();
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
+
+  const asianhallintaAvoimetUrl = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaAvoimet,
+    formatMessage,
+    { koulutusmuoto: koulutusmuoto.kebabCase }
+  );
+
+  const asianhallintaPaatetytUrl = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaPaatetyt,
+    formatMessage,
+    { koulutusmuoto: koulutusmuoto.kebabCase }
+  );
 
   return (
     <React.Fragment>
       <Router history={history}>
         <LocalizedSwitch>
-          {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
-            <Route
-              params={{
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }}
-              path={AppRoute.Asianhallinta}
-              render={() => (
-                <Esittelijat
-                  koulutusmuoto={koulutusmuoto}
-                  WizardContainer={WizardContainer}
-                />
-              )}
-            />
-          ) : null}
+          <Route
+            authenticated={!!user}
+            exact
+            path={AppRoute.AsianhallintaAvoimet}
+            render={() => (
+              <React.Fragment>
+                <BreadcrumbsItem to={asianhallintaAvoimetUrl}>
+                  {formatMessage(common.asiatOpen)}
+                </BreadcrumbsItem>
+                <Asiat koulutusmuoto={koulutusmuoto} user={user} />
+              </React.Fragment>
+            )}
+          />
+          <Route
+            authenticated={!!user}
+            exact
+            path={AppRoute.AsianhallintaPaatetyt}
+            render={() => (
+              <React.Fragment>
+                <BreadcrumbsItem to={asianhallintaPaatetytUrl}>
+                  {formatMessage(common.asiatReady)}
+                </BreadcrumbsItem>
+                <Asiat koulutusmuoto={koulutusmuoto} user={user} />
+              </React.Fragment>
+            )}
+          />
+          <Route
+            authenticated={!!user}
+            exact
+            path={AppRoute.UusiHakemus}
+            render={() => (
+              <BaseData
+                locale={locale}
+                koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                render={_props => {
+                  console.info(_props, "_props");
+                  return (
+                    <MuutoksetContainer>
+                      <WizardContainer
+                        kohteet={_props.kohteet}
+                        koulutukset={_props.koulutukset}
+                        koulutusalat={_props.koulutusalat}
+                        koulutustyypit={_props.koulutustyypit}
+                        lisatiedot={_props.lisatiedot}
+                        maaraystyypit={_props.maaraystyypit}
+                        muut={_props.muut}
+                        opetuskielet={_props.opetuskielet}
+                        organisaatio={_props.organisaatio}
+                        role={"ESITTELIJA"}
+                        viimeisinLupa={_props.viimeisinLupa}
+                      />
+                    </MuutoksetContainer>
+                  );
+                }}
+              />
+            )}
+          />
+          {/* <Route
+            exact
+            path={AppRoute.AsianhallintaAvoimet}
+            render={() => (
+              <Esittelijat
+                koulutusmuoto={koulutusmuoto}
+                WizardContainer={WizardContainer}
+              />
+            )}
+          /> */}
           <Route path="*">
             <div className="flex-1 bg-gray-100">
               <div className="border border-gray-300 max-w-7xl m-auto bg-white mt-12 px-64 py-12">
                 <Typography component="h1" variant="h1">
-                  {intl.formatMessage(common.asianhallinta)}
+                  {formatMessage(common.asianhallinta)}
                 </Typography>
-                <p>{intl.formatMessage(common.asianhallintaInfoText)}</p>
+                <p>{formatMessage(common.asianhallintaInfoText)}</p>
                 <div className="grid grid-cols-3 gap-4 justify-items-auto pt-12">
                   <NavLink
                     className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
@@ -46,7 +116,7 @@ const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
                     exact={true}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    {intl.formatMessage(education.preAndBasicEducation)}
+                    {formatMessage(education.preAndBasicEducation)}
                     <ArrowForwardIcon className="ml-4" />
                   </NavLink>
                   <NavLink
@@ -55,7 +125,7 @@ const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
                     exact={true}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    {intl.formatMessage(education.highSchoolEducation)}
+                    {formatMessage(education.highSchoolEducation)}
                     <ArrowForwardIcon className="ml-4" />
                   </NavLink>
                   <NavLink
@@ -64,7 +134,7 @@ const Asianhallinta = ({ koulutusmuoto, WizardContainer }) => {
                     exact={true}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    {intl.formatMessage(education.vocationalEducation)}
+                    {formatMessage(education.vocationalEducation)}
                     <ArrowForwardIcon className="ml-4" />
                   </NavLink>
                 </div>

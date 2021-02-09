@@ -1905,6 +1905,11 @@
     "filepath": "src/i18n/definitions/kebabCase.js"
   },
   {
+    "id": "kebabCase.paatetyt",
+    "defaultMessage": "paatetyt",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
     "id": "kebabCase.tilastot",
     "defaultMessage": "tilastot",
     "filepath": "src/i18n/definitions/kebabCase.js"
@@ -2011,7 +2016,7 @@
   },
   {
     "id": "routes.ammatillinenKoulutus",
-    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinenkoulutus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2022,6 +2027,11 @@
   {
     "id": "routes.asianhallintaAvoimet",
     "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallintaAvoimetPath",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/:koulutusmuoto/asianhallinta/avoimet",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2065,6 +2075,11 @@
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
+    "id": "routes.koulutusmuodonEtusivu",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
     "id": "routes.logIn",
     "defaultMessage": "/kirjaudu",
     "filepath": "src/i18n/definitions/routes.js"
@@ -2092,6 +2107,11 @@
   {
     "id": "routes.tilastot",
     "defaultMessage": "/tilastot",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.uusiHakemus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
