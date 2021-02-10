@@ -7,24 +7,36 @@ import { ToastContainer } from "react-toastify";
 import { useGlobalSettings } from "stores/appStore";
 import SessionDialog from "SessionDialog";
 import { useHistory } from "react-router-dom";
+import { useIdleTimer } from "react-idle-timer";
+import { sessionTimeoutInMinutes } from "modules/constants";
 import { App } from "App";
 
 import "react-toastify/dist/ReactToastify.css";
 
-export const AppLayout = ({ localesByLang, children, user }) => {
+export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   const history = useHistory();
+  const { formatMessage, locale } = useIntl();
+
   const [{ isDebugModeOn }] = useGlobalSettings();
   const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
 
-  const { formatMessage, locale } = useIntl();
-
   const onSessionDialogLogout = useCallback(() => {
-    history.push("/cas-logout");
-  }, [history]);
+    history.push(localizeRouteKey(locale, AppRoute.CasLogOut, formatMessage));
+  }, [formatMessage, history, locale]);
 
   const onSessionDialogOK = useCallback(() => {
     setSessionDialogVisible(false);
   }, []);
+
+  const handleOnIdle = () => {
+    setSessionDialogVisible(true);
+  };
+
+  useIdleTimer({
+    timeout: (sessionTimeoutInMinutes / 2) * 60 * 1000, // unit: ms
+    onIdle: handleOnIdle,
+    debounce: 500
+  });
 
   return (
     <React.Fragment>
@@ -59,6 +71,7 @@ export const AppLayout = ({ localesByLang, children, user }) => {
                 localesByLang={localesByLang}
                 onLogout={onSessionDialogOK}
                 onSessionDialogOK={onSessionDialogOK}
+                organisation={organisation}
                 user={user}
               />
             }
@@ -71,6 +84,7 @@ export const AppLayout = ({ localesByLang, children, user }) => {
           localesByLang={localesByLang}
           onLogout={onSessionDialogOK}
           onSessionDialogOK={onSessionDialogOK}
+          organisation={organisation}
           user={user}
         />
       )}

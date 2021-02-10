@@ -28,6 +28,7 @@ export const App = ({ localesByLang, children, organisation, user }) => {
 
   const getOrganisationLink = useCallback(() => {
     let result = {};
+
     if (user && user.oid && organisation) {
       const orgNimi = user && organisation ? prop("nimi", organisation) : "";
       const isEsittelija = user
@@ -74,8 +75,6 @@ export const App = ({ localesByLang, children, organisation, user }) => {
           localesByLang={localesByLang}
           logIn={formatMessage(authMessages.logIn)}
           authenticationLink={authenticationLink}
-          // onLoginButtonClick={onLoginButtonClick}
-          // onMenuClick={onMenuClick}
           organisationLink={organisationLink}
           shortDescription={shortDescription}
           template={template}
@@ -87,8 +86,6 @@ export const App = ({ localesByLang, children, organisation, user }) => {
       authenticationLink,
       locale,
       localesByLang,
-      // onLoginButtonClick,
-      // onMenuClick,
       formatMessage,
       getOrganisationLink,
       shortDescription,
