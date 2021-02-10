@@ -177,17 +177,11 @@ const Asiat = ({ koulutusmuoto, user }) => {
             <LocalizedSwitch>
               <Route
                 authenticated={!!user}
-                params={{
-                  koulutusmuoto: koulutusmuoto.kebabCase
-                }}
                 path={AppRoute.AsianhallintaAvoimet}
                 render={() => <AvoimetAsiat koulutusmuoto={koulutusmuoto} />}
               />
               <Route
                 authenticated={!!user}
-                params={{
-                  koulutusmuoto: koulutusmuoto.kebabCase
-                }}
                 path={AppRoute.AsianhallintaPaatetyt}
                 render={() => <PaatetytAsiat koulutusmuoto={koulutusmuoto} />}
               />

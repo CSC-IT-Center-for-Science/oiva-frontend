@@ -9,8 +9,6 @@ import "../../../css/tailwind.css";
 import { useIntl } from "react-intl";
 import { getKoulutusmuodot, localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
-import education from "i18n/definitions/education";
-import common from "i18n/definitions/common";
 import { LanguageSwitcher } from "modules/i18n/index";
 import { addIndex, map } from "ramda";
 
@@ -38,41 +36,12 @@ const Navigation = ({
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
   const classes = useStyles(theme);
 
-  const level1Links = [
-    {
-      path: AppRoute.JarjestamisJaYllapitamisluvat,
-      text: formatMessage(education.preAndBasicEducation)
-    }
-  ];
-
   const links = map(koulutusmuoto => {
     return {
       path: AppRoute.getKoulutusmuodonEtusivu(koulutusmuoto.kebabCase),
       text: koulutusmuoto.paasivunOtsikko
     };
   }, koulutusmuodot);
-
-  console.info(links);
-
-  // [
-  //   {
-  //     path: AppRoute.getKoulutusmuodonEtusivu(),
-  //     text: formatMessage(education.preAndBasicEducation)
-  //   },
-  //   {
-  //     path: AppRoute.KoulutusmuodonEtusivu,
-  //     text: formatMessage(education.highSchoolEducation)
-  //   },
-  //   {
-  //     path: AppRoute.KoulutusmuodonEtusivu,
-  //     text: formatMessage(education.vocationalEducation)
-  //   },
-  //   {
-  //     path: AppRoute.VapaaSKoulutusmuodonEtusivuivistystyo,
-  //     text: formatMessage(education.vstEducation)
-  //   },
-  //   { path: AppRoute.Tilastot, text: formatMessage(common.statistics) }
-  // ];
 
   const items = addIndex(map)((link, index) => {
     const bgColorClass = `bg-${theme.hoverColor}`;

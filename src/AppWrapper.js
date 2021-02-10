@@ -129,9 +129,6 @@ const AppWrapper = () => {
     user.fetchedAt
   ]);
 
-  console.info("aksdlöfjkalsödfjklaösdfjklö");
-
-  console.info("laskeskellaan2...");
   return (
     <LocalizedRouter
       languages={AppLanguage}

@@ -13,6 +13,9 @@ import { localizeRouteKey } from "utils/common";
 import BaseData from "basedata";
 import { MuutoksetContainer } from "stores/muutokset";
 import { ROLE_ESITTELIJA } from "modules/constants";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import lukiokoulutus from "i18n/definitions/lukiokoulutus";
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 
 const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
   const history = useHistory();
@@ -140,7 +143,16 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
                   <div className="grid grid-cols-3 gap-4 justify-items-auto pt-12">
                     <NavLink
                       className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
-                      to={"/asianhallinta/esijaperusopetus"}
+                      to={localizeRouteKey(
+                        locale,
+                        AppRoute.AsianhallintaAvoimet,
+                        formatMessage,
+                        {
+                          koulutusmuoto: formatMessage(
+                            esiJaPerusopetus.kebabCase
+                          )
+                        }
+                      )}
                       exact={true}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
@@ -149,7 +161,14 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
                     </NavLink>
                     <NavLink
                       className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
-                      to={"/asianhallinta/lukio"}
+                      to={localizeRouteKey(
+                        locale,
+                        AppRoute.AsianhallintaAvoimet,
+                        formatMessage,
+                        {
+                          koulutusmuoto: formatMessage(lukiokoulutus.kebabCase)
+                        }
+                      )}
                       exact={true}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
@@ -158,7 +177,16 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
                     </NavLink>
                     <NavLink
                       className="font-semibold px-4 py-8 bg-white border border-gray-300 flex justify-center items-center"
-                      to={"/asianhallinta/ammatillinen"}
+                      to={localizeRouteKey(
+                        locale,
+                        AppRoute.AsianhallintaAvoimet,
+                        formatMessage,
+                        {
+                          koulutusmuoto: formatMessage(
+                            ammatillinenKoulutus.kebabCase
+                          )
+                        }
+                      )}
                       exact={true}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
