@@ -70,7 +70,7 @@ const AppWrapper = () => {
   const handleOnIdle = event => {
     setSessionDialogVisible(true);
   };
-
+  console.info("asfd");
   useIdleTimer({
     timeout: (sessionTimeoutInMinutes / 2) * 60 * 1000, // unit: ms
     onIdle: handleOnIdle,

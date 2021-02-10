@@ -1,25 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import css from "./header.module.css";
 import { NavLink, useLocation } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-  useMediaQuery
-} from "@material-ui/core";
+import { AppBar, Toolbar, Typography, useMediaQuery } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import HorizontalLayout from "./HorizontalLayout";
-import VerticalLayout from "./VerticalLayout";
-import { equals, includes } from "ramda";
-import { getMatchingRoute, localizeRouteKey } from "utils/common";
+import { includes } from "ramda";
+import { localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
-import { AppLanguage } from "const";
 import { AppRoute, AppRouteTitles } from "const/index";
 import common from "i18n/definitions/common";
 import { Navigation } from "modules/navigation/index";
@@ -33,15 +19,6 @@ const MEDIA_QUERIES = {
   DESKTOP_LARGE: "only screen and (min-width: 1280px)"
 };
 
-const useStyles = makeStyles(theme => ({
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  }
-}));
-
 const useStylesForTypography = makeStyles(() => ({
   root: {
     textTransform: "uppercase",
@@ -49,22 +26,8 @@ const useStylesForTypography = makeStyles(() => ({
   }
 }));
 
-const Header = ({
-  inFinnish,
-  inSwedish,
-  isAuthenticated,
-  localesByLang,
-  logIn,
-  logo,
-  authenticationLink,
-  onLoginButtonClick,
-  onMenuClick,
-  organisationLink,
-  shortDescription,
-  template = "A",
-  languageSelectionAriaLabel = "Kielivalinta"
-}) => {
-  const { formatMessage, locale, messages } = useIntl();
+const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
+  const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
 
   const typographyClasses = useStylesForTypography();

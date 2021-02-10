@@ -1,107 +1,30 @@
 import React, { useCallback, useState } from "react";
-import Header from "components/02-organisms/Header/index";
 import { useIntl } from "react-intl";
-import authMessages from "i18n/definitions/auth";
-import langMessages from "i18n/definitions/languages";
-import { assoc, head, includes, or, prop, tail, toPairs } from "ramda";
-import common from "i18n/definitions/common";
 import { AppRoute } from "const/index";
-import { localizeRoutePath } from "modules/i18n/components/LocalizedSwitch";
-import { Breadcrumbs, BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { NavLink, useLocation } from "react-router-dom";
-import { COLORS } from "modules/styles";
+import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { localizeRouteKey } from "utils/common";
-import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 import { ToastContainer } from "react-toastify";
 import { useGlobalSettings } from "stores/appStore";
+import SessionDialog from "SessionDialog";
+import { useHistory } from "react-router-dom";
+import { App } from "App";
 
 import "react-toastify/dist/ReactToastify.css";
 
 export const AppLayout = ({ localesByLang, children, organisation, user }) => {
+  const history = useHistory();
   const [{ isDebugModeOn }] = useGlobalSettings();
   const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
 
   const { formatMessage, locale } = useIntl();
-  const { pathname } = useLocation();
 
-  const authenticationLink = {
-    text: !user
-      ? [formatMessage(authMessages.logIn)]
-      : [formatMessage(authMessages.logOut), user.username],
-    path: !user
-      ? localizeRoutePath(AppRoute.CasAuth, locale, formatMessage)
-      : localizeRoutePath(AppRoute.CasLogOut, locale, formatMessage)
-  };
+  const onSessionDialogLogout = useCallback(() => {
+    history.push("/cas-logout");
+  }, [history]);
 
-  const getOrganisationLink = useCallback(() => {
-    let result = {};
-    if (user && user.oid && organisation) {
-      const orgNimi = user && organisation ? prop("nimi", organisation) : "";
-      const isEsittelija = user
-        ? includes("OIVA_APP_ESITTELIJA", user.roles)
-        : false;
-      result = assoc(
-        "text",
-        // Select name by locale or first in nimi object
-        or(prop(locale, orgNimi), tail(head(toPairs(orgNimi)) || [])),
-        result
-      );
-
-      if (!isEsittelija) {
-        result = assoc(
-          "path",
-          localizeRouteKey(locale, AppRoute.Jarjestamislupa, formatMessage, {
-            id: organisation.ytunnus,
-            koulutusmuoto: formatMessage(ammatillinenKoulutus.kebabCase)
-          }),
-          result
-        );
-      }
-    }
-    return result;
-  }, [formatMessage, locale, organisation, user]);
-
-  const shortDescription = {
-    text: formatMessage(common.siteShortDescription),
-    path: "/"
-  };
-
-  const isBreadcrumbVisible =
-    pathname !== `${localizeRouteKey(locale, AppRoute.Home, formatMessage)}`;
-
-  const getHeader = useCallback(
-    template => {
-      const organisationLink = getOrganisationLink();
-      return (
-        <Header
-          inFinnish={"FI"}
-          inSwedish={"SV"}
-          isAuthenticated={!!user}
-          locale={locale}
-          localesByLang={localesByLang}
-          logIn={formatMessage(authMessages.logIn)}
-          authenticationLink={authenticationLink}
-          // onLoginButtonClick={onLoginButtonClick}
-          // onMenuClick={onMenuClick}
-          organisationLink={organisationLink}
-          shortDescription={shortDescription}
-          template={template}
-          languageSelectionAriaLabel={formatMessage(langMessages.selection)}
-        ></Header>
-      );
-    },
-    [
-      authenticationLink,
-      locale,
-      localesByLang,
-      // onLoginButtonClick,
-      // onMenuClick,
-      formatMessage,
-      getOrganisationLink,
-      shortDescription,
-      user
-    ]
-  );
+  const onSessionDialogOK = useCallback(() => {
+    setSessionDialogVisible(false);
+  }, []);
 
   return (
     <React.Fragment>
@@ -110,31 +33,45 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
       >
         Oiva
       </BreadcrumbsItem>
-      {getHeader()}
-      <main>
-        <ToastContainer />
-        {isBreadcrumbVisible && (
-          <nav
-            tabIndex="0"
-            className="breadcumbs-nav py-4 border-b pl-8"
-            aria-label={formatMessage(common.breadCrumbs)}
-          >
-            <Breadcrumbs
-              hideIfEmpty={true}
-              separator={<b> / </b>}
-              item={NavLink}
-              finalItem={"b"}
-              finalProps={{
-                style: {
-                  fontWeight: 400,
-                  color: COLORS.BLACK
-                }
-              }}
-            />
-          </nav>
-        )}
-        {children}
-      </main>
+
+      <ToastContainer />
+
+      {isSessionDialogVisible && !!user ? (
+        <SessionDialog
+          isVisible={isSessionDialogVisible}
+          onLogout={onSessionDialogLogout}
+          onOK={onSessionDialogOK}
+        />
+      ) : null}
+
+      {isDebugModeOn ? (
+        <div className="flex">
+          <div
+            id="cy"
+            className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
+            style={{ zIndex: 9000 }}
+          ></div>
+          <div className="w-2/3 relative">
+            {
+              <App
+                children={children}
+                isSessionDialogVisible={isSessionDialogVisible}
+                localesByLang={localesByLang}
+                onLogout={onSessionDialogOK}
+                onSessionDialogOK={onSessionDialogOK}
+              />
+            }
+          </div>
+        </div>
+      ) : (
+        <App
+          children={children}
+          isSessionDialogVisible={isSessionDialogVisible}
+          localesByLang={localesByLang}
+          onLogout={onSessionDialogOK}
+          onSessionDialogOK={onSessionDialogOK}
+        />
+      )}
     </React.Fragment>
   );
 };
