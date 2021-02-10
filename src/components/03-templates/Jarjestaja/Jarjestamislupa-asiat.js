@@ -7,6 +7,7 @@ const JarjestamislupaAsiat = React.memo(
   ({
     history,
     isForceReloadRequested,
+    koulutusmuoto,
     lupa,
     match,
     newApplicationRouteItem,
@@ -16,6 +17,7 @@ const JarjestamislupaAsiat = React.memo(
       <JarjestamislupaAsiatList
         history={history}
         isForceReloadRequested={isForceReloadRequested}
+        koulutusmuoto={koulutusmuoto}
         lupa={lupa}
         match={match}
         newApplicationRouteItem={newApplicationRouteItem}

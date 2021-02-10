@@ -252,6 +252,7 @@ const Jarjestaja = React.memo(
                         "force=true",
                         props.location.search
                       )}
+                      koulutusmuoto={koulutusmuoto}
                       match={props.match}
                       newApplicationRouteItem={newApplicationRouteItem}
                       lupa={lupa}
