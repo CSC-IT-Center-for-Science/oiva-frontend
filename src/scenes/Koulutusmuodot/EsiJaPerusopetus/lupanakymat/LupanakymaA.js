@@ -84,7 +84,8 @@ const LupanakymaA = React.memo(
         filter(
           changeObj => startsWith("rajoitteet_", changeObj.anchor),
           flatten(
-            map(cObj => {
+            map(
+              cObj => {
                 return path(["meta", "changeObjects"], cObj);
               },
               // maaraykset || []
@@ -196,6 +197,17 @@ const LupanakymaA = React.memo(
                     sectionId="toimintaalue"
                     title={intl.formatMessage(education.opetustaAntavatKunnat)}
                     valtakunnallinenMaarays={valtakunnallinenMaarays}
+                  />
+                </div>
+
+                <div className="pt-8">
+                  <Opetuskieli
+                    code="3"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+                    rajoitteet={opetuskieletRajoitteet}
+                    sectionId={"opetuskielet"}
+                    title={intl.formatMessage(common.opetuskieli)}
                   />
                 </div>
 
