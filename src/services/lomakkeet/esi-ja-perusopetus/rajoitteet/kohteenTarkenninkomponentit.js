@@ -17,7 +17,8 @@ export const getKohteenTarkenninkomponentit = async (
   osioidenData,
   kohdeavain,
   locale,
-  isReadOnly = false
+  isReadOnly = false,
+  useMultiselect = false
 ) => {
   const komponentitByKey = {
     maaraaika: getMaaraaikalomake,
@@ -55,5 +56,5 @@ export const getKohteenTarkenninkomponentit = async (
 
   const fn = prop(kohdeavain, komponentitByKey);
 
-  return fn ? await fn(isReadOnly, prop(kohdeavain, osioidenData), locale) : [];
+  return fn ? await fn(isReadOnly, prop(kohdeavain, osioidenData), locale, useMultiselect) : [];
 };

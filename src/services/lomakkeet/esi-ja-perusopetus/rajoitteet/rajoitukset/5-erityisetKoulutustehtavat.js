@@ -15,7 +15,8 @@ import { getAnchorPart } from "utils/common";
 export default async function getErityisetKoulutustehtavat(
   isReadOnly,
   osionData = [],
-  locale
+  locale,
+  useMultiselect
 ) {
   const localeUpper = toUpper(locale);
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
@@ -30,7 +31,7 @@ export default async function getErityisetKoulutustehtavat(
           forChangeObject: {
             section: "erityisetKoulutustehtavat"
           },
-          isMulti: false,
+          isMulti: useMultiselect,
           isReadOnly,
           options: flatten(
             map(erityinenKoulutustehtava => {

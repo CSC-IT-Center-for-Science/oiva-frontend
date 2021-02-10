@@ -19,7 +19,8 @@ import { getKunnatFromStorage } from "helpers/kunnat";
 export default async function getOpetustaAntavatKunnat(
   isReadOnly,
   osionData = [],
-  locale
+  locale,
+  useMultiselect = false
 ) {
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
@@ -68,7 +69,7 @@ export default async function getOpetustaAntavatKunnat(
           forChangeObject: {
             section: "opetustaAntavatKunnat"
           },
-          isMulti: false,
+          isMulti: useMultiselect,
           isReadOnly,
           options: concat(
             map(kunta => {

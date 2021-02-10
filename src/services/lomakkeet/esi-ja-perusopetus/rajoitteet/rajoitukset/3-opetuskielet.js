@@ -13,7 +13,9 @@ import { find, flatten, map, path, prop, propEq, sortBy } from "ramda";
  */
 export default async function getOpetuskielikomponentit(
   isReadOnly,
-  osionData = []
+  osionData = [],
+  locale,
+  useMultiselect = false
 ) {
   const kielet = await getKieletOPHFromStorage();
 
@@ -44,7 +46,7 @@ export default async function getOpetuskielikomponentit(
             forChangeObject: {
               section: "opetuskielet"
             },
-            isMulti: false,
+            isMulti: useMultiselect,
             isReadOnly,
             options: map(opetuskieli => {
               /**
