@@ -201,6 +201,17 @@ const LupanakymaA = React.memo(
                 </div>
 
                 <div className="pt-8">
+                  <Opetuskieli
+                    code="3"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+                    rajoitteet={opetuskieletRajoitteet}
+                    sectionId={"opetuskielet"}
+                    title={intl.formatMessage(common.opetuskieli)}
+                  />
+                </div>
+
+                <div className="pt-8">
                   <OpetuksenJarjestamismuoto
                     code="4"
                     isPreviewModeOn={isPreviewModeOn}
