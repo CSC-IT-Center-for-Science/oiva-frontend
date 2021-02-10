@@ -9,12 +9,6 @@ import translations from "i18n/locales";
 import { AppLayout } from "modules/layout";
 import Tilastot from "scenes/Tilastot/components/index";
 import JarjestamisJaYllapitamisluvat from "scenes/JarjestamisJaYllapitamisluvat/index";
-import Login from "scenes/Login/Login";
-import Logout from "scenes/Logout/Logout";
-import DestroyCasAuth from "scenes/Logout/services/DestroyCasAuth";
-import RequireCasAuth from "scenes/Login/services/RequireCasAuth";
-import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
-
 import { useUser } from "stores/user";
 import {
   ROLE_ESITTELIJA,
@@ -25,6 +19,10 @@ import {
 } from "modules/constants";
 import { indexOf, isEmpty } from "ramda";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
+import AuthWithLocale from "AuthWithLocale";
+import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
+import LogOutWithLocale from "LogOutWithLocale";
+import Logout from "scenes/Logout/Logout";
 
 export const Oiva = () => {
   // See the file: .env.development.local
@@ -96,9 +94,9 @@ export const Oiva = () => {
 
   return (
     <LocalizedRouter
-      RouterComponent={BrowserRouter}
       languages={AppLanguage}
       localesByLang={messages}
+      RouterComponent={BrowserRouter}
     >
       <AppLayout
         localesByLang={messages}
@@ -106,19 +104,16 @@ export const Oiva = () => {
         user={user}
       >
         <LocalizedSwitch>
-          <Route exact path={AppRoute.LogIn} component={Login} />
+          <Route exact path={AppRoute.CasAuth} component={AuthWithLocale} />
+          <Route exact path={AppRoute.CasLogOut} component={LogOutWithLocale} />
           <Route exact path={AppRoute.LogOut} component={Logout} />
-          <Route exact path={AppRoute.CasAuth} component={RequireCasAuth} />
-          <Route exact path={AppRoute.CasLogOut} component={DestroyCasAuth} />
-          {!!organisation && (
-            <Route
-              exact
-              path={AppRoute.CasReady}
-              render={() => (
-                <CasAuthenticated organisation={organisation} user={user} />
-              )}
-            />
-          )}
+          <Route
+            exact
+            path={AppRoute.CasReady}
+            render={() => (
+              <CasAuthenticated organisation={organisation} user={user} />
+            )}
+          />
           <Route exact path={AppRoute.Home}>
             <Home />
           </Route>

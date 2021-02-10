@@ -11,7 +11,7 @@ import { App } from "App";
 
 import "react-toastify/dist/ReactToastify.css";
 
-export const AppLayout = ({ localesByLang, children, organisation, user }) => {
+export const AppLayout = ({ localesByLang, children, user }) => {
   const history = useHistory();
   const [{ isDebugModeOn }] = useGlobalSettings();
   const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
@@ -59,6 +59,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
                 localesByLang={localesByLang}
                 onLogout={onSessionDialogOK}
                 onSessionDialogOK={onSessionDialogOK}
+                user={user}
               />
             }
           </div>
@@ -70,6 +71,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
           localesByLang={localesByLang}
           onLogout={onSessionDialogOK}
           onSessionDialogOK={onSessionDialogOK}
+          user={user}
         />
       )}
     </React.Fragment>

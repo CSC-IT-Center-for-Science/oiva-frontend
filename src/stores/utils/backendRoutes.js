@@ -21,6 +21,9 @@ export const backendRoutes = {
     path: `koodistot/koodit/lisatietoja/`,
     minimumTimeBetweenFetchingInMinutes: 30
   },
+  logIn: {
+    path: `auth/login`
+  },
   lupaByYtunnus: {
     path: `luvat/jarjestaja/`,
     minimumTimeBetweenFetchingInMinutes: 0
