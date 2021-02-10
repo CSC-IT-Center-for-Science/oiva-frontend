@@ -1,5 +1,4 @@
 import {
-  append,
   compose,
   endsWith,
   find,
@@ -8,7 +7,6 @@ import {
   map,
   path,
   prop,
-  propEq,
   toUpper,
   values,
   filter, startsWith,

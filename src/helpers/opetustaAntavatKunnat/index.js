@@ -517,7 +517,7 @@ export async function defineBackendChangeObjects(
   let alimaarayksetUlkomaa = [];
 
   if (ulkomaaBEchangeObjectTextBoxes.length > 0) {
-    ulkomaaBEchangeObjectTextBoxes.map((item, index) => {
+    alimaarayksetUlkomaa = ulkomaaBEchangeObjectTextBoxes.map((item, index) => {
       const rajoitteetByRajoiteIdAndKoodiarvo = reject(
         isNil,
         mapObjIndexed(rajoite => {
@@ -527,7 +527,7 @@ export async function defineBackendChangeObjects(
         }, rajoitteetByRajoiteId)
       );
 
-      alimaarayksetUlkomaa.push(values(
+      return values(
         mapObjIndexed(asetukset => {
           return createAlimaarayksetBEObjects(
             kohteet,
@@ -536,7 +536,7 @@ export async function defineBackendChangeObjects(
             asetukset
           );
         }, rajoitteetByRajoiteIdAndKoodiarvo)
-      ));
+      );
     });
   }
 

@@ -78,9 +78,7 @@ export async function previewOfOpetustaAntavaKunnat({
             anchor: koodiarvo,
             name: "HtmlContent",
             properties: {
-              content: kunta.metadata && getLocalizedProperty(kunta.metadata, locale, "nimi") ||
-                kunta.koodi && find(propEq("kieli", locale.toUpperCase()), kunta.koodi.metadata).nimi ||
-                kunta.properties && kunta.properties.metadata.title
+              content: !(!(kunta.metadata && getLocalizedProperty(kunta.metadata, locale, "nimi")) && !(kunta.koodi && find(propEq("kieli", locale.toUpperCase()), kunta.koodi.metadata).nimi) && !(kunta.properties && kunta.properties.metadata.title))
             }
           }
       ]
