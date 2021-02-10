@@ -3,9 +3,6 @@ import { IntlProvider } from "react-intl";
 import { Route, Redirect } from "react-router-dom";
 import { AppLanguage } from "const";
 import { isEmpty } from "ramda";
-import { CAS_BASE_URL } from "modules/constants";
-import Login from "scenes/Login/Login";
-import { AppRoute } from "const/index";
 import RequireCasAuth from "scenes/Login/services/RequireCasAuth";
 
 export const LocalizedRouter = ({

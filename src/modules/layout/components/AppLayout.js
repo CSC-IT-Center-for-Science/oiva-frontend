@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Header from "components/02-organisms/Header/index";
 import { useIntl } from "react-intl";
-import { useUser } from "stores/user";
 import authMessages from "i18n/definitions/auth";
 import langMessages from "i18n/definitions/languages";
-import { getRaw } from "basedata";
 import { assoc, head, includes, or, prop, tail, toPairs } from "ramda";
-import { backendRoutes } from "stores/utils/backendRoutes";
 import common from "i18n/definitions/common";
 import { AppRoute } from "const/index";
 import { localizeRoutePath } from "modules/i18n/components/LocalizedSwitch";
@@ -15,15 +12,17 @@ import { NavLink, useLocation } from "react-router-dom";
 import { COLORS } from "modules/styles";
 import { localizeRouteKey } from "utils/common";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import { ToastContainer } from "react-toastify";
+import { useGlobalSettings } from "stores/appStore";
+
+import "react-toastify/dist/ReactToastify.css";
 
 export const AppLayout = ({ localesByLang, children, organisation, user }) => {
+  const [{ isDebugModeOn }] = useGlobalSettings();
+  const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
+
   const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
-  // const [userState, userActions] = useUser();
-
-  // const { data: user } = userState;
-
-  // const [organisation, setOrganisation] = useState();
 
   const authenticationLink = {
     text: !user
@@ -33,26 +32,6 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
       ? localizeRoutePath(AppRoute.CasAuth, locale, formatMessage)
       : localizeRoutePath(AppRoute.CasLogOut, locale, formatMessage)
   };
-
-  // useEffect(() => {
-  //   if (user && user.oid) {
-  //     getRaw(
-  //       "organisaatio",
-  //       `${backendRoutes.organisaatio.path}/${user.oid}`,
-  //       []
-  //     ).then(result => {
-  //       setOrganisation(result);
-  //     });
-  //   }
-  // }, [setOrganisation, user]);
-
-  // useEffect(() => {
-  //   // Let's fetch the current user from backend
-  //   const abortController = userActions.load();
-  //   return function cancel() {
-  //     abortController.abort();
-  //   };
-  // }, [userActions]);
 
   const getOrganisationLink = useCallback(() => {
     let result = {};
@@ -80,7 +59,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
       }
     }
     return result;
-  }, [locale, organisation, user]);
+  }, [formatMessage, locale, organisation, user]);
 
   const shortDescription = {
     text: formatMessage(common.siteShortDescription),
@@ -133,6 +112,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
       </BreadcrumbsItem>
       {getHeader()}
       <main>
+        <ToastContainer />
         {isBreadcrumbVisible && (
           <nav
             tabIndex="0"

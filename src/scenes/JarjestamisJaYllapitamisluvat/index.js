@@ -17,7 +17,7 @@ import VapaaSivistystyo from "scenes/Koulutusmuodot/VapaaSivistystyo/index";
 import Lukio from "scenes/Koulutusmuodot/Lukiokoulutus/index";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 
-const JarjestamisJaYllapitamisluvat = ({}) => {
+const JarjestamisJaYllapitamisluvat = () => {
   const { formatMessage, locale } = useIntl();
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
 

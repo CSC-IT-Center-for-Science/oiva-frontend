@@ -131,7 +131,7 @@ const AppWrapper = () => {
 
   console.info("aksdlöfjkalsödfjklaösdfjklö");
 
-  console.info("laskeskellaan...");
+  console.info("laskeskellaan2...");
   return (
     <LocalizedRouter
       languages={AppLanguage}

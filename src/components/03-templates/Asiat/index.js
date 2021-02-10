@@ -10,7 +10,6 @@ import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import UusiAsiaEsidialog from "../UusiAsiaEsidialog";
-import { last, split } from "ramda";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import commonMessages from "../../../i18n/definitions/common";
 import Typography from "@material-ui/core/Typography";

@@ -3,7 +3,6 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { AppRoute, AppLanguage } from "const";
 import { LocalizedRouter, LocalizedSwitch } from "modules/i18n/index";
 import Home from "scenes/Home/index";
-import { useGlobalSettings } from "stores/appStore";
 import { getRaw } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import translations from "i18n/locales";
@@ -28,9 +27,6 @@ import { indexOf, isEmpty } from "ramda";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
 
 export const Oiva = () => {
-  const [{ isDebugModeOn }] = useGlobalSettings();
-  const [isSessionDialogVisible, setSessionDialogVisible] = useState(false);
-
   // See the file: .env.development.local
   const isBackendTheSourceOfLocalizations = !process.env.USE_LOCAL_TRANSLATIONS;
 

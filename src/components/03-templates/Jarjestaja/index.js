@@ -7,7 +7,6 @@ import JarjestajaBasicInfo from "./JarjestajaBasicInfo";
 import JulkisetTiedot from "./JulkisetTiedot";
 import OmatTiedot from "./OmatTiedot";
 import JarjestamislupaAsiat from "./Jarjestamislupa-asiat";
-import HakemuksetJaPaatokset from "./HakemuksetJaPaatokset";
 import common from "i18n/definitions/common";
 import education from "i18n/definitions/education";
 import * as R from "ramda";
@@ -61,8 +60,6 @@ const Jarjestaja = React.memo(
     lupa = {},
     lupakohteet = [],
     organisation = {},
-    path,
-    url,
     user,
     tulevatLuvat = [],
     voimassaOlevaLupa = {}
@@ -264,13 +261,6 @@ const Jarjestaja = React.memo(
                 )}
               />
             )}
-            {/* {!!user && (
-              <Route
-                path={`${path}/hakemukset-ja-paatokset`}
-                exact
-                render={props => <HakemuksetJaPaatokset match={props.match} />}
-              />
-            )} */}
           </LocalizedSwitch>
         </div>
       </article>

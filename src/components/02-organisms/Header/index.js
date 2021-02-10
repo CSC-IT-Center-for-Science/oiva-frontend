@@ -66,47 +66,8 @@ const Header = ({
 }) => {
   const { formatMessage, locale, messages } = useIntl();
   const { pathname } = useLocation();
-  const selectedLangStyles = "border bg-white text-green-500 mr-1";
-  const commonLangStyles =
-    "leading-none font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
-  const classes = useStyles();
+
   const typographyClasses = useStylesForTypography();
-  // const items = [
-  //   <NavLink
-  //     to={localizeRouteKey(locale, logo.path, formatMessage)}
-  //     className="inline-block no-underline text-white hover:text-gray-100"
-  //   >
-  //     <Typography variant="h6" classes={typographyClasses}>
-  //       {logo.text}
-  //     </Typography>
-  //     {shortDescription.text}
-  //   </NavLink>,
-  // !!authenticationLink ? (
-  //   <NavLink
-  //     to={authenticationLink.path}
-  //     exact={false}
-  //     className="inline-block no-underline text-white hover:underline hover:text-gray-100"
-  //   >
-  //     <span>{authenticationLink.text[0]} </span>
-  //     {authenticationLink.text[1] && (
-  //       <span className="font-bold">{authenticationLink.text[1]}</span>
-  //     )}
-  //   </NavLink>
-  // ) : (
-  //     <React.Fragment />
-  //   ),
-  //   organisationLink.path ? (
-  //     <NavLink
-  //       className="link-to-own-organisation text-white"
-  //       to={organisationLink.path}
-  //       exact={false}
-  //     >
-  //       <span className="text-white">{organisationLink.text}</span>
-  //     </NavLink>
-  //   ) : (
-  //     <span className="text-white">{organisationLink.text}</span>
-  //   )
-  // ];
 
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
 
