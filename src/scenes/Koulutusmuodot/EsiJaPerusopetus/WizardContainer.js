@@ -119,7 +119,6 @@ const WizardContainer = ({
         page: 1,
         uuid
       });
-      console.info(url);
       history.push(url);
     },
     [formatMessage, history, id, koulutusmuoto.kebabCase, locale]
@@ -176,14 +175,9 @@ const WizardContainer = ({
         )
       );
 
-      if (!formData) {
-        console.info("NO FORM DATA: ");
-      }
-
       let muutospyynto = null;
 
       if (action === "save") {
-        // console.info("TALLENNUSTOIMINTO ON KOMMENTOITU VÄLIAIKAISESTI POIS.");
         muutospyynto = await onSave(formData);
       } else if (action === "preview") {
         muutospyynto = await onPreview(formData);

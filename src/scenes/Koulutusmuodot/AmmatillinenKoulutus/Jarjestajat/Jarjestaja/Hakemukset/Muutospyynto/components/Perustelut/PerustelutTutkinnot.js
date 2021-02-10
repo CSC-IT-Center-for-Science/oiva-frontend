@@ -45,7 +45,6 @@ const PerustelutTutkinnot = React.memo(
     return (
       <React.Fragment>
         {map(koulutusala => {
-          console.info(tutkinnotByKoulutusala, koulutusala);
           if (tutkinnotByKoulutusala[koulutusala.koodiarvo]) {
             const fullSectionId = `${sectionId}_${koulutusala.koodiarvo}`;
             const title = koulutusala.metadata[localeUpper].nimi;
@@ -53,7 +52,7 @@ const PerustelutTutkinnot = React.memo(
               prop("koulutustyyppikoodiarvo"),
               tutkinnotByKoulutusala[koulutusala.koodiarvo]
             );
-            console.info(koulutusala, changeObjects);
+
             if (changeObjects.tutkinnot[koulutusala.koodiarvo]) {
               return (
                 <ExpandableRowRoot

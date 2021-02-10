@@ -48,10 +48,7 @@ export const useGetLomake = (
           : lomakerakenne;
 
         if (!equal(lomakeJaSenMetadata, lomake)) {
-          // console.info("Asetetaan lomake", _path, isPreviewModeOn);
           setLomake(lomakeJaSenMetadata);
-        } else {
-          // console.info("Sama lomake", _path, isPreviewModeOn, lomake);
         }
       } catch (err) {
         setIsLoading(null);

@@ -109,7 +109,7 @@ export const defineBackendChangeObjects = async (
       opetustehtavaAnchor,
       changeObjects.opetustehtavat
     );
-    // console.info(kohteet, opetustehtava);
+
     // Muodostetaan muutosobjekti, mikäli käyttöliittymässä on tehty
     // kohtaan muutoksia.
     if (changeObj) {

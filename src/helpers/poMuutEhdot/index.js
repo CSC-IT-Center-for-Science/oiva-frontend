@@ -105,14 +105,6 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    // console.info(
-    //   "rajoitteetByRajoiteIdAndKoodiarvo",
-    //   rajoitteetByRajoiteIdAndKoodiarvo,
-    //   head(values(rajoitteetByRajoiteIdAndKoodiarvo)),
-    //   ehto.koodiarvo,
-    //   ehto
-    // );
-
     if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
@@ -151,14 +143,11 @@ export const defineBackendChangeObjects = async (
           kohteenTarkentimenArvo &&
           (rajoitevalinnanAnkkuriosa === ankkuri || !rajoitevalinnanAnkkuriosa)
         ) {
-          console.info("ankkuri", ankkuri, kohteenTarkentimenArvo, ehto);
-
           // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
           // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
           // loput toisiinsa "alenevassa polvessa".
           alimaaraykset = values(
             mapObjIndexed(asetukset => {
-              console.info(asetukset);
               return createAlimaarayksetBEObjects(
                 kohteet,
                 maaraystyypit,

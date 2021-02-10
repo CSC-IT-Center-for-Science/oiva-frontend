@@ -20,7 +20,7 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
-  console.info(opetuksenJarjestamismuoto, maaraykset);
+
   const jarjestamismuodonKuvaus = opetuksenJarjestamismuoto
     ? path(
         ["properties", "value"],

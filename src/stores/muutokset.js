@@ -164,12 +164,6 @@ const Store = createStore({
        */
       const nextAsetuksetIndex = length(asetuksetChangeObjects) / 2;
 
-      console.group();
-      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
-      console.info("kohdennuspolku", kohdennuspolku);
-      console.info("Seuraava ankkuritaso", nextAsetuksetIndex);
-      console.groupEnd();
-
       /**
        * Luodaan
        */
@@ -303,12 +297,6 @@ const Store = createStore({
               }, kohdennusChangeObjects)
             ) + 1
           : 0;
-
-      console.group();
-      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
-      console.info("kohdennuspolku", kohdennuspolku);
-      console.info("Seuraava ankkuritaso", nextKohdennusAnchorPart);
-      console.groupEnd();
 
       /**
        * Luodaan
