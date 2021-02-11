@@ -18,6 +18,8 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
 import AvoimetAsiat from "../AvoimetAsiat/index";
+import { last, split } from "ramda";
+import kebabCase from "i18n/definitions/kebabCase";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -52,23 +54,11 @@ const esidialoginHakuavaimet = ["organisaatiot"];
 const Asiat = ({ koulutusmuoto, user }) => {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
-  const location = useLocation();
-  const avoimetUrl = localizeRouteKey(
-    locale,
-    AppRoute.AsianhallintaAvoimet,
-    formatMessage,
-    {
-      koulutusmuoto: koulutusmuoto.kebabCase
-    }
-  );
-  const paatetytUrl = localizeRouteKey(
-    locale,
-    AppRoute.AsianhallintaPaatetyt,
-    formatMessage,
-    {
-      koulutusmuoto: koulutusmuoto.kebabCase
-    }
-  );
+  const { pathname } = useLocation();
+  const tabKey = last(split("/", pathname));
+
+  const avoimetPath = formatMessage(kebabCase.avoimet);
+  const paatetytPath = formatMessage(kebabCase.paatetyt);
 
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = formatMessage;
@@ -147,24 +137,25 @@ const Asiat = ({ koulutusmuoto, user }) => {
               </div>
             </div>
             <OivaTabs
-              value={location.pathname}
+              value={tabKey}
               indicatorColor="primary"
               textColor="primary"
               onChange={(e, val) => {
+                console.info(val);
                 history.push(val);
               }}
             >
               <OivaTab
                 label={t(common.asiatOpen)}
                 aria-label={t(common.asiatReady)}
-                to={avoimetUrl}
-                value={avoimetUrl}
+                to={avoimetPath}
+                value={avoimetPath}
               />
               <OivaTab
                 label={t(common.asiatReady)}
                 aria-label={t(common.asiatReady)}
-                to={paatetytUrl}
-                value={paatetytUrl}
+                to={paatetytPath}
+                value={paatetytPath}
               />
             </OivaTabs>
           </div>

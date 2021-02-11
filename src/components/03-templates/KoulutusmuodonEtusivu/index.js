@@ -8,7 +8,7 @@ import Jarjestajat from "../Jarjestajat";
 import BaseData from "basedata";
 import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
-import Asianhallinta from "components/03-templates/Asianhallinta";
+import Asianhallinta from "components/03-templates/Asianhallinta/index";
 import { includes } from "ramda";
 import { LocalizedSwitch } from "modules/i18n/index";
 import { AppRoute } from "const/index";

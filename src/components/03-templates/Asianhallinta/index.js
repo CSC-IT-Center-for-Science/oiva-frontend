@@ -8,7 +8,6 @@ import { Typography } from "@material-ui/core";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
 import Asiat from "../Asiat/index";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { localizeRouteKey } from "utils/common";
 import BaseData from "basedata";
 import { MuutoksetContainer } from "stores/muutokset";
@@ -21,22 +20,8 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
 
-  const asianhallintaAvoimetUrl = localizeRouteKey(
-    locale,
-    AppRoute.AsianhallintaAvoimet,
-    formatMessage,
-    { koulutusmuoto: koulutusmuoto.kebabCase }
-  );
-
   const role =
     sessionStorage.getItem("role") === ROLE_ESITTELIJA ? "ESITTELIJA" : "KJ";
-
-  const asianhallintaPaatetytUrl = localizeRouteKey(
-    locale,
-    AppRoute.AsianhallintaPaatetyt,
-    formatMessage,
-    { koulutusmuoto: koulutusmuoto.kebabCase }
-  );
 
   return (
     <React.Fragment>
@@ -44,29 +29,8 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
         <LocalizedSwitch>
           <Route
             authenticated={!!user}
-            exact
-            path={AppRoute.AsianhallintaAvoimet}
-            render={() => (
-              <React.Fragment>
-                <BreadcrumbsItem to={asianhallintaAvoimetUrl}>
-                  {formatMessage(common.asiatOpen)}
-                </BreadcrumbsItem>
-                <Asiat koulutusmuoto={koulutusmuoto} user={user} />
-              </React.Fragment>
-            )}
-          />
-          <Route
-            authenticated={!!user}
-            exact
-            path={AppRoute.AsianhallintaPaatetyt}
-            render={() => (
-              <React.Fragment>
-                <BreadcrumbsItem to={asianhallintaPaatetytUrl}>
-                  {formatMessage(common.asiatReady)}
-                </BreadcrumbsItem>
-                <Asiat koulutusmuoto={koulutusmuoto} user={user} />
-              </React.Fragment>
-            )}
+            path={AppRoute.Asianhallinta}
+            render={() => <Asiat koulutusmuoto={koulutusmuoto} user={user} />}
           />
           <Route
             authenticated={!!user}
