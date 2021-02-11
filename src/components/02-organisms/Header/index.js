@@ -1,15 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, useLocation } from "react-router-dom";
-import { AppBar, Toolbar, Typography, useMediaQuery } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Toolbar, useMediaQuery } from "@material-ui/core";
 import { includes } from "ramda";
 import { localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
-import { AppRoute, AppRouteTitles } from "const/index";
+import { AppRoute } from "const/index";
 import common from "i18n/definitions/common";
 import { Navigation } from "modules/navigation/index";
 import { LanguageSwitcher } from "modules/i18n/index";
+
+import logo_fi from "static/images/oiva-logo-fi-tekstilla.svg";
+import logo_sv from "static/images/oiva-logo-sv-tekstilla.svg";
 
 const MEDIA_QUERIES = {
   MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
@@ -19,23 +21,11 @@ const MEDIA_QUERIES = {
   DESKTOP_LARGE: "only screen and (min-width: 1280px)"
 };
 
-const useStylesForTypography = makeStyles(() => ({
-  root: {
-    fontFamily: "serif",
-    lineHeight: 1,
-    textTransform: "uppercase"
-  }
-}));
-
 const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
   const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
 
-  const typographyClasses = useStylesForTypography();
-
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
-
-  const homeRouteKey = AppRouteTitles.home.get(AppRoute.Home) || "";
 
   const is2ndNavVisible = includes(
     localizeRouteKey(
@@ -50,24 +40,18 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
     <React.Fragment>
       {breakpointTabletMin && (
         <AppBar elevation={0} position="static">
-          <Toolbar className="bg-green-500 px-4 justify-between overflow-hidden">
+          <Toolbar className="bg-green-500 px-5 justify-between overflow-hidden">
             <NavLink
               to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-              className="flex items-center no-underline text-white hover:text-gray-100 pr-4"
+              className="flex items-center no-underline text-white hover:text-gray-100 pr-10"
             >
-              <Typography variant="h1" classes={typographyClasses}>
-                {homeRouteKey
-                  ? formatMessage({
-                      id: AppRouteTitles.home.get(AppRoute.Home) || ""
-                    })
-                  : "KÄÄNNÖS PUUTTUU"}
-              </Typography>
-              <span
-                className="ml-4 text-sm leading-tight"
-                style={{ width: "11rem" }}
-              >
-                {formatMessage(common.siteShortDescription)}
-              </span>
+              <img
+                alt={`${formatMessage(
+                  common.opetusJaKulttuuriministerio
+                )} logo`}
+                src={locale === "sv" ? logo_sv : logo_fi}
+                className="lg:w-fit-content max-w-sm"
+              />
             </NavLink>
             <div id="navigation-level-1">
               <Navigation level={1} />
@@ -75,13 +59,11 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
             <div className="flex-1 flex justify-end items-center">
               {organisationLink.path && (
                 <NavLink
-                  className="link-to-own-organisation text-white border p-2 rounded-lg mr-4"
+                  className="link-to-own-organisation text-white border p-2 rounded-lg mr-5 hover:bg-white hover:text-green-500"
                   to={organisationLink.path}
                   exact={false}
                 >
-                  <span className="text-white">
-                    {formatMessage(common.omaSivu)}
-                  </span>
+                  {formatMessage(common.omaSivu)}
                 </NavLink>
               )}
               {!!authenticationLink && (
@@ -90,9 +72,11 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                   exact={false}
                   className="inline-block no-underline text-white hover:underline hover:text-gray-100"
                 >
-                  <span>{authenticationLink.text[0]} </span>
+                  <span className="font-normal">
+                    {authenticationLink.text[0]}{" "}
+                  </span>
                   {authenticationLink.text[1] && (
-                    <span className="font-bold">
+                    <span className="font-medium">
                       {authenticationLink.text[1]}
                     </span>
                   )}
