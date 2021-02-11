@@ -5,6 +5,11 @@ export default defineMessages({
     id: "routes.ammatillinenKoulutus",
     defaultMessage: "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus"
   },
+  asia: {
+    id: "routes.asia",
+    defaultMessage:
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{uuid}"
+  },
   asianhallinta: {
     id: "routes.asianhallinta",
     defaultMessage:

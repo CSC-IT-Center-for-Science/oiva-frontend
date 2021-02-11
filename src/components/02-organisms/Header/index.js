@@ -21,8 +21,9 @@ const MEDIA_QUERIES = {
 
 const useStylesForTypography = makeStyles(() => ({
   root: {
-    textTransform: "uppercase",
-    lineHeight: 1
+    fontFamily: "serif",
+    lineHeight: 1,
+    textTransform: "uppercase"
   }
 }));
 

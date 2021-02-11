@@ -8,12 +8,11 @@ import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 import Table from "components/02-organisms/Table";
-import { downloadFileFn } from "utils/common";
+import { downloadFileFn, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
 import { useMuutospyynto } from "stores/muutospyynto";
 import { Helmet } from "react-helmet";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
@@ -28,6 +27,7 @@ import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "../ConfirmDialog";
 import * as R from "ramda";
 import Typography from "@material-ui/core/Typography";
+import { AppRoute } from "const/index";
 
 const WrapTable = styled.div``;
 
@@ -113,9 +113,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const removeAsiakirja = async () => {
     await muutospyynnotActions.remove(documentIdForAction, intl.formatMessage);
     history.push(
-      `/${
-        koulutusmuoto.kebabCase
-      }/asianhallinta/avoimet?force=${new Date().getTime()}`
+      `${localizeRouteKey(intl.locale, AppRoute.AsianhallintaAvoimet, t, {
+        koulutusmuoto: koulutusmuoto.kebabCase
+      })}?force=${new Date().getTime()}`
     );
   };
 
@@ -146,9 +146,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     }
     // Let's move to Asiat view.
     history.push(
-      `/${
-        koulutusmuoto.kebabCase
-      }/asianhallinta/avoimet?force=${new Date().getTime()}`
+      `${localizeRouteKey(intl.locale, AppRoute.AsianhallintaAvoimet, t, {
+        koulutusmuoto: koulutusmuoto.kebabCase
+      })}?force=${new Date().getTime()}`
     );
   };
 
@@ -285,7 +285,19 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   setIsDownloadPDFAndChangeStateDialogVisible(true);
                   setDocumentIdForAction(row.uuid);
                 } else if (action === "edit") {
-                  history.push(`${ytunnus}/${row.uuid}`);
+                  history.push(
+                    localizeRouteKey(
+                      intl.locale,
+                      AppRoute.Hakemus,
+                      intl.formatMessage,
+                      {
+                        id: ytunnus,
+                        koulutusmuoto: koulutusmuoto.kebabCase,
+                        page: 1,
+                        uuid: row.uuid
+                      }
+                    )
+                  );
                 } else if (action === "remove") {
                   setDocumentIdForAction(row.uuid);
                   row.type === "liite"
@@ -387,32 +399,25 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
-      <div
-        className="flex flex-col flex-1"
-        style={{
-          borderTop: "0.05rem solid #E3E3E3",
-          background: "#FAFAFA"
-        }}
-      >
+      <div className="flex flex-col flex-1">
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        {/* <BreadcrumbsItem
-          to={`/${koulutusmuoto.kebabCase}/asianhallinta/${ytunnus}`}
-        >
-          {nimi}
-        </BreadcrumbsItem> */}
-        <div
-          className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8"
-          style={{
-            maxWidth: "90rem"
-          }}
-        >
+        <div className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8">
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
             onClick={() => {
-              history.push(`/${koulutusmuoto.kebabCase}/asianhallinta/avoimet`);
+              history.push(
+                localizeRouteKey(
+                  intl.locale,
+                  AppRoute.AsianhallintaAvoimet,
+                  t,
+                  {
+                    koulutusmuoto: koulutusmuoto.kebabCase
+                  }
+                )
+              );
             }}
           >
             <BackIcon
@@ -436,10 +441,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </div>
         </div>
         <div className="flex-1 flex w-full">
-          <div
-            style={{ maxWidth: "90rem" }}
-            className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12"
-          >
+          <div className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
             <span>
               <Typography component="h4" variant="h4" className="float-left">
                 {t(common.asianAsiakirjat)}

@@ -2050,6 +2050,11 @@
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
+    "id": "routes.asia",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet/{id}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
     "id": "routes.asianhallinta",
     "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta",
     "filepath": "src/i18n/definitions/routes.js"

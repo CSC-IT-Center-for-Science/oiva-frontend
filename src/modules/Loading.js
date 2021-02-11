@@ -11,14 +11,16 @@ const Loading = ({ notReadyList = [], percentage, text }) => {
   const loadingtext = text || intl.formatMessage(common.loading);
 
   return (
-    <div className="flex items-center justify-center mx-auto pt-24">
+    <div className="flex items-center justify-center mx-auto py-24">
       <span className="relative mr-6">
         {!R.isNil(percentage) && (
           <span className="absolute mt-6 ml-6">{Math.round(percentage)}%</span>
         )}
         <CircularProgress size={80} value={percentage} />
       </span>
-      <Typography component="h3" variant="h3" className="ml-4">{loadingtext}...</Typography>
+      <Typography component="h3" variant="h3" className="ml-4">
+        {loadingtext}...
+      </Typography>
       <ul className="ml-10">
         {R.addIndex(R.map)((item, i) => {
           return <li key={`${item}-${i}`}>{item}</li>;

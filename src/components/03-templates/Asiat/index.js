@@ -18,8 +18,8 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
 import AvoimetAsiat from "../AvoimetAsiat/index";
-import { last, split } from "ramda";
-import kebabCase from "i18n/definitions/kebabCase";
+import { startsWith } from "ramda";
+import Asiakirjat from "components/02-organisms/Asiakirjat/index";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -54,11 +54,30 @@ const esidialoginHakuavaimet = ["organisaatiot"];
 const Asiat = ({ koulutusmuoto, user }) => {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
-  const { pathname } = useLocation();
-  const tabKey = last(split("/", pathname));
+  const location = useLocation();
 
-  const avoimetPath = formatMessage(kebabCase.avoimet);
-  const paatetytPath = formatMessage(kebabCase.paatetyt);
+  const avoimetPath = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaAvoimet,
+    formatMessage,
+    {
+      koulutusmuoto: koulutusmuoto.kebabCase
+    }
+  );
+  const paatetytPath = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaPaatetyt,
+    formatMessage,
+    {
+      koulutusmuoto: koulutusmuoto.kebabCase
+    }
+  );
+
+  const tabKey = startsWith(avoimetPath, location.pathname)
+    ? avoimetPath
+    : startsWith(paatetytPath, location.pathname)
+    ? paatetytPath
+    : null;
 
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = formatMessage;
@@ -111,75 +130,88 @@ const Asiat = ({ koulutusmuoto, user }) => {
         />
       )}
 
-      <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
-        <div className="flex items-center">
-          <div className="flex-1">
-            <Typography component="h1" variant="h1">
-              {t(common.asianhallinta)}
-            </Typography>
-            <div className="w-full flex flex-row justify-between">
-              <Typography
-                component="h2"
-                variant="h2"
-                style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}
-              >
-                {koulutusmuoto.paasivunOtsikko}
-              </Typography>
-              <div>
-                <SimpleButton
-                  aria-label={t(common.luoUusiAsia)}
-                  color="primary"
-                  variant="contained"
-                  text={t(common.luoUusiAsia)}
-                  size="large"
-                  onClick={() => setIsEsidialogVisible(true)}
-                />
+      <LocalizedSwitch>
+        {!tabKey && (
+          <Route
+            path={AppRoute.Asia}
+            render={() => <Asiakirjat koulutusmuoto={koulutusmuoto} />}
+          />
+        )}
+        <Route path="*">
+          <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
+            <div className="flex items-center">
+              <div className="flex-1">
+                <Typography component="h1" variant="h1">
+                  {t(common.asianhallinta)}
+                </Typography>
+                <div className="w-full flex flex-row justify-between">
+                  <Typography
+                    component="h2"
+                    variant="h2"
+                    style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}
+                  >
+                    {koulutusmuoto.paasivunOtsikko}
+                  </Typography>
+                  <div>
+                    <SimpleButton
+                      aria-label={t(common.luoUusiAsia)}
+                      color="primary"
+                      variant="contained"
+                      text={t(common.luoUusiAsia)}
+                      size="large"
+                      onClick={() => setIsEsidialogVisible(true)}
+                    />
+                  </div>
+                </div>
+                <OivaTabs
+                  value={tabKey}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  onChange={(e, val) => {
+                    history.push(val);
+                  }}
+                >
+                  <OivaTab
+                    label={t(common.asiatOpen)}
+                    aria-label={t(common.asiatReady)}
+                    to={avoimetPath}
+                    value={avoimetPath}
+                  />
+                  <OivaTab
+                    label={t(common.asiatReady)}
+                    aria-label={t(common.asiatReady)}
+                    to={paatetytPath}
+                    value={paatetytPath}
+                  />
+                </OivaTabs>
               </div>
             </div>
-            <OivaTabs
-              value={tabKey}
-              indicatorColor="primary"
-              textColor="primary"
-              onChange={(e, val) => {
-                console.info(val);
-                history.push(val);
-              }}
-            >
-              <OivaTab
-                label={t(common.asiatOpen)}
-                aria-label={t(common.asiatReady)}
-                to={avoimetPath}
-                value={avoimetPath}
-              />
-              <OivaTab
-                label={t(common.asiatReady)}
-                aria-label={t(common.asiatReady)}
-                to={paatetytPath}
-                value={paatetytPath}
-              />
-            </OivaTabs>
           </div>
-        </div>
-      </div>
 
-      <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
-        <div className="flex mx-auto w-4/5 max-w-8xl py-12">
-          <div className="flex-1 bg-white">
-            <LocalizedSwitch>
-              <Route
-                authenticated={!!user}
-                path={AppRoute.AsianhallintaAvoimet}
-                render={() => <AvoimetAsiat koulutusmuoto={koulutusmuoto} />}
-              />
-              <Route
-                authenticated={!!user}
-                path={AppRoute.AsianhallintaPaatetyt}
-                render={() => <PaatetytAsiat koulutusmuoto={koulutusmuoto} />}
-              />
-            </LocalizedSwitch>
+          <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+            <div className="flex mx-auto w-4/5 max-w-8xl py-12">
+              <div className="flex-1 bg-white">
+                <LocalizedSwitch>
+                  <Route
+                    authenticated={!!user}
+                    path={AppRoute.AsianhallintaAvoimet}
+                    render={() => (
+                      <AvoimetAsiat koulutusmuoto={koulutusmuoto} />
+                    )}
+                  />
+                  <Route
+                    authenticated={!!user}
+                    path={AppRoute.AsianhallintaPaatetyt}
+                    render={() => (
+                      <PaatetytAsiat koulutusmuoto={koulutusmuoto} />
+                    )}
+                  />
+                </LocalizedSwitch>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </Route>
+      </LocalizedSwitch>
     </React.Fragment>
   );
 };

@@ -1,5 +1,6 @@
 export const AppRoute = {
   AmmatillinenKoulutus: "routes.ammatillinenKoulutus",
+  Asia: "routes.asia",
   Asianhallinta: "routes.asianhallinta",
   AsianhallintaAvoimet: "routes.asianhallintaAvoimet",
   AsianhallintaAvoimetPath: "routes.asianhallintaAvoimetPath",

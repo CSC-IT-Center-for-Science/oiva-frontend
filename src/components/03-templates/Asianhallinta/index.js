@@ -29,11 +29,6 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
         <LocalizedSwitch>
           <Route
             authenticated={!!user}
-            path={AppRoute.Asianhallinta}
-            render={() => <Asiat koulutusmuoto={koulutusmuoto} user={user} />}
-          />
-          <Route
-            authenticated={!!user}
             exact
             path={AppRoute.UusiHakemus}
             render={() => (
@@ -95,6 +90,11 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
                 />
               );
             }}
+          />
+          <Route
+            authenticated={!!user}
+            path={AppRoute.Asianhallinta}
+            render={() => <Asiat koulutusmuoto={koulutusmuoto} user={user} />}
           />
           <Route path="*">
             {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
