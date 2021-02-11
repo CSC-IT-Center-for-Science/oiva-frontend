@@ -4,18 +4,21 @@ import {
   compose,
   drop,
   find,
+  flatten,
+  forEach,
   includes,
+  last,
   mapObjIndexed,
   not,
   path,
   pathEq,
-  pipe,
   prop,
   propEq,
   reject,
-  unnest,
+  split,
   values
 } from "ramda";
+import { getAnchorPart } from "../../utils/common";
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
@@ -44,15 +47,31 @@ export const defineBackendChangeObjects = async (
     }, rajoitteetByRajoiteId)
   );
 
-  // Lisää kaikki rajoitus muutosobjektit parent muutokselle
-  const paaMuutos = pipe(
-    unnest,
-    find(v => not(path(["parent"], v)))
-  )(alimaaraykset);
-  if (paaMuutos) {
-    paaMuutos.meta = { changeObjects: values(rajoitteetByRajoiteId) };
-  }
-
+  // Lisää rajoitus muutosobjektit parent muutoksille
+  forEach(alimaarays => {
+    if (not(path["parent"], alimaarays)) {
+      const rajoiteId = last(
+        split("_", getAnchorPart(alimaarays.meta.changeObjects[0].anchor, 0))
+      );
+      const rajoiteObjWithRajoitteenTyyppi = find(
+        rajoiteObj =>
+          path(["properties", "metadata", "section"], rajoiteObj) ===
+          "opiskelijamaarat",
+        rajoitteetByRajoiteId[rajoiteId]
+      );
+      // Miksi tyyppi tulee kaikille Cobjeille?
+      console.log(alimaarays.meta);
+      alimaarays.meta = {
+        ...alimaarays.meta,
+        changeObjects: values(rajoitteetByRajoiteId[rajoiteId]),
+        tyyppi: path(
+          ["properties", "value", "value"],
+          rajoiteObjWithRajoitteenTyyppi
+        )
+      };
+    }
+  }, flatten(alimaaraykset));
+  console.log(alimaaraykset);
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
    * muutoksia. Siksi kentän tiedoista luodaan tässä kohtaa oma backend-

@@ -18,5 +18,13 @@ export default defineMessages({
     id: "opiskelijamaara.osionInfoteksti",
     defaultMessage:
       "Opiskelijamäärää ei ole oletusarvoisesti rajoitettu. Ole hyvä ja tarkista rajoitteet lomakkeen lopusta."
+  },
+  kokonaismaara: {
+    id: "opiskelijamaara.kokonaismaara",
+    defaultMessage: "Kokonaisoppilas-/opiskelijamäärä"
+  },
+  yksittainenKohdennus: {
+    id: "opiskelijamaara.yksittainenKohdennus",
+    defaultMessage: "Yksittäinen oppilasmääräkohdennus"
   }
 });
