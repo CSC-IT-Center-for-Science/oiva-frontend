@@ -74,7 +74,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
     muutospyynnot.avoimet &&
     muutospyynnot.avoimet.isLoading === false &&
     muutospyynnot.avoimet.fetchedAt &&
-    muutospyynnot.avoimet.data.length
+    R.length(R.path(["avoimet", "data"], muutospyynnot))
   ) {
     return (
       <div
@@ -109,7 +109,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
     muutospyynnot.avoimet &&
     muutospyynnot.avoimet.isLoading === false &&
     muutospyynnot.avoimet.fetchedAt &&
-    muutospyynnot.avoimet.data.length === 0
+    !R.length(R.path(["avoimet", "data"], muutospyynnot))
   ) {
     return (
       <div
