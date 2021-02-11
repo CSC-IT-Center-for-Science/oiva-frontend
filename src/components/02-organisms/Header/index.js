@@ -72,7 +72,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
               <Navigation level={1} />
             </div>
             <div className="flex-1 flex justify-end items-center">
-              {organisationLink.path ? (
+              {organisationLink.path && (
                 <NavLink
                   className="link-to-own-organisation text-white border p-2 rounded-lg mr-4"
                   to={organisationLink.path}
@@ -82,8 +82,6 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                     {formatMessage(common.omaSivu)}
                   </span>
                 </NavLink>
-              ) : (
-                <span className="text-white">{organisationLink.text}</span>
               )}
               {!!authenticationLink && (
                 <NavLink
