@@ -9,7 +9,6 @@ import {
   includes,
   last,
   mapObjIndexed,
-  not,
   path,
   pathEq,
   prop,
@@ -47,9 +46,9 @@ export const defineBackendChangeObjects = async (
     }, rajoitteetByRajoiteId)
   );
 
-  // Lisää rajoitus muutosobjektit parent muutoksille
+  // Lisää rajoitus muutosobjektit parent muutoksille, sekä lisätään metaan parentin tyyppi
   forEach(alimaarays => {
-    if (not(path["parent"], alimaarays)) {
+    if (!path(["parent"], alimaarays)) {
       const rajoiteId = last(
         split("_", getAnchorPart(alimaarays.meta.changeObjects[0].anchor, 0))
       );
@@ -59,8 +58,6 @@ export const defineBackendChangeObjects = async (
           "opiskelijamaarat",
         rajoitteetByRajoiteId[rajoiteId]
       );
-      // Miksi tyyppi tulee kaikille Cobjeille?
-      console.log(alimaarays.meta);
       alimaarays.meta = {
         ...alimaarays.meta,
         changeObjects: values(rajoitteetByRajoiteId[rajoiteId]),
