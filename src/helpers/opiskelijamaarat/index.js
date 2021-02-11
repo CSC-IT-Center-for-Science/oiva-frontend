@@ -68,7 +68,7 @@ export const defineBackendChangeObjects = async (
       };
     }
   }, flatten(alimaaraykset));
-  console.log(alimaaraykset);
+
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
    * muutoksia. Siksi kentän tiedoista luodaan tässä kohtaa oma backend-
