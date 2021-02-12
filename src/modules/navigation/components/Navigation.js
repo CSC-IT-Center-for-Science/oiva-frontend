@@ -4,7 +4,6 @@ import { AppRoute, AppRouteTitles } from "const/index";
 import { useIntl } from "react-intl";
 import { isEmpty, map, values } from "ramda";
 import { getKoulutusmuodot } from "utils/common";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 export const Navigation = ({ level }) => {

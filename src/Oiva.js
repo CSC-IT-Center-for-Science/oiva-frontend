@@ -23,6 +23,9 @@ import AuthWithLocale from "AuthWithLocale";
 import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
 import LogOutWithLocale from "LogOutWithLocale";
 import Logout from "scenes/Logout/Logout";
+import { defaults } from "react-sweet-state";
+
+defaults.devtools = true;
 
 export const Oiva = () => {
   // See the file: .env.development.local

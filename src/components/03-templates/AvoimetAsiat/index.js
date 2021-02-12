@@ -3,15 +3,12 @@ import Table from "../../02-organisms/Table";
 import ConfirmDialog from "../../02-organisms/ConfirmDialog";
 import { generateAvoimetAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
-import { useLocation, useHistory, Route } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../../modules/Loading";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import common from "../../../i18n/definitions/common";
 import ProcedureHandler from "../../02-organisms/procedureHandler";
 import { includes, length, path } from "ramda";
-import { LocalizedSwitch } from "modules/i18n/index";
-import Asiakirjat from "components/02-organisms/Asiakirjat/index";
-import { AppRoute } from "const/index";
 
 const AvoimetAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
