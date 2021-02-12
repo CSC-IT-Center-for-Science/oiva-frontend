@@ -294,7 +294,7 @@ export async function createObjectToSave(
     propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.paattymispaivamaara =
+  objectToSave.voimassaloppupvm =
     paattymispaivamaaraObj && paattymispaivamaaraObj.properties.value
       ? moment(paattymispaivamaaraObj.properties.value).format("YYYY-MM-DD")
       : "";
