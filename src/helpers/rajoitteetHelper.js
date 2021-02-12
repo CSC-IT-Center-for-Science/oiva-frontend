@@ -26,7 +26,8 @@ const koodistoMapping = {
   opetustehtavat: "opetustehtava",
   opiskelijamaarat: "oppilasopiskelijamaara",
   toimintaalue: "kunta",
-  opetuskielet: "kielikoodistoopetushallinto"
+  opetuskielet: "kielikoodistoopetushallinto",
+  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto"
 };
 
 function isAsetusKohdennuksenKohdennus(asetusChangeObj) {
