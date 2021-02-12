@@ -1,5 +1,6 @@
 import {
   append,
+  drop,
   mapObjIndexed,
   groupBy,
   prop,
@@ -121,7 +122,7 @@ export const defineBackendChangeObjects = async (
             kohteet,
             maaraystyypit,
             muutosobjekti,
-            asetukset
+            drop(2, asetukset)
           );
         }, rajoitteetByRajoiteIdAndKoodiarvo)
       );
