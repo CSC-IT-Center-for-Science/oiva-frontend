@@ -6,20 +6,25 @@ import Typography from "@material-ui/core/Typography";
 import { useIntl } from "react-intl";
 import commonMessages from "../../i18n/definitions/common";
 import { useHistory } from "react-router-dom";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const";
 
 export default function TilastotCard() {
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
   const history = useHistory();
 
   return (
     <Card>
       <CardActionArea
         onClick={() => {
-          history.push("/tilastot");
-        }}>
+          history.push(
+            localizeRouteKey(locale, AppRoute.Tilastot, formatMessage)
+          );
+        }}
+      >
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {intl.formatMessage(commonMessages.statistics)}
+            {formatMessage(commonMessages.statistics)}
           </Typography>
         </CardContent>
       </CardActionArea>

@@ -82,8 +82,6 @@ export function getChangeObjects(muutoshakemus) {
     muut
   } = muutoshakemus;
 
-  console.info(changeObjects);
-
   if (backendChanges.kielet) {
     if (backendChanges.kielet.opetuskielet) {
       changeObjects.kielet.opetuskielet = R.compose(

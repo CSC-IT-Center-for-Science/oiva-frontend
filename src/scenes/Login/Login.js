@@ -7,6 +7,8 @@ import { useIntl } from "react-intl";
 import auth from "../../i18n/definitions/auth";
 import common from "../../i18n/definitions/common";
 import { Typography } from "@material-ui/core";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 // import LoginForm from 'routes/Login/components/LoginForm'
 
@@ -28,17 +30,19 @@ const FakeButton = styled.div`
 `;
 
 const Login = () => {
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
   return (
     <div>
-      <Helmet htmlAttributes={{ lang: intl.locale }}>
-        <title>Oiva | {intl.formatMessage(auth.logIn)}</title>
+      <Helmet htmlAttributes={{ lang: locale }}>
+        <title>Oiva | {formatMessage(auth.logIn)}</title>
       </Helmet>
-      <BreadcrumbsItem to="/">
-        {intl.formatMessage(common.frontpage)}
+      <BreadcrumbsItem
+        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
+      >
+        {formatMessage(common.frontpage)}
       </BreadcrumbsItem>
       <BreadcrumbsItem to="/kirjaudu">
-        {intl.formatMessage(common.logIn)}
+        {formatMessage(common.logIn)}
       </BreadcrumbsItem>
       <Typography component="h1" variant="h1">
         Kirjautuminen

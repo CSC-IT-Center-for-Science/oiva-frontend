@@ -3,6 +3,8 @@ import common from "../i18n/definitions/common";
 import moment from "moment";
 import ProcedureHandler from "../components/02-organisms/procedureHandler";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 const asiatTableColumnSetup = avoimet => {
   return [
@@ -93,7 +95,7 @@ export const generateAvoimetAsiatTableStructure = (
   intl,
   history,
   onPaatettyActionClicked,
-  koulutustyyppi
+  koulutusmuotoKebabCase
 ) => {
   const formatMessage = intl.formatMessage;
   const tableColumnSetup = asiatTableColumnSetup(true);
@@ -140,7 +142,17 @@ export const generateAvoimetAsiatTableStructure = (
                 } else if (action === "paata") {
                   await onPaatettyActionClicked(row);
                 } else {
-                  history.push(`/${koulutustyyppi}/asianhallinta/${row.id}`);
+                  history.push(
+                    localizeRouteKey(
+                      intl.locale,
+                      AppRoute.Asia,
+                      intl.formatMessage,
+                      {
+                        koulutusmuoto: koulutusmuotoKebabCase,
+                        uuid: row.id
+                      }
+                    )
+                  );
                 }
               },
               cells: generateAsiaTableRows(row, intl, true).concat([

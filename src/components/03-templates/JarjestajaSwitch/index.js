@@ -5,10 +5,10 @@ import { useIntl } from "react-intl";
 import { isEmpty, prop } from "ramda";
 import Loading from "../../../modules/Loading";
 import BaseData from "basedata";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { parseLupa } from "utils/lupaParser";
 import Jarjestaja from "components/03-templates/Jarjestaja";
 import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaParser";
+import { AppRoute } from "const/index";
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
@@ -41,14 +41,11 @@ const JarjestajaSwitch = ({
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {koulutusmuoto.paasivunOtsikko}
-      </BreadcrumbsItem>
       <Switch>
         <Route
           authenticated={!!user}
           exact
-          path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
+          path={AppRoute.UusiHakemus}
           render={() => (
             <BaseData
               locale={locale}
@@ -59,6 +56,7 @@ const JarjestajaSwitch = ({
                     kohteet={_props.kohteet}
                     koulutukset={_props.koulutukset}
                     koulutusalat={_props.koulutusalat}
+                    koulutusmuoto={koulutusmuoto}
                     koulutustyypit={_props.koulutustyypit}
                     lisatiedot={_props.lisatiedot}
                     maaraystyypit={_props.maaraystyypit}
@@ -73,8 +71,8 @@ const JarjestajaSwitch = ({
           )}
         />
         <Route
-          path={`${path}`}
-          render={props => {
+          path="*"
+          render={() => {
             /**
              * Varmistetaan, että ollaan aikeissa näyttää halutun järjestäjän
              * tiedot vertaamalla haussa käytettyä y-tunnusta luvan
@@ -98,8 +96,6 @@ const JarjestajaSwitch = ({
                   lupakohteet={lupakohteet}
                   lupa={lupa}
                   organisation={organisation}
-                  path={path}
-                  url={props.match.url}
                   user={user}
                   kielet={kielet}
                   tulevatLuvat={tulevatLuvat}

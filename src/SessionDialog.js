@@ -55,18 +55,19 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
       }, 1000);
       setTimerHandle(timerHandle);
     }
-  }, [isVisible, timerHandle, countDown]);
+  }, [countDown, isVisible, timerHandle]);
 
   return (
     <Dialog
-      open={isVisible}
+      open={true}
       aria-labelledby="simple-dialog-title"
-      PaperProps={{ style: { overflowY: "visible" } }}>
+      PaperProps={{ style: { overflowY: "visible" } }}
+    >
       <DialogTitle id="customized-dialog-title" onClose={continueAsLoggedIn}>
         {intl.formatMessage(auth.sessionDialogTitle)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <p className="mx-2 mb-6">
+        <p className="mx-8 my-6">
           {intl.formatMessage(auth.sessionDialogCountdown, {
             time: `${Math.floor(timeLeft / 60)} m ${(timeLeft % 60)
               .toString()
@@ -80,7 +81,8 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
             <Button
               onClick={() => logout(false)}
               color="primary"
-              variant="outlined">
+              variant="outlined"
+            >
               {intl.formatMessage(auth.logOut)}
             </Button>
           </div>
@@ -89,7 +91,8 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
               return continueAsLoggedIn();
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(auth.jatkaKirjautuneena)}
           </Button>
         </div>

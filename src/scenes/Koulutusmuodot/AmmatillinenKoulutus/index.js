@@ -3,6 +3,8 @@ import KoulutusmuodonEtusivu from "components/03-templates/KoulutusmuodonEtusivu
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
 import WizardContainer from "./WizardContainer";
+import { useIntl } from "react-intl";
+import { getKoulutusmuodot } from "utils/common";
 
 /**
  * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
@@ -21,7 +23,11 @@ const hakuavaimet = [
   "tulevatLuvat"
 ];
 
-export default function AmmatillinenKoulutus({ koulutusmuoto }) {
+export default function AmmatillinenKoulutus() {
+  const { formatMessage } = useIntl();
+
+  const koulutusmuoto = getKoulutusmuodot(formatMessage).ammatillinenKoulutus;
+
   return (
     <KoulutusmuodonEtusivu
       hakuavaimet={hakuavaimet}

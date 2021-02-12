@@ -87,7 +87,7 @@ const AsiaDialogContainer = ({
       organisation={organisaatio}
       role={role}
       title={intl.formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
-      urlOnClose={"/ammatillinenkoulutus/asianhallinta/avoimet?force=true"}
+      urlOnClose={"/ammatillinen-koulutus/asianhallinta/avoimet?force=true"}
     />
   ) : (
     <Loading />
