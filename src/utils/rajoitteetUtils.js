@@ -356,10 +356,20 @@ export const getRajoite = (value, rajoitteet) => {
  *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa varten
  *
  */
-export const getRajoitteetFromMaarays = (alimaaraykset, locale) => {
+export const getRajoitteetFromMaarays = (
+  alimaaraykset = [],
+  locale,
+  naytettavaArvo
+) => {
+  console.info(naytettavaArvo, alimaaraykset);
   let htmlString = "";
   forEach(alimaarays => {
-    htmlString = handleAlimaarays(alimaarays, htmlString, locale);
+    htmlString = handleAlimaarays(
+      alimaarays,
+      htmlString,
+      locale,
+      naytettavaArvo
+    );
   }, alimaaraykset);
   return (
     <ul
@@ -369,7 +379,12 @@ export const getRajoitteetFromMaarays = (alimaaraykset, locale) => {
   );
 };
 
-export const handleAlimaarays = (alimaarays, htmlString, locale) => {
+export const handleAlimaarays = (
+  alimaarays,
+  htmlString,
+  locale,
+  naytettavaArvo = "nimi"
+) => {
   let modifiedString = `${htmlString}<ul class="list-disc">`;
 
   const hasAlimaarays = !!length(alimaarays.aliMaaraykset);
@@ -396,14 +411,20 @@ export const handleAlimaarays = (alimaarays, htmlString, locale) => {
       metadata => metadata.kieli === locale,
       path(["koodi", "metadata"], alimaarays || [])
     );
-    modifiedString = `${modifiedString}<li class="list-disc">${value.nimi} ${
-      alimaarays.arvo ? alimaarays.arvo : ""
-    }</li>`;
+    modifiedString = `${modifiedString}<li class="list-disc">${value[
+      naytettavaArvo
+    ] || value.nimi} ${alimaarays.arvo || ""}</li>`;
   }
 
   if (hasAlimaarays) {
+    console.info(alimaarays);
     forEach(alimaarays => {
-      modifiedString = handleAlimaarays(alimaarays, modifiedString, locale);
+      modifiedString = handleAlimaarays(
+        alimaarays,
+        modifiedString,
+        locale,
+        naytettavaArvo
+      );
     }, alimaarays.aliMaaraykset);
   }
 
