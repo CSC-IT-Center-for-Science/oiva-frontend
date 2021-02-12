@@ -417,7 +417,6 @@ export const handleAlimaarays = (
   }
 
   if (hasAlimaarays) {
-    console.info(alimaarays);
     forEach(alimaarays => {
       modifiedString = handleAlimaarays(
         alimaarays,
