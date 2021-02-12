@@ -117,7 +117,7 @@ export const LanguageSwitcher = ({ localesByLang }) => {
     "font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
 
   return (
-    <ul className="flex border-l ml-4 pl-4">
+    <ul className="flex border-l border-opacity-25 ml-5 pl-5">
       {Object.keys(AppLanguage).map(lang => {
         return getMatchingRoute(
           locale,
@@ -126,7 +126,7 @@ export const LanguageSwitcher = ({ localesByLang }) => {
           pathname,
           localesByLang
         ) ? (
-          <li key={lang} className="mr-2">
+          <li key={lang} className="mr-1">
             <NavLink
               to={getMatchingRoute(
                 locale,

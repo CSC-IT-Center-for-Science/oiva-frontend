@@ -4,14 +4,21 @@ import { AppRoute, AppRouteTitles } from "const/index";
 import { useIntl } from "react-intl";
 import { isEmpty, map, values } from "ramda";
 import { getKoulutusmuodot } from "utils/common";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 export const Navigation = ({ level }) => {
   const { formatMessage, locale } = useIntl();
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
 
   const mainRoutes = {
-    JarjestamisJaYllapitamisluvat: AppRoute.JarjestamisJaYllapitamisluvat,
-    Tilastot: AppRoute.Tilastot
+    JarjestamisJaYllapitamisluvat: {
+      route: AppRoute.JarjestamisJaYllapitamisluvat,
+      isExpandable: true
+    },
+    Tilastot: {
+      route: AppRoute.Tilastot
+    }
   };
 
   return (
@@ -19,19 +26,26 @@ export const Navigation = ({ level }) => {
       <ul className={`block h-full ${level === 2 ? "bg-green-600" : ""}`}>
         {// Päätason navigaatio
         level === 1 &&
-          Object.keys(mainRoutes).map((elem, index) => {
+          Object.keys(mainRoutes).map((key, index) => {
             const routeTitleKey =
-              AppRouteTitles.navigation.level1.get(AppRoute[elem]) || "";
+              AppRouteTitles.navigation.level1.get(AppRoute[key]) || "";
+
             return (
-              <li key={elem} className="inline-block h-full">
+              <li key={key} className="inline-block h-full">
                 <NavLink
-                  to={localizeRouteKey(AppRoute[elem])}
-                  activeClassName="bg-green-700 hover:text-white border"
-                  className="text-white px-4 p-6 uppercase"
+                  to={localizeRouteKey(AppRoute[key])}
+                  activeClassName="bg-green-600"
+                  className="text-white px-5 p-6 uppercase font-medium hover:text-white hover:bg-green-600"
+                  style={{ fontSize: "0.9375rem" }}
                 >
-                  {routeTitleKey
-                    ? formatMessage({ id: routeTitleKey })
-                    : AppRoute[elem]}
+                  <span>
+                    {routeTitleKey
+                      ? formatMessage({ id: routeTitleKey })
+                      : AppRoute[key]}
+                  </span>
+                  {mainRoutes[key].isExpandable && (
+                    <ExpandMoreIcon className="ml-2 align-bottom" />
+                  )}
                 </NavLink>
               </li>
             );
@@ -51,8 +65,8 @@ export const Navigation = ({ level }) => {
               <li key={koulutusmuoto.kebabCase} className="inline-block h-full">
                 <NavLink
                   to={routeToKoulutusmuodonEtusivu}
-                  activeClassName="bg-green-700 hover:text-white border"
-                  className="text-white px-4 py-2"
+                  activeClassName="bg-green-700 hover:text-white"
+                  className="text-white px-4 py-3 font-medium"
                 >
                   {koulutusmuoto.paasivunOtsikko}
                 </NavLink>
