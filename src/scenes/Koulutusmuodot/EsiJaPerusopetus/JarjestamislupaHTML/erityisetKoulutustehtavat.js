@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   addIndex,
-  and,
-  compose,
   filter,
   find,
   isEmpty,
-  isNil,
+  length,
   map,
-  not,
   path,
   propEq,
   toUpper
@@ -17,12 +14,13 @@ import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import Typography from "@material-ui/core/Typography";
+import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 
 export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   maaraykset
 }) {
   const intl = useIntl();
-  const locale = toUpper(intl.locale);
+  const localeUpper = toUpper(intl.locale);
   const [
     erityisetKoulutustehtavatKoodisto,
     setErityisetKoulutustehtavatKoodisto
@@ -39,7 +37,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
       });
   }, []);
 
-  const erityisetKoulutustehtavat = filter(
+  const erityisetKoulutustehtavatMaaraykset = filter(
     maarays =>
       maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
       maarays.koodisto === "poerityinenkoulutustehtava",
@@ -53,52 +51,43 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
     maaraykset
   );
 
-  return !isEmpty(erityisetKoulutustehtavat) &&
+  return !isEmpty(erityisetKoulutustehtavatMaaraykset) &&
     !isEmpty(erityisetKoulutustehtavatKoodisto) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.erityisetKoulutustehtavat)}
       </Typography>
-      <ul className="ml-8 list-disc mb-4">
-        {map(erityinenKoulutustehtava => {
-          const koodistonTiedot = find(
-            propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo),
-            erityisetKoulutustehtavatKoodisto
-          );
-          /**
-           * Etsitään määräystä vastaava toinen määräys, jossa on
-           * mahdollisesti määritelty tähän määräykseen liittyvä
-           * kuvausteksti.
-           */
-          const kuvausmaaraykset = filter(ek => {
-            return and(
-              propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo)(ek),
-              compose(not, isNil, path(["meta", "kuvaus"]))(ek)
-            );
-          }, erityisetKoulutustehtavat);
 
-          return !!koodistonTiedot ? (
-            <li key={erityinenKoulutustehtava.koodiarvo}>
-              {path(["metadata", locale, "nimi"], koodistonTiedot)}
-              {kuvausmaaraykset.length ? (
-                <ul className="ml-8 list-disc mb-4">
-                  {addIndex(map)(
-                    (kuvausmaarays, index) => (
-                      <li key={`kuvaus-${index}`}>
-                        {path(["meta", "kuvaus"], kuvausmaarays)}
-                      </li>
-                    ),
-                    kuvausmaaraykset
-                  )}
-                </ul>
-              ) : null}
-            </li>
-          ) : null;
-        }, filter(compose(isNil, path(["meta", "kuvaus"])), erityisetKoulutustehtavat)).filter(
-          Boolean
-        )}
+      <ul className="ml-8 list-disc mb-4">
+        {addIndex(map)((maarays, index) => {
+          let naytettavaArvo = path(["meta", "kuvaus"], maarays);
+
+          if (!naytettavaArvo) {
+            const koodistosta = find(
+              propEq("koodiarvo", maarays.koodiarvo),
+              erityisetKoulutustehtavatKoodisto
+            );
+
+            naytettavaArvo = koodistosta.metadata[localeUpper].nimi;
+          }
+
+          const result = (
+            <React.Fragment key={`${maarays.koodiarvo}-${index}`}>
+              <li className="leading-bulletList">{naytettavaArvo}</li>
+
+              {length(maarays.aliMaaraykset)
+                ? getRajoitteetFromMaarays(
+                    maarays.aliMaaraykset,
+                    localeUpper,
+                    "kuvaus"
+                  )
+                : ""}
+            </React.Fragment>
+          );
+          return result;
+        }, erityisetKoulutustehtavatMaaraykset)}
       </ul>
-      { lisatietomaarays ? (lisatietomaarays.meta.arvo) : null}
+      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
     </div>
   ) : null;
 }

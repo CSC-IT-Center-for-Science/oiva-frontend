@@ -68,28 +68,26 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
           {opetustehtavaKoodisto.metadata[toUpper(intl.locale)].kuvaus}
         </Typography>
         <ul className="ml-8 list-disc mb-4">
-          {addIndex(map)(
-            (maarays, index) => [
-              <li
-                key={`${maarays.koodiarvo}-${index}`}
-                className="leading-bulletList"
-              >
-                {path(
-                  ["metadata", locale, "nimi"],
-                  find(
-                    propEq("koodiarvo", maarays.koodiarvo),
-                    opetustehtavatFromStorage
-                  )
-                )}
-              </li>,
-              <>
+          {addIndex(map)((maarays, index) => {
+            const result = (
+              <React.Fragment key={`${maarays.koodiarvo}-${index}`}>
+                <li className="leading-bulletList">
+                  {path(
+                    ["metadata", locale, "nimi"],
+                    find(
+                      propEq("koodiarvo", maarays.koodiarvo),
+                      opetustehtavatFromStorage
+                    )
+                  )}
+                </li>
+
                 {length(maarays.aliMaaraykset)
                   ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
                   : ""}
-              </>
-            ],
-            opetustehtavaMaaraykset
-          )}
+              </React.Fragment>
+            );
+            return result;
+          }, opetustehtavaMaaraykset)}
         </ul>
         {lisatietomaarays && lisatietomaarays.meta.arvo}
       </div>
