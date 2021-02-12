@@ -455,6 +455,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "asiaTable.headers.paatospvm",
+    "defaultMessage": "Päätöspäivämäärä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "asiaTable.headers.hakupvm",
     "defaultMessage": "Haettu voimaantulo",
     "filepath": "src/i18n/definitions/common.js"

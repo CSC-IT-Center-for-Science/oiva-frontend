@@ -30,6 +30,7 @@
   "asiaTable.headers.asianumero": "Asianumero",
   "asiaTable.headers.hakupvm": "Haettu voimaantulo",
   "asiaTable.headers.maakunta": "Maakunta",
+  "asiaTable.headers.paatospvm": "Päätöspäivämäärä",
   "asiaTable.headers.saapunut": "Saapunut/luotu",
   "asiaTable.headers.tila": "Tila",
   "asiaTypes.lupaChange": "Järjestämisluvan muutos",

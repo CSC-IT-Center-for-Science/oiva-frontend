@@ -30,8 +30,6 @@ export const Navigation = ({ level }) => {
             const routeTitleKey =
               AppRouteTitles.navigation.level1.get(AppRoute[key]) || "";
 
-            // const Icon = mainRoutes[key].isExpandable ? <ExpandMoreIcon />
-
             return (
               <li key={key} className="inline-block h-full">
                 <NavLink
