@@ -5,6 +5,10 @@ export default defineMessages({
     id: "esiJaPerusopetus.genetiivi",
     defaultMessage: "Esi- ja perusopetuksen"
   },
+  kebabCase: {
+    id: "esiJaPerusopetus.kebabCase",
+    defaultMessage: "esi-ja-perusopetus"
+  },
   kuvausteksti: {
     id: "esiJaPerusopetus.kuvausteksti",
     defaultMessage:
@@ -18,5 +22,14 @@ export default defineMessages({
   paasivunOtsikko: {
     id: "esiJaPerusopetus.paasivunOtsikko",
     defaultMessage: "Esi- ja perusopetuksen järjestäjät"
+  },
+  poOpetustehtava: {
+    id: "esiJaPerusopetus.poOpetustehtava",
+    defaultMessage: "PO Opetustehtävä"
+  },
+  esittelyteksti: {
+    id: "esiJaPerusopetus.esittelyteksti",
+    defaultMessage:
+      "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia esi- ja perusopetuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä."
   }
 });

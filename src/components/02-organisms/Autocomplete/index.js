@@ -10,6 +10,8 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import InputLabel from "@material-ui/core/InputLabel";
 import { equals, map } from "ramda";
+import { useIntl } from "react-intl";
+import commonMessages from "i18n/definitions/common";
 
 /**
  * Autocomplete wraps a Select
@@ -28,6 +30,7 @@ const Autocomplete = React.memo(
     const [value, setValue] = useState([]);
     const [, setMinCharacters] = useState(3);
     const [isOptionsShown, setIsOptionsShown] = useState(false);
+    const intl = useIntl();
 
     useEffect(() => {
       setValue(props.value);
@@ -158,9 +161,9 @@ const Autocomplete = React.memo(
         : setIsOptionsShown(false);
     };
 
-    return (
+    return props.isVisible ? (
       <React.Fragment>
-        {props.isPreviewModeOn ? (
+        {props.isPreviewModeOn || props.isReadOnly ? (
           <ul className="ml-8 list-disc mb-4">
             {map(
               value =>
@@ -173,42 +176,57 @@ const Autocomplete = React.memo(
             {props.title && (
               <InputLabel
                 required={props.isRequired}
-                style={{ marginBottom: "0.2em" }}>
+                style={{ marginBottom: "0.2em" }}
+              >
                 {props.title}
               </InputLabel>
             )}
             {props.isSearch ? (
               <Select
                 autosize={props.autosize}
+                components={props.isSearch && { DropdownIndicator }}
+                getOptionLabel={option => `${option.label}`}
+                getOptionValue={option => `${option.value}`}
                 name={props.name}
-                isMulti={props.isMulti}
-                value={value}
-                onChange={handleSelectChange}
-                placeholder={props.placeholder}
+                hideSelectedOptions={props.isSearch}
                 inputProps={{
                   id: "select-multiple"
                 }}
-                options={isOptionsShown ? options : []}
-                getOptionLabel={option => `${option.label}`}
-                getOptionValue={option => `${option.value}`}
+                isMulti={props.isMulti}
                 isSearchable={true}
+                menuIsOpen={isOptionsShown}
+                noOptionsMessage={() =>
+                  intl.formatMessage(commonMessages.eiValittaviaKohteita)
+                }
+                onChange={handleSelectChange}
+                onInputChange={onInputChange}
+                options={isOptionsShown ? options : []}
+                placeholder={
+                  props.placeholder
+                    ? props.placeholder
+                    : intl.formatMessage(commonMessages.autocompleteValitse)
+                }
+                required={props.isRequired}
                 searchFilter={searchFilter}
                 styles={optionStyles}
-                components={props.isSearch && { DropdownIndicator }}
-                hideSelectedOptions={props.isSearch}
-                onInputChange={onInputChange}
-                menuIsOpen={isOptionsShown}
+                value={value}
                 width={props.width}
-                required={props.isRequired}
               />
             ) : (
               <Select
                 autosize={props.autosize}
-                name={props.name}
+                hideSelectedOptions={props.hideSelectedOptions}
                 isMulti={props.isMulti}
-                value={value}
+                name={props.name}
+                noOptionsMessage={() =>
+                  intl.formatMessage(commonMessages.eiValittaviaKohteita)
+                }
                 onChange={handleSelectChange}
-                placeholder={props.placeholder}
+                placeholder={
+                  props.placeholder
+                    ? props.placeholder
+                    : intl.formatMessage(commonMessages.autocompleteValitse)
+                }
                 inputProps={{
                   id: "select-multiple"
                 }}
@@ -218,20 +236,21 @@ const Autocomplete = React.memo(
                 isSearchable={true}
                 searchFilter={searchFilter}
                 styles={optionStyles}
-                hideSelectedOptions={props.hideSelectedOptions}
-                width={props.width}
                 required={props.isRequired}
+                value={value}
+                width={props.width}
               />
             )}
           </React.Fragment>
         )}
       </React.Fragment>
-    );
+    ) : null;
   },
   (cp, np) => {
     return (
       equals(cp.isPreviewModeOn, np.isPreviewModeOn) &&
       equals(cp.isValid, np.isValid) &&
+      equals(cp.isVisible, np.isVisible) &&
       equals(cp.options, np.options) &&
       equals(cp.value, np.value) &&
       equals(cp.height, np.height) &&
@@ -243,9 +262,11 @@ const Autocomplete = React.memo(
 
 Autocomplete.defaultProps = {
   isMulti: true,
+  isReadOnly: false,
   isRequired: false,
   isValid: true,
-  placeholder: "Valitse...",
+  isVisible: true,
+  placeholder: null,
   value: [],
   isSearch: false,
   minChars: 3,
@@ -258,8 +279,10 @@ Autocomplete.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   isMulti: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,
+  isVisible: PropTypes.bool,
   name: PropTypes.string,
   callback: PropTypes.func,
   options: PropTypes.array,

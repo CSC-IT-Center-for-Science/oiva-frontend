@@ -5,6 +5,11 @@
     "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
   },
   {
+    "id": "ammatillinenKoulutus.kebabCase",
+    "defaultMessage": "ammatillinen-koulutus",
+    "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
+  },
+  {
     "id": "ammatillinenKoulutus.kuvausteksti",
     "defaultMessage": "Ammatillisten tutkintojen ja koulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää tutkintojen ja koulutuksen järjestämislupaa. Järjestämislupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
     "filepath": "src/i18n/definitions/ammatillinenKoulutus.js"
@@ -83,6 +88,11 @@
     "id": "auth.endOfSessionInfo",
     "defaultMessage": "Sinut on kirjattu ulos sovelluksesta.",
     "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "common.oiva",
+    "defaultMessage": "Oiva",
+    "filepath": "src/i18n/definitions/common.js"
   },
   {
     "id": "common.statistics",
@@ -442,6 +452,11 @@
   {
     "id": "asiaTable.headers.saapunut",
     "defaultMessage": "Saapunut/luotu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "asiaTable.headers.paatospvm",
+    "defaultMessage": "Päätöspäivämäärä",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1195,8 +1210,18 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.haeKJ",
+    "defaultMessage": "Hae koulutuksen järjestäjää (Y-tunnus, OID, Virastotunnus)",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.luoUusiAsiaEsidialogiInfo2",
     "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella.",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.luoUusiAsiaEsidialogiInfo3",
+    "defaultMessage": "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää hakutoiminnolla.",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1227,6 +1252,11 @@
   {
     "id": "common.syotaYtunnus",
     "defaultMessage": "Syötä Y-tunnus",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.syotaHaettavaTunniste",
+    "defaultMessage": "Syötä haettava tunniste",
     "filepath": "src/i18n/definitions/common.js"
   },
   {
@@ -1535,6 +1565,66 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.esikatselu",
+    "defaultMessage": "Esikatselu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.opetusJotaLupaKoskee",
+    "defaultMessage": "Opetus, jota lupa koskee",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.is",
+    "defaultMessage": "on",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.henkiloa",
+    "defaultMessage": "henkiloa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.kunnassa",
+    "defaultMessage": "kunnassa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.autocompleteValitse",
+    "defaultMessage": "Valitse...",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.asianumero",
+    "defaultMessage": "asianumero",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.paatospaiva",
+    "defaultMessage": "Päätöspäivä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.voimaantulopaiva",
+    "defaultMessage": "Voimaantulopäivä",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.eiValittaviaKohteita",
+    "defaultMessage": "Ei valittavia kohteita",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.omaSivu",
+    "defaultMessage": "Oma sivu",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.eiAvoimiaAsioita",
+    "defaultMessage": "Taulukossa ei ole yhtään avoinna olevaa asiaa",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1581,7 +1671,7 @@
   },
   {
     "id": "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
-    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena",
+    "defaultMessage": "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä koulukotiopetusmuotoisena",
     "filepath": "src/i18n/definitions/education.js"
   },
   {
@@ -1660,6 +1750,16 @@
     "filepath": "src/i18n/definitions/education.js"
   },
   {
+    "id": "education.opetetaanKielilla",
+    "defaultMessage": "opetetaan kielillä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.opetustehtavana",
+    "defaultMessage": "opetustehtavana",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
     "id": "error.duplicateAsianumero",
     "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
     "filepath": "src/i18n/definitions/error.js"
@@ -1675,6 +1775,11 @@
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
+    "id": "esiJaPerusopetus.kebabCase",
+    "defaultMessage": "esi-ja-perusopetus",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
     "id": "esiJaPerusopetus.kuvausteksti",
     "defaultMessage": "Kunta on perusopetuslain nojalla velvollinen järjestämään sen alueella asuville oppivelvollisuusikäisille esi- ja perusopetusta. Valtioneuvosto voi myöntää opetus- ja kulttuuriministeriön esityksestä myös rekisteröidylle yhteisölle tai säätiölle luvan perusopetuslain mukaisen opetuksen järjestämiseen. Opetusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella opetuksen järjestäjiä ja heidän järjestämislupiaan.",
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
@@ -1687,6 +1792,16 @@
   {
     "id": "esiJaPerusopetus.paasivunOtsikko",
     "defaultMessage": "Esi- ja perusopetuksen järjestäjät",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.poOpetustehtava",
+    "defaultMessage": "PO Opetustehtävä",
+    "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
+  },
+  {
+    "id": "esiJaPerusopetus.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia esi- ja perusopetuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä.",
     "filepath": "src/i18n/definitions/esiJaPerusopetus.js"
   },
   {
@@ -1780,6 +1895,61 @@
     "filepath": "src/i18n/definitions/informUser.js"
   },
   {
+    "id": "kebabCase.asianhallinta",
+    "defaultMessage": "asianhallinta",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.avoimet",
+    "defaultMessage": "avoimet",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.jarjestamisJaYllapitamisluvat",
+    "defaultMessage": "jarjestamis-ja-yllapitamisluvat",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.jarjestamislupa",
+    "defaultMessage": "jarjestamislupa",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.jarjestamislupaasiat",
+    "defaultMessage": "jarjestamislupa-asiat",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.koulutustoimijat",
+    "defaultMessage": "koulutustoimijat",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.omatTiedot",
+    "defaultMessage": "omat-tiedot",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.paatetyt",
+    "defaultMessage": "paatetyt",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.paatokset",
+    "defaultMessage": "paatokset",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.tilastot",
+    "defaultMessage": "tilastot",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
+    "id": "kebabCase.uusi",
+    "defaultMessage": "uusi",
+    "filepath": "src/i18n/definitions/kebabCase.js"
+  },
+  {
     "id": "languages.inFinnish",
     "defaultMessage": "Suomeksi",
     "filepath": "src/i18n/definitions/languages.js"
@@ -1810,6 +1980,11 @@
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
+    "id": "lukiokoulutus.kebabCase",
+    "defaultMessage": "lukiokoulutus",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
     "id": "lukiokoulutus.kuvausteksti",
     "defaultMessage": "Lukiokoulutuksen järjestäminen edellyttää opetus ja kulttuuriministeriön myöntämää koulutuksen järjestämislupaa. Lupa voidaan myöntää hakemuksesta kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle, säätiölle tai ulkomailla järjestettävää koulutusta varten. Koulutusta voidaan ministeriön päätöksellä järjestää myös valtion oppilaitoksessa. Tällä sivulla voit tarkastella koulutuksen järjestäjiä ja heidän järjestämislupiaan.",
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
@@ -1825,6 +2000,196 @@
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
+    "id": "opiskelijamaara.kokonaismaaraJaSenKohdennukset",
+    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä mahdollisilla kohdennuksilla",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.vainKohdennetutRajoitukset",
+    "defaultMessage": "Vain kohdennetut oppilas-/opiskelijamäärärajoitukset",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.eiRajoiteta",
+    "defaultMessage": "Opiskelijamäärää ei rajoiteta",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.osionInfoteksti",
+    "defaultMessage": "Opiskelijamäärää ei ole oletusarvoisesti rajoitettu. Ole hyvä ja tarkista rajoitteet lomakkeen lopusta.",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "rajoitteet.ajalla",
+    "defaultMessage": "ajalla",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.muokkaaRajoitetta",
+    "defaultMessage": "Muokkaa",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.poistaRajoite",
+    "defaultMessage": "Poista",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.rajoite",
+    "defaultMessage": "Rajoite",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.rajoitteet",
+    "defaultMessage": "Rajoitteet",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.lisaaAlirajoite",
+    "defaultMessage": "Lisää alirajoite",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "routes.ammatillinenKoulutus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asia",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet/{id}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallinta",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallintaAvoimet",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallintaAvoimetPath",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/:koulutusmuoto/asianhallinta/avoimet",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.asianhallintaPaatetyt",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/paatetyt",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.casAuth",
+    "defaultMessage": "/cas-auth",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.casLogOut",
+    "defaultMessage": "/cas-logout",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.casReady",
+    "defaultMessage": "/cas-ready",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.esiJaPerusopetus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/esi-ja-perusopetus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.hakemus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.home",
+    "defaultMessage": "/",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.jarjestamisJaYllapitamisluvat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.jarjestamislupa",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/jarjestamislupa",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.jarjestamislupaasiat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/jarjestamislupa-asiat",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.koulutustoimijat",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.koulutusmuodonEtusivu",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.logIn",
+    "defaultMessage": "/kirjaudu",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.logOut",
+    "defaultMessage": "/logout",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.lukiokoulutus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/lukiokoulutus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.omatTiedot",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/omat-tiedot",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.paatokset",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/paatokset",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.saavutettavuusseloste",
+    "defaultMessage": "/saavutettavuusseloste",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.tietosuojailmoitus",
+    "defaultMessage": "/tietosuojailmoitus",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.tilastot",
+    "defaultMessage": "/tilastot",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.uusiHakemus",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.vapaaSivistystyo",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/vapaa-sivistystyo",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
+    "id": "routes.yhteydenotto",
+    "defaultMessage": "/yhteydenotto",
+    "filepath": "src/i18n/definitions/routes.js"
+  },
+  {
     "id": "user.ownOrganisation",
     "defaultMessage": "Oma organisaatio",
     "filepath": "src/i18n/definitions/user.js"
@@ -1832,6 +2197,11 @@
   {
     "id": "vapaaSivistystyo.genetiivi",
     "defaultMessage": "Vapaan sivistystyön",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.kebabCase",
+    "defaultMessage": "vapaa-sivistystyo",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {
@@ -1847,6 +2217,21 @@
   {
     "id": "vapaaSivistystyo.paasivunOtsikko",
     "defaultMessage": "Vapaan sivistystyön oppilaitosten ylläpitäjät",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu oppilaitoksen ylläpitämisluvan perustiedot. Ylläpitämislupa löytyy alkuperäisenä kokonaisuudessaan Päätökset-välilehdeltä.",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.voimassaOlevatYllapitamisluvat",
+    "defaultMessage": "Voimassa olevat ylläpitämisluvat {count} kpl",
+    "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
+  },
+  {
+    "id": "vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa",
+    "defaultMessage": "Voimassa olevat ylläpitämisluvat ({amount} kpl)",
     "filepath": "src/i18n/definitions/vapaaSivistystyo.js"
   },
   {

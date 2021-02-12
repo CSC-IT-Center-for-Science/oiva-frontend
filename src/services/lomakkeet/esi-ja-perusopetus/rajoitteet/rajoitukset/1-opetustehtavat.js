@@ -1,52 +1,67 @@
 import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
-import { getChangeObjByAnchor } from "../../../../../components/02-organisms/CategorizedListRoot/utils";
-import { map, toUpper } from "ramda";
+import { compose, endsWith, find, map, prop } from "ramda";
+import { getLocalizedProperty } from "../../../utils";
 
-export default async function getOpetustehtavatLomake(
-  changeObjects = [],
-  locale
+export default async function getOpetustehtavakomponentit(
+  isReadOnly,
+  osionData = [],
+  locale,
+  useMultiselect = false
 ) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
-  const localeUpper = toUpper(locale);
 
   if (opetustehtavat.length) {
-    return {
-      anchor: "rajoitus",
-      components: [
-        {
-          anchor: "opetustehtavat",
-          name: "Autocomplete",
-          properties: {
-            options: map(opetustehtava => {
-              const maarays = false; // TO DO: Etsi opetustehtävää koskeva määräys
-              const anchor = `opetustehtavat.opetustehtava.${opetustehtava.koodiarvo}`;
-              const changeObj = getChangeObjByAnchor(anchor, changeObjects);
-              return (!!maarays &&
-                (!changeObj || changeObj.properties.isChecked)) ||
-                (changeObj && changeObj.properties.isChecked)
-                ? {
-                    label: opetustehtava.metadata[localeUpper].nimi,
-                    value: opetustehtava.koodiarvo
-                  }
-                : null;
-            }, opetustehtavat).filter(Boolean),
-            value: ""
-          }
+    return [
+      {
+        anchor: "komponentti",
+        name: "Autocomplete",
+        styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+        properties: {
+          forChangeObject: {
+            section: "getOpetustehtavatLomake"
+          },
+          isMulti: useMultiselect,
+          isReadOnly,
+          options: map(opetustehtava => {
+            /**
+             * Tarkistetaan, onko kyseinen opetustehtävä valittuna
+             * lomakkeella, jota vasten rajoituksia ollaan tekemässä.
+             **/
+            const stateObj = find(
+              compose(endsWith(`.${opetustehtava.koodiarvo}`), prop("anchor")),
+              osionData
+            );
+
+            /**
+             * Jos valinnan tilasta kertova objekti on olemassa ja sen
+             * isChecked-arvo on true, tarkoittaa se sitä, että kyseinen
+             * opetustehtävä on päälomakkeella valitttuna. Tällöin
+             * mahdollistetaan sen valitseminen yhdeksi rajoitteista.
+             */
+            return stateObj && stateObj.properties.isChecked
+              ? {
+                  label: getLocalizedProperty(
+                    opetustehtava.metadata,
+                    locale,
+                    "nimi"
+                  ),
+                  value: opetustehtava.koodiarvo
+                }
+              : null;
+          }, opetustehtavat).filter(Boolean),
+          value: ""
         }
-      ]
-    };
+      }
+    ];
   } else {
-    return {
-      anchor: "ei-valintamahdollisuutta",
-      components: [
-        {
-          anchor: "teksti",
-          name: "StatusTextRow",
-          properties: {
-            title: "Ei valintamahdollisuutta."
-          }
+    return [
+      {
+        anchor: "teksti",
+        name: "StatusTextRow",
+        properties: {
+          title: "Ei valintamahdollisuutta."
         }
-      ]
-    };
+      }
+    ];
   }
 }

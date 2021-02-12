@@ -1,70 +1,74 @@
-import { getChangeObjByAnchor } from "components/02-organisms/CategorizedListRoot/utils";
-import { getEnsisijaisetOpetuskieletOPHFromStorage } from "helpers/opetuskielet";
-import { map, toUpper } from "ramda";
+import { getKieletOPHFromStorage } from "helpers/opetuskielet";
+import { find, flatten, map, path, prop, propEq, sortBy } from "ramda";
 
-export default async function opetustehtavat(
-  changeObjects = [],
-  locale
+/**
+ * Mikäli päälomakkeella on valittuna opetuskieliä, tämä funktio määrittää
+ * ja palauttaa pudotusvalikon, jossa valitut opetuskielet ovat valittavina
+ * rajoitteiksi. Muussa tapauksessa palautuu tieto siitä, ettei rajoituksia
+ * ole mahdollista tehdä opetuskielten perusteella, koska päälomakkeella
+ * niistä yksikään ei ole valittuna.
+ *
+ * @param {array} osionData - Sisältää päälomakkeen opetuskieliosion
+ * lomakerakenteen täydennettyinä siihen tehdyillä muutoksilla.
+ */
+export default async function getOpetuskielikomponentit(
+  isReadOnly,
+  osionData = [],
+  locale,
+  useMultiselect = false
 ) {
-  const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
-  const localeUpper = toUpper(locale);
-  const anchorA = `opetuskielet.opetuskieli.ensisijaiset`;
-  const anchorB = `opetuskielet.opetuskieli.toissijaiset`;
-  const changeLangObj = getChangeObjByAnchor(anchorA, changeObjects);
-  const addLangObj = getChangeObjByAnchor(anchorB, changeObjects);
+  const kielet = await getKieletOPHFromStorage();
 
-  if (
-    (changeLangObj && changeLangObj.properties) ||
-    (addLangObj && addLangObj.properties)
-  ) {
-    let valitutKielet =
-      changeLangObj.properties.value || addLangObj.properties.value;
-    // lisätään toissijaiset kielet vain, jos on sekä ensi- että toissijaisia kieliä
-    if (
-      changeLangObj &&
-      changeLangObj.properties &&
-      addLangObj &&
-      addLangObj.properties
-    ) {
-      valitutKielet = [].concat(
-        changeLangObj.properties.value,
-        addLangObj.properties.value
-      );
-    }
+  // Yhdistetään päälomakkkeella valittuina olevat ensisijaiset ja toissijaiset
+  // opetuskielet yhdeksi taulukoksi, koska tällä tietoa ei ole syystä
+  // luoda omaa pudotusvalikkoa molemmille.
+  const valitutKielet = sortBy(
+    prop("label"),
+    flatten(
+      map(stateObj => {
+        const valikko = path(
+          ["properties", "forChangeObject", "valikko"],
+          stateObj
+        );
+        return valikko ? stateObj.properties.value : null;
+      }, osionData).filter(Boolean)
+    )
+  );
 
-    return {
-      anchor: "rajoitus",
-      components: [
+  // Palautettava lomakerakenne
+  return kielet.length
+    ? [
         {
-          anchor: "opetuskielet",
+          anchor: "komponentti",
           name: "Autocomplete",
+          styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
           properties: {
-            options: map(kieli => {
-              return {
-                label:
-                  opetuskielet.filter(opetuskieli => {
-                    return opetuskieli.koodiarvo === kieli.value;
-                  })[0].metadata[localeUpper].nimi || kieli.label, // filtteröity lokalisoitu kielen nimi opetuskielten joukosta // tai osan ei pitäisi koskaan tulla, varmistus
-                value: kieli.value
-              };
-            }, valitutKielet),
+            forChangeObject: {
+              section: "opetuskielet"
+            },
+            isMulti: useMultiselect,
+            isReadOnly,
+            options: map(opetuskieli => {
+              /**
+               * Tarkistetaan, onko kyseinen opetuskieli valittuna
+               * lomakkeella, jota vasten rajoituksia ollaan tekemässä.
+               **/
+              return find(
+                propEq("value", opetuskieli.koodiarvo),
+                valitutKielet
+              );
+            }, kielet).filter(Boolean),
             value: ""
           }
         }
       ]
-    };
-  } else {
-    return {
-      anchor: "ei-valintamahdollisuutta",
-      components: [
+    : [
         {
           anchor: "teksti",
           name: "StatusTextRow",
           properties: {
-            title: "Ei valintamahdollisuutta."
+            title: "Ongelma kielien näyttämisessä."
           }
         }
-      ]
-    };
-  }
+      ];
 }

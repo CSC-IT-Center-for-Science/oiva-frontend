@@ -241,7 +241,7 @@ export default [
   },
   {
     kuntaKoodiarvo: "090",
-    maakuntaKey: "FI-04"
+    maakuntaKey: "FI-13"
   },
   {
     kuntaKoodiarvo: "097",
@@ -249,7 +249,7 @@ export default [
   },
   {
     kuntaKoodiarvo: "171",
-    maakuntaKey: "FI-04"
+    maakuntaKey: "FI-15"
   },
   {
     kuntaKoodiarvo: "178",
@@ -525,7 +525,7 @@ export default [
   },
   {
     kuntaKoodiarvo: "291",
-    maakuntaKey: "FI-08"
+    maakuntaKey: "FI-11"
   },
   {
     kuntaKoodiarvo: "312",
@@ -605,7 +605,7 @@ export default [
   },
   {
     kuntaKoodiarvo: "142",
-    maakuntaKey: "FI-09"
+    maakuntaKey: "FI-16"
   },
   {
     kuntaKoodiarvo: "163",
@@ -889,7 +889,7 @@ export default [
   },
   {
     kuntaKoodiarvo: "152",
-    maakuntaKey: "FI-12"
+    maakuntaKey: "FI-03"
   },
   {
     kuntaKoodiarvo: "231",

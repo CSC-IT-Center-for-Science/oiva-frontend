@@ -12,13 +12,13 @@ import {
   not,
   pathEq,
   prop,
-  propEq,
-  toUpper
+  propEq
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getLocalizedProperty } from "../utils";
 
 const labelStyles = {
   addition: isAdded,
@@ -59,11 +59,12 @@ export const opetustaAntavatKunnat = async (
     quickFilterChanges = [],
     valtakunnallinenMaarays
   },
-  { isReadOnly },
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects,
   { onChanges, toggleEditView }
 ) => {
+  const _isReadOnly = isPreviewModeOn || isReadOnly;
   const kunnat = await getKunnatFromStorage();
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
@@ -79,7 +80,6 @@ export const opetustaAntavatKunnat = async (
 
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
 
-  const localeUpper = toUpper(locale);
   const maaraysUuid = valtakunnallinenMaarays
     ? valtakunnallinenMaarays.uuid
     : undefined;
@@ -102,7 +102,7 @@ export const opetustaAntavatKunnat = async (
     );
 
     const municipalitiesOfProvince = map(kunta => {
-      const kunnanNimi = kunta.metadata[localeUpper].nimi;
+      const kunnanNimi = getLocalizedProperty(kunta.metadata, locale, "nimi");
 
       const isKuntaInLupa = !!find(
         pathEq(["metadata", "koodiarvo"], kunta.koodiarvo),
@@ -180,7 +180,7 @@ export const opetustaAntavatKunnat = async (
               custom: isInLupa
             }),
             name: maakunta.koodiarvo,
-            title: maakunta.metadata[localeUpper].nimi
+            title: getLocalizedProperty(maakunta.metadata, locale, "nimi")
           }
         }
       ],
@@ -212,12 +212,16 @@ export const opetustaAntavatKunnat = async (
             name: "CategoryFilter",
             styleClasses: ["mt-4"],
             properties: {
+              locale,
+              isPreviewModeOn,
+              isReadOnly: _isReadOnly,
               anchor: "areaofaction",
-              changeObjectsByProvince, 
+              changeObjectsByProvince,
               isEditViewActive,
               localizations,
               municipalities: kunnatIlmanUlkomaata,
               onChanges,
+              currentMunicipalities: maaraykset,
               toggleEditView,
               provinces: options,
               provincesWithoutMunicipalities: maakunnat,
@@ -311,8 +315,7 @@ export const opetustaAntavatKunnat = async (
                       voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
                     },
                     isReadOnly,
-                    placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
-                      .nimi,
+                    title: __("common.lisatiedot"),
                     value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                   }
                 }

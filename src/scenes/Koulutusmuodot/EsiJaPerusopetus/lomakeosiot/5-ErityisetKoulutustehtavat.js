@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import education from "i18n/definitions/education";
 import { getAnchorPart } from "utils/common";
-import { useChangeObjects } from "stores/muutokset";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "erityisetKoulutustehtavat"],
@@ -16,11 +19,16 @@ const ErityisetKoulutustehtavat = ({
   isPreviewModeOn,
   maaraykset,
   mode = constants.mode,
+  rajoitteet,
   sectionId,
   title
 }) => {
   const intl = useIntl();
   const [, { createTextBoxChangeObject }] = useChangeObjects();
+
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
 
   const onAddButtonClick = useCallback(
     addBtn => {
@@ -32,8 +40,9 @@ const ErityisetKoulutustehtavat = ({
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       code={code}
-      data={{ sectionId, maaraykset }}
+      data={{ maaraykset, rajoitteet, sectionId }}
       functions={{
         onAddButtonClick
       }}
@@ -43,7 +52,8 @@ const ErityisetKoulutustehtavat = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.erityisetKoulutustehtavat)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 
@@ -52,6 +62,7 @@ ErityisetKoulutustehtavat.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

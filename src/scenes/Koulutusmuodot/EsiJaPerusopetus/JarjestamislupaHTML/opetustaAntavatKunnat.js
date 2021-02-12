@@ -13,7 +13,8 @@ import {
   sortBy,
   startsWith,
   path,
-  isNil
+  isNil,
+  uniqBy
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
@@ -48,14 +49,14 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     maaraykset
   );
 
-  const kuntaMaaraykset = filter(maarays => {
+  const kuntaMaaraykset = uniqBy(prop("koodiarvo"), filter(maarays => {
     return (
       maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
       maarays.koodisto === "kunta" &&
       (!maarays.meta.changeObjects ||
-        !includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+        !includes("ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || ""))
     );
-  }, maaraykset);
+  }, maaraykset));
 
   const kunnatFromMaakuntaMaaraykset = map(maakunta => {
     return !isEmpty(maakuntaKunnat)
@@ -75,7 +76,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
       !isNil(path(["meta", "changeObjects"], maarays)) &&
       !isEmpty(path(["meta", "changeObjects"], maarays)) &&
-      startsWith("toimintaalue.ulkomaa", maarays.meta.changeObjects[0].anchor),
+      startsWith("toimintaalue.ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || ""),
     maaraykset
   );
 
@@ -91,8 +92,8 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
       !isNil(path(["meta", "changeObjects"], maarays)) &&
       !isEmpty(path(["meta", "changeObjects"], maarays)) &&
-      includes("ulkomaa", maarays.meta.changeObjects[0].anchor) &&
-      includes("lisatiedot", maarays.meta.changeObjects[0].anchor),
+      includes("ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || "") &&
+      includes("lisatiedot",path(["meta", "changeObjects", "0", "anchor"], maarays) || ""),
     maaraykset
   );
 
@@ -122,19 +123,12 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
           ),
           kunnatFromLupa
         )}
+        {opetustaJarjestetaanUlkomaillaIsChecked && opetustaJarjestetaanUlkomaillaLisatiedotMaarays ?
+          <li>
+            {opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo}
+          </li>
+          : ""}
       </ul>
-      {opetustaJarjestetaanUlkomaillaIsChecked && (
-        <div className="mb-4">
-          <Typography component="h4" variant="h4">
-            {intl.formatMessage(
-              education.opetustaJarjestetaanSuomenUlkopuolella
-            )}
-          </Typography>
-          {opetustaJarjestetaanUlkomaillaLisatiedotMaarays
-            ? opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo
-            : ""}
-        </div>
-      )}
       <p className="mb-6">{lisatietomaarays && lisatietomaarays.meta.arvo}</p>
     </div>
   ) : null;

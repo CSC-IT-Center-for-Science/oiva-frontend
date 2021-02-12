@@ -3,40 +3,35 @@ import { __ } from "i18n-for-browser";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import { find, path, propEq } from "ramda";
 
-const isAsianumeroValid = async (
-  value,
-  uuid,
-  formatMessage,
-  setLastCheckedAsianumero,
-  lastCheckedAsianumero
-) => {
+const checkIfAsianumeroIsValid = async (value, uuid, formatMessage) => {
   const isValueInValidFormat = /^VN\/[0-9]{1,9}\/[0-9]{4}$/.test(value);
   /**
    * Jos kentän arvo on muodoltaan oikeanlainen, eikä tätä asianumeroa ole viimeksi tarkistettu, tarkistetaan
    * onko kyseinen asianumero jo käytössä.
    */
-  if (isValueInValidFormat && value !== lastCheckedAsianumero.asianumero) {
-    const procedureHandler = new ProcedureHandler(formatMessage);
-    const outputs = await procedureHandler.run(
-      "muutospyynto.muutokset.tarkistaDuplikaattiAsianumero",
-      [uuid, value]
-    );
-    const isAsianumeroAlreadyInUse =
-      outputs.muutospyynto.muutokset.tarkistaDuplikaattiAsianumero.output
-        .result;
+  const procedureHandler = new ProcedureHandler(formatMessage);
+  const outputs = await procedureHandler.run(
+    "muutospyynto.muutokset.tarkistaDuplikaattiAsianumero",
+    [uuid, value]
+  );
+  const isAsianumeroAlreadyInUse =
+    outputs.muutospyynto.muutokset.tarkistaDuplikaattiAsianumero.output.result;
 
-    setLastCheckedAsianumero({
-      asianumero: value,
-      isDuplicate: isAsianumeroAlreadyInUse
-    });
-    /**
-     * Mikäli asianumero ei ole käytössä, on kenttä arvoltaan
-     * validi sen sisällön ollessa oikeassa muodossa.
-     */
-    return !isAsianumeroAlreadyInUse;
-  } else {
-    return isValueInValidFormat && !lastCheckedAsianumero.isDuplicate;
-  }
+  /**
+   * Mikäli asianumero ei ole käytössä, on kenttä arvoltaan
+   * validi sen sisällön ollessa oikeassa muodossa.
+   */
+  return {
+    isValid: isValueInValidFormat && !isAsianumeroAlreadyInUse,
+    errors: {
+      isAsianumeroAlreadyInUse,
+      isValueInValidFormat
+    },
+    errorTexts: {
+      isAsianumeroAlreadyInUse: `Asianumero ${value} on jo käytössä.`,
+      isValueInValidFormat: "Asianumero on väärässä muodossa."
+    }
+  };
 };
 
 /**
@@ -58,7 +53,11 @@ export default async function getTopThree(
   const asianumero =
     path(["properties", "value"], changeObjAsianumero) || defaultAsianumero;
 
-  const validAsianumero = await isAsianumeroValid(
+  const {
+    isValid: isAsianumeroValid,
+    errors: asianumeroErrors,
+    errorTexts: asianumeroErrorTexts
+  } = await checkIfAsianumeroIsValid(
     asianumero,
     data.uuid,
     data.formatMessage,
@@ -67,7 +66,13 @@ export default async function getTopThree(
   );
 
   return {
-    isValid: validAsianumero,
+    isValid: isAsianumeroValid,
+    errors: {
+      asianumero: asianumeroErrors
+    },
+    errorTexts: {
+      asianumero: asianumeroErrorTexts
+    },
     structure: [
       {
         anchor: "asianumero",
@@ -79,7 +84,7 @@ export default async function getTopThree(
             properties: {
               isReadOnly,
               isRequired: true,
-              isValid: validAsianumero,
+              isValid: isAsianumeroValid,
               label: __("asianumero"),
               type: "text",
               value: defaultAsianumero,

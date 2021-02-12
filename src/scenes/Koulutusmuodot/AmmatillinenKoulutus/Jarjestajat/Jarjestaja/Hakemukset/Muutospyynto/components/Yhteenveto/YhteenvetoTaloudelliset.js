@@ -7,6 +7,7 @@ import TaloudellisetTilinpaatostiedot from "../Taloudelliset/TaloudellisetTilinp
 import TaloudellisetLiitteet from "../Taloudelliset/TaloudellisetLiitteet";
 import PropTypes from "prop-types";
 import * as R from "ramda";
+import { Typography } from "@material-ui/core";
 
 const YhteenvetoTaloudelliset = ({
   changeObjects,

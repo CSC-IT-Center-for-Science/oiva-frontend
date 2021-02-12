@@ -8,12 +8,12 @@ const HorizontalLayout = ({ children, items }) => {
     <div className="template-a-container py-4">
       <div className="align-self-end pr-4">{items[0]}</div>
       <div className="item-2 pl-4">
-        <div className="flex">
-          <div className="flex flex-col pr-4 border-r align-self-center">
+        <div className="flex" style={{ height: "1.875rem" }}>
+          <div className="flex justify-center h-inherit flex-col pr-4 border-r align-self-center">
             <div>{items[1]}</div>
             <div>{items[2]}</div>
           </div>
-          <div className="align-self-center pl-4">{children}</div>
+          <div className="align-self-center pl-5">{children}</div>
         </div>
       </div>
     </div>

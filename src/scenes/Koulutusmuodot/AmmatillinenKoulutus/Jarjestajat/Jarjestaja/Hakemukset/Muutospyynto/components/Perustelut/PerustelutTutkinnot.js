@@ -52,6 +52,7 @@ const PerustelutTutkinnot = React.memo(
               prop("koulutustyyppikoodiarvo"),
               tutkinnotByKoulutusala[koulutusala.koodiarvo]
             );
+
             if (changeObjects.tutkinnot[koulutusala.koodiarvo]) {
               return (
                 <ExpandableRowRoot
@@ -68,7 +69,8 @@ const PerustelutTutkinnot = React.memo(
                   onUpdate={onChangesUpdate}
                   sectionId={fullSectionId}
                   showCategoryTitles={true}
-                  title={title}>
+                  title={title}
+                >
                   <Lomake
                     action="reasoning"
                     anchor={fullSectionId}
@@ -87,7 +89,8 @@ const PerustelutTutkinnot = React.memo(
                     isReadOnly={isReadOnly}
                     onChangesUpdate={onChangesUpdate}
                     path={["perustelut", "tutkinnot"]}
-                    showCategoryTitles={true}></Lomake>
+                    showCategoryTitles={true}
+                  ></Lomake>
                 </ExpandableRowRoot>
               );
             }

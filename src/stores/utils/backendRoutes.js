@@ -14,10 +14,15 @@ export const backendRoutes = {
   koulutusalat: { path: `koodistot/koulutusalat/` },
   koulutustyypit: { path: `koodistot/koulutustyypit/` },
   kujalisamaareet: { path: `koodistot/koodit/kujalisamaareet` },
+  joistalisaksi: { path: `koodistot/koodit/kujalisamaareetjoistalisaksi` },
+  ajalla: { path: `koodistot/koodit/kujalisamaareetlisaksiajalla` },
   kunnat: { path: `koodistot/kunnat` },
   lisatietoja: {
     path: `koodistot/koodit/lisatietoja/`,
     minimumTimeBetweenFetchingInMinutes: 30
+  },
+  logIn: {
+    path: `auth/login`
   },
   lupaByYtunnus: {
     path: `luvat/jarjestaja/`,

@@ -12,6 +12,10 @@ import { COLORS } from "../../../modules/styles";
 import styles from "./textbox.module.css";
 import SimpleButton from "../SimpleButton";
 
+// Komponentin teksti lähetetään komponentin ulkopuolelle
+// tässä määritellyn ajan (ms) kuluttua.
+const sendOutDelay = 500;
+
 const textboxStyles = {
   root: {
     outline: "none !important",
@@ -121,22 +125,42 @@ const TextBox = ({
 }) => {
   const [isVisited, setIsVisited] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [sendOutHandle, setSendOutHandle] = useState();
+  const [internalValue, setInternalValue] = useState(value);
+  const [isOkToSendOut, setIsOkToSendOut] = useState(false);
 
   const textBoxRef = useRef(null);
 
-  const updateValue = useCallback(
-    e => {
+  useEffect(() => {
+    if (isOkToSendOut) {
       onChanges(
         {
           forChangeObject,
           fullAnchor
         },
         {
-          value: e.target.value
+          value: internalValue
         }
       );
+      setIsOkToSendOut(false);
+    }
+  }, [forChangeObject, fullAnchor, internalValue, isOkToSendOut, onChanges]);
+
+  const updateValue = useCallback(
+    e => {
+      setInternalValue(e.target.value);
+
+      if (sendOutHandle) {
+        clearTimeout(sendOutHandle);
+      }
+
+      const handle = setTimeout(() => {
+        setIsOkToSendOut(true);
+      }, sendOutDelay);
+
+      setSendOutHandle(handle);
     },
-    [forChangeObject, fullAnchor, onChanges]
+    [sendOutHandle]
   );
 
   const deleteTextBox = useCallback(() => {
@@ -188,9 +212,8 @@ const TextBox = ({
                         ((!value && showValidationErrors) || isVisited)
                       ? classes.cssLabelRequired
                       : classes.cssLabel
-                  } ${isReadOnly &&
-                    value &&
-                    classes.inputLabelReadonlyShrink}`}>
+                  } ${isReadOnly && value && classes.inputLabelReadonlyShrink}`}
+                >
                   <span style={{ padding: "0 0.3em", background: "white" }}>
                     {title}
                     {!isReadOnly && isRequired && "*"}
@@ -234,7 +257,7 @@ const TextBox = ({
                   } 
               w-full p-2 resize-none ${isPreviewModeOn ? "bg-white" : ""}`}
                 onChange={updateValue}
-                value={value}
+                value={internalValue}
                 inputprops={{
                   readOnly: isReadOnly
                 }}
@@ -252,7 +275,8 @@ const TextBox = ({
                     paddingLeft: "0.5em",
                     marginBottom: "0.5em",
                     color: COLORS.OIVA_ORANGE_TEXT
-                  }}>
+                  }}
+                >
                   {!value && requiredMessage}
                 </FormHelperText>
               )}
@@ -260,7 +284,8 @@ const TextBox = ({
             {!isReadOnly && isRemovable && !isHidden && (
               <div
                 className="ml-8 mr-1 mt-4"
-                style={{ position: "relative", right: "32px", top: "7px" }}>
+                style={{ position: "relative", right: "32px", top: "7px" }}
+              >
                 <SimpleButton
                   ariaLabel={"Remove text area"}
                   icon={"ClearIcon"}

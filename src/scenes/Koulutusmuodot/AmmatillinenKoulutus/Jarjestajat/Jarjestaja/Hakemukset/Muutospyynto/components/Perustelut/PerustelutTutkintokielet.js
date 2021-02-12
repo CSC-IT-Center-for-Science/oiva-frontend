@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import ExpandableRowRoot from "../../../../../../../../../components/02-organisms/ExpandableRowRoot";
+import ExpandableRowRoot from "components/02-organisms/ExpandableRowRoot";
 import * as R from "ramda";
-import Lomake from "../../../../../../../../../components/02-organisms/Lomake";
-import wizardMessages from "../../../../../../../../../i18n/definitions/wizard";
-import common from "../../../../../../../../../i18n/definitions/common";
+import Lomake from "components/02-organisms/Lomake";
+import wizardMessages from "i18n/definitions/wizard";
+import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
-import { getRules } from "../../../../../../../../../services/lomakkeet/perustelut/kielet/tutkintokielet/rules";
+import { getRules } from "services/lomakkeet/perustelut/kielet/tutkintokielet/rules";
+import { Typography } from "@material-ui/core";
 
 const PerustelutTutkintokielet = React.memo(props => {
   const intl = useIntl();
@@ -58,7 +59,8 @@ const PerustelutTutkintokielet = React.memo(props => {
                 sectionId={fullSectionId}
                 showCategoryTitles={true}
                 title={title}
-                isExpanded={true}>
+                isExpanded={true}
+              >
                 <Lomake
                   action="reasoning"
                   anchor={`${sectionId}_${areaCode}`}
@@ -77,7 +79,8 @@ const PerustelutTutkintokielet = React.memo(props => {
                   onChangesUpdate={onChangesUpdate}
                   path={["perustelut", "kielet", "tutkintokielet"]}
                   rulesFn={getRules}
-                  showCategoryTitles={true}></Lomake>
+                  showCategoryTitles={true}
+                ></Lomake>
               </ExpandableRowRoot>
             );
           }

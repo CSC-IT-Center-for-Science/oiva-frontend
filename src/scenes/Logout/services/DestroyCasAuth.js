@@ -1,3 +1,3 @@
-import {CAS_LOGOUT_URL} from "../../../modules/constants";
+import { CAS_LOGOUT_URL } from "../../../modules/constants";
 
-export default () => window.location = CAS_LOGOUT_URL
+export default locale => (window.location = CAS_LOGOUT_URL(locale));

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "components/02-organisms/DialogTitle";
@@ -15,7 +15,6 @@ import {
   CircularProgress,
   Typography
 } from "@material-ui/core";
-import { useOrganisations } from "stores/organisations";
 import { sortBy, prop, map, find, propEq, trim } from "ramda";
 import { resolveLocalizedOrganizationName } from "modules/helpers";
 import SearchIcon from "@material-ui/icons/Search";
@@ -49,10 +48,18 @@ const useStyles = makeStyles({
   }
 });
 
-const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
+const defaultProps = {
+  organisations: []
+};
+
+const UusiAsiaEsidialog = ({
+  isVisible,
+  onClose,
+  onSelect,
+  organisations = defaultProps.organisations
+}) => {
   const intl = useIntl();
   const [selectedKJ, setSelectedKJ] = useState();
-  const [organisations, organisationsActions] = useOrganisations({});
   const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(false);
   const [organisation, setOrganisation] = useState(null);
   const [organisationStatus, setOrganisationStatus] = useState();
@@ -60,15 +67,6 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isKJMissing, setIsKJMissing] = useState(false);
   const classes = useStyles();
-
-  useEffect(() => {
-    const abortController = organisationsActions.load();
-    return function cancel() {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-  }, [organisationsActions]);
 
   const searchByYtunnus = useCallback(async () => {
     const { value: ytunnus } = inputEl.current;
@@ -80,10 +78,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
     setOrganisation(result);
     setIsKJMissing(false);
     if (result) {
-      const isLupaExisting = !!find(
-        propEq("oid", result.oid),
-        organisations.data
-      );
+      const isLupaExisting = !!find(propEq("oid", result.oid), organisations);
       if (isLupaExisting) {
         setOrganisationStatus("duplicate");
       } else {
@@ -94,9 +89,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
     }
   }, [organisations]);
 
-  return organisations.data &&
-    organisations.fetchedAt &&
-    !organisations.isErroneous ? (
+  return organisations ? (
     <Dialog open={isVisible} PaperProps={{ style: { overflowY: "visible" } }}>
       <DialogTitle onClose={onClose}>
         {intl.formatMessage(common.luoUusiAsia)}
@@ -106,16 +99,16 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
           {isSearchFieldVisible ? (
             <React.Fragment>
               <p className="mb-6">
-                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
+                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
               </p>
               <Typography component="h4" variant="h4">
-                {intl.formatMessage(common.haeKJYtunnuksella)}
+                {intl.formatMessage(common.haeKJ)}
               </Typography>
               <div className="flex items-center">
-                <FormControl>
+                <FormControl style={{ flexGrow: "1" }}>
                   <TextField
                     id="search-field"
-                    label={intl.formatMessage(common.syotaYtunnus)}
+                    label={intl.formatMessage(common.syotaHaettavaTunniste)}
                     InputProps={{
                       endAdornment: isLoading ? (
                         <CircularProgress style={{ height: "auto" }} />
@@ -125,14 +118,14 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                           aria-label={intl.formatMessage(
                             common.suoritaYtunnushaku
                           )}
-                          onClick={searchByYtunnus}>
+                          onClick={searchByYtunnus}
+                        >
                           <SearchIcon />
                         </IconButton>
                       ),
                       inputRef: inputEl,
                       onKeyUp: e => {
-                        // 13 = Enter
-                        return e.keyCode === 13 ? searchByYtunnus() : null;
+                        return e.key === "Enter" ? searchByYtunnus() : null;
                       }
                     }}
                     variant="outlined"
@@ -143,7 +136,8 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                     setOrganisation(null);
                     setIsSearchFieldVisible(false);
                   }}
-                  style={{ marginLeft: "1rem" }}>
+                  style={{ marginLeft: "auto" }}
+                >
                   {intl.formatMessage(common.suljeHaku)}
                 </StyledButton>
               </div>
@@ -168,7 +162,8 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                     <a
                       href={`mailto:${intl.formatMessage(
                         common.yhteisetpalvelutEmailAddress
-                      )}`}>
+                      )}`}
+                    >
                       {intl.formatMessage(common.yhteisetpalvelutEmailAddress)}
                     </a>
                   </p>
@@ -216,7 +211,7 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                           value: organisation.ytunnus
                         }
                       : null;
-                  }, organisations.data)
+                  }, organisations)
                 ).filter(Boolean)}
                 callback={(payload, values) => {
                   setSelectedKJ(values.value);
@@ -225,15 +220,16 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
                 value={[selectedKJ]}
               />
               <p className="my-4">
-                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo2)}
+                {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
               </p>
               <StyledButton
                 onClick={() => {
                   setSelectedKJ(null);
                   setIsSearchFieldVisible(true);
                 }}
-                startIcon={<SearchIcon />}>
-                {intl.formatMessage(common.haeKJYtunnuksella)}
+                startIcon={<SearchIcon />}
+              >
+                {intl.formatMessage(common.haeKJ)}
               </StyledButton>
               {isKJMissing && !selectedKJ ? (
                 <p className="mt-2">
@@ -273,7 +269,8 @@ const UusiAsiaEsidialog = ({ isVisible, onClose, onSelect }) => {
               return false;
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(common.accept)}
           </Button>
         </div>

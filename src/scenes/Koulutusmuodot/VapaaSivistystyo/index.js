@@ -2,6 +2,8 @@ import React from "react";
 import KoulutusmuodonEtusivu from "components/03-templates/KoulutusmuodonEtusivu";
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import JarjestajaluetteloFiltteroinnilla from "./JarjestajaluetteloFiltteroinnilla";
+import { useIntl } from "react-intl";
+import { getKoulutusmuodot } from "utils/common";
 
 /**
  * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
@@ -10,7 +12,11 @@ import JarjestajaluetteloFiltteroinnilla from "./JarjestajaluetteloFiltteroinnil
  **/
 const hakuavaimet = ["lupaByUuid", "organisaatio", "vstTyypit"];
 
-export default function VapaaSivistystyo({ koulutusmuoto }) {
+export default function VapaaSivistystyo() {
+  const { formatMessage } = useIntl();
+
+  const koulutusmuoto = getKoulutusmuodot(formatMessage).vapaaSivistystyo;
+
   return (
     <KoulutusmuodonEtusivu
       hakuavaimet={hakuavaimet}
@@ -19,8 +25,7 @@ export default function VapaaSivistystyo({ koulutusmuoto }) {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
-      jarjestajatOtsikko={
-        koulutusmuoto.jarjestajatOtsikko
-      }></KoulutusmuodonEtusivu>
+      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
+    ></KoulutusmuodonEtusivu>
   );
 }

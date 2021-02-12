@@ -1,59 +1,94 @@
 import {
+  append,
   compose,
-  filter,
+  endsWith,
+  find,
   flatten,
-  head,
-  isNil,
+  includes,
   map,
-  not,
   path,
-  sortBy,
+  prop,
+  propEq,
+  toUpper,
   values
 } from "ramda";
+import { getKunnatFromStorage } from "helpers/kunnat";
 
-export default function opetustaAntavatKunnat(changeObjects = []) {
-  const changesByProvince = path(
-    ["properties", "changesByProvince"],
-    head(changeObjects) || {}
+export default async function getOpetustaAntavatKunnat(
+  isReadOnly,
+  osionData = [],
+  locale,
+  useMultiselect = false
+) {
+  const localeUpper = toUpper(locale);
+  const kunnat = await getKunnatFromStorage();
+
+  const changesByProvinceObj = find(
+    compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
+    osionData
   );
 
-  if (changesByProvince) {
-    const listOfMunicipalities = sortBy(
-      path(["properties", "metadata", "title"]),
-      filter(
-        compose(not, isNil, path(["properties", "metadata", "title"])),
-        flatten(values(changesByProvince))
-      )
-    );
+  // Ulkomaiden eri kunnat, jotka käyttäjä on syöttänyt vapaasti
+  // päälomakkeella, halutaan samaan luetteloon Suomen kuntien kanssa.
+  // Päälomakkeella on syöttämistä varten yksi textarea-elementti, joten
+  // tilaobjekteja on 0 - 1 kappale(tta).
+  const ulkomaaStateObj = find(
+    propEq("anchor", "toimintaalue.ulkomaa.200.lisatiedot"),
+    osionData
+  );
 
-    return {
-      anchor: "rajoitus",
-      components: [
-        {
-          anchor: "opetustaAntavatKunnat",
-          name: "Autocomplete",
-          properties: {
-            options: map(changeObj => {
-              const { koodiarvo, title } = changeObj.properties.metadata;
-              return { label: title, value: koodiarvo };
-            }, listOfMunicipalities).filter(Boolean),
-            value: ""
-          }
+  // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
+  // alempana koodissa luotavaa pudostusvalikkoa varten.
+  const ulkomaaOption = ulkomaaStateObj
+    ? {
+        label: ulkomaaStateObj.properties.value,
+        value: ulkomaaStateObj.properties.metadata.koodiarvo
+      }
+    : null;
+
+  if (kunnat) {
+    const valitutKunnat = changesByProvinceObj
+      ? map(
+          path(["properties", "metadata", "koodiarvo"]),
+          flatten(
+            values(changesByProvinceObj.properties.changeObjectsByProvince)
+          )
+        )
+      : [];
+
+    return [
+      {
+        anchor: "komponentti",
+        name: "Autocomplete",
+        styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
+        properties: {
+          forChangeObject: {
+            section: "opetustaAntavatKunnat"
+          },
+          isMulti: useMultiselect,
+          isReadOnly,
+          options: append(
+            ulkomaaOption,
+            map(kunta => {
+              const { koodiarvo, metadata } = kunta;
+              return includes(koodiarvo, valitutKunnat)
+                ? { label: metadata[localeUpper].nimi, value: koodiarvo }
+                : null;
+            }, kunnat)
+          ).filter(Boolean),
+          value: ""
         }
-      ]
-    };
+      }
+    ];
   } else {
-    return {
-      anchor: "ei-valintamahdollisuutta",
-      components: [
-        {
-          anchor: "teksti",
-          name: "StatusTextRow",
-          properties: {
-            title: "Ei valintamahdollisuutta."
-          }
+    return [
+      {
+        anchor: "ei-kuntia",
+        name: "StatusTextRow",
+        properties: {
+          title: "Ei valintamahdollisuutta."
         }
-      ]
-    };
+      }
+    ];
   }
 }

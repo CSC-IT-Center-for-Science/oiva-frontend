@@ -40,7 +40,7 @@ export default defineMessages({
   eiSisaOppilaitosTaiKotikoulumuotoinen: {
     id: "education.eiSisaOppilaitosTaiKotikoulumuotoinen",
     defaultMessage:
-      "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä kotikouluopetusmuotoisena"
+      "Opetusta ei järjestetä sisäoppilaitosmuotoisesti, eikä koulukotiopetusmuotoisena"
   },
   oppilastaOpiskelijaa: {
     id: "education.oppilastaOpiskelijaa",
@@ -101,5 +101,13 @@ export default defineMessages({
   opetuksenJarjestajat: {
     id: "education.opetuksenJarjestajat",
     defaultMessage: "Opetuksen järjestäjät"
+  },
+  opetetaanKielilla: {
+    id: "education.opetetaanKielilla",
+    defaultMessage: "opetetaan kielillä"
+  },
+  opetustehtavana: {
+    id: "education.opetustehtavana",
+    defaultMessage: "opetustehtavana"
   }
 });

@@ -13,13 +13,13 @@ import {
   prop,
   propEq,
   sortBy,
-  startsWith,
-  toUpper
+  startsWith
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getLocalizedProperty } from "../utils";
 
 export async function erityisetKoulutustehtavat(
   { maaraykset, sectionId },
@@ -31,7 +31,6 @@ export async function erityisetKoulutustehtavat(
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
-  const localeUpper = toUpper(locale);
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -43,9 +42,10 @@ export async function erityisetKoulutustehtavat(
   return flatten(
     [
       map(erityinenKoulutustehtava => {
-        const tehtavaanLiittyvatMaaraykset = filter(m =>
-          propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
-          propEq("koodisto", "poerityinenkoulutustehtava", m),
+        const tehtavaanLiittyvatMaaraykset = filter(
+          m =>
+            propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
+            propEq("koodisto", "poerityinenkoulutustehtava", m),
           maaraykset
         );
         const kuvausmaaraykset = filter(
@@ -98,7 +98,8 @@ export async function erityisetKoulutustehtavat(
                     name: "TextBox",
                     properties: {
                       forChangeObject: {
-                        ankkuri: kuvausankkuri0
+                        ankkuri: kuvausankkuri0,
+                        koodiarvo: erityinenKoulutustehtava.koodiarvo
                       },
                       isPreviewModeOn,
                       isReadOnly: _isReadOnly,
@@ -106,7 +107,11 @@ export async function erityisetKoulutustehtavat(
                       title: __("common.kuvaus"),
                       value: kuvausmaarays0
                         ? kuvausmaarays0.meta.kuvaus
-                        : erityinenKoulutustehtava.metadata[localeUpper].kuvaus
+                        : getLocalizedProperty(
+                            erityinenKoulutustehtava.metadata,
+                            locale,
+                            "kuvaus"
+                          )
                     }
                   }
                 ],
@@ -120,14 +125,15 @@ export async function erityisetKoulutustehtavat(
                 map(maarays => {
                   return maarays.meta.ankkuri !== kuvausankkuri0
                     ? {
-                        anchor: maarays.koodiarvo,
+                        anchor: path(["meta", "ankkuri"], maarays),
                         components: [
                           {
                             anchor: "kuvaus",
                             name: "TextBox",
                             properties: {
                               forChangeObject: {
-                                ankkuri: maarays.koodiarvo
+                                ankkuri: path(["meta", "ankkuri"], maarays),
+                                koodiarvo: maarays.koodiarvo
                               },
                               isPreviewModeOn,
                               isReadOnly: _isReadOnly,
@@ -189,7 +195,8 @@ export async function erityisetKoulutustehtavat(
                                 ankkuri: anchor,
                                 focusWhenDeleted: !!previousTextBoxChangeObj
                                   ? previousTextBoxAnchor
-                                  : `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`
+                                  : `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.0.kuvaus`,
+                                koodiarvo: erityinenKoulutustehtava.koodiarvo
                               },
                               isPreviewModeOn,
                               isReadOnly: _isReadOnly,
@@ -205,30 +212,32 @@ export async function erityisetKoulutustehtavat(
               /**
                * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
                */
-              {
-                anchor: "lisaaPainike",
-                components: [
-                  {
-                    anchor: "A",
-                    name: "SimpleButton",
-                    onClick: onAddButtonClick,
-                    properties: {
-                      isPreviewModeOn,
-                      isReadOnly: _isReadOnly,
-                      isVisible: isCheckedByChange,
-                      icon: "FaPlus",
-                      iconContainerStyles: {
-                        width: "15px"
-                      },
-                      iconStyles: {
-                        fontSize: 10
-                      },
-                      text: __("common.lisaaUusiKuvaus"),
-                      variant: "text"
-                    }
+              erityinenKoulutustehtava.koodiarvo !== "1"
+                ? {
+                    anchor: "lisaaPainike",
+                    components: [
+                      {
+                        anchor: "A",
+                        name: "SimpleButton",
+                        onClick: onAddButtonClick,
+                        properties: {
+                          isPreviewModeOn,
+                          isReadOnly: _isReadOnly,
+                          isVisible: isCheckedByChange,
+                          icon: "FaPlus",
+                          iconContainerStyles: {
+                            width: "15px"
+                          },
+                          iconStyles: {
+                            fontSize: 10
+                          },
+                          text: __("common.lisaaUusiKuvaus"),
+                          variant: "text"
+                        }
+                      }
+                    ]
                   }
-                ]
-              }
+                : null
             ].filter(Boolean)
           ]),
           components: [
@@ -244,7 +253,11 @@ export async function erityisetKoulutustehtavat(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: erityinenKoulutustehtava.metadata[localeUpper].nimi
+                title: getLocalizedProperty(
+                  erityinenKoulutustehtava.metadata,
+                  locale,
+                  "nimi"
+                )
               }
             }
           ]
@@ -280,8 +293,7 @@ export async function erityisetKoulutustehtavat(
                   },
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  placeholder: (lisatiedotObj.metadata[toUpper(locale)] || {})
-                    .nimi,
+                  title: __("common.lisatiedot"),
                   value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
                 }
               }

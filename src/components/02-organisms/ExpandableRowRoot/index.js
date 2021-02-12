@@ -66,12 +66,14 @@ const ExpandableRowRoot = ({
         <ExpandableRow
           shouldBeExpanded={isExpanded}
           onToggle={onToggle}
-          id={anchor}>
+          id={anchor}
+        >
           <Typography
             component="h4"
             variant="h4"
             classes={{ root: classes.noPadding }}
-            data-slot="title">
+            data-slot="title"
+          >
             {code && <span className="pr-6">{code}</span>}
             <span>{title}</span>
           </Typography>
@@ -97,7 +99,8 @@ const ExpandableRowRoot = ({
                           e.stopPropagation();
                           return onChangesRemove(sectionId, anchor, index);
                         }}
-                        size="small">
+                        size="small"
+                      >
                         {messages.undo}
                       </Button>
                     </Tooltip>
@@ -108,7 +111,8 @@ const ExpandableRowRoot = ({
           </div>
           <div
             data-slot="content"
-            className={`w-full ${!children ? "p-8" : ""}`}>
+            className={`w-full ${!children ? "p-8" : ""}`}
+          >
             {!children && (isExpanded || isToggledOpen) ? (
               <CategorizedListRoot
                 anchor={anchor}

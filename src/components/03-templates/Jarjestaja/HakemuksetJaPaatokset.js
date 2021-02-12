@@ -36,7 +36,7 @@ const HakemuksetJaPaatokset = ({ match }) => {
   const organisation = {};
 
   const getMuutospyyntoUrl = () => {
-    return `${match.url}/uusi`;
+    return `${match.url}/uusi/1`;
   };
 
   if (sessionStorage.getItem("role") !== ROLE_MUOKKAAJA) {

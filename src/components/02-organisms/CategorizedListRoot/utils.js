@@ -65,7 +65,7 @@ export const findCategoryAnchor = (
         level + 1,
         path
       );
-    }, category.categories);
+    }, (category.categories || []).filter(Boolean));
   }
   return structure;
 };

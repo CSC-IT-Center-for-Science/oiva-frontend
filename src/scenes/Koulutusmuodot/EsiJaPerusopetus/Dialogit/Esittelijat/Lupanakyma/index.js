@@ -85,8 +85,14 @@ const UusiAsiaDialog = ({
   const [muutEhdotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "muutEhdot"
   });
+  const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitteet"
+  });
 
-  const [{ changeObjects }, { initializeChanges }] = useChangeObjects();
+  const [
+    { changeObjects, isPreviewModeOn },
+    { setPreviewMode, initializeChanges }
+  ] = useChangeObjects();
 
   const intl = useIntl();
   const params = useParams();
@@ -94,7 +100,6 @@ const UusiAsiaDialog = ({
   let { uuid } = params;
 
   const [isConfirmDialogVisible, setIsConfirmDialogVisible] = useState(false);
-  const [isPreviewModeOn, setPreviewMode] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
@@ -156,8 +161,8 @@ const UusiAsiaDialog = ({
    * @param {object} formData
    */
   const onPreview = useCallback(async () => {
-    setPreviewMode(isPreviewModeOn => !isPreviewModeOn);
-  }, []);
+    return setPreviewMode(!isPreviewModeOn);
+  }, [isPreviewModeOn, setPreviewMode]);
 
   /**
    * Saves the form.
@@ -192,6 +197,7 @@ const UusiAsiaDialog = ({
             opetustehtavat: opetustehtavatCo,
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
+            rajoitteet: rajoitteetCO,
             toimintaalue: toimintaalueCO
           },
           uuid,
@@ -244,6 +250,7 @@ const UusiAsiaDialog = ({
       opiskelijamaaratCo,
       organisation,
       paatoksentiedotCo,
+      rajoitteetCO,
       toimintaalueCO,
       uuid
     ]
@@ -257,7 +264,8 @@ const UusiAsiaDialog = ({
           onClose={leaveOrOpenCancelModal}
           maxWidth={"lg"}
           fullScreen={true}
-          aria-labelledby="simple-dialog-title">
+          aria-labelledby="simple-dialog-title"
+        >
           {isPreviewModeOn ? null : (
             <div className="flex m-auto items-center w-full px-12 bg-vaalenvihrea">
               <div className="flex-1">
@@ -294,7 +302,8 @@ const UusiAsiaDialog = ({
                       <React.Fragment>
                         <a
                           href={`tel:${organisationPhoneNumber}`}
-                          className="underline">
+                          className="underline"
+                        >
                           {organisationPhoneNumber}
                         </a>{" "}
                         |{" "}
@@ -304,7 +313,8 @@ const UusiAsiaDialog = ({
                       <React.Fragment>
                         <a
                           href={`mailto:${organisationEmail}`}
-                          className="underline">
+                          className="underline"
+                        >
                           {organisationEmail}
                         </a>{" "}
                         |{" "}
@@ -324,10 +334,12 @@ const UusiAsiaDialog = ({
               id="wizard-content"
               className={`mx-auto ${
                 isPreviewModeOn ? "kk:w-4/5 kkk:w-2/3" : "max-w-7xl"
-              }`}>
+              }`}
+            >
               <form
                 onSubmit={() => {}}
-                className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
+                className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}
+              >
                 <div className="flex">
                   <div
                     className={`${
@@ -336,11 +348,13 @@ const UusiAsiaDialog = ({
                     style={{
                       transform: "translate3d(0, 0, 0)",
                       height: isPreviewModeOn ? "100vh" : "84vh"
-                    }}>
+                    }}
+                  >
                     <section
-                      className={`fixed w-full ${
+                      className={`px-12 pb-32 fixed w-full ${
                         isPreviewModeOn ? "border-r border-gray-300" : ""
-                      }`}>
+                      }`}
+                    >
                       <div className={`border-b border-gray-300`}>
                         <Typography component="h2" variant="h2">
                           {intl.formatMessage(common.decisionDetails)}
@@ -350,9 +364,11 @@ const UusiAsiaDialog = ({
                         className={`${
                           isPreviewModeOn ? "overflow-auto" : "pb-32"
                         }`}
-                        style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
+                        style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
+                      >
                         <LupanakymaA
                           isPreviewModeOn={false}
+                          isRestrictionsModeOn={true}
                           lupakohteet={lupakohteet}
                           maaraykset={lupa.maaraykset}
                           valtakunnallinenMaarays={valtakunnallinenMaarays}
@@ -366,19 +382,22 @@ const UusiAsiaDialog = ({
                       style={{
                         transform: "translate3d(0, 0, 0)",
                         height: "100vh"
-                      }}>
+                      }}
+                    >
                       <section
                         className={`fixed w-full ${
                           isPreviewModeOn ? "border-l border-gray-300" : ""
-                        }`}>
+                        }`}
+                      >
                         <div className="border-b border-gray-300 px-6">
                           <Typography component="h2" variant="h2">
                             {intl.formatMessage(common.esikatselu)}
                           </Typography>
                         </div>
                         <div
-                          className="p-6 overflow-auto"
-                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
+                          className="pt-6 px-6 pb-32 overflow-auto"
+                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
+                        >
                           <LupanakymaA
                             isPreviewModeOn={true}
                             lupakohteet={lupakohteet}
@@ -397,7 +416,8 @@ const UusiAsiaDialog = ({
             <div
               className={`flex flex-col md:flex-row justify-between ${
                 isDebugOn ? "w-2/3" : "w-full"
-              }  max-w-5xl p-4 mx-auto`}>
+              }  max-w-5xl p-4 mx-auto`}
+            >
               <div className="inline-flex">
                 <div className="inline-flex mr-4">
                   {isPreviewModeOn ? null : (
@@ -405,7 +425,8 @@ const UusiAsiaDialog = ({
                       color="secondary"
                       className="save"
                       onClick={leaveOrOpenCancelModal}
-                      variant="outlined">
+                      variant="outlined"
+                    >
                       {intl.formatMessage(wizardMessages.getOut)}
                     </Button>
                   )}
@@ -416,7 +437,8 @@ const UusiAsiaDialog = ({
                   onClick={() => {
                     return onAction("preview");
                   }}
-                  variant="outlined">
+                  variant="outlined"
+                >
                   {isPreviewModeOn
                     ? intl.formatMessage(wizardMessages.closePreview)
                     : intl.formatMessage(wizardMessages.preview)}

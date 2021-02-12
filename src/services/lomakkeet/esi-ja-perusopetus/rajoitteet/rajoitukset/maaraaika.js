@@ -1,11 +1,6 @@
 import { __ } from "i18n-for-browser";
 
-export default function maaraaika(
-  changeObjects,
-  otherChangeObjects = [],
-  tarkentimetChangeObjects = [],
-  locale
-) {
+export const getMaaraaikalomake = async locale => {
   return {
     anchor: "rajoitus",
     components: [
@@ -13,6 +8,12 @@ export default function maaraaika(
         anchor: "alkamispaiva",
         name: "Datepicker",
         properties: {
+          forChangeObject: {
+            // TODO: Aseta koodisto ja koodiarvo ei-kovakoodatusti
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
+            section: "maaraaika"
+          },
           label: "Alkamispäivä",
           value: "",
           onChanges: () => {},
@@ -34,6 +35,11 @@ export default function maaraaika(
         anchor: "paattymispaiva",
         name: "Datepicker",
         properties: {
+          forChangeObject: {
+            koodiarvo: "3",
+            koodisto: "kujalisamaareet",
+            section: "maaraaika"
+          },
           label: "Päättymispäivä",
           value: "",
           onChanges: () => {},
@@ -53,4 +59,4 @@ export default function maaraaika(
       }
     ]
   };
-}
+};

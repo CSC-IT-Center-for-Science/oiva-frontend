@@ -10,15 +10,16 @@ import {
   prop,
   sortBy
 } from "ramda";
+import { getRajoite } from "utils/rajoitteetUtils";
 
-export async function previewOfOpetuskielet({ lomakedata }) {
+export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   let structure = [];
 
   const ensisijaiset = find(
     compose(endsWith(".ensisijaiset"), prop("anchor")),
     lomakedata
   );
-  
+
   const toissijaiset = find(
     compose(endsWith(".toissijaiset"), prop("anchor")),
     lomakedata
@@ -28,9 +29,40 @@ export async function previewOfOpetuskielet({ lomakedata }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          return {
-            content: opetuskieli.label
-          };
+          const { rajoiteId, rajoite } = getRajoite(
+            opetuskieli.value,
+            rajoitteet
+          );
+          if (rajoiteId) {
+            return {
+              anchor: opetuskieli.value,
+              components: [
+                {
+                  anchor: "rajoite",
+                  name: "Rajoite",
+                  properties: {
+                    areTitlesVisible: false,
+                    isReadOnly: true,
+                    rajoiteId,
+                    rajoite
+                  }
+                }
+              ]
+            };
+          } else {
+            return {
+              anchor: "opetuskieli",
+              components: [
+                {
+                  anchor: opetuskieli.value,
+                  name: "HtmlContent",
+                  properties: {
+                    content: opetuskieli.label
+                  }
+                }
+              ]
+            };
+          }
         }, path(["properties", "value"], ensisijaiset) || []).filter(Boolean)
       )
     : [];
@@ -39,9 +71,40 @@ export async function previewOfOpetuskielet({ lomakedata }) {
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          return {
-            content: opetuskieli.label
-          };
+          const { rajoiteId, rajoite } = getRajoite(
+            opetuskieli.value,
+            rajoitteet
+          );
+          if (rajoiteId) {
+            return {
+              anchor: opetuskieli.value,
+              components: [
+                {
+                  anchor: "rajoite",
+                  name: "Rajoite",
+                  properties: {
+                    areTitlesVisible: false,
+                    isReadOnly: true,
+                    rajoiteId,
+                    rajoite
+                  }
+                }
+              ]
+            };
+          } else {
+            return {
+              anchor: "opetuskieli",
+              components: [
+                {
+                  anchor: opetuskieli.value,
+                  name: "HtmlContent",
+                  properties: {
+                    content: opetuskieli.label
+                  }
+                }
+              ]
+            };
+          }
         }, path(["properties", "value"], toissijaiset) || []).filter(Boolean)
       )
     : [];
@@ -75,7 +138,7 @@ export async function previewOfOpetuskielet({ lomakedata }) {
             name: "FormTitle",
             properties: {
               isPreviewModeOn: true,
-              level: 3,
+              level: 4,
               title: __("education.voidaanAntaaMyosSeuraavillaKielilla")
             }
           }

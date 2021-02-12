@@ -1,5 +1,6 @@
 import * as R from "ramda";
 import { getAnchorInit } from "utils/common";
+import { getValitutKoodiarvot } from "../../services/lomakkeet/opiskelijavuodet/index";
 
 // Magic constants
 
@@ -79,15 +80,13 @@ export const isVaativatukiRajoitusVisible = (lomakedataMuut = {}) => {
    * tarkoittaa sitä, että vaativaa tukea koskeva opiskelijavuosimäärä
    * tulee lähettää backendille tietokantaan tallennettavaksi.
    **/
-  return !!R.head(
-    R.filter(
-      R.includes(
-        R.__,
-        R.path(["02", "valitutKoodiarvot"], lomakedataMuut) || []
-      ),
-      vaativatCodes
+  const amountOfUnselectedVaativaTukiRadioButtons = R.length(
+    R.difference(
+      vaativatCodes,
+      getValitutKoodiarvot(R.prop("02", lomakedataMuut))
     )
   );
+  return amountOfUnselectedVaativaTukiRadioButtons < R.length(vaativatCodes);
 };
 
 const findChange = (anchorStart, changeObjects) =>

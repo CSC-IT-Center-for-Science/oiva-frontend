@@ -8,11 +8,11 @@ import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import PerustelutToimintaalue from "./Perustelut/PerustelutToimintaalue";
 import PerustelutOpiskelijavuodet from "./Perustelut/PerustelutOpiskelijavuodet";
-import YhteenvetoLiitteet from "./Yhteenveto/YhteenvetoLiitteet";
 import PerustelutLiitteet from "./Perustelut/PerustelutLiitteet";
 import wizard from "../../../../../../../../i18n/definitions/wizard";
 import * as R from "ramda";
 import Section from "components/03-templates/Section";
+import { Typography } from "@material-ui/core";
 
 const defaultProps = {
   changeObjects: {},
@@ -41,6 +41,7 @@ const MuutospyyntoWizardPerustelut = ({
   onChangesUpdate,
   opetuskielet,
   tutkinnot,
+  tutkinnotCO,
   vankilat = defaultProps.vankilat
 }) => {
   const intl = useIntl();
@@ -72,8 +73,8 @@ const MuutospyyntoWizardPerustelut = ({
   }, [maaraystyypit]);
 
   const isTutkinnotChanges = useMemo(() => {
-    return R.not(R.isEmpty(changeObjects.tutkinnot || {}));
-  }, [changeObjects.tutkinnot]);
+    return R.not(R.isEmpty(tutkinnotCO || {}));
+  }, [tutkinnotCO]);
 
   const isKoulutuksetChanges = useMemo(() => {
     return R.not(R.isEmpty(R.flatten(R.values(changeObjects.koulutukset))));
@@ -138,11 +139,12 @@ const MuutospyyntoWizardPerustelut = ({
           {(isTutkinnotChanges || isKoulutuksetChanges) && (
             <Section
               code={lupaKohteet[1].headingNumber}
-              title={lupaKohteet[1].heading}>
+              title={lupaKohteet[1].heading}
+            >
               {isTutkinnotChanges && (
                 <PerustelutTutkinnot
                   changeObjects={{
-                    tutkinnot: R.prop("tutkinnot", changeObjects) || {},
+                    tutkinnot: tutkinnotCO,
                     perustelut: {
                       tutkinnot:
                         R.path(["perustelut", "tutkinnot"], changeObjects) || {}
@@ -163,7 +165,7 @@ const MuutospyyntoWizardPerustelut = ({
                   onChangesUpdate={onChangesUpdate}
                 />
               )}
-              {isKoulutuksetChanges && (
+              {/* {isKoulutuksetChanges && (
                 <PerustelutKoulutukset
                   changeObjects={{
                     koulutukset: changeObjects.koulutukset,
@@ -181,9 +183,9 @@ const MuutospyyntoWizardPerustelut = ({
                   onChangesRemove={onChangesRemove}
                   onChangesUpdate={onChangesUpdate}
                 />
-              )}
+              )} */}
               {/* Attachments for Tutkinnot ja koulutukset */}
-              <Section className="my-0">
+              {/* <Section className="my-0">
                 <PerustelutLiitteet
                   changeObjects={{
                     perustelut: changeObjects.perustelut.liitteet
@@ -191,10 +193,10 @@ const MuutospyyntoWizardPerustelut = ({
                   onChangesRemove={onChangesRemove}
                   onChangesUpdate={onChangesUpdate}
                 />
-              </Section>
+              </Section> */}
             </Section>
           )}
-          {(isTutkintokieletChanges || isOpetuskieletChanges) && (
+          {/* {(isTutkintokieletChanges || isOpetuskieletChanges) && (
             <Section code={2} title={kohdetiedot[1].title}>
               {isOpetuskieletChanges ? (
                 <PerustelutOpetuskielet
@@ -241,10 +243,10 @@ const MuutospyyntoWizardPerustelut = ({
                 />
               ) : null}
             </Section>
-          )}
+          )} */}
 
           {/* TOIMINTA-ALUE */}
-          {isToimintaalueChanges ? (
+          {/* {isToimintaalueChanges ? (
             <Section code={3} title={kohdetiedot[2].title}>
               <PerustelutToimintaalue
                 kohde={R.find(R.propEq("tunniste", "toimintaalue"))(kohteet)}
@@ -262,10 +264,10 @@ const MuutospyyntoWizardPerustelut = ({
                 onChangesUpdate={onChangesUpdate}
               />
             </Section>
-          ) : null}
+          ) : null} */}
 
           {/* OPISKELIJAVUODET */}
-          {isOpiskelijavuodetChanges ? (
+          {/* {isOpiskelijavuodetChanges ? (
             <Section code={4} title={kohdetiedot[3].title}>
               <PerustelutOpiskelijavuodet
                 changeObjects={changeObjects}
@@ -274,10 +276,10 @@ const MuutospyyntoWizardPerustelut = ({
                 onChangesUpdate={onChangesUpdate}
               />
             </Section>
-          ) : null}
+          ) : null} */}
 
           {/* MUUT */}
-          {isMuutChanges ? (
+          {/* {isMuutChanges ? (
             <Section code={5} title={kohdetiedot[4].title}>
               <PerustelutMuut
                 changeObjects={{
@@ -291,10 +293,11 @@ const MuutospyyntoWizardPerustelut = ({
                 vankilat={vankilat}
               />
             </Section>
-          ) : null}
+          ) : null} */}
           {/* Common attachments, the same also in Yhteenveto */}
-          {isAnyChanges && (
+          {/* {isAnyChanges && (
             <Section className="my-0">
+            KATSO, MITEN TOTEUTETTU YHTEENVETOSIVULLA
               <YhteenvetoLiitteet
                 changeObjects={{
                   hakemuksenLiitteet:
@@ -304,7 +307,7 @@ const MuutospyyntoWizardPerustelut = ({
                 onChangesUpdate={onChangesUpdate}
               />
             </Section>
-          )}
+          )} */}
         </React.Fragment>
       ) : null}
     </React.Fragment>

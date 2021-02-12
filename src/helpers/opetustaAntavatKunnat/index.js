@@ -1,24 +1,28 @@
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import {
-  find,
-  map,
-  propEq,
-  filter,
-  compose,
-  flatten,
-  values,
-  not,
-  pathEq,
-  assocPath,
   append,
-  path,
-  head,
-  uniq,
-  reject,
-  isNil,
-  includes,
+  assocPath,
+  compose,
   concat,
+  drop,
   endsWith,
-  prop
+  filter,
+  find,
+  flatten,
+  head,
+  includes,
+  isNil,
+  map,
+  mapObjIndexed,
+  not,
+  path,
+  prop,
+  pathEq,
+  propEq,
+  reject,
+  take,
+  uniq,
+  values
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";
@@ -34,12 +38,15 @@ export async function defineBackendChangeObjects(
   changeObjects = {},
   kohde,
   maaraystyypit,
-  lupaMaaraykset
+  lupaMaaraykset,
+  locale,
+  kohteet
 ) {
   const {
     quickFilterChanges = [],
     changesByProvince,
-    perustelut
+    perustelut,
+    rajoitteetByRajoiteId
   } = changeObjects;
 
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);
@@ -48,7 +55,10 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = await getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste(
+    "toimintaalue",
+    lupaMaaraykset
+  );
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**
@@ -309,7 +319,7 @@ export async function defineBackendChangeObjects(
             pathEq(["properties", "metadata", "koodiarvo"], maakunta.koodiarvo),
             provinceChangeObjects
           );
-          let muutosobjektit = [];
+          let muutosobjektit = null;
 
           if (maakuntaChangeObj && maakuntaChangeObj.properties.isChecked) {
             if (!maakuntaChangeObj.properties.isIndeterminate) {
@@ -340,23 +350,32 @@ export async function defineBackendChangeObjects(
                 muutosobjektit
               );
             } else {
-              /**
-               * Jos maakunnan kunnista vain osaa ollaan lisäämässä lupaan,
-               * käydään kunnat läpi ja muodostetaan lisättävistä backend-
-               * muotoiset muutosobjektit.
-               */
-              muutosobjektit = map(kunta => {
+              muutosobjektit = []
+              if(changeObj.anchor.indexOf('.kunnat.' + changeObj.properties.metadata.koodiarvo) !== -1) {
+                const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+                  isNil,
+                  mapObjIndexed(rajoite => {
+                    return pathEq(
+                      [1, "properties", "value", "value"],
+                      changeObj.properties.metadata.koodiarvo,
+                      rajoite
+                    )
+                      ? rajoite
+                      : null;
+                  }, rajoitteetByRajoiteId)
+                );
+
                 const kuntaChangeObj = find(
                   pathEq(
                     ["properties", "metadata", "koodiarvo"],
-                    kunta.koodiarvo
+                    changeObj.properties.metadata.koodiarvo
                   ),
                   provinceChangeObjects
                 );
                 const kuntaMaarays = find(
                   maarays =>
                     maarays.koodisto === "kunta" &&
-                    maarays.koodiarvo === kunta.koodiarvo,
+                    maarays.koodiarvo === changeObj.properties.metadata.koodiarvo,
                   maaraykset
                 );
 
@@ -365,10 +384,13 @@ export async function defineBackendChangeObjects(
                   ((kuntaChangeObj && kuntaChangeObj.properties.isChecked) ||
                     (!!maakuntaMaarays && !kuntaChangeObj))
                 ) {
-                  return {
+                  const kuntamuutosobjekti = {
                     tila: "LISAYS",
                     meta: {
-                      changeObjects: perustelut,
+                      changeObjects: concat(
+                        perustelut || [],
+                        take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+                      ),
                       perusteluteksti: [
                         {
                           value:
@@ -380,12 +402,27 @@ export async function defineBackendChangeObjects(
                     },
                     kohde,
                     koodisto: "kunta",
-                    koodiarvo: kunta.koodiarvo,
+                    koodiarvo: changeObj.properties.metadata.koodiarvo,
                     maaraystyyppi
                   };
+
+                  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+                  // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+                  // loput toisiinsa "alenevassa polvessa".
+                  const alimaaraykset = values(
+                    mapObjIndexed(asetukset => {
+                      return createAlimaarayksetBEObjects(
+                        kohteet,
+                        maaraystyypit,
+                        kuntamuutosobjekti,
+                        drop(2, asetukset)
+                      );
+                    }, rajoitteetByRajoiteIdAndKoodiarvo)
+                  );
+
+                  muutosobjektit = [kuntamuutosobjekti, alimaaraykset];
                 }
-                return null;
-              }, maakunta.kunnat).filter(Boolean);
+              }
             }
           } else if (!isMaakunta && changeObj.properties.isChecked) {
             /**
@@ -413,7 +450,7 @@ export async function defineBackendChangeObjects(
               }
             ];
           }
-          return muutosobjektit;
+          return muutosobjektit.filter(Boolean);
         }, provinceChangeObjects)
       )
     ).filter(Boolean);
@@ -455,27 +492,51 @@ export async function defineBackendChangeObjects(
     compose(endsWith(".200.lisatiedot"), prop("anchor")),
     changeObjects.ulkomaa
   );
+
   const ulkomaaBEchangeObjectTextBox = changeObjUlkomaaTextBox
-    ? [
-        {
-          tila: "LISAYS",
-          meta: {
-            arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
-            changeObjects: [changeObjUlkomaaTextBox]
-          },
-          kohde,
-          koodiarvo: path(
-            ["properties", "metadata", "koodiarvo"],
-            changeObjUlkomaaTextBox
-          ),
-          koodisto: path(
-            ["properties", "metadata", "koodisto", "koodistoUri"],
-            changeObjUlkomaaTextBox
-          ),
-          maaraystyyppi
-        }
-      ]
+    ? {
+        generatedId: `ulkomaa-${Math.random()}`,
+        tila: "LISAYS",
+        meta: {
+          arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
+          changeObjects: [changeObjUlkomaaTextBox]
+        },
+        kohde,
+        koodiarvo: path(
+          ["properties", "metadata", "koodiarvo"],
+          changeObjUlkomaaTextBox
+        ),
+        koodisto: path(
+          ["properties", "metadata", "koodisto", "koodistoUri"],
+          changeObjUlkomaaTextBox
+        ),
+        maaraystyyppi
+      }
     : null;
+
+  let alimaarayksetUlkomaa = [];
+
+  if (ulkomaaBEchangeObjectTextBox) {
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq([1, "properties", "value", "value"], "200", rajoite)
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
+    alimaarayksetUlkomaa = values(
+      mapObjIndexed(asetukset => {
+        return createAlimaarayksetBEObjects(
+          kohteet,
+          maaraystyypit,
+          ulkomaaBEchangeObjectTextBox,
+          asetukset
+        );
+      }, rajoitteetByRajoiteIdAndKoodiarvo)
+    );
+  }
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -505,6 +566,7 @@ export async function defineBackendChangeObjects(
     : null;
 
   let allBEobjects = flatten([
+    alimaarayksetUlkomaa,
     quickFilterBEchangeObjects,
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,

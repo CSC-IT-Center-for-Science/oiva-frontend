@@ -1,6 +1,5 @@
 import {
   map,
-  toUpper,
   find,
   pathEq,
   not,
@@ -18,6 +17,7 @@ import {
   getToissijaisetOpetuskieletOPHFromStorage
 } from "helpers/opetuskielet";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
+import { getLocalizedProperty } from "../utils";
 
 export async function getOpetuskieletOPHLomake(
   { maaraykset },
@@ -61,21 +61,19 @@ export async function getOpetuskieletOPHLomake(
     lisatiedot || []
   );
 
-  const localeUpper = toUpper(locale);
-
   const ensisijaisetAnchor = "ensisijaiset";
   const toissijaisetAnchor = "toissijaiset";
 
   const ensisijaisetOpetuskieletOptions = map(kieli => {
     return {
-      label: path(["metadata", localeUpper, "nimi"], kieli),
+      label: getLocalizedProperty(kieli.metadata, locale, "nimi"),
       value: kieli.koodiarvo
     };
   }, valittavanaOlevatEnsisisijaisetOpetuskielet);
 
   const toissijaisetOpetuskieletOptions = map(kieli => {
     return {
-      label: path(["metadata", localeUpper, "nimi"], kieli),
+      label: getLocalizedProperty(kieli.metadata, locale, "nimi"),
       value: kieli.koodiarvo
     };
   }, valittavanaOlevatToissisijaisetOpetuskielet);
@@ -166,7 +164,7 @@ export async function getOpetuskieletOPHLomake(
                 },
                 isPreviewModeOn,
                 isReadOnly: _isReadOnly,
-                placeholder: __("common.lisatiedot"),
+                title: __("common.lisatiedot"),
                 value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
               }
             }

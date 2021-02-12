@@ -5,48 +5,49 @@ import ATVKoulutukset from "./Koulutukset/ATVKoulutukset";
 import Tyovoimakoulutukset from "./Koulutukset/Tyovoimakoulutukset";
 import Kuljettajakoulutukset from "./Koulutukset/Kuljettajakoulutukset";
 
-const MuutospyyntoWizardKoulutukset = props => {
+const MuutospyyntoWizardKoulutukset = ({
+  isReadOnly,
+  koulutukset,
+  maaraykset,
+  mode
+}) => {
   return (
     <div>
       <ValmentavatKoulutukset
-        changeObjects={props.changeObjects}
-        koulutukset={props.koulutukset}
-        maaraykset={props.maaraykset}
-        onChangesRemove={props.onChangesRemove}
-        onChangesUpdate={props.onChangesUpdate}
+        isReadOnly={isReadOnly}
+        koulutukset={koulutukset}
+        maaraykset={maaraykset}
+        mode={mode}
       />
 
       <ATVKoulutukset
-        changeObjects={props.changeObjects}
-        koulutukset={props.koulutukset}
-        maaraykset={props.maaraykset}
-        onChangesRemove={props.onChangesRemove}
-        onChangesUpdate={props.onChangesUpdate}
+        isReadOnly={isReadOnly}
+        koulutukset={koulutukset}
+        maaraykset={maaraykset}
+        mode={mode}
       />
 
       <Tyovoimakoulutukset
-        changeObjects={props.changeObjects}
-        koulutukset={props.koulutukset}
-        maaraykset={props.maaraykset}
-        onChangesRemove={props.onChangesRemove}
-        onChangesUpdate={props.onChangesUpdate}
+        isReadOnly={isReadOnly}
+        koulutukset={koulutukset}
+        maaraykset={maaraykset}
+        mode={mode}
       />
 
       <Kuljettajakoulutukset
-        changeObjects={props.changeObjects}
-        koulutukset={props.koulutukset}
-        maaraykset={props.maaraykset}
-        onChangesRemove={props.onChangesRemove}
-        onChangesUpdate={props.onChangesUpdate}
+        isReadOnly={isReadOnly}
+        koulutukset={koulutukset}
+        maaraykset={maaraykset}
+        mode={mode}
       />
     </div>
   );
 };
 
 MuutospyyntoWizardKoulutukset.propTypes = {
-  changeObjects: PropTypes.object,
   koulutukset: PropTypes.object,
-  maaraykset: PropTypes.array
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default MuutospyyntoWizardKoulutukset;

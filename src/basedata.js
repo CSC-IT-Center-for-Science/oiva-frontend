@@ -110,6 +110,7 @@ const fetchBaseData = async (
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
    */
   const raw = {
+    ajalla: await getRaw("ajalla", backendRoutes.ajalla.path, keys),
     elykeskukset: await getRaw(
       "elykeskukset",
       backendRoutes.elykeskukset.path,
@@ -197,6 +198,11 @@ const fetchBaseData = async (
       backendRoutes.kujalisamaareet.path,
       keys
     ),
+    joistalisaksi: await getRaw(
+      "joistalisaksi",
+      backendRoutes.joistalisaksi.path,
+      keys
+    ),
     kunnat: await getRaw("kunnat", backendRoutes.kunnat.path, keys),
     maakunnat: await getRaw("maakunnat", backendRoutes.maakunnat.path, keys),
     maakuntakunnat: await getRaw(
@@ -242,7 +248,9 @@ const fetchBaseData = async (
     ),
     organisaatiot: await getRaw(
       "organisaatiot",
-      backendRoutes.organisaatiot.path,
+      koulutustyyppi
+        ? `${backendRoutes.organisaatiot.path}?koulutustyyppi=${koulutustyyppi}`
+        : backendRoutes.organisaatiot.path,
       keys
     ),
     poErityisetKoulutustehtavat: await getRaw(
@@ -262,9 +270,7 @@ const fetchBaseData = async (
         backendRoutes.tulevatLuvat.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
-      }${
-        oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""
-      }`,
+      }${oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""}`,
       keys,
       backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
     ),
@@ -308,6 +314,25 @@ const fetchBaseData = async (
   const result = {
     elykeskukset: raw.elykeskukset
   };
+
+  result.ajalla = raw.ajalla
+    ? await localforage.setItem(
+        "ajalla",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maare => {
+            return omit(["koodiArvo"], {
+              ...maare,
+              koodiarvo: maare.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maare.metadata)
+              )
+            });
+          }, raw.ajalla).filter(Boolean)
+        )
+      )
+    : undefined;
 
   result.kielet = raw.kielet
     ? await localforage.setItem(
@@ -417,6 +442,25 @@ const fetchBaseData = async (
       )
     : undefined;
 
+  result.joistaLisaksi = raw.joistalisaksi
+    ? await localforage.setItem(
+        "joistaLisaksi",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maare => {
+            return omit(["koodiArvo"], {
+              ...maare,
+              koodiarvo: maare.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maare.metadata)
+              )
+            });
+          }, raw.joistalisaksi).filter(Boolean)
+        )
+      )
+    : undefined;
+
   result.lisamaareet = raw.kujalisamaareet
     ? await localforage.setItem(
         "kujalisamaareet",
@@ -508,18 +552,21 @@ const fetchBaseData = async (
     : undefined;
 
   result.oivaperustelut = raw.oivaperustelut
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.oivaperustelut)
+    ? await localforage.setItem(
+        "oivaperustelut",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.oivaperustelut)
+        )
       )
     : undefined;
 
@@ -628,18 +675,21 @@ const fetchBaseData = async (
   result.tulevatLuvat = raw.tulevatLuvat || [];
 
   result.vankilat = raw.vankilat
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.vankilat)
+    ? await localforage.setItem(
+        "vankilat",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.vankilat)
+        )
       )
     : undefined;
 
@@ -683,15 +733,28 @@ const BaseData = ({
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi, oppilaitostyyppi).then(
-      result => {
-        if (isSubscribed) {
-          setBaseData(result);
-        }
+    fetchBaseData(
+      keys,
+      locale,
+      lupaUuid,
+      _ytunnus,
+      koulutustyyppi,
+      oppilaitostyyppi
+    ).then(result => {
+      if (isSubscribed) {
+        setBaseData(result);
       }
-    );
+    });
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi, oppilaitostyyppi]);
+  }, [
+    keys,
+    locale,
+    lupaUuid,
+    _ytunnus,
+    location.pathname,
+    koulutustyyppi,
+    oppilaitostyyppi
+  ]);
 
   if (!isEmpty(baseData)) {
     return (

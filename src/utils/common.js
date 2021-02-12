@@ -1,6 +1,12 @@
 import { API_BASE_URL } from "../modules/constants";
 import moment from "moment";
 import * as R from "ramda";
+import common from "i18n/definitions/common";
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
+import lukiokoulutus from "i18n/definitions/lukiokoulutus";
+import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
+import education from "i18n/definitions/education";
 
 /**
  * Utility functions are listed here.
@@ -216,8 +222,8 @@ export function sortObjectsByProperty(a, b, path) {
   }
   const aRaw = R.path(path, a);
   const bRaw = R.path(path, b);
-  const aDate = moment(aRaw, "DD.MM.YYYY", true);
-  const bDate = moment(bRaw, "DD.MM.YYYY", true);
+  const aDate = moment(aRaw, "D.M.YYYY", true);
+  const bDate = moment(bRaw, "D.M.YYYY", true);
   const aCompare = aDate.isValid() ? aDate : aRaw;
   const bCompare = aDate.isValid() ? bDate : bRaw;
 
@@ -309,3 +315,79 @@ export const recursiveTreeShake = (p = [], branch) => {
 
   return updatedBranch;
 };
+
+export const isDate = input => {
+  return Object.prototype.toString.call(input) === "[object Date]";
+};
+
+export function localizeRouteKey(locale, path, formatMessage, params) {
+  return `/${locale}` + formatMessage({ id: path }, params);
+}
+
+export function getMatchingRoute(
+  locale,
+  language,
+  pathName,
+  messages = [],
+  localesByLang = {}
+) {
+  // Selvitetään aktiivinen polku (route).
+  const [, route] = pathName.split(locale);
+
+  const routeKey = Object.keys(messages).find(key => {
+    return messages[key] === route;
+  });
+  // Etsitään vastaava polku juuri aktiiviseksi valittua kieltä hyödyntäen.
+  const matchingRoute = localesByLang[language][routeKey];
+
+  // Palautetaan lokalisoitu polku (route).
+  return `/${language}` + matchingRoute;
+}
+
+export function getKoulutusmuodot(formatMessage) {
+  return {
+    ammatillinenKoulutus: {
+      genetiivi: formatMessage(ammatillinenKoulutus.genetiivi),
+      kebabCase: formatMessage(ammatillinenKoulutus.kebabCase),
+      kortinOtsikko: formatMessage(education.vocationalEducation),
+      kuvausteksti: formatMessage(ammatillinenKoulutus.kuvausteksti),
+      lyhytKuvaus: formatMessage(ammatillinenKoulutus.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(education.vocationalEducation),
+      pascalCase: "AmmatillinenKoulutus",
+      jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
+    },
+    esiJaPerusopetus: {
+      genetiivi: formatMessage(esiJaPerusopetus.genetiivi),
+      kebabCase: formatMessage(esiJaPerusopetus.kebabCase),
+      kortinOtsikko: formatMessage(education.preAndBasicEducation),
+      koulutustyyppi: "1",
+      kuvausteksti: formatMessage(esiJaPerusopetus.kuvausteksti),
+      lyhytKuvaus: formatMessage(esiJaPerusopetus.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(education.preAndBasicEducation),
+      pascalCase: "EsiJaPerusopetus",
+      jarjestajatOtsikko: formatMessage(education.opetuksenJarjestajat)
+    },
+    lukiokoulutus: {
+      genetiivi: formatMessage(lukiokoulutus.genetiivi),
+      kebabCase: formatMessage(lukiokoulutus.kebabCase),
+      kortinOtsikko: formatMessage(education.highSchoolEducation),
+      koulutustyyppi: "2",
+      kuvausteksti: formatMessage(lukiokoulutus.kuvausteksti),
+      lyhytKuvaus: formatMessage(lukiokoulutus.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(education.highSchoolEducation),
+      pascalCase: "Lukiokoulutus",
+      jarjestajatOtsikko: formatMessage(education.koulutuksenJarjestajat)
+    },
+    vapaaSivistystyo: {
+      genetiivi: formatMessage(vapaaSivistystyo.genetiivi),
+      kebabCase: formatMessage(vapaaSivistystyo.kebabCase),
+      kortinOtsikko: formatMessage(education.vstEducation),
+      koulutustyyppi: "3",
+      kuvausteksti: formatMessage(vapaaSivistystyo.kuvausteksti),
+      lyhytKuvaus: formatMessage(vapaaSivistystyo.lyhytKuvaus),
+      paasivunOtsikko: formatMessage(common.vstTitleName),
+      pascalCase: "VapaaSivistystyo",
+      jarjestajatOtsikko: formatMessage(education.oppilaitostenYllapitajat)
+    }
+  };
+}

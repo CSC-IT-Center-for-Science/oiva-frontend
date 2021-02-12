@@ -3,12 +3,15 @@ import Table from "../../02-organisms/Table";
 import ConfirmDialog from "../../02-organisms/ConfirmDialog";
 import { generateAvoimetAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, Route } from "react-router-dom";
 import Loading from "../../../modules/Loading";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
-import * as R from "ramda";
 import common from "../../../i18n/definitions/common";
 import ProcedureHandler from "../../02-organisms/procedureHandler";
+import { includes, length, path } from "ramda";
+import { LocalizedSwitch } from "modules/i18n/index";
+import Asiakirjat from "components/02-organisms/Asiakirjat/index";
+import { AppRoute } from "const/index";
 
 const AvoimetAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
@@ -23,7 +26,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const isForced = R.includes("force=", location.search);
+    const isForced = includes("force=", location.search);
     let abortController = muutospyynnotActions.loadByStates(
       ["AVOIN", "VALMISTELUSSA", "ESITTELYSSA"],
       ["avoimet"],
@@ -73,13 +76,15 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
   if (
     muutospyynnot.avoimet &&
     muutospyynnot.avoimet.isLoading === false &&
-    muutospyynnot.avoimet.fetchedAt
+    muutospyynnot.avoimet.fetchedAt &&
+    length(path(["avoimet", "data"], muutospyynnot))
   ) {
     return (
       <div
         style={{
           borderBottom: "0.05rem solid #E3E3E3"
-        }}>
+        }}
+      >
         <Table
           structure={tableStructure}
           sortedBy={{ columnIndex: 5, order: "descending" }}
@@ -101,6 +106,20 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
           }}
           loadingSpinner={isLoading}
         />
+      </div>
+    );
+  } else if (
+    muutospyynnot.avoimet &&
+    muutospyynnot.avoimet.isLoading === false &&
+    muutospyynnot.avoimet.fetchedAt &&
+    length(path(["avoimet", "data"], muutospyynnot)) === 0
+  ) {
+    return (
+      <div
+        className="flex justify-center text-tummanharmaa text-base items-center"
+        style={{ height: "100%" }}
+      >
+        {intl.formatMessage(common.eiAvoimiaAsioita)}
       </div>
     );
   } else {

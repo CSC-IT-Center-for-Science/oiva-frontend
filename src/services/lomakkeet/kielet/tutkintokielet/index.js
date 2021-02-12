@@ -1,17 +1,41 @@
-import { find, filter, map, propEq, toUpper } from "ramda";
+import {
+  addIndex,
+  equals,
+  find,
+  flatten,
+  last,
+  map,
+  path,
+  propEq,
+  split,
+  toUpper
+} from "ramda";
 import { getKieletFromStorage } from "helpers/kielet";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
+import { getAnchorPart } from "utils/common";
+import { getTutkinnotFromStorage } from "helpers/tutkinnot";
 
-async function getModificationForm(aktiivisetTutkinnot, locale) {
+async function getModificationForm(
+  aktiivisetTutkinnot = [],
+  isReadOnly,
+  locale
+) {
   const kielet = await getKieletFromStorage();
   const koulutustyypit = await getKoulutustyypitFromStorage();
+  const tutkinnotFromStorage = await getTutkinnotFromStorage();
   const localeUpper = toUpper(locale);
   const currentDate = new Date();
   return map(koulutustyyppi => {
-    const tutkinnot = filter(
-      propEq("koulutustyyppikoodiarvo", koulutustyyppi.koodiarvo),
-      aktiivisetTutkinnot
-    );
+    const tutkinnot = map(tutkinto => {
+      const koodiarvo = path(["properties", "code"], tutkinto);
+      const koulutustyyppikoodiarvo = getAnchorPart(tutkinto.anchor, 1);
+      if (last(tutkinto.anchor.split(".")) !== "osaamisala") {
+        if (equals(koulutustyyppikoodiarvo, koulutustyyppi.koodiarvo)) {
+          return find(propEq("koodiarvo", koodiarvo), tutkinnotFromStorage);
+        }
+      }
+      return false;
+    }, aktiivisetTutkinnot).filter(Boolean);
     if (tutkinnot.length) {
       return {
         anchor: koulutustyyppi.koodiarvo,
@@ -23,6 +47,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
               {
                 anchor: "nimi",
                 name: "StatusTextRow",
+                styleClasses: ["flex-2"],
                 properties: {
                   code: tutkinto.koodiarvo,
                   title: tutkinto.metadata[localeUpper].nimi,
@@ -34,6 +59,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
                 anchor: "kielet",
                 name: "Autocomplete",
                 properties: {
+                  isReadOnly,
                   options: map(kieli => {
                     return {
                       label: kieli.metadata[localeUpper].nimi,
@@ -62,7 +88,7 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
                       };
                     }
                     return null;
-                  }, tutkinto.tutkintokielet).filter(Boolean)
+                  }, tutkinto.tutkintokielet || []).filter(Boolean)
                 }
               }
             ]
@@ -74,15 +100,125 @@ async function getModificationForm(aktiivisetTutkinnot, locale) {
   }, koulutustyypit).filter(Boolean);
 }
 
+const getReasoningForm = async (
+  { koulutusalakoodiarvo, maaraykset },
+  isReadOnly,
+  locale,
+  changeObjects
+) => {
+  const localeUpper = toUpper(locale);
+  const currentDate = new Date();
+
+  const tutkinnot = await getTutkinnotFromStorage();
+
+  return addIndex(map)((changeObj, i) => {
+    const anchorParts = split(".", changeObj.anchor);
+    const item = find(propEq("koodiarvo", anchorParts[2]), tutkinnot);
+
+    const metadata = item.metadata[toUpper(locale)];
+
+    /**
+     * There might be some sub articles (alimääräyksiä) under the current article (määräys).
+     * We are interested of them which are related to tutkintokielet section.
+     * */
+    const maarays = find(propEq("koodiarvo", anchorParts[2]), maaraykset);
+    const alimaaraykset = maarays ? maarays.aliMaaraykset : [];
+
+    /**
+     * selectedByDefault includes all the languages which already are in LUPA.
+     * */
+    const selectedByDefault = map(alimaarays => {
+      if (
+        alimaarays.kohde.tunniste === "opetusjatutkintokieli" &&
+        new Date(alimaarays.koodi.voimassaAlkuPvm) < currentDate
+      ) {
+        const metadataObj = find(
+          propEq("kieli", localeUpper),
+          alimaarays.koodi.metadata
+        );
+        return metadataObj
+          ? {
+              label: metadataObj.nimi,
+              value: alimaarays.koodi.koodiArvo
+            }
+          : null;
+      }
+      return null;
+    }, alimaaraykset || []).filter(Boolean);
+    return {
+      anchor: `${anchorParts[1]}|${i}|`,
+      code: item.koodiArvo,
+      title: metadata.nimi,
+      categories: addIndex(map)((language, index) => {
+        const isSelectedByDefault = !!find(
+          propEq("value", language.value),
+          selectedByDefault
+        );
+        const isAdded = !isSelectedByDefault;
+        const isRemoved =
+          isSelectedByDefault &&
+          !!!find(
+            propEq("value", language.value),
+            changeObj.properties.value || []
+          );
+        return isAdded || isRemoved
+          ? {
+              anchor: `${item.koodiarvo}${index > 0 ? index : ""}`,
+              categories: [
+                {
+                  anchor: "title",
+                  components: [
+                    {
+                      anchor: "A",
+                      name: "StatusTextRow",
+                      properties: {
+                        title: `${language.label} (${language.value})`,
+                        styleClasses: ["flex"],
+                        statusTextStyleClasses: isAdded
+                          ? ["text-green-600 pr-4 w-20 font-bold"]
+                          : ["text-red-500 pr-4 w-20 font-bold"],
+                        statusText: isAdded ? " LISÄYS:" : " POISTO:"
+                      }
+                    }
+                  ]
+                },
+                {
+                  anchor: "perustelut",
+                  components: [
+                    {
+                      anchor: "A",
+                      name: "TextBox",
+                      properties: {
+                        forChangeObject: {
+                          koulutusalakoodiarvo
+                        },
+                        isReadOnly: isReadOnly,
+                        title: "Perustele muutos tähän, kiitos.",
+                        value: ""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          : [];
+      }, flatten([selectedByDefault, changeObj.properties.value].filter(Boolean)))
+    };
+  }, changeObjects || []).filter(Boolean);
+};
+
 export default async function getTutkintokieletLomake(
-  action,
+  mode,
   data,
   { isReadOnly },
-  locale
+  locale,
+  changeObjects = []
 ) {
-  switch (action) {
+  switch (mode) {
     case "modification":
-      return await getModificationForm(data.aktiiviset, locale);
+      return await getModificationForm(data.aktiiviset, isReadOnly, locale);
+    case "reasoning":
+      return await getReasoningForm(data, isReadOnly, locale, changeObjects);
     default:
       return [];
   }

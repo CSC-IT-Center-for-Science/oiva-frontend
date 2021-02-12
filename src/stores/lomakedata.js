@@ -1,6 +1,7 @@
 import { createStore, createHook, createContainer } from "react-sweet-state";
 import { assocPath, path, prepend, split } from "ramda";
 import { recursiveTreeShake } from "utils/common";
+import equal from "react-fast-compare";
 
 const Store = createStore({
   initialState: {
@@ -11,7 +12,9 @@ const Store = createStore({
       const anchorParts = prepend("sections", split("_", anchor));
       const nextStateCandidate = assocPath(anchorParts, data, getState());
       const shakedTree = recursiveTreeShake(anchorParts, nextStateCandidate);
-      setState(shakedTree);
+      if (!equal(getState(), shakedTree)) {
+        setState(shakedTree);
+      }
     },
     setValidity: (status, anchor) => ({ getState, setState }) => {
       setState(assocPath(["validity", anchor], status, getState()));
