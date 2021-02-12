@@ -4,7 +4,7 @@ import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { NavLink, Route, Router, useHistory } from "react-router-dom";
-import Jarjestajat from "../Jarjestajat";
+import Jarjestajat from "../Jarjestajat/index";
 import BaseData from "basedata";
 import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
