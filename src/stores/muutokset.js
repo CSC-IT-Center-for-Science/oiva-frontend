@@ -208,8 +208,8 @@ const Store = createStore({
             endsWith(sectionId === 'toimintaalue' ? ".lisatiedot" : ".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           concat(
-            !(!(currentChangeObjects.unsaved && currentChangeObjects.unsaved[sectionId]) && ![]),
-            !(!currentChangeObjects.saved && currentChangeObjects.saved[sectionId]) || ![]
+            (currentChangeObjects.unsaved && currentChangeObjects.unsaved[sectionId]) || [],
+            (currentChangeObjects.saved && currentChangeObjects.saved[sectionId]) || []
           ) || []
         );
 
