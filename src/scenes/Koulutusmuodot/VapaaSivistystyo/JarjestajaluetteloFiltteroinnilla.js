@@ -4,11 +4,10 @@ import { Helmet } from "react-helmet";
 import education from "../../../i18n/definitions/education";
 import { useIntl } from "react-intl";
 import BaseData from "basedata";
-import vapaaSivistystyo from "i18n/definitions/vapaaSivistystyo";
 
 const keys = ["vstTyypit"];
 
-const JarjestajaluetteloFiltteroinnilla = ({ luvat }) => {
+const JarjestajaluetteloFiltteroinnilla = ({ koulutusmuoto, luvat }) => {
   const intl = useIntl();
 
   return (
@@ -22,10 +21,9 @@ const JarjestajaluetteloFiltteroinnilla = ({ luvat }) => {
         keys={keys}
         render={_props => (
           <Jarjestajaluettelo
-            koulutusmuoto={intl.formatMessage(vapaaSivistystyo.kebabCase)}
+            koulutusmuoto={koulutusmuoto}
             luvat={luvat}
-            vstTyypit={_props.vstTyypit}
-          />
+            vstTyypit={_props.vstTyypit} />
         )}
       />
     </React.Fragment>

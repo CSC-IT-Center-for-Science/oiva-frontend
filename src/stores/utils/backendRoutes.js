@@ -24,7 +24,7 @@ export const backendRoutes = {
   logIn: {
     path: `auth/login`
   },
-  lupaByYtunnus: {
+  lupaByOid: {
     path: `luvat/jarjestaja/`,
     minimumTimeBetweenFetchingInMinutes: 0
   },
@@ -83,7 +83,6 @@ export const backendRoutes = {
   kaannokset: { path: "lokalisaatio" },
 
   organisaatiot: { path: "luvat/organisaatiot" },
-  ytunnushaku: { path: "organisaatiot/" },
   opetustehtavakoodisto: { path: "koodistot/koodisto/opetustehtava" },
   opetustehtavat: { path: "koodistot/koodit/opetustehtava" },
   kieletOPH: { path: "koodistot/koodit/kielikoodistoopetushallinto" },

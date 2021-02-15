@@ -98,7 +98,7 @@ export default defineMessages({
   paatokset: {
     id: "routes.paatokset",
     defaultMessage:
-      "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/paatokset"
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/paatokset"
   },
   saavutettavuusseloste: {
     id: "routes.saavutettavuusseloste",

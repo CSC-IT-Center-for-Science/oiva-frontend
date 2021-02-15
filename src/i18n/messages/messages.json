@@ -2156,7 +2156,7 @@
   },
   {
     "id": "routes.paatokset",
-    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/paatokset",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/paatokset",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {

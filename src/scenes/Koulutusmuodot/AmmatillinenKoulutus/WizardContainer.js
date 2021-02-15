@@ -114,9 +114,21 @@ const WizardContainer = ({
       /**
        * User is redirected to the url of the saved document.
        */
-      history.push(`/ammatillinen-koulutus/asianhallinta/${id}/${uuid}/1`);
+      history.push(
+        localizeRouteKey(
+          locale,
+          AppRoute.Hakemus,
+          formatMessage,
+          {
+            id: id,
+            koulutusmuoto: koulutusmuoto.kebabCase,
+            page: 1,
+            uuid
+          }
+        )
+      );
     },
-    [history, id]
+    [history, id, koulutusmuoto, locale, formatMessage]
   );
 
   /**
@@ -333,7 +345,7 @@ const WizardContainer = ({
               AppRoute.Jarjestamislupaasiat,
               formatMessage,
               {
-                id: organisaatio.ytunnus,
+                id: organisaatio.oid,
                 koulutusmuoto: koulutusmuoto.kebabCase
               }
             )

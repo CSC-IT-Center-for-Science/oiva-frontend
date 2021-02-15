@@ -75,15 +75,15 @@ const JarjestajaSwitch = ({
           render={() => {
             /**
              * Varmistetaan, että ollaan aikeissa näyttää halutun järjestäjän
-             * tiedot vertaamalla haussa käytettyä y-tunnusta luvan
-             * y-tunnukseen, mikäli haussa käytettiin y-tunnusta. Toinen
+             * tiedot vertaamalla haussa käytettyä oid:a luvan
+             * järjestäjän oid:iin, mikäli haussa käytettiin oid:a. Toinen
              * vaihtoehto on, että haku on tehty lupaUuid:llä, jolloin
              * vertaamme sitä luvan vastaavaan tietoon.
              * */
             if (
               (lupa &&
-                ytunnus &&
-                ytunnus === prop("jarjestajaYtunnus", lupa)) ||
+                organisation &&
+                organisation.oid === prop("jarjestajaOid", lupa)) ||
               (lupaUuid &&
                 lupaUuid === prop("uuid", lupa) &&
                 !isEmpty(lupakohteet))
