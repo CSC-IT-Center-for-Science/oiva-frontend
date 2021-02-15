@@ -65,7 +65,6 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
             naytettavaArvo = koodistosta.metadata[localeUpper].nimi;
           }
 
-          console.info(maarays);
           const result = (
             <React.Fragment key={`${maarays.koodiarvo}-${index}`}>
               <li className="leading-bulletList">{naytettavaArvo}</li>

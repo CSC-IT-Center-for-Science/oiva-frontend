@@ -407,7 +407,7 @@ export const handleAlimaarays = (
       "rajoitteet.ajalla"
     )} ${alkupvm} - ${loppupvm}</li>`;
   } else {
-    let value =
+    const value =
       find(
         metadata => metadata.kieli === locale,
         path(["koodi", "metadata"], alimaarays) || []
