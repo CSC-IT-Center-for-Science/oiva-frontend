@@ -407,20 +407,16 @@ export const handleAlimaarays = (
       "rajoitteet.ajalla"
     )} ${alkupvm} - ${loppupvm}</li>`;
   } else {
-    let value = find(
-      metadata => metadata.kieli === locale,
-      path(["koodi", "metadata"], alimaarays) || []
-    );
+    let value =
+      find(
+        metadata => metadata.kieli === locale,
+        path(["koodi", "metadata"], alimaarays) || []
+      ) || prop("meta", alimaarays);
+
     if (value) {
       modifiedString = `${modifiedString}<li class="list-disc">${value[
         naytettavaArvo
       ] || value.nimi} ${alimaarays.arvo || ""}</li>`;
-    } else {
-      // Kunnes parempi ratkaisu suunnitellaan
-      modifiedString = `${modifiedString}<li class="list-disc">${path(
-        ["meta", "changeObjects", "1", "properties", "value", "label"],
-        alimaarays
-      )}</li>`;
     }
   }
 

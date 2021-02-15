@@ -144,7 +144,8 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
-          changeObjects: [asetusChangeObj, nth(index + 1, asetukset)]
+          changeObjects: [asetusChangeObj, nth(index + 1, asetukset)],
+          kuvaus: prop("label", multiselectValue)
         }
       };
 
