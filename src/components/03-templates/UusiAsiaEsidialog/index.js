@@ -68,11 +68,11 @@ const UusiAsiaEsidialog = ({
   const [isKJMissing, setIsKJMissing] = useState(false);
   const classes = useStyles();
 
-  const searchByYtunnus = useCallback(async () => {
-    const { value: ytunnus } = inputEl.current;
+  const searchById = useCallback(async () => {
+    const { value: id } = inputEl.current;
     setIsLoading(true);
     const result = await fetchJSON(
-      `${backendRoutes.ytunnushaku.path}/${trim(ytunnus)}`
+      `${backendRoutes.organisaatio.path}/${trim(id)}`
     );
     setIsLoading(false);
     setOrganisation(result);
@@ -118,14 +118,14 @@ const UusiAsiaEsidialog = ({
                           aria-label={intl.formatMessage(
                             common.suoritaYtunnushaku
                           )}
-                          onClick={searchByYtunnus}
+                          onClick={searchById}
                         >
                           <SearchIcon />
                         </IconButton>
                       ),
                       inputRef: inputEl,
                       onKeyUp: e => {
-                        return e.key === "Enter" ? searchByYtunnus() : null;
+                        return e.key === "Enter" ? searchById() : null;
                       }
                     }}
                     variant="outlined"
@@ -208,7 +208,7 @@ const UusiAsiaEsidialog = ({
                             organisation,
                             intl.locale
                           ),
-                          value: organisation.ytunnus
+                          value: organisation.oid
                         }
                       : null;
                   }, organisations)
@@ -253,7 +253,7 @@ const UusiAsiaEsidialog = ({
             onClick={() => {
               const kj =
                 isSearchFieldVisible && organisation
-                  ? { value: organisation.ytunnus }
+                  ? { value: organisation.oid }
                   : selectedKJ;
               if (
                 isSearchFieldVisible &&

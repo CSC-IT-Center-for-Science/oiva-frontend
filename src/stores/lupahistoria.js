@@ -20,7 +20,9 @@ const Store = createStore({
           queryParameters: params
         },
         {
-          jarjestajaOid
+          jarjestajaOid,
+          koulutusmuoto,
+          oppilaitostyyppi
         }
       );
     }

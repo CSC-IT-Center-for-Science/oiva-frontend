@@ -38,6 +38,8 @@ import {
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -311,7 +313,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
   );
 }
 
-function Jarjestajaluettelo({ luvat }) {
+function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
   const intl = useIntl();
   const [data, setData] = useState(() =>
     map(({ jarjestaja }) => {
@@ -325,6 +327,7 @@ function Jarjestajaluettelo({ luvat }) {
           ) || {}
         ).nimi,
         ytunnus: jarjestaja.ytunnus,
+        oid: jarjestaja.oid,
         toiminnot: ["info"]
       };
     }, luvat)
@@ -338,7 +341,12 @@ function Jarjestajaluettelo({ luvat }) {
         return (
           <Link
             className="underline"
-            to={`/lukiokoulutus/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
+            to={localizeRouteKey(
+              intl.locale,
+              AppRoute.Jarjestamislupa,
+              intl.formatMessage,
+              { id: row.original.oid, koulutusmuoto: koulutusmuoto.kebabCase }
+            )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.nimi
             })}>

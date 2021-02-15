@@ -427,7 +427,7 @@
   "routes.logOut": "/logout",
   "routes.lukiokoulutus": "/jarjestamis-ja-yllapitamisluvat/lukiokoulutus",
   "routes.omatTiedot": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/omat-tiedot",
-  "routes.paatokset": "/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/{id}/paatokset",
+  "routes.paatokset": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/koulutustoimijat/{id}/paatokset",
   "routes.saavutettavuusseloste": "/saavutettavuusseloste",
   "routes.tietosuojailmoitus": "/tietosuojailmoitus",
   "routes.tilastot": "/tilastot",

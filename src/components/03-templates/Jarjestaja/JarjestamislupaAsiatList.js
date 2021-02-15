@@ -197,7 +197,7 @@ const JarjestamislupaAsiatList = ({
                       AppRoute.Hakemus,
                       intl.formatMessage,
                       {
-                        id: organisation.ytunnus,
+                        id: organisation.oid,
                         koulutusmuoto: koulutusmuoto.kebabCase,
                         page: 1,
                         uuid: row.id
