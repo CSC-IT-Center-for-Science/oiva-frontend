@@ -15,16 +15,8 @@ import getPerustelutLiitteetlomake from "./perustelut/liitteet";
 import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
-import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoskee";
-import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
-import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
-import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
-import { getOpiskelijamaaratLomake } from "./esi-ja-perusopetus/6-opiskelijamaarat";
-import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
-import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
-import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
-import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
-import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
+
+// Ammatillisen koulutuksen muokkauslomakkeet
 import { getMuutLaajennettu } from "./ammatillinenKoulutus/5-muut/laajennettuOppisopimuskoulutus";
 import { getMuutVaativaTuki } from "./ammatillinenKoulutus/5-muut/vaativaTuki";
 import { getMuutSisaoppilaitos } from "./ammatillinenKoulutus/5-muut/sisaoppilaitos";
@@ -38,6 +30,18 @@ import { getMuutMuuMaarays } from "./ammatillinenKoulutus/5-muut/muuMaarays";
 // Ammatillisen koulutuksen esikatselulomakkeet
 import previewOfTutkinnot from "./ammatillinenKoulutus/esikatselu/1-tutkinnot";
 
+// Esi -ja perusopetuksen muokkauslomakkeet
+import { opetusJotaLupaKoskee } from "./esi-ja-perusopetus/1-opetusJotaLupaKoskee";
+import getPaatoksenTiedot from "./esi-ja-perusopetus/0-paatoksenTiedot";
+import { getOpetuskieletOPHLomake } from "./esi-ja-perusopetus/3-opetuskielet";
+import { opetuksenJarjestamismuoto } from "./esi-ja-perusopetus/4-opetuksenJarjestamismuoto";
+import { getOpiskelijamaaratLomake } from "./esi-ja-perusopetus/6-opiskelijamaarat";
+import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulutustehtavat";
+import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
+import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
+import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
+import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
+
 // Esi- ja perusopetuksen esikatselulomakkeet
 import { previewOfOpetusJotaLupaKoskee } from "./esi-ja-perusopetus/esikatselu/1-opetusJotaLupaKoskee";
 import { previewOfOpetuskielet } from "./esi-ja-perusopetus/esikatselu/3-opetuskielet";
@@ -47,6 +51,18 @@ import { previewOfOpiskelijamaarat } from "./esi-ja-perusopetus/esikatselu/6-opi
 import { previewOfMuutEhdot } from "./esi-ja-perusopetus/esikatselu/7-muutEhdot";
 import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2-opetustaAntavatKunnat";
 import { previewOfRajoite } from "./esi-ja-perusopetus/esikatselu/10-rajoite";
+
+// Esi -ja perusopetuksen muokkauslomakkeet
+import { opetusJotaLupaKoskee as opetusJotaLupaKoskeeLukio } from "./lukiokoulutus/1-opetusJotaLupaKoskee";
+import getPaatoksenTiedotLukio from "./lukiokoulutus/0-paatoksenTiedot";
+import { getOpetuskieletOPHLomake as getOpetuskieletOPHLomakeLukio } from "./lukiokoulutus/3-opetuskielet";
+import { opetuksenJarjestamismuoto as opetuksenJarjestamismuotoLukio } from "./lukiokoulutus/4-opetuksenJarjestamismuoto";
+import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
+import { erityisetKoulutustehtavat as erityisetKoulutustehtavatLukio } from "./lukiokoulutus/5-erityisetKoulutustehtavat";
+import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
+import { opetustaAntavatKunnat as opetustaAntavatKunnatLukio } from "./lukiokoulutus/2-opetustaAntavatKunnat";
+import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
+import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/rajoite";
 
 /**
  * LOMAKEPALVELU
@@ -356,6 +372,87 @@ const lomakkeet = {
     paatoksenTiedot: {
       addition: (data, booleans, locale, changeObjects) =>
         getPaatoksenTiedot(data, booleans, locale, changeObjects)
+    },
+    opetustaAntavatKunnat: {
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        opetustaAntavatKunnat(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects, functions) =>
+        previewOfOpetustaAntavaKunnat(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        )
+    },
+    rajoite: {
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        rajoitelomake(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfRajoite(data, booleans, locale, changeObjects)
+    },
+    rajoitteet: {
+      addition: (data, booleans, locale, changeObjects, functions) =>
+        rajoitteet(data, booleans, locale, changeObjects, functions)
+    }
+  },
+  // Lukiokoulutus
+  lukiokoulutus: {
+    erityisetKoulutustehtavat: {
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        erityisetKoulutustehtavat(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        ),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfErityisetKoulutustehtavat(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
+    },
+    muutEhdot: {
+      modification: (data, booleans, locale, changeObjects, functions) =>
+        muutEhdot(data, booleans, locale, changeObjects, functions),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfMuutEhdot(data, booleans, locale, changeObjects)
+    },
+    opetuksenJarjestamismuodot: {
+      modification: (data, booleans, locale) =>
+        opetuksenJarjestamismuoto(data, booleans, locale),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetuksenJarjestamismuoto(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
+    },
+    opetusJotaLupaKoskee: {
+      modification: (data, booleans, locale, changeObjects) =>
+        opetusJotaLupaKoskee(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetusJotaLupaKoskee(data, booleans, locale, changeObjects)
+    },
+    opetuskielet: {
+      modification: (data, booleans, locale, changeObjects) =>
+        getOpetuskieletOPHLomake(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpetuskielet(data, booleans, locale, changeObjects)
+    },
+    opiskelijamaarat: {
+      modification: (data, booleans, locale) =>
+        getOpiskelijamaaratLomake(data, booleans, locale),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfOpiskelijamaarat(data, booleans, locale, changeObjects)
+    },
+    paatoksenTiedot: {
+      addition: (data, booleans, locale, changeObjects) =>
+        getPaatoksenTiedotLukio(data, booleans, locale, changeObjects)
     },
     opetustaAntavatKunnat: {
       modification: (data, booleans, locale, changeObjects, functions) =>

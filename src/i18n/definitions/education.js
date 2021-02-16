@@ -109,5 +109,9 @@ export default defineMessages({
   opetustehtavana: {
     id: "education.opetustehtavana",
     defaultMessage: "opetustehtavana"
+  },
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
+    id: "education.oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+    defaultMessage: "Oikeus sisäoppilaitosmuotoiseen koulutukseen"
   }
 });
