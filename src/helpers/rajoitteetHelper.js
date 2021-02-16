@@ -1,6 +1,7 @@
 import {
-  addIndex,
   append,
+  compose,
+  addIndex,
   endsWith,
   find,
   findIndex,
@@ -26,7 +27,8 @@ const koodistoMapping = {
   opetustehtavat: "opetustehtava",
   opiskelijamaarat: "oppilasopiskelijamaara",
   toimintaalue: "kunta",
-  opetuskielet: "kielikoodistoopetushallinto"
+  opetuskielet: "kielikoodistoopetushallinto",
+  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto"
 };
 
 function isAsetusKohdennuksenKohdennus(asetusChangeObj) {
@@ -67,8 +69,15 @@ export const createAlimaarayksetBEObjects = (
   let loppupvm = null;
   if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
-    loppupvm = valueOfValueChangeObj;
-    alkupvm = pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
+    alkupvm = path(['properties', 'value'], find(
+      compose(endsWith(".alkamispaiva"), prop("anchor")),
+      asetukset
+    )) || valueOfValueChangeObj;
+
+    loppupvm = path(['properties', 'value'], find(
+      compose(endsWith(".paattymispaiva"), prop("anchor")),
+      asetukset
+    )) || pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
   }
 
   let koodisto = "";
@@ -144,7 +153,20 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
-          changeObjects: [asetusChangeObj, nth(index + 1, asetukset)],
+          changeObjects: [
+            asetusChangeObj,
+            nth(index + 1, asetukset),
+            includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj) && [
+              find(
+                compose(endsWith(".alkamispaiva"), prop("anchor")),
+                asetukset
+              ) || null,
+              find(
+                compose(endsWith(".paattymispaiva"), prop("anchor")),
+                asetukset
+              ) || null
+            ]
+          ],
           kuvaus: prop("label", multiselectValue)
         }
       };

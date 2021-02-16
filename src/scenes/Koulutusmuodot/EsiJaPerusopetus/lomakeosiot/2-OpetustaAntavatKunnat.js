@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import wizard from "i18n/definitions/wizard";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import { useChangeObjects, useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import equal from "react-fast-compare";
 import * as R from "ramda";
 
@@ -31,6 +31,7 @@ const OpetustaAntavatKunnat = React.memo(
     ] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "toimintaalue"
     });
+    const [, { createTextBoxChangeObject }] = useChangeObjects();
 
     const maakuntamaaraykset = R.filter(
       maarays => maarays.koodisto === "maakunta",
@@ -101,6 +102,13 @@ const OpetustaAntavatKunnat = React.memo(
       R.isEmpty(kuntamaaraykset) &&
       fiCode !== "FI1";
 
+    const onAddButtonClick = useCallback(
+      koodiarvo => {
+        createTextBoxChangeObject(sectionId, koodiarvo);
+      },
+      [createTextBoxChangeObject, sectionId]
+    );
+
     return (
       <Lomake
         mode={constants.mode}
@@ -144,7 +152,8 @@ const OpetustaAntavatKunnat = React.memo(
         }}
         functions={{
           onChanges: whenChanges,
-          toggleEditView
+          toggleEditView,
+          onAddButtonClick
         }}
         isPreviewModeOn={isPreviewModeOn}
         isRowExpanded={true}

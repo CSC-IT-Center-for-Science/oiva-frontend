@@ -41,7 +41,7 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
       <PoOpetustaAntavatKunnatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuskieletHtml maaraykset={lupa.maaraykset} />
-      {/*<PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />*/}
+      <PoOpetuksenJarjestamismuotoHtml maaraykset={lupa.maaraykset} />
       <PoOpiskelijamaaratHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
