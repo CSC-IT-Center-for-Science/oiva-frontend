@@ -24,7 +24,7 @@ export const backendRoutes = {
   logIn: {
     path: `auth/login`
   },
-  lupaByYtunnus: {
+  lupaByOid: {
     path: `luvat/jarjestaja/`,
     minimumTimeBetweenFetchingInMinutes: 0
   },

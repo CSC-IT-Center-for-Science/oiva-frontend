@@ -10,14 +10,14 @@ const Store = createStore({
         formatMessage
       ).run("muutospyynnot.tilanmuutos.esittelyyn", [uuid]);
     },
-    load: (ytunnus, isForceReloadRequested) => ({ getState, setState }) => {
+    load: (oid, isForceReloadRequested) => ({ getState, setState }) => {
       return execute(
         { getState, setState },
         {
           key: "muutospyynnot",
-          urlEnding: ytunnus
+          urlEnding: oid
         },
-        { ytunnus },
+        { oid },
         isForceReloadRequested ? 0 : undefined
       );
     },

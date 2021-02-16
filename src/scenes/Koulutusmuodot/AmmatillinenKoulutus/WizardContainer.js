@@ -120,10 +120,10 @@ const WizardContainer = ({
           AppRoute.Hakemus,
           formatMessage,
           {
-            id: id,
+            id,
             koulutusmuoto: koulutusmuoto.kebabCase,
             page: 1,
-            uuid: uuid
+            uuid
           }
         )
       );

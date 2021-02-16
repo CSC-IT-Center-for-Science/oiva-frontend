@@ -16,7 +16,7 @@ const hakuavaimet = [
   "kunnat",
   "lisatietoja",
   "lupaByUuid",
-  "lupaByYtunnus",
+  "lupaByOid",
   "maakuntakunnat",
   "maaraystyypit",
   "opetustehtavakoodisto",

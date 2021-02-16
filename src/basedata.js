@@ -140,9 +140,9 @@ const fetchBaseData = async (
       : null,
     lupaByOid: oid
       ? await getRaw(
-          "lupaByYtunnus",
+          "lupaByOid",
           `${
-            backendRoutes.lupaByYtunnus.path
+            backendRoutes.lupaByOid.path
           }${oid}?with=all&useKoodistoVersions=false${
             koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
           }`,
@@ -747,7 +747,8 @@ const BaseData = ({
     id,
     location.pathname,
     koulutustyyppi,
-    oppilaitostyyppi
+    oppilaitostyyppi,
+    oid
   ]);
 
   if (!isEmpty(baseData)) {
