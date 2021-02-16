@@ -166,7 +166,8 @@ export const createAlimaarayksetBEObjects = (
                 asetukset
               ) || null
             ]
-          ]
+          ],
+          kuvaus: prop("label", multiselectValue)
         }
       };
 
