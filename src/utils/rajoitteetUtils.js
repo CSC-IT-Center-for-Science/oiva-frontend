@@ -3,11 +3,14 @@ import {
   append,
   assocPath,
   filter,
+  find,
   flatten,
+  forEach,
   head,
   includes,
   join,
   keys,
+  length,
   map,
   mapObjIndexed,
   nth,
@@ -23,6 +26,7 @@ import {
 } from "ramda";
 import moment from "moment";
 import { __ } from "i18n-for-browser";
+import React from "react";
 
 const pisteytys = {
   rajoite: 0,
@@ -78,15 +82,14 @@ const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
 function getTarkentimenArvo(tarkennin) {
   let tarkentimenArvo =
-    path(
-      ["properties", "value", "label"],
-      tarkennin
-    ) ||
-    path(["properties", "value"],
-      tarkennin);
-  return Array.isArray(tarkentimenArvo) ?
-    pipe(map(arvo => arvo.label), join(",<br/>"))(tarkentimenArvo) :
-    tarkentimenArvo;
+    path(["properties", "value", "label"], tarkennin) ||
+    path(["properties", "value"], tarkennin);
+  return Array.isArray(tarkentimenArvo)
+    ? pipe(
+        map(arvo => arvo.label),
+        join(",<br/>")
+      )(tarkentimenArvo)
+    : tarkentimenArvo;
 }
 
 function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
@@ -146,9 +149,11 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
                 }
               : null;
             //: getTaydennyssana(tarkenninavain, locale);
-            
-            const tarkentimenArvo = getTarkentimenArvo(asetus.tarkennin[tarkenninavain]);
-            
+
+            const tarkentimenArvo = getTarkentimenArvo(
+              asetus.tarkennin[tarkenninavain]
+            );
+
             const muokattuTarkentimenArvo = moment(
               tarkentimenArvo,
               "YYYY-MM-DDTHH:mm:ss.SSSZ",
@@ -315,13 +320,15 @@ export function getRajoiteListamuodossa(
     const indexMap = addIndex(map);
     listamuotoWithEndings = join(
       "",
-      indexMap((kohdennus, index)=> {
+      indexMap((kohdennus, index) => {
         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
         const s = join("", kohdennus);
         const amountOfInstances = getAmountOfInstances("<ul", s);
-        return addEnding("</li></ul>", s, index === 0
-          ? amountOfInstances - 2
-          : amountOfInstances);
+        return addEnding(
+          "</li></ul>",
+          s,
+          index === 0 ? amountOfInstances - 2 : amountOfInstances
+        );
       }, kohdennusLista)
     );
     listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
@@ -343,4 +350,83 @@ export const getRajoite = (value, rajoitteet) => {
   );
 
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
+};
+
+/**
+ *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa varten
+ *
+ */
+export const getRajoitteetFromMaarays = (
+  alimaaraykset = [],
+  locale,
+  naytettavaArvo
+) => {
+  console.info(naytettavaArvo, alimaaraykset);
+  let htmlString = "";
+  forEach(alimaarays => {
+    htmlString = handleAlimaarays(
+      alimaarays,
+      htmlString,
+      locale,
+      naytettavaArvo
+    );
+  }, alimaaraykset);
+  return (
+    <ul
+      className="htmlContent ml-8"
+      dangerouslySetInnerHTML={{ __html: htmlString }}
+    ></ul>
+  );
+};
+
+export const handleAlimaarays = (
+  alimaarays,
+  htmlString,
+  locale,
+  naytettavaArvo = "nimi"
+) => {
+  let modifiedString = `${htmlString}<ul class="list-disc">`;
+
+  const hasAlimaarays = !!length(alimaarays.aliMaaraykset);
+
+  const isMaaraaikaRajoite =
+    alimaarays.koodisto === "kujalisamaareetlisaksiajalla";
+
+  if (isMaaraaikaRajoite) {
+    const alkupvm = moment(
+      path(["meta", "alkupvm"], alimaarays),
+      "YYYY-MM-DD"
+    ).format("DD.MM.YYYY");
+
+    const loppupvm = moment(
+      path(["meta", "loppupvm"], alimaarays),
+      "YYYY-MM-DD"
+    ).format("DD.MM.YYYY");
+
+    modifiedString = `${modifiedString}<li class="list-disc">${__(
+      "rajoitteet.ajalla"
+    )} ${alkupvm} - ${loppupvm}</li>`;
+  } else {
+    const value = find(
+      metadata => metadata.kieli === locale,
+      path(["koodi", "metadata"], alimaarays || [])
+    );
+    modifiedString = `${modifiedString}<li class="list-disc">${value[
+      naytettavaArvo
+    ] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+  }
+
+  if (hasAlimaarays) {
+    forEach(alimaarays => {
+      modifiedString = handleAlimaarays(
+        alimaarays,
+        modifiedString,
+        locale,
+        naytettavaArvo
+      );
+    }, alimaarays.aliMaaraykset);
+  }
+
+  modifiedString = `${modifiedString}</ul>`;
+  return modifiedString;
 };

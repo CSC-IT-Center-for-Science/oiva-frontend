@@ -19,6 +19,7 @@ import {
   values,
   concat,
   take,
+  toLower,
   drop
 } from "ramda";
 import localforage from "localforage";
@@ -95,7 +96,11 @@ export const defineBackendChangeObjects = async (
         kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
         koodiarvo: lisatiedotObj.koodiarvo,
         koodisto: lisatiedotObj.koodisto.koodistoUri,
-        kuvaus: getLocalizedProperty(lisatiedotChangeObj.metadata, locale, "kuvaus"),
+        kuvaus: getLocalizedProperty(
+          lisatiedotChangeObj.metadata,
+          locale,
+          "kuvaus"
+        ),
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
           arvo: path(["properties", "value"], lisatiedotChangeObj),
@@ -133,7 +138,7 @@ export const defineBackendChangeObjects = async (
       ? {
           generatedId: `opetuskielet-${Math.random()}`,
           kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
-          koodiarvo: opetuskieli.koodiarvo,
+          koodiarvo: toLower(opetuskieli.koodiarvo),
           koodisto: opetuskieli.koodisto.koodistoUri,
           kuvaus: getLocalizedProperty(changeObj.metadata, locale, "kuvaus"),
           maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),

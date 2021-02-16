@@ -7,7 +7,6 @@ import JarjestajaBasicInfo from "./JarjestajaBasicInfo";
 import JulkisetTiedot from "./JulkisetTiedot";
 import OmatTiedot from "./OmatTiedot";
 import JarjestamislupaAsiat from "./Jarjestamislupa-asiat";
-import HakemuksetJaPaatokset from "./HakemuksetJaPaatokset";
 import common from "i18n/definitions/common";
 import education from "i18n/definitions/education";
 import * as R from "ramda";
@@ -16,7 +15,11 @@ import { Helmet } from "react-helmet";
 import { Tab, Tabs, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { koulutustyypitMap } from "../../../utils/constants";
+import { localizeRouteKey } from "utils/common";
 import equal from "react-fast-compare";
+import { AppRoute } from "const/index";
+import { LocalizedSwitch } from "modules/i18n/index";
+import kebabCase from "i18n/definitions/kebabCase";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -57,8 +60,6 @@ const Jarjestaja = React.memo(
     lupa = {},
     lupakohteet = [],
     organisation = {},
-    path,
-    url,
     user,
     tulevatLuvat = [],
     voimassaOlevaLupa = {}
@@ -78,15 +79,21 @@ const Jarjestaja = React.memo(
           }
         : {};
 
-    const breadcrumb = useMemo(() => {
-      return jarjestaja ? `/jarjestajat/${jarjestaja.oid}` : "";
-    }, [jarjestaja]);
+    const breadcrumb = localizeRouteKey(
+      intl.locale,
+      AppRoute.Jarjestamislupa,
+      intl.formatMessage,
+      {
+        id: jarjestaja.oid,
+        koulutusmuoto: koulutusmuoto.kebabCase
+      }
+    );
 
     const tabNavRoutes = useMemo(() => {
       // Basic routes (no authentication needed)
       const basicRoutes = [
         {
-          path: "jarjestamislupa",
+          path: intl.formatMessage(kebabCase.jarjestamislupa),
           text: intl.formatMessage(
             koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
               ? common.yllapitamisLupaTitle
@@ -95,7 +102,7 @@ const Jarjestaja = React.memo(
           authenticated: true
         },
         {
-          path: "paatokset",
+          path: intl.formatMessage(kebabCase.paatokset),
           exact: true,
           text: intl.formatMessage(common.lupaPaatokset),
           authenticated: true
@@ -106,14 +113,14 @@ const Jarjestaja = React.memo(
         user && R.equals(user.oid, R.prop("oid", lupa.jarjestaja))
           ? [
               {
-                path: "omattiedot",
+                path: intl.formatMessage(kebabCase.omatTiedot),
                 exact: true,
                 text: intl.formatMessage(common.omatTiedotTitle),
                 authenticated: !!user
               },
               {
                 id: "jarjestamislupa-asia",
-                path: "jarjestamislupa-asiat",
+                path: intl.formatMessage(kebabCase.jarjestamislupaasiat),
                 text: intl.formatMessage(common.asiatTitle),
                 authenticated: !!user
               }
@@ -122,13 +129,20 @@ const Jarjestaja = React.memo(
       return R.flatten(R.insert(1, basicRoutes, additionalRoutes));
     }, [koulutusmuoto.koulutustyyppi, lupa.jarjestaja, user, intl]);
 
-    const newApplicationRouteItem = useMemo(() => {
-      return {
-        path: `${url}/hakemukset-ja-paatokset/uusi/1`,
-        text: intl.formatMessage(common.newHakemus),
-        authenticated: !!user
-      };
-    }, [intl, url, user]);
+    const newApplicationRouteItem = {
+      path: localizeRouteKey(
+        intl.locale,
+        AppRoute.UusiHakemus,
+        intl.formatMessage,
+        {
+          id: organisation.ytunnus,
+          koulutusmuoto: koulutusmuoto.kebabCase,
+          page: 1
+        }
+      ),
+      text: intl.formatMessage(common.newHakemus),
+      authenticated: !!user
+    };
 
     return (
       <article className="flex flex-1 flex-col">
@@ -154,7 +168,8 @@ const Jarjestaja = React.memo(
             textColor="primary"
             onChange={(e, val) => {
               history.push(val);
-            }}>
+            }}
+          >
             {tabNavRoutes
               ? R.addIndex(R.map)((route, index) => {
                   return (
@@ -170,84 +185,34 @@ const Jarjestaja = React.memo(
               : null}
           </OivaTabs>
         </div>
-        {!!user ? (
-          <div className="flex-1 bg-gray-100 border-t border-solid border-gray-300">
-            <Route
-              path={`${path}/omattiedot`}
-              exact
-              render={() => (
-                <BaseData
-                  keys={["kunnat", "lupa", "maakunnat"]}
-                  locale={intl.locale}
-                  render={_props =>
-                    !R.isEmpty(organisation) ? (
-                      <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
-                        <div className="max-w-5xl m-auto">
-                          <OmatTiedot organisation={organisation} {..._props} />
+        <div className="flex-1 bg-gray-100 border-t border-solid border-gray-300">
+          <LocalizedSwitch>
+            {!!user && (
+              <Route
+                exact
+                path={AppRoute.OmatTiedot}
+                render={() => (
+                  <BaseData
+                    keys={["kunnat", "lupa", "maakunnat"]}
+                    locale={intl.locale}
+                    render={_props =>
+                      !R.isEmpty(organisation) ? (
+                        <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
+                          <div className="max-w-5xl m-auto">
+                            <OmatTiedot
+                              organisation={organisation}
+                              {..._props}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ) : null
-                  }
-                />
-              )}
-            />
-            <Route
-              path={`${url}/jarjestamislupa`}
-              render={() => (
-                <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
-                  {JarjestamislupaJSX ? (
-                    <div className="max-w-5xl m-auto">
-                      <JarjestamislupaJSX
-                        lupa={lupa}
-                        lupakohteet={lupakohteet}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-              )}
-            />
-            <Route
-              path={`${url}/paatokset`}
-              exact
-              render={() => (
-                <JulkisetTiedot
-                  koulutusmuoto={koulutusmuoto}
-                  jarjestaja={jarjestaja}
-                  tulevatLuvat={tulevatLuvat}
-                  voimassaOlevaLupa={voimassaOlevaLupa}
-                />
-              )}
-            />
-            <Route
-              path={`${url}/jarjestamislupa-asiat`}
-              exact
-              render={props => (
-                <div className="m-12 mx-auto w-4/5 max-w-8xl">
-                  <JarjestamislupaAsiat
-                    history={props.history}
-                    intl={intl}
-                    isForceReloadRequested={R.includes(
-                      "force=true",
-                      props.location.search
-                    )}
-                    match={props.match}
-                    newApplicationRouteItem={newApplicationRouteItem}
-                    lupa={lupa}
-                    organisation={organisation}
+                      ) : null
+                    }
                   />
-                </div>
-              )}
-            />
+                )}
+              />
+            )}
             <Route
-              path={`${path}/hakemukset-ja-paatokset`}
-              exact
-              render={props => <HakemuksetJaPaatokset match={props.match} />}
-            />
-          </div>
-        ) : (
-          <div className="flex-1 bg-gray-100 border-t border-solid border-gray-300">
-            <Route
-              path={`${url}/jarjestamislupa`}
+              path={AppRoute.Jarjestamislupa}
               render={() => (
                 <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
                   {JarjestamislupaJSX ? (
@@ -263,7 +228,7 @@ const Jarjestaja = React.memo(
               )}
             />
             <Route
-              path={`${url}/paatokset`}
+              path={AppRoute.Paatokset}
               exact
               render={() => (
                 <JulkisetTiedot
@@ -274,8 +239,31 @@ const Jarjestaja = React.memo(
                 />
               )}
             />
-          </div>
-        )}
+            {!!user && (
+              <Route
+                path={AppRoute.Jarjestamislupaasiat}
+                exact
+                render={props => (
+                  <div className="m-12 mx-auto w-4/5 max-w-8xl">
+                    <JarjestamislupaAsiat
+                      history={props.history}
+                      intl={intl}
+                      isForceReloadRequested={R.includes(
+                        "force=true",
+                        props.location.search
+                      )}
+                      koulutusmuoto={koulutusmuoto}
+                      match={props.match}
+                      newApplicationRouteItem={newApplicationRouteItem}
+                      lupa={lupa}
+                      organisation={organisation}
+                    />
+                  </div>
+                )}
+              />
+            )}
+          </LocalizedSwitch>
+        </div>
       </article>
     );
   },

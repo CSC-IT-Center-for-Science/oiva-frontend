@@ -13,7 +13,6 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
     pathEq(["properties", "isChecked"], true),
     osionData
   );
-  console.info(valittuJarjestamismuoto, osionData);
   /**
    * Päälomakkeella valinta tehdään radio button -elementeillä, joista yksi
    * on hyvin todennäköisesti valittuna, vaikka käyttäjä ei olisi itse valinnut
@@ -41,7 +40,6 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
              * valittuna lomakkeella, jota vasten rajoituksia ollaan
              * tekemässä.
              **/
-            console.info(muoto, valittuJarjestamismuoto);
             return path(
               ["properties", "forChangeObject", "koodiarvo"],
               valittuJarjestamismuoto

@@ -10,7 +10,7 @@ import { Typography } from "@material-ui/core";
 
 const Logout = () => {
   const history = useHistory();
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   useEffect(() => {
     sessionStorage.removeItem("username");
@@ -38,17 +38,18 @@ const Logout = () => {
     <div className="mx-4 sm:mx-24">
       <MessageWrapper>
         <Typography component="h1" variant="h1" className="mb-4">
-          {intl.formatMessage(auth[`${localizationKeyPrefix}Title`])}
+          {formatMessage(auth[`${localizationKeyPrefix}Title`])}
         </Typography>
         <p className="mb-4">
-          {intl.formatMessage(auth[`${localizationKeyPrefix}Info`], {
+          {formatMessage(auth[`${localizationKeyPrefix}Info`], {
             time: sessionTimeoutInMinutes
           })}
         </p>
         <div>
           <SimpleButton
-            text={intl.formatMessage(auth.logIn)}
-            onClick={() => history.push("/cas-auth")}></SimpleButton>
+            text={formatMessage(auth.logIn)}
+            onClick={() => history.push(`/${locale}/cas-auth`)}
+          ></SimpleButton>
         </div>
       </MessageWrapper>
     </div>

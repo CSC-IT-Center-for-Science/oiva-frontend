@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { filter, find, map, toUpper, isEmpty, propEq, path } from "ramda";
+import {
+  filter,
+  find,
+  length,
+  map,
+  toUpper,
+  isEmpty,
+  propEq,
+  path,
+  addIndex
+} from "ramda";
 import { useIntl } from "react-intl";
 import {
   getOpetustehtavatFromStorage,
   getOpetustehtavaKoodistoFromStorage
 } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
+import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 
 export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
   const intl = useIntl();
@@ -34,7 +45,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
       });
   }, []);
 
-  const opetustehtavat = filter(
+  const opetustehtavaMaaraykset = filter(
     maarays =>
       maarays.kohde.tunniste === "opetusjotalupakoskee" &&
       maarays.koodisto === "opetustehtava",
@@ -49,7 +60,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
   );
 
   return (
-    !isEmpty(opetustehtavat) &&
+    !isEmpty(opetustehtavaMaaraykset) &&
     !isEmpty(opetustehtavaKoodisto) &&
     !isEmpty(opetustehtavatFromStorage) && (
       <div className="mt-4">
@@ -57,20 +68,26 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
           {opetustehtavaKoodisto.metadata[toUpper(intl.locale)].kuvaus}
         </Typography>
         <ul className="ml-8 list-disc mb-4">
-          {map(
-            opetustehtava => (
-              <li key={opetustehtava.koodiarvo} className="leading-bulletList">
-                {path(
-                  ["metadata", locale, "nimi"],
-                  find(
-                    propEq("koodiarvo", opetustehtava.koodiarvo),
-                    opetustehtavatFromStorage
-                  )
-                )}
-              </li>
-            ),
-            opetustehtavat
-          )}
+          {addIndex(map)((maarays, index) => {
+            const result = (
+              <React.Fragment key={`${maarays.koodiarvo}-${index}`}>
+                <li className="leading-bulletList">
+                  {path(
+                    ["metadata", locale, "nimi"],
+                    find(
+                      propEq("koodiarvo", maarays.koodiarvo),
+                      opetustehtavatFromStorage
+                    )
+                  )}
+                </li>
+
+                {length(maarays.aliMaaraykset)
+                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
+                  : ""}
+              </React.Fragment>
+            );
+            return result;
+          }, opetustehtavaMaaraykset)}
         </ul>
         {lisatietomaarays && lisatietomaarays.meta.arvo}
       </div>

@@ -3,6 +3,8 @@ import KoulutusmuodonEtusivu from "components/03-templates/KoulutusmuodonEtusivu
 import JarjestamislupaJSX from "./JarjestamislupaHTML";
 import Jarjestajaluettelo from "./Jarjestajaluettelo";
 import WizardContainer from "./WizardContainer";
+import { getKoulutusmuodot } from "utils/common";
+import { useIntl } from "react-intl";
 
 /**
  * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
@@ -26,7 +28,11 @@ const hakuavaimet = [
   "kieletOPH"
 ];
 
-export default function EsiJaPerusopetus({ koulutusmuoto }) {
+export default function EsiJaPerusopetus() {
+  const { formatMessage } = useIntl();
+
+  const koulutusmuoto = getKoulutusmuodot(formatMessage).esiJaPerusopetus;
+
   return (
     <KoulutusmuodonEtusivu
       hakuavaimet={hakuavaimet}

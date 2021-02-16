@@ -260,7 +260,7 @@ export const opetustaAntavatKunnat = async (
                   isChecked: false,
                   isIndeterminate: false,
                   isReadOnly,
-                  title: __("education.opetustaSuomenUlkopuolella")
+                  title: __("education.opetustaJarjestetaanSuomenUlkopuolella")
                 },
                 styleClasses: ["mt-8"]
               }

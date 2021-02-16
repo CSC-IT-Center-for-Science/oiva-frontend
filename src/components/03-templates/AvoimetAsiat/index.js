@@ -6,9 +6,9 @@ import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../../modules/Loading";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
-import * as R from "ramda";
 import common from "../../../i18n/definitions/common";
 import ProcedureHandler from "../../02-organisms/procedureHandler";
+import { includes, length, path } from "ramda";
 
 const AvoimetAsiat = ({ koulutusmuoto }) => {
   const history = useHistory();
@@ -23,7 +23,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const isForced = R.includes("force=", location.search);
+    const isForced = includes("force=", location.search);
     let abortController = muutospyynnotActions.loadByStates(
       ["AVOIN", "VALMISTELUSSA", "ESITTELYSSA"],
       ["avoimet"],
@@ -74,7 +74,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
     muutospyynnot.avoimet &&
     muutospyynnot.avoimet.isLoading === false &&
     muutospyynnot.avoimet.fetchedAt &&
-    muutospyynnot.avoimet.data.length
+    length(path(["avoimet", "data"], muutospyynnot))
   ) {
     return (
       <div
@@ -109,7 +109,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
     muutospyynnot.avoimet &&
     muutospyynnot.avoimet.isLoading === false &&
     muutospyynnot.avoimet.fetchedAt &&
-    muutospyynnot.avoimet.data.length === 0
+    length(path(["avoimet", "data"], muutospyynnot)) === 0
   ) {
     return (
       <div
