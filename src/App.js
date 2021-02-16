@@ -45,7 +45,7 @@ export const App = ({ localesByLang, children, organisation, user }) => {
         result = assoc(
           "path",
           localizeRouteKey(locale, AppRoute.Jarjestamislupa, formatMessage, {
-            id: organisation.ytunnus,
+            id: organisation.oid,
             koulutusmuoto: formatMessage(ammatillinenKoulutus.kebabCase)
           }),
           result
