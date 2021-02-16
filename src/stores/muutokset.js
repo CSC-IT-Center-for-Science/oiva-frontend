@@ -202,8 +202,8 @@ const Store = createStore({
             endsWith(".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           concat(
-            currentChangeObjects.unsaved[sectionId] || [],
-            currentChangeObjects.saved[sectionId] || []
+            (currentChangeObjects.unsaved && currentChangeObjects.unsaved[sectionId]) || [],
+            (currentChangeObjects.saved && currentChangeObjects.saved[sectionId]) || []
           ) || []
         );
 
