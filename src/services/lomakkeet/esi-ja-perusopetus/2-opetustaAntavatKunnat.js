@@ -12,13 +12,15 @@ import {
   not,
   pathEq,
   prop,
-  propEq
+  propEq,
+  endsWith
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
+import { getAnchorPart } from "../../../utils/common";
 
 const labelStyles = {
   addition: isAdded,
@@ -62,7 +64,7 @@ export const opetustaAntavatKunnat = async (
   { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects,
-  { onChanges, toggleEditView }
+  { onChanges, toggleEditView, onAddButtonClick }
 ) => {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const kunnat = await getKunnatFromStorage();
@@ -202,6 +204,8 @@ export const opetustaAntavatKunnat = async (
   const noSelectionsInLupa =
     isEmpty(maakuntamaaraykset) && isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
+  const ulkomaaCheckbox = find(propEq("anchor", "toimintaalue.ulkomaa.200"), changeObjects)
+
   const lomakerakenne = flatten(
     [
       {
@@ -261,7 +265,7 @@ export const opetustaAntavatKunnat = async (
                 styleClasses: ["mt-8"]
               }
             ],
-            categories: [
+            categories: flatten([
               {
                 anchor: ulkomaa.koodiarvo,
                 components: [
@@ -279,10 +283,57 @@ export const opetustaAntavatKunnat = async (
                       placeholder: __("common.maaJaPaikkakunta"),
                       title: __("common.maaJaPaikkakunta")
                     }
+                  },
+                  ...map(
+                    changeObj => {
+                      const anchor = getAnchorPart(changeObj.anchor, 3);
+                      return {
+                        anchor: anchor + ".lisatiedot",
+                        name: "TextBox",
+                        properties: {
+                          forChangeObject: {
+                            ankkuri: anchor,
+                            koodiarvo: ulkomaa.koodiarvo,
+                            koodisto: ulkomaa.koodisto,
+                          },
+                          isPreviewModeOn,
+                          isReadOnly: _isReadOnly,
+                          placeholder: __("common.maaJaPaikkakunta"),
+                          title: __("common.maaJaPaikkakunta"),
+                          isRemovable: true,
+                          value: changeObj.properties.value
+                        }
+                      }
+                    },
+                    filter(changeObj => {
+                      return (
+                        endsWith(".lisatiedot", changeObj.anchor) &&
+                        includes(`.${ulkomaa.koodiarvo}`, changeObj.anchor) &&
+                        !includes(`${ulkomaa.koodiarvo}.0`, changeObj.anchor) &&
+                        !includes(`${ulkomaa.koodiarvo}.lisatiedot`, changeObj.anchor)
+                      );
+                    }, changeObjects)),
+                  {
+                    anchor: "A",
+                    name: "SimpleButton",
+                    onClick: () => onAddButtonClick("ulkomaa."+ulkomaa.koodiarvo),
+                    properties: {
+                      isReadOnly: _isReadOnly,
+                      isVisible: ulkomaaCheckbox ? ulkomaaCheckbox.properties.isChecked : false,
+                      text: "Lisää uusi paikkakunta ja maa",
+                      icon: "FaPlus",
+                      iconContainerStyles: {
+                        width: "15px"
+                      },
+                      iconStyles: {
+                        fontSize: 10
+                      },
+                      variant: "text"
+                    }
                   }
                 ]
               }
-            ]
+            ])
           }
         : null,
       lisatiedotObj
