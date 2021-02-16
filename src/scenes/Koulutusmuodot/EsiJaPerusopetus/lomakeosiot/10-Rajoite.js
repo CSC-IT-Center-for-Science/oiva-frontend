@@ -83,9 +83,9 @@ const Rajoite = ({
       open={state.isRestrictionDialogVisible}
       PaperProps={{
         style: {
-          overflowY: "visible",
-          minHeight: "30%",
+          overflowY: "auto",
           minWidth: "32rem",
+          height: "100%",
           width: "80%",
           maxWidth: "88rem"
         }
