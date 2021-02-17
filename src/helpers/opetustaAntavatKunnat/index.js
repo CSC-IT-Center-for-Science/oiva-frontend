@@ -4,7 +4,6 @@ import {
   assocPath,
   compose,
   concat,
-  drop,
   endsWith,
   filter,
   find,
@@ -415,7 +414,8 @@ export async function defineBackendChangeObjects(
                         kohteet,
                         maaraystyypit,
                         kuntamuutosobjekti,
-                        drop(2, asetukset)
+                        // drop(2, asetukset)
+                        asetukset
                       );
                     }, rajoitteetByRajoiteIdAndKoodiarvo)
                   );

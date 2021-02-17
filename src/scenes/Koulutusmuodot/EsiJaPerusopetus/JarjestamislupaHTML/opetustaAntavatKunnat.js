@@ -3,23 +3,20 @@ import {
   find,
   toUpper,
   isEmpty,
-  propEq,
   filter,
   map,
   concat,
-  flatten,
   includes,
-  prop,
-  sortBy,
-  startsWith,
   path,
-  isNil,
-  uniqBy
+  pipe,
+  groupBy,
+  mergeAll
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import { getKunnatFromStorage } from "../../../../helpers/kunnat";
 import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
+import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import Typography from "@material-ui/core/Typography";
 
 export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
@@ -42,27 +39,20 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       });
   }, []);
 
-  const maakuntaMaaraykset = filter(
-    maarays =>
-      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-      maarays.koodisto === "maakunta",
-    maaraykset
+  const kuntaMaaraykset = [];
+  pipe(
+    groupBy(x => x.koodiarvo),
+    map(x => {
+      kuntaMaaraykset.push(mergeAll(x));
+    }))
+  (filter(maarays => {
+      return (
+        maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+        maarays.koodisto === "kunta" &&
+        !includes("200", path(["koodiarvo"], maarays) || "")
+      );
+    }, maaraykset)
   );
-
-  const kuntaMaaraykset = uniqBy(prop("koodiarvo"), filter(maarays => {
-    return (
-      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-      maarays.koodisto === "kunta" &&
-      (!maarays.meta.changeObjects ||
-        !includes("ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || ""))
-    );
-  }, maaraykset));
-
-  const kunnatFromMaakuntaMaaraykset = map(maakunta => {
-    return !isEmpty(maakuntaKunnat)
-      ? find(propEq("koodiarvo", maakunta.koodiarvo), maakuntaKunnat).kunnat
-      : null;
-  }, maakuntaMaaraykset);
 
   const lisatietomaarays = find(
     maarays =>
@@ -71,63 +61,26 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     maaraykset
   );
 
-  const opetustaJarjestetaanUlkomaillaValintaMaarays = find(
+  const opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset = filter(
     maarays =>
       maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-      !isNil(path(["meta", "changeObjects"], maarays)) &&
-      !isEmpty(path(["meta", "changeObjects"], maarays)) &&
-      startsWith("toimintaalue.ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || ""),
+      includes("200", path(["koodiarvo"], maarays) || "") &&
+      maarays.meta.arvo,
     maaraykset
-  );
-
-  const opetustaJarjestetaanUlkomaillaIsChecked =
-    opetustaJarjestetaanUlkomaillaValintaMaarays &&
-    path(
-      ["meta", "changeObjects", "0", "properties", "isChecked"],
-      opetustaJarjestetaanUlkomaillaValintaMaarays
-    );
-
-  const opetustaJarjestetaanUlkomaillaLisatiedotMaarays = find(
-    maarays =>
-      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-      !isNil(path(["meta", "changeObjects"], maarays)) &&
-      !isEmpty(path(["meta", "changeObjects"], maarays)) &&
-      includes("ulkomaa", path(["meta", "changeObjects", "0", "anchor"], maarays) || "") &&
-      includes("lisatiedot",path(["meta", "changeObjects", "0", "anchor"], maarays) || ""),
-    maaraykset
-  );
-
-  /** Set nimi property for maarays, and sort maaraykset by nimi **/
-  const kunnatFromLupa = sortBy(prop("nimi"))(
-    map(kunta => {
-      kunta.nimi = kunta.metadata
-        ? kunta.metadata[locale].nimi
-        : find(propEq("kieli", locale), kunta.koodi.metadata).nimi;
-      return kunta;
-    }, flatten(concat(kunnatFromMaakuntaMaaraykset, kuntaMaaraykset)).filter(Boolean))
   );
 
   return !isEmpty(kunnat) &&
-    !isEmpty(maakuntaKunnat) &&
-    (!isEmpty(kunnatFromLupa) || opetustaJarjestetaanUlkomaillaIsChecked) ? (
+    !isEmpty(maakuntaKunnat) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}
       </Typography>
       <ul className="ml-8 list-disc mb-4">
-        {map(
-          kunta => (
-            <li key={kunta.koodiarvo} className="leading-bulletList">
-              {kunta.nimi}
-            </li>
-          ),
-          kunnatFromLupa
+        {getRajoitteetFromMaarays(
+          concat(kuntaMaaraykset, opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset),
+          locale,
+          "arvo"
         )}
-        {opetustaJarjestetaanUlkomaillaIsChecked && opetustaJarjestetaanUlkomaillaLisatiedotMaarays ?
-          <li>
-            {opetustaJarjestetaanUlkomaillaLisatiedotMaarays.meta.arvo}
-          </li>
-          : ""}
       </ul>
       <p className="mb-6">{lisatietomaarays && lisatietomaarays.meta.arvo}</p>
     </div>

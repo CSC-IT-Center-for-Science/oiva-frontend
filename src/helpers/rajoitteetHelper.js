@@ -134,6 +134,21 @@ export const createAlimaarayksetBEObjects = (
     mapIndex((multiselectValue, multiIndex) => {
       const codeValue = path(["value"], multiselectValue) || koodiarvo;
 
+      const changeObjects = [
+        asetusChangeObj,
+        nth(index + 1, asetukset),
+        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj) ? [
+          find(
+            compose(endsWith(".alkamispaiva"), prop("anchor")),
+            asetukset
+          ) || null,
+          find(
+            compose(endsWith(".paattymispaiva"), prop("anchor")),
+            asetukset
+          ) || null
+        ] : null
+      ]
+
       const alimaarays = {
         generatedId: `alimaarays-${Math.random()}`,
         parent: alimaarayksenParent,
@@ -153,20 +168,7 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
-          changeObjects: [
-            asetusChangeObj,
-            nth(index + 1, asetukset),
-            includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj) && [
-              find(
-                compose(endsWith(".alkamispaiva"), prop("anchor")),
-                asetukset
-              ) || null,
-              find(
-                compose(endsWith(".paattymispaiva"), prop("anchor")),
-                asetukset
-              ) || null
-            ]
-          ],
+          changeObjects: changeObjects.filter(Boolean),
           kuvaus: prop("label", multiselectValue)
         }
       };
