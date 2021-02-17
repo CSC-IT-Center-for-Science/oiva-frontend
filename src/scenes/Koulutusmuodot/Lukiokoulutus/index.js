@@ -31,7 +31,7 @@ const hakuavaimet = [
 export default function Lukio() {
   const { formatMessage } = useIntl();
 
-  const koulutusmuoto = getKoulutusmuodot(formatMessage).esiJaPerusopetus;
+  const koulutusmuoto = getKoulutusmuodot(formatMessage).lukiokoulutus;
 
   return (
     <KoulutusmuodonEtusivu
