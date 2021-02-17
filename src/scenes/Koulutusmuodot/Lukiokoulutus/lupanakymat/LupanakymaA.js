@@ -3,11 +3,11 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import common from "i18n/definitions/common";
 import education from "i18n/definitions/education";
-import Opetustehtavat from "../lomakeosiot/1-Opetustehtavat";
 import OpetustaAntavatKunnat from "../lomakeosiot/1-OpetustaAntavatKunnat";
 import Opetuskieli from "../lomakeosiot/2-Opetuskieli";
 import OikeusSisaoppilaitosmuotoiseenKoulutukseen from "../lomakeosiot/3-OikeusSisaoppilaitosmuotoiseenKoulutukseen";
-import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtavat";
+import ErityisetKoulutustehtavat from "../lomakeosiot/4-ErityisetKoulutustehtavat";
+import ValtakunnallisetKehittamistehtavat from "../lomakeosiot/5-ValtakunnallisetKehittamistehtavat";
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import {
@@ -232,7 +232,21 @@ const LupanakymaA = React.memo(
                   />
                 </div>
 
-                {/* Tähän väliin 5. Valtakunnallinen kehittämistehtävä */}
+                <div className="pt-8">
+                  <ValtakunnallisetKehittamistehtavat
+                    code="5"
+                    isPreviewModeOn={isPreviewModeOn}
+                    maaraykset={filterByTunniste(
+                      "valtakunnallinenKehittamistehtava",
+                      maaraykset
+                    )}
+                    rajoitteet={erityisetKoulutustehtavatRajoitteet}
+                    sectionId={"valtakunnallisetKehittamistehtavat"}
+                    title={intl.formatMessage(
+                      education.valtakunnallinenKehittamistehtava
+                    )}
+                  />
+                </div>
 
                 <div className="pt-8">
                   <Opiskelijamaarat

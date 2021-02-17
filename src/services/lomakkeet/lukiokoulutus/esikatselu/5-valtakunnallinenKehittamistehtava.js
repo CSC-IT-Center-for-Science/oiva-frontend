@@ -2,7 +2,7 @@ import { append, endsWith, find, map } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getRajoite } from "utils/rajoitteetUtils";
 
-export async function previewOfOpetusJotaLupaKoskee({
+export async function previewOfValtakunnallinenKehittamistehtava({
   lomakedata,
   rajoitteet
 }) {
