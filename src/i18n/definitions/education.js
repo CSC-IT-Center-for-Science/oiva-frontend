@@ -113,5 +113,9 @@ export default defineMessages({
   oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
     id: "education.oikeusSisaoppilaitosmuotoiseenKoulutukseen",
     defaultMessage: "Oikeus sisäoppilaitosmuotoiseen koulutukseen"
+  },
+  koulutuksellaEiOleSisaoppilaitosmuotoista: {
+    id: "education.koulutuksellaEiOleSisaoppilaitosmuotoista",
+    defaultMessage: "Koulutuksella ei ole sisäoppilaitosmuotoista"
   }
 });

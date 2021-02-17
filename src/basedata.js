@@ -44,6 +44,7 @@ import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
 import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
+import { initializeOikeudet } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -153,6 +154,11 @@ const fetchBaseData = async (
     vstTyypit: await getRaw(
       "vstTyypit",
       `${backendRoutes.vsttyypit.path}`,
+      keys
+    ),
+    oikeusSisaoppilaitosmuotoiseenKoulutukseen: await getRaw(
+      "oikeusSisaooppilaitosmuotoiseenKoulutukseen",
+      backendRoutes.oikeusSisaoppilaitosmuotoiseenKoulutukseen.path,
       keys
     ),
     // Koulutukset (muut)
@@ -373,6 +379,13 @@ const fetchBaseData = async (
   result.kohteet = raw.kohteet
     ? await localforage.setItem("kohteet", raw.kohteet)
     : [];
+
+  result.oikeusSisaoppilaitosmuotoiseenKoulutukseen = raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen
+    ? await localforage.setItem(
+        "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+        initializeOikeudet(raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen)
+      )
+    : null;
 
   result.koulutukset =
     raw.ammatilliseentehtavaanvalmistavakoulutus ||

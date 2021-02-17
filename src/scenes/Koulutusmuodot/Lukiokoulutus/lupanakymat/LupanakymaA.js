@@ -5,8 +5,8 @@ import common from "i18n/definitions/common";
 import education from "i18n/definitions/education";
 import Opetustehtavat from "../lomakeosiot/1-Opetustehtavat";
 import OpetustaAntavatKunnat from "../lomakeosiot/1-OpetustaAntavatKunnat";
-import Opetuskieli from "../lomakeosiot/3-Opetuskieli";
-import OpetuksenJarjestamismuoto from "../lomakeosiot/4-OpetuksenJarjestamismuoto";
+import Opetuskieli from "../lomakeosiot/2-Opetuskieli";
+import OikeusSisaoppilaitosmuotoiseenKoulutukseen from "../lomakeosiot/3-OikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtavat";
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
@@ -204,7 +204,7 @@ const LupanakymaA = React.memo(
                 </div>
 
                 <div className="pt-8">
-                  <OpetuksenJarjestamismuoto
+                  <OikeusSisaoppilaitosmuotoiseenKoulutukseen
                     code="3"
                     isPreviewModeOn={isPreviewModeOn}
                     maaraykset={opetuksenJarjestamismuotomaaraykset}
