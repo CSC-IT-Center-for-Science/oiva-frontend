@@ -58,7 +58,7 @@ import getPaatoksenTiedotLukio from "./lukiokoulutus/0-paatoksenTiedot";
 import { getOpetuskieletOPHLomake as getOpetuskieletOPHLomakeLukio } from "./lukiokoulutus/2-opetuskielet";
 import { getOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
-import { erityisetKoulutustehtavat as erityisetKoulutustehtavatLukio } from "./lukiokoulutus/5-erityisetKoulutustehtavat";
+import { getErityisetKoulutustehtavatLukio } from "./lukiokoulutus/4-erityisetKoulutustehtavat";
 import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
 import { opetustaAntavatKunnat as opetustaAntavatKunnatLukio } from "./lukiokoulutus/1-opetustaAntavatKunnat";
 import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
@@ -68,7 +68,7 @@ import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/
 import { previewOfOpetusJotaLupaKoskee as previewOfOpetusJotaLupaKoskeeLukio } from "./lukiokoulutus/esikatselu/1-opetusJotaLupaKoskee";
 import { previewOfOpetuskielet as previewOfOpetuskieletLukio } from "./lukiokoulutus/esikatselu/2-opetuskielet";
 import { previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/esikatselu/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
-import { previewOfErityisetKoulutustehtavat as previewOfErityisetKoulutustehtavatLukio } from "./lukiokoulutus/esikatselu/5-erityisetKoulutustehtavat";
+import { previewOfErityisetKoulutustehtavat as previewOfErityisetKoulutustehtavatLukio } from "./lukiokoulutus/esikatselu/4-erityisetKoulutustehtavat";
 import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./lukiokoulutus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
 import { previewOfOpetustaAntavaKunnat as previewOfOpetustaAntavaKunnatLukio } from "./lukiokoulutus/esikatselu/1-opetustaAntavatKunnat";
@@ -410,7 +410,7 @@ const lomakkeet = {
   lukiokoulutus: {
     erityisetKoulutustehtavat: {
       modification: (data, booleans, locale, changeObjects, functions) =>
-        erityisetKoulutustehtavat(
+        getErityisetKoulutustehtavatLukio(
           data,
           booleans,
           locale,
@@ -418,7 +418,7 @@ const lomakkeet = {
           functions
         ),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfErityisetKoulutustehtavat(
+        previewOfErityisetKoulutustehtavatLukio(
           data,
           booleans,
           locale,

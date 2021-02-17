@@ -105,5 +105,8 @@ export const backendRoutes = {
   },
   lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot: {
     path: "koodistot/koodit/lukiomuutkoulutuksenjarjestamiseenliittyvatehdot"
+  },
+  lukioErityinenKoulutustehtavaUusi: {
+    path: "koodistot/koodit/lukioerityinenkoulutustehtavauusi"
   }
 };
