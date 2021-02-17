@@ -156,6 +156,11 @@ const fetchBaseData = async (
       `${backendRoutes.vsttyypit.path}`,
       keys
     ),
+    lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot: await getRaw(
+      "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+      backendRoutes.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot.path,
+      keys
+    ),
     oikeusSisaoppilaitosmuotoiseenKoulutukseen: await getRaw(
       "oikeusSisaooppilaitosmuotoiseenKoulutukseen",
       backendRoutes.oikeusSisaoppilaitosmuotoiseenKoulutukseen.path,
@@ -379,6 +384,25 @@ const fetchBaseData = async (
   result.kohteet = raw.kohteet
     ? await localforage.setItem("kohteet", raw.kohteet)
     : [];
+
+  result.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot = raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot
+    ? await localforage.setItem(
+        "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+        sortBy(
+          prop("koodiarvo"),
+          map(muuData => {
+            return omit(["koodiArvo"], {
+              ...muuData,
+              koodiarvo: muuData.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), muuData.metadata)
+              )
+            });
+          }, raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot)
+        )
+      )
+    : null;
 
   result.oikeusSisaoppilaitosmuotoiseenKoulutukseen = raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen
     ? await localforage.setItem(

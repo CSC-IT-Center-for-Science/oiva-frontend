@@ -427,9 +427,9 @@ const lomakkeet = {
     },
     muutEhdot: {
       modification: (data, booleans, locale, changeObjects, functions) =>
-        muutEhdot(data, booleans, locale, changeObjects, functions),
+        muutEhdotLukio(data, booleans, locale, changeObjects, functions),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfMuutEhdot(data, booleans, locale, changeObjects)
+        previewOfMuutEhdotLukio(data, booleans, locale, changeObjects)
     },
     oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
       modification: (data, booleans, locale) =>

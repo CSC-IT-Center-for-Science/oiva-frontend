@@ -17,9 +17,9 @@ import {
   sortBy
 } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
-import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
+import localforage from "localforage";
 
 export async function muutEhdot(
   { maaraykset },
@@ -29,7 +29,9 @@ export async function muutEhdot(
   { onAddButtonClick }
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
-  const poMuutEhdot = await getPOMuutEhdotFromStorage();
+  const muutEhdot = await localforage.getItem(
+    "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot"
+  );
   const lisatiedot = await getLisatiedotFromStorage();
 
   const muuEhtoChangeObj = getChangeObjByAnchor(
@@ -242,7 +244,7 @@ export async function muutEhdot(
           ].filter(Boolean)
         )
       };
-    }, poMuutEhdot),
+    }, muutEhdot),
     lisatiedotObj
       ? [
           {
