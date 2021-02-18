@@ -1,6 +1,7 @@
 import React from "react";
 import SivupohjaA from "components/03-templates/SivupohjaA";
 import { Typography } from "@material-ui/core";
+import { useIntl } from "react-intl";
 
 const contentFi = (
   <SivupohjaA>
@@ -169,7 +170,8 @@ const contentFi = (
       <a
         href={"https://www.avi.fi/web/avi/avi-etela-suomi"}
         rel="noopener noreferrer"
-        target={"_blank"}>
+        target={"_blank"}
+      >
         voit tehdä ilmoituksen Etelä-Suomen aluehallintovirastoon
       </a>
       . Etelä-Suomen aluehallintoviraston sivulla kerrotaan tarkasti, miten
@@ -393,8 +395,9 @@ const contentSv = (
   </SivupohjaA>
 );
 
-const Saavutettavuusseloste = props => {
-  return props.locale === "sv" ? contentSv : contentFi;
+const Saavutettavuusseloste = () => {
+  const { locale } = useIntl();
+  return locale === "sv" ? contentSv : contentFi;
 };
 
 export default Saavutettavuusseloste;

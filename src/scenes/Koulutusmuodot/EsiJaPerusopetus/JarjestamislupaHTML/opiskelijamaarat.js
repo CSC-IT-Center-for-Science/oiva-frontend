@@ -63,11 +63,11 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
                 )}{" "}
                 {maarays.arvo}
               </li>
-              <>
+              <React.Fragment>
                 {length(maarays.aliMaaraykset)
                   ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
                   : ""}
-              </>
+              </React.Fragment>
             </ul>
           </ul>
         ],
