@@ -9,7 +9,7 @@ import { useIntl } from "react-intl";
 import close_icon from "static/images/close-icon.svg";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { last, map, split, values } from "ramda";
+import { addIndex, last, map, split, values } from "ramda";
 import { AppRoute } from "const/index";
 import { getKoulutusmuodot, localizeRouteKey } from "../../../../utils/common";
 import AuthenticationLink from "../AuthenticationLink";
@@ -100,7 +100,7 @@ const MobileMenu = ({
         {jarjestamisluvatMenuVisible ? (
           <div className="bg-green-600">
             {" "}
-            {map(koulutusmuoto => {
+            {addIndex(map)((koulutusmuoto, index) => {
               const route = AppRoute.getKoulutusmuodonEtusivu(
                 koulutusmuoto.kebabCase
               );
@@ -114,6 +114,7 @@ const MobileMenu = ({
               );
               return (
                 <NavLink
+                  key={index}
                   style={{
                     fontSize: "0.9375rem",
                     lineHeight: "2.875rem"
