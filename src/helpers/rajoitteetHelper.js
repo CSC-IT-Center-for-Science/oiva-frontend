@@ -8,6 +8,7 @@ import {
   flatten,
   head,
   includes,
+  isNil,
   last,
   map,
   nth,
@@ -15,12 +16,11 @@ import {
   pipe,
   prop,
   propEq,
+  reject,
   split,
   test,
   toLower,
-  uniqBy,
-  isNil,
-  reject
+  uniqBy
 } from "ramda";
 import moment from "moment";
 
@@ -147,7 +147,7 @@ export const createAlimaarayksetBEObjects = (
           ? koodiarvo
           : path(["value"], multiselectValue) || koodiarvo;
 
-      const alimaarays = {
+      const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
         parent: alimaarayksenParent,
         kohde: find(propEq("tunniste", tunniste), kohteet),
@@ -159,7 +159,7 @@ export const createAlimaarayksetBEObjects = (
         tila: "LISAYS",
         arvo,
         maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
-        meta: reject(isNil, {
+        meta: {
           ...(alkupvm
             ? { alkupvm: moment(alkupvm).format("YYYY-MM-DD") }
             : null),
@@ -183,13 +183,13 @@ export const createAlimaarayksetBEObjects = (
               ) || null
             ]
           ],
-          orgOid:
-            koodisto === "oppilaitos"
-              ? prop("value", multiselectValue)
-              : undefined,
           kuvaus: prop("label", multiselectValue)
-        })
-      };
+        },
+        orgOid:
+          koodisto === "oppilaitos"
+            ? prop("value", multiselectValue)
+            : undefined
+      });
 
       const updatedMuutosobjektit = append(alimaarays, muutosobjektit);
       const nextAsetusChangeObj = nth(index + offset, asetukset);
