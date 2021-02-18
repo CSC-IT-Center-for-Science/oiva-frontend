@@ -10,14 +10,16 @@ const OrganisationLink = ({
   navLinkClasses
 }) => {
   const baseClasses =
-    "link-to-own-organisation text-white border p-2 rounded-lg hover:bg-white hover:text-green-500";
+    "link-to-own-organisation text-white border py-1 px-2 hover:bg-white hover:text-green-500";
   const classes = `${baseClasses} ${navLinkClasses}`;
   return (
     <NavLink
+      style={{
+        borderRadius: "2rem"
+      }}
       className={classes}
       to={organisationLink.path}
       exact={false}
-      activeClassName="bg-green-600"
     >
       {formatMessage(common.omaSivu)}
     </NavLink>

@@ -17,6 +17,8 @@ import {
   split,
   startsWith
 } from "ramda";
+import { useMediaQuery } from "@material-ui/core";
+import { MEDIA_QUERIES } from "../../../components/02-organisms/Header";
 
 export const calculateRouteParts = (
   locale,
@@ -119,9 +121,11 @@ export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
   const commonLangStyles =
     "font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
 
+  const breakpointDesktopLargeMin = useMediaQuery(MEDIA_QUERIES.DESKTOP_LARGE);
+
   return (
     <ul className={allUlClasses}>
-      {Object.keys(AppLanguage).map(lang => {
+      {Object.keys(AppLanguage).map((lang, index) => {
         return getMatchingRoute(
           locale,
           AppLanguage[lang],
@@ -129,7 +133,12 @@ export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
           pathname,
           localesByLang
         ) ? (
-          <li key={lang} className="mr-1">
+          <li
+            key={lang}
+            className={
+              index === 0 && !breakpointDesktopLargeMin ? "mr-3" : "mr-1"
+            }
+          >
             <NavLink
               to={getMatchingRoute(
                 locale,
@@ -143,7 +152,8 @@ export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
               } ${commonLangStyles} uppercase flex justify-center items-center`}
               style={{
                 width: "1.625rem",
-                height: "1.625rem"
+                height: "1.625rem",
+                borderColor: "white"
               }}
             >
               <span>{AppLanguage[lang]}</span>

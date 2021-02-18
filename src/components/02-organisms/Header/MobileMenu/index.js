@@ -152,7 +152,7 @@ const MobileMenu = ({
         }, AppRouteTitlesMobile)}
       </div>
 
-      <div className="flex-1 flex flex-row justify-start px-5">
+      <div className="flex-1 flex flex-row justify-start px-5 items-center">
         {!!authenticationLink && (
           <AuthenticationLink
             authenticationLink={authenticationLink}
@@ -163,7 +163,7 @@ const MobileMenu = ({
           <OrganisationLink
             organisationLink={organisationLink}
             formatMessage={formatMessage}
-            navLinkClasses="pt-3 ml-auto"
+            navLinkClasses="pt-1 ml-auto"
           />
         )}
       </div>

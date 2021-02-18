@@ -19,7 +19,7 @@ import SideNavigation from "../SideNavigation";
 import AuthenticationLink from "./AuthenticationLink";
 import OrganisationLink from "./OrganisationLink";
 
-const MEDIA_QUERIES = {
+export const MEDIA_QUERIES = {
   MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
   TABLET: "only screen and (min-width: 768px) and (max-width: 1023px)",
   TABLET_MIN: "only screen and (min-width: 768px)",
@@ -35,9 +35,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 
   const breakpointDesktopLarge = useMediaQuery(MEDIA_QUERIES.DESKTOP_LARGE);
 
-  const breakpointDesktopMin = useMediaQuery(MEDIA_QUERIES.DESKTOP_NORMAL);
-
-  const mediumSizedScreen = breakpointTabletMin && !breakpointDesktopMin;
+  const mediumSizedScreen = breakpointTabletMin && !breakpointDesktopLarge;
 
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
 
@@ -54,7 +52,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 
   return (
     <React.Fragment>
-      {(breakpointDesktopMin || breakpointDesktopLarge) && (
+      {breakpointDesktopLarge && (
         <AppBar elevation={0} position="static">
           <Toolbar className="bg-green-500 px-5 justify-between overflow-hidden">
             <NavLink
@@ -99,7 +97,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
         </AppBar>
       )}
 
-      {!breakpointDesktopMin && !breakpointDesktopLarge && (
+      {!breakpointDesktopLarge && (
         <React.Fragment>
           <SideNavigation isVisible={isMobileMenuVisible}>
             <MobileMenu
@@ -133,13 +131,13 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                       common.opetusJaKulttuuriministerio
                     )} logo`}
                     src={oiva_logo}
-                    className="lg:w-fit-content max-w-sm"
+                    className="max-w-sm"
                   />
                 )}
               </NavLink>
 
               <div className="flex-1 flex justify-end items-center">
-                {organisationLink.path && (
+                {mediumSizedScreen && organisationLink.path && (
                   <OrganisationLink
                     organisationLink={organisationLink}
                     formatMessage={formatMessage}
