@@ -215,8 +215,11 @@ const getKohdennuksetRecursively = async (
     rajoiteChangeObjects
   );
 
-  const useMultiselect = includes("opiskelijamaarat",
-    [kohteenAvain, kohdennuksenKohdeavain, kohteenTarkenninavain]);
+  const useMultiselect = includes("opiskelijamaarat", [
+    kohteenAvain,
+    kohdennuksenKohdeavain,
+    kohteenTarkenninavain
+  ]);
 
   const kohteenTarkenninkomponentit = await getKohteenTarkenninkomponentit(
     osioidenData,
@@ -227,9 +230,7 @@ const getKohdennuksetRecursively = async (
   );
 
   let ensimmaisenAsetuksenKohdeavain =
-    length(kohdennusindeksipolku) % 2
-      ? kohdennuksenKohdeavain
-      : kohteenAvain;
+    length(kohdennusindeksipolku) % 2 ? kohdennuksenKohdeavain : kohteenAvain;
 
   // Usein rajoituksen tarkentimen arvo on numeerinen, jolloin
   // 1. asetuksen kohdeavaimena tulee käyttäärajoitteen kohteen
@@ -415,7 +416,9 @@ const getKohdennuksetRecursively = async (
                     },
                     properties: {
                       isVisible:
-                        !isReadOnly && kohteenAvain !== "yksittainen" && kohdennustaso === 0 &&
+                        !isReadOnly &&
+                        kohteenAvain !== "yksittainen" &&
+                        kohdennustaso === 0 &&
                         (kohdennuksenKohdeavain === "kokonaismaara" ||
                           kohdennuksenKohdeavain === "opiskelijamaarat" ||
                           !!length(lukumaarakomponentit)),
@@ -423,7 +426,8 @@ const getKohdennuksetRecursively = async (
                     }
                   },
                   ((!!length(asetusvaihtoehdot) &&
-                  length(asetuslomakekokonaisuus) < length(asetusvaihtoehdot)) ||
+                    length(asetuslomakekokonaisuus) <
+                      length(asetusvaihtoehdot)) ||
                     kohteenAvain === "yksittainen") &&
                   !isReadOnly
                     ? {
