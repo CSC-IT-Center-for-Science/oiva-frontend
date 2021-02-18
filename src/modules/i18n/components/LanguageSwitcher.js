@@ -104,7 +104,7 @@ export function getMatchingRoute(
   return localizedRoute;
 }
 
-export const LanguageSwitcher = ({ localesByLang }) => {
+export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
   const { pathname } = useLocation();
   const { locale, messages } = useIntl();
   const langMap = {
@@ -112,12 +112,15 @@ export const LanguageSwitcher = ({ localesByLang }) => {
     Swedish: "sv"
   };
 
+  const baseUlClasses = "flex ml-5 pl-5";
+  const allUlClasses = `${baseUlClasses} ${ulClasses}`;
+
   const selectedLangStyles = "border bg-white text-green-500";
   const commonLangStyles =
     "font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
 
   return (
-    <ul className="flex border-l border-opacity-25 ml-5 pl-5">
+    <ul className={allUlClasses}>
       {Object.keys(AppLanguage).map(lang => {
         return getMatchingRoute(
           locale,

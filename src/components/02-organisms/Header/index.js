@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { NavLink, useLocation } from "react-router-dom";
 import { AppBar, Toolbar, useMediaQuery } from "@material-ui/core";
@@ -9,9 +9,15 @@ import { AppRoute } from "const/index";
 import common from "i18n/definitions/common";
 import { Navigation } from "modules/navigation/index";
 import { LanguageSwitcher } from "modules/i18n/index";
+import MenuIcon from "@material-ui/icons/Menu";
 
 import logo_fi from "static/images/oiva-logo-fi-tekstilla.svg";
 import logo_sv from "static/images/oiva-logo-sv-tekstilla.svg";
+import oiva_logo from "static/images/oiva-logo.svg";
+import MobileMenu from "./MobileMenu";
+import SideNavigation from "../SideNavigation";
+import AuthenticationLink from "./AuthenticationLink";
+import OrganisationLink from "./OrganisationLink";
 
 const MEDIA_QUERIES = {
   MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
@@ -27,6 +33,14 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
 
+  const breakpointDesktopLarge = useMediaQuery(MEDIA_QUERIES.DESKTOP_LARGE);
+
+  const breakpointDesktopMin = useMediaQuery(MEDIA_QUERIES.DESKTOP_NORMAL);
+
+  const mediumSizedScreen = breakpointTabletMin && !breakpointDesktopMin;
+
+  const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
+
   const is2ndNavVisible = includes(
     localizeRouteKey(
       locale,
@@ -36,9 +50,11 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
     pathname
   );
 
+  const toggleMobileMenu = () => setIsMobileMenuVisible(!isMobileMenuVisible);
+
   return (
     <React.Fragment>
-      {breakpointTabletMin && (
+      {(breakpointDesktopMin || breakpointDesktopLarge) && (
         <AppBar elevation={0} position="static">
           <Toolbar className="bg-green-500 px-5 justify-between overflow-hidden">
             <NavLink
@@ -58,31 +74,19 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
             </div>
             <div className="flex-1 flex justify-end items-center">
               {organisationLink.path && (
-                <NavLink
-                  className="link-to-own-organisation text-white border p-2 rounded-lg mr-5 hover:bg-white hover:text-green-500"
-                  to={organisationLink.path}
-                  exact={false}
-                >
-                  {formatMessage(common.omaSivu)}
-                </NavLink>
+                <OrganisationLink
+                  organisationLink={organisationLink}
+                  formatMessage={formatMessage}
+                  navLinkClasses="mr-5"
+                />
               )}
               {!!authenticationLink && (
-                <NavLink
-                  to={authenticationLink.path}
-                  exact={false}
-                  className="inline-block no-underline text-white hover:underline hover:text-gray-100"
-                >
-                  <span className="font-normal">
-                    {authenticationLink.text[0]}{" "}
-                  </span>
-                  {authenticationLink.text[1] && (
-                    <span className="font-medium">
-                      {authenticationLink.text[1]}
-                    </span>
-                  )}
-                </NavLink>
+                <AuthenticationLink authenticationLink={authenticationLink} />
               )}
-              <LanguageSwitcher localesByLang={localesByLang} />
+              <LanguageSwitcher
+                localesByLang={localesByLang}
+                ulClasses="border-l border-opacity-25"
+              />
             </div>
           </Toolbar>
           {is2ndNavVisible && (
@@ -93,6 +97,73 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
             </AppBar>
           )}
         </AppBar>
+      )}
+
+      {!breakpointDesktopMin && !breakpointDesktopLarge && (
+        <React.Fragment>
+          <SideNavigation isVisible={isMobileMenuVisible}>
+            <MobileMenu
+              localesByLang={localesByLang}
+              onCloseMenu={toggleMobileMenu}
+              organisationLink={organisationLink}
+              authenticationLink={authenticationLink}
+            />
+          </SideNavigation>
+          <AppBar className="bg-green-500" elevation={0} position="static">
+            <Toolbar className="px-5 justify-start overflow-hidden">
+              <MenuIcon
+                className="mr-6 cursor-pointer"
+                onClick={toggleMobileMenu}
+              />
+              <NavLink
+                to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
+                className="flex items-center no-underline text-white hover:text-gray-100 mr-16"
+              >
+                {mediumSizedScreen ? (
+                  <img
+                    alt={`${formatMessage(
+                      common.opetusJaKulttuuriministerio
+                    )} logo`}
+                    src={locale === "sv" ? logo_sv : logo_fi}
+                    className="lg:w-fit-content max-w-sm"
+                  />
+                ) : (
+                  <img
+                    alt={`${formatMessage(
+                      common.opetusJaKulttuuriministerio
+                    )} logo`}
+                    src={oiva_logo}
+                    className="lg:w-fit-content max-w-sm"
+                  />
+                )}
+              </NavLink>
+
+              <div className="flex-1 flex justify-end items-center">
+                {organisationLink.path && (
+                  <OrganisationLink
+                    organisationLink={organisationLink}
+                    formatMessage={formatMessage}
+                    navLinkClasses="mr-5"
+                  />
+                )}
+                {!!authenticationLink && (
+                  <AuthenticationLink
+                    authenticationLink={authenticationLink}
+                    navLinkClasses="leading-snug"
+                  />
+                )}
+                {mediumSizedScreen ? (
+                  <LanguageSwitcher
+                    localesByLang={localesByLang}
+                    ulClasses="border-l border-opacity-25"
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </Toolbar>
+          </AppBar>
+        </React.Fragment>
       )}
     </React.Fragment>
   );
