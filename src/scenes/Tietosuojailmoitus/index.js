@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import SivupohjaA from "components/03-templates/SivupohjaA";
+import { useIntl } from "react-intl";
 
 const ContentFi = (
   <SivupohjaA>
@@ -335,8 +336,9 @@ const ContentSv = (
   </div>
 );
 
-const Tietosuojailmoitus = props => {
-  return props.locale === "sv" ? ContentSv : ContentFi;
+const Tietosuojailmoitus = () => {
+  const { locale } = useIntl();
+  return locale === "sv" ? ContentSv : ContentFi;
 };
 
 export default Tietosuojailmoitus;

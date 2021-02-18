@@ -40,14 +40,14 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
           <li key={opetuksenJarjestamismuoto.koodiarvo}>
             {jarjestamismuodonMetadata.nimi}
           </li>
-          <>
+          <React.Fragment>
             {length(opetuksenJarjestamismuoto.aliMaaraykset)
               ? getRajoitteetFromMaarays(
                   opetuksenJarjestamismuoto.aliMaaraykset,
                   locale
                 )
               : ""}
-          </>
+          </React.Fragment>
         </ul>
       ) : null}
       {lisatietomaarays && lisatietomaarays.meta.arvo}

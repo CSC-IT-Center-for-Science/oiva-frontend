@@ -56,5 +56,12 @@ export const getKohteenTarkenninkomponentit = async (
 
   const fn = prop(kohdeavain, komponentitByKey);
 
-  return fn ? await fn(isReadOnly, prop(kohdeavain, osioidenData), locale, useMultiselect) : [];
+  return fn
+    ? await fn(
+        isReadOnly,
+        prop(kohdeavain, osioidenData),
+        locale,
+        useMultiselect
+      )
+    : [];
 };

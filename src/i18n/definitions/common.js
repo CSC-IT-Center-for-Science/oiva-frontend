@@ -1283,5 +1283,9 @@ export default defineMessages({
   eiAvoimiaAsioita: {
     id: "common.eiAvoimiaAsioita",
     defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
+  },
+  sulje: {
+    id: "common.sulje",
+    defaultMessage: "Sulje"
   }
 });

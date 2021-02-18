@@ -321,32 +321,54 @@ export function getRajoiteListamuodossa(
       format
     );
 
-// DEVELOPISTA
-  //   const kohdennusLista = pipe(
-  //     values,
-  //     map(kohdennus =>
-  //       Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
-  //     ),
-  //     unnest
-  //   )(lapikaydytKohdennukset);
-  //   const indexMap = addIndex(map);
-  //   listamuotoWithEndings = join(
-  //     "",
-  //     indexMap((kohdennus, index) => {
-  //       // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
-  //       const s = join("", kohdennus);
-  //       const amountOfInstances = getAmountOfInstances("<ul", s);
-  //       return addEnding(
-  //         "</li></ul>",
-  //         s,
-  //         index === 0 ? amountOfInstances - 2 : amountOfInstances
-  //       );
-  //     }, kohdennusLista)
-  //   );
-  //   listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
-  // }
-  //
-    // 1777
+    // DEVELOP
+//     const kohdennusLista = pipe(
+//       values,
+//       map(kohdennus =>
+//         Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
+//       ),
+//       unnest
+//     )(lapikaydytKohdennukset);
+//     const indexMap = addIndex(map);
+//     listamuotoWithEndings = join(
+//       "",
+//       indexMap((kohdennus, index) => {
+//         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+//         const s = join("", kohdennus);
+//         const amountOfInstances = getAmountOfInstances("<ul", s);
+//         return addEnding(
+//           "</li></ul>",
+//           s,
+//           index === 0 ? amountOfInstances - 2 : amountOfInstances
+//         );
+//       }, kohdennusLista)
+//     );
+//     listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
+//   }
+//   return listamuotoWithEndings;
+// }
+
+    // CSCOIVA-1777
+//     const kohdennusLista = pipe(
+//       values,
+//       map(kohdennus =>
+//         Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
+//       ),
+//       unnest
+//     )(lapikaydytKohdennukset);
+//     listamuotoWithEndings = join(
+//       "",
+//       map(kohdennus => {
+//         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+//         const s = join("", kohdennus);
+//         const amountOfInstances = getAmountOfInstances("<ul>", s);
+//         return addEnding("</li></ul>", s, amountOfInstances - 2);
+//       }, kohdennusLista)
+//     );
+//   }
+//   return listamuotoWithEndings;
+// }
+
     const kohdennusLista = pipe(
       values,
       map(kohdennus =>
@@ -354,15 +376,21 @@ export function getRajoiteListamuodossa(
       ),
       unnest
     )(lapikaydytKohdennukset);
+    const indexMap = addIndex(map);
     listamuotoWithEndings = join(
       "",
-      map(kohdennus => {
+      indexMap((kohdennus, index) => {
         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
         const s = join("", kohdennus);
-        const amountOfInstances = getAmountOfInstances("<ul>", s);
-        return addEnding("</li></ul>", s, amountOfInstances - 2);
+        const amountOfInstances = getAmountOfInstances("<ul", s);
+        return addEnding(
+          "</li></ul>",
+          s,
+          index === 0 ? amountOfInstances - 2 : amountOfInstances
+        );
       }, kohdennusLista)
     );
+    listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
   }
   return listamuotoWithEndings;
 }
@@ -506,10 +534,10 @@ export const handleAlimaarays = (
         path(["koodi", "metadata"], alimaarays) || []
       ) || prop("meta", alimaarays);
 
-    if (value) {
-      modifiedString = `${modifiedString}<li class="list-disc">${value[
-        naytettavaArvo
-        ] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    if (value.nimi !== 'Ulkomaa' || (hasAlimaarays && alimaarays.meta.arvo) || alimaarays.meta.arvo) {
+      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta.arvo || value[naytettavaArvo] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    } else {
+      modifiedString = htmlString
     }
   }
 

@@ -46,11 +46,14 @@ export default async function getOpetustaAntavatKunnat(
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
   const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
-    return {
-      label: item.properties.value,
-      value: item.properties.metadata.koodiarvo,
-      index
+    if(item.properties.metadata) {
+      return {
+        label: item.properties.value,
+        value: item.properties.metadata.koodiarvo,
+        index
+      }
     }
+    return null
   })
 
   if (kunnat) {

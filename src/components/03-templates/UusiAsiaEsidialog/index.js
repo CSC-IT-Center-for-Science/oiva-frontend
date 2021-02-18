@@ -81,6 +81,8 @@ const UusiAsiaEsidialog = ({
       const isLupaExisting = !!find(propEq("oid", result.oid), organisations);
       if (isLupaExisting) {
         setOrganisationStatus("duplicate");
+      } else if (result.status === "PASSIIVINEN") {
+        setOrganisationStatus("passive")
       } else {
         setOrganisationStatus("ok");
       }
@@ -180,6 +182,20 @@ const UusiAsiaEsidialog = ({
                   </p>
                   <p className="mb-2">
                     {intl.formatMessage(common.loytyyjoVoimassaOlevaLupa)}{" "}
+                  </p>
+                </div>
+              ) : null}
+              {organisation && organisationStatus === "passive" ? (
+                <div>
+                  <p className="my-4 text-gray-500 text-xs">
+                    {intl.formatMessage(common.haullaLoytyiKJ)}
+                  </p>
+                  <p className="mb-2 text-xl">
+                    <StyledErrorIcon />{" "}
+                    {organisation.nimi.fi || organisation.nimi.sv}
+                  </p>
+                  <p className="mb-2">
+                    {intl.formatMessage(common.KJPassiivinen)}{" "}
                   </p>
                 </div>
               ) : null}

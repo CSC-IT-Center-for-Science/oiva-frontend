@@ -150,6 +150,13 @@ const fetchBaseData = async (
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
       : null,
+    oppilaitoksetByOid: oid
+      ? await getRaw(
+          "oppilaitoksetByOid",
+          `${backendRoutes.oppilaitoksetByOid.path}${oid}${backendRoutes.oppilaitoksetByOid.postfix}`,
+          keys
+        )
+      : null,
     vstTyypit: await getRaw(
       "vstTyypit",
       `${backendRoutes.vsttyypit.path}`,
@@ -372,6 +379,13 @@ const fetchBaseData = async (
 
   result.kohteet = raw.kohteet
     ? await localforage.setItem("kohteet", raw.kohteet)
+    : [];
+
+  result.oppilaitoksetByOid = raw.oppilaitoksetByOid
+    ? await localforage.setItem(
+        "oppilaitoksetByOid",
+        sortBy(path(["nimi", locale]), raw.oppilaitoksetByOid)
+      )
     : [];
 
   result.koulutukset =
