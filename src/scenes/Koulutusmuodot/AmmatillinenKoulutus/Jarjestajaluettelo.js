@@ -335,6 +335,7 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
           ) || {}
         ).nimi,
         ytunnus: jarjestaja.ytunnus,
+        oid: jarjestaja.oid,
         toiminnot: ["info"]
       };
     }, luvat)
@@ -352,7 +353,7 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
               intl.locale,
               AppRoute.Jarjestamislupa,
               intl.formatMessage,
-              { id: row.values.ytunnus, koulutusmuoto: koulutusmuoto.kebabCase }
+              { id: row.original.oid, koulutusmuoto: koulutusmuoto.kebabCase }
             )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.nimi

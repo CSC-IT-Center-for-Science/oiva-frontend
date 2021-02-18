@@ -72,10 +72,10 @@ const JarjestamislupaAsiatList = ({
   useEffect(() => {
     let abortController;
     if (lupa && !R.isEmpty(lupa)) {
-      const ytunnus = R.path(["jarjestaja", "ytunnus"], lupa);
-      if (ytunnus) {
+      const oid = R.path(["jarjestaja", "oid"], lupa);
+      if (oid) {
         abortController = muutospyynnotActions.load(
-          ytunnus,
+          oid,
           isForceReloadRequested
         );
       }
@@ -197,7 +197,7 @@ const JarjestamislupaAsiatList = ({
                       AppRoute.Hakemus,
                       intl.formatMessage,
                       {
-                        id: organisation.ytunnus,
+                        id: organisation.oid,
                         koulutusmuoto: koulutusmuoto.kebabCase,
                         page: 1,
                         uuid: row.id

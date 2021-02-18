@@ -84,8 +84,8 @@ const Rajoite = ({
       PaperProps={{
         style: {
           overflowY: "auto",
-          minHeight: "30%",
           minWidth: "32rem",
+          height: "100%",
           width: "80%",
           maxWidth: "88rem"
         }

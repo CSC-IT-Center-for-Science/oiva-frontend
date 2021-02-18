@@ -98,7 +98,7 @@ export default function KoulutusmuodonEtusivu({
                         );
                       } else if (
                         _props1.lupa &&
-                        _props1.lupa.jarjestajaYtunnus
+                        _props1.lupa.jarjestajaOid
                       ) {
                         return (
                           <BaseData
@@ -131,7 +131,7 @@ export default function KoulutusmuodonEtusivu({
                                 ? _props1.voimassaOlevaLupa.oppilaitostyyppi
                                 : null
                             }
-                            ytunnus={_props1.lupa.jarjestajaYtunnus}
+                            oid={_props1.lupa.jarjestajaOid}
                           />
                         );
                       }
