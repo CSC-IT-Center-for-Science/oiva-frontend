@@ -385,7 +385,7 @@ export async function defineBackendChangeObjects(
                     (!!maakuntaMaarays && !kuntaChangeObj))
                 ) {
                   const kuntamuutosobjekti = {
-                    generatedId: `ulkomaa-${Math.random()}`,
+                    generatedId: `kunta-${Math.random()}`,
                     tila: "LISAYS",
                     meta: {
                       changeObjects: concat(
