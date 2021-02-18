@@ -10,7 +10,7 @@ import {
   path,
   pipe,
   groupBy,
-  mergeAll
+  mergeDeepWithKey
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
@@ -43,7 +43,11 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
   pipe(
     groupBy(x => x.koodiarvo),
     map(x => {
-      kuntaMaaraykset.push(mergeAll(x));
+      let kuntaWithCombinedAliMaaraykset = {}
+      map(kunta => {
+        kuntaWithCombinedAliMaaraykset =  mergeDeepWithKey((k, l, r) => k === 'aliMaaraykset' ? concat(l, r) : r, kunta, kuntaWithCombinedAliMaaraykset)
+      }, x)
+      kuntaMaaraykset.push(kuntaWithCombinedAliMaaraykset);
     }))
   (filter(maarays => {
       return (
@@ -77,7 +81,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       </Typography>
       <ul className="ml-8 list-disc mb-4">
         {getRajoitteetFromMaarays(
-          concat(kuntaMaaraykset, opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset),
+          concat(kuntaMaaraykset, opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset).filter(Boolean),
           locale,
           "arvo"
         )}
