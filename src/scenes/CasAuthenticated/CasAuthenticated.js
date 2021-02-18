@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { Redirect } from "react-router-dom";
 import { useIntl } from "react-intl";
 import { ROLE_ESITTELIJA } from "modules/constants";
-import commonMessages from "../../i18n/definitions/common";
+import common from "../../i18n/definitions/common";
 import { useUser } from "../../stores/user";
 import { Typography } from "@material-ui/core";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const";
+import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 
 const Successful = styled.div`
   padding-left: 20px;
@@ -13,15 +16,15 @@ const Successful = styled.div`
   max-width: 1200px;
 `;
 
-const CasAuthenticated = ({ organisation }) => {
-  const intl = useIntl();
+const CasAuthenticated = ({ organisation = {} }) => {
+  const { formatMessage, locale } = useIntl();
   const [user] = useUser();
 
-  const { ytunnus } = organisation;
+  const { oid } = organisation;
 
   if (user.hasErrored) {
-    return <p>{intl.formatMessage(commonMessages.loginError)}</p>;
-  } else if (user.fetchedAt && ytunnus) {
+    return <p>Virhe tapahtui</p>; // <p>{intl.formatMessage(commonMessages.loginError)}</p>;
+  } else if (user.fetchedAt && oid) {
     const role = user.data.roles[1];
     switch (role) {
       case ROLE_ESITTELIJA: {
@@ -30,11 +33,11 @@ const CasAuthenticated = ({ organisation }) => {
       default: {
         return (
           <Redirect
-            ytunnus={ytunnus}
-            to={{
-              pathname: `/ammatillinenkoulutus/koulutuksenjarjestajat/${ytunnus}/omattiedot`,
-              ytunnus
-            }}
+            oid={oid}
+            to={localizeRouteKey(locale, AppRoute.OmatTiedot, formatMessage, {
+              id: oid,
+              koulutusmuoto: formatMessage(ammatillinenKoulutus.kebabCase)
+            })}
           />
         );
       }
@@ -43,7 +46,7 @@ const CasAuthenticated = ({ organisation }) => {
   return (
     <Successful>
       <Typography component="h2" variant="h2">
-        {intl.formatMessage(commonMessages.welcome)}
+        {formatMessage(common.welcome)}
         {", "}
         {sessionStorage.getItem("username")}
       </Typography>

@@ -207,15 +207,9 @@ const UusiAsiaDialog = ({
         )
       );
 
-      console.info(formData);
-      if (!formData) {
-        console.info("NO FORM DATA: ");
-      }
-
       let muutospyynto = null;
 
       if (action === "save") {
-        // console.info("TALLENNUSTOIMINTO ON KOMMENTOITU VÄLIAIKAISESTI POIS.");
         muutospyynto = await onSave(formData);
       } else if (action === "preview") {
         muutospyynto = await onPreview(formData);
@@ -400,7 +394,8 @@ const UusiAsiaDialog = ({
                             {intl.formatMessage(common.esikatselu)}
                           </Typography>
                         </div>
-                        <div className="pt-6 px-6 pb-32 overflow-auto"
+                        <div
+                          className="pt-6 px-6 pb-32 overflow-auto"
                           style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
                         >
                           <LupanakymaA

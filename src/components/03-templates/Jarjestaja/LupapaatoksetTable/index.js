@@ -26,10 +26,15 @@ import { koulutustyypitMap } from "../../../../utils/constants";
  * @param {string} orderBy - property of a row object (above).
  */
 function descendingComparator(rowA, rowB, orderBy) {
-  if (rowB[orderBy] < rowA[orderBy]) {
+  const aDate = moment(rowA[orderBy], "DD.MM.YYYY", true);
+  const bDate = moment(rowB[orderBy], "DD.MM.YYYY", true);
+  const aCompare = aDate.isValid() ? aDate : rowA[orderBy];
+  const bCompare = aDate.isValid() ? bDate : rowB[orderBy];
+
+  if (bCompare < aCompare) {
     return -1;
   }
-  if (rowB[orderBy] > rowA[orderBy]) {
+  if (bCompare > aCompare) {
     return 1;
   }
   return 0;
@@ -83,11 +88,13 @@ function LupapaatoksetTableHead(props) {
               key={headCell.id}
               align={"left"}
               sortDirection={orderBy === headCell.id ? order : false}
-              className={index === 0 ? classes.firstCol : ""}>
+              className={index === 0 ? classes.firstCol : ""}
+            >
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}>
+                onClick={createSortHandler(headCell.id)}
+              >
                 {headCell.label}
                 {orderBy === headCell.id ? (
                   <span className={classes.visuallyHidden}>
@@ -179,20 +186,29 @@ export default function LupapaatoksetTable({
     },
     {
       id: "paatoskirje",
-      label: intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ?
-        common.lupaTitle : common.paatoskirje),
-      hidden: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
+      label: intl.formatMessage(
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
+          ? common.lupaTitle
+          : common.paatoskirje
+      ),
+      hidden:
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
     },
     {
       id: "jarjestamislupa",
-      label: intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
-        common.yllapitamisLupaTitle : common.lupaTitle),
-      hidden: koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
+      label: intl.formatMessage(
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
+          ? common.yllapitamisLupaTitle
+          : common.lupaTitle
+      ),
+      hidden:
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
     },
     {
       id: "kumottu",
       label: intl.formatMessage(common.lupaHistoriaKumottuDateHeading),
-      hidden: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ||
+      hidden:
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ||
         koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
     }
   ].filter(hc => !hc.hidden);
@@ -250,12 +266,13 @@ export default function LupapaatoksetTable({
       paatospvm: lupa.paatospvm,
       jarjestamislupa: lupa.asianumero ? lupa.asianumero : lupa.diaarinumero,
       urls: {
-        jarjestamislupa: koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
-          `/api/pebble/resources/liitteet/vst/${lupa.meta.liitetiedosto}` : `${API_BASE_URL}/pdf/${lupa.uuid}`,
-        paatoskirje:
-          paatoskirje
-            ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`
-            : null
+        jarjestamislupa:
+          koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
+            ? `/api/pebble/resources/liitteet/vst/${lupa.meta.liitetiedosto}`
+            : `${API_BASE_URL}/pdf/${lupa.uuid}`,
+        paatoskirje: paatoskirje
+          ? `${API_BASE_URL}/liitteet/${paatoskirje.uuid}/raw`
+          : null
       },
       paatoskirje: paatoskirje ? paatoskirje.nimi : null,
       voimassaoloalkupvm: lupa.alkupvm,
@@ -321,7 +338,8 @@ export default function LupapaatoksetTable({
             className={classes.table}
             aria-labelledby={intl.formatMessage(common.lupapaatoksetTaulukko)}
             size={dense ? "small" : "medium"}
-            aria-label={intl.formatMessage(common.lupapaatoksetTaulukko)}>
+            aria-label={intl.formatMessage(common.lupapaatoksetTaulukko)}
+          >
             <LupapaatoksetTableHead
               classes={classes}
               headCells={headCells}
@@ -342,13 +360,15 @@ export default function LupapaatoksetTable({
                       onClick={event => handleClick(event, row.diaarinumero)}
                       role="checkbox"
                       tabIndex={-1}
-                      key={`row-${index}`}>
+                      key={`row-${index}`}
+                    >
                       {headCells.some(hc => hc.id === "diaarinumero") && (
                         <TableCell
                           component="td"
                           id={labelId}
                           scope="row"
-                          className={classes.firstCol}>
+                          className={classes.firstCol}
+                        >
                           {row.diaarinumero}
                         </TableCell>
                       )}
@@ -362,18 +382,25 @@ export default function LupapaatoksetTable({
                       {headCells.some(hc => hc.id === "voimassaoloalkupvm") && (
                         <TableCell align="left">
                           {row.voimassaoloalkupvm
-                            ? moment(row.voimassaoloalkupvm).format("DD.MM.YYYY")
+                            ? moment(row.voimassaoloalkupvm).format(
+                                "DD.MM.YYYY"
+                              )
                             : null}
                         </TableCell>
                       )}
-                      {headCells.some(hc => hc.id === "voimassaololoppupvm") && (
+                      {headCells.some(
+                        hc => hc.id === "voimassaololoppupvm"
+                      ) && (
                         <TableCell align="left">
-                          {!isEmpty(row.voimassaoleva) && moment(row.voimassaoloalkupvm) <= today && moment(row.voimassaololoppupvm) >= today ? (
+                          {!isEmpty(row.voimassaoleva) &&
+                          moment(row.voimassaoloalkupvm) <= today &&
+                          moment(row.voimassaololoppupvm) >= today ? (
                             <span className="bg-green-250 p-2">
-                            {row.voimassaoleva}
-                          </span>
+                              {row.voimassaoleva}
+                            </span>
                           ) : (
-                            row.voimassaololoppupvm && moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
+                            row.voimassaololoppupvm &&
+                            moment(row.voimassaololoppupvm).format("DD.MM.YYYY")
                           )}
                         </TableCell>
                       )}
@@ -383,9 +410,14 @@ export default function LupapaatoksetTable({
                           {row.paatoskirje && (
                             <a
                               href={row.urls.paatoskirje}
-                              className="ml-2 underline">
-                              {intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ?
-                                common.jarjestamislupaDownload : common.paatoskirjeDownload)}
+                              className="ml-2 underline"
+                            >
+                              {intl.formatMessage(
+                                koulutusmuoto.koulutustyyppi ===
+                                  koulutustyypitMap.ESI_JA_PERUSOPETUS
+                                  ? common.jarjestamislupaDownload
+                                  : common.paatoskirjeDownload
+                              )}
                             </a>
                           )}
                         </TableCell>
@@ -395,9 +427,14 @@ export default function LupapaatoksetTable({
                           <GetApp />
                           <a
                             href={row.urls.jarjestamislupa}
-                            className="ml-2 underline">
-                            {intl.formatMessage(koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ?
-                              common.yllapitamislupaDownload : common.jarjestamislupaDownload)}
+                            className="ml-2 underline"
+                          >
+                            {intl.formatMessage(
+                              koulutusmuoto.koulutustyyppi ===
+                                koulutustyypitMap.VAPAASIVISTYSTYO
+                                ? common.yllapitamislupaDownload
+                                : common.jarjestamislupaDownload
+                            )}
                           </a>
                         </TableCell>
                       )}

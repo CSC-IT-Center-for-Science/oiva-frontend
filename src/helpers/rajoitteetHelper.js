@@ -1,17 +1,24 @@
 import {
   append,
+  compose,
+  addIndex,
   endsWith,
   find,
+  findIndex,
+  flatten,
   head,
   includes,
   last,
+  map,
   nth,
   path,
   pipe,
   prop,
   propEq,
   split,
-  test
+  test,
+  toLower,
+  uniqBy
 } from "ramda";
 import moment from "moment";
 
@@ -19,16 +26,17 @@ const koodistoMapping = {
   maaraaika: "kujalisamaareet",
   opetustehtavat: "opetustehtava",
   opiskelijamaarat: "oppilasopiskelijamaara",
-  toimintaalue: "opetustaAntavatKunnat",
-  opetuskielet: "opetuskieli"
+  toimintaalue: "kunta",
+  opetuskielet: "kielikoodistoopetushallinto",
+  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto"
 };
 
-const tunnisteMapping = {
-  maaraaika: "maaraaika",
-  opetustehtavat: "opetusjotalupakoskee",
-  toimintaalue: "kunnatjoissaopetustajarjestetaan",
-  opetuskielet: "opetuskieli"
-};
+function isAsetusKohdennuksenKohdennus(asetusChangeObj) {
+  return test(
+    /^.+kohdennukset\.\d\.kohdennukset\.\d\.kohde/,
+    prop("anchor", asetusChangeObj)
+  );
+}
 
 export const createAlimaarayksetBEObjects = (
   kohteet,
@@ -36,11 +44,14 @@ export const createAlimaarayksetBEObjects = (
   paalomakkeenBEMuutos, // myöhemmin lomakedata käyttöön
   asetukset,
   muutosobjektit = [],
-  index = 0
+  index = 0,
+  kohdennuksenKohdeNumber = 0,
+  insideMulti = false
 ) => {
   let offset = 2;
   const asetusChangeObj = nth(index, asetukset);
   const valueChangeObj = nth(index + 1, asetukset);
+  const valueOfValueChangeObj = path(["properties", "value"], valueChangeObj);
   const valueValueOfAsetusChangeObj = path(
     ["properties", "value", "value"],
     asetusChangeObj
@@ -58,8 +69,15 @@ export const createAlimaarayksetBEObjects = (
   let loppupvm = null;
   if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
-    alkupvm = path(["properties", "value"], valueChangeObj);
-    loppupvm = pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
+    alkupvm = path(['properties', 'value'], find(
+      compose(endsWith(".alkamispaiva"), prop("anchor")),
+      asetukset
+    )) || valueOfValueChangeObj;
+
+    loppupvm = path(['properties', 'value'], find(
+      compose(endsWith(".paattymispaiva"), prop("anchor")),
+      asetukset
+    )) || pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
   }
 
   let koodisto = "";
@@ -81,42 +99,105 @@ export const createAlimaarayksetBEObjects = (
 
   const tunniste = path(["kohde", "tunniste"], paalomakkeenBEMuutos);
 
+  const isKohdennuksenKohdennus = isAsetusKohdennuksenKohdennus(
+    asetusChangeObj
+  );
+  if (isKohdennuksenKohdennus) {
+    kohdennuksenKohdeNumber += 1;
+    insideMulti = false;
+  }
+  const nextKohdennuksenKohdennusIndex = findIndex(asetus => {
+    return test(
+      new RegExp(
+        `^.+kohdennukset\\.\\d\\.kohdennukset\\.${kohdennuksenKohdeNumber}\\.kohde`
+      ),
+      asetus.anchor
+    );
+  })(asetukset);
   const alimaarayksenParent =
     index === 0
       ? prop("generatedId", paalomakkeenBEMuutos)
-      : test(/^.+kohdennukset\.\d\.kohdennukset\.\d\.kohde/, prop("anchor", asetusChangeObj)) ? prop("generatedId", head(muutosobjektit))
+      : isKohdennuksenKohdennus
+      ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
-  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj)) ?
-    path(["properties", "value"], valueChangeObj) : null;
-  const alimaarays = {
-    generatedId: `alimaarays-${Math.random()}`,
-    parent: alimaarayksenParent,
-    kohde: find(propEq("tunniste", tunniste), kohteet),
-    koodiarvo,
-    koodisto,
-    tila: "LISAYS",
-    arvo,
-    maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
-    meta: {
-      ...(alkupvm ? {alkupvm: moment(alkupvm).format("YYYY-MM-DD")} : null),
-      ...(loppupvm ? {loppupvm: moment(loppupvm).format("YYYY-MM-DD")} : null),
-      changeObjects: [asetusChangeObj, nth(index + 1, asetukset)]
-    }
-  };
+  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj))
+    ? valueOfValueChangeObj
+    : null;
 
-  const updatedMuutosobjektit = append(alimaarays, muutosobjektit);
+  const multiSelectValues = Array.isArray(valueOfValueChangeObj)
+    ? valueOfValueChangeObj
+    : [valueOfValueChangeObj];
+  const mapIndex = addIndex(map);
 
-  if (index + offset <= asetukset.length - offset) {
-    return createAlimaarayksetBEObjects(
-      kohteet,
-      maaraystyypit,
-      paalomakkeenBEMuutos,
-      asetukset,
-      updatedMuutosobjektit,
-      index + offset
-    );
-  }
+  return pipe(
+    mapIndex((multiselectValue, multiIndex) => {
+      const codeValue = path(["value"], multiselectValue) || koodiarvo;
 
-  return updatedMuutosobjektit;
+      const alimaarays = {
+        generatedId: `alimaarays-${Math.random()}`,
+        parent: alimaarayksenParent,
+        kohde: find(propEq("tunniste", tunniste), kohteet),
+        koodiarvo:
+          koodisto === "kielikoodistoopetushallinto"
+            ? toLower(codeValue)
+            : codeValue,
+        koodisto,
+        tila: "LISAYS",
+        arvo,
+        maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
+        meta: {
+          ...(alkupvm
+            ? { alkupvm: moment(alkupvm).format("YYYY-MM-DD") }
+            : null),
+          ...(loppupvm
+            ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
+            : null),
+          changeObjects: [
+            asetusChangeObj,
+            nth(index + 1, asetukset),
+            includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj) && [
+              find(
+                compose(endsWith(".alkamispaiva"), prop("anchor")),
+                asetukset
+              ) || null,
+              find(
+                compose(endsWith(".paattymispaiva"), prop("anchor")),
+                asetukset
+              ) || null
+            ]
+          ],
+          kuvaus: prop("label", multiselectValue)
+        }
+      };
+
+      const updatedMuutosobjektit = append(alimaarays, muutosobjektit);
+      const nextAsetusChangeObj = nth(index + offset, asetukset);
+
+      let end =
+        nextKohdennuksenKohdennusIndex >= 0
+          ? nextKohdennuksenKohdennusIndex
+          : asetukset.length - offset;
+      end =
+        insideMulti && isAsetusKohdennuksenKohdennus(nextAsetusChangeObj)
+          ? end - 1
+          : end;
+      let start = index + offset;
+      if (start <= end) {
+        return createAlimaarayksetBEObjects(
+          kohteet,
+          maaraystyypit,
+          paalomakkeenBEMuutos,
+          asetukset,
+          updatedMuutosobjektit,
+          start,
+          kohdennuksenKohdeNumber,
+          insideMulti || multiIndex > 0
+        );
+      }
+      return updatedMuutosobjektit;
+    }),
+    flatten,
+    uniqBy(prop("generatedId"))
+  )(multiSelectValues);
 };

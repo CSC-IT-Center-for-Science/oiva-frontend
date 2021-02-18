@@ -2,8 +2,6 @@ import "../i18n-config";
 import * as helper from "../../../helpers/opiskelijavuodet";
 import { __ as translate } from "i18n-for-browser";
 import {
-  __,
-  filter,
   find,
   head,
   includes,

@@ -19,6 +19,8 @@ import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import * as R from "ramda";
 import { Typography } from "@material-ui/core";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,6 +55,7 @@ const states = [
 const JarjestamislupaAsiatList = ({
   history,
   isForceReloadRequested,
+  koulutusmuoto,
   lupa,
   match,
   newApplicationRouteItem,
@@ -69,10 +72,10 @@ const JarjestamislupaAsiatList = ({
   useEffect(() => {
     let abortController;
     if (lupa && !R.isEmpty(lupa)) {
-      const ytunnus = R.path(["jarjestaja", "ytunnus"], lupa);
-      if (ytunnus) {
+      const oid = R.path(["jarjestaja", "oid"], lupa);
+      if (oid) {
         abortController = muutospyynnotActions.load(
-          ytunnus,
+          oid,
           isForceReloadRequested
         );
       }
@@ -188,7 +191,19 @@ const JarjestamislupaAsiatList = ({
                     R.find(R.propEq("uuid", row.id), muutospyynnot.data)
                   );
                 } else if (action === "edit") {
-                  history.push(`hakemukset-ja-paatokset/${row.id}/1`);
+                  history.push(
+                    localizeRouteKey(
+                      intl.locale,
+                      AppRoute.Hakemus,
+                      intl.formatMessage,
+                      {
+                        id: organisation.oid,
+                        koulutusmuoto: koulutusmuoto.kebabCase,
+                        page: 1,
+                        uuid: row.id
+                      }
+                    )
+                  );
                 }
               },
               cells: cells
@@ -232,7 +247,8 @@ const JarjestamislupaAsiatList = ({
             className="mb-2"
             to={newApplicationRouteItem.path}
             exact={newApplicationRouteItem.exact}
-            style={{ textDecoration: "none", color: "inherit" }}>
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
             <Button color="primary" className="newHakemus">
               <Add />
               <span className="pl-2">{newApplicationRouteItem.text}</span>

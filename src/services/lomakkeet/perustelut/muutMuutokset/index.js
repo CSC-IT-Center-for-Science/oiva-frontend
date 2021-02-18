@@ -333,11 +333,11 @@ export default async function getMuutPerustelulomake(
 ) {
   const muut = await getMuutFromStorage();
   const vankilat = await getVankilatFromStorage();
-  console.info(data, vankilat, muut);
+
   const defaultAdditionForm = getDefaultAdditionForm(isReadOnly);
   const defaultRemovalForm = getDefaultRemovalForm(isReadOnly);
   const mapping = getMapping(vankilat, isReadOnly, locale, defaultRemovalForm);
-  console.info(mapping, changeObjects);
+
   return getReasoningForm(
     data.areaCode,
     defaultAdditionForm,

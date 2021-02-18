@@ -6,6 +6,7 @@ import {
   drop,
   find,
   head,
+  includes,
   init,
   join,
   length,
@@ -61,6 +62,7 @@ async function getAsetuslomakekokonaisuus(
   rajoiteId,
   rajoiteChangeObjects,
   asetuksenKohdeavain,
+  useMultiSelect,
   osioidenData,
   locale,
   onRemoveCriterion,
@@ -84,6 +86,7 @@ async function getAsetuslomakekokonaisuus(
   const asetuksenTarkenninkomponentit = asetuksenTarkenninlomakkeenAvain
     ? await getAsetuksenTarkenninkomponentit(
         asetuksenTarkenninlomakkeenAvain,
+        useMultiSelect,
         locale,
         osioidenData,
         isReadOnly
@@ -146,6 +149,7 @@ async function getAsetuslomakekokonaisuus(
       rajoiteId,
       rajoiteChangeObjects,
       asetuksenKohdeavain,
+      useMultiSelect,
       osioidenData,
       locale,
       onRemoveCriterion,
@@ -211,11 +215,15 @@ const getKohdennuksetRecursively = async (
     rajoiteChangeObjects
   );
 
+  const useMultiselect = includes("opiskelijamaarat",
+    [kohteenAvain, kohdennuksenKohdeavain, kohteenTarkenninavain]);
+
   const kohteenTarkenninkomponentit = await getKohteenTarkenninkomponentit(
     osioidenData,
     kohteenTarkenninavain,
     locale,
-    isReadOnly
+    isReadOnly,
+    useMultiselect
   );
 
   let ensimmaisenAsetuksenKohdeavain =
@@ -244,6 +252,7 @@ const getKohdennuksetRecursively = async (
     rajoiteId,
     rajoiteChangeObjects,
     ensimmaisenAsetuksenKohdeavain,
+    useMultiselect,
     osioidenData,
     locale,
     onRemoveCriterion,
@@ -406,7 +415,7 @@ const getKohdennuksetRecursively = async (
                     },
                     properties: {
                       isVisible:
-                        !isReadOnly && kohteenAvain !== "yksittainen" &&
+                        !isReadOnly && kohteenAvain !== "yksittainen" && kohdennustaso === 0 &&
                         (kohdennuksenKohdeavain === "kokonaismaara" ||
                           kohdennuksenKohdeavain === "opiskelijamaarat" ||
                           !!length(lukumaarakomponentit)),

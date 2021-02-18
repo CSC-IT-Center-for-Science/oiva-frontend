@@ -1,24 +1,23 @@
-import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import {
   compose,
   drop,
   find,
-  hasPath,
+  flatten,
+  forEach,
   includes,
+  last,
   mapObjIndexed,
-  not,
   path,
   pathEq,
-  pipe,
   prop,
   propEq,
   reject,
-  unnest,
+  split,
   values
 } from "ramda";
-import { sortRestrictions } from "utils/rajoitteetUtils";
+import { getAnchorPart } from "../../utils/common";
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
@@ -27,14 +26,9 @@ export const defineBackendChangeObjects = async (
   kohteet
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
-  const lisamaareet = await getKujalisamaareetFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
-
-  const restrictionsSorted = sortRestrictions(rajoitteetByRajoiteId);
-
-  console.info(restrictionsSorted, lisamaareet);
 
   // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
   // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
@@ -47,22 +41,33 @@ export const defineBackendChangeObjects = async (
         { kohde },
         // Poista kaksi ensimmäistä asetusta ja asetukset joissa ei ole
         // value arvoa (kohdennuksenkohdennus).
-        drop(2, reject(pathEq(["properties", "value"], ""),
-          asetukset)
-        )
+        drop(2, reject(pathEq(["properties", "value"], ""), asetukset))
       );
     }, rajoitteetByRajoiteId)
   );
 
-  console.info(alimaaraykset);
-
-  // Lisää kaikki rajoitus muutosobjektit parent muutokselle
-  const paaMuutos = pipe(unnest,
-    find(v => not(path(["parent"], v)))
-  )(alimaaraykset);
-  if (paaMuutos) {
-    paaMuutos.meta = { changeObjects: values(rajoitteetByRajoiteId) };
-  }
+  // Lisää rajoitus muutosobjektit parent muutoksille, sekä lisätään metaan parentin tyyppi
+  forEach(alimaarays => {
+    if (!path(["parent"], alimaarays)) {
+      const rajoiteId = last(
+        split("_", getAnchorPart(alimaarays.meta.changeObjects[0].anchor, 0))
+      );
+      const rajoiteObjWithRajoitteenTyyppi = find(
+        rajoiteObj =>
+          path(["properties", "metadata", "section"], rajoiteObj) ===
+          "opiskelijamaarat",
+        rajoitteetByRajoiteId[rajoiteId]
+      );
+      alimaarays.meta = {
+        ...alimaarays.meta,
+        changeObjects: values(rajoitteetByRajoiteId[rajoiteId]),
+        tyyppi: path(
+          ["properties", "value", "value"],
+          rajoiteObjWithRajoitteenTyyppi
+        )
+      };
+    }
+  }, flatten(alimaaraykset));
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita

@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  oiva: {
+    id: "common.oiva",
+    defaultMessage: "Oiva"
+  },
   statistics: {
     id: "common.statistics",
     defaultMessage: "Tilastot"
@@ -290,6 +294,10 @@ export default defineMessages({
   "asiaTable.headers.saapunut": {
     id: "asiaTable.headers.saapunut",
     defaultMessage: "Saapunut/luotu"
+  },
+  "asiaTable.headers.paatospvm": {
+    id: "asiaTable.headers.paatospvm",
+    defaultMessage: "Päätöspäivämäärä"
   },
   "asiaTable.headers.hakupvm": {
     id: "asiaTable.headers.hakupvm",
@@ -1267,6 +1275,10 @@ export default defineMessages({
   eiValittaviaKohteita: {
     id: "common.eiValittaviaKohteita",
     defaultMessage: "Ei valittavia kohteita"
+  },
+  omaSivu: {
+    id: "common.omaSivu",
+    defaultMessage: "Oma sivu"
   },
   eiAvoimiaAsioita: {
     id: "common.eiAvoimiaAsioita",

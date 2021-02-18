@@ -50,9 +50,6 @@ export async function createObjectToSave(
     changeObjects.rajoitteet
   );
 
-  console.info("changeObjects", changeObjects);
-  console.info("rajoitteetByRajoiteId", rajoitteetByRajoiteId);
-
   // 1. OPETUS, JOTA LUPA KOSKEE
   const opetus = await opetusHelper.defineBackendChangeObjects(
     {
@@ -297,7 +294,7 @@ export async function createObjectToSave(
     propEq("anchor", "paatoksentiedot.paattymispaivamaara.A"),
     changeObjects.paatoksentiedot || []
   );
-  objectToSave.paattymispaivamaara =
+  objectToSave.voimassaloppupvm =
     paattymispaivamaaraObj && paattymispaivamaaraObj.properties.value
       ? moment(paattymispaivamaaraObj.properties.value).format("YYYY-MM-DD")
       : "";

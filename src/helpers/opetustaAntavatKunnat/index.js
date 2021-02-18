@@ -493,54 +493,56 @@ export async function defineBackendChangeObjects(
       ]
     : null;
 
-  const changeObjUlkomaaTextBox = find(
-    compose(endsWith(".200.lisatiedot"), prop("anchor")),
+  const changeObjUlkomaaTextBoxes = filter(
+    compose(endsWith(".lisatiedot"), prop("anchor")),
     changeObjects.ulkomaa
   );
 
-  const ulkomaaBEchangeObjectTextBox = changeObjUlkomaaTextBox
-    ? {
-        generatedId: `ulkomaa-${Math.random()}`,
-        tila: "LISAYS",
-        meta: {
-          arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
-          changeObjects: [changeObjUlkomaaTextBox]
-        },
-        kohde,
-        koodiarvo: path(
-          ["properties", "metadata", "koodiarvo"],
-          changeObjUlkomaaTextBox
-        ),
-        koodisto: path(
-          ["properties", "metadata", "koodisto", "koodistoUri"],
-          changeObjUlkomaaTextBox
-        ),
-        maaraystyyppi
-      }
-    : null;
+  let ulkomaaBEchangeObjectTextBoxes = changeObjUlkomaaTextBoxes.map(item => {
+    return {
+      generatedId: `ulkomaa-${Math.random()}`,
+      tila: "LISAYS",
+      meta: {
+        arvo: path(["properties", "value"], item),
+        changeObjects: [item]
+      },
+      kohde,
+      koodiarvo: path(
+        ["properties", "metadata", "koodiarvo"],
+        item
+      ),
+      koodisto: path(
+        ["properties", "metadata", "koodisto", "koodistoUri"],
+        item
+      ),
+      maaraystyyppi
+    }
+  })
 
   let alimaarayksetUlkomaa = [];
 
-  if (ulkomaaBEchangeObjectTextBox) {
-    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
-      isNil,
-      mapObjIndexed(rajoite => {
-        return pathEq([1, "properties", "value", "value"], "200", rajoite)
-          ? rajoite
-          : null;
-      }, rajoitteetByRajoiteId)
-    );
+  if (ulkomaaBEchangeObjectTextBoxes.length > 0) {
+    alimaarayksetUlkomaa = ulkomaaBEchangeObjectTextBoxes.map((item, index) => {
+      const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq([1, "properties", "value", "value"], "200", rajoite) && pathEq([1, "properties", "value", "index"], index, rajoite)
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      );
 
-    alimaarayksetUlkomaa = values(
-      mapObjIndexed(asetukset => {
-        return createAlimaarayksetBEObjects(
-          kohteet,
-          maaraystyypit,
-          ulkomaaBEchangeObjectTextBox,
-          asetukset
-        );
-      }, rajoitteetByRajoiteIdAndKoodiarvo)
-    );
+      return values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            item,
+            asetukset
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
+    });
   }
 
   /**
@@ -576,7 +578,7 @@ export async function defineBackendChangeObjects(
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,
     ulkomaaBEchangeObjectCheckbox,
-    ulkomaaBEchangeObjectTextBox,
+    ulkomaaBEchangeObjectTextBoxes,
     lisatiedotBEchangeObject
   ]).filter(Boolean);
 

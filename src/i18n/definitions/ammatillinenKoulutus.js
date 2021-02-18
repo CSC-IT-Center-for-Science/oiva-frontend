@@ -5,6 +5,10 @@ export default defineMessages({
     id: "ammatillinenKoulutus.genetiivi",
     defaultMessage: "Ammatillisen koulutuksen"
   },
+  kebabCase: {
+    id: "ammatillinenKoulutus.kebabCase",
+    defaultMessage: "ammatillinen-koulutus"
+  },
   kuvausteksti: {
     id: "ammatillinenKoulutus.kuvausteksti",
     defaultMessage:

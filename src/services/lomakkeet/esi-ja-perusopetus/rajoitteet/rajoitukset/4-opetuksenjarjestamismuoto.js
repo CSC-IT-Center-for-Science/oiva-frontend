@@ -3,7 +3,9 @@ import { find, length, map, path, pathEq } from "ramda";
 
 export default async function getOpetuksenJarjestamismuotokomponentit(
   isReadOnly,
-  osionData = []
+  osionData = [],
+  locale,
+  useMultiselect = false
 ) {
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
@@ -11,7 +13,6 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
     pathEq(["properties", "isChecked"], true),
     osionData
   );
-  console.info(valittuJarjestamismuoto, osionData);
   /**
    * Päälomakkeella valinta tehdään radio button -elementeillä, joista yksi
    * on hyvin todennäköisesti valittuna, vaikka käyttäjä ei olisi itse valinnut
@@ -31,7 +32,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
           forChangeObject: {
             section: "opetuksenJarjestamismuoto"
           },
-          isMulti: false,
+          isMulti: useMultiselect,
           isReadOnly,
           options: map(muoto => {
             /**
@@ -39,7 +40,6 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
              * valittuna lomakkeella, jota vasten rajoituksia ollaan
              * tekemässä.
              **/
-            console.info(muoto, valittuJarjestamismuoto);
             return path(
               ["properties", "forChangeObject", "koodiarvo"],
               valittuJarjestamismuoto

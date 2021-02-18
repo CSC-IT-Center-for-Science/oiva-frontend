@@ -7,7 +7,7 @@ import BaseData from "basedata";
 
 const keys = ["vstTyypit"];
 
-const JarjestajaluetteloFiltteroinnilla = ({ luvat }) => {
+const JarjestajaluetteloFiltteroinnilla = ({ koulutusmuoto, luvat }) => {
   const intl = useIntl();
 
   return (
@@ -20,7 +20,10 @@ const JarjestajaluetteloFiltteroinnilla = ({ luvat }) => {
         locale={intl.locale}
         keys={keys}
         render={_props => (
-          <Jarjestajaluettelo luvat={luvat} vstTyypit={_props.vstTyypit} />
+          <Jarjestajaluettelo
+            koulutusmuoto={koulutusmuoto}
+            luvat={luvat}
+            vstTyypit={_props.vstTyypit} />
         )}
       />
     </React.Fragment>

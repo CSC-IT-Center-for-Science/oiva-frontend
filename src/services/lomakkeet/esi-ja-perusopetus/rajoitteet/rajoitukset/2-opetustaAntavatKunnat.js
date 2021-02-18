@@ -1,5 +1,4 @@
 import {
-  append,
   compose,
   endsWith,
   find,
@@ -8,16 +7,18 @@ import {
   map,
   path,
   prop,
-  propEq,
   toUpper,
-  values
+  values,
+  filter, startsWith,
+  concat
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
 export default async function getOpetustaAntavatKunnat(
   isReadOnly,
   osionData = [],
-  locale
+  locale,
+  useMultiselect = false
 ) {
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
@@ -31,10 +32,11 @@ export default async function getOpetustaAntavatKunnat(
   // päälomakkeella, halutaan samaan luetteloon Suomen kuntien kanssa.
   // Päälomakkeella on syöttämistä varten yksi textarea-elementti, joten
   // tilaobjekteja on 0 - 1 kappale(tta).
-  const ulkomaaStateObj = find(
-    propEq("anchor", "toimintaalue.ulkomaa.200.lisatiedot"),
-    osionData
-  );
+  const ulkomaatStateObj = filter(changeObj => {
+    return (
+      endsWith(".lisatiedot", changeObj.anchor) && startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
+    );
+  }, osionData)
 
   const ulkomaaOptionChecked = !!path(
     ["properties", "isChecked"],
@@ -43,13 +45,13 @@ export default async function getOpetustaAntavatKunnat(
 
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
-  const ulkomaaOption =
-    ulkomaaStateObj && ulkomaaOptionChecked
-      ? {
-          label: path(["properties", "value"], ulkomaaStateObj),
-          value: path(["properties", "metadata", "koodiarvo"], ulkomaaStateObj)
-        }
-      : null;
+  const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
+    return {
+      label: item.properties.value,
+      value: item.properties.metadata.koodiarvo,
+      index
+    }
+  })
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj
@@ -70,16 +72,17 @@ export default async function getOpetustaAntavatKunnat(
           forChangeObject: {
             section: "opetustaAntavatKunnat"
           },
-          isMulti: false,
+          // Käytetäänkö näissä multiselectii?
+          isMulti: useMultiselect,
           isReadOnly,
-          options: append(
-            ulkomaaOption,
+          options: concat(
             map(kunta => {
               const { koodiarvo, metadata } = kunta;
               return includes(koodiarvo, valitutKunnat)
                 ? { label: metadata[localeUpper].nimi, value: koodiarvo }
                 : null;
-            }, kunnat)
+            }, kunnat),
+            ulkomaaOptions
           ).filter(Boolean),
           value: ""
         }

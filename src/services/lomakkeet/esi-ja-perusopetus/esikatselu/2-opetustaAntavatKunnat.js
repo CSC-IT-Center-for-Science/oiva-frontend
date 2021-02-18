@@ -50,15 +50,11 @@ export async function previewOfOpetustaAntavaKunnat({
     lomakedata
   );
 
-  const ulkomaaTextBox = find(
-    compose(endsWith("ulkomaa.200.lisatiedot"), prop("anchor")),
+  const ulkomaaTextBoxes = filter(
+    compose(endsWith(".lisatiedot"), prop("anchor")),
     lomakedata
   );
-
-  const ulkomaaTextBoxValue = path(["properties", "isChecked"], ulkomaaCheckbox)
-    ? path(["properties", "value"], ulkomaaTextBox)
-    : null;
-
+  // Tarviiko muutoksia ulkomaahommiin?
   const getStructure = kunta => {
     const koodiarvo =
       kunta.koodiarvo || path(["properties", "metadata", "koodiarvo"], kunta);
@@ -80,28 +76,24 @@ export async function previewOfOpetustaAntavaKunnat({
               }
             }
           : {
-              anchor: koodiarvo,
-              name: "HtmlContent",
-              properties: {
-                content:
-                  (kunta.metadata &&
-                    getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
-                  (kunta.koodi &&
-                    find(
-                      propEq("kieli", locale.toUpperCase()),
-                      kunta.koodi.metadata
-                    ).nimi) ||
-                  (kunta.properties && kunta.properties.metadata.title)
-              }
+            anchor: koodiarvo,
+            name: "HtmlContent",
+            properties: {
+              content: (kunta.metadata && getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
+                (kunta.koodi && find(propEq("kieli", locale.toUpperCase()), kunta.koodi.metadata).nimi) ||
+                (kunta.properties && kunta.properties.metadata.title)
             }
+          }
       ]
     };
   };
 
-  const currentMunicipalities = path(
-    ["properties", "currentMunicipalities"],
-    changeObjectsByProvinceNode
-  );
+  const ulkomaaTextBoxValues = path(["properties", "isChecked"], ulkomaaCheckbox) ?
+    values(map(ulkomaaTextBox => {
+      return path(["properties", "value"], ulkomaaTextBox);
+    }, ulkomaaTextBoxes)) : null;
+
+  const currentMunicipalities = path(["properties", "currentMunicipalities"], changeObjectsByProvinceNode);
 
   if (changeObjectsByProvinceNode) {
     const kunnat = flatten(
@@ -118,24 +110,17 @@ export async function previewOfOpetustaAntavaKunnat({
       )
     );
 
-    const kunnatUlkomaatAdded = ulkomaaTextBoxValue
-      ? sortBy(
-          path(["components", "0", "properties", "content"]),
-          concat(
-            [
-              {
-                components: [
-                  {
-                    name: "HtmlContent",
-                    properties: { content: ulkomaaTextBoxValue }
-                  }
-                ]
-              }
-            ],
-            kunnat
-          )
-        )
-      : kunnat;
+    const kunnatUlkomaatAdded = ulkomaaTextBoxValues ?
+      sortBy(path(["components", "0", "properties", "content"]),
+        concat(map(ulkomaaTextBoxValue => {
+          return {
+            components: [{
+              name: "HtmlContent",
+              properties: { content: ulkomaaTextBoxValue }
+            }]
+          };
+        }, ulkomaaTextBoxValues), kunnat)) : kunnat;
+
     if (kunnatUlkomaatAdded.length) {
       structure = append(
         {

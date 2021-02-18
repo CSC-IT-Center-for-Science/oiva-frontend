@@ -4,7 +4,6 @@ import Rajoite from "components/02-organisms/Rajoite";
 import HtmlContent from "../HtmlContent";
 
 const List = ({ items }) => {
-  console.info(items);
   const itemsToRender = addIndex(map)(
     (item, index) => (
       <li key={`list-item-${index}`} className="leading-bulletList">

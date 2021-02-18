@@ -38,6 +38,8 @@ import {
 } from "@material-ui/core";
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/index";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -153,7 +155,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
     <React.Fragment>
       <MaUTable
         {...getTableProps()}
-        className="border border-solid border-gray-400">
+        className="border border-solid border-gray-400"
+      >
         <caption>
           {intl.formatMessage(common.voimassaOlevatJarjestamisluvat, {
             amount: `${rows.length} / ${luvat.length}`
@@ -168,7 +171,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
-                      })}>
+                      })}
+                    >
                       {column.render("Header")}
                       {/* Add a sort direction indicator */}
                       {column.isSorted ? (
@@ -217,7 +221,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
       <nav
         role="navigation"
         aria-label={intl.formatMessage(common.navigationBetweenTablePages)}
-        className="flex justify-evenly items-center">
+        className="flex justify-evenly items-center"
+      >
         <div>
           <StyledButton
             onClick={() => gotoPage(0)}
@@ -227,7 +232,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}>
+            mr={2}
+          >
             <FirstPageIcon /> {intl.formatMessage(common.ensimmainenSivu)}
           </StyledButton>
           <StyledButton
@@ -238,7 +244,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}>
+            mr={2}
+          >
             <ArrowLeftIcon /> {intl.formatMessage(common.edellinen)}
           </StyledButton>
           <StyledButton
@@ -249,7 +256,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}>
+            mr={2}
+          >
             {intl.formatMessage(common.seuraava)} <ArrowRightIcon />
           </StyledButton>
           <StyledButton
@@ -259,7 +267,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
             )}
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(common.viimeinenSivu)} <LastPageIcon />
           </StyledButton>
         </div>
@@ -298,7 +307,8 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
             inputProps={{
               name: "rows-per-page",
               id: "rows-per-page"
-            }}>
+            }}
+          >
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
@@ -311,13 +321,14 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
   );
 }
 
-function Jarjestajaluettelo({ luvat }) {
+function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
   const intl = useIntl();
   const [data, setData] = useState(() =>
     map(({ jarjestaja }) => {
       return {
         nimi: jarjestaja.nimi[intl.locale] || head(values(jarjestaja.nimi)),
         ytunnus: jarjestaja.ytunnus,
+        oid: jarjestaja.oid,
         toiminnot: ["info"]
       };
     }, luvat)
@@ -331,10 +342,19 @@ function Jarjestajaluettelo({ luvat }) {
         return (
           <Link
             className="underline"
-            to={`/esi-ja-perusopetus/koulutuksenjarjestajat/${row.values.ytunnus}/jarjestamislupa`}
+            to={localizeRouteKey(
+              intl.locale,
+              AppRoute.Jarjestamislupa,
+              intl.formatMessage,
+              {
+                id: row.original.oid,
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }
+            )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.nimi
-            })}>
+            })}
+          >
             {row.values.nimi}
           </Link>
         );

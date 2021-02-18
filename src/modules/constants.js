@@ -1,8 +1,8 @@
 // Palvelu
 export const HOST_BASE_URL = window.location.origin;
 export const API_BASE_URL = `${HOST_BASE_URL}/api`;
-export const CAS_LOGIN_REDIRECT_URL = `${API_BASE_URL}/auth/login?redirect=${HOST_BASE_URL}/cas-ready`;
-export const CAS_LOGIN_READY = `${HOST_BASE_URL}/cas-ready`;
+export const CAS_LOGIN_REDIRECT_URL = CAS_LOGIN_READY =>
+  `${API_BASE_URL}/auth/login?redirect=${CAS_LOGIN_READY}`;
 export const CAS_BASE_URL = "https://virkailija.testiopintopolku.fi";
 export const CAS_LOGOUT_URL = `${API_BASE_URL}/auth/logout`;
 

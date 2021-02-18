@@ -43,7 +43,6 @@ export async function getOpiskelijamaaranRajausvaihtoehdot(
 
   // const valittuOpiskelijamaarastrategia = "kokonaismaara";
 
-  // console.info(osionData, valittuOpiskelijamaarastrategia);
   return [
     {
       anchor: "opiskelijamaarastrategia",

@@ -51,7 +51,6 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
               name: "List",
               properties: {
                 items: map(node => {
-                  console.info("node", node);
                   const anchorParts = split(".", node.anchor);
                   const koodiarvo = getAnchorPart(node.anchor, 1);
                   const index = getAnchorPart(node.anchor, 2);

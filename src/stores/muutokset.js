@@ -180,12 +180,6 @@ const Store = createStore({
       const nextAsetuksetIndex =
         (length(asetuksetChangeObjects) - maaraAikaAsetustenLkm) / 2;
 
-      console.group();
-      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
-      console.info("kohdennuspolku", kohdennuspolku);
-      console.info("Seuraava ankkuritaso", nextAsetuksetIndex);
-      console.groupEnd();
-
       /**
        * Luodaan
        */
@@ -221,11 +215,11 @@ const Store = createStore({
         const textBoxChangeObjects = filter(
           changeObj =>
             startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
-            endsWith(".kuvaus", changeObj.anchor) &&
+            endsWith(sectionId === 'toimintaalue' ? ".lisatiedot" : ".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           concat(
-            currentChangeObjects.unsaved[sectionId] || [],
-            currentChangeObjects.saved[sectionId] || []
+            (currentChangeObjects.unsaved && currentChangeObjects.unsaved[sectionId]) || [],
+            (currentChangeObjects.saved && currentChangeObjects.saved[sectionId]) || []
           ) || []
         );
 
@@ -235,7 +229,7 @@ const Store = createStore({
                 max,
                 -Infinity,
                 map(changeObj => {
-                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
+                  return parseInt(getAnchorPart(changeObj.anchor, sectionId === 'toimintaalue' ? 3 : 2), 10);
                 }, textBoxChangeObjects)
               ) + 1
             : 1;
@@ -245,12 +239,12 @@ const Store = createStore({
          * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
          * kenttä olisi automaattisesti fokusoitu.
          */
-        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`;
         let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
+              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`,
               properties: {
                 value: ""
               }
@@ -319,12 +313,6 @@ const Store = createStore({
               }, kohdennusChangeObjects)
             ) + 1
           : 0;
-
-      console.group();
-      console.info("kohdennusindeksipolku", kohdennusindeksipolku);
-      console.info("kohdennuspolku", kohdennuspolku);
-      console.info("Seuraava ankkuritaso", nextKohdennusAnchorPart);
-      console.groupEnd();
 
       /**
        * Luodaan

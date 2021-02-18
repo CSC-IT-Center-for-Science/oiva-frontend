@@ -4,12 +4,14 @@ import {
   assocPath,
   concat,
   filter,
+  find,
   flatten,
   forEach,
   head,
   includes,
   join,
   keys,
+  length,
   map,
   mapObjIndexed,
   nth,
@@ -25,6 +27,7 @@ import {
 } from "ramda";
 import moment from "moment";
 import { __ } from "i18n-for-browser";
+import React from "react";
 
 const pisteytys = {
   rajoite: 0,
@@ -76,62 +79,25 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
   return string;
 }
 
-function getTaydennyssana(key, locale) {
-  const taydennyssanat = {
-    fi: {
-      alkamispaiva: {
-        pre: __("rajoitteet.ajalla"),
-        post: " - "
-      },
-      lukumaara: {
-        pre: __("common.is"),
-        post: __("common.henkiloa")
-      },
-      opetuskielet: {
-        pre: __("education.opetetaanKielella")
-      },
-      opetustaAntavatKunnat: {
-        pre: __("common.kunnassa")
-      },
-      opetustehtavat: {
-        pre: __("education.opetustehtavana")
-      },
-      opetuksenJarjestamismuodot: {}
-    },
-    sv: {
-      alkamispaiva: {
-        pre: __("rajoitteet.ajalla"),
-        post: " - "
-      },
-      lukumaara: {
-        pre: __("common.is"),
-        post: __("common.henkiloa")
-      },
-      opetuskielet: {
-        pre: __("education.opetetaanKielella")
-      },
-      opetustaAntavatKunnat: {
-        pre: __("common.kunnassa")
-      },
-      opetustehtavat: {
-        pre: __("education.opetustehtavana")
-      },
-      opetuksenJarjestamismuoto: {}
-    }
-  };
-
-  return path([locale, key], taydennyssanat);
-}
-
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
-function kayLapiKohdennus(
-  kohdennus,
-  locale,
-  lista = [],
-  format,
-  ensimmainenRajoite = true
-) {
+function getTarkentimenArvo(tarkennin) {
+  let tarkentimenArvo =
+    path(["properties", "value", "label"], tarkennin) ||
+    path(["properties", "value"], tarkennin);
+  return Array.isArray(tarkentimenArvo)
+    ? pipe(
+        map(arvo => arvo.label),
+        join(",<br/>")
+      )(tarkentimenArvo)
+    : tarkentimenArvo;
+}
+
+function kayLapiKohdennus(kohdennus,
+                          locale,
+                          lista = [],
+                          format,
+                          ensimmainenRajoite = true) {
   const asetukset = join(
     " ",
     flatten(
@@ -186,12 +152,11 @@ function kayLapiKohdennus(
                 }
               : null;
             //: getTaydennyssana(tarkenninavain, locale);
-            const tarkentimenArvo =
-              path(
-                ["properties", "value", "label"],
-                asetus.tarkennin[tarkenninavain]
-              ) ||
-              path(["properties", "value"], asetus.tarkennin[tarkenninavain]);
+
+            const tarkentimenArvo = getTarkentimenArvo(
+              asetus.tarkennin[tarkenninavain]
+            );
+
             const muokattuTarkentimenArvo = moment(
               tarkentimenArvo,
               "YYYY-MM-DDTHH:mm:ss.SSSZ",
@@ -242,12 +207,8 @@ function kayLapiKohdennus(
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
-  const tarkentimenArvo = path(
-    ["properties", "value", "label"],
-    prop(tarkenninavain, tarkennin)
-  );
+  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin));
   const taydennyssana = null;
-  //const taydennyssana = getTaydennyssana(tarkenninavain, locale);
 
   let item = tarkentimenArvo;
 
@@ -256,7 +217,7 @@ function kayLapiKohdennus(
       " ",
       [
         taydennyssana.pre,
-        `<strong>${tarkentimenArvo}</strong>`,
+        `<strong>${item}</strong>`,
         taydennyssana.post
       ].filter(Boolean)
     );
@@ -359,6 +320,33 @@ export function getRajoiteListamuodossa(
       [],
       format
     );
+
+// DEVELOPISTA
+  //   const kohdennusLista = pipe(
+  //     values,
+  //     map(kohdennus =>
+  //       Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
+  //     ),
+  //     unnest
+  //   )(lapikaydytKohdennukset);
+  //   const indexMap = addIndex(map);
+  //   listamuotoWithEndings = join(
+  //     "",
+  //     indexMap((kohdennus, index) => {
+  //       // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
+  //       const s = join("", kohdennus);
+  //       const amountOfInstances = getAmountOfInstances("<ul", s);
+  //       return addEnding(
+  //         "</li></ul>",
+  //         s,
+  //         index === 0 ? amountOfInstances - 2 : amountOfInstances
+  //       );
+  //     }, kohdennusLista)
+  //   );
+  //   listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
+  // }
+  //
+    // 1777
     const kohdennusLista = pipe(
       values,
       map(kohdennus =>
@@ -456,3 +444,87 @@ export const getRajoitteet = (value, rajoitteet) => {
     rajoitteet
   );
 };
+
+/**
+ *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa varten
+ *
+ */
+export const getRajoitteetFromMaarays = (
+  alimaaraykset = [],
+  locale,
+  naytettavaArvo
+) => {
+  console.info(naytettavaArvo, alimaaraykset);
+  let htmlString = "";
+  forEach(alimaarays => {
+    htmlString = handleAlimaarays(
+      alimaarays,
+      htmlString,
+      locale,
+      naytettavaArvo
+    );
+  }, alimaaraykset);
+  return (
+    <ul
+      className="htmlContent ml-8"
+      dangerouslySetInnerHTML={{ __html: htmlString }}
+    ></ul>
+  );
+};
+
+export const handleAlimaarays = (
+  alimaarays,
+  htmlString,
+  locale,
+  naytettavaArvo = "nimi"
+) => {
+  let modifiedString = `${htmlString}<ul class="list-disc">`;
+
+  const hasAlimaarays = !!length(alimaarays.aliMaaraykset);
+
+  const isMaaraaikaRajoite =
+    alimaarays.koodisto === "kujalisamaareetlisaksiajalla";
+
+  if (isMaaraaikaRajoite) {
+    const alkupvm = moment(
+      path(["meta", "alkupvm"], alimaarays),
+      "YYYY-MM-DD"
+    ).format("DD.MM.YYYY");
+
+    const loppupvm = moment(
+      path(["meta", "loppupvm"], alimaarays),
+      "YYYY-MM-DD"
+    ).format("DD.MM.YYYY");
+
+    modifiedString = `${modifiedString}<li class="list-disc">${__(
+      "rajoitteet.ajalla"
+    )} ${alkupvm} - ${loppupvm}</li>`;
+  } else {
+    const value =
+      find(
+        metadata => metadata.kieli === locale,
+        path(["koodi", "metadata"], alimaarays) || []
+      ) || prop("meta", alimaarays);
+
+    if (value) {
+      modifiedString = `${modifiedString}<li class="list-disc">${value[
+        naytettavaArvo
+        ] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    }
+  }
+
+  if (hasAlimaarays) {
+    forEach(alimaarays => {
+      modifiedString = handleAlimaarays(
+        alimaarays,
+        modifiedString,
+        locale,
+        naytettavaArvo
+      );
+    }, alimaarays.aliMaaraykset);
+  }
+
+  modifiedString = `${modifiedString}</ul>`;
+  return modifiedString;
+};
+

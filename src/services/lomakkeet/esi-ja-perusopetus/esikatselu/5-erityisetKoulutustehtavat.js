@@ -26,8 +26,6 @@ export const previewOfErityisetKoulutustehtavat = ({
     lomakedata
   );
 
-  console.info("rajoitteet: ", rajoitteet);
-
   const anchorsOfCheckedNodes = map(prop("anchor"), checkedNodes);
 
   if (anchorsOfCheckedNodes.length) {

@@ -51,6 +51,8 @@ import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
 import vapaaSivistystyo from "../../../i18n/definitions/vapaaSivistystyo";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -326,7 +328,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
-function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
+function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   const intl = useIntl();
 
   const byYllapitaja = descend(prop("yllapitaja"));
@@ -405,7 +407,12 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
         return (
           <Link
             className="underline"
-            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.lupaUuid}/jarjestamislupa`}
+            to={localizeRouteKey(
+              intl.locale,
+              AppRoute.Jarjestamislupa,
+              intl.formatMessage,
+              { id: row.values.lupaUuid, koulutusmuoto: koulutusmuoto.kebabCase }
+            )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
             })}>
