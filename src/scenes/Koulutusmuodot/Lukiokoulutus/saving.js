@@ -229,7 +229,7 @@ export async function createObjectToSave(
 
   let objectToSave = {
     alkupera,
-    koulutustyyppi: koulutustyypitMap.ESI_JA_PERUSOPETUS,
+    koulutustyyppi: koulutustyypitMap.LUKIO,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,
