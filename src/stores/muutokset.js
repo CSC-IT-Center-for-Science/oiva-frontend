@@ -213,7 +213,10 @@ const Store = createStore({
                 max,
                 -Infinity,
                 map(changeObj => {
-                  return parseInt(getAnchorPart(changeObj.anchor, sectionId === 'toimintaalue' ? 3 : 2), 10);
+                  if(sectionId === 'toimintaalue') {
+                    return getAnchorPart(changeObj.anchor, 3) === "lisatiedot" ? 0 : parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+                  }
+                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
                 }, textBoxChangeObjects)
               ) + 1
             : 1;
