@@ -76,6 +76,25 @@ step("Avaa uusi muutospyyntolomake", async () => {
   }
 });
 
+step("Klikkaa elementtiä, jossa on teksti <teksti>", async teksti => {
+  try {
+    await click(teksti);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+step(
+  "Varmista, että uuden asian esidialogi aukesi otsikolla <teksti>",
+  async teksti => {
+    try {
+      assert.equal(await $("h6").text(), teksti);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
+
 step("Edellinen sivu", async () => {
   try {
     await click($("button.previous"));

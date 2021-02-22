@@ -1,6 +1,6 @@
 # Perusnavigaatio
 
-* Siirry osoitteeseen "localhost"
+* Siirry osoitteeseen "oivadev.csc.fi"
 * Log in as "oiva-essi"
 
 ## Navigointi koulutusmuotojen välillä
