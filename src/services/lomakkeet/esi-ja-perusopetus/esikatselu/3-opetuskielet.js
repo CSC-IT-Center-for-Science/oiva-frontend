@@ -85,7 +85,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
                   properties: {
                     areTitlesVisible: false,
                     isReadOnly: true,
-                    rajoite: rajoitteet
+                    rajoite: kohdistuvatRajoitteet
                   }
                 }
               ]

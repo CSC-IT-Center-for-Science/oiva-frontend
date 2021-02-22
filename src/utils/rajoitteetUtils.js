@@ -93,11 +93,13 @@ function getTarkentimenArvo(tarkennin) {
     : tarkentimenArvo;
 }
 
-function kayLapiKohdennus(kohdennus,
-                          locale,
-                          lista = [],
-                          format,
-                          ensimmainenRajoite = true) {
+function kayLapiKohdennus(
+  kohdennus,
+  locale,
+  lista = [],
+  format,
+  ensimmainenRajoite = true
+) {
   const asetukset = join(
     " ",
     flatten(
@@ -137,7 +139,9 @@ function kayLapiKohdennus(kohdennus,
                   ).format("DD.MM.YYYY")
                 : "";
 
-              return `<ul><li>${__('rajoitteet.ajalla')} ${alkamispaivaValue} - ${paattymispaivaValue}`;
+              return `<ul><li>${__(
+                "rajoitteet.ajalla"
+              )} ${alkamispaivaValue} - ${paattymispaivaValue}`;
             }
             const tarkenninValue = asetus.kohde.properties.value.value;
             // TODO: Label pitäisi hakea koodistosta tarkenninValue arvon avulla jos koodistossa on muutettu tekstiä.
@@ -321,54 +325,6 @@ export function getRajoiteListamuodossa(
       format
     );
 
-    // DEVELOP
-//     const kohdennusLista = pipe(
-//       values,
-//       map(kohdennus =>
-//         Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
-//       ),
-//       unnest
-//     )(lapikaydytKohdennukset);
-//     const indexMap = addIndex(map);
-//     listamuotoWithEndings = join(
-//       "",
-//       indexMap((kohdennus, index) => {
-//         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
-//         const s = join("", kohdennus);
-//         const amountOfInstances = getAmountOfInstances("<ul", s);
-//         return addEnding(
-//           "</li></ul>",
-//           s,
-//           index === 0 ? amountOfInstances - 2 : amountOfInstances
-//         );
-//       }, kohdennusLista)
-//     );
-//     listamuotoWithEndings = addEnding("</li></ul>", listamuotoWithEndings, 2);
-//   }
-//   return listamuotoWithEndings;
-// }
-
-    // CSCOIVA-1777
-//     const kohdennusLista = pipe(
-//       values,
-//       map(kohdennus =>
-//         Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
-//       ),
-//       unnest
-//     )(lapikaydytKohdennukset);
-//     listamuotoWithEndings = join(
-//       "",
-//       map(kohdennus => {
-//         // Lopuksi täytyy vielä sulkea avatut listat ja niiden alkiot.
-//         const s = join("", kohdennus);
-//         const amountOfInstances = getAmountOfInstances("<ul>", s);
-//         return addEnding("</li></ul>", s, amountOfInstances - 2);
-//       }, kohdennusLista)
-//     );
-//   }
-//   return listamuotoWithEndings;
-// }
-
     const kohdennusLista = pipe(
       values,
       map(kohdennus =>
@@ -461,11 +417,11 @@ export const getRajoite = (value, rajoitteet) => {
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
 };
 
-export const getRajoitteet = (value, rajoitteet) => {
+export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
   return filter(
     rajoite =>
       pathEq(
-        ["changeObjects", 1, "properties", "value", "value"],
+        ["changeObjects", 1, "properties", "value", valueAttr],
         value,
         rajoite
       ),
@@ -534,10 +490,17 @@ export const handleAlimaarays = (
         path(["koodi", "metadata"], alimaarays) || []
       ) || prop("meta", alimaarays);
 
-    if (value.nimi !== 'Ulkomaa' || (hasAlimaarays && alimaarays.meta.arvo) || alimaarays.meta.arvo) {
-      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta.arvo || value[naytettavaArvo] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    if (
+      value.nimi !== "Ulkomaa" ||
+      (hasAlimaarays && alimaarays.meta.arvo) ||
+      alimaarays.meta.arvo
+    ) {
+      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta
+        .arvo ||
+        value[naytettavaArvo] ||
+        value.nimi} ${alimaarays.arvo || ""}</li>`;
     } else {
-      modifiedString = htmlString
+      modifiedString = htmlString;
     }
   }
 
@@ -555,4 +518,3 @@ export const handleAlimaarays = (
   modifiedString = `${modifiedString}</ul>`;
   return modifiedString;
 };
-

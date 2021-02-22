@@ -54,7 +54,7 @@ export async function previewOfOpetustaAntavaKunnat({
     compose(endsWith(".lisatiedot"), prop("anchor")),
     lomakedata
   );
-  // Tarviiko muutoksia ulkomaahommiin?
+
   const getStructure = kunta => {
     const koodiarvo =
       kunta.koodiarvo || path(["properties", "metadata", "koodiarvo"], kunta);
@@ -76,24 +76,39 @@ export async function previewOfOpetustaAntavaKunnat({
               }
             }
           : {
-            anchor: koodiarvo,
-            name: "HtmlContent",
-            properties: {
-              content: (kunta.metadata && getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
-                (kunta.koodi && find(propEq("kieli", locale.toUpperCase()), kunta.koodi.metadata).nimi) ||
-                (kunta.properties && kunta.properties.metadata.title)
+              anchor: koodiarvo,
+              name: "HtmlContent",
+              properties: {
+                content:
+                  (kunta.metadata &&
+                    getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
+                  (kunta.koodi &&
+                    find(
+                      propEq("kieli", locale.toUpperCase()),
+                      kunta.koodi.metadata
+                    ).nimi) ||
+                  (kunta.properties && kunta.properties.metadata.title)
+              }
             }
-          }
       ]
     };
   };
 
-  const ulkomaaTextBoxValues = path(["properties", "isChecked"], ulkomaaCheckbox) ?
-    values(map(ulkomaaTextBox => {
-      return path(["properties", "value"], ulkomaaTextBox);
-    }, ulkomaaTextBoxes)) : null;
+  const ulkomaaTextBoxValues = path(
+    ["properties", "isChecked"],
+    ulkomaaCheckbox
+  )
+    ? values(
+        map(ulkomaaTextBox => {
+          return path(["properties", "value"], ulkomaaTextBox);
+        }, ulkomaaTextBoxes)
+      )
+    : null;
 
-  const currentMunicipalities = path(["properties", "currentMunicipalities"], changeObjectsByProvinceNode);
+  const currentMunicipalities = path(
+    ["properties", "currentMunicipalities"],
+    changeObjectsByProvinceNode
+  );
 
   if (changeObjectsByProvinceNode) {
     const kunnat = flatten(
@@ -110,16 +125,40 @@ export async function previewOfOpetustaAntavaKunnat({
       )
     );
 
-    const kunnatUlkomaatAdded = ulkomaaTextBoxValues ?
-      sortBy(path(["components", "0", "properties", "content"]),
-        concat(map(ulkomaaTextBoxValue => {
-          return {
-            components: [{
-              name: "HtmlContent",
-              properties: { content: ulkomaaTextBoxValue }
-            }]
-          };
-        }, ulkomaaTextBoxValues), kunnat)) : kunnat;
+    const kunnatUlkomaatAdded = ulkomaaTextBoxValues
+      ? sortBy(
+          path(["components", "0", "properties", "content"]),
+          concat(
+            map(ulkomaaTextBoxValue => {
+              const kohdistuvatRajoitteet = getRajoitteet(
+                ulkomaaTextBoxValue,
+                rajoitteet,
+                "label"
+              );
+
+              return {
+                components: [
+                  !isEmpty(kohdistuvatRajoitteet)
+                    ? {
+                        anchor: "rajoite",
+                        name: "Rajoite",
+                        properties: {
+                          areTitlesVisible: false,
+                          isReadOnly: true,
+                          rajoite: kohdistuvatRajoitteet
+                        }
+                      }
+                    : {
+                        name: "HtmlContent",
+                        properties: { content: ulkomaaTextBoxValue }
+                      }
+                ]
+              };
+            }, ulkomaaTextBoxValues),
+            kunnat
+          )
+        )
+      : kunnat;
 
     if (kunnatUlkomaatAdded.length) {
       structure = append(
@@ -150,6 +189,7 @@ export async function previewOfOpetustaAntavaKunnat({
       ]),
       currentMunicipalities
     );
+
     const existingForeignMunicipalities = filter(
       propEq("koodiarvo", "200"),
       currentMunicipalities

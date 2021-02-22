@@ -9,8 +9,10 @@ import {
   prop,
   toUpper,
   values,
-  filter, startsWith,
-  concat
+  filter,
+  startsWith,
+  concat,
+  propEq
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
@@ -34,9 +36,10 @@ export default async function getOpetustaAntavatKunnat(
   // tilaobjekteja on 0 - 1 kappale(tta).
   const ulkomaatStateObj = filter(changeObj => {
     return (
-      endsWith(".lisatiedot", changeObj.anchor) && startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
+      endsWith(".lisatiedot", changeObj.anchor) &&
+      startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
     );
-  }, osionData)
+  }, osionData);
 
   const ulkomaaOptionChecked = !!path(
     ["properties", "isChecked"],
@@ -75,7 +78,6 @@ export default async function getOpetustaAntavatKunnat(
           forChangeObject: {
             section: "opetustaAntavatKunnat"
           },
-          // Käytetäänkö näissä multiselectii?
           isMulti: useMultiselect,
           isReadOnly,
           options: concat(
