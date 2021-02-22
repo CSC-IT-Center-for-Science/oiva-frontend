@@ -17,7 +17,7 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "modules/constants";
-import { indexOf, isEmpty } from "ramda";
+import { indexOf, isEmpty, mergeDeepRight } from "ramda";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
 import AuthWithLocale from "AuthWithLocale";
 import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
@@ -44,7 +44,8 @@ export const Oiva = () => {
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
       getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(result => {
-        const combinedMessages = Object.assign({}, result, translations);
+        // Reititykseen liittyvät käännökset hoidetaan lokaalisti.
+        const combinedMessages = mergeDeepRight(translations, result);
         setMessages(combinedMessages);
       });
     } else {
