@@ -356,10 +356,20 @@ export const getRajoite = (value, rajoitteet) => {
  *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa varten
  *
  */
-export const getRajoitteetFromMaarays = (alimaaraykset, locale) => {
+export const getRajoitteetFromMaarays = (
+  alimaaraykset = [],
+  locale,
+  naytettavaArvo
+) => {
+  console.info(naytettavaArvo, alimaaraykset);
   let htmlString = "";
   forEach(alimaarays => {
-    htmlString = handleAlimaarays(alimaarays, htmlString, locale);
+    htmlString = handleAlimaarays(
+      alimaarays,
+      htmlString,
+      locale,
+      naytettavaArvo
+    );
   }, alimaaraykset);
   return (
     <ul
@@ -369,7 +379,12 @@ export const getRajoitteetFromMaarays = (alimaaraykset, locale) => {
   );
 };
 
-export const handleAlimaarays = (alimaarays, htmlString, locale) => {
+export const handleAlimaarays = (
+  alimaarays,
+  htmlString,
+  locale,
+  naytettavaArvo = "nimi"
+) => {
   let modifiedString = `${htmlString}<ul class="list-disc">`;
 
   const hasAlimaarays = !!length(alimaarays.aliMaaraykset);
@@ -392,18 +407,27 @@ export const handleAlimaarays = (alimaarays, htmlString, locale) => {
       "rajoitteet.ajalla"
     )} ${alkupvm} - ${loppupvm}</li>`;
   } else {
-    const value = find(
-      metadata => metadata.kieli === locale,
-      path(["koodi", "metadata"], alimaarays || [])
-    );
-    modifiedString = `${modifiedString}<li class="list-disc">${value.nimi} ${
-      alimaarays.arvo ? alimaarays.arvo : ""
-    }</li>`;
+    const value =
+      find(
+        metadata => metadata.kieli === locale,
+        path(["koodi", "metadata"], alimaarays) || []
+      ) || prop("meta", alimaarays);
+
+    if (value.nimi !== 'Ulkomaa' || (hasAlimaarays && alimaarays.meta.arvo) || alimaarays.meta.arvo) {
+      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta.arvo || value[naytettavaArvo] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    } else {
+      modifiedString = htmlString
+    }
   }
 
   if (hasAlimaarays) {
     forEach(alimaarays => {
-      modifiedString = handleAlimaarays(alimaarays, modifiedString, locale);
+      modifiedString = handleAlimaarays(
+        alimaarays,
+        modifiedString,
+        locale,
+        naytettavaArvo
+      );
     }, alimaarays.aliMaaraykset);
   }
 

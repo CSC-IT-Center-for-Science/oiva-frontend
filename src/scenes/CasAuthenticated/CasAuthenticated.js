@@ -20,11 +20,11 @@ const CasAuthenticated = ({ organisation = {} }) => {
   const { formatMessage, locale } = useIntl();
   const [user] = useUser();
 
-  const { ytunnus } = organisation;
+  const { oid } = organisation;
 
   if (user.hasErrored) {
     return <p>Virhe tapahtui</p>; // <p>{intl.formatMessage(commonMessages.loginError)}</p>;
-  } else if (user.fetchedAt && ytunnus) {
+  } else if (user.fetchedAt && oid) {
     const role = user.data.roles[1];
     switch (role) {
       case ROLE_ESITTELIJA: {
@@ -33,9 +33,9 @@ const CasAuthenticated = ({ organisation = {} }) => {
       default: {
         return (
           <Redirect
-            ytunnus={ytunnus}
+            oid={oid}
             to={localizeRouteKey(locale, AppRoute.OmatTiedot, formatMessage, {
-              id: ytunnus,
+              id: oid,
               koulutusmuoto: formatMessage(ammatillinenKoulutus.kebabCase)
             })}
           />

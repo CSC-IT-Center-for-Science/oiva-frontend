@@ -97,17 +97,14 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     };
   }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
-  const nimi = useMemo(
-    () =>
-      muutospyynto.data &&
-      (muutospyynto.data.jarjestaja.nimi.fi ||
-        muutospyynto.data.jarjestaja.nimi.sv),
+  const jarjestaja = useMemo(
+    () => muutospyynto.data && muutospyynto.data.jarjestaja,
     [muutospyynto.data]
   );
 
-  const ytunnus = useMemo(
-    () => muutospyynto.data && muutospyynto.data.jarjestaja.ytunnus,
-    [muutospyynto.data]
+  const nimi = useMemo(
+    () => jarjestaja && (jarjestaja.nimi.fi || jarjestaja.nimi.sv),
+    [jarjestaja]
   );
 
   const removeAsiakirja = async () => {
@@ -257,7 +254,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             {
               cells: R.addIndex(R.map)((title, ii) => {
                 return {
-                  isSortable: ii === 4 ? false : true,
+                  isSortable: ii !== 4,
                   truncate: false,
                   styleClasses: [colWidths[ii]],
                   text: intl.formatMessage(title),
@@ -291,7 +288,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       AppRoute.Hakemus,
                       intl.formatMessage,
                       {
-                        id: ytunnus,
+                        id: jarjestaja.oid,
                         koulutusmuoto: koulutusmuoto.kebabCase,
                         page: 1,
                         uuid: row.uuid
@@ -435,7 +432,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 {nimi}
               </Typography>
               <Typography component="h5" variant="h5">
-                {ytunnus}
+                {jarjestaja.ytunnus}
               </Typography>
             </div>
           </div>

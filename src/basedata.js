@@ -86,14 +86,14 @@ export const getRaw = async (
 /**
  * Funktio noutaa sovelluksen tarvitseman pohjadatan, kuten kunnat, maakunnat,
  * kielet ja määräystyypit. Nämä ovat yleistä dataa, jota käytetään mm.
- * lomakkeita ja listauksia muodostettaessa. Lupa noudetaan y-tunnusta käyttäen
- * ja sen sisältämiä määräyksiä hyödynnetään parsittaessa pohjadataa
+ * lomakkeita ja listauksia muodostettaessa. Lupa noudetaan järjestäjän oid:a
+ * käyttäen ja sen sisältämiä määräyksiä hyödynnetään parsittaessa pohjadataa
  * tarvittaessa paremmin sovellusta palvelevaan muotoon.
  *
  * @param keys
  * @param {string} locale - fi / sv
  * @param lupaUuid
- * @param {string} ytunnus
+ * @param {string} oid
  * @param koulutustyyppi
  * @param oppilaitostyyppi
  */
@@ -101,7 +101,7 @@ const fetchBaseData = async (
   keys,
   locale,
   lupaUuid,
-  ytunnus,
+  oid,
   koulutustyyppi,
   oppilaitostyyppi
 ) => {
@@ -138,16 +138,23 @@ const fetchBaseData = async (
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
       : null,
-    lupaByYtunnus: ytunnus
+    lupaByOid: oid
       ? await getRaw(
-          "lupaByYtunnus",
+          "lupaByOid",
           `${
-            backendRoutes.lupaByYtunnus.path
-          }${ytunnus}?with=all&useKoodistoVersions=false${
+            backendRoutes.lupaByOid.path
+          }${oid}?with=all&useKoodistoVersions=false${
             koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
           }`,
           keys,
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
+        )
+      : null,
+    oppilaitoksetByOid: oid
+      ? await getRaw(
+          "oppilaitoksetByOid",
+          `${backendRoutes.oppilaitoksetByOid.path}${oid}${backendRoutes.oppilaitoksetByOid.postfix}`,
+          keys
         )
       : null,
     vstTyypit: await getRaw(
@@ -243,7 +250,7 @@ const fetchBaseData = async (
     ),
     organisaatio: await getRaw(
       "organisaatio",
-      `${backendRoutes.organisaatio.path}${ytunnus}`,
+      `${backendRoutes.organisaatio.path}${oid}`,
       keys
     ),
     organisaatiot: await getRaw(
@@ -266,7 +273,7 @@ const fetchBaseData = async (
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     tulevatLuvat: await getRaw(
       "tulevatLuvat",
-      `${backendRoutes.tulevatLuvat.path}${ytunnus}${
+      `${backendRoutes.tulevatLuvat.path}${oid}${
         backendRoutes.tulevatLuvat.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
@@ -277,7 +284,7 @@ const fetchBaseData = async (
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
-      `${backendRoutes.viimeisinLupa.path}${ytunnus}${
+      `${backendRoutes.viimeisinLupa.path}${oid}${
         backendRoutes.viimeisinLupa.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
@@ -287,7 +294,7 @@ const fetchBaseData = async (
     )
   };
   const lupa = raw.viimeisinLupa ||
-    (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
+    (lupaUuid ? raw.lupaByUuid : oid ? raw.lupaByOid : null) || {
       maaraykset: []
     };
 
@@ -372,6 +379,13 @@ const fetchBaseData = async (
 
   result.kohteet = raw.kohteet
     ? await localforage.setItem("kohteet", raw.kohteet)
+    : [];
+
+  result.oppilaitoksetByOid = raw.oppilaitoksetByOid
+    ? await localforage.setItem(
+        "oppilaitoksetByOid",
+        sortBy(path(["nimi", locale]), raw.oppilaitoksetByOid)
+      )
     : [];
 
   result.koulutukset =
@@ -695,7 +709,7 @@ const fetchBaseData = async (
 
   result.viimeisinLupa = raw.viimeisinLupa || {};
 
-  result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByYtunnus;
+  result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByOid;
 
   return result;
 };
@@ -710,22 +724,16 @@ const BaseData = ({
   render,
   koulutustyyppi,
   oppilaitostyyppi,
-  ytunnus
+  oid
 }) => {
   const { id } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
-  const _ytunnus = ytunnus || (id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null);
   const lupaUuid =
     id &&
     test(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/, id)
       ? id
       : null;
-  /**
-   * TO DO: Käytetään hauissa oid:tä, mikäli se on annettu y-tunnuksen sijaan.
-   * Organisaation oid on aina muotoa 1.g2.246.562.10.XXXXXXXXXX.
-   * const oid = !!_ytunnus ? id : null;
-   **/
 
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
@@ -737,7 +745,7 @@ const BaseData = ({
       keys,
       locale,
       lupaUuid,
-      _ytunnus,
+      lupaUuid ? oid : id,
       koulutustyyppi,
       oppilaitostyyppi
     ).then(result => {
@@ -750,16 +758,17 @@ const BaseData = ({
     keys,
     locale,
     lupaUuid,
-    _ytunnus,
+    id,
     location.pathname,
     koulutustyyppi,
-    oppilaitostyyppi
+    oppilaitostyyppi,
+    oid
   ]);
 
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData, lupaUuid, ytunnus: _ytunnus }) : null}
+        {!!render ? render({ ...baseData, lupaUuid, oid: id }) : null}
       </React.Fragment>
     );
   }

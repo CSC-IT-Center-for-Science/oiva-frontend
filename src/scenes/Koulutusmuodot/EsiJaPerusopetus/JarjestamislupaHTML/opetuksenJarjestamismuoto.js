@@ -1,11 +1,13 @@
 import React from "react";
-import { find, includes, path } from "ramda";
+import { find, length, path, toUpper } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
+import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 
 export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
   const intl = useIntl();
+  const locale = toUpper(intl.locale);
 
   const opetuksenJarjestamismuoto = find(
     maarays =>
@@ -21,13 +23,10 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
     maaraykset
   );
 
-  const jarjestamismuodonKuvaus = opetuksenJarjestamismuoto
-    ? path(
-        ["properties", "value"],
-        find(
-          changeObj => includes("kuvaus", changeObj.anchor),
-          opetuksenJarjestamismuoto.meta.changeObjects
-        )
+  const jarjestamismuodonMetadata = opetuksenJarjestamismuoto
+    ? find(
+        metadata => metadata.kieli === locale,
+        path(["koodi", "metadata"], opetuksenJarjestamismuoto)
       )
     : null;
 
@@ -39,8 +38,16 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
       {opetuksenJarjestamismuoto ? (
         <ul className="ml-8 list-disc mb-4">
           <li key={opetuksenJarjestamismuoto.koodiarvo}>
-            {jarjestamismuodonKuvaus}
+            {jarjestamismuodonMetadata.nimi}
           </li>
+          <React.Fragment>
+            {length(opetuksenJarjestamismuoto.aliMaaraykset)
+              ? getRajoitteetFromMaarays(
+                  opetuksenJarjestamismuoto.aliMaaraykset,
+                  locale
+                )
+              : ""}
+          </React.Fragment>
         </ul>
       ) : null}
       {lisatietomaarays && lisatietomaarays.meta.arvo}

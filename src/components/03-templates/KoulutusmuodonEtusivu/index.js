@@ -4,7 +4,7 @@ import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { NavLink, Route, Router, useHistory } from "react-router-dom";
-import Jarjestajat from "../Jarjestajat";
+import Jarjestajat from "../Jarjestajat/index";
 import BaseData from "basedata";
 import JarjestajaSwitch from "../JarjestajaSwitch";
 import { useUser } from "stores/user";
@@ -96,10 +96,7 @@ export default function KoulutusmuodonEtusivu({
                             ytunnus={_props1.ytunnus}
                           />
                         );
-                      } else if (
-                        _props1.lupa &&
-                        _props1.lupa.jarjestajaYtunnus
-                      ) {
+                      } else if (_props1.lupa && _props1.lupa.jarjestajaOid) {
                         return (
                           <BaseData
                             keys={keys2}
@@ -131,7 +128,7 @@ export default function KoulutusmuodonEtusivu({
                                 ? _props1.voimassaOlevaLupa.oppilaitostyyppi
                                 : null
                             }
-                            ytunnus={_props1.lupa.jarjestajaYtunnus}
+                            oid={_props1.lupa.jarjestajaOid}
                           />
                         );
                       }

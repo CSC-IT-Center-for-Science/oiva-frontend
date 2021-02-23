@@ -200,7 +200,7 @@ const Store = createStore({
         const textBoxChangeObjects = filter(
           changeObj =>
             startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
-            endsWith(".kuvaus", changeObj.anchor) &&
+            endsWith(sectionId === 'toimintaalue' ? ".lisatiedot" : ".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           concat(
             path(splittedSectionId, currentChangeObjects.unsaved) || [],
@@ -214,6 +214,9 @@ const Store = createStore({
                 max,
                 -Infinity,
                 map(changeObj => {
+                  if(sectionId === 'toimintaalue') {
+                    return getAnchorPart(changeObj.anchor, 3) === "lisatiedot" ? 0 : parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+                  }
                   return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
                 }, textBoxChangeObjects)
               ) + 1
@@ -224,12 +227,12 @@ const Store = createStore({
          * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
          * kenttä olisi automaattisesti fokusoitu.
          */
-        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`;
         let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
+              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`,
               properties: {
                 value: ""
               }

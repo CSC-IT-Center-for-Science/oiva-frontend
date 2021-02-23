@@ -135,7 +135,7 @@ const Jarjestaja = React.memo(
         AppRoute.UusiHakemus,
         intl.formatMessage,
         {
-          id: organisation.ytunnus,
+          id: organisation.oid,
           koulutusmuoto: koulutusmuoto.kebabCase,
           page: 1
         }

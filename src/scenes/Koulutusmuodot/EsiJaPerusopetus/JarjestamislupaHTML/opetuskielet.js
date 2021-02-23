@@ -74,11 +74,11 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
                   )
                 )}
               </li>,
-              <>
+              <React.Fragment>
                 {length(opetuskieli.aliMaaraykset)
                   ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale)
                   : ""}
-              </>
+              </React.Fragment>
             ],
             ensisijaisetOpetuskielet || []
           )}
@@ -100,11 +100,11 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
                   )
                 )}
               </li>,
-              <>
+              <React.Fragment>
                 {length(opetuskieli.aliMaaraykset)
                   ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale)
                   : ""}
-              </>
+              </React.Fragment>
             ],
             toissijaisetOpetuskielet || []
           )}

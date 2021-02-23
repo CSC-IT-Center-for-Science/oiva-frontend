@@ -1,12 +1,14 @@
 import {
-  addIndex,
   append,
+  compose,
+  addIndex,
   endsWith,
   find,
   findIndex,
   flatten,
   head,
   includes,
+  isNil,
   last,
   map,
   nth,
@@ -14,6 +16,7 @@ import {
   pipe,
   prop,
   propEq,
+  reject,
   split,
   test,
   toLower,
@@ -25,8 +28,10 @@ const koodistoMapping = {
   maaraaika: "kujalisamaareet",
   opetustehtavat: "opetustehtava",
   opiskelijamaarat: "oppilasopiskelijamaara",
+  oppilaitokset: "oppilaitos",
   toimintaalue: "kunta",
-  opetuskielet: "kielikoodistoopetushallinto"
+  opetuskielet: "kielikoodistoopetushallinto",
+  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto"
 };
 
 function isAsetusKohdennuksenKohdennus(asetusChangeObj) {
@@ -67,8 +72,17 @@ export const createAlimaarayksetBEObjects = (
   let loppupvm = null;
   if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
-    loppupvm = valueOfValueChangeObj;
-    alkupvm = pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
+    alkupvm =
+      path(
+        ["properties", "value"],
+        find(compose(endsWith(".alkamispaiva"), prop("anchor")), asetukset)
+      ) || valueOfValueChangeObj;
+
+    loppupvm =
+      path(
+        ["properties", "value"],
+        find(compose(endsWith(".paattymispaiva"), prop("anchor")), asetukset)
+      ) || pipe(nth(index + 2), path(["properties", "value"]))(asetukset);
   }
 
   let koodisto = "";
@@ -79,7 +93,12 @@ export const createAlimaarayksetBEObjects = (
     koodisto =
       prop(valueValueOfAsetusChangeObj, koodistoMapping) ||
       head(split("_", valueValueOfAsetusChangeObj));
-    koodiarvo = koodiarvo || last(split("_", valueValueOfAsetusChangeObj));
+
+    if (koodisto === "oppilaitos") {
+      koodiarvo = "1";
+    } else {
+      koodiarvo = koodiarvo || last(split("_", valueValueOfAsetusChangeObj));
+    }
   } else if (sectionOfAsetusChangeObj) {
     // Jossain tapauksessa elementti ei ole pudotusvalikko, joten
     // koodistoarvo tulee etsiä toisella tavalla. Tällaisissa tapauksissa
@@ -121,11 +140,30 @@ export const createAlimaarayksetBEObjects = (
     : [valueOfValueChangeObj];
   const mapIndex = addIndex(map);
 
-  return pipe(
+  const result = pipe(
     mapIndex((multiselectValue, multiIndex) => {
-      const codeValue = path(["value"], multiselectValue) || koodiarvo;
+      const codeValue =
+        koodisto === "oppilaitos"
+          ? koodiarvo
+          : path(["value"], multiselectValue) || koodiarvo;
 
-      const alimaarays = {
+
+      const changeObjects = [
+        asetusChangeObj,
+        nth(index + 1, asetukset),
+        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj) ? [
+          find(
+            compose(endsWith(".alkamispaiva"), prop("anchor")),
+            asetukset
+          ) || null,
+          find(
+            compose(endsWith(".paattymispaiva"), prop("anchor")),
+            asetukset
+          ) || null
+        ] : null
+      ]
+
+      const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
         parent: alimaarayksenParent,
         kohde: find(propEq("tunniste", tunniste), kohteet),
@@ -144,9 +182,14 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
-          changeObjects: [asetusChangeObj, nth(index + 1, asetukset)]
-        }
-      };
+          changeObjects: changeObjects.filter(Boolean),
+          kuvaus: prop("label", multiselectValue)
+        },
+        orgOid:
+          koodisto === "oppilaitos"
+            ? prop("value", multiselectValue)
+            : undefined
+      });
 
       const updatedMuutosobjektit = append(alimaarays, muutosobjektit);
       const nextAsetusChangeObj = nth(index + offset, asetukset);
@@ -177,4 +220,6 @@ export const createAlimaarayksetBEObjects = (
     flatten,
     uniqBy(prop("generatedId"))
   )(multiSelectValues);
+
+  return result;
 };

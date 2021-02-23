@@ -12,13 +12,14 @@ import moment from "moment";
 
 const TutkintoWrapper = styled.div`
   margin: 6px 0 6px 30px;
-  font-size: 15px;
+  font-size: 1rem;
   display: flex;
   position: relative;
 `;
 
 const Koodi = styled.span`
   flex: 1;
+  flex-grow: 0.6;
 `;
 
 const Nimi = styled.span`

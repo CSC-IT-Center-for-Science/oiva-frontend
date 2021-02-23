@@ -4,7 +4,6 @@ import {
   assocPath,
   compose,
   concat,
-  drop,
   endsWith,
   filter,
   find,
@@ -22,7 +21,8 @@ import {
   reject,
   take,
   uniq,
-  values
+  values,
+  drop
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";
@@ -385,6 +385,7 @@ export async function defineBackendChangeObjects(
                     (!!maakuntaMaarays && !kuntaChangeObj))
                 ) {
                   const kuntamuutosobjekti = {
+                    generatedId: `kunta-${Math.random()}`,
                     tila: "LISAYS",
                     meta: {
                       changeObjects: concat(
@@ -488,54 +489,65 @@ export async function defineBackendChangeObjects(
       ]
     : null;
 
-  const changeObjUlkomaaTextBox = find(
-    compose(endsWith(".200.lisatiedot"), prop("anchor")),
+  const changeObjUlkomaaTextBoxes = filter(
+    compose(endsWith(".lisatiedot"), prop("anchor")),
     changeObjects.ulkomaa
   );
 
-  const ulkomaaBEchangeObjectTextBox = changeObjUlkomaaTextBox
-    ? {
-        generatedId: `ulkomaa-${Math.random()}`,
-        tila: "LISAYS",
-        meta: {
-          arvo: path(["properties", "value"], changeObjUlkomaaTextBox),
-          changeObjects: [changeObjUlkomaaTextBox]
-        },
-        kohde,
-        koodiarvo: path(
-          ["properties", "metadata", "koodiarvo"],
-          changeObjUlkomaaTextBox
-        ),
-        koodisto: path(
-          ["properties", "metadata", "koodisto", "koodistoUri"],
-          changeObjUlkomaaTextBox
-        ),
-        maaraystyyppi
-      }
-    : null;
-
-  let alimaarayksetUlkomaa = [];
-
-  if (ulkomaaBEchangeObjectTextBox) {
+  let ulkomaaBEchangeObjectTextBoxes = changeObjUlkomaaTextBoxes.map((item, index) => {
     const rajoitteetByRajoiteIdAndKoodiarvo = reject(
       isNil,
       mapObjIndexed(rajoite => {
-        return pathEq([1, "properties", "value", "value"], "200", rajoite)
+        return pathEq([1, "properties", "value", "value"], "200", rajoite) && pathEq([1, "properties", "value", "index"], index, rajoite)
           ? rajoite
           : null;
       }, rajoitteetByRajoiteId)
     );
 
-    alimaarayksetUlkomaa = values(
-      mapObjIndexed(asetukset => {
-        return createAlimaarayksetBEObjects(
-          kohteet,
-          maaraystyypit,
-          ulkomaaBEchangeObjectTextBox,
-          asetukset
-        );
-      }, rajoitteetByRajoiteIdAndKoodiarvo)
-    );
+    return {
+      generatedId: `ulkomaa-${Math.random()}`,
+      tila: "LISAYS",
+      meta: {
+        arvo: path(["properties", "value"], item),
+        changeObjects: concat(
+          [item],
+          take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+        )
+      },
+      kohde,
+      koodiarvo: path(
+        ["properties", "metadata", "koodiarvo"],
+        item
+      ),
+      koodisto: "kunta",
+      maaraystyyppi
+    }
+  })
+
+  let alimaarayksetUlkomaa = [];
+
+  if (ulkomaaBEchangeObjectTextBoxes.length > 0) {
+    alimaarayksetUlkomaa = ulkomaaBEchangeObjectTextBoxes.map((item, index) => {
+      const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq([1, "properties", "value", "value"], "200", rajoite) && pathEq([1, "properties", "value", "index"], index, rajoite)
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      );
+
+      return values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            item,
+            drop(2, asetukset)
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
+    });
   }
 
   /**
@@ -571,7 +583,7 @@ export async function defineBackendChangeObjects(
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,
     ulkomaaBEchangeObjectCheckbox,
-    ulkomaaBEchangeObjectTextBox,
+    ulkomaaBEchangeObjectTextBoxes,
     lisatiedotBEchangeObject
   ]).filter(Boolean);
 
