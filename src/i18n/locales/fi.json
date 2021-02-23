@@ -411,6 +411,7 @@
   "routes.asia": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{uuid}",
   "routes.asianhallinta": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta",
   "routes.asianhallintaAvoimet": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet",
+  "routes.asianhallintaAvoimetPath": "/jarjestamis-ja-yllapitamisluvat/:koulutusmuoto/asianhallinta/avoimet",
   "routes.asianhallintaPaatetyt": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/paatetyt",
   "routes.casAuth": "/cas-auth",
   "routes.casLogOut": "/cas-logout",
