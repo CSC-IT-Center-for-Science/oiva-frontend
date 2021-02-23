@@ -79,7 +79,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}
       </Typography>
-      <ul className="ml-8 list-disc mb-4">
+      <ul className="list-disc mb-4">
         {getRajoitteetFromMaarays(
           concat(kuntaMaaraykset, opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset).filter(Boolean),
           locale,
