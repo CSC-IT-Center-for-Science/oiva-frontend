@@ -103,10 +103,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   );
 
   const nimi = useMemo(
-    () =>
-      jarjestaja &&
-      (jarjestaja.nimi.fi ||
-        jarjestaja.nimi.sv),
+    () => jarjestaja && (jarjestaja.nimi.fi || jarjestaja.nimi.sv),
     [jarjestaja]
   );
 

@@ -9,6 +9,7 @@ import getOpetuskielikomponentit from "./3-opetuskielet";
 import getOpetuksenJarjestamismuotokomponentit from "./4-opetuksenjarjestamismuoto";
 import getErityisetKoulutustehtavat from "./5-erityisetKoulutustehtavat";
 import getMuutEhdot from "./7-muutEhdot";
+import getOppilaitokset from "./oppilaitokset";
 
 const asetuksenTarkenninlomakkeet = {
   // Enintään
@@ -24,6 +25,7 @@ const asetuksenTarkenninlomakkeet = {
   opetuskielet: getOpetuskielikomponentit,
   opetustehtavat: getOpetustehtavakomponentit,
   opiskelijamaarat: getLukumaarakomponentit,
+  oppilaitokset: getOppilaitokset,
   toimintaalue: getOpetustaAntavatKunnat
 };
 

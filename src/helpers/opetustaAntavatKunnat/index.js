@@ -4,7 +4,6 @@ import {
   assocPath,
   compose,
   concat,
-  drop,
   endsWith,
   filter,
   find,
@@ -22,7 +21,8 @@ import {
   reject,
   take,
   uniq,
-  values
+  values,
+  drop
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa";
 import { getMaakuntakunnat } from "../maakunnat";
@@ -385,6 +385,7 @@ export async function defineBackendChangeObjects(
                     (!!maakuntaMaarays && !kuntaChangeObj))
                 ) {
                   const kuntamuutosobjekti = {
+                    generatedId: `kunta-${Math.random()}`,
                     tila: "LISAYS",
                     meta: {
                       changeObjects: concat(
@@ -493,23 +494,32 @@ export async function defineBackendChangeObjects(
     changeObjects.ulkomaa
   );
 
-  let ulkomaaBEchangeObjectTextBoxes = changeObjUlkomaaTextBoxes.map(item => {
+  let ulkomaaBEchangeObjectTextBoxes = changeObjUlkomaaTextBoxes.map((item, index) => {
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq([1, "properties", "value", "value"], "200", rajoite) && pathEq([1, "properties", "value", "index"], index, rajoite)
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
     return {
       generatedId: `ulkomaa-${Math.random()}`,
       tila: "LISAYS",
       meta: {
         arvo: path(["properties", "value"], item),
-        changeObjects: [item]
+        changeObjects: concat(
+          [item],
+          take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+        )
       },
       kohde,
       koodiarvo: path(
         ["properties", "metadata", "koodiarvo"],
         item
       ),
-      koodisto: path(
-        ["properties", "metadata", "koodisto", "koodistoUri"],
-        item
-      ),
+      koodisto: "kunta",
       maaraystyyppi
     }
   })
@@ -533,7 +543,7 @@ export async function defineBackendChangeObjects(
             kohteet,
             maaraystyypit,
             item,
-            asetukset
+            drop(2, asetukset)
           );
         }, rajoitteetByRajoiteIdAndKoodiarvo)
       );

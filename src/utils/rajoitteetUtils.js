@@ -413,10 +413,10 @@ export const handleAlimaarays = (
         path(["koodi", "metadata"], alimaarays) || []
       ) || prop("meta", alimaarays);
 
-    if (value) {
-      modifiedString = `${modifiedString}<li class="list-disc">${value[
-        naytettavaArvo
-      ] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    if (value.nimi !== 'Ulkomaa' || (hasAlimaarays && alimaarays.meta.arvo) || alimaarays.meta.arvo) {
+      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta.arvo || value[naytettavaArvo] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    } else {
+      modifiedString = htmlString
     }
   }
 
