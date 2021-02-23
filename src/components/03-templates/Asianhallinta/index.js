@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { NavLink, Route, Router, useHistory } from "react-router-dom";
+import { NavLink, Redirect, Route, Router, useHistory } from "react-router-dom";
 import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -23,7 +23,7 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
   const role =
     sessionStorage.getItem("role") === ROLE_ESITTELIJA ? "ESITTELIJA" : "KJ";
 
-  return (
+  return !!user ? (
     <React.Fragment>
       <Router history={history}>
         <LocalizedSwitch>
@@ -91,11 +91,13 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
               );
             }}
           />
-          <Route
-            authenticated={!!user}
-            path={AppRoute.Asianhallinta}
-            render={() => <Asiat koulutusmuoto={koulutusmuoto} user={user} />}
-          />
+          {!!user && (
+            <Route
+              authenticated={!!user}
+              path={AppRoute.Asianhallinta}
+              render={() => <Asiat koulutusmuoto={koulutusmuoto} user={user} />}
+            />
+          )}
           <Route path="*">
             {sessionStorage.getItem("role") === ROLE_ESITTELIJA ? (
               <div className="flex-1 bg-gray-100">
@@ -165,6 +167,8 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
         </LocalizedSwitch>
       </Router>
     </React.Fragment>
+  ) : (
+    <Redirect to={"/"} />
   );
 };
 

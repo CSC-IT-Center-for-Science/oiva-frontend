@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import { AppRoute, AppLanguage } from "const";
 import { LocalizedRouter, LocalizedSwitch } from "modules/i18n/index";
 import Home from "scenes/Home/index";
@@ -27,6 +27,7 @@ import { defaults } from "react-sweet-state";
 import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import Yhteydenotto from "./scenes/Yhteydenotto";
 import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
+
 defaults.devtools = true;
 
 export const Oiva = () => {
@@ -143,7 +144,7 @@ export const Oiva = () => {
           </Route>
 
           <Route path="*">
-            <div>Juuritason oletusnäkymä</div>
+            <Redirect to={"/"} />
           </Route>
         </LocalizedSwitch>
       </AppLayout>
