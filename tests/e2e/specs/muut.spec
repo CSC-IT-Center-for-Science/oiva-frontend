@@ -23,7 +23,7 @@
 
 * Sulje lomake
 * Log out
-* Navigate to app
+* Siirry osoitteeseen "localhost"
 * Log in as "oiva-mikki"
 * Avaa uusi muutospyyntolomake
 
