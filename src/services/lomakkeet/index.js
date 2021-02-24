@@ -53,25 +53,25 @@ import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2
 import { previewOfRajoite } from "./esi-ja-perusopetus/esikatselu/10-rajoite";
 
 // Lukiokoulutuksen muokkauslomakkeet
-import { opetusJotaLupaKoskee as opetusJotaLupaKoskeeLukio } from "./lukiokoulutus/1-opetusJotaLupaKoskee";
 import getPaatoksenTiedotLukio from "./lukiokoulutus/0-paatoksenTiedot";
+import { opetustaAntavatKunnat as opetustaAntavatKunnatLukio } from "./lukiokoulutus/1-opetustaAntavatKunnat";
 import { getOpetuskieletOPHLomake as getOpetuskieletOPHLomakeLukio } from "./lukiokoulutus/2-opetuskielet";
 import { getOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
+import { getErityisetKoulutustehtavatLukio } from "./lukiokoulutus/4-erityisetKoulutustehtavat";
+import { getValtakunnallinenKehittamistehtavalomake } from "./lukiokoulutus/5-valtakunnallinenKehittamistehtava";
 import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
-import { erityisetKoulutustehtavat as erityisetKoulutustehtavatLukio } from "./lukiokoulutus/5-erityisetKoulutustehtavat";
 import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
-import { opetustaAntavatKunnat as opetustaAntavatKunnatLukio } from "./lukiokoulutus/1-opetustaAntavatKunnat";
 import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
 import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/rajoite";
 
 // Lukiokoulutuksen esikatselulomakkeet
-import { previewOfOpetusJotaLupaKoskee as previewOfOpetusJotaLupaKoskeeLukio } from "./lukiokoulutus/esikatselu/1-opetusJotaLupaKoskee";
+import { previewOfOpetustaAntavaKunnat as previewOfOpetustaAntavaKunnatLukio } from "./lukiokoulutus/esikatselu/1-opetustaAntavatKunnat";
 import { previewOfOpetuskielet as previewOfOpetuskieletLukio } from "./lukiokoulutus/esikatselu/2-opetuskielet";
 import { previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/esikatselu/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
-import { previewOfErityisetKoulutustehtavat as previewOfErityisetKoulutustehtavatLukio } from "./lukiokoulutus/esikatselu/5-erityisetKoulutustehtavat";
+import { previewOfErityisetKoulutustehtavat as previewOfErityisetKoulutustehtavatLukio } from "./lukiokoulutus/esikatselu/4-erityisetKoulutustehtavat";
+import { previewOfValtakunnallinenKehittamistehtava } from "./lukiokoulutus/esikatselu/5-valtakunnallinenKehittamistehtava";
 import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./lukiokoulutus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
-import { previewOfOpetustaAntavaKunnat as previewOfOpetustaAntavaKunnatLukio } from "./lukiokoulutus/esikatselu/1-opetustaAntavatKunnat";
 import { previewOfRajoite as previewOfRajoiteLukio } from "./lukiokoulutus/esikatselu/10-rajoite";
 
 /**
@@ -410,7 +410,7 @@ const lomakkeet = {
   lukiokoulutus: {
     erityisetKoulutustehtavat: {
       modification: (data, booleans, locale, changeObjects, functions) =>
-        erityisetKoulutustehtavat(
+        getErityisetKoulutustehtavatLukio(
           data,
           booleans,
           locale,
@@ -418,7 +418,7 @@ const lomakkeet = {
           functions
         ),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfErityisetKoulutustehtavat(
+        previewOfErityisetKoulutustehtavatLukio(
           data,
           booleans,
           locale,
@@ -442,11 +442,21 @@ const lomakkeet = {
           changeObjects
         )
     },
-    opetusJotaLupaKoskee: {
+    valtakunnallinenKehittamistehtava: {
       modification: (data, booleans, locale, changeObjects) =>
-        opetusJotaLupaKoskee(data, booleans, locale, changeObjects),
+        getValtakunnallinenKehittamistehtavalomake(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        ),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfOpetusJotaLupaKoskee(data, booleans, locale, changeObjects)
+        previewOfValtakunnallinenKehittamistehtava(
+          data,
+          booleans,
+          locale,
+          changeObjects
+        )
     },
     opetuskielet: {
       modification: (data, booleans, locale, changeObjects) =>
