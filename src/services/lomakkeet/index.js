@@ -52,11 +52,11 @@ import { previewOfMuutEhdot } from "./esi-ja-perusopetus/esikatselu/7-muutEhdot"
 import { previewOfOpetustaAntavaKunnat } from "./esi-ja-perusopetus/esikatselu/2-opetustaAntavatKunnat";
 import { previewOfRajoite } from "./esi-ja-perusopetus/esikatselu/10-rajoite";
 
-// Esi -ja perusopetuksen muokkauslomakkeet
+// Lukiokoulutuksen muokkauslomakkeet
 import { opetusJotaLupaKoskee as opetusJotaLupaKoskeeLukio } from "./lukiokoulutus/1-opetusJotaLupaKoskee";
 import getPaatoksenTiedotLukio from "./lukiokoulutus/0-paatoksenTiedot";
 import { getOpetuskieletOPHLomake as getOpetuskieletOPHLomakeLukio } from "./lukiokoulutus/2-opetuskielet";
-import { opetuksenJarjestamismuoto as opetuksenJarjestamismuotoLukio } from "./lukiokoulutus/4-opetuksenJarjestamismuoto";
+import { getOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
 import { erityisetKoulutustehtavat as erityisetKoulutustehtavatLukio } from "./lukiokoulutus/5-erityisetKoulutustehtavat";
 import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
@@ -67,7 +67,7 @@ import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/
 // Lukiokoulutuksen esikatselulomakkeet
 import { previewOfOpetusJotaLupaKoskee as previewOfOpetusJotaLupaKoskeeLukio } from "./lukiokoulutus/esikatselu/1-opetusJotaLupaKoskee";
 import { previewOfOpetuskielet as previewOfOpetuskieletLukio } from "./lukiokoulutus/esikatselu/2-opetuskielet";
-import { previewOfOpetuksenJarjestamismuoto as previewOfOpetuksenJarjestamismuotoLukio } from "./lukiokoulutus/esikatselu/4-opetuksenJarjestamismuoto";
+import { previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/esikatselu/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import { previewOfErityisetKoulutustehtavat as previewOfErityisetKoulutustehtavatLukio } from "./lukiokoulutus/esikatselu/5-erityisetKoulutustehtavat";
 import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./lukiokoulutus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
@@ -431,11 +431,11 @@ const lomakkeet = {
       preview: (data, booleans, locale, changeObjects) =>
         previewOfMuutEhdot(data, booleans, locale, changeObjects)
     },
-    opetuksenJarjestamismuodot: {
+    oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
       modification: (data, booleans, locale) =>
-        opetuksenJarjestamismuoto(data, booleans, locale),
+        getOikeusSisaoppilaitosmuotoiseenKoulutukseen(data, booleans, locale),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfOpetuksenJarjestamismuoto(
+        previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen(
           data,
           booleans,
           locale,

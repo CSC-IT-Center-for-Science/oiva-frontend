@@ -7,10 +7,10 @@ import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   mode: "modification",
-  formLocation: ["lukiokoulutus", "opetuksenJarjestamismuodot"]
+  formLocation: ["lukiokoulutus", "oikeusSisaoppilaitosmuotoiseenKoulutukseen"]
 };
 
-const OpetuksenJarjestamismuoto = ({
+const OikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
   code,
   isPreviewModeOn,
   maaraykset,
@@ -36,13 +36,15 @@ const OpetuksenJarjestamismuoto = ({
       isRowExpanded={true}
       mode={mode}
       path={constants.formLocation}
-      rowTitle={intl.formatMessage(education.opetuksenJarjestamismuodot)}
+      rowTitle={intl.formatMessage(
+        education.oikeusSisaoppilaitosmuotoiseenKoulutukseen
+      )}
       showCategoryTitles={true}
     ></Lomake>
   );
 };
 
-OpetuksenJarjestamismuoto.propTypes = {
+OikeusSisaoppilaitosmuotoiseenKoulutukseen.propTypes = {
   code: PropTypes.string,
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
@@ -52,4 +54,4 @@ OpetuksenJarjestamismuoto.propTypes = {
   title: PropTypes.string
 };
 
-export default OpetuksenJarjestamismuoto;
+export default OikeusSisaoppilaitosmuotoiseenKoulutukseen;

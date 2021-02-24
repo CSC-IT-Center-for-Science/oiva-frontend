@@ -97,5 +97,10 @@ export const backendRoutes = {
   },
   vsttyypit: {
     path: `koodistot/koodit/vsttyypit`
+  },
+
+  // Lukiokoulutus
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
+    path: "koodistot/koodit/lukiooikeussisaooppilaitosmuotoiseenkoulutukseen"
   }
 };
