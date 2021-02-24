@@ -88,7 +88,7 @@ function getTarkentimenArvo(tarkennin) {
   return Array.isArray(tarkentimenArvo)
     ? pipe(
         map(arvo => arvo.label),
-        join(",<br/>")
+        join(", ")
       )(tarkentimenArvo)
     : tarkentimenArvo;
 }
@@ -439,15 +439,13 @@ export const getRajoitteetFromMaarays = (
   naytettavaArvo
 ) => {
   console.info(naytettavaArvo, alimaaraykset);
-  let htmlString = "";
-  forEach(alimaarays => {
-    htmlString = handleAlimaarays(
-      alimaarays,
-      htmlString,
-      locale,
-      naytettavaArvo
-    );
-  }, alimaaraykset);
+  const htmlString = handleAlimaaraykset(
+    "",
+    alimaaraykset,
+    naytettavaArvo,
+    locale
+  );
+
   return (
     <ul
       className="htmlContent ml-8"
@@ -460,7 +458,8 @@ export const handleAlimaarays = (
   alimaarays,
   htmlString,
   locale,
-  naytettavaArvo = "nimi"
+  naytettavaArvo = "nimi",
+  multiselectAlimaaraykset = null
 ) => {
   let modifiedString = `${htmlString}<ul class="list-disc">`;
 
@@ -484,37 +483,127 @@ export const handleAlimaarays = (
       "rajoitteet.ajalla"
     )} ${alkupvm} - ${loppupvm}</li>`;
   } else {
-    const value =
-      find(
-        metadata => metadata.kieli === locale,
-        path(["koodi", "metadata"], alimaarays) || []
-      ) || prop("meta", alimaarays);
-
-    if (
-      value.nimi !== "Ulkomaa" ||
-      (hasAlimaarays && alimaarays.meta.arvo) ||
-      alimaarays.meta.arvo
-    ) {
-      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta
-        .arvo ||
-        value[naytettavaArvo] ||
-        value.nimi} ${alimaarays.arvo || ""}</li>`;
+    if (multiselectAlimaaraykset) {
+      modifiedString = `${modifiedString}<li class="list-disc">`;
+      addIndex(forEach)((alimaarays, index) => {
+        modifiedString = `${modifiedString}${getValueFromMultiselectAlimaarays(
+          alimaarays,
+          naytettavaArvo,
+          hasAlimaarays,
+          locale,
+          index === length(multiselectAlimaaraykset) - 1
+        )}`;
+      }, multiselectAlimaaraykset);
+      modifiedString = `${modifiedString}</li>`;
     } else {
-      modifiedString = htmlString;
+      const value =
+        find(
+          metadata => metadata.kieli === locale,
+          path(["koodi", "metadata"], alimaarays) || []
+        ) || prop("meta", alimaarays);
+
+      if (
+        value.nimi !== "Ulkomaa" ||
+        (hasAlimaarays && alimaarays.meta.arvo) ||
+        alimaarays.meta.arvo
+      ) {
+        modifiedString = `${modifiedString}<li class="list-disc">${alimaarays
+          .meta.arvo ||
+          value[naytettavaArvo] ||
+          value.nimi ||
+          value.kuvaus} ${alimaarays.arvo || ""}</li>`;
+      } else {
+        modifiedString = htmlString;
+      }
     }
   }
 
   if (hasAlimaarays) {
-    forEach(alimaarays => {
-      modifiedString = handleAlimaarays(
-        alimaarays,
-        modifiedString,
-        locale,
-        naytettavaArvo
-      );
-    }, alimaarays.aliMaaraykset);
+    modifiedString = handleAlimaaraykset(
+      modifiedString,
+      alimaarays.aliMaaraykset,
+      naytettavaArvo,
+      locale
+    );
   }
 
   modifiedString = `${modifiedString}</ul>`;
   return modifiedString;
+};
+
+const handleAlimaaraykset = (
+  modifiedString,
+  alimaaraykset,
+  naytettavaArvo,
+  locale
+) => {
+  let lapikaydytMultiselectit = [];
+  forEach(alimaarays => {
+    const multiselectUuid = path(["meta", "multiselectUuid"], alimaarays);
+    /** Käydään vain yksi alimääräys läpi, joka sisältää tietyn multiselectUuid:n */
+    if (
+      !multiselectUuid ||
+      !includes(multiselectUuid, lapikaydytMultiselectit)
+    ) {
+      const multiselectAlimaaraykset = multiselectUuid
+        ? getMultiselectAlimaaraykset(multiselectUuid, alimaaraykset)
+        : null;
+
+      modifiedString = handleAlimaarays(
+        alimaarays,
+        modifiedString,
+        locale,
+        naytettavaArvo,
+        multiselectAlimaaraykset
+      );
+      if (multiselectUuid) {
+        lapikaydytMultiselectit = append(lapikaydytMultiselectit, [
+          multiselectUuid
+        ]);
+      }
+    }
+  }, alimaaraykset);
+  return modifiedString;
+};
+
+const getValueFromMultiselectAlimaarays = (
+  alimaarays,
+  naytettavaArvo,
+  hasAlimaarays,
+  locale,
+  last
+) => {
+  const value =
+    find(
+      metadata => metadata.kieli === locale,
+      path(["koodi", "metadata"], alimaarays) || []
+    ) || prop("meta", alimaarays);
+
+  if (
+    value.nimi !== "Ulkomaa" ||
+    (hasAlimaarays && alimaarays.meta.arvo) ||
+    alimaarays.meta.arvo
+  ) {
+    const arvo =
+      alimaarays.meta.arvo ||
+      value[naytettavaArvo] ||
+      value.nimi ||
+      alimaarays.meta.kuvaus;
+    const arvo2 = alimaarays.arvo;
+    return arvo2
+      ? `${arvo} ${arvo2}${last ? "" : ", "}`
+      : `${arvo}${last ? "" : ", "}`;
+  } else {
+    return "";
+  }
+};
+
+const getMultiselectAlimaaraykset = (multiselectUuid, alimaaraykset) => {
+  return multiselectUuid
+    ? filter(
+        alimaarays =>
+          pathEq(["meta", "multiselectUuid"], multiselectUuid, alimaarays),
+        alimaaraykset
+      )
+    : null;
 };

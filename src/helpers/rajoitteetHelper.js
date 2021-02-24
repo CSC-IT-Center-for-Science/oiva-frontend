@@ -10,6 +10,7 @@ import {
   includes,
   isNil,
   last,
+  length,
   map,
   nth,
   path,
@@ -23,6 +24,7 @@ import {
   uniqBy
 } from "ramda";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 
 const koodistoMapping = {
   maaraaika: "kujalisamaareet",
@@ -140,6 +142,8 @@ export const createAlimaarayksetBEObjects = (
     : [valueOfValueChangeObj];
   const mapIndex = addIndex(map);
 
+  const multiSelectUuid = length(multiSelectValues) > 1 ? uuidv4() : null;
+
   const result = pipe(
     mapIndex((multiselectValue, multiIndex) => {
       const codeValue =
@@ -147,21 +151,22 @@ export const createAlimaarayksetBEObjects = (
           ? koodiarvo
           : path(["value"], multiselectValue) || koodiarvo;
 
-
       const changeObjects = [
         asetusChangeObj,
         nth(index + 1, asetukset),
-        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj) ? [
-          find(
-            compose(endsWith(".alkamispaiva"), prop("anchor")),
-            asetukset
-          ) || null,
-          find(
-            compose(endsWith(".paattymispaiva"), prop("anchor")),
-            asetukset
-          ) || null
-        ] : null
-      ]
+        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
+          ? [
+              find(
+                compose(endsWith(".alkamispaiva"), prop("anchor")),
+                asetukset
+              ) || null,
+              find(
+                compose(endsWith(".paattymispaiva"), prop("anchor")),
+                asetukset
+              ) || null
+            ]
+          : null
+      ];
 
       const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
@@ -182,6 +187,7 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
+          ...(multiSelectUuid ? { multiselectUuid: multiSelectUuid } : null),
           changeObjects: changeObjects.filter(Boolean),
           kuvaus: prop("label", multiselectValue)
         },
