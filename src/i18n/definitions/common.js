@@ -785,10 +785,6 @@ export default defineMessages({
     id: "common.confirmExitEsittelijaMuutoshakemusWizardTitle",
     defaultMessage: "Tallennetaanko muutokset ennen poistumista?"
   },
-  tietosuojailmoitus: {
-    id: "common.tietosuojailmoitus",
-    defaultMessage: "Tietosuojailmoitus"
-  },
   yhteydenotto: {
     id: "common.yhteydenotto",
     defaultMessage: "Yhteydenotto"
