@@ -23,7 +23,7 @@ const assert = chai.assert;
 const headless = process.env.headless_chrome.toLowerCase() === "true";
 
 beforeSuite(async () => {
-  await openBrowser({ headless: headless });
+  await openBrowser({ args: ["--window-size=1600,1200"], headless });
 });
 
 afterSuite(async () => {
@@ -38,6 +38,26 @@ step("Navigate to app", async () => {
     await click($("#details-button"));
     await click($("#proceed-link"));
   }
+});
+
+step(
+  "Kirjoita kenttään, jonka tyyppi on <type> arvo <value>",
+  async (type, value) => {
+    await focus(textBox({ type }));
+    await write(value);
+  }
+);
+
+step(
+  "Kirjoita kenttään, jonka parametri <parameter> on <parameterValue> arvo <value>",
+  async (parameter, parameterValue, value) => {
+    await focus(textBox({ [parameter]: parameterValue }));
+    await write(value);
+  }
+);
+
+step("Klikkaa esidialogin hakupainiketta", async () => {
+  await click(button({ "aria-label": "Hae" }));
 });
 
 step("Log in as <username>", async username => {
@@ -77,6 +97,33 @@ step("Avaa uusi muutospyyntolomake", async () => {
     console.error(e);
   }
 });
+
+step("Klikkaa elementtiä, jossa on teksti <teksti>", async teksti => {
+  try {
+    await click(teksti);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+step("Varmista, että hakulomake on avattu otsikolla <teksti>", async teksti => {
+  try {
+    assert.equal(await $("h1").text(), teksti);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+step(
+  "Varmista, että uuden asian esidialogi aukesi otsikolla <teksti>",
+  async teksti => {
+    try {
+      assert.equal(await $("h6").text(), teksti);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
 
 step("Edellinen sivu", async () => {
   try {
