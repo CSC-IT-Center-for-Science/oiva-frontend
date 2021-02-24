@@ -1,8 +1,9 @@
 # Muutoshakemus
 
-* Navigate to app
+* Siirry osoitteeseen "localhost"
+* Log in as "oiva-essi"
 
-## Esi- ja perusopetus
+## Esi -ja perusopetus
 
 * Klikkaa päänavigaation linkkiä "Järjestämis- ja ylläpitämisluvat"
 * Siirry koulutusmuodon "Esi- ja perusopetus" pääsivulle
