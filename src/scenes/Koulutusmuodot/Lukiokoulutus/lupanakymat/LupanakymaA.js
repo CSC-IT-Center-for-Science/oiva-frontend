@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import common from "i18n/definitions/common";
 import education from "i18n/definitions/education";
 import Opetustehtavat from "../lomakeosiot/1-Opetustehtavat";
-import OpetustaAntavatKunnat from "../lomakeosiot/2-OpetustaAntavatKunnat";
+import OpetustaAntavatKunnat from "../lomakeosiot/1-OpetustaAntavatKunnat";
 import Opetuskieli from "../lomakeosiot/3-Opetuskieli";
 import OpetuksenJarjestamismuoto from "../lomakeosiot/4-OpetuksenJarjestamismuoto";
 import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtavat";
