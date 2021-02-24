@@ -17,11 +17,11 @@ import {
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getAnchorPart } from "../../../utils/common";
-import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
+import localforage from "localforage";
 
-export async function erityisetKoulutustehtavat(
+export async function getErityisetKoulutustehtavatLukio(
   { maaraykset, sectionId },
   { isPreviewModeOn, isReadOnly },
   locale,
@@ -29,7 +29,9 @@ export async function erityisetKoulutustehtavat(
   { onAddButtonClick }
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
-  const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const erityisetKoulutustehtavat = await localforage.getItem(
+    "lukioErityinenKoulutustehtavaUusi"
+  );
   const lisatiedot = await getLisatiedotFromStorage();
 
   const lisatiedotObj = find(
@@ -45,7 +47,7 @@ export async function erityisetKoulutustehtavat(
         const tehtavaanLiittyvatMaaraykset = filter(
           m =>
             propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
-            propEq("koodisto", "poerityinenkoulutustehtava", m),
+            propEq("koodisto", "lukioerityinenkoulutustehtavauusi", m),
           maaraykset
         );
         const kuvausmaaraykset = filter(
@@ -212,32 +214,30 @@ export async function erityisetKoulutustehtavat(
               /**
                * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
                */
-              erityinenKoulutustehtava.koodiarvo !== "1"
-                ? {
-                    anchor: "lisaaPainike",
-                    components: [
-                      {
-                        anchor: "A",
-                        name: "SimpleButton",
-                        onClick: onAddButtonClick,
-                        properties: {
-                          isPreviewModeOn,
-                          isReadOnly: _isReadOnly,
-                          isVisible: isCheckedByChange,
-                          icon: "FaPlus",
-                          iconContainerStyles: {
-                            width: "15px"
-                          },
-                          iconStyles: {
-                            fontSize: 10
-                          },
-                          text: __("common.lisaaUusiKuvaus"),
-                          variant: "text"
-                        }
-                      }
-                    ]
+              {
+                anchor: "lisaaPainike",
+                components: [
+                  {
+                    anchor: "A",
+                    name: "SimpleButton",
+                    onClick: onAddButtonClick,
+                    properties: {
+                      isPreviewModeOn,
+                      isReadOnly: _isReadOnly,
+                      isVisible: isCheckedByChange,
+                      icon: "FaPlus",
+                      iconContainerStyles: {
+                        width: "15px"
+                      },
+                      iconStyles: {
+                        fontSize: 10
+                      },
+                      text: __("common.lisaaUusiKuvaus"),
+                      variant: "text"
+                    }
                   }
-                : null
+                ]
+              }
             ].filter(Boolean)
           ]),
           components: [
@@ -262,7 +262,7 @@ export async function erityisetKoulutustehtavat(
             }
           ]
         };
-      }, poErityisetKoulutustehtavat),
+      }, erityisetKoulutustehtavat),
       {
         anchor: "erityiset-koulutustehtavat",
         layout: { margins: { top: "large" } },
