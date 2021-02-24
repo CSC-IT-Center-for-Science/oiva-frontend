@@ -20,8 +20,7 @@ import {
   split
 } from "ramda";
 import * as muutEhdotHelper from "helpers/poMuutEhdot";
-import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
-import * as opetusHelper from "helpers/opetustehtavat";
+import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
@@ -38,6 +37,7 @@ export async function createObjectToSave(
   maaraystyypit,
   alkupera = "KJ"
 ) {
+  console.info(kohteet, changeObjects);
   const allAttachmentsRaw = [];
 
   // ... without tiedosto-property
@@ -50,29 +50,7 @@ export async function createObjectToSave(
     changeObjects.rajoitteet
   );
 
-  // 1. OPETUS, JOTA LUPA KOSKEE
-  const opetus = await opetusHelper.defineBackendChangeObjects(
-    {
-      opetustehtavat: changeObjects.opetustehtavat,
-      rajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "opetustehtavat",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      )
-    },
-    maaraystyypit,
-    locale,
-    kohteet
-  );
-
-  // 2. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
+  // 1. KUNNAT, JOISSA OPETUSTA JÄRJESTETÄÄN
   const categoryFilterChangeObj =
     find(
       propEq("anchor", "toimintaalue.categoryFilter"),
@@ -117,7 +95,7 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // 3. OPETUSKIELET
+  // 2. OPETUSKIELET
   const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
     {
       opetuskielet: changeObjects.opetuskielet,
@@ -139,16 +117,17 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // 4. OPETUKSEN JÄRJESTÄMISMUOTO
-  const opetuksenJarjestamismuodot = await opetuksenJarjestamismuodotHelper.defineBackendChangeObjects(
+  // 3. OIKEUS SISÄOPPILAITOSMUOTOISEEN KOULUTUKSEEN
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper.defineBackendChangeObjects(
     {
-      opetuksenJarjestamismuodot: changeObjects.opetuksenJarjestamismuodot,
+      oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+        changeObjects.oikeusSisaoppilaitosmuotoiseenKoulutukseen,
       rajoitteetByRajoiteId: reject(
         isNil,
         mapObjIndexed(rajoite => {
           return pathEq(
             ["0", "properties", "value", "value"],
-            "opetuksenJarjestamismuodot",
+            "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
             rajoite
           )
             ? rajoite
@@ -248,8 +227,7 @@ export async function createObjectToSave(
     muutokset: flatten([
       erityisetKoulutustehtavat,
       muutEhdot,
-      opetuksenJarjestamismuodot,
-      opetus,
+      oikeusSisaoppilaitosmuotoiseenKoulutukseen,
       opetuskielet,
       opetustaAntavatKunnat,
       opiskelijamaarat
