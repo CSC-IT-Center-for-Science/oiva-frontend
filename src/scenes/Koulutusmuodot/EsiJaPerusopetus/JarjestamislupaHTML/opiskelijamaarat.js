@@ -43,14 +43,12 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
         (maarays, index) => [
           <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc">
             <li className="leading-bulletList">
-              {/*<strong>*/}
                 {maarays.meta.tyyppi === "yksittainen"
                   ? intl.formatMessage(
                       opiskelijamaara.yksittainenKohdennus,
                       locale
                     )
                   : intl.formatMessage(opiskelijamaara.kokonaismaara, locale)}
-              {/*</strong>*/}
               {": "}{path(
                 ["nimi"],
                 find(
