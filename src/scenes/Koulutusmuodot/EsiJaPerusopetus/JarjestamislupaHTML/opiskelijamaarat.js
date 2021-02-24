@@ -43,26 +43,21 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
         (maarays, index) => [
           <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc">
             <li className="leading-bulletList">
-              <strong>
                 {maarays.meta.tyyppi === "yksittainen"
                   ? intl.formatMessage(
                       opiskelijamaara.yksittainenKohdennus,
                       locale
                     )
                   : intl.formatMessage(opiskelijamaara.kokonaismaara, locale)}
-              </strong>
+              {": "}{path(
+                ["nimi"],
+                find(
+                  metadata => metadata.kieli === locale,
+                  path(["koodi", "metadata"], maarays)
+                )
+              )}{" "}{maarays.arvo}
             </li>
-            <ul key={maarays.arvo + "-" + index} className="ml-8 list-disc">
-              <li>
-                {path(
-                  ["nimi"],
-                  find(
-                    metadata => metadata.kieli === locale,
-                    path(["koodi", "metadata"], maarays)
-                  )
-                )}{" "}
-                {maarays.arvo}
-              </li>
+            <ul key={maarays.arvo + "-" + index} className="list-disc">
               <React.Fragment>
                 {length(maarays.aliMaaraykset)
                   ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
