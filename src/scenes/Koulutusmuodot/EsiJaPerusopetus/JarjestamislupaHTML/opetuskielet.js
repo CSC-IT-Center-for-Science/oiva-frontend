@@ -64,7 +64,6 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
           {intl.formatMessage(common.opetuskieli)}
         </Typography>
         {getOpetuskieletHtml(ensisijaisetOpetuskielet, kieletOPH, locale)}
-
         {!isEmpty(toissijaisetOpetuskielet) && (
           <Typography component="h4" variant="h4">
             {intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}

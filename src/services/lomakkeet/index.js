@@ -64,6 +64,16 @@ import { opetustaAntavatKunnat as opetustaAntavatKunnatLukio } from "./lukiokoul
 import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
 import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/rajoite";
 
+// Lukiokoulutuksen esikatselulomakkeet
+import { previewOfOpetusJotaLupaKoskee as previewOfOpetusJotaLupaKoskeeLukio } from "./lukiokoulutus/esikatselu/1-opetusJotaLupaKoskee";
+import { previewOfOpetuskielet as previewOfOpetuskieletLukio } from "./lukiokoulutus/esikatselu/3-opetuskielet";
+import { previewOfOpetuksenJarjestamismuoto as previewOfOpetuksenJarjestamismuotoLukio } from "./lukiokoulutus/esikatselu/4-opetuksenJarjestamismuoto";
+import { previewOfErityisetKoulutustehtavat as previewOfErityisetKoulutustehtavatLukio } from "./lukiokoulutus/esikatselu/5-erityisetKoulutustehtavat";
+import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./lukiokoulutus/esikatselu/6-opiskelijamaarat";
+import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
+import { previewOfOpetustaAntavaKunnat as previewOfOpetustaAntavaKunnatLukio } from "./lukiokoulutus/esikatselu/2-opetustaAntavatKunnat";
+import { previewOfRajoite as previewOfRajoiteLukio } from "./lukiokoulutus/esikatselu/10-rajoite";
+
 /**
  * LOMAKEPALVELU
  */
@@ -456,9 +466,15 @@ const lomakkeet = {
     },
     opetustaAntavatKunnat: {
       modification: (data, booleans, locale, changeObjects, functions) =>
-        opetustaAntavatKunnat(data, booleans, locale, changeObjects, functions),
+        opetustaAntavatKunnatLukio(
+          data,
+          booleans,
+          locale,
+          changeObjects,
+          functions
+        ),
       preview: (data, booleans, locale, changeObjects, functions) =>
-        previewOfOpetustaAntavaKunnat(
+        previewOfOpetustaAntavaKunnatLukio(
           data,
           booleans,
           locale,

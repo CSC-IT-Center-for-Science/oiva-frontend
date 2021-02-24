@@ -1760,6 +1760,11 @@
     "filepath": "src/i18n/definitions/education.js"
   },
   {
+    "id": "education.oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+    "defaultMessage": "Oikeus sisäoppilaitosmuotoiseen koulutukseen",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
     "id": "error.duplicateAsianumero",
     "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
     "filepath": "src/i18n/definitions/error.js"
@@ -2020,6 +2025,16 @@
     "filepath": "src/i18n/definitions/opiskelijamaara.js"
   },
   {
+    "id": "opiskelijamaara.kokonaismaara",
+    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
+    "id": "opiskelijamaara.yksittainenKohdennus",
+    "defaultMessage": "Yksittäinen oppilasmääräkohdennus",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
     "id": "rajoitteet.ajalla",
     "defaultMessage": "ajalla",
     "filepath": "src/i18n/definitions/rajoitteet.js"
@@ -2056,7 +2071,7 @@
   },
   {
     "id": "routes.asia",
-    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet/{id}",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{uuid}",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
