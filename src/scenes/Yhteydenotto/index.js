@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import SivupohjaA from "components/03-templates/SivupohjaA";
+import { useIntl } from "react-intl";
 
 const ContentFi = (
   <SivupohjaA>
@@ -35,7 +36,8 @@ const ContentFi = (
         href="https://minedu.fi/yhteystiedot"
         className="underline"
         target="_blank"
-        rel="noopener noreferrer">
+        rel="noopener noreferrer"
+      >
         Opetus- ja kulttuuriministeriön yhteystiedot
       </a>
     </p>
@@ -78,7 +80,8 @@ const ContentSv = (
         href="https://minedu.fi/sv/kontaktinformation"
         className="underline"
         target="_blank"
-        rel="noopener noreferrer">
+        rel="noopener noreferrer"
+      >
         Undervisnings- och kulturministeriets kontaktuppgifter
       </a>
     </p>
@@ -90,8 +93,9 @@ const ContentSv = (
   </SivupohjaA>
 );
 
-const Yhteydenotto = props => {
-  return props.locale === "sv" ? ContentSv : ContentFi;
+const Yhteydenotto = () => {
+  const { locale } = useIntl();
+  return locale === "sv" ? ContentSv : ContentFi;
 };
 
 export default Yhteydenotto;

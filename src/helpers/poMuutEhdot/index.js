@@ -105,7 +105,7 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    if (length(kuvausChangeObjects)) {
+    if (checkboxChangeObj && length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
         const kuvausBEChangeObject = {

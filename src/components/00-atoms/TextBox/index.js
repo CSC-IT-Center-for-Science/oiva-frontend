@@ -126,10 +126,14 @@ const TextBox = ({
   const [isVisited, setIsVisited] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [sendOutHandle, setSendOutHandle] = useState();
-  const [internalValue, setInternalValue] = useState(value);
+  const [internalValue, setInternalValue] = useState();
   const [isOkToSendOut, setIsOkToSendOut] = useState(false);
 
   const textBoxRef = useRef(null);
+
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
 
   useEffect(() => {
     if (isOkToSendOut) {

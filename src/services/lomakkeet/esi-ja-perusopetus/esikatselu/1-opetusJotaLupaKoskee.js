@@ -1,6 +1,6 @@
-import { append, endsWith, find, map } from "ramda";
+import { append, endsWith, find, isEmpty, map } from "ramda";
 import { getAnchorPart } from "utils/common";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
 export async function previewOfOpetusJotaLupaKoskee({
   lomakedata,
@@ -18,7 +18,7 @@ export async function previewOfOpetusJotaLupaKoskee({
    */
   const listItems = map(opetustehtava => {
     const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
-    const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
+    const kohdistuvatRajoitteet = getRajoitteet(koodiarvo, rajoitteet);
 
     // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
     // valittuja arvoja (ilman rajoittteita)
@@ -26,15 +26,14 @@ export async function previewOfOpetusJotaLupaKoskee({
       return {
         anchor: koodiarvo,
         components: [
-          rajoite
+          !isEmpty(kohdistuvatRajoitteet)
             ? {
                 anchor: "rajoite",
                 name: "Rajoite",
                 properties: {
                   areTitlesVisible: false,
                   isReadOnly: true,
-                  rajoiteId,
-                  rajoite
+                  rajoite: kohdistuvatRajoitteet
                 }
               }
             : {

@@ -23,7 +23,8 @@ const Rajoite = ({
       data={{
         rajoiteId,
         sectionId: "rajoitelomake",
-        changeObjects: rajoite.changeObjects
+        changeObjects: rajoite.changeObjects,
+        rajoitteet: rajoite
       }}
       isInExpandableRow={false}
       isPreviewModeOn={isReadOnly}
@@ -40,7 +41,7 @@ const Rajoite = ({
 Rajoite.propTypes = {
   isReadOnly: PropTypes.bool,
   areTitlesVisible: PropTypes.bool,
-  rajoiteId: PropTypes.string.isRequired,
+  rajoiteId: PropTypes.string,
   rajoite: PropTypes.object
 };
 
