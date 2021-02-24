@@ -5,12 +5,13 @@ import {
   concat,
   endsWith,
   find,
+  isEmpty,
   map,
   path,
   prop,
   sortBy
 } from "ramda";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
 export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   let structure = [];
@@ -20,94 +21,14 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     lomakedata
   );
 
+  const ensisijaisetListItems = getKieletPreview(ensisijaiset, rajoitteet);
+
   const toissijaiset = find(
     compose(endsWith(".toissijaiset"), prop("anchor")),
     lomakedata
   );
 
-  const ensisijaisetListItems = !!ensisijaiset
-    ? sortBy(
-        prop("content"),
-        map(opetuskieli => {
-          const { rajoiteId, rajoite } = getRajoite(
-            opetuskieli.value,
-            rajoitteet
-          );
-          if (rajoiteId) {
-            return {
-              anchor: opetuskieli.value,
-              components: [
-                {
-                  anchor: "rajoite",
-                  name: "Rajoite",
-                  properties: {
-                    areTitlesVisible: false,
-                    isReadOnly: true,
-                    rajoiteId,
-                    rajoite
-                  }
-                }
-              ]
-            };
-          } else {
-            return {
-              anchor: "opetuskieli",
-              components: [
-                {
-                  anchor: opetuskieli.value,
-                  name: "HtmlContent",
-                  properties: {
-                    content: opetuskieli.label
-                  }
-                }
-              ]
-            };
-          }
-        }, path(["properties", "value"], ensisijaiset) || []).filter(Boolean)
-      )
-    : [];
-
-  const toissijaisetListItems = !!toissijaiset
-    ? sortBy(
-        prop("content"),
-        map(opetuskieli => {
-          const { rajoiteId, rajoite } = getRajoite(
-            opetuskieli.value,
-            rajoitteet
-          );
-          if (rajoiteId) {
-            return {
-              anchor: opetuskieli.value,
-              components: [
-                {
-                  anchor: "rajoite",
-                  name: "Rajoite",
-                  properties: {
-                    areTitlesVisible: false,
-                    isReadOnly: true,
-                    rajoiteId,
-                    rajoite
-                  }
-                }
-              ]
-            };
-          } else {
-            return {
-              anchor: "opetuskieli",
-              components: [
-                {
-                  anchor: opetuskieli.value,
-                  name: "HtmlContent",
-                  properties: {
-                    content: opetuskieli.label
-                  }
-                }
-              ]
-            };
-          }
-        }, path(["properties", "value"], toissijaiset) || []).filter(Boolean)
-      )
-    : [];
+  const toissijaisetListItems = getKieletPreview(toissijaiset, rajoitteet);
 
   if (ensisijaisetListItems.length) {
     structure = append(
@@ -185,3 +106,46 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
 
   return structure;
 }
+
+const getKieletPreview = (kielet, rajoitteet) => {
+  return !!kielet
+    ? sortBy(
+        prop("content"),
+        map(opetuskieli => {
+          const kohdistuvatRajoitteet = getRajoitteet(
+            opetuskieli.value,
+            rajoitteet
+          );
+          if (!isEmpty(kohdistuvatRajoitteet)) {
+            return {
+              anchor: opetuskieli.value,
+              components: [
+                {
+                  anchor: "rajoite",
+                  name: "Rajoite",
+                  properties: {
+                    areTitlesVisible: false,
+                    isReadOnly: true,
+                    rajoite: kohdistuvatRajoitteet
+                  }
+                }
+              ]
+            };
+          } else {
+            return {
+              anchor: "opetuskieli",
+              components: [
+                {
+                  anchor: opetuskieli.value,
+                  name: "HtmlContent",
+                  properties: {
+                    content: opetuskieli.label
+                  }
+                }
+              ]
+            };
+          }
+        }, path(["properties", "value"], kielet) || []).filter(Boolean)
+      )
+    : [];
+};

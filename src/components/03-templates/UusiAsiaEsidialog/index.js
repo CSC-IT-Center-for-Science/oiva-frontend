@@ -82,7 +82,7 @@ const UusiAsiaEsidialog = ({
       if (isLupaExisting) {
         setOrganisationStatus("duplicate");
       } else if (result.status === "PASSIIVINEN") {
-        setOrganisationStatus("passive")
+        setOrganisationStatus("passive");
       } else {
         setOrganisationStatus("ok");
       }

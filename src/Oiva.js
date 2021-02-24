@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import { AppRoute, AppLanguage } from "const";
 import { LocalizedRouter, LocalizedSwitch } from "modules/i18n/index";
 import Home from "scenes/Home/index";
@@ -17,7 +17,7 @@ import {
   ROLE_NIMENKIRJOITTAJA,
   ROLE_YLLAPITAJA
 } from "modules/constants";
-import { indexOf, isEmpty } from "ramda";
+import { indexOf, isEmpty, mergeDeepRight } from "ramda";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
 import AuthWithLocale from "AuthWithLocale";
 import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
@@ -27,6 +27,7 @@ import { defaults } from "react-sweet-state";
 import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import Yhteydenotto from "./scenes/Yhteydenotto";
 import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
+
 defaults.devtools = true;
 
 export const Oiva = () => {
@@ -44,7 +45,8 @@ export const Oiva = () => {
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
       getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(result => {
-        const combinedMessages = Object.assign({}, result, translations);
+        // Reititykseen liittyvät käännökset hoidetaan lokaalisti.
+        const combinedMessages = mergeDeepRight(translations, result);
         setMessages(combinedMessages);
       });
     } else {
@@ -142,7 +144,7 @@ export const Oiva = () => {
           </Route>
 
           <Route path="*">
-            <div>Juuritason oletusnäkymä</div>
+            <Redirect to={"/"} />
           </Route>
         </LocalizedSwitch>
       </AppLayout>

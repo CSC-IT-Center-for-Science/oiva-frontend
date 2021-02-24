@@ -42,7 +42,6 @@ export const getAsetuksenKohdekomponentti = async (
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
-          find(propEq("value", "oppilaitokset"), kohdevaihtoehdot),
           maaraaikaOption,
           oppilaitokset
         ],

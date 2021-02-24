@@ -96,10 +96,7 @@ export default function KoulutusmuodonEtusivu({
                             ytunnus={_props1.ytunnus}
                           />
                         );
-                      } else if (
-                        _props1.lupa &&
-                        _props1.lupa.jarjestajaOid
-                      ) {
+                      } else if (_props1.lupa && _props1.lupa.jarjestajaOid) {
                         return (
                           <BaseData
                             keys={keys2}
