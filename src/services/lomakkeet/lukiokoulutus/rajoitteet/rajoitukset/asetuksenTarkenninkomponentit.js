@@ -4,8 +4,8 @@ import {
   getMaaraaikakomponentit
 } from "./tarkenninkomponentit";
 import getOpetustehtavakomponentit from "./1-opetustehtavat";
-import getOpetustaAntavatKunnat from "./2-opetustaAntavatKunnat";
-import getOpetuskielikomponentit from "./3-opetuskielet";
+import getOpetustaAntavatKunnat from "./1-opetustaAntavatKunnat";
+import getOpetuskielikomponentit from "./2-opetuskielet";
 import getOpetuksenJarjestamismuotokomponentit from "./4-opetuksenjarjestamismuoto";
 import getErityisetKoulutustehtavat from "./5-erityisetKoulutustehtavat";
 import getMuutEhdot from "./7-muutEhdot";
