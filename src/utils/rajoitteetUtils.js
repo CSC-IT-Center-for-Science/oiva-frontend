@@ -2,6 +2,7 @@ import {
   addIndex,
   append,
   assocPath,
+  concat,
   filter,
   find,
   flatten,
@@ -92,7 +93,13 @@ function getTarkentimenArvo(tarkennin) {
     : tarkentimenArvo;
 }
 
-function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
+function kayLapiKohdennus(
+  kohdennus,
+  locale,
+  lista = [],
+  format,
+  ensimmainenRajoite = true
+) {
   const asetukset = join(
     " ",
     flatten(
@@ -132,7 +139,7 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
                   ).format("DD.MM.YYYY")
                 : "";
 
-              return `<ul className="p-0"><li className="p-0">${__(
+              return `<ul><li>${__(
                 "rajoitteet.ajalla"
               )} ${alkamispaivaValue} - ${paattymispaivaValue}`;
             }
@@ -172,13 +179,13 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
                 ].filter(Boolean)
               );
               if (format === "list") {
-                return `<ul className="p-0"><li>${item}`;
+                return `<ul><li>${item}`;
               } else {
                 return item;
               }
             } else if (muokattuTarkentimenArvo) {
               return format === "list"
-                ? `<ul className="p-0"><li>${tarkenninLabel} <strong>${muokattuTarkentimenArvo}</strong>`
+                ? `<ul><li>${tarkenninLabel} ${muokattuTarkentimenArvo}`
                 : muokattuTarkentimenArvo;
             }
           }, tarkenninkomponentit)
@@ -200,10 +207,7 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
       `<ul><li>${format === "list" ? toLower(joista) : `, ${toLower(joista)}`}`,
       paivitettyLista
     );
-    paivitettyLista = append(
-      ` <strong>${kohdennuslukema}</strong>`,
-      paivitettyLista
-    );
+    paivitettyLista = append(` ${kohdennuslukema}`, paivitettyLista);
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
@@ -223,10 +227,9 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
     );
   }
 
-  paivitettyLista = append(
-    format === "list" ? `<ul><li><strong>${item}</strong>` : item,
-    paivitettyLista
-  );
+  paivitettyLista = ensimmainenRajoite
+    ? append(format === "list" ? `<ul><li>${item}` : item, paivitettyLista)
+    : paivitettyLista;
 
   paivitettyLista = append(asetukset, paivitettyLista);
 
@@ -242,10 +245,22 @@ function kayLapiKohdennus(kohdennus, locale, lista = [], format) {
   return paivitettyLista;
 }
 
-export function kayLapiKohdennukset(kohdennukset, locale, lista = [], format) {
+export function kayLapiKohdennukset(
+  kohdennukset,
+  locale,
+  lista = [],
+  format,
+  ensimmainenRajoite
+) {
   const indexedMap = addIndex(map);
   return indexedMap((kohdennus, index) => {
-    return kayLapiKohdennus(kohdennus, locale, index > 0 ? [] : lista, format);
+    return kayLapiKohdennus(
+      kohdennus,
+      locale,
+      index > 0 ? [] : lista,
+      format,
+      ensimmainenRajoite
+    );
   }, kohdennukset);
 }
 
@@ -336,6 +351,56 @@ export function getRajoiteListamuodossa(
   return listamuotoWithEndings;
 }
 
+export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
+  let listamuotoWithEndings = "";
+  let listamuoto = "";
+  let rakenne = {};
+  addIndex(forEach)((key, index) => {
+    for (let i = 0; i < rajoitteet[key].changeObjects.length; i += 1) {
+      rakenne = assocPath(
+        split(".", rajoitteet[key].changeObjects[i].anchor),
+        rajoitteet[key].changeObjects[i],
+        rakenne
+      );
+    }
+
+    const baseAnchor = key ? `rajoitteet_${key}` : "rajoitteet";
+
+    const kohdennukset = path([baseAnchor, "kohdennukset"], rakenne);
+
+    if (kohdennukset) {
+      const lapikaydytKohdennukset = kayLapiKohdennukset(
+        kohdennukset,
+        locale,
+        [],
+        format,
+        index === 0
+      );
+
+      const kohdennusLista = pipe(
+        values,
+        map(kohdennus =>
+          Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
+        ),
+        unnest
+      )(lapikaydytKohdennukset);
+
+      listamuotoWithEndings = join(
+        "",
+        map(kohdennus => {
+          const s = join("", kohdennus);
+          const amountOfInstances = getAmountOfInstances("<ul>", s);
+
+          return addEnding("</li></ul>", s, amountOfInstances - 1);
+        }, kohdennusLista)
+      );
+
+      listamuoto = concat(listamuoto, listamuotoWithEndings);
+    }
+  }, keys(rajoitteet));
+  return listamuoto;
+}
+
 export const getRajoite = (value, rajoitteet) => {
   const rajoiteId = head(
     filter(key => {
@@ -350,6 +415,18 @@ export const getRajoite = (value, rajoitteet) => {
   );
 
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
+};
+
+export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
+  return filter(
+    rajoite =>
+      pathEq(
+        ["changeObjects", 1, "properties", "value", valueAttr],
+        value,
+        rajoite
+      ),
+    rajoitteet
+  );
 };
 
 /**
@@ -413,10 +490,17 @@ export const handleAlimaarays = (
         path(["koodi", "metadata"], alimaarays) || []
       ) || prop("meta", alimaarays);
 
-    if (value.nimi !== 'Ulkomaa' || (hasAlimaarays && alimaarays.meta.arvo) || alimaarays.meta.arvo) {
-      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta.arvo || value[naytettavaArvo] || value.nimi} ${alimaarays.arvo || ""}</li>`;
+    if (
+      value.nimi !== "Ulkomaa" ||
+      (hasAlimaarays && alimaarays.meta.arvo) ||
+      alimaarays.meta.arvo
+    ) {
+      modifiedString = `${modifiedString}<li class="list-disc">${alimaarays.meta
+        .arvo ||
+        value[naytettavaArvo] ||
+        value.nimi} ${alimaarays.arvo || ""}</li>`;
     } else {
-      modifiedString = htmlString
+      modifiedString = htmlString;
     }
   }
 

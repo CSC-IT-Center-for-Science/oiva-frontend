@@ -350,8 +350,12 @@ export async function defineBackendChangeObjects(
                 muutosobjektit
               );
             } else {
-              muutosobjektit = []
-              if(changeObj.anchor.indexOf('.kunnat.' + changeObj.properties.metadata.koodiarvo) !== -1) {
+              muutosobjektit = [];
+              if (
+                changeObj.anchor.indexOf(
+                  ".kunnat." + changeObj.properties.metadata.koodiarvo
+                ) !== -1
+              ) {
                 const rajoitteetByRajoiteIdAndKoodiarvo = reject(
                   isNil,
                   mapObjIndexed(rajoite => {
@@ -375,7 +379,8 @@ export async function defineBackendChangeObjects(
                 const kuntaMaarays = find(
                   maarays =>
                     maarays.koodisto === "kunta" &&
-                    maarays.koodiarvo === changeObj.properties.metadata.koodiarvo,
+                    maarays.koodiarvo ===
+                      changeObj.properties.metadata.koodiarvo,
                   maaraykset
                 );
 
