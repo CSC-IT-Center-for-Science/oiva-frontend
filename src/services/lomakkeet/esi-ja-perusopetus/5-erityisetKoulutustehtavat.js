@@ -60,7 +60,7 @@ export async function erityisetKoulutustehtavat(
         const dynamicTextBoxChangeObjects = filter(
           changeObj =>
             startsWith(
-              `${sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
+              `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.`,
               changeObj.anchor
             ) &&
             endsWith(".kuvaus", changeObj.anchor) &&

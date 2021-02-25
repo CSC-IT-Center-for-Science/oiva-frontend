@@ -1760,6 +1760,16 @@
     "filepath": "src/i18n/definitions/education.js"
   },
   {
+    "id": "education.koulutuksellaEiOleSisaoppilaitosmuotoista",
+    "defaultMessage": "Koulutuksella ei ole sisäoppilaitosmuotoista",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.valtakunnallinenKehittamistehtava",
+    "defaultMessage": "Valtakunnallinen kehittämistehtävä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
     "id": "error.duplicateAsianumero",
     "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
     "filepath": "src/i18n/definitions/error.js"
