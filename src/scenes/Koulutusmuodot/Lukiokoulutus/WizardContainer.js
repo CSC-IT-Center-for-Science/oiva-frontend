@@ -54,9 +54,9 @@ const WizardContainer = ({
     anchor: "opetustehtavat"
   });
   const [
-    opetuksenJarjestamismuodotCo
+    oikeusSisaoppilaitosmuotoiseenKoulutukseenCo
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "opetuksenJarjestamismuodot"
+    anchor: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
   });
   const [
     erityisetKoulutustehtavatCO
@@ -160,7 +160,7 @@ const WizardContainer = ({
           {
             erityisetKoulutustehtavat: erityisetKoulutustehtavatCO,
             muutEhdot: muutEhdotCo,
-            opetuksenJarjestamismuodot: opetuksenJarjestamismuodotCo,
+            oikeusSisaoppilaitosmuotoiseenKoulutukseen: oikeusSisaoppilaitosmuotoiseenKoulutukseenCo,
             opetuskielet: opetuskieletCO,
             opetustehtavat: opetustehtavatCo,
             opiskelijamaarat: opiskelijamaaratCo,
@@ -212,7 +212,7 @@ const WizardContainer = ({
       onNewDocSave,
       onPreview,
       onSave,
-      opetuksenJarjestamismuodotCo,
+      oikeusSisaoppilaitosmuotoiseenKoulutukseenCo,
       opetuskieletCO,
       opetustehtavatCo,
       opiskelijamaaratCo,

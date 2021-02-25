@@ -142,8 +142,8 @@ const LupanakymaA = React.memo(
       rajoitteet
     );
 
-    const opetuksenJarjestamismuodotRajoitteet = getRajoitteetBySection(
-      "opetuksenJarjestamismuodot",
+    const oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet = getRajoitteetBySection(
+      "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
       rajoitteet
     );
 
@@ -208,8 +208,10 @@ const LupanakymaA = React.memo(
                     code="3"
                     isPreviewModeOn={isPreviewModeOn}
                     maaraykset={opetuksenJarjestamismuotomaaraykset}
-                    rajoitteet={opetuksenJarjestamismuodotRajoitteet}
-                    sectionId={"opetuksenJarjestamismuodot"}
+                    rajoitteet={
+                      oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet
+                    }
+                    sectionId={"oikeusSisaoppilaitosmuotoiseenKoulutukseen"}
                     title={intl.formatMessage(
                       education.oikeusSisaoppilaitosmuotoiseenKoulutukseen
                     )}
