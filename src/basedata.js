@@ -44,6 +44,7 @@ import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
 import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
+import { initializeOikeudet } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -160,6 +161,21 @@ const fetchBaseData = async (
     vstTyypit: await getRaw(
       "vstTyypit",
       `${backendRoutes.vsttyypit.path}`,
+      keys
+    ),
+    lukioErityinenKoulutustehtavaUusi: await getRaw(
+      "lukioErityinenKoulutustehtavaUusi",
+      backendRoutes.lukioErityinenKoulutustehtavaUusi.path,
+      keys
+    ),
+    lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot: await getRaw(
+      "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+      backendRoutes.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot.path,
+      keys
+    ),
+    oikeusSisaoppilaitosmuotoiseenKoulutukseen: await getRaw(
+      "oikeusSisaooppilaitosmuotoiseenKoulutukseen",
+      backendRoutes.oikeusSisaoppilaitosmuotoiseenKoulutukseen.path,
       keys
     ),
     // Koulutukset (muut)
@@ -380,6 +396,55 @@ const fetchBaseData = async (
   result.kohteet = raw.kohteet
     ? await localforage.setItem("kohteet", raw.kohteet)
     : [];
+
+  result.lukioErityinenKoulutustehtavaUusi = raw.lukioErityinenKoulutustehtavaUusi
+    ? await localforage.setItem(
+        "lukioErityinenKoulutustehtavaUusi",
+        map(
+          omit(["koodiarvoInt"]),
+          sortBy(
+            prop("koodiarvoInt"),
+            map(koulutustehtava => {
+              return omit(["koodiArvo"], {
+                ...koulutustehtava,
+                koodiarvo: koulutustehtava.koodiArvo,
+                koodiarvoInt: parseInt(koulutustehtava.koodiArvo, 10),
+                metadata: mapObjIndexed(
+                  head,
+                  groupBy(prop("kieli"), koulutustehtava.metadata)
+                )
+              });
+            }, raw.lukioErityinenKoulutustehtavaUusi)
+          )
+        )
+      )
+    : null;
+
+  result.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot = raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot
+    ? await localforage.setItem(
+        "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+        sortBy(
+          prop("koodiarvo"),
+          map(muuData => {
+            return omit(["koodiArvo"], {
+              ...muuData,
+              koodiarvo: muuData.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), muuData.metadata)
+              )
+            });
+          }, raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot)
+        )
+      )
+    : null;
+
+  result.oikeusSisaoppilaitosmuotoiseenKoulutukseen = raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen
+    ? await localforage.setItem(
+        "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+        initializeOikeudet(raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen)
+      )
+    : null;
 
   result.oppilaitoksetByOid = raw.oppilaitoksetByOid
     ? await localforage.setItem(

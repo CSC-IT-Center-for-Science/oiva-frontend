@@ -25,15 +25,15 @@ import localforage from "localforage";
 import { __ } from "i18n-for-browser";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
-export const initializeOpetuksenJarjestamismuoto = muoto => {
+export const initializeOikeus = oikeus => {
   return omit(["koodiArvo"], {
-    ...muoto,
-    koodiarvo: muoto.koodiArvo,
-    metadata: mapObjIndexed(head, groupBy(prop("kieli"), muoto.metadata))
+    ...oikeus,
+    koodiarvo: oikeus.koodiArvo,
+    metadata: mapObjIndexed(head, groupBy(prop("kieli"), oikeus.metadata))
   });
 };
 
-export const initializeOpetuksenJarjestamismuodot = muodot => {
+export const initializeOikeudet = oikeudet => {
   return sort(
     (a, b) => {
       const aInt = parseInt(a.koodiarvo, 10);
@@ -45,9 +45,9 @@ export const initializeOpetuksenJarjestamismuodot = muodot => {
       }
       return 0;
     },
-    map(muoto => {
-      return initializeOpetuksenJarjestamismuoto(muoto);
-    }, muodot)
+    map(oikeus => {
+      return initializeOikeus(oikeus);
+    }, oikeudet)
   );
 };
 
@@ -59,19 +59,22 @@ export const defineBackendChangeObjects = async (
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
 
-  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
 
-  const kohde = find(propEq("tunniste", "opetuksenjarjestamismuoto"), kohteet);
+  const kohde = find(
+    propEq("tunniste", "sisaoppilaitosmuotoinenkoulutus"),
+    kohteet
+  );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
 
-  const opetuksenJarjestamismuotoChangeObjs = map(
-    jarjestamismuoto => {
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseenChangeObjs = map(
+    oikeus => {
       const rajoitteetByRajoiteIdAndKoodiarvo = reject(
         isNil,
         mapObjIndexed(rajoite => {
           return pathEq(
             [1, "properties", "value", "value"],
-            jarjestamismuoto.koodiarvo,
+            oikeus.koodiarvo,
             rajoite
           )
             ? rajoite
@@ -79,35 +82,30 @@ export const defineBackendChangeObjects = async (
         }, rajoitteetByRajoiteId)
       );
       const changeObj = find(
-        compose(
-          endsWith(`${jarjestamismuoto.koodiarvo}.valinta`),
-          prop("anchor")
-        ),
-        changeObjects.opetuksenJarjestamismuodot
+        compose(endsWith(`${oikeus.koodiarvo}.valinta`), prop("anchor")),
+        changeObjects.oikeusSisaoppilaitosmuotoiseenKoulutukseen
       );
       const kuvausChangeObj = find(
-        compose(
-          endsWith(`${jarjestamismuoto.koodiarvo}.kuvaus.A`),
-          prop("anchor")
-        ),
-        changeObjects.opetuksenJarjestamismuodot
+        compose(endsWith(`${oikeus.koodiarvo}.kuvaus.A`), prop("anchor")),
+        changeObjects.oikeusSisaoppilaitosmuotoiseenKoulutukseen
       );
 
       const muutosobjekti = changeObj
         ? {
-            generatedId: `opetuksenJarjestamismuoto-${Math.random()}`,
+            generatedId: `oikeus-${Math.random()}`,
             kohde,
-            koodiarvo: jarjestamismuoto.koodiarvo,
-            koodisto: jarjestamismuoto.koodisto.koodistoUri,
+            koodiarvo: oikeus.koodiarvo,
+            koodisto: oikeus.koodisto.koodistoUri,
+            kuvaus: changeObj.properties.value,
             maaraystyyppi,
-            meta: reject(isNil, {
+            meta: {
               changeObjects: [
                 changeObj,
                 kuvausChangeObj,
                 take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
               ].filter(Boolean),
-              kuvaus: kuvausChangeObj ? kuvausChangeObj.properties.value : null
-            }),
+              kuvaus: changeObj.properties.value
+            },
             tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
           }
         : null;
@@ -131,10 +129,10 @@ export const defineBackendChangeObjects = async (
     append(
       {
         koodiarvo: 0,
-        koodisto: { koodistoUri: "opetuksenjarjestamismuoto" },
+        koodisto: { koodistoUri: "sisaoppilaitosmuotoinenkoulutus" },
         kuvaus: __("education.eiSisaOppilaitosTaiKotikoulumuotoinen")
       },
-      opetuksenJarjestamismuodot
+      oikeusSisaoppilaitosmuotoiseenKoulutukseen
     )
   ).filter(Boolean);
 
@@ -145,7 +143,7 @@ export const defineBackendChangeObjects = async (
    */
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects.opetuksenJarjestamismuodot
+    changeObjects.oikeusSisaoppilaitosmuotoiseenKoulutukseen
   );
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
@@ -169,11 +167,11 @@ export const defineBackendChangeObjects = async (
     : null;
 
   return flatten([
-    opetuksenJarjestamismuotoChangeObjs,
+    oikeusSisaoppilaitosmuotoiseenKoulutukseenChangeObjs,
     lisatiedotBEchangeObject
   ]).filter(Boolean);
 };
 
-export function getOpetuksenJarjestamismuodotFromStorage() {
-  return localforage.getItem("opetuksenJarjestamismuodot");
+export function getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage() {
+  return localforage.getItem("oikeusSisaoppilaitosmuotoiseenKoulutukseen");
 }

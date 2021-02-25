@@ -2,17 +2,17 @@ import { isAdded, isRemoved } from "css/label";
 import { find, flatten, map, pathEq, propEq } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
-import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
 import { getLocalizedProperty } from "../utils";
+import { getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
 
-export async function opetuksenJarjestamismuoto(
+export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
   { maaraykset },
   { isPreviewModeOn, isReadOnly },
   locale
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
-  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const oikeudet = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -23,15 +23,15 @@ export async function opetuksenJarjestamismuoto(
 
   return flatten(
     [
-      map(muoto => {
+      map(oikeus => {
         const maarays = find(
           m =>
-            propEq("koodiarvo", muoto.koodiarvo, m) &&
+            propEq("koodiarvo", oikeus.koodiarvo, m) &&
             propEq("koodisto", "opetuksenjarjestamismuoto", m),
           maaraykset
         );
         return {
-          anchor: muoto.koodiarvo,
+          anchor: oikeus.koodiarvo,
           categories: [
             {
               anchor: "kuvaus",
@@ -41,14 +41,14 @@ export async function opetuksenJarjestamismuoto(
                   name: "TextBox",
                   properties: {
                     forChangeObject: {
-                      koodiarvo: muoto.koodiarvo
+                      koodiarvo: oikeus.koodiarvo
                     },
                     isPreviewModeOn,
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
                     value: getLocalizedProperty(
-                      muoto.metadata,
+                      oikeus.metadata,
                       locale,
                       "kuvaus"
                     )
@@ -64,7 +64,7 @@ export async function opetuksenJarjestamismuoto(
               name: "RadioButtonWithLabel",
               properties: {
                 forChangeObject: {
-                  koodiarvo: muoto.koodiarvo
+                  koodiarvo: oikeus.koodiarvo
                 },
                 isChecked: !!maarays,
                 isIndeterminate: false,
@@ -74,12 +74,12 @@ export async function opetuksenJarjestamismuoto(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: getLocalizedProperty(muoto.metadata, locale, "nimi")
+                title: getLocalizedProperty(oikeus.metadata, locale, "nimi")
               }
             }
           ]
         };
-      }, opetuksenJarjestamismuodot),
+      }, oikeudet),
       {
         anchor: "0",
         components: [
@@ -95,7 +95,7 @@ export async function opetuksenJarjestamismuoto(
                 addition: isAdded,
                 removal: isRemoved
               },
-              title: __("education.eiSisaOppilaitosTaiKotikoulumuotoinen")
+              title: __("education.koulutuksellaEiOleSisaoppilaitosmuotoista")
             }
           }
         ]
