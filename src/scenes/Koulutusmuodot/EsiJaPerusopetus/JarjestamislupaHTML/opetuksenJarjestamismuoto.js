@@ -23,13 +23,6 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
     maaraykset
   );
 
-  const jarjestamismuodonMetadata = opetuksenJarjestamismuoto
-    ? find(
-        metadata => metadata.kieli === locale,
-        path(["koodi", "metadata"], opetuksenJarjestamismuoto)
-      )
-    : null;
-
   return opetuksenJarjestamismuoto || lisatietomaarays ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
@@ -38,7 +31,7 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
       {opetuksenJarjestamismuoto ? (
         <ul className="ml-8 list-disc mb-4">
           <li key={opetuksenJarjestamismuoto.koodiarvo}>
-            {jarjestamismuodonMetadata.nimi}
+            {opetuksenJarjestamismuoto.meta.kuvaus}
           </li>
           <React.Fragment>
             {length(opetuksenJarjestamismuoto.aliMaaraykset)

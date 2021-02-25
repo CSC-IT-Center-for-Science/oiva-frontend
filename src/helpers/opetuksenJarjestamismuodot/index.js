@@ -99,16 +99,15 @@ export const defineBackendChangeObjects = async (
             kohde,
             koodiarvo: jarjestamismuoto.koodiarvo,
             koodisto: jarjestamismuoto.koodisto.koodistoUri,
-            kuvaus: changeObj.properties.value,
             maaraystyyppi,
-            meta: {
+            meta: reject(isNil, {
               changeObjects: [
                 changeObj,
                 kuvausChangeObj,
                 take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
               ].filter(Boolean),
-              kuvaus: changeObj.properties.value
-            },
+              kuvaus: kuvausChangeObj ? kuvausChangeObj.properties.value : null
+            }),
             tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
           }
         : null;
