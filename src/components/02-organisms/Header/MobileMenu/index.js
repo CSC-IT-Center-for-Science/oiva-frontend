@@ -30,10 +30,6 @@ const MobileMenu = ({
 
   const AppRouteTitlesMobile = [
     { route: AppRoute.Tilastot, translationKey: "common.statistics" },
-    {
-      route: AppRoute.Tietosuojailmoitus,
-      translationKey: "common.tietosuojailmoitus"
-    },
     { route: AppRoute.Yhteydenotto, translationKey: "common.yhteydenotto" },
     {
       route: AppRoute.Saavutettavuusseloste,

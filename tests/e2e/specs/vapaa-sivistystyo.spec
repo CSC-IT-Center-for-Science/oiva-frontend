@@ -1,6 +1,6 @@
 # Muutoshakemus
 
-* Navigate to app
+* Siirry osoitteeseen "localhost"
 
 ## Vapaa sivistystyö
 

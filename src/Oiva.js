@@ -24,7 +24,6 @@ import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
 import LogOutWithLocale from "LogOutWithLocale";
 import Logout from "scenes/Logout/Logout";
 import { defaults } from "react-sweet-state";
-import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import Yhteydenotto from "./scenes/Yhteydenotto";
 import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
 
@@ -44,11 +43,16 @@ export const Oiva = () => {
 
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
-      getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(result => {
-        // Reititykseen liittyvät käännökset hoidetaan lokaalisti.
-        const combinedMessages = mergeDeepRight(translations, result);
-        setMessages(combinedMessages);
-      });
+      getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(
+        externalLocalizations => {
+          // Reititykseen liittyvät käännökset hoidetaan lokaalisti.
+          const combinedMessages = mergeDeepRight(
+            translations,
+            externalLocalizations || {}
+          );
+          setMessages(combinedMessages);
+        }
+      );
     } else {
       setMessages(translations);
     }
@@ -132,9 +136,6 @@ export const Oiva = () => {
           </Route>
           <Route exact path={AppRoute.Tilastot}>
             <Tilastot />
-          </Route>
-          <Route path={AppRoute.Tietosuojailmoitus}>
-            <Tietosuojailmoitus />
           </Route>
           <Route path={AppRoute.Yhteydenotto}>
             <Yhteydenotto />

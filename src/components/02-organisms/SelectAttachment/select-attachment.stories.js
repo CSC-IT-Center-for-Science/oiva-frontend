@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
-import SelectAttachment from "../../../../../src/lib/components/02-organisms/SelectAttachment";
+import SelectAttachment from "components/02-organisms/SelectAttachment";
 
 storiesOf("SelectAttachment", module)
   .addDecorator(withInfo)
@@ -14,5 +14,6 @@ storiesOf("SelectAttachment", module)
         attachmentError: "Virheellinen tiedostotyyppi",
         ok: "Ok",
         cancel: "Peruuta"
-      }}/>
+      }}
+    />
   ));

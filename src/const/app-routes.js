@@ -25,7 +25,6 @@ export const AppRoute = {
   OmatTiedot: "routes.omatTiedot",
   Paatokset: "routes.paatokset",
   Saavutettavuusseloste: "routes.saavutettavuusseloste",
-  Tietosuojailmoitus: "routes.tietosuojailmoitus",
   Tilastot: "routes.tilastot",
   UusiHakemus: "routes.uusiHakemus",
   Hakemus: "routes.hakemus",
@@ -51,16 +50,3 @@ export const AppRouteTitles = {
     ])
   }
 };
-
-// export const AppRouteTitles = new Map([
-//   [AppRoute.CasAuth, "common.oiva"],
-//   [AppRoute.CasLogOut, "common.oiva"],
-//   [AppRoute.CasReady, "common.oiva"],
-//   [AppRoute.LogIn, "auth.logIn"],
-//   [AppRoute.LogOut, "auth.logOut"],
-//   [AppRoute.Saavutettavuusseloste, "common.saavutettavuusseloste"],
-//   [AppRoute.Tietosuojailmoitus, "common.tietosuojailmoitus"],
-//   [AppRoute.Tilastot, "common.statistics"],
-//   [AppRoute.VapaaSivistystyo, "common.vstTitleName"],
-//   [AppRoute.Yhteydenotto, "common.yhteydenotto"]
-// ]);
