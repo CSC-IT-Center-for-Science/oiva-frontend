@@ -12,6 +12,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { COLORS } from "modules/styles";
 import { localizeRouteKey } from "utils/common";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import Footer from "components/03-templates/Footer";
 
 export const App = ({ localesByLang, children, organisation, user }) => {
   const { formatMessage, locale } = useIntl();
@@ -94,9 +95,9 @@ export const App = ({ localesByLang, children, organisation, user }) => {
   );
 
   return (
-    <React.Fragment>
+    <div className="flex flex-col" style={{ minHeight: "100vh" }}>
       {getHeader()}
-      <main className="xxl:px-6">
+      <main className="xxl:px-6 flex-1">
         {isBreadcrumbVisible && (
           <nav
             tabIndex="0"
@@ -119,6 +120,9 @@ export const App = ({ localesByLang, children, organisation, user }) => {
         )}
         {children}
       </main>
-    </React.Fragment>
+      <footer>
+        <Footer />
+      </footer>
+    </div>
   );
 };

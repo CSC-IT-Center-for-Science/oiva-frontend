@@ -1020,11 +1020,6 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
-    "id": "common.tietosuojailmoitus",
-    "defaultMessage": "Tietosuojailmoitus",
-    "filepath": "src/i18n/definitions/common.js"
-  },
-  {
     "id": "common.yhteydenotto",
     "defaultMessage": "Yhteydenotto",
     "filepath": "src/i18n/definitions/common.js"
@@ -2177,11 +2172,6 @@
   {
     "id": "routes.saavutettavuusseloste",
     "defaultMessage": "/saavutettavuusseloste",
-    "filepath": "src/i18n/definitions/routes.js"
-  },
-  {
-    "id": "routes.tietosuojailmoitus",
-    "defaultMessage": "/tietosuojailmoitus",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {

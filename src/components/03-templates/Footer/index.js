@@ -14,18 +14,6 @@ const Footer = () => {
     <div className="mt-8 md:flex justify-between lg:justify-start">
       <p className="lg:mr-10">
         <Link
-          to={localizeRouteKey(
-            locale,
-            AppRoute.Tietosuojailmoitus,
-            formatMessage
-          )}
-          className="underline text-green-500"
-        >
-          {formatMessage(common.tietosuojailmoitus)}
-        </Link>
-      </p>
-      <p className="lg:mr-10">
-        <Link
           to={localizeRouteKey(locale, AppRoute.Yhteydenotto, formatMessage)}
           className="underline text-green-500"
         >

@@ -24,7 +24,6 @@ import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
 import LogOutWithLocale from "LogOutWithLocale";
 import Logout from "scenes/Logout/Logout";
 import { defaults } from "react-sweet-state";
-import Tietosuojailmoitus from "./scenes/Tietosuojailmoitus";
 import Yhteydenotto from "./scenes/Yhteydenotto";
 import Saavutettavuusseloste from "./scenes/Saavutettavuusseloste";
 
@@ -132,9 +131,6 @@ export const Oiva = () => {
           </Route>
           <Route exact path={AppRoute.Tilastot}>
             <Tilastot />
-          </Route>
-          <Route path={AppRoute.Tietosuojailmoitus}>
-            <Tietosuojailmoitus />
           </Route>
           <Route path={AppRoute.Yhteydenotto}>
             <Yhteydenotto />

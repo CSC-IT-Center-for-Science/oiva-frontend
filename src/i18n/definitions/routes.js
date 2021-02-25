@@ -104,10 +104,6 @@ export default defineMessages({
     id: "routes.saavutettavuusseloste",
     defaultMessage: "/saavutettavuusseloste"
   },
-  tietosuojailmoitus: {
-    id: "routes.tietosuojailmoitus",
-    defaultMessage: "/tietosuojailmoitus"
-  },
   tilastot: {
     id: "routes.tilastot",
     defaultMessage: "/tilastot"
