@@ -117,5 +117,10 @@ export default defineMessages({
   koulutuksellaEiOleSisaoppilaitosmuotoista: {
     id: "education.koulutuksellaEiOleSisaoppilaitosmuotoista",
     defaultMessage: "Koulutuksella ei ole sisäoppilaitosmuotoista"
+
+  },
+  valtakunnallinenKehittamistehtava: {
+    id: "education.valtakunnallinenKehittamistehtava",
+    defaultMessage: "Valtakunnallinen kehittämistehtävä"
   }
 });

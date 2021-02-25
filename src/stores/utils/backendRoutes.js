@@ -102,5 +102,11 @@ export const backendRoutes = {
   // Lukiokoulutus
   oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
     path: "koodistot/koodit/lukiooikeussisaooppilaitosmuotoiseenkoulutukseen"
+  },
+  lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot: {
+    path: "koodistot/koodit/lukiomuutkoulutuksenjarjestamiseenliittyvatehdot"
+  },
+  lukioErityinenKoulutustehtavaUusi: {
+    path: "koodistot/koodit/lukioerityinenkoulutustehtavauusi"
   }
 };
