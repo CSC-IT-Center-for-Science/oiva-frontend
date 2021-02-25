@@ -123,6 +123,25 @@ step(
   }
 );
 
+step(
+  "Varmista, että sisäänkirjautumisen ohjedialogi aukesi otsikolla <teksti>",
+  async teksti => {
+    try {
+      assert.equal(await $("h6").text(), teksti);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
+
+step("Varmista, ettei löydy tekstiä <teksti>", async teksti => {
+  try {
+    assert.ok(!(await text(teksti).exists()));
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 step("Edellinen sivu", async () => {
   try {
     await click($("button.previous"));
