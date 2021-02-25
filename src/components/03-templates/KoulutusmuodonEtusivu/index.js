@@ -50,6 +50,7 @@ export default function KoulutusmuodonEtusivu({
         <Router history={history}>
           <LocalizedSwitch>
             <Route
+              authenticated={!!user}
               path={AppRoute.Asianhallinta}
               render={() => (
                 <Asianhallinta

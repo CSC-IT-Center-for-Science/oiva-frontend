@@ -17,3 +17,8 @@
 * Varmista, että hakulomake on avattu otsikolla "Tampereen kaupunki"
 * Assert if text exists "Päätöksen valmistelu: Järjestämisluvan muutos"
 * Kirjoita kenttään, jonka parametri "id" on "paatoksentiedot.asianumero.A" arvo "VN/0000/0001"
+* Klikkaa elementtiä, jossa on teksti "Tallenna"
+* Varmista, että hakulomake on avattu otsikolla "Tampereen kaupunki"
+* Päivitä selainikkuna
+* Kirjoita kenttään, jonka parametri "id" on "paatoksentiedot.asianumero.A" arvo "VN/0000/0002"
+* Varmista, että hakulomake on avattu otsikolla "Tampereen kaupunki"

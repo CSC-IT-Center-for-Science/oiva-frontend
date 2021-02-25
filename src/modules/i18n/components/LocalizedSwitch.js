@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch } from "react-router";
 import { useIntl } from "react-intl";
-import { replace } from "ramda";
+import { has, replace } from "ramda";
 
 function getLocalizedPath(path, locale, formatMessage) {
   let localizedPath = "";
@@ -68,19 +68,26 @@ export const LocalizedSwitch = ({ children }) => {
     <Switch>
       {React.Children.map(children, child => {
         if (React.isValidElement(child) && messages[child.props.path]) {
-          const _path = getLocalizedPath(
-            messages[child.props.path],
-            locale,
-            formatMessage
-          );
-          return React.cloneElement(child, {
-            ...child.props,
-            path: _path
-          });
+          if (
+            !has("authenticated", child.props) ||
+            child.props.authenticated === true
+          ) {
+            const _path = getLocalizedPath(
+              messages[child.props.path],
+              locale,
+              formatMessage
+            );
+            return React.cloneElement(child, {
+              ...child.props,
+              path: _path
+            });
+          } else {
+            return child;
+          }
         } else {
           return child;
         }
-      })}
+      }).filter(Boolean)}
     </Switch>
   );
 };

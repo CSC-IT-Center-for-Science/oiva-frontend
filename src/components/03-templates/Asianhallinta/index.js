@@ -1,6 +1,6 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import { NavLink, Redirect, Route, Router, useHistory } from "react-router-dom";
+import { NavLink, Route, Router, useHistory } from "react-router-dom";
 import common from "../../../i18n/definitions/common";
 import education from "../../../i18n/definitions/education";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -23,7 +23,7 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
   const role =
     sessionStorage.getItem("role") === ROLE_ESITTELIJA ? "ESITTELIJA" : "KJ";
 
-  return !!user ? (
+  return (
     <React.Fragment>
       <Router history={history}>
         <LocalizedSwitch>
@@ -167,8 +167,6 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
         </LocalizedSwitch>
       </Router>
     </React.Fragment>
-  ) : (
-    <Redirect to={"/"} />
   );
 };
 

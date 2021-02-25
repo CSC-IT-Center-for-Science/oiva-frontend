@@ -145,7 +145,8 @@ export const Oiva = () => {
           </Route>
 
           <Route path="*">
-            <Redirect to={"/"} />
+            Oivan etusivu
+            {/* <Redirect to={"/"} /> */}
           </Route>
         </LocalizedSwitch>
       </AppLayout>
