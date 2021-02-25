@@ -466,9 +466,9 @@ const lomakkeet = {
     },
     opiskelijamaarat: {
       modification: (data, booleans, locale) =>
-        getOpiskelijamaaratLomake(data, booleans, locale),
+        getOpiskelijamaaratLomakeLukio(data, booleans, locale),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfOpiskelijamaarat(data, booleans, locale, changeObjects)
+        previewOfOpiskelijamaaratLukio(data, booleans, locale, changeObjects)
     },
     paatoksenTiedot: {
       addition: (data, booleans, locale, changeObjects) =>
