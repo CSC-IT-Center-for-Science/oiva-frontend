@@ -17,6 +17,8 @@ import {
   split,
   startsWith
 } from "ramda";
+import { useMediaQuery } from "@material-ui/core";
+import { MEDIA_QUERIES } from "../../../components/02-organisms/Header";
 
 export const calculateRouteParts = (
   locale,
@@ -104,7 +106,7 @@ export function getMatchingRoute(
   return localizedRoute;
 }
 
-export const LanguageSwitcher = ({ localesByLang }) => {
+export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
   const { pathname } = useLocation();
   const { locale, messages } = useIntl();
   const langMap = {
@@ -112,13 +114,18 @@ export const LanguageSwitcher = ({ localesByLang }) => {
     Swedish: "sv"
   };
 
+  const baseUlClasses = "flex ml-5 pl-5";
+  const allUlClasses = `${baseUlClasses} ${ulClasses}`;
+
   const selectedLangStyles = "border bg-white text-green-500";
   const commonLangStyles =
     "font-medium rounded-full text-sm hover:bg-white hover:text-green-500";
 
+  const breakpointDesktopLargeMin = useMediaQuery(MEDIA_QUERIES.DESKTOP_LARGE);
+
   return (
-    <ul className="flex border-l border-opacity-25 ml-5 pl-5">
-      {Object.keys(AppLanguage).map(lang => {
+    <ul className={allUlClasses}>
+      {Object.keys(AppLanguage).map((lang, index) => {
         return getMatchingRoute(
           locale,
           AppLanguage[lang],
@@ -126,7 +133,12 @@ export const LanguageSwitcher = ({ localesByLang }) => {
           pathname,
           localesByLang
         ) ? (
-          <li key={lang} className="mr-1">
+          <li
+            key={lang}
+            className={
+              index === 0 && !breakpointDesktopLargeMin ? "mr-3" : "mr-1"
+            }
+          >
             <NavLink
               to={getMatchingRoute(
                 locale,
@@ -140,7 +152,8 @@ export const LanguageSwitcher = ({ localesByLang }) => {
               } ${commonLangStyles} uppercase flex justify-center items-center`}
               style={{
                 width: "1.625rem",
-                height: "1.625rem"
+                height: "1.625rem",
+                borderColor: "white"
               }}
             >
               <span>{AppLanguage[lang]}</span>

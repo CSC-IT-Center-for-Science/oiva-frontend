@@ -1,5 +1,6 @@
 import { createContainer, createHook, createStore } from "react-sweet-state";
 import {
+  add,
   append,
   assoc,
   assocPath,
@@ -160,9 +161,24 @@ const Store = createStore({
       /**
         Seuraavan kriteerin id saadaan jakamalla asetuksia koskevien muutos-
         objektien määrä kahdella, koska yksi asetus sisältää sekä kohteen että
-        tarkentimen.
+        tarkentimen. Määräajan tapauksessa asetus sisältää kohteen sekä kaksi tarkenninta.
+        Täytyy siis vähentää yksi per määräaikaasetus asetuksetChangeObjectsin pituudesta.
        */
-      const nextAsetuksetIndex = length(asetuksetChangeObjects) / 2;
+      const maaraAikaAsetustenLkm = reduce(
+        add,
+        0,
+        map(
+          asetus =>
+            path(["properties", "value", "value"], asetus) ===
+            "kujalisamaareetlisaksiajalla_1"
+              ? 1
+              : 0,
+          asetuksetChangeObjects
+        )
+      );
+
+      const nextAsetuksetIndex =
+        (length(asetuksetChangeObjects) - maaraAikaAsetustenLkm) / 2;
 
       /**
        * Luodaan
@@ -213,7 +229,10 @@ const Store = createStore({
                 max,
                 -Infinity,
                 map(changeObj => {
-                  return parseInt(getAnchorPart(changeObj.anchor, sectionId === 'toimintaalue' ? 3 : 2), 10);
+                  if(sectionId === 'toimintaalue') {
+                    return getAnchorPart(changeObj.anchor, 3) === "lisatiedot" ? 0 : parseInt(getAnchorPart(changeObj.anchor, 3), 10);
+                  }
+                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
                 }, textBoxChangeObjects)
               ) + 1
             : 1;

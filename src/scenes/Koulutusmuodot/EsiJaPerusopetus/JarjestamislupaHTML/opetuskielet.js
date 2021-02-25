@@ -8,7 +8,8 @@ import {
   isEmpty,
   propEq,
   path,
-  length
+  length,
+  addIndex
 } from "ramda";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
@@ -62,55 +63,41 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
         <Typography component="h3" variant="h3">
           {intl.formatMessage(common.opetuskieli)}
         </Typography>
-        <ul className="ml-8 list-disc mb-4">
-          {map(
-            opetuskieli => [
-              <li key={opetuskieli.koodiarvo} className="leading-bulletList">
-                {path(
-                  ["metadata", locale, "nimi"],
-                  find(
-                    propEq("koodiarvo", toUpper(opetuskieli.koodiarvo)),
-                    kieletOPH
-                  )
-                )}
-              </li>,
-              <React.Fragment>
-                {length(opetuskieli.aliMaaraykset)
-                  ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale)
-                  : ""}
-              </React.Fragment>
-            ],
-            ensisijaisetOpetuskielet || []
-          )}
-        </ul>
+        {getOpetuskieletHtml(ensisijaisetOpetuskielet, kieletOPH, locale)}
         {!isEmpty(toissijaisetOpetuskielet) && (
           <Typography component="h4" variant="h4">
             {intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}
           </Typography>
         )}
-        <ul className="ml-8 list-disc mb-4">
-          {map(
-            opetuskieli => [
-              <li key={opetuskieli.koodiarvo} className="leading-bulletList">
-                {path(
-                  ["metadata", locale, "nimi"],
-                  find(
-                    propEq("koodiarvo", toUpper(opetuskieli.koodiarvo)),
-                    kieletOPH
-                  )
-                )}
-              </li>,
-              <React.Fragment>
-                {length(opetuskieli.aliMaaraykset)
-                  ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale)
-                  : ""}
-              </React.Fragment>
-            ],
-            toissijaisetOpetuskielet || []
-          )}
-        </ul>
+        {getOpetuskieletHtml(toissijaisetOpetuskielet, kieletOPH, locale)}
         {lisatietomaarays && lisatietomaarays.meta.arvo}
       </div>
     )
   );
 }
+
+const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale) => {
+  return (
+    <ul className="ml-8 list-disc mb-4">
+      {addIndex(map)(
+        (opetuskieli, index) => [
+          <li key={opetuskieli.koodiarvo} className="leading-bulletList">
+            {path(
+              ["metadata", locale, "nimi"],
+              find(
+                propEq("koodiarvo", toUpper(opetuskieli.koodiarvo)),
+                kieletOPH
+              )
+            )}
+          </li>,
+          <div key={"div-" + index}>
+            {length(opetuskieli.aliMaaraykset)
+              ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale)
+              : ""}
+          </div>
+        ],
+        opetuskielet || []
+      )}
+    </ul>
+  );
+};

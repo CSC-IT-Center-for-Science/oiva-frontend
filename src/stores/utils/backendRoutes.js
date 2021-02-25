@@ -89,6 +89,10 @@ export const backendRoutes = {
   opetuksenJarjestamismuodot: {
     path: "koodistot/koodit/opetuksenjarjestamismuoto"
   },
+  oppilaitoksetByOid: {
+    path: "organisaatiot/",
+    postfix: "/oppilaitokset"
+  },
   poErityisetKoulutustehtavat: {
     path: "koodistot/koodit/poerityinenkoulutustehtava"
   },
