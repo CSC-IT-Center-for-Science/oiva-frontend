@@ -30,10 +30,9 @@ afterSuite(async () => {
   await closeBrowser();
 });
 
-step("Navigate to app", async () => {
+step("Siirry osoitteeseen <url>", async url => {
   try {
-    // await goto("https://oivadev.csc.fi/");
-    await goto("http://localhost");
+    await goto(url);
   } catch (e) {
     await click($("#details-button"));
     await click($("#proceed-link"));
@@ -61,13 +60,12 @@ step("Klikkaa esidialogin hakupainiketta", async () => {
 });
 
 step("Log in as <username>", async username => {
-  await click(link({ href: "/cas-auth" }));
+  await click("Kirjaudu sisään");
   await write(username);
   await focus(textBox({ type: "password" }));
   await write(process.env[username]);
   await click(button({ type: "submit" }));
   assert.ok(await text("Kirjaudu ulos").exists());
-  assert.ok(await text("Omat tiedot").exists());
 });
 
 step("Log out", async () => {
@@ -124,6 +122,25 @@ step(
     }
   }
 );
+
+step(
+  "Varmista, että sisäänkirjautumisen ohjedialogi aukesi otsikolla <teksti>",
+  async teksti => {
+    try {
+      assert.equal(await $("h6").text(), teksti);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
+
+step("Varmista, ettei löydy tekstiä <teksti>", async teksti => {
+  try {
+    assert.ok(!(await text(teksti).exists()));
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 step("Edellinen sivu", async () => {
   try {
@@ -193,10 +210,43 @@ step("Assert if text exists <string>", async string => {
   }
 });
 
-step("Navigate to Esi- ja perusopetus", async () => {
-  const link = await link({ href: "/esi-ja-perusopetus" });
-  click(link);
-  assert.ok(await text("Tulossa vuoden 2020 aikana").exists());
+step("Klikkaa päänavigaation linkkiä <linkinTeksti>", async linkinTeksti => {
+  await click(linkinTeksti);
+  assert.ok(await text(linkinTeksti).exists());
+  assert.equal(await $("h1").text(), linkinTeksti);
+});
+
+step(
+  "Siirry koulutusmuodon <koulutusmuoto> pääsivulle",
+  async koulutusmuoto => {
+    await click(koulutusmuoto);
+    assert.ok(await $("h1").exists());
+    assert.equal(await $("h1").text(), koulutusmuoto);
+  }
+);
+
+step(
+  "Siirry koulutusmuodon avoimiin asioihin sivulla olevan linkin <linkinTeksti> kautta",
+  async linkinTeksti => {
+    await click(linkinTeksti);
+    assert.ok(await $("h1").exists());
+    assert.equal(await $("h1").text(), linkinTeksti);
+  }
+);
+
+step(
+  "Siirry päätettyihin asioihin klikkaamalla asianhallintasivun välilehteä <tabText>",
+  async tabText => {
+    await click(tabText);
+  }
+);
+
+step("Tarkista, että urlissa lukee <teksti>", async teksti => {
+  assert.include(await currentURL(), teksti, "URL OK");
+});
+
+step("Vaihda kieleksi <locale>", async locale => {
+  await click(locale);
 });
 
 step("Navigate to Lukiokoulutus", async () => {

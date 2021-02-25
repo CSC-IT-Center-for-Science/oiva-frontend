@@ -43,11 +43,16 @@ export const Oiva = () => {
 
   useEffect(() => {
     if (isBackendTheSourceOfLocalizations) {
-      getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(result => {
-        // Reititykseen liittyvät käännökset hoidetaan lokaalisti.
-        const combinedMessages = mergeDeepRight(translations, result);
-        setMessages(combinedMessages);
-      });
+      getRaw("lokalisaatio", backendRoutes.kaannokset.path, []).then(
+        externalLocalizations => {
+          // Reititykseen liittyvät käännökset hoidetaan lokaalisti.
+          const combinedMessages = mergeDeepRight(
+            translations,
+            externalLocalizations || {}
+          );
+          setMessages(combinedMessages);
+        }
+      );
     } else {
       setMessages(translations);
     }

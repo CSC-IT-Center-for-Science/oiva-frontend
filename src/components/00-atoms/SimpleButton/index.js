@@ -30,9 +30,13 @@ const SimpleButton = ({
   isReadOnly = defaultProps.isReadOnly,
   onClick,
   size = defaultProps.size,
+  styleAsALink,
   text = defaultProps.text,
   variant = defaultProps.variant
 }) => {
+  const baseClasses =
+    "inline-block no-underline text-white hover:text-gray-100 normal-case font-normal";
+
   const handleClick = event => {
     if (!!onClick) {
       onClick({ forChangeObject, fullAnchor }, {}, event);
@@ -53,14 +57,15 @@ const SimpleButton = ({
           disableElevation
           disableRipple
           disabled={disabled}
-          aria-label={ariaLabel}>
+          aria-label={ariaLabel}
+        >
           {icon && (
             <span style={iconContainerStyles}>
               {icon === "FaPlus" && <FaPlus style={iconStyles} />}
               {icon === "ClearIcon" && <ClearIcon style={iconStyles} />}
             </span>
           )}
-          {text}
+          {styleAsALink ? <span className={baseClasses}>{text}</span> : text}
         </Button>
       )}
     </React.Fragment>

@@ -1,8 +1,8 @@
 # Muutoshakemus
 
-Tags: muutoshakemus, taloudelliset
+tags: muutoshakemus, taloudelliset
 
-* Navigate to app
+* Siirry osoitteeseen "localhost"
 * Log in as "oiva-sanni"
 * Set view port to "1200" x "1200"
 * Avaa uusi muutospyyntolomake
