@@ -54,6 +54,7 @@ export async function getErityisetKoulutustehtavatLukio(
           hasPath(["meta", "kuvaus"]),
           tehtavaanLiittyvatMaaraykset
         );
+
         const changeObj = getChangeObjByAnchor(
           `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`,
           changeObjects
@@ -62,7 +63,7 @@ export async function getErityisetKoulutustehtavatLukio(
         const dynamicTextBoxChangeObjects = filter(
           changeObj =>
             startsWith(
-              `${sectionId}.${erityinenKoulutustehtava.koodiarvo}`,
+              `${sectionId}.${erityinenKoulutustehtava.koodiarvo}.`,
               changeObj.anchor
             ) &&
             endsWith(".kuvaus", changeObj.anchor) &&
@@ -168,10 +169,9 @@ export async function getErityisetKoulutustehtavatLukio(
                   );
 
                   /**
-                   * Tarkistetaan, onko muutos jo tallennettu tietokantaan
-                   * eli löytyykö määräys. Jos määräys on olemassa, niin ei
+                   * Jos määräys on olemassa, ei
                    * luoda muutosobjektin perusteella enää dynaamista
-                   * tekstikenttää, koska tekstikentttä on luotu jo aiemmin
+                   * tekstikenttää, koska tekstikenttä on luotu jo aiemmin
                    * vähän ylempänä tässä tiedostossa.
                    **/
                   const maarays = find(

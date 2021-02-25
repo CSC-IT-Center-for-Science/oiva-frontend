@@ -19,12 +19,12 @@ import {
   reject,
   split
 } from "ramda";
-import * as muutEhdotHelper from "helpers/poMuutEhdot";
+import * as muutEhdotHelper from "helpers/lukioMuutEhdot";
 import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
-import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat";
+import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
 import { koulutustyypitMap } from "../../../utils/constants";
 
 export async function createObjectToSave(
@@ -140,7 +140,7 @@ export async function createObjectToSave(
     kohteet
   );
 
-  // 5. ERITYINEN KOULUTUSTEHTÄVÄ
+  // 4. ERITYINEN KOULUTUSTEHTÄVÄ
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
     {
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
