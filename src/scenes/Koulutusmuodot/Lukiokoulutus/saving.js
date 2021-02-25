@@ -19,7 +19,7 @@ import {
   reject,
   split
 } from "ramda";
-import * as muutEhdotHelper from "helpers/poMuutEhdot";
+import * as muutEhdotHelper from "helpers/lukioMuutEhdot";
 import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
