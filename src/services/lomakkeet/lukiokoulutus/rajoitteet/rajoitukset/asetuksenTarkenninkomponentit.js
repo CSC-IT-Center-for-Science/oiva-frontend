@@ -22,7 +22,6 @@ const asetuksenTarkenninlomakkeet = {
   muutEhdot: getMuutEhdot,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
   opetuskielet: getOpetuskielikomponentit,
-  opetustehtavat: getOpetustehtavakomponentit,
   opiskelijamaarat: getLukumaarakomponentit,
   oppilaitokset: getOppilaitokset,
   toimintaalue: getOpetustaAntavatKunnat
