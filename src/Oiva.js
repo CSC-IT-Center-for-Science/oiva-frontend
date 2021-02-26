@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Redirect, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { AppRoute, AppLanguage } from "const";
 import { LocalizedRouter, LocalizedSwitch } from "modules/i18n/index";
 import Home from "scenes/Home/index";
@@ -103,7 +103,7 @@ export const Oiva = () => {
     };
   }, [userActions]);
 
-  return (
+  return userState.fetchedAt ? (
     <LocalizedRouter
       languages={AppLanguage}
       localesByLang={messages}
@@ -144,12 +144,9 @@ export const Oiva = () => {
             <Saavutettavuusseloste />
           </Route>
 
-          <Route path="*">
-            Oivan etusivu
-            {/* <Redirect to={"/"} /> */}
-          </Route>
+          <Route path="*">Oivan etusivu</Route>
         </LocalizedSwitch>
       </AppLayout>
     </LocalizedRouter>
-  );
+  ) : null;
 };

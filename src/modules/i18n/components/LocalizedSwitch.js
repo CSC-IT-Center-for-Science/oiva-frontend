@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch } from "react-router";
+import { Redirect, Switch } from "react-router";
 import { useIntl } from "react-intl";
 import { has, replace } from "ramda";
 
@@ -82,12 +82,12 @@ export const LocalizedSwitch = ({ children }) => {
               path: _path
             });
           } else {
-            return child;
+            return <Redirect to="/" />;
           }
         } else {
           return child;
         }
-      }).filter(Boolean)}
+      })}
     </Switch>
   );
 };
