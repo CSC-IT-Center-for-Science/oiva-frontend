@@ -171,20 +171,6 @@ export const getAsetuksenKohdekomponentti = async (
         value: ""
       }
     };
-  } else if (asetuksenKohdeavain === "opetustehtavat") {
-    return {
-      anchor: "kohde",
-      name: "Autocomplete",
-      layout: { indentation: "none" },
-      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
-      properties: {
-        isMulti: false,
-        isReadOnly,
-        isVisible: !isReadOnly,
-        options: [maaraaikaOption, oppilaitokset],
-        value: ""
-      }
-    };
   } else if (asetuksenKohdeavain === "toimintaalue") {
     return {
       anchor: "kohde",
@@ -195,11 +181,7 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
-          maaraaikaOption,
-          oppilaitokset
-        ],
+        options: [maaraaikaOption, oppilaitokset],
         value: ""
       }
     };

@@ -37,7 +37,6 @@ export async function createObjectToSave(
   maaraystyypit,
   alkupera = "KJ"
 ) {
-  console.info(kohteet, changeObjects);
   const allAttachmentsRaw = [];
 
   // ... without tiedosto-property
