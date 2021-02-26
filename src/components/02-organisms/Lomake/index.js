@@ -4,7 +4,7 @@ import CategorizedListRoot from "../CategorizedListRoot";
 import { getLomake } from "../../../services/lomakkeet";
 import { useIntl } from "react-intl";
 import ExpandableRowRoot from "../ExpandableRowRoot";
-import formMessages from "i18n/definitions/lomake";
+import common from "i18n/definitions/common";
 import { has, isEmpty, length, omit } from "ramda";
 import { useLomakedata } from "stores/lomakedata";
 import { getReducedStructure } from "../CategorizedListRoot/utils";
@@ -59,8 +59,8 @@ const Lomake = React.memo(
 
     const rowLocalizations = isEmpty(rowMessages)
       ? {
-          undo: intl.formatMessage(formMessages.undo),
-          changesTest: intl.formatMessage(formMessages.changesText)
+          undo: intl.formatMessage(common.undo),
+          changesTest: intl.formatMessage(common.changesText)
         }
       : rowMessages;
 
