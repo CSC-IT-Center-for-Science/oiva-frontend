@@ -68,9 +68,9 @@
 }
 
 .test-1245 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+  --bg-opacity: 1;
+  background-color: #f7fafc;
+  background-color: rgba(247, 250, 252, var(--bg-opacity));
   display: flex;
   font-size: 1.25rem;
-  line-height: 1.75rem;
 }
