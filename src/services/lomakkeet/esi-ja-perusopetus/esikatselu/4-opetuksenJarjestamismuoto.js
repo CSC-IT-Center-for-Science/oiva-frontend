@@ -1,7 +1,11 @@
-import { append, endsWith, find, pathEq, propEq } from "ramda";
+import { append, endsWith, find, isEmpty, path, pathEq, propEq } from "ramda";
 import { replaceAnchorPartWith } from "utils/common";
+import { getRajoitteet } from "../../../../utils/rajoitteetUtils";
 
-export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
+export const previewOfOpetuksenJarjestamismuoto = ({
+  lomakedata,
+  rajoitteet
+}) => {
   let structure = [];
   const checkedNode = find(
     pathEq(["properties", "isChecked"], true),
@@ -18,6 +22,10 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
     );
 
     if (kuvausNode) {
+      const kohdistuvatRajoitteet = getRajoitteet(
+        path(["properties", "forChangeObject", "koodiarvo"], kuvausNode),
+        rajoitteet
+      );
       structure = append(
         {
           anchor: "valittu",
@@ -28,7 +36,24 @@ export const previewOfOpetuksenJarjestamismuoto = ({ lomakedata }) => {
               properties: {
                 items: [
                   {
-                    content: kuvausNode.properties.value
+                    anchor: "muoto",
+                    components: [
+                      !isEmpty(kohdistuvatRajoitteet)
+                        ? {
+                            anchor: "rajoite",
+                            name: "Rajoite",
+                            properties: {
+                              areTitlesVisible: false,
+                              isReadOnly: true,
+                              rajoite: kohdistuvatRajoitteet
+                            }
+                          }
+                        : {
+                            anchor: "kuvaus",
+                            name: "HtmlContent",
+                            properties: { content: kuvausNode.properties.value }
+                          }
+                    ]
                   }
                 ]
               }

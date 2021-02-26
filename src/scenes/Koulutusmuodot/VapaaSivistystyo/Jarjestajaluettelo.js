@@ -50,6 +50,9 @@ import {
 import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
+import vapaaSivistystyo from "../../../i18n/definitions/vapaaSivistystyo";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -169,7 +172,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
         {...getTableProps()}
         className="border border-solid border-gray-400">
         <caption>
-          {intl.formatMessage(common.voimassaOlevatJarjestamisluvat, {
+          {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa, {
             amount: `${rows.length} / ${luvat.length}`
           })}
         </caption>
@@ -325,7 +328,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
-function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
+function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   const intl = useIntl();
 
   const byYllapitaja = descend(prop("yllapitaja"));
@@ -342,8 +345,8 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
           const localeUpper = toUpper(intl.locale);
           return {
             yllapitaja:
-              lupa.jarjestaja.nimi[intl.locale] ||
-              head(values(lupa.jarjestaja.nimi)),
+              lupa.jarjestaja ? lupa.jarjestaja.nimi[intl.locale] ||
+              head(values(lupa.jarjestaja.nimi)) : "",
             oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, intl.locale),
             oppilaitostyyppi: oppilaitostyyppiKoodistosta
               ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi
@@ -404,7 +407,12 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
         return (
           <Link
             className="underline"
-            to={`/vapaa-sivistystyo/koulutuksenjarjestajat/${row.values.lupaUuid}/jarjestamislupa`}
+            to={localizeRouteKey(
+              intl.locale,
+              AppRoute.Jarjestamislupa,
+              intl.formatMessage,
+              { id: row.values.lupaUuid, koulutusmuoto: koulutusmuoto.kebabCase }
+            )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
             })}>
@@ -463,7 +471,7 @@ function Jarjestajaluettelo({ vstTyypit = [], luvat = [] }) {
   return (
     <div className="mx-auto w-full mb-16">
       <p className="mt-4 mb-8">
-        {intl.formatMessage(common.kjSivuinfo, { kpl: luvat.length })}
+        {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvat, { count: luvat.length })}
       </p>
 
       <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">

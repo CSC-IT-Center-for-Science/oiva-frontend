@@ -3,7 +3,7 @@ import React from "react";
 import { render } from "react-dom";
 import { ThroughProvider } from "react-through";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import AppWrapper from "./AppWrapper";
+import { Oiva } from "./Oiva";
 import localforage from "localforage";
 import { COLORS } from "modules/styles";
 
@@ -70,6 +70,14 @@ theme.typography.h4 = {
   paddingTop: "1rem"
 };
 
+theme.typography.h5 = {
+  fontSize: ".875rem",
+  fontWeight: 500,
+  lineHeight: "1.5",
+  paddingBottom: "0.875rem",
+  paddingTop: "0.875rem"
+};
+
 theme.typography.p = {
   marginBottom: "1.5rem"
 };
@@ -81,7 +89,7 @@ theme.palette.secondary.main = COLORS.DARK_GRAY;
 render(
   <ThroughProvider>
     <MuiThemeProvider theme={theme}>
-      <AppWrapper />
+      <Oiva />
     </MuiThemeProvider>
   </ThroughProvider>,
   document.getElementById("root")

@@ -1,32 +1,74 @@
 import React from "react";
-import { find } from "ramda";
+import {
+  addIndex,
+  filter,
+  find,
+  isEmpty,
+  length,
+  map,
+  path,
+  toUpper
+} from "ramda";
 import { useIntl } from "react-intl";
-import common from "../../../../i18n/definitions/common";
 import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
+import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
 
 export default function PoOpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
+  const locale = toUpper(intl.locale);
 
-  const opiskelijamaaraMaarays = find(maarays => maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
-    maarays.koodisto === "kujalisamaareet", maaraykset);
+  const opiskelijamaaraMaaraykset = filter(
+    maarays =>
+      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
+      maarays.koodisto === "kujalisamaareet",
+    maaraykset
+  );
 
-  const lisatietomaarays = find(maarays => maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
-    maarays.koodisto === "lisatietoja", maaraykset);
+  const lisatietomaarays = find(
+    maarays =>
+      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
+      maarays.koodisto === "lisatietoja",
+    maaraykset
+  );
 
-  return opiskelijamaaraMaarays ? (
+  return !isEmpty(opiskelijamaaraMaaraykset) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.oppilasOpiskelijamaarat)}
       </Typography>
-      <ul className="ml-8 list-disc mb-4">
-        <li className="leading-bulletList">
-          {(opiskelijamaaraMaarays.koodiarvo === "1" ?
-            intl.formatMessage(common.enintaan) : intl.formatMessage(common.vahintaan)) + " " +
-          opiskelijamaaraMaarays.arvo}
-        </li>
-      </ul>
-      { lisatietomaarays && (lisatietomaarays.meta.arvo)}
+
+      {addIndex(map)(
+        (maarays, index) => [
+          <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc">
+            <li className="leading-bulletList">
+                {maarays.meta.tyyppi === "yksittainen"
+                  ? intl.formatMessage(
+                      opiskelijamaara.yksittainenKohdennus,
+                      locale
+                    )
+                  : intl.formatMessage(opiskelijamaara.kokonaismaara, locale)}
+              {": "}{path(
+                ["nimi"],
+                find(
+                  metadata => metadata.kieli === locale,
+                  path(["koodi", "metadata"], maarays)
+                )
+              )}{" "}{maarays.arvo}
+            </li>
+            <ul key={maarays.arvo + "-" + index} className="list-disc">
+              <React.Fragment>
+                {length(maarays.aliMaaraykset)
+                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
+                  : ""}
+              </React.Fragment>
+            </ul>
+          </ul>
+        ],
+        opiskelijamaaraMaaraykset || []
+      )}
+      {lisatietomaarays && lisatietomaarays.meta.arvo}
     </div>
-  ) : null
+  ) : null;
 }

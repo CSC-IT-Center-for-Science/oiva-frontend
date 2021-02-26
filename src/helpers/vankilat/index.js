@@ -18,5 +18,5 @@ export const initializeVankilat = ({
 };
 
 export function getVankilatFromStorage() {
-  return localforage.getItem("elykeskukset");
+  return localforage.getItem("vankilat");
 }

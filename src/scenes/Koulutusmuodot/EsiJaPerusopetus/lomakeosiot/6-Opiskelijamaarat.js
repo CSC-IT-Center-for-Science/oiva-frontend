@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import education from "i18n/definitions/education";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "opiskelijamaarat"],
@@ -14,23 +15,30 @@ const Opiskelijamaarat = ({
   isPreviewModeOn,
   maaraykset,
   mode = constants.mode,
+  rajoitteet,
   sectionId,
   title
 }) => {
   const intl = useIntl();
 
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       code={code}
-      data={{ maaraykset }}
+      data={{ maaraykset, rajoitteet }}
       formTitle={title}
       mode={mode}
       isPreviewModeOn={isPreviewModeOn}
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.oppilasOpiskelijamaarat)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 

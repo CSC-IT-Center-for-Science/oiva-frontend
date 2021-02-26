@@ -14,12 +14,17 @@ export const backendRoutes = {
   koulutusalat: { path: `koodistot/koulutusalat/` },
   koulutustyypit: { path: `koodistot/koulutustyypit/` },
   kujalisamaareet: { path: `koodistot/koodit/kujalisamaareet` },
+  joistalisaksi: { path: `koodistot/koodit/kujalisamaareetjoistalisaksi` },
+  ajalla: { path: `koodistot/koodit/kujalisamaareetlisaksiajalla` },
   kunnat: { path: `koodistot/kunnat` },
   lisatietoja: {
     path: `koodistot/koodit/lisatietoja/`,
     minimumTimeBetweenFetchingInMinutes: 30
   },
-  lupaByYtunnus: {
+  logIn: {
+    path: `auth/login`
+  },
+  lupaByOid: {
     path: `luvat/jarjestaja/`,
     minimumTimeBetweenFetchingInMinutes: 0
   },
@@ -78,12 +83,15 @@ export const backendRoutes = {
   kaannokset: { path: "lokalisaatio" },
 
   organisaatiot: { path: "luvat/organisaatiot" },
-  ytunnushaku: { path: "organisaatiot/" },
   opetustehtavakoodisto: { path: "koodistot/koodisto/opetustehtava" },
   opetustehtavat: { path: "koodistot/koodit/opetustehtava" },
   kieletOPH: { path: "koodistot/koodit/kielikoodistoopetushallinto" },
   opetuksenJarjestamismuodot: {
     path: "koodistot/koodit/opetuksenjarjestamismuoto"
+  },
+  oppilaitoksetByOid: {
+    path: "organisaatiot/",
+    postfix: "/oppilaitokset"
   },
   poErityisetKoulutustehtavat: {
     path: "koodistot/koodit/poerityinenkoulutustehtava"
@@ -93,5 +101,16 @@ export const backendRoutes = {
   },
   vsttyypit: {
     path: `koodistot/koodit/vsttyypit`
+  },
+
+  // Lukiokoulutus
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
+    path: "koodistot/koodit/lukiooikeussisaooppilaitosmuotoiseenkoulutukseen"
+  },
+  lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot: {
+    path: "koodistot/koodit/lukiomuutkoulutuksenjarjestamiseenliittyvatehdot"
+  },
+  lukioErityinenKoulutustehtavaUusi: {
+    path: "koodistot/koodit/lukioerityinenkoulutustehtavauusi"
   }
 };

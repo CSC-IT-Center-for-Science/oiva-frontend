@@ -65,9 +65,9 @@ module.exports = {
         250: "#CAE4C0",
         300: "#a7ecc5", //#9ae6b4
         400: "#65A884", //#68d391
-        500: "#4C7A61", //#48bb78 main green
-        600: "#3B604C", //#38a169
-        700: "#355b47", //#2f855a
+        500: "#4C7A61", // main green
+        600: "#436F57",
+        700: "#3C644E",
         800: "#294637", //#276749
         900: "#2355b47" //#22543d x
       },
@@ -211,7 +211,7 @@ module.exports = {
       xs: "0.75rem",
       sm: "0.875rem",
       base: "1rem",
-      lg: "1.2rem",
+      lg: "1.25rem",
       xl: "1.5rem",
       "2xl": "2rem",
       "3xl": "1.875rem",
@@ -251,7 +251,7 @@ module.exports = {
     lineHeight: {
       none: "1",
       tight: "1.25",
-      bulletList: "1.325",
+      bulletList: "1.3125",
       snug: "1.375",
       normal: "1.5",
       relaxed: "1.625",
@@ -286,6 +286,7 @@ module.exports = {
       "8xl": "88rem",
       "9xl": "96rem",
       "213": "53.125rem",
+      "9/10": "90%",
       full: "100%"
     },
     minHeight: {
@@ -331,7 +332,10 @@ module.exports = {
       "11": "11",
       "12": "12"
     },
-    padding: theme => theme("spacing"),
+    padding: theme => ({
+      revert: "revert",
+      ...theme("spacing")
+    }),
     stroke: {
       current: "currentColor"
     },

@@ -44,6 +44,7 @@ import { initializeLisatiedot } from "helpers/lisatiedot";
 import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
 import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
+import { initializeOikeudet } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -86,14 +87,14 @@ export const getRaw = async (
 /**
  * Funktio noutaa sovelluksen tarvitseman pohjadatan, kuten kunnat, maakunnat,
  * kielet ja määräystyypit. Nämä ovat yleistä dataa, jota käytetään mm.
- * lomakkeita ja listauksia muodostettaessa. Lupa noudetaan y-tunnusta käyttäen
- * ja sen sisältämiä määräyksiä hyödynnetään parsittaessa pohjadataa
+ * lomakkeita ja listauksia muodostettaessa. Lupa noudetaan järjestäjän oid:a
+ * käyttäen ja sen sisältämiä määräyksiä hyödynnetään parsittaessa pohjadataa
  * tarvittaessa paremmin sovellusta palvelevaan muotoon.
  *
  * @param keys
  * @param {string} locale - fi / sv
  * @param lupaUuid
- * @param {string} ytunnus
+ * @param {string} oid
  * @param koulutustyyppi
  * @param oppilaitostyyppi
  */
@@ -101,7 +102,7 @@ const fetchBaseData = async (
   keys,
   locale,
   lupaUuid,
-  ytunnus,
+  oid,
   koulutustyyppi,
   oppilaitostyyppi
 ) => {
@@ -110,6 +111,7 @@ const fetchBaseData = async (
    * Raw-objekti sisältää backendiltä tulevan datan muokkaamattomana.
    */
   const raw = {
+    ajalla: await getRaw("ajalla", backendRoutes.ajalla.path, keys),
     elykeskukset: await getRaw(
       "elykeskukset",
       backendRoutes.elykeskukset.path,
@@ -137,21 +139,43 @@ const fetchBaseData = async (
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
       : null,
-    lupaByYtunnus: ytunnus
+    lupaByOid: oid
       ? await getRaw(
-          "lupaByYtunnus",
+          "lupaByOid",
           `${
-            backendRoutes.lupaByYtunnus.path
-          }${ytunnus}?with=all&useKoodistoVersions=false${
+            backendRoutes.lupaByOid.path
+          }${oid}?with=all&useKoodistoVersions=false${
             koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
           }`,
           keys,
           backendRoutes.lupaByUuid.minimumTimeBetweenFetchingInMinutes
         )
       : null,
+    oppilaitoksetByOid: oid
+      ? await getRaw(
+          "oppilaitoksetByOid",
+          `${backendRoutes.oppilaitoksetByOid.path}${oid}${backendRoutes.oppilaitoksetByOid.postfix}`,
+          keys
+        )
+      : null,
     vstTyypit: await getRaw(
       "vstTyypit",
       `${backendRoutes.vsttyypit.path}`,
+      keys
+    ),
+    lukioErityinenKoulutustehtavaUusi: await getRaw(
+      "lukioErityinenKoulutustehtavaUusi",
+      backendRoutes.lukioErityinenKoulutustehtavaUusi.path,
+      keys
+    ),
+    lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot: await getRaw(
+      "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+      backendRoutes.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot.path,
+      keys
+    ),
+    oikeusSisaoppilaitosmuotoiseenKoulutukseen: await getRaw(
+      "oikeusSisaooppilaitosmuotoiseenKoulutukseen",
+      backendRoutes.oikeusSisaoppilaitosmuotoiseenKoulutukseen.path,
       keys
     ),
     // Koulutukset (muut)
@@ -197,6 +221,11 @@ const fetchBaseData = async (
       backendRoutes.kujalisamaareet.path,
       keys
     ),
+    joistalisaksi: await getRaw(
+      "joistalisaksi",
+      backendRoutes.joistalisaksi.path,
+      keys
+    ),
     kunnat: await getRaw("kunnat", backendRoutes.kunnat.path, keys),
     maakunnat: await getRaw("maakunnat", backendRoutes.maakunnat.path, keys),
     maakuntakunnat: await getRaw(
@@ -237,12 +266,14 @@ const fetchBaseData = async (
     ),
     organisaatio: await getRaw(
       "organisaatio",
-      `${backendRoutes.organisaatio.path}${ytunnus}`,
+      `${backendRoutes.organisaatio.path}${oid}`,
       keys
     ),
     organisaatiot: await getRaw(
       "organisaatiot",
-      backendRoutes.organisaatiot.path,
+      koulutustyyppi
+        ? `${backendRoutes.organisaatiot.path}?koulutustyyppi=${koulutustyyppi}`
+        : backendRoutes.organisaatiot.path,
       keys
     ),
     poErityisetKoulutustehtavat: await getRaw(
@@ -258,20 +289,18 @@ const fetchBaseData = async (
     tutkinnot: await getRaw("tutkinnot", backendRoutes.tutkinnot.path, keys),
     tulevatLuvat: await getRaw(
       "tulevatLuvat",
-      `${backendRoutes.tulevatLuvat.path}${ytunnus}${
+      `${backendRoutes.tulevatLuvat.path}${oid}${
         backendRoutes.tulevatLuvat.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
-      }${
-        oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""
-      }`,
+      }${oppilaitostyyppi ? "&oppilaitostyyppi=" + oppilaitostyyppi : ""}`,
       keys,
       backendRoutes.tulevatLuvat.minimumTimeBetweenFetchingInMinutes
     ),
     vankilat: await getRaw("vankilat", backendRoutes.vankilat.path, keys),
     viimeisinLupa: await getRaw(
       "viimeisinLupa",
-      `${backendRoutes.viimeisinLupa.path}${ytunnus}${
+      `${backendRoutes.viimeisinLupa.path}${oid}${
         backendRoutes.viimeisinLupa.postfix
       }?with=all&useKoodistoVersions=false${
         koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
@@ -281,7 +310,7 @@ const fetchBaseData = async (
     )
   };
   const lupa = raw.viimeisinLupa ||
-    (lupaUuid ? raw.lupaByUuid : ytunnus ? raw.lupaByYtunnus : null) || {
+    (lupaUuid ? raw.lupaByUuid : oid ? raw.lupaByOid : null) || {
       maaraykset: []
     };
 
@@ -308,6 +337,25 @@ const fetchBaseData = async (
   const result = {
     elykeskukset: raw.elykeskukset
   };
+
+  result.ajalla = raw.ajalla
+    ? await localforage.setItem(
+        "ajalla",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maare => {
+            return omit(["koodiArvo"], {
+              ...maare,
+              koodiarvo: maare.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maare.metadata)
+              )
+            });
+          }, raw.ajalla).filter(Boolean)
+        )
+      )
+    : undefined;
 
   result.kielet = raw.kielet
     ? await localforage.setItem(
@@ -347,6 +395,62 @@ const fetchBaseData = async (
 
   result.kohteet = raw.kohteet
     ? await localforage.setItem("kohteet", raw.kohteet)
+    : [];
+
+  result.lukioErityinenKoulutustehtavaUusi = raw.lukioErityinenKoulutustehtavaUusi
+    ? await localforage.setItem(
+        "lukioErityinenKoulutustehtavaUusi",
+        map(
+          omit(["koodiarvoInt"]),
+          sortBy(
+            prop("koodiarvoInt"),
+            map(koulutustehtava => {
+              return omit(["koodiArvo"], {
+                ...koulutustehtava,
+                koodiarvo: koulutustehtava.koodiArvo,
+                koodiarvoInt: parseInt(koulutustehtava.koodiArvo, 10),
+                metadata: mapObjIndexed(
+                  head,
+                  groupBy(prop("kieli"), koulutustehtava.metadata)
+                )
+              });
+            }, raw.lukioErityinenKoulutustehtavaUusi)
+          )
+        )
+      )
+    : null;
+
+  result.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot = raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot
+    ? await localforage.setItem(
+        "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+        sortBy(
+          prop("koodiarvo"),
+          map(muuData => {
+            return omit(["koodiArvo"], {
+              ...muuData,
+              koodiarvo: muuData.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), muuData.metadata)
+              )
+            });
+          }, raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot)
+        )
+      )
+    : null;
+
+  result.oikeusSisaoppilaitosmuotoiseenKoulutukseen = raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen
+    ? await localforage.setItem(
+        "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+        initializeOikeudet(raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen)
+      )
+    : null;
+
+  result.oppilaitoksetByOid = raw.oppilaitoksetByOid
+    ? await localforage.setItem(
+        "oppilaitoksetByOid",
+        sortBy(path(["nimi", locale]), raw.oppilaitoksetByOid)
+      )
     : [];
 
   result.koulutukset =
@@ -413,6 +517,25 @@ const fetchBaseData = async (
           map(koulutustyyppi => {
             return initializeKoulutustyyppi(koulutustyyppi);
           }, raw.koulutustyypit)
+        )
+      )
+    : undefined;
+
+  result.joistaLisaksi = raw.joistalisaksi
+    ? await localforage.setItem(
+        "joistaLisaksi",
+        sortBy(
+          path(["metadata", localeUpper, "nimi"]),
+          map(maare => {
+            return omit(["koodiArvo"], {
+              ...maare,
+              koodiarvo: maare.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), maare.metadata)
+              )
+            });
+          }, raw.joistalisaksi).filter(Boolean)
         )
       )
     : undefined;
@@ -508,18 +631,21 @@ const fetchBaseData = async (
     : undefined;
 
   result.oivaperustelut = raw.oivaperustelut
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.oivaperustelut)
+    ? await localforage.setItem(
+        "oivaperustelut",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.oivaperustelut)
+        )
       )
     : undefined;
 
@@ -628,24 +754,27 @@ const fetchBaseData = async (
   result.tulevatLuvat = raw.tulevatLuvat || [];
 
   result.vankilat = raw.vankilat
-    ? sortBy(
-        prop("koodiarvo"),
-        map(perustelu => {
-          return omit(["koodiArvo"], {
-            ...perustelu,
-            koodiarvo: perustelu.koodiArvo,
-            metadata: mapObjIndexed(
-              head,
-              groupBy(prop("kieli"), perustelu.metadata)
-            )
-          });
-        }, raw.vankilat)
+    ? await localforage.setItem(
+        "vankilat",
+        sortBy(
+          prop("koodiarvo"),
+          map(perustelu => {
+            return omit(["koodiArvo"], {
+              ...perustelu,
+              koodiarvo: perustelu.koodiArvo,
+              metadata: mapObjIndexed(
+                head,
+                groupBy(prop("kieli"), perustelu.metadata)
+              )
+            });
+          }, raw.vankilat)
+        )
       )
     : undefined;
 
   result.viimeisinLupa = raw.viimeisinLupa || {};
 
-  result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByYtunnus;
+  result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByOid;
 
   return result;
 };
@@ -660,22 +789,16 @@ const BaseData = ({
   render,
   koulutustyyppi,
   oppilaitostyyppi,
-  ytunnus
+  oid
 }) => {
   const { id } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
-  const _ytunnus = ytunnus || (id && test(/[0-9]{7}-[0-9]{1}/, id) ? id : null);
   const lupaUuid =
     id &&
     test(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/, id)
       ? id
       : null;
-  /**
-   * TO DO: Käytetään hauissa oid:tä, mikäli se on annettu y-tunnuksen sijaan.
-   * Organisaation oid on aina muotoa 1.g2.246.562.10.XXXXXXXXXX.
-   * const oid = !!_ytunnus ? id : null;
-   **/
 
   /**
    * Lupa: datan noutaminen backendistä ja sen tallentaminen
@@ -683,20 +806,34 @@ const BaseData = ({
    */
   useEffect(() => {
     let isSubscribed = true;
-    fetchBaseData(keys, locale, lupaUuid, _ytunnus, koulutustyyppi, oppilaitostyyppi).then(
-      result => {
-        if (isSubscribed) {
-          setBaseData(result);
-        }
+    fetchBaseData(
+      keys,
+      locale,
+      lupaUuid,
+      lupaUuid ? oid : id,
+      koulutustyyppi,
+      oppilaitostyyppi
+    ).then(result => {
+      if (isSubscribed) {
+        setBaseData(result);
       }
-    );
+    });
     return () => (isSubscribed = false);
-  }, [keys, locale, lupaUuid, _ytunnus, location.pathname, koulutustyyppi, oppilaitostyyppi]);
+  }, [
+    keys,
+    locale,
+    lupaUuid,
+    id,
+    location.pathname,
+    koulutustyyppi,
+    oppilaitostyyppi,
+    oid
+  ]);
 
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData, lupaUuid, ytunnus: _ytunnus }) : null}
+        {!!render ? render({ ...baseData, lupaUuid, oid: id }) : null}
       </React.Fragment>
     );
   }

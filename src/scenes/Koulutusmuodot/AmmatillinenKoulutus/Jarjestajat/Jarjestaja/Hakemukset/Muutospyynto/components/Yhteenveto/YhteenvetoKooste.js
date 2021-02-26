@@ -10,9 +10,9 @@ import PropTypes from "prop-types";
 import { useIntl } from "react-intl";
 import PerustelutToimintaalue from "../Perustelut/PerustelutToimintaalue";
 import FormSection from "../../../../../../../../../components/03-templates/FormSection";
-import YhteenvetoTaloudelliset from "./YhteenvetoTaloudelliset";
 import * as R from "ramda";
 import Section from "components/03-templates/Section";
+import MuutospyyntoWizardTaloudelliset from "../MuutospyyntoWizardTaloudelliset";
 
 const YhteenvetoKooste = ({
   changeObjects,
@@ -70,7 +70,8 @@ const YhteenvetoKooste = ({
         <React.Fragment>
           <Section
             code={lupaKohteet[1].headingNumber}
-            title={lupaKohteet[1].heading}>
+            title={lupaKohteet[1].heading}
+          >
             {!R.isEmpty(changeObjects.tutkinnot) && (
               <PerustelutTutkinnot
                 changeObjects={{
@@ -264,10 +265,7 @@ const YhteenvetoKooste = ({
           ) : null}
 
           {!!R.prop("taloudelliset", changeObjects) && (
-            <YhteenvetoTaloudelliset
-              changeObjects={changeObjects}
-              onChangesUpdate={onChangesUpdate}
-            />
+            <MuutospyyntoWizardTaloudelliset />
           )}
         </React.Fragment>
       ) : null}

@@ -1,6 +1,6 @@
-import { isAdded, isRemoved, isInLupa } from "../../../../css/label";
+import { isAdded, isRemoved, isInLupa } from "css/label";
 import { getOpetuskieletFromStorage } from "helpers/opetuskielet";
-import { isNil, map, reject, toUpper } from "ramda";
+import { find, isNil, map, propEq, reject, toUpper } from "ramda";
 
 /**
  * For: Koulutuksen järjestäjä
@@ -39,15 +39,75 @@ async function getModificationForm(locale) {
   }, opetuskielet);
 }
 
+async function getReasoningForm({ isReadOnly }, locale, changeObjects = []) {
+  const localeUpper = toUpper(locale);
+  const opetuskielet = await getOpetuskieletFromStorage();
+
+  return map(opetuskieli => {
+    let structure = null;
+    const changeObj = find(
+      propEq("anchor", `kielet_opetuskielet.${opetuskieli.koodiarvo}.A`),
+      changeObjects
+    );
+    if (changeObj) {
+      const isAddedBool = changeObj.properties.isChecked;
+      structure = {
+        anchor: opetuskieli.koodiarvo,
+        meta: {
+          isInLupa: !!opetuskieli.maarays,
+          kuvaus: opetuskieli.metadata[localeUpper].nimi,
+          meta: opetuskieli.meta
+        },
+        components: [
+          {
+            anchor: "A",
+            name: "StatusTextRow",
+            properties: {
+              title: opetuskieli.metadata[localeUpper].nimi,
+              styleClasses: ["flex"],
+              statusTextStyleClasses: isAddedBool
+                ? ["text-green-600 pr-4 w-20 font-bold"]
+                : ["text-red-500 pr-4 w-20 font-bold"],
+              statusText: isAddedBool ? " LISÄYS:" : " POISTO:"
+            }
+          }
+        ],
+        categories: [
+          {
+            anchor: "perustelut",
+            components: [
+              {
+                anchor: "A",
+                name: "TextBox",
+                properties: {
+                  isReadOnly,
+                  placeholder: "Sana on vapaa...",
+                  title: "Perustelut",
+                  value: ""
+                },
+                styleClasses: ["mb-6 w-full"]
+              }
+            ]
+          }
+        ]
+      };
+    }
+    return structure;
+  }, opetuskielet).filter(Boolean);
+}
+
 export default async function getOpetuskieletLomake(
-  action,
+  mode,
   data,
-  { isReadOnly },
-  locale
+  booleans,
+  locale,
+  changeObjects
 ) {
-  switch (action) {
+  switch (mode) {
     case "modification":
       return await getModificationForm(locale);
+    case "reasoning":
+      return await getReasoningForm(booleans, locale, changeObjects);
     default:
       return [];
   }

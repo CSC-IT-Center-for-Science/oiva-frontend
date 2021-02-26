@@ -1,8 +1,9 @@
 import { isAdded, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, propEq, toUpper } from "ramda";
+import { find, flatten, map, pathEq, propEq } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getOpetuksenJarjestamismuodotFromStorage } from "helpers/opetuksenJarjestamismuodot";
+import { getLocalizedProperty } from "../utils";
 
 export async function opetuksenJarjestamismuoto(
   { maaraykset },
@@ -10,7 +11,6 @@ export async function opetuksenJarjestamismuoto(
   locale
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
-  const localeUpper = toUpper(locale);
   const lisatiedot = await getLisatiedotFromStorage();
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
@@ -24,9 +24,10 @@ export async function opetuksenJarjestamismuoto(
   return flatten(
     [
       map(muoto => {
-        const maarays = find(m =>
-          propEq("koodiarvo", muoto.koodiarvo, m) &&
-          propEq("koodisto", "opetuksenjarjestamismuoto", m),
+        const maarays = find(
+          m =>
+            propEq("koodiarvo", muoto.koodiarvo, m) &&
+            propEq("koodisto", "opetuksenjarjestamismuoto", m),
           maaraykset
         );
         return {
@@ -39,11 +40,18 @@ export async function opetuksenJarjestamismuoto(
                   anchor: "A",
                   name: "TextBox",
                   properties: {
+                    forChangeObject: {
+                      koodiarvo: muoto.koodiarvo
+                    },
                     isPreviewModeOn,
                     isReadOnly: _isReadOnly,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
-                    value: muoto.metadata[localeUpper].kuvaus
+                    value: getLocalizedProperty(
+                      muoto.metadata,
+                      locale,
+                      "kuvaus"
+                    )
                   }
                 }
               ],
@@ -55,6 +63,9 @@ export async function opetuksenJarjestamismuoto(
               anchor: "valinta",
               name: "RadioButtonWithLabel",
               properties: {
+                forChangeObject: {
+                  koodiarvo: muoto.koodiarvo
+                },
                 isChecked: !!maarays,
                 isIndeterminate: false,
                 isPreviewModeOn,
@@ -63,7 +74,7 @@ export async function opetuksenJarjestamismuoto(
                   addition: isAdded,
                   removal: isRemoved
                 },
-                title: muoto.metadata[localeUpper].nimi
+                title: getLocalizedProperty(muoto.metadata, locale, "nimi")
               }
             }
           ]
@@ -118,7 +129,7 @@ export async function opetuksenJarjestamismuoto(
               },
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
-              placeholder: __("common.lisatiedot"),
+              title: __("common.lisatiedot"),
               value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
             }
           }

@@ -1,96 +1,55 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useLomakedata } from "stores/lomakedata";
-import {
-  concat,
-  filter,
-  find,
-  includes,
-  keys,
-  map,
-  path,
-  pathEq,
-  prop
-} from "ramda";
+import { find, path, propEq } from "ramda";
 import Lomake from "components/02-organisms/Lomake";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 const constants = {
   formLocation: ["ammatillinenKoulutus", "muut", "vaativaTuki"]
 };
 
 const VaativaTuki = ({
+  isReadOnly,
   items,
   localeUpper,
   maarayksetByKoodiarvo,
+  mode,
   sectionId
 }) => {
-  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "muut"
-  });
-
-  const [lomakedata, { setLomakedata }] = useLomakedata({
+  const [lomakedata] = useLomakedata({
     anchor: "opiskelijavuodet"
   });
 
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
+
+  const vaativaTukiStateObj = find(
+    propEq("anchor", "opiskelijavuodet.vaativatuki.A"),
+    lomakedata
+  );
+
   const dataLomakepalvelulle = useMemo(
     () => ({
-      isApplyForValueSet: prop("isApplyForValueSet", lomakedata.vaativaTuki),
+      isApplyForValueSet: !!path(
+        ["properties", "applyForValue"],
+        vaativaTukiStateObj
+      ),
       items,
       maarayksetByKoodiarvo,
       koodiarvot: ["2", "16", "17", "18", "19", "20", "21"]
     }),
-    [items, lomakedata.vaativaTuki, maarayksetByKoodiarvo]
+    [items, vaativaTukiStateObj, maarayksetByKoodiarvo]
   );
-
-  const koodiarvot = concat(
-    map(prop("koodiarvo"), items.vaativa_1),
-    map(prop("koodiarvo"), items.vaativa_2)
-  );
-
-  useEffect(() => {
-    const muutostenJalkeenAktiivisetKoodiarvot = filter(koodiarvo => {
-      const changeObj = find(
-        pathEq(["properties", "metadata", "koodiarvo"], koodiarvo),
-        changeObjects
-      );
-      return (
-        includes(koodiarvo, koodiarvot) &&
-        (!changeObj || pathEq(["properties", "isChecked"], true, changeObj))
-      );
-    }, keys(maarayksetByKoodiarvo)).filter(Boolean);
-
-    const muutostenMyotaAktiivisetKoodiarvot = map(changeObj => {
-      const koodiarvo = path(
-        ["properties", "metadata", "koodiarvo"],
-        changeObj
-      );
-      return includes(koodiarvo, koodiarvot) &&
-        pathEq(["properties", "isChecked"], true, changeObj)
-        ? path(["properties", "metadata", "koodiarvo"], changeObj)
-        : null;
-    }, changeObjects).filter(Boolean);
-
-    setLomakedata(
-      concat(
-        muutostenJalkeenAktiivisetKoodiarvot,
-        muutostenMyotaAktiivisetKoodiarvot
-      ),
-      `${sectionId}_valitutKoodiarvot`
-    );
-  }, [
-    changeObjects,
-    koodiarvot,
-    maarayksetByKoodiarvo,
-    sectionId,
-    setLomakedata
-  ]);
 
   return (
     <Lomake
-      mode="modification"
       anchor={sectionId}
+      changeObjects={changeObjects}
       data={dataLomakepalvelulle}
+      isReadOnly={isReadOnly}
+      mode={mode}
       path={constants.formLocation}
       rowTitle={items.vaativa_1[0].metadata[localeUpper].nimi}
       showCategoryTitles={true}

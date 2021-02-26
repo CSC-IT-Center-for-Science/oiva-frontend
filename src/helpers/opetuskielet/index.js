@@ -13,10 +13,19 @@ import {
   compose,
   includes,
   flatten,
-  pathEq
+  pathEq,
+  reject,
+  isNil,
+  values,
+  concat,
+  take,
+  toLower,
+  drop
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { getLocalizedProperty } from "../../services/lomakkeet/utils";
 
 export const initializeMaarays = (tutkinto, maarays) => {
   return { ...tutkinto, maarays: head(dissoc("aliMaaraykset", maarays)) };
@@ -57,13 +66,14 @@ export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
 };
 
 export const defineBackendChangeObjects = async (
-  changeObjects = [],
+  changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
   const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
+  const { rajoitteetByRajoiteId } = changeObjects;
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -72,13 +82,13 @@ export const defineBackendChangeObjects = async (
 
   const opetuskieletChangeObjs = filter(
     compose(startsWith("opetuskielet.opetuskieli"), prop("anchor")),
-    changeObjects
+    changeObjects.opetuskielet
   );
 
   /** Lisätietokentän käsittely */
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.opetuskielet
   );
 
   const lisatiedotBeChangeObj = lisatiedotChangeObj
@@ -86,7 +96,11 @@ export const defineBackendChangeObjects = async (
         kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
         koodiarvo: lisatiedotObj.koodiarvo,
         koodisto: lisatiedotObj.koodisto.koodistoUri,
-        kuvaus: path(["metadata", locale, "kuvaus"], lisatiedotChangeObj),
+        kuvaus: getLocalizedProperty(
+          lisatiedotChangeObj.metadata,
+          locale,
+          "kuvaus"
+        ),
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
           arvo: path(["properties", "value"], lisatiedotChangeObj),
@@ -107,21 +121,53 @@ export const defineBackendChangeObjects = async (
       opetuskieletChangeObjs
     );
 
-    return changeObj
+    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return pathEq(
+          [1, "properties", "value", "value"],
+          opetuskieli.koodiarvo,
+          rajoite
+        )
+          ? rajoite
+          : null;
+      }, rajoitteetByRajoiteId)
+    );
+
+    const muutosobjekti = changeObj
       ? {
           generatedId: `opetuskielet-${Math.random()}`,
           kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
-          koodiarvo: opetuskieli.koodiarvo,
+          koodiarvo: toLower(opetuskieli.koodiarvo),
           koodisto: opetuskieli.koodisto.koodistoUri,
-          kuvaus: path(["metadata", locale, "kuvaus"], changeObj),
+          kuvaus: getLocalizedProperty(changeObj.metadata, locale, "kuvaus"),
           maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
           meta: {
-            changeObjects: [changeObj],
+            changeObjects: concat(
+              [changeObj],
+              take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+            ),
             valikko: path(["properties", "metadata", "valikko"], changeObj)
           },
           tila: "LISAYS"
         }
       : null;
+
+    // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+    // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+    // loput toisiinsa "alenevassa polvessa".
+    const alimaaraykset = values(
+      mapObjIndexed(asetukset => {
+        return createAlimaarayksetBEObjects(
+          kohteet,
+          maaraystyypit,
+          muutosobjekti,
+          drop(2, asetukset)
+        );
+      }, rajoitteetByRajoiteIdAndKoodiarvo)
+    );
+
+    return [muutosobjekti, alimaaraykset];
   }, opetuskielet);
 
   return flatten([opetuskieliBeChangeObjects, lisatiedotBeChangeObj]).filter(

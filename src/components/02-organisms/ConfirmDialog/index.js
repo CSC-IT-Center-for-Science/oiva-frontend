@@ -24,12 +24,13 @@ const ConfirmDialog = props => {
       open={isConfirmDialogVisible}
       fullWidth={true}
       aria-labelledby="confirm-dialog"
-      maxWidth="sm">
+      maxWidth="sm"
+    >
       <DialogTitle id="confirm-dialog" onClose={onClose}>
         {messages.title}
       </DialogTitle>
       <DialogContent>
-        <div className="p-2">{messages.content}</div>
+        <div className="py-2 px-8">{messages.content}</div>
       </DialogContent>
       <DialogActions>
         <div className="flex pr-6 pb-4">
@@ -38,19 +39,24 @@ const ConfirmDialog = props => {
               {messages.cancel}
             </Button>
           </div>
-          {!!handleExitAndAbandonChanges &&
+          {!!handleExitAndAbandonChanges && (
             <div className="mr-4">
-              <Button onClick={handleExitAndAbandonChanges} color="primary" variant="outlined">
+              <Button
+                onClick={handleExitAndAbandonChanges}
+                color="primary"
+                variant="outlined"
+              >
                 {messages.noSave}
               </Button>
             </div>
-          }
-          <Button onClick={handleOk} color="primary" variant="contained" disabled={loadingSpinner}>
-            {
-              loadingSpinner ?
-                <CircularProgress size={20}/> :
-                messages.ok
-            }
+          )}
+          <Button
+            onClick={handleOk}
+            color="primary"
+            variant="contained"
+            disabled={loadingSpinner}
+          >
+            {loadingSpinner ? <CircularProgress size={20} /> : messages.ok}
           </Button>
         </div>
       </DialogActions>

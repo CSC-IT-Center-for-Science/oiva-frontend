@@ -1,50 +1,47 @@
 import React from "react";
-import {
-  List as MaterialUIList,
-  ListItem,
-  ListItemIcon
-} from "@material-ui/core";
 import { addIndex, map } from "ramda";
-import { withStyles } from "@material-ui/styles";
-import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
-
-const StyledList = withStyles({
-  root: {
-    listStyle: "circle"
-  }
-})(MaterialUIList);
-
-const StyledListItemIcon = withStyles({
-  root: {
-    minWidth: "1rem"
-  }
-})(ListItemIcon);
-
-const StyledFiberManualRecordIcon = withStyles({
-  root: {
-    color: "#000000",
-    transform: "scale(0.3)",
-  }
-})(FiberManualRecordIcon);
+import Rajoite from "components/02-organisms/Rajoite";
+import HtmlContent from "../HtmlContent";
 
 const List = ({ items }) => {
   const itemsToRender = addIndex(map)(
     (item, index) => (
-      <ListItem disableGutters={true} key={`list-item-${index}`}>
-        <StyledListItemIcon>
-          <StyledFiberManualRecordIcon />
-        </StyledListItemIcon>
-        {item.content}
-      </ListItem>
+      <li key={`list-item-${index}`} className="leading-bulletList">
+        {map(component => {
+          const { properties } = component;
+          if (properties) {
+            if (component.name === "Rajoite") {
+              return (
+                <Rajoite
+                  areTitlesVisible={properties.areTitlesVisible}
+                  id={properties.id}
+                  isReadOnly={properties.isReadOnly}
+                  key={index}
+                  locale={properties.locale}
+                  rajoiteId={properties.rajoiteId}
+                  rajoite={properties.rajoite}
+                />
+              );
+            } else if (component.name === "HtmlContent") {
+              return (
+                <HtmlContent
+                  key={index}
+                  content={properties.content}
+                ></HtmlContent>
+              );
+            } else {
+              return <div key={index}>[komponenttia ei osata käsitellä]</div>;
+            }
+          } else {
+            return <div>[arvoa ei annettu]</div>;
+          }
+        }, item.components || [])}
+      </li>
     ),
     items
   );
 
-  return (
-    <StyledList dense={true} disablePadding={true}>
-      {itemsToRender}
-    </StyledList>
-  );
+  return <ul className="list-disc px-6">{itemsToRender}</ul>;
 };
 
 export default List;

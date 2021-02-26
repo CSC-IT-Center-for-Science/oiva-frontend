@@ -1,9 +1,22 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  jatkaKirjautumiseen: {
+    id: "auth.jatkaKirjautumiseen",
+    defaultMessage: "Jatka kirjautumiseen"
+  },
   logIn: {
     id: "auth.logIn",
     defaultMessage: "Kirjaudu sisään"
+  },
+  loginInfoDialogText: {
+    id: "auth.loginInfoDialogText",
+    defaultMessage:
+      "Tällä hetkellä OIVA-palveluun kirjautuminen on mahdollista vain opetus- ja kulttuuriministeriön virkamiehille."
+  },
+  loginInfoDialogTitle: {
+    id: "auth.loginInfoDialogTitle",
+    defaultMessage: "OIVA-palveluun kirjautuminen"
   },
   logOut: {
     id: "auth.logOut",

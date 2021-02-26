@@ -3,7 +3,10 @@ import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
 import Lomake from "components/02-organisms/Lomake";
 import education from "i18n/definitions/education";
-import { useChangeObjects } from "stores/muutokset";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "muutEhdot"],
@@ -15,11 +18,16 @@ const MuutEhdot = ({
   isPreviewModeOn,
   maaraykset,
   mode = constants.mode,
+  rajoitteet,
   sectionId,
   title
 }) => {
   const intl = useIntl();
   const [, { createTextBoxChangeObject }] = useChangeObjects();
+
+  const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: sectionId
+  });
 
   const onAddButtonClick = useCallback(
     koodiarvo => {
@@ -31,8 +39,9 @@ const MuutEhdot = ({
   return (
     <Lomake
       anchor={sectionId}
+      changeObjects={changeObjects}
       code={code}
-      data={{ maaraykset }}
+      data={{ maaraykset, rajoitteet }}
       functions={{ onAddButtonClick }}
       formTitle={title}
       mode={mode}
@@ -40,7 +49,8 @@ const MuutEhdot = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.muutEhdotTitle)}
-      showCategoryTitles={true}></Lomake>
+      showCategoryTitles={true}
+    ></Lomake>
   );
 };
 
@@ -49,6 +59,7 @@ MuutEhdot.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

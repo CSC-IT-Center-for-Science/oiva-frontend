@@ -6,8 +6,8 @@ export function findBackendMuutos(anchor, backendMuutokset) {
   }, backendMuutokset);
   if (!backendMuutos && R.includes(".", anchor)) {
     return findBackendMuutos(
-        R.compose(R.join("."), R.init, R.split("."), R.always(anchor)),
-        backendMuutokset
+      R.compose(R.join("."), R.init, R.split("."), R.always(anchor)),
+      backendMuutokset
     );
   }
   return { anchor, backendMuutos };
@@ -57,12 +57,7 @@ export function getChangeObjects(muutoshakemus) {
    * part. It's curried because of a need to call it with negation.
    */
   const curriedSplitter = R.curry(
-    R.compose(
-      isNaN,
-      R.head,
-      R.split("."),
-      R.prop("anchor")
-    )
+    R.compose(isNaN, R.head, R.split("."), R.prop("anchor"))
   );
 
   let changeObjects = {
@@ -96,10 +91,7 @@ export function getChangeObjects(muutoshakemus) {
     }
     if (backendChanges.kielet.tutkintokielet) {
       changeObjects.kielet.tutkintokielet = R.mergeWith(
-        R.compose(
-          R.uniq,
-          R.concat
-        ),
+        R.compose(R.uniq, R.concat),
         backendChanges.kielet.tutkintokielet || {},
         ((tutkintokielet || {}).state || {}).changes || []
       );
@@ -107,12 +99,9 @@ export function getChangeObjects(muutoshakemus) {
   }
 
   if (backendChanges.tutkinnotjakoulutukset) {
-    const backendChangesTutkinnot = R.filter(
-      R.compose(
-        R.not,
-        curriedSplitter
-      )
-    )(backendChanges.tutkinnotjakoulutukset);
+    const backendChangesTutkinnot = R.filter(R.compose(R.not, curriedSplitter))(
+      backendChanges.tutkinnotjakoulutukset
+    );
 
     const backendChangesKoulutukset = R.filter(curriedSplitter)(
       backendChanges.tutkinnotjakoulutukset
@@ -142,10 +131,7 @@ export function getChangeObjects(muutoshakemus) {
 
   if (backendChanges.muut) {
     changeObjects.muut = R.mergeWith(
-      R.compose(
-        R.uniq,
-        R.concat
-      ),
+      R.compose(R.uniq, R.concat),
       backendChanges.muut || {},
       ((muut || {}).state || {}).changes || []
     );

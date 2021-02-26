@@ -1,55 +1,73 @@
-import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
-import { compose, endsWith, find, includes, path, prop, propEq } from "ramda";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import {
+  compose,
+  drop,
+  find,
+  flatten,
+  forEach,
+  includes,
+  last,
+  mapObjIndexed,
+  path,
+  pathEq,
+  prop,
+  propEq,
+  reject,
+  split,
+  values
+} from "ramda";
+import { getAnchorPart } from "../../utils/common";
 
 export const defineBackendChangeObjects = async (
-  changeObjects = [],
+  changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
-  const lisamaareet = await getKujalisamaareetFromStorage();
+  const { rajoitteetByRajoiteId } = changeObjects;
   const lisatiedot = await getLisatiedotFromStorage();
   const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
 
-  /**
-   * Dropdown-kentän ja input-kentän yhdistelmästä muodostetaan
-   * backend-muotoinen muutosobjekti.
-   */
-  const dropdownChangeObj = find(
-    compose(endsWith(".dropdown"), prop("anchor")),
-    changeObjects
+  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+  // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+  // loput toisiinsa "alenevassa polvessa".
+  const alimaaraykset = values(
+    mapObjIndexed(asetukset => {
+      return createAlimaarayksetBEObjects(
+        kohteet,
+        maaraystyypit,
+        { kohde },
+        // Poista kaksi ensimmäistä asetusta ja asetukset joissa ei ole
+        // value arvoa (kohdennuksenkohdennus).
+        drop(2, reject(pathEq(["properties", "value"], ""), asetukset))
+      );
+    }, rajoitteetByRajoiteId)
   );
 
-  const inputChangeObj = find(
-    compose(endsWith(".input"), prop("anchor")),
-    changeObjects
-  );
-
-  const { selectedOption: dropdownKoodiarvo } = !!dropdownChangeObj
-    ? dropdownChangeObj.properties
-    : {};
-
-  const lisamaareObj = find(
-    propEq("koodiarvo", dropdownKoodiarvo),
-    lisamaareet
-  );
-
-  const dropdownInputBEchangeObject =
-    !!dropdownKoodiarvo && !!inputChangeObj && !!lisamaareObj
-      ? {
-          arvo: path(["properties", "value"], inputChangeObj),
-          kohde,
-          koodiarvo: dropdownKoodiarvo,
-          koodisto: lisamaareObj.koodisto.koodistoUri,
-          maaraystyyppi,
-          meta: {
-            changeObjects: [dropdownChangeObj, inputChangeObj]
-          },
-          tila: "LISAYS"
-        }
-      : null;
+  // Lisää rajoitus muutosobjektit parent muutoksille, sekä lisätään metaan parentin tyyppi
+  forEach(alimaarays => {
+    if (!path(["parent"], alimaarays)) {
+      const rajoiteId = last(
+        split("_", getAnchorPart(alimaarays.meta.changeObjects[0].anchor, 0))
+      );
+      const rajoiteObjWithRajoitteenTyyppi = find(
+        rajoiteObj =>
+          path(["properties", "metadata", "section"], rajoiteObj) ===
+          "opiskelijamaarat",
+        rajoitteetByRajoiteId[rajoiteId]
+      );
+      alimaarays.meta = {
+        ...alimaarays.meta,
+        changeObjects: values(rajoitteetByRajoiteId[rajoiteId]),
+        tyyppi: path(
+          ["properties", "value", "value"],
+          rajoiteObjWithRajoitteenTyyppi
+        )
+      };
+    }
+  }, flatten(alimaaraykset));
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -60,7 +78,7 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.opiskelijamaarat
   );
 
   const lisatiedotBEchangeObject =
@@ -78,10 +96,7 @@ export const defineBackendChangeObjects = async (
         }
       : null;
 
-  const allBEchangeObjects = [
-    dropdownInputBEchangeObject,
-    lisatiedotBEchangeObject
-  ].filter(Boolean);
+  const allBEchangeObjects = [lisatiedotBEchangeObject].filter(Boolean);
 
-  return allBEchangeObjects;
+  return [allBEchangeObjects, alimaaraykset];
 };

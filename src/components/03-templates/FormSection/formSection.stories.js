@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import FormSection from "./index";
-import { simpleStory } from "../../02-organisms/CategorizedListRoot/storydata/simpleStory";
+import { simpleRadioStory as simpleStory } from "../../02-organisms/CategorizedListRoot/storydata/simpleRadioStory";
 import { complexStory } from "../../02-organisms/CategorizedListRoot/storydata/complexStory";
 import ExpandableRowRoot from "../../02-organisms/ExpandableRowRoot";
 import { withInfo } from "@storybook/addon-info";
@@ -38,10 +38,7 @@ storiesOf("FormSection", module)
     </FormSection>
   ))
   .add("Only the title is set", () => (
-    <FormSection
-      id="kielet"
-      title="Title of a section"
-    >
+    <FormSection id="kielet" title="Title of a section">
       Fugiat adipisicing ullamco nostrud occaecat sunt do sit ex esse. In et
       aliqua nostrud esse incididunt consequat adipisicing. Quis magna id id
       quis est. Ipsum sit eiusmod magna veniam nostrud pariatur velit enim
@@ -59,7 +56,7 @@ storiesOf("FormSection", module)
   .add("Usage with ExpandableRowRoot", () => (
     <FormSection
       id="kielet"
-      sectionChanges={{ simple :simpleStory.changes}}
+      sectionChanges={{ simple: simpleStory.changes }}
       code={3}
       title="Title of a section"
       runOnChanges={handleChanges}

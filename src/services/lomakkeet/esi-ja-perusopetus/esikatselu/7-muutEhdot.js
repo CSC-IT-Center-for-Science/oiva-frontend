@@ -4,14 +4,18 @@ import {
   filter,
   find,
   flatten,
+  isEmpty,
   map,
+  nth,
   pathEq,
   prop,
+  split,
   startsWith
 } from "ramda";
-import { removeAnchorPart } from "utils/common";
+import { getAnchorPart, removeAnchorPart } from "utils/common";
+import { getRajoitteet } from "utils/rajoitteetUtils";
 
-export const previewOfMuutEhdot = ({ lomakedata }) => {
+export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   let structure = [];
 
   const checkedNodes = filter(
@@ -46,10 +50,35 @@ export const previewOfMuutEhdot = ({ lomakedata }) => {
               anchor: "A",
               name: "List",
               properties: {
-                items: map(
-                  node => ({ content: node.properties.value }),
-                  kuvausNodes
-                )
+                items: map(node => {
+                  const anchorParts = split(".", node.anchor);
+                  const koodiarvo = getAnchorPart(node.anchor, 1);
+                  const index = getAnchorPart(node.anchor, 2);
+                  const kohdistuvatRajoitteet = getRajoitteet(
+                    `${koodiarvo}-${index}`,
+                    rajoitteet
+                  );
+                  return {
+                    anchor: koodiarvo,
+                    components: [
+                      !isEmpty(kohdistuvatRajoitteet)
+                        ? {
+                            anchor: "rajoite",
+                            name: "Rajoite",
+                            properties: {
+                              areTitlesVisible: false,
+                              isReadOnly: true,
+                              rajoite: kohdistuvatRajoitteet
+                            }
+                          }
+                        : {
+                            anchor: nth(2, anchorParts),
+                            name: "HtmlContent",
+                            properties: { content: node.properties.value }
+                          }
+                    ]
+                  };
+                }, kuvausNodes)
               }
             }
           ]

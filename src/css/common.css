@@ -15,3 +15,11 @@
   padding-bottom: 0.25rem;
   z-index: 60;
 }
+
+.MuiButton-contained {
+  box-shadow: none !important;
+}
+
+.MuiButton-contained:hover {
+  box-shadow: none !important;
+}

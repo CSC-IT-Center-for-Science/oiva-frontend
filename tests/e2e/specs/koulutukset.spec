@@ -1,6 +1,6 @@
 # Muutoshakemus
 
-* Navigate to app
+* Siirry osoitteeseen "localhost"
 * Log in as "oiva-sanni"
 
 ## Koulutukset
@@ -21,8 +21,6 @@
 
 * Seuraava sivu
 * Assert if "perustelut_koulutukset_tyovoimakoulutukset.1-removal.textbox" exists
-
-
 
 * Edellinen sivu
 * Avaa ExpandableRow "koulutukset_kuljettajakoulutukset"

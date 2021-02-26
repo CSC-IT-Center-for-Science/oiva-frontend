@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
-import { split, join, replace } from "ramda";
+import {
+  join,
+  replace,
+  split
+} from "ramda";
 
 const LargeParagraph = styled.p`
   font-size: 20px;
@@ -16,15 +20,17 @@ const JarjestajaBasicInfo = ({ jarjestaja }) => {
   const ytunnusVoiceOverSpelling = replace(
     "-",
     intl.formatMessage(common.viiva),
-    join(" ", split("", jarjestaja.ytunnus))
+    join(" ", split("", jarjestaja.ytunnus || ""))
   );
   const ariaLabel = `${ytunnusTitle}: ${ytunnusVoiceOverSpelling}`;
 
   return (
     <React.Fragment>
+      {jarjestaja.ytunnus &&
       <LargeParagraph aria-label={ariaLabel} role="text">
         {ytunnusTitle} {jarjestaja.ytunnus}
       </LargeParagraph>
+      }
     </React.Fragment>
   );
 };

@@ -5,10 +5,10 @@ import { useIntl } from "react-intl";
 import { isEmpty, prop } from "ramda";
 import Loading from "../../../modules/Loading";
 import BaseData from "basedata";
-import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { parseLupa } from "utils/lupaParser";
 import Jarjestaja from "components/03-templates/Jarjestaja";
 import { parseVSTLupa } from "scenes/Koulutusmuodot/VapaaSivistystyo/utils/lupaParser";
+import { AppRoute } from "const/index";
 
 const JarjestajaSwitch = ({
   JarjestamislupaJSX,
@@ -22,9 +22,10 @@ const JarjestajaSwitch = ({
   ytunnus,
   kielet,
   tulevatLuvat,
-  voimassaOlevaLupa
+  voimassaOlevaLupa,
+  WizardContainer
 }) => {
-  const intl = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   /**
    * Vapaan sivistystyön luvat täytyy parsia eri tavalla. Siksi tämä ehto.
@@ -35,61 +36,54 @@ const JarjestajaSwitch = ({
   const lupakohteet = useMemo(() => {
     return !lupa
       ? {}
-      : parseLupaFn({ ...lupa }, intl.formatMessage, intl.locale.toUpperCase());
-  }, [lupa, intl, parseLupaFn]);
+      : parseLupaFn({ ...lupa }, formatMessage, locale.toUpperCase());
+  }, [lupa, formatMessage, locale, parseLupaFn]);
 
   return (
     <React.Fragment>
-      <BreadcrumbsItem to={`/${koulutusmuoto.kebabCase}`}>
-        {koulutusmuoto.paasivunOtsikko}
-      </BreadcrumbsItem>
       <Switch>
         <Route
+          authenticated={!!user}
           exact
-          path={`${path}/hakemukset-ja-paatokset/uusi/:page`}
-          render={props => {
-            if (!isEmpty(lupakohteet) && lupa) {
-              return (
-                <BaseData
-                  locale={intl.locale}
-                  render={_props => (
-                    <div>TODO: Avataan uusi tyhjä KJ-puolen lomake</div>
-                  )}
-                />
-              );
-            }
-            return <Loading />;
-          }}
+          path={AppRoute.UusiHakemus}
+          render={() => (
+            <BaseData
+              locale={locale}
+              koulutustyyppi={koulutusmuoto.koulutustyyppi}
+              render={_props => {
+                return (
+                  <WizardContainer
+                    kohteet={_props.kohteet}
+                    koulutukset={_props.koulutukset}
+                    koulutusalat={_props.koulutusalat}
+                    koulutusmuoto={koulutusmuoto}
+                    koulutustyypit={_props.koulutustyypit}
+                    lisatiedot={_props.lisatiedot}
+                    maaraystyypit={_props.maaraystyypit}
+                    muut={_props.muut}
+                    organisaatio={_props.organisaatio}
+                    viimeisinLupa={_props.viimeisinLupa}
+                    role="KJ"
+                  />
+                );
+              }}
+            />
+          )}
         />
         <Route
-          exact
-          path={`${path}/hakemukset-ja-paatokset/:uuid/:page`}
-          render={props => {
-            if (lupakohteet && lupa) {
-              return (
-                <BaseData
-                  locale={intl.locale}
-                  render={_props => <div>TODO: Avataan KJ-puolen lomake</div>}
-                />
-              );
-            }
-            return <Loading />;
-          }}
-        />
-        <Route
-          path={`${path}`}
-          render={props => {
+          path="*"
+          render={() => {
             /**
              * Varmistetaan, että ollaan aikeissa näyttää halutun järjestäjän
-             * tiedot vertaamalla haussa käytettyä y-tunnusta luvan
-             * y-tunnukseen, mikäli haussa käytettiin y-tunnusta. Toinen
+             * tiedot vertaamalla haussa käytettyä oid:a luvan
+             * järjestäjän oid:iin, mikäli haussa käytettiin oid:a. Toinen
              * vaihtoehto on, että haku on tehty lupaUuid:llä, jolloin
              * vertaamme sitä luvan vastaavaan tietoon.
              * */
             if (
               (lupa &&
-                ytunnus &&
-                ytunnus === prop("jarjestajaYtunnus", lupa)) ||
+                organisation &&
+                organisation.oid === prop("jarjestajaOid", lupa)) ||
               (lupaUuid &&
                 lupaUuid === prop("uuid", lupa) &&
                 !isEmpty(lupakohteet))
@@ -102,8 +96,6 @@ const JarjestajaSwitch = ({
                   lupakohteet={lupakohteet}
                   lupa={lupa}
                   organisation={organisation}
-                  path={path}
-                  url={props.match.url}
                   user={user}
                   kielet={kielet}
                   tulevatLuvat={tulevatLuvat}

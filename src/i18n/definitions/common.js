@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  oiva: {
+    id: "common.oiva",
+    defaultMessage: "Oiva"
+  },
   statistics: {
     id: "common.statistics",
     defaultMessage: "Tilastot"
@@ -290,6 +294,10 @@ export default defineMessages({
   "asiaTable.headers.saapunut": {
     id: "asiaTable.headers.saapunut",
     defaultMessage: "Saapunut/luotu"
+  },
+  "asiaTable.headers.paatospvm": {
+    id: "asiaTable.headers.paatospvm",
+    defaultMessage: "Päätöspäivämäärä"
   },
   "asiaTable.headers.hakupvm": {
     id: "asiaTable.headers.hakupvm",
@@ -777,10 +785,6 @@ export default defineMessages({
     id: "common.confirmExitEsittelijaMuutoshakemusWizardTitle",
     defaultMessage: "Tallennetaanko muutokset ennen poistumista?"
   },
-  tietosuojailmoitus: {
-    id: "common.tietosuojailmoitus",
-    defaultMessage: "Tietosuojailmoitus"
-  },
   yhteydenotto: {
     id: "common.yhteydenotto",
     defaultMessage: "Yhteydenotto"
@@ -935,10 +939,19 @@ export default defineMessages({
     id: "common.haeKJYtunnuksella",
     defaultMessage: "Hae koulutuksen järjestäjää Y-tunnuksella"
   },
+  haeKJ: {
+    id: "common.haeKJ",
+    defaultMessage: "Hae koulutuksen järjestäjää (Y-tunnus, OID, Virastotunnus)"
+  },
   luoUusiAsiaEsidialogiInfo2: {
     id: "common.luoUusiAsiaEsidialogiInfo2",
     defaultMessage:
       "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää Y-tunnuksella."
+  },
+  luoUusiAsiaEsidialogiInfo3: {
+    id: "common.luoUusiAsiaEsidialogiInfo3",
+    defaultMessage:
+      "Mikäli et löydä sopivaa valintaa listalta, voit hakea koulutuksen järjestäjää hakutoiminnolla."
   },
   suoritaYtunnushaku: {
     id: "common.suoritaYtunnushaku",
@@ -964,6 +977,10 @@ export default defineMessages({
   syotaYtunnus: {
     id: "common.syotaYtunnus",
     defaultMessage: "Syötä Y-tunnus"
+  },
+  syotaHaettavaTunniste: {
+    id: "common.syotaHaettavaTunniste",
+    defaultMessage: "Syötä haettava tunniste"
   },
   suljeHaku: {
     id: "common.suljeHaku",
@@ -1218,5 +1235,53 @@ export default defineMessages({
   esikatselu: {
     id: "common.esikatselu",
     defaultMessage: "Esikatselu"
+  },
+  opetusJotaLupaKoskee: {
+    id: "common.opetusJotaLupaKoskee",
+    defaultMessage: "Opetus, jota lupa koskee"
+  },
+  is: {
+    id: "common.is",
+    defaultMessage: "on"
+  },
+  henkiloa: {
+    id: "common.henkiloa",
+    defaultMessage: "henkiloa"
+  },
+  kunnassa: {
+    id: "common.kunnassa",
+    defaultMessage: "kunnassa"
+  },
+  autocompleteValitse: {
+    id: "common.autocompleteValitse",
+    defaultMessage: "Valitse..."
+  },
+  asianumero: {
+    id: "common.asianumero",
+    defaultMessage: "asianumero"
+  },
+  paatospaiva: {
+    id: "common.paatospaiva",
+    defaultMessage: "Päätöspäivä"
+  },
+  voimaantulopaiva: {
+    id: "common.voimaantulopaiva",
+    defaultMessage: "Voimaantulopäivä"
+  },
+  eiValittaviaKohteita: {
+    id: "common.eiValittaviaKohteita",
+    defaultMessage: "Ei valittavia kohteita"
+  },
+  omaSivu: {
+    id: "common.omaSivu",
+    defaultMessage: "Oma sivu"
+  },
+  eiAvoimiaAsioita: {
+    id: "common.eiAvoimiaAsioita",
+    defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
+  },
+  sulje: {
+    id: "common.sulje",
+    defaultMessage: "Sulje"
   }
 });

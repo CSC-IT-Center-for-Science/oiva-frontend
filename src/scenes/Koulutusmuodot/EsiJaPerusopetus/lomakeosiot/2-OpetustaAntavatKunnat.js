@@ -4,7 +4,8 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import wizard from "i18n/definitions/wizard";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import { useChangeObjects, useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import equal from "react-fast-compare";
 import * as R from "ramda";
 
 const constants = {
@@ -18,6 +19,7 @@ const OpetustaAntavatKunnat = React.memo(
     isPreviewModeOn,
     lupakohde,
     maaraykset,
+    rajoitteet,
     sectionId,
     title,
     valtakunnallinenMaarays
@@ -29,6 +31,7 @@ const OpetustaAntavatKunnat = React.memo(
     ] = useChangeObjectsByAnchorWithoutUnderRemoval({
       anchor: "toimintaalue"
     });
+    const [, { createTextBoxChangeObject }] = useChangeObjects();
 
     const maakuntamaaraykset = R.filter(
       maarays => maarays.koodisto === "maakunta",
@@ -37,9 +40,7 @@ const OpetustaAntavatKunnat = React.memo(
 
     const kuntamaaraykset = R.filter(maarays => {
       return (
-        maarays.koodisto === "kunta" &&
-        (!maarays.meta.changeObjects ||
-          !R.includes("ulkomaa", maarays.meta.changeObjects[0].anchor))
+        maarays.koodisto === "kunta"
       );
     }, maaraykset);
 
@@ -97,14 +98,25 @@ const OpetustaAntavatKunnat = React.memo(
     }, [changeObjects, sectionId]);
 
     const noSelectionsInLupa =
-      R.isEmpty(maakuntamaaraykset) && R.isEmpty(kuntamaaraykset) && fiCode !== "FI1";
+      R.isEmpty(maakuntamaaraykset) &&
+      R.isEmpty(kuntamaaraykset) &&
+      fiCode !== "FI1";
+
+    const onAddButtonClick = useCallback(
+      koodiarvo => {
+        createTextBoxChangeObject(sectionId, koodiarvo);
+      },
+      [createTextBoxChangeObject, sectionId]
+    );
 
     return (
       <Lomake
         mode={constants.mode}
         anchor={sectionId}
+        changeObjects={changeObjects}
         code={code}
         data={{
+          changeObjectsByProvince: Object.assign({}, provinceChanges),
           fiCode,
           isEditViewActive,
           isEiMaariteltyaToimintaaluettaChecked: fiCode === "FI2",
@@ -134,13 +146,14 @@ const OpetustaAntavatKunnat = React.memo(
           kuntamaaraykset,
           maakuntamaaraykset,
           maaraykset,
-          changeObjectsByProvince: Object.assign({}, provinceChanges),
           quickFilterChanges,
+          rajoitteet,
           valtakunnallinenMaarays
         }}
         functions={{
           onChanges: whenChanges,
-          toggleEditView
+          toggleEditView,
+          onAddButtonClick
         }}
         isPreviewModeOn={isPreviewModeOn}
         isRowExpanded={true}
@@ -152,6 +165,9 @@ const OpetustaAntavatKunnat = React.memo(
         formTitle={title}
       />
     );
+  },
+  (cp, np) => {
+    return equal(R.omit(["functions"], cp), R.omit(["functions"], np));
   }
 );
 
@@ -161,6 +177,7 @@ OpetustaAntavatKunnat.propTypes = {
   kuntamaaraykset: PropTypes.array,
   lupakohde: PropTypes.object,
   maaraykset: PropTypes.array,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string,
   valtakunnallinenMaarays: PropTypes.object

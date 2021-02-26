@@ -106,6 +106,7 @@ const Difference = ({
             <Input
               fullWidth={false}
               id={id}
+              isReadOnly={isReadOnly}
               isRequired={isRequired}
               onChanges={handleChange}
               payload={payload}
@@ -131,11 +132,11 @@ Difference.propTypes = {
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
   initialValue: PropTypes.number,
+  isReadOnly: PropTypes.bool,
+  isRequired: PropTypes.bool,
   onChanges: PropTypes.func,
   payload: PropTypes.object,
-  titles: PropTypes.array,
-  isReadOnly: PropTypes.bool,
-  isRequired: PropTypes.bool
+  titles: PropTypes.array
 };
 
 export default Difference;

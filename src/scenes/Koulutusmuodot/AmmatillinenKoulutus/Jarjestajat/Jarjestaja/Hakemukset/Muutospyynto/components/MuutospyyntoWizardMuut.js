@@ -1,7 +1,16 @@
 import React, { useMemo } from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import { filter, groupBy, omit, path, prop, propEq, toUpper } from "ramda";
+import {
+  filter,
+  groupBy,
+  omit,
+  path,
+  pipe,
+  propEq,
+  reduce,
+  toUpper
+} from "ramda";
 import Laajennettu from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/01-Laajennettu";
 import VaativaTuki from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/02-VaativaTuki";
 import Sisaoppilaitos from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/Lupanakyma/Osiot/Muut/03-Sisaoppilaitos";
@@ -14,6 +23,7 @@ import MuuMaarays from "scenes/Koulutusmuodot/AmmatillinenKoulutus/Esittelijat/L
 import { Typography } from "@material-ui/core";
 
 const defaultProps = {
+  isReadOnly: false,
   maaraykset: [],
   muut: []
 };
@@ -21,7 +31,9 @@ const defaultProps = {
 const MuutospyyntoWizardMuut = React.memo(
   ({
     code,
+    isReadOnly = defaultProps.isReadOnly,
     maaraykset = defaultProps.maaraykset,
+    mode,
     muut = defaultProps.muut,
     sectionId,
     title
@@ -31,13 +43,15 @@ const MuutospyyntoWizardMuut = React.memo(
 
     const maarayksetByKoodiarvo = useMemo(
       () =>
-        groupBy(
-          prop("koodiarvo"),
+        pipe(
           filter(
-            propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat"),
-            maaraykset
-          )
-        ),
+            propEq("koodisto", "oivamuutoikeudetvelvollisuudetehdotjatehtavat")
+          ),
+          reduce((maaraysByKoodiarvo, maarays) => {
+            maaraysByKoodiarvo[maarays.koodiarvo] = maarays;
+            return maaraysByKoodiarvo;
+          }, {})
+        )(maaraykset),
       [maaraykset]
     );
 
@@ -72,75 +86,102 @@ const MuutospyyntoWizardMuut = React.memo(
         </Typography>
         {!!items.laajennettu && items.laajennettu.length > 0 ? (
           <Laajennettu
+            isReadOnly={isReadOnly}
             items={items.laajennettu}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_01`}></Laajennettu>
+            mode={mode}
+            sectionId={`${sectionId}_01`}
+          ></Laajennettu>
         ) : null}
 
         {(!!items.vaativa_1 && items.vaativa_1.length > 0) ||
         (!!items.vaativa_2 && items.vaativa_2.length > 0) ? (
           <VaativaTuki
+            isReadOnly={isReadOnly}
             items={vaativaTukiItems}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_02`}></VaativaTuki>
+            mode={mode}
+            sectionId={`${sectionId}_02`}
+          ></VaativaTuki>
         ) : null}
 
         {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
           <Sisaoppilaitos
+            isReadOnly={isReadOnly}
             items={items.sisaoppilaitos}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_03`}></Sisaoppilaitos>
+            mode={mode}
+            sectionId={`${sectionId}_03`}
+          ></Sisaoppilaitos>
         ) : null}
 
         {!!items.vankila && items.vankila.length > 0 ? (
           <Vankila
+            isReadOnly={isReadOnly}
             items={items.vankila}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_04`}></Vankila>
+            mode={mode}
+            sectionId={`${sectionId}_04`}
+          ></Vankila>
         ) : null}
 
         {!!items.urheilu && items.urheilu.length > 0 ? (
           <Urheilu
+            isReadOnly={isReadOnly}
             items={items.urheilu}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_05`}></Urheilu>
+            mode={mode}
+            sectionId={`${sectionId}_05`}
+          ></Urheilu>
         ) : null}
 
         {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
           <Yhteistyo
+            isReadOnly={isReadOnly}
             items={items.yhteistyo}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_06`}></Yhteistyo>
+            mode={mode}
+            sectionId={`${sectionId}_06`}
+          ></Yhteistyo>
         ) : null}
 
         {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
           <Yhteistyosopimus
+            isReadOnly={isReadOnly}
             items={items.yhteistyosopimus}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_08`}></Yhteistyosopimus>
+            mode={mode}
+            sectionId={`${sectionId}_08`}
+          ></Yhteistyosopimus>
         ) : null}
 
         {!!items.selvitykset && items.selvitykset.length > 0 ? (
           <Selvitykset
+            isReadOnly={isReadOnly}
             items={items.selvitykset}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_09`}></Selvitykset>
+            mode={mode}
+            sectionId={`${sectionId}_09`}
+          ></Selvitykset>
         ) : null}
 
         {!!items.muumaarays && items.muumaarays.length > 0 ? (
           <MuuMaarays
+            isReadOnly={isReadOnly}
             items={items.muumaarays}
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
-            sectionId={`${sectionId}_07`}></MuuMaarays>
+            mode={mode}
+            sectionId={`${sectionId}_07`}
+          ></MuuMaarays>
         ) : null}
       </React.Fragment>
     );
@@ -149,7 +190,9 @@ const MuutospyyntoWizardMuut = React.memo(
 
 MuutospyyntoWizardMuut.propTypes = {
   headingNumber: PropTypes.number,
+  isReadOnly: PropTypes.bool,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array
 };
 

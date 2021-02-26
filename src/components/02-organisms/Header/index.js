@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import css from "./header.module.css";
-import {NavLink} from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import { AppBar, Toolbar, useMediaQuery } from "@material-ui/core";
+import { includes } from "ramda";
+import { localizeRouteKey } from "utils/common";
+import { useIntl } from "react-intl";
+import { AppRoute } from "const/index";
+import common from "i18n/definitions/common";
+import { Navigation } from "modules/navigation/index";
+import { LanguageSwitcher } from "modules/i18n/index";
 import MenuIcon from "@material-ui/icons/Menu";
-import {AppBar, Button, IconButton, Toolbar, Typography, useMediaQuery} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import HorizontalLayout from "./HorizontalLayout";
-import VerticalLayout from "./VerticalLayout";
-import {equals} from "ramda";
 
-const MEDIA_QUERIES = {
+import logo_fi from "static/images/oiva-logo-fi-tekstilla.svg";
+import logo_sv from "static/images/oiva-logo-sv-tekstilla.svg";
+import oiva_logo from "static/images/oiva-logo.svg";
+import MobileMenu from "./MobileMenu";
+import SideNavigation from "../SideNavigation";
+import AuthenticationLink from "./AuthenticationLink";
+import OrganisationLink from "./OrganisationLink";
+
+export const MEDIA_QUERIES = {
   MOBILE: "only screen and (min-width: 360px) and (max-width: 767px)",
   TABLET: "only screen and (min-width: 768px) and (max-width: 1023px)",
   TABLET_MIN: "only screen and (min-width: 768px)",
@@ -19,202 +27,145 @@ const MEDIA_QUERIES = {
   DESKTOP_LARGE: "only screen and (min-width: 1280px)"
 };
 
-const useStyles = makeStyles(theme => ({
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  }
-}));
+const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
+  const { formatMessage, locale } = useIntl();
+  const { pathname } = useLocation();
 
-const useStylesForTypography = makeStyles(() => ({
-  root: {
-    lineHeight: 1
-  }
-}));
+  const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
 
-const Header = React.memo(
-  ({
-     inFinnish,
-     inSwedish,
-     isAuthenticated,
-     locale,
-     logIn,
-     logo,
-     authenticationLink,
-     onLocaleChange,
-     onLoginButtonClick,
-     onMenuClick,
-     organisationLink,
-     shortDescription,
-     template = "A",
-     languageSelectionAriaLabel = "Kielivalinta"
-   }) => {
-    const classes = useStyles();
-    const typographyClasses = useStylesForTypography();
-    const items = [
-      <a href={logo.path} className="inline-block no-underline text-gray-800">
-        <Typography variant="h6" classes={typographyClasses}>
-          {logo.text}
-        </Typography>
-        {shortDescription.text}
-      </a>,
-      !!authenticationLink ? (
-        <NavLink
-          to={authenticationLink.path}
-          exact={false}
-          className="inline-block no-underline text-gray-800 hover:underline">
-          <span>{authenticationLink.text[0]} </span>
-          {authenticationLink.text[1] && (
-            <span className="font-bold">{authenticationLink.text[1]}</span>
-          )}
-        </NavLink>
-      ) : (
-        <React.Fragment />
-      ),
-      organisationLink.path ? (
-        <NavLink
-          className="link-to-own-organisation"
-          to={organisationLink.path}
-          exact={false}>
-          <span className="text-gray-600">{organisationLink.text}</span>
-        </NavLink>
-      ) : (
-        <span className="text-gray-800">{organisationLink.text}</span>
-      )
-    ];
+  const breakpointDesktopLarge = useMediaQuery(MEDIA_QUERIES.DESKTOP_LARGE);
 
-    const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
+  const mediumSizedScreen = breakpointTabletMin && !breakpointDesktopLarge;
 
-    return (
-      <React.Fragment>
-        {/* Layout for mobile and other small screens */}
-        {!breakpointTabletMin && (
-          <React.Fragment>
-            {template === "C" && (
-              <VerticalLayout items={items}>
-                <ToggleButtonGroup
-                  size="small"
-                  onChange={onLocaleChange}
-                  value={locale}
-                  exclusive>
-                  <ToggleButton
-                    aria-label={languageSelectionAriaLabel + inFinnish}
-                    key={1}
-                    value="fi"
-                    className="whitespace-no-wrap"
-                    classes={{
-                      label: css["locale-label"],
-                      selected: css["locale-selected"],
-                      sizeSmall: css["locale-button"]
-                    }}
-                    disabled={locale === "fi"}>
-                    {inFinnish}
-                  </ToggleButton>
-                  <ToggleButton
-                    aria-label={languageSelectionAriaLabel + inSwedish}
-                    key={2}
-                    value="sv"
-                    className="whitespace-no-wrap"
-                    classes={{
-                      label: css["locale-label"],
-                      selected: css["locale-selected"],
-                      sizeSmall: css["locale-button"]
-                    }}
-                    disabled={locale === "sv"}>
-                    {inSwedish}
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </VerticalLayout>
-            )}
-            {template !== "C" && (
-              <div className={`fixed w-full z-50 ${classes.root} `}>
-                <AppBar elevation={0} position="static">
-                  <Toolbar className="bg-green-500">
-                    <IconButton
-                      edge="start"
-                      className={classes.menuButton}
-                      color="inherit"
-                      aria-label="menu"
-                      onClick={onMenuClick}>
-                      <MenuIcon />
-                    </IconButton>
-                    <NavLink
-                      to={logo.path}
-                      exact={true}
-                      className="inline-block no-underline text-white flex-grow">
-                      <Typography variant="h6" className={classes.title}>
-                        {logo.text}
-                      </Typography>
-                    </NavLink>
-                    {!isAuthenticated && !!authenticationLink ? (
-                      <Button color="inherit" onClick={onLoginButtonClick}>
-                        {logIn}
-                      </Button>
-                    ) : (
-                      <React.Fragment />
-                    )}
-                  </Toolbar>
-                </AppBar>
-              </div>
-            )}
-          </React.Fragment>
-        )}
-        {/* Layout for bigger screens */}
-        {breakpointTabletMin && (
-          <AppBar elevation={0} position="static">
-            <Toolbar className="bg-white px-4 border border-gray-300">
-              {(template === "A" || !template) && (
-                <HorizontalLayout items={items}>
-                  <ToggleButtonGroup
-                    size="small"
-                    onChange={onLocaleChange}
-                    value={locale}
-                    exclusive>
-                    <ToggleButton
-                      aria-label={languageSelectionAriaLabel + inFinnish}
-                      key={1}
-                      value="fi"
-                      className="whitespace-no-wrap"
-                      classes={{
-                        label: css["locale-label"],
-                        selected: css["locale-selected"],
-                        sizeSmall: css["locale-button"]
-                      }}
-                      disabled={locale === "fi"}>
-                      {inFinnish}
-                    </ToggleButton>
-                    <ToggleButton
-                      aria-label={languageSelectionAriaLabel + inSwedish}
-                      key={2}
-                      value="sv"
-                      className="whitespace-no-wrap"
-                      classes={{
-                        label: css["locale-label"],
-                        selected: css["locale-selected"],
-                        sizeSmall: css["locale-button"]
-                      }}
-                      disabled={locale === "sv"}>
-                      {inSwedish}
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </HorizontalLayout>
+  const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
+
+  const is2ndNavVisible = includes(
+    localizeRouteKey(
+      locale,
+      AppRoute.JarjestamisJaYllapitamisluvat,
+      formatMessage
+    ),
+    pathname
+  );
+
+  const toggleMobileMenu = () => setIsMobileMenuVisible(!isMobileMenuVisible);
+
+  return (
+    <React.Fragment>
+      {breakpointDesktopLarge && (
+        <AppBar elevation={0} position="static">
+          <Toolbar className="bg-green-500 px-5 justify-between overflow-hidden">
+            <NavLink
+              to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
+              className="flex items-center no-underline text-white hover:text-gray-100 pr-10"
+            >
+              <img
+                alt={`${formatMessage(
+                  common.opetusJaKulttuuriministerio
+                )} logo`}
+                src={locale === "sv" ? logo_sv : logo_fi}
+                className="lg:w-fit-content max-w-sm"
+              />
+            </NavLink>
+            <div id="navigation-level-1">
+              <Navigation level={1} />
+            </div>
+            <div className="flex-1 flex justify-end items-center">
+              {organisationLink.path && (
+                <OrganisationLink
+                  organisationLink={organisationLink}
+                  formatMessage={formatMessage}
+                  navLinkClasses="mr-5"
+                />
               )}
+              {!!authenticationLink && (
+                <AuthenticationLink authenticationLink={authenticationLink} />
+              )}
+              <LanguageSwitcher
+                localesByLang={localesByLang}
+                ulClasses="border-l border-opacity-25"
+              />
+            </div>
+          </Toolbar>
+          {is2ndNavVisible && (
+            <AppBar elevation={0} position="static">
+              <Toolbar className="bg-green-600" style={{ minHeight: "3rem" }}>
+                <Navigation level={2} />
+              </Toolbar>
+            </AppBar>
+          )}
+        </AppBar>
+      )}
+
+      {!breakpointDesktopLarge && (
+        <React.Fragment>
+          <SideNavigation isVisible={isMobileMenuVisible}>
+            <MobileMenu
+              localesByLang={localesByLang}
+              onCloseMenu={toggleMobileMenu}
+              organisationLink={organisationLink}
+              authenticationLink={authenticationLink}
+            />
+          </SideNavigation>
+          <AppBar className="bg-green-500" elevation={0} position="static">
+            <Toolbar className="px-5 justify-start overflow-hidden">
+              <MenuIcon
+                className="mr-6 cursor-pointer"
+                onClick={toggleMobileMenu}
+              />
+              <NavLink
+                to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
+                className="flex items-center no-underline text-white hover:text-gray-100 mr-16"
+              >
+                {mediumSizedScreen ? (
+                  <img
+                    alt={`${formatMessage(
+                      common.opetusJaKulttuuriministerio
+                    )} logo`}
+                    src={locale === "sv" ? logo_sv : logo_fi}
+                    className="lg:w-fit-content max-w-sm"
+                  />
+                ) : (
+                  <img
+                    alt={`${formatMessage(
+                      common.opetusJaKulttuuriministerio
+                    )} logo`}
+                    src={oiva_logo}
+                    className="max-w-sm"
+                  />
+                )}
+              </NavLink>
+
+              <div className="flex-1 flex justify-end items-center">
+                {mediumSizedScreen && organisationLink.path && (
+                  <OrganisationLink
+                    organisationLink={organisationLink}
+                    formatMessage={formatMessage}
+                    navLinkClasses="mr-5"
+                  />
+                )}
+                {!!authenticationLink && (
+                  <AuthenticationLink
+                    authenticationLink={authenticationLink}
+                    navLinkClasses="leading-snug"
+                  />
+                )}
+                {mediumSizedScreen ? (
+                  <LanguageSwitcher
+                    localesByLang={localesByLang}
+                    ulClasses="border-l border-opacity-25"
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
             </Toolbar>
           </AppBar>
-        )}
-      </React.Fragment>
-    );
-  },
-  (currentProps, nextProps) => {
-    const isSameOld =
-      equals("" + currentProps.onLocaleChange, "" + nextProps.onLocaleChange) &&
-      equals(currentProps.organisationLink, nextProps.organisationLink) &&
-      equals(currentProps.locale, nextProps.locale);
-    return isSameOld;
-  }
-);
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
+};
 
 Header.propTypes = {
   inFinnish: PropTypes.string,
@@ -224,9 +175,8 @@ Header.propTypes = {
   logIn: PropTypes.string,
   logo: PropTypes.object,
   authenticationLink: PropTypes.object,
-  onLocaleChange: PropTypes.func.isRequired,
-  onLoginButtonClick: PropTypes.func.isRequired,
-  onMenuClick: PropTypes.func.isRequired,
+  onLoginButtonClick: PropTypes.func,
+  onMenuClick: PropTypes.func,
   organisationLink: PropTypes.object,
   shortDescription: PropTypes.object,
   template: PropTypes.string,

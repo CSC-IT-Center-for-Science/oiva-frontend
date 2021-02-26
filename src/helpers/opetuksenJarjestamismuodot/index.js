@@ -1,5 +1,6 @@
 import {
   append,
+  drop,
   mapObjIndexed,
   groupBy,
   prop,
@@ -13,10 +14,16 @@ import {
   propEq,
   path,
   includes,
-  flatten
+  flatten,
+  values,
+  reject,
+  isNil,
+  pathEq,
+  take
 } from "ramda";
 import localforage from "localforage";
 import { __ } from "i18n-for-browser";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 export const initializeOpetuksenJarjestamismuoto = muoto => {
   return omit(["koodiArvo"], {
@@ -45,11 +52,13 @@ export const initializeOpetuksenJarjestamismuodot = muodot => {
 };
 
 export const defineBackendChangeObjects = async (
-  changeObjects = [],
+  changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
+  const { rajoitteetByRajoiteId } = changeObjects;
+
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
   const kohde = find(propEq("tunniste", "opetuksenjarjestamismuoto"), kohteet);
@@ -57,36 +66,67 @@ export const defineBackendChangeObjects = async (
 
   const opetuksenJarjestamismuotoChangeObjs = map(
     jarjestamismuoto => {
+      const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
+            [1, "properties", "value", "value"],
+            jarjestamismuoto.koodiarvo,
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      );
       const changeObj = find(
         compose(
           endsWith(`${jarjestamismuoto.koodiarvo}.valinta`),
           prop("anchor")
         ),
-        changeObjects
+        changeObjects.opetuksenJarjestamismuodot
       );
       const kuvausChangeObj = find(
         compose(
           endsWith(`${jarjestamismuoto.koodiarvo}.kuvaus.A`),
           prop("anchor")
         ),
-        changeObjects
+        changeObjects.opetuksenJarjestamismuodot
       );
 
-      return changeObj
+      const muutosobjekti = changeObj
         ? {
             generatedId: `opetuksenJarjestamismuoto-${Math.random()}`,
             kohde,
             koodiarvo: jarjestamismuoto.koodiarvo,
             koodisto: jarjestamismuoto.koodisto.koodistoUri,
-            kuvaus: changeObj.properties.value,
             maaraystyyppi,
-            meta: {
-              changeObjects: [changeObj, kuvausChangeObj].filter(Boolean),
-              kuvaus: changeObj.properties.value
-            },
+            meta: reject(isNil, {
+              changeObjects: [
+                changeObj,
+                kuvausChangeObj,
+                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+              ].filter(Boolean),
+              kuvaus: kuvausChangeObj ? kuvausChangeObj.properties.value : null
+            }),
             tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
           }
         : null;
+
+      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+      // loput toisiinsa "alenevassa polvessa".
+      const alimaaraykset = values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            muutosobjekti,
+            drop(2, asetukset)
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
+
+      return [muutosobjekti, alimaaraykset];
     },
     append(
       {
@@ -105,7 +145,7 @@ export const defineBackendChangeObjects = async (
    */
   const lisatiedotChangeObj = find(
     compose(includes(".lisatiedot."), prop("anchor")),
-    changeObjects
+    changeObjects.opetuksenJarjestamismuodot
   );
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
