@@ -3,6 +3,7 @@
 const {
   $,
   button,
+  clear,
   goto,
   click,
   closeBrowser,
@@ -50,7 +51,9 @@ step(
 step(
   "Kirjoita kenttään, jonka parametri <parameter> on <parameterValue> arvo <value>",
   async (parameter, parameterValue, value) => {
-    await focus(textBox({ [parameter]: parameterValue }));
+    const field = textBox({ [parameter]: parameterValue });
+    await focus(field);
+    await clear(field);
     await write(value);
   }
 );
@@ -59,8 +62,22 @@ step("Klikkaa esidialogin hakupainiketta", async () => {
   await click(button({ "aria-label": "Hae" }));
 });
 
+step(
+  "Varmista, ettei auki olevalle hakemukselle pääse kirjautumattomana",
+  async () => {
+    const url = await currentURL();
+    await click("Poistu");
+    await click("Kirjaudu ulos");
+    await goto(url);
+    assert.ok(
+      await text("Oiva - Opetushallinnon ohjaus- ja säätelypalvelu").exists()
+    );
+  }
+);
+
 step("Log in as <username>", async username => {
   await click("Kirjaudu sisään");
+  await click("JATKA KIRJAUTUMISEEN");
   await write(username);
   await focus(textBox({ type: "password" }));
   await write(process.env[username]);
@@ -83,6 +100,10 @@ step("Jarjestamislupa", async () => {
   } catch (e) {
     console.error(e);
   }
+});
+
+step("Päivitä selainikkuna", async () => {
+  await reload();
 });
 
 step("Avaa uusi muutospyyntolomake", async () => {
