@@ -1,4 +1,5 @@
 .tooltipBg {
-  --tw-text-opacity: 1 !important;
-  color: rgba(59, 130, 246, var(--tw-text-opacity)) !important;
+  --text-opacity: 1 !important;
+  color: #4299e1 !important;
+  color: rgba(66, 153, 225, var(--text-opacity)) !important;
 }
