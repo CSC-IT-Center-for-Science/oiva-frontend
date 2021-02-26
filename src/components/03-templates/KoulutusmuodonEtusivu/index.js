@@ -3,7 +3,7 @@ import { Typography } from "@material-ui/core";
 import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
-import { NavLink, Route, Router, useHistory } from "react-router-dom";
+import { NavLink, Redirect, Route, Router, useHistory } from "react-router-dom";
 import Jarjestajat from "../Jarjestajat/index";
 import BaseData from "basedata";
 import JarjestajaSwitch from "../JarjestajaSwitch";
@@ -49,17 +49,18 @@ export default function KoulutusmuodonEtusivu({
         </BreadcrumbsItem>
         <Router history={history}>
           <LocalizedSwitch>
-            <Route
-              authenticated={!!user}
-              path={AppRoute.Asianhallinta}
-              render={() => (
-                <Asianhallinta
-                  koulutusmuoto={koulutusmuoto}
-                  user={user}
-                  WizardContainer={WizardContainer}
-                />
-              )}
-            />
+            {!!user && (
+              <Route
+                path={AppRoute.Asianhallinta}
+                render={() => (
+                  <Asianhallinta
+                    koulutusmuoto={koulutusmuoto}
+                    user={user}
+                    WizardContainer={WizardContainer}
+                  />
+                )}
+              />
+            )}
             <Route
               path={AppRoute.Koulutustoimijat}
               render={props => {
@@ -138,7 +139,7 @@ export default function KoulutusmuodonEtusivu({
                 );
               }}
             />
-            <Route path="*">
+            <Route exact={true} path={AppRoute[koulutusmuoto.pascalCase]}>
               <article className="mx-auto w-4/5 mt-12 max-w-8xl">
                 <Typography component="h1" variant="h1">
                   {paasivunOtsikko}
@@ -174,6 +175,9 @@ export default function KoulutusmuodonEtusivu({
                   ) : null}
                 </section>
               </article>
+            </Route>
+            <Route path="*">
+              <Redirect to="/" />
             </Route>
           </LocalizedSwitch>
         </Router>
