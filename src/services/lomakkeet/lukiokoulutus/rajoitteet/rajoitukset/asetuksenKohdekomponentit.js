@@ -163,7 +163,6 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           maaraaikaOption,
           oppilaitokset
