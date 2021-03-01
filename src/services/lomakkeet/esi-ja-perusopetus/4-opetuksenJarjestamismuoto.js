@@ -21,6 +21,8 @@ export async function opetuksenJarjestamismuoto(
 
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
 
+  let eiRelevanttejaMaarayksia = true;
+
   return flatten(
     [
       map(muoto => {
@@ -30,6 +32,9 @@ export async function opetuksenJarjestamismuoto(
             propEq("koodisto", "opetuksenjarjestamismuoto", m),
           maaraykset
         );
+        if (maarays) {
+          eiRelevanttejaMaarayksia = false;
+        }
         return {
           anchor: muoto.koodiarvo,
           categories: [
@@ -87,7 +92,7 @@ export async function opetuksenJarjestamismuoto(
             anchor: "valinta",
             name: "RadioButtonWithLabel",
             properties: {
-              isChecked: true,
+              isChecked: eiRelevanttejaMaarayksia,
               isIndeterminate: false,
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
