@@ -184,6 +184,25 @@ export const getAsetuksenKohdekomponentti = async (
         value: ""
       }
     };
+  } else if (asetuksenKohdeavain === "oikeusSisaoppilaitosmuotoiseenKoulutukseen") {
+    return {
+      anchor: "kohde",
+      name: "Autocomplete",
+      layout: { indentation: "none" },
+      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
+      properties: {
+        isMulti: false,
+        isReadOnly,
+        isVisible: !isReadOnly,
+        options: [
+          find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
+          find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
+          maaraaikaOption,
+          oppilaitokset
+        ],
+        value: ""
+      }
+    };
   } else {
     return {
       anchor: "ei-valittavia-kohteita",
