@@ -1,7 +1,7 @@
 import getOpetustaAntavatKunnat from "./rajoitukset/1-opetustaAntavatKunnat";
 import getOpetuskielikomponentit from "./rajoitukset/2-opetuskielet";
 import getOpetuksenJarjestamismuotokomponentit from "./rajoitukset/4-opetuksenjarjestamismuoto";
-import getErityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
+import getErityisetKoulutustehtavat from "./rajoitukset/4-erityisetKoulutustehtavat";
 import getMuutEhdot from "./rajoitukset/7-muutEhdot";
 import { getMaaraaikalomake } from "./rajoitukset/maaraaika";
 import { prop } from "ramda";

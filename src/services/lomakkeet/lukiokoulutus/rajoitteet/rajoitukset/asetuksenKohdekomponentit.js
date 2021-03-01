@@ -38,10 +38,12 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
-          find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
+          find(
+            propEq("value", "oikeusSisaoppilaitosmuotoiseenKoulutukseen"),
+            kohdevaihtoehdot
+          ),
           maaraaikaOption,
           oppilaitokset
         ],
@@ -72,7 +74,6 @@ export const getAsetuksenKohdekomponentti = async (
                 };
               }, kujalisamaareet)
             : [
-                find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
                 find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
                 find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
                 find(
@@ -121,7 +122,6 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
@@ -143,7 +143,6 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           maaraaikaOption,
@@ -163,7 +162,6 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           maaraaikaOption,
           oppilaitokset
