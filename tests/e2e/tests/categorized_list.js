@@ -118,7 +118,7 @@ step("Vieritä tekstiin <teksti>", async teksti => {
 });
 
 step("Vieritä alas <pikselimaara>", async pikselimaara => {
-  await scrollDown(pikselimaara);
+  await scrollDown(parseInt(pikselimaara, 10));
 });
 
 step(
