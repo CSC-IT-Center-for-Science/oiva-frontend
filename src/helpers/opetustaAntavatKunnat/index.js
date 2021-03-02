@@ -395,7 +395,7 @@ export async function defineBackendChangeObjects(
                     meta: {
                       changeObjects: concat(
                         perustelut || [],
-                        take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+                        values(rajoitteetByRajoiteIdAndKoodiarvo)
                       ),
                       perusteluteksti: [
                         {
@@ -499,35 +499,35 @@ export async function defineBackendChangeObjects(
     changeObjects.ulkomaa
   );
 
-  let ulkomaaBEchangeObjectTextBoxes = changeObjUlkomaaTextBoxes.map((item, index) => {
-    const rajoitteetByRajoiteIdAndKoodiarvo = reject(
-      isNil,
-      mapObjIndexed(rajoite => {
-        return pathEq([1, "properties", "value", "value"], "200", rajoite) && pathEq([1, "properties", "value", "index"], index, rajoite)
-          ? rajoite
-          : null;
-      }, rajoitteetByRajoiteId)
-    );
+  let ulkomaaBEchangeObjectTextBoxes = changeObjUlkomaaTextBoxes.map(
+    (item, index) => {
+      const rajoitteetByRajoiteIdAndKoodiarvo = reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq([1, "properties", "value", "value"], "200", rajoite) &&
+            pathEq([1, "properties", "value", "index"], index, rajoite)
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
+      );
 
-    return {
-      generatedId: `ulkomaa-${Math.random()}`,
-      tila: "LISAYS",
-      meta: {
-        arvo: path(["properties", "value"], item),
-        changeObjects: concat(
-          [item],
-          take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
-        )
-      },
-      kohde,
-      koodiarvo: path(
-        ["properties", "metadata", "koodiarvo"],
-        item
-      ),
-      koodisto: "kunta",
-      maaraystyyppi
+      return {
+        generatedId: `ulkomaa-${Math.random()}`,
+        tila: "LISAYS",
+        meta: {
+          arvo: path(["properties", "value"], item),
+          changeObjects: concat(
+            [item],
+            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+          )
+        },
+        kohde,
+        koodiarvo: path(["properties", "metadata", "koodiarvo"], item),
+        koodisto: "kunta",
+        maaraystyyppi
+      };
     }
-  })
+  );
 
   let alimaarayksetUlkomaa = [];
 
@@ -536,7 +536,8 @@ export async function defineBackendChangeObjects(
       const rajoitteetByRajoiteIdAndKoodiarvo = reject(
         isNil,
         mapObjIndexed(rajoite => {
-          return pathEq([1, "properties", "value", "value"], "200", rajoite) && pathEq([1, "properties", "value", "index"], index, rajoite)
+          return pathEq([1, "properties", "value", "value"], "200", rajoite) &&
+            pathEq([1, "properties", "value", "index"], index, rajoite)
             ? rajoite
             : null;
         }, rajoitteetByRajoiteId)

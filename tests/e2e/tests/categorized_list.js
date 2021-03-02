@@ -113,6 +113,30 @@ step("Scroll down <selector> <amountInPx>", async (selector, pixels = 100) => {
   await scrollDown($(selector), pixels);
 });
 
+step("Vieritä tekstiin <teksti>", async teksti => {
+  await scrollTo(teksti);
+});
+
+step("Vieritä alas <pikselimaara>", async pikselimaara => {
+  await scrollDown(pikselimaara);
+});
+
+step(
+  "Valitse rajoituksen <kohdeId> kohteeksi <teksti>",
+  async (kohdeId, teksti) => {
+    await click($(`input[id="${kohdeId}"]`));
+    await click(teksti);
+  }
+);
+
+step(
+  "Valitse kohteen tarkentimen <inputId> arvoksi <teksti>",
+  async (inputId, teksti) => {
+    await click($(`input[id="${inputId}"]`));
+    await click(teksti);
+  }
+);
+
 step("View textbox <anchor>", async anchor => {
   const storedValue = gauge.dataStore.scenarioStore.get(anchor);
   const textBox = await getTextBox(anchor);
