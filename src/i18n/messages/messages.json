@@ -1770,6 +1770,16 @@
     "filepath": "src/i18n/definitions/education.js"
   },
   {
+    "id": "education.valtakunnallinenKehittamistehtavaInfo",
+    "defaultMessage": "Erityisiin koulutustehtäviin sisältyvät valtakunnalliset kehittämistehtävät seuraavissa opetuspainotuksissa:",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
+    "id": "education.valtakunnallinenKehittamistehtavaInfo2",
+    "defaultMessage": "Ei lisättyjä valtakunnallisia kehittämistehtäviä",
+    "filepath": "src/i18n/definitions/education.js"
+  },
+  {
     "id": "error.duplicateAsianumero",
     "defaultMessage": "Asianumero on jo käytössä toisella muutospyynnöllä",
     "filepath": "src/i18n/definitions/error.js"
