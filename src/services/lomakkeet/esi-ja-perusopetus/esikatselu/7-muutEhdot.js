@@ -14,6 +14,7 @@ import {
 } from "ramda";
 import { getAnchorPart, removeAnchorPart } from "utils/common";
 import { getRajoitteet } from "utils/rajoitteetUtils";
+import Lisatiedot from "../../lisatiedot";
 
 export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   let structure = [];
@@ -96,18 +97,7 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
     structure = append(
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              title: lisatiedotNode.properties.value
-            }
-          }
-        ]
-      },
+      Lisatiedot(lisatiedotNode.properties.value),
       structure
     );
   }
