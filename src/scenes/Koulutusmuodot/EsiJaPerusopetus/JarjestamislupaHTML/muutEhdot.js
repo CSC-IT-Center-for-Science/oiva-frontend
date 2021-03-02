@@ -15,6 +15,7 @@ import education from "../../../../i18n/definitions/education";
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
+import { getLocalizedProperty } from "services/lomakkeet/utils";
 
 export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
   const intl = useIntl();
@@ -62,7 +63,7 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
               muutEhdotKoodisto
             );
 
-            naytettavaArvo = koodistosta.metadata[localeUpper].nimi;
+            naytettavaArvo = getLocalizedProperty(koodistosta.metadata, localeUpper, "kuvaus");
           }
 
           const result = (
