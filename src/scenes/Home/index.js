@@ -27,7 +27,7 @@ const Home = () => {
       </Typography>
       <section>
         <Typography component="h2" variant="h2" className="py-4">
-          {formatMessage(common.jarjestamisJaYllapitamisluvat)}
+          {formatMessage(common.jarjestamisJaYllapitamisluvatOtsikko)}
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-auto">
           {addIndex(map)(
