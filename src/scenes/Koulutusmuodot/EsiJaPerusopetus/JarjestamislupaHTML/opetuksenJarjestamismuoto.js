@@ -24,9 +24,12 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
     maaraykset
   );
 
-  const jarjestamismuodonMetadata = path(["koodi", "metadata"], opetuksenJarjestamismuoto);
-  const kuvaus = opetuksenJarjestamismuoto.meta.kuvaus ||
-    getLocalizedProperty(jarjestamismuodonMetadata, locale, "kuvaus");
+  let kuvaus = null;
+  if (opetuksenJarjestamismuoto) {
+    const jarjestamismuodonMetadata = path(["koodi", "metadata"], opetuksenJarjestamismuoto);
+    kuvaus = opetuksenJarjestamismuoto.meta.kuvaus ||
+      getLocalizedProperty(jarjestamismuodonMetadata, locale, "kuvaus");
+  }
 
   return opetuksenJarjestamismuoto || lisatietomaarays ? (
     <div className="mt-4">
