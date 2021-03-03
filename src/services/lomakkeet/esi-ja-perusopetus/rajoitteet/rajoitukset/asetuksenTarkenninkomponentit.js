@@ -34,7 +34,8 @@ export const getAsetuksenTarkenninkomponentit = async (
   useMultiselect,
   locale,
   osioidenData,
-  isReadOnly = false
+  isReadOnly = false,
+  inputId
 ) => {
   if (!asetuksenKohdeavain) {
     return false;
@@ -46,7 +47,8 @@ export const getAsetuksenTarkenninkomponentit = async (
         isReadOnly,
         prop(asetuksenKohdeavain, osioidenData),
         locale,
-        useMultiselect
+        useMultiselect,
+        inputId
       )) || []
     );
   } else {

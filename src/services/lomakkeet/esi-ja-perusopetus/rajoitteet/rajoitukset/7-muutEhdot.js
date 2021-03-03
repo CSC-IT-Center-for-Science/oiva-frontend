@@ -12,7 +12,13 @@ import {
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 
-export default async function getMuutEhdot(isReadOnly, osionData = [], locale, useMultiselect = false) {
+export default async function getMuutEhdot(
+  isReadOnly,
+  osionData = [],
+  locale,
+  useMultiselect = false,
+  inputId
+) {
   const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
 
@@ -26,6 +32,7 @@ export default async function getMuutEhdot(isReadOnly, osionData = [], locale, u
           forChangeObject: {
             section: "muutEhdot"
           },
+          inputId,
           isMulti: useMultiselect,
           isReadOnly,
           options: flatten(
