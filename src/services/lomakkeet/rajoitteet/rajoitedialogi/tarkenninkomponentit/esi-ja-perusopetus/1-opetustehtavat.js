@@ -65,7 +65,5 @@ export default async function getOpetustehtavakomponentit(
     ];
   }
 
-  console.info(lomakerakenne);
-
   return lomakerakenne;
 }
