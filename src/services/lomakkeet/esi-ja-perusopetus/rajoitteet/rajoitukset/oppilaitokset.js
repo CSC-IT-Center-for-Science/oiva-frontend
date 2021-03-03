@@ -21,7 +21,7 @@ export default async function getOppilaitokset(
             section: "oppilaitokset"
           },
           inputId,
-          isMulti: useMultiselect,
+          isMulti: true,
           isReadOnly,
           options: map(oppilaitos => {
             return {
