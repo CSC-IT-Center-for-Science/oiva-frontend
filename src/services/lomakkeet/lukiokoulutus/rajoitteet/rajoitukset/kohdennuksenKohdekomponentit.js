@@ -1,8 +1,14 @@
 import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
-import { map, path, toUpper } from "ramda";
+import {
+  map,
+  path,
+  toUpper
+} from "ramda";
 
 export const getKohdennuksenKohdekomponentti = async (isReadOnly, locale) => {
-  const kujalisamaareet = await getKujalisamaareetFromStorage("joistaLisaksi");
+  const kujalisamaareet = await getKujalisamaareetFromStorage(
+    "joistaLisaksi"
+  );
   return {
     anchor: "kohde",
     name: "Autocomplete",

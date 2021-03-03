@@ -1,4 +1,3 @@
-import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import {
   compose,
   endsWith,
@@ -11,18 +10,18 @@ import {
   toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
+import { getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 
-export default async function getMuutEhdot(
+export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false,
-  inputId
+  useMultiselect = false
 ) {
-  const muutEhdot = await getPOMuutEhdotFromStorage();
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
   const localeUpper = toUpper(locale);
 
-  if (muutEhdot.length) {
+  if (oikeusSisaoppilaitosmuotoiseenKoulutukseen.length) {
     return [
       {
         anchor: "komponentti",
@@ -30,13 +29,12 @@ export default async function getMuutEhdot(
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
           forChangeObject: {
-            section: "muutEhdot"
+            section: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
           },
-          inputId,
           isMulti: useMultiselect,
           isReadOnly,
           options: flatten(
-            map(muuEhto => {
+            map(item => {
               /**
                * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
                * valittuna lomakkeella, jota vasten rajoituksia ollaan
@@ -44,7 +42,7 @@ export default async function getMuutEhdot(
                **/
               const stateObj = find(
                 compose(
-                  endsWith(`.${muuEhto.koodiarvo}.valintaelementti`),
+                  endsWith(`.${item.koodiarvo}.valinta`),
                   prop("anchor")
                 ),
                 osionData
@@ -55,8 +53,8 @@ export default async function getMuutEhdot(
                 // on kaivettava osion datasta koodiarvolla.
                 const kuvausStateObjects = filter(stateObj => {
                   return (
-                    getAnchorPart(stateObj.anchor, 1) === muuEhto.koodiarvo &&
-                    endsWith(".kuvaus", stateObj.anchor)
+                    getAnchorPart(stateObj.anchor, 1) === item.koodiarvo &&
+                    endsWith(".kuvaus.A", stateObj.anchor)
                   );
                 }, osionData);
 
@@ -64,7 +62,7 @@ export default async function getMuutEhdot(
                  * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
-                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
+                  path(["metadata", "FI", "kayttoohje"], item) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
@@ -76,15 +74,15 @@ export default async function getMuutEhdot(
                         return option;
                       }, kuvausStateObjects)
                     : {
-                        label: muuEhto.metadata[localeUpper].nimi,
-                        value: `${muuEhto.koodiarvo}-0`
+                        label: item.metadata[localeUpper].nimi,
+                        value: `${item.koodiarvo}`
                       };
 
                 return options;
               }
 
               return null;
-            }, muutEhdot).filter(Boolean)
+            }, oikeusSisaoppilaitosmuotoiseenKoulutukseen).filter(Boolean)
           ),
           value: ""
         }

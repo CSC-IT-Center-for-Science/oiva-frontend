@@ -7,6 +7,11 @@ import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
  rajoitteen kohteelle on valittavissa.
  */
 
+const oppilaitokset = {
+  label: "Oppilaitokset",
+  value: "oppilaitokset"
+};
+
 export const getAsetuksenKohdekomponentti = async (
   asetuksenKohdeavain,
   isReadOnly = false,
@@ -37,7 +42,8 @@ export const getAsetuksenKohdekomponentti = async (
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
-          maaraaikaOption
+          maaraaikaOption,
+          oppilaitokset
         ],
         value: ""
       }
@@ -77,7 +83,8 @@ export const getAsetuksenKohdekomponentti = async (
                   propEq("value", "erityisetKoulutustehtavat"),
                   kohdevaihtoehdot
                 ),
-                maaraaikaOption
+                maaraaikaOption,
+                oppilaitokset
               ]
       }
     };
@@ -119,7 +126,8 @@ export const getAsetuksenKohdekomponentti = async (
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
           find(propEq("value", "erityisetKoulutustehtavat"), kohdevaihtoehdot),
-          maaraaikaOption
+          maaraaikaOption,
+          oppilaitokset
         ],
         value: ""
       }
@@ -138,7 +146,8 @@ export const getAsetuksenKohdekomponentti = async (
           find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
-          maaraaikaOption
+          maaraaikaOption,
+          oppilaitokset
         ],
         value: ""
       }
@@ -154,24 +163,10 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
-          maaraaikaOption
+          maaraaikaOption,
+          oppilaitokset
         ],
-        value: ""
-      }
-    };
-  } else if (asetuksenKohdeavain === "opetustehtavat") {
-    return {
-      anchor: "kohde",
-      name: "Autocomplete",
-      layout: { indentation: "none" },
-      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
-      properties: {
-        isMulti: false,
-        isReadOnly,
-        isVisible: !isReadOnly,
-        options: [maaraaikaOption],
         value: ""
       }
     };
@@ -185,11 +180,35 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
+        options: [maaraaikaOption, oppilaitokset],
+        value: ""
+      }
+    };
+  } else if (asetuksenKohdeavain === "oikeusSisaoppilaitosmuotoiseenKoulutukseen") {
+    return {
+      anchor: "kohde",
+      name: "Autocomplete",
+      layout: { indentation: "none" },
+      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
+      properties: {
+        isMulti: false,
+        isReadOnly,
+        isVisible: !isReadOnly,
         options: [
-          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
-          maaraaikaOption
+          find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
+          find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
+          maaraaikaOption,
+          oppilaitokset
         ],
         value: ""
+      }
+    };
+  } else {
+    return {
+      anchor: "ei-valittavia-kohteita",
+      name: "StatusTextRow",
+      properties: {
+        title: "Ei valittavia kohteita"
       }
     };
   }
