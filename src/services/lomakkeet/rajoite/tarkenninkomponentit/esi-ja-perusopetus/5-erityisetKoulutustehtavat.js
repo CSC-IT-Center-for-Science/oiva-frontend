@@ -16,7 +16,8 @@ export default async function getErityisetKoulutustehtavat(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect
+  useMultiselect,
+  inputId
 ) {
   const localeUpper = toUpper(locale);
   const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
@@ -31,6 +32,7 @@ export default async function getErityisetKoulutustehtavat(
           forChangeObject: {
             section: "erityisetKoulutustehtavat"
           },
+          inputId,
           isMulti: useMultiselect,
           isReadOnly,
           options: flatten(

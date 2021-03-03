@@ -46,12 +46,13 @@ async function getAsetuslomakekokonaisuus(
   index = 0,
   lomakerakenne = []
 ) {
+  const inputId = `${asetuksenKohdeavain}-${index}`;
   const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
     asetuksenKohdeavain,
-    kohdevaihtoehdot,
     isReadOnly,
     locale,
-    index
+    index,
+    `asetuksenKohde-${inputId}`
   );
 
   const asetuksenTarkenninlomakkeenAvain =
@@ -66,7 +67,8 @@ async function getAsetuslomakekokonaisuus(
         useMultiSelect,
         locale,
         osioidenData,
-        isReadOnly
+        isReadOnly,
+        `asetuksenTarkennin-${inputId}`
       )
     : [];
 
@@ -347,6 +349,7 @@ const getKohdennuksetRecursively = async (
                         name: "Autocomplete",
                         styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
                         properties: {
+                          inputId: `kohde-${join("-", kohdennusindeksipolku)}`,
                           isMulti: false,
                           isReadOnly,
                           isVisible: !isReadOnly,
