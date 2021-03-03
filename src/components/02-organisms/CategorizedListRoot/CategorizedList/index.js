@@ -770,6 +770,7 @@ const CategorizedList = props => {
                                 }
                                 fullAnchor={fullAnchor}
                                 id={fullAnchor}
+                                inputId={propsObj.inputId}
                                 isMulti={propsObj.isMulti}
                                 isPreviewModeOn={propsObj.isPreviewModeOn}
                                 isRequired={propsObj.isRequired}

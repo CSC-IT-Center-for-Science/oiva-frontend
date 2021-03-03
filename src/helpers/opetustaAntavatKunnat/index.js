@@ -395,7 +395,7 @@ export async function defineBackendChangeObjects(
                     meta: {
                       changeObjects: concat(
                         perustelut || [],
-                        take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+                        values(rajoitteetByRajoiteIdAndKoodiarvo)
                       ),
                       perusteluteksti: [
                         {

@@ -6,7 +6,8 @@ export default async function getOpetustehtavakomponentit(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  useMultiselect = false,
+  inputId
 ) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
 
@@ -20,6 +21,7 @@ export default async function getOpetustehtavakomponentit(
           forChangeObject: {
             section: "getOpetustehtavatLomake"
           },
+          inputId,
           isMulti: useMultiselect,
           isReadOnly,
           options: map(opetustehtava => {

@@ -36,6 +36,9 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
           koulutusmuodon: "esi- ja perusopetuksen"
         })}
       </Typography>
+      {lupa.loppupvm &&
+      <p className="mb-4">{formatMessage(esiJaPerusopetus.onVoimassa, {loppupvm: moment(lupa.loppupvm).format("D.M.YYYY")})}</p>
+      }
       <p className="mb-4">{formatMessage(esiJaPerusopetus.esittelyteksti)}</p>
 
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />

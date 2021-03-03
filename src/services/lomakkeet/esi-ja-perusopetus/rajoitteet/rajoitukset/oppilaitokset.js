@@ -4,7 +4,9 @@ import localforage from "localforage";
 export default async function getOppilaitokset(
   isReadOnly,
   osionData = [],
-  locale
+  locale,
+  useMultiselect,
+  inputId
 ) {
   const oppilaitokset = await localforage.getItem("oppilaitoksetByOid");
 
@@ -18,6 +20,7 @@ export default async function getOppilaitokset(
           forChangeObject: {
             section: "oppilaitokset"
           },
+          inputId,
           isMulti: true,
           isReadOnly,
           options: map(oppilaitos => {
