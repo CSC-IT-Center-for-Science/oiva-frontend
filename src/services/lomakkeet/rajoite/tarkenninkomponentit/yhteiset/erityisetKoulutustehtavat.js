@@ -16,7 +16,6 @@ export default async function getErityisetKoulutustehtavat(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect,
   inputId
 ) {
   const localeUpper = toUpper(locale);
@@ -33,7 +32,7 @@ export default async function getErityisetKoulutustehtavat(
             section: "erityisetKoulutustehtavat"
           },
           inputId,
-          isMulti: useMultiselect,
+          isMulti: true,
           isReadOnly,
           options: flatten(
             map(erityinenKoulutustehtava => {

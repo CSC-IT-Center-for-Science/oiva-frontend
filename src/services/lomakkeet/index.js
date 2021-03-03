@@ -16,6 +16,9 @@ import getYhteenvetoLiitteetLomake from "./yhteenveto/liitteet";
 import getYhteenvetoYleisetTiedotLomake from "./yhteenveto/yleisetTiedot";
 import getTopThree from "./esittelija";
 
+// Rajoitelomake (yksi ja sama toteutus koulutusmuodosta riippumatta)
+import { rajoitelomake } from "./rajoite/rajoitelomake";
+
 // Ammatillisen koulutuksen muokkauslomakkeet
 import { getMuutLaajennettu } from "./ammatillinenKoulutus/5-muut/laajennettuOppisopimuskoulutus";
 import { getMuutVaativaTuki } from "./ammatillinenKoulutus/5-muut/vaativaTuki";
@@ -40,7 +43,6 @@ import { erityisetKoulutustehtavat } from "./esi-ja-perusopetus/5-erityisetKoulu
 import { muutEhdot } from "./esi-ja-perusopetus/7-muutEhdot";
 import { opetustaAntavatKunnat } from "./esi-ja-perusopetus/2-opetustaAntavatKunnat";
 import { rajoitteet } from "./esi-ja-perusopetus/rajoitteet/9-rajoitteet";
-import { rajoitelomake } from "./esi-ja-perusopetus/rajoitteet/rajoite";
 
 // Esi- ja perusopetuksen esikatselulomakkeet
 import { previewOfOpetusJotaLupaKoskee } from "./esi-ja-perusopetus/esikatselu/1-opetusJotaLupaKoskee";
@@ -62,10 +64,8 @@ import { getValtakunnallinenKehittamistehtavalomake } from "./lukiokoulutus/5-va
 import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
 import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
 import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
-import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/rajoite";
 
 // Lukiokoulutuksen esikatselulomakkeet
-
 import { previewOfOpetustaAntavaKunnat as previewOfOpetustaAntavaKunnatLukio } from "./lukiokoulutus/esikatselu/1-opetustaAntavatKunnat";
 import { previewOfOpetuskielet as previewOfOpetuskieletLukio } from "./lukiokoulutus/esikatselu/2-opetuskielet";
 import { previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen } from "./lukiokoulutus/esikatselu/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
@@ -496,7 +496,7 @@ const lomakkeet = {
     },
     rajoite: {
       addition: (data, booleans, locale, changeObjects, functions) =>
-        rajoitelomakeLukio(data, booleans, locale, changeObjects, functions),
+        rajoitelomake(data, booleans, locale, changeObjects, functions),
       preview: (data, booleans, locale, changeObjects) =>
         previewOfRajoiteLukio(data, booleans, locale, changeObjects)
     },

@@ -15,7 +15,7 @@ export default async function getOpetuskielikomponentit(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  inputId
 ) {
   const kielet = await getKieletOPHFromStorage();
 
@@ -46,7 +46,8 @@ export default async function getOpetuskielikomponentit(
             forChangeObject: {
               section: "opetuskielet"
             },
-            isMulti: useMultiselect,
+            inputId,
+            isMulti: true,
             isReadOnly,
             options: map(opetuskieli => {
               /**

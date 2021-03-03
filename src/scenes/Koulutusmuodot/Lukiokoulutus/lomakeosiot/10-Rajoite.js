@@ -17,7 +17,40 @@ import {
 } from "stores/muutokset";
 
 const constants = {
-  formLocation: ["lukiokoulutus", "rajoite"]
+  formLocation: ["lukiokoulutus", "rajoite"],
+  // Kohdevaihtoehtoja käytetään rajoitteita tehtäessä.
+  // Kohteet vaihtelevat koulutusmuodoittain.
+  kohdevaihtoehdot: [
+    {
+      label: "Kunnat, joissa opetusta järjestetään",
+      value: "toimintaalue"
+    },
+    { label: "Opetuskieli", value: "opetuskielet" },
+    {
+      label: "Opetuksen järjestämismuodot",
+      value: "opetuksenJarjestamismuodot"
+    },
+    {
+      label: "Oikeus sisäoppilaitosmuotoiseen koulutukseen",
+      value: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
+    },
+    {
+      label: "Erityinen koulutustehtävä",
+      value: "erityisetKoulutustehtavat"
+    },
+    {
+      label: "Opiskelijamäärät",
+      value: "opiskelijamaarat"
+    },
+    {
+      label: "Muut koulutuksen järjestämiseen liittyvät ehdot",
+      value: "muutEhdot"
+    },
+    {
+      label: "Oppilaitokset",
+      value: "oppilaitokset"
+    }
+  ]
 };
 
 const Rajoite = ({
@@ -104,6 +137,7 @@ const Rajoite = ({
             anchor={`${sectionId}_${restrictionId}`}
             changeObjects={changeObjects}
             data={{
+              kohdevaihtoehdot: constants.kohdevaihtoehdot,
               osioidenData,
               rajoiteId: restrictionId,
               sectionId

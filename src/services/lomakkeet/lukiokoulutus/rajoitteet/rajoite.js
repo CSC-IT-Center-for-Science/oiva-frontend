@@ -179,7 +179,7 @@ const getKohdennuksetRecursively = async (
   ensimmaisenKohdennuksenKohteenTarkenninavain,
   lomakerakenne = []
 ) => {
-  const { osioidenData, rajoiteId } = data;
+  const { kohdevaihtoehdot, osioidenData, rajoiteId } = data;
 
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
     ? await getKohdennuksenKohdekomponentti(isReadOnly, locale)

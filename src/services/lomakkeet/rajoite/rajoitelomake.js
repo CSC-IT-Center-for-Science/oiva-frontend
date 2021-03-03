@@ -6,7 +6,6 @@ import {
   drop,
   find,
   head,
-  includes,
   init,
   join,
   length,
@@ -19,8 +18,7 @@ import {
 
 import { getAsetuksenKohdekomponentti } from "services/lomakkeet/rajoite/asetuksenKohdekomponentit";
 import { getKohdennuksenKohdekomponentti } from "services/lomakkeet/rajoite/kohdennuksenKohdekomponentit";
-import { getKohteenTarkenninkomponentit } from "./kohde/kohteenTarkenninkomponentit";
-import { getAsetuksenTarkenninkomponentit } from "services/lomakkeet/rajoite/asetus/asetuksenTarkenninkomponentit";
+import { getTarkenninkomponentit } from "services/lomakkeet/rajoite/tarkenninkomponentit/index";
 import { getKohdennuksenTarkenninkomponentit } from "services/lomakkeet/rajoite/kohdennuksenTarkenninkomponentit";
 import { getAnchorPart } from "utils/common";
 
@@ -37,7 +35,6 @@ async function getAsetuslomakekokonaisuus(
   rajoiteId,
   rajoiteChangeObjects,
   asetuksenKohdeavain,
-  useMultiSelect,
   osioidenData,
   locale,
   onRemoveCriterion,
@@ -49,6 +46,7 @@ async function getAsetuslomakekokonaisuus(
   const inputId = `${asetuksenKohdeavain}-${index}`;
   const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
     asetuksenKohdeavain,
+    kohdevaihtoehdot,
     isReadOnly,
     locale,
     index,
@@ -62,9 +60,8 @@ async function getAsetuslomakekokonaisuus(
     ) || path(["properties", "value", "value"], asetuksenKohdekomponentti);
 
   const asetuksenTarkenninkomponentit = asetuksenTarkenninlomakkeenAvain
-    ? await getAsetuksenTarkenninkomponentit(
+    ? await getTarkenninkomponentit(
         asetuksenTarkenninlomakkeenAvain,
-        useMultiSelect,
         locale,
         osioidenData,
         isReadOnly,
@@ -117,18 +114,10 @@ async function getAsetuslomakekokonaisuus(
   ).length;
 
   if (index < asetuksetLength - 1) {
-    // const asetuksenKohdeavain = prop("asetukset", rajoiteChangeObjects)
-    //   ? path(
-    //       ["asetukset", `${index}`, "kohde", "properties", "value", "value"],
-    //       rajoiteChangeObjects
-    //     )
-    //   : asetuksenKohdeavain;
-
     return getAsetuslomakekokonaisuus(
       rajoiteId,
       rajoiteChangeObjects,
       asetuksenKohdeavain,
-      useMultiSelect,
       osioidenData,
       locale,
       onRemoveCriterion,
@@ -138,8 +127,6 @@ async function getAsetuslomakekokonaisuus(
       updatedLomakerakenne
     );
   }
-
-  // console.info(updatedLomakerakenne);
 
   return updatedLomakerakenne;
 }
@@ -195,18 +182,11 @@ const getKohdennuksetRecursively = async (
     rajoiteChangeObjects
   );
 
-  const useMultiselect = includes("opiskelijamaarat", [
-    kohteenAvain,
-    kohdennuksenKohdeavain,
-    kohteenTarkenninavain
-  ]);
-
-  const kohteenTarkenninkomponentit = await getKohteenTarkenninkomponentit(
-    osioidenData,
+  const kohteenTarkenninkomponentit = await getTarkenninkomponentit(
     kohteenTarkenninavain,
     locale,
-    isReadOnly,
-    useMultiselect
+    osioidenData,
+    isReadOnly
   );
 
   let ensimmaisenAsetuksenKohdeavain =
@@ -233,7 +213,6 @@ const getKohdennuksetRecursively = async (
     rajoiteId,
     rajoiteChangeObjects,
     ensimmaisenAsetuksenKohdeavain,
-    useMultiselect,
     osioidenData,
     locale,
     onRemoveCriterion,
