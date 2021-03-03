@@ -16,7 +16,8 @@ export const getAsetuksenKohdekomponentti = async (
   asetuksenKohdeavain,
   isReadOnly = false,
   locale,
-  index
+  index,
+  inputId
 ) => {
   const localeUpper = toUpper(locale);
 
@@ -34,6 +35,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -59,6 +61,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -98,6 +101,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -117,6 +121,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -139,6 +144,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -159,6 +165,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -178,6 +185,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
@@ -192,6 +200,7 @@ export const getAsetuksenKohdekomponentti = async (
       layout: { indentation: "none" },
       styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
       properties: {
+        inputId,
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,

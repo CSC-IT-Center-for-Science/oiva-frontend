@@ -189,9 +189,7 @@ const Autocomplete = React.memo(
                 getOptionValue={option => `${option.value}`}
                 name={props.name}
                 hideSelectedOptions={props.isSearch}
-                inputProps={{
-                  id: "select-multiple"
-                }}
+                inputId={props.inputId}
                 isMulti={props.isMulti}
                 isSearchable={true}
                 menuIsOpen={isOptionsShown}
@@ -216,6 +214,7 @@ const Autocomplete = React.memo(
               <Select
                 autosize={props.autosize}
                 hideSelectedOptions={props.hideSelectedOptions}
+                inputId={props.inputId}
                 isMulti={props.isMulti}
                 name={props.name}
                 noOptionsMessage={() =>
@@ -227,9 +226,6 @@ const Autocomplete = React.memo(
                     ? props.placeholder
                     : intl.formatMessage(commonMessages.autocompleteValitse)
                 }
-                inputProps={{
-                  id: "select-multiple"
-                }}
                 options={options}
                 getOptionLabel={option => `${option.label}`}
                 getOptionValue={option => `${option.value}`}
@@ -248,6 +244,7 @@ const Autocomplete = React.memo(
   },
   (cp, np) => {
     return (
+      equals(cp.id, np.id) &&
       equals(cp.isPreviewModeOn, np.isPreviewModeOn) &&
       equals(cp.isValid, np.isValid) &&
       equals(cp.isVisible, np.isVisible) &&
@@ -278,6 +275,7 @@ Autocomplete.defaultProps = {
 Autocomplete.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
+  inputId: PropTypes.string,
   isMulti: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,

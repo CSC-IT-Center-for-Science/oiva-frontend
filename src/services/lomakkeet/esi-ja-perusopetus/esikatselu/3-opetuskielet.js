@@ -12,6 +12,7 @@ import {
   sortBy
 } from "ramda";
 import { getRajoitteet } from "utils/rajoitteetUtils";
+import Lisatiedot from "../../lisatiedot";
 
 export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   let structure = [];
@@ -88,18 +89,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
     structure = append(
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              title: lisatiedotNode.properties.value
-            }
-          }
-        ]
-      },
+      Lisatiedot(lisatiedotNode.properties.value),
       structure
     );
   }
@@ -145,7 +135,9 @@ const getKieletPreview = (kielet, rajoitteet) => {
               ]
             };
           }
-        }, path(["properties", "value"], kielet) || []).filter(Boolean)
+        }, path(["properties", "value"], kielet).filter(Boolean) || []).filter(
+          Boolean
+        )
       )
     : [];
 };

@@ -5,7 +5,7 @@ import getOpetuksenJarjestamismuotokomponentit from "./rajoitukset/4-opetuksenja
 import getErityisetKoulutustehtavat from "./rajoitukset/5-erityisetKoulutustehtavat";
 import getMuutEhdot from "./rajoitukset/7-muutEhdot";
 import { getMaaraaikalomake } from "./rajoitukset/maaraaika";
-import { prop } from "ramda";
+import { join, prop } from "ramda";
 
 /** 
 Oheiset funktiot palauttavat listan kohteen tarkenninvaihtoehdoista.
@@ -18,8 +18,10 @@ export const getKohteenTarkenninkomponentit = async (
   kohdeavain,
   locale,
   isReadOnly = false,
-  useMultiselect = false
+  useMultiselect = false,
+  kohdennusindeksipolku = []
 ) => {
+  const inputId = `${kohdeavain}-${join("-", kohdennusindeksipolku)}`;
   const komponentitByKey = {
     maaraaika: getMaaraaikalomake,
     opetustehtavat: getOpetustehtavakomponentit,
@@ -30,6 +32,7 @@ export const getKohteenTarkenninkomponentit = async (
     opiskelijamaarat: () => [
       {
         anchor: "opiskelijamaarat",
+        inputId,
         name: "Autocomplete",
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
@@ -61,7 +64,8 @@ export const getKohteenTarkenninkomponentit = async (
         isReadOnly,
         prop(kohdeavain, osioidenData),
         locale,
-        useMultiselect
+        useMultiselect,
+        inputId
       )
     : [];
 };

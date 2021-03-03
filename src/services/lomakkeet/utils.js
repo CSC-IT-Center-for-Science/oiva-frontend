@@ -2,6 +2,12 @@ import * as R from "ramda";
 import "./i18n-config";
 import { __ } from "i18n-for-browser";
 import { removeAnchorPart } from "../../utils/common";
+import {
+  groupBy,
+  head,
+  mapObjIndexed,
+  prop
+} from "ramda";
 
 export function getMessages(key) {
   const messages = {
@@ -315,7 +321,17 @@ export const ifOneTerm = async function(terms, lomake, changeObjects) {
 export const ifTerm = R.compose(R.includes(true), checkTerm);
 
 export const getLocalizedProperty = (metadata, locale, propertyName) => {
-const localeUpper = R.toUpper(locale);
+  /**
+   * If metadata is straight from the koodisto it is an array format.
+   * Convert it to object first.
+   **/
+  if (Array.isArray(metadata)) {
+    metadata = mapObjIndexed(
+      head,
+      groupBy(prop("kieli"), metadata)
+    );
+  }
+  const localeUpper = R.toUpper(locale);
   if (R.path([localeUpper, propertyName], metadata)) {
     return R.path([localeUpper, propertyName], metadata);
   }

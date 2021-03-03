@@ -20,7 +20,8 @@ export default async function getOpetustaAntavatKunnat(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  useMultiselect = false,
+  inputId
 ) {
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
@@ -49,15 +50,15 @@ export default async function getOpetustaAntavatKunnat(
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
   const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
-    if(item.properties.metadata) {
+    if (item.properties.metadata) {
       return {
         label: item.properties.value,
         value: item.properties.metadata.koodiarvo,
         index
-      }
+      };
     }
-    return null
-  })
+    return null;
+  });
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj
@@ -78,6 +79,7 @@ export default async function getOpetustaAntavatKunnat(
           forChangeObject: {
             section: "opetustaAntavatKunnat"
           },
+          inputId,
           isMulti: useMultiselect,
           isReadOnly,
           options: concat(
