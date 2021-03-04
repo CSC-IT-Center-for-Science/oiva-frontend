@@ -230,6 +230,7 @@ const WizardContainer = ({
         <LupanakymaA
           isPreviewModeOn={false}
           isRestrictionsModeOn={true}
+          koulutustyyppi={koulutusmuoto.koulutustyyppi}
           lupakohteet={lupakohteet}
           maaraykset={viimeisinLupa.maaraykset}
           valtakunnallinenMaarays={valtakunnallinenMaarays}

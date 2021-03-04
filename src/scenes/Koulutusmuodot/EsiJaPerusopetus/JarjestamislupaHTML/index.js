@@ -5,8 +5,6 @@ import common from "i18n/definitions/common";
 import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import moment from "moment";
 import Typography from "@material-ui/core/Typography";
-import LupanakymaA from "../lupanakymat/LupanakymaA";
-import { find, prop, propEq } from "ramda";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 import PoOpetuskieletHtml from "./opetuskielet";
@@ -19,14 +17,8 @@ import PoOpetuksenMuutEhdotHtml from "./muutEhdot";
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
  */
-const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
-  //const JarjestamislupaJSX = ({ lupa }) => {
+const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
-
-  const valtakunnallinenMaarays = find(
-    propEq("koodisto", "nuts1"),
-    prop("maaraykset", lupa) || []
-  );
 
   return (
     <React.Fragment>
@@ -36,9 +28,13 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
           koulutusmuodon: "esi- ja perusopetuksen"
         })}
       </Typography>
-      {lupa.loppupvm &&
-      <p className="mb-4">{formatMessage(esiJaPerusopetus.onVoimassa, {loppupvm: moment(lupa.loppupvm).format("D.M.YYYY")})}</p>
-      }
+      {lupa.loppupvm && (
+        <p className="mb-4">
+          {formatMessage(esiJaPerusopetus.onVoimassa, {
+            loppupvm: moment(lupa.loppupvm).format("D.M.YYYY")
+          })}
+        </p>
+      )}
       <p className="mb-4">{formatMessage(esiJaPerusopetus.esittelyteksti)}</p>
 
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
@@ -48,14 +44,6 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
       <PoOpiskelijamaaratHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
-
-      {/*<LupanakymaA*/}
-      {/*  isPreviewModeOn={true}*/}
-      {/*  kohteet={kohteet}*/}
-      {/*  lupakohteet={lupakohteet}*/}
-      {/*  maaraykset={lupa.maaraykset}*/}
-      {/*  valtakunnallinenMaarays={valtakunnallinenMaarays}*/}
-      {/*/>*/}
     </React.Fragment>
   );
 };

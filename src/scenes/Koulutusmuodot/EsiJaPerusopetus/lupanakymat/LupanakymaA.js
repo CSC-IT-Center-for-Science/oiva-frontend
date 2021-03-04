@@ -31,10 +31,44 @@ import {
   split,
   startsWith
 } from "ramda";
-import Rajoitteet from "../lomakeosiot/9-Rajoitteet";
 import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
 import AsianumeroYmsKentat from "../lomakeosiot/0-AsianumeroYmsKentat";
+import Rajoitteet from "components/02-organisms/Rajoitteet/index";
+
+// Kohdevaihtoehtoja käytetään rajoitteita tehtäessä.
+// Kohteet vaihtelevat koulutusmuodoittain.
+const rajoitteidenKohdevaihtoehdot = [
+  {
+    label: "Opetus, jota lupa koskee",
+    value: "opetustehtavat"
+  },
+  {
+    label: "Kunnat, joissa opetusta järjestetään",
+    value: "toimintaalue"
+  },
+  { label: "Opetuskieli", value: "opetuskielet" },
+  {
+    label: "Opetuksen järjestämismuodot",
+    value: "opetuksenJarjestamismuodot"
+  },
+  {
+    label: "Erityinen koulutustehtävä",
+    value: "erityisetKoulutustehtavat"
+  },
+  {
+    label: "Opiskelijamäärät",
+    value: "opiskelijamaarat"
+  },
+  {
+    label: "Muut koulutuksen järjestämiseen liittyvät ehdot",
+    value: "muutEhdot"
+  },
+  {
+    label: "Oppilaitokset",
+    value: "oppilaitokset"
+  }
+];
 
 export const getRajoitteetBySection = (sectionId, rajoitteetByRajoiteId) => {
   const rajoitteet = reject(
@@ -65,6 +99,7 @@ const LupanakymaA = React.memo(
   ({
     isPreviewModeOn,
     isRestrictionsModeOn,
+    koulutustyyppi,
     lupakohteet,
     maaraykset,
     valtakunnallinenMaarays
@@ -175,6 +210,8 @@ const LupanakymaA = React.memo(
         <Rajoitteet
           isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
+          kohdevaihtoehdot={rajoitteidenKohdevaihtoehdot}
+          koulutustyyppi={koulutustyyppi}
           sectionId="rajoitteet"
           render={() => {
             return (
