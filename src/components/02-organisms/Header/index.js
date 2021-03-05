@@ -99,7 +99,10 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 
       {!breakpointDesktopLarge && (
         <React.Fragment>
-          <SideNavigation isVisible={isMobileMenuVisible}>
+          <SideNavigation
+            isVisible={isMobileMenuVisible}
+            setIsMobileMenuVisible={setIsMobileMenuVisible}
+          >
             <MobileMenu
               localesByLang={localesByLang}
               onCloseMenu={toggleMobileMenu}

@@ -3,7 +3,12 @@ import Drawer from "@material-ui/core/Drawer";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 
-const SideNavigation = ({ children, handleDrawerToggle, isVisible }) => {
+const SideNavigation = ({
+  children,
+  handleDrawerToggle,
+  isVisible,
+  setIsMobileMenuVisible
+}) => {
   const toggleDrawer = isOpen => event => {
     if (
       event.type === "keydown" &&
@@ -34,6 +39,9 @@ const SideNavigation = ({ children, handleDrawerToggle, isVisible }) => {
         }}
         open={isVisible}
         onClose={toggleDrawer(false)}
+        variant="temporary"
+        onEscapeKeyDown={() => setIsMobileMenuVisible(false)}
+        onBackdropClick={() => setIsMobileMenuVisible(false)}
       >
         <div
           tabIndex={0}
@@ -50,7 +58,8 @@ const SideNavigation = ({ children, handleDrawerToggle, isVisible }) => {
 
 SideNavigation.propTypes = {
   handleDrawerToggle: PropTypes.func,
-  isVisible: PropTypes.bool
+  isVisible: PropTypes.bool,
+  setIsMobileMenuVisible: PropTypes.func.isRequired
 };
 
 export default SideNavigation;
