@@ -1,4 +1,4 @@
-import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
+import { getLukioErityisetKoulutustehtavatFromStorage } from "helpers/lukioErityisetKoulutustehtavat/index";
 import {
   compose,
   endsWith,
@@ -19,7 +19,7 @@ export default async function getErityisetKoulutustehtavat(
   useMultiselect
 ) {
   const localeUpper = toUpper(locale);
-  const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const erityisetKoulutustehtavat = await getLukioErityisetKoulutustehtavatFromStorage();
 
   if (erityisetKoulutustehtavat.length) {
     return [
@@ -61,8 +61,8 @@ export default async function getErityisetKoulutustehtavat(
                   );
                 }, osionData);
 
-                /** Näytetään kuvaukset erityisille koulutustehtäville, joilla on koodistossa
-                 * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
+                 * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
                   path(
