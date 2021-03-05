@@ -245,6 +245,7 @@ export const Wizard = ({
             ) : null}
           </div>
           <WizardActions
+            isPreviewModeOn={isPreviewModeOn}
             isSavingEnabled={isSavingEnabled}
             onClose={leaveOrOpenCancelModal}
             onPreview={() => {

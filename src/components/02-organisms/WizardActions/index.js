@@ -8,13 +8,19 @@ import { WizardBottom } from "components/03-templates/Jarjestaja/MuutospyyntoWiz
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
+const defaultProps = {
+  isPreviewModeOn: false,
+  isSavingEnabled: false
+};
+
 const WizardActions = ({
-  isSavingEnabled = false,
+  isPreviewModeOn = defaultProps.isPreviewModeOn,
+  isSavingEnabled = defaultProps.isSavingEnabled,
   onClose,
   onPreview,
   onSave
 }) => {
-  const intl = useIntl();
+  const { formatMessage } = useIntl();
 
   return (
     <WizardBottom>
@@ -31,7 +37,7 @@ const WizardActions = ({
               onClick={onClose}
               variant="outlined"
             >
-              {intl.formatMessage(wizardMessages.getOut)}
+              {formatMessage(wizardMessages.getOut)}
             </Button>
           </div>
           <Button
@@ -40,7 +46,9 @@ const WizardActions = ({
             onClick={onPreview}
             variant="outlined"
           >
-            {intl.formatMessage(wizardMessages.previewAndPrint)}
+            {isPreviewModeOn
+              ? formatMessage(wizardMessages.closePreview)
+              : formatMessage(wizardMessages.previewAndPrint)}
           </Button>
         </div>
         <SimpleButton
@@ -48,7 +56,7 @@ const WizardActions = ({
           disabled={!isSavingEnabled}
           className="button-right save"
           onClick={onSave}
-          text={intl.formatMessage(wizardMessages.saveDraft)}
+          text={formatMessage(wizardMessages.saveDraft)}
         />
       </div>
     </WizardBottom>
@@ -56,6 +64,8 @@ const WizardActions = ({
 };
 
 WizardActions.propTypes = {
+  // Default: false
+  isPreviewModeOn: PropTypes.bool,
   // Default: false
   isSavingEnabled: PropTypes.bool,
   // Will be called when user wants to close the dialog
