@@ -356,21 +356,7 @@ const getKohdennuksetRecursively = async (
                               components: kohteenTarkenninkomponentit
                             }
                           ]
-                        : [
-                            {
-                              anchor: "tarkennin",
-                              layout: { indentation: "none" },
-                              components: [
-                                {
-                                  anchor: "A",
-                                  name: "StatusTextRow",
-                                  properties: {
-                                    title: "Ei valittavia tarkentimen arvoja"
-                                  }
-                                }
-                              ]
-                            }
-                          ]
+                        : []
                   },
                   ensimmaisenAsetuksenKohdeavain
                     ? {

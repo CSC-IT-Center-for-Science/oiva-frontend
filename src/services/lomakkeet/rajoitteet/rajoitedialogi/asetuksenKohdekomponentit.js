@@ -2,7 +2,7 @@ import { find, head, is, map, path, prop, propEq, toUpper } from "ramda";
 import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
 
 /**
- Tässä tiedostossa määritellään, mitä asetuksia/kriteerejä kullekin
+ Tässä tiedostossa määritellään, mitä asetuksia eli rajoitekriteerejä kullekin
  rajoitteen kohteelle on valittavissa.
  */
 export const getAsetuksenKohdekomponentti = async (
@@ -15,7 +15,6 @@ export const getAsetuksenKohdekomponentti = async (
   inputId
 ) => {
   const localeUpper = toUpper(locale);
-  console.info(koulutustyyppi);
   const kujalisamaareet = await getKujalisamaareetFromStorage("joistaLisaksi");
 
   const ajalla = head(await getKujalisamaareetFromStorage("ajalla"));
@@ -40,14 +39,16 @@ export const getAsetuksenKohdekomponentti = async (
     isMulti: false,
     isReadOnly,
     isVisible: !isReadOnly,
-    options: getOptionObjects([
-      "opetustehtavat",
-      "toimintaalue",
-      "opetuskielet",
-      "opetuksenJarjestamismuodot",
-      maaraaikaOption,
-      "oppilaitokset"
-    ]),
+    options: getOptionObjects(
+      [
+        koulutustyyppi === "1" ? "opetustehtavat" : null,
+        "toimintaalue",
+        "opetuskielet",
+        koulutustyyppi === "1" ? "opetuksenJarjestamismuodot" : null,
+        maaraaikaOption,
+        "oppilaitokset"
+      ].filter(Boolean)
+    ),
     value: ""
   };
 
@@ -72,15 +73,17 @@ export const getAsetuksenKohdekomponentti = async (
       isMulti: false,
       isReadOnly,
       isVisible: !isReadOnly,
-      options: getOptionObjects([
-        "opetustehtavat",
-        "toimintaalue",
-        "opetuskielet",
-        "opetuksenJarjestamismuodot",
-        "erityisetKoulutustehtavat",
-        maaraaikaOption,
-        "oppilaitokset"
-      ]),
+      options: getOptionObjects(
+        [
+          koulutustyyppi === "1" ? "opetustehtavat" : null,
+          "toimintaalue",
+          "opetuskielet",
+          koulutustyyppi === "1" ? "opetuksenJarjestamismuodot" : null,
+          "erityisetKoulutustehtavat",
+          maaraaikaOption,
+          "oppilaitokset"
+        ].filter(Boolean)
+      ),
       value: ""
     },
     opetuksenJarjestamismuodot: {
@@ -88,13 +91,15 @@ export const getAsetuksenKohdekomponentti = async (
       isMulti: false,
       isReadOnly,
       isVisible: !isReadOnly,
-      options: getOptionObjects([
-        "opetustehtavat",
-        "toimintaalue",
-        "opetuskielet",
-        maaraaikaOption,
-        "oppilaitokset"
-      ]),
+      options: getOptionObjects(
+        [
+          koulutustyyppi === "1" ? "opetustehtavat" : null,
+          "toimintaalue",
+          "opetuskielet",
+          maaraaikaOption,
+          "oppilaitokset"
+        ].filter(Boolean)
+      ),
       value: ""
     },
     opetuskielet: {
@@ -125,11 +130,13 @@ export const getAsetuksenKohdekomponentti = async (
       isMulti: false,
       isReadOnly,
       isVisible: !isReadOnly,
-      options: getOptionObjects([
-        "opetustehtavat",
-        maaraaikaOption,
-        "oppilaitokset"
-      ]),
+      options: getOptionObjects(
+        [
+          koulutustyyppi === "1" ? "opetustehtavat" : null,
+          maaraaikaOption,
+          "oppilaitokset"
+        ].filter(Boolean)
+      ),
       value: ""
     }
   };
@@ -155,19 +162,19 @@ export const getAsetuksenKohdekomponentti = async (
                 label: maare.metadata[localeUpper].nimi
               };
             }, kujalisamaareet)
-          : getOptionObjects([
-              "opetustehtavat",
-              "toimintaalue",
-              "opetuskielet",
-              "opetuksenJarjestamismuodot",
-              "erityisetKoulutustehtavat",
-              maaraaikaOption,
-              "oppilaitokset"
-            ])
+          : getOptionObjects(
+              [
+                koulutustyyppi === "1" ? "opetustehtavat" : null,
+                "toimintaalue",
+                "opetuskielet",
+                koulutustyyppi === "1" ? "opetuksenJarjestamismuodot" : null,
+                "erityisetKoulutustehtavat",
+                maaraaikaOption,
+                "oppilaitokset"
+              ].filter(Boolean)
+            )
     };
   }
-
-  console.info(asetuksenKohdeavain, propertiesToReturn);
 
   return propertiesToReturn
     ? {
