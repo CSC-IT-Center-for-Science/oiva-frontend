@@ -24,5 +24,25 @@ export default defineMessages({
   lisaaAlirajoite: {
     id: "rajoitteet.lisaaAlirajoite",
     defaultMessage: "Lisää alirajoite"
+  },
+  lisaaKohdennus: {
+    id: "rajoitteet.lisaaKohdennus",
+    defaultMessage: "Lisää kohdennus"
+  },
+  rajoitekriteerit: {
+    id: "rajoitteet.rajoitekriteerit",
+    defaultMessage: "Rajoitekriteerit"
+  },
+  lisaaKriteeri: {
+    id: "rajoitteet.lisaaKriteeri",
+    defaultMessage: "Lisää kriteeri"
+  },
+  kohdennus: {
+    id: "rajoitteet.kohdennus",
+    defaultMessage: "Kohdennus"
+  },
+  rajoituksenKohde: {
+    id: "rajoitteet.rajoituksenKohde",
+    defaultMessage: "Rajoituksen kohde"
   }
 });

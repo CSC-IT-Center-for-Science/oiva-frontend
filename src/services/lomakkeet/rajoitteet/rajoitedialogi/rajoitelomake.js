@@ -21,6 +21,7 @@ import { getKohdennuksenKohdekomponentti } from "services/lomakkeet/rajoitteet/r
 import { getTarkenninkomponentit } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/index";
 import { getKohdennuksenTarkenninkomponentit } from "services/lomakkeet/rajoitteet/rajoitedialogi/kohdennuksenTarkenninkomponentit";
 import { getAnchorPart } from "utils/common";
+import { __ } from "i18n-for-browser";
 
 const bgColorClassesByIndex = {
   "0": "bg-gray-100",
@@ -194,10 +195,6 @@ const getKohdennuksetRecursively = async (
     koulutustyyppi,
     false // false = käyttäjä voi valita kenttään vain yhden tarkentimen arvon
   );
-  console.info(
-    `Noudetut kohteen tarkenninkomponentit avaimella ${kohteenTarkenninavain}:`,
-    kohteenTarkenninkomponentit
-  );
 
   let ensimmaisenAsetuksenKohdeavain =
     length(kohdennusindeksipolku) % 2 ? kohdennuksenKohdeavain : kohteenAvain;
@@ -288,7 +285,6 @@ const getKohdennuksetRecursively = async (
   const paivitettyLomakerakenne = append(
     {
       anchor: "kohdennukset",
-      // title: "Kohdennukset",
       layout: { indentation: "none" },
       styleClasses: isReadOnly
         ? []
@@ -308,7 +304,7 @@ const getKohdennuksetRecursively = async (
                 length(kohdennusindeksipolku) === 1 ? "border-b" : "",
                 "border-gray-300"
               ],
-          title: `Kohdennus ${join(
+          title: `${__("rajoitteet.kohdennus")} ${join(
             ".",
             map(value => {
               return String(parseInt(value, 10) + 1);
@@ -332,7 +328,7 @@ const getKohdennuksetRecursively = async (
                   {
                     anchor: "kohde",
                     layout: { indentation: "none" },
-                    title: "Rajoituksen kohde",
+                    title: __("rajoitteet.rajoituksenKohde"),
                     components: [
                       {
                         anchor: "valikko",
@@ -361,7 +357,7 @@ const getKohdennuksetRecursively = async (
                   ensimmaisenAsetuksenKohdeavain
                     ? {
                         anchor: "asetukset",
-                        title: "Rajoitekriteerit",
+                        title: __("rajoitteet.rajoitekriteerit"),
                         categories: asetuslomakekokonaisuus
                       }
                     : null
@@ -394,7 +390,7 @@ const getKohdennuksetRecursively = async (
                         (kohdennuksenKohdeavain === "kokonaismaara" ||
                           kohdennuksenKohdeavain === "opiskelijamaarat" ||
                           !!length(lukumaarakomponentit)),
-                      text: "Lisää kohdennus"
+                      text: __("rajoitteet.lisaaKohdennus")
                     }
                   },
                   ((!!length(asetusvaihtoehdot) &&
@@ -423,7 +419,7 @@ const getKohdennuksetRecursively = async (
                           });
                         },
                         properties: {
-                          text: "Lisää kriteeri"
+                          text: __("rajoitteet.lisaaKriteeri")
                         }
                       }
                     : null
