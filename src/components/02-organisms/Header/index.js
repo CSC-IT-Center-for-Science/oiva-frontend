@@ -39,15 +39,6 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
 
-  const is2ndNavVisible = includes(
-    localizeRouteKey(
-      locale,
-      AppRoute.JarjestamisJaYllapitamisluvat,
-      formatMessage
-    ),
-    pathname
-  );
-
   const toggleMobileMenu = () => setIsMobileMenuVisible(!isMobileMenuVisible);
 
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
