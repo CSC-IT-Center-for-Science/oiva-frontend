@@ -34,27 +34,24 @@ export const getAsetuksenKohdekomponentti = async (
     }, optionKeys);
   }
 
-  const erityisetKoulutustehtavatProperties = {
-    inputId,
-    isMulti: false,
-    isReadOnly,
-    isVisible: !isReadOnly,
-    options: getOptionObjects(
-      [
-        koulutustyyppi === "1" ? "opetustehtavat" : null,
-        "toimintaalue",
-        "opetuskielet",
-        koulutustyyppi === "1" ? "opetuksenJarjestamismuodot" : null,
-        maaraaikaOption,
-        "oppilaitokset"
-      ].filter(Boolean)
-    ),
-    value: ""
-  };
-
   let properties = {
-    erityisetKoulutustehtavat_1: erityisetKoulutustehtavatProperties,
-    erityisetKoulutustehtavat_2: erityisetKoulutustehtavatProperties,
+    erityisetKoulutustehtavat: {
+      inputId,
+      isMulti: false,
+      isReadOnly,
+      isVisible: !isReadOnly,
+      options: getOptionObjects(
+        [
+          koulutustyyppi === "1" ? "opetustehtavat" : null,
+          "toimintaalue",
+          "opetuskielet",
+          koulutustyyppi === "1" ? "opetuksenJarjestamismuodot" : null,
+          maaraaikaOption,
+          "oppilaitokset"
+        ].filter(Boolean)
+      ),
+      value: ""
+    },
     lukumaara: {
       inputId,
       isMulti: false,
