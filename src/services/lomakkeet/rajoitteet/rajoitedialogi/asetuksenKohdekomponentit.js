@@ -83,6 +83,21 @@ export const getAsetuksenKohdekomponentti = async (
       ),
       value: ""
     },
+    oikeusSisaoppilaitosmuotoiseenKoulutukseen: {
+      inputId,
+      isMulti: false,
+      isReadOnly,
+      isVisible: !isReadOnly,
+      options: getOptionObjects(
+        [
+          "toimintaalue",
+          "opetuskielet",
+          maaraaikaOption,
+          "oppilaitokset"
+        ].filter(Boolean)
+      ),
+      value: ""
+    },
     opetuksenJarjestamismuodot: {
       inputId,
       isMulti: false,

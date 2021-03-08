@@ -4,6 +4,7 @@ import {
   getMaaraaikakomponentit
 } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/tarkenninkomponentit";
 import getOpetustehtavakomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/esi-ja-perusopetus/1-opetustehtavat";
+import getOikeusSisaoppilaitosmuotoiseenKoulutukseen from "./lukiokoulutus/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import getOpetuksenJarjestamismuotokomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/esi-ja-perusopetus/4-opetuksenjarjestamismuoto";
 import getMuutEhdot from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/esi-ja-perusopetus/7-muutEhdot";
 // Koulutusmuodoille yhteiset tarkentimet
@@ -12,6 +13,7 @@ import getOpetuskielikomponentit from "services/lomakkeet/rajoitteet/rajoitedial
 import getErityisetKoulutustehtavat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/erityisetKoulutustehtavat";
 import getOppilaitokset from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/oppilaitokset";
 import { getMaaraaikalomake } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/maaraaika";
+import { __ } from "i18n-for-browser";
 
 const tarkenninlomakkeet = {
   // Enintään
@@ -23,10 +25,10 @@ const tarkenninlomakkeet = {
 
   erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
   muutEhdot: getMuutEhdot,
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen: getOikeusSisaoppilaitosmuotoiseenKoulutukseen,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
   opetuskielet: getOpetuskielikomponentit,
   opetustehtavat: getOpetustehtavakomponentit,
-  //   opiskelijamaarat: getLukumaarakomponentit,
   oppilaitokset: getOppilaitokset,
   toimintaalue: getKunnat,
   maaraaika: getMaaraaikalomake,
@@ -43,11 +45,11 @@ const tarkenninlomakkeet = {
         options: [
           {
             value: "kokonaismaara",
-            label: "Kokonaisoppilas-/opiskelijamäärä"
+            label: __("opiskelijamaara.kokonaismaara")
           },
           {
             value: "yksittainen",
-            label: "Yksittäinen oppilasmääräkohdennus"
+            label: __("opiskelijamaara.yksittainenKohdennus")
           }
         ],
         value: []
