@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AppBar, Toolbar, useMediaQuery } from "@material-ui/core";
-import { includes, map, values } from "ramda";
+import { map, values } from "ramda";
 import { getKoulutusmuodot, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { AppRoute } from "const/index";
@@ -29,7 +29,6 @@ export const MEDIA_QUERIES = {
 
 const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
   const { formatMessage, locale } = useIntl();
-  const { pathname } = useLocation();
 
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
 
@@ -69,9 +68,6 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                     route: AppRoute.JarjestamisJaYllapitamisluvat,
                     routes: values(
                       map(koulutusmuoto => {
-                        const route = AppRoute.getKoulutusmuodonEtusivu(
-                          koulutusmuoto.kebabCase
-                        );
                         return {
                           key: koulutusmuoto.pascalCase,
                           params: {

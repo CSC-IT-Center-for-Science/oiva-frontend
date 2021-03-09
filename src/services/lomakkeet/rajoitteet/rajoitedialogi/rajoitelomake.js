@@ -153,7 +153,6 @@ const getKohdennuksetRecursively = async (
   lomakerakenne = []
 ) => {
   const { kohdevaihtoehdot, koulutustyyppi, osioidenData, rajoiteId } = data;
-  console.info(koulutustyyppi);
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
     ? await getKohdennuksenKohdekomponentti(isReadOnly, locale)
     : null;
