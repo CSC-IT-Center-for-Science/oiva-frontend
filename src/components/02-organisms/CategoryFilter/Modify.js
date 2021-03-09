@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import CategorizedListRoot from "../CategorizedListRoot";
-import Autocomplete from "../Autocomplete";
+import Autocomplete from "../Autocomplete/index";
 import {
   assoc,
   equals,
@@ -772,26 +772,31 @@ const Modify = React.memo(
                 setCos(nextChanges);
                 setQuickFilterChanges(changes);
                 setProvinceId(null);
-              }}></CategorizedListRoot>
+              }}
+            ></CategorizedListRoot>
           </div>
         </fieldset>
 
         <hr />
 
-        <Autocomplete
-          minChars={1}
-          name="maakunnat-ja-kunnat-filter"
-          options={locations}
-          isSearch
-          callback={onAutocompleteChanges}
-          value={selectedLocations}
-        />
+        <div className="mt-6 z-50">
+          <Autocomplete
+            inputId={"maakunnat-ja-kunnat-filter"}
+            isSearch
+            minChars={1}
+            name="maakunnat-ja-kunnat-filter"
+            options={locations}
+            callback={onAutocompleteChanges}
+            value={selectedLocations}
+          />
+        </div>
         <div className="bg-white overflow-auto p-2">
           <div className="p-4 flex">
             <div
               id="finland_map"
               className="w-2/5"
-              style={{ height: "500px" }}></div>
+              style={{ height: "500px" }}
+            ></div>
             <div className="w-3/5">
               {provinceCategories.length > 0 ? (
                 <CategorizedListRoot
@@ -799,9 +804,8 @@ const Modify = React.memo(
                   categories={provinceCategories}
                   changes={provinceChanges}
                   onUpdate={updateChangeObjects}
-                  uncheckParentWithoutActiveChildNodes={
-                    true
-                  }></CategorizedListRoot>
+                  uncheckParentWithoutActiveChildNodes={true}
+                ></CategorizedListRoot>
               ) : null}
             </div>
           </div>
@@ -810,12 +814,14 @@ const Modify = React.memo(
               <SimpleButton
                 variant={"outlined"}
                 onClick={() => onClose(quickFilterChanges)}
-                text={localizations.cancel}></SimpleButton>
+                text={localizations.cancel}
+              ></SimpleButton>
             </div>
             <div>
               <SimpleButton
                 onClick={() => onClose(quickFilterChanges, cos)}
-                text={localizations.accept}></SimpleButton>
+                text={localizations.accept}
+              ></SimpleButton>
             </div>
           </div>
         </div>

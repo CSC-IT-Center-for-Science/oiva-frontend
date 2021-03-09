@@ -1,4 +1,5 @@
-import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
+import { getLukioErityisetKoulutustehtavatFromStorage } from "helpers/lukioErityisetKoulutustehtavat/index";
+import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat/index";
 import {
   compose,
   endsWith,
@@ -6,22 +7,32 @@ import {
   find,
   flatten,
   map,
-  path,
   prop,
-  toUpper
+  toUpper,
+  path
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 
-export default async function getMuutEhdot(
+export default async function getErityisetKoulutustehtavat(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  voidaankoValitaUseita,
+  inputId,
+  koulutustyyppi
 ) {
-  const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
+  let erityisetKoulutustehtavat = [];
 
-  if (muutEhdot.length) {
+  if (koulutustyyppi === "1") {
+    // 1 = esi- ja perusopetus
+    erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  } else if (koulutustyyppi === "2") {
+    // 2 = lukiokoulutus
+    erityisetKoulutustehtavat = await getLukioErityisetKoulutustehtavatFromStorage();
+  }
+
+  if (erityisetKoulutustehtavat.length) {
     return [
       {
         anchor: "komponentti",
@@ -29,12 +40,13 @@ export default async function getMuutEhdot(
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
           forChangeObject: {
-            section: "muutEhdot"
+            section: "erityisetKoulutustehtavat"
           },
-          isMulti: useMultiselect,
+          inputId,
+          isMulti: voidaankoValitaUseita,
           isReadOnly,
           options: flatten(
-            map(muuEhto => {
+            map(erityinenKoulutustehtava => {
               /**
                * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
                * valittuna lomakkeella, jota vasten rajoituksia ollaan
@@ -42,7 +54,9 @@ export default async function getMuutEhdot(
                **/
               const stateObj = find(
                 compose(
-                  endsWith(`.${muuEhto.koodiarvo}.valintaelementti`),
+                  endsWith(
+                    `.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`
+                  ),
                   prop("anchor")
                 ),
                 osionData
@@ -53,16 +67,20 @@ export default async function getMuutEhdot(
                 // on kaivettava osion datasta koodiarvolla.
                 const kuvausStateObjects = filter(stateObj => {
                   return (
-                    getAnchorPart(stateObj.anchor, 1) === muuEhto.koodiarvo &&
+                    getAnchorPart(stateObj.anchor, 1) ===
+                      erityinenKoulutustehtava.koodiarvo &&
                     endsWith(".kuvaus", stateObj.anchor)
                   );
                 }, osionData);
 
-                /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
-                 * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                /** Näytetään kuvaukset erityisille koulutustehtäville, joilla on koodistossa
+                 * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
-                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
+                  path(
+                    ["metadata", "FI", "kayttoohje"],
+                    erityinenKoulutustehtava
+                  ) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
@@ -74,15 +92,16 @@ export default async function getMuutEhdot(
                         return option;
                       }, kuvausStateObjects)
                     : {
-                        label: muuEhto.metadata[localeUpper].nimi,
-                        value: `${muuEhto.koodiarvo}-0`
+                        label:
+                          erityinenKoulutustehtava.metadata[localeUpper].nimi,
+                        value: `${erityinenKoulutustehtava.koodiarvo}-0`
                       };
 
                 return options;
               }
 
               return null;
-            }, muutEhdot).filter(Boolean)
+            }, erityisetKoulutustehtavat).filter(Boolean)
           ),
           value: ""
         }

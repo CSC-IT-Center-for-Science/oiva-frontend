@@ -17,10 +17,12 @@ import {
 } from "stores/muutokset";
 
 const constants = {
-  formLocation: ["esiJaPerusopetus", "rajoite"]
+  formLocation: ["rajoitteet", "rajoitedialogi"]
 };
 
-const Rajoite = ({
+const Rajoitedialogi = ({
+  kohdevaihtoehdot,
+  koulutustyyppi,
   osioidenData,
   sectionId,
   parentSectionId,
@@ -36,8 +38,6 @@ const Rajoite = ({
   const [changeObjects] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: sectionId
   });
-
-  console.info(rajoitelomakeChangeObjs, sectionId, changeObjects);
 
   const lisaaKohdennus = useCallback(
     ({ metadata }) => {
@@ -104,6 +104,8 @@ const Rajoite = ({
             anchor={`${sectionId}_${restrictionId}`}
             changeObjects={changeObjects}
             data={{
+              kohdevaihtoehdot,
+              koulutustyyppi,
               osioidenData,
               rajoiteId: restrictionId,
               sectionId
@@ -115,6 +117,7 @@ const Rajoite = ({
             }}
             isInExpandableRow={false}
             isSavingState={false}
+            mode={"modification"}
             path={constants.formLocation}
             showCategoryTitles={true}
           ></Lomake>
@@ -146,8 +149,10 @@ const Rajoite = ({
   );
 };
 
-Rajoite.propTypes = {
+Rajoitedialogi.propTypes = {
+  kohdevaihtoehdot: PropTypes.array,
+  koulutustyyppi: PropTypes.string,
   parentSectionId: PropTypes.string
 };
 
-export default Rajoite;
+export default Rajoitedialogi;

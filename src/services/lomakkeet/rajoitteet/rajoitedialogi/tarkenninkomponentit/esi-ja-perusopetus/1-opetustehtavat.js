@@ -1,17 +1,26 @@
 import { getOpetustehtavatFromStorage } from "helpers/opetustehtavat";
 import { compose, endsWith, find, map, prop } from "ramda";
-import { getLocalizedProperty } from "../../../utils";
+import { getLocalizedProperty } from "services/lomakkeet/utils";
 
 export default async function getOpetustehtavakomponentit(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  isMulti,
+  inputId
 ) {
   const opetustehtavat = await getOpetustehtavatFromStorage();
-
+  let lomakerakenne = [
+    {
+      anchor: "teksti",
+      name: "StatusTextRow",
+      properties: {
+        title: "Ei valintamahdollisuutta."
+      }
+    }
+  ];
   if (opetustehtavat.length) {
-    return [
+    lomakerakenne = [
       {
         anchor: "komponentti",
         name: "Autocomplete",
@@ -20,7 +29,8 @@ export default async function getOpetustehtavakomponentit(
           forChangeObject: {
             section: "getOpetustehtavatLomake"
           },
-          isMulti: useMultiselect,
+          inputId,
+          isMulti,
           isReadOnly,
           options: map(opetustehtava => {
             /**
@@ -53,15 +63,9 @@ export default async function getOpetustehtavakomponentit(
         }
       }
     ];
-  } else {
-    return [
-      {
-        anchor: "teksti",
-        name: "StatusTextRow",
-        properties: {
-          title: "Ei valintamahdollisuutta."
-        }
-      }
-    ];
   }
+
+  console.info(lomakerakenne);
+
+  return lomakerakenne;
 }

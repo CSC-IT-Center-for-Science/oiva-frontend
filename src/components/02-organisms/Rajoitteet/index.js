@@ -5,17 +5,19 @@ import { useIntl } from "react-intl";
 import { v4 as uuidv4 } from "uuid";
 import Lomake from "components/02-organisms/Lomake";
 import { useAllSections } from "stores/lomakedata";
-import { useChangeObjects } from "../../../../stores/muutokset";
+import { useChangeObjects } from "stores/muutokset";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
-import Rajoite from "./10-Rajoite";
+import Rajoitedialogi from "components/02-organisms/Rajoitedialogi/index";
 
 const constants = {
-  formLocations: ["lukiokoulutus", "rajoitteet"]
+  formLocations: ["rajoitteet"]
 };
 
 const Rajoitteet = ({
   isPreviewModeOn,
   isRestrictionsModeOn,
+  kohdevaihtoehdot,
+  koulutustyyppi,
   onChangesUpdate,
   render,
   sectionId
@@ -58,13 +60,15 @@ const Rajoitteet = ({
     <React.Fragment>
       {render ? render() : null}
       {isRestrictionDialogVisible && !isPreviewModeOn && (
-        <Rajoite
+        <Rajoitedialogi
+          kohdevaihtoehdot={kohdevaihtoehdot}
+          koulutustyyppi={koulutustyyppi}
           osioidenData={osioidenData}
           onChangesUpdate={onChangesUpdate}
           parentSectionId={sectionId}
           restrictionId={restrictionId}
           sectionId={dialogSectionId}
-        ></Rajoite>
+        ></Rajoitedialogi>
       )}
       {isRestrictionsModeOn && !isPreviewModeOn && (
         <div className="pt-8">
@@ -78,6 +82,7 @@ const Rajoitteet = ({
               onModifyRestriction,
               onRemoveRestriction
             }}
+            mode={"listaus"}
             noPadding={true}
             onChangesUpdate={onChangesUpdate}
             path={constants.formLocations}
@@ -90,7 +95,8 @@ const Rajoitteet = ({
 };
 
 Rajoitteet.propTypes = {
-  isPreviewModeOn: PropTypes.bool
+  isPreviewModeOn: PropTypes.bool,
+  kohdevaihtoehdot: PropTypes.array.isRequired
 };
 
 export default Rajoitteet;

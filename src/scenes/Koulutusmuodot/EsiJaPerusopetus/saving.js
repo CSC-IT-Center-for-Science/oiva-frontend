@@ -170,7 +170,7 @@ export async function createObjectToSave(
         mapObjIndexed(rajoite => {
           return pathEq(
             ["0", "properties", "value", "value"],
-            "erityisetKoulutustehtavat",
+            "erityisetKoulutustehtavatPO",
             rajoite
           )
             ? rajoite

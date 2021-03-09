@@ -1,3 +1,4 @@
+import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import {
   compose,
   endsWith,
@@ -10,18 +11,18 @@ import {
   toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
-import { getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 
-export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
+export default async function getMuutEhdot(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  isMulti,
+  inputId
 ) {
-  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
+  const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
 
-  if (oikeusSisaoppilaitosmuotoiseenKoulutukseen.length) {
+  if (muutEhdot.length) {
     return [
       {
         anchor: "komponentti",
@@ -29,12 +30,13 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
           forChangeObject: {
-            section: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
+            section: "muutEhdot"
           },
-          isMulti: useMultiselect,
+          inputId,
+          isMulti,
           isReadOnly,
           options: flatten(
-            map(item => {
+            map(muuEhto => {
               /**
                * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
                * valittuna lomakkeella, jota vasten rajoituksia ollaan
@@ -42,7 +44,7 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                **/
               const stateObj = find(
                 compose(
-                  endsWith(`.${item.koodiarvo}.valinta`),
+                  endsWith(`.${muuEhto.koodiarvo}.valintaelementti`),
                   prop("anchor")
                 ),
                 osionData
@@ -53,8 +55,8 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                 // on kaivettava osion datasta koodiarvolla.
                 const kuvausStateObjects = filter(stateObj => {
                   return (
-                    getAnchorPart(stateObj.anchor, 1) === item.koodiarvo &&
-                    endsWith(".kuvaus.A", stateObj.anchor)
+                    getAnchorPart(stateObj.anchor, 1) === muuEhto.koodiarvo &&
+                    endsWith(".kuvaus", stateObj.anchor)
                   );
                 }, osionData);
 
@@ -62,7 +64,7 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                  * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
-                  path(["metadata", "FI", "kayttoohje"], item) === "Kuvaus"
+                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
@@ -74,15 +76,15 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                         return option;
                       }, kuvausStateObjects)
                     : {
-                        label: item.metadata[localeUpper].nimi,
-                        value: `${item.koodiarvo}`
+                        label: muuEhto.metadata[localeUpper].nimi,
+                        value: `${muuEhto.koodiarvo}-0`
                       };
 
                 return options;
               }
 
               return null;
-            }, oikeusSisaoppilaitosmuotoiseenKoulutukseen).filter(Boolean)
+            }, muutEhdot).filter(Boolean)
           ),
           value: ""
         }

@@ -1,4 +1,4 @@
-import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
+import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import {
   compose,
   endsWith,
@@ -6,22 +6,22 @@ import {
   find,
   flatten,
   map,
+  path,
   prop,
-  toUpper,
-  path
+  toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 
-export default async function getErityisetKoulutustehtavat(
+export default async function getMuutEhdot(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect
+  isMulti
 ) {
+  const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
-  const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
 
-  if (erityisetKoulutustehtavat.length) {
+  if (muutEhdot.length) {
     return [
       {
         anchor: "komponentti",
@@ -29,12 +29,12 @@ export default async function getErityisetKoulutustehtavat(
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
           forChangeObject: {
-            section: "erityisetKoulutustehtavat"
+            section: "muutEhdot"
           },
-          isMulti: useMultiselect,
+          isMulti,
           isReadOnly,
           options: flatten(
-            map(erityinenKoulutustehtava => {
+            map(muuEhto => {
               /**
                * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
                * valittuna lomakkeella, jota vasten rajoituksia ollaan
@@ -42,9 +42,7 @@ export default async function getErityisetKoulutustehtavat(
                **/
               const stateObj = find(
                 compose(
-                  endsWith(
-                    `.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`
-                  ),
+                  endsWith(`.${muuEhto.koodiarvo}.valintaelementti`),
                   prop("anchor")
                 ),
                 osionData
@@ -55,20 +53,16 @@ export default async function getErityisetKoulutustehtavat(
                 // on kaivettava osion datasta koodiarvolla.
                 const kuvausStateObjects = filter(stateObj => {
                   return (
-                    getAnchorPart(stateObj.anchor, 1) ===
-                      erityinenKoulutustehtava.koodiarvo &&
+                    getAnchorPart(stateObj.anchor, 1) === muuEhto.koodiarvo &&
                     endsWith(".kuvaus", stateObj.anchor)
                   );
                 }, osionData);
 
-                /** Näytetään kuvaukset erityisille koulutustehtäville, joilla on koodistossa
-                 * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
+                 * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
-                  path(
-                    ["metadata", "FI", "kayttoohje"],
-                    erityinenKoulutustehtava
-                  ) === "Kuvaus"
+                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
@@ -80,16 +74,15 @@ export default async function getErityisetKoulutustehtavat(
                         return option;
                       }, kuvausStateObjects)
                     : {
-                        label:
-                          erityinenKoulutustehtava.metadata[localeUpper].nimi,
-                        value: `${erityinenKoulutustehtava.koodiarvo}-0`
+                        label: muuEhto.metadata[localeUpper].nimi,
+                        value: `${muuEhto.koodiarvo}-0`
                       };
 
                 return options;
               }
 
               return null;
-            }, erityisetKoulutustehtavat).filter(Boolean)
+            }, muutEhdot).filter(Boolean)
           ),
           value: ""
         }

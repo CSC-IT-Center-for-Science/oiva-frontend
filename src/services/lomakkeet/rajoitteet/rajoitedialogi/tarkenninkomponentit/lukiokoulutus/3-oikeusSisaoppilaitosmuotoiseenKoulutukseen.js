@@ -1,4 +1,3 @@
-import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import {
   compose,
   endsWith,
@@ -6,22 +5,23 @@ import {
   find,
   flatten,
   map,
+  path,
   prop,
-  toUpper,
-  path
+  toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
+import { getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 
-export default async function getErityisetKoulutustehtavat(
+export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect
+  isMulti
 ) {
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
   const localeUpper = toUpper(locale);
-  const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
 
-  if (erityisetKoulutustehtavat.length) {
+  if (oikeusSisaoppilaitosmuotoiseenKoulutukseen.length) {
     return [
       {
         anchor: "komponentti",
@@ -29,24 +29,19 @@ export default async function getErityisetKoulutustehtavat(
         styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
         properties: {
           forChangeObject: {
-            section: "erityisetKoulutustehtavat"
+            section: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
           },
-          isMulti: useMultiselect,
+          isMulti,
           isReadOnly,
           options: flatten(
-            map(erityinenKoulutustehtava => {
+            map(item => {
               /**
                * Tarkistetaan, onko kyseinen erityinen koulutustehtävä
                * valittuna lomakkeella, jota vasten rajoituksia ollaan
                * tekemässä.
                **/
               const stateObj = find(
-                compose(
-                  endsWith(
-                    `.${erityinenKoulutustehtava.koodiarvo}.valintaelementti`
-                  ),
-                  prop("anchor")
-                ),
+                compose(endsWith(`.${item.koodiarvo}.valinta`), prop("anchor")),
                 osionData
               );
 
@@ -55,20 +50,16 @@ export default async function getErityisetKoulutustehtavat(
                 // on kaivettava osion datasta koodiarvolla.
                 const kuvausStateObjects = filter(stateObj => {
                   return (
-                    getAnchorPart(stateObj.anchor, 1) ===
-                      erityinenKoulutustehtava.koodiarvo &&
-                    endsWith(".kuvaus", stateObj.anchor)
+                    getAnchorPart(stateObj.anchor, 1) === item.koodiarvo &&
+                    endsWith(".kuvaus.A", stateObj.anchor)
                   );
                 }, osionData);
 
-                /** Näytetään kuvaukset erityisille koulutustehtäville, joilla on koodistossa
-                 * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
+                /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
+                 * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 const options =
-                  path(
-                    ["metadata", "FI", "kayttoohje"],
-                    erityinenKoulutustehtava
-                  ) === "Kuvaus"
+                  path(["metadata", "FI", "kayttoohje"], item) === "Kuvaus"
                     ? map(stateObj => {
                         const option = {
                           value: `${getAnchorPart(
@@ -80,16 +71,15 @@ export default async function getErityisetKoulutustehtavat(
                         return option;
                       }, kuvausStateObjects)
                     : {
-                        label:
-                          erityinenKoulutustehtava.metadata[localeUpper].nimi,
-                        value: `${erityinenKoulutustehtava.koodiarvo}-0`
+                        label: item.metadata[localeUpper].nimi,
+                        value: `${item.koodiarvo}`
                       };
 
                 return options;
               }
 
               return null;
-            }, erityisetKoulutustehtavat).filter(Boolean)
+            }, oikeusSisaoppilaitosmuotoiseenKoulutukseen).filter(Boolean)
           ),
           value: ""
         }

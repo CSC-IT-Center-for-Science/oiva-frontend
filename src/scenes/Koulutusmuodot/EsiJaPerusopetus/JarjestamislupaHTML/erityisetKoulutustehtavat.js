@@ -15,6 +15,7 @@ import education from "../../../../i18n/definitions/education";
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
+import { getLocalizedProperty } from "services/lomakkeet/utils";
 
 export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   maaraykset
@@ -68,7 +69,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
               erityisetKoulutustehtavatKoodisto
             );
 
-            naytettavaArvo = koodistosta.metadata[localeUpper].nimi;
+            naytettavaArvo = getLocalizedProperty(koodistosta.metadata, localeUpper, "kuvaus");
           }
 
           const result = (

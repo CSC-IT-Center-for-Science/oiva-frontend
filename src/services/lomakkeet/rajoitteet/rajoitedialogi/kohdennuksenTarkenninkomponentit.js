@@ -2,7 +2,7 @@ import { prop } from "ramda";
 import {
   getLukumaarakomponentit,
   getMaaraaikakomponentit
-} from "./tarkenninkomponentit";
+} from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/tarkenninkomponentit";
 
 const kohdennuksenTarkenninkomponentit = {
   enintaan: getLukumaarakomponentit,

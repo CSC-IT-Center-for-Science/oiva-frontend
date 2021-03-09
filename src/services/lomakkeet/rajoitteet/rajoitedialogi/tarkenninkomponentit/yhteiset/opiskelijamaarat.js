@@ -3,7 +3,8 @@ import { __ } from "i18n-for-browser";
 export async function getKokonaisopiskelijamaaralomake(
   isReadOnly,
   osionData = [],
-  locale
+  locale,
+  isMulti
 ) {
   return {
     anchor: "rajoitus",
@@ -55,7 +56,7 @@ export async function getOpiskelijamaaranRajausvaihtoehdot(
             forChangeObject: {
               section: "opiskelijamaarat"
             },
-            isMulti: false,
+            isMulti,
             isReadOnly,
             options: [
               {

@@ -11,16 +11,16 @@ import {
   values,
   filter,
   startsWith,
-  concat,
-  propEq
+  concat
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
-export default async function getOpetustaAntavatKunnat(
+export default async function getKunnat(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  isMulti,
+  inputId
 ) {
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
@@ -41,23 +41,18 @@ export default async function getOpetustaAntavatKunnat(
     );
   }, osionData);
 
-  const ulkomaaOptionChecked = !!path(
-    ["properties", "isChecked"],
-    find(propEq("anchor", "toimintaalue.ulkomaa.200"), osionData)
-  );
-
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
   const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
-    if(item.properties.metadata) {
+    if (item.properties.metadata) {
       return {
         label: item.properties.value,
         value: item.properties.metadata.koodiarvo,
         index
-      }
+      };
     }
-    return null
-  })
+    return null;
+  });
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj
@@ -78,7 +73,8 @@ export default async function getOpetustaAntavatKunnat(
           forChangeObject: {
             section: "opetustaAntavatKunnat"
           },
-          isMulti: useMultiselect,
+          inputId,
+          isMulti,
           isReadOnly,
           options: concat(
             map(kunta => {

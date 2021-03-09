@@ -135,7 +135,9 @@ const getKieletPreview = (kielet, rajoitteet) => {
               ]
             };
           }
-        }, path(["properties", "value"], kielet) || []).filter(Boolean)
+        }, path(["properties", "value"], kielet).filter(Boolean) || []).filter(
+          Boolean
+        )
       )
     : [];
 };

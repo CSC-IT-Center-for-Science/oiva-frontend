@@ -5,7 +5,8 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect = false
+  isMulti,
+  inputId
 ) {
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
 
@@ -32,7 +33,8 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
           forChangeObject: {
             section: "opetuksenJarjestamismuoto"
           },
-          isMulti: useMultiselect,
+          inputId,
+          isMulti,
           isReadOnly,
           options: map(muoto => {
             /**
