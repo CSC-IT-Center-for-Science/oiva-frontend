@@ -5,7 +5,7 @@ export default async function getOppilaitokset(
   isReadOnly,
   osionData = [],
   locale,
-  useMultiselect,
+  isMulti,
   inputId
 ) {
   const oppilaitokset = await localforage.getItem("oppilaitoksetByOid");

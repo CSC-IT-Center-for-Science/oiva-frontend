@@ -16,7 +16,8 @@ export default async function getMuutEhdot(
   isReadOnly,
   osionData = [],
   locale,
-  isMulti
+  isMulti,
+  inputId
 ) {
   const muutEhdot = await getPOMuutEhdotFromStorage();
   const localeUpper = toUpper(locale);
@@ -31,6 +32,7 @@ export default async function getMuutEhdot(
           forChangeObject: {
             section: "muutEhdot"
           },
+          inputId,
           isMulti,
           isReadOnly,
           options: flatten(

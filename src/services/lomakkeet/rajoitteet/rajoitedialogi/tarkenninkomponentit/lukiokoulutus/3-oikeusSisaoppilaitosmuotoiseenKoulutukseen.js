@@ -16,7 +16,8 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
   isReadOnly,
   osionData = [],
   locale,
-  isMulti
+  isMulti,
+  inputId
 ) {
   const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
   const localeUpper = toUpper(locale);
@@ -31,6 +32,7 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
           forChangeObject: {
             section: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
           },
+          inputId,
           isMulti,
           isReadOnly,
           options: flatten(

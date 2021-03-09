@@ -11,7 +11,8 @@ import {
   values,
   filter,
   startsWith,
-  concat
+  concat,
+  propEq
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
@@ -40,6 +41,11 @@ export default async function getKunnat(
       startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
     );
   }, osionData);
+
+  const ulkomaaOptionChecked = !!path(
+    ["properties", "isChecked"],
+    find(propEq("anchor", "toimintaalue.ulkomaa.200"), osionData)
+  );
 
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
