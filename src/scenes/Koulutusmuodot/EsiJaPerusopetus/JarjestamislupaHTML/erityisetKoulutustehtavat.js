@@ -7,6 +7,7 @@ import {
   length,
   map,
   path,
+  pathEq,
   propEq,
   toUpper
 } from "ramda";
@@ -40,14 +41,14 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
 
   const erityisetKoulutustehtavatMaaraykset = filter(
     maarays =>
-      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
+      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
       maarays.koodisto === "poerityinenkoulutustehtava",
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
+      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
@@ -69,7 +70,11 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
               erityisetKoulutustehtavatKoodisto
             );
 
-            naytettavaArvo = getLocalizedProperty(koodistosta.metadata, localeUpper, "kuvaus");
+            naytettavaArvo = getLocalizedProperty(
+              koodistosta.metadata,
+              localeUpper,
+              "kuvaus"
+            );
           }
 
           const result = (

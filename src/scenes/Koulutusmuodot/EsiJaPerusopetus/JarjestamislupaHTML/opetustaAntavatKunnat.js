@@ -10,7 +10,8 @@ import {
   path,
   pipe,
   groupBy,
-  mergeDeepWithKey
+  mergeDeepWithKey,
+  pathEq
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
@@ -43,15 +44,24 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
   pipe(
     groupBy(x => x.koodiarvo),
     map(x => {
-      let kuntaWithCombinedAliMaaraykset = {}
+      let kuntaWithCombinedAliMaaraykset = {};
       map(kunta => {
-        kuntaWithCombinedAliMaaraykset =  mergeDeepWithKey((k, l, r) => k === 'aliMaaraykset' ? concat(l, r) : r, kunta, kuntaWithCombinedAliMaaraykset)
-      }, x)
+        kuntaWithCombinedAliMaaraykset = mergeDeepWithKey(
+          (k, l, r) => (k === "aliMaaraykset" ? concat(l, r) : r),
+          kunta,
+          kuntaWithCombinedAliMaaraykset
+        );
+      }, x);
       kuntaMaaraykset.push(kuntaWithCombinedAliMaaraykset);
-    }))
-  (filter(maarays => {
+    })
+  )(
+    filter(maarays => {
       return (
-        maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+        pathEq(
+          ["kohde", "tunniste"],
+          "kunnatjoissaopetustajarjestetaan",
+          maarays
+        ) &&
         maarays.koodisto === "kunta" &&
         !includes("200", path(["koodiarvo"], maarays) || "")
       );
@@ -60,28 +70,38 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
-      maarays.koodisto === "lisatietoja",
+      pathEq(
+        ["kohde", "tunniste"],
+        "kunnatjoissaopetustajarjestetaan",
+        maarays
+      ) && maarays.koodisto === "lisatietoja",
     maaraykset
   );
 
   const opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset = filter(
     maarays =>
-      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      pathEq(
+        ["kohde", "tunniste"],
+        "kunnatjoissaopetustajarjestetaan",
+        maarays
+      ) &&
       includes("200", path(["koodiarvo"], maarays) || "") &&
       maarays.meta.arvo,
     maaraykset
   );
 
-  return !isEmpty(kunnat) &&
-    !isEmpty(maakuntaKunnat) ? (
+  return !isEmpty(kuntaMaaraykset) &&
+    !isEmpty(opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}
       </Typography>
       <ul className="list-disc mb-4">
         {getRajoitteetFromMaarays(
-          concat(kuntaMaaraykset, opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset).filter(Boolean),
+          concat(
+            kuntaMaaraykset,
+            opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset
+          ).filter(Boolean),
           locale,
           "arvo"
         )}

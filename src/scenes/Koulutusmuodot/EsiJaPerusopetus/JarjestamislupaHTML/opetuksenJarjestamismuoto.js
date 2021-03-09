@@ -1,5 +1,5 @@
 import React from "react";
-import { find, length, path, toUpper } from "ramda";
+import { find, length, path, pathEq, toUpper } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
@@ -12,22 +12,26 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
 
   const opetuksenJarjestamismuoto = find(
     maarays =>
-      maarays.kohde.tunniste === "opetuksenjarjestamismuoto" &&
+      pathEq(["kohde", "tunniste"], "opetuksenjarjestamismuoto", maarays) &&
       maarays.koodisto === "opetuksenjarjestamismuoto",
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "opetuksenjarjestamismuoto" &&
+      pathEq(["kohde", "tunniste"], "opetuksenjarjestamismuoto", maarays) &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
 
   let kuvaus = null;
   if (opetuksenJarjestamismuoto) {
-    const jarjestamismuodonMetadata = path(["koodi", "metadata"], opetuksenJarjestamismuoto);
-    kuvaus = opetuksenJarjestamismuoto.meta.kuvaus ||
+    const jarjestamismuodonMetadata = path(
+      ["koodi", "metadata"],
+      opetuksenJarjestamismuoto
+    );
+    kuvaus =
+      opetuksenJarjestamismuoto.meta.kuvaus ||
       getLocalizedProperty(jarjestamismuodonMetadata, locale, "kuvaus");
   }
 
@@ -38,9 +42,7 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
       </Typography>
       {opetuksenJarjestamismuoto ? (
         <ul className="ml-8 list-disc mb-4">
-          <li key={opetuksenJarjestamismuoto.koodiarvo}>
-            {kuvaus}
-          </li>
+          <li key={opetuksenJarjestamismuoto.koodiarvo}>{kuvaus}</li>
           <React.Fragment>
             {length(opetuksenJarjestamismuoto.aliMaaraykset)
               ? getRajoitteetFromMaarays(

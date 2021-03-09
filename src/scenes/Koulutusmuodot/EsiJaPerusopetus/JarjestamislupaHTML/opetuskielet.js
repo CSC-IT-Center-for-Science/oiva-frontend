@@ -9,7 +9,8 @@ import {
   propEq,
   path,
   length,
-  addIndex
+  addIndex,
+  pathEq
 } from "ramda";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
@@ -34,7 +35,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   const ensisijaisetOpetuskielet = filter(
     maarays =>
-      maarays.kohde.tunniste === "opetuskieli" &&
+      pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
       includes("ensisijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset
@@ -42,7 +43,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   const toissijaisetOpetuskielet = filter(
     maarays =>
-      maarays.kohde.tunniste === "opetuskieli" &&
+      pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
       includes("toissijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset
@@ -50,7 +51,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "opetuskieli" &&
+      pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
