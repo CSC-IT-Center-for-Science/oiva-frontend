@@ -1,17 +1,11 @@
-import {
-  append,
-  endsWith,
-  find,
-  keys,
-  map,
-  pipe
-} from "ramda";
+import { append, endsWith, find, keys, length, map, pipe } from "ramda";
 import Lisatiedot from "../../lisatiedot";
 
 export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
   let structure = [];
 
-  const opiskelijaMaaraRajoitteet = pipe(keys,
+  const opiskelijaMaaraRajoitteet = pipe(
+    keys,
     map(rajoiteId => {
       const rajoite = rajoitteet[rajoiteId];
       return {
@@ -32,8 +26,9 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
     })
   )(rajoitteet);
 
-  if (opiskelijaMaaraRajoitteet) {
-    structure = append({
+  if (length(opiskelijaMaaraRajoitteet)) {
+    structure = append(
+      {
         anchor: "opiskelijamaarat",
         components: [
           {
@@ -45,8 +40,7 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
             }
           }
         ]
-      }
-      ,
+      },
       structure
     );
   }
@@ -58,10 +52,7 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      Lisatiedot(lisatiedotNode.properties.value),
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;
