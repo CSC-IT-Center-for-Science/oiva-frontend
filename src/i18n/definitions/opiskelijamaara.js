@@ -26,5 +26,9 @@ export default defineMessages({
   yksittainenKohdennus: {
     id: "opiskelijamaara.yksittainenKohdennus",
     defaultMessage: "Yksittäinen oppilasmääräkohdennus"
+  },
+  kokonaismaaraEiRajattu: {
+    id: "opiskelijamaara.kokonaismaaraEiRajattu",
+    defaultMessage: "Kokonaisoppilas-/opiskelijamäärä: Ei rajattu"
   }
 });
