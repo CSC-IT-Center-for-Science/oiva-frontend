@@ -34,19 +34,15 @@ export const AppRoute = {
 
 export const AppRouteTitles = {
   home: new Map([[AppRoute.Home, "common.oiva"]]),
-  navigation: {
-    level1: new Map([
-      [
-        AppRoute.JarjestamisJaYllapitamisluvat,
-        "common.jarjestamisJaYllapitamisluvat"
-      ],
-      [AppRoute.Tilastot, "common.statistics"]
-    ]),
-    level2: new Map([
-      [AppRoute.KoulutusmuodonEtusivu, "education.preAndBasicEducation"],
-      [AppRoute.KoulutusmuodonEtusivu, "education.highSchoolEducation"],
-      [AppRoute.KoulutusmuodonEtusivu, "education.vocationalEducation"],
-      [AppRoute.KoulutusmuodonEtusivu, "common.vstTitleName"]
-    ])
-  }
+  navigation: new Map([
+    [
+      AppRoute.JarjestamisJaYllapitamisluvat,
+      "common.jarjestamisJaYllapitamisluvat"
+    ],
+    [AppRoute.Tilastot, "common.statistics"],
+    [AppRoute.KoulutusmuodonEtusivu, "education.preAndBasicEducation"],
+    [AppRoute.KoulutusmuodonEtusivu, "education.highSchoolEducation"],
+    [AppRoute.KoulutusmuodonEtusivu, "education.vocationalEducation"],
+    [AppRoute.KoulutusmuodonEtusivu, "common.vstTitleName"]
+  ])
 };
