@@ -26,7 +26,6 @@ const defaultProps = {
 export default function PoOpetusJotaLupaKoskeeHtml({
   maaraykset = defaultProps.opetustehtavaMaaraykset
 }) {
-  console.info(maaraykset);
   const intl = useIntl();
   const locale = toUpper(intl.locale);
   const [opetustehtavatFromStorage, setOpetustehtavatFromStorage] = useState(

@@ -90,7 +90,9 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
     maaraykset
   );
 
-  return !isEmpty(kuntaMaaraykset) &&
+  return !isEmpty(kunnat) &&
+    !isEmpty(maakuntaKunnat) &&
+    !isEmpty(kuntaMaaraykset) &&
     !isEmpty(opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
