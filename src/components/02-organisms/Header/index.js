@@ -10,12 +10,14 @@ import common from "i18n/definitions/common";
 import { Navigation } from "modules/navigation/index";
 import { LanguageSwitcher } from "modules/i18n/index";
 import MenuIcon from "@material-ui/icons/Menu";
+import { IconButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 import logo_fi from "static/images/oiva-logo-fi-tekstilla.svg";
 import logo_sv from "static/images/oiva-logo-sv-tekstilla.svg";
 import oiva_logo from "static/images/oiva-logo.svg";
-import MobileMenu from "./MobileMenu";
-import SideNavigation from "../SideNavigation";
+import MobileMenu from "./MobileMenu/index";
+import SideNavigation from "../SideNavigation/index";
 import AuthenticationLink from "./AuthenticationLink";
 import OrganisationLink from "./OrganisationLink";
 
@@ -27,9 +29,20 @@ export const MEDIA_QUERIES = {
   DESKTOP_LARGE: "only screen and (min-width: 1280px)"
 };
 
+const useStyles = makeStyles(theme => ({
+  margin: {
+    margin: theme.spacing(1)
+  },
+  extendedIcon: {
+    color: "#ffffff",
+    marginRight: theme.spacing(1)
+  }
+}));
+
 const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
   const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
+  const classes = useStyles();
 
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
 
@@ -125,11 +138,16 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
             />
           </SideNavigation>
           <AppBar className="bg-green-500" elevation={0} position="static">
-            <Toolbar className="px-5 justify-start overflow-hidden">
-              <MenuIcon
-                className="mr-6 cursor-pointer"
+            <Toolbar className="justify-start overflow-hidden">
+              <IconButton
+                aria-label="open-main-menu"
+                color="inherit"
                 onClick={toggleMobileMenu}
-              />
+                className={classes.margin}
+              >
+                <MenuIcon />
+              </IconButton>
+
               <NavLink
                 to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
                 className="flex items-center no-underline text-white hover:text-gray-100 mr-16"
@@ -152,7 +170,6 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                   />
                 )}
               </NavLink>
-
               <div className="flex-1 flex justify-end items-center">
                 {mediumSizedScreen && organisationLink.path && (
                   <OrganisationLink
