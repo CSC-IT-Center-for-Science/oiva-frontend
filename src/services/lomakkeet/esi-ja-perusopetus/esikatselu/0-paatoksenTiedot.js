@@ -21,7 +21,7 @@ export async function previewOfPaatoksentiedot({ lomakedata }) {
                 anchor: "A",
                 name: "StatusTextRow",
                 properties: {
-                  code: `${__mf("esiJaPerusopetus.onVoimassa", {
+                  code: `${__mf("common.onVoimassa", {
                     loppupvm: moment(paattymispvm).format("DD.MM.YYYY")
                   })}`
                 }
