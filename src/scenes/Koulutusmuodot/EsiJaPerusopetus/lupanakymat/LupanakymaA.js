@@ -35,6 +35,7 @@ import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
 import AsianumeroYmsKentat from "../lomakeosiot/0-AsianumeroYmsKentat";
 import Rajoitteet from "components/02-organisms/Rajoitteet/index";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 
 // Kohdevaihtoehtoja käytetään rajoitteita tehtäessä.
 // Kohteet vaihtelevat koulutusmuodoittain.
@@ -108,8 +109,20 @@ const LupanakymaA = React.memo(
 
     const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
 
+    const paattymispvm = path(
+      ["properties", "value"],
+      find(
+        cObj => cObj.anchor === "paatoksentiedot.paattymispaivamaara.A",
+        path(
+          ["0"],
+          useChangeObjectsByAnchorWithoutUnderRemoval({
+            anchor: "paatoksentiedot"
+          })
+        ) || []
+      )
+    );
+
     // TODO: Näytetään rajoitteet oikein, jos on sekä määräyksiä että muutosobjekteja.
-    // TODO: Näytetään rajoitteet oikein, jos sama asia on usean rajoitteen kohteena?
     const rajoitteetFromMaarayksetByRajoiteId = map(
       cObjs => {
         return { changeObjects: cObjs };
@@ -199,11 +212,15 @@ const LupanakymaA = React.memo(
 
     const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
 
+    const asianumeroYmsClasses = isPreviewModeOn
+      ? "md:w-1/2 xxl:w-1/3 pr-6 mb-6 mt-3"
+      : "md:w-1/2 xxl:w-1/3 px-6 my-12";
+
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
-        {isPreviewModeOn ? null : (
-          <div className="md:w-1/2 xxl:w-1/3 px-6 my-12">
-            <AsianumeroYmsKentat />
+        {!(isPreviewModeOn && !paattymispvm) && (
+          <div className={asianumeroYmsClasses}>
+            <AsianumeroYmsKentat isPreviewModeOn={isPreviewModeOn} />
           </div>
         )}
 
@@ -236,7 +253,6 @@ const LupanakymaA = React.memo(
                     valtakunnallinenMaarays={valtakunnallinenMaarays}
                   />
                 </div>
-
                 <div className="pt-8">
                   <Opetuskieli
                     code="3"
@@ -247,7 +263,6 @@ const LupanakymaA = React.memo(
                     title={intl.formatMessage(common.opetuskieli)}
                   />
                 </div>
-
                 <div className="pt-8">
                   <OpetuksenJarjestamismuoto
                     code="4"
@@ -260,7 +275,6 @@ const LupanakymaA = React.memo(
                     )}
                   />
                 </div>
-
                 <div className="pt-8">
                   <ErityisetKoulutustehtavat
                     code="5"
@@ -276,7 +290,6 @@ const LupanakymaA = React.memo(
                     )}
                   />
                 </div>
-
                 <div className="pt-8">
                   <Opiskelijamaarat
                     code="6"
@@ -292,7 +305,6 @@ const LupanakymaA = React.memo(
                     )}
                   />
                 </div>
-
                 <div className="pt-8">
                   <MuutEhdot
                     code="7"

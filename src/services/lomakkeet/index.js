@@ -72,6 +72,7 @@ import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./l
 import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
 
 import { previewOfRajoite as previewOfRajoiteLukio } from "./lukiokoulutus/esikatselu/10-rajoite";
+import { previewOfPaatoksentiedot } from "./esi-ja-perusopetus/esikatselu/0-paatoksenTiedot";
 import { rajoitteet } from "./rajoitteet/index";
 
 /**
@@ -381,7 +382,9 @@ const lomakkeet = {
     },
     paatoksenTiedot: {
       addition: (data, booleans, locale, changeObjects) =>
-        getPaatoksenTiedot(data, booleans, locale, changeObjects)
+        getPaatoksenTiedot(data, booleans, locale, changeObjects),
+      preview: (data, booleans, locale, changeObjects) =>
+        previewOfPaatoksentiedot(data, booleans, locale, changeObjects)
     },
     opetustaAntavatKunnat: {
       modification: (data, booleans, locale, changeObjects, functions) =>
