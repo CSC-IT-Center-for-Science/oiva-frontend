@@ -438,7 +438,6 @@ export const getRajoitteetFromMaarays = (
   locale,
   naytettavaArvo
 ) => {
-  console.info(naytettavaArvo, alimaaraykset);
   const htmlString = handleAlimaaraykset(
     "",
     alimaaraykset,
