@@ -384,7 +384,6 @@ const CategorizedList = props => {
                           isReadOnly={propsObj.isReadOnly}
                           onChanges={handleChanges}
                           labelStyles={labelStyles}
-                          title={title}
                         >
                           <div className="flex">
                             {propsObj.code ? (
