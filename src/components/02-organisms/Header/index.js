@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AppBar, Toolbar, useMediaQuery } from "@material-ui/core";
-import { includes, map, values } from "ramda";
+import { map, values } from "ramda";
 import { getKoulutusmuodot, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { AppRoute } from "const/index";
@@ -41,7 +41,6 @@ const useStyles = makeStyles(theme => ({
 
 const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
   const { formatMessage, locale } = useIntl();
-  const { pathname } = useLocation();
   const classes = useStyles();
 
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
@@ -76,6 +75,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
             <div id="navigation-level-1">
               <Navigation
                 level={1}
+                localesByLang={localesByLang}
                 routes={[
                   {
                     key: "JarjestamisJaYllapitamisluvat",
