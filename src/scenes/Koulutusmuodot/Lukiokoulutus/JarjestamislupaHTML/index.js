@@ -10,6 +10,7 @@ import OpetuskieletHtml from "./opetuskielet";
 import OpiskelijamaaratHtml from "./opiskelijamaarat";
 import ErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import OpetuksenMuutEhdotHtml from "./muutEhdot";
+import OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml from "./oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 
 /**
  * Funktio rakentaa lukiokoulutuksen HTML-lupanäkymän.
@@ -37,6 +38,9 @@ const JarjestamislupaJSX = ({ lupa }) => {
 
       <OpetustaAntavatKunnatHtml maaraykset={lupa.maaraykset} />
       <OpetuskieletHtml maaraykset={lupa.maaraykset} />
+      <OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml
+        maaraykset={lupa.maaraykset}
+      />
       <OpiskelijamaaratHtml maaraykset={lupa.maaraykset} />
       <ErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
       <OpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
