@@ -5,7 +5,7 @@ import Lomake from "components/02-organisms/Lomake";
 import education from "i18n/definitions/education";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 import { useLomakedata } from "stores/lomakedata";
-import { compose, filter, prop, propEq } from "ramda";
+import { compose, filter, prop, propEq, map, startsWith, allPass, endsWith, flatten } from "ramda";
 
 const constants = {
   formLocation: ["lukiokoulutus", "valtakunnallinenKehittamistehtava"],
@@ -32,13 +32,18 @@ const ValtakunnallisetKehittamistehtavat = ({
     anchor: "erityisetKoulutustehtavat"
   });
 
-  useEffect(() => {
-    setCheckboxStatesSection4(
-      filter(
-        compose(propEq("isChecked", true), prop("properties")),
-        stateObjectsSection4
-      )
+   useEffect(() => {
+    let items = flatten(map(item => {
+        return filter(
+          compose(allPass([startsWith(item.anchor.replace(/.[^.]+$/, "")), endsWith(".kuvaus")]), prop("anchor")),
+          stateObjectsSection4
+        )
+      }, filter(
+      compose(propEq("isChecked", true), prop("properties")),
+      stateObjectsSection4
+      ))
     );
+    setCheckboxStatesSection4(items)
   }, [stateObjectsSection4]);
 
   return (

@@ -13,11 +13,12 @@ export const defineBackendChangeObjects = async (
     kohteet
   );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
-  const muutokset = map((ehto, index) => {
+  const muutokset = map((ehto) => {
     let koodiarvo = nth(1, split(".", ehto.anchor));
+    let index = nth(2, split(".", ehto.anchor));
     // Checkbox-kenttien muutokset
     const checkboxChangeObj = find(
-      compose(endsWith(koodiarvo + `.valintaelementti`), prop("anchor")),
+      compose(endsWith(`.${koodiarvo}.${index}.valintaelementti`), prop("anchor")),
       changeObjects.valtakunnallisetKehittamistehtavat
     );
 
@@ -31,12 +32,7 @@ export const defineBackendChangeObjects = async (
         koodisto: "valtakunnallinenkehittamistehtava",
         maaraystyyppi,
         meta: {
-          changeObjects: flatten(
-            concat([], [
-              checkboxChangeObj
-            ])
-            // checkboxChangeObj
-          ).filter(Boolean)
+          changeObjects: checkboxChangeObj
         },
         tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
       }

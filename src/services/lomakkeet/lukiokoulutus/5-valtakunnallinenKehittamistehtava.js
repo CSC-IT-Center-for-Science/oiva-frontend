@@ -36,8 +36,9 @@ export async function getValtakunnallinenKehittamistehtavalomake(
     kehittamistehtavatStructure = flatten(concat(kehittamistehtavatStructure,
       [
         map(checkboxObjSection4 => {
+          const anchor = `${getAnchorPart(checkboxObjSection4.anchor, 1)}.${getAnchorPart(checkboxObjSection4.anchor, 2)}`;
           return {
-            anchor: getAnchorPart(checkboxObjSection4.anchor, 1),
+            anchor,
             components: [
               {
                 anchor: "valintaelementti",
@@ -52,7 +53,7 @@ export async function getValtakunnallinenKehittamistehtavalomake(
                     addition: isAdded,
                     removal: isRemoved
                   },
-                  title: path(["properties", "title"], checkboxObjSection4)
+                  title: path(["properties", "value"], checkboxObjSection4)
                 }
               }
             ]

@@ -33,7 +33,8 @@ const CheckboxWithLabel = React.memo(
     isPreviewModeOn,
     isReadOnly,
     labelStyles,
-    onChanges
+    onChanges,
+    title
   }) => {
     const styles = makeStyles({
       root: {
@@ -109,7 +110,8 @@ const CheckboxWithLabel = React.memo(
       cp.isDisabled === np.isDisabled &&
       cp.isIndeterminate === np.isIndeterminate &&
       cp.isPreviewModeOn === np.isPreviewModeOn &&
-      cp.isReadOnly === np.isReadOnly
+      cp.isReadOnly === np.isReadOnly &&
+      cp.title === np.title
     );
   }
 );
@@ -125,6 +127,7 @@ CheckboxWithLabel.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
+  title: PropTypes.title,
   isChecked: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isIndeterminate: PropTypes.bool,
