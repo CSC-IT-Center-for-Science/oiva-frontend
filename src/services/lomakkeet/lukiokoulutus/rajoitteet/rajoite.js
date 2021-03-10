@@ -26,15 +26,15 @@ import { getAnchorPart } from "utils/common";
 
 export const kohdevaihtoehdot = [
   {
+    label: "Opetus, jota lupa koskee",
+    value: "opetustehtavat"
+  },
+  {
     label: "Kunnat, joissa opetusta järjestetään",
     value: "toimintaalue"
   },
   { label: "Opetuskieli", value: "opetuskielet" },
   { label: "Opetuksen järjestämismuodot", value: "opetuksenJarjestamismuodot" },
-  {
-    label: "Oikeus sisäoppilaitosmuotoiseen koulutukseen",
-    value: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
-  },
   {
     label: "Erityinen koulutustehtävä",
     value: "erityisetKoulutustehtavat"
@@ -93,20 +93,20 @@ async function getAsetuslomakekokonaisuus(
       )
     : [];
 
-  console.group();
-  console.info("Index:", index);
-  console.info("Asetuksen kohdeavain:", asetuksenKohdeavain);
-  console.info("Asetuksen kohdekomponentti:", asetuksenKohdekomponentti);
-  console.info(
-    "Asetuksen tarkentimen avain:",
-    asetuksenTarkenninlomakkeenAvain
-  );
-  console.info(
-    "Asetuksen tarkenninkomponentit:",
-    asetuksenTarkenninkomponentit
-  );
-  console.info("rajoiteChangeObjects:", rajoiteChangeObjects);
-  console.groupEnd();
+  // console.group();
+  // console.info("Index:", index);
+  // console.info("Asetuksen kohdeavain:", asetuksenKohdeavain);
+  // console.info("Asetuksen kohdekomponentti:", asetuksenKohdekomponentti);
+  // console.info(
+  //   "Asetuksen tarkentimen avain:",
+  //   asetuksenTarkenninlomakkeenAvain
+  // );
+  // console.info(
+  //   "Asetuksen tarkenninkomponentit:",
+  //   asetuksenTarkenninkomponentit
+  // );
+  // console.info("rajoiteChangeObjects:", rajoiteChangeObjects);
+  // console.groupEnd();
 
   const updatedLomakerakenne =
     asetuksenKohdekomponentti || !!length(asetuksenTarkenninkomponentit)

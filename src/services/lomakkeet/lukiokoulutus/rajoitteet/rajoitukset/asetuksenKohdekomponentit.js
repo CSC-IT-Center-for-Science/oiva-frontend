@@ -7,11 +7,6 @@ import { getKujalisamaareetFromStorage } from "helpers/kujalisamaareet";
  rajoitteen kohteelle on valittavissa.
  */
 
-const oppilaitokset = {
-  label: "Oppilaitokset",
-  value: "oppilaitokset"
-};
-
 export const getAsetuksenKohdekomponentti = async (
   asetuksenKohdeavain,
   isReadOnly = false,
@@ -38,14 +33,11 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
+          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
-          find(
-            propEq("value", "oikeusSisaoppilaitosmuotoiseenKoulutukseen"),
-            kohdevaihtoehdot
-          ),
-          maaraaikaOption,
-          oppilaitokset
+          find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
+          maaraaikaOption
         ],
         value: ""
       }
@@ -74,6 +66,7 @@ export const getAsetuksenKohdekomponentti = async (
                 };
               }, kujalisamaareet)
             : [
+                find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
                 find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
                 find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
                 find(
@@ -84,8 +77,7 @@ export const getAsetuksenKohdekomponentti = async (
                   propEq("value", "erityisetKoulutustehtavat"),
                   kohdevaihtoehdot
                 ),
-                maaraaikaOption,
-                oppilaitokset
+                maaraaikaOption
               ]
       }
     };
@@ -122,12 +114,12 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
+          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
           find(propEq("value", "opetuksenJarjestamismuodot"), kohdevaihtoehdot),
           find(propEq("value", "erityisetKoulutustehtavat"), kohdevaihtoehdot),
-          maaraaikaOption,
-          oppilaitokset
+          maaraaikaOption
         ],
         value: ""
       }
@@ -143,10 +135,10 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
+          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
           find(propEq("value", "opetuskielet"), kohdevaihtoehdot),
-          maaraaikaOption,
-          oppilaitokset
+          maaraaikaOption
         ],
         value: ""
       }
@@ -162,10 +154,24 @@ export const getAsetuksenKohdekomponentti = async (
         isReadOnly,
         isVisible: !isReadOnly,
         options: [
+          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
           find(propEq("value", "toimintaalue"), kohdevaihtoehdot),
-          maaraaikaOption,
-          oppilaitokset
+          maaraaikaOption
         ],
+        value: ""
+      }
+    };
+  } else if (asetuksenKohdeavain === "opetustehtavat") {
+    return {
+      anchor: "kohde",
+      name: "Autocomplete",
+      layout: { indentation: "none" },
+      styleClasses: ["w-4/5 xl:w-2/3 mb-6"],
+      properties: {
+        isMulti: false,
+        isReadOnly,
+        isVisible: !isReadOnly,
+        options: [maaraaikaOption],
         value: ""
       }
     };
@@ -179,16 +185,11 @@ export const getAsetuksenKohdekomponentti = async (
         isMulti: false,
         isReadOnly,
         isVisible: !isReadOnly,
-        options: [maaraaikaOption, oppilaitokset],
+        options: [
+          find(propEq("value", "opetustehtavat"), kohdevaihtoehdot),
+          maaraaikaOption
+        ],
         value: ""
-      }
-    };
-  } else {
-    return {
-      anchor: "ei-valittavia-kohteita",
-      name: "StatusTextRow",
-      properties: {
-        title: "Ei valittavia kohteita"
       }
     };
   }

@@ -11,8 +11,7 @@ import {
   values,
   filter,
   startsWith,
-  concat,
-  propEq
+  concat
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
@@ -41,23 +40,15 @@ export default async function getOpetustaAntavatKunnat(
     );
   }, osionData);
 
-  const ulkomaaOptionChecked = !!path(
-    ["properties", "isChecked"],
-    find(propEq("anchor", "toimintaalue.ulkomaa.200"), osionData)
-  );
-
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
   const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
-    if(item.properties.metadata) {
-      return {
-        label: item.properties.value,
-        value: item.properties.metadata.koodiarvo,
-        index
-      }
-    }
-    return null
-  })
+    return {
+      label: item.properties.value,
+      value: item.properties.metadata.koodiarvo,
+      index
+    };
+  });
 
   if (kunnat) {
     const valitutKunnat = changesByProvinceObj
