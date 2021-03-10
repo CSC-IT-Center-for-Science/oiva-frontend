@@ -7,6 +7,7 @@ import {
   length,
   map,
   path,
+  pathEq,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -22,7 +23,7 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
 
   const opiskelijamaaraMaaraykset = filter(
     maarays =>
-      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
+      pathEq(["kohde", "tunniste"], "oppilasopiskelijamaara", maarays) &&
       maarays.koodisto === "kujalisamaareet",
     maaraykset
   );
@@ -34,7 +35,7 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
+      pathEq(["kohde", "tunniste"], "oppilasopiskelijamaara", maarays) &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
