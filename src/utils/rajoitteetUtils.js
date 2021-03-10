@@ -173,7 +173,7 @@ function kayLapiKohdennus(
                 " ",
                 [
                   taydennyssana.pre,
-                  `<strong>${muokattuTarkentimenArvo}</strong>`,
+                  muokattuTarkentimenArvo,
                   taydennyssana.post
                 ].filter(Boolean)
               );
@@ -224,11 +224,7 @@ function kayLapiKohdennus(
   if (taydennyssana) {
     item = join(
       " ",
-      [
-        taydennyssana.pre,
-        `<strong>${item}</strong>`,
-        taydennyssana.post
-      ].filter(Boolean)
+      [taydennyssana.pre, item, taydennyssana.post].filter(Boolean)
     );
   }
 
