@@ -155,7 +155,6 @@ function kayLapiKohdennus(
                   post: "henkilöä"
                 }
               : null;
-            //: getTaydennyssana(tarkenninavain, locale);
 
             const tarkentimenArvo = getTarkentimenArvo(
               asetus.tarkennin[tarkenninavain]
@@ -174,7 +173,7 @@ function kayLapiKohdennus(
                 " ",
                 [
                   taydennyssana.pre,
-                  `<strong>${muokattuTarkentimenArvo}</strong>`,
+                  muokattuTarkentimenArvo,
                   taydennyssana.post
                 ].filter(Boolean)
               );
@@ -184,6 +183,12 @@ function kayLapiKohdennus(
                 return item;
               }
             } else if (muokattuTarkentimenArvo) {
+              /** Näytetään opiskelijamäärärajoitteen ensimmäinen rivi hieman eri tavalla */
+              if (tarkenninavain === "lukumaara" && ensimmainenRajoite) {
+                return format === "list"
+                  ? `: ${tarkenninLabel} ${muokattuTarkentimenArvo}`
+                  : muokattuTarkentimenArvo;
+              }
               return format === "list"
                 ? `<ul><li>${tarkenninLabel} ${muokattuTarkentimenArvo}`
                 : muokattuTarkentimenArvo;
@@ -219,11 +224,7 @@ function kayLapiKohdennus(
   if (taydennyssana) {
     item = join(
       " ",
-      [
-        taydennyssana.pre,
-        `<strong>${item}</strong>`,
-        taydennyssana.post
-      ].filter(Boolean)
+      [taydennyssana.pre, item, taydennyssana.post].filter(Boolean)
     );
   }
 
@@ -438,7 +439,6 @@ export const getRajoitteetFromMaarays = (
   locale,
   naytettavaArvo
 ) => {
-  console.info(naytettavaArvo, alimaaraykset);
   const htmlString = handleAlimaaraykset(
     "",
     alimaaraykset,

@@ -30,7 +30,7 @@ const JarjestamislupaJSX = ({ lupa }) => {
       </Typography>
       {lupa.loppupvm && (
         <p className="mb-4">
-          {formatMessage(esiJaPerusopetus.onVoimassa, {
+          {formatMessage(common.onVoimassa, {
             loppupvm: moment(lupa.loppupvm).format("D.M.YYYY")
           })}
         </p>

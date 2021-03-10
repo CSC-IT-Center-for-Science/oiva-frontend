@@ -10,8 +10,7 @@ import {
   path,
   pipe,
   groupBy,
-  mergeDeepWithKey,
-  pathEq
+  mergeDeepWithKey
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
@@ -20,7 +19,7 @@ import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import Typography from "@material-ui/core/Typography";
 
-export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
+export default function OpetustaAntavatKunnatHtml({ maaraykset }) {
   const intl = useIntl();
   const locale = toUpper(intl.locale);
   const [kunnat, setKunnat] = useState([]);
@@ -57,11 +56,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
   )(
     filter(maarays => {
       return (
-        pathEq(
-          ["kohde", "tunniste"],
-          "kunnatjoissaopetustajarjestetaan",
-          maarays
-        ) &&
+        maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
         maarays.koodisto === "kunta" &&
         !includes("200", path(["koodiarvo"], maarays) || "")
       );
@@ -70,30 +65,20 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
 
   const lisatietomaarays = find(
     maarays =>
-      pathEq(
-        ["kohde", "tunniste"],
-        "kunnatjoissaopetustajarjestetaan",
-        maarays
-      ) && maarays.koodisto === "lisatietoja",
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
+      maarays.koodisto === "lisatietoja",
     maaraykset
   );
 
   const opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset = filter(
     maarays =>
-      pathEq(
-        ["kohde", "tunniste"],
-        "kunnatjoissaopetustajarjestetaan",
-        maarays
-      ) &&
+      maarays.kohde.tunniste === "kunnatjoissaopetustajarjestetaan" &&
       includes("200", path(["koodiarvo"], maarays) || "") &&
       maarays.meta.arvo,
     maaraykset
   );
 
-  return !isEmpty(kunnat) &&
-    !isEmpty(maakuntaKunnat) &&
-    !isEmpty(kuntaMaaraykset) &&
-    !isEmpty(opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset) ? (
+  return !isEmpty(kunnat) && !isEmpty(maakuntaKunnat) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}

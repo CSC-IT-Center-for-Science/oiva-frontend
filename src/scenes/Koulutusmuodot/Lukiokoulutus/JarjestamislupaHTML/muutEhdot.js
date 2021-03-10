@@ -7,57 +7,50 @@ import {
   length,
   map,
   path,
-  pathEq,
   propEq,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
-import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
+import { getLukioMuutEhdotFromStorage } from "helpers/lukioMuutEhdot/index";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 
-export default function PoOpetuksenErityisetKoulutustehtavatHtml({
-  maaraykset
-}) {
+export default function OpetuksenMuutEhdotHtml({ maaraykset }) {
   const intl = useIntl();
   const localeUpper = toUpper(intl.locale);
-  const [
-    erityisetKoulutustehtavatKoodisto,
-    setErityisetKoulutustehtavatKoodisto
-  ] = useState([]);
+  const [muutEhdotKoodisto, setMuutEhdotKoodisto] = useState([]);
 
-  /** Fetch opetuksenJarjestamismuodot from storage */
+  /** Fetch Muut ehdot -koodisto from storage */
   useEffect(() => {
-    getPOErityisetKoulutustehtavatFromStorage()
-      .then(erityisetKoulutustehtavat =>
-        setErityisetKoulutustehtavatKoodisto(erityisetKoulutustehtavat)
-      )
+    getLukioMuutEhdotFromStorage()
+      .then(muutEhdotKoodisto => setMuutEhdotKoodisto(muutEhdotKoodisto))
       .catch(err => {
         console.error(err);
       });
   }, []);
 
-  const erityisetKoulutustehtavatMaaraykset = filter(
+  const muutEhdotMaaraykset = filter(
     maarays =>
-      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
-      maarays.koodisto === "poerityinenkoulutustehtava",
+      maarays.kohde.tunniste ===
+        "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
+      maarays.koodisto === "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
+      maarays.kohde.tunniste ===
+        "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
 
-  return !isEmpty(erityisetKoulutustehtavatMaaraykset) &&
-    !isEmpty(erityisetKoulutustehtavatKoodisto) ? (
+  return !isEmpty(muutEhdotMaaraykset) && !isEmpty(muutEhdotKoodisto) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
-        {intl.formatMessage(education.erityisetKoulutustehtavat)}
+        {intl.formatMessage(education.muutEhdotTitle)}
       </Typography>
 
       <ul className="ml-8 list-disc mb-4">
@@ -67,7 +60,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
           if (!naytettavaArvo) {
             const koodistosta = find(
               propEq("koodiarvo", maarays.koodiarvo),
-              erityisetKoulutustehtavatKoodisto
+              muutEhdotKoodisto
             );
 
             naytettavaArvo = getLocalizedProperty(
@@ -80,7 +73,6 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
           const result = (
             <React.Fragment key={`${maarays.koodiarvo}-${index}`}>
               <li className="leading-bulletList">{naytettavaArvo}</li>
-
               {length(maarays.aliMaaraykset)
                 ? getRajoitteetFromMaarays(
                     maarays.aliMaaraykset,
@@ -91,7 +83,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
             </React.Fragment>
           );
           return result;
-        }, erityisetKoulutustehtavatMaaraykset)}
+        }, muutEhdotMaaraykset)}
       </ul>
       {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
     </div>

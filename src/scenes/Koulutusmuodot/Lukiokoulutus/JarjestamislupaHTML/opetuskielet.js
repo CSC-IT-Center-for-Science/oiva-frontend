@@ -9,8 +9,7 @@ import {
   propEq,
   path,
   length,
-  addIndex,
-  pathEq
+  addIndex
 } from "ramda";
 import { useIntl } from "react-intl";
 import common from "../../../../i18n/definitions/common";
@@ -19,7 +18,7 @@ import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 
-export default function PoOpetuskieletHtml({ maaraykset }) {
+export default function OpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
   const locale = toUpper(intl.locale);
   const [kieletOPH, setKieletOPH] = useState([]);
@@ -35,7 +34,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   const ensisijaisetOpetuskielet = filter(
     maarays =>
-      pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
+      maarays.kohde.tunniste === "opetuskieli" &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
       includes("ensisijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset
@@ -43,7 +42,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   const toissijaisetOpetuskielet = filter(
     maarays =>
-      pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
+      maarays.kohde.tunniste === "opetuskieli" &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
       includes("toissijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset
@@ -51,7 +50,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
 
   const lisatietomaarays = find(
     maarays =>
-      pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
+      maarays.kohde.tunniste === "opetuskieli" &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );

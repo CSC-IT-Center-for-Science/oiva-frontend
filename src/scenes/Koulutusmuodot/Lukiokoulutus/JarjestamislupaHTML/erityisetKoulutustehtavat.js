@@ -7,20 +7,17 @@ import {
   length,
   map,
   path,
-  pathEq,
   propEq,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
-import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
+import { getLukioErityisetKoulutustehtavatFromStorage } from "helpers/lukioErityisetKoulutustehtavat/index";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 
-export default function PoOpetuksenErityisetKoulutustehtavatHtml({
-  maaraykset
-}) {
+export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
   const intl = useIntl();
   const localeUpper = toUpper(intl.locale);
   const [
@@ -30,7 +27,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
 
   /** Fetch opetuksenJarjestamismuodot from storage */
   useEffect(() => {
-    getPOErityisetKoulutustehtavatFromStorage()
+    getLukioErityisetKoulutustehtavatFromStorage()
       .then(erityisetKoulutustehtavat =>
         setErityisetKoulutustehtavatKoodisto(erityisetKoulutustehtavat)
       )
@@ -41,14 +38,14 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
 
   const erityisetKoulutustehtavatMaaraykset = filter(
     maarays =>
-      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
-      maarays.koodisto === "poerityinenkoulutustehtava",
+      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
+      maarays.koodisto === "lukioerityinenkoulutustehtavauusi",
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
+      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );

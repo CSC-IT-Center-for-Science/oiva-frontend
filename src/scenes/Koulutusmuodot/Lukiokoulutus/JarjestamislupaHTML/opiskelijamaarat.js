@@ -7,7 +7,6 @@ import {
   length,
   map,
   path,
-  pathEq,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -17,13 +16,13 @@ import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
 import { __ } from "i18n-for-browser";
 
-export default function PoOpiskelijamaaratHtml({ maaraykset }) {
+export default function OpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
   const locale = toUpper(intl.locale);
 
   const opiskelijamaaraMaaraykset = filter(
     maarays =>
-      pathEq(["kohde", "tunniste"], "oppilasopiskelijamaara", maarays) &&
+      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
       maarays.koodisto === "kujalisamaareet",
     maaraykset
   );
@@ -35,7 +34,7 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
 
   const lisatietomaarays = find(
     maarays =>
-      pathEq(["kohde", "tunniste"], "oppilasopiskelijamaara", maarays) &&
+      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
