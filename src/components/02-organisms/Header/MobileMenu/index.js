@@ -14,6 +14,20 @@ import { AppRoute } from "const/index";
 import { getKoulutusmuodot, localizeRouteKey } from "../../../../utils/common";
 import AuthenticationLink from "../AuthenticationLink";
 import OrganisationLink from "../OrganisationLink";
+import { Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  margin: {
+    margin: theme.spacing(1)
+  },
+  root: {
+    marginTop: "0.6rem",
+    paddingLeft: 0,
+    textTransform: "none",
+    color: "#ffffff"
+  }
+}));
 
 const MobileMenu = ({
   localesByLang,
@@ -21,12 +35,10 @@ const MobileMenu = ({
   organisationLink,
   authenticationLink
 }) => {
+  const classes = useStyles();
   const { formatMessage, locale } = useIntl();
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
-  const [
-    jarjestamisluvatMenuVisible,
-    setJarjestamisluvatMenuVisible
-  ] = useState(false);
+  const [jarjestamisluvatMenuVisible] = useState(true);
 
   const AppRouteTitlesMobile = [
     { route: AppRoute.Tilastot, translationKey: "common.statistics" },
@@ -39,49 +51,44 @@ const MobileMenu = ({
 
   return (
     <React.Fragment>
-      <span
-        className="flex-1 flex align-top pt-5 px-5"
-        style={{ height: "4.562rem" }}
-      >
-        <span>
-          <span
-            className="cursor-pointer"
-            style={{ fontSize: "0.9375rem" }}
-            onClick={onCloseMenu}
-          >
-            <img
-              className="mb-1 inline-block"
-              style={{ paddingRight: "0.625rem" }}
-              alt={`${formatMessage(common.sulje)}`}
-              src={close_icon}
-            />
-            {formatMessage(common.sulje)}
-          </span>
-        </span>
+      <span className="flex-1 flex align-top" style={{ height: "4.562rem" }}>
+        <Button
+          className={classes.root}
+          style={{ fontSize: "0.9375rem" }}
+          onClick={onCloseMenu}
+        >
+          <img
+            className="mb-1 inline-block"
+            style={{ paddingRight: "0.625rem" }}
+            alt={`${formatMessage(common.sulje)}`}
+            src={close_icon}
+          />
+          {formatMessage(common.sulje)}
+        </Button>
 
-        <span className="ml-auto">
+        <span className="ml-auto pt-5 px-5">
           <LanguageSwitcher localesByLang={localesByLang} showBorder={false} />
         </span>
       </span>
-      <NavLink to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}>
+      <NavLink
+        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
+        className="block"
+      >
         <img
           alt={`${formatMessage(common.opetusJaKulttuuriministerio)} logo`}
           src={locale === "sv" ? logo_sv : logo_fi}
-          className="lg:w-fit-content max-w-sm pb-6 px-5"
+          className="lg:w-fit-content max-w-sm py-6 px-5"
         />
       </NavLink>
       <div className={jarjestamisluvatMenuVisible ? "bg-green-600" : ""}>
         <span
           className="px-5 pt-3 font-medium inline-block"
-          onClick={() =>
-            setJarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible)
-          }
           style={{
             width: "100%",
             height: "2.875rem"
           }}
         >
-          <div className="cursor-pointer">
+          <div>
             <span style={{ paddingRight: "0.625rem" }}>
               {formatMessage(common.jarjestamisJaYllapitamisluvat)}
             </span>

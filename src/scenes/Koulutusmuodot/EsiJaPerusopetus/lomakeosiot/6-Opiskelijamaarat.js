@@ -1,7 +1,7 @@
 import React from "react";
 import { useIntl } from "react-intl";
 import PropTypes from "prop-types";
-import Lomake from "components/02-organisms/Lomake";
+import Lomake from "components/02-organisms/Lomake/index";
 import education from "i18n/definitions/education";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
 

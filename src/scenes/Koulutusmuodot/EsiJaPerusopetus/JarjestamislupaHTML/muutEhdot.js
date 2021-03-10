@@ -7,6 +7,7 @@ import {
   length,
   map,
   path,
+  pathEq,
   propEq,
   toUpper
 } from "ramda";
@@ -33,17 +34,21 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
 
   const muutEhdotMaaraykset = filter(
     maarays =>
-      maarays.kohde.tunniste ===
-        "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
-      maarays.koodisto === "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
+      pathEq(
+        ["kohde", "tunniste"],
+        "muutkoulutuksenjarjestamiseenliittyvatehdot",
+        maarays
+      ) && maarays.koodisto === "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste ===
-        "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
-      maarays.koodisto === "lisatietoja",
+      pathEq(
+        ["kohde", "tunniste"],
+        "muutkoulutuksenjarjestamiseenliittyvatehdot",
+        maarays
+      ) && maarays.koodisto === "lisatietoja",
     maaraykset
   );
 
@@ -63,7 +68,11 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
               muutEhdotKoodisto
             );
 
-            naytettavaArvo = getLocalizedProperty(koodistosta.metadata, localeUpper, "kuvaus");
+            naytettavaArvo = getLocalizedProperty(
+              koodistosta.metadata,
+              localeUpper,
+              "kuvaus"
+            );
           }
 
           const result = (
