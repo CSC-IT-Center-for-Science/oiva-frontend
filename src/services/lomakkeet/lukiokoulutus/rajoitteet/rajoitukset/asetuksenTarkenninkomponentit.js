@@ -3,12 +3,12 @@ import {
   getLukumaarakomponentit,
   getMaaraaikakomponentit
 } from "./tarkenninkomponentit";
+import getOpetustehtavakomponentit from "./1-opetustehtavat";
 import getOpetustaAntavatKunnat from "./1-opetustaAntavatKunnat";
 import getOpetuskielikomponentit from "./2-opetuskielet";
 import getOpetuksenJarjestamismuotokomponentit from "./4-opetuksenjarjestamismuoto";
-import getErityisetKoulutustehtavat from "./4-erityisetKoulutustehtavat";
+import getErityisetKoulutustehtavat from "./5-erityisetKoulutustehtavat";
 import getMuutEhdot from "./7-muutEhdot";
-import getOppilaitokset from "./oppilaitokset";
 
 const asetuksenTarkenninlomakkeet = {
   // Enintään
@@ -22,8 +22,8 @@ const asetuksenTarkenninlomakkeet = {
   muutEhdot: getMuutEhdot,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
   opetuskielet: getOpetuskielikomponentit,
+  opetustehtavat: getOpetustehtavakomponentit,
   opiskelijamaarat: getLukumaarakomponentit,
-  oppilaitokset: getOppilaitokset,
   toimintaalue: getOpetustaAntavatKunnat
 };
 

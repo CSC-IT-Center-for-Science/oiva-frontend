@@ -61,6 +61,7 @@ import { getErityisetKoulutustehtavatLukio } from "./lukiokoulutus/4-erityisetKo
 import { getValtakunnallinenKehittamistehtavalomake } from "./lukiokoulutus/5-valtakunnallinenKehittamistehtava";
 import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
 import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
+
 import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
 import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/rajoite";
 
@@ -499,13 +500,13 @@ const lomakkeet = {
     },
     rajoite: {
       addition: (data, booleans, locale, changeObjects, functions) =>
-        rajoitelomakeLukio(data, booleans, locale, changeObjects, functions),
+        rajoitelomake(data, booleans, locale, changeObjects, functions),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfRajoiteLukio(data, booleans, locale, changeObjects)
+        previewOfRajoite(data, booleans, locale, changeObjects)
     },
     rajoitteet: {
       addition: (data, booleans, locale, changeObjects, functions) =>
-        rajoitteetLukio(data, booleans, locale, changeObjects, functions)
+        rajoitteet(data, booleans, locale, changeObjects, functions)
     }
   }
 };
