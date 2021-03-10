@@ -15,6 +15,7 @@ import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
+import { __ } from "i18n-for-browser";
 
 export default function PoOpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
@@ -25,6 +26,11 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
       pathEq(["kohde", "tunniste"], "oppilasopiskelijamaara", maarays) &&
       maarays.koodisto === "kujalisamaareet",
     maaraykset
+  );
+
+  const hasKokonaisopiskelijamaararajoite = !!find(
+    maarays => path(["meta", "tyyppi"], maarays) === "kokonaismaara",
+    opiskelijamaaraMaaraykset
   );
 
   const lisatietomaarays = find(
@@ -39,7 +45,13 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.oppilasOpiskelijamaarat)}
       </Typography>
-
+      {!hasKokonaisopiskelijamaararajoite && (
+        <ul key="kokonaisopiskelijamaara-ei-rajattu" className="ml-8 list-disc">
+          <li className="leading-bulletList">
+            {__("opiskelijamaara.kokonaismaaraEiRajattu")}
+          </li>
+        </ul>
+      )}
       {addIndex(map)(
         (maarays, index) => [
           <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc">
