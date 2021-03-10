@@ -1,5 +1,5 @@
 import { isAdded, isRemoved } from "css/label";
-import { filter, find, flatten, map, path, pathEq, propEq, concat } from "ramda";
+import { find, flatten, map, path, pathEq, propEq, concat } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getAnchorPart } from "utils/common";

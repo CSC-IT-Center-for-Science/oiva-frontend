@@ -1,4 +1,4 @@
-import { compose, concat, endsWith, find, flatten, includes, map, nth, path, prop, propEq, split } from "ramda";
+import { compose, endsWith, find, flatten, includes, map, nth, path, prop, propEq, split } from "ramda";
 
 export const defineBackendChangeObjects = async (
   changeObjects = [],
