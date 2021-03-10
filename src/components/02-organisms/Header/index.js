@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AppBar, Toolbar, useMediaQuery } from "@material-ui/core";
-import { includes } from "ramda";
-import { localizeRouteKey } from "utils/common";
+import { map, values } from "ramda";
+import { getKoulutusmuodot, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { AppRoute } from "const/index";
 import common from "i18n/definitions/common";
@@ -29,7 +29,6 @@ export const MEDIA_QUERIES = {
 
 const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
   const { formatMessage, locale } = useIntl();
-  const { pathname } = useLocation();
 
   const breakpointTabletMin = useMediaQuery(MEDIA_QUERIES.TABLET_MIN);
 
@@ -39,16 +38,9 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 
   const [isMobileMenuVisible, setIsMobileMenuVisible] = useState(false);
 
-  const is2ndNavVisible = includes(
-    localizeRouteKey(
-      locale,
-      AppRoute.JarjestamisJaYllapitamisluvat,
-      formatMessage
-    ),
-    pathname
-  );
-
   const toggleMobileMenu = () => setIsMobileMenuVisible(!isMobileMenuVisible);
+
+  const koulutusmuodot = getKoulutusmuodot(formatMessage);
 
   return (
     <React.Fragment>
@@ -68,7 +60,32 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
               />
             </NavLink>
             <div id="navigation-level-1">
-              <Navigation level={1} />
+              <Navigation
+                level={1}
+                routes={[
+                  {
+                    key: "JarjestamisJaYllapitamisluvat",
+                    route: AppRoute.JarjestamisJaYllapitamisluvat,
+                    routes: values(
+                      map(koulutusmuoto => {
+                        return {
+                          key: koulutusmuoto.pascalCase,
+                          params: {
+                            koulutusmuoto: koulutusmuoto.kebabCase
+                          },
+                          title: koulutusmuoto.paasivunOtsikko
+                        };
+                      }, koulutusmuodot)
+                    ),
+                    titleKey: "common.jarjestamisJaYllapitamisluvat"
+                  },
+                  {
+                    key: "Tilastot",
+                    route: AppRoute.Tilastot,
+                    titleKey: "common.statistics"
+                  }
+                ]}
+              />
             </div>
             <div className="flex-1 flex justify-end items-center">
               {organisationLink.path && (
@@ -87,19 +104,15 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
               />
             </div>
           </Toolbar>
-          {is2ndNavVisible && (
-            <AppBar elevation={0} position="static">
-              <Toolbar className="bg-green-600" style={{ minHeight: "3rem" }}>
-                <Navigation level={2} />
-              </Toolbar>
-            </AppBar>
-          )}
         </AppBar>
       )}
 
       {!breakpointDesktopLarge && (
         <React.Fragment>
-          <SideNavigation isVisible={isMobileMenuVisible}>
+          <SideNavigation
+            isVisible={isMobileMenuVisible}
+            setIsMobileMenuVisible={setIsMobileMenuVisible}
+          >
             <MobileMenu
               localesByLang={localesByLang}
               onCloseMenu={toggleMobileMenu}

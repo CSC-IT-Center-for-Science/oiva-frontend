@@ -1560,6 +1560,11 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.jarjestamisJaYllapitamisluvatOtsikko",
+    "defaultMessage": "Järjestämis- ja ylläpitämisluvat",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "common.esikatselu",
     "defaultMessage": "Esikatselu",
     "filepath": "src/i18n/definitions/common.js"
@@ -1983,16 +1988,6 @@
     "id": "languages.selection",
     "defaultMessage": "Kielivalinta",
     "filepath": "src/i18n/definitions/languages.js"
-  },
-  {
-    "id": "common.changesText",
-    "defaultMessage": "Muutokset:",
-    "filepath": "src/i18n/definitions/lomake.js"
-  },
-  {
-    "id": "common.undo",
-    "defaultMessage": "Kumoa muutokset",
-    "filepath": "src/i18n/definitions/lomake.js"
   },
   {
     "id": "lukiokoulutus.genetiivi",

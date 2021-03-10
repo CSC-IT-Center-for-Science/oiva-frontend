@@ -11,12 +11,14 @@ const {
   focus,
   link,
   openBrowser,
+  press,
+  reload,
   scrollTo,
   setViewPort,
   text,
   textBox,
-  write,
-  reload
+  waitFor,
+  write
 } = require("taiko");
 const chai = require("chai");
 require("dotenv").config();
@@ -40,6 +42,10 @@ step("Siirry osoitteeseen <url>", async url => {
   }
 });
 
+step("Odota <ms> ms", async ms => {
+  await waitFor(ms);
+});
+
 step(
   "Kirjoita kenttään, jonka tyyppi on <type> arvo <value>",
   async (type, value) => {
@@ -48,13 +54,50 @@ step(
   }
 );
 
+step("Paina näppäintä <key>", async key => {
+  await press(key);
+});
+
+step(
+  "Klikkaa elementtiä, jonka <parameter> on <parameterValue>",
+  async (parameter, parameterValue) => {
+    await click({ [parameter]: parameterValue });
+  }
+);
+
+step(
+  "Klikkaa elementtiä, jonka <parameter> sisältää <parameterValue>",
+  async (parameter, parameterValue) => {
+    await click($(`[${parameter}*="${parameterValue}"]`));
+  }
+);
+
 step(
   "Kirjoita kenttään, jonka parametri <parameter> on <parameterValue> arvo <value>",
   async (parameter, parameterValue, value) => {
     const field = textBox({ [parameter]: parameterValue });
     await focus(field);
-    await clear(field);
+    await waitFor(100);
+    await focus(field);
+    await waitFor(100);
+    // await clear(field);
     await write(value);
+  }
+);
+
+step(
+  "Valitse asetuksen kohde <asetuksenAutocompletenId> kohteeksi <teksti>",
+  async (asetuksenAutocompletenId, teksti) => {
+    await click($(`input[id="${asetuksenAutocompletenId}"]`));
+    await click(teksti);
+  }
+);
+
+step(
+  "Valitse asetuksen tarkennin <asetuksenTarkentimenAutocompletenId> kohteeksi <teksti>",
+  async (asetuksenTarkentimenAutocompletenId, teksti) => {
+    await click($(`input[id="${asetuksenTarkentimenAutocompletenId}"]`));
+    await click(teksti);
   }
 );
 
@@ -264,6 +307,10 @@ step(
 
 step("Tarkista, että urlissa lukee <teksti>", async teksti => {
   assert.include(await currentURL(), teksti, "URL OK");
+});
+
+step("Scroll to text <teksti>", async teksti => {
+  await scrollTo(teksti);
 });
 
 step("Vaihda kieleksi <locale>", async locale => {

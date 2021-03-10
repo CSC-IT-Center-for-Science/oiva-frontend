@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import { getLocalizedProperty } from "services/lomakkeet/utils";
 
 export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
   const intl = useIntl();
@@ -23,6 +24,13 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
     maaraykset
   );
 
+  let kuvaus = null;
+  if (opetuksenJarjestamismuoto) {
+    const jarjestamismuodonMetadata = path(["koodi", "metadata"], opetuksenJarjestamismuoto);
+    kuvaus = opetuksenJarjestamismuoto.meta.kuvaus ||
+      getLocalizedProperty(jarjestamismuodonMetadata, locale, "kuvaus");
+  }
+
   return opetuksenJarjestamismuoto || lisatietomaarays ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
@@ -31,7 +39,7 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
       {opetuksenJarjestamismuoto ? (
         <ul className="ml-8 list-disc mb-4">
           <li key={opetuksenJarjestamismuoto.koodiarvo}>
-            {opetuksenJarjestamismuoto.meta.kuvaus}
+            {kuvaus}
           </li>
           <React.Fragment>
             {length(opetuksenJarjestamismuoto.aliMaaraykset)
