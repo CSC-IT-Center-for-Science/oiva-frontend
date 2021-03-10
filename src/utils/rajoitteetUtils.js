@@ -155,7 +155,6 @@ function kayLapiKohdennus(
                   post: "henkilöä"
                 }
               : null;
-            //: getTaydennyssana(tarkenninavain, locale);
 
             const tarkentimenArvo = getTarkentimenArvo(
               asetus.tarkennin[tarkenninavain]
@@ -184,6 +183,12 @@ function kayLapiKohdennus(
                 return item;
               }
             } else if (muokattuTarkentimenArvo) {
+              /** Näytetään opiskelijamäärärajoitteen ensimmäinen rivi hieman eri tavalla */
+              if (tarkenninavain === "lukumaara" && ensimmainenRajoite) {
+                return format === "list"
+                  ? `: ${tarkenninLabel} ${muokattuTarkentimenArvo}`
+                  : muokattuTarkentimenArvo;
+              }
               return format === "list"
                 ? `<ul><li>${tarkenninLabel} ${muokattuTarkentimenArvo}`
                 : muokattuTarkentimenArvo;
