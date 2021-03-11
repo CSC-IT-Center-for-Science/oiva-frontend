@@ -35,7 +35,7 @@ const ValtakunnallisetKehittamistehtavat = ({
    useEffect(() => {
     let items = flatten(map(item => {
         return filter(
-          compose(allPass([startsWith(item.anchor.replace(/.[^.]+$/, "")), endsWith(".kuvaus")]), prop("anchor")),
+          compose(allPass([startsWith(`${item.anchor.replace(/.[^.]+$/, "")}.`), endsWith(".kuvaus")]), prop("anchor")),
           stateObjectsSection4
         )
       }, filter(

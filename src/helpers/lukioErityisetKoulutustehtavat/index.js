@@ -118,9 +118,9 @@ export const defineBackendChangeObjects = async (
         );
 
         if(isValtakunnallinenKehitystehtava) {
-          changeObj.properties.metadata.isValtakunnallinenKehitystehtava = isValtakunnallinenKehitystehtava.properties.isChecked;
+          changeObj.properties.metadata.isChecked = isValtakunnallinenKehitystehtava.properties.isChecked;
         } else if(!changeObj.properties.metadata.isValtakunnallinenKehitystehtava) {
-          changeObj.properties.metadata.isValtakunnallinenKehitystehtava = false
+          changeObj.properties.metadata.isChecked = false
         }
 
         const kuvausBEChangeObject = {
@@ -136,7 +136,8 @@ export const defineBackendChangeObjects = async (
             changeObjects: concat(
               take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
               [checkboxChangeObj, changeObj]
-            ).filter(Boolean)
+            ).filter(Boolean),
+            isValtakunnallinenKehitystehtava: changeObj.properties.metadata.isChecked
           },
           tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
         };
