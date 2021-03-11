@@ -50,7 +50,7 @@ export async function defineBackendChangeObjects(
   } = changeObjects;
 
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);
-
+  console.info(changeObjects);
   /**
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
@@ -495,7 +495,7 @@ export async function defineBackendChangeObjects(
     : null;
 
   const changeObjUlkomaaTextBoxes = filter(
-    compose(endsWith(".lisatiedot"), prop("anchor")),
+    compose(endsWith(".kuvaus"), prop("anchor")),
     changeObjects.ulkomaa
   );
 

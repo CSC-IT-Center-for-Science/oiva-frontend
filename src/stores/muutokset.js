@@ -215,11 +215,15 @@ const Store = createStore({
         const textBoxChangeObjects = filter(
           changeObj =>
             startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
-            endsWith(sectionId === 'toimintaalue' ? ".lisatiedot" : ".kuvaus", changeObj.anchor) &&
+            endsWith(".kuvaus", changeObj.anchor) &&
             !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
           concat(
-            (currentChangeObjects.unsaved && currentChangeObjects.unsaved[sectionId]) || [],
-            (currentChangeObjects.saved && currentChangeObjects.saved[sectionId]) || []
+            (currentChangeObjects.unsaved &&
+              currentChangeObjects.unsaved[sectionId]) ||
+              [],
+            (currentChangeObjects.saved &&
+              currentChangeObjects.saved[sectionId]) ||
+              []
           ) || []
         );
 
@@ -228,12 +232,10 @@ const Store = createStore({
             ? reduce(
                 max,
                 -Infinity,
-                map(changeObj => {
-                  if(sectionId === 'toimintaalue') {
-                    return getAnchorPart(changeObj.anchor, 3) === "lisatiedot" ? 0 : parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-                  }
-                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
-                }, textBoxChangeObjects)
+                map(
+                  changeObj => parseInt(getAnchorPart(changeObj.anchor, 2), 10),
+                  textBoxChangeObjects
+                )
               ) + 1
             : 1;
 
@@ -242,12 +244,12 @@ const Store = createStore({
          * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
          * kenttä olisi automaattisesti fokusoitu.
          */
-        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`;
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
         let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`,
+              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
               properties: {
                 value: ""
               }
