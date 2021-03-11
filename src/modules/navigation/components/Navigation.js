@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { AppRoute } from "const/index";
 import { useIntl } from "react-intl";
-import { includes, isEmpty, length, map } from "ramda";
+import { includes, isEmpty, length, map, path } from "ramda";
 import { PropTypes } from "prop-types";
 import { localizeRouteKey } from "utils/common";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { __ } from "i18n-for-browser";
 
-export const Navigation = ({ routes }) => {
+export const Navigation = ({ localesByLang, routes }) => {
   const { formatMessage, locale } = useIntl();
   const [visibleSubMenuRoute, setVisibleSubMenuRoute] = useState();
   const location = useLocation();
@@ -44,8 +43,10 @@ export const Navigation = ({ routes }) => {
                       : routeObj.title}
                   </span>
                   {length(routeObj.routes) ? (
-                    includes(__(routeObj.route), location.pathname) &&
-                    visibleSubMenuRoute === routeObj.key ? (
+                    includes(
+                      path([locale, routeObj.route], localesByLang),
+                      location.pathname
+                    ) && visibleSubMenuRoute === routeObj.key ? (
                       <ExpandMoreIcon className="ml-2 align-bottom" />
                     ) : (
                       <ExpandLessIcon className="ml-2 align-bottom" />
@@ -57,7 +58,10 @@ export const Navigation = ({ routes }) => {
               {/* 2. tason navigaatio */}
               {!isEmpty(routeObj.routes) &&
                 visibleSubMenuRoute === routeObj.key &&
-                includes(__(routeObj.route), location.pathname) && (
+                includes(
+                  path([locale, routeObj.route], localesByLang),
+                  location.pathname
+                ) && (
                   <ul
                     className={"flex left-0 w-full fixed bg-green-600"}
                     style={{ top: "4.5rem" }}
