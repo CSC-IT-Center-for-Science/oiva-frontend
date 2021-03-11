@@ -27,7 +27,7 @@ export const defineBackendChangeObjects = async (
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
   const lisatiedot = await getLisatiedotFromStorage();
-  const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
+  const kohde = find(propEq("tunniste", "opiskelijamaarat"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
 
   // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
