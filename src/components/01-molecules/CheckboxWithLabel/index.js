@@ -126,7 +126,6 @@ CheckboxWithLabel.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
-  title: PropTypes.title,
   isChecked: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isIndeterminate: PropTypes.bool,
