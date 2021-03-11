@@ -119,7 +119,7 @@ export const defineBackendChangeObjects = async (
 
         if(isValtakunnallinenKehitystehtava) {
           changeObj.properties.metadata.isChecked = isValtakunnallinenKehitystehtava.properties.isChecked;
-        } else if(!changeObj.properties.metadata.isValtakunnallinenKehitystehtava) {
+        } else if(!changeObj.properties.metadata.isChecked) {
           changeObj.properties.metadata.isChecked = false
         }
 

@@ -44,7 +44,7 @@ export async function getValtakunnallinenKehittamistehtavalomake(
                 anchor: "valintaelementti",
                 name: "CheckboxWithLabel",
                 properties: {
-                  isChecked: path(["properties", "metadata", "isValtakunnallinenKehitystehtava"], checkboxObjSection4),
+                  isChecked: path(["properties", "metadata", "isChecked"], checkboxObjSection4),
                   isIndeterminate: false,
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
