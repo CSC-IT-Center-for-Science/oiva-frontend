@@ -1,4 +1,4 @@
-import { isAdded, isRemoved } from "css/label";
+import { isAdded, isInLupa, isRemoved } from "css/label";
 import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
 import {
   compose,
@@ -251,6 +251,10 @@ export async function erityisetKoulutustehtavat(
                 isReadOnly: _isReadOnly,
                 labelStyles: {
                   addition: isAdded,
+                  custom: Object.assign(
+                    {},
+                    !!tehtavaanLiittyvatMaaraykset.length ? isInLupa : {}
+                  ),
                   removal: isRemoved
                 },
                 title: getLocalizedProperty(

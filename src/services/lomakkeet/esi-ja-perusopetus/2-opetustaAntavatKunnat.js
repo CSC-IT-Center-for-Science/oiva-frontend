@@ -107,7 +107,7 @@ export const opetustaAntavatKunnat = async (
       const kunnanNimi = getLocalizedProperty(kunta.metadata, locale, "nimi");
 
       const isKuntaInLupa = !!find(
-        pathEq(["metadata", "koodiarvo"], kunta.koodiarvo),
+        propEq("koodiarvo", kunta.koodiarvo),
         kuntamaaraykset
       );
 
@@ -204,7 +204,15 @@ export const opetustaAntavatKunnat = async (
   const noSelectionsInLupa =
     isEmpty(maakuntamaaraykset) && isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
-  const ulkomaaCheckbox = find(propEq("anchor", "toimintaalue.ulkomaa.200"), changeObjects)
+  const ulkomaaCheckbox = find(
+    propEq("anchor", "toimintaalue.ulkomaa.200"),
+    changeObjects
+  );
+
+  const isUlkomaaCheckedByDefault = !!find(
+    propEq("koodiarvo", "200"),
+    kuntamaaraykset
+  );
 
   const lomakerakenne = flatten(
     [
@@ -254,10 +262,12 @@ export const opetustaAntavatKunnat = async (
                   labelStyles: {
                     addition: isAdded,
                     removal: isRemoved,
-                    // TODO: määritä oikea ehto ja arvo
-                    custom: Object.assign({}, !!false ? isInLupa : {})
+                    custom: Object.assign(
+                      {},
+                      isUlkomaaCheckedByDefault ? isInLupa : {}
+                    )
                   },
-                  isChecked: false,
+                  isChecked: isUlkomaaCheckedByDefault,
                   isIndeterminate: false,
                   isReadOnly,
                   title: __("education.opetustaJarjestetaanSuomenUlkopuolella")
@@ -294,7 +304,7 @@ export const opetustaAntavatKunnat = async (
                           forChangeObject: {
                             ankkuri: anchor,
                             koodiarvo: ulkomaa.koodiarvo,
-                            koodisto: ulkomaa.koodisto,
+                            koodisto: ulkomaa.koodisto
                           },
                           isPreviewModeOn,
                           isReadOnly: _isReadOnly,
@@ -303,23 +313,30 @@ export const opetustaAntavatKunnat = async (
                           isRemovable: true,
                           value: changeObj.properties.value
                         }
-                      }
+                      };
                     },
                     filter(changeObj => {
                       return (
                         endsWith(".lisatiedot", changeObj.anchor) &&
                         includes(`.${ulkomaa.koodiarvo}`, changeObj.anchor) &&
                         !includes(`${ulkomaa.koodiarvo}.0`, changeObj.anchor) &&
-                        !includes(`${ulkomaa.koodiarvo}.lisatiedot`, changeObj.anchor)
+                        !includes(
+                          `${ulkomaa.koodiarvo}.lisatiedot`,
+                          changeObj.anchor
+                        )
                       );
-                    }, changeObjects)),
+                    }, changeObjects)
+                  ),
                   {
                     anchor: "A",
                     name: "SimpleButton",
-                    onClick: () => onAddButtonClick("ulkomaa."+ulkomaa.koodiarvo),
+                    onClick: () =>
+                      onAddButtonClick("ulkomaa." + ulkomaa.koodiarvo),
                     properties: {
                       isReadOnly: _isReadOnly,
-                      isVisible: ulkomaaCheckbox ? ulkomaaCheckbox.properties.isChecked : false,
+                      isVisible: ulkomaaCheckbox
+                        ? ulkomaaCheckbox.properties.isChecked
+                        : false,
                       text: "Lisää uusi paikkakunta ja maa",
                       icon: "FaPlus",
                       iconContainerStyles: {
