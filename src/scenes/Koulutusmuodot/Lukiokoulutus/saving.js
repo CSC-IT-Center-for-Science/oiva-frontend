@@ -38,6 +38,7 @@ export async function createObjectToSave(
   alkupera = "KJ"
 ) {
   const allAttachmentsRaw = [];
+  const koulutustyyppi = koulutustyypitMap.LUKIO;
 
   // ... without tiedosto-property
   const allAttachments = map(attachment => {
@@ -180,7 +181,8 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
-    kohteet
+    kohteet,
+    koulutustyyppi
   );
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
@@ -207,7 +209,7 @@ export async function createObjectToSave(
 
   let objectToSave = {
     alkupera,
-    koulutustyyppi: koulutustyypitMap.LUKIO,
+    koulutustyyppi,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,
