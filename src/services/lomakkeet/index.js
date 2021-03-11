@@ -71,7 +71,7 @@ import { previewOfValtakunnallinenKehittamistehtava } from "./lukiokoulutus/esik
 import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./lukiokoulutus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
 
-import { previewOfRajoite as previewOfRajoiteLukio } from "./lukiokoulutus/esikatselu/10-rajoite";
+import { previewOfRajoite } from "./rajoitteet/esikatselu";
 import { previewOfPaatoksentiedot } from "./esi-ja-perusopetus/esikatselu/0-paatoksenTiedot";
 import { rajoitteet } from "./rajoitteet/index";
 
@@ -493,7 +493,7 @@ const lomakkeet = {
       modification: (data, booleans, locale, changeObjects, functions) =>
         rajoitelomake(data, booleans, locale, changeObjects, functions),
       preview: (data, booleans, locale, changeObjects) =>
-        previewOfRajoiteLukio(data, booleans, locale, changeObjects)
+        previewOfRajoite(data, booleans, locale, changeObjects)
     }
   }
 };

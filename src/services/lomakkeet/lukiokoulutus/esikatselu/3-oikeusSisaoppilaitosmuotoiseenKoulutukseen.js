@@ -1,6 +1,6 @@
-import { append, endsWith, find, path, pathEq, propEq } from "ramda";
+import { append, endsWith, find, isEmpty, path, pathEq, propEq } from "ramda";
 import { replaceAnchorPartWith } from "utils/common";
-import { getRajoite } from "../../../../utils/rajoitteetUtils";
+import { getRajoitteet } from "../../../../utils/rajoitteetUtils";
 
 export const previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
   lomakedata,
@@ -22,7 +22,7 @@ export const previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
     );
 
     if (kuvausNode) {
-      const { rajoiteId, rajoite } = getRajoite(
+      const kohdistuvatRajoitteet = getRajoitteet(
         path(["properties", "forChangeObject", "koodiarvo"], kuvausNode),
         rajoitteet
       );
@@ -38,15 +38,14 @@ export const previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
                   {
                     anchor: "muoto",
                     components: [
-                      rajoite
+                      !isEmpty(kohdistuvatRajoitteet)
                         ? {
                             anchor: "rajoite",
                             name: "Rajoite",
                             properties: {
                               areTitlesVisible: false,
                               isReadOnly: true,
-                              rajoiteId,
-                              rajoite
+                              rajoite: kohdistuvatRajoitteet
                             }
                           }
                         : {

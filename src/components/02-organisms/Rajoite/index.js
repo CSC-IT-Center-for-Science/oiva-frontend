@@ -8,7 +8,7 @@ const defaultProps = {
 };
 
 const constants = {
-  formLocation: ["esiJaPerusopetus", "rajoite"]
+  formLocation: ["rajoitteet", "rajoitedialogi"]
 };
 
 const Rajoite = ({
