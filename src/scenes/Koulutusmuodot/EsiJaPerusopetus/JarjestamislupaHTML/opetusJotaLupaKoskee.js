@@ -8,7 +8,8 @@ import {
   isEmpty,
   propEq,
   path,
-  addIndex
+  addIndex,
+  pathEq
 } from "ramda";
 import { useIntl } from "react-intl";
 import {
@@ -18,7 +19,13 @@ import {
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 
-export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
+const defaultProps = {
+  maaraykset: []
+};
+
+export default function PoOpetusJotaLupaKoskeeHtml({
+  maaraykset = defaultProps.opetustehtavaMaaraykset
+}) {
   const intl = useIntl();
   const locale = toUpper(intl.locale);
   const [opetustehtavatFromStorage, setOpetustehtavatFromStorage] = useState(
@@ -47,14 +54,14 @@ export default function PoOpetusJotaLupaKoskeeHtml({ maaraykset }) {
 
   const opetustehtavaMaaraykset = filter(
     maarays =>
-      maarays.kohde.tunniste === "opetusjotalupakoskee" &&
+      pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
       maarays.koodisto === "opetustehtava",
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "opetusjotalupakoskee" &&
+      pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );

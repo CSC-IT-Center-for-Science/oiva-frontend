@@ -1,22 +1,23 @@
 import {
+  allPass,
   append,
   compose,
+  concat,
   endsWith,
+  filter,
   find,
   flatten,
   includes,
   isEmpty,
+  length,
   map,
   mapObjIndexed,
+  not,
   path,
   prop,
-  sortBy,
-  values,
-  concat,
-  filter,
-  not,
   propEq,
-  allPass
+  sortBy,
+  values
 } from "ramda";
 import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
 import { getLocalizedProperty } from "../../utils";
@@ -241,25 +242,28 @@ export async function previewOfOpetustaAntavaKunnat({
       )
     );
 
-    structure = append(
-      {
-        anchor: "valitut",
-        components: [
-          {
-            anchor: "listaus",
-            name: "List",
-            properties: {
-              isDense: true,
-              items: concat(
-                municipalities.filter(Boolean),
-                foreignMunicipalities.filter(Boolean)
-              )
-            }
-          }
-        ]
-      },
-      structure
+    const allMunicipalities = concat(
+      municipalities.filter(Boolean),
+      foreignMunicipalities.filter(Boolean)
     );
+
+    if (length(allMunicipalities))
+      structure = append(
+        {
+          anchor: "valitut",
+          components: [
+            {
+              anchor: "listaus",
+              name: "List",
+              properties: {
+                isDense: true,
+                items: allMunicipalities
+              }
+            }
+          ]
+        },
+        structure
+      );
   }
 
   const lisatiedotNode = find(
@@ -269,10 +273,7 @@ export async function previewOfOpetustaAntavaKunnat({
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      Lisatiedot(lisatiedotNode.properties.value),
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;

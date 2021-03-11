@@ -1,82 +1,110 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { AppRoute, AppRouteTitles } from "const/index";
+import React, { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { AppRoute } from "const/index";
 import { useIntl } from "react-intl";
-import { isEmpty, map, values } from "ramda";
-import { getKoulutusmuodot } from "utils/common";
+import { includes, isEmpty, length, map, path } from "ramda";
+import { PropTypes } from "prop-types";
+import { localizeRouteKey } from "utils/common";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
-export const Navigation = ({ level }) => {
+export const Navigation = ({ localesByLang, routes }) => {
   const { formatMessage, locale } = useIntl();
-  const koulutusmuodot = getKoulutusmuodot(formatMessage);
-
-  const mainRoutes = {
-    JarjestamisJaYllapitamisluvat: {
-      route: AppRoute.JarjestamisJaYllapitamisluvat,
-      isExpandable: true
-    },
-    Tilastot: {
-      route: AppRoute.Tilastot
-    }
-  };
+  const [visibleSubMenuRoute, setVisibleSubMenuRoute] = useState();
+  const location = useLocation();
 
   return (
-    !isEmpty(mainRoutes) && (
-      <ul className={`block h-full ${level === 2 ? "bg-green-600" : ""}`}>
-        {// Päätason navigaatio
-        level === 1 &&
-          Object.keys(mainRoutes).map((key, index) => {
-            const routeTitleKey =
-              AppRouteTitles.navigation.level1.get(AppRoute[key]) || "";
-
-            return (
-              <li key={key} className="inline-block h-full">
-                <NavLink
-                  to={localizeRouteKey(AppRoute[key])}
-                  activeClassName="bg-green-600"
-                  className="text-white px-5 p-6 uppercase font-medium hover:text-white hover:bg-green-600"
-                  style={{ fontSize: "0.9375rem" }}
-                >
+    !isEmpty(routes) && (
+      // 1. tason navigaatio
+      <ul className={"flex"}>
+        {routes.map(routeObj => {
+          return (
+            <li
+              key={routeObj.key}
+              className="flex flex-col items-center hover:bg-green-600"
+              onClick={() => setVisibleSubMenuRoute(routeObj.key)}
+              onMouseEnter={() => setVisibleSubMenuRoute(routeObj.key)}
+              onMouseLeave={() => setVisibleSubMenuRoute(null)}
+            >
+              <NavLink
+                to={localizeRouteKey(
+                  locale,
+                  AppRoute[routeObj.key],
+                  formatMessage
+                )}
+                activeClassName={"bg-green-700 bg-opacity-75"}
+                className="flex flex-col justify-center text-white px-5 h-20 uppercase font-medium hover:text-white hover:bg-green-600 hover:bg-opacity-50"
+                style={{ fontSize: "0.9375rem" }}
+              >
+                <div>
                   <span>
-                    {routeTitleKey
-                      ? formatMessage({ id: routeTitleKey })
-                      : AppRoute[key]}
+                    {routeObj.titleKey
+                      ? formatMessage({ id: routeObj.titleKey })
+                      : routeObj.title}
                   </span>
-                  {mainRoutes[key].isExpandable && (
-                    <ExpandMoreIcon className="ml-2 align-bottom" />
-                  )}
-                </NavLink>
-              </li>
-            );
-          })}
-        {// Tässä muodostetaan toisen tason navigaatio eli linkit eri
-        // koulutusmuotojen etusivuille.
-        level === 2 &&
-          map(koulutusmuoto => {
-            const route = AppRoute.getKoulutusmuodonEtusivu(
-              koulutusmuoto.kebabCase
-            );
+                  {length(routeObj.routes) ? (
+                    includes(
+                      path([locale, routeObj.route], localesByLang),
+                      location.pathname
+                    ) && visibleSubMenuRoute === routeObj.key ? (
+                      <ExpandMoreIcon className="ml-2 align-bottom" />
+                    ) : (
+                      <ExpandLessIcon className="ml-2 align-bottom" />
+                    )
+                  ) : null}
+                </div>
+              </NavLink>
 
-            const routeToKoulutusmuodonEtusivu = localizeRouteKey(route.key, {
-              koulutusmuoto: koulutusmuoto.kebabCase
-            });
-            return (
-              <li key={koulutusmuoto.kebabCase} className="inline-block h-full">
-                <NavLink
-                  to={routeToKoulutusmuodonEtusivu}
-                  activeClassName="bg-green-700 hover:text-white"
-                  className="text-white px-4 py-3 font-medium"
-                >
-                  {koulutusmuoto.paasivunOtsikko}
-                </NavLink>
-              </li>
-            );
-          }, values(koulutusmuodot))}
+              {/* 2. tason navigaatio */}
+              {!isEmpty(routeObj.routes) &&
+                visibleSubMenuRoute === routeObj.key &&
+                includes(
+                  path([locale, routeObj.route], localesByLang),
+                  location.pathname
+                ) && (
+                  <ul
+                    className={"flex left-0 w-full fixed bg-green-600"}
+                    style={{ top: "4.5rem" }}
+                  >
+                    {map(routeObj => {
+                      return (
+                        <li
+                          key={routeObj.key}
+                          className="flex flex-col items-center hover:bg-green-700 hover:bg-opacity-75"
+                          onClick={e => {
+                            e.stopPropagation();
+                            setVisibleSubMenuRoute(null);
+                          }}
+                        >
+                          <NavLink
+                            to={localizeRouteKey(
+                              locale,
+                              AppRoute[routeObj.key],
+                              formatMessage
+                            )}
+                            activeClassName={"bg-green-700"}
+                            className="flex flex-col justify-center text-white px-5 h-20 uppercase font-medium hover:text-white hover:bg-green-600 hover:bg-opacity-50"
+                            style={{ fontSize: "0.9375rem" }}
+                          >
+                            <span>
+                              {routeObj.titleKey
+                                ? formatMessage({ id: routeObj.titleKey })
+                                : routeObj.title}
+                            </span>
+                          </NavLink>
+                        </li>
+                      );
+                    }, routeObj.routes || [])}
+                  </ul>
+                )}
+            </li>
+          );
+        })}
       </ul>
     )
   );
+};
 
-  function localizeRouteKey(path, params) {
-    return `/${locale}` + formatMessage({ id: path }, params);
-  }
+Navigation.propTypes = {
+  routes: PropTypes.array
 };

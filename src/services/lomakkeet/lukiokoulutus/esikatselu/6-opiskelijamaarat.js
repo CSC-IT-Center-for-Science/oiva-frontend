@@ -1,16 +1,10 @@
-import {
-  append,
-  endsWith,
-  find,
-  keys,
-  map,
-  pipe
-} from "ramda";
+import { append, endsWith, find, keys, length, map, pipe } from "ramda";
 
 export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
   let structure = [];
 
-  const opiskelijaMaaraRajoitteet = pipe(keys,
+  const opiskelijaMaaraRajoitteet = pipe(
+    keys,
     map(rajoiteId => {
       const rajoite = rajoitteet[rajoiteId];
       return {
@@ -31,8 +25,9 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
     })
   )(rajoitteet);
 
-  if (opiskelijaMaaraRajoitteet) {
-    structure = append({
+  if (length(opiskelijaMaaraRajoitteet)) {
+    structure = append(
+      {
         anchor: "opiskelijamaarat",
         components: [
           {
@@ -44,8 +39,7 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
             }
           }
         ]
-      }
-      ,
+      },
       structure
     );
   }
