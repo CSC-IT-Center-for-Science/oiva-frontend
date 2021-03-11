@@ -143,6 +143,7 @@ export async function createObjectToSave(
   // 4. ERITYINEN KOULUTUSTEHTÄVÄ
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
     {
+      valtakunnallisetKehittamistehtavat: changeObjects.valtakunnallisetKehittamistehtavat,
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
       rajoitteetByRajoiteId: reject(
         isNil,
@@ -167,18 +168,6 @@ export async function createObjectToSave(
     {
       valtakunnallisetKehittamistehtavat: changeObjects.valtakunnallisetKehittamistehtavat,
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
-      rajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "valtakunnallisetKehittamistehtavat",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      )
     },
     maaraystyypit,
     locale,

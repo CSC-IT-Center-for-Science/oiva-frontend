@@ -109,6 +109,20 @@ export const defineBackendChangeObjects = async (
     if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
+        const koodiarvo = nth(1, split(".", changeObj.anchor));
+        const index = nth(2, split(".", changeObj.anchor));
+
+        const isValtakunnallinenKehitystehtava = find(
+          compose(endsWith(`.${koodiarvo}.${index}.valintaelementti`), prop("anchor")),
+          changeObjects.valtakunnallisetKehittamistehtavat
+        );
+
+        if(isValtakunnallinenKehitystehtava) {
+          changeObj.properties.metadata.isValtakunnallinenKehitystehtava = isValtakunnallinenKehitystehtava.properties.isChecked;
+        } else if(!changeObj.properties.metadata.isValtakunnallinenKehitystehtava) {
+          changeObj.properties.metadata.isValtakunnallinenKehitystehtava = false
+        }
+
         const kuvausBEChangeObject = {
           generatedId: changeObj.anchor,
           kohde,

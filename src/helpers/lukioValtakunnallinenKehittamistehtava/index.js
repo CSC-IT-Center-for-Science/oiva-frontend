@@ -1,4 +1,4 @@
-import { compose, endsWith, find, flatten, includes, map, nth, path, prop, propEq, split } from "ramda";
+import { compose, find, flatten, includes, path, prop, propEq } from "ramda";
 
 export const defineBackendChangeObjects = async (
   changeObjects = [],
@@ -6,40 +6,11 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
-  const { valtakunnallisetKehittamistehtavat } = changeObjects;
-
   const kohde = find(
     propEq("tunniste", "valtakunnallinenkehittamistehtava"),
     kohteet
   );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
-  const muutokset = map((ehto) => {
-    let koodiarvo = nth(1, split(".", ehto.anchor));
-    let index = nth(2, split(".", ehto.anchor));
-    // Checkbox-kenttien muutokset
-    const checkboxChangeObj = find(
-      compose(endsWith(`.${koodiarvo}.${index}.valintaelementti`), prop("anchor")),
-      changeObjects.valtakunnallisetKehittamistehtavat
-    );
-
-    let checkboxBEchangeObject = null;
-
-    checkboxBEchangeObject = checkboxChangeObj
-      ? {
-        generatedId: `valtakunnallinenKehittamistehtava-${Math.random()}`,
-        kohde,
-        koodiarvo: koodiarvo,
-        koodisto: "valtakunnallinenkehittamistehtava",
-        maaraystyyppi,
-        meta: {
-          changeObjects: checkboxChangeObj
-        },
-        tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
-      }
-      : null;
-
-    return [checkboxBEchangeObject];
-  }, valtakunnallisetKehittamistehtavat);
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -71,9 +42,7 @@ export const defineBackendChangeObjects = async (
     }
     : null;
 
-  const objects = flatten([muutokset, lisatiedotBEchangeObject]).filter(
+  return flatten([lisatiedotBEchangeObject]).filter(
     Boolean
   );
-
-  return objects;
 };
