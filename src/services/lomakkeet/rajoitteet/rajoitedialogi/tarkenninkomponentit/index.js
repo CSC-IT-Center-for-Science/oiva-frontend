@@ -6,7 +6,6 @@ import {
 import getOpetustehtavakomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/esi-ja-perusopetus/1-opetustehtavat";
 import getOikeusSisaoppilaitosmuotoiseenKoulutukseen from "./lukiokoulutus/3-oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import getOpetuksenJarjestamismuotokomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/esi-ja-perusopetus/4-opetuksenjarjestamismuoto";
-import getMuutEhdot from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/esi-ja-perusopetus/7-muutEhdot";
 // Koulutusmuodoille yhteiset tarkentimet
 import getKunnat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/kunnat";
 import getOpetuskielikomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/opetuskielet";
@@ -14,6 +13,7 @@ import getErityisetKoulutustehtavat from "services/lomakkeet/rajoitteet/rajoited
 import getOppilaitokset from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/oppilaitokset";
 import { getMaaraaikalomake } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/maaraaika";
 import { __ } from "i18n-for-browser";
+import getMuutEhdot from "./yhteiset/muutEhdot";
 
 const tarkenninlomakkeet = {
   // Enintään
