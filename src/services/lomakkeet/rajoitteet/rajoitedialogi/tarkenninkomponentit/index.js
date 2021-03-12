@@ -12,6 +12,7 @@ import getKunnat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkom
 import getOpetuskielikomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/opetuskielet";
 import getErityisetKoulutustehtavat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/erityisetKoulutustehtavat";
 import getOppilaitokset from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/oppilaitokset";
+import getValtakunnallisetKehittamistehtavat from 'services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/lukiokoulutus/5-valtakunnallinenKehittamistehtava'
 import { getMaaraaikalomake } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/maaraaika";
 import { __ } from "i18n-for-browser";
 
@@ -24,6 +25,7 @@ const tarkenninlomakkeet = {
   kujalisamaareetlisaksiajalla_1: getMaaraaikakomponentit,
 
   erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
+  valtakunnallisetKehittamistehtavat: getValtakunnallisetKehittamistehtavat,
   muutEhdot: getMuutEhdot,
   oikeusSisaoppilaitosmuotoiseenKoulutukseen: getOikeusSisaoppilaitosmuotoiseenKoulutukseen,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,

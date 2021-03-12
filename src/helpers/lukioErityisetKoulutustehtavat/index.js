@@ -59,13 +59,59 @@ export const initializeLukioErityisetKoulutustehtavat = erityisetKoulutustehtava
   );
 };
 
+const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject) => {
+  const rajoitteetForKuvaus = filter(rajoiteCobjs => {
+    return (
+      nth(
+        1,
+        split(
+          "-",
+          path([1, "properties", "value", "value"], rajoiteCobjs) || ""
+        )
+      ) === kuvausnro
+    );
+  }, values(rajoitteetByRajoiteIdAndKoodiarvo));
+
+  // TODO: Tässä pitäisi käydä kaikki rajoitteet läpi, jos halutaan useampia
+  // TODO: rajoitteita samalle asialle. (nyt haetaan vain ensimmäisen rajoitteen arvo)
+  const kohteenTarkentimenArvo = path(
+    [1, "properties", "value", "value"],
+    head(rajoitteetForKuvaus)
+  );
+
+  const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
+    ? nth(1, split("-", kohteenTarkentimenArvo))
+    : null;
+
+  if (
+    kohteenTarkentimenArvo &&
+    (rajoitevalinnanAnkkuriosa === ankkuri || !rajoitevalinnanAnkkuriosa)
+  ) {
+    // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+    // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+    // loput toisiinsa "alenevassa polvessa".
+     return values(
+      mapObjIndexed(asetukset => {
+        return createAlimaarayksetBEObjects(
+          kohteet,
+          maaraystyypit,
+          kuvausBEChangeObject,
+          drop(2, asetukset)
+        );
+      }, rajoitteetForKuvaus)
+    );
+  } else {
+    return []
+  }
+}
+
 export const defineBackendChangeObjects = async (
   changeObjects = {},
   maaraystyypit,
   locale,
   kohteet
 ) => {
-  const { rajoitteetByRajoiteId } = changeObjects;
+  const { rajoitteetByRajoiteId, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId } = changeObjects;
   console.info(kohteet);
   const kohde = find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
 
@@ -106,6 +152,18 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
+    const valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo = reject(
+      isNil,
+      mapObjIndexed(rajoite => {
+        return startsWith(
+          `${koulutustehtava.koodiarvo}-`,
+          path([1, "properties", "value", "value"], rajoite)
+        )
+          ? rajoite
+          : null;
+      }, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId)
+    );
+
     if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
@@ -134,7 +192,8 @@ export const defineBackendChangeObjects = async (
             ankkuri,
             kuvaus: changeObj.properties.value,
             changeObjects: concat(
-              take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+              concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+              take(2, values(valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo))),
               [checkboxChangeObj, changeObj]
             ).filter(Boolean),
             isValtakunnallinenKehitystehtava: changeObj.properties.metadata.isChecked
@@ -142,51 +201,13 @@ export const defineBackendChangeObjects = async (
           tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
         };
 
-        let alimaaraykset = [];
+
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);
-        const rajoitteetForKuvaus = filter(rajoiteCobjs => {
-          return (
-            nth(
-              1,
-              split(
-                "-",
-                path([1, "properties", "value", "value"], rajoiteCobjs) || ""
-              )
-            ) === kuvausnro
-          );
-        }, values(rajoitteetByRajoiteIdAndKoodiarvo));
+        const alimaaraykset = getAlimaaraykset(kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject)
 
-        // TODO: Tässä pitäisi käydä kaikki rajoitteet läpi, jos halutaan useampia
-        // TODO: rajoitteita samalle asialle. (nyt haetaan vain ensimmäisen rajoitteen arvo)
-        const kohteenTarkentimenArvo = path(
-          [1, "properties", "value", "value"],
-          head(rajoitteetForKuvaus)
-        );
+        let valtaAlimaaraykset = getAlimaaraykset(kuvausnro, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject)
 
-        const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
-          ? nth(1, split("-", kohteenTarkentimenArvo))
-          : null;
-
-        if (
-          kohteenTarkentimenArvo &&
-          (rajoitevalinnanAnkkuriosa === ankkuri || !rajoitevalinnanAnkkuriosa)
-        ) {
-          // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
-          // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
-          // loput toisiinsa "alenevassa polvessa".
-          alimaaraykset = values(
-            mapObjIndexed(asetukset => {
-              return createAlimaarayksetBEObjects(
-                kohteet,
-                maaraystyypit,
-                kuvausBEChangeObject,
-                drop(2, asetukset)
-              );
-            }, rajoitteetForKuvaus)
-          );
-        }
-
-        return [kuvausBEChangeObject, alimaaraykset];
+        return [kuvausBEChangeObject, alimaaraykset, valtaAlimaaraykset];
       }, kuvausChangeObjects);
     } else {
       // Jos muokattuja kuvauksia ei kyseiselle koodiarvolle löydy, tarkistetaan

@@ -53,6 +53,10 @@ const rajoitteidenKohdevaihtoehdot = [
     value: "erityisetKoulutustehtavat"
   },
   {
+    label: "Valtakunnalliset kehittämistehtävät",
+    value: "valtakunnallisetKehittamistehtavat"
+  },
+  {
     label: "Opiskelijamäärät",
     value: "opiskelijamaarat"
   },
