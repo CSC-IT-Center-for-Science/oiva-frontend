@@ -149,6 +149,7 @@ const OpetustaAntavatKunnat = React.memo(
           maaraykset,
           quickFilterChanges,
           rajoitteet,
+          sectionId,
           valtakunnallinenMaarays
         }}
         functions={{
