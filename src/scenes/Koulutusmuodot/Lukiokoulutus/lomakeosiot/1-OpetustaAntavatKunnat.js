@@ -10,6 +10,7 @@ import {
 } from "stores/muutokset";
 import equal from "react-fast-compare";
 import * as R from "ramda";
+import { getAnchorPart } from "utils/common";
 
 const constants = {
   formLocation: ["lukiokoulutus", "opetustaAntavatKunnat"],
@@ -104,8 +105,12 @@ const OpetustaAntavatKunnat = React.memo(
       fiCode !== "FI1";
 
     const onAddButtonClick = useCallback(
-      koodiarvo => {
-        createTextBoxChangeObject(sectionId, koodiarvo);
+      addBtn => {
+        console.info(getAnchorPart(addBtn.fullAnchor, 1));
+        createTextBoxChangeObject(
+          sectionId,
+          getAnchorPart(addBtn.fullAnchor, 1)
+        );
       },
       [createTextBoxChangeObject, sectionId]
     );

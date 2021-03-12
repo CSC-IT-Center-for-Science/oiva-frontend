@@ -1,5 +1,5 @@
-import { isAdded, isRemoved } from "css/label";
-import { find, flatten, map, pathEq, propEq } from "ramda";
+import { isAdded, isInLupa, isRemoved } from "css/label";
+import { find, flatten, length, map, pathEq, propEq } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
@@ -27,7 +27,11 @@ export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
         const maarays = find(
           m =>
             propEq("koodiarvo", oikeus.koodiarvo, m) &&
-            propEq("koodisto", "opetuksenjarjestamismuoto", m),
+            propEq(
+              "koodisto",
+              "lukiooikeussisaooppilaitosmuotoiseenkoulutukseen",
+              m
+            ),
           maaraykset
         );
         return {
@@ -72,6 +76,7 @@ export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                 isReadOnly: _isReadOnly,
                 labelStyles: {
                   addition: isAdded,
+                  custom: Object.assign({}, !!maarays ? isInLupa : {}),
                   removal: isRemoved
                 },
                 title: getLocalizedProperty(oikeus.metadata, locale, "nimi")
@@ -87,7 +92,7 @@ export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
             anchor: "valinta",
             name: "RadioButtonWithLabel",
             properties: {
-              isChecked: true,
+              isChecked: !length(maaraykset),
               isIndeterminate: false,
               isPreviewModeOn,
               isReadOnly: _isReadOnly,
