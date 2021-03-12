@@ -109,7 +109,8 @@ const CheckboxWithLabel = React.memo(
       cp.isDisabled === np.isDisabled &&
       cp.isIndeterminate === np.isIndeterminate &&
       cp.isPreviewModeOn === np.isPreviewModeOn &&
-      cp.isReadOnly === np.isReadOnly
+      cp.isReadOnly === np.isReadOnly &&
+      equals(cp.children, np.children)
     );
   }
 );
