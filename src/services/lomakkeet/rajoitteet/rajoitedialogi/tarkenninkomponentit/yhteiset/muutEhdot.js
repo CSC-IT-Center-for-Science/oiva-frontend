@@ -11,15 +11,22 @@ import {
   toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
+import { getLukioMuutEhdotFromStorage } from "../../../../../../helpers/lukioMuutEhdot";
 
 export default async function getMuutEhdot(
   isReadOnly,
   osionData = [],
   locale,
   isMulti,
-  inputId
+  inputId,
+  koulutustyyppi
 ) {
-  const muutEhdot = await getPOMuutEhdotFromStorage();
+
+  const muutEhdot =
+    koulutustyyppi === "2"
+      ? await getLukioMuutEhdotFromStorage()
+      : await getPOMuutEhdotFromStorage();
+
   const localeUpper = toUpper(locale);
 
   if (muutEhdot.length) {
