@@ -4,6 +4,7 @@ import {
   filter,
   find,
   flatten,
+  isEmpty,
   map,
   nth,
   pathEq,
@@ -12,7 +13,8 @@ import {
   startsWith
 } from "ramda";
 import { getAnchorPart, removeAnchorPart } from "utils/common";
-import { getRajoite } from "utils/rajoitteetUtils";
+import { getRajoitteet } from "utils/rajoitteetUtils";
+import Lisatiedot from "../../lisatiedot";
 
 export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   let structure = [];
@@ -53,22 +55,21 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
                   const anchorParts = split(".", node.anchor);
                   const koodiarvo = getAnchorPart(node.anchor, 1);
                   const index = getAnchorPart(node.anchor, 2);
-                  const { rajoiteId, rajoite } = getRajoite(
+                  const kohdistuvatRajoitteet = getRajoitteet(
                     `${koodiarvo}-${index}`,
                     rajoitteet
                   );
                   return {
                     anchor: koodiarvo,
                     components: [
-                      rajoite
+                      !isEmpty(kohdistuvatRajoitteet)
                         ? {
                             anchor: "rajoite",
                             name: "Rajoite",
                             properties: {
                               areTitlesVisible: false,
                               isReadOnly: true,
-                              rajoiteId,
-                              rajoite
+                              rajoite: kohdistuvatRajoitteet
                             }
                           }
                         : {
@@ -95,21 +96,7 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              title: lisatiedotNode.properties.value
-            }
-          }
-        ]
-      },
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;

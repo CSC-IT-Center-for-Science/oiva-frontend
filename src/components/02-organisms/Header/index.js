@@ -75,6 +75,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
             <div id="navigation-level-1">
               <Navigation
                 level={1}
+                localesByLang={localesByLang}
                 routes={[
                   {
                     key: "JarjestamisJaYllapitamisluvat",

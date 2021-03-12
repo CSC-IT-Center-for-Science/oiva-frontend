@@ -1,9 +1,21 @@
-import { append, endsWith, find, keys, length, map, pipe } from "ramda";
+import {
+  append,
+  endsWith,
+  find,
+  keys,
+  length,
+  map,
+  path,
+  pipe,
+  prepend
+} from "ramda";
+import Lisatiedot from "../../lisatiedot";
+import { __ } from "i18n-for-browser";
 
 export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
   let structure = [];
 
-  const opiskelijaMaaraRajoitteet = pipe(
+  let opiskelijaMaaraRajoitteet = pipe(
     keys,
     map(rajoiteId => {
       const rajoite = rajoitteet[rajoiteId];
@@ -25,7 +37,38 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
     })
   )(rajoitteet);
 
-  if (length(opiskelijaMaaraRajoitteet)) {
+  const hasKokonaisopiskelijamaararajoitus = !!find(rajoite => {
+    const rajoiteCobjs = path(
+      ["components", "0", "properties", "rajoite", "changeObjects"],
+      rajoite
+    );
+    return find(
+      rajoite =>
+        path(["properties", "metadata", "section"], rajoite) ===
+          "opiskelijamaarat" &&
+        path(["properties", "value", "value"], rajoite) === "kokonaismaara",
+      rajoiteCobjs
+    );
+  }, opiskelijaMaaraRajoitteet);
+
+  if (length(opiskelijaMaaraRajoitteet) > 0) {
+    if (!hasKokonaisopiskelijamaararajoitus) {
+      const eiKokonaisoppilasmaararajoitustaContent = {
+        components: [
+          {
+            name: "HtmlContent",
+            properties: {
+              content: __("opiskelijamaara.kokonaismaaraEiRajattu")
+            }
+          }
+        ]
+      };
+      opiskelijaMaaraRajoitteet = prepend(
+        eiKokonaisoppilasmaararajoitustaContent,
+        opiskelijaMaaraRajoitteet
+      );
+    }
+
     structure = append(
       {
         anchor: "opiskelijamaarat",
@@ -51,21 +94,7 @@ export const previewOfOpiskelijamaarat = ({ lomakedata, rajoitteet }) => {
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              title: lisatiedotNode.properties.value
-            }
-          }
-        ]
-      },
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;
