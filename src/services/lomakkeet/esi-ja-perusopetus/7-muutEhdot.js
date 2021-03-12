@@ -248,11 +248,11 @@ export async function muutEhdot(
           {
             anchor: "lisatiedotTitle",
             layout: { margins: { top: "large" } },
+            styleClasses: ["mt-10", "pt-10", "border-t"],
             components: [
               {
                 anchor: lisatiedotObj.koodiarvo,
                 name: "StatusTextRow",
-                styleClasses: ["pt-8", "border-t"],
                 properties: {
                   title: __("common.lisatiedotInfo")
                 }
