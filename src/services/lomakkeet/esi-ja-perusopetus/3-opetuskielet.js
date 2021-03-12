@@ -26,7 +26,6 @@ export async function getOpetuskieletOPHLomake(
   locale,
   changeObjects
 ) {
-  console.info(maaraykset);
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const ensisijaisetOpetuskieletOPH = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const toissijaisetOpetuskieletOPH = await getToissijaisetOpetuskieletOPHFromStorage();

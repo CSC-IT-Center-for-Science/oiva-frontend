@@ -76,7 +76,6 @@ export const opetustaAntavatKunnat = async (
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
   const lisatiedot = await getLisatiedotFromStorage();
-
   const ulkomaa = find(propEq("koodiarvo", "200"), kunnat);
 
   const kunnatIlmanUlkomaata = filter(
@@ -215,14 +214,11 @@ export const opetustaAntavatKunnat = async (
   const noSelectionsInLupa =
     isEmpty(maakuntamaaraykset) && isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
-  const isUlkomaaCheckedByDefault = prop(
-    "isChecked",
-    find(
-      maarays =>
-        propEq("koodiarvo", "200", maarays) &&
-        !hasPath(["meta", "arvo"], maarays),
-      kuntamaaraykset
-    )
+  const isUlkomaaCheckedByDefault = !!find(
+    maarays =>
+      propEq("koodiarvo", "200", maarays) &&
+      !hasPath(["meta", "arvo"], maarays),
+    kuntamaaraykset
   );
 
   const kuvausankkuri0 = "0";
@@ -325,11 +321,11 @@ export const opetustaAntavatKunnat = async (
                           placeholder: __("common.kuvausPlaceholder"),
                           title: __("common.kuvaus"),
                           value: kuvausmaarays0
-                            ? kuvausmaarays0.meta.kuvaus
+                            ? kuvausmaarays0.meta.arvo
                             : getLocalizedProperty(
                                 ulkomaa.metadata,
                                 locale,
-                                "kuvaus"
+                                "arvo"
                               )
                         }
                       }
@@ -345,7 +341,6 @@ export const opetustaAntavatKunnat = async (
                       prop("anchor")
                     ),
                     map(maarays => {
-                      // console.info(maarays);
                       return maarays.meta.ankkuri !== kuvausankkuri0
                         ? {
                             anchor: path(["meta", "ankkuri"], maarays),
@@ -363,7 +358,7 @@ export const opetustaAntavatKunnat = async (
                                   isRemovable: true,
                                   placeholder: __("common.kuvausPlaceholder"),
                                   title: __("common.kuvaus"),
-                                  value: maarays.meta.kuvaus
+                                  value: maarays.meta.arvo
                                 }
                               }
                             ]

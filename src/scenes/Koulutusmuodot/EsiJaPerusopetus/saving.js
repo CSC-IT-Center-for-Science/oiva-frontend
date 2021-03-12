@@ -25,7 +25,7 @@ import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
-import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat";
+import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat/index";
 import { koulutustyypitMap } from "../../../utils/constants";
 
 export async function createObjectToSave(

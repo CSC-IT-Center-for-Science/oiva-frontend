@@ -515,6 +515,7 @@ export async function defineBackendChangeObjects(
         generatedId: `ulkomaa-${Math.random()}`,
         tila: "LISAYS",
         meta: {
+          ankkuri: path(["properties", "metadata", "ankkuri"], item),
           arvo: path(["properties", "value"], item),
           changeObjects: concat(
             [item],
