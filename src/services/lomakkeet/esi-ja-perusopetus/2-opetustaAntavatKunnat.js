@@ -345,7 +345,7 @@ export const opetustaAntavatKunnat = async (
                       prop("anchor")
                     ),
                     map(maarays => {
-                      console.info(maarays);
+                      // console.info(maarays);
                       return maarays.meta.ankkuri !== kuvausankkuri0
                         ? {
                             anchor: path(["meta", "ankkuri"], maarays),
@@ -421,7 +421,7 @@ export const opetustaAntavatKunnat = async (
                                     ankkuri: anchor,
                                     focusWhenDeleted: !!previousTextBoxChangeObj
                                       ? previousTextBoxAnchor
-                                      : `${sectionId}.${ulkomaa.koodiarvo}.0.kuvaus`,
+                                      : `${sectionId}.ulkomaa.0.kuvaus`,
                                     koodiarvo: ulkomaa.koodiarvo
                                   },
                                   isPreviewModeOn,
