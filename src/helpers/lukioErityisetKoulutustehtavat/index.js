@@ -1,4 +1,5 @@
 import {
+  assocPath,
   compose,
   concat,
   drop,
@@ -118,9 +119,9 @@ export const defineBackendChangeObjects = async (
         );
 
         if(isValtakunnallinenKehitystehtava) {
-          changeObj.properties.metadata.isChecked = isValtakunnallinenKehitystehtava.properties.isChecked;
+          changeObj = assocPath(["properties", "metadata", "isChecked"], path(["properties", "isChecked"], isValtakunnallinenKehitystehtava), changeObj)
         } else if(!changeObj.properties.metadata.isChecked) {
-          changeObj.properties.metadata.isChecked = false
+          changeObj = assocPath(["properties", "metadata", "isChecked"], false, changeObj)
         }
 
         const kuvausBEChangeObject = {
@@ -137,7 +138,7 @@ export const defineBackendChangeObjects = async (
               take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
               [checkboxChangeObj, changeObj]
             ).filter(Boolean),
-            isValtakunnallinenKehitystehtava: changeObj.properties.metadata.isChecked
+            isValtakunnallinenKehitystehtava: path(["properties", "metadata", "isChecked"],changeObj)
           },
           tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
         };
