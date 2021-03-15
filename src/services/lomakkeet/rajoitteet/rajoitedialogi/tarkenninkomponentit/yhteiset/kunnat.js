@@ -52,8 +52,6 @@ export default async function getKunnat(
     };
   }, ulkomaatStateObj);
 
-  });
-
   if (kunnat) {
     const muutoksillaValitutKunnat = changesByProvinceObj
       ? map(
