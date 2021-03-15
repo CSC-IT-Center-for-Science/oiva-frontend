@@ -109,11 +109,11 @@ export async function opetuksenJarjestamismuoto(
       {
         anchor: "lisatiedot",
         layout: { margins: { top: "large" } },
+        styleClasses: ["mt-10", "pt-10", "border-t"],
         components: [
           {
             anchor: "info",
             name: "StatusTextRow",
-            styleClasses: ["pt-8", "border-t"],
             properties: {
               title: __("common.lisatiedotInfo")
             }
