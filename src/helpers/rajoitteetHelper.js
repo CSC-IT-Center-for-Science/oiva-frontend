@@ -187,6 +187,9 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
+          ...(paalomakkeenBEMuutos.isValtakunnallinenKehittamistehtava
+            ? { valtakunnallinenKehittamistehtava: true }
+            : null),
           ...(multiSelectUuid ? { multiselectUuid: multiSelectUuid } : null),
           changeObjects: changeObjects.filter(Boolean),
           kuvaus: prop("label", multiselectValue)

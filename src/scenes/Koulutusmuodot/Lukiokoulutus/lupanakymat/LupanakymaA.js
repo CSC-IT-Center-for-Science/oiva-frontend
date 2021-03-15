@@ -177,6 +177,12 @@ const LupanakymaA = React.memo(
       rajoitteet
     );
 
+
+    const valtakunnallisetKehittamistehtavatRajoitteet = getRajoitteetBySection(
+      "valtakunnallisetKehittamistehtavat",
+      rajoitteet
+    );
+
     const toimintaalueRajoitteet = getRajoitteetBySection(
       "toimintaalue",
       rajoitteet
@@ -269,7 +275,7 @@ const LupanakymaA = React.memo(
                       "valtakunnallinenKehittamistehtava",
                       maaraykset
                     )}
-                    rajoitteet={erityisetKoulutustehtavatRajoitteet}
+                    rajoitteet={valtakunnallisetKehittamistehtavatRajoitteet}
                     sectionId={"valtakunnallisetKehittamistehtavat"}
                     title={intl.formatMessage(
                       education.valtakunnallinenKehittamistehtava

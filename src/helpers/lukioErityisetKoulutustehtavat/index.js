@@ -60,7 +60,7 @@ export const initializeLukioErityisetKoulutustehtavat = erityisetKoulutustehtava
   );
 };
 
-const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject) => {
+const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject, valtakunnallinenKehitystehtava) => {
   const rajoitteetForKuvaus = filter(rajoiteCobjs => {
     return (
       nth(
@@ -83,6 +83,10 @@ const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri,
   const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
     ? nth(1, split("-", kohteenTarkentimenArvo))
     : null;
+
+  if(valtakunnallinenKehitystehtava) {
+    kuvausBEChangeObject = assocPath(["isValtakunnallinenKehittamistehtava"], true, kuvausBEChangeObject)
+  }
 
   if (
     kohteenTarkentimenArvo &&
@@ -204,9 +208,9 @@ export const defineBackendChangeObjects = async (
 
 
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);
-        const alimaaraykset = getAlimaaraykset(kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject)
+        const alimaaraykset = getAlimaaraykset(kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject, false)
 
-        let valtaAlimaaraykset = getAlimaaraykset(kuvausnro, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject)
+        let valtaAlimaaraykset = getAlimaaraykset(kuvausnro, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject, true)
 
         return [kuvausBEChangeObject, alimaaraykset, valtaAlimaaraykset];
       }, kuvausChangeObjects);
