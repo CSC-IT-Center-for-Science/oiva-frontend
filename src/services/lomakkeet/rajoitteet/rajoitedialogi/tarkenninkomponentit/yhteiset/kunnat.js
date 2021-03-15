@@ -1,17 +1,18 @@
 import {
   compose,
+  concat,
   endsWith,
+  filter,
   find,
   flatten,
   includes,
   map,
   path,
   prop,
+  startsWith,
   toUpper,
   values,
-  filter,
-  startsWith,
-  concat
+  without
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
@@ -36,26 +37,25 @@ export default async function getKunnat(
   // tilaobjekteja on 0 - 1 kappale(tta).
   const ulkomaatStateObj = filter(changeObj => {
     return (
-      endsWith(".lisatiedot", changeObj.anchor) &&
+      endsWith(".kuvaus", changeObj.anchor) &&
       startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
     );
   }, osionData);
 
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
-  const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
-    if (item.properties.metadata) {
-      return {
-        label: item.properties.value,
-        value: item.properties.metadata.koodiarvo,
-        index
-      };
-    }
-    return null;
+  const ulkomaaOptions = map((item, index) => {
+    return {
+      label: item.properties.value,
+      value: "200",
+      index
+    };
+  }, ulkomaatStateObj);
+
   });
 
   if (kunnat) {
-    const valitutKunnat = changesByProvinceObj
+    const muutoksillaValitutKunnat = changesByProvinceObj
       ? map(
           path(["properties", "metadata", "koodiarvo"]),
           flatten(
@@ -63,6 +63,18 @@ export default async function getKunnat(
           )
         )
       : [];
+
+    const oletusarvoinValitutKunnat = changesByProvinceObj
+      ? map(
+          prop("koodiarvo"),
+          changesByProvinceObj.properties.currentMunicipalities
+        )
+      : [];
+
+    const valitutKunnat = without(
+      ["200"],
+      concat(oletusarvoinValitutKunnat, muutoksillaValitutKunnat)
+    );
 
     return [
       {

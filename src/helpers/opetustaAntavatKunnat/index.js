@@ -456,8 +456,8 @@ export async function defineBackendChangeObjects(
               }
             ];
           }
-          return muutosobjektit.filter(Boolean);
-        }, provinceChangeObjects)
+          return muutosobjektit;
+        }, provinceChangeObjects).filter(Boolean)
       )
     ).filter(Boolean);
   }
