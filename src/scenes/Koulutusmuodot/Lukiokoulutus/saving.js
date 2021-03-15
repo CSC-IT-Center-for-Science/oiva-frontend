@@ -25,6 +25,7 @@ import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
 import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
+import * as valtakunnallinenKehittamistehtavaHelper from "helpers/lukioValtakunnallinenKehittamistehtava";
 import { koulutustyypitMap } from "../../../utils/constants";
 
 export async function createObjectToSave(
@@ -39,6 +40,7 @@ export async function createObjectToSave(
 ) {
   console.info(kohteet, changeObjects);
   const allAttachmentsRaw = [];
+  const koulutustyyppi = koulutustyypitMap.LUKIO;
 
   // ... without tiedosto-property
   const allAttachments = map(attachment => {
@@ -143,6 +145,7 @@ export async function createObjectToSave(
   // 4. ERITYINEN KOULUTUSTEHTÄVÄ
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
     {
+      valtakunnallisetKehittamistehtavat: changeObjects.valtakunnallisetKehittamistehtavat,
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
       rajoitteetByRajoiteId: reject(
         isNil,
@@ -161,6 +164,17 @@ export async function createObjectToSave(
     locale,
     kohteet
   );
+
+  // 5. VALTAKUNNALLINEN KEHITTÄMISTEHTÄVÄ
+  const valtakunnallinenKehittamistehtava = await valtakunnallinenKehittamistehtavaHelper.defineBackendChangeObjects(
+    {
+      valtakunnallisetKehittamistehtavat: changeObjects.valtakunnallisetKehittamistehtavat,
+      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
+    },
+    maaraystyypit,
+    locale,
+    kohteet
+  )
 
   // 6. OPPILAS-/OPISKELIJAMÄÄRÄT
   const opiskelijamaarat = await opiskelijamaaratHelper.defineBackendChangeObjects(
@@ -181,7 +195,8 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
-    kohteet
+    kohteet,
+    koulutustyyppi
   );
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
@@ -208,7 +223,7 @@ export async function createObjectToSave(
 
   let objectToSave = {
     alkupera,
-    koulutustyyppi: koulutustyypitMap.LUKIO,
+    koulutustyyppi,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,
@@ -230,7 +245,8 @@ export async function createObjectToSave(
       oikeusSisaoppilaitosmuotoiseenKoulutukseen,
       opetuskielet,
       opetustaAntavatKunnat,
-      opiskelijamaarat
+      opiskelijamaarat,
+      valtakunnallinenKehittamistehtava
     ]),
     uuid
   };

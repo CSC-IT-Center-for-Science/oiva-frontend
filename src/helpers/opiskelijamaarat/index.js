@@ -23,11 +23,15 @@ export const defineBackendChangeObjects = async (
   changeObjects = {},
   maaraystyypit,
   locale,
-  kohteet
+  kohteet,
+  koulutustyyppi
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
   const lisatiedot = await getLisatiedotFromStorage();
-  const kohde = find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
+  const kohde = getOpiskelijamaarakohdeByKoulutustyyppi(
+    koulutustyyppi,
+    kohteet
+  );
   const maaraystyyppi = find(propEq("tunniste", "RAJOITE"), maaraystyypit);
 
   // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
@@ -99,4 +103,15 @@ export const defineBackendChangeObjects = async (
   const allBEchangeObjects = [lisatiedotBEchangeObject].filter(Boolean);
 
   return [allBEchangeObjects, alimaaraykset];
+};
+
+const getOpiskelijamaarakohdeByKoulutustyyppi = (koulutustyyppi, kohteet) => {
+  switch (koulutustyyppi) {
+    case "1":
+      return find(propEq("tunniste", "oppilasopiskelijamaara"), kohteet);
+    case "2":
+      return find(propEq("tunniste", "opiskelijamaarat"), kohteet);
+    default:
+      return null;
+  }
 };

@@ -1,4 +1,5 @@
 import {
+  assocPath,
   compose,
   concat,
   drop,
@@ -109,6 +110,20 @@ export const defineBackendChangeObjects = async (
     if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
+        const koodiarvo = nth(1, split(".", changeObj.anchor));
+        const index = nth(2, split(".", changeObj.anchor));
+
+        const isValtakunnallinenKehitystehtava = find(
+          compose(endsWith(`.${koodiarvo}.${index}.valintaelementti`), prop("anchor")),
+          changeObjects.valtakunnallisetKehittamistehtavat
+        );
+
+        if(isValtakunnallinenKehitystehtava) {
+          changeObj = assocPath(["properties", "metadata", "isChecked"], path(["properties", "isChecked"], isValtakunnallinenKehitystehtava), changeObj)
+        } else if(!changeObj.properties.metadata.isChecked) {
+          changeObj = assocPath(["properties", "metadata", "isChecked"], false, changeObj)
+        }
+
         const kuvausBEChangeObject = {
           generatedId: changeObj.anchor,
           kohde,
@@ -122,7 +137,8 @@ export const defineBackendChangeObjects = async (
             changeObjects: concat(
               take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
               [checkboxChangeObj, changeObj]
-            ).filter(Boolean)
+            ).filter(Boolean),
+            isValtakunnallinenKehitystehtava: path(["properties", "metadata", "isChecked"],changeObj)
           },
           tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
         };
