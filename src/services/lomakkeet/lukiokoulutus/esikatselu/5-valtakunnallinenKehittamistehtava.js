@@ -17,8 +17,9 @@ export async function previewOfValtakunnallinenKehittamistehtava({
    * (!!isChecked = true).
    */
   const listItems = map(opetustehtava => {
-    const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
-    const { rajoiteId, rajoite } = getRajoite(koodiarvo, rajoitteet);
+    const koodiarvo = getAnchorPart(opetustehtava.anchor, 1);
+    const index = getAnchorPart(opetustehtava.anchor, 2)
+    const { rajoiteId, rajoite } = getRajoite(`${koodiarvo}-${index}`, rajoitteet);
 
     // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
     // valittuja arvoja (ilman rajoittteita)

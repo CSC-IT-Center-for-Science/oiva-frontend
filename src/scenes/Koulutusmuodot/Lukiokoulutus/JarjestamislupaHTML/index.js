@@ -11,6 +11,7 @@ import OpiskelijamaaratHtml from "./opiskelijamaarat";
 import ErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import OpetuksenMuutEhdotHtml from "./muutEhdot";
 import OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml from "./oikeusSisaoppilaitosmuotoiseenKoulutukseen";
+import ValtakunnallisetKehittamistehtavatHtml from "./valtakunnallisetKehittamistehtavat";
 
 /**
  * Funktio rakentaa lukiokoulutuksen HTML-lupanäkymän.
@@ -43,6 +44,7 @@ const JarjestamislupaJSX = ({ lupa }) => {
       />
       <OpiskelijamaaratHtml maaraykset={lupa.maaraykset} />
       <ErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
+      <ValtakunnallisetKehittamistehtavatHtml maaraykset={lupa.maaraykset} />
       <OpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
     </React.Fragment>
   );

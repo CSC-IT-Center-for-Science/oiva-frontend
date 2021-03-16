@@ -158,6 +158,18 @@ export async function createObjectToSave(
             ? rajoite
             : null;
         }, rajoitteetByRajoiteId)
+      ),
+      valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
+            ["0", "properties", "value", "value"],
+            "valtakunnallisetKehittamistehtavat",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
       )
     },
     maaraystyypit,
