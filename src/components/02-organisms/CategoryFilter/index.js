@@ -166,10 +166,11 @@ const CategoryFilter = ({
       />
     );
   } else {
-    const isEsiJaPerusopetus = koulutustyyppi === "esiJaPerusopetus";
-
     /** Esi- ja perusopetuksen layout */
-    if (isEsiJaPerusopetus) {
+    if (
+      koulutustyyppi === "esiJaPerusopetus" ||
+      koulutustyyppi === "lukiokoulutus"
+    ) {
       return (
         <React.Fragment>
           {!nothingInLupa && (
