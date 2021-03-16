@@ -1,7 +1,11 @@
 import {
+  append,
+  assocPath,
   compose,
   includes,
+  filter,
   flatten,
+  length,
   path,
   omit,
   prop,
@@ -10,11 +14,11 @@ import {
   mapObjIndexed,
   map,
   find,
+  pathEq,
   propEq,
   join,
   init,
-  split,
-  filter
+  split
 } from "ramda";
 import localforage from "localforage";
 import { fillForBackend } from "../../services/lomakkeet/backendMappings";
@@ -31,8 +35,24 @@ export function getMuutFromStorage() {
   return localforage.getItem("muut");
 }
 
-export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
-  map(changeObj => {
+export const getChangesToSave = (
+  changeObjects = {},
+  kohde,
+  maaraystyypit,
+  maaraykset
+) => {
+  const yhteistyosopimusmaaraykset = filter(
+    maarays => maarays.koodiarvo === "8",
+    maaraykset
+  );
+  const yhteistyosopimuksetUnchecked = !!find(
+    cObj =>
+      cObj.anchor === "muut_08.yhteistyosopimus.8.A" &&
+      !cObj.properties.isChecked,
+    changeObjects.muutokset
+  );
+
+  let changes = map(changeObj => {
     const anchorInit = compose(join("."), init, split("."))(changeObj.anchor);
 
     let tila = changeObj.properties.isChecked ? "LISAYS" : "POISTO";
@@ -65,13 +85,34 @@ export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
     let meta = Object.assign(
       {},
       {
-        tunniste: "tutkintokieli",
+        tunniste: "muut",
         changeObjects: flatten([[changeObj], perustelut]),
         muutosperustelukoodiarvo: []
       },
       perustelutForBackend,
       perusteluteksti ? { perusteluteksti } : null
     );
+    /** Ei tallenneta yhteistyösopimusten tekstikenttää, jos yhteistyösopimukset unchecked */
+    if (
+      pathEq(["properties", "metadata", "koodiarvo"], "8", changeObj) &&
+      yhteistyosopimuksetUnchecked &&
+      changeObj.anchor === "muut_08.yhteistyosopimus.8.tekstikentta.A"
+    ) {
+      return null;
+    }
+    /** Yhteistyösopimustekstin pitää tallentua määräykselle paikkaan
+     * meta->yhteistyosopimus->kuvaus */
+    if (
+      !yhteistyosopimuksetUnchecked &&
+      pathEq(["properties", "metadata", "koodiarvo"], "8", changeObj) &&
+      changeObj.anchor === "muut_08.yhteistyosopimus.8.tekstikentta.A"
+    ) {
+      meta = assocPath(
+        ["yhteistyosopimus", "kuvaus"],
+        changeObj.properties.value,
+        meta
+      );
+    }
     return {
       koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
       koodisto: path(
@@ -86,3 +127,32 @@ export const getChangesToSave = (changeObjects = {}, kohde, maaraystyypit) =>
       tila
     };
   }, changeObjects.muutokset).filter(Boolean);
+
+  /** Poisto-objektin luominen edellisille yhteistyösopimusmääräyksille, jos löytyy muutos-objekti koskien yhteistyösopimuksen
+   * tekstikenttää */
+  if (
+    !!length(yhteistyosopimusmaaraykset) &&
+    !yhteistyosopimuksetUnchecked &&
+    !!find(
+      cObj =>
+        pathEq(["properties", "metadata", "koodiarvo"], "8", cObj) &&
+        cObj.anchor === "muut_08.yhteistyosopimus.8.tekstikentta.A",
+      changeObjects.muutokset
+    )
+  ) {
+    changes = append(
+      map(maarays => {
+        return {
+          koodiarvo: "8",
+          koodisto: "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+          kohde,
+          maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
+          maaraysUuid: maarays.uuid,
+          tila: "POISTO"
+        };
+      }, yhteistyosopimusmaaraykset),
+      changes
+    );
+  }
+  return changes;
+};
