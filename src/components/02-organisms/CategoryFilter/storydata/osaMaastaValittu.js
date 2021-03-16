@@ -1,110 +1,56 @@
 export default {
   changes: {
-    "FI-10": [
+    "FI-15": [
       {
-        anchor: "maakuntakunnat.FI-10.kunnat.583",
+        anchor: "maakuntakunnat.FI-15.kunnat.204",
         properties: {
           metadata: {
-            koodiarvo: "583",
-            title: "Pelkosenniemi",
-            maakuntaKey: "FI-10"
+            koodiarvo: "204",
+            title: "Kaavi",
+            maakuntaKey: "FI-15",
+            maaraysUuid: undefined
           },
-          isChecked: true
-        }
-      },
-      {
-        anchor: "maakuntakunnat.FI-10.A",
-        properties: {
           isChecked: true,
-          isIndeterminate: true,
-          metadata: { koodiarvo: "19", maakuntaKey: "FI-10", title: "Lappi" }
+          isIndeterminate: undefined
         }
       },
       {
-        anchor: "maakuntakunnat.FI-10.kunnat.698",
-        properties: {
-          metadata: {
-            koodiarvo: "698",
-            title: "Rovaniemi",
-            maakuntaKey: "FI-10"
-          },
-          isChecked: true
-        }
-      },
-      {
-        anchor: "maakuntakunnat.FI-10.kunnat.851",
-        properties: {
-          metadata: { koodiarvo: "851", title: "Tornio", maakuntaKey: "FI-10" },
-          isChecked: true
-        }
-      },
-      {
-        anchor: "maakuntakunnat.FI-10.kunnat.976",
-        properties: {
-          metadata: {
-            koodiarvo: "976",
-            title: "Ylitornio",
-            maakuntaKey: "FI-10"
-          },
-          isChecked: true
-        }
-      }
-    ],
-    "FI-04": [
-      {
-        anchor: "maakuntakunnat.FI-04.kunnat.588",
-        properties: {
-          metadata: {
-            koodiarvo: "588",
-            title: "Pertunmaa",
-            maakuntaKey: "FI-04"
-          },
-          isChecked: true
-        }
-      },
-      {
-        anchor: "maakuntakunnat.FI-04.A",
+        anchor: "maakuntakunnat.FI-15.A",
         properties: {
           isChecked: true,
           isIndeterminate: true,
           metadata: {
-            koodiarvo: "10",
-            maakuntaKey: "FI-04",
-            title: "Etelä-Savo"
+            koodiarvo: "11",
+            maakuntaKey: "FI-15",
+            title: undefined,
+            maaraysUuid: undefined
           }
         }
       },
       {
-        anchor: "maakuntakunnat.FI-04.kunnat.618",
+        anchor: "maakuntakunnat.FI-15.kunnat.749",
         properties: {
           metadata: {
-            koodiarvo: "618",
-            title: "Punkaharju",
-            maakuntaKey: "FI-04"
+            koodiarvo: "749",
+            title: "Siilinjärvi",
+            maakuntaKey: "FI-15",
+            maaraysUuid: undefined
           },
-          isChecked: true
+          isChecked: true,
+          isIndeterminate: undefined
         }
       },
       {
-        anchor: "maakuntakunnat.FI-04.kunnat.740",
+        anchor: "maakuntakunnat.FI-15.kunnat.857",
         properties: {
           metadata: {
-            koodiarvo: "740",
-            title: "Savonlinna",
-            maakuntaKey: "FI-04"
+            koodiarvo: "857",
+            title: "Tuusniemi",
+            maakuntaKey: "FI-15",
+            maaraysUuid: undefined
           },
-          isChecked: true
-        }
-      },
-      {
-        anchor: "maakuntakunnat.FI-04.kunnat.681",
-        properties: {
-          metadata: {
-            koodiarvo: "681",
-            title: "Rantasalmi",
-            maakuntaKey: "FI-04"
-          },
-          isChecked: true
+          isChecked: true,
+          isIndeterminate: undefined
         }
       }
     ]
@@ -120,24 +66,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "09",
-            forChangeObject: {
-              koodiarvo: "09",
-              maakuntaKey: "FI-02",
-              title: "Etelä-Karjala"
-            },
-            isChecked: true,
-            isIndeterminate: true,
+            forChangeObject: { koodiarvo: "09", maakuntaKey: "FI-02" },
+            isChecked: false,
+            isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "09",
             title: "Etelä-Karjala"
@@ -160,49 +95,14 @@ export default {
                   title: "Imatra",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "153",
                 title: "Imatra"
-              }
-            },
-            {
-              anchor: "173",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "173",
-                forChangeObject: {
-                  koodiarvo: "173",
-                  title: "Joutseno",
-                  maakuntaKey: "FI-02"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "173",
-                title: "Joutseno"
               }
             },
             {
@@ -216,18 +116,11 @@ export default {
                   title: "Lappeenranta",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "405",
                 title: "Lappeenranta"
@@ -244,18 +137,11 @@ export default {
                   title: "Lemi",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "416",
                 title: "Lemi"
@@ -274,16 +160,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "441",
                 title: "Luumäki"
@@ -302,16 +181,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "580",
                 title: "Parikkala"
@@ -328,18 +200,11 @@ export default {
                   title: "Rautjärvi",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "689",
                 title: "Rautjärvi"
@@ -356,49 +221,14 @@ export default {
                   title: "Ruokolahti",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "700",
                 title: "Ruokolahti"
-              }
-            },
-            {
-              anchor: "728",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "728",
-                forChangeObject: {
-                  koodiarvo: "728",
-                  title: "Saari",
-                  maakuntaKey: "FI-02"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "728",
-                title: "Saari"
               }
             },
             {
@@ -412,49 +242,14 @@ export default {
                   title: "Savitaipale",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "739",
                 title: "Savitaipale"
-              }
-            },
-            {
-              anchor: "775",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "775",
-                forChangeObject: {
-                  koodiarvo: "775",
-                  title: "Suomenniemi",
-                  maakuntaKey: "FI-02"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "775",
-                title: "Suomenniemi"
               }
             },
             {
@@ -468,77 +263,14 @@ export default {
                   title: "Taipalsaari",
                   maakuntaKey: "FI-02"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "831",
                 title: "Taipalsaari"
-              }
-            },
-            {
-              anchor: "891",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "891",
-                forChangeObject: {
-                  koodiarvo: "891",
-                  title: "Uukuniemi",
-                  maakuntaKey: "FI-02"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "891",
-                title: "Uukuniemi"
-              }
-            },
-            {
-              anchor: "978",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "978",
-                forChangeObject: {
-                  koodiarvo: "978",
-                  title: "Ylämaa",
-                  maakuntaKey: "FI-02"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "978",
-                title: "Ylämaa"
               }
             }
           ]
@@ -554,24 +286,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "14",
-            forChangeObject: {
-              koodiarvo: "14",
-              maakuntaKey: "FI-03",
-              title: "Etelä-Pohjanmaa"
-            },
-            isChecked: true,
-            isIndeterminate: true,
+            forChangeObject: { koodiarvo: "14", maakuntaKey: "FI-03" },
+            isChecked: false,
+            isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "14",
             title: "Etelä-Pohjanmaa"
@@ -583,34 +304,6 @@ export default {
           anchor: "kunnat",
           formId: "FI-03",
           components: [
-            {
-              anchor: "004",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "004",
-                forChangeObject: {
-                  koodiarvo: "004",
-                  title: "Alahärmä",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: false,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "004",
-                title: "Alahärmä"
-              }
-            },
             {
               anchor: "005",
               name: "CheckboxWithLabel",
@@ -624,16 +317,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "005",
                 title: "Alajärvi"
@@ -650,18 +336,11 @@ export default {
                   title: "Alavus",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "010",
                 title: "Alavus"
@@ -680,16 +359,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "052",
                 title: "Evijärvi"
@@ -708,16 +380,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "145",
                 title: "Ilmajoki"
@@ -736,75 +401,33 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "151",
                 title: "Isojoki"
               }
             },
             {
-              anchor: "164",
+              anchor: "152",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
               properties: {
-                code: "164",
+                code: "152",
                 forChangeObject: {
-                  koodiarvo: "164",
-                  title: "Jalasjärvi",
+                  koodiarvo: "152",
+                  title: "Isokyrö",
                   maakuntaKey: "FI-03"
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
-                name: "164",
-                title: "Jalasjärvi"
-              }
-            },
-            {
-              anchor: "175",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "175",
-                forChangeObject: {
-                  koodiarvo: "175",
-                  title: "Jurva",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "175",
-                title: "Jurva"
+                name: "152",
+                title: "Isokyrö"
               }
             },
             {
@@ -818,18 +441,11 @@ export default {
                   title: "Karijoki",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "218",
                 title: "Karijoki"
@@ -846,18 +462,11 @@ export default {
                   title: "Kauhajoki",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "232",
                 title: "Kauhajoki"
@@ -874,49 +483,14 @@ export default {
                   title: "Kauhava",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "233",
                 title: "Kauhava"
-              }
-            },
-            {
-              anchor: "281",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "281",
-                forChangeObject: {
-                  koodiarvo: "281",
-                  title: "Kortesjärvi",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "281",
-                title: "Kortesjärvi"
               }
             },
             {
@@ -930,18 +504,11 @@ export default {
                   title: "Kuortane",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "300",
                 title: "Kuortane"
@@ -958,18 +525,11 @@ export default {
                   title: "Kurikka",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "301",
                 title: "Kurikka"
@@ -986,18 +546,11 @@ export default {
                   title: "Lappajärvi",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "403",
                 title: "Lappajärvi"
@@ -1014,105 +567,14 @@ export default {
                   title: "Lapua",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "408",
                 title: "Lapua"
-              }
-            },
-            {
-              anchor: "414",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "414",
-                forChangeObject: {
-                  koodiarvo: "414",
-                  title: "Lehtimäki",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "414",
-                title: "Lehtimäki"
-              }
-            },
-            {
-              anchor: "544",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "544",
-                forChangeObject: {
-                  koodiarvo: "544",
-                  title: "Nurmo",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "544",
-                title: "Nurmo"
-              }
-            },
-            {
-              anchor: "589",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "589",
-                forChangeObject: {
-                  koodiarvo: "589",
-                  title: "Peräseinäjoki",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "589",
-                title: "Peräseinäjoki"
               }
             },
             {
@@ -1126,18 +588,11 @@ export default {
                   title: "Seinäjoki",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "743",
                 title: "Seinäjoki"
@@ -1154,18 +609,11 @@ export default {
                   title: "Soini",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "759",
                 title: "Soini"
@@ -1182,49 +630,14 @@ export default {
                   title: "Teuva",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "846",
                 title: "Teuva"
-              }
-            },
-            {
-              anchor: "863",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "863",
-                forChangeObject: {
-                  koodiarvo: "863",
-                  title: "Töysä",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "863",
-                title: "Töysä"
               }
             },
             {
@@ -1238,77 +651,14 @@ export default {
                   title: "Vimpeli",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "934",
                 title: "Vimpeli"
-              }
-            },
-            {
-              anchor: "971",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "971",
-                forChangeObject: {
-                  koodiarvo: "971",
-                  title: "Ylihärmä",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "971",
-                title: "Ylihärmä"
-              }
-            },
-            {
-              anchor: "975",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "975",
-                forChangeObject: {
-                  koodiarvo: "975",
-                  title: "Ylistaro",
-                  maakuntaKey: "FI-03"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "975",
-                title: "Ylistaro"
               }
             },
             {
@@ -1322,18 +672,11 @@ export default {
                   title: "Ähtäri",
                   maakuntaKey: "FI-03"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "989",
                 title: "Ähtäri"
@@ -1352,24 +695,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "10",
-            forChangeObject: {
-              koodiarvo: "10",
-              maakuntaKey: "FI-04",
-              title: "Etelä-Savo"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "10", maakuntaKey: "FI-04" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "10",
             title: "Etelä-Savo"
@@ -1382,34 +714,6 @@ export default {
           formId: "FI-04",
           components: [
             {
-              anchor: "014",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "014",
-                forChangeObject: {
-                  koodiarvo: "014",
-                  title: "Anttola",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "014",
-                title: "Anttola"
-              }
-            },
-            {
               anchor: "046",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
@@ -1420,77 +724,14 @@ export default {
                   title: "Enonkoski",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "046",
                 title: "Enonkoski"
-              }
-            },
-            {
-              anchor: "085",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "085",
-                forChangeObject: {
-                  koodiarvo: "085",
-                  title: "Haukivuori",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "085",
-                title: "Haukivuori"
-              }
-            },
-            {
-              anchor: "090",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "090",
-                forChangeObject: {
-                  koodiarvo: "090",
-                  title: "Heinävesi",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "090",
-                title: "Heinävesi"
               }
             },
             {
@@ -1504,49 +745,14 @@ export default {
                   title: "Hirvensalmi",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "097",
                 title: "Hirvensalmi"
-              }
-            },
-            {
-              anchor: "171",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "171",
-                forChangeObject: {
-                  koodiarvo: "171",
-                  title: "Joroinen",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "171",
-                title: "Joroinen"
               }
             },
             {
@@ -1560,49 +766,14 @@ export default {
                   title: "Juva",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "178",
                 title: "Juva"
-              }
-            },
-            {
-              anchor: "184",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "184",
-                forChangeObject: {
-                  koodiarvo: "184",
-                  title: "Jäppilä",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "184",
-                title: "Jäppilä"
               }
             },
             {
@@ -1616,49 +787,14 @@ export default {
                   title: "Kangasniemi",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "213",
                 title: "Kangasniemi"
-              }
-            },
-            {
-              anchor: "246",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "246",
-                forChangeObject: {
-                  koodiarvo: "246",
-                  title: "Kerimäki",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "246",
-                title: "Kerimäki"
               }
             },
             {
@@ -1672,49 +808,14 @@ export default {
                   title: "Mikkeli",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "491",
                 title: "Mikkeli"
-              }
-            },
-            {
-              anchor: "492",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "492",
-                forChangeObject: {
-                  koodiarvo: "492",
-                  title: "Mikkeli mlk",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "492",
-                title: "Mikkeli mlk"
               }
             },
             {
@@ -1728,18 +829,11 @@ export default {
                   title: "Mäntyharju",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "507",
                 title: "Mäntyharju"
@@ -1756,18 +850,11 @@ export default {
                   title: "Pertunmaa",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "588",
                 title: "Pertunmaa"
@@ -1784,105 +871,14 @@ export default {
                   title: "Pieksämäki",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "593",
                 title: "Pieksämäki"
-              }
-            },
-            {
-              anchor: "594",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "594",
-                forChangeObject: {
-                  koodiarvo: "594",
-                  title: "Pieksämäki mlk",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "594",
-                title: "Pieksämäki mlk"
-              }
-            },
-            {
-              anchor: "640",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "640",
-                forChangeObject: {
-                  koodiarvo: "640",
-                  title: "Pieksänmaa",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "640",
-                title: "Pieksänmaa"
-              }
-            },
-            {
-              anchor: "618",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "618",
-                forChangeObject: {
-                  koodiarvo: "618",
-                  title: "Punkaharju",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "618",
-                title: "Punkaharju"
               }
             },
             {
@@ -1896,18 +892,11 @@ export default {
                   title: "Puumala",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "623",
                 title: "Puumala"
@@ -1924,49 +913,14 @@ export default {
                   title: "Rantasalmi",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "681",
                 title: "Rantasalmi"
-              }
-            },
-            {
-              anchor: "696",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "696",
-                forChangeObject: {
-                  koodiarvo: "696",
-                  title: "Ristiina",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "696",
-                title: "Ristiina"
               }
             },
             {
@@ -1980,49 +934,14 @@ export default {
                   title: "Savonlinna",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "740",
                 title: "Savonlinna"
-              }
-            },
-            {
-              anchor: "741",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "741",
-                forChangeObject: {
-                  koodiarvo: "741",
-                  title: "Savonranta",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "741",
-                title: "Savonranta"
               }
             },
             {
@@ -2036,49 +955,14 @@ export default {
                   title: "Sulkava",
                   maakuntaKey: "FI-04"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "768",
                 title: "Sulkava"
-              }
-            },
-            {
-              anchor: "937",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "937",
-                forChangeObject: {
-                  koodiarvo: "937",
-                  title: "Virtasalmi",
-                  maakuntaKey: "FI-04"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "937",
-                title: "Virtasalmi"
               }
             }
           ]
@@ -2094,24 +978,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "18",
-            forChangeObject: {
-              koodiarvo: "18",
-              maakuntaKey: "FI-05",
-              title: "Kainuu"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "18", maakuntaKey: "FI-05" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "18",
             title: "Kainuu"
@@ -2134,18 +1007,11 @@ export default {
                   title: "Hyrynsalmi",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "105",
                 title: "Hyrynsalmi"
@@ -2162,18 +1028,11 @@ export default {
                   title: "Kajaani",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "205",
                 title: "Kajaani"
@@ -2190,18 +1049,11 @@ export default {
                   title: "Kuhmo",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "290",
                 title: "Kuhmo"
@@ -2218,18 +1070,11 @@ export default {
                   title: "Paltamo",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "578",
                 title: "Paltamo"
@@ -2246,18 +1091,11 @@ export default {
                   title: "Puolanka",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "620",
                 title: "Puolanka"
@@ -2274,18 +1112,11 @@ export default {
                   title: "Ristijärvi",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "697",
                 title: "Ristijärvi"
@@ -2302,18 +1133,11 @@ export default {
                   title: "Sotkamo",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "765",
                 title: "Sotkamo"
@@ -2330,49 +1154,14 @@ export default {
                   title: "Suomussalmi",
                   maakuntaKey: "FI-05"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "777",
                 title: "Suomussalmi"
-              }
-            },
-            {
-              anchor: "940",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "940",
-                forChangeObject: {
-                  koodiarvo: "940",
-                  title: "Vuolijoki",
-                  maakuntaKey: "FI-05"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "940",
-                title: "Vuolijoki"
               }
             }
           ]
@@ -2388,24 +1177,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "05",
-            forChangeObject: {
-              koodiarvo: "05",
-              maakuntaKey: "FI-06",
-              title: "Kanta-Häme"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "05", maakuntaKey: "FI-06" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "05",
             title: "Kanta-Häme"
@@ -2428,18 +1206,11 @@ export default {
                   title: "Forssa",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "061",
                 title: "Forssa"
@@ -2456,49 +1227,14 @@ export default {
                   title: "Hattula",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "082",
                 title: "Hattula"
-              }
-            },
-            {
-              anchor: "083",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "083",
-                forChangeObject: {
-                  koodiarvo: "083",
-                  title: "Hauho",
-                  maakuntaKey: "FI-06"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "083",
-                title: "Hauho"
               }
             },
             {
@@ -2512,18 +1248,11 @@ export default {
                   title: "Hausjärvi",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "086",
                 title: "Hausjärvi"
@@ -2540,18 +1269,11 @@ export default {
                   title: "Humppila",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "103",
                 title: "Humppila"
@@ -2568,18 +1290,11 @@ export default {
                   title: "Hämeenlinna",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "109",
                 title: "Hämeenlinna"
@@ -2596,18 +1311,11 @@ export default {
                   title: "Janakkala",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "165",
                 title: "Janakkala"
@@ -2624,77 +1332,14 @@ export default {
                   title: "Jokioinen",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "169",
                 title: "Jokioinen"
-              }
-            },
-            {
-              anchor: "210",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "210",
-                forChangeObject: {
-                  koodiarvo: "210",
-                  title: "Kalvola",
-                  maakuntaKey: "FI-06"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "210",
-                title: "Kalvola"
-              }
-            },
-            {
-              anchor: "401",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "401",
-                forChangeObject: {
-                  koodiarvo: "401",
-                  title: "Lammi",
-                  maakuntaKey: "FI-06"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "401",
-                title: "Lammi"
               }
             },
             {
@@ -2708,49 +1353,14 @@ export default {
                   title: "Loppi",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "433",
                 title: "Loppi"
-              }
-            },
-            {
-              anchor: "692",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "692",
-                forChangeObject: {
-                  koodiarvo: "692",
-                  title: "Renko",
-                  maakuntaKey: "FI-06"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "692",
-                title: "Renko"
               }
             },
             {
@@ -2764,18 +1374,11 @@ export default {
                   title: "Riihimäki",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "694",
                 title: "Riihimäki"
@@ -2792,49 +1395,14 @@ export default {
                   title: "Tammela",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "834",
                 title: "Tammela"
-              }
-            },
-            {
-              anchor: "855",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "855",
-                forChangeObject: {
-                  koodiarvo: "855",
-                  title: "Tuulos",
-                  maakuntaKey: "FI-06"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "855",
-                title: "Tuulos"
               }
             },
             {
@@ -2848,18 +1416,11 @@ export default {
                   title: "Ypäjä",
                   maakuntaKey: "FI-06"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "981",
                 title: "Ypäjä"
@@ -2878,24 +1439,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "16",
-            forChangeObject: {
-              koodiarvo: "16",
-              maakuntaKey: "FI-07",
-              title: "Keski-Pohjanmaa"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "16", maakuntaKey: "FI-07" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "16",
             title: "Keski-Pohjanmaa"
@@ -2918,18 +1468,11 @@ export default {
                   title: "Halsua",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "074",
                 title: "Halsua"
@@ -2946,18 +1489,11 @@ export default {
                   title: "Kannus",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "217",
                 title: "Kannus"
@@ -2974,18 +1510,11 @@ export default {
                   title: "Kaustinen",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "236",
                 title: "Kaustinen"
@@ -3002,49 +1531,14 @@ export default {
                   title: "Kokkola",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "272",
                 title: "Kokkola"
-              }
-            },
-            {
-              anchor: "315",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "315",
-                forChangeObject: {
-                  koodiarvo: "315",
-                  title: "Kälviä",
-                  maakuntaKey: "FI-07"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "315",
-                title: "Kälviä"
               }
             },
             {
@@ -3058,49 +1552,14 @@ export default {
                   title: "Lestijärvi",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "421",
                 title: "Lestijärvi"
-              }
-            },
-            {
-              anchor: "429",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "429",
-                forChangeObject: {
-                  koodiarvo: "429",
-                  title: "Lohtaja",
-                  maakuntaKey: "FI-07"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "429",
-                title: "Lohtaja"
               }
             },
             {
@@ -3114,18 +1573,11 @@ export default {
                   title: "Perho",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "584",
                 title: "Perho"
@@ -3142,49 +1594,14 @@ export default {
                   title: "Toholampi",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "849",
                 title: "Toholampi"
-              }
-            },
-            {
-              anchor: "885",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "885",
-                forChangeObject: {
-                  koodiarvo: "885",
-                  title: "Ullava",
-                  maakuntaKey: "FI-07"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "885",
-                title: "Ullava"
               }
             },
             {
@@ -3198,18 +1615,11 @@ export default {
                   title: "Veteli",
                   maakuntaKey: "FI-07"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "924",
                 title: "Veteli"
@@ -3228,24 +1638,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "13",
-            forChangeObject: {
-              koodiarvo: "13",
-              maakuntaKey: "FI-08",
-              title: "Keski-Suomi"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "13", maakuntaKey: "FI-08" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "13",
             title: "Keski-Suomi"
@@ -3268,18 +1667,11 @@ export default {
                   title: "Hankasalmi",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "077",
                 title: "Hankasalmi"
@@ -3296,18 +1688,11 @@ export default {
                   title: "Joutsa",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "172",
                 title: "Joutsa"
@@ -3324,49 +1709,14 @@ export default {
                   title: "Jyväskylä",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "179",
                 title: "Jyväskylä"
-              }
-            },
-            {
-              anchor: "180",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "180",
-                forChangeObject: {
-                  koodiarvo: "180",
-                  title: "Jyväskylä mlk",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "180",
-                title: "Jyväskylä mlk"
               }
             },
             {
@@ -3380,49 +1730,14 @@ export default {
                   title: "Jämsä",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "182",
                 title: "Jämsä"
-              }
-            },
-            {
-              anchor: "183",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "183",
-                forChangeObject: {
-                  koodiarvo: "183",
-                  title: "Jämsänkoski",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "183",
-                title: "Jämsänkoski"
               }
             },
             {
@@ -3436,18 +1751,11 @@ export default {
                   title: "Kannonkoski",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "216",
                 title: "Kannonkoski"
@@ -3464,18 +1772,11 @@ export default {
                   title: "Karstula",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "226",
                 title: "Karstula"
@@ -3492,18 +1793,11 @@ export default {
                   title: "Keuruu",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "249",
                 title: "Keuruu"
@@ -3520,18 +1814,11 @@ export default {
                   title: "Kinnula",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "256",
                 title: "Kinnula"
@@ -3548,18 +1835,11 @@ export default {
                   title: "Kivijärvi",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "265",
                 title: "Kivijärvi"
@@ -3576,77 +1856,14 @@ export default {
                   title: "Konnevesi",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "275",
                 title: "Konnevesi"
-              }
-            },
-            {
-              anchor: "277",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "277",
-                forChangeObject: {
-                  koodiarvo: "277",
-                  title: "Korpilahti",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "277",
-                title: "Korpilahti"
-              }
-            },
-            {
-              anchor: "291",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "291",
-                forChangeObject: {
-                  koodiarvo: "291",
-                  title: "Kuhmoinen",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "291",
-                title: "Kuhmoinen"
               }
             },
             {
@@ -3660,18 +1877,11 @@ export default {
                   title: "Kyyjärvi",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "312",
                 title: "Kyyjärvi"
@@ -3688,49 +1898,14 @@ export default {
                   title: "Laukaa",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "410",
                 title: "Laukaa"
-              }
-            },
-            {
-              anchor: "415",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "415",
-                forChangeObject: {
-                  koodiarvo: "415",
-                  title: "Leivonmäki",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "415",
-                title: "Leivonmäki"
               }
             },
             {
@@ -3744,18 +1919,11 @@ export default {
                   title: "Luhanka",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "435",
                 title: "Luhanka"
@@ -3772,18 +1940,11 @@ export default {
                   title: "Multia",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "495",
                 title: "Multia"
@@ -3800,18 +1961,11 @@ export default {
                   title: "Muurame",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "500",
                 title: "Muurame"
@@ -3828,18 +1982,11 @@ export default {
                   title: "Petäjävesi",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "592",
                 title: "Petäjävesi"
@@ -3856,49 +2003,14 @@ export default {
                   title: "Pihtipudas",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "601",
                 title: "Pihtipudas"
-              }
-            },
-            {
-              anchor: "633",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "633",
-                forChangeObject: {
-                  koodiarvo: "633",
-                  title: "Pylkönmäki",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "633",
-                title: "Pylkönmäki"
               }
             },
             {
@@ -3912,77 +2024,14 @@ export default {
                   title: "Saarijärvi",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "729",
                 title: "Saarijärvi"
-              }
-            },
-            {
-              anchor: "770",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "770",
-                forChangeObject: {
-                  koodiarvo: "770",
-                  title: "Sumiainen",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "770",
-                title: "Sumiainen"
-              }
-            },
-            {
-              anchor: "774",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "774",
-                forChangeObject: {
-                  koodiarvo: "774",
-                  title: "Suolahti",
-                  maakuntaKey: "FI-08"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "774",
-                title: "Suolahti"
               }
             },
             {
@@ -3996,18 +2045,11 @@ export default {
                   title: "Toivakka",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "850",
                 title: "Toivakka"
@@ -4024,18 +2066,11 @@ export default {
                   title: "Uurainen",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "892",
                 title: "Uurainen"
@@ -4052,18 +2087,11 @@ export default {
                   title: "Viitasaari",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "931",
                 title: "Viitasaari"
@@ -4080,18 +2108,11 @@ export default {
                   title: "Äänekoski",
                   maakuntaKey: "FI-08"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "992",
                 title: "Äänekoski"
@@ -4110,24 +2131,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "08",
-            forChangeObject: {
-              koodiarvo: "08",
-              maakuntaKey: "FI-09",
-              title: "Kymenlaakso"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "08", maakuntaKey: "FI-09" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "08",
             title: "Kymenlaakso"
@@ -4140,62 +2150,6 @@ export default {
           formId: "FI-09",
           components: [
             {
-              anchor: "754",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "754",
-                forChangeObject: {
-                  koodiarvo: "754",
-                  title: "Anjalankoski",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "754",
-                title: "Anjalankoski"
-              }
-            },
-            {
-              anchor: "044",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "044",
-                forChangeObject: {
-                  koodiarvo: "044",
-                  title: "Elimäki",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "044",
-                title: "Elimäki"
-              }
-            },
-            {
               anchor: "075",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
@@ -4206,77 +2160,14 @@ export default {
                   title: "Hamina",
                   maakuntaKey: "FI-09"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "075",
                 title: "Hamina"
-              }
-            },
-            {
-              anchor: "142",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "142",
-                forChangeObject: {
-                  koodiarvo: "142",
-                  title: "Iitti",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "142",
-                title: "Iitti"
-              }
-            },
-            {
-              anchor: "163",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "163",
-                forChangeObject: {
-                  koodiarvo: "163",
-                  title: "Jaala",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "163",
-                title: "Jaala"
               }
             },
             {
@@ -4290,18 +2181,11 @@ export default {
                   title: "Kotka",
                   maakuntaKey: "FI-09"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "285",
                 title: "Kotka"
@@ -4318,49 +2202,14 @@ export default {
                   title: "Kouvola",
                   maakuntaKey: "FI-09"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "286",
                 title: "Kouvola"
-              }
-            },
-            {
-              anchor: "306",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "306",
-                forChangeObject: {
-                  koodiarvo: "306",
-                  title: "Kuusankoski",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "306",
-                title: "Kuusankoski"
               }
             },
             {
@@ -4374,18 +2223,11 @@ export default {
                   title: "Miehikkälä",
                   maakuntaKey: "FI-09"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "489",
                 title: "Miehikkälä"
@@ -4402,77 +2244,14 @@ export default {
                   title: "Pyhtää",
                   maakuntaKey: "FI-09"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "624",
                 title: "Pyhtää"
-              }
-            },
-            {
-              anchor: "909",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "909",
-                forChangeObject: {
-                  koodiarvo: "909",
-                  title: "Valkeala",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "909",
-                title: "Valkeala"
-              }
-            },
-            {
-              anchor: "917",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "917",
-                forChangeObject: {
-                  koodiarvo: "917",
-                  title: "Vehkalahti",
-                  maakuntaKey: "FI-09"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "917",
-                title: "Vehkalahti"
               }
             },
             {
@@ -4486,18 +2265,11 @@ export default {
                   title: "Virolahti",
                   maakuntaKey: "FI-09"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "935",
                 title: "Virolahti"
@@ -4516,24 +2288,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "19",
-            forChangeObject: {
-              koodiarvo: "19",
-              maakuntaKey: "FI-10",
-              title: "Lappi"
-            },
+            forChangeObject: { koodiarvo: "19", maakuntaKey: "FI-10" },
             isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "19",
             title: "Lappi"
@@ -4558,16 +2319,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "047",
                 title: "Enontekiö"
@@ -4586,16 +2340,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "148",
                 title: "Inari"
@@ -4614,16 +2361,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "240",
                 title: "Kemi"
@@ -4642,16 +2382,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "320",
                 title: "Kemijärvi"
@@ -4670,16 +2403,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "241",
                 title: "Keminmaa"
@@ -4698,16 +2424,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "261",
                 title: "Kittilä"
@@ -4726,16 +2445,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "273",
                 title: "Kolari"
@@ -4754,16 +2466,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "498",
                 title: "Muonio"
@@ -4782,16 +2487,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "583",
                 title: "Pelkosenniemi"
@@ -4810,16 +2508,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "854",
                 title: "Pello"
@@ -4838,16 +2529,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "614",
                 title: "Posio"
@@ -4866,16 +2550,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "683",
                 title: "Ranua"
@@ -4894,47 +2571,12 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "698",
                 title: "Rovaniemi"
-              }
-            },
-            {
-              anchor: "699",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "699",
-                forChangeObject: {
-                  koodiarvo: "699",
-                  title: "Rovaniemi mlk",
-                  maakuntaKey: "FI-10"
-                },
-                isChecked: false,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "699",
-                title: "Rovaniemi mlk"
               }
             },
             {
@@ -4950,16 +2592,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "732",
                 title: "Salla"
@@ -4978,16 +2613,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "742",
                 title: "Savukoski"
@@ -5006,16 +2634,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "751",
                 title: "Simo"
@@ -5034,16 +2655,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "758",
                 title: "Sodankylä"
@@ -5062,16 +2676,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "845",
                 title: "Tervola"
@@ -5090,16 +2697,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "851",
                 title: "Tornio"
@@ -5118,16 +2718,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "890",
                 title: "Utsjoki"
@@ -5146,16 +2739,9 @@ export default {
                 },
                 isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "976",
                 title: "Ylitornio"
@@ -5174,24 +2760,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "06",
-            forChangeObject: {
-              koodiarvo: "06",
-              maakuntaKey: "FI-11",
-              title: "Pirkanmaa"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "06", maakuntaKey: "FI-11" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "06",
             title: "Pirkanmaa"
@@ -5214,18 +2789,11 @@ export default {
                   title: "Akaa",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "020",
                 title: "Akaa"
@@ -5242,18 +2810,11 @@ export default {
                   title: "Hämeenkyrö",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "108",
                 title: "Hämeenkyrö"
@@ -5270,18 +2831,11 @@ export default {
                   title: "Ikaalinen",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "143",
                 title: "Ikaalinen"
@@ -5298,18 +2852,11 @@ export default {
                   title: "Juupajoki",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "177",
                 title: "Juupajoki"
@@ -5326,18 +2873,11 @@ export default {
                   title: "Kangasala",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "211",
                 title: "Kangasala"
@@ -5354,133 +2894,35 @@ export default {
                   title: "Kihniö",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "250",
                 title: "Kihniö"
               }
             },
             {
-              anchor: "289",
+              anchor: "291",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
               properties: {
-                code: "289",
+                code: "291",
                 forChangeObject: {
-                  koodiarvo: "289",
-                  title: "Kuhmalahti",
+                  koodiarvo: "291",
+                  title: "Kuhmoinen",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
-                name: "289",
-                title: "Kuhmalahti"
-              }
-            },
-            {
-              anchor: "299",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "299",
-                forChangeObject: {
-                  koodiarvo: "299",
-                  title: "Kuorevesi",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "299",
-                title: "Kuorevesi"
-              }
-            },
-            {
-              anchor: "303",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "303",
-                forChangeObject: {
-                  koodiarvo: "303",
-                  title: "Kuru",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "303",
-                title: "Kuru"
-              }
-            },
-            {
-              anchor: "310",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "310",
-                forChangeObject: {
-                  koodiarvo: "310",
-                  title: "Kylmäkoski",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "310",
-                title: "Kylmäkoski"
+                name: "291",
+                title: "Kuhmoinen"
               }
             },
             {
@@ -5494,133 +2936,14 @@ export default {
                   title: "Lempäälä",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "418",
                 title: "Lempäälä"
-              }
-            },
-            {
-              anchor: "439",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "439",
-                forChangeObject: {
-                  koodiarvo: "439",
-                  title: "Luopioinen",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "439",
-                title: "Luopioinen"
-              }
-            },
-            {
-              anchor: "443",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "443",
-                forChangeObject: {
-                  koodiarvo: "443",
-                  title: "Längelmäki",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "443",
-                title: "Längelmäki"
-              }
-            },
-            {
-              anchor: "493",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "493",
-                forChangeObject: {
-                  koodiarvo: "493",
-                  title: "Mouhijärvi",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "493",
-                title: "Mouhijärvi"
-              }
-            },
-            {
-              anchor: "506",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "506",
-                forChangeObject: {
-                  koodiarvo: "506",
-                  title: "Mänttä",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "506",
-                title: "Mänttä"
               }
             },
             {
@@ -5634,18 +2957,11 @@ export default {
                   title: "Mänttä-Vilppula",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "508",
                 title: "Mänttä-Vilppula"
@@ -5662,18 +2978,11 @@ export default {
                   title: "Nokia",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "536",
                 title: "Nokia"
@@ -5690,18 +2999,11 @@ export default {
                   title: "Orivesi",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "562",
                 title: "Orivesi"
@@ -5718,18 +3020,11 @@ export default {
                   title: "Parkano",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "581",
                 title: "Parkano"
@@ -5746,48 +3041,13 @@ export default {
                   title: "Pirkkala",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "604",
-                title: "Pirkkala"
-              }
-            },
-            {
-              anchor: "994",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "994",
-                forChangeObject: {
-                  koodiarvo: "994",
-                  title: "Pirkkala",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "994",
                 title: "Pirkkala"
               }
             },
@@ -5802,18 +3062,11 @@ export default {
                   title: "Punkalaidun",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "619",
                 title: "Punkalaidun"
@@ -5830,18 +3083,11 @@ export default {
                   title: "Pälkäne",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "635",
                 title: "Pälkäne"
@@ -5858,49 +3104,14 @@ export default {
                   title: "Ruovesi",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "702",
                 title: "Ruovesi"
-              }
-            },
-            {
-              anchor: "730",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "730",
-                forChangeObject: {
-                  koodiarvo: "730",
-                  title: "Sahalahti",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "730",
-                title: "Sahalahti"
               }
             },
             {
@@ -5914,49 +3125,14 @@ export default {
                   title: "Sastamala",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "790",
                 title: "Sastamala"
-              }
-            },
-            {
-              anchor: "772",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "772",
-                forChangeObject: {
-                  koodiarvo: "772",
-                  title: "Suodenniemi",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "772",
-                title: "Suodenniemi"
               }
             },
             {
@@ -5970,49 +3146,14 @@ export default {
                   title: "Tampere",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "837",
                 title: "Tampere"
-              }
-            },
-            {
-              anchor: "864",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "864",
-                forChangeObject: {
-                  koodiarvo: "864",
-                  title: "Toijala",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "864",
-                title: "Toijala"
               }
             },
             {
@@ -6026,18 +3167,11 @@ export default {
                   title: "Urjala",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "887",
                 title: "Urjala"
@@ -6054,49 +3188,14 @@ export default {
                   title: "Valkeakoski",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "908",
                 title: "Valkeakoski"
-              }
-            },
-            {
-              anchor: "912",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "912",
-                forChangeObject: {
-                  koodiarvo: "912",
-                  title: "Vammala",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "912",
-                title: "Vammala"
               }
             },
             {
@@ -6110,105 +3209,14 @@ export default {
                   title: "Vesilahti",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "922",
                 title: "Vesilahti"
-              }
-            },
-            {
-              anchor: "928",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "928",
-                forChangeObject: {
-                  koodiarvo: "928",
-                  title: "Viiala",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "928",
-                title: "Viiala"
-              }
-            },
-            {
-              anchor: "932",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "932",
-                forChangeObject: {
-                  koodiarvo: "932",
-                  title: "Viljakkala",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "932",
-                title: "Viljakkala"
-              }
-            },
-            {
-              anchor: "933",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "933",
-                forChangeObject: {
-                  koodiarvo: "933",
-                  title: "Vilppula",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "933",
-                title: "Vilppula"
               }
             },
             {
@@ -6222,18 +3230,11 @@ export default {
                   title: "Virrat",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "936",
                 title: "Virrat"
@@ -6250,49 +3251,14 @@ export default {
                   title: "Ylöjärvi",
                   maakuntaKey: "FI-11"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "980",
                 title: "Ylöjärvi"
-              }
-            },
-            {
-              anchor: "988",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "988",
-                forChangeObject: {
-                  koodiarvo: "988",
-                  title: "Äetsä",
-                  maakuntaKey: "FI-11"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "988",
-                title: "Äetsä"
               }
             }
           ]
@@ -6308,24 +3274,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "15",
-            forChangeObject: {
-              koodiarvo: "15",
-              maakuntaKey: "FI-12",
-              title: "Pohjanmaa"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "15", maakuntaKey: "FI-12" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "15",
             title: "Pohjanmaa"
@@ -6338,34 +3293,6 @@ export default {
           formId: "FI-12",
           components: [
             {
-              anchor: "152",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "152",
-                forChangeObject: {
-                  koodiarvo: "152",
-                  title: "Isokyrö",
-                  maakuntaKey: "FI-12"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "152",
-                title: "Isokyrö"
-              }
-            },
-            {
               anchor: "231",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
@@ -6376,18 +3303,11 @@ export default {
                   title: "Kaskinen",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "231",
                 title: "Kaskinen"
@@ -6404,18 +3324,11 @@ export default {
                   title: "Korsnäs",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "280",
                 title: "Korsnäs"
@@ -6432,18 +3345,11 @@ export default {
                   title: "Kristiinankaupunki",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "287",
                 title: "Kristiinankaupunki"
@@ -6460,18 +3366,11 @@ export default {
                   title: "Kruunupyy",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "288",
                 title: "Kruunupyy"
@@ -6488,18 +3387,11 @@ export default {
                   title: "Laihia",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "399",
                 title: "Laihia"
@@ -6516,18 +3408,11 @@ export default {
                   title: "Luoto",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "440",
                 title: "Luoto"
@@ -6544,49 +3429,14 @@ export default {
                   title: "Maalahti",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "475",
                 title: "Maalahti"
-              }
-            },
-            {
-              anchor: "479",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "479",
-                forChangeObject: {
-                  koodiarvo: "479",
-                  title: "Maksamaa",
-                  maakuntaKey: "FI-12"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "479",
-                title: "Maksamaa"
               }
             },
             {
@@ -6600,18 +3450,11 @@ export default {
                   title: "Mustasaari",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "499",
                 title: "Mustasaari"
@@ -6628,49 +3471,14 @@ export default {
                   title: "Närpiö",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "545",
                 title: "Närpiö"
-              }
-            },
-            {
-              anchor: "559",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "559",
-                forChangeObject: {
-                  koodiarvo: "559",
-                  title: "Oravainen",
-                  maakuntaKey: "FI-12"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "559",
-                title: "Oravainen"
               }
             },
             {
@@ -6684,18 +3492,11 @@ export default {
                   title: "Pedersöre",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "599",
                 title: "Pedersöre"
@@ -6712,18 +3513,11 @@ export default {
                   title: "Pietarsaari",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "598",
                 title: "Pietarsaari"
@@ -6740,18 +3534,11 @@ export default {
                   title: "Uusikaarlepyy",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "893",
                 title: "Uusikaarlepyy"
@@ -6768,49 +3555,14 @@ export default {
                   title: "Vaasa",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "905",
                 title: "Vaasa"
-              }
-            },
-            {
-              anchor: "942",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "942",
-                forChangeObject: {
-                  koodiarvo: "942",
-                  title: "Vähäkyrö",
-                  maakuntaKey: "FI-12"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "942",
-                title: "Vähäkyrö"
               }
             },
             {
@@ -6824,77 +3576,14 @@ export default {
                   title: "Vöyri",
                   maakuntaKey: "FI-12"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "946",
                 title: "Vöyri"
-              }
-            },
-            {
-              anchor: "944",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "944",
-                forChangeObject: {
-                  koodiarvo: "944",
-                  title: "Vöyri",
-                  maakuntaKey: "FI-12"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "944",
-                title: "Vöyri"
-              }
-            },
-            {
-              anchor: "945",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "945",
-                forChangeObject: {
-                  koodiarvo: "945",
-                  title: "Vöyri-Maksmaa",
-                  maakuntaKey: "FI-12"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "945",
-                title: "Vöyri-Maksmaa"
               }
             }
           ]
@@ -6910,24 +3599,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "12",
-            forChangeObject: {
-              koodiarvo: "12",
-              maakuntaKey: "FI-13",
-              title: "Pohjois-Karjala"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "12", maakuntaKey: "FI-13" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "12",
             title: "Pohjois-Karjala"
@@ -6940,31 +3618,24 @@ export default {
           formId: "FI-13",
           components: [
             {
-              anchor: "045",
+              anchor: "090",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
               properties: {
-                code: "045",
+                code: "090",
                 forChangeObject: {
-                  koodiarvo: "045",
-                  title: "Eno",
+                  koodiarvo: "090",
+                  title: "Heinävesi",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
-                name: "045",
-                title: "Eno"
+                name: "090",
+                title: "Heinävesi"
               }
             },
             {
@@ -6978,18 +3649,11 @@ export default {
                   title: "Ilomantsi",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "146",
                 title: "Ilomantsi"
@@ -7006,18 +3670,11 @@ export default {
                   title: "Joensuu",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "167",
                 title: "Joensuu"
@@ -7034,77 +3691,14 @@ export default {
                   title: "Juuka",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "176",
                 title: "Juuka"
-              }
-            },
-            {
-              anchor: "248",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "248",
-                forChangeObject: {
-                  koodiarvo: "248",
-                  title: "Kesälahti",
-                  maakuntaKey: "FI-13"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "248",
-                title: "Kesälahti"
-              }
-            },
-            {
-              anchor: "251",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "251",
-                forChangeObject: {
-                  koodiarvo: "251",
-                  title: "Kiihtelysvaara",
-                  maakuntaKey: "FI-13"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "251",
-                title: "Kiihtelysvaara"
               }
             },
             {
@@ -7118,18 +3712,11 @@ export default {
                   title: "Kitee",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "260",
                 title: "Kitee"
@@ -7146,18 +3733,11 @@ export default {
                   title: "Kontiolahti",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "276",
                 title: "Kontiolahti"
@@ -7174,18 +3754,11 @@ export default {
                   title: "Lieksa",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "422",
                 title: "Lieksa"
@@ -7202,18 +3775,11 @@ export default {
                   title: "Liperi",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "426",
                 title: "Liperi"
@@ -7230,18 +3796,11 @@ export default {
                   title: "Nurmes",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "541",
                 title: "Nurmes"
@@ -7258,18 +3817,11 @@ export default {
                   title: "Outokumpu",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "309",
                 title: "Outokumpu"
@@ -7286,49 +3838,14 @@ export default {
                   title: "Polvijärvi",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "607",
                 title: "Polvijärvi"
-              }
-            },
-            {
-              anchor: "632",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "632",
-                forChangeObject: {
-                  koodiarvo: "632",
-                  title: "Pyhäselkä",
-                  maakuntaKey: "FI-13"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "632",
-                title: "Pyhäselkä"
               }
             },
             {
@@ -7342,18 +3859,11 @@ export default {
                   title: "Rääkkylä",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "707",
                 title: "Rääkkylä"
@@ -7370,105 +3880,14 @@ export default {
                   title: "Tohmajärvi",
                   maakuntaKey: "FI-13"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "848",
                 title: "Tohmajärvi"
-              }
-            },
-            {
-              anchor: "856",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "856",
-                forChangeObject: {
-                  koodiarvo: "856",
-                  title: "Tuupovaara",
-                  maakuntaKey: "FI-13"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "856",
-                title: "Tuupovaara"
-              }
-            },
-            {
-              anchor: "911",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "911",
-                forChangeObject: {
-                  koodiarvo: "911",
-                  title: "Valtimo",
-                  maakuntaKey: "FI-13"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "911",
-                title: "Valtimo"
-              }
-            },
-            {
-              anchor: "943",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "943",
-                forChangeObject: {
-                  koodiarvo: "943",
-                  title: "Värtsilä",
-                  maakuntaKey: "FI-13"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "943",
-                title: "Värtsilä"
               }
             }
           ]
@@ -7484,24 +3903,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "17",
-            forChangeObject: {
-              koodiarvo: "17",
-              maakuntaKey: "FI-14",
-              title: "Pohjois-Pohjanmaa"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "17", maakuntaKey: "FI-14" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "17",
             title: "Pohjois-Pohjanmaa"
@@ -7524,18 +3932,11 @@ export default {
                   title: "Alavieska",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "009",
                 title: "Alavieska"
@@ -7552,18 +3953,11 @@ export default {
                   title: "Haapajärvi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "069",
                 title: "Haapajärvi"
@@ -7580,18 +3974,11 @@ export default {
                   title: "Haapavesi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "071",
                 title: "Haapavesi"
@@ -7608,77 +3995,14 @@ export default {
                   title: "Hailuoto",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "072",
                 title: "Hailuoto"
-              }
-            },
-            {
-              anchor: "084",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "084",
-                forChangeObject: {
-                  koodiarvo: "084",
-                  title: "Haukipudas",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "084",
-                title: "Haukipudas"
-              }
-            },
-            {
-              anchor: "095",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "095",
-                forChangeObject: {
-                  koodiarvo: "095",
-                  title: "Himanka",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "095",
-                title: "Himanka"
               }
             },
             {
@@ -7692,18 +4016,11 @@ export default {
                   title: "Ii",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "139",
                 title: "Ii"
@@ -7720,18 +4037,11 @@ export default {
                   title: "Kalajoki",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "208",
                 title: "Kalajoki"
@@ -7748,105 +4058,14 @@ export default {
                   title: "Kempele",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "244",
                 title: "Kempele"
-              }
-            },
-            {
-              anchor: "247",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "247",
-                forChangeObject: {
-                  koodiarvo: "247",
-                  title: "Kestilä",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "247",
-                title: "Kestilä"
-              }
-            },
-            {
-              anchor: "255",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "255",
-                forChangeObject: {
-                  koodiarvo: "255",
-                  title: "Kiiminki",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "255",
-                title: "Kiiminki"
-              }
-            },
-            {
-              anchor: "292",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "292",
-                forChangeObject: {
-                  koodiarvo: "292",
-                  title: "Kuivaniemi",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "292",
-                title: "Kuivaniemi"
               }
             },
             {
@@ -7860,18 +4079,11 @@ export default {
                   title: "Kuusamo",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "305",
                 title: "Kuusamo"
@@ -7888,18 +4100,11 @@ export default {
                   title: "Kärsämäki",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "317",
                 title: "Kärsämäki"
@@ -7916,18 +4121,11 @@ export default {
                   title: "Liminka",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "425",
                 title: "Liminka"
@@ -7944,18 +4142,11 @@ export default {
                   title: "Lumijoki",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "436",
                 title: "Lumijoki"
@@ -7972,18 +4163,11 @@ export default {
                   title: "Merijärvi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "483",
                 title: "Merijärvi"
@@ -8000,18 +4184,11 @@ export default {
                   title: "Muhos",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "494",
                 title: "Muhos"
@@ -8028,18 +4205,11 @@ export default {
                   title: "Nivala",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "535",
                 title: "Nivala"
@@ -8056,18 +4226,11 @@ export default {
                   title: "Oulainen",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "563",
                 title: "Oulainen"
@@ -8084,105 +4247,14 @@ export default {
                   title: "Oulu",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "564",
                 title: "Oulu"
-              }
-            },
-            {
-              anchor: "567",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "567",
-                forChangeObject: {
-                  koodiarvo: "567",
-                  title: "Oulunsalo",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "567",
-                title: "Oulunsalo"
-              }
-            },
-            {
-              anchor: "582",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "582",
-                forChangeObject: {
-                  koodiarvo: "582",
-                  title: "Pattijoki",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "582",
-                title: "Pattijoki"
-              }
-            },
-            {
-              anchor: "603",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "603",
-                forChangeObject: {
-                  koodiarvo: "603",
-                  title: "Piippola",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "603",
-                title: "Piippola"
               }
             },
             {
@@ -8196,49 +4268,14 @@ export default {
                   title: "Pudasjärvi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "615",
                 title: "Pudasjärvi"
-              }
-            },
-            {
-              anchor: "617",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "617",
-                forChangeObject: {
-                  koodiarvo: "617",
-                  title: "Pulkkila",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "617",
-                title: "Pulkkila"
               }
             },
             {
@@ -8252,18 +4289,11 @@ export default {
                   title: "Pyhäjoki",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "625",
                 title: "Pyhäjoki"
@@ -8280,18 +4310,11 @@ export default {
                   title: "Pyhäjärvi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "626",
                 title: "Pyhäjärvi"
@@ -8308,18 +4331,11 @@ export default {
                   title: "Pyhäntä",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "630",
                 title: "Pyhäntä"
@@ -8336,49 +4352,14 @@ export default {
                   title: "Raahe",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "678",
                 title: "Raahe"
-              }
-            },
-            {
-              anchor: "682",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "682",
-                forChangeObject: {
-                  koodiarvo: "682",
-                  title: "Rantsila",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "682",
-                title: "Rantsila"
               }
             },
             {
@@ -8392,49 +4373,14 @@ export default {
                   title: "Reisjärvi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "691",
                 title: "Reisjärvi"
-              }
-            },
-            {
-              anchor: "708",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "708",
-                forChangeObject: {
-                  koodiarvo: "708",
-                  title: "Ruukki",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "708",
-                title: "Ruukki"
               }
             },
             {
@@ -8448,18 +4394,11 @@ export default {
                   title: "Sievi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "746",
                 title: "Sievi"
@@ -8476,18 +4415,11 @@ export default {
                   title: "Siikajoki",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "748",
                 title: "Siikajoki"
@@ -8504,18 +4436,11 @@ export default {
                   title: "Siikalatva",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "791",
                 title: "Siikalatva"
@@ -8532,49 +4457,14 @@ export default {
                   title: "Taivalkoski",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "832",
                 title: "Taivalkoski"
-              }
-            },
-            {
-              anchor: "841",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "841",
-                forChangeObject: {
-                  koodiarvo: "841",
-                  title: "Temmes",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "841",
-                title: "Temmes"
               }
             },
             {
@@ -8588,18 +4478,11 @@ export default {
                   title: "Tyrnävä",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "859",
                 title: "Tyrnävä"
@@ -8616,18 +4499,11 @@ export default {
                   title: "Utajärvi",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "889",
                 title: "Utajärvi"
@@ -8644,105 +4520,14 @@ export default {
                   title: "Vaala",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "785",
                 title: "Vaala"
-              }
-            },
-            {
-              anchor: "926",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "926",
-                forChangeObject: {
-                  koodiarvo: "926",
-                  title: "Vihanti",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "926",
-                title: "Vihanti"
-              }
-            },
-            {
-              anchor: "972",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "972",
-                forChangeObject: {
-                  koodiarvo: "972",
-                  title: "Yli-Ii",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "972",
-                title: "Yli-Ii"
-              }
-            },
-            {
-              anchor: "973",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "973",
-                forChangeObject: {
-                  koodiarvo: "973",
-                  title: "Ylikiiminki",
-                  maakuntaKey: "FI-14"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "973",
-                title: "Ylikiiminki"
               }
             },
             {
@@ -8756,18 +4541,11 @@ export default {
                   title: "Ylivieska",
                   maakuntaKey: "FI-14"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "977",
                 title: "Ylivieska"
@@ -8786,24 +4564,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "11",
-            forChangeObject: {
-              koodiarvo: "11",
-              maakuntaKey: "FI-15",
-              title: "Pohjois-Savo"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "11", maakuntaKey: "FI-15" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "11",
             title: "Pohjois-Savo"
@@ -8826,49 +4593,35 @@ export default {
                   title: "Iisalmi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "140",
                 title: "Iisalmi"
               }
             },
             {
-              anchor: "174",
+              anchor: "171",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
               properties: {
-                code: "174",
+                code: "171",
                 forChangeObject: {
-                  koodiarvo: "174",
-                  title: "Juankoski",
+                  koodiarvo: "171",
+                  title: "Joroinen",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
-                name: "174",
-                title: "Juankoski"
+                name: "171",
+                title: "Joroinen"
               }
             },
             {
@@ -8882,77 +4635,14 @@ export default {
                   title: "Kaavi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "204",
                 title: "Kaavi"
-              }
-            },
-            {
-              anchor: "212",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "212",
-                forChangeObject: {
-                  koodiarvo: "212",
-                  title: "Kangaslampi",
-                  maakuntaKey: "FI-15"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "212",
-                title: "Kangaslampi"
-              }
-            },
-            {
-              anchor: "227",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "227",
-                forChangeObject: {
-                  koodiarvo: "227",
-                  title: "Karttula",
-                  maakuntaKey: "FI-15"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "227",
-                title: "Karttula"
               }
             },
             {
@@ -8966,18 +4656,11 @@ export default {
                   title: "Keitele",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "239",
                 title: "Keitele"
@@ -8994,18 +4677,11 @@ export default {
                   title: "Kiuruvesi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "263",
                 title: "Kiuruvesi"
@@ -9022,18 +4698,11 @@ export default {
                   title: "Kuopio",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "297",
                 title: "Kuopio"
@@ -9050,18 +4719,11 @@ export default {
                   title: "Lapinlahti",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "402",
                 title: "Lapinlahti"
@@ -9078,77 +4740,14 @@ export default {
                   title: "Leppävirta",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "420",
                 title: "Leppävirta"
-              }
-            },
-            {
-              anchor: "476",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "476",
-                forChangeObject: {
-                  koodiarvo: "476",
-                  title: "Maaninka",
-                  maakuntaKey: "FI-15"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "476",
-                title: "Maaninka"
-              }
-            },
-            {
-              anchor: "534",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "534",
-                forChangeObject: {
-                  koodiarvo: "534",
-                  title: "Nilsiä",
-                  maakuntaKey: "FI-15"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "534",
-                title: "Nilsiä"
               }
             },
             {
@@ -9162,18 +4761,11 @@ export default {
                   title: "Pielavesi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "595",
                 title: "Pielavesi"
@@ -9190,18 +4782,11 @@ export default {
                   title: "Rautalampi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "686",
                 title: "Rautalampi"
@@ -9218,18 +4803,11 @@ export default {
                   title: "Rautavaara",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "687",
                 title: "Rautavaara"
@@ -9246,18 +4824,11 @@ export default {
                   title: "Siilinjärvi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "749",
                 title: "Siilinjärvi"
@@ -9274,18 +4845,11 @@ export default {
                   title: "Sonkajärvi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "762",
                 title: "Sonkajärvi"
@@ -9302,18 +4866,11 @@ export default {
                   title: "Suonenjoki",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "778",
                 title: "Suonenjoki"
@@ -9330,18 +4887,11 @@ export default {
                   title: "Tervo",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "844",
                 title: "Tervo"
@@ -9358,18 +4908,11 @@ export default {
                   title: "Tuusniemi",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "857",
                 title: "Tuusniemi"
@@ -9386,77 +4929,14 @@ export default {
                   title: "Varkaus",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "915",
                 title: "Varkaus"
-              }
-            },
-            {
-              anchor: "916",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "916",
-                forChangeObject: {
-                  koodiarvo: "916",
-                  title: "Varpaisjärvi",
-                  maakuntaKey: "FI-15"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "916",
-                title: "Varpaisjärvi"
-              }
-            },
-            {
-              anchor: "919",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "919",
-                forChangeObject: {
-                  koodiarvo: "919",
-                  title: "Vehmersalmi",
-                  maakuntaKey: "FI-15"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "919",
-                title: "Vehmersalmi"
               }
             },
             {
@@ -9470,18 +4950,11 @@ export default {
                   title: "Vesanto",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "921",
                 title: "Vesanto"
@@ -9498,18 +4971,11 @@ export default {
                   title: "Vieremä",
                   maakuntaKey: "FI-15"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "925",
                 title: "Vieremä"
@@ -9528,24 +4994,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "07",
-            forChangeObject: {
-              koodiarvo: "07",
-              maakuntaKey: "FI-16",
-              title: "Päijät-Häme"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "07", maakuntaKey: "FI-16" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "07",
             title: "Päijät-Häme"
@@ -9558,34 +5013,6 @@ export default {
           formId: "FI-16",
           components: [
             {
-              anchor: "015",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "015",
-                forChangeObject: {
-                  koodiarvo: "015",
-                  title: "Artjärvi",
-                  maakuntaKey: "FI-16"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "015",
-                title: "Artjärvi"
-              }
-            },
-            {
               anchor: "016",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
@@ -9596,18 +5023,11 @@ export default {
                   title: "Asikkala",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "016",
                 title: "Asikkala"
@@ -9624,18 +5044,11 @@ export default {
                   title: "Hartola",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "081",
                 title: "Hartola"
@@ -9652,77 +5065,14 @@ export default {
                   title: "Heinola",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "111",
                 title: "Heinola"
-              }
-            },
-            {
-              anchor: "088",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "088",
-                forChangeObject: {
-                  koodiarvo: "088",
-                  title: "Heinola",
-                  maakuntaKey: "FI-16"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "088",
-                title: "Heinola"
-              }
-            },
-            {
-              anchor: "089",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "089",
-                forChangeObject: {
-                  koodiarvo: "089",
-                  title: "Heinola mlk",
-                  maakuntaKey: "FI-16"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "089",
-                title: "Heinola mlk"
               }
             },
             {
@@ -9736,49 +5086,35 @@ export default {
                   title: "Hollola",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "098",
                 title: "Hollola"
               }
             },
             {
-              anchor: "283",
+              anchor: "142",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
               properties: {
-                code: "283",
+                code: "142",
                 forChangeObject: {
-                  koodiarvo: "283",
-                  title: "Hämeenkoski",
+                  koodiarvo: "142",
+                  title: "Iitti",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
-                name: "283",
-                title: "Hämeenkoski"
+                name: "142",
+                title: "Iitti"
               }
             },
             {
@@ -9792,18 +5128,11 @@ export default {
                   title: "Kärkölä",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "316",
                 title: "Kärkölä"
@@ -9820,49 +5149,14 @@ export default {
                   title: "Lahti",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "398",
                 title: "Lahti"
-              }
-            },
-            {
-              anchor: "532",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "532",
-                forChangeObject: {
-                  koodiarvo: "532",
-                  title: "Nastola",
-                  maakuntaKey: "FI-16"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "532",
-                title: "Nastola"
               }
             },
             {
@@ -9876,18 +5170,11 @@ export default {
                   title: "Orimattila",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "560",
                 title: "Orimattila"
@@ -9904,18 +5191,11 @@ export default {
                   title: "Padasjoki",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "576",
                 title: "Padasjoki"
@@ -9932,18 +5212,11 @@ export default {
                   title: "Sysmä",
                   maakuntaKey: "FI-16"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "781",
                 title: "Sysmä"
@@ -9962,24 +5235,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "04",
-            forChangeObject: {
-              koodiarvo: "04",
-              maakuntaKey: "FI-17",
-              title: "Satakunta"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "04", maakuntaKey: "FI-17" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "04",
             title: "Satakunta"
@@ -9992,34 +5254,6 @@ export default {
           formId: "FI-17",
           components: [
             {
-              anchor: "001",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "001",
-                forChangeObject: {
-                  koodiarvo: "001",
-                  title: "Ahlainen",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "001",
-                title: "Ahlainen"
-              }
-            },
-            {
               anchor: "050",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
@@ -10030,18 +5264,11 @@ export default {
                   title: "Eura",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "050",
                 title: "Eura"
@@ -10058,18 +5285,11 @@ export default {
                   title: "Eurajoki",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "051",
                 title: "Eurajoki"
@@ -10086,49 +5306,14 @@ export default {
                   title: "Harjavalta",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "079",
                 title: "Harjavalta"
-              }
-            },
-            {
-              anchor: "099",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "099",
-                forChangeObject: {
-                  koodiarvo: "099",
-                  title: "Honkajoki",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "099",
-                title: "Honkajoki"
               }
             },
             {
@@ -10142,18 +5327,11 @@ export default {
                   title: "Huittinen",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "102",
                 title: "Huittinen"
@@ -10170,18 +5348,11 @@ export default {
                   title: "Jämijärvi",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "181",
                 title: "Jämijärvi"
@@ -10198,18 +5369,11 @@ export default {
                   title: "Kankaanpää",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "214",
                 title: "Kankaanpää"
@@ -10226,105 +5390,14 @@ export default {
                   title: "Karvia",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "230",
                 title: "Karvia"
-              }
-            },
-            {
-              anchor: "254",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "254",
-                forChangeObject: {
-                  koodiarvo: "254",
-                  title: "Kiikoinen",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "254",
-                title: "Kiikoinen"
-              }
-            },
-            {
-              anchor: "262",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "262",
-                forChangeObject: {
-                  koodiarvo: "262",
-                  title: "Kiukainen",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "262",
-                title: "Kiukainen"
-              }
-            },
-            {
-              anchor: "266",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "266",
-                forChangeObject: {
-                  koodiarvo: "266",
-                  title: "Kodisjoki",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "266",
-                title: "Kodisjoki"
               }
             },
             {
@@ -10338,161 +5411,14 @@ export default {
                   title: "Kokemäki",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "271",
                 title: "Kokemäki"
-              }
-            },
-            {
-              anchor: "293",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "293",
-                forChangeObject: {
-                  koodiarvo: "293",
-                  title: "Kullaa",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "293",
-                title: "Kullaa"
-              }
-            },
-            {
-              anchor: "319",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "319",
-                forChangeObject: {
-                  koodiarvo: "319",
-                  title: "Köyliö",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "319",
-                title: "Köyliö"
-              }
-            },
-            {
-              anchor: "406",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "406",
-                forChangeObject: {
-                  koodiarvo: "406",
-                  title: "Lappi",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "406",
-                title: "Lappi"
-              }
-            },
-            {
-              anchor: "413",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "413",
-                forChangeObject: {
-                  koodiarvo: "413",
-                  title: "Lavia",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "413",
-                title: "Lavia"
-              }
-            },
-            {
-              anchor: "442",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "442",
-                forChangeObject: {
-                  koodiarvo: "442",
-                  title: "Luvia",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "442",
-                title: "Luvia"
               }
             },
             {
@@ -10506,18 +5432,11 @@ export default {
                   title: "Merikarvia",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "484",
                 title: "Merikarvia"
@@ -10534,49 +5453,14 @@ export default {
                   title: "Nakkila",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "531",
                 title: "Nakkila"
-              }
-            },
-            {
-              anchor: "537",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "537",
-                forChangeObject: {
-                  koodiarvo: "537",
-                  title: "Noormarkku",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "537",
-                title: "Noormarkku"
               }
             },
             {
@@ -10590,18 +5474,11 @@ export default {
                   title: "Pomarkku",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "608",
                 title: "Pomarkku"
@@ -10618,18 +5495,11 @@ export default {
                   title: "Pori",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "609",
                 title: "Pori"
@@ -10646,18 +5516,11 @@ export default {
                   title: "Rauma",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "684",
                 title: "Rauma"
@@ -10674,18 +5537,11 @@ export default {
                   title: "Siikainen",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "747",
                 title: "Siikainen"
@@ -10702,18 +5558,11 @@ export default {
                   title: "Säkylä",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "783",
                 title: "Säkylä"
@@ -10730,49 +5579,14 @@ export default {
                   title: "Ulvila",
                   maakuntaKey: "FI-17"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "886",
                 title: "Ulvila"
-              }
-            },
-            {
-              anchor: "913",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "913",
-                forChangeObject: {
-                  koodiarvo: "913",
-                  title: "Vampula",
-                  maakuntaKey: "FI-17"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "913",
-                title: "Vampula"
               }
             }
           ]
@@ -10788,24 +5602,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "01",
-            forChangeObject: {
-              koodiarvo: "01",
-              maakuntaKey: "FI-18",
-              title: "Uusimaa"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "01", maakuntaKey: "FI-18" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "01",
             title: "Uusimaa"
@@ -10828,18 +5631,11 @@ export default {
                   title: "Askola",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "018",
                 title: "Askola"
@@ -10856,18 +5652,11 @@ export default {
                   title: "Espoo",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "049",
                 title: "Espoo"
@@ -10884,18 +5673,11 @@ export default {
                   title: "Hanko",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "078",
                 title: "Hanko"
@@ -10912,18 +5694,11 @@ export default {
                   title: "Helsinki",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "091",
                 title: "Helsinki"
@@ -10940,18 +5715,11 @@ export default {
                   title: "Hyvinkää",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "106",
                 title: "Hyvinkää"
@@ -10968,18 +5736,11 @@ export default {
                   title: "Inkoo",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "149",
                 title: "Inkoo"
@@ -10996,77 +5757,14 @@ export default {
                   title: "Järvenpää",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "186",
                 title: "Järvenpää"
-              }
-            },
-            {
-              anchor: "220",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "220",
-                forChangeObject: {
-                  koodiarvo: "220",
-                  title: "Karjaa",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "220",
-                title: "Karjaa"
-              }
-            },
-            {
-              anchor: "223",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "223",
-                forChangeObject: {
-                  koodiarvo: "223",
-                  title: "Karjalohja",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "223",
-                title: "Karjalohja"
               }
             },
             {
@@ -11080,18 +5778,11 @@ export default {
                   title: "Karkkila",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "224",
                 title: "Karkkila"
@@ -11108,18 +5799,11 @@ export default {
                   title: "Kauniainen",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "235",
                 title: "Kauniainen"
@@ -11136,18 +5820,11 @@ export default {
                   title: "Kerava",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "245",
                 title: "Kerava"
@@ -11164,18 +5841,11 @@ export default {
                   title: "Kirkkonummi",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "257",
                 title: "Kirkkonummi"
@@ -11192,77 +5862,14 @@ export default {
                   title: "Lapinjärvi",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "407",
                 title: "Lapinjärvi"
-              }
-            },
-            {
-              anchor: "424",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "424",
-                forChangeObject: {
-                  koodiarvo: "424",
-                  title: "Liljendal",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "424",
-                title: "Liljendal"
-              }
-            },
-            {
-              anchor: "427",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "427",
-                forChangeObject: {
-                  koodiarvo: "427",
-                  title: "Lohja",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "427",
-                title: "Lohja"
               }
             },
             {
@@ -11276,49 +5883,14 @@ export default {
                   title: "Lohja",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "444",
                 title: "Lohja"
-              }
-            },
-            {
-              anchor: "428",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "428",
-                forChangeObject: {
-                  koodiarvo: "428",
-                  title: "Lohjan kunta",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "428",
-                title: "Lohjan kunta"
               }
             },
             {
@@ -11332,18 +5904,11 @@ export default {
                   title: "Loviisa",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "434",
                 title: "Loviisa"
@@ -11360,18 +5925,11 @@ export default {
                   title: "Myrskylä",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "504",
                 title: "Myrskylä"
@@ -11388,49 +5946,14 @@ export default {
                   title: "Mäntsälä",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "505",
                 title: "Mäntsälä"
-              }
-            },
-            {
-              anchor: "540",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "540",
-                forChangeObject: {
-                  koodiarvo: "540",
-                  title: "Nummi-Pusula",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "540",
-                title: "Nummi-Pusula"
               }
             },
             {
@@ -11444,77 +5967,14 @@ export default {
                   title: "Nurmijärvi",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "543",
                 title: "Nurmijärvi"
-              }
-            },
-            {
-              anchor: "585",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "585",
-                forChangeObject: {
-                  koodiarvo: "585",
-                  title: "Pernaja",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "585",
-                title: "Pernaja"
-              }
-            },
-            {
-              anchor: "606",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "606",
-                forChangeObject: {
-                  koodiarvo: "606",
-                  title: "Pohja",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "606",
-                title: "Pohja"
               }
             },
             {
@@ -11528,18 +5988,11 @@ export default {
                   title: "Pornainen",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "611",
                 title: "Pornainen"
@@ -11556,77 +6009,14 @@ export default {
                   title: "Porvoo",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "638",
                 title: "Porvoo"
-              }
-            },
-            {
-              anchor: "612",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "612",
-                forChangeObject: {
-                  koodiarvo: "612",
-                  title: "Porvoo",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "612",
-                title: "Porvoo"
-              }
-            },
-            {
-              anchor: "613",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "613",
-                forChangeObject: {
-                  koodiarvo: "613",
-                  title: "Porvoo mlk",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "613",
-                title: "Porvoo mlk"
               }
             },
             {
@@ -11640,18 +6030,11 @@ export default {
                   title: "Pukkila",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "616",
                 title: "Pukkila"
@@ -11668,77 +6051,14 @@ export default {
                   title: "Raasepori",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "710",
                 title: "Raasepori"
-              }
-            },
-            {
-              anchor: "701",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "701",
-                forChangeObject: {
-                  koodiarvo: "701",
-                  title: "Ruotsinpyhtää",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "701",
-                title: "Ruotsinpyhtää"
-              }
-            },
-            {
-              anchor: "737",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "737",
-                forChangeObject: {
-                  koodiarvo: "737",
-                  title: "Sammatti",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "737",
-                title: "Sammatti"
               }
             },
             {
@@ -11752,18 +6072,11 @@ export default {
                   title: "Sipoo",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "753",
                 title: "Sipoo"
@@ -11780,49 +6093,14 @@ export default {
                   title: "Siuntio",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "755",
                 title: "Siuntio"
-              }
-            },
-            {
-              anchor: "835",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "835",
-                forChangeObject: {
-                  koodiarvo: "835",
-                  title: "Tammisaari",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "835",
-                title: "Tammisaari"
               }
             },
             {
@@ -11836,49 +6114,14 @@ export default {
                   title: "Tuusula",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "858",
                 title: "Tuusula"
-              }
-            },
-            {
-              anchor: "200",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "200",
-                forChangeObject: {
-                  koodiarvo: "200",
-                  title: "Ulkomaa",
-                  maakuntaKey: "FI-18"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "200",
-                title: "Ulkomaa"
               }
             },
             {
@@ -11892,18 +6135,11 @@ export default {
                   title: "Vantaa",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "092",
                 title: "Vantaa"
@@ -11920,18 +6156,11 @@ export default {
                   title: "Vihti",
                   maakuntaKey: "FI-18"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "927",
                 title: "Vihti"
@@ -11950,24 +6179,13 @@ export default {
           name: "CheckboxWithLabel",
           properties: {
             code: "02",
-            forChangeObject: {
-              koodiarvo: "02",
-              maakuntaKey: "FI-19",
-              title: "Varsinais-Suomi"
-            },
-            isChecked: true,
+            forChangeObject: { koodiarvo: "02", maakuntaKey: "FI-19" },
+            isChecked: false,
             isIndeterminate: false,
             labelStyles: {
-              addition: {
-                color: "purple"
-              },
-              removal: {
-                color: "purple",
-                textDecoration: "line-through"
-              },
-              custom: {
-                fontWeight: 600
-              }
+              addition: { color: "purple" },
+              removal: { color: "purple", textDecoration: "line-through" },
+              custom: { fontWeight: 600 }
             },
             name: "02",
             title: "Varsinais-Suomi"
@@ -11980,62 +6198,6 @@ export default {
           formId: "FI-19",
           components: [
             {
-              anchor: "006",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "006",
-                forChangeObject: {
-                  koodiarvo: "006",
-                  title: "Alastaro",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "006",
-                title: "Alastaro"
-              }
-            },
-            {
-              anchor: "017",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "017",
-                forChangeObject: {
-                  koodiarvo: "017",
-                  title: "Askainen",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "017",
-                title: "Askainen"
-              }
-            },
-            {
               anchor: "019",
               name: "CheckboxWithLabel",
               styleClasses: ["w-1/2"],
@@ -12046,133 +6208,14 @@ export default {
                   title: "Aura",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "019",
                 title: "Aura"
-              }
-            },
-            {
-              anchor: "040",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "040",
-                forChangeObject: {
-                  koodiarvo: "040",
-                  title: "Dragsfjärd",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "040",
-                title: "Dragsfjärd"
-              }
-            },
-            {
-              anchor: "073",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "073",
-                forChangeObject: {
-                  koodiarvo: "073",
-                  title: "Halikko",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "073",
-                title: "Halikko"
-              }
-            },
-            {
-              anchor: "101",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "101",
-                forChangeObject: {
-                  koodiarvo: "101",
-                  title: "Houtskari",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "101",
-                title: "Houtskari"
-              }
-            },
-            {
-              anchor: "150",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "150",
-                forChangeObject: {
-                  koodiarvo: "150",
-                  title: "Iniö",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "150",
-                title: "Iniö"
               }
             },
             {
@@ -12186,77 +6229,14 @@ export default {
                   title: "Kaarina",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "202",
                 title: "Kaarina"
-              }
-            },
-            {
-              anchor: "219",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "219",
-                forChangeObject: {
-                  koodiarvo: "219",
-                  title: "Karinainen",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "219",
-                title: "Karinainen"
-              }
-            },
-            {
-              anchor: "243",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "243",
-                forChangeObject: {
-                  koodiarvo: "243",
-                  title: "Kemiö",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "243",
-                title: "Kemiö"
               }
             },
             {
@@ -12270,105 +6250,14 @@ export default {
                   title: "Kemiönsaari",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "322",
                 title: "Kemiönsaari"
-              }
-            },
-            {
-              anchor: "252",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "252",
-                forChangeObject: {
-                  koodiarvo: "252",
-                  title: "Kiikala",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "252",
-                title: "Kiikala"
-              }
-            },
-            {
-              anchor: "259",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "259",
-                forChangeObject: {
-                  koodiarvo: "259",
-                  title: "Kisko",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "259",
-                title: "Kisko"
-              }
-            },
-            {
-              anchor: "279",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "279",
-                forChangeObject: {
-                  koodiarvo: "279",
-                  title: "Korppoo",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "279",
-                title: "Korppoo"
               }
             },
             {
@@ -12382,18 +6271,11 @@ export default {
                   title: "Koski Tl",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "284",
                 title: "Koski Tl"
@@ -12410,49 +6292,14 @@ export default {
                   title: "Kustavi",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "304",
                 title: "Kustavi"
-              }
-            },
-            {
-              anchor: "308",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "308",
-                forChangeObject: {
-                  koodiarvo: "308",
-                  title: "Kuusjoki",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "308",
-                title: "Kuusjoki"
               }
             },
             {
@@ -12466,49 +6313,14 @@ export default {
                   title: "Laitila",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "400",
                 title: "Laitila"
-              }
-            },
-            {
-              anchor: "419",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "419",
-                forChangeObject: {
-                  koodiarvo: "419",
-                  title: "Lemu",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "419",
-                title: "Lemu"
               }
             },
             {
@@ -12522,18 +6334,11 @@ export default {
                   title: "Lieto",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "423",
                 title: "Lieto"
@@ -12550,49 +6355,14 @@ export default {
                   title: "Loimaa",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "430",
                 title: "Loimaa"
-              }
-            },
-            {
-              anchor: "431",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "431",
-                forChangeObject: {
-                  koodiarvo: "431",
-                  title: "Loimaan kunta",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "431",
-                title: "Loimaan kunta"
               }
             },
             {
@@ -12606,18 +6376,11 @@ export default {
                   title: "Marttila",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "480",
                 title: "Marttila"
@@ -12634,133 +6397,14 @@ export default {
                   title: "Masku",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "481",
                 title: "Masku"
-              }
-            },
-            {
-              anchor: "482",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "482",
-                forChangeObject: {
-                  koodiarvo: "482",
-                  title: "Mellilä",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "482",
-                title: "Mellilä"
-              }
-            },
-            {
-              anchor: "485",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "485",
-                forChangeObject: {
-                  koodiarvo: "485",
-                  title: "Merimasku",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "485",
-                title: "Merimasku"
-              }
-            },
-            {
-              anchor: "490",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "490",
-                forChangeObject: {
-                  koodiarvo: "490",
-                  title: "Mietoinen",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "490",
-                title: "Mietoinen"
-              }
-            },
-            {
-              anchor: "501",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "501",
-                forChangeObject: {
-                  koodiarvo: "501",
-                  title: "Muurla",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "501",
-                title: "Muurla"
               }
             },
             {
@@ -12774,18 +6418,11 @@ export default {
                   title: "Mynämäki",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "503",
                 title: "Mynämäki"
@@ -12802,49 +6439,14 @@ export default {
                   title: "Naantali",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "529",
                 title: "Naantali"
-              }
-            },
-            {
-              anchor: "533",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "533",
-                forChangeObject: {
-                  koodiarvo: "533",
-                  title: "Nauvo",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "533",
-                title: "Nauvo"
               }
             },
             {
@@ -12858,18 +6460,11 @@ export default {
                   title: "Nousiainen",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "538",
                 title: "Nousiainen"
@@ -12886,18 +6481,11 @@ export default {
                   title: "Oripää",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "561",
                 title: "Oripää"
@@ -12914,49 +6502,14 @@ export default {
                   title: "Paimio",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "577",
                 title: "Paimio"
-              }
-            },
-            {
-              anchor: "573",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "573",
-                forChangeObject: {
-                  koodiarvo: "573",
-                  title: "Parainen",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "573",
-                title: "Parainen"
               }
             },
             {
@@ -12970,105 +6523,14 @@ export default {
                   title: "Parainen",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "445",
                 title: "Parainen"
-              }
-            },
-            {
-              anchor: "586",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "586",
-                forChangeObject: {
-                  koodiarvo: "586",
-                  title: "Perniö",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "586",
-                title: "Perniö"
-              }
-            },
-            {
-              anchor: "587",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "587",
-                forChangeObject: {
-                  koodiarvo: "587",
-                  title: "Pertteli",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "587",
-                title: "Pertteli"
-              }
-            },
-            {
-              anchor: "602",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "602",
-                forChangeObject: {
-                  koodiarvo: "602",
-                  title: "Piikkiö",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "602",
-                title: "Piikkiö"
               }
             },
             {
@@ -13082,18 +6544,11 @@ export default {
                   title: "Pyhäranta",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "631",
                 title: "Pyhäranta"
@@ -13110,18 +6565,11 @@ export default {
                   title: "Pöytyä",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "636",
                 title: "Pöytyä"
@@ -13138,18 +6586,11 @@ export default {
                   title: "Raisio",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "680",
                 title: "Raisio"
@@ -13166,49 +6607,14 @@ export default {
                   title: "Rusko",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "704",
                 title: "Rusko"
-              }
-            },
-            {
-              anchor: "705",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "705",
-                forChangeObject: {
-                  koodiarvo: "705",
-                  title: "Rymättylä",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "705",
-                title: "Rymättylä"
               }
             },
             {
@@ -13222,18 +6628,11 @@ export default {
                   title: "Salo",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "734",
                 title: "Salo"
@@ -13250,18 +6649,11 @@ export default {
                   title: "Sauvo",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "738",
                 title: "Sauvo"
@@ -13278,77 +6670,14 @@ export default {
                   title: "Somero",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "761",
                 title: "Somero"
-              }
-            },
-            {
-              anchor: "776",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "776",
-                forChangeObject: {
-                  koodiarvo: "776",
-                  title: "Suomusjärvi",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "776",
-                title: "Suomusjärvi"
-              }
-            },
-            {
-              anchor: "784",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "784",
-                forChangeObject: {
-                  koodiarvo: "784",
-                  title: "Särkisalo",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "784",
-                title: "Särkisalo"
               }
             },
             {
@@ -13362,49 +6691,14 @@ export default {
                   title: "Taivassalo",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "833",
                 title: "Taivassalo"
-              }
-            },
-            {
-              anchor: "838",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "838",
-                forChangeObject: {
-                  koodiarvo: "838",
-                  title: "Tarvasjoki",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "838",
-                title: "Tarvasjoki"
               }
             },
             {
@@ -13418,18 +6712,11 @@ export default {
                   title: "Turku",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "853",
                 title: "Turku"
@@ -13446,49 +6733,14 @@ export default {
                   title: "Uusikaupunki",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "895",
                 title: "Uusikaupunki"
-              }
-            },
-            {
-              anchor: "906",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "906",
-                forChangeObject: {
-                  koodiarvo: "906",
-                  title: "Vahto",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "906",
-                title: "Vahto"
               }
             },
             {
@@ -13502,105 +6754,14 @@ export default {
                   title: "Vehmaa",
                   maakuntaKey: "FI-19"
                 },
-                isChecked: true,
+                isChecked: false,
                 labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
+                  addition: { color: "purple" },
+                  removal: { color: "purple", textDecoration: "line-through" },
+                  custom: { fontWeight: 600 }
                 },
                 name: "918",
                 title: "Vehmaa"
-              }
-            },
-            {
-              anchor: "920",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "920",
-                forChangeObject: {
-                  koodiarvo: "920",
-                  title: "Velkua",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "920",
-                title: "Velkua"
-              }
-            },
-            {
-              anchor: "923",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "923",
-                forChangeObject: {
-                  koodiarvo: "923",
-                  title: "Västanfjärd",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "923",
-                title: "Västanfjärd"
-              }
-            },
-            {
-              anchor: "979",
-              name: "CheckboxWithLabel",
-              styleClasses: ["w-1/2"],
-              properties: {
-                code: "979",
-                forChangeObject: {
-                  koodiarvo: "979",
-                  title: "Yläne",
-                  maakuntaKey: "FI-19"
-                },
-                isChecked: true,
-                labelStyles: {
-                  addition: {
-                    color: "purple"
-                  },
-                  removal: {
-                    color: "purple",
-                    textDecoration: "line-through"
-                  },
-                  custom: {
-                    fontWeight: 600
-                  }
-                },
-                name: "979",
-                title: "Yläne"
               }
             }
           ]

@@ -192,7 +192,8 @@ const CategoryFilter = ({
               <SimpleButton
                 variant="outlined"
                 onClick={() => toggleEditView(true)}
-                text={localizations.editButtonText}></SimpleButton>
+                text={localizations.editButtonText}
+              ></SimpleButton>
             </div>
           )}
         </React.Fragment>
@@ -219,7 +220,8 @@ const CategoryFilter = ({
               <SimpleButton
                 variant="outlined"
                 onClick={() => toggleEditView(true)}
-                text={localizations.editButtonText}></SimpleButton>
+                text={localizations.editButtonText}
+              ></SimpleButton>
             </div>
           )}
         </React.Fragment>
