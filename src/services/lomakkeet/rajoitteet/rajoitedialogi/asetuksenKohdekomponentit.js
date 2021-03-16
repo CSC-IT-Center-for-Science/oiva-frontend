@@ -52,6 +52,18 @@ export const getAsetuksenKohdekomponentti = async (
       ),
       value: ""
     },
+    valtakunnallisetKehittamistehtavat: {
+      inputId,
+      isMulti: false,
+      isReadOnly,
+      isVisible: !isReadOnly,
+      options: getOptionObjects(
+        [
+          maaraaikaOption
+        ].filter(Boolean)
+      ),
+      value: ""
+    },
     lukumaara: {
       inputId,
       isMulti: false,

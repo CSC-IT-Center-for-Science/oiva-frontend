@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 
-export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
+export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
   const intl = useIntl();
   const localeUpper = toUpper(intl.locale);
   const [
@@ -36,25 +36,26 @@ export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
       });
   }, []);
 
-  const erityisetKoulutustehtavatMaaraykset = filter(
+  const valtakunnallisetKehittamistehtavatMaaraykset = filter(
     maarays =>
       maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
-      maarays.koodisto === "lukioerityinenkoulutustehtavauusi",
+      maarays.koodisto === "lukioerityinenkoulutustehtavauusi" &&
+      maarays.meta.isValtakunnallinenKehitystehtava,
     maaraykset
   );
 
   const lisatietomaarays = find(
     maarays =>
-      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
+      maarays.kohde.tunniste === "valtakunnallinenkehittamistehtava" &&
       maarays.koodisto === "lisatietoja",
     maaraykset
   );
 
-  return !isEmpty(erityisetKoulutustehtavatMaaraykset) &&
+  return !isEmpty(valtakunnallisetKehittamistehtavatMaaraykset) &&
     !isEmpty(erityisetKoulutustehtavatKoodisto) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
-        {intl.formatMessage(education.erityisetKoulutustehtavat)}
+        {intl.formatMessage(education.valtakunnallinenKehittamistehtava)}
       </Typography>
 
       <ul className="ml-8 list-disc mb-4">
@@ -81,7 +82,7 @@ export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
               {length(maarays.aliMaaraykset)
                 ? getRajoitteetFromMaarays(
                   filter(aliMaarays =>
-                      !hasPath(["meta", "valtakunnallinenKehittamistehtava"], aliMaarays),
+                      hasPath(["meta", "valtakunnallinenKehittamistehtava"], aliMaarays),
                     maarays.aliMaaraykset
                   ),
                   localeUpper,
@@ -91,7 +92,7 @@ export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
             </React.Fragment>
           );
           return result;
-        }, erityisetKoulutustehtavatMaaraykset)}
+        }, valtakunnallisetKehittamistehtavatMaaraykset)}
       </ul>
       {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
     </div>
