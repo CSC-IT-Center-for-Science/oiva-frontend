@@ -54,11 +54,7 @@ export const Navigation = ({ localesByLang, routes }) => {
 
               {/* 2. tason navigaatio */}
               {!isEmpty(routeObj.routes) &&
-                visibleSubMenuRoute === routeObj.key &&
-                includes(
-                  path([locale, routeObj.route], localesByLang),
-                  location.pathname
-                ) && (
+                visibleSubMenuRoute === routeObj.key && (
                   <ul
                     className={"flex left-0 w-full fixed bg-green-600 h12"}
                     style={{ top: "4.5rem" }}
