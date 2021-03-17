@@ -22,7 +22,7 @@ export const Navigation = ({ localesByLang, routes }) => {
             <li
               key={routeObj.key}
               className="flex flex-col items-center hover:bg-green-600"
-              onClick={() => setVisibleSubMenuRoute(routeObj.key)}
+              onClick={() => {setVisibleSubMenuRoute(visibleSubMenuRoute === null ? routeObj.key : null)}}
               onMouseEnter={() => setVisibleSubMenuRoute(routeObj.key)}
               onMouseLeave={() => setVisibleSubMenuRoute(null)}
             >
@@ -43,13 +43,10 @@ export const Navigation = ({ localesByLang, routes }) => {
                       : routeObj.title}
                   </span>
                   {length(routeObj.routes) ? (
-                    includes(
-                      path([locale, routeObj.route], localesByLang),
-                      location.pathname
-                    ) && visibleSubMenuRoute === routeObj.key ? (
-                      <ExpandMoreIcon className="ml-2 align-bottom" />
-                    ) : (
+                    visibleSubMenuRoute === routeObj.key ? (
                       <ExpandLessIcon className="ml-2 align-bottom" />
+                    ) : (
+                      <ExpandMoreIcon className="ml-2 align-bottom" />
                     )
                   ) : null}
                 </div>
@@ -63,7 +60,7 @@ export const Navigation = ({ localesByLang, routes }) => {
                   location.pathname
                 ) && (
                   <ul
-                    className={"flex left-0 w-full fixed bg-green-600 h-12"}
+                    className={"flex left-0 w-full fixed bg-green-600 h12"}
                     style={{ top: "4.5rem" }}
                   >
                     {map(routeObj => {
