@@ -54,14 +54,17 @@ export const Navigation = ({ localesByLang, routes }) => {
 
               {/* 2. tason navigaatio */}
               {!isEmpty(routeObj.routes) &&
-              visibleSubMenuRoute === routeObj.key &&
-              (
-                <ul
-                  className={"flex left-0 w-full fixed bg-green-600"}
-                  style={{ top: "4.5rem" }}
-                >
-                  {map(routeObj => {
-                    return (
+                visibleSubMenuRoute === routeObj.key &&
+                includes(
+                  path([locale, routeObj.route], localesByLang),
+                  location.pathname
+                ) && (
+                  <ul
+                    className={"flex left-0 w-full fixed bg-green-600 h12"}
+                    style={{ top: "4.5rem" }}
+                  >
+                    {map(routeObj => {
+                      return (
                         <li
                           key={routeObj.key}
                           className="flex flex-col items-center hover:bg-green-700 hover:bg-opacity-75"
@@ -77,7 +80,7 @@ export const Navigation = ({ localesByLang, routes }) => {
                               formatMessage
                             )}
                             activeClassName={"bg-green-700"}
-                            className="flex flex-col justify-center text-white px-5 h-20 uppercase font-medium hover:text-white hover:bg-green-600 hover:bg-opacity-50"
+                            className="flex flex-col justify-center text-white px-5 h-20 font-medium hover:text-white hover:bg-green-600 hover:bg-opacity-50"
                             style={{ fontSize: "0.9375rem" }}
                           >
                             <span>
