@@ -8,6 +8,7 @@ import {
   includes,
   map,
   path,
+  pathEq,
   prop,
   startsWith,
   toUpper,
@@ -26,7 +27,7 @@ export default async function getKunnat(
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
 
-  const changesByProvinceObj = find(
+  const areaOfAction = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
   );
@@ -53,24 +54,35 @@ export default async function getKunnat(
   }, ulkomaatStateObj);
 
   if (kunnat) {
-    const muutoksillaValitutKunnat = changesByProvinceObj
+    // Koska osion data ei ole ajantasalla johtuen kuntaosion monimutkaisesta
+    // rakenteesta, on osion muutoksia tarkkailtava, jotta käyttäjälle osataan
+    // näyttää vain ja ainoastaan kunnat, jotka ovat valittuina päälomakkeella.
+    const muutoksillaValitutKunnat = areaOfAction
       ? map(
           path(["properties", "metadata", "koodiarvo"]),
-          flatten(
-            values(changesByProvinceObj.properties.changeObjectsByProvince)
-          )
+          filter(changeObj => {
+            console.info(changeObj);
+            return pathEq(["properties", "isChecked"], true, changeObj);
+          }, flatten(values(areaOfAction.properties.changeObjectsByProvince)))
         )
       : [];
 
-    const oletusarvoinValitutKunnat = changesByProvinceObj
+    const oletusarvoinValitutKunnat = areaOfAction
+      ? map(prop("koodiarvo"), areaOfAction.properties.currentMunicipalities)
+      : [];
+
+    const muutoksillaPoistetutKunnat = areaOfAction
       ? map(
-          prop("koodiarvo"),
-          changesByProvinceObj.properties.currentMunicipalities
+          path(["properties", "metadata", "koodiarvo"]),
+          filter(changeObj => {
+            console.info(changeObj);
+            return pathEq(["properties", "isChecked"], false, changeObj);
+          }, flatten(values(areaOfAction.properties.changeObjectsByProvince)))
         )
       : [];
 
     const valitutKunnat = without(
-      ["200"],
+      concat(["200"], muutoksillaPoistetutKunnat),
       concat(oletusarvoinValitutKunnat, muutoksillaValitutKunnat)
     );
 
