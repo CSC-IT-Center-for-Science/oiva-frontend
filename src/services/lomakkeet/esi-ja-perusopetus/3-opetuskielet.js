@@ -9,7 +9,8 @@ import {
   filter,
   uniq,
   concat,
-  propEq
+  propEq,
+  toUpper
 } from "ramda";
 import { __ } from "i18n-for-browser";
 import {
@@ -96,8 +97,9 @@ export async function getOpetuskieletOPHLomake(
             options: ensisijaisetOpetuskieletOptions,
             title: __("common.valitseYksiTaiUseampi"),
             value: map(maarays => {
+              const maarayksenKoodiarvoUpper = toUpper(maarays.koodiarvo);
               const option = find(
-                propEq("value", maarays.koodiarvo),
+                propEq("value", maarayksenKoodiarvoUpper),
                 ensisijaisetOpetuskieletOptions
               );
               return option;
@@ -124,8 +126,9 @@ export async function getOpetuskieletOPHLomake(
             options: toissijaisetOpetuskieletOptions,
             title: __("common.valitseYksiTaiUseampi"),
             value: map(maarays => {
+              const maarayksenKoodiarvoUpper = toUpper(maarays.koodiarvo);
               const option = find(
-                propEq("value", maarays.koodiarvo),
+                propEq("value", maarayksenKoodiarvoUpper),
                 toissijaisetOpetuskieletOptions
               );
               return option;

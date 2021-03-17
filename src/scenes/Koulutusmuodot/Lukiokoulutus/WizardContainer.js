@@ -72,6 +72,9 @@ const WizardContainer = ({
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
   });
+  const [valtakunnallisetKehittamistehtavatCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "valtakunnallisetKehittamistehtavat"
+  });
 
   useEffect(() => {
     const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
@@ -166,7 +169,8 @@ const WizardContainer = ({
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
             rajoitteet: rajoitteetCO,
-            toimintaalue: toimintaalueCO
+            toimintaalue: toimintaalueCO,
+            valtakunnallisetKehittamistehtavat: valtakunnallisetKehittamistehtavatCO
           },
           uuid,
           kohteet,
@@ -220,6 +224,7 @@ const WizardContainer = ({
       paatoksentiedotCo,
       rajoitteetCO,
       toimintaalueCO,
+      valtakunnallisetKehittamistehtavatCO,
       uuid
     ]
   );
@@ -230,6 +235,7 @@ const WizardContainer = ({
         <LupanakymaA
           isPreviewModeOn={false}
           isRestrictionsModeOn={true}
+          koulutustyyppi={koulutusmuoto.koulutustyyppi}
           lupakohteet={lupakohteet}
           maaraykset={viimeisinLupa.maaraykset}
           valtakunnallinenMaarays={valtakunnallinenMaarays}

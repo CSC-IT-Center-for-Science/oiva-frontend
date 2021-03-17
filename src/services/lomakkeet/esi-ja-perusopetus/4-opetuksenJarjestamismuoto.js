@@ -1,4 +1,4 @@
-import { isAdded, isRemoved } from "css/label";
+import { isAdded, isInLupa, isRemoved } from "css/label";
 import { find, flatten, map, pathEq, propEq } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
@@ -77,6 +77,7 @@ export async function opetuksenJarjestamismuoto(
                 isReadOnly: _isReadOnly,
                 labelStyles: {
                   addition: isAdded,
+                  custom: Object.assign({}, !!maarays ? isInLupa : {}),
                   removal: isRemoved
                 },
                 title: getLocalizedProperty(muoto.metadata, locale, "nimi")

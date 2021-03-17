@@ -495,7 +495,7 @@ export async function defineBackendChangeObjects(
     : null;
 
   const changeObjUlkomaaTextBoxes = filter(
-    compose(endsWith(".lisatiedot"), prop("anchor")),
+    compose(endsWith(".kuvaus"), prop("anchor")),
     changeObjects.ulkomaa
   );
 
@@ -515,6 +515,7 @@ export async function defineBackendChangeObjects(
         generatedId: `ulkomaa-${Math.random()}`,
         tila: "LISAYS",
         meta: {
+          ankkuri: path(["properties", "metadata", "ankkuri"], item),
           arvo: path(["properties", "value"], item),
           changeObjects: concat(
             [item],

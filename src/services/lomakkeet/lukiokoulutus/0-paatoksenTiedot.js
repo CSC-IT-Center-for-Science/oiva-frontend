@@ -22,12 +22,11 @@ const isFieldEmpty = (anchor, defaultValue, changeObjects) => {
  */
 export default async function getPaatoksenTiedot(
   data,
-  { isPreviewModeOn, isReadOnly },
+  { isReadOnly },
   locale,
   changeObjects
 ) {
   const defaultAsianumero = "";
-  const defaultDiaarinumero = "";
 
   const isAsianumeroFieldEmpty = await isFieldEmpty(
     "paatoksentiedot.asianumero.A",
@@ -35,15 +34,7 @@ export default async function getPaatoksenTiedot(
     changeObjects
   );
 
-  const isDiaarinumeroFieldEmpty = await isFieldEmpty(
-    "paatoksentiedot.diaarinumero.A",
-    defaultAsianumero,
-    changeObjects
-  );
-
-  const isValid =
-    (!isAsianumeroFieldEmpty || !isDiaarinumeroFieldEmpty) &&
-    !(!isAsianumeroFieldEmpty && !isDiaarinumeroFieldEmpty);
+  const isValid = !isAsianumeroFieldEmpty;
 
   return {
     /**
@@ -66,7 +57,7 @@ export default async function getPaatoksenTiedot(
             name: "Input",
             properties: {
               isReadOnly,
-              isRequired: isDiaarinumeroFieldEmpty,
+              isRequired: true,
               isValid,
               label: __("common.asianumero"),
               type: "text",

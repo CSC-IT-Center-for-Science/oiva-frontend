@@ -309,6 +309,10 @@ step("Tarkista, että urlissa lukee <teksti>", async teksti => {
   assert.include(await currentURL(), teksti, "URL OK");
 });
 
+step("Scroll to text <teksti>", async teksti => {
+  await scrollTo(teksti);
+});
+
 step("Vaihda kieleksi <locale>", async locale => {
   await click(locale);
 });
