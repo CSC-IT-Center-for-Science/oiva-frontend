@@ -97,15 +97,17 @@ const MobileMenu = ({
             to={localizeRouteKey(locale, AppRoute.JarjestamisJaYllapitamisluvat, formatMessage)}
             className="text-white font-medium block"
           >
-            <span className="px-5">
+            <span className="pl-5 pr-3">
               {formatMessage(common.jarjestamisJaYllapitamisluvat)}
             </span>
 
+            <span className="pr-5">
             {jarjestamisluvatMenuVisible ? (
               <ExpandLessIcon />
             ) : (
               <ExpandMoreIcon />
             )}
+            </span>
           </NavLink>
         </span>
         {jarjestamisluvatMenuVisible ? (
