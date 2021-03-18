@@ -21,7 +21,7 @@ import {
 } from "ramda";
 import * as muutEhdotHelper from "helpers/lukioMuutEhdot";
 import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
-import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
+import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
 import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
@@ -94,8 +94,11 @@ export async function createObjectToSave(
     maaraystyypit,
     lupa.maaraykset,
     locale,
-    kohteet
+    kohteet,
+    "kunnatjoissaopetustajarjestetaan"
   );
+
+  console.info(opetustaAntavatKunnat);
 
   // 2. OPETUSKIELET
   const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
@@ -145,7 +148,8 @@ export async function createObjectToSave(
   // 4. ERITYINEN KOULUTUSTEHTÄVÄ
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
     {
-      valtakunnallisetKehittamistehtavat: changeObjects.valtakunnallisetKehittamistehtavat,
+      valtakunnallisetKehittamistehtavat:
+        changeObjects.valtakunnallisetKehittamistehtavat,
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
       rajoitteetByRajoiteId: reject(
         isNil,
@@ -180,13 +184,14 @@ export async function createObjectToSave(
   // 5. VALTAKUNNALLINEN KEHITTÄMISTEHTÄVÄ
   const valtakunnallinenKehittamistehtava = await valtakunnallinenKehittamistehtavaHelper.defineBackendChangeObjects(
     {
-      valtakunnallisetKehittamistehtavat: changeObjects.valtakunnallisetKehittamistehtavat,
-      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
+      valtakunnallisetKehittamistehtavat:
+        changeObjects.valtakunnallisetKehittamistehtavat,
+      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat
     },
     maaraystyypit,
     locale,
     kohteet
-  )
+  );
 
   // 6. OPPILAS-/OPISKELIJAMÄÄRÄT
   const opiskelijamaarat = await opiskelijamaaratHelper.defineBackendChangeObjects(

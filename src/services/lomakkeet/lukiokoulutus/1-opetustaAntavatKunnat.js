@@ -261,7 +261,7 @@ export const opetustaAntavatKunnat = async (
               showCategoryTitles: false,
               quickFilterChanges: quickFilterChanges,
               nothingInLupa: noSelectionsInLupa,
-              koulutustyyppi: "esiJaPerusopetus"
+              koulutustyyppi: "lukiokoulutus"
             }
           }
         ]
