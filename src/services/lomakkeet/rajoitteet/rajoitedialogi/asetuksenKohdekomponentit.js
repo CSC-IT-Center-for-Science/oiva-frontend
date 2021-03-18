@@ -57,11 +57,7 @@ export const getAsetuksenKohdekomponentti = async (
       isMulti: false,
       isReadOnly,
       isVisible: !isReadOnly,
-      options: getOptionObjects(
-        [
-          maaraaikaOption
-        ].filter(Boolean)
-      ),
+      options: getOptionObjects([maaraaikaOption].filter(Boolean)),
       value: ""
     },
     lukumaara: {

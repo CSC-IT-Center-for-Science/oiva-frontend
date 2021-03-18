@@ -58,7 +58,7 @@ export async function muutEhdot(
           propEq("koodiarvo", ehto.koodiarvo, m) &&
           propEq(
             "koodisto",
-            "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
+            "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
             m
           ),
         maaraykset
@@ -87,7 +87,10 @@ export async function muutEhdot(
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
-                custom: Object.assign({}, !!ehto.maarays ? isInLupa : {})
+                custom: Object.assign(
+                  {},
+                  !!ehtoonLiittyvatMaaraykset.length ? isInLupa : {}
+                )
               },
               isChecked: !!ehtoonLiittyvatMaaraykset.length,
               isIndeterminate: false

@@ -149,8 +149,8 @@ const LupanakymaA = React.memo(
       maaraykset
     );
 
-    const opetuksenJarjestamismuotomaaraykset = filterByTunniste(
-      "opetuksenjarjestamismuoto",
+    const oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset = filterByTunniste(
+      "sisaoppilaitosmuotoinenkoulutus",
       maaraykset
     );
 
@@ -240,7 +240,9 @@ const LupanakymaA = React.memo(
                   <OikeusSisaoppilaitosmuotoiseenKoulutukseen
                     code="3"
                     isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={opetuksenJarjestamismuotomaaraykset}
+                    maaraykset={
+                      oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset
+                    }
                     rajoitteet={
                       oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet
                     }

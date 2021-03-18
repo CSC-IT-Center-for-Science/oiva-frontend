@@ -10,7 +10,8 @@ import kunnat from "./storydata/kunnat";
 import maakunnat from "./storydata/maakunnat";
 
 const initialState = {
-  isEditViewActive: false
+  isEditViewActive: false,
+  changes: osaMaastaValittu.changes
 };
 
 storiesOf("CategoryFilter", module)
@@ -36,7 +37,7 @@ storiesOf("CategoryFilter", module)
         municipalities={kunnat}
         provinces={osaMaastaValittu.categories}
         provincesWithoutMunicipalities={maakunnat}
-        changeObjectsByProvince={{}}
+        changeObjectsByProvince={store.state.changes}
         showCategoryTitles={false}
         onChanges={changeObjectsByMaakunta => {
           return changeObjectsByMaakunta;
