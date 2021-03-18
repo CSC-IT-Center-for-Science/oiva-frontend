@@ -7,9 +7,9 @@ import {
   includes,
   isNil,
   map,
+  path,
   prop,
-  reject,
-  toLower
+  reject
 } from "ramda";
 import { getDefaultAdditionForm } from "../../perustelut/muutMuutokset/index";
 import getDefaultRemovalForm from "../../perustelut/lomakeosiot/poistolomake";
@@ -40,9 +40,7 @@ export function getModificationForm(
      * järjestäjillä on koodiarvolla 8 erilaisia kuvaustekstejä.
      **/
     if (item.koodiarvo === "8") {
-      title = maarays
-        ? maarays.meta["yhteistyösopimus"][toLower(locale)]
-        : title;
+      title = __("common.lupaSisaltaaYhteistyosopimuksia");
       mitaHaluatHakea = [
         {
           anchor: "tekstikentta",
@@ -56,7 +54,8 @@ export function getModificationForm(
                   koodisto: item.koodisto,
                   maaraysUuid: (maarays || {}).uuid
                 }),
-                placeholder: __("other.placeholder")
+                placeholder: __("other.placeholder"),
+                value: path(["meta", "yhteistyosopimus", "kuvaus"], maarays)
               }
             }
           ]

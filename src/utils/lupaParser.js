@@ -1,12 +1,8 @@
 import _ from "lodash";
-import {
-  KOHTEET,
-  KOODISTOT,
-  LUPA_SECTIONS
-} from "./constants";
+import { KOHTEET, KOODISTOT, LUPA_SECTIONS } from "./constants";
 import { parseLocalizedField } from "../modules/helpers";
 import common from "../i18n/definitions/common";
-import { length, path, toUpper } from "ramda";
+import { length, path, prop, toUpper } from "ramda";
 
 /**
  *
@@ -118,7 +114,10 @@ const parseSectionData = (
           _.forEach(ylaKoodit, ylaKoodi => {
             const ylaKoodiKoodiArvo = ylaKoodi.koodiArvo;
             const ylaKoodiMetadata = ylaKoodi.metadata;
-            const ylakoodiMetadataArvo = parseLocalizedField(ylaKoodiMetadata, locale);
+            const ylakoodiMetadataArvo = parseLocalizedField(
+              ylaKoodiMetadata,
+              locale
+            );
 
             if (ylaKoodi.koodisto.koodistoUri === "isced2011koulutusalataso1") {
               tutkinto.koodi = koodiArvo;
@@ -490,8 +489,10 @@ const parseSectionData = (
           }
           case "8": {
             const { yhteistyosopimus } = meta;
-            obj.kuvaus = yhteistyosopimus.kuvaus;
-            yhteistyosopimukset.push(obj);
+            if (yhteistyosopimus) {
+              obj.kuvaus = yhteistyosopimus.kuvaus;
+              yhteistyosopimukset.push(obj);
+            }
             break;
           }
           case "9": {
@@ -526,8 +527,17 @@ const parseSectionData = (
             vankilat.push(obj);
             break;
           }
+          /** Muu määräys: kajaanin kaupungin oma koodiarvo */
           case "15": {
             muut.push(obj);
+            break;
+          }
+          /** Muu määräys */
+          case "22": {
+            if (prop("value", meta)) {
+              obj.kuvaus = prop("value", meta);
+              muut.push(obj);
+            }
             break;
           }
           default:
