@@ -7,6 +7,7 @@ import {
   includes,
   isNil,
   map,
+  path,
   prop,
   reject
 } from "ramda";
@@ -69,6 +70,7 @@ export function getModificationForm(
                     koodiarvo: item.koodiarvo,
                     koodisto: item.koodisto
                   },
+                  value: path(["meta", "value"], maarays),
                   placeholder: __("other.placeholder")
                 }
               }
