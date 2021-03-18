@@ -1,5 +1,5 @@
 import { getKunnatFromStorage } from "helpers/kunnat";
-import { getMaakunnat, getMaakuntakunnat } from "helpers/maakunnat/index";
+import { getMaakunnat, getMaakuntakunnat } from "helpers/maakunnat";
 import {
   compose,
   flatten,

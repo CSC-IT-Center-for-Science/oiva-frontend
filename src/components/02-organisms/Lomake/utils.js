@@ -19,3 +19,7 @@ export const getReducedStructureIncludingChanges = (
     };
   }, reducedStructure);
 };
+
+export const getCurrentStateOfLomake = async () => {
+  
+}

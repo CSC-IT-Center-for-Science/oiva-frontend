@@ -1,19 +1,17 @@
 import {
   compose,
-  concat,
   endsWith,
-  filter,
   find,
   flatten,
   includes,
   map,
   path,
-  pathEq,
   prop,
-  startsWith,
   toUpper,
   values,
-  without
+  filter,
+  startsWith,
+  concat
 } from "ramda";
 import { getKunnatFromStorage } from "helpers/kunnat";
 
@@ -27,7 +25,7 @@ export default async function getKunnat(
   const localeUpper = toUpper(locale);
   const kunnat = await getKunnatFromStorage();
 
-  const areaOfAction = find(
+  const changesByProvinceObj = find(
     compose(endsWith(".maakunnatjakunnat"), prop("anchor")),
     osionData
   );
@@ -38,53 +36,33 @@ export default async function getKunnat(
   // tilaobjekteja on 0 - 1 kappale(tta).
   const ulkomaatStateObj = filter(changeObj => {
     return (
-      endsWith(".kuvaus", changeObj.anchor) &&
+      endsWith(".lisatiedot", changeObj.anchor) &&
       startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
     );
   }, osionData);
 
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
-  const ulkomaaOptions = map((item, index) => {
-    return {
-      label: item.properties.value,
-      value: "200",
-      index
-    };
-  }, ulkomaatStateObj);
+  const ulkomaaOptions = ulkomaatStateObj.map((item, index) => {
+    if (item.properties.metadata) {
+      return {
+        label: item.properties.value,
+        value: item.properties.metadata.koodiarvo,
+        index
+      };
+    }
+    return null;
+  });
 
   if (kunnat) {
-    // Koska osion data ei ole ajantasalla johtuen kuntaosion monimutkaisesta
-    // rakenteesta, on osion muutoksia tarkkailtava, jotta käyttäjälle osataan
-    // näyttää vain ja ainoastaan kunnat, jotka ovat valittuina päälomakkeella.
-    const muutoksillaValitutKunnat = areaOfAction
+    const valitutKunnat = changesByProvinceObj
       ? map(
           path(["properties", "metadata", "koodiarvo"]),
-          filter(changeObj => {
-            console.info(changeObj);
-            return pathEq(["properties", "isChecked"], true, changeObj);
-          }, flatten(values(areaOfAction.properties.changeObjectsByProvince)))
+          flatten(
+            values(changesByProvinceObj.properties.changeObjectsByProvince)
+          )
         )
       : [];
-
-    const oletusarvoinValitutKunnat = areaOfAction
-      ? map(prop("koodiarvo"), areaOfAction.properties.currentMunicipalities)
-      : [];
-
-    const muutoksillaPoistetutKunnat = areaOfAction
-      ? map(
-          path(["properties", "metadata", "koodiarvo"]),
-          filter(changeObj => {
-            console.info(changeObj);
-            return pathEq(["properties", "isChecked"], false, changeObj);
-          }, flatten(values(areaOfAction.properties.changeObjectsByProvince)))
-        )
-      : [];
-
-    const valitutKunnat = without(
-      concat(["200"], muutoksillaPoistetutKunnat),
-      concat(oletusarvoinValitutKunnat, muutoksillaValitutKunnat)
-    );
 
     return [
       {

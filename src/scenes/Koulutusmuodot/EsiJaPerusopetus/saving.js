@@ -115,8 +115,7 @@ export async function createObjectToSave(
     maaraystyypit,
     lupa.maaraykset,
     locale,
-    kohteet,
-    "toimintaalue"
+    kohteet
   );
 
   // 3. OPETUSKIELET
