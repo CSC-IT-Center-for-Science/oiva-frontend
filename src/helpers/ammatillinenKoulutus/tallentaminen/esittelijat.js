@@ -119,7 +119,12 @@ export async function createObjectToSave(
       perustelut: []
     },
     R.find(R.propEq("tunniste", "muut"), kohteet),
-    maaraystyypit
+    maaraystyypit,
+    R.filter(
+      maarays =>
+        maarays.koodisto === "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+      lupa.maaraykset
+    )
   );
 
   let objectToSave = {

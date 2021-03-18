@@ -170,16 +170,7 @@ export const createAlimaarayksetBEObjects = (
 
       const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
-        parent: paalomakkeenBEMuutos.isMaarays
-          ? index !== 0
-            ? alimaarayksenParent
-            : null
-          : alimaarayksenParent,
-        parentMaaraysUuid: paalomakkeenBEMuutos.isMaarays
-          ? index === 0
-            ? alimaarayksenParent
-            : null
-          : null,
+        parent: alimaarayksenParent,
         kohde: find(propEq("tunniste", tunniste), kohteet),
         koodiarvo:
           koodisto === "kielikoodistoopetushallinto"

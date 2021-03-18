@@ -40,8 +40,7 @@ export async function defineBackendChangeObjects(
   maaraystyypit,
   lupaMaaraykset,
   locale,
-  kohteet,
-  tunniste
+  kohteet
 ) {
   const {
     quickFilterChanges = [],
@@ -56,7 +55,10 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = await getMaarayksetByTunniste(tunniste, lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste(
+    "toimintaalue",
+    lupaMaaraykset
+  );
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**
@@ -138,7 +140,7 @@ export async function defineBackendChangeObjects(
   }, maakuntakunnat);
 
   // YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN POISTAMINEN
-  const yksittaisetMaaraykset = filter(
+  const yksittäisetMaaraykset = filter(
     compose(not, propEq("koodisto", "nuts1")),
     maaraykset
   );
@@ -203,7 +205,7 @@ export async function defineBackendChangeObjects(
       };
     }
     return null;
-  }, yksittaisetMaaraykset).filter(Boolean);
+  }, yksittäisetMaaraykset).filter(Boolean);
 
   /**
    * YKSITTÄISTEN MAAKUNTIEN JA KUNTIEN LISÄÄMINEN
@@ -410,7 +412,7 @@ export async function defineBackendChangeObjects(
                     maaraystyyppi
                   };
 
-                  // Muodostetaan tehdyistä rajoituksista objektit backendiä varten.
+                  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
                   // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
                   // loput toisiinsa "alenevassa polvessa".
                   const alimaaraykset = values(
@@ -454,8 +456,8 @@ export async function defineBackendChangeObjects(
               }
             ];
           }
-          return muutosobjektit;
-        }, provinceChangeObjects).filter(Boolean)
+          return muutosobjektit.filter(Boolean);
+        }, provinceChangeObjects)
       )
     ).filter(Boolean);
   }
@@ -582,38 +584,14 @@ export async function defineBackendChangeObjects(
       }
     : null;
 
-  // Luodaan vielä alimääräykset rajoitteille, jotka on kytketty olemassa
-  // oleviin määräyksiin.
-  const maarayksiaVastenLuodutRajoitteet = flatten(
-    map(maarays => {
-      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
-        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
-        if (koodiarvo === maarays.koodiarvo) {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            {
-              isMaarays: true,
-              generatedId: maarays.uuid,
-              kohde
-            },
-            rajoite
-          );
-        }
-      }, rajoitteetByRajoiteId);
-      return values(maaraystaKoskevatRajoitteet);
-    }, maaraykset)
-  ).filter(Boolean);
-
   let allBEobjects = flatten([
     alimaarayksetUlkomaa,
-    lisatiedotBEchangeObject,
-    maarayksiaVastenLuodutRajoitteet,
     quickFilterBEchangeObjects,
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,
     ulkomaaBEchangeObjectCheckbox,
-    ulkomaaBEchangeObjectTextBoxes
+    ulkomaaBEchangeObjectTextBoxes,
+    lisatiedotBEchangeObject
   ]).filter(Boolean);
 
   /**
