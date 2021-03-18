@@ -18,7 +18,8 @@ import {
   propEq,
   join,
   init,
-  split
+  split,
+  assoc
 } from "ramda";
 import localforage from "localforage";
 import { fillForBackend } from "../../services/lomakkeet/backendMappings";
@@ -41,15 +42,15 @@ export const getChangesToSave = (
   maaraystyypit,
   maaraykset
 ) => {
-  const yhteistyosopimusmaaraykset = filter(
-    maarays => maarays.koodiarvo === "8",
-    maaraykset
+  const yhteistyosopimusmaaraykset = getMaarayksetByKoodiarvo("8", maaraykset);
+  const muuMaaraysMaaraykset = getMaarayksetByKoodiarvo("22", maaraykset);
+  const yhteistyosopimuksetUnchecked = isValintaUnchecked(
+    "muut_08.yhteistyosopimus.8.A",
+    changeObjects
   );
-  const yhteistyosopimuksetUnchecked = !!find(
-    cObj =>
-      cObj.anchor === "muut_08.yhteistyosopimus.8.A" &&
-      !cObj.properties.isChecked,
-    changeObjects.muutokset
+  const muuMaarayksetUnchecked = isValintaUnchecked(
+    "muut_07.muumaarays.22.A",
+    changeObjects
   );
 
   let changes = map(changeObj => {
@@ -92,11 +93,15 @@ export const getChangesToSave = (
       perustelutForBackend,
       perusteluteksti ? { perusteluteksti } : null
     );
-    /** Ei tallenneta yhteistyösopimusten tekstikenttää, jos yhteistyösopimukset unchecked */
+    /** Ei tallenneta yhteistyösopimusten/muiden määräysten tekstikenttää,
+     * jos yhteistyösopimukset/muut määräykset unchecked */
     if (
-      pathEq(["properties", "metadata", "koodiarvo"], "8", changeObj) &&
-      yhteistyosopimuksetUnchecked &&
-      changeObj.anchor === "muut_08.yhteistyosopimus.8.tekstikentta.A"
+      (pathEq(["properties", "metadata", "koodiarvo"], "8", changeObj) &&
+        yhteistyosopimuksetUnchecked &&
+        changeObj.anchor === "muut_08.yhteistyosopimus.8.tekstikentta.A") ||
+      (pathEq(["properties", "metadata", "koodiarvo"], "22", changeObj) &&
+        muuMaarayksetUnchecked &&
+        changeObj.anchor === "muut_07.muumaarays.22.other.A")
     ) {
       return null;
     }
@@ -113,6 +118,16 @@ export const getChangesToSave = (
         meta
       );
     }
+    /** Tallennetaan muun määräyksen tekstikentän arvo paikkaan
+     * meta->value */
+    if (
+      !muuMaarayksetUnchecked &&
+      pathEq(["properties", "metadata", "koodiarvo"], "22", changeObj) &&
+      changeObj.anchor === "muut_07.muumaarays.22.other.A"
+    ) {
+      meta = assoc("value", changeObj.properties.value, meta);
+    }
+
     return {
       koodiarvo: path(["properties", "metadata", "koodiarvo"], changeObj),
       koodisto: path(
@@ -131,28 +146,85 @@ export const getChangesToSave = (
   /** Poisto-objektin luominen edellisille yhteistyösopimusmääräyksille, jos löytyy muutos-objekti koskien yhteistyösopimuksen
    * tekstikenttää */
   if (
-    !!length(yhteistyosopimusmaaraykset) &&
-    !yhteistyosopimuksetUnchecked &&
-    !!find(
-      cObj =>
-        pathEq(["properties", "metadata", "koodiarvo"], "8", cObj) &&
-        cObj.anchor === "muut_08.yhteistyosopimus.8.tekstikentta.A",
-      changeObjects.muutokset
+    removalObjectsShouldBeCreated(
+      "8",
+      yhteistyosopimusmaaraykset,
+      yhteistyosopimuksetUnchecked,
+      changeObjects.muutokset,
+      "muut_08.yhteistyosopimus.8.tekstikentta.A"
     )
   ) {
-    changes = append(
-      map(maarays => {
-        return {
-          koodiarvo: "8",
-          koodisto: "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
-          kohde,
-          maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
-          maaraysUuid: maarays.uuid,
-          tila: "POISTO"
-        };
-      }, yhteistyosopimusmaaraykset),
+    changes = createRemovalObjectsForMaaraykset(
+      yhteistyosopimusmaaraykset,
+      kohde,
+      maaraystyypit,
+      changes
+    );
+  }
+  /** Poisto-objektin luominen edellisille muille määräyksille, jos löytyy muutos-objekti koskien muun määräyksen
+   * tekstikenttää */
+  if (
+    removalObjectsShouldBeCreated(
+      "22",
+      muuMaaraysMaaraykset,
+      muuMaarayksetUnchecked,
+      changeObjects.muutokset,
+      "muut_07.muumaarays.22.other.A"
+    )
+  ) {
+    changes = createRemovalObjectsForMaaraykset(
+      muuMaaraysMaaraykset,
+      kohde,
+      maaraystyypit,
       changes
     );
   }
   return changes;
 };
+
+const createRemovalObjectsForMaaraykset = (
+  maaraykset,
+  kohde,
+  maaraystyypit,
+  changes
+) =>
+  append(
+    map(maarays => {
+      return {
+        koodiarvo: maarays.koodiarvo,
+        koodisto: "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+        kohde,
+        maaraystyyppi: find(propEq("tunniste", "VELVOITE"), maaraystyypit),
+        maaraysUuid: maarays.uuid,
+        tila: "POISTO"
+      };
+    }, maaraykset),
+    changes
+  );
+
+const getMaarayksetByKoodiarvo = (koodiarvo, maaraykset) => {
+  return filter(maarays => maarays.koodiarvo === koodiarvo, maaraykset);
+};
+
+const isValintaUnchecked = (anchor, changeObjects) => {
+  return !!find(
+    cObj => cObj.anchor === anchor && !cObj.properties.isChecked,
+    changeObjects.muutokset
+  );
+};
+
+const removalObjectsShouldBeCreated = (
+  koodiarvo,
+  maarayksetValinnalle,
+  valintaUnchecked,
+  muutokset,
+  textFieldAnchor
+) =>
+  !!length(maarayksetValinnalle) &&
+  !valintaUnchecked &&
+  !!find(
+    cObj =>
+      pathEq(["properties", "metadata", "koodiarvo"], koodiarvo, cObj) &&
+      cObj.anchor === textFieldAnchor,
+    muutokset
+  );
