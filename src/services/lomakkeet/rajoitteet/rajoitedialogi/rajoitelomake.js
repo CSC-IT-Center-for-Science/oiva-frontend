@@ -219,7 +219,6 @@ const getKohdennuksetRecursively = async (
     rajoiteId,
     rajoiteChangeObjects,
     ensimmaisenAsetuksenKohdeavain,
-    true,
     osioidenData,
     locale,
     onRemoveCriterion,
