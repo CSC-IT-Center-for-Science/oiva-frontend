@@ -116,7 +116,7 @@ export async function createObjectToSave(
     lupa.maaraykset,
     locale,
     kohteet,
-    "toimintaalue"
+    "kunnatjoissaopetustajarjestetaan"
   );
 
   // 3. OPETUSKIELET

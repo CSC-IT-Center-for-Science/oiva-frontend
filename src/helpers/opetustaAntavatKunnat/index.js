@@ -50,7 +50,6 @@ export async function defineBackendChangeObjects(
     rajoitteetByRajoiteId
   } = changeObjects;
 
-  console.info(kohde, changeObjects, lupaMaaraykset);
   const maaraystyyppi = find(propEq("tunniste", "VELVOITE"), maaraystyypit);
 
   /**
@@ -411,7 +410,7 @@ export async function defineBackendChangeObjects(
                     maaraystyyppi
                   };
 
-                  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+                  // Muodostetaan tehdyistä rajoituksista objektit backendiä varten.
                   // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
                   // loput toisiinsa "alenevassa polvessa".
                   const alimaaraykset = values(
@@ -583,14 +582,38 @@ export async function defineBackendChangeObjects(
       }
     : null;
 
+  // Luodaan vielä alimääräykset rajoitteille, jotka on kytketty olemassa
+  // oleviin määräyksiin.
+  const maarayksiaVastenLuodutRajoitteet = flatten(
+    map(maarays => {
+      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
+        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
+        if (koodiarvo === maarays.koodiarvo) {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            {
+              isMaarays: true,
+              generatedId: maarays.uuid,
+              kohde
+            },
+            rajoite
+          );
+        }
+      }, rajoitteetByRajoiteId);
+      return values(maaraystaKoskevatRajoitteet);
+    }, maaraykset)
+  ).filter(Boolean);
+
   let allBEobjects = flatten([
     alimaarayksetUlkomaa,
+    lisatiedotBEchangeObject,
+    maarayksiaVastenLuodutRajoitteet,
     quickFilterBEchangeObjects,
     provinceBEchangeObjects.lisaykset,
     provinceBEchangeObjects.poistot,
     ulkomaaBEchangeObjectCheckbox,
-    ulkomaaBEchangeObjectTextBoxes,
-    lisatiedotBEchangeObject
+    ulkomaaBEchangeObjectTextBoxes
   ]).filter(Boolean);
 
   /**
