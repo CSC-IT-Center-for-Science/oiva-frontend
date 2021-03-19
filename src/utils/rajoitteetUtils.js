@@ -28,6 +28,7 @@ import {
 import moment from "moment";
 import { __ } from "i18n-for-browser";
 import React from "react";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 const pisteytys = {
   rajoite: 0,
@@ -606,4 +607,35 @@ const getMultiselectAlimaaraykset = (multiselectUuid, alimaaraykset) => {
         alimaaraykset
       )
     : null;
+};
+
+// Alimääräysten luonti rajoitteille, jotka on kytketty olemassa
+// oleviin määräyksiin.
+export const createMaarayksiaVastenLuodutRajoitteetBEObjects = (
+  maaraykset,
+  rajoitteetByRajoiteId,
+  kohteet,
+  maaraystyypit,
+  kohde
+) => {
+  return flatten(
+    map(maarays => {
+      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
+        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
+        if (koodiarvo === maarays.koodiarvo) {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            {
+              isMaarays: true,
+              generatedId: maarays.uuid,
+              kohde
+            },
+            rajoite
+          );
+        }
+      }, rajoitteetByRajoiteId);
+      return values(maaraystaKoskevatRajoitteet);
+    }, maaraykset)
+  ).filter(Boolean);
 };

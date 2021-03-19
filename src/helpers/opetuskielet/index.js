@@ -26,6 +26,8 @@ import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import { getLocalizedProperty } from "../../services/lomakkeet/utils";
+import { createMaarayksiaVastenLuodutRajoitteetBEObjects } from "utils/rajoitteetUtils";
+import { getMaarayksetByTunniste } from "helpers/lupa/index";
 
 export const initializeMaarays = (tutkinto, maarays) => {
   return { ...tutkinto, maarays: head(dissoc("aliMaaraykset", maarays)) };
@@ -67,10 +69,16 @@ export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
+  kohde,
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
+  const maaraykset = await getMaarayksetByTunniste(
+    kohde.tunniste,
+    lupaMaaraykset
+  );
   const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   const { rajoitteetByRajoiteId } = changeObjects;
@@ -170,9 +178,19 @@ export const defineBackendChangeObjects = async (
     return [muutosobjekti, alimaaraykset];
   }, opetuskielet);
 
-  return flatten([opetuskieliBeChangeObjects, lisatiedotBeChangeObj]).filter(
-    Boolean
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
   );
+
+  return flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    lisatiedotBeChangeObj,
+    opetuskieliBeChangeObjects
+  ]).filter(Boolean);
 };
 
 export function getEnsisijaisetOpetuskieletOPHFromStorage() {
