@@ -20,7 +20,7 @@ import {
   split
 } from "ramda";
 import * as muutEhdotHelper from "helpers/poMuutEhdot";
-import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
+import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot/index";
 import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
@@ -161,6 +161,7 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
