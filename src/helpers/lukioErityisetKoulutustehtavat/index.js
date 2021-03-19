@@ -60,7 +60,15 @@ export const initializeLukioErityisetKoulutustehtavat = erityisetKoulutustehtava
   );
 };
 
-const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject, valtakunnallinenKehitystehtava) => {
+const getAlimaaraykset = (
+  kuvausnro,
+  rajoitteetByRajoiteIdAndKoodiarvo,
+  ankkuri,
+  kohteet,
+  maaraystyypit,
+  kuvausBEChangeObject,
+  valtakunnallinenKehitystehtava
+) => {
   const rajoitteetForKuvaus = filter(rajoiteCobjs => {
     return (
       nth(
@@ -84,8 +92,12 @@ const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri,
     ? nth(1, split("-", kohteenTarkentimenArvo))
     : null;
 
-  if(valtakunnallinenKehitystehtava) {
-    kuvausBEChangeObject = assocPath(["isValtakunnallinenKehittamistehtava"], true, kuvausBEChangeObject)
+  if (valtakunnallinenKehitystehtava) {
+    kuvausBEChangeObject = assocPath(
+      ["isValtakunnallinenKehittamistehtava"],
+      true,
+      kuvausBEChangeObject
+    );
   }
 
   if (
@@ -95,7 +107,7 @@ const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri,
     // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
     // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
     // loput toisiinsa "alenevassa polvessa".
-     return values(
+    return values(
       mapObjIndexed(asetukset => {
         return createAlimaarayksetBEObjects(
           kohteet,
@@ -106,9 +118,9 @@ const getAlimaaraykset = (kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri,
       }, rajoitteetForKuvaus)
     );
   } else {
-    return []
+    return [];
   }
-}
+};
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
@@ -116,8 +128,11 @@ export const defineBackendChangeObjects = async (
   locale,
   kohteet
 ) => {
-  const { rajoitteetByRajoiteId, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId } = changeObjects;
-  console.info(kohteet);
+  const {
+    rajoitteetByRajoiteId,
+    valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId
+  } = changeObjects;
+
   const kohde = find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
 
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
@@ -176,14 +191,25 @@ export const defineBackendChangeObjects = async (
         const index = nth(2, split(".", changeObj.anchor));
 
         const isValtakunnallinenKehitystehtava = find(
-          compose(endsWith(`.${koodiarvo}.${index}.valintaelementti`), prop("anchor")),
+          compose(
+            endsWith(`.${koodiarvo}.${index}.valintaelementti`),
+            prop("anchor")
+          ),
           changeObjects.valtakunnallisetKehittamistehtavat
         );
 
-        if(isValtakunnallinenKehitystehtava) {
-          changeObj = assocPath(["properties", "metadata", "isChecked"], path(["properties", "isChecked"], isValtakunnallinenKehitystehtava), changeObj)
-        } else if(!changeObj.properties.metadata.isChecked) {
-          changeObj = assocPath(["properties", "metadata", "isChecked"], false, changeObj)
+        if (isValtakunnallinenKehitystehtava) {
+          changeObj = assocPath(
+            ["properties", "metadata", "isChecked"],
+            path(["properties", "isChecked"], isValtakunnallinenKehitystehtava),
+            changeObj
+          );
+        } else if (!changeObj.properties.metadata.isChecked) {
+          changeObj = assocPath(
+            ["properties", "metadata", "isChecked"],
+            false,
+            changeObj
+          );
         }
 
         const kuvausBEChangeObject = {
@@ -197,20 +223,45 @@ export const defineBackendChangeObjects = async (
             ankkuri,
             kuvaus: changeObj.properties.value,
             changeObjects: concat(
-              concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
-              take(2, values(valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo))),
+              concat(
+                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+                take(
+                  2,
+                  values(
+                    valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo
+                  )
+                )
+              ),
               [checkboxChangeObj, changeObj]
             ).filter(Boolean),
-            isValtakunnallinenKehitystehtava: path(["properties", "metadata", "isChecked"],changeObj)
+            isValtakunnallinenKehitystehtava: path(
+              ["properties", "metadata", "isChecked"],
+              changeObj
+            )
           },
           tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
         };
 
-
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);
-        const alimaaraykset = getAlimaaraykset(kuvausnro, rajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject, false)
+        const alimaaraykset = getAlimaaraykset(
+          kuvausnro,
+          rajoitteetByRajoiteIdAndKoodiarvo,
+          ankkuri,
+          kohteet,
+          maaraystyypit,
+          kuvausBEChangeObject,
+          false
+        );
 
-        let valtaAlimaaraykset = getAlimaaraykset(kuvausnro, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo, ankkuri, kohteet, maaraystyypit, kuvausBEChangeObject, true)
+        let valtaAlimaaraykset = getAlimaaraykset(
+          kuvausnro,
+          valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo,
+          ankkuri,
+          kohteet,
+          maaraystyypit,
+          kuvausBEChangeObject,
+          true
+        );
 
         return [kuvausBEChangeObject, alimaaraykset, valtaAlimaaraykset];
       }, kuvausChangeObjects);
