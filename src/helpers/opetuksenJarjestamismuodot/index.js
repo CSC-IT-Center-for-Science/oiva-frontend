@@ -68,8 +68,6 @@ export const defineBackendChangeObjects = async (
     kohde.tunniste,
     lupaMaaraykset
   );
-
-  console.info(kohde, kohteet, maaraykset, lupaMaaraykset);
   const opetuksenJarjestamismuotoChangeObjs = map(
     jarjestamismuoto => {
       const rajoitteetByRajoiteIdAndKoodiarvo = reject(
@@ -121,16 +119,18 @@ export const defineBackendChangeObjects = async (
       // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
-      const alimaaraykset = values(
-        mapObjIndexed(asetukset => {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            muutosobjekti,
-            drop(2, asetukset)
-          );
-        }, rajoitteetByRajoiteIdAndKoodiarvo)
-      );
+      const alimaaraykset = muutosobjekti
+        ? values(
+            mapObjIndexed(asetukset => {
+              return createAlimaarayksetBEObjects(
+                kohteet,
+                maaraystyypit,
+                muutosobjekti,
+                drop(2, asetukset)
+              );
+            }, rajoitteetByRajoiteIdAndKoodiarvo)
+          )
+        : [];
 
       return [muutosobjekti, alimaaraykset];
     },
@@ -151,8 +151,6 @@ export const defineBackendChangeObjects = async (
     maaraystyypit,
     kohde
   );
-
-  console.info(maarayksiaVastenLuodutRajoitteet);
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita

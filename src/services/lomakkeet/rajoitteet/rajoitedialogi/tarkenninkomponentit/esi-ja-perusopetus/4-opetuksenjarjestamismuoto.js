@@ -48,10 +48,7 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
             ) === muoto.koodiarvo
               ? {
                   label: valittuJarjestamismuoto.properties.title,
-                  value: path(
-                    ["properties", "metadata", "koodiarvo"],
-                    valittuJarjestamismuoto
-                  )
+                  value: muoto.koodiarvo
                 }
               : null;
           }, opetuksenJarjestamismuodot).filter(Boolean),
