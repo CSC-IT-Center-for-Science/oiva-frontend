@@ -68,7 +68,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );

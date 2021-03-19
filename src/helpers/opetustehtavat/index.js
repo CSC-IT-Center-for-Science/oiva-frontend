@@ -26,6 +26,7 @@ import { getChangeObjByAnchor } from "../../components/02-organisms/CategorizedL
 import { getLisatiedotFromStorage } from "../lisatiedot";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import { getLocalizedProperty } from "../../services/lomakkeet/utils";
+import { getMaarayksetByTunniste } from "helpers/lupa/index";
 
 export const initializeOpetustehtava = opetustehtava => {
   return omit(["koodiArvo"], {
@@ -58,13 +59,20 @@ export const initializeOpetustehtavat = opetustehtavat => {
 
 export const defineBackendChangeObjects = async (
   changeObjects,
+  kohde,
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
+  const maaraykset = await getMaarayksetByTunniste(
+    "opetusjotalupakoskee",
+    lupaMaaraykset
+  );
   const { rajoitteetByRajoiteId } = changeObjects;
   const opetustehtavat = await getOpetustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
+
   // Luodaan LISÄYS
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -150,7 +158,34 @@ export const defineBackendChangeObjects = async (
     }
   }, opetustehtavat).filter(Boolean);
 
-  return flatten([opetusMuutokset, lisatiedotBeChangeObj]).filter(Boolean);
+  // Luodaan vielä alimääräykset rajoitteille, jotka on kytketty olemassa
+  // oleviin määräyksiin.
+  const maarayksiaVastenLuodutRajoitteet = flatten(
+    map(maarays => {
+      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
+        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
+        if (koodiarvo === maarays.koodiarvo) {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            {
+              isMaarays: true,
+              generatedId: maarays.uuid,
+              kohde
+            },
+            rajoite
+          );
+        }
+      }, rajoitteetByRajoiteId);
+      return values(maaraystaKoskevatRajoitteet);
+    }, maaraykset)
+  ).filter(Boolean);
+
+  return flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    opetusMuutokset,
+    lisatiedotBeChangeObj
+  ]).filter(Boolean);
 };
 
 export function getOpetustehtavatFromStorage() {
