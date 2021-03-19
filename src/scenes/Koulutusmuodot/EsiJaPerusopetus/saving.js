@@ -24,7 +24,7 @@ import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamism
 import * as opetusHelper from "helpers/opetustehtavat/index";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
-import * as opetuskieletHelper from "helpers/opetuskielet";
+import * as opetuskieletHelper from "helpers/opetuskielet/index";
 import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat/index";
 import { koulutustyypitMap } from "../../../utils/constants";
 
@@ -138,7 +138,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetuskieli"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
