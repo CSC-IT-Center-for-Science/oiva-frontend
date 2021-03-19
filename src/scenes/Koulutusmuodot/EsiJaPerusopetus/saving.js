@@ -21,7 +21,7 @@ import {
 } from "ramda";
 import * as muutEhdotHelper from "helpers/poMuutEhdot";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
-import * as opetusHelper from "helpers/opetustehtavat";
+import * as opetusHelper from "helpers/opetustehtavat/index";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet";
@@ -68,7 +68,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
