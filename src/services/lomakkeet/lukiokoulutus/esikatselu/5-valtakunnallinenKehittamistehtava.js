@@ -1,6 +1,7 @@
 import { append, endsWith, find, map } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getRajoite } from "utils/rajoitteetUtils";
+import Lisatiedot from "../../lisatiedot";
 
 export async function previewOfValtakunnallinenKehittamistehtava({
   lomakedata,
@@ -18,8 +19,11 @@ export async function previewOfValtakunnallinenKehittamistehtava({
    */
   const listItems = map(opetustehtava => {
     const koodiarvo = getAnchorPart(opetustehtava.anchor, 1);
-    const index = getAnchorPart(opetustehtava.anchor, 2)
-    const { rajoiteId, rajoite } = getRajoite(`${koodiarvo}-${index}`, rajoitteet);
+    const index = getAnchorPart(opetustehtava.anchor, 2);
+    const { rajoiteId, rajoite } = getRajoite(
+      `${koodiarvo}-${index}`,
+      rajoitteet
+    );
 
     // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
     // valittuja arvoja (ilman rajoittteita)
@@ -75,21 +79,7 @@ export async function previewOfValtakunnallinenKehittamistehtava({
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              title: lisatiedotNode.properties.value
-            }
-          }
-        ]
-      },
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;

@@ -18,6 +18,7 @@ import education from "../../../../i18n/definitions/education";
 import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function PoOpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
@@ -71,7 +72,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
           </Typography>
         )}
         {getOpetuskieletHtml(toissijaisetOpetuskielet, kieletOPH, locale)}
-        {lisatietomaarays && lisatietomaarays.meta.arvo}
+        <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
       </div>
     )
   );

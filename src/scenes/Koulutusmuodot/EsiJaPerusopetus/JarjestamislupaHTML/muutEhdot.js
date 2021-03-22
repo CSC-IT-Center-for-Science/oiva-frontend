@@ -17,6 +17,7 @@ import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
   const intl = useIntl();
@@ -90,7 +91,7 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
           return result;
         }, muutEhdotMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }
