@@ -23,7 +23,7 @@ import * as muutEhdotHelper from "helpers/lukioMuutEhdot";
 import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
-import * as opetuskieletHelper from "helpers/opetuskielet";
+import * as opetuskieletHelper from "helpers/opetuskielet/index";
 import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
 import * as valtakunnallinenKehittamistehtavaHelper from "helpers/lukioValtakunnallinenKehittamistehtava";
 import { koulutustyypitMap } from "../../../utils/constants";
@@ -38,7 +38,6 @@ export async function createObjectToSave(
   maaraystyypit,
   alkupera = "KJ"
 ) {
-  console.info(kohteet, changeObjects);
   const allAttachmentsRaw = [];
   const koulutustyyppi = koulutustyypitMap.LUKIO;
 
@@ -98,8 +97,6 @@ export async function createObjectToSave(
     "kunnatjoissaopetustajarjestetaan"
   );
 
-  console.info(opetustaAntavatKunnat);
-
   // 2. OPETUSKIELET
   const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
     {
@@ -117,7 +114,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetuskieli"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );

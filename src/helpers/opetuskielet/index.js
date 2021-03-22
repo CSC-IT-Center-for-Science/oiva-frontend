@@ -164,16 +164,18 @@ export const defineBackendChangeObjects = async (
     // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
     // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
     // loput toisiinsa "alenevassa polvessa".
-    const alimaaraykset = values(
-      mapObjIndexed(asetukset => {
-        return createAlimaarayksetBEObjects(
-          kohteet,
-          maaraystyypit,
-          muutosobjekti,
-          drop(2, asetukset)
-        );
-      }, rajoitteetByRajoiteIdAndKoodiarvo)
-    );
+    const alimaaraykset = muutosobjekti
+      ? values(
+          mapObjIndexed(asetukset => {
+            return createAlimaarayksetBEObjects(
+              kohteet,
+              maaraystyypit,
+              muutosobjekti,
+              drop(2, asetukset)
+            );
+          }, rajoitteetByRajoiteIdAndKoodiarvo)
+        )
+      : [];
 
     return [muutosobjekti, alimaaraykset];
   }, opetuskielet);
