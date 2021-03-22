@@ -22,6 +22,7 @@ import {
   sortBy,
   split,
   toLower,
+  toUpper,
   unnest,
   values
 } from "ramda";
@@ -620,9 +621,10 @@ export const createMaarayksiaVastenLuodutRajoitteetBEObjects = (
 ) => {
   return flatten(
     map(maarays => {
+      const maaraysKoodiarvoUpper = toUpper(maarays.koodiarvo);
       const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
         const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
-        if (koodiarvo === maarays.koodiarvo) {
+        if (koodiarvo && toUpper(koodiarvo) === maaraysKoodiarvoUpper) {
           return createAlimaarayksetBEObjects(
             kohteet,
             maaraystyypit,

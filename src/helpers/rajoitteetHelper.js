@@ -170,12 +170,12 @@ export const createAlimaarayksetBEObjects = (
 
       const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
-        parent: paalomakkeenBEMuutos.isMaarays
+        parent: prop("isMaarays", paalomakkeenBEMuutos)
           ? index !== 0
             ? alimaarayksenParent
             : null
           : alimaarayksenParent,
-        parentMaaraysUuid: paalomakkeenBEMuutos.isMaarays
+        parentMaaraysUuid: prop("isMaarays", paalomakkeenBEMuutos)
           ? index === 0
             ? alimaarayksenParent
             : null
@@ -196,7 +196,7 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
-          ...(paalomakkeenBEMuutos.isValtakunnallinenKehittamistehtava
+          ...(prop("isValtakunnallinenKehittamistehtava", paalomakkeenBEMuutos)
             ? { valtakunnallinenKehittamistehtava: true }
             : null),
           ...(multiSelectUuid ? { multiselectUuid: multiSelectUuid } : null),

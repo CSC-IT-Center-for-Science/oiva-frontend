@@ -61,7 +61,6 @@ export default async function getKunnat(
       ? map(
           path(["properties", "metadata", "koodiarvo"]),
           filter(changeObj => {
-            console.info(changeObj);
             return pathEq(["properties", "isChecked"], true, changeObj);
           }, flatten(values(areaOfAction.properties.changeObjectsByProvince)))
         )
@@ -75,7 +74,6 @@ export default async function getKunnat(
       ? map(
           path(["properties", "metadata", "koodiarvo"]),
           filter(changeObj => {
-            console.info(changeObj);
             return pathEq(["properties", "isChecked"], false, changeObj);
           }, flatten(values(areaOfAction.properties.changeObjectsByProvince)))
         )

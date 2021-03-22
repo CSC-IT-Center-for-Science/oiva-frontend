@@ -24,6 +24,8 @@ import {
 import localforage from "localforage";
 import { __ } from "i18n-for-browser";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { createMaarayksiaVastenLuodutRajoitteetBEObjects } from "utils/rajoitteetUtils";
+import { getMaarayksetByTunniste } from "helpers/lupa/index";
 
 export const initializeOpetuksenJarjestamismuoto = muoto => {
   return omit(["koodiArvo"], {
@@ -54,16 +56,18 @@ export const initializeOpetuksenJarjestamismuodot = muodot => {
 export const defineBackendChangeObjects = async (
   changeObjects = {},
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
-
   const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
-
   const kohde = find(propEq("tunniste", "opetuksenjarjestamismuoto"), kohteet);
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
-
+  const maaraykset = await getMaarayksetByTunniste(
+    kohde.tunniste,
+    lupaMaaraykset
+  );
   const opetuksenJarjestamismuotoChangeObjs = map(
     jarjestamismuoto => {
       const rajoitteetByRajoiteIdAndKoodiarvo = reject(
@@ -115,16 +119,18 @@ export const defineBackendChangeObjects = async (
       // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
-      const alimaaraykset = values(
-        mapObjIndexed(asetukset => {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            muutosobjekti,
-            drop(2, asetukset)
-          );
-        }, rajoitteetByRajoiteIdAndKoodiarvo)
-      );
+      const alimaaraykset = muutosobjekti
+        ? values(
+            mapObjIndexed(asetukset => {
+              return createAlimaarayksetBEObjects(
+                kohteet,
+                maaraystyypit,
+                muutosobjekti,
+                drop(2, asetukset)
+              );
+            }, rajoitteetByRajoiteIdAndKoodiarvo)
+          )
+        : [];
 
       return [muutosobjekti, alimaaraykset];
     },
@@ -137,6 +143,14 @@ export const defineBackendChangeObjects = async (
       opetuksenJarjestamismuodot
     )
   ).filter(Boolean);
+
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -169,8 +183,9 @@ export const defineBackendChangeObjects = async (
     : null;
 
   return flatten([
-    opetuksenJarjestamismuotoChangeObjs,
-    lisatiedotBEchangeObject
+    lisatiedotBEchangeObject,
+    maarayksiaVastenLuodutRajoitteet,
+    opetuksenJarjestamismuotoChangeObjs
   ]).filter(Boolean);
 };
 
