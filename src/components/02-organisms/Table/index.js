@@ -123,7 +123,8 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
             key={`row-${iii}`}
             row={row}
             onClick={onRowClick}
-            tableLevel={level}>
+            tableLevel={level}
+          >
             {R.addIndex(R.map)((cell, iiii) => {
               return (
                 <TableCell
@@ -135,7 +136,8 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
                   orderOfBodyRows={orderOfBodyRows}
                   properties={cell}
                   row={row}
-                  tableLevel={level}>
+                  tableLevel={level}
+                >
                   {cell.table && (
                     // Nested table is created here.
                     <Table level={level + 1} structure={cell.table}></Table>

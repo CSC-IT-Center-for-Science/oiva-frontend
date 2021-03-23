@@ -224,8 +224,8 @@ export function sortObjectsByProperty(a, b, path) {
   const bRaw = R.path(path, b);
   const aDate = moment(aRaw, "D.M.YYYY", true);
   const bDate = moment(bRaw, "D.M.YYYY", true);
-  const aCompare = aDate.isValid() ? aDate : aRaw;
-  const bCompare = aDate.isValid() ? bDate : bRaw;
+  const aCompare = aDate.isValid() ? aDate : R.toUpper(aRaw);
+  const bCompare = aDate.isValid() ? bDate : R.toUpper(bRaw);
 
   if (aCompare < bCompare) {
     return -1;
