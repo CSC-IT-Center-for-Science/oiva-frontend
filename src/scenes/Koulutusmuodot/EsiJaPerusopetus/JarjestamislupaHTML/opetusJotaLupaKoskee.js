@@ -9,7 +9,10 @@ import {
   propEq,
   path,
   addIndex,
-  pathEq
+  pathEq,
+  sortBy,
+  prop,
+  compose
 } from "ramda";
 import { useIntl } from "react-intl";
 import {
@@ -52,12 +55,12 @@ export default function PoOpetusJotaLupaKoskeeHtml({
       });
   }, []);
 
-  const opetustehtavaMaaraykset = filter(
+  const opetustehtavaMaaraykset = sortBy(compose(parseInt, prop("koodiarvo")), filter(
     maarays =>
       pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
       maarays.koodisto === "opetustehtava",
     maaraykset
-  );
+  ));
 
   const lisatietomaarays = find(
     maarays =>
