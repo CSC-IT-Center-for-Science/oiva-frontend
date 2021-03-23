@@ -30,8 +30,8 @@ const MuutEhdot = ({
   });
 
   const onAddButtonClick = useCallback(
-    koodiarvo => {
-      createTextBoxChangeObject(sectionId, koodiarvo);
+    (koodiarvo, index) => {
+      createTextBoxChangeObject(sectionId, koodiarvo, index);
     },
     [createTextBoxChangeObject, sectionId]
   );

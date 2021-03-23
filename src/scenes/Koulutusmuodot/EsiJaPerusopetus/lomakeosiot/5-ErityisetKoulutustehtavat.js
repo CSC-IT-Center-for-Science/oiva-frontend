@@ -31,8 +31,10 @@ const ErityisetKoulutustehtavat = ({
   });
 
   const onAddButtonClick = useCallback(
-    addBtn => {
-      createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.fullAnchor, 1));
+    index => (
+      addBtn
+    ) => {
+      createTextBoxChangeObject(sectionId, getAnchorPart(addBtn.fullAnchor, 1), index);
     },
     [createTextBoxChangeObject, sectionId]
   );

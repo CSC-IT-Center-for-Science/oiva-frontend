@@ -222,11 +222,11 @@ export async function muutEhdot(
                       {
                         anchor: "A",
                         name: "SimpleButton",
-                        onClick: () => onAddButtonClick(ehto.koodiarvo),
+                        onClick: () => onAddButtonClick(ehto.koodiarvo, kuvausmaaraykset.length),
                         properties: {
                           isPreviewModeOn,
                           isReadOnly: _isReadOnly,
-                          isVisible: isCheckedByChange, // TODO: Huomioidaan mahdollinen määräys
+                          isVisible: isCheckedByChange || kuvausmaaraykset.length > 0 , // TODO: Huomioidaan mahdollinen määräys
                           text: __("common.lisaaUusiKuvaus"),
                           icon: "FaPlus",
                           iconContainerStyles: {
