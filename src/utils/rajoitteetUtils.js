@@ -437,14 +437,15 @@ export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
 export const getRajoitteetFromMaarays = (
   alimaaraykset = [],
   locale,
+  ajallaText,
   naytettavaArvo
 ) => {
-  console.info(naytettavaArvo, alimaaraykset);
   const htmlString = handleAlimaaraykset(
     "",
     alimaaraykset,
     naytettavaArvo,
-    locale
+    locale,
+    ajallaText
   );
 
   return (
@@ -459,6 +460,7 @@ export const handleAlimaarays = (
   alimaarays,
   htmlString,
   locale,
+  ajallaText,
   naytettavaArvo = "nimi",
   multiselectAlimaaraykset = null
 ) => {
@@ -480,9 +482,7 @@ export const handleAlimaarays = (
       "YYYY-MM-DD"
     ).format("DD.MM.YYYY");
 
-    modifiedString = `${modifiedString}<li class="list-disc">${__(
-      "rajoitteet.ajalla"
-    )} ${alkupvm} - ${loppupvm}</li>`;
+    modifiedString = `${modifiedString}<li class="list-disc">${ajallaText} ${alkupvm} - ${loppupvm}</li>`;
   } else {
     if (multiselectAlimaaraykset) {
       modifiedString = `${modifiedString}<li class="list-disc">`;
@@ -524,7 +524,8 @@ export const handleAlimaarays = (
       modifiedString,
       alimaarays.aliMaaraykset,
       naytettavaArvo,
-      locale
+      locale,
+      ajallaText
     );
   }
 
@@ -536,7 +537,8 @@ const handleAlimaaraykset = (
   modifiedString,
   alimaaraykset,
   naytettavaArvo,
-  locale
+  locale,
+  ajallaText
 ) => {
   let lapikaydytMultiselectit = [];
   forEach(alimaarays => {
@@ -554,6 +556,7 @@ const handleAlimaaraykset = (
         alimaarays,
         modifiedString,
         locale,
+        ajallaText,
         naytettavaArvo,
         multiselectAlimaaraykset
       );

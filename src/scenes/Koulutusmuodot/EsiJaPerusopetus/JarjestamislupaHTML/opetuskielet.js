@@ -18,6 +18,7 @@ import education from "../../../../i18n/definitions/education";
 import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
@@ -64,20 +65,20 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
         <Typography component="h3" variant="h3">
           {intl.formatMessage(common.opetuskieli)}
         </Typography>
-        {getOpetuskieletHtml(ensisijaisetOpetuskielet, kieletOPH, locale)}
+        {getOpetuskieletHtml(ensisijaisetOpetuskielet, kieletOPH, locale, intl)}
         {!isEmpty(toissijaisetOpetuskielet) && (
           <Typography component="h4" variant="h4">
             {intl.formatMessage(education.voidaanAntaaMyosSeuraavillaKielilla)}
           </Typography>
         )}
-        {getOpetuskieletHtml(toissijaisetOpetuskielet, kieletOPH, locale)}
+        {getOpetuskieletHtml(toissijaisetOpetuskielet, kieletOPH, locale, intl)}
         {lisatietomaarays && lisatietomaarays.meta.arvo}
       </div>
     )
   );
 }
 
-const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale) => {
+const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale, intl) => {
   return (
     <ul className="ml-8 list-disc mb-4">
       {addIndex(map)(
@@ -93,7 +94,7 @@ const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale) => {
           </li>,
           <div key={"div-" + index}>
             {length(opetuskieli.aliMaaraykset)
-              ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale)
+              ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale, intl.formatMessage(rajoitteet.ajalla))
               : ""}
           </div>
         ],
