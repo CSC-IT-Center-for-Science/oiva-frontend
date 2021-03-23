@@ -502,6 +502,7 @@ const CategorizedList = props => {
                                 }
                                 fullAnchor={fullAnchor}
                                 id={fullAnchor}
+                                isDeleted={propsObj.isDeleted}
                                 isDisabled={isDisabled}
                                 isErroneous={propsObj.isErroneous}
                                 isHidden={isDisabled}

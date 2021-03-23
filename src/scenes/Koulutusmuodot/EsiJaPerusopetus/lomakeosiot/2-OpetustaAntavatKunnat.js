@@ -105,11 +105,12 @@ const OpetustaAntavatKunnat = React.memo(
       fiCode !== "FI1";
 
     const onAddButtonClick = useCallback(
-      addBtn => {
-        console.info(getAnchorPart(addBtn.fullAnchor, 1));
+      (fromComponent, index) => {
+        console.info(fromComponent, index);
         createTextBoxChangeObject(
           sectionId,
-          getAnchorPart(addBtn.fullAnchor, 1)
+          getAnchorPart(fromComponent.fullAnchor, 1),
+          index
         );
       },
       [createTextBoxChangeObject, sectionId]

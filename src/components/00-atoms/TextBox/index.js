@@ -102,6 +102,7 @@ const TextBox = ({
   forChangeObject,
   fullAnchor,
   id,
+  isDeleted,
   isDisabled,
   isErroneous,
   isHidden,
@@ -174,7 +175,7 @@ const TextBox = ({
         fullAnchor
       },
       {
-        deleteElement: true
+        isDeleted: true
       }
     );
   }, [forChangeObject, fullAnchor, onChanges]);
@@ -325,6 +326,7 @@ const TextBox = ({
 TextBox.defaultProps = {
   ariaLabel: "Text area",
   delay: 300,
+  isDeleted: false,
   isDisabled: false,
   isHidden: false,
   isReadOnly: false,
@@ -346,6 +348,7 @@ TextBox.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
+  isDeleted: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isErroneous: PropTypes.bool,
   isHidden: PropTypes.bool,

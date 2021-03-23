@@ -228,7 +228,7 @@ const Store = createStore({
         );
 
         const textBoxNumber =
-          (length(textBoxChangeObjects) > 0
+          length(textBoxChangeObjects) > 0
             ? reduce(
                 max,
                 -Infinity,
@@ -237,7 +237,9 @@ const Store = createStore({
                   textBoxChangeObjects
                 )
               ) + 1
-            : from > 0 ? from : 1);
+            : from > 0
+            ? from
+            : 1;
 
         /**
          * Luodaan uusi muutosobjekti ja annetaan sille focus-ominaisuus,
@@ -421,9 +423,11 @@ const Store = createStore({
             ["properties", "metadata", "focusWhenDeleted"],
             changeObj
           );
-          return changeObj.properties.deleteElement && anchor ? anchor : null;
+          return changeObj.properties.isDeleted && anchor ? anchor : null;
         }, changeObjects).filter(Boolean)
       );
+
+      console.info(focusWhenDeleted);
 
       if (focusWhenDeleted) {
         dispatch(setFocusOn(focusWhenDeleted));

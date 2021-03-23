@@ -17,7 +17,14 @@ import {
   path,
   hasPath,
   startsWith,
-  endsWith
+  endsWith,
+  length,
+  max,
+  apply,
+  equals,
+  addIndex,
+  nth,
+  last
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
@@ -221,12 +228,6 @@ export const opetustaAntavatKunnat = async (
     kuntamaaraykset
   );
 
-  const kuvausankkuri0 = "0";
-  const kuvausmaarays0 = find(
-    pathEq(["meta", "ankkuri"], kuvausankkuri0),
-    ulkomaillaSijaitsevatKunnat
-  );
-
   const dynamicTextBoxChangeObjects = filter(
     changeObj =>
       startsWith(`${sectionId}.ulkomaa.`, changeObj.anchor) &&
@@ -234,6 +235,17 @@ export const opetustaAntavatKunnat = async (
       !startsWith(`${sectionId}.ulkomaa.0`, changeObj.anchor),
     changeObjects
   );
+
+  const seuraavaAnkkuri =
+    parseInt(
+      apply(
+        Math.max,
+        map(path(["meta", "ankkuri"]), ulkomaillaSijaitsevatKunnat)
+      ),
+      10
+    ) + 1;
+
+  console.info(seuraavaAnkkuri, changeObjects);
 
   const lomakerakenne = flatten(
     [
@@ -302,38 +314,7 @@ export const opetustaAntavatKunnat = async (
               categories: flatten(
                 [
                   /**
-                   * Mikäli 200 = ulkomaa on valittu, on valinnan alla näytettävä
-                   * ainakin yksi tekstikenttä. Luodaan tekstikenttä tässä.
-                   */
-                  {
-                    anchor: kuvausankkuri0,
-                    components: [
-                      {
-                        anchor: "kuvaus",
-                        name: "TextBox",
-                        properties: {
-                          forChangeObject: {
-                            ankkuri: kuvausankkuri0,
-                            koodiarvo: ulkomaa.koodiarvo
-                          },
-                          isPreviewModeOn,
-                          isReadOnly: _isReadOnly,
-                          placeholder: __("common.kuvausPlaceholder"),
-                          title: __("common.kuvaus"),
-                          value: kuvausmaarays0
-                            ? kuvausmaarays0.meta.arvo
-                            : getLocalizedProperty(
-                                ulkomaa.metadata,
-                                locale,
-                                "arvo"
-                              )
-                        }
-                      }
-                    ],
-                    layout: { indentation: "none" }
-                  },
-                  /**
-                   * Luodaan loput tekstikentät määräyksiin perustuen.
+                   * Luodaan määräyksiin perustuvat tekstikentät.
                    */
                   sortBy(
                     compose(
@@ -341,9 +322,22 @@ export const opetustaAntavatKunnat = async (
                       prop("anchor")
                     ),
                     map(maarays => {
-                      return maarays.meta.ankkuri !== kuvausankkuri0
-                        ? {
-                            anchor: path(["meta", "ankkuri"], maarays),
+                      const anchor = path(["meta", "ankkuri"], maarays);
+                      const isRemoved = !!find(changeObj => {
+                        const changeObjAnkkuri = path(
+                          ["properties", "metadata", "ankkuri"],
+                          changeObj
+                        );
+                        return (
+                          equals(changeObjAnkkuri, anchor) &&
+                          pathEq(["properties", "isDeleted"], true, changeObj)
+                        );
+                      }, changeObjects);
+
+                      return isRemoved
+                        ? null
+                        : {
+                            anchor,
                             components: [
                               {
                                 anchor: "kuvaus",
@@ -362,8 +356,7 @@ export const opetustaAntavatKunnat = async (
                                 }
                               }
                             ]
-                          }
-                        : null;
+                          };
                     }, ulkomaillaSijaitsevatKunnat).filter(Boolean)
                   ),
                   /**
@@ -375,15 +368,35 @@ export const opetustaAntavatKunnat = async (
                       anchorPart => parseInt(anchorPart, 10),
                       prop("anchor")
                     ),
-                    map(changeObj => {
-                      const previousTextBoxAnchor = `${sectionId}.${
-                        ulkomaa.koodiarvo
-                      }.${parseInt(getAnchorPart(changeObj.anchor, 2), 10) -
-                        1}.kuvaus`;
+                    addIndex(map)((changeObj, index) => {
+                      const previousTextBoxChangeObj =
+                        index > 0
+                          ? nth(index - 1, dynamicTextBoxChangeObjects)
+                          : null;
+                      const lastInLupaTextBox = last(
+                        ulkomaillaSijaitsevatKunnat
+                      );
 
-                      const previousTextBoxChangeObj = find(
-                        propEq("anchor", previousTextBoxAnchor),
-                        dynamicTextBoxChangeObjects
+                      // Selvitetään, mihin fokus siirretään, jos tekstikenttä
+                      // poistetaan (käyttäjän toimesta).
+                      let previousTextBoxAnchor = null;
+
+                      if (previousTextBoxChangeObj) {
+                        previousTextBoxAnchor = prop(
+                          "anchor",
+                          previousTextBoxChangeObj
+                        );
+                      } else if (lastInLupaTextBox) {
+                        previousTextBoxAnchor = `${sectionId}.ulkomaa.${path(
+                          ["meta", "ankkuri"],
+                          lastInLupaTextBox
+                        )}.kuvaus`;
+                      }
+
+                      console.info(
+                        changeObj,
+                        previousTextBoxAnchor,
+                        previousTextBoxChangeObj
                       );
 
                       /**
@@ -401,9 +414,20 @@ export const opetustaAntavatKunnat = async (
                         ulkomaillaSijaitsevatKunnat
                       );
 
+                      const isRemoved = pathEq(
+                        ["properties", "isDeleted"],
+                        true,
+                        changeObj
+                      );
+
+                      // console.info(
+                      //   previousTextBoxChangeObj,
+                      //   previousTextBoxAnchor
+                      // );
+
                       const anchor = getAnchorPart(changeObj.anchor, 2);
 
-                      return !!maarays
+                      return !!maarays || isRemoved
                         ? null
                         : {
                             anchor,
@@ -414,9 +438,7 @@ export const opetustaAntavatKunnat = async (
                                 properties: {
                                   forChangeObject: {
                                     ankkuri: anchor,
-                                    focusWhenDeleted: !!previousTextBoxChangeObj
-                                      ? previousTextBoxAnchor
-                                      : `${sectionId}.ulkomaa.0.kuvaus`,
+                                    focusWhenDeleted: previousTextBoxAnchor,
                                     koodiarvo: ulkomaa.koodiarvo
                                   },
                                   isPreviewModeOn,
@@ -440,7 +462,12 @@ export const opetustaAntavatKunnat = async (
                           {
                             anchor: "A",
                             name: "SimpleButton",
-                            onClick: onAddButtonClick,
+                            onClick: fromComponent => {
+                              return onAddButtonClick(
+                                fromComponent,
+                                seuraavaAnkkuri
+                              );
+                            },
                             properties: {
                               isPreviewModeOn,
                               isReadOnly: _isReadOnly,
