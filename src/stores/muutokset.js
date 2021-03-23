@@ -204,7 +204,7 @@ const Store = createStore({
     /**
      * -------------------- DYNAMIC TEXTBOXES --------------------
      */
-    createTextBoxChangeObject: (sectionId, koodiarvo) => ({
+    createTextBoxChangeObject: (sectionId, koodiarvo, from) => ({
       getState,
       dispatch,
       setState
@@ -228,7 +228,7 @@ const Store = createStore({
         );
 
         const textBoxNumber =
-          length(textBoxChangeObjects) > 0
+          (length(textBoxChangeObjects) > 0
             ? reduce(
                 max,
                 -Infinity,
@@ -237,7 +237,7 @@ const Store = createStore({
                   textBoxChangeObjects
                 )
               ) + 1
-            : 1;
+            : from > 0 ? from : 1);
 
         /**
          * Luodaan uusi muutosobjekti ja annetaan sille focus-ominaisuus,

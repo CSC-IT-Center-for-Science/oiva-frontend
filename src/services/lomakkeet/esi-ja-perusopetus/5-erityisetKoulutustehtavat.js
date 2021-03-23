@@ -219,11 +219,11 @@ export async function erityisetKoulutustehtavat(
                       {
                         anchor: "A",
                         name: "SimpleButton",
-                        onClick: onAddButtonClick,
+                        onClick: onAddButtonClick(kuvausmaaraykset.length),
                         properties: {
                           isPreviewModeOn,
                           isReadOnly: _isReadOnly,
-                          isVisible: isCheckedByChange,
+                          isVisible: isCheckedByChange || kuvausmaaraykset.length > 0,
                           icon: "FaPlus",
                           iconContainerStyles: {
                             width: "15px"
