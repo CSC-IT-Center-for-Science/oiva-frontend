@@ -345,7 +345,7 @@ export function getRajoiteListamuodossa(
         return addEnding(
           "</li></ul>",
           s,
-          index === 0 ? amountOfInstances - 2 : amountOfInstances
+          index === 0 ? amountOfInstances - 1 : amountOfInstances
         );
       }, kohdennusLista)
     );
