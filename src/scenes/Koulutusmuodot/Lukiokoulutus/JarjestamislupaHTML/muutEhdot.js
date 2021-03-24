@@ -16,6 +16,7 @@ import { getLukioMuutEhdotFromStorage } from "helpers/lukioMuutEhdot/index";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function OpetuksenMuutEhdotHtml({ maaraykset }) {
   const intl = useIntl();
@@ -85,7 +86,7 @@ export default function OpetuksenMuutEhdotHtml({ maaraykset }) {
           return result;
         }, muutEhdotMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

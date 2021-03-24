@@ -18,6 +18,7 @@ import {
 } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 const defaultProps = {
   maaraykset: []
@@ -96,7 +97,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({
             return result;
           }, opetustehtavaMaaraykset)}
         </ul>
-        {lisatietomaarays && lisatietomaarays.meta.arvo}
+        <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
       </div>
     )
   );

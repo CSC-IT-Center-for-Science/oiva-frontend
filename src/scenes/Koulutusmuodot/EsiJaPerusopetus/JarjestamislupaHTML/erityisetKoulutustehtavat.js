@@ -17,6 +17,7 @@ import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKo
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   maaraykset
@@ -93,7 +94,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
           return result;
         }, erityisetKoulutustehtavatMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

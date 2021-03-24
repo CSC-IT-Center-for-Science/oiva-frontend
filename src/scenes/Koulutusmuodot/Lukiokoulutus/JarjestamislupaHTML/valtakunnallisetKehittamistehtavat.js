@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   addIndex,
   filter,
-  find, hasPath,
+  find,
+  hasPath,
   isEmpty,
   length,
   map,
@@ -16,6 +17,7 @@ import { getLukioErityisetKoulutustehtavatFromStorage } from "helpers/lukioErity
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
   const intl = useIntl();
@@ -81,20 +83,24 @@ export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
 
               {length(maarays.aliMaaraykset)
                 ? getRajoitteetFromMaarays(
-                  filter(aliMaarays =>
-                      hasPath(["meta", "valtakunnallinenKehittamistehtava"], aliMaarays),
-                    maarays.aliMaaraykset
-                  ),
-                  localeUpper,
-                  "kuvaus"
-                )
+                    filter(
+                      aliMaarays =>
+                        hasPath(
+                          ["meta", "valtakunnallinenKehittamistehtava"],
+                          aliMaarays
+                        ),
+                      maarays.aliMaaraykset
+                    ),
+                    localeUpper,
+                    "kuvaus"
+                  )
                 : ""}
             </React.Fragment>
           );
           return result;
         }, valtakunnallisetKehittamistehtavatMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

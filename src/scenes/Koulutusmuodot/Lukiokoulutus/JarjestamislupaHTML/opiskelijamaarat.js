@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
 import { __ } from "i18n-for-browser";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function OpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
@@ -82,7 +83,7 @@ export default function OpiskelijamaaratHtml({ maaraykset }) {
         ],
         opiskelijamaaraMaaraykset || []
       )}
-      {lisatietomaarays && lisatietomaarays.meta.arvo}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }
