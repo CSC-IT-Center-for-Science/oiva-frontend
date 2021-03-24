@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import Table from "../../02-organisms/Table";
+import Table from "../../02-organisms/Table/index";
 import { generatePaatetytAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
@@ -49,7 +49,8 @@ const PaatetytAsiat = ({ koulutusmuoto }) => {
       <div
         style={{
           borderBottom: "0.05rem solid #E3E3E3"
-        }}>
+        }}
+      >
         <Table
           structure={tableStructure}
           sortedBy={{ columnIndex: 5, order: "descending" }}
