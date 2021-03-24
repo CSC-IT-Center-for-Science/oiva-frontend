@@ -11,10 +11,10 @@ import {
   filter,
   flatten,
   groupBy,
-  head,
   includes,
   isNil,
   join,
+  last,
   length,
   map,
   max,
@@ -27,6 +27,7 @@ import {
   propEq,
   reduce,
   reject,
+  sortBy,
   split,
   startsWith,
   values
@@ -417,17 +418,23 @@ const Store = createStore({
         dispatch
       );
 
-      const focusWhenDeleted = head(
-        map(changeObj => {
-          const anchor = path(
-            ["properties", "metadata", "focusWhenDeleted"],
-            changeObj
-          );
-          return changeObj.properties.isDeleted && anchor ? anchor : null;
-        }, changeObjects).filter(Boolean)
+      const focusWhenDeleted = path(
+        ["properties", "metadata", "focusWhenDeleted"],
+        last(
+          sortBy(
+            path(["properties", "dateOfRemoval"]),
+            filter(changeObj => {
+              const anchor = path(
+                ["properties", "metadata", "focusWhenDeleted"],
+                changeObj
+              );
+              return changeObj.properties.isDeleted && anchor;
+            }, changeObjects)
+          )
+        )
       );
 
-      console.info(focusWhenDeleted);
+      console.info(changeObjects, focusWhenDeleted);
 
       if (focusWhenDeleted) {
         dispatch(setFocusOn(focusWhenDeleted));

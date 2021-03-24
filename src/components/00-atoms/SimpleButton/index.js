@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import { FaPlus } from "react-icons/fa";
@@ -14,7 +14,8 @@ const defaultProps = {
   disabled: false,
   icon: null,
   iconStyles: {},
-  iconContainerStyles: {}
+  iconContainerStyles: {},
+  shouldHaveFocus: false
 };
 
 const SimpleButton = ({
@@ -29,11 +30,15 @@ const SimpleButton = ({
   id,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
+  onFocus,
+  shouldHaveFocus = defaultProps.shouldHaveFocus,
   size = defaultProps.size,
   styleAsALink,
   text = defaultProps.text,
   variant = defaultProps.variant
 }) => {
+  const simpleButtonRef = useRef(null);
+
   const baseClasses =
     "inline-block no-underline text-white hover:text-gray-100 normal-case font-normal";
 
@@ -45,19 +50,27 @@ const SimpleButton = ({
     }
   };
 
+  useEffect(() => {
+    if (shouldHaveFocus) {
+      simpleButtonRef.current.focus();
+      onFocus(fullAnchor);
+    }
+  }, [fullAnchor, onFocus, shouldHaveFocus]);
+
   return (
     <React.Fragment>
       {!isReadOnly && (
         <Button
-          id={id}
-          size={size}
-          onClick={handleClick}
-          variant={variant}
+          aria-label={ariaLabel}
           color={color}
+          disabled={disabled}
           disableElevation
           disableRipple
-          disabled={disabled}
-          aria-label={ariaLabel}
+          id={id}
+          onClick={handleClick}
+          ref={simpleButtonRef}
+          size={size}
+          variant={variant}
         >
           {icon && (
             <span style={iconContainerStyles}>
@@ -81,11 +94,13 @@ SimpleButton.propTypes = {
   id: PropTypes.string,
   isReadOnly: PropTypes.bool,
   onClick: PropTypes.func,
+  onFocus: PropTypes.func,
   text: PropTypes.string,
   variant: PropTypes.string,
   icon: PropTypes.string,
   iconStyles: PropTypes.object,
-  iconContainerStyles: PropTypes.object
+  iconContainerStyles: PropTypes.object,
+  shouldHaveFocus: PropTypes.bool
 };
 
 export default SimpleButton;

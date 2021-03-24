@@ -6,7 +6,7 @@ import StatusTextRow from "../../../01-molecules/StatusTextRow";
 import Autocomplete from "../../../02-organisms/Autocomplete";
 import Multiselect from "../../../02-organisms/Multiselect";
 import Difference from "../../../02-organisms/Difference";
-import SimpleButton from "../../../00-atoms/SimpleButton";
+import SimpleButton from "../../../00-atoms/SimpleButton/index";
 import { heights } from "../../../../css/autocomplete";
 import { flattenObj, removeAnchorPart } from "../../../../utils/common";
 import Datepicker from "../../../00-atoms/Datepicker";
@@ -502,7 +502,6 @@ const CategorizedList = props => {
                                 }
                                 fullAnchor={fullAnchor}
                                 id={fullAnchor}
-                                isDeleted={propsObj.isDeleted}
                                 isDisabled={isDisabled}
                                 isErroneous={propsObj.isErroneous}
                                 isHidden={isDisabled}
@@ -818,6 +817,7 @@ const CategorizedList = props => {
                           fullAnchor={fullAnchor}
                           id={fullAnchor}
                           isReadOnly={propsObj.isReadOnly}
+                          onFocus={onFocus}
                           text={propsObj.text}
                           variant={propsObj.variant}
                           icon={propsObj.icon}
@@ -832,6 +832,7 @@ const CategorizedList = props => {
                             parent: props.parent,
                             rootPath: props.rootPath
                           }}
+                          shouldHaveFocus={props.focusOn === fullAnchor}
                         />
                       </div>
                     )}
