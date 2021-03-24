@@ -20,7 +20,7 @@ import {
   split
 } from "ramda";
 import * as muutEhdotHelper from "helpers/lukioMuutEhdot";
-import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
+import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet/index";
@@ -140,8 +140,8 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
-    locale,
-    kohteet
+    kohteet,
+    lupa.maaraykset
   );
 
   // 4. ERITYINEN KOULUTUSTEHTÄVÄ
