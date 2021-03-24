@@ -5,6 +5,7 @@ import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
   const intl = useIntl();
@@ -47,7 +48,8 @@ export default function PoOpetuksenJarjestamismuotoHtml({ maaraykset }) {
             {length(opetuksenJarjestamismuoto.aliMaaraykset)
               ? getRajoitteetFromMaarays(
                   opetuksenJarjestamismuoto.aliMaaraykset,
-                  locale
+                  locale,
+                  intl.formatMessage(rajoitteet.ajalla)
                 )
               : ""}
           </React.Fragment>
