@@ -11,6 +11,7 @@ import {
   filter,
   flatten,
   groupBy,
+  head,
   includes,
   isNil,
   join,
@@ -57,7 +58,9 @@ const removeUnsavedChanges = () => ({ getState, setState }) => {
 };
 
 const setFocusOn = anchor => ({ getState, setState }) => {
-  setState(assoc("focusOn", anchor, getState()));
+  setState(
+    assoc("focusOn", { anchor, focusSetAt: new Date().getTime() }, getState())
+  );
 };
 
 const setLatestChanges = changeObjects => ({ getState, setState }) => {
@@ -418,25 +421,47 @@ const Store = createStore({
         dispatch
       );
 
-      const focusWhenDeleted = path(
-        ["properties", "metadata", "focusWhenDeleted"],
-        last(
-          sortBy(
-            path(["properties", "dateOfRemoval"]),
-            filter(changeObj => {
-              const anchor = path(
-                ["properties", "metadata", "focusWhenDeleted"],
-                changeObj
-              );
-              return changeObj.properties.isDeleted && anchor;
-            }, changeObjects)
-          )
-        )
+      const changeObjectsSortedByRemovalDate = sortBy(
+        path(["properties", "dateOfRemoval"]),
+        filter(changeObj => {
+          const anchor = path(
+            ["properties", "metadata", "focusWhenDeleted"],
+            changeObj
+          );
+          return changeObj.properties.isDeleted && anchor;
+        }, changeObjects)
       );
 
-      console.info(changeObjects, focusWhenDeleted);
+      const theMostRecentChangeObjWithFocusWhenDeleted = last(
+        changeObjectsSortedByRemovalDate
+      );
 
-      if (focusWhenDeleted) {
+      console.info(
+        "theMostRecentChangeObjWithFocusWhenDeleted",
+        theMostRecentChangeObjWithFocusWhenDeleted
+      );
+
+      const focusWhenDeleted = path(
+        ["properties", "metadata", "focusWhenDeleted"],
+        theMostRecentChangeObjWithFocusWhenDeleted
+      );
+
+      console.info("freshNewChangeObjects", freshNewChangeObjects);
+      console.info(
+        changeObjectsSortedByRemovalDate,
+        focusWhenDeleted,
+        prop("anchor", getState().focusOn)
+      );
+
+      const latestFocusSetAt = prop("focusSetAt", getState().focusOn);
+
+      if (
+        !latestFocusSetAt ||
+        path(
+          ["properties", "dateOfRemoval"],
+          theMostRecentChangeObjWithFocusWhenDeleted
+        ) > latestFocusSetAt
+      ) {
         dispatch(setFocusOn(focusWhenDeleted));
       }
 

@@ -139,7 +139,7 @@ CategorizedListRoot.propTypes = {
   // Root anchor of the form. Dots are not allowed.
   anchor: PropTypes.string,
   // Anchor of the element that should have focus
-  focusOn: PropTypes.string,
+  focusOn: PropTypes.object,
   // Structure of the form. Array of categories.
   categories: PropTypes.array,
   // Array of change objects.

@@ -152,8 +152,6 @@ export const createDynamicTextFields = (
 
           const anchor = getAnchorPart(changeObj.anchor, 2);
 
-          console.info(anchor, anchorToBeFocused);
-
           return !!maarays
             ? null
             : {

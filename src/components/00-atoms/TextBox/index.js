@@ -112,13 +112,12 @@ const TextBox = ({
   isValid,
   label,
   onChanges,
-  onFocus,
   placeholder,
   requiredMessage,
   rows,
   rowsMax,
   showValidationErrors,
-  shouldHaveFocus,
+  shouldHaveFocusAt,
   title,
   tooltip,
   value
@@ -175,17 +174,16 @@ const TextBox = ({
       },
       {
         isDeleted: true,
-        dateOfRemoval: new Date()
+        dateOfRemoval: new Date().getTime()
       }
     );
   }, [forChangeObject, fullAnchor, onChanges]);
 
   useEffect(() => {
-    if (shouldHaveFocus) {
+    if (shouldHaveFocusAt) {
       textBoxRef.current.focus();
-      onFocus();
     }
-  }, [onFocus, shouldHaveFocus]);
+  }, [shouldHaveFocusAt]);
 
   return (
     <React.Fragment>
@@ -363,7 +361,7 @@ TextBox.propTypes = {
   requiredMessage: PropTypes.string,
   rows: PropTypes.number,
   rowsMax: PropTypes.number,
-  shouldHaveFocus: PropTypes.bool,
+  shouldHaveFocusAt: PropTypes.number,
   showValidationErrors: PropTypes.bool,
   title: PropTypes.string,
   tooltip: PropTypes.object,

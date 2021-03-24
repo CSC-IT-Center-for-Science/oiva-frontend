@@ -15,7 +15,7 @@ const defaultProps = {
   icon: null,
   iconStyles: {},
   iconContainerStyles: {},
-  shouldHaveFocus: false
+  shouldHaveFocusAt: null
 };
 
 const SimpleButton = ({
@@ -31,7 +31,7 @@ const SimpleButton = ({
   isReadOnly = defaultProps.isReadOnly,
   onClick,
   onFocus,
-  shouldHaveFocus = defaultProps.shouldHaveFocus,
+  shouldHaveFocusAt = defaultProps.shouldHaveFocusAt,
   size = defaultProps.size,
   styleAsALink,
   text = defaultProps.text,
@@ -51,11 +51,10 @@ const SimpleButton = ({
   };
 
   useEffect(() => {
-    if (shouldHaveFocus) {
+    if (shouldHaveFocusAt) {
       simpleButtonRef.current.focus();
-      onFocus(fullAnchor);
     }
-  }, [fullAnchor, onFocus, shouldHaveFocus]);
+  }, [shouldHaveFocusAt]);
 
   return (
     <React.Fragment>
@@ -100,7 +99,7 @@ SimpleButton.propTypes = {
   icon: PropTypes.string,
   iconStyles: PropTypes.object,
   iconContainerStyles: PropTypes.object,
-  shouldHaveFocus: PropTypes.bool
+  shouldHaveFocusAt: PropTypes.number
 };
 
 export default SimpleButton;

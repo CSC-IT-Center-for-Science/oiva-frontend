@@ -12,7 +12,7 @@ import { flattenObj, removeAnchorPart } from "../../../../utils/common";
 import Datepicker from "../../../00-atoms/Datepicker";
 import Dropdown from "../../../00-atoms/Dropdown";
 import AlertMessage from "../../../00-atoms/Alert";
-import TextBox from "../../../00-atoms/TextBox";
+import TextBox from "../../../00-atoms/TextBox/index";
 import Input from "../../../00-atoms/Input";
 import Attachments from "../../Attachments";
 import * as R from "ramda";
@@ -513,7 +513,12 @@ const CategorizedList = props => {
                                 onChanges={handleChanges}
                                 onFocus={onFocus}
                                 placeholder={propsObj.placeholder}
-                                shouldHaveFocus={props.focusOn === fullAnchor}
+                                shouldHaveFocusAt={
+                                  props.focusOn &&
+                                  R.propEq("anchor", fullAnchor, props.focusOn)
+                                    ? R.prop("focusSetAt", props.focusOn)
+                                    : undefined
+                                }
                                 title={propsObj.title}
                                 tooltip={propsObj.tooltip}
                                 value={propsObj.value}
@@ -832,7 +837,12 @@ const CategorizedList = props => {
                             parent: props.parent,
                             rootPath: props.rootPath
                           }}
-                          shouldHaveFocus={props.focusOn === fullAnchor}
+                          shouldHaveFocusAt={
+                            props.focusOn &&
+                            R.propEq("anchor", fullAnchor, props.focusOn)
+                              ? R.prop("focusSetAt", props.focusOn)
+                              : undefined
+                          }
                         />
                       </div>
                     )}
@@ -967,7 +977,7 @@ CategorizedList.defaultProps = {
 
 CategorizedList.propTypes = {
   anchor: PropTypes.string,
-  focusOn: PropTypes.string,
+  focusOn: PropTypes.object,
   categories: PropTypes.array,
   changes: PropTypes.array,
   debug: PropTypes.bool,
