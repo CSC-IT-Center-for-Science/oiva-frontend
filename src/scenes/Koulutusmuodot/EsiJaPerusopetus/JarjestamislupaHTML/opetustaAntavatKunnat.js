@@ -20,6 +20,7 @@ import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import Typography from "@material-ui/core/Typography";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
+import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
   const intl = useIntl();
@@ -106,6 +107,7 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
             opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset
           ).filter(Boolean),
           locale,
+          intl.formatMessage(rajoitteet.ajalla),
           "arvo"
         )}
       </ul>
