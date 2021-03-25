@@ -73,7 +73,7 @@ export async function createObjectToSave(
         changeObjects.toimintaalue || []
       ),
       ulkomaa: filter(
-        compose(includes(".ulkomaa."), prop("anchor")),
+        compose(includes(".200."), prop("anchor")),
         changeObjects.toimintaalue || []
       ),
       rajoitteetByRajoiteId: reject(
