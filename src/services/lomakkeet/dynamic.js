@@ -190,7 +190,6 @@ export const createDynamicTextFields = (
             anchor: "A",
             name: "SimpleButton",
             onClick: fromComponent => {
-              console.info(fromComponent, seuraavaAnkkuri);
               return onAddButtonClick(fromComponent, seuraavaAnkkuri);
             },
             properties: {
