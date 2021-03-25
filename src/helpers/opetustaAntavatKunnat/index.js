@@ -465,7 +465,7 @@ export async function defineBackendChangeObjects(
    * tiedot siitä.
    */
   const changeObjUlkomaaCheckbox = find(
-    compose(endsWith(".200"), prop("anchor")),
+    compose(endsWith(".200.valintaelementti"), prop("anchor")),
     changeObjects.ulkomaa
   );
 
