@@ -28,6 +28,7 @@ import ConfirmDialog from "../ConfirmDialog";
 import * as R from "ramda";
 import Typography from "@material-ui/core/Typography";
 import { AppRoute } from "const/index";
+import moment from "moment";
 
 const WrapTable = styled.div``;
 
@@ -169,11 +170,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             R.prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
             liite.luoja,
-            liite.luontipvm ? (
-              <Moment format="D.M.YYYY">{liite.luontipvm}</Moment>
-            ) : (
-              ""
-            )
+            liite.luontipvm ? moment(liite.luontipvm).format("D.M.YYYY") : ""
           ],
           fileLinkFn: () => {
             muutospyyntoActions.download(
