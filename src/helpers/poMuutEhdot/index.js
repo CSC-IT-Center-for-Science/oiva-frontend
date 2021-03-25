@@ -28,6 +28,8 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
+import { getMaarayksetByTunniste } from "../lupa";
 
 export const initializePOMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -63,6 +65,7 @@ export const defineBackendChangeObjects = async (
   changeObjects = [],
   maaraystyypit,
   locale,
+  lupaMaaraykset,
   kohteet
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
@@ -71,6 +74,20 @@ export const defineBackendChangeObjects = async (
     propEq("tunniste", "muutkoulutuksenjarjestamiseenliittyvatehdot"),
     kohteet
   );
+
+  const maaraykset = await getMaarayksetByTunniste(
+    kohde.tunniste,
+    lupaMaaraykset
+  );
+
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
+
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const muutEhdot = await getPOMuutEhdotFromStorage();
 
@@ -236,9 +253,11 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  const objects = flatten([muutokset, lisatiedotBEchangeObject]).filter(
-    Boolean
-  );
+  const objects = flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    muutokset,
+    lisatiedotBEchangeObject
+  ]).filter(Boolean);
 
   return objects;
 };

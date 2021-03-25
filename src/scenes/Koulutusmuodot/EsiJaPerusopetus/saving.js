@@ -233,6 +233,7 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
+    lupa.maaraykset,
     kohteet
   );
 
