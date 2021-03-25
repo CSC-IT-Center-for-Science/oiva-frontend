@@ -32,6 +32,7 @@ import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import { getAnchorPart } from "../../utils/common";
 import { getMaarayksetByTunniste } from "helpers/lupa/index";
+import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "utils/rajoitteetUtils";
 
 export const initializeLukioErityinenKoulutustehtava = erityinenKoulutustehtava => {
   return omit(["koodiArvo"], {
@@ -144,6 +145,14 @@ export const defineBackendChangeObjects = async (
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const erityisetKoulutustehtavat = await getLukioErityisetKoulutustehtavatFromStorage();
 
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
+
   const muutokset = map(koulutustehtava => {
     // Checkbox-kenttien muutokset
     const checkboxChangeObj = find(
@@ -157,7 +166,7 @@ export const defineBackendChangeObjects = async (
     const tehtavaanLiittyvatMaaraykset = filter(
       m =>
         propEq("koodiarvo", koulutustehtava.koodiarvo, m) &&
-        propEq("koodisto", "poerityinenkoulutustehtava", m),
+        propEq("koodisto", "lukioerityinenkoulutustehtavauusi", m),
       maaraykset
     );
 
@@ -353,7 +362,11 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  return flatten([muutokset, lisatiedotBEchangeObject]).filter(Boolean);
+  return flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    muutokset,
+    lisatiedotBEchangeObject
+  ]).filter(Boolean);
 };
 
 export function getLukioErityisetKoulutustehtavatFromStorage() {

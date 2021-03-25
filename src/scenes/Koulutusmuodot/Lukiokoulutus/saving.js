@@ -24,7 +24,7 @@ import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oike
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet/index";
-import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
+import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat/index";
 import * as valtakunnallinenKehittamistehtavaHelper from "helpers/lukioValtakunnallinenKehittamistehtava";
 import { koulutustyypitMap } from "../../../utils/constants";
 
