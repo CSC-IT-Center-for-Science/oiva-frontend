@@ -1,21 +1,10 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { __ } from "i18n-for-browser";
-import { getChangeObjByAnchor } from "../../../components/02-organisms/CategorizedListRoot/utils";
-import {
-  filter,
-  find,
-  flatten,
-  hasPath,
-  map,
-  path,
-  pathEq,
-  propEq
-} from "ramda";
-
+import { filter, find, flatten, hasPath, map, pathEq, propEq } from "ramda";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
 import localforage from "localforage";
 import { createDynamicTextFields } from "../dynamic";
+import { __ } from "i18n-for-browser";
 
 export async function muutEhdot(
   { maaraykset, sectionId },

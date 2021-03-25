@@ -305,7 +305,7 @@ export const defineBackendChangeObjects = async (
           }
         : null;
 
-      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Muodostetaan tehdyistä rajoituksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
       const alimaaraykset =

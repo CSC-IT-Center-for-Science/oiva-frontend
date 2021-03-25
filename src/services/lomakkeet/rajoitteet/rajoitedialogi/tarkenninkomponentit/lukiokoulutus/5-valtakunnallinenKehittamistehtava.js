@@ -1,12 +1,4 @@
-import { getLukioErityisetKoulutustehtavatFromStorage } from "helpers/lukioErityisetKoulutustehtavat/index";
-import {
-  compose,
-  endsWith,
-  filter,
-  flatten,
-  map,
-  prop
-} from "ramda";
+import { compose, endsWith, filter, flatten, map, prop } from "ramda";
 import { getAnchorPart } from "utils/common";
 
 export default async function getValtakunnallisetKehittamistehtavat(
@@ -16,7 +8,10 @@ export default async function getValtakunnallisetKehittamistehtavat(
   voidaankoValitaUseita,
   inputId
 ) {
-  let valtakunnallisetKehittamistehtavat = filter(compose(endsWith('.valintaelementti'), prop('anchor')), osionData)
+  let valtakunnallisetKehittamistehtavat = filter(
+    compose(endsWith(".valintaelementti"), prop("anchor")),
+    osionData
+  );
 
   if (valtakunnallisetKehittamistehtavat.length) {
     return [
@@ -38,7 +33,10 @@ export default async function getValtakunnallisetKehittamistehtavat(
                   value: `${getAnchorPart(
                     valtakunnallinenKehittamistehtava.anchor,
                     1
-                  )}-${getAnchorPart(valtakunnallinenKehittamistehtava.anchor, 2)}`,
+                  )}-${getAnchorPart(
+                    valtakunnallinenKehittamistehtava.anchor,
+                    2
+                  )}`,
                   label: valtakunnallinenKehittamistehtava.properties.title
                 };
               }

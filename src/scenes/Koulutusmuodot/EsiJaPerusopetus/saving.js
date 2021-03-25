@@ -19,7 +19,7 @@ import {
   reject,
   split
 } from "ramda";
-import * as muutEhdotHelper from "helpers/poMuutEhdot";
+import * as muutEhdotHelper from "helpers/poMuutEhdot/index";
 import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot/index";
 import * as opetusHelper from "helpers/opetustehtavat";
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
@@ -232,9 +232,9 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
-    locale,
     lupa.maaraykset,
-    kohteet
+    kohteet,
+    locale
   );
 
   let objectToSave = {
