@@ -210,7 +210,6 @@ const Store = createStore({
       dispatch,
       setState
     }) => {
-      console.info(sectionId, koodiarvo, from);
       if (sectionId) {
         const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
