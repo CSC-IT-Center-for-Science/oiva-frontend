@@ -1,6 +1,7 @@
 import { append, endsWith, find, isEmpty, path, pathEq, propEq } from "ramda";
 import { replaceAnchorPartWith } from "utils/common";
 import { getRajoitteet } from "../../../../utils/rajoitteetUtils";
+import Lisatiedot from "../../lisatiedot";
 
 export const previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
   lomakedata,
@@ -71,21 +72,7 @@ export const previewOfOikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      {
-        anchor: "lisatiedot",
-        components: [
-          {
-            anchor: "A",
-            name: "StatusTextRow",
-            properties: {
-              title: lisatiedotNode.properties.value
-            }
-          }
-        ]
-      },
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;

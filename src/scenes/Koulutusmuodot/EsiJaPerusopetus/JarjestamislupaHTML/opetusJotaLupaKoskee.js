@@ -18,6 +18,8 @@ import {
 } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
+import rajoitteet from "i18n/definitions/rajoitteet";
 
 const defaultProps = {
   maaraykset: []
@@ -89,14 +91,14 @@ export default function PoOpetusJotaLupaKoskeeHtml({
                 </li>
 
                 {length(maarays.aliMaaraykset)
-                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
+                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale, intl.formatMessage(rajoitteet.ajalla))
                   : ""}
               </React.Fragment>
             );
             return result;
           }, opetustehtavaMaaraykset)}
         </ul>
-        {lisatietomaarays && lisatietomaarays.meta.arvo}
+        <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
       </div>
     )
   );

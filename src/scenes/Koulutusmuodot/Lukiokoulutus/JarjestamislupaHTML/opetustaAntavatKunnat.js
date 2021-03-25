@@ -18,6 +18,7 @@ import { getKunnatFromStorage } from "../../../../helpers/kunnat";
 import { getMaakuntakunnat } from "../../../../helpers/maakunnat";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import Typography from "@material-ui/core/Typography";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function OpetustaAntavatKunnatHtml({ maaraykset }) {
   const intl = useIntl();
@@ -93,7 +94,7 @@ export default function OpetustaAntavatKunnatHtml({ maaraykset }) {
           "arvo"
         )}
       </ul>
-      <p className="mb-6">{lisatietomaarays && lisatietomaarays.meta.arvo}</p>
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

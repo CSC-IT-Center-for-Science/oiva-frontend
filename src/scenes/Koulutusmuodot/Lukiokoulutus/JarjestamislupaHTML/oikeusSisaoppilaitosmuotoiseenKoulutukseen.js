@@ -5,6 +5,7 @@ import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 
 export default function OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml({
   maaraykset
@@ -55,7 +56,7 @@ export default function OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml({
           </React.Fragment>
         </ul>
       ) : null}
-      {lisatietomaarays && lisatietomaarays.meta.arvo}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }
