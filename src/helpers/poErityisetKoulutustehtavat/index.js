@@ -17,6 +17,7 @@ import {
   nth,
   omit,
   path,
+  pathEq,
   prop,
   propEq,
   reject,
@@ -96,6 +97,13 @@ export const defineBackendChangeObjects = async (
       changeObjects.erityisetKoulutustehtavat
     );
 
+    const tehtavaanLiittyvatMaaraykset = filter(
+      m =>
+        propEq("koodiarvo", koulutustehtava.koodiarvo, m) &&
+        propEq("koodisto", "poerityinenkoulutustehtava", m),
+      maaraykset
+    );
+
     // Kuvauskenttien muutokset kohdassa (muu koulutustehtava)
     const kuvausChangeObjects = filter(changeObj => {
       return (
@@ -120,7 +128,12 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    if (checkboxChangeObj && length(kuvausChangeObjects)) {
+    const isCheckboxChecked =
+      (!!tehtavaanLiittyvatMaaraykset.length && !checkboxChangeObj) ||
+      (checkboxChangeObj &&
+        pathEq(["properties", "isChecked"], true, checkboxChangeObj));
+
+    if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
         const kuvausBEChangeObject = {
@@ -138,7 +151,7 @@ export const defineBackendChangeObjects = async (
               [checkboxChangeObj, changeObj]
             ).filter(Boolean)
           },
-          tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+          tila: isCheckboxChecked ? "LISAYS" : "POISTO"
         };
 
         let alimaaraykset = [];

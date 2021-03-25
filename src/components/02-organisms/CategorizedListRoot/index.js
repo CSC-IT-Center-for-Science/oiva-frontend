@@ -2,7 +2,8 @@ import React, { useCallback, useMemo, useRef } from "react";
 import PropTypes from "prop-types";
 import CategorizedList from "./CategorizedList";
 import { handleNodeMain, getReducedStructure, getTargetNode } from "./utils";
-import * as R from "ramda";
+import isEqual from "react-fast-compare";
+import { compose, equals, filter, head, not, propEq } from "ramda";
 
 // Default values for some properties of the component.
 const defaultProps = {
@@ -85,10 +86,7 @@ const CategorizedListRoot = React.memo(
       _anchor => {
         return onUpdate({
           anchor,
-          changes: R.filter(
-            R.compose(R.not, R.propEq("anchor", _anchor)),
-            changes
-          )
+          changes: filter(compose(not, propEq("anchor", _anchor)), changes)
         });
       },
       [anchor, changes, onUpdate]
@@ -100,7 +98,7 @@ const CategorizedListRoot = React.memo(
          * If the first change object is not null (default) the CategorizedList
          * will be created.
          **/
-        !R.equals(R.head(changes), null)
+        !equals(head(changes), null)
           ? (() => {
               /**
                * This is the first instance of CategorizedList. The component
@@ -127,11 +125,13 @@ const CategorizedListRoot = React.memo(
     );
   },
   (prevState, nextState) => {
-    const areCategoriesSame =
-      JSON.stringify(prevState.categories) ===
-      JSON.stringify(nextState.categories);
-    const areChangesSame = R.equals(prevState.changes, nextState.changes);
-    return areCategoriesSame && areChangesSame;
+    return (
+      isEqual(prevState.changes, nextState.changes) &&
+      isEqual(
+        JSON.stringify(prevState.categories),
+        JSON.stringify(nextState.categories)
+      )
+    );
   }
 );
 
