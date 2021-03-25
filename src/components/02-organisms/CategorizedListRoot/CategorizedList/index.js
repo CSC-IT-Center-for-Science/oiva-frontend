@@ -815,37 +815,55 @@ const CategorizedList = props => {
                     {component.name === "HtmlContent" && (
                       <HtmlContent content={propsObj.content} />
                     )}
-                    {component.name === "SimpleButton" && (
-                      <div className={`${styleClassesStr} flex-2`}>
-                        <SimpleButton
-                          forChangeObject={component.properties.forChangeObject}
-                          fullAnchor={fullAnchor}
-                          id={fullAnchor}
-                          isReadOnly={propsObj.isReadOnly}
-                          onFocus={onFocus}
-                          text={propsObj.text}
-                          variant={propsObj.variant}
-                          icon={propsObj.icon}
-                          iconContainerStyles={propsObj.iconContainerStyles}
-                          iconStyles={propsObj.iconStyles}
-                          onClick={component.onClick}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
-                          shouldHaveFocusAt={
-                            props.focusOn &&
-                            R.propEq("anchor", fullAnchor, props.focusOn)
-                              ? R.prop("focusSetAt", props.focusOn)
-                              : undefined
-                          }
-                        />
-                      </div>
-                    )}
+                    {component.name === "SimpleButton"
+                      ? (() => {
+                          const isDisabled =
+                            parentComponent &&
+                            R.includes(parentComponent.name, [
+                              "CheckboxWithLabel",
+                              "RadioButtonWithLabel"
+                            ]) &&
+                            ((!parentComponent.properties.isChecked &&
+                              R.isEmpty(parentChangeObj.properties)) ||
+                              parentChangeObj.properties.isChecked === false);
+                          return (
+                            <div className={`${styleClassesStr} flex-2`}>
+                              <SimpleButton
+                                forChangeObject={
+                                  component.properties.forChangeObject
+                                }
+                                fullAnchor={fullAnchor}
+                                id={fullAnchor}
+                                isDisabled={isDisabled}
+                                isHidden={isDisabled}
+                                isReadOnly={propsObj.isReadOnly}
+                                text={propsObj.text}
+                                variant={propsObj.variant}
+                                icon={propsObj.icon}
+                                iconContainerStyles={
+                                  propsObj.iconContainerStyles
+                                }
+                                iconStyles={propsObj.iconStyles}
+                                onClick={component.onClick}
+                                payload={{
+                                  anchor,
+                                  categories: category.categories,
+                                  component,
+                                  fullPath,
+                                  parent: props.parent,
+                                  rootPath: props.rootPath
+                                }}
+                                shouldHaveFocusAt={
+                                  props.focusOn &&
+                                  R.propEq("anchor", fullAnchor, props.focusOn)
+                                    ? R.prop("focusSetAt", props.focusOn)
+                                    : undefined
+                                }
+                              />
+                            </div>
+                          );
+                        })()
+                      : null}
                     {component.name === "Datepicker" && (
                       <div className={styleClassesStr}>
                         <Datepicker

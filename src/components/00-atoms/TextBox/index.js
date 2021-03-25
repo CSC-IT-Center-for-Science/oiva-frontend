@@ -293,9 +293,6 @@ const TextBox = ({
                   ariaLabel={"Remove text area"}
                   icon={"ClearIcon"}
                   color={"default"}
-                  iconStyles={{
-                    fontSize: 20
-                  }}
                   variant={"text"}
                   text={""}
                   onClick={deleteTextBox}

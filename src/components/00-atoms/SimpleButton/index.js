@@ -6,7 +6,6 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 const defaultProps = {
   forChangeObject: {},
-  isReadOnly: false,
   text: "[text is missing]",
   variant: "contained",
   color: "primary",
@@ -15,22 +14,25 @@ const defaultProps = {
   icon: null,
   iconStyles: {},
   iconContainerStyles: {},
+  isDisabled: false,
+  isHidden: false,
+  isReadOnly: false,
   shouldHaveFocusAt: null
 };
 
 const SimpleButton = ({
   ariaLabel,
   color = defaultProps.color,
-  disabled = defaultProps.disabled,
   forChangeObject = defaultProps.forChangeObject,
   fullAnchor,
   icon = defaultProps.icon,
   iconContainerStyles = defaultProps.iconContainerStyles,
   iconStyles = defaultProps.iconStyles,
   id,
+  isDisabled = defaultProps.isDisabled,
+  isHidden = defaultProps.isHidden,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
-  onFocus,
   shouldHaveFocusAt = defaultProps.shouldHaveFocusAt,
   size = defaultProps.size,
   styleAsALink,
@@ -58,11 +60,11 @@ const SimpleButton = ({
 
   return (
     <React.Fragment>
-      {!isReadOnly && (
+      {!isReadOnly && !isHidden && (
         <Button
           aria-label={ariaLabel}
           color={color}
-          disabled={disabled}
+          disabled={isDisabled}
           disableElevation
           disableRipple
           id={id}
@@ -87,13 +89,12 @@ const SimpleButton = ({
 SimpleButton.propTypes = {
   ariaLabel: PropTypes.string,
   color: PropTypes.string,
-  disabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isReadOnly: PropTypes.bool,
   onClick: PropTypes.func,
-  onFocus: PropTypes.func,
   text: PropTypes.string,
   variant: PropTypes.string,
   icon: PropTypes.string,

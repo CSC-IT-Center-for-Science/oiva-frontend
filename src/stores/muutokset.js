@@ -11,7 +11,6 @@ import {
   filter,
   flatten,
   groupBy,
-  head,
   includes,
   isNil,
   join,
@@ -39,7 +38,6 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
-// import { muutokset } from "scenes/Koulutusmuodot/AmmatillinenKoulutus/sivun1tietojaTaytettyKattavasti";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -97,7 +95,6 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  // initialState: muutokset,
   initialState: {
     changeObjects: {
       saved: {},
@@ -213,6 +210,7 @@ const Store = createStore({
       dispatch,
       setState
     }) => {
+      console.info(sectionId, koodiarvo, from);
       if (sectionId) {
         const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
@@ -436,21 +434,9 @@ const Store = createStore({
         changeObjectsSortedByRemovalDate
       );
 
-      console.info(
-        "theMostRecentChangeObjWithFocusWhenDeleted",
-        theMostRecentChangeObjWithFocusWhenDeleted
-      );
-
       const focusWhenDeleted = path(
         ["properties", "metadata", "focusWhenDeleted"],
         theMostRecentChangeObjWithFocusWhenDeleted
-      );
-
-      console.info("freshNewChangeObjects", freshNewChangeObjects);
-      console.info(
-        changeObjectsSortedByRemovalDate,
-        focusWhenDeleted,
-        prop("anchor", getState().focusOn)
       );
 
       const latestFocusSetAt = prop("focusSetAt", getState().focusOn);

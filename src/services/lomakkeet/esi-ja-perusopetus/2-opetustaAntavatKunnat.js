@@ -251,10 +251,10 @@ export const opetustaAntavatKunnat = async (
       !!ulkomaa
         ? flatten([
             {
-              anchor: "ulkomaa",
+              anchor: ulkomaa.koodiarvo,
               components: [
                 {
-                  anchor: ulkomaa.koodiarvo,
+                  anchor: "valintaelementti",
                   name: "CheckboxWithLabel",
                   properties: {
                     forChangeObject: {

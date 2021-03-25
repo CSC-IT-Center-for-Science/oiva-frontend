@@ -106,7 +106,6 @@ const OpetustaAntavatKunnat = React.memo(
 
     const onAddButtonClick = useCallback(
       (fromComponent, index) => {
-        console.info(fromComponent, index);
         createTextBoxChangeObject(
           sectionId,
           getAnchorPart(fromComponent.fullAnchor, 1),

@@ -14,7 +14,8 @@ import {
   addIndex,
   nth,
   last,
-  startsWith
+  startsWith,
+  length
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getChangeObjByAnchor } from "components/02-organisms/CategorizedListRoot/utils";
@@ -27,24 +28,24 @@ export const createDynamicTextFields = (
   koodiarvo,
   onAddButtonClick,
   isPreviewModeOn = false,
-  isReadOnly = false
+  isReadOnly = false,
+  maxAmountOfTextBoxes = 10
 ) => {
   const dynamicTextBoxChangeObjects = filter(
     changeObj =>
-      startsWith(`${sectionId}.ulkomaa.`, changeObj.anchor) &&
+      startsWith(`${sectionId}.${koodiarvo}.`, changeObj.anchor) &&
       endsWith(".kuvaus", changeObj.anchor) &&
-      !startsWith(`${sectionId}.ulkomaa.0`, changeObj.anchor) &&
       !pathEq(["properties", "isDeleted"], true, changeObj),
     changeObjects
   );
 
   const seuraavaAnkkuri =
     parseInt(apply(Math.max, map(path(["meta", "ankkuri"]), maaraykset)), 10) +
-    1;
+      1 || 0;
 
   const unremovedInLupaTextBoxes = filter(maarays => {
     const changeObj = getChangeObjByAnchor(
-      `${sectionId}.ulkomaa.${path(["meta", "ankkuri"], maarays)}.kuvaus`,
+      `${sectionId}.${koodiarvo}.${path(["meta", "ankkuri"], maarays)}.kuvaus`,
       changeObjects
     );
     return !changeObj || !pathEq(["properties", "isDeleted"], true, changeObj);
@@ -76,11 +77,11 @@ export const createDynamicTextFields = (
           // Selvitetään, mihin fokus siirretään, jos tekstikenttä
           // poistetaan (käyttäjän toimesta).
           let previousTextBoxAnchor = previousInLupaTextBox
-            ? `${sectionId}.ulkomaa.${path(
+            ? `${sectionId}.${koodiarvo}.${path(
                 ["meta", "ankkuri"],
                 previousInLupaTextBox
               )}.kuvaus`
-            : `${sectionId}.ulkomaa.lisaaPainike.A`;
+            : `${sectionId}.${koodiarvo}.lisaaPainike.A`;
 
           return isRemoved
             ? null
@@ -101,7 +102,9 @@ export const createDynamicTextFields = (
                       isRemovable: true,
                       placeholder: __("common.kuvausPlaceholder"),
                       title: __("common.kuvaus"),
-                      value: maarays.meta.arvo
+                      value:
+                        path(["meta", "arvo"], maarays) ||
+                        path(["meta", "kuvaus"], maarays)
                     }
                   }
                 ]
@@ -121,7 +124,7 @@ export const createDynamicTextFields = (
 
           // Selvitetään, mihin fokus siirretään, jos tekstikenttä
           // poistetaan (käyttäjän toimesta).
-          let anchorToBeFocused = `${sectionId}.ulkomaa.lisaaPainike.A`;
+          let anchorToBeFocused = `${sectionId}.${koodiarvo}.lisaaPainike.A`;
 
           if (previousTextBoxChangeObj) {
             anchorToBeFocused = prop("anchor", previousTextBoxChangeObj);
@@ -129,7 +132,7 @@ export const createDynamicTextFields = (
             // Jos kyseessä on ensimmäinen muutosobjektien kautta luotavista
             // tekstikentistä, siirretään fokus viimeiseen, aiemmin
             // määräysten pohjalta luotuun, tekstikenttään.
-            anchorToBeFocused = `${sectionId}.ulkomaa.${path(
+            anchorToBeFocused = `${sectionId}.${koodiarvo}.${path(
               ["meta", "ankkuri"],
               lastInLupaTextBox
             )}.kuvaus`;
@@ -187,12 +190,16 @@ export const createDynamicTextFields = (
             anchor: "A",
             name: "SimpleButton",
             onClick: fromComponent => {
+              console.info(fromComponent, seuraavaAnkkuri);
               return onAddButtonClick(fromComponent, seuraavaAnkkuri);
             },
             properties: {
               isPreviewModeOn,
               isReadOnly: isPreviewModeOn || isReadOnly,
-              isVisible: true,
+              isVisible:
+                length(unremovedInLupaTextBoxes) +
+                  length(dynamicTextBoxChangeObjects) <
+                maxAmountOfTextBoxes,
               icon: "FaPlus",
               iconContainerStyles: {
                 width: "15px"
