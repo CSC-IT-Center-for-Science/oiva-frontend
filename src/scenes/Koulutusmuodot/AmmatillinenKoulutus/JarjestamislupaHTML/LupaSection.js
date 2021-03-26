@@ -13,7 +13,7 @@ import Section from "components/03-templates/Section";
 import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { parseLocalizedField } from "modules/helpers";
-import { find } from "ramda";
+import { find, compose, sortBy, prop, filter, flatten, groupBy } from "ramda";
 import Typography from "@material-ui/core/Typography";
 
 const Otsikko = styled.div`
@@ -302,35 +302,19 @@ const LupaSection = props => {
       // Kohde 5: Muut määräykset
       case KOHTEET.MUUT: {
         const {
-          muut,
-          vaativat,
-          vankilat,
-          kokeilut,
-          yhteistyosopimukset,
-          toimintaedellytykset,
-          muutCombined
+          muutCombined,
+          ...rest
         } = kohde;
 
+
+        const muut = groupBy(prop("tyyppi"), sortBy(compose(parseInt, prop("koodiarvo")), flatten(Object.keys(filter(Array.isArray, rest)).map(x => rest[x]))));
         return (
           <div>
             <Section code={headingNumber} title={heading}>
-              {_.map(muut, (muu, i) => {
-                const { tyyppi, kuvaus } = muu;
-                return (
-                  <MuutSection key={i}>
-                    <Typography component="h4" variant="h4">
-                      <Bold>{tyyppi}</Bold>
-                    </Typography>
-                    <Kuvaus>{kuvaus}</Kuvaus>
-                  </MuutSection>
-                );
-              })}
 
-              {section(vaativat)}
-              {section(kokeilut)}
-              {section(vankilat)}
-              {section(yhteistyosopimukset)}
-              {section(toimintaedellytykset)}
+              {_.map(muut, muu => {
+                return (section(muu))
+              })}
 
               {muutCombined.length === 0 ? (
                 <p>{intl.formatMessage(common.lupaSectionMuutEiMaarayksia)}</p>
