@@ -19,6 +19,7 @@ import {
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import rajoitteet from "i18n/definitions/rajoitteet";
+import common from "i18n/definitions/common";
 
 const defaultProps = {
   maaraykset: []
@@ -73,7 +74,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({
     !isEmpty(opetustehtavatFromStorage) && (
       <div className="mt-4">
         <Typography component="h3" variant="h3">
-          {opetustehtavaKoodisto.metadata[toUpper(intl.locale)].kuvaus}
+          {intl.formatMessage(common.opetusJotaLupaKoskee)}
         </Typography>
         <ul className="ml-8 list-disc mb-4">
           {addIndex(map)((maarays, index) => {
@@ -90,7 +91,11 @@ export default function PoOpetusJotaLupaKoskeeHtml({
                 </li>
 
                 {length(maarays.aliMaaraykset)
-                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale, intl.formatMessage(rajoitteet.ajalla))
+                  ? getRajoitteetFromMaarays(
+                      maarays.aliMaaraykset,
+                      locale,
+                      intl.formatMessage(rajoitteet.ajalla)
+                    )
                   : ""}
               </React.Fragment>
             );
