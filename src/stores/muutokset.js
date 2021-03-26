@@ -205,7 +205,7 @@ const Store = createStore({
     /**
      * -------------------- DYNAMIC TEXTBOXES --------------------
      */
-    createTextBoxChangeObject: (sectionId, koodiarvo, from) => ({
+    createTextBoxChangeObject: (sectionId, koodiarvo, ankkuri) => ({
       getState,
       dispatch,
       setState
@@ -213,47 +213,20 @@ const Store = createStore({
       if (sectionId) {
         const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
-        const textBoxChangeObjects = filter(
-          changeObj =>
-            startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
-            endsWith(".kuvaus", changeObj.anchor) &&
-            !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
-          concat(
-            (currentChangeObjects.unsaved &&
-              currentChangeObjects.unsaved[sectionId]) ||
-              [],
-            (currentChangeObjects.saved &&
-              currentChangeObjects.saved[sectionId]) ||
-              []
-          ) || []
-        );
-
-        const textBoxNumber =
-          length(textBoxChangeObjects) > 0
-            ? reduce(
-                max,
-                -Infinity,
-                map(
-                  changeObj => parseInt(getAnchorPart(changeObj.anchor, 2), 10),
-                  textBoxChangeObjects
-                )
-              ) + 1
-            : from > 0
-            ? from
-            : 1;
 
         /**
          * Luodaan uusi muutosobjekti ja annetaan sille focus-ominaisuus,
          * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
          * kenttä olisi automaattisesti fokusoitu.
          */
-        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`;
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${ankkuri}.kuvaus`;
         let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.kuvaus`,
+              anchor: `${sectionId}.${koodiarvo}.${ankkuri}.kuvaus`,
               properties: {
+                metadata: { ankkuri },
                 value: ""
               }
             },
