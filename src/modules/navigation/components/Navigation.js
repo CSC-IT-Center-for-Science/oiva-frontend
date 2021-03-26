@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { AppRoute } from "const/index";
 import { useIntl } from "react-intl";
-import { includes, isEmpty, length, map, path } from "ramda";
+import { isEmpty, length, map } from "ramda";
 import { PropTypes } from "prop-types";
 import { localizeRouteKey } from "utils/common";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
-export const Navigation = ({ localesByLang, routes }) => {
+export const Navigation = ({ routes }) => {
   const { formatMessage, locale } = useIntl();
   const [visibleSubMenuRoute, setVisibleSubMenuRoute] = useState();
-  const location = useLocation();
 
   return (
     !isEmpty(routes) && (
@@ -22,7 +21,11 @@ export const Navigation = ({ localesByLang, routes }) => {
             <li
               key={routeObj.key}
               className="flex flex-col items-center hover:bg-green-600"
-              onClick={() => {setVisibleSubMenuRoute(visibleSubMenuRoute === null ? routeObj.key : null)}}
+              onClick={() => {
+                setVisibleSubMenuRoute(
+                  visibleSubMenuRoute === null ? routeObj.key : null
+                );
+              }}
               onMouseEnter={() => setVisibleSubMenuRoute(routeObj.key)}
               onMouseLeave={() => setVisibleSubMenuRoute(null)}
             >

@@ -154,11 +154,12 @@ export const createDynamicTextFields = (
 
           if (
             previousTextBoxChangeObj &&
-            lastInLupaTextBoxAnchor <
-              path(
-                ["properties", "metadata", "ankkuri"],
-                previousTextBoxChangeObj
-              )
+            (!lastInLupaTextBoxAnchor ||
+              lastInLupaTextBoxAnchor <
+                path(
+                  ["properties", "metadata", "ankkuri"],
+                  previousTextBoxChangeObj
+                ))
           ) {
             anchorToBeFocused = prop("anchor", previousTextBoxChangeObj);
           } else if (lastInLupaTextBox) {
