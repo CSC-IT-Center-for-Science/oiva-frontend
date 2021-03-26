@@ -45,7 +45,7 @@ const EsittelijatWizardActions = ({
         </div>
         <SimpleButton
           color="primary"
-          disabled={!isSavingEnabled}
+          isDisabled={!isSavingEnabled}
           className="button-right save"
           onClick={onSave}
           text={intl.formatMessage(wizardMessages.saveDraft)}

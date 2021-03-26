@@ -19,15 +19,11 @@ storiesOf("SimpleButton", module).add("Outlined, large", () => (
 ));
 storiesOf("SimpleButton", module).add("Text button", () => (
   <div className="flex flex-col w-56 p-4">
-    <SimpleButton
-      text="Text is here"
-      color="default"
-      onClick={() => {}}
-    />
+    <SimpleButton text="Text is here" color="default" onClick={() => {}} />
   </div>
 ));
 storiesOf("SimpleButton", module).add("Disabled Normal button", () => (
   <div className={"flex flex-col w-56 p-4"}>
-    <SimpleButton text="Text is here" disabled={true} onClick={() => {}} />
+    <SimpleButton text="Text is here" isDisabled={true} onClick={() => {}} />
   </div>
 ));
