@@ -15,7 +15,8 @@ import {
   nth,
   last,
   startsWith,
-  length
+  length,
+  not
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getChangeObjByAnchor } from "components/02-organisms/CategorizedListRoot/utils";
@@ -34,83 +35,102 @@ export const createDynamicTextFields = (
   const dynamicTextBoxChangeObjects = filter(
     changeObj =>
       startsWith(`${sectionId}.${koodiarvo}.`, changeObj.anchor) &&
-      endsWith(".kuvaus", changeObj.anchor) &&
-      !pathEq(["properties", "isDeleted"], true, changeObj),
+      endsWith(".kuvaus", changeObj.anchor),
     changeObjects
   );
 
-  const seuraavaAnkkuri =
-    parseInt(apply(Math.max, map(path(["meta", "ankkuri"]), maaraykset)), 10) +
-      1 || 0;
+  const unremovedDynamicTextBoxChangeObjects = sortBy(
+    prop("anchor"),
+    filter(
+      compose(not, pathEq(["properties", "isDeleted"], true)),
+      dynamicTextBoxChangeObjects
+    )
+  );
 
-  const unremovedInLupaTextBoxes = filter(maarays => {
-    const changeObj = getChangeObjByAnchor(
-      `${sectionId}.${koodiarvo}.${path(["meta", "ankkuri"], maarays)}.kuvaus`,
-      changeObjects
-    );
-    return !changeObj || !pathEq(["properties", "isDeleted"], true, changeObj);
-  }, maaraykset);
+  const nykyisetAnkkuriarvot = flatten([
+    map(path(["meta", "ankkuri"]), maaraykset),
+    map(
+      path(["properties", "metadata", "ankkuri"]),
+      dynamicTextBoxChangeObjects
+    )
+  ]);
+
+  const seuraavaAnkkuri =
+    parseInt(apply(Math.max, nykyisetAnkkuriarvot), 10) + 1 || 0;
+
+  const unremovedInLupaTextBoxes = sortBy(
+    path(["meta", "ankkuri"]),
+    filter(maarays => {
+      const changeObj = getChangeObjByAnchor(
+        `${sectionId}.${koodiarvo}.${path(
+          ["meta", "ankkuri"],
+          maarays
+        )}.kuvaus`,
+        changeObjects
+      );
+      return (
+        !changeObj || !pathEq(["properties", "isDeleted"], true, changeObj)
+      );
+    }, maaraykset)
+  );
 
   return flatten(
     [
       /**
        * Luodaan määräyksiin perustuvat tekstikentät.
        */
-      sortBy(
-        compose(anchorPart => parseInt(anchorPart, 10), prop("anchor")),
-        addIndex(map)((maarays, index) => {
-          const anchor = path(["meta", "ankkuri"], maarays);
-          const isRemoved = !!find(changeObj => {
-            const changeObjAnkkuri = path(
-              ["properties", "metadata", "ankkuri"],
-              changeObj
-            );
-            return (
-              equals(changeObjAnkkuri, anchor) &&
-              pathEq(["properties", "isDeleted"], true, changeObj)
-            );
-          }, changeObjects);
+      addIndex(map)((maarays, index) => {
+        const anchor = path(["meta", "ankkuri"], maarays);
+        const isRemoved = !!find(changeObj => {
+          const changeObjAnkkuri = path(
+            ["properties", "metadata", "ankkuri"],
+            changeObj
+          );
+          return (
+            equals(changeObjAnkkuri, anchor) &&
+            pathEq(["properties", "isDeleted"], true, changeObj)
+          );
+        }, changeObjects);
 
-          const previousInLupaTextBox =
-            index > 0 ? nth(index - 1, unremovedInLupaTextBoxes) : null;
+        const previousInLupaTextBox =
+          index > 0 ? nth(index - 1, unremovedInLupaTextBoxes) : null;
 
-          // Selvitetään, mihin fokus siirretään, jos tekstikenttä
-          // poistetaan (käyttäjän toimesta).
-          let previousTextBoxAnchor = previousInLupaTextBox
-            ? `${sectionId}.${koodiarvo}.${path(
-                ["meta", "ankkuri"],
-                previousInLupaTextBox
-              )}.kuvaus`
-            : `${sectionId}.${koodiarvo}.lisaaPainike.A`;
+        // Selvitetään, mihin fokus siirretään, jos tekstikenttä
+        // poistetaan (käyttäjän toimesta).
+        let previousTextBoxAnchor = previousInLupaTextBox
+          ? `${sectionId}.${koodiarvo}.${path(
+              ["meta", "ankkuri"],
+              previousInLupaTextBox
+            )}.kuvaus`
+          : `${sectionId}.${koodiarvo}.lisaaPainike.A`;
 
-          return isRemoved
-            ? null
-            : {
-                anchor,
-                components: [
-                  {
-                    anchor: "kuvaus",
-                    name: "TextBox",
-                    properties: {
-                      forChangeObject: {
-                        ankkuri: anchor,
-                        focusWhenDeleted: previousTextBoxAnchor,
-                        koodiarvo: maarays.koodiarvo
-                      },
-                      isPreviewModeOn,
-                      isReadOnly: isPreviewModeOn || isReadOnly,
-                      isRemovable: true,
-                      placeholder: __("common.kuvausPlaceholder"),
-                      title: __("common.kuvaus"),
-                      value:
-                        path(["meta", "arvo"], maarays) ||
-                        path(["meta", "kuvaus"], maarays)
-                    }
+        return isRemoved
+          ? null
+          : {
+              anchor,
+              components: [
+                {
+                  anchor: "kuvaus",
+                  name: "TextBox",
+                  properties: {
+                    forChangeObject: {
+                      ankkuri: anchor,
+                      focusWhenDeleted: previousTextBoxAnchor,
+                      koodiarvo: maarays.koodiarvo
+                    },
+                    isPreviewModeOn,
+                    isReadOnly: isPreviewModeOn || isReadOnly,
+                    isRemovable: true,
+                    placeholder: __("common.kuvausPlaceholder"),
+                    title: __("common.kuvaus"),
+                    value:
+                      path(["meta", "arvo"], maarays) ||
+                      path(["meta", "kuvaus"], maarays)
                   }
-                ]
-              };
-        }, unremovedInLupaTextBoxes).filter(Boolean)
-      ),
+                }
+              ]
+            };
+      }, unremovedInLupaTextBoxes).filter(Boolean),
       /**
        * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
        * erillisen painikkeen avulla.
@@ -119,23 +139,33 @@ export const createDynamicTextFields = (
         compose(anchorPart => parseInt(anchorPart, 10), prop("anchor")),
         addIndex(map)((changeObj, index) => {
           const previousTextBoxChangeObj =
-            index > 0 ? nth(index - 1, dynamicTextBoxChangeObjects) : null;
+            index > 0
+              ? nth(index - 1, unremovedDynamicTextBoxChangeObjects)
+              : null;
           const lastInLupaTextBox = last(unremovedInLupaTextBoxes);
+          const lastInLupaTextBoxAnchor = path(
+            ["meta", "ankkuri"],
+            lastInLupaTextBox
+          );
 
           // Selvitetään, mihin fokus siirretään, jos tekstikenttä
           // poistetaan (käyttäjän toimesta).
           let anchorToBeFocused = `${sectionId}.${koodiarvo}.lisaaPainike.A`;
 
-          if (previousTextBoxChangeObj) {
+          if (
+            previousTextBoxChangeObj &&
+            lastInLupaTextBoxAnchor <
+              path(
+                ["properties", "metadata", "ankkuri"],
+                previousTextBoxChangeObj
+              )
+          ) {
             anchorToBeFocused = prop("anchor", previousTextBoxChangeObj);
           } else if (lastInLupaTextBox) {
             // Jos kyseessä on ensimmäinen muutosobjektien kautta luotavista
             // tekstikentistä, siirretään fokus viimeiseen, aiemmin
             // määräysten pohjalta luotuun, tekstikenttään.
-            anchorToBeFocused = `${sectionId}.${koodiarvo}.${path(
-              ["meta", "ankkuri"],
-              lastInLupaTextBox
-            )}.kuvaus`;
+            anchorToBeFocused = `${sectionId}.${koodiarvo}.${lastInLupaTextBoxAnchor}.kuvaus`;
           }
 
           /**
@@ -178,7 +208,7 @@ export const createDynamicTextFields = (
                   }
                 ]
               };
-        }, dynamicTextBoxChangeObjects).filter(Boolean)
+        }, unremovedDynamicTextBoxChangeObjects).filter(Boolean)
       ),
       /**
        * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
@@ -197,7 +227,7 @@ export const createDynamicTextFields = (
               isReadOnly: isPreviewModeOn || isReadOnly,
               isVisible:
                 length(unremovedInLupaTextBoxes) +
-                  length(dynamicTextBoxChangeObjects) <
+                  length(unremovedDynamicTextBoxChangeObjects) <
                 maxAmountOfTextBoxes,
               icon: "FaPlus",
               iconContainerStyles: {
