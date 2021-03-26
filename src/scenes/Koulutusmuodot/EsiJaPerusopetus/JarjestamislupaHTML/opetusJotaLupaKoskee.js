@@ -21,6 +21,7 @@ import {
 } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import { sortArticlesByHuomioitavaKoodi } from "../../../../services/lomakkeet/utils";
 
 const defaultProps = {
   maaraykset: []
@@ -55,12 +56,12 @@ export default function PoOpetusJotaLupaKoskeeHtml({
       });
   }, []);
 
-  const opetustehtavaMaaraykset = sortBy(compose(parseInt, prop("koodiarvo")), filter(
+  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(filter(
     maarays =>
       pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
       maarays.koodisto === "opetustehtava",
     maaraykset
-  ));
+  ), locale);
 
   const lisatietomaarays = find(
     maarays =>
