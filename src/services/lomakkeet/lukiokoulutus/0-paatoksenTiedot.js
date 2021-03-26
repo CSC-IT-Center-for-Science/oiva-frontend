@@ -145,32 +145,6 @@ export default async function getPaatoksenTiedot(
             }
           }
         ]
-      },
-      {
-        anchor: "paattymispaivamaara",
-        components: [
-          {
-            anchor: "A",
-            name: "Datepicker",
-            styleClasses: [""],
-            properties: {
-              fullWidth: true,
-              label: __("common.paattymispaivamaara"),
-              placeholder: __("common.paattymispaivamaara"),
-              locale: locale,
-              localizations: {
-                ok: __("common.ok"),
-                clear: __("common.clear"),
-                cancel: __("common.cancel"),
-                today: __("common.today"),
-                datemax: __("common.datemax"),
-                datemin: __("common.datemin"),
-                dateinvalid: __("common.dateinvalid")
-              },
-              value: ""
-            }
-          }
-        ]
       }
     ]
   };
