@@ -9,7 +9,10 @@ import {
   propEq,
   path,
   addIndex,
-  pathEq
+  pathEq,
+  sortBy,
+  prop,
+  compose
 } from "ramda";
 import { useIntl } from "react-intl";
 import {
@@ -18,6 +21,7 @@ import {
 } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import { sortArticlesByHuomioitavaKoodi } from "../../../../services/lomakkeet/utils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
 
@@ -54,12 +58,12 @@ export default function PoOpetusJotaLupaKoskeeHtml({
       });
   }, []);
 
-  const opetustehtavaMaaraykset = filter(
+  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(filter(
     maarays =>
       pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
       maarays.koodisto === "opetustehtava",
     maaraykset
-  );
+  ), locale);
 
   const lisatietomaarays = find(
     maarays =>
