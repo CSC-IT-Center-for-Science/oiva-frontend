@@ -44,12 +44,12 @@ export async function getErityisetKoulutustehtavatLukio(
   return flatten(
     [
       map(erityinenKoulutustehtava => {
-        const tehtavaanLiittyvatMaaraykset = filter(
-          m =>
-            propEq("koodiarvo", erityinenKoulutustehtava.koodiarvo, m) &&
-            propEq("koodisto", "lukioerityinenkoulutustehtavauusi", m),
-          maaraykset
-        );
+        const tehtavaanLiittyvatMaaraykset = filter(m => {
+          return (
+            m.koodiarvo == erityinenKoulutustehtava.koodiarvo &&
+            propEq("koodisto", "lukioerityinenkoulutustehtavauusi", m)
+          );
+        }, maaraykset);
         const kuvausmaaraykset = filter(
           hasPath(["meta", "kuvaus"]),
           tehtavaanLiittyvatMaaraykset
@@ -84,7 +84,6 @@ export async function getErityisetKoulutustehtavatLukio(
           pathEq(["meta", "ankkuri"], kuvausankkuri0),
           kuvausmaaraykset
         );
-
         return {
           anchor: erityinenKoulutustehtava.koodiarvo,
           categories: flatten([

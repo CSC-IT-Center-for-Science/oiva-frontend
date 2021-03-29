@@ -189,7 +189,8 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
-    kohteet
+    kohteet,
+    lupa.maaraykset
   );
 
   // 6. OPPILAS-/OPISKELIJAMÄÄRÄT

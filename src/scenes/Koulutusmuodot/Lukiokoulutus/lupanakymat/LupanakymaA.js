@@ -177,7 +177,6 @@ const LupanakymaA = React.memo(
       rajoitteet
     );
 
-
     const valtakunnallisetKehittamistehtavatRajoitteet = getRajoitteetBySection(
       "valtakunnallisetKehittamistehtavat",
       rajoitteet
@@ -273,9 +272,14 @@ const LupanakymaA = React.memo(
                   <ValtakunnallisetKehittamistehtavat
                     code="5"
                     isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste(
-                      "valtakunnallinenKehittamistehtava",
-                      maaraykset
+                    maaraykset={filter(
+                      maarays =>
+                        propEq(
+                          "koodisto",
+                          "valtakunnallinenkehittamistehtava",
+                          maarays
+                        ),
+                      maaraykset || []
                     )}
                     rajoitteet={valtakunnallisetKehittamistehtavatRajoitteet}
                     sectionId={"valtakunnallisetKehittamistehtavat"}

@@ -8,6 +8,7 @@ import {
   length,
   map,
   path,
+  pathEq,
   propEq,
   toUpper
 } from "ramda";
@@ -38,11 +39,20 @@ export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
       });
   }, []);
 
-  const valtakunnallisetKehittamistehtavatMaaraykset = filter(
+  const erityinenkoulutustehtavaMaaraykset = filter(
     maarays =>
       maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
-      maarays.koodisto === "lukioerityinenkoulutustehtavauusi" &&
-      maarays.meta.isValtakunnallinenKehitystehtava,
+      maarays.koodisto === "lukioerityinenkoulutustehtavauusi",
+    maaraykset
+  );
+
+  const valtakunnallinenKehittamistehtavaMaaraykset = filter(
+    maarays =>
+      pathEq(
+        ["kohde", "tunniste"],
+        "valtakunnallinenkehittamistehtava",
+        maarays
+      ) && propEq("koodisto", "valtakunnallinenkehittamistehtava", maarays),
     maaraykset
   );
 
@@ -53,7 +63,8 @@ export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
     maaraykset
   );
 
-  return !isEmpty(valtakunnallisetKehittamistehtavatMaaraykset) &&
+  return !isEmpty(valtakunnallinenKehittamistehtavaMaaraykset) &&
+    !isEmpty(erityinenkoulutustehtavaMaaraykset) &&
     !isEmpty(erityisetKoulutustehtavatKoodisto) ? (
     <div className="mt-4">
       <Typography component="h3" variant="h3">
@@ -62,7 +73,21 @@ export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
 
       <ul className="ml-8 list-disc mb-4">
         {addIndex(map)((maarays, index) => {
-          let naytettavaArvo = path(["meta", "kuvaus"], maarays);
+          const vastaavaErityinenKoulutustehtavaMaarays = find(
+            eritMaarays =>
+              propEq("koodiarvo", maarays.koodiarvo, eritMaarays) &&
+              pathEq(
+                ["meta", "ankkuri"],
+                path(["meta", "ankkuri"], maarays),
+                eritMaarays
+              ),
+            erityinenkoulutustehtavaMaaraykset
+          );
+
+          let naytettavaArvo = path(
+            ["meta", "kuvaus"],
+            vastaavaErityinenKoulutustehtavaMaarays
+          );
 
           if (!naytettavaArvo) {
             const koodistosta = find(
@@ -98,7 +123,7 @@ export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
             </React.Fragment>
           );
           return result;
-        }, valtakunnallisetKehittamistehtavatMaaraykset)}
+        }, valtakunnallinenKehittamistehtavaMaaraykset)}
       </ul>
       <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
