@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
+  equals,
   filter,
   find,
-  includes,
   map,
   toUpper,
   isEmpty,
@@ -38,7 +38,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
     maarays =>
       pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
-      includes("ensisijaiset", maarays.meta.changeObjects[0].anchor),
+      equals("ensisijaiset", maarays.meta.valikko),
     maaraykset
   );
 
@@ -46,7 +46,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
     maarays =>
       pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
-      includes("toissijaiset", maarays.meta.changeObjects[0].anchor),
+      equals("toissijaiset", maarays.meta.valikko),
     maaraykset
   );
 
