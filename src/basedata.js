@@ -274,7 +274,8 @@ const fetchBaseData = async (
       koulutustyyppi
         ? `${backendRoutes.organisaatiot.path}?koulutustyyppi=${koulutustyyppi}`
         : backendRoutes.organisaatiot.path,
-      keys
+      keys,
+      backendRoutes.organisaatiot.minimumTimeBetweenFetchingInMinutes
     ),
     poErityisetKoulutustehtavat: await getRaw(
       "poErityisetKoulutustehtavat",

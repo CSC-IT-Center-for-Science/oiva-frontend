@@ -82,7 +82,10 @@ export const backendRoutes = {
   liitteet: { path: `liitteet/`, abortController: false },
   kaannokset: { path: "lokalisaatio" },
 
-  organisaatiot: { path: "luvat/organisaatiot" },
+  organisaatiot: {
+    path: "luvat/organisaatiot",
+    minimumTimeBetweenFetchingInMinutes: 0
+  },
   opetustehtavakoodisto: { path: "koodistot/koodisto/opetustehtava" },
   opetustehtavat: { path: "koodistot/koodit/opetustehtava" },
   kieletOPH: { path: "koodistot/koodit/kielikoodistoopetushallinto" },
