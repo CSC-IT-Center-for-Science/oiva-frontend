@@ -191,10 +191,11 @@ export const defineBackendChangeObjects = async (
         const index = nth(2, split(".", changeObj.anchor));
 
         const isValtakunnallinenKehitystehtava = find(
-          compose(
-            endsWith(`.${koodiarvo}.${index}.valintaelementti`),
-            prop("anchor")
-          ),
+          tehtava =>
+            endsWith(
+              `.${koodiarvo}.${index}.valintaelementti`,
+              tehtava.anchor
+            ) && tehtava.tila !== "POISTO",
           changeObjects.valtakunnallisetKehittamistehtavat
         );
 
@@ -239,7 +240,9 @@ export const defineBackendChangeObjects = async (
               changeObj
             )
           },
-          tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+          tila: path(["properties", "isChecked", checkboxChangeObj])
+            ? "LISAYS"
+            : "POISTO"
         };
 
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);

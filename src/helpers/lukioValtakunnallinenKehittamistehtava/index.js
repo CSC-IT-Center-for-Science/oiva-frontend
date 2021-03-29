@@ -51,12 +51,50 @@ export const defineBackendChangeObjects = async (
     maaraykset || []
   );
 
+  const uncheckedErityisetKoulutustehtavatCheckboxes = filter(
+    erityinenKoulutustehtava =>
+      getAnchorPart(erityinenKoulutustehtava.anchor, 2) ===
+        "valintaelementti" &&
+      path(["properties", "isChecked"], erityinenKoulutustehtava) === false,
+    changeObjects.erityisetKoulutustehtavat
+  );
+
+  /** Käydään läpi uncheckatut erityiset koulutustehtävät. Jos 5 osiosta löytyy näitä vastaavia määräyksiä
+   * luodaan niille poisto-objektit TODO: Poisto-objektien luonti poistettujen tekstikenttien perusteella */
+  const poistoObjektitOsion4MuutostenPerusteella = map(
+    uncheckedErityinenKoulutustehtava => {
+      const vastaavat5OsionMaaraykset = filter(
+        maarays =>
+          maarays.koodiarvo ===
+          getAnchorPart(uncheckedErityinenKoulutustehtava.anchor, 1),
+        valtakunnallinenkehittamistehtavaMaaraykset
+      );
+
+      return map(maaraysOsio5 => {
+        return {
+          generatedId: `kehittamistehtava-${Math.random()}`,
+          kohde,
+          koodiarvo: maaraysOsio5.koodiarvo,
+          koodisto: kohde.tunniste,
+          maaraystyyppi,
+          maaraysUuid: maaraysOsio5.uuid,
+          meta: {
+            ankkuri: path(["meta", "ankkuri"], maaraysOsio5)
+          },
+          tila: "POISTO"
+        };
+      }, vastaavat5OsionMaaraykset);
+    },
+    uncheckedErityisetKoulutustehtavatCheckboxes
+  );
+
   const valintaBeChangeObjects = map(changeObj => {
     const koodiarvo = getAnchorPart(changeObj.anchor, 1);
     const ankkuri = getAnchorPart(changeObj.anchor, 2);
     const tila = path(["properties", "isChecked"], changeObj)
       ? "LISAYS"
       : "POISTO";
+
     const maaraysUuid =
       tila === "POISTO"
         ? prop(
@@ -69,6 +107,7 @@ export const defineBackendChangeObjects = async (
             )
           )
         : null;
+
     return {
       generatedId: changeObj.anchor,
       kohde,
@@ -105,7 +144,9 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  return flatten([valintaBeChangeObjects, lisatiedotBEchangeObject]).filter(
-    Boolean
-  );
+  return flatten([
+    valintaBeChangeObjects,
+    poistoObjektitOsion4MuutostenPerusteella,
+    lisatiedotBEchangeObject
+  ]).filter(Boolean);
 };
