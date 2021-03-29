@@ -17,6 +17,8 @@ import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKo
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
+import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   maaraykset
@@ -85,6 +87,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
                 ? getRajoitteetFromMaarays(
                     maarays.aliMaaraykset,
                     localeUpper,
+                    intl.formatMessage(rajoitteet.ajalla),
                     "kuvaus"
                   )
                 : ""}
@@ -93,7 +96,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
           return result;
         }, erityisetKoulutustehtavatMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

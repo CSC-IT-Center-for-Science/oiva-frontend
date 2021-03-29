@@ -11,6 +11,7 @@ import {
   includes,
   join,
   keys,
+  last,
   length,
   map,
   mapObjIndexed,
@@ -345,7 +346,7 @@ export function getRajoiteListamuodossa(
         return addEnding(
           "</li></ul>",
           s,
-          index === 0 ? amountOfInstances - 2 : amountOfInstances
+          index === 0 ? amountOfInstances - 1 : amountOfInstances
         );
       }, kohdennusLista)
     );
@@ -439,13 +440,15 @@ export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
 export const getRajoitteetFromMaarays = (
   alimaaraykset = [],
   locale,
+  ajallaText,
   naytettavaArvo
 ) => {
   const htmlString = handleAlimaaraykset(
     "",
     alimaaraykset,
     naytettavaArvo,
-    locale
+    locale,
+    ajallaText
   );
 
   return (
@@ -460,6 +463,7 @@ export const handleAlimaarays = (
   alimaarays,
   htmlString,
   locale,
+  ajallaText,
   naytettavaArvo = "nimi",
   multiselectAlimaaraykset = null
 ) => {
@@ -481,9 +485,7 @@ export const handleAlimaarays = (
       "YYYY-MM-DD"
     ).format("DD.MM.YYYY");
 
-    modifiedString = `${modifiedString}<li class="list-disc">${__(
-      "rajoitteet.ajalla"
-    )} ${alkupvm} - ${loppupvm}</li>`;
+    modifiedString = `${modifiedString}<li class="list-disc">${ajallaText} ${alkupvm} - ${loppupvm}</li>`;
   } else {
     if (multiselectAlimaaraykset) {
       modifiedString = `${modifiedString}<li class="list-disc">`;
@@ -525,7 +527,8 @@ export const handleAlimaarays = (
       modifiedString,
       alimaarays.aliMaaraykset,
       naytettavaArvo,
-      locale
+      locale,
+      ajallaText
     );
   }
 
@@ -537,7 +540,8 @@ const handleAlimaaraykset = (
   modifiedString,
   alimaaraykset,
   naytettavaArvo,
-  locale
+  locale,
+  ajallaText
 ) => {
   let lapikaydytMultiselectit = [];
   forEach(alimaarays => {
@@ -555,6 +559,7 @@ const handleAlimaaraykset = (
         alimaarays,
         modifiedString,
         locale,
+        ajallaText,
         naytettavaArvo,
         multiselectAlimaaraykset
       );
@@ -625,6 +630,53 @@ export const createMaarayksiaVastenLuodutRajoitteetBEObjects = (
       const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
         const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
         if (koodiarvo && toUpper(koodiarvo) === maaraysKoodiarvoUpper) {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            {
+              isMaarays: true,
+              generatedId: maarays.uuid,
+              kohde
+            },
+            rajoite
+          );
+        }
+      }, rajoitteetByRajoiteId);
+      return values(maaraystaKoskevatRajoitteet);
+    }, maaraykset)
+  ).filter(Boolean);
+};
+
+// Alimääräysten luonti rajoitteille, jotka on kytketty olemassa
+// oleviin dynaamisia tekstikenttiä koskeviin määräyksiin.
+export const createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects = (
+  maaraykset,
+  rajoitteetByRajoiteId,
+  kohteet,
+  maaraystyypit,
+  kohde
+) => {
+  return flatten(
+    map(maarays => {
+      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
+        /** Tekstikentän id on muotoa koodiarvo-ankkuri */
+        const rajoiteTekstikenttaId = path(
+          ["1", "properties", "value", "value"],
+          rajoite
+        );
+        const rajoitteenTekstikentanAnkkuri = last(
+          split("-", rajoiteTekstikenttaId)
+        );
+        const rajoitteenTekstikentanKoodiarvo = head(
+          split("-", rajoiteTekstikenttaId)
+        );
+        if (
+          rajoitteenTekstikentanKoodiarvo === maarays.koodiarvo &&
+          /** Määräyksen ankkuri on null jos tekstikenttiä ei voi lisätä */
+          (path(["meta", "ankkuri"], maarays) == null ||
+            rajoitteenTekstikentanAnkkuri ===
+              path(["meta", "ankkuri"], maarays))
+        ) {
           return createAlimaarayksetBEObjects(
             kohteet,
             maaraystyypit,

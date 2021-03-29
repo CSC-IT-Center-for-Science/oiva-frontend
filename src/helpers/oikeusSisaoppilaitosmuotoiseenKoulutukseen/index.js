@@ -24,6 +24,8 @@ import {
 import localforage from "localforage";
 import { __ } from "i18n-for-browser";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { createMaarayksiaVastenLuodutRajoitteetBEObjects } from "utils/rajoitteetUtils";
+import { getMaarayksetByTunniste } from "helpers/lupa/index";
 
 export const initializeOikeus = oikeus => {
   return omit(["koodiArvo"], {
@@ -54,8 +56,8 @@ export const initializeOikeudet = oikeudet => {
 export const defineBackendChangeObjects = async (
   changeObjects = {},
   maaraystyypit,
-  locale,
-  kohteet
+  kohteet,
+  lupaMaaraykset
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
 
@@ -66,6 +68,11 @@ export const defineBackendChangeObjects = async (
     kohteet
   );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
+
+  const maaraykset = await getMaarayksetByTunniste(
+    kohde.tunniste,
+    lupaMaaraykset
+  );
 
   const oikeusSisaoppilaitosmuotoiseenKoulutukseenChangeObjs = map(
     oikeus => {
@@ -113,16 +120,18 @@ export const defineBackendChangeObjects = async (
       // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
-      const alimaaraykset = values(
-        mapObjIndexed(asetukset => {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            muutosobjekti,
-            drop(2, asetukset)
-          );
-        }, rajoitteetByRajoiteIdAndKoodiarvo)
-      );
+      const alimaaraykset = muutosobjekti
+        ? values(
+            mapObjIndexed(asetukset => {
+              return createAlimaarayksetBEObjects(
+                kohteet,
+                maaraystyypit,
+                muutosobjekti,
+                drop(2, asetukset)
+              );
+            }, rajoitteetByRajoiteIdAndKoodiarvo)
+          )
+        : null;
 
       return [muutosobjekti, alimaaraykset];
     },
@@ -135,6 +144,14 @@ export const defineBackendChangeObjects = async (
       oikeusSisaoppilaitosmuotoiseenKoulutukseen
     )
   ).filter(Boolean);
+
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita
@@ -167,8 +184,9 @@ export const defineBackendChangeObjects = async (
     : null;
 
   return flatten([
-    oikeusSisaoppilaitosmuotoiseenKoulutukseenChangeObjs,
-    lisatiedotBEchangeObject
+    lisatiedotBEchangeObject,
+    maarayksiaVastenLuodutRajoitteet,
+    oikeusSisaoppilaitosmuotoiseenKoulutukseenChangeObjs
   ]).filter(Boolean);
 };
 

@@ -177,7 +177,7 @@ export async function createObjectToSave(
         mapObjIndexed(rajoite => {
           return pathEq(
             ["0", "properties", "value", "value"],
-            "erityisetKoulutustehtavatPO",
+            "erityisetKoulutustehtavat",
             rajoite
           )
             ? rajoite
@@ -187,6 +187,7 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
+    lupa.maaraykset,
     kohteet
   );
 
@@ -232,6 +233,7 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
+    lupa.maaraykset,
     kohteet
   );
 
