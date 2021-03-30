@@ -26,6 +26,7 @@ import {
   take,
   values
 } from "ramda";
+import { getMaarayksetByTunniste} from "../lupa/index";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
@@ -64,9 +65,15 @@ export function getLukioMuutEhdotFromStorage() {
 export const defineBackendChangeObjects = async (
   changeObjects = [],
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
+  const maaraykset = await getMaarayksetByTunniste(
+    "muutkoulutuksenjarjestamiseenliittyvatehdot",
+    lupaMaaraykset
+  )
+
   const { rajoitteetByRajoiteId } = changeObjects;
 
   const kohde = find(
@@ -238,7 +245,30 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  const objects = flatten([muutokset, lisatiedotBEchangeObject]).filter(
+  // Luodaan vielä alimääräykset rajoitteille, jotka on kytketty olemassa
+  // oleviin määräyksiin.
+  const maarayksiaVastenLuodutRajoitteet = flatten(
+    map(maarays => {
+      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
+        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
+        if (koodiarvo === `${maarays.koodiarvo}-${maarays.meta.ankkuri || 0}`) {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            {
+              isMaarays: true,
+              generatedId: maarays.uuid,
+              kohde
+            },
+            rajoite
+          );
+        }
+      }, rajoitteetByRajoiteId);
+      return values(maaraystaKoskevatRajoitteet);
+    }, maaraykset)
+  ).filter(Boolean);
+
+  const objects = flatten([maarayksiaVastenLuodutRajoitteet, muutokset, lisatiedotBEchangeObject]).filter(
     Boolean
   );
 
