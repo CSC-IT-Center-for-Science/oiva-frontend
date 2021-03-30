@@ -1,4 +1,5 @@
 import {
+  any,
   mapObjIndexed,
   groupBy,
   prop,
@@ -20,7 +21,8 @@ import {
   concat,
   take,
   toLower,
-  drop
+  drop,
+  equals
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
@@ -142,24 +144,53 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    const muutosobjekti = changeObj
-      ? {
-          generatedId: `opetuskielet-${Math.random()}`,
-          kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
-          koodiarvo: toLower(opetuskieli.koodiarvo),
-          koodisto: opetuskieli.koodisto.koodistoUri,
-          kuvaus: getLocalizedProperty(changeObj.metadata, locale, "kuvaus"),
-          maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
-          meta: {
-            changeObjects: concat(
-              [changeObj],
-              take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
-            ),
-            valikko: path(["properties", "metadata", "valikko"], changeObj)
-          },
-          tila: "LISAYS"
-        }
-      : null;
+    const maarays = find(
+      maarays => maarays.koodiarvo.toLowerCase() === opetuskieli.koodiarvo.toLowerCase(),
+      maaraykset
+    );
+
+    const isValikkoChanged = any(change => {
+      return equals(
+        path(["properties", "metadata", "valikko"], change),
+        path(["meta", "valikko"], maarays)
+      );
+    }, opetuskieletChangeObjs);
+
+    let muutosobjekti = null;
+
+    if (changeObj && !maarays) {
+      // Kokonaan uusi kielivalinta
+      muutosobjekti = {
+        generatedId: `opetuskielet-${Math.random()}`,
+        kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
+        koodiarvo: toLower(opetuskieli.koodiarvo),
+        koodisto: opetuskieli.koodisto.koodistoUri,
+        maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+        meta: {
+          changeObjects: concat(
+            [changeObj],
+            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+          ),
+          ...(changeObj ? { valikko: path(["properties", "metadata", "valikko"], changeObj) } : null)
+        },
+        tila: "LISAYS"
+      };
+    } else if (maarays && !changeObj && isValikkoChanged) {
+      // Luvalta löytyvä kielivalinta jonka valikko on muuttunut, mutta ei ole muutosobjektia.
+      muutosobjekti = {
+        generatedId: `opetuskielet-${Math.random()}`,
+        kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
+        koodiarvo: toLower(opetuskieli.koodiarvo),
+        koodisto: opetuskieli.koodisto.koodistoUri,
+        maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+        meta: {
+          changeObjects: opetuskieletChangeObjs,
+          ...(changeObj ? { valikko: path(["properties", "metadata", "valikko"], changeObj) } : null)
+        },
+        maaraysUuid: maarays.uuid,
+        tila: "POISTO"
+      };
+    }
 
     // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
     // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
