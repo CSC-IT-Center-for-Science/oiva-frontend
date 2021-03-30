@@ -22,11 +22,12 @@ const isFieldEmpty = (anchor, defaultValue, changeObjects) => {
  */
 export default async function getPaatoksenTiedot(
   data,
-  { isReadOnly },
+  { isPreviewModeOn, isReadOnly },
   locale,
   changeObjects
 ) {
   const defaultAsianumero = "";
+  const defaultDiaarinumero = "";
 
   const isAsianumeroFieldEmpty = await isFieldEmpty(
     "paatoksentiedot.asianumero.A",
@@ -34,7 +35,15 @@ export default async function getPaatoksenTiedot(
     changeObjects
   );
 
-  const isValid = !isAsianumeroFieldEmpty;
+  const isDiaarinumeroFieldEmpty = await isFieldEmpty(
+    "paatoksentiedot.diaarinumero.A",
+    defaultAsianumero,
+    changeObjects
+  );
+
+  const isValid =
+    (!isAsianumeroFieldEmpty || !isDiaarinumeroFieldEmpty) &&
+    !(!isAsianumeroFieldEmpty && !isDiaarinumeroFieldEmpty);
 
   return {
     /**
@@ -55,13 +64,32 @@ export default async function getPaatoksenTiedot(
           {
             anchor: "A",
             name: "Input",
+            styleClasses: ["w-full"],
             properties: {
               isReadOnly,
-              isRequired: true,
+              isRequired: isDiaarinumeroFieldEmpty,
               isValid,
               label: __("common.asianumero"),
               type: "text",
               value: defaultAsianumero
+            }
+          }
+        ]
+      },
+      {
+        anchor: "diaarinumero",
+        components: [
+          {
+            anchor: "A",
+            name: "Input",
+            styleClasses: ["w-full"],
+            properties: {
+              isReadOnly,
+              isRequired: isAsianumeroFieldEmpty,
+              isValid,
+              label: __("common.diaarinumero"),
+              type: "text",
+              value: defaultDiaarinumero
             }
           }
         ]
@@ -72,6 +100,7 @@ export default async function getPaatoksenTiedot(
           {
             anchor: "A",
             name: "Datepicker",
+            styleClasses: [""],
             properties: {
               fullWidth: true,
               label: __("common.paatospaiva"),
@@ -97,6 +126,7 @@ export default async function getPaatoksenTiedot(
           {
             anchor: "A",
             name: "Datepicker",
+            styleClasses: [""],
             properties: {
               fullWidth: true,
               label: __("common.voimaantulopaiva"),
