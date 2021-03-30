@@ -13,9 +13,9 @@ import {
   path,
   prop,
   propEq,
+  reject,
   split
 } from "ramda";
-
 import { getAsetuksenKohdekomponentti } from "services/lomakkeet/rajoitteet/rajoitedialogi/asetuksenKohdekomponentit";
 import { getKohdennuksenKohdekomponentti } from "services/lomakkeet/rajoitteet/rajoitedialogi/kohdennuksenKohdekomponentit";
 import { getTarkenninkomponentit } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/index";
@@ -338,7 +338,10 @@ const getKohdennuksetRecursively = async (
                           isMulti: false,
                           isReadOnly,
                           isVisible: !isReadOnly,
-                          options: kohdevaihtoehdot
+                          options: reject(
+                            propEq("value", "oppilaitokset"),
+                            kohdevaihtoehdot
+                          )
                         }
                       }
                     ],
