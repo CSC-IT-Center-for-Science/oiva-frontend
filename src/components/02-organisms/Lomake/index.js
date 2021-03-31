@@ -86,9 +86,12 @@ const Lomake = React.memo(
       [setChanges]
     );
 
-    const onFocus = useCallback(() => {
-      setFocusOn(null);
-    }, [setFocusOn]);
+    const onFocus = useCallback(
+      (anchor = null) => {
+        setFocusOn(anchor);
+      },
+      [setFocusOn]
+    );
 
     useEffect(() => {
       (async () => {

@@ -18,6 +18,7 @@ import {
   nth,
   omit,
   path,
+  pathEq,
   prop,
   propEq,
   reject,
@@ -30,6 +31,8 @@ import {
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import { getAnchorPart } from "../../utils/common";
+import { getMaarayksetByTunniste } from "helpers/lupa/index";
+import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "utils/rajoitteetUtils";
 
 export const initializeLukioErityinenKoulutustehtava = erityinenKoulutustehtava => {
   return omit(["koodiArvo"], {
@@ -125,6 +128,7 @@ const getAlimaaraykset = (
 export const defineBackendChangeObjects = async (
   changeObjects = {},
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
@@ -134,9 +138,20 @@ export const defineBackendChangeObjects = async (
   } = changeObjects;
 
   const kohde = find(propEq("tunniste", "erityinenkoulutustehtava"), kohteet);
-
+  const maaraykset = await getMaarayksetByTunniste(
+    kohde.tunniste,
+    lupaMaaraykset
+  );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const erityisetKoulutustehtavat = await getLukioErityisetKoulutustehtavatFromStorage();
+
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
 
   const muutokset = map(koulutustehtava => {
     // Checkbox-kenttien muutokset
@@ -147,6 +162,18 @@ export const defineBackendChangeObjects = async (
       ),
       changeObjects.erityisetKoulutustehtavat
     );
+
+    const tehtavaanLiittyvatMaaraykset = filter(
+      m =>
+        propEq("koodiarvo", koulutustehtava.koodiarvo, m) &&
+        propEq("koodisto", "lukioerityinenkoulutustehtavauusi", m),
+      maaraykset
+    );
+
+    const isCheckboxChecked =
+      (!!tehtavaanLiittyvatMaaraykset.length && !checkboxChangeObj) ||
+      (checkboxChangeObj &&
+        pathEq(["properties", "isChecked"], true, checkboxChangeObj));
 
     // Kuvauskenttien muutokset kohdassa (muu koulutustehtava)
     const kuvausChangeObjects = filter(changeObj => {
@@ -239,7 +266,7 @@ export const defineBackendChangeObjects = async (
               changeObj
             )
           },
-          tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+          tila: isCheckboxChecked ? "LISAYS" : "POISTO"
         };
 
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);
@@ -287,7 +314,7 @@ export const defineBackendChangeObjects = async (
           }
         : null;
 
-      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Muodostetaan tehdyistä rajoituksista objektit backendiä varten.
       // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
       // loput toisiinsa "alenevassa polvessa".
       const alimaaraykset =
@@ -335,7 +362,11 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  return flatten([muutokset, lisatiedotBEchangeObject]).filter(Boolean);
+  return flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    muutokset,
+    lisatiedotBEchangeObject
+  ]).filter(Boolean);
 };
 
 export function getLukioErityisetKoulutustehtavatFromStorage() {

@@ -17,6 +17,7 @@ import {
   nth,
   omit,
   path,
+  pathEq,
   prop,
   propEq,
   reject,
@@ -64,9 +65,9 @@ export function getPOMuutEhdotFromStorage() {
 export const defineBackendChangeObjects = async (
   changeObjects = [],
   maaraystyypit,
-  locale,
   lupaMaaraykset,
-  kohteet
+  kohteet,
+  locale
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
 
@@ -98,6 +99,18 @@ export const defineBackendChangeObjects = async (
       changeObjects.muutEhdot
     );
 
+    const ehtoonLiittyvatMaaraykset = filter(
+      m =>
+        propEq("koodiarvo", ehto.koodiarvo, m) &&
+        propEq("koodisto", "pomuutkoulutuksenjarjestamiseenliittyvatehdot", m),
+      maaraykset
+    );
+
+    const isCheckboxChecked =
+      (!!ehtoonLiittyvatMaaraykset.length && !checkboxChangeObj) ||
+      (checkboxChangeObj &&
+        pathEq(["properties", "isChecked"], true, checkboxChangeObj));
+
     // Kuvauskenttien muutokset kohdassa (muu ehto)
     const kuvausChangeObjects = filter(changeObj => {
       return (
@@ -122,7 +135,7 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    if (checkboxChangeObj && length(kuvausChangeObjects)) {
+    if (length(kuvausChangeObjects)) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
         const kuvausBEChangeObject = {
@@ -142,7 +155,7 @@ export const defineBackendChangeObjects = async (
               ])
             ).filter(Boolean)
           },
-          tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+          tila: isCheckboxChecked ? "LISAYS" : "POISTO"
         };
 
         let alimaaraykset = [];

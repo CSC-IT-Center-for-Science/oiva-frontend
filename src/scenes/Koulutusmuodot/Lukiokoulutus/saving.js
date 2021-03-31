@@ -24,7 +24,7 @@ import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oike
 import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet/index";
-import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
+import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat/index";
 import * as valtakunnallinenKehittamistehtavaHelper from "helpers/lukioValtakunnallinenKehittamistehtava";
 import { koulutustyypitMap } from "../../../utils/constants";
 
@@ -73,7 +73,7 @@ export async function createObjectToSave(
         changeObjects.toimintaalue || []
       ),
       ulkomaa: filter(
-        compose(includes(".ulkomaa."), prop("anchor")),
+        compose(includes(".200."), prop("anchor")),
         changeObjects.toimintaalue || []
       ),
       rajoitteetByRajoiteId: reject(
@@ -176,6 +176,7 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );

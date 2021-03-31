@@ -16,7 +16,6 @@ import {
   find,
   flatten,
   groupBy,
-  isEmpty,
   isNil,
   last,
   length,
@@ -155,12 +154,11 @@ const LupanakymaA = React.memo(
     );
 
     // Rajoitteet
-    // TODO: Toistaiseksi näytetään määräyksiltä saadut rajoitteet, jos niitä on. Muutoin
-    // TODO: näytetään muutosobjekteilta saadut rajoitteet. Tämä pitää korjata kun lupamuutoksia
-    // TODO: aletaan tekemään esi- ja perusopetukselle.
-    const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId)
-      ? rajoitteetFromMaarayksetByRajoiteId
-      : rajoitteetByRajoiteId;
+    const rajoitteet = Object.assign(
+      {},
+      rajoitteetFromMaarayksetByRajoiteId,
+      rajoitteetByRajoiteId
+    );
 
     const opetuskieletRajoitteet = getRajoitteetBySection(
       "opetuskielet",

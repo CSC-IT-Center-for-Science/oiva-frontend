@@ -7,6 +7,7 @@ import {
   useChangeObjects,
   useChangeObjectsByAnchorWithoutUnderRemoval
 } from "stores/muutokset";
+import { getAnchorPart } from "utils/common";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "muutEhdot"],
@@ -30,8 +31,13 @@ const MuutEhdot = ({
   });
 
   const onAddButtonClick = useCallback(
-    (koodiarvo, index) => {
-      createTextBoxChangeObject(sectionId, koodiarvo, index);
+    (fromComponent, index, value = null) => {
+      createTextBoxChangeObject(
+        sectionId,
+        getAnchorPart(fromComponent.fullAnchor, 1),
+        index,
+        value
+      );
     },
     [createTextBoxChangeObject, sectionId]
   );
@@ -41,7 +47,7 @@ const MuutEhdot = ({
       anchor={sectionId}
       changeObjects={changeObjects}
       code={code}
-      data={{ maaraykset, rajoitteet }}
+      data={{ maaraykset, rajoitteet, sectionId }}
       functions={{ onAddButtonClick }}
       formTitle={title}
       mode={mode}

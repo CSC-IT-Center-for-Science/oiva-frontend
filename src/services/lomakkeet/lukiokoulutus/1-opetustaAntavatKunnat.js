@@ -13,18 +13,14 @@ import {
   pathEq,
   prop,
   propEq,
-  sortBy,
-  path,
-  hasPath,
-  startsWith,
-  endsWith
+  hasPath
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
-import { getAnchorPart } from "../../../utils/common";
+import { createDynamicTextFields } from "../dynamic";
 
 const labelStyles = {
   addition: isAdded,
@@ -221,20 +217,6 @@ export const opetustaAntavatKunnat = async (
     kuntamaaraykset
   );
 
-  const kuvausankkuri0 = "0";
-  const kuvausmaarays0 = find(
-    pathEq(["meta", "ankkuri"], kuvausankkuri0),
-    ulkomaillaSijaitsevatKunnat
-  );
-
-  const dynamicTextBoxChangeObjects = filter(
-    changeObj =>
-      startsWith(`${sectionId}.ulkomaa.`, changeObj.anchor) &&
-      endsWith(".kuvaus", changeObj.anchor) &&
-      !startsWith(`${sectionId}.ulkomaa.0`, changeObj.anchor),
-    changeObjects
-  );
-
   const lomakerakenne = flatten(
     [
       {
@@ -269,10 +251,10 @@ export const opetustaAntavatKunnat = async (
       !!ulkomaa
         ? flatten([
             {
-              anchor: "ulkomaa",
+              anchor: ulkomaa.koodiarvo,
               components: [
                 {
-                  anchor: ulkomaa.koodiarvo,
+                  anchor: "valintaelementti",
                   name: "CheckboxWithLabel",
                   properties: {
                     forChangeObject: {
@@ -299,167 +281,14 @@ export const opetustaAntavatKunnat = async (
                   styleClasses: ["mt-8"]
                 }
               ],
-              categories: flatten(
-                [
-                  /**
-                   * Mikäli 200 = ulkomaa on valittu, on valinnan alla näytettävä
-                   * ainakin yksi tekstikenttä. Luodaan tekstikenttä tässä.
-                   */
-                  {
-                    anchor: kuvausankkuri0,
-                    components: [
-                      {
-                        anchor: "kuvaus",
-                        name: "TextBox",
-                        properties: {
-                          forChangeObject: {
-                            ankkuri: kuvausankkuri0,
-                            koodiarvo: ulkomaa.koodiarvo
-                          },
-                          isPreviewModeOn,
-                          isReadOnly: _isReadOnly,
-                          placeholder: __("common.kuvausPlaceholder"),
-                          title: __("common.kuvaus"),
-                          value: kuvausmaarays0
-                            ? kuvausmaarays0.meta.arvo
-                            : getLocalizedProperty(
-                                ulkomaa.metadata,
-                                locale,
-                                "arvo"
-                              )
-                        }
-                      }
-                    ],
-                    layout: { indentation: "none" }
-                  },
-                  /**
-                   * Luodaan loput tekstikentät määräyksiin perustuen.
-                   */
-                  sortBy(
-                    compose(
-                      anchorPart => parseInt(anchorPart, 10),
-                      prop("anchor")
-                    ),
-                    map(maarays => {
-                      return maarays.meta.ankkuri !== kuvausankkuri0
-                        ? {
-                            anchor: path(["meta", "ankkuri"], maarays),
-                            components: [
-                              {
-                                anchor: "kuvaus",
-                                name: "TextBox",
-                                properties: {
-                                  forChangeObject: {
-                                    ankkuri: path(["meta", "ankkuri"], maarays),
-                                    koodiarvo: maarays.koodiarvo
-                                  },
-                                  isPreviewModeOn,
-                                  isReadOnly: _isReadOnly,
-                                  isRemovable: true,
-                                  placeholder: __("common.kuvausPlaceholder"),
-                                  title: __("common.kuvaus"),
-                                  value: maarays.meta.arvo
-                                }
-                              }
-                            ]
-                          }
-                        : null;
-                    }, ulkomaillaSijaitsevatKunnat).filter(Boolean)
-                  ),
-                  /**
-                   * Luodaan dynaamiset tekstikentät, joita käyttäjä voi luoda lisää
-                   * erillisen painikkeen avulla.
-                   */
-                  sortBy(
-                    compose(
-                      anchorPart => parseInt(anchorPart, 10),
-                      prop("anchor")
-                    ),
-                    map(changeObj => {
-                      const previousTextBoxAnchor = `${sectionId}.${
-                        ulkomaa.koodiarvo
-                      }.${parseInt(getAnchorPart(changeObj.anchor, 2), 10) -
-                        1}.kuvaus`;
-
-                      const previousTextBoxChangeObj = find(
-                        propEq("anchor", previousTextBoxAnchor),
-                        dynamicTextBoxChangeObjects
-                      );
-
-                      /**
-                       * Tarkistetaan, onko muutos jo tallennettu tietokantaan
-                       * eli löytyykö määräys. Jos määräys on olemassa, niin ei
-                       * luoda muutosobjektin perusteella enää dynaamista
-                       * tekstikenttää, koska tekstikentttä on luotu jo aiemmin
-                       * vähän ylempänä tässä tiedostossa.
-                       **/
-                      const maarays = find(
-                        pathEq(
-                          ["meta", "ankkuri"],
-                          path(["properties", "metadata", "ankkuri"], changeObj)
-                        ),
-                        ulkomaillaSijaitsevatKunnat
-                      );
-
-                      const anchor = getAnchorPart(changeObj.anchor, 2);
-
-                      return !!maarays
-                        ? null
-                        : {
-                            anchor,
-                            components: [
-                              {
-                                anchor: "kuvaus",
-                                name: "TextBox",
-                                properties: {
-                                  forChangeObject: {
-                                    ankkuri: anchor,
-                                    focusWhenDeleted: !!previousTextBoxChangeObj
-                                      ? previousTextBoxAnchor
-                                      : `${sectionId}.ulkomaa.0.kuvaus`,
-                                    koodiarvo: ulkomaa.koodiarvo
-                                  },
-                                  isPreviewModeOn,
-                                  isReadOnly: _isReadOnly,
-                                  isRemovable: true,
-                                  placeholder: __("common.kuvausPlaceholder"),
-                                  title: __("common.kuvaus")
-                                }
-                              }
-                            ]
-                          };
-                    }, dynamicTextBoxChangeObjects).filter(Boolean)
-                  ),
-                  /**
-                   * Luodaan painike, jolla käyttäjä voi luoda lisää tekstikenttiä.
-                   */
-                  ulkomaa.koodiarvo !== "1"
-                    ? {
-                        anchor: "lisaaPainike",
-                        components: [
-                          {
-                            anchor: "A",
-                            name: "SimpleButton",
-                            onClick: onAddButtonClick,
-                            properties: {
-                              isPreviewModeOn,
-                              isReadOnly: _isReadOnly,
-                              isVisible: true,
-                              icon: "FaPlus",
-                              iconContainerStyles: {
-                                width: "15px"
-                              },
-                              iconStyles: {
-                                fontSize: 10
-                              },
-                              text: __("common.lisaaUusiKuvaus"),
-                              variant: "text"
-                            }
-                          }
-                        ]
-                      }
-                    : null
-                ].filter(Boolean)
+              categories: createDynamicTextFields(
+                sectionId,
+                ulkomaillaSijaitsevatKunnat,
+                changeObjects,
+                ulkomaa.koodiarvo,
+                onAddButtonClick,
+                isPreviewModeOn,
+                isReadOnly
               )
             }
           ])
