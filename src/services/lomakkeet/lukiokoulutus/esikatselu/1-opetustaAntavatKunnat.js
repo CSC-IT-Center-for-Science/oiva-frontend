@@ -53,7 +53,7 @@ export async function previewOfOpetustaAntavaKunnat({
   );
 
   const ulkomaaTextBoxes = filter(
-    compose(endsWith(".lisatiedot"), prop("anchor")),
+    compose(endsWith(".kuvaus"), prop("anchor")),
     lomakedata
   );
 
