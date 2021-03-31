@@ -48,7 +48,9 @@ export async function erityisetKoulutustehtavat(
             onAddButtonClick,
             isPreviewModeOn,
             isReadOnly,
-            erityinenKoulutustehtava.koodiarvo === "1" ? 1 : 10
+            erityinenKoulutustehtava.koodiarvo === "1" ? 1 : 10,
+            poErityisetKoulutustehtavat,
+            locale
           ),
           components: [
             {

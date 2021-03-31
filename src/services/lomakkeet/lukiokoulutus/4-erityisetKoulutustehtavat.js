@@ -49,7 +49,10 @@ export async function getErityisetKoulutustehtavatLukio(
             erityinenKoulutustehtava.koodiarvo,
             onAddButtonClick,
             isPreviewModeOn,
-            isReadOnly
+            isReadOnly,
+            10,
+            erityisetKoulutustehtavat,
+            locale
           ),
           components: [
             {

@@ -127,7 +127,9 @@ export const defineBackendChangeObjects = async (
               ])
             ).filter(Boolean)
           },
-          tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+          tila: path(["properties", "isChecked"], checkboxChangeObj)
+            ? "LISAYS"
+            : "POISTO"
         };
 
         let alimaaraykset = [];

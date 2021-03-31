@@ -204,7 +204,7 @@ const Store = createStore({
     /**
      * -------------------- DYNAMIC TEXTBOXES --------------------
      */
-    createTextBoxChangeObject: (sectionId, koodiarvo, ankkuri) => ({
+    createTextBoxChangeObject: (sectionId, koodiarvo, ankkuri, value = "") => ({
       getState,
       dispatch,
       setState
@@ -225,8 +225,8 @@ const Store = createStore({
             {
               anchor: `${sectionId}.${koodiarvo}.${ankkuri}.kuvaus`,
               properties: {
-                metadata: { ankkuri },
-                value: ""
+                metadata: { ankkuri, koodiarvo },
+                value: value ? value : ""
               }
             },
             path(splittedSectionId, currentChangeObjects.unsaved) || []

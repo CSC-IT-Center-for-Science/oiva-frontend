@@ -74,7 +74,9 @@ export async function muutEhdot(
           onAddButtonClick,
           isPreviewModeOn,
           isReadOnly,
-          ehto.koodiarvo === "99" ? 10 : 1
+          ehto.koodiarvo === "99" ? 10 : 1,
+          muutEhdot,
+          locale
         )
       };
     }, muutEhdot),

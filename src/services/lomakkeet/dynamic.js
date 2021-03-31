@@ -16,7 +16,8 @@ import {
   last,
   startsWith,
   length,
-  not
+  not,
+  toUpper
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getChangeObjByAnchor } from "components/02-organisms/CategorizedListRoot/utils";
@@ -30,7 +31,9 @@ export const createDynamicTextFields = (
   onAddButtonClick,
   isPreviewModeOn = false,
   isReadOnly = false,
-  maxAmountOfTextBoxes = 10
+  maxAmountOfTextBoxes = 10,
+  koodit,
+  locale
 ) => {
   const dynamicTextBoxChangeObjects = filter(
     changeObj =>
@@ -73,6 +76,33 @@ export const createDynamicTextFields = (
       );
     }, maaraykset)
   );
+
+  const numberOfTextBoxes =
+    length(unremovedInLupaTextBoxes) +
+    length(unremovedDynamicTextBoxChangeObjects);
+
+  const checkBoxChangeObj = !!find(
+    cObj =>
+      cObj.anchor === `${sectionId}.${koodiarvo}.valintaelementti` &&
+      path(["properties", "isChecked"], cObj),
+    changeObjects
+  );
+
+  const relatedCheckBoxIsChecked = checkBoxChangeObj || length(maaraykset) > 0; // Tarkista vielä miten tänne otetaan määräykset ja changeObjit...
+
+  /** Lisätään tässä tekstikenttä, jos valintaelementti checkattu, eikä tekstikenttiä ole */
+  if (relatedCheckBoxIsChecked && numberOfTextBoxes === 0) {
+    const koodi = find(koodi => koodi.koodiarvo === koodiarvo, koodit || []);
+    const kuvaus = path(
+      ["metadata", locale ? toUpper(locale) : "FI", "kuvaus"],
+      koodi
+    );
+    onAddButtonClick(
+      { fullAnchor: `${sectionId}.${koodiarvo}.lisaaPainike.A"` },
+      seuraavaAnkkuri,
+      kuvaus
+    );
+  }
 
   return flatten(
     [
@@ -120,7 +150,8 @@ export const createDynamicTextFields = (
                     },
                     isPreviewModeOn,
                     isReadOnly: isPreviewModeOn || isReadOnly,
-                    isRemovable: true,
+                    isRemovable: maxAmountOfTextBoxes > 1,
+                    isRemoveBtnDisabled: numberOfTextBoxes === 1,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
                     value:
@@ -202,7 +233,8 @@ export const createDynamicTextFields = (
                       },
                       isPreviewModeOn,
                       isReadOnly: isPreviewModeOn || isReadOnly,
-                      isRemovable: true,
+                      isRemovable:
+                        maxAmountOfTextBoxes > 1 && numberOfTextBoxes > 1,
                       placeholder: __("common.kuvausPlaceholder"),
                       title: __("common.kuvaus")
                     }
@@ -227,9 +259,8 @@ export const createDynamicTextFields = (
               isPreviewModeOn,
               isReadOnly: isPreviewModeOn || isReadOnly,
               isVisible:
-                length(unremovedInLupaTextBoxes) +
-                  length(unremovedDynamicTextBoxChangeObjects) <
-                maxAmountOfTextBoxes,
+                numberOfTextBoxes < maxAmountOfTextBoxes &&
+                numberOfTextBoxes > 0,
               icon: "FaPlus",
               iconContainerStyles: {
                 width: "15px"

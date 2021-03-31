@@ -31,11 +31,12 @@ const MuutEhdot = ({
   });
 
   const onAddButtonClick = useCallback(
-    (fromComponent, index) => {
+    (fromComponent, index, value = null) => {
       createTextBoxChangeObject(
         sectionId,
         getAnchorPart(fromComponent.fullAnchor, 1),
-        index
+        index,
+        value
       );
     },
     [createTextBoxChangeObject, sectionId]
