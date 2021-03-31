@@ -88,7 +88,7 @@ export const createDynamicTextFields = (
     changeObjects
   );
 
-  const relatedCheckBoxIsChecked = checkBoxChangeObj || length(maaraykset) > 0; // Tarkista vielä miten tänne otetaan määräykset ja changeObjit...
+  const relatedCheckBoxIsChecked = checkBoxChangeObj || length(maaraykset) > 0;
 
   /** Lisätään tässä tekstikenttä, jos valintaelementti checkattu, eikä tekstikenttiä ole */
   if (relatedCheckBoxIsChecked && numberOfTextBoxes === 0) {
