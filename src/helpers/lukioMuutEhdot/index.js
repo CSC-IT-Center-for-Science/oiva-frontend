@@ -29,6 +29,7 @@ import {
 import { getMaarayksetByTunniste} from "../lupa/index";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
 
 export const initializeLukioMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -245,28 +246,13 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  // Luodaan vielä alimääräykset rajoitteille, jotka on kytketty olemassa
-  // oleviin määräyksiin.
-  const maarayksiaVastenLuodutRajoitteet = flatten(
-    map(maarays => {
-      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
-        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
-        if (koodiarvo === `${maarays.koodiarvo}-${maarays.meta.ankkuri || 0}`) {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            {
-              isMaarays: true,
-              generatedId: maarays.uuid,
-              kohde
-            },
-            rajoite
-          );
-        }
-      }, rajoitteetByRajoiteId);
-      return values(maaraystaKoskevatRajoitteet);
-    }, maaraykset)
-  ).filter(Boolean);
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
 
   const objects = flatten([maarayksiaVastenLuodutRajoitteet, muutokset, lisatiedotBEchangeObject]).filter(
     Boolean
