@@ -26,8 +26,10 @@ import {
   take,
   values
 } from "ramda";
+import { getMaarayksetByTunniste} from "../lupa/index";
 import localforage from "localforage";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
 
 export const initializeLukioMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -64,9 +66,15 @@ export function getLukioMuutEhdotFromStorage() {
 export const defineBackendChangeObjects = async (
   changeObjects = [],
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
+  const maaraykset = await getMaarayksetByTunniste(
+    "muutkoulutuksenjarjestamiseenliittyvatehdot",
+    lupaMaaraykset
+  )
+
   const { rajoitteetByRajoiteId } = changeObjects;
 
   const kohde = find(
@@ -240,7 +248,15 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  const objects = flatten([muutokset, lisatiedotBEchangeObject]).filter(
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
+
+  const objects = flatten([maarayksiaVastenLuodutRajoitteet, muutokset, lisatiedotBEchangeObject]).filter(
     Boolean
   );
 
