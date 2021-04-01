@@ -9,10 +9,7 @@ import {
   propEq,
   path,
   addIndex,
-  pathEq,
-  sortBy,
-  prop,
-  compose
+  pathEq
 } from "ramda";
 import { useIntl } from "react-intl";
 import {
