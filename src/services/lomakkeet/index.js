@@ -62,9 +62,6 @@ import { getValtakunnallinenKehittamistehtavalomake } from "./lukiokoulutus/5-va
 import { getOpiskelijamaaratLomake as getOpiskelijamaaratLomakeLukio } from "./lukiokoulutus/6-opiskelijamaarat";
 import { muutEhdot as muutEhdotLukio } from "./lukiokoulutus/7-muutEhdot";
 
-import { rajoitteet as rajoitteetLukio } from "./lukiokoulutus/rajoitteet/9-rajoitteet";
-import { rajoitelomake as rajoitelomakeLukio } from "./lukiokoulutus/rajoitteet/rajoite";
-
 // Lukiokoulutuksen esikatselulomakkeet
 
 import { previewOfOpetustaAntavaKunnat as previewOfOpetustaAntavaKunnatLukio } from "./lukiokoulutus/esikatselu/1-opetustaAntavatKunnat";
@@ -75,7 +72,6 @@ import { previewOfValtakunnallinenKehittamistehtava } from "./lukiokoulutus/esik
 import { previewOfOpiskelijamaarat as previewOfOpiskelijamaaratLukio } from "./lukiokoulutus/esikatselu/6-opiskelijamaarat";
 import { previewOfMuutEhdot as previewOfMuutEhdotLukio } from "./lukiokoulutus/esikatselu/7-muutEhdot";
 
-import { previewOfRajoite as previewOfRajoiteLukio } from "./lukiokoulutus/esikatselu/10-rajoite";
 import { previewOfPaatoksentiedot } from "./esi-ja-perusopetus/esikatselu/0-paatoksenTiedot";
 
 /**

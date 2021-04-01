@@ -109,11 +109,6 @@ const LupanakymaA = React.memo(
       rajoitteetListausChangeObj
     );
 
-    const opetustehtavamaaraykset = filterByTunniste(
-      "opetusjotalupakoskee",
-      maaraykset
-    );
-
     const toimintaaaluemaaraykset = filterByTunniste(
       "kunnatjoissaopetustajarjestetaan",
       maaraykset
@@ -131,11 +126,6 @@ const LupanakymaA = React.memo(
     const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId)
       ? rajoitteetFromMaarayksetByRajoiteId
       : rajoitteetByRajoiteId;
-
-    const opetustehtavatRajoitteet = getRajoitteetBySection(
-      "opetustehtavat",
-      rajoitteet
-    );
 
     const opetuskieletRajoitteet = getRajoitteetBySection(
       "opetuskielet",

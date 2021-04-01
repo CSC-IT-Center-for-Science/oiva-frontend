@@ -5,8 +5,6 @@ import common from "i18n/definitions/common";
 import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import moment from "moment";
 import Typography from "@material-ui/core/Typography";
-import LupanakymaA from "../lupanakymat/LupanakymaA";
-import { find, prop, propEq } from "ramda";
 import PoOpetusJotaLupaKoskeeHtml from "./opetusJotaLupaKoskee";
 import PoOpetustaAntavatKunnatHtml from "./opetustaAntavatKunnat";
 import PoOpetuskieletHtml from "./opetuskielet";
@@ -22,11 +20,6 @@ import PoOpetuksenMuutEhdotHtml from "./muutEhdot";
 const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
   //const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
-
-  const valtakunnallinenMaarays = find(
-    propEq("koodisto", "nuts1"),
-    prop("maaraykset", lupa) || []
-  );
 
   return (
     <React.Fragment>
