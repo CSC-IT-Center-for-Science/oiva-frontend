@@ -27,7 +27,6 @@ export default async function getPaatoksenTiedot(
   changeObjects
 ) {
   const defaultAsianumero = "";
-  const defaultDiaarinumero = "";
 
   const isAsianumeroFieldEmpty = await isFieldEmpty(
     "paatoksentiedot.asianumero.A",

@@ -82,9 +82,6 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                     route: AppRoute.JarjestamisJaYllapitamisluvat,
                     routes: values(
                       map(koulutusmuoto => {
-                        const route = AppRoute.getKoulutusmuodonEtusivu(
-                          koulutusmuoto.kebabCase
-                        );
                         return {
                           key: koulutusmuoto.pascalCase,
                           params: {
