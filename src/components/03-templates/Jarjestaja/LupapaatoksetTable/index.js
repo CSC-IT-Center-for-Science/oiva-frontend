@@ -192,6 +192,7 @@ export default function LupapaatoksetTable({
           : common.paatoskirje
       ),
       hidden:
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO ||
         koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
     },
     {
