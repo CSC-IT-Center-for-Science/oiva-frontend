@@ -72,14 +72,18 @@ const WizardContainer = ({
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
   });
-  const [valtakunnallisetKehittamistehtavatCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [
+    valtakunnallisetKehittamistehtavatCO
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "valtakunnallisetKehittamistehtavat"
   });
 
   useEffect(() => {
-    const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+    const changeObjectsFromBackend = getSavedChangeObjects(
+      muutospyynto || viimeisinLupa
+    );
     initializeChanges(changeObjectsFromBackend);
-  }, [muutospyynto, initializeChanges]);
+  }, [muutospyynto, initializeChanges, viimeisinLupa]);
 
   useEffect(() => {
     async function fetchMuutospyynto() {
