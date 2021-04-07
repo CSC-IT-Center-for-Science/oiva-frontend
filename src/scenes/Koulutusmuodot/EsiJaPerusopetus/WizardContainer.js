@@ -74,9 +74,11 @@ const WizardContainer = ({
   });
 
   useEffect(() => {
-    const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+    const changeObjectsFromBackend = getSavedChangeObjects(
+      muutospyynto || viimeisinLupa
+    );
     initializeChanges(changeObjectsFromBackend);
-  }, [muutospyynto, initializeChanges]);
+  }, [muutospyynto, initializeChanges, viimeisinLupa]);
 
   useEffect(() => {
     async function fetchMuutospyynto() {
