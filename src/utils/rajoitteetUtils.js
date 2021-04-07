@@ -674,7 +674,7 @@ export const createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEO
           rajoitteenTekstikentanKoodiarvo === maarays.koodiarvo &&
           /** Määräyksen ankkuri on null jos tekstikenttiä ei voi lisätä */
           (path(["meta", "ankkuri"], maarays) == null ||
-            rajoitteenTekstikentanAnkkuri ===
+            parseInt(rajoitteenTekstikentanAnkkuri) ===
               path(["meta", "ankkuri"], maarays))
         ) {
           return createAlimaarayksetBEObjects(
