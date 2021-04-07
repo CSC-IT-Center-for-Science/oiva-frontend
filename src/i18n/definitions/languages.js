@@ -1,6 +1,10 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  finnish: {
+    id: "language.finnish",
+    defaultMessage: "suomi"
+  },
   inFinnish: {
     id: "languages.inFinnish",
     defaultMessage: "Suomeksi"
@@ -12,5 +16,9 @@ export default defineMessages({
   selection: {
     id: "languages.selection",
     defaultMessage: "Kielivalinta"
+  },
+  swedish: {
+    id: "language.swedish",
+    defaultMessage: "ruotsi"
   }
 });

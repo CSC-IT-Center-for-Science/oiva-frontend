@@ -350,6 +350,8 @@
   "education.oppilastaOpiskelijaaOtsikko": "Opetuksen järjestäjän oppilas-/opiskelijamäärä",
   "education.preAndBasicEducation": "För- och grundutbildning",
   "education.valtakunnallinenKehittamistehtava": "Valtakunnallinen kehittämistehtävä",
+  "education.valtakunnallinenKehittamistehtavaInfo": "Erityisiin koulutustehtäviin sisältyvät valtakunnalliset kehittämistehtävät seuraavissa opetuspainotuksissa:",
+  "education.valtakunnallinenKehittamistehtavaInfo2": "Ei lisättyjä valtakunnallisia kehittämistehtäviä",
   "education.vapaanSivistystyon": "Vapaan sivistystyön",
   "education.vocationalEducation": "Yrkesutbildning",
   "education.voidaanAntaaMyosSeuraavillaKielilla": "Opetusta voidaan antaa myös seuraavilla kielillä",

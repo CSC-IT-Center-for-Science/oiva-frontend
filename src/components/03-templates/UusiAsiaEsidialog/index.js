@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "components/02-organisms/DialogTitle";
-import Autocomplete from "components/02-organisms/Autocomplete";
+import Autocomplete from "components/02-organisms/Autocomplete/index";
 import common from "i18n/definitions/common";
 import {
   DialogContent,
@@ -23,6 +23,8 @@ import { fetchJSON } from "basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import CheckIcon from "@material-ui/icons/Check";
 import ErrorIcon from "@material-ui/icons/Error";
+import languages from "i18n/definitions/languages";
+import Select from "react-select";
 
 const StyledButton = withStyles({
   root: {
@@ -63,6 +65,7 @@ const UusiAsiaEsidialog = ({
   const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(false);
   const [organisation, setOrganisation] = useState(null);
   const [organisationStatus, setOrganisationStatus] = useState();
+  const [selectedLanguage, setSelectedLanguage] = useState();
   const inputEl = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isKJMissing, setIsKJMissing] = useState(false);
@@ -235,9 +238,36 @@ const UusiAsiaEsidialog = ({
                 title={""}
                 value={[selectedKJ]}
               />
+
+              {/* Jos KJ on valittuna, näytetään valikko, josta käyttäjän tulee valita kieli luvalle, jonka hän on aikeissa luoda. */}
+              {selectedKJ && (
+                <div className="mt-4">
+                  <Select
+                    id="luvan-kielivalinta"
+                    name="luvan-kieli"
+                    options={[
+                      {
+                        label: intl.formatMessage(languages.finnish),
+                        value: "fi"
+                      },
+                      {
+                        label: intl.formatMessage(languages.swedish),
+                        value: "sv"
+                      }
+                    ]}
+                    onChange={value => {
+                      setSelectedLanguage(value);
+                    }}
+                    placeholder={intl.formatMessage(common.valitseLuvanKieli)}
+                    value={selectedLanguage}
+                  />
+                </div>
+              )}
+
               <p className="my-4">
                 {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
               </p>
+
               <StyledButton
                 onClick={() => {
                   setSelectedKJ(null);
@@ -265,7 +295,11 @@ const UusiAsiaEsidialog = ({
             </Button>
           </div>
           <Button
-            className={selectedKJ || organisation ? "" : classes.fakeDisabled}
+            className={
+              (selectedKJ || organisation) && selectedLanguage
+                ? ""
+                : classes.fakeDisabled
+            }
             onClick={() => {
               const kj =
                 isSearchFieldVisible && organisation
@@ -276,9 +310,9 @@ const UusiAsiaEsidialog = ({
                 organisation &&
                 organisationStatus !== "duplicate"
               ) {
-                return onSelect(kj);
+                return selectedLanguage ? onSelect(kj) : false;
               } else if (kj) {
-                return onSelect(kj);
+                return selectedLanguage ? onSelect(kj) : false;
               } else {
                 setIsKJMissing(true);
               }
