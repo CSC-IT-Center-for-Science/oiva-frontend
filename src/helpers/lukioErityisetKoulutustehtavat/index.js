@@ -26,6 +26,7 @@ import {
   split,
   startsWith,
   take,
+  toUpper,
   values
 } from "ramda";
 import localforage from "localforage";
@@ -184,6 +185,14 @@ export const defineBackendChangeObjects = async (
       );
     }, changeObjects.erityisetKoulutustehtavat);
 
+    const kuvausKoodistosta = path(
+      ["metadata", locale ? toUpper(locale) : "FI", "kuvaus"],
+      find(
+        koodi => koodi.koodiarvo === koulutustehtava.koodiarvo,
+        erityisetKoulutustehtavat || []
+      )
+    );
+
     let checkboxBEchangeObject = null;
     let kuvausBEchangeObjects = [];
 
@@ -211,7 +220,7 @@ export const defineBackendChangeObjects = async (
       }, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId)
     );
 
-    if (length(kuvausChangeObjects)) {
+    if (length(kuvausChangeObjects) && isCheckboxChecked) {
       kuvausBEchangeObjects = map(changeObj => {
         const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
         const koodiarvo = nth(1, split(".", changeObj.anchor));
@@ -239,35 +248,71 @@ export const defineBackendChangeObjects = async (
           );
         }
 
-        const kuvausBEChangeObject = {
-          generatedId: changeObj.anchor,
-          kohde,
-          koodiarvo: koulutustehtava.koodiarvo,
-          koodisto: koulutustehtava.koodisto.koodistoUri,
-          kuvaus: changeObj.properties.value,
-          maaraystyyppi,
-          meta: {
-            ankkuri,
-            kuvaus: changeObj.properties.value,
-            changeObjects: concat(
-              concat(
-                take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
-                take(
-                  2,
-                  values(
-                    valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo
+        const liittyvaMaarays = find(
+          maarays =>
+            maarays.koodiarvo === getAnchorPart(changeObj.anchor, 1) &&
+            pathEq(["meta", "ankkuri"], ankkuri, maarays),
+          tehtavaanLiittyvatMaaraykset
+        );
+
+        /** Jos kuvaus on identtinen koodistosta tulevan kanssa ei tallenneta sitä lainkaan muutokselle.
+         *  Tällöin muutokset koodistoon näkyvät html-luvalla */
+        const kuvaus =
+          path(["properties", "value"], changeObj) === kuvausKoodistosta
+            ? null
+            : path(["properties", "value"], changeObj);
+        const isDeleted = path(["properties", "isDeleted"], changeObj);
+        const isMuokattu = liittyvaMaarays && !isDeleted;
+        const changeObjectDeleted = isDeleted && !liittyvaMaarays;
+        const tila = isCheckboxChecked && !isDeleted ? "LISAYS" : "POISTO";
+
+        const kuvausBEChangeObject = changeObjectDeleted
+          ? null
+          : Object.assign(
+              {},
+              {
+                generatedId: changeObj.anchor,
+                kohde,
+                koodiarvo: koulutustehtava.koodiarvo,
+                koodisto: koulutustehtava.koodisto.koodistoUri,
+                ...(kuvaus && { kuvaus }),
+                maaraystyyppi,
+                meta: {
+                  ankkuri,
+                  ...(kuvaus && { kuvaus }),
+                  changeObjects: concat(
+                    concat(
+                      take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+                      take(
+                        2,
+                        values(
+                          valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo
+                        )
+                      )
+                    ),
+                    [checkboxChangeObj, changeObj]
+                  ).filter(Boolean),
+                  isValtakunnallinenKehitystehtava: path(
+                    ["properties", "metadata", "isChecked"],
+                    changeObj
                   )
-                )
-              ),
-              [checkboxChangeObj, changeObj]
-            ).filter(Boolean),
-            isValtakunnallinenKehitystehtava: path(
-              ["properties", "metadata", "isChecked"],
-              changeObj
-            )
-          },
-          tila: isCheckboxChecked ? "LISAYS" : "POISTO"
-        };
+                },
+                tila,
+                maaraysUuid: tila === "POISTO" ? liittyvaMaarays.uuid : null
+              }
+            );
+
+        /** Jos tekstikenttämääräystä on muokattu, pitää luoda poisto-objekti määräykselle */
+        const muokkausPoistoObjekti = isMuokattu
+          ? {
+              kohde,
+              koodiarvo: koulutustehtava.koodiarvo,
+              koodisto: koulutustehtava.koodisto.koodistoUri,
+              tila: "POISTO",
+              maaraysUuid: liittyvaMaarays.uuid,
+              maaraystyyppi
+            }
+          : null;
 
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);
         const alimaaraykset = getAlimaaraykset(
@@ -290,7 +335,12 @@ export const defineBackendChangeObjects = async (
           true
         );
 
-        return [kuvausBEChangeObject, alimaaraykset, valtaAlimaaraykset];
+        return [
+          kuvausBEChangeObject,
+          muokkausPoistoObjekti,
+          alimaaraykset,
+          valtaAlimaaraykset
+        ];
       }, kuvausChangeObjects);
     } else {
       // Jos muokattuja kuvauksia ei kyseiselle koodiarvolle löydy, tarkistetaan
@@ -331,7 +381,22 @@ export const defineBackendChangeObjects = async (
             )
           : null;
 
-      return [checkboxBEchangeObject, alimaaraykset];
+      /** Jos checkboxi ei ole checkattu. Luodaan poisto-objektit koulutustehtävään
+       * liittyville määräyksille (eli tekstikentille) */
+      const uncheckedCheckBoxPoistot = !isCheckboxChecked
+        ? map(maarays => {
+            return {
+              kohde,
+              koodiarvo: koulutustehtava.koodiarvo,
+              koodisto: koulutustehtava.koodisto.koodistoUri,
+              tila: "POISTO",
+              maaraysUuid: maarays.uuid,
+              maaraystyyppi
+            };
+          }, tehtavaanLiittyvatMaaraykset)
+        : null;
+
+      return [checkboxBEchangeObject, uncheckedCheckBoxPoistot, alimaaraykset];
     }
 
     return [checkboxBEchangeObject, kuvausBEchangeObjects];

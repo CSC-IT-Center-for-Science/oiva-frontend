@@ -1,5 +1,5 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { filter, find, flatten, hasPath, map, pathEq, propEq } from "ramda";
+import { filter, find, flatten, map, pathEq, propEq } from "ramda";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
 import localforage from "localforage";
@@ -35,16 +35,12 @@ export async function getErityisetKoulutustehtavatLukio(
             propEq("koodisto", "lukioerityinenkoulutustehtavauusi", m),
           maaraykset
         );
-        const kuvausmaaraykset = filter(
-          hasPath(["meta", "kuvaus"]),
-          tehtavaanLiittyvatMaaraykset
-        );
 
         return {
           anchor: erityinenKoulutustehtava.koodiarvo,
           categories: createDynamicTextFields(
             sectionId,
-            kuvausmaaraykset,
+            tehtavaanLiittyvatMaaraykset,
             changeObjects,
             erityinenKoulutustehtava.koodiarvo,
             onAddButtonClick,

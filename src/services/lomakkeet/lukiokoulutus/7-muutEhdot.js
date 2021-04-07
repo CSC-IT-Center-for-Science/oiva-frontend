@@ -1,5 +1,5 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { filter, find, flatten, hasPath, map, pathEq, propEq } from "ramda";
+import { filter, find, flatten, map, pathEq, propEq } from "ramda";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
 import localforage from "localforage";
@@ -38,10 +38,6 @@ export async function muutEhdot(
           ),
         maaraykset
       );
-      const kuvausmaaraykset = filter(
-        hasPath(["meta", "kuvaus"]),
-        ehtoonLiittyvatMaaraykset
-      );
 
       return {
         anchor: ehto.koodiarvo,
@@ -68,7 +64,7 @@ export async function muutEhdot(
         ],
         categories: createDynamicTextFields(
           sectionId,
-          kuvausmaaraykset,
+          ehtoonLiittyvatMaaraykset,
           changeObjects,
           ehto.koodiarvo,
           onAddButtonClick,
