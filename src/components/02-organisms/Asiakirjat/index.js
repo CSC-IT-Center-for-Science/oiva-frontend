@@ -393,7 +393,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 mx-auto w-4/5 max-w-8xl">
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
