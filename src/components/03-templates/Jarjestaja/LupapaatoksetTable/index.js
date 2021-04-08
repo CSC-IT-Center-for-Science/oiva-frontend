@@ -187,12 +187,12 @@ export default function LupapaatoksetTable({
     {
       id: "paatoskirje",
       label: intl.formatMessage(
-        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ||
+          koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO
           ? common.lupaTitle
           : common.paatoskirje
       ),
       hidden:
-        koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO ||
         koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO
     },
     {
@@ -203,14 +203,16 @@ export default function LupapaatoksetTable({
           : common.lupaTitle
       ),
       hidden:
-        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ||
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO
     },
     {
       id: "kumottu",
       label: intl.formatMessage(common.lupaHistoriaKumottuDateHeading),
       hidden:
         koulutusmuoto.koulutustyyppi === koulutustyypitMap.VAPAASIVISTYSTYO ||
-        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.ESI_JA_PERUSOPETUS ||
+        koulutusmuoto.koulutustyyppi === koulutustyypitMap.LUKIO
     }
   ].filter(hc => !hc.hidden);
 
