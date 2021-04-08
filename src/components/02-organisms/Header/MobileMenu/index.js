@@ -38,7 +38,10 @@ const MobileMenu = ({
   const classes = useStyles();
   const { formatMessage, locale } = useIntl();
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
-  const [jarjestamisluvatMenuVisible, setjarjestamisluvatMenuVisible] = useState(false);
+  const [
+    jarjestamisluvatMenuVisible,
+    setjarjestamisluvatMenuVisible
+  ] = useState(false);
 
   const AppRouteTitlesMobile = [
     { route: AppRoute.Tilastot, translationKey: "common.statistics" },
@@ -50,7 +53,7 @@ const MobileMenu = ({
   ];
 
   return (
-    <React.Fragment>
+    <nav>
       <span className="flex-1 flex align-top" style={{ height: "4.562rem" }}>
         <Button
           className={classes.root}
@@ -82,19 +85,29 @@ const MobileMenu = ({
       </NavLink>
       <div className={jarjestamisluvatMenuVisible ? "bg-green-600" : ""}>
         <span
-          className={jarjestamisluvatMenuVisible ? "font-medium inline-block bg-green-700" : "font-medium inline-block"}
+          className={
+            jarjestamisluvatMenuVisible
+              ? "font-medium inline-block bg-green-700"
+              : "font-medium inline-block"
+          }
           style={{
             width: "100%",
             height: "2.875rem"
           }}
-          onClick={() => {setjarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible)}}
+          onClick={() => {
+            setjarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible);
+          }}
         >
           <NavLink
             style={{
               fontSize: "1.0625rem",
               lineHeight: "2.875rem"
             }}
-            to={localizeRouteKey(locale, AppRoute.JarjestamisJaYllapitamisluvat, formatMessage)}
+            to={localizeRouteKey(
+              locale,
+              AppRoute.JarjestamisJaYllapitamisluvat,
+              formatMessage
+            )}
             className="text-white font-medium block"
           >
             <span className="pl-5 pr-3">
@@ -102,11 +115,11 @@ const MobileMenu = ({
             </span>
 
             <span className="pr-5">
-            {jarjestamisluvatMenuVisible ? (
-              <ExpandLessIcon />
-            ) : (
-              <ExpandMoreIcon />
-            )}
+              {jarjestamisluvatMenuVisible ? (
+                <ExpandLessIcon />
+              ) : (
+                <ExpandMoreIcon />
+              )}
             </span>
           </NavLink>
         </span>
@@ -180,7 +193,7 @@ const MobileMenu = ({
           />
         )}
       </div>
-    </React.Fragment>
+    </nav>
   );
 };
 
