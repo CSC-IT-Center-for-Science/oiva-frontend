@@ -417,7 +417,9 @@ export default function LupapaatoksetTable({
                             >
                               {intl.formatMessage(
                                 koulutusmuoto.koulutustyyppi ===
-                                  koulutustyypitMap.ESI_JA_PERUSOPETUS
+                                  koulutustyypitMap.ESI_JA_PERUSOPETUS ||
+                                  koulutusmuoto.koulutustyyppi ===
+                                    koulutustyypitMap.LUKIO
                                   ? common.jarjestamislupaDownload
                                   : common.paatoskirjeDownload
                               )}
