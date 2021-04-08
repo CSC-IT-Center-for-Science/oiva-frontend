@@ -1291,5 +1291,9 @@ export default defineMessages({
   onVoimassa: {
     id: "common.onVoimassa",
     defaultMessage: "Järjestämislupa on voimassa {loppupvm} asti"
+  },
+  mainNavigation: {
+    id: "common.mainNavigation",
+    defaultMessage: "Päänavigaatio"
   }
 });
