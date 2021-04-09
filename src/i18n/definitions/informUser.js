@@ -66,5 +66,19 @@ export default defineMessages({
   muutospyynonTilanMuuttaminenEpaonnistui: {
     id: "informUser.muutospyynonTilanMuuttaminenEpaonnistui",
     defaultMessage: "Muutospyynnön eli asian tilaa ei voitu muuttaa."
+  },
+  eiVoimassaOlevaaJarjestamislupaa: {
+    id: "informUser.eiVoimassaOlevaaJarjestamislupaa",
+    defaultMessage:
+      "Tällä koulutuksen järjestäjällä ei ole voimassa olevaa {xKielista} järjestämislupaa."
+  },
+  hyvaksymallaSiirrytaanLupalomakkeelle: {
+    id: "informUser.hyvaksymallaSiirrytaanLupalomakkeelle",
+    defaultMessage: "Hyväksymällä siirrytään luvan tietojen syöttämiseen."
+  },
+  voimassaOlevaJarjestamislupa: {
+    id: "informUser.voimassaOlevaJarjestamislupa",
+    defaultMessage:
+      "Tällä koulutuksen järjestäjällä on jo voimassa oleva {xKielinen} järjestämislupa."
   }
 });

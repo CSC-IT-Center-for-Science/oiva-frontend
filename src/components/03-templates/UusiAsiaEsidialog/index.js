@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { PropTypes } from "prop-types";
 import { useIntl } from "react-intl";
 import DialogTitle from "components/02-organisms/DialogTitle";
@@ -25,6 +25,8 @@ import CheckIcon from "@material-ui/icons/Check";
 import ErrorIcon from "@material-ui/icons/Error";
 import languages from "i18n/definitions/languages";
 import Select from "react-select";
+import informUser from "i18n/definitions/informUser";
+import { getRaw } from "basedata";
 
 const StyledButton = withStyles({
   root: {
@@ -56,11 +58,13 @@ const defaultProps = {
 
 const UusiAsiaEsidialog = ({
   isVisible,
+  koulutustyyppi,
   onClose,
   onSelect,
   organisations = defaultProps.organisations
 }) => {
   const intl = useIntl();
+  const [viimeisinLupa, setViimeisinLupa] = useState();
   const [selectedKJ, setSelectedKJ] = useState();
   const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(false);
   const [organisation, setOrganisation] = useState(null);
@@ -70,6 +74,45 @@ const UusiAsiaEsidialog = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isKJMissing, setIsKJMissing] = useState(false);
   const classes = useStyles();
+
+  const Kielivalikko = (
+    <Select
+      id="luvan-kielivalinta"
+      name="luvan-kieli"
+      options={[
+        {
+          label: intl.formatMessage(languages.finnish),
+          value: "fi"
+        },
+        {
+          label: intl.formatMessage(languages.swedish),
+          value: "sv"
+        }
+      ]}
+      onChange={value => {
+        setSelectedLanguage(value);
+      }}
+      placeholder={intl.formatMessage(common.valitseLuvanKieli)}
+      value={selectedLanguage}
+    />
+  );
+
+  // Luvan kielen vaihtuessa tarkistetaan onko KJ:llä jo kyseisellä kielellä
+  // lupaa.
+  useEffect(() => {
+    const oid = prop("value", selectedKJ) || prop("oid", organisation);
+    console.info(oid);
+    if (koulutustyyppi && oid && selectedLanguage) {
+      getRaw(
+        "viimeisinLupa",
+        `${backendRoutes.viimeisinLupa.path}${oid}/viimeisin?koulutustyyppi=${koulutustyyppi}&kieli=${selectedLanguage.value}`,
+        []
+      ).then(viimeisinLupa => {
+        // Asetetaan vielä muistiin tieto siitä, löytyikö lupaa.
+        setViimeisinLupa(viimeisinLupa);
+      });
+    }
+  }, [koulutustyyppi, selectedKJ, selectedLanguage]);
 
   const searchById = useCallback(async () => {
     const { value: id } = inputEl.current;
@@ -155,6 +198,25 @@ const UusiAsiaEsidialog = ({
                     <CheckIcon color="primary" />{" "}
                     {organisation.nimi.fi || organisation.nimi.sv}
                   </p>
+                  {/* Jos KJ:lla on voimassa oleva järjestämislupa valitulla kielellä, näytetään aihetta koskeva ohjeteksti.  */}
+                  {selectedLanguage && viimeisinLupa ? (
+                    <p className="mt-4 mb-12">
+                      <StyledErrorIcon />{" "}
+                      {intl.formatMessage(
+                        informUser.voimassaOlevaJarjestamislupa,
+                        {
+                          xKielista:
+                            prop("value", selectedLanguage) === "fi"
+                              ? intl.formatMessage(languages.suomenkielista)
+                              : intl.formatMessage(languages.ruotsinkielista)
+                        }
+                      )}{" "}
+                      {intl.formatMessage(
+                        informUser.hyvaksymallaSiirrytaanLupalomakkeelle
+                      )}
+                    </p>
+                  ) : null}
+                  <div className="my-4 w-4/5">{Kielivalikko}</div>
                 </div>
               ) : null}
               {organisationStatus === "notfound" ? (
@@ -240,29 +302,26 @@ const UusiAsiaEsidialog = ({
               />
 
               {/* Jos KJ on valittuna, näytetään valikko, josta käyttäjän tulee valita kieli luvalle, jonka hän on aikeissa luoda. */}
-              {selectedKJ && (
-                <div className="mt-4">
-                  <Select
-                    id="luvan-kielivalinta"
-                    name="luvan-kieli"
-                    options={[
-                      {
-                        label: intl.formatMessage(languages.finnish),
-                        value: "fi"
-                      },
-                      {
-                        label: intl.formatMessage(languages.swedish),
-                        value: "sv"
-                      }
-                    ]}
-                    onChange={value => {
-                      setSelectedLanguage(value);
-                    }}
-                    placeholder={intl.formatMessage(common.valitseLuvanKieli)}
-                    value={selectedLanguage}
-                  />
-                </div>
-              )}
+              {selectedKJ && <div className="mt-4">{Kielivalikko}</div>}
+
+              {/* Jos KJ:lla ei ole voimassa olevaa järjestämislupaa valitulla kielellä, näytetään aihetta koskeva ohjeteksti.  */}
+              {selectedKJ && selectedLanguage && !viimeisinLupa ? (
+                <p className="mt-4 mb-12">
+                  <StyledErrorIcon />{" "}
+                  {intl.formatMessage(
+                    informUser.eiVoimassaOlevaaJarjestamislupaa,
+                    {
+                      xKielista:
+                        prop("value", selectedLanguage) === "fi"
+                          ? intl.formatMessage(languages.suomenkielista)
+                          : intl.formatMessage(languages.ruotsinkielista)
+                    }
+                  )}{" "}
+                  {intl.formatMessage(
+                    informUser.hyvaksymallaSiirrytaanLupalomakkeelle
+                  )}
+                </p>
+              ) : null}
 
               <p className="my-4">
                 {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
@@ -330,6 +389,8 @@ const UusiAsiaEsidialog = ({
 };
 
 UusiAsiaEsidialog.propTypes = {
+  // Enum value that defines the type of education
+  koulutustyyppi: PropTypes.string,
   // Boolean that tells if the dialog is open or closed.
   isVisible: PropTypes.bool,
   // Function that will be called when the dialog is going to be closed / hided.

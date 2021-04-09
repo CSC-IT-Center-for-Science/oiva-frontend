@@ -108,6 +108,7 @@ const Asiat = ({ koulutusmuoto, user }) => {
             return (
               <UusiAsiaEsidialog
                 isVisible={isEsidialogVisible}
+                koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 onClose={() => setIsEsidialogVisible(false)}
                 organisations={_props.organisaatiot}
                 onSelect={selectedItem =>

@@ -239,6 +239,7 @@ export async function createObjectToSave(
 
   let objectToSave = {
     alkupera,
+    kieli: "fi", // TODO: Korvaa kovakoodattu arvo luvan kielellä (huom. ei localella)
     koulutustyyppi,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
