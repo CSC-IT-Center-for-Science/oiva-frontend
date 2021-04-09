@@ -54,7 +54,7 @@ export default function OpiskelijamaaratHtml({ maaraykset }) {
       )}
       {addIndex(map)(
         (maarays, index) => [
-          <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc">
+          <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc mb-4">
             <li className="leading-bulletList">
               {maarays.meta.tyyppi === "yksittainen"
                 ? intl.formatMessage(

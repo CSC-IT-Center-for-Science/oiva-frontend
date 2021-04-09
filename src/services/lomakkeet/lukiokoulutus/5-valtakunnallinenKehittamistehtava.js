@@ -33,10 +33,13 @@ export async function getValtakunnallinenKehittamistehtavalomake(
     }
   ];
   if (checkboxStatesSection4.length > 0) {
-    kehittamistehtavatStructure = flatten(concat(kehittamistehtavatStructure,
-      [
+    kehittamistehtavatStructure = flatten(
+      concat(kehittamistehtavatStructure, [
         map(checkboxObjSection4 => {
-          const anchor = `${getAnchorPart(checkboxObjSection4.anchor, 1)}.${getAnchorPart(checkboxObjSection4.anchor, 2)}`;
+          const anchor = `${getAnchorPart(
+            checkboxObjSection4.anchor,
+            1
+          )}.${getAnchorPart(checkboxObjSection4.anchor, 2)}`;
           return {
             anchor,
             components: [
@@ -44,7 +47,10 @@ export async function getValtakunnallinenKehittamistehtavalomake(
                 anchor: "valintaelementti",
                 name: "CheckboxWithLabel",
                 properties: {
-                  isChecked: path(["properties", "metadata", "isChecked"], checkboxObjSection4),
+                  isChecked: path(
+                    ["properties", "metadata", "isChecked"],
+                    checkboxObjSection4
+                  ),
                   isIndeterminate: false,
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
@@ -58,39 +64,43 @@ export async function getValtakunnallinenKehittamistehtavalomake(
             ]
           };
         }, checkboxStatesSection4)
-      ]));
+      ])
+    );
   } else {
-    kehittamistehtavatStructure = flatten(concat(kehittamistehtavatStructure, [{
-      anchor: "info",
+    kehittamistehtavatStructure = flatten(
+      concat(kehittamistehtavatStructure, [
+        {
+          anchor: "info",
+          components: [
+            {
+              anchor: "valinta",
+              name: "StatusTextRow",
+              properties: {
+                title: __("education.valtakunnallinenKehittamistehtavaInfo2")
+              }
+            }
+          ]
+        }
+      ])
+    );
+  }
+  let lisatiedotStructure = flatten([
+    {
+      anchor: "valtakunnalliset-kehittamistehtavat",
       components: [
         {
-          anchor: "valinta",
+          anchor: "lisatiedot-info",
           name: "StatusTextRow",
           properties: {
-            title: __("education.valtakunnallinenKehittamistehtavaInfo2")
+            title: __("common.lisatiedotInfo")
           }
         }
-      ]
-    }]));
-  }
-  let lisatiedotStructure = flatten(
-    [
-      {
-        anchor: "valtakunnalliset-kehittamistehtavat",
-        layout: { margins: { top: "large" } },
-        components: [
-          {
-            anchor: "lisatiedot-info",
-            name: "StatusTextRow",
-            styleClasses: ["pt-8", "border-t"],
-            properties: {
-              title: __("common.lisatiedotInfo")
-            }
-          }
-        ]
-      },
-      lisatiedotObj
-        ? {
+      ],
+      layout: { margins: { top: "large" } },
+      styleClasses: ["mt-10", "pt-10", "border-t"]
+    },
+    lisatiedotObj
+      ? {
           anchor: "lisatiedot",
           components: [
             {
@@ -111,9 +121,10 @@ export async function getValtakunnallinenKehittamistehtavalomake(
             }
           ]
         }
-        : null
-    ]
-  );
+      : null
+  ]);
 
-  return flatten([kehittamistehtavatStructure, lisatiedotStructure]).filter(Boolean);
+  return flatten([kehittamistehtavatStructure, lisatiedotStructure]).filter(
+    Boolean
+  );
 }

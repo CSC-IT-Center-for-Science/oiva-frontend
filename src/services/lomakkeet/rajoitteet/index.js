@@ -36,13 +36,13 @@ export function rajoitteet(
           {
             anchor: "rajoiteosio",
             name: "StatusTextRow",
-            styleClasses: ["mb-6"],
             properties: {
               title:
                 "Lupaan kohdistuvia rajoitteita voit tehdä lomakkeella tekemiesi valintojen perusteella."
             }
           }
-        ]
+        ],
+        styleClasses: ["mb-6"]
       },
       {
         anchor: "rajoitteenLisaaminen",
