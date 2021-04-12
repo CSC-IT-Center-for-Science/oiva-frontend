@@ -121,7 +121,7 @@ export const defineBackendChangeObjects = async (
     // Muodostetaan muutosobjekti, mikäli käyttöliittymässä on tehty
     // kohtaan muutoksia.
     if (changeObj) {
-      const tila = path(["properties", "isChecked"], changeObj).isChecked
+      const tila = path(["properties", "isChecked"], changeObj)
         ? "LISAYS"
         : "POISTO";
       const muutosId = `opetustehtava-${Math.random()}`;
@@ -143,10 +143,7 @@ export const defineBackendChangeObjects = async (
           tila === "POISTO"
             ? prop(
                 "uuid",
-                find(
-                  maarays => maarays.koodiarvo === opetustehtava.koodiarvo,
-                  maaraykset
-                )
+                find(propEq("koodiarvo", opetustehtava.koodiarvo), maaraykset)
               )
             : null
       };
