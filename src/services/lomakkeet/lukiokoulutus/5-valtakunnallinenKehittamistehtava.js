@@ -97,17 +97,17 @@ export async function getValtakunnallinenKehittamistehtavalomake(
   let lisatiedotStructure = flatten([
     {
       anchor: "valtakunnalliset-kehittamistehtavat",
-      layout: { margins: { top: "large" } },
       components: [
         {
           anchor: "lisatiedot-info",
           name: "StatusTextRow",
-          styleClasses: ["pt-8", "border-t"],
           properties: {
             title: __("common.lisatiedotInfo")
           }
         }
-      ]
+      ],
+      layout: { margins: { top: "large" } },
+      styleClasses: ["mt-10", "pt-10", "border-t"]
     },
     lisatiedotObj
       ? {

@@ -5,6 +5,8 @@ import SimpleButton from "components/00-atoms/SimpleButton";
 import { Typography } from "@material-ui/core";
 import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";
 import HtmlContent from "components/01-molecules/HtmlContent";
+import { useIntl } from "react-intl";
+import rajoitteetMessages from "i18n/definitions/rajoitteet";
 
 const RajoitteetList = ({
   locale,
@@ -12,8 +14,11 @@ const RajoitteetList = ({
   onRemoveRestriction,
   rajoitteet
 }) => {
+  const { formatMessage } = useIntl();
   if (isEmpty(rajoitteet)) {
-    return <p>Ei rajoitteita.</p>;
+    return (
+      <p className="mt-6">{formatMessage(rajoitteetMessages.eiRajoitteita)} </p>
+    );
   } else {
     return (
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
