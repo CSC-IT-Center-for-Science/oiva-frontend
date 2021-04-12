@@ -15,7 +15,7 @@ import {
   CircularProgress,
   Typography
 } from "@material-ui/core";
-import { sortBy, prop, map, find, propEq, trim } from "ramda";
+import { sortBy, prop, map, trim } from "ramda";
 import { resolveLocalizedOrganizationName } from "modules/helpers";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles, makeStyles } from "@material-ui/styles";
@@ -97,22 +97,24 @@ const UusiAsiaEsidialog = ({
     />
   );
 
-  // Luvan kielen vaihtuessa tarkistetaan onko KJ:llä jo kyseisellä kielellä
-  // lupaa.
+  // Käyttäjän tehdessä organisaatiohaun tai vaihtaessa luvan kieltä
+  // tarkistetaan onko KJ:llä jo kyseisellä kielellä lupaa.
   useEffect(() => {
     const oid = prop("value", selectedKJ) || prop("oid", organisation);
-    console.info(oid);
+    console.info(koulutustyyppi, oid, selectedLanguage);
     if (koulutustyyppi && oid && selectedLanguage) {
+      console.info("Haetaan viimeisin lupa...");
       getRaw(
         "viimeisinLupa",
         `${backendRoutes.viimeisinLupa.path}${oid}/viimeisin?koulutustyyppi=${koulutustyyppi}&kieli=${selectedLanguage.value}`,
         []
       ).then(viimeisinLupa => {
+        console.info("Viimeisin lupa", viimeisinLupa);
         // Asetetaan vielä muistiin tieto siitä, löytyikö lupaa.
         setViimeisinLupa(viimeisinLupa);
       });
     }
-  }, [koulutustyyppi, selectedKJ, selectedLanguage]);
+  }, [koulutustyyppi, organisation, selectedKJ, selectedLanguage]);
 
   const searchById = useCallback(async () => {
     const { value: id } = inputEl.current;
@@ -124,10 +126,7 @@ const UusiAsiaEsidialog = ({
     setOrganisation(result);
     setIsKJMissing(false);
     if (result) {
-      const isLupaExisting = !!find(propEq("oid", result.oid), organisations);
-      if (isLupaExisting) {
-        setOrganisationStatus("duplicate");
-      } else if (result.status === "PASSIIVINEN") {
+      if (result.status === "PASSIIVINEN") {
         setOrganisationStatus("passive");
       } else {
         setOrganisationStatus("ok");
@@ -205,18 +204,18 @@ const UusiAsiaEsidialog = ({
                       {intl.formatMessage(
                         informUser.voimassaOlevaJarjestamislupa,
                         {
-                          xKielista:
+                          xKielinen:
                             prop("value", selectedLanguage) === "fi"
-                              ? intl.formatMessage(languages.suomenkielista)
-                              : intl.formatMessage(languages.ruotsinkielista)
+                              ? intl.formatMessage(languages.suomenkielinen)
+                              : intl.formatMessage(languages.ruotsinkielinen)
                         }
                       )}{" "}
                       {intl.formatMessage(
-                        informUser.hyvaksymallaSiirrytaanLupalomakkeelle
+                        informUser.hyvaksymallaSiirrytaanLuvanMuokkaamiseen
                       )}
                     </p>
                   ) : null}
-                  <div className="my-4 w-4/5">{Kielivalikko}</div>
+                  <div className="my-4 w-4/5 pr-5">{Kielivalikko}</div>
                 </div>
               ) : null}
               {organisationStatus === "notfound" ? (
