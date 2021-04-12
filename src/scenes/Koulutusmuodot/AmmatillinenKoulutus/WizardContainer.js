@@ -45,7 +45,7 @@ const WizardContainer = ({
 }) => {
   const { formatMessage, locale } = useIntl();
 
-  let { id, uuid } = useParams();
+  let { id, language, uuid } = useParams();
   let history = useHistory();
 
   const [lomakedata] = useAllSections();
@@ -115,20 +115,16 @@ const WizardContainer = ({
        * User is redirected to the url of the saved document.
        */
       history.push(
-        localizeRouteKey(
-          locale,
-          AppRoute.Hakemus,
-          formatMessage,
-          {
-            id,
-            koulutusmuoto: koulutusmuoto.kebabCase,
-            page: 1,
-            uuid
-          }
-        )
+        localizeRouteKey(locale, AppRoute.Hakemus, formatMessage, {
+          id,
+          koulutusmuoto: koulutusmuoto.kebabCase,
+          language,
+          page: 1,
+          uuid
+        })
       );
     },
-    [history, id, koulutusmuoto, locale, formatMessage]
+    [history, id, koulutusmuoto, language, locale, formatMessage]
   );
 
   /**
@@ -334,6 +330,7 @@ const WizardContainer = ({
           />
         ) : null
       }
+      koulutusmuoto={koulutusmuoto}
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}

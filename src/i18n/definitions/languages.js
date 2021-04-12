@@ -13,6 +13,10 @@ export default defineMessages({
     id: "languages.inSwedish",
     defaultMessage: "På svenska"
   },
+  ruotsinkielinen: {
+    id: "language.ruotsinkielinen",
+    defaultMessage: "ruotsinkielinen"
+  },
   ruotsinkielista: {
     id: "language.ruotsinkielista",
     defaultMessage: "ruotsinkielistä"
@@ -24,6 +28,10 @@ export default defineMessages({
   swedish: {
     id: "language.swedish",
     defaultMessage: "ruotsi"
+  },
+  suomenkielinen: {
+    id: "language.suomenkielinen",
+    defaultMessage: "suomenkielinen"
   },
   suomenkielista: {
     id: "language.suomenkielista",

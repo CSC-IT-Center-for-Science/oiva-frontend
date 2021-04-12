@@ -76,6 +76,10 @@ export default defineMessages({
     id: "informUser.hyvaksymallaSiirrytaanLupalomakkeelle",
     defaultMessage: "Hyväksymällä siirrytään luvan tietojen syöttämiseen."
   },
+  hyvaksymallaSiirrytaanLuvanMuokkaamiseen: {
+    id: "informUser.hyvaksymallaSiirrytaanLuvanMuokkaamiseen",
+    defaultMessage: "Hyväksymällä siirrytään luvan muokkaamiseen."
+  },
   voimassaOlevaJarjestamislupa: {
     id: "informUser.voimassaOlevaJarjestamislupa",
     defaultMessage:

@@ -101,15 +101,12 @@ const UusiAsiaEsidialog = ({
   // tarkistetaan onko KJ:llä jo kyseisellä kielellä lupaa.
   useEffect(() => {
     const oid = prop("value", selectedKJ) || prop("oid", organisation);
-    console.info(koulutustyyppi, oid, selectedLanguage);
     if (koulutustyyppi && oid && selectedLanguage) {
-      console.info("Haetaan viimeisin lupa...");
       getRaw(
         "viimeisinLupa",
         `${backendRoutes.viimeisinLupa.path}${oid}/viimeisin?koulutustyyppi=${koulutustyyppi}&kieli=${selectedLanguage.value}`,
         []
       ).then(viimeisinLupa => {
-        console.info("Viimeisin lupa", viimeisinLupa);
         // Asetetaan vielä muistiin tieto siitä, löytyikö lupaa.
         setViimeisinLupa(viimeisinLupa);
       });
@@ -134,7 +131,7 @@ const UusiAsiaEsidialog = ({
     } else {
       setOrganisationStatus("notfound");
     }
-  }, [organisations]);
+  }, []);
 
   return organisations ? (
     <Dialog open={isVisible} PaperProps={{ style: { overflowY: "visible" } }}>
@@ -144,6 +141,7 @@ const UusiAsiaEsidialog = ({
       <DialogContent style={{ overflowY: "visible" }}>
         <div className="px-8 py-4 relative">
           {isSearchFieldVisible ? (
+            // HAKUNÄKYMÄ
             <React.Fragment>
               <p className="mb-6">
                 {intl.formatMessage(common.luoUusiAsiaEsidialogiInfo3)}
@@ -271,6 +269,7 @@ const UusiAsiaEsidialog = ({
               ) : null}
             </React.Fragment>
           ) : (
+            // PUDOTUSVALIKKONÄKYMÄ
             <React.Fragment>
               <p className="mb-6">
                 {intl.formatMessage(common.luoUusiAsiaInstructions)}
@@ -368,9 +367,13 @@ const UusiAsiaEsidialog = ({
                 organisation &&
                 organisationStatus !== "duplicate"
               ) {
-                return selectedLanguage ? onSelect(kj) : false;
+                return selectedLanguage
+                  ? onSelect(kj, selectedLanguage)
+                  : false;
               } else if (kj) {
-                return selectedLanguage ? onSelect(kj) : false;
+                return selectedLanguage
+                  ? onSelect(kj, selectedLanguage)
+                  : false;
               } else {
                 setIsKJMissing(true);
               }
