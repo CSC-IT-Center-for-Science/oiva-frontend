@@ -404,7 +404,7 @@ export const createDynamicTextBoxBeChangeObjects = (
   }, kuvausChangeObjects);
 };
 
-export const createDynamicTextBoxBeCheckboxChangeObjects = (
+export const createBECheckboxChangeObjectsForDynamicTextBoxes = (
   checkboxChangeObj,
   koodi,
   rajoitteetByRajoiteIdAndKoodiarvo,

@@ -36,7 +36,7 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
   }, []);
 
   const muutEhdotMaaraykset = sortBy(
-    m => parseInt(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`, 10),
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
     filter(
       maarays =>
         pathEq(

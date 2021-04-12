@@ -43,7 +43,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   }, []);
 
   const erityisetKoulutustehtavatMaaraykset = sortBy(
-    m => parseInt(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`, 10),
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
     filter(
       maarays =>
         pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&

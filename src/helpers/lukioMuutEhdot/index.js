@@ -26,7 +26,7 @@ import localforage from "localforage";
 import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
 import {
   createDynamicTextBoxBeChangeObjects,
-  createDynamicTextBoxBeCheckboxChangeObjects
+  createBECheckboxChangeObjectsForDynamicTextBoxes
 } from "../../services/lomakkeet/dynamic";
 
 export const initializeLukioMuuEhto = ehto => {
@@ -149,7 +149,7 @@ export const defineBackendChangeObjects = async (
         kohteet
       );
     } else {
-      return createDynamicTextBoxBeCheckboxChangeObjects(
+      return createBECheckboxChangeObjectsForDynamicTextBoxes(
         checkboxChangeObj,
         ehto,
         rajoitteetByRajoiteIdAndKoodiarvo,

@@ -9,6 +9,7 @@ import {
   map,
   path,
   propEq,
+  sortBy,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -38,12 +39,15 @@ export default function ValtakunnallisetKehittamistehtavatHtml({ maaraykset }) {
       });
   }, []);
 
-  const valtakunnallisetKehittamistehtavatMaaraykset = filter(
-    maarays =>
-      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
-      maarays.koodisto === "lukioerityinenkoulutustehtavauusi" &&
-      maarays.meta.isValtakunnallinenKehitystehtava,
-    maaraykset
+  const valtakunnallisetKehittamistehtavatMaaraykset = sortBy(
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
+    filter(
+      maarays =>
+        maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
+        maarays.koodisto === "lukioerityinenkoulutustehtavauusi" &&
+        maarays.meta.isValtakunnallinenKehitystehtava,
+      maaraykset
+    )
   );
 
   const lisatietomaarays = find(

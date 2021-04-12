@@ -26,7 +26,7 @@ import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjec
 import { getMaarayksetByTunniste } from "../lupa";
 import {
   createDynamicTextBoxBeChangeObjects,
-  createDynamicTextBoxBeCheckboxChangeObjects
+  createBECheckboxChangeObjectsForDynamicTextBoxes
 } from "../../services/lomakkeet/dynamic";
 
 export const initializePOMuuEhto = ehto => {
@@ -152,7 +152,7 @@ export const defineBackendChangeObjects = async (
         kohteet
       );
     } else {
-      return createDynamicTextBoxBeCheckboxChangeObjects(
+      return createBECheckboxChangeObjectsForDynamicTextBoxes(
         checkboxChangeObj,
         ehto,
         rajoitteetByRajoiteIdAndKoodiarvo,

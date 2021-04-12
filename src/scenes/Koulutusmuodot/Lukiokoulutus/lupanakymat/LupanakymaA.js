@@ -271,7 +271,7 @@ const LupanakymaA = React.memo(
                     code="5"
                     isPreviewModeOn={isPreviewModeOn}
                     maaraykset={filterByTunniste(
-                      "valtakunnallinenKehittamistehtava",
+                      "erityinenkoulutustehtava",
                       maaraykset
                     )}
                     rajoitteet={valtakunnallisetKehittamistehtavatRajoitteet}
