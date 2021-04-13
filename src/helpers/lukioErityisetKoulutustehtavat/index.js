@@ -331,7 +331,15 @@ export const defineBackendChangeObjects = async (
             )
           : null;
 
-      return [checkboxBEchangeObject, alimaaraykset];
+      const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+        maaraykset,
+        valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
+        kohteet,
+        maaraystyypit,
+        kohde
+      );
+
+      return [checkboxBEchangeObject, alimaaraykset, maarayksiaVastenLuodutRajoitteet];
     }
 
     return [checkboxBEchangeObject, kuvausBEchangeObjects];
