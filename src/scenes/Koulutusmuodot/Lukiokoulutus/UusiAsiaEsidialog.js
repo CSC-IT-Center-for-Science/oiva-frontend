@@ -213,7 +213,7 @@ const UusiAsiaEsidialog = ({
                       )}
                     </p>
                   ) : null}
-                  <div className="my-4 w-4/5 pr-5">{Kielivalikko}</div>
+                  <div className="my-4 w-4/5 pr-6">{Kielivalikko}</div>
                 </div>
               ) : null}
               {organisationStatus === "notfound" ? (
