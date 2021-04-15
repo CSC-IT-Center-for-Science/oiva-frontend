@@ -20,6 +20,7 @@ import * as R from "ramda";
  */
 const TableCell = ({
   columnIndex,
+  isHeaderCell,
   onClick,
   orderOfBodyRows,
   properties = {},
@@ -62,11 +63,25 @@ const TableCell = ({
         ) : null}
       </TableSortLabel>}
     </MaterialUITableCell>
-  ) :  <MaterialUITableCell>{properties.text}</MaterialUITableCell>
-
+  ) :  (
+    <MaterialUITableCell className={isHeaderCell ? "cursor-default" : ""}>
+      {(properties.text || properties.menu) && (
+        <span
+          className={`${properties.truncate ? "truncate" : ""}`}>
+          {properties.text}
+          {properties.menu && (
+            <SimpleMenu
+              actions={menuActions}
+              id={properties.menu.id}></SimpleMenu>
+          )}
+        </span>
+      )}
+    </MaterialUITableCell>
+  )
 };
 
 TableCell.propTypes = {
+  isHeaderCell: PropTypes.bool,
   columnIndex: PropTypes.number,
   onClick: PropTypes.func,
   orderOfBodyRows: PropTypes.object,

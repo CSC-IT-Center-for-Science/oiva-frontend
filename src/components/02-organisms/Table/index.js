@@ -144,13 +144,11 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
               <TableCell
                 columnIndex={iiii}
                 isHeaderCell={part.role === "thead"}
-                isOnLastRow={iii === rows.length - 1}
                 key={`cell-${iiii}`}
                 onClick={onCellClick}
                 orderOfBodyRows={orderOfBodyRows}
                 properties={cell}
                 row={row}
-                tableLevel={level}
               />
             );
           }, row.cells || [])}
