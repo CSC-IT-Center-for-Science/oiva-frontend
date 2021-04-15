@@ -523,7 +523,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                     >
                       <Table
                         structure={table}
-                        sortedBy={{ columnIndex: 3, order: "descending" }}
+                        sortedBy={{ columnIndex: 3, order: "desc" }}
                       />
                     </div>
                   )}

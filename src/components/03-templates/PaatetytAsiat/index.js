@@ -53,7 +53,7 @@ const PaatetytAsiat = ({ koulutusmuoto }) => {
       >
         <Table
           structure={tableStructure}
-          sortedBy={{ columnIndex: 5, order: "descending" }}
+          sortedBy={{ columnIndex: 5, order: "desc" }}
         />
       </div>
     );

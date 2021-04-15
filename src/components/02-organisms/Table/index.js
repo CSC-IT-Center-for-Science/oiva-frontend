@@ -1,10 +1,21 @@
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import TableCell from "./TableCell";
-import TableRow from "./TableRow";
-import RowGroup from "./RowGroup";
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from "./TableRow/index";
+import TableCell from "./TableCell/index";
 import { sortObjectsByProperty } from "../../../utils/common";
-import * as R from "ramda";
+import Paper from '@material-ui/core/Paper';
+import TableContainer from '@material-ui/core/TableContainer';
+import MaterialUITable from '@material-ui/core/Table';
+import { makeStyles } from '@material-ui/core/styles';
+import { addIndex, assocPath, findIndex, is, map, path, prop, propEq, reverse, sort } from "ramda";
+
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+});
 
 /**
  *
@@ -13,15 +24,17 @@ import * as R from "ramda";
  * @param {level} props.level - Level of unnested table is 0.
  * @param {object} props.sortedBy - Default sorting configuration.
  * @param {number} props.sortedBy.columnIndex - Column index.
- * @param {string} props.order - Valid values: ascending, descending.
+ * @param {string} props.order - Valid values: asc, desc.
  */
 const Table = ({ structure, level = 0, sortedBy = {} }) => {
+  const classes = useStyles();
+
   const [sortingHistory, setSortingHistory] = useState({});
 
   // This is for sorting the rows.
   const orderSwap = {
-    ascending: "descending",
-    descending: "ascending"
+    asc: "desc",
+    desc: "asc"
   };
 
   /**
@@ -30,8 +43,8 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
    **/
 
   const [orderOfBodyRows, setOrderOfBodyRows] = useState({
-    columnIndex: R.is(Number, sortedBy.columnIndex) ? sortedBy.columnIndex : 0,
-    order: sortedBy.order || "ascending"
+    columnIndex: is(Number, sortedBy.columnIndex) ? sortedBy.columnIndex : 0,
+    order: sortedBy.order || "asc"
   });
 
   /**
@@ -42,21 +55,21 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
       ...prevValue,
       [orderOfBodyRows.columnIndex]: orderOfBodyRows.order
     }));
-    const indexOfTbody = R.findIndex(R.propEq("role", "tbody"), structure);
+    const indexOfTbody = findIndex(propEq("role", "tbody"), structure);
     if (indexOfTbody >= 0) {
       const rowsPath = [indexOfTbody, "rowGroups", 0, "rows"];
       // ASC sorting is happening here.
-      const sorted = R.sort((a, b) => {
+      const sorted = sort((a, b) => {
         return sortObjectsByProperty(a, b, [
           "cells",
           orderOfBodyRows.columnIndex,
           "text"
         ]);
-      }, R.path(rowsPath, structure) || []);
+      }, path(rowsPath, structure) || []);
       // If user wants to sort by descending order the sorted array will be reversed.
-      const updatedStructure = R.assocPath(
+      const updatedStructure = assocPath(
         rowsPath,
-        orderOfBodyRows.order === "ascending" ? sorted : R.reverse(sorted),
+        orderOfBodyRows.order === "asc" ? sorted : reverse(sorted),
         structure
       );
       return updatedStructure;
@@ -93,9 +106,9 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
     // Sort action is handled inside the Table component.
     if (action === "sort") {
       setOrderOfBodyRows(prevState => {
-        let order = R.prop(prevState.order, orderSwap);
+        let order = prop(prevState.order, orderSwap);
         if (prevState.columnIndex !== columnIndex) {
-          order = sortingHistory[columnIndex] || "ascending";
+          order = sortingHistory[columnIndex] || "asc";
         }
         return { columnIndex: columnIndex, order };
       });
@@ -115,44 +128,35 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
    * @param {array} part.rowGroups - Array of rowgroup objects.
    * @param {array} rows - Array of row objects.
    */
-  const getRowsToRender = (part, rows = []) => {
-    const jsx = R.addIndex(R.map)((row, iii) => {
+   const getRowsToRender = (part, rows = []) => {
+    const ParentOfRow = part.role === "thead" ? TableHead : TableBody;
+    const jsx = <ParentOfRow key={Math.random()}>{
+      addIndex(map)((row, iii) => {      
       return (
-        <React.Fragment key={iii}>
-          <TableRow
-            key={`row-${iii}`}
-            row={row}
-            onClick={onRowClick}
-            tableLevel={level}
-          >
-            {R.addIndex(R.map)((cell, iiii) => {
-              return (
-                <TableCell
-                  columnIndex={iiii}
-                  isHeaderCell={part.role === "thead"}
-                  isOnLastRow={iii === rows.length - 1}
-                  key={`cell-${iiii}`}
-                  onClick={onCellClick}
-                  orderOfBodyRows={orderOfBodyRows}
-                  properties={cell}
-                  row={row}
-                  tableLevel={level}
-                >
-                  {cell.table && (
-                    // Nested table is created here.
-                    <Table level={level + 1} structure={cell.table}></Table>
-                  )}
-                </TableCell>
-              );
-            }, row.cells || [])}
-          </TableRow>
-          {/* Row object can contain "sub rows" that will always be shown under their
-          parent row - even if the table is sorted. This is especially useful what
-          comes to creating nested tables. */}
-          {row.rows && getRowsToRender(part, row.rows)}
-        </React.Fragment>
+        <TableRow
+          key={`row-${iii}`}
+          row={row}
+          onClick={onRowClick}
+          tableLevel={level}
+        >
+          {addIndex(map)((cell, iiii) => {
+            return (
+              <TableCell
+                columnIndex={iiii}
+                isHeaderCell={part.role === "thead"}
+                isOnLastRow={iii === rows.length - 1}
+                key={`cell-${iiii}`}
+                onClick={onCellClick}
+                orderOfBodyRows={orderOfBodyRows}
+                properties={cell}
+                row={row}
+                tableLevel={level}
+              />
+            );
+          }, row.cells || [])}
+        </TableRow>
       );
-    }, rows);
+    }, rows)}</ParentOfRow>
     return jsx;
   };
 
@@ -160,22 +164,21 @@ const Table = ({ structure, level = 0, sortedBy = {} }) => {
    * Starting point of table creation. Structure will be walked through and table's
    * different parts will be created.
    */
-  const table = R.addIndex(R.map)((part, i) => {
+  const table = addIndex(map)((part, i) => {
     return (
-      <React.Fragment key={i}>
-        {R.addIndex(R.map)((rowGroup, ii) => {
-          return (
-            <RowGroup key={`rowGroup-${ii}`} tableLevel={level}>
-              {getRowsToRender(part, rowGroup.rows)}
-            </RowGroup>
-          );
-        }, part.rowGroups || [])}
-      </React.Fragment>
+          <React.Fragment key={i}>
+            {map(rowGroup => {
+              return getRowsToRender(part, rowGroup.rows);  
+            }, part.rowGroups || [])}
+          </React.Fragment>
     );
   }, sortedStructure);
 
   // The table will is rendered.
-  return <div role="grid">{table}</div>;
+  return (
+    <TableContainer component={Paper}>
+      <MaterialUITable className={classes.table} aria-label="simple table">{table}</MaterialUITable>
+    </TableContainer>);
 };
 
 Table.propTypes = {

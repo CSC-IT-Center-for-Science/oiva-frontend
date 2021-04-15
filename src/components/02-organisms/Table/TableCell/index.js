@@ -1,28 +1,9 @@
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import * as R from "ramda";
-import { withStyles } from "@material-ui/core";
+import MaterialUITableCell from '@material-ui/core/TableCell';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import SimpleMenu from "../../SimpleMenu";
-
-/**
- * StyledButton is used for creating buttons for sort actions.
- */
-const StyledButton = withStyles({
-  root: {
-    border: 0,
-    color: "white",
-    width: "100%",
-    justifyContent: "left",
-    outline: "none",
-    margin: "0.5rem"
-  },
-  label: {
-    textTransform: "none"
-  }
-})(Button);
+import PropTypes from "prop-types";
+import * as R from "ramda";
 
 /**
  * TableCell component. Used  by the Table component.
@@ -38,20 +19,12 @@ const StyledButton = withStyles({
  * @param {number} props.tableLevel - Indicates the nesting level. For a flat table the value is 0.
  */
 const TableCell = ({
-  children,
   columnIndex,
-  isHeaderCell = false,
-  isOnLastRow = false,
   onClick,
   orderOfBodyRows,
   properties = {},
-  row,
-  tableLevel = 0
+  row
 }) => {
-  const classNames = R.join(
-    " ",
-    R.without(["truncate"], properties.styleClasses || [])
-  );
 
   function sort() {
     onClick("sort", { columnIndex, properties });
@@ -74,66 +47,31 @@ const TableCell = ({
       : [];
   }, [onClick, properties, row]);
 
-  return (
-    <div
-      key={`key-${Math.random()}`}
-      role={isHeaderCell ? "columnheader" : "gridcell"}
-      className={`${classNames} ${properties.table ? "w-full" : "flex"} ${
-        isHeaderCell ? `bg-green-${tableLevel + 5}00 text-white` : "p-2"
-      } relative items-center ${!isOnLastRow ? "border-b" : ""}`}>
-      {properties.isSortable ? (
-        <StyledButton
-          aria-label="Sort"
-          onClick={() => {
-            sort();
-          }}
-          title={properties.sortingTooltip}>
-          {properties.text && (
-            <span className={properties.truncate ? "truncate" : ""}>
-              {properties.text}
-            </span>
-          )}
-          {orderOfBodyRows && columnIndex === orderOfBodyRows.columnIndex && (
-            <React.Fragment>
-              {orderOfBodyRows.order === "ascending" ? (
-                <ArrowUpwardIcon fontSize="small" />
-              ) : (
-                <ArrowDownwardIcon fontSize="small" />
-              )}
-            </React.Fragment>
-          )}
-        </StyledButton>
-      ) : (
-        <React.Fragment>
-          {(properties.text || properties.menu) && (
-            <span
-              className={`${properties.truncate ? "truncate" : ""} py-4 px-2 ${
-                isHeaderCell ? "cursor-default" : ""
-              }`}>
-              {properties.text}
-              {properties.menu && (
-                <SimpleMenu
-                  actions={menuActions}
-                  id={properties.menu.id}></SimpleMenu>
-              )}
-            </span>
-          )}
-        </React.Fragment>
-      )}
-      {children}
-    </div>
-  );
+  return properties.isSortable ? (
+    <MaterialUITableCell>
+      {orderOfBodyRows && <TableSortLabel
+        active={columnIndex === orderOfBodyRows.columnIndex}
+        direction={orderOfBodyRows.order}
+        onClick={sort}
+      >
+        {properties.text}
+        {columnIndex === orderOfBodyRows.columnIndex ? (
+          <span className="visuallyHidden">
+            {orderOfBodyRows.order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+          </span>
+        ) : null}
+      </TableSortLabel>}
+    </MaterialUITableCell>
+  ) :  <MaterialUITableCell>{properties.text}</MaterialUITableCell>
+
 };
 
 TableCell.propTypes = {
   columnIndex: PropTypes.number,
-  isHeaderCell: PropTypes.bool,
-  isOnLastRow: PropTypes.bool,
   onClick: PropTypes.func,
   orderOfBodyRows: PropTypes.object,
   properties: PropTypes.object,
-  row: PropTypes.object,
-  tableLevel: PropTypes.number
+  row: PropTypes.object
 };
 
 export default TableCell;
