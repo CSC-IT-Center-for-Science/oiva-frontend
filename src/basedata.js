@@ -827,6 +827,7 @@ const BaseData = ({
     locale,
     lupaUuid,
     id,
+    language,
     location.pathname,
     koulutustyyppi,
     oppilaitostyyppi,
