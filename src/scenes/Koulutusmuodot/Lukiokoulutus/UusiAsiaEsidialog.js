@@ -104,7 +104,7 @@ const UusiAsiaEsidialog = ({
     if (koulutustyyppi && oid && selectedLanguage) {
       getRaw(
         "viimeisinLupa",
-        `${backendRoutes.viimeisinLupa.path}${oid}/viimeisin?koulutustyyppi=${koulutustyyppi}&kieli=${selectedLanguage.value}`,
+        `${backendRoutes.viimeisinLupa.path}${oid}/viimeisin?koulutustyyppi=${koulutustyyppi}&kieli=${selectedLanguage.value}&with=all&useKoodistoVersions=false`,
         []
       ).then(viimeisinLupa => {
         // Asetetaan vielä muistiin tieto siitä, löytyikö lupaa.
