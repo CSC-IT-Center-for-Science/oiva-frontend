@@ -38,7 +38,10 @@ const MobileMenu = ({
   const classes = useStyles();
   const { formatMessage, locale } = useIntl();
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
-  const [jarjestamisluvatMenuVisible, setjarjestamisluvatMenuVisible] = useState(false);
+  const [
+    jarjestamisluvatMenuVisible,
+    setjarjestamisluvatMenuVisible
+  ] = useState(true);
 
   const AppRouteTitlesMobile = [
     { route: AppRoute.Tilastot, translationKey: "common.statistics" },
@@ -71,6 +74,7 @@ const MobileMenu = ({
         </span>
       </span>
       <NavLink
+        onClick={onCloseMenu}
         to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
         className="block"
       >
@@ -81,35 +85,46 @@ const MobileMenu = ({
         />
       </NavLink>
       <div className={jarjestamisluvatMenuVisible ? "bg-green-600" : ""}>
-        <span
-          className={jarjestamisluvatMenuVisible ? "font-medium inline-block bg-green-700" : "font-medium inline-block"}
+        <div
+          className={
+            jarjestamisluvatMenuVisible
+              ? "font-medium inline-block bg-green-700"
+              : "font-medium inline-block"
+          }
           style={{
             width: "100%",
             height: "2.875rem"
           }}
-          onClick={() => {setjarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible)}}
+          onClick={() => {
+            setjarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible);
+          }}
         >
-          <NavLink
-            style={{
-              fontSize: "1.0625rem",
-              lineHeight: "2.875rem"
-            }}
-            to={localizeRouteKey(locale, AppRoute.JarjestamisJaYllapitamisluvat, formatMessage)}
-            className="text-white font-medium block"
-          >
-            <span className="pl-5 pr-3">
-              {formatMessage(common.jarjestamisJaYllapitamisluvat)}
-            </span>
-
+          <div className="flex py-2">
+            <NavLink
+              onClick={onCloseMenu}
+              style={{
+                fontSize: "1.0625rem"
+              }}
+              to={localizeRouteKey(
+                locale,
+                AppRoute.JarjestamisJaYllapitamisluvat,
+                formatMessage
+              )}
+              className="text-white font-medium block"
+            >
+              <span className="pl-5 pr-3">
+                {formatMessage(common.jarjestamisJaYllapitamisluvat)}
+              </span>
+            </NavLink>
             <span className="pr-5">
-            {jarjestamisluvatMenuVisible ? (
-              <ExpandLessIcon />
-            ) : (
-              <ExpandMoreIcon />
-            )}
+              {jarjestamisluvatMenuVisible ? (
+                <ExpandLessIcon />
+              ) : (
+                <ExpandMoreIcon />
+              )}
             </span>
-          </NavLink>
-        </span>
+          </div>
+        </div>
         {jarjestamisluvatMenuVisible ? (
           <div className="bg-green-600">
             {" "}
@@ -135,6 +150,7 @@ const MobileMenu = ({
                   to={routeToKoulutusmuodonEtusivu}
                   className="text-white pl-10 pr-5 font-medium block"
                   activeClassName="bg-green-700"
+                  onClick={onCloseMenu}
                 >
                   {koulutusmuoto.paasivunOtsikko}
                 </NavLink>
@@ -158,6 +174,7 @@ const MobileMenu = ({
               to={localizeRouteKey(locale, route.route, formatMessage)}
               className="text-white px-5 block"
               activeClassName="bg-green-700"
+              onClick={onCloseMenu}
             >
               {formatMessage(common[last(split(".", route.translationKey))])}
             </NavLink>
