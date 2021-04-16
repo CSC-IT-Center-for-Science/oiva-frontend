@@ -3,7 +3,7 @@ import MuutospyyntoWizard from "./components/MuutospyyntoWizard";
 
 const routes = [
   {
-    path: "/jarjestajat/:id/hakemukset/uusi/:page",
+    path: "/jarjestajat/:id/hakemukset/uusi/:page/:language",
     exact: true,
     component: MuutospyyntoWizard
   },

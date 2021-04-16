@@ -2126,7 +2126,7 @@
   },
   {
     "id": "routes.hakemus",
-    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}/{language}",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {
@@ -2196,7 +2196,7 @@
   },
   {
     "id": "routes.uusiHakemus",
-    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}",
+    "defaultMessage": "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}/{language}",
     "filepath": "src/i18n/definitions/routes.js"
   },
   {

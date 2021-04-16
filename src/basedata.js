@@ -104,7 +104,8 @@ const fetchBaseData = async (
   lupaUuid,
   oid,
   koulutustyyppi,
-  oppilaitostyyppi
+  oppilaitostyyppi,
+  language
 ) => {
   const localeUpper = toUpper(locale);
   /**
@@ -304,8 +305,8 @@ const fetchBaseData = async (
       `${backendRoutes.viimeisinLupa.path}${oid}${
         backendRoutes.viimeisinLupa.postfix
       }?with=all&useKoodistoVersions=false${
-        koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
-      }`,
+        koulutustyyppi ? `&koulutustyyppi=${koulutustyyppi}` : ""
+      }${language ? `&kieli=${language}` : ""}`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
@@ -792,7 +793,7 @@ const BaseData = ({
   oppilaitostyyppi,
   oid
 }) => {
-  const { id } = useParams();
+  const { id, language } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
   const lupaUuid =
@@ -813,7 +814,8 @@ const BaseData = ({
       lupaUuid,
       lupaUuid ? oid : id,
       koulutustyyppi,
-      oppilaitostyyppi
+      oppilaitostyyppi,
+      language
     ).then(result => {
       if (isSubscribed) {
         setBaseData(result);
