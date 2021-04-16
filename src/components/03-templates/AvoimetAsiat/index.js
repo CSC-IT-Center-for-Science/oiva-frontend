@@ -84,7 +84,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
       >
         <Table
           structure={tableStructure}
-          sortedBy={{ columnIndex: 5, order: "descending" }}
+          sortedBy={{ columnIndex: 5, order: "desc" }}
         />
         <ConfirmDialog
           isConfirmDialogVisible={isPaatettyConfirmationDialogVisible}

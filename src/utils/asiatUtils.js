@@ -72,7 +72,7 @@ export const generateAsiaTableRows = (
   return R.addIndex(R.map)(
     (col, j) => {
       return {
-        truncate: true,
+        truncate: false,
         styleClasses: [tableColumnSetup[j].widthClass],
         text: col.text
       };
