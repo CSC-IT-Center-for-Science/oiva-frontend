@@ -837,8 +837,10 @@ const CategorizedList = props => {
                                 isDisabled={isDisabled}
                                 isHidden={isDisabled}
                                 isReadOnly={propsObj.isReadOnly}
+                                color={propsObj.color}
                                 text={propsObj.text}
                                 variant={propsObj.variant}
+                                buttonStyles={propsObj.buttonStyles}
                                 icon={propsObj.icon}
                                 iconContainerStyles={
                                   propsObj.iconContainerStyles
