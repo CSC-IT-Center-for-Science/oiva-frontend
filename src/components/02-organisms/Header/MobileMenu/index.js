@@ -85,7 +85,7 @@ const MobileMenu = ({
         />
       </NavLink>
       <div className={jarjestamisluvatMenuVisible ? "bg-green-600" : ""}>
-        <span
+        <div
           className={
             jarjestamisluvatMenuVisible
               ? "font-medium inline-block bg-green-700"
@@ -99,28 +99,30 @@ const MobileMenu = ({
             setjarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible);
           }}
         >
-          <NavLink
-            style={{
-              fontSize: "1.0625rem",
-              lineHeight: "2.875rem"
-            }}
-            to={localizeRouteKey(
-              locale,
-              AppRoute.JarjestamisJaYllapitamisluvat,
-              formatMessage
-            )}
-            className="text-white font-medium block"
-          >
-            <span className="pl-5 pr-3">
-              {formatMessage(common.jarjestamisJaYllapitamisluvat)}
-            </span>
-            <span className="pr-5">
+          <div className="flex py-2">
+            <NavLink
+              onClick={onCloseMenu}
+              style={{
+                fontSize: "1.0625rem"
+              }}
+              to={localizeRouteKey(
+                locale,
+                AppRoute.JarjestamisJaYllapitamisluvat,
+                formatMessage
+              )}
+              className="text-white font-medium block"
+            >
+              <span className="pl-5 pr-3">
+                {formatMessage(common.jarjestamisJaYllapitamisluvat)}
+              </span>
+            </NavLink>
+            <button className="pr-5">
               {jarjestamisluvatMenuVisible ? (
                 <ExpandLessIcon />
               ) : (
                 <ExpandMoreIcon />
               )}
-            </span>
+            </button>
           </div>
         </div>
         {jarjestamisluvatMenuVisible ? (
