@@ -83,9 +83,7 @@ export const generateAsiaTableRows = (
       {
         text:
           formatMessage(common["asiaTypes.lupaChange"]) +
-          (row.kieli && row.kieli === "sv"
-            ? ` (${formatMessage(languages.ruotsinkielinen)})`
-            : "")
+          (row.kieli && row.kieli === "sv" ? " (SV)" : "")
       }, // Only one type known in system at this juncture
       { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
       { text: getMaakuntaNimiFromHakemus(row, locale) },
