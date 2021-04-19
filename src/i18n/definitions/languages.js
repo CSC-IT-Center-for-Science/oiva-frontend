@@ -2,7 +2,7 @@ import { defineMessages } from "react-intl";
 
 export default defineMessages({
   finnish: {
-    id: "language.finnish",
+    id: "languages.finnish",
     defaultMessage: "suomi"
   },
   inFinnish: {
@@ -14,11 +14,11 @@ export default defineMessages({
     defaultMessage: "På svenska"
   },
   ruotsinkielinen: {
-    id: "language.ruotsinkielinen",
+    id: "languages.ruotsinkielinen",
     defaultMessage: "ruotsinkielinen"
   },
   ruotsinkielista: {
-    id: "language.ruotsinkielista",
+    id: "languages.ruotsinkielista",
     defaultMessage: "ruotsinkielistä"
   },
   selection: {
@@ -26,15 +26,15 @@ export default defineMessages({
     defaultMessage: "Kielivalinta"
   },
   swedish: {
-    id: "language.swedish",
+    id: "languages.swedish",
     defaultMessage: "ruotsi"
   },
   suomenkielinen: {
-    id: "language.suomenkielinen",
+    id: "languages.suomenkielinen",
     defaultMessage: "suomenkielinen"
   },
   suomenkielista: {
-    id: "language.suomenkielista",
+    id: "languages.suomenkielista",
     defaultMessage: "suomenkielistä"
   }
 });

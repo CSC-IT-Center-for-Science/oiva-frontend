@@ -29,6 +29,7 @@ import * as R from "ramda";
 import Typography from "@material-ui/core/Typography";
 import { AppRoute } from "const/index";
 import moment from "moment";
+import languages from "i18n/definitions/languages";
 
 const WrapTable = styled.div``;
 
@@ -202,6 +203,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           muutospyyntoActions.download(path, intl.formatMessage);
         }
       },
+      kieli: muutospyynto.data.kieli,
       openInNewWindow: true,
       items: [
         intl.formatMessage(common.application),
@@ -287,6 +289,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       {
                         id: jarjestaja.oid,
                         koulutusmuoto: koulutusmuoto.kebabCase,
+                        language: row.kieli || "fi",
                         page: 1,
                         uuid: row.uuid
                       }
@@ -308,7 +311,13 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   };
                 },
                 [
-                  { text: row.items[0] },
+                  {
+                    text:
+                      row.items[0] +
+                      (row.kieli
+                        ? ` (${intl.formatMessage(languages.ruotsinkielinen)})`
+                        : "")
+                  },
                   { text: row.items[1] },
                   { text: row.items[2] },
                   { text: row.items[3] }
