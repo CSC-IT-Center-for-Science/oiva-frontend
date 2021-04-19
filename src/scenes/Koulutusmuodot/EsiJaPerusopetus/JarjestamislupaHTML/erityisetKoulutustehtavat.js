@@ -9,6 +9,7 @@ import {
   path,
   pathEq,
   propEq,
+  sortBy,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -41,11 +42,14 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
       });
   }, []);
 
-  const erityisetKoulutustehtavatMaaraykset = filter(
-    maarays =>
-      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
-      maarays.koodisto === "poerityinenkoulutustehtava",
-    maaraykset
+  const erityisetKoulutustehtavatMaaraykset = sortBy(
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
+    filter(
+      maarays =>
+        pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
+        maarays.koodisto === "poerityinenkoulutustehtava",
+      maaraykset
+    )
   );
 
   const lisatietomaarays = find(

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog/index";
 import OrganisationInfo from "components/02-organisms/OrganisationInfo/index";
 import { withStyles } from "@material-ui/styles";
@@ -19,6 +19,8 @@ import WizardActions from "components/02-organisms/WizardActions/index";
 import common from "i18n/definitions/common";
 import { useMuutospyynto } from "stores/muutospyynto";
 import PropTypes from "prop-types";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/app-routes";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -54,6 +56,7 @@ const FormDialog = withStyles(() => ({
 });
 
 export const Wizard = ({
+  koulutusmuoto,
   onAction,
   organisation,
   page1,
@@ -67,7 +70,7 @@ export const Wizard = ({
   const intl = useIntl();
   const params = useParams();
   let history = useHistory();
-  let { page: pageParam } = params;
+  let { id, page: pageParam, uuid } = params;
 
   const [page, setPage] = useState();
 
@@ -81,6 +84,36 @@ export const Wizard = ({
   const [unsavedChangeObjects] = useUnsavedChangeObjects();
   const [underRemovalChangeObjects] = useUnderRemovalChangeObjects();
   const [, muutospyyntoActions] = useMuutospyynto();
+
+  const [scrollMemory, setScrollMemory] = useState();
+
+  const getScrollElementAndPosition = useMemo(() => {
+    const rootElement = document.querySelector("div.MuiDialogContent-root");
+    if (rootElement) {
+      const innerElement = document.querySelector("div[attr='inner-scroll']");
+      const initialHeight = 243 // MuiDialogTitle-root height + MuiTypography-root height + MuiTypography-h2 height
+      if (isPreviewModeOn) {
+        if(window.innerWidth > 1599) {
+          rootElement.scrollTop = 183; // MuiDialogTitle-root height + MuiTypography-root height
+          setScrollMemory(rootElement.scrollTop - initialHeight);
+          return innerElement;
+        } else {
+          setScrollMemory(rootElement.scrollTop);
+        }
+      } else if (window.innerWidth > 1599) {
+        setScrollMemory(innerElement.scrollTop + initialHeight);
+      }
+      return rootElement;
+    }
+    return undefined;
+  }, [isPreviewModeOn]);
+
+  useLayoutEffect(() => {
+    const elem = getScrollElementAndPosition;
+    if (elem) {
+      elem.scrollTo({ top: scrollMemory, behavior: 'instant' });
+    }
+  }, [getScrollElementAndPosition, isPreviewModeOn, scrollMemory]);
 
   /**
    * User is redirected to the following path when the form is closed.
@@ -109,9 +142,22 @@ export const Wizard = ({
 
   const handleStep = useCallback(
     pageNumber => {
-      history.push(String(pageNumber));
+      history.push(
+        localizeRouteKey(
+          intl.locale,
+          uuid ? AppRoute.Hakemus : AppRoute.UusiHakemus,
+          intl.formatMessage,
+          {
+            id,
+            koulutusmuoto: koulutusmuoto.kebabCase,
+            language: "fi",
+            page: pageNumber,
+            uuid
+          }
+        )
+      );
     },
-    [history]
+    [id, intl.formatMessage, intl.locale, history, koulutusmuoto, uuid]
   );
 
   const leaveOrOpenCancelModal = () => {
@@ -195,6 +241,7 @@ export const Wizard = ({
                           </Typography>
                         </div>
                         <div
+                          attr="inner-scroll"
                           className={`${
                             isPreviewModeOn ? "overflow-auto" : "pb-32"
                           }`}

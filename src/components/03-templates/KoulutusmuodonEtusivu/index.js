@@ -6,7 +6,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { NavLink, Redirect, Route, Router, useHistory } from "react-router-dom";
 import Jarjestajat from "../Jarjestajat/index";
 import BaseData from "basedata";
-import JarjestajaSwitch from "../JarjestajaSwitch";
+import JarjestajaSwitch from "../JarjestajaSwitch/index";
 import { useUser } from "stores/user";
 import Asianhallinta from "components/03-templates/Asianhallinta/index";
 import { includes } from "ramda";
@@ -24,6 +24,7 @@ export default function KoulutusmuodonEtusivu({
   koulutusmuoto,
   kuvausteksti,
   paasivunOtsikko,
+  UusiAsiaEsidialog,
   WizardContainer
 }) {
   const history = useHistory();
@@ -56,6 +57,7 @@ export default function KoulutusmuodonEtusivu({
                   <Asianhallinta
                     koulutusmuoto={koulutusmuoto}
                     user={user}
+                    UusiAsiaEsidialog={UusiAsiaEsidialog}
                     WizardContainer={WizardContainer}
                   />
                 )}

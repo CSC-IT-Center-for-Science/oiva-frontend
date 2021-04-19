@@ -1295,5 +1295,9 @@ export default defineMessages({
   mainNavigation: {
     id: "common.mainNavigation",
     defaultMessage: "Päänavigaatio"
+  },
+  valitseLuvanKieli: {
+    id: "common.valitseLuvanKieli",
+    defaultMessage: "Valitse luvan kieli"
   }
 });

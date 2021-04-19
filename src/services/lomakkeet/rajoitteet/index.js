@@ -8,6 +8,7 @@ import {
   prop,
   split
 } from "ramda";
+import { __ } from "i18n-for-browser";
 
 export function rajoitteet(
   data,
@@ -36,13 +37,13 @@ export function rajoitteet(
           {
             anchor: "rajoiteosio",
             name: "StatusTextRow",
-            styleClasses: ["mb-6"],
             properties: {
               title:
                 "Lupaan kohdistuvia rajoitteita voit tehdä lomakkeella tekemiesi valintojen perusteella."
             }
           }
-        ]
+        ],
+        styleClasses: ["mb-6"]
       },
       {
         anchor: "rajoitteenLisaaminen",
@@ -52,7 +53,9 @@ export function rajoitteet(
             name: "SimpleButton",
             onClick: onAddRestriction,
             properties: {
-              text: "Lisää rajoite"
+              text: __("rajoitteet.lisaaRajoite"),
+              color: "secondary",
+              variant: "outlined"
             }
           }
         ]

@@ -137,7 +137,8 @@ const Jarjestaja = React.memo(
         {
           id: organisation.oid,
           koulutusmuoto: koulutusmuoto.kebabCase,
-          page: 1
+          page: 1,
+          language: "fi"
         }
       ),
       text: intl.formatMessage(common.newHakemus),

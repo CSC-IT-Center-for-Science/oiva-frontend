@@ -14,7 +14,6 @@ export async function getValtakunnallinenKehittamistehtavalomake(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
     lisatiedot || []
   );
-
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
   let kehittamistehtavatStructure = [
     {
@@ -40,6 +39,20 @@ export async function getValtakunnallinenKehittamistehtavalomake(
             checkboxObjSection4.anchor,
             1
           )}.${getAnchorPart(checkboxObjSection4.anchor, 2)}`;
+          const kuvausNro = getAnchorPart(checkboxObjSection4.anchor, 2);
+
+          const hasMaarays = !!find(
+            maarays =>
+              path(["meta", "isValtakunnallinenKehitystehtava"], maarays) &&
+              path(["meta", "ankkuri"], maarays) === kuvausNro &&
+              pathEq(
+                ["properties", "forChangeObject", "koodiarvo"],
+                maarays.koodiarvo,
+                checkboxObjSection4
+              ),
+            maaraykset
+          );
+
           return {
             anchor,
             components: [
@@ -47,10 +60,7 @@ export async function getValtakunnallinenKehittamistehtavalomake(
                 anchor: "valintaelementti",
                 name: "CheckboxWithLabel",
                 properties: {
-                  isChecked: path(
-                    ["properties", "metadata", "isChecked"],
-                    checkboxObjSection4
-                  ),
+                  isChecked: hasMaarays,
                   isIndeterminate: false,
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,

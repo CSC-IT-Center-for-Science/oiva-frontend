@@ -29,6 +29,10 @@ export default defineMessages({
     id: "rajoitteet.lisaaKohdennus",
     defaultMessage: "Lisää kohdennus"
   },
+  lisaaRajoite: {
+    id: "rajoitteet.lisaaRajoite",
+    defaultMessage: "Lisää rajoite"
+  },
   rajoitekriteerit: {
     id: "rajoitteet.rajoitekriteerit",
     defaultMessage: "Rajoitekriteerit"
@@ -44,5 +48,9 @@ export default defineMessages({
   rajoituksenKohde: {
     id: "rajoitteet.rajoituksenKohde",
     defaultMessage: "Rajoituksen kohde"
+  },
+  eiRajoitteita: {
+    id: "rajoitteet.eiRajoitteita",
+    defaultMessage: "Ei rajoitteita"
   }
 });
