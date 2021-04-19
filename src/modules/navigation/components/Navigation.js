@@ -37,7 +37,7 @@ export const Navigation = ({ routes }) => {
                   fontSize: "0.9375rem"
                 }}
               >
-                <div className="flex flex-col justify-center hover:text-white" style={{height: "100%", flexDirection: "row"}}>
+                <div className="flex flex-row justify-center hover:text-white h-full">
                   <NavLink
                     to={routeKey}
                     activeClassName={"bg-green-700 bg-opacity-75"}
