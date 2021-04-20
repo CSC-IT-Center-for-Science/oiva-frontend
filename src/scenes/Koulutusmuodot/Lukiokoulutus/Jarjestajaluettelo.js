@@ -40,6 +40,7 @@ import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
+import languages from "i18n/definitions/languages"
 
 const StyledButton = styled(Button)(spacing);
 
@@ -325,9 +326,10 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
   const intl = useIntl();
 
   const [data, setData] = useState(() =>
-    map(({ jarjestaja, uuid }) => {
+    map(({ jarjestaja, kieli, uuid }) => {
       const localeUpper = toUpper(intl.locale);
       return {
+        kieli,
         nimi: jarjestaja.nimi[intl.locale] || head(values(jarjestaja.nimi)),
         lupaUuid: uuid,
         maakunta: (
@@ -362,9 +364,9 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
             )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.nimi
-            })}
-          >
-            {row.values.nimi}
+            })}>
+            {row.values.nimi}{" "}
+            {row.original.kieli && row.original.kieli === "sv" ? `(${intl.formatMessage(languages.ruotsinkielinen)})` : null}
           </Link>
         );
       }

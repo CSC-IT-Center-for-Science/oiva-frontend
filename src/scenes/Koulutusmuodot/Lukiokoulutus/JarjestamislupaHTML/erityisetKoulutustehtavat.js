@@ -9,6 +9,7 @@ import {
   map,
   path,
   propEq,
+  sortBy,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -38,11 +39,14 @@ export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
       });
   }, []);
 
-  const erityisetKoulutustehtavatMaaraykset = filter(
-    maarays =>
-      maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
-      maarays.koodisto === "lukioerityinenkoulutustehtavauusi",
-    maaraykset
+  const erityisetKoulutustehtavatMaaraykset = sortBy(
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
+    filter(
+      maarays =>
+        maarays.kohde.tunniste === "erityinenkoulutustehtava" &&
+        maarays.koodisto === "lukioerityinenkoulutustehtavauusi",
+      maaraykset
+    )
   );
 
   const lisatietomaarays = find(

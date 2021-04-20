@@ -5,6 +5,7 @@ import Jarjestajaluettelo from "./Jarjestajaluettelo";
 import WizardContainer from "./WizardContainer";
 import { getKoulutusmuodot } from "utils/common";
 import { useIntl } from "react-intl";
+import UusiAsiaEsidialog from "./UusiAsiaEsidialog";
 
 /**
  * Hakuavaimet, joiden perusteella basedata.js täydentään lokaalia
@@ -42,6 +43,7 @@ export default function Lukio() {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
+      UusiAsiaEsidialog={UusiAsiaEsidialog}
       WizardContainer={WizardContainer}
     ></KoulutusmuodonEtusivu>
   );

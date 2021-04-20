@@ -8,6 +8,7 @@ import {
   map,
   path,
   propEq,
+  sortBy,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -32,12 +33,15 @@ export default function OpetuksenMuutEhdotHtml({ maaraykset }) {
       });
   }, []);
 
-  const muutEhdotMaaraykset = filter(
-    maarays =>
-      maarays.kohde.tunniste ===
-        "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
-      maarays.koodisto === "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
-    maaraykset
+  const muutEhdotMaaraykset = sortBy(
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
+    filter(
+      maarays =>
+        maarays.kohde.tunniste ===
+          "muutkoulutuksenjarjestamiseenliittyvatehdot" &&
+        maarays.koodisto === "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
+      maaraykset
+    )
   );
 
   const lisatietomaarays = find(

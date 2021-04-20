@@ -17,11 +17,20 @@ import {
   startsWith,
   length,
   not,
-  toUpper
+  toUpper,
+  concat,
+  take,
+  values,
+  head,
+  split,
+  mapObjIndexed,
+  drop,
+  isEmpty
 } from "ramda";
 import { getAnchorPart } from "utils/common";
 import { getChangeObjByAnchor } from "components/02-organisms/CategorizedListRoot/utils";
 import { __ } from "i18n-for-browser";
+import { createAlimaarayksetBEObjects } from "../../helpers/rajoitteetHelper";
 
 export const createDynamicTextFields = (
   sectionId,
@@ -59,7 +68,7 @@ export const createDynamicTextFields = (
   ]);
 
   const seuraavaAnkkuri =
-    parseInt(apply(Math.max, nykyisetAnkkuriarvot), 10) + 1 || 0;
+    parseInt(apply(Math.max, nykyisetAnkkuriarvot), 10) + 1 || "0";
 
   const unremovedInLupaTextBoxes = sortBy(
     path(["meta", "ankkuri"]),
@@ -118,6 +127,11 @@ export const createDynamicTextFields = (
           );
           return (
             equals(changeObjAnkkuri, anchor) &&
+            pathEq(
+              ["properties", "metadata", "koodiarvo"],
+              maarays.koodiarvo,
+              changeObj
+            ) &&
             pathEq(["properties", "isDeleted"], true, changeObj)
           );
         }, changeObjects);
@@ -133,6 +147,11 @@ export const createDynamicTextFields = (
               previousInLupaTextBox
             )}.kuvaus`
           : `${sectionId}.${koodiarvo}.lisaaPainike.A`;
+
+        const kuvaus = path(
+          ["metadata", locale ? toUpper(locale) : "FI", "kuvaus"],
+          find(koodi => koodi.koodiarvo === koodiarvo, koodit || [])
+        );
 
         return isRemoved
           ? null
@@ -150,13 +169,14 @@ export const createDynamicTextFields = (
                     },
                     isPreviewModeOn,
                     isReadOnly: isPreviewModeOn || isReadOnly,
-                    isRemovable: maxAmountOfTextBoxes > 1,
-                    isRemoveBtnDisabled: numberOfTextBoxes === 1,
+                    isRemovable:
+                      maxAmountOfTextBoxes > 1 && numberOfTextBoxes > 1,
                     placeholder: __("common.kuvausPlaceholder"),
                     title: __("common.kuvaus"),
                     value:
                       path(["meta", "arvo"], maarays) ||
-                      path(["meta", "kuvaus"], maarays)
+                      path(["meta", "kuvaus"], maarays) ||
+                      kuvaus
                   }
                 }
               ]
@@ -276,4 +296,178 @@ export const createDynamicTextFields = (
       }
     ].filter(Boolean)
   );
+};
+
+export const createDynamicTextBoxBeChangeObjects = (
+  kuvausChangeObjects,
+  liittyvatMaaraykset,
+  kuvausKoodistosta,
+  isCheckboxChecked,
+  koodi,
+  maaraystyyppi,
+  maaraystyypit,
+  rajoitteetByRajoiteIdAndKoodiarvo,
+  checkboxChangeObj,
+  kohde,
+  kohteet
+) => {
+  return map(changeObj => {
+    const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
+
+    const liittyvaMaarays = find(
+      maarays =>
+        maarays.koodiarvo === getAnchorPart(changeObj.anchor, 1) &&
+        pathEq(["meta", "ankkuri"], ankkuri, maarays),
+      liittyvatMaaraykset
+    );
+
+    /** Jos kuvaus on identtinen koodistosta tulevan kanssa ei tallenneta sitä lainkaan muutokselle.
+     *  Tällöin muutokset koodistoon näkyvät html-luvalla */
+    const kuvaus =
+      path(["properties", "value"], changeObj) === kuvausKoodistosta
+        ? null
+        : path(["properties", "value"], changeObj);
+    const isDeleted = path(["properties", "isDeleted"], changeObj);
+    const isMuokattu = liittyvaMaarays && !isDeleted;
+    const changeObjectDeleted = isDeleted && !liittyvaMaarays;
+    const tila = isCheckboxChecked && !isDeleted ? "LISAYS" : "POISTO";
+
+    const kuvausBEChangeObject = changeObjectDeleted
+      ? null
+      : Object.assign(
+          {},
+          {
+            generatedId: changeObj.anchor,
+            kohde,
+            koodiarvo: koodi.koodiarvo,
+            koodisto: koodi.koodisto.koodistoUri,
+            ...(kuvaus && { kuvaus }),
+            maaraystyyppi,
+            meta: {
+              ankkuri,
+              ...(kuvaus && { kuvaus }),
+              changeObjects: flatten(
+                concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
+                  checkboxChangeObj,
+                  changeObj
+                ])
+              ).filter(Boolean)
+            },
+            tila,
+            maaraysUuid: tila === "POISTO" ? liittyvaMaarays.uuid : null
+          }
+        );
+
+    /** Jos tekstikenttämääräystä on muokattu, pitää luoda poisto-objekti määräykselle */
+    const muokkausPoistoObjekti = isMuokattu
+      ? {
+          kohde,
+          koodiarvo: koodi.koodiarvo,
+          koodisto: koodi.koodisto.koodistoUri,
+          tila: "POISTO",
+          maaraysUuid: liittyvaMaarays.uuid,
+          maaraystyyppi
+        }
+      : null;
+
+    let alimaaraykset = [];
+
+    const kohteenTarkentimenArvo = path(
+      [1, "properties", "value", "value"],
+      head(values(rajoitteetByRajoiteIdAndKoodiarvo))
+    );
+
+    const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
+      ? nth(1, split("-", kohteenTarkentimenArvo))
+      : null;
+
+    if (
+      kohteenTarkentimenArvo &&
+      (rajoitevalinnanAnkkuriosa === ankkuri || !rajoitevalinnanAnkkuriosa)
+    ) {
+      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+      // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+      // loput toisiinsa "alenevassa polvessa".
+      alimaaraykset = values(
+        mapObjIndexed(asetukset => {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            kuvausBEChangeObject,
+            drop(2, asetukset)
+          );
+        }, rajoitteetByRajoiteIdAndKoodiarvo)
+      );
+    }
+
+    return [kuvausBEChangeObject, muokkausPoistoObjekti, alimaaraykset];
+  }, kuvausChangeObjects);
+};
+
+export const createBECheckboxChangeObjectsForDynamicTextBoxes = (
+  checkboxChangeObj,
+  koodi,
+  rajoitteetByRajoiteIdAndKoodiarvo,
+  kohteet,
+  kohde,
+  maaraystyypit,
+  maaraystyyppi,
+  liittyvatMaaraykset,
+  isCheckboxChecked,
+  locale,
+  nimi
+) => {
+  let checkboxBEchangeObject = null;
+  checkboxBEchangeObject = checkboxChangeObj
+    ? {
+        generatedId: `${nimi}-${Math.random()}`,
+        kohde,
+        koodiarvo: koodi.koodiarvo,
+        koodisto: koodi.koodisto.koodistoUri,
+        kuvaus: koodi.metadata[locale].kuvaus,
+        maaraystyyppi,
+        meta: {
+          changeObjects: flatten(
+            concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
+              checkboxChangeObj
+            ])
+          ).filter(Boolean)
+        },
+        tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
+      }
+    : null;
+
+  // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
+  // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
+  // loput toisiinsa "alenevassa polvessa".
+  const alimaaraykset =
+    checkboxBEchangeObject && !isEmpty(rajoitteetByRajoiteIdAndKoodiarvo)
+      ? values(
+          mapObjIndexed(asetukset => {
+            return createAlimaarayksetBEObjects(
+              kohteet,
+              maaraystyypit,
+              checkboxBEchangeObject,
+              drop(2, asetukset)
+            );
+          }, rajoitteetByRajoiteIdAndKoodiarvo)
+        )
+      : null;
+
+  /** Jos checkboxi ei ole checkattu. Luodaan poisto-objektit koulutustehtävään
+   * liittyville määräyksille (eli tekstikentille) */
+  const uncheckedCheckBoxPoistot = !isCheckboxChecked
+    ? map(maarays => {
+        return {
+          kohde,
+          koodiarvo: koodi.koodiarvo,
+          koodisto: koodi.koodisto.koodistoUri,
+          tila: "POISTO",
+          maaraysUuid: maarays.uuid,
+          maaraystyyppi
+        };
+      }, liittyvatMaaraykset)
+    : null;
+
+  return [checkboxBEchangeObject, uncheckedCheckBoxPoistot, alimaaraykset];
 };

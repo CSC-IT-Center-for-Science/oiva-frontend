@@ -49,7 +49,7 @@ export default defineMessages({
   hakemus: {
     id: "routes.hakemus",
     defaultMessage:
-      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}"
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/{uuid}/{page}/{language}"
   },
   home: {
     id: "routes.home",
@@ -111,7 +111,7 @@ export default defineMessages({
   uusiHakemus: {
     id: "routes.uusiHakemus",
     defaultMessage:
-      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}"
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/{id}/uusi/{page}/{language}"
   },
   vapaaSivistystyo: {
     id: "routes.vapaaSivistystyo",

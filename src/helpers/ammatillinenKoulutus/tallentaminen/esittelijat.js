@@ -123,7 +123,7 @@ export async function createObjectToSave(
     R.filter(
       maarays =>
         maarays.koodisto === "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
-      lupa.maaraykset
+      lupa.maaraykset || []
     )
   );
 

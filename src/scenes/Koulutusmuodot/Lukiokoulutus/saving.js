@@ -36,6 +36,7 @@ export async function createObjectToSave(
   uuid,
   kohteet,
   maaraystyypit,
+  language, // Luvan kieli
   alkupera = "KJ"
 ) {
   const allAttachmentsRaw = [];
@@ -241,6 +242,7 @@ export async function createObjectToSave(
 
   let objectToSave = {
     alkupera,
+    kieli: language,
     koulutustyyppi,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,

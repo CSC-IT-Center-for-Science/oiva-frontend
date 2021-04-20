@@ -1,6 +1,6 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
 import { __ } from "i18n-for-browser";
-import { filter, find, flatten, hasPath, map, pathEq, propEq } from "ramda";
+import { filter, find, flatten, map, pathEq, propEq } from "ramda";
 import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
@@ -36,10 +36,6 @@ export async function muutEhdot(
           ),
         maaraykset
       );
-      const kuvausmaaraykset = filter(
-        hasPath(["meta", "kuvaus"]),
-        ehtoonLiittyvatMaaraykset
-      );
 
       return {
         anchor: ehto.koodiarvo,
@@ -66,7 +62,7 @@ export async function muutEhdot(
         ],
         categories: createDynamicTextFields(
           sectionId,
-          kuvausmaaraykset,
+          ehtoonLiittyvatMaaraykset,
           changeObjects,
           ehto.koodiarvo,
           onAddButtonClick,

@@ -40,8 +40,23 @@
     "filepath": "src/i18n/definitions/attachments.js"
   },
   {
+    "id": "auth.jatkaKirjautumiseen",
+    "defaultMessage": "Jatka kirjautumiseen",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
     "id": "auth.logIn",
     "defaultMessage": "Kirjaudu sisään",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.loginInfoDialogText",
+    "defaultMessage": "Tällä hetkellä OIVA-palveluun kirjautuminen on mahdollista vain opetus- ja kulttuuriministeriön virkamiehille.",
+    "filepath": "src/i18n/definitions/auth.js"
+  },
+  {
+    "id": "auth.loginInfoDialogTitle",
+    "defaultMessage": "OIVA-palveluun kirjautuminen",
     "filepath": "src/i18n/definitions/auth.js"
   },
   {
@@ -1625,6 +1640,21 @@
     "filepath": "src/i18n/definitions/common.js"
   },
   {
+    "id": "common.sulje",
+    "defaultMessage": "Sulje",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.onVoimassa",
+    "defaultMessage": "Järjestämislupa on voimassa {loppupvm} asti",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
+    "id": "common.valitseLuvanKieli",
+    "defaultMessage": "Valitse luvan kieli",
+    "filepath": "src/i18n/definitions/common.js"
+  },
+  {
     "id": "education.highSchoolEducation",
     "defaultMessage": "Lukiokoulutus",
     "filepath": "src/i18n/definitions/education.js"
@@ -1920,6 +1950,26 @@
     "filepath": "src/i18n/definitions/informUser.js"
   },
   {
+    "id": "informUser.eiVoimassaOlevaaJarjestamislupaa",
+    "defaultMessage": "Tällä koulutuksen järjestäjällä ei ole voimassa olevaa {xKielista} järjestämislupaa.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.hyvaksymallaSiirrytaanLupalomakkeelle",
+    "defaultMessage": "Hyväksymällä siirrytään luvan tietojen syöttämiseen.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.hyvaksymallaSiirrytaanLuvanMuokkaamiseen",
+    "defaultMessage": "Hyväksymällä siirrytään luvan muokkaamiseen.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
+    "id": "informUser.voimassaOlevaJarjestamislupa",
+    "defaultMessage": "Tällä koulutuksen järjestäjällä on jo voimassa oleva {xKielinen} järjestämislupa.",
+    "filepath": "src/i18n/definitions/informUser.js"
+  },
+  {
     "id": "kebabCase.asianhallinta",
     "defaultMessage": "asianhallinta",
     "filepath": "src/i18n/definitions/kebabCase.js"
@@ -1975,6 +2025,11 @@
     "filepath": "src/i18n/definitions/kebabCase.js"
   },
   {
+    "id": "languages.finnish",
+    "defaultMessage": "suomi",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
     "id": "languages.inFinnish",
     "defaultMessage": "Suomeksi",
     "filepath": "src/i18n/definitions/languages.js"
@@ -1985,8 +2040,33 @@
     "filepath": "src/i18n/definitions/languages.js"
   },
   {
+    "id": "languages.ruotsinkielinen",
+    "defaultMessage": "ruotsinkielinen",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
+    "id": "languages.ruotsinkielista",
+    "defaultMessage": "ruotsinkielistä",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
     "id": "languages.selection",
     "defaultMessage": "Kielivalinta",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
+    "id": "languages.swedish",
+    "defaultMessage": "ruotsi",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
+    "id": "languages.suomenkielinen",
+    "defaultMessage": "suomenkielinen",
+    "filepath": "src/i18n/definitions/languages.js"
+  },
+  {
+    "id": "languages.suomenkielista",
+    "defaultMessage": "suomenkielistä",
     "filepath": "src/i18n/definitions/languages.js"
   },
   {
@@ -2012,6 +2092,11 @@
   {
     "id": "lukiokoulutus.paasivunOtsikko",
     "defaultMessage": "Lukiokoulutuksen järjestäjät",
+    "filepath": "src/i18n/definitions/lukiokoulutus.js"
+  },
+  {
+    "id": "lukiokoulutus.esittelyteksti",
+    "defaultMessage": "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia lukiokoulutuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä.",
     "filepath": "src/i18n/definitions/lukiokoulutus.js"
   },
   {
@@ -2045,6 +2130,11 @@
     "filepath": "src/i18n/definitions/opiskelijamaara.js"
   },
   {
+    "id": "opiskelijamaara.kokonaismaaraEiRajattu",
+    "defaultMessage": "Kokonaisoppilas-/opiskelijamäärä: Ei rajattu",
+    "filepath": "src/i18n/definitions/opiskelijamaara.js"
+  },
+  {
     "id": "rajoitteet.ajalla",
     "defaultMessage": "ajalla",
     "filepath": "src/i18n/definitions/rajoitteet.js"
@@ -2072,6 +2162,36 @@
   {
     "id": "rajoitteet.lisaaAlirajoite",
     "defaultMessage": "Lisää alirajoite",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.lisaaKohdennus",
+    "defaultMessage": "Lisää kohdennus",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.rajoitekriteerit",
+    "defaultMessage": "Rajoitekriteerit",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.lisaaKriteeri",
+    "defaultMessage": "Lisää kriteeri",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.kohdennus",
+    "defaultMessage": "Kohdennus",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.rajoituksenKohde",
+    "defaultMessage": "Rajoituksen kohde",
+    "filepath": "src/i18n/definitions/rajoitteet.js"
+  },
+  {
+    "id": "rajoitteet.eiRajoitteita",
+    "defaultMessage": "Ei rajoitteita",
     "filepath": "src/i18n/definitions/rajoitteet.js"
   },
   {
