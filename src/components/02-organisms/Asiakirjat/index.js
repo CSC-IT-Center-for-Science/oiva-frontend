@@ -151,15 +151,19 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     );
   };
 
-  const baseRow = [
-    muutospyynto && muutospyynto.data && states.includes(muutospyynto.data.tila)
-      ? intl.formatMessage(
-          common[
-            asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
-          ]
-        )
-      : ""
-  ];
+  const baseRow = {
+    tila: R.path(["data", "tila"], muutospyynto),
+    localizedTila:
+      muutospyynto &&
+      muutospyynto.data &&
+      states.includes(muutospyynto.data.tila)
+        ? intl.formatMessage(
+            common[
+              asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
+            ]
+          )
+        : ""
+  };
 
   const liitteetRowItems = useMemo(() => {
     if (muutospyynnonLiitteet.fetchedAt) {
@@ -196,18 +200,18 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       return { items: [] };
     }
     return {
-      uuid,
       fileLinkFn: async () => {
         const path = await muutospyyntoActions.getLupaPreviewDownloadPath(uuid);
         if (path) {
           muutospyyntoActions.download(path, intl.formatMessage);
         }
       },
+      isEsittelyssa: baseRow.tila === "ESITTELYSSA",
       kieli: muutospyynto.data.kieli,
       openInNewWindow: true,
       items: [
         intl.formatMessage(common.application),
-        ...baseRow,
+        baseRow.localizedTila,
         muutospyynto.data.luoja,
         muutospyynto.data.luontipvm ? (
           <Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>
@@ -215,7 +219,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           ""
         )
       ],
-      tila: muutospyynto.data ? muutospyynto.data.tila : ""
+      tila: muutospyynto.data ? muutospyynto.data.tila : "",
+      uuid
     };
   }, [
     baseRow,
@@ -271,6 +276,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         {
           rows: R.addIndex(R.map)((row, i) => {
             return {
+              isClickable: !row.isEsittelyssa,
+              isHoverable: !row.isEsittelyssa,
               uuid: row.uuid,
               type: row.type,
               fileLinkFn: row.fileLinkFn,
@@ -280,26 +287,35 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 } else if (action === "download-pdf-and-change-state") {
                   setIsDownloadPDFAndChangeStateDialogVisible(true);
                   setDocumentIdForAction(row.uuid);
-                } else if (action === "edit") {
-                  history.push(
-                    localizeRouteKey(
-                      intl.locale,
-                      AppRoute.Hakemus,
-                      intl.formatMessage,
-                      {
-                        id: jarjestaja.oid,
-                        koulutusmuoto: koulutusmuoto.kebabCase,
-                        language: row.kieli || "fi",
-                        page: 1,
-                        uuid: row.uuid
-                      }
-                    )
-                  );
                 } else if (action === "remove") {
                   setDocumentIdForAction(row.uuid);
                   row.type === "liite"
                     ? setIsDeleteLiiteDialogVisible(true)
                     : setIsRemovalDialogVisible(true);
+                } else {
+                  // Tässä on listattu rivin klikkaamisen oletustoiminnot.
+                  if (row.type === "liite") {
+                    // Liitteen tapauksessa oletustoiminto on liitteen
+                    // lataaminen.
+                    row.fileLinkFn();
+                  } else {
+                    // Muutospyynnön tapauksessa oletustoiminto on sen
+                    // avaaminen muokkaustilaan.
+                    history.push(
+                      localizeRouteKey(
+                        intl.locale,
+                        AppRoute.Hakemus,
+                        intl.formatMessage,
+                        {
+                          id: jarjestaja.oid,
+                          koulutusmuoto: koulutusmuoto.kebabCase,
+                          language: row.kieli || "fi",
+                          page: 1,
+                          uuid: row.uuid
+                        }
+                      )
+                    );
+                  }
                 }
               },
               cells: R.addIndex(R.map)(
@@ -326,12 +342,6 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
-                    row.type !== "liite" && row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "edit",
-                          text: t(common["asiaTable.actions.muokkaa"])
-                        }
-                      : null,
                     {
                       id: "lataa",
                       text:
