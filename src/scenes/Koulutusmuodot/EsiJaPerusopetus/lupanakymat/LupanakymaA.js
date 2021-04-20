@@ -226,7 +226,8 @@ const LupanakymaA = React.memo(
 
         <Rajoitteet
           maaraykset={filter(
-            maarays => maarays.aliMaaraykset,
+            maarays =>
+              maarays.aliMaaraykset || maarays.koodisto === "kujalisamaareet",
             maaraykset || []
           )}
           isPreviewModeOn={isPreviewModeOn}
