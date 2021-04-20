@@ -74,7 +74,6 @@ const RajoitteetList = ({
             const naytettavaArvo = !isChangeObj
               ? koodistoNaytettavaArvoMap(rajoite.koodisto)
               : null;
-            console.log(rajoite.koodisto);
 
             let rajoiteListamuodossa = isChangeObj
               ? getRajoiteListamuodossa(
