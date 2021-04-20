@@ -18,8 +18,7 @@ import {
   propEq,
   reject,
   sort,
-  startsWith,
-  toUpper
+  startsWith
 } from "ramda";
 import { getMaarayksetByTunniste } from "../lupa/index";
 import localforage from "localforage";

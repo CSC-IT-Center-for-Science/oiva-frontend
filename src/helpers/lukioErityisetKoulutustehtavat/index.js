@@ -26,7 +26,6 @@ import {
   split,
   startsWith,
   take,
-  toUpper,
   values
 } from "ramda";
 import localforage from "localforage";
@@ -484,14 +483,6 @@ export const defineBackendChangeObjects = async (
             };
           }, tehtavaanLiittyvatMaaraykset)
         : null;
-
-      const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-        maaraykset,
-        valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
-        kohteet,
-        maaraystyypit,
-        kohde
-      );
 
       return [
         checkboxBEchangeObject,

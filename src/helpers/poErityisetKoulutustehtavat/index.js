@@ -18,8 +18,7 @@ import {
   propEq,
   reject,
   sort,
-  startsWith,
-  toUpper
+  startsWith
 } from "ramda";
 import localforage from "localforage";
 import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
