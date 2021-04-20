@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import { FaPlus } from "react-icons/fa";
 import ClearIcon from "@material-ui/icons/Clear";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const defaultProps = {
   forChangeObject: {},
@@ -37,7 +38,8 @@ const SimpleButton = ({
   size = defaultProps.size,
   styleAsALink,
   text = defaultProps.text,
-  variant = defaultProps.variant
+  variant = defaultProps.variant,
+  buttonStyles = defaultProps.buttonStyles
 }) => {
   const simpleButtonRef = useRef(null);
 
@@ -62,6 +64,7 @@ const SimpleButton = ({
     <React.Fragment>
       {!isReadOnly && !isHidden && (
         <Button
+          style={buttonStyles}
           aria-label={ariaLabel}
           color={color}
           disabled={isDisabled}
@@ -77,6 +80,7 @@ const SimpleButton = ({
             <span style={iconContainerStyles}>
               {icon === "FaPlus" && <FaPlus style={iconStyles} />}
               {icon === "ClearIcon" && <ClearIcon style={iconStyles} />}
+              {icon === "Delete" && <DeleteIcon style={iconStyles} />}
             </span>
           )}
           {styleAsALink ? <span className={baseClasses}>{text}</span> : text}
@@ -100,7 +104,8 @@ SimpleButton.propTypes = {
   icon: PropTypes.string,
   iconStyles: PropTypes.object,
   iconContainerStyles: PropTypes.object,
-  shouldHaveFocusAt: PropTypes.number
+  shouldHaveFocusAt: PropTypes.number,
+  buttonStyles: PropTypes.object
 };
 
 export default SimpleButton;

@@ -233,6 +233,7 @@ export async function createObjectToSave(
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,
+    kieli: "fi",
     luoja: sessionStorage.getItem("username"),
     // luontipvm: moment().valueOf(),
     luontipvm: moment().format("YYYY-MM-DD"),

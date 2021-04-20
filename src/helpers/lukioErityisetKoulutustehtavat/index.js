@@ -485,6 +485,14 @@ export const defineBackendChangeObjects = async (
           }, tehtavaanLiittyvatMaaraykset)
         : null;
 
+      const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+        maaraykset,
+        valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
+        kohteet,
+        maaraystyypit,
+        kohde
+      );
+
       return [
         checkboxBEchangeObject,
         uncheckedCheckBoxPoistot,
@@ -495,7 +503,8 @@ export const defineBackendChangeObjects = async (
     return [
       checkboxBEchangeObject,
       onlyValtakunnallinenMuutosBeCobjs,
-      kuvausBEchangeObjects
+      kuvausBEchangeObjects,
+      maarayksiaVastenLuodutRajoitteet
     ];
   }, erityisetKoulutustehtavat);
 

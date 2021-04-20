@@ -5,6 +5,7 @@ import ProcedureHandler from "../components/02-organisms/procedureHandler";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import languages from "i18n/definitions/languages";
 
 const asiatTableColumnSetup = avoimet => {
   return [
@@ -72,14 +73,18 @@ export const generateAsiaTableRows = (
   return R.addIndex(R.map)(
     (col, j) => {
       return {
-        truncate: true,
+        truncate: false,
         styleClasses: [tableColumnSetup[j].widthClass],
         text: col.text
       };
     },
     [
       { text: row.asianumero || row.diaarinumero },
-      { text: formatMessage(common["asiaTypes.lupaChange"]) }, // Only one type known in system at this juncture
+      {
+        text:
+          formatMessage(common["asiaTypes.lupaChange"]) +
+          (row.kieli && row.kieli === "sv" ? " (SV)" : "")
+      }, // Only one type known in system at this juncture
       { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
       { text: getMaakuntaNimiFromHakemus(row, locale) },
       {

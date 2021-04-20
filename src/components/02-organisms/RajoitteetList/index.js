@@ -38,7 +38,6 @@ const koodistoNaytettavaArvoMap = koodisto => {
 
 const RajoitteetList = ({
   locale,
-  onModifyRestriction,
   onRemoveRestriction,
   rajoitteet,
   rajoiteMaaraykset = []
@@ -112,24 +111,19 @@ const RajoitteetList = ({
                 <div className="flex-1">
                   <HtmlContent content={rajoiteListamuodossa} />
                 </div>
-                <div className="flex justify-between pt-6">
-                  <div className="mr-2">
-                    <SimpleButton
-                      text="Poista"
-                      onClick={() =>
-                        onRemoveRestriction(
-                          rajoiteId,
-                          isChangeObj ? null : rajoite
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="ml-2">
-                    <SimpleButton
-                      text="Muokkaa"
-                      onClick={() => onModifyRestriction(rajoiteId)}
-                    />
-                  </div>
+                <div className="flex pt-6">
+                  <SimpleButton
+                    buttonStyles={{
+                      justifyContent: "start",
+                      padding: 0
+                    }}
+                    text={formatMessage(rajoitteetMessages.poistaRajoite)}
+                    onClick={() => onRemoveRestriction(rajoiteId)}
+                    icon={"Delete"}
+                    iconStyles={{ fontSize: "24px" }}
+                    iconContainerStyles={{ marginRight: "0.5rem" }}
+                    variant={"text"}
+                  />
                 </div>
               </div>
             );

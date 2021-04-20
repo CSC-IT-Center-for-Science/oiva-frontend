@@ -1291,5 +1291,9 @@ export default defineMessages({
   onVoimassa: {
     id: "common.onVoimassa",
     defaultMessage: "Järjestämislupa on voimassa {loppupvm} asti"
+  },
+  valitseLuvanKieli: {
+    id: "common.valitseLuvanKieli",
+    defaultMessage: "Valitse luvan kieli"
   }
 });
