@@ -201,6 +201,10 @@ const LupanakymaA = React.memo(
         )}
 
         <Rajoitteet
+          maaraykset={filter(
+            maarays => maarays.aliMaaraykset,
+            maaraykset || []
+          )}
           isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           kohdevaihtoehdot={rajoitteidenKohdevaihtoehdot}

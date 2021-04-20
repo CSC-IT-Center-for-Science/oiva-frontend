@@ -301,7 +301,6 @@ export const createDynamicTextFields = (
 export const createDynamicTextBoxBeChangeObjects = (
   kuvausChangeObjects,
   liittyvatMaaraykset,
-  kuvausKoodistosta,
   isCheckboxChecked,
   koodi,
   maaraystyyppi,
@@ -321,12 +320,15 @@ export const createDynamicTextBoxBeChangeObjects = (
       liittyvatMaaraykset
     );
 
-    /** Jos kuvaus on identtinen koodistosta tulevan kanssa ei tallenneta sitä lainkaan muutokselle.
-     *  Tällöin muutokset koodistoon näkyvät html-luvalla */
-    const kuvaus =
-      path(["properties", "value"], changeObj) === kuvausKoodistosta
-        ? null
-        : path(["properties", "value"], changeObj);
+    /** Haetaan kuvaus-muutosobjektiin liittyvät rajoitteet */
+    const liittyvatRajoitteet = filter(
+      asetukset =>
+        path(["1", "properties", "value", "value"], asetukset) ===
+        `${koodi.koodiarvo}-${ankkuri}`,
+      rajoitteetByRajoiteIdAndKoodiarvo
+    );
+
+    const kuvaus = path(["properties", "value"], changeObj);
     const isDeleted = path(["properties", "isDeleted"], changeObj);
     const isMuokattu = liittyvaMaarays && !isDeleted;
     const changeObjectDeleted = isDeleted && !liittyvaMaarays;
@@ -337,17 +339,17 @@ export const createDynamicTextBoxBeChangeObjects = (
       : Object.assign(
           {},
           {
-            generatedId: changeObj.anchor,
+            generatedId: Math.random(),
             kohde,
             koodiarvo: koodi.koodiarvo,
             koodisto: koodi.koodisto.koodistoUri,
-            ...(kuvaus && { kuvaus }),
+            kuvaus,
             maaraystyyppi,
             meta: {
               ankkuri,
-              ...(kuvaus && { kuvaus }),
+              kuvaus,
               changeObjects: flatten(
-                concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
+                concat(take(2, values(liittyvatRajoitteet)), [
                   checkboxChangeObj,
                   changeObj
                 ])
@@ -372,11 +374,13 @@ export const createDynamicTextBoxBeChangeObjects = (
 
     let alimaaraykset = [];
 
+    /** Tämä on muotoa koodiarvo-ankkuri */
     const kohteenTarkentimenArvo = path(
       [1, "properties", "value", "value"],
-      head(values(rajoitteetByRajoiteIdAndKoodiarvo))
+      head(values(liittyvatRajoitteet))
     );
 
+    /** Otetaan ankkuri talteen */
     const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
       ? nth(1, split("-", kohteenTarkentimenArvo))
       : null;
@@ -396,7 +400,7 @@ export const createDynamicTextBoxBeChangeObjects = (
             kuvausBEChangeObject,
             drop(2, asetukset)
           );
-        }, rajoitteetByRajoiteIdAndKoodiarvo)
+        }, liittyvatRajoitteet)
       );
     }
 

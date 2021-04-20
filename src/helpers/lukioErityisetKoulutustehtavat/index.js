@@ -85,8 +85,6 @@ const getAlimaaraykset = (
     );
   }, values(rajoitteetByRajoiteIdAndKoodiarvo));
 
-  // TODO: Tässä pitäisi käydä kaikki rajoitteet läpi, jos halutaan useampia
-  // TODO: rajoitteita samalle asialle. (nyt haetaan vain ensimmäisen rajoitteen arvo)
   const kohteenTarkentimenArvo = path(
     [1, "properties", "value", "value"],
     head(rajoitteetForKuvaus)
@@ -185,14 +183,6 @@ export const defineBackendChangeObjects = async (
       );
     }, changeObjects.erityisetKoulutustehtavat);
 
-    const kuvausKoodistosta = path(
-      ["metadata", locale ? toUpper(locale) : "FI", "kuvaus"],
-      find(
-        koodi => koodi.koodiarvo === koulutustehtava.koodiarvo,
-        erityisetKoulutustehtavat || []
-      )
-    );
-
     let checkboxBEchangeObject = null;
     let kuvausBEchangeObjects = [];
 
@@ -283,11 +273,11 @@ export const defineBackendChangeObjects = async (
               kohde,
               koodiarvo: koulutustehtava.koodiarvo,
               koodisto: koulutustehtava.koodisto.koodistoUri,
-              ...(kuvaus && { kuvaus }),
+              kuvaus,
               maaraystyyppi,
               meta: {
                 ankkuri: path(["meta", "ankkuri"], liittyvaMaarays),
-                ...(kuvaus && { kuvaus }),
+                kuvaus,
                 changeObjects: concat(
                   concat(
                     take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
@@ -341,12 +331,15 @@ export const defineBackendChangeObjects = async (
           valtakunnallinenKehitystehtavaUICobj
         );
 
-        /** Jos kuvaus on identtinen koodistosta tulevan kanssa ei tallenneta sitä lainkaan muutokselle.
-         *  Tällöin muutokset koodistoon näkyvät html-luvalla */
-        const kuvaus =
-          path(["properties", "value"], changeObj) === kuvausKoodistosta
-            ? null
-            : path(["properties", "value"], changeObj);
+        /** Haetaan kuvaus-muutosobjektiin liittyvät rajoitteet */
+        const liittyvatRajoitteet = filter(
+          asetukset =>
+            path(["1", "properties", "value", "value"], asetukset) ===
+            `${koulutustehtava.koodiarvo}-${ankkuri}`,
+          rajoitteetByRajoiteIdAndKoodiarvo
+        );
+
+        const kuvaus = path(["properties", "value"], changeObj);
         const isDeleted = path(["properties", "isDeleted"], changeObj);
         const isMuokattu = liittyvaMaarays && !isDeleted;
         const changeObjectDeleted = isDeleted && !liittyvaMaarays;
@@ -366,18 +359,18 @@ export const defineBackendChangeObjects = async (
           : Object.assign(
               {},
               {
-                generatedId: changeObj.anchor,
+                generatedId: Math.random(),
                 kohde,
                 koodiarvo: koulutustehtava.koodiarvo,
                 koodisto: koulutustehtava.koodisto.koodistoUri,
-                ...(kuvaus && { kuvaus }),
+                kuvaus,
                 maaraystyyppi,
                 meta: {
                   ankkuri,
-                  ...(kuvaus && { kuvaus }),
+                  kuvaus,
                   changeObjects: concat(
                     concat(
-                      take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)),
+                      take(2, values(liittyvatRajoitteet)),
                       take(
                         2,
                         values(
@@ -413,7 +406,7 @@ export const defineBackendChangeObjects = async (
         const kuvausnro = getAnchorPart(changeObj.anchor, 2);
         const alimaaraykset = getAlimaaraykset(
           kuvausnro,
-          rajoitteetByRajoiteIdAndKoodiarvo,
+          liittyvatRajoitteet,
           ankkuri,
           kohteet,
           maaraystyypit,

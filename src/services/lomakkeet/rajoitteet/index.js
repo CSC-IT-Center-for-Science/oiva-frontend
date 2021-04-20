@@ -69,7 +69,8 @@ export function rajoitteet(
               locale,
               onModifyRestriction,
               onRemoveRestriction,
-              rajoitteet: rajoitteetGrouped
+              rajoitteet: rajoitteetGrouped,
+              rajoiteMaaraykset: data.restrictions
             }
           }
         ]

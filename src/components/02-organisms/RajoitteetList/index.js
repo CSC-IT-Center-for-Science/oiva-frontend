@@ -1,21 +1,56 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { addIndex, isEmpty, mapObjIndexed, values } from "ramda";
+import {
+  addIndex,
+  isEmpty,
+  values,
+  concat,
+  path,
+  split,
+  last,
+  replace
+} from "ramda";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { Typography } from "@material-ui/core";
-import { getRajoiteListamuodossa } from "utils/rajoitteetUtils";
+import {
+  getRajoiteListamuodossa,
+  getRajoitteetFromMaarays
+} from "utils/rajoitteetUtils";
 import HtmlContent from "components/01-molecules/HtmlContent";
 import { useIntl } from "react-intl";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
+import { map } from "ramda";
+import { getAnchorPart } from "../../../utils/common";
+
+const koodistoNaytettavaArvoMap = koodisto => {
+  switch (koodisto) {
+    case "poerityinenkoulutustehtava":
+    case "pomuutkoulutuksenjarjestamiseenliittyvatehdot":
+    case "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot":
+    case "lukioerityinenkoulutustehtavauusi":
+      return "kuvaus";
+    case "kujalisamaareet":
+      return "tyyppi";
+    default:
+      return "nimi";
+  }
+};
 
 const RajoitteetList = ({
   locale,
   onModifyRestriction,
   onRemoveRestriction,
-  rajoitteet
+  rajoitteet,
+  rajoiteMaaraykset = []
 }) => {
   const { formatMessage } = useIntl();
-  if (isEmpty(rajoitteet)) {
+
+  const rajoiteMaarayksetAndCobjs = concat(
+    rajoiteMaaraykset || [],
+    rajoitteet ? values(rajoitteet) : []
+  );
+
+  if (isEmpty(rajoiteMaarayksetAndCobjs)) {
     return (
       <p className="mt-6">{formatMessage(rajoitteetMessages.eiRajoitteita)} </p>
     );
@@ -23,13 +58,49 @@ const RajoitteetList = ({
     return (
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
         {values(
-          addIndex(mapObjIndexed)((rajoite, rajoiteId, __, index) => {
-            const rajoiteListamuodossa = getRajoiteListamuodossa(
-              rajoite.changeObjects,
-              locale,
-              rajoiteId,
-              "list"
-            );
+          addIndex(map)((rajoite, index) => {
+            const isChangeObj = !!rajoite.changeObjects;
+            const rajoiteId = isChangeObj
+              ? last(
+                  split(
+                    "_",
+                    getAnchorPart(
+                      path(["changeObjects", "0", "anchor"], rajoite),
+                      0
+                    )
+                  )
+                )
+              : rajoite.uuid;
+
+            const naytettavaArvo = !isChangeObj
+              ? koodistoNaytettavaArvoMap(rajoite.koodisto)
+              : null;
+            console.log(rajoite.koodisto);
+
+            let rajoiteListamuodossa = isChangeObj
+              ? getRajoiteListamuodossa(
+                  rajoite.changeObjects,
+                  locale,
+                  rajoiteId,
+                  "list"
+                )
+              : getRajoitteetFromMaarays(
+                  rajoite.aliMaaraykset,
+                  locale,
+                  formatMessage(rajoitteetMessages.ajalla),
+                  naytettavaArvo ? naytettavaArvo : "nimi",
+                  true,
+                  rajoite
+                );
+            if (!isChangeObj) {
+              /**  Poistetaan list-disc luokat ensimmäisestä ul ja li elementistä jos kyseessä määräys.
+               *   Lomakkeen rajoitelaatikossa ei haluta bullettia ensimmäiselle riville **/
+              rajoiteListamuodossa = replace(
+                '<ul class="list-disc"><li class="list-disc">',
+                "<ul><li>",
+                rajoiteListamuodossa
+              );
+            }
             return (
               <div
                 className="flex flex-col p-6 border border-gray-300"
@@ -45,7 +116,12 @@ const RajoitteetList = ({
                   <div className="mr-2">
                     <SimpleButton
                       text="Poista"
-                      onClick={() => onRemoveRestriction(rajoiteId)}
+                      onClick={() =>
+                        onRemoveRestriction(
+                          rajoiteId,
+                          isChangeObj ? null : rajoite
+                        )
+                      }
                     />
                   </div>
                   <div className="ml-2">
@@ -57,7 +133,7 @@ const RajoitteetList = ({
                 </div>
               </div>
             );
-          }, rajoitteet)
+          }, rajoiteMaarayksetAndCobjs)
         )}
       </div>
     );

@@ -434,29 +434,69 @@ export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
 };
 
 /**
- *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa varten
+ *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa / lomaketta varten
  *
  */
 export const getRajoitteetFromMaarays = (
   alimaaraykset = [],
   locale,
   ajallaText,
-  naytettavaArvo
+  naytettavaArvo,
+  returnAsString = false,
+  parentMaarays = null // Näyttää myös parent-määräyksen, jos se annetaan parametrina
 ) => {
+  const maaraysHtmlString = parentMaarays
+    ? getRajoiteFromParentMaarays(parentMaarays, locale, naytettavaArvo)
+    : "";
+
   const htmlString = handleAlimaaraykset(
-    "",
+    maaraysHtmlString,
     alimaaraykset,
     naytettavaArvo,
     locale,
     ajallaText
   );
 
-  return (
+  return returnAsString ? (
+    htmlString
+  ) : (
     <ul
       className="htmlContent ml-8"
       dangerouslySetInnerHTML={{ __html: htmlString }}
     ></ul>
   );
+};
+
+/** Rajoitemääräyksen parent-osan näyttäminen. (käytetään ainakin lomakkeen rajoitelaatikossa) */
+const getRajoiteFromParentMaarays = (parentMaarays, locale, naytettavaArvo) => {
+  let maaraysHtmlString = "";
+  const value =
+    find(
+      metadata => metadata.kieli === locale,
+      path(["koodi", "metadata"], parentMaarays) || []
+    ) || prop("meta", parentMaarays);
+
+  /** Opiskelijamäärämääräykset */
+  if (naytettavaArvo === "tyyppi") {
+    const tyyppiString =
+      value[naytettavaArvo] === "yksittainen"
+        ? __("opiskelijamaara.yksittainenKohdennus")
+        : __("opiskelijamaara.kokonaismaara");
+    maaraysHtmlString = `<ul><li>${tyyppiString}: ${parentMaarays.arvo}`;
+
+    /** Dynaamiset tekstikentät */
+  } else if (naytettavaArvo === "kuvaus") {
+    maaraysHtmlString = `<ul><li>${prop("kuvaus", value)}`;
+
+    /** Muut */
+  } else {
+    const metadata = find(
+      maarays => prop("kieli", maarays) === toUpper(locale),
+      path(["koodi", "metadata"], parentMaarays) || []
+    );
+    maaraysHtmlString = `<ul><li>${prop(naytettavaArvo, metadata)}`;
+  }
+  return maaraysHtmlString;
 };
 
 export const handleAlimaarays = (
@@ -502,10 +542,9 @@ export const handleAlimaarays = (
     } else {
       const value =
         find(
-          metadata => metadata.kieli === locale,
+          metadata => metadata.kieli === toUpper(locale),
           path(["koodi", "metadata"], alimaarays) || []
         ) || prop("meta", alimaarays);
-
       if (
         value.nimi !== "Ulkomaa" ||
         (hasAlimaarays && alimaarays.meta.arvo) ||

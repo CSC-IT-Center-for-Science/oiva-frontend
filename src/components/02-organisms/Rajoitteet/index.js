@@ -14,6 +14,7 @@ const constants = {
 };
 
 const Rajoitteet = ({
+  maaraykset,
   isPreviewModeOn,
   isRestrictionsModeOn,
   kohdevaihtoehdot,
@@ -76,6 +77,7 @@ const Rajoitteet = ({
             isInExpandableRow={false}
             anchor={sectionId}
             changeObjects={changeObjects}
+            data={{ restrictions: maaraykset }}
             formTitle={formatMessage(rajoitteetMessages.rajoitteet)}
             functions={{
               onAddRestriction,

@@ -942,6 +942,7 @@ const CategorizedList = props => {
                         isBorderVisible={propsObj.isBorderVisible}
                         locale={propsObj.locale}
                         rajoitteet={propsObj.rajoitteet}
+                        rajoiteMaaraykset={propsObj.rajoiteMaaraykset}
                         onModifyRestriction={propsObj.onModifyRestriction}
                         onRemoveRestriction={propsObj.onRemoveRestriction}
                       />
