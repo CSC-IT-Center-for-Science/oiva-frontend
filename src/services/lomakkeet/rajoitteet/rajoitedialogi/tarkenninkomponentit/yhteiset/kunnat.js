@@ -39,7 +39,7 @@ export default async function getKunnat(
   const ulkomaatStateObj = filter(changeObj => {
     return (
       endsWith(".kuvaus", changeObj.anchor) &&
-      startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
+      startsWith("toimintaalue.200.", changeObj.anchor)
     );
   }, osionData);
 
