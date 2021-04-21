@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   addIndex,
+  flatten,
   isEmpty,
   values,
-  concat,
   path,
   split,
   last,
@@ -44,12 +44,55 @@ const RajoitteetList = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const rajoiteMaarayksetAndCobjs = concat(
-    rajoiteMaaraykset || [],
-    rajoitteet ? values(rajoitteet) : []
-  );
+  const rajoiteMaarayksetListamuodossa = map(rajoiteMaarays => {
+    const naytettavaArvo = koodistoNaytettavaArvoMap(rajoiteMaarays.koodisto);
 
-  if (isEmpty(rajoiteMaarayksetAndCobjs)) {
+    const rajoiteListamuodossa = getRajoitteetFromMaarays(
+      rajoiteMaarays.aliMaaraykset,
+      locale,
+      formatMessage(rajoitteetMessages.ajalla),
+      naytettavaArvo ? naytettavaArvo : "nimi",
+      true,
+      rajoiteMaarays
+    );
+
+    /**  Poistetaan list-disc luokat ensimmäisestä ul ja li elementistä.
+     *   Lomakkeen rajoitelaatikossa ei haluta bullettia ensimmäiselle riville **/
+    return {
+      rajoiteId: rajoiteMaarays.uuid,
+      htmlContent: replace(
+        '<ul class="list-disc"><li class="list-disc">',
+        "<ul><li>",
+        rajoiteListamuodossa
+      )
+    };
+  }, rajoiteMaaraykset);
+
+  const rajoiteChangeObjsListamuodossa = map(rajoite => {
+    const rajoiteId = last(
+      split(
+        "_",
+        getAnchorPart(path(["changeObjects", "0", "anchor"], rajoite), 0)
+      )
+    );
+    return {
+      rajoiteId: rajoiteId,
+      htmlContent: getRajoiteListamuodossa(
+        rajoite.changeObjects,
+        locale,
+        rajoiteId,
+        "list",
+        rajoitteet
+      )
+    };
+  }, values(rajoitteet));
+
+  const rajoiteMaarayksetAndCobjsListamuodossa = flatten([
+    rajoiteMaarayksetListamuodossa,
+    rajoiteChangeObjsListamuodossa
+  ]);
+
+  if (isEmpty(flatten(rajoiteMaarayksetAndCobjsListamuodossa))) {
     return (
       <p className="mt-6">{formatMessage(rajoitteetMessages.eiRajoitteita)} </p>
     );
@@ -58,57 +101,16 @@ const RajoitteetList = ({
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 mt-6">
         {values(
           addIndex(map)((rajoite, index) => {
-            const isChangeObj = !!rajoite.changeObjects;
-            const rajoiteId = isChangeObj
-              ? last(
-                  split(
-                    "_",
-                    getAnchorPart(
-                      path(["changeObjects", "0", "anchor"], rajoite),
-                      0
-                    )
-                  )
-                )
-              : rajoite.uuid;
-
-            const naytettavaArvo = !isChangeObj
-              ? koodistoNaytettavaArvoMap(rajoite.koodisto)
-              : null;
-
-            let rajoiteListamuodossa = isChangeObj
-              ? getRajoiteListamuodossa(
-                  rajoite.changeObjects,
-                  locale,
-                  rajoiteId,
-                  "list"
-                )
-              : getRajoitteetFromMaarays(
-                  rajoite.aliMaaraykset,
-                  locale,
-                  formatMessage(rajoitteetMessages.ajalla),
-                  naytettavaArvo ? naytettavaArvo : "nimi",
-                  true,
-                  rajoite
-                );
-            if (!isChangeObj) {
-              /**  Poistetaan list-disc luokat ensimmäisestä ul ja li elementistä jos kyseessä määräys.
-               *   Lomakkeen rajoitelaatikossa ei haluta bullettia ensimmäiselle riville **/
-              rajoiteListamuodossa = replace(
-                '<ul class="list-disc"><li class="list-disc">',
-                "<ul><li>",
-                rajoiteListamuodossa
-              );
-            }
             return (
               <div
                 className="flex flex-col p-6 border border-gray-300"
-                key={rajoiteId}
+                key={rajoite.rajoiteId}
               >
                 <Typography component="h3" variant="h3">
                   Rajoite {index + 1}
                 </Typography>
                 <div className="flex-1">
-                  <HtmlContent content={rajoiteListamuodossa} />
+                  <HtmlContent content={rajoite.htmlContent} />
                 </div>
                 <div className="flex pt-6">
                   <SimpleButton
@@ -117,7 +119,7 @@ const RajoitteetList = ({
                       padding: 0
                     }}
                     text={formatMessage(rajoitteetMessages.poistaRajoite)}
-                    onClick={() => onRemoveRestriction(rajoiteId)}
+                    onClick={() => onRemoveRestriction(rajoite.rajoiteId)}
                     icon={"Delete"}
                     iconStyles={{ fontSize: "24px" }}
                     iconContainerStyles={{ marginRight: "0.5rem" }}
@@ -126,7 +128,7 @@ const RajoitteetList = ({
                 </div>
               </div>
             );
-          }, rajoiteMaarayksetAndCobjs)
+          }, rajoiteMaarayksetAndCobjsListamuodossa)
         )}
       </div>
     );
