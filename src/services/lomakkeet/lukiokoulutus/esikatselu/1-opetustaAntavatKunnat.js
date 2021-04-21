@@ -48,7 +48,7 @@ export async function previewOfOpetustaAntavaKunnat({
   const locale = changeObjectsByProvinceNode.properties.locale;
 
   const ulkomaaCheckbox = find(
-    compose(endsWith("ulkomaa.200"), prop("anchor")),
+    compose(endsWith("200.valintaelementti"), prop("anchor")),
     lomakedata
   );
 
