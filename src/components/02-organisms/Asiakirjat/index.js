@@ -559,6 +559,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 };
 
 Asiakirjat.propTypes = {
+  // Asiakirjan UUID
   uuid: PropTypes.object,
   koulutusmuoto: PropTypes.object
 };
