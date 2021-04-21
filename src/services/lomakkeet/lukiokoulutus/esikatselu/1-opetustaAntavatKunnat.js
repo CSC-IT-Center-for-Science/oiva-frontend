@@ -247,7 +247,7 @@ export async function previewOfOpetustaAntavaKunnat({
       foreignMunicipalities.filter(Boolean)
     );
 
-    if (length(allMunicipalities))
+    if (length(allMunicipalities)) {
       structure = append(
         {
           anchor: "valitut",
@@ -264,6 +264,7 @@ export async function previewOfOpetustaAntavaKunnat({
         },
         structure
       );
+    }
   }
 
   const lisatiedotNode = find(
