@@ -45,7 +45,7 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
     <div>
       {lupaException ? (
         <TopSectionWrapper className="pb-4">
-          <Typography component="h2" variant="h5">
+          <Typography component="h2" variant="h2">
             {intl.formatMessage(titleMessageKey, { date: "" })}
           </Typography>
         </TopSectionWrapper>
