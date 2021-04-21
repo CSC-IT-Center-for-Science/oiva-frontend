@@ -34,7 +34,7 @@ const WizardContainer = ({
 }) => {
   let history = useHistory();
   const { formatMessage, locale } = useIntl();
-  const { id, uuid } = useParams();
+  const { id, language, uuid } = useParams();
   const [
     { isPreviewModeOn },
     { initializeChanges, setPreviewMode }
@@ -72,7 +72,9 @@ const WizardContainer = ({
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
   });
-  const [valtakunnallisetKehittamistehtavatCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+  const [
+    valtakunnallisetKehittamistehtavatCO
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "valtakunnallisetKehittamistehtavat"
   });
 
@@ -112,13 +114,14 @@ const WizardContainer = ({
   const steps = null;
 
   const onNewDocSave = useCallback(
-    uuid => {
+    (uuid, language) => {
       /**
        * User is redirected to the url of the saved document.
        */
       const url = localizeRouteKey(locale, AppRoute.Hakemus, formatMessage, {
         id,
         koulutusmuoto: koulutusmuoto.kebabCase,
+        language,
         page: 1,
         uuid
       });
@@ -175,6 +178,7 @@ const WizardContainer = ({
           uuid,
           kohteet,
           maaraystyypit,
+          language,
           "ESITTELIJA"
         )
       );
@@ -191,7 +195,7 @@ const WizardContainer = ({
         if (!!muutospyynto && prop("uuid", muutospyynto)) {
           if (!uuid && !fromDialog) {
             // Jos kyseessä on ensimmäinen tallennus...
-            onNewDocSave(muutospyynto.uuid);
+            onNewDocSave(muutospyynto.uuid, language);
           } else {
             /**
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
@@ -208,6 +212,7 @@ const WizardContainer = ({
     [
       erityisetKoulutustehtavatCO,
       initializeChanges,
+      language,
       locale,
       kohteet,
       viimeisinLupa,

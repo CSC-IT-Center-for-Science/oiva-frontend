@@ -53,7 +53,7 @@ const MobileMenu = ({
   ];
 
   return (
-    <React.Fragment>
+    <nav>
       <span className="flex-1 flex align-top" style={{ height: "4.562rem" }}>
         <Button
           className={classes.root}
@@ -116,13 +116,13 @@ const MobileMenu = ({
                 {formatMessage(common.jarjestamisJaYllapitamisluvat)}
               </span>
             </NavLink>
-            <span className="pr-5">
+            <button className="pr-5">
               {jarjestamisluvatMenuVisible ? (
                 <ExpandLessIcon />
               ) : (
                 <ExpandMoreIcon />
               )}
-            </span>
+            </button>
           </div>
         </div>
         {jarjestamisluvatMenuVisible ? (
@@ -197,7 +197,7 @@ const MobileMenu = ({
           />
         )}
       </div>
-    </React.Fragment>
+    </nav>
   );
 };
 

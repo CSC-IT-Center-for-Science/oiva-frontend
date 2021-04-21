@@ -19,6 +19,8 @@ import WizardActions from "components/02-organisms/WizardActions/index";
 import common from "i18n/definitions/common";
 import { useMuutospyynto } from "stores/muutospyynto";
 import PropTypes from "prop-types";
+import { localizeRouteKey } from "utils/common";
+import { AppRoute } from "const/app-routes";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
@@ -54,6 +56,7 @@ const FormDialog = withStyles(() => ({
 });
 
 export const Wizard = ({
+  koulutusmuoto,
   onAction,
   organisation,
   page1,
@@ -67,7 +70,7 @@ export const Wizard = ({
   const intl = useIntl();
   const params = useParams();
   let history = useHistory();
-  let { page: pageParam } = params;
+  let { id, page: pageParam, uuid } = params;
 
   const [page, setPage] = useState();
 
@@ -139,9 +142,22 @@ export const Wizard = ({
 
   const handleStep = useCallback(
     pageNumber => {
-      history.push(String(pageNumber));
+      history.push(
+        localizeRouteKey(
+          intl.locale,
+          uuid ? AppRoute.Hakemus : AppRoute.UusiHakemus,
+          intl.formatMessage,
+          {
+            id,
+            koulutusmuoto: koulutusmuoto.kebabCase,
+            language: "fi",
+            page: pageNumber,
+            uuid
+          }
+        )
+      );
     },
-    [history]
+    [id, intl.formatMessage, intl.locale, history, koulutusmuoto, uuid]
   );
 
   const leaveOrOpenCancelModal = () => {
