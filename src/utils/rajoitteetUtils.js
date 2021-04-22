@@ -542,7 +542,7 @@ export const handleAlimaarays = (
     } else {
       const value =
         find(
-          metadata => metadata.kieli === toUpper(locale),
+          metadata => toUpper(metadata.kieli) === toUpper(locale),
           path(["koodi", "metadata"], alimaarays) || []
         ) || prop("meta", alimaarays);
       if (
