@@ -18,8 +18,7 @@ import {
   propEq,
   reject,
   sort,
-  startsWith,
-  toUpper
+  startsWith
 } from "ramda";
 import localforage from "localforage";
 import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
@@ -132,16 +131,10 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    const kuvausKoodistosta = path(
-      ["metadata", locale ? toUpper(locale) : "FI", "kuvaus"],
-      find(koodi => koodi.koodiarvo === ehto.koodiarvo, muutEhdot || [])
-    );
-
     if (length(kuvausChangeObjects) && isCheckboxChecked) {
       kuvausBEchangeObjects = createDynamicTextBoxBeChangeObjects(
         kuvausChangeObjects,
         ehtoonLiittyvatMaaraykset,
-        kuvausKoodistosta,
         isCheckboxChecked,
         ehto,
         maaraystyyppi,

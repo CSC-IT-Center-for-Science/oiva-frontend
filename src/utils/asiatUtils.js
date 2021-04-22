@@ -5,7 +5,6 @@ import ProcedureHandler from "../components/02-organisms/procedureHandler";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
-import languages from "i18n/definitions/languages";
 
 const asiatTableColumnSetup = avoimet => {
   return [

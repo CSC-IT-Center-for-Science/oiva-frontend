@@ -16,6 +16,7 @@ import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
 import { __ } from "i18n-for-browser";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
+import rajoitteet from "../../../../i18n/definitions/rajoitteet";
 
 export default function OpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
@@ -23,7 +24,7 @@ export default function OpiskelijamaaratHtml({ maaraykset }) {
 
   const opiskelijamaaraMaaraykset = filter(
     maarays =>
-      maarays.kohde.tunniste === "oppilasopiskelijamaara" &&
+      maarays.kohde.tunniste === "opiskelijamaarat" &&
       maarays.koodisto === "kujalisamaareet",
     maaraykset
   );
@@ -75,7 +76,11 @@ export default function OpiskelijamaaratHtml({ maaraykset }) {
             <ul key={maarays.arvo + "-" + index} className="list-disc">
               <React.Fragment>
                 {length(maarays.aliMaaraykset)
-                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale)
+                  ? getRajoitteetFromMaarays(
+                      maarays.aliMaaraykset,
+                      locale,
+                      intl.formatMessage(rajoitteet.ajalla)
+                    )
                   : ""}
               </React.Fragment>
             </ul>
