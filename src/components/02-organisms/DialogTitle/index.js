@@ -1,4 +1,4 @@
-import {withStyles} from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -10,7 +10,7 @@ const DialogTitle = withStyles(theme => ({
   root: {
     margin: 0,
     paddingLeft: theme.spacing(4),
-    paddingTop: theme.spacing(3),
+    paddingTop: theme.spacing(4),
     paddingBottom: 0,
     background: "#ffffff"
   },
@@ -42,8 +42,7 @@ DialogTitle.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ]),
+  ])
 };
-
 
 export default DialogTitle;
