@@ -92,7 +92,7 @@ const RajoitteetList = ({
     rajoiteChangeObjsListamuodossa
   ]);
 
-  if (isEmpty(flatten(rajoiteMaarayksetAndCobjsListamuodossa))) {
+  if (isEmpty(rajoiteMaarayksetAndCobjsListamuodossa)) {
     return (
       <p className="mt-6">{formatMessage(rajoitteetMessages.eiRajoitteita)} </p>
     );
