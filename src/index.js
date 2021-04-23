@@ -28,7 +28,19 @@ localforage.config({
   name: "Oiva App"
 });
 
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      sm: 576,
+      md: 768,
+      lg: 992,
+      xl: 1200,
+      xxl: 1600,
+      kk: 2160, // 2k
+      kkk: 3240 // 3k
+    }
+  }
+});
 
 theme.typography.useNextVariants = true;
 

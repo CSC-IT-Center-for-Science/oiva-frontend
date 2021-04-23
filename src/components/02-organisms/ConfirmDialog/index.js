@@ -8,6 +8,7 @@ import DialogTitle from "../DialogTitle/index";
 import "../../../css/tailwind.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const DialogActions = withStyles(theme => ({
   root: {
@@ -17,6 +18,20 @@ const DialogActions = withStyles(theme => ({
     paddingBottom: theme.spacing(4)
   }
 }))(MuiDialogActions);
+
+const useStyles = makeStyles(theme => ({
+  paper: { minWidth: "400px" },
+  root: {
+    minWidth: "300px",
+    "& > *:not(:last-child)": {
+      marginBottom: "20px",
+      [theme.breakpoints.up("sm")]: {
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(0)
+      }
+    }
+  }
+}));
 
 const ConfirmDialog = props => {
   const {
@@ -29,13 +44,15 @@ const ConfirmDialog = props => {
     loadingSpinner = false
   } = props;
 
+  const classes = useStyles();
+
   return (
     <Dialog
       open={isConfirmDialogVisible}
       fullWidth={true}
       aria-labelledby="confirm-dialog"
       maxWidth="sm"
-      className="min-w-64"
+      classes={{ paper: classes.paper }}
     >
       <DialogTitle id="confirm-dialog" onClose={onClose}>
         <span className="mr-12">{messages.title}</span>
@@ -44,13 +61,12 @@ const ConfirmDialog = props => {
         <div className="py-2 px-8">{messages.content}</div>
       </DialogContent>
       <DialogActions>
-        <div className="flex flex-col sm:flex-row flex-grow sm:flex-grow-0">
-          <Button
-            onClick={handleCancel}
-            color="primary"
-            variant="outlined"
-            className="mb-4" // sm:mr-4 ei toimi, koska se ylikirjoittuu
-          >
+        <div
+          className={
+            classes.root + " flex flex-col sm:flex-row flex-grow sm:flex-grow-0"
+          }
+        >
+          <Button onClick={handleCancel} color="primary" variant="outlined">
             {messages.cancel}
           </Button>
           {!!handleExitAndAbandonChanges && (
