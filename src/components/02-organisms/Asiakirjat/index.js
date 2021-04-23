@@ -412,11 +412,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
-      <div className="flex flex-col flex-1 mx-auto w-4/5 max-w-8xl">
+      <React.Fragment>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8">
+        <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
@@ -452,37 +452,41 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </div>
         </div>
         <div className="flex-1 flex w-full">
-          <div className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
-            <Typography
-              component="h4"
-              variant="h4"
-              className="float-right"
-              style={{ margin: 0 }}
-            >
-              <SelectAttachment
-                attachmentAdded={handleAddPaatoskirje}
-                messages={{
-                  attachmentAdd: t(common.attachmentAddPaatoskirje),
-                  attachmentName: t(common.attachmentName),
-                  attachmentErrorName: t(common.attachmentErrorName),
-                  attachmentError: t(common.attachmentError),
-                  ok: t(common.ok),
-                  cancel: t(common.cancel)
-                }}
-                styles={{
-                  fontSize: "1em",
-                  backgroundColor: COLORS.BG_GRAY,
-                  border: "none",
-                  iconSize: "18",
-                  svgMargin: "0.1em 0.1em 0.2em 0",
-                  circleIcon: true,
-                  disableHover: true,
-                  normalCase: true
-                }}
-                fileType={"paatosKirje"}
-              />
-            </Typography>
-
+          <div className="flex-1 flex flex-col w-full mx-auto">
+            <div className="mx-auto w-4/5 max-w-8xl">
+              <Typography component="h4" variant="h4" className="float-left">
+                {t(common.asianAsiakirjat)}
+              </Typography>
+              <Typography
+                component="h4"
+                variant="h4"
+                className="float-right"
+                style={{ margin: 0 }}
+              >
+                <SelectAttachment
+                  attachmentAdded={handleAddPaatoskirje}
+                  messages={{
+                    attachmentAdd: t(common.attachmentAddPaatoskirje),
+                    attachmentName: t(common.attachmentName),
+                    attachmentErrorName: t(common.attachmentErrorName),
+                    attachmentError: t(common.attachmentError),
+                    ok: t(common.ok),
+                    cancel: t(common.cancel)
+                  }}
+                  styles={{
+                    fontSize: "1em",
+                    backgroundColor: COLORS.BG_GRAY,
+                    border: "none",
+                    iconSize: "18",
+                    svgMargin: "0.1em 0.1em 0.2em 0",
+                    circleIcon: true,
+                    disableHover: true,
+                    normalCase: true
+                  }}
+                  fileType={"paatosKirje"}
+                />
+              </Typography>
+            </div>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog
                 isConfirmDialogVisible={isDeleteLiiteDialogVisible}
@@ -513,39 +517,43 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 onOK={setStateOfMuutospyyntoAsEsittelyssa}
               ></PDFAndStateDialog>
             )}
-            <div
-              className="flex-1 bg-white"
-              style={{ border: "0.05rem solid #E3E3E3" }}
-            >
-              <WrapTable>
-                <Media
-                  query={MEDIA_QUERIES.MOBILE}
-                  render={() => (
-                    <OldTable role="table">
-                      <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
-                    </OldTable>
-                  )}
-                />
-                <Media
-                  query={MEDIA_QUERIES.TABLET_MIN}
-                  render={() => (
-                    <div
-                      style={{
-                        borderBottom: "0.05rem solid #E3E3E3"
-                      }}
-                    >
-                      <Table
-                        structure={table}
-                        sortedBy={{ columnIndex: 3, order: "desc" }}
-                      />
-                    </div>
-                  )}
-                />
-              </WrapTable>
+            <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+              <div className="flex mx-auto w-4/5 max-w-8xl py-12">
+                <div
+                  className="flex-1 bg-white"
+                  style={{ border: "0.05rem solid #E3E3E3" }}
+                >
+                  <WrapTable>
+                    <Media
+                      query={MEDIA_QUERIES.MOBILE}
+                      render={() => (
+                        <OldTable role="table">
+                          <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
+                        </OldTable>
+                      )}
+                    />
+                    <Media
+                      query={MEDIA_QUERIES.TABLET_MIN}
+                      render={() => (
+                        <div
+                          style={{
+                            borderBottom: "0.05rem solid #E3E3E3"
+                          }}
+                        >
+                          <Table
+                            structure={table}
+                            sortedBy={{ columnIndex: 3, order: "desc" }}
+                          />
+                        </div>
+                      )}
+                    />
+                  </WrapTable>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   } else if (muutospyyntoLoaded && !muutospyynto.data) {
     return (
@@ -559,6 +567,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 };
 
 Asiakirjat.propTypes = {
+  // Asiakirjan UUID
   uuid: PropTypes.object,
   koulutusmuoto: PropTypes.object
 };
