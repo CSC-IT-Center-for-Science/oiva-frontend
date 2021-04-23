@@ -454,9 +454,6 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <div className="flex-1 flex w-full">
           <div className="flex-1 flex flex-col w-full mx-auto">
             <div className="mx-auto w-4/5 max-w-8xl">
-              <Typography component="h4" variant="h4" className="float-left">
-                {t(common.asianAsiakirjat)}
-              </Typography>
               <Typography
                 component="h4"
                 variant="h4"
