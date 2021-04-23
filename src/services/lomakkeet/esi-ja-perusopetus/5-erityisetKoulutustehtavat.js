@@ -1,5 +1,5 @@
 import { isAdded, isInLupa, isRemoved } from "css/label";
-import { filter, find, flatten, map, pathEq, propEq } from "ramda";
+import { filter, find, flatten, includes, map, pathEq, propEq } from "ramda";
 import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKoulutustehtavat";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
@@ -24,6 +24,10 @@ export async function erityisetKoulutustehtavat(
 
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
 
+  // Jos kohtaan on voitava lisätä useampia tekstikenttiä, lisää
+  // koodiarvo tähän.
+  const multipleDynamicTextBoxesByKoodiarvo = ["12"];
+
   return flatten(
     [
       map(erityinenKoulutustehtava => {
@@ -44,7 +48,12 @@ export async function erityisetKoulutustehtavat(
             onAddButtonClick,
             isPreviewModeOn,
             isReadOnly,
-            erityinenKoulutustehtava.koodiarvo === "1" ? 1 : 10,
+            includes(
+              erityinenKoulutustehtava.koodiarvo,
+              multipleDynamicTextBoxesByKoodiarvo
+            )
+              ? 10
+              : 1,
             poErityisetKoulutustehtavat,
             locale
           ),
