@@ -20,7 +20,7 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 const useStyles = makeStyles(theme => ({
-  paper: { minWidth: "400px" },
+  paper: { minWidth: "360px" },
   root: {
     minWidth: "300px",
     "& > *:not(:last-child)": {

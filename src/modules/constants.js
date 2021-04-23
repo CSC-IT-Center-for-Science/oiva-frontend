@@ -18,4 +18,4 @@ export const ROLE_NIMENKIRJOITTAJA = "OIVA_APP_NIMENKIRJOITTAJA";
 export const ROLE_KATSELIJA = "OIVA_APP_KATSELIJA";
 
 // SESSION
-export const sessionTimeoutInMinutes = 20;
+export const sessionTimeoutInMinutes = 0.3;
