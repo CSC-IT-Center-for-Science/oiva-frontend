@@ -117,6 +117,7 @@ const WizardContainer = ({
       const url = localizeRouteKey(locale, AppRoute.Hakemus, formatMessage, {
         id,
         koulutusmuoto: koulutusmuoto.kebabCase,
+        language: "fi",
         page: 1,
         uuid
       });

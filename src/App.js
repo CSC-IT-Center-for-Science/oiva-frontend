@@ -97,7 +97,7 @@ export const App = ({ localesByLang, children, organisation, user }) => {
   return (
     <div className="flex flex-col" style={{ minHeight: "100vh" }}>
       {getHeader()}
-      <main className="xxl:px-6 flex-1">
+      <main className="flex-1 flex flex-col">
         {isBreadcrumbVisible && (
           <nav
             tabIndex="0"

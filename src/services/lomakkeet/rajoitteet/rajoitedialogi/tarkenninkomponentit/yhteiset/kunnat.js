@@ -1,4 +1,5 @@
 import {
+  addIndex,
   compose,
   concat,
   endsWith,
@@ -39,13 +40,13 @@ export default async function getKunnat(
   const ulkomaatStateObj = filter(changeObj => {
     return (
       endsWith(".kuvaus", changeObj.anchor) &&
-      startsWith("toimintaalue.ulkomaa.", changeObj.anchor)
+      startsWith("toimintaalue.200.", changeObj.anchor)
     );
   }, osionData);
 
   // Jos kunta ulkomailta löytyi, luodaan sen pohjalta vaihtoehto (option)
   // alempana koodissa luotavaa pudostusvalikkoa varten.
-  const ulkomaaOptions = map((item, index) => {
+  const ulkomaaOptions = addIndex(map)((item, index) => {
     return {
       label: item.properties.value,
       value: "200",

@@ -48,12 +48,12 @@ export async function previewOfOpetustaAntavaKunnat({
   const locale = changeObjectsByProvinceNode.properties.locale;
 
   const ulkomaaCheckbox = find(
-    compose(endsWith("ulkomaa.200"), prop("anchor")),
+    compose(endsWith("200.valintaelementti"), prop("anchor")),
     lomakedata
   );
 
   const ulkomaaTextBoxes = filter(
-    compose(endsWith(".lisatiedot"), prop("anchor")),
+    compose(endsWith(".kuvaus"), prop("anchor")),
     lomakedata
   );
 
@@ -247,7 +247,7 @@ export async function previewOfOpetustaAntavaKunnat({
       foreignMunicipalities.filter(Boolean)
     );
 
-    if (length(allMunicipalities))
+    if (length(allMunicipalities)) {
       structure = append(
         {
           anchor: "valitut",
@@ -264,6 +264,7 @@ export async function previewOfOpetustaAntavaKunnat({
         },
         structure
       );
+    }
   }
 
   const lisatiedotNode = find(
