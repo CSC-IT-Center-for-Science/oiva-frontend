@@ -425,7 +425,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8">
+        <div className="flex flex-col justify-end w-4/5 py-8 mx-auto px-3 lg:px-8">
           {/* Linkki, jolla pääsee Asiat-sivulle */}
           <Link
             className="cursor-pointer"
