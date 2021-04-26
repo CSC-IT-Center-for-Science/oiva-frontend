@@ -177,11 +177,18 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             liite.luoja,
             liite.luontipvm ? moment(liite.luontipvm).format("D.M.YYYY") : ""
           ],
-          fileLinkFn: () => {
-            muutospyyntoActions.download(
-              `/liitteet/${liite.uuid}/raw`,
-              intl.formatMessage
-            );
+          fileLinkFn: (isGoingToDownload = false) => {
+            if (isGoingToDownload) {
+              muutospyyntoActions.download(
+                `/liitteet/${liite.uuid}/raw?inline=false`,
+                intl.formatMessage
+              );
+            } else {
+              muutospyyntoActions.downloadAndShowInAnotherWindow(
+                `/liitteet/${liite.uuid}/raw?inline=true`,
+                intl.formatMessage
+              );
+            }
           }
         }),
         R.sortBy(R.prop("nimi"), muutospyynnonLiitteet.data || [])
@@ -237,10 +244,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     return R.addIndex(R.map)(
       (row, idx) => (
         <AsiakirjatItem
-          onClick={downloadFileFn({
-            url: row.fileLink,
-            openInNewWindow: row.openInNewWindow
-          })}
+          onClick={() => {
+            downloadFileFn({
+              url: row.fileLink,
+              openInNewWindow: row.openInNewWindow
+            });
+          }}
           rowItems={row.items}
           key={idx}
         />
@@ -249,7 +258,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     );
   };
 
-  const table = [
+  const tableStructure = [
     {
       role: "thead",
       rowGroups: [
@@ -283,7 +292,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               fileLinkFn: row.fileLinkFn,
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLinkFn) {
-                  row.fileLinkFn();
+                  row.fileLinkFn(true);
                 } else if (action === "download-pdf-and-change-state") {
                   setIsDownloadPDFAndChangeStateDialogVisible(true);
                   setDocumentIdForAction(row.uuid);
@@ -416,7 +425,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
+        <div className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8">
+          {/* Linkki, jolla pääsee Asiat-sivulle */}
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
