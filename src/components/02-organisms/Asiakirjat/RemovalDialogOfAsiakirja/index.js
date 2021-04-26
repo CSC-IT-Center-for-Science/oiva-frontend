@@ -17,14 +17,15 @@ const RemovalDialogOfAsiakirja = ({ isVisible, onClose, onOK, removeAsia }) => {
     <Dialog
       open={isVisible}
       aria-labelledby="simple-dialog-title"
-      PaperProps={{ style: { overflowY: "visible" } }}>
+      PaperProps={{ style: { overflowY: "visible" } }}
+    >
       <DialogTitle id="customized-dialog-title" onClose={onClose}>
         {removeAsia
           ? intl.formatMessage(common.titleOfPoistetaankoKokoAsia)
           : intl.formatMessage(common.titleOfPoistetaankoAsiakirja)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <p>
+        <p className="p-8">
           {removeAsia
             ? intl.formatMessage(common.poistetaankoKokoAsia)
             : intl.formatMessage(common.poistetaankoAsiakirja)}
@@ -42,7 +43,8 @@ const RemovalDialogOfAsiakirja = ({ isVisible, onClose, onOK, removeAsia }) => {
               return onOK();
             }}
             color="primary"
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(common.poista)}
           </Button>
         </div>

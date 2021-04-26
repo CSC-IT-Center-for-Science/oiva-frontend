@@ -7,7 +7,7 @@ import AsiakirjatItem from "./AsiakirjatItem";
 import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import Table from "components/02-organisms/Table";
+import Table from "components/02-organisms/Table/index";
 import { downloadFileFn, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
@@ -17,7 +17,7 @@ import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
-import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja";
+import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
@@ -293,9 +293,6 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLinkFn) {
                   row.fileLinkFn(true);
-                } else if (action === "download-pdf-and-change-state") {
-                  setIsDownloadPDFAndChangeStateDialogVisible(true);
-                  setDocumentIdForAction(row.uuid);
                 } else if (action === "remove") {
                   setDocumentIdForAction(row.uuid);
                   row.type === "liite"
@@ -351,28 +348,31 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
-                    {
-                      id: "lataa",
-                      text:
-                        row.type === "liite"
-                          ? t(common["asiaTable.actions.lataaLiite"])
-                          : t(common["asiaTable.actions.lataa"])
-                    },
-                    row.type !== "liite" && row.tila !== "ESITTELYSSA"
+                    row.tila !== "ESITTELYSSA"
                       ? {
-                          id: "download-pdf-and-change-state",
-                          text: t(
-                            common["asiaTable.actions.lataaPDFJaMuutaTila"]
-                          )
+                          id: "edit",
+                          isHidden: row.type === "liite",
+                          name: "edit",
+                          text: t(common.edit)
                         }
                       : null,
                     row.tila !== "ESITTELYSSA"
                       ? {
                           id: "remove",
+                          name: "delete",
                           text: t(common.poista)
                         }
-                      : null
-                  ].filter(Boolean)
+                      : null,
+                    {
+                      id: "lataa",
+                      name: "download",
+                      text:
+                        row.type === "liite"
+                          ? t(common["asiaTable.actions.lataaLiite"])
+                          : t(common["asiaTable.actions.lataa"])
+                    }
+                  ].filter(Boolean),
+                  isExpanded: true
                 },
                 styleClasses: ["w-1/12 cursor-default"]
               })
