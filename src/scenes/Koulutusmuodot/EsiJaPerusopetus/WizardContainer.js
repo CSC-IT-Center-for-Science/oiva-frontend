@@ -35,6 +35,7 @@ const WizardContainer = ({
   let history = useHistory();
   const { formatMessage, locale } = useIntl();
   const { id, uuid } = useParams();
+  const [isSaving, setIsSaving] = useState(false);
   const [
     { isPreviewModeOn },
     { initializeChanges, setPreviewMode }
@@ -139,11 +140,13 @@ const WizardContainer = ({
    */
   const onSave = useCallback(
     async formData => {
+      setIsSaving(true);
       const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallennaEsittelijanToimesta",
         [formData]
       );
+      setIsSaving(false);
       return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
         .result;
     },
@@ -236,6 +239,7 @@ const WizardContainer = ({
           valtakunnallinenMaarays={valtakunnallinenMaarays}
         />
       }
+      isSaving={isSaving}
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}
