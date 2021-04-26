@@ -548,7 +548,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                           }}
                         >
                           <Table
-                            structure={table}
+                            structure={tableStructure}
                             sortedBy={{ columnIndex: 3, order: "desc" }}
                           />
                         </div>
