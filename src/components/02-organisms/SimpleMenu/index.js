@@ -69,7 +69,6 @@ function SimpleMenu({ actions = [], id, isExpanded }) {
               className={action.isHidden ? "invisible" : ""}
               disabled={action.isDisabled}
               onClick={e => {
-                console.info(e);
                 handleClose(e, action);
                 return false;
               }}
