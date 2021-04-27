@@ -348,21 +348,19 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
-                    row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "edit",
-                          isHidden: row.type === "liite",
-                          name: "edit",
-                          text: t(common.edit)
-                        }
-                      : null,
-                    row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "remove",
-                          name: "delete",
-                          text: t(common.poista)
-                        }
-                      : null,
+                    {
+                      id: "edit",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      isHidden: row.type === "liite",
+                      name: "edit",
+                      text: t(common.edit)
+                    },
+                    {
+                      id: "remove",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      name: "delete",
+                      text: t(common.poista)
+                    },
                     {
                       id: "lataa",
                       name: "download",
