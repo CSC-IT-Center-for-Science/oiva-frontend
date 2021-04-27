@@ -355,13 +355,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       name: "edit",
                       text: t(common.edit)
                     },
-                    row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "remove",
-                          name: "delete",
-                          text: t(common.poista)
-                        }
-                      : null,
+                    {
+                      id: "remove",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      name: "delete",
+                      text: t(common.poista)
+                    },
                     {
                       id: "lataa",
                       name: "download",
