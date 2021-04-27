@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Media from "react-media";
 import styled from "styled-components";
 import { Table as OldTable, Tbody } from "modules/Table";
@@ -30,6 +30,7 @@ import Typography from "@material-ui/core/Typography";
 import { AppRoute } from "const/index";
 import moment from "moment";
 import languages from "i18n/definitions/languages";
+import SimpleButton from "components/00-atoms/SimpleButton/index";
 
 const WrapTable = styled.div``;
 
@@ -78,6 +79,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const [isDeleteLiiteDialogVisible, setIsDeleteLiiteDialogVisible] = useState(
     false
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const [
+    isPaatettyConfirmationDialogVisible,
+    setPaatettyConfirmationDialogVisible
+  ] = useState(false);
+  const [rowActionTargetId, setRowActionTargetId] = useState(null);
   const [documentIdForAction, setDocumentIdForAction] = useState();
   const [, muutospyynnotActions] = useMuutospyynnot();
 
@@ -417,51 +424,127 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     muutospyynnonLiitteetAction.load(muutospyynto.data.uuid, true);
   };
 
+  const triggerPaatettyActionProcedure = useCallback(async () => {
+    const timestamp = new Date().getTime();
+    setIsLoading(true);
+    await new ProcedureHandler(t).run("muutospyynnot.tilanmuutos.paatetyksi", [
+      rowActionTargetId
+    ]);
+    setIsLoading(false);
+    setPaatettyConfirmationDialogVisible(false);
+    setRowActionTargetId(null);
+    history.push("?force=" + timestamp);
+  }, [rowActionTargetId, history, t]);
+
+  /*
+  
+  
+  TILANVAIHTOPAINIKKEIDEN TOIMINNOT
+  
+  
+   */
+
+  async function palautaValmisteluun() {
+    const timestamp = new Date().getTime();
+    await new ProcedureHandler(t).run(
+      "muutospyynnot.tilanmuutos.valmisteluun",
+      [uuid]
+    );
+    history.push("?force=" + timestamp);
+  }
+
+  const onPaatettyActionClicked = row => {
+    setRowActionTargetId(row.id);
+    setPaatettyConfirmationDialogVisible(true);
+  };
+
+  // async function palautaValmisteluun() {
+  //   if (action === "esittelyyn") {
+  //     const timestamp = new Date().getTime();
+  //     await new ProcedureHandler(
+  //       formatMessage
+  //     ).run("muutospyynnot.tilanmuutos.esittelyyn", [row.id]);
+  //     history.push("?force=" + timestamp);
+  //   } else if (action === "valmisteluun") {
+  //     const timestamp = new Date().getTime();
+  //     await new ProcedureHandler(
+  //       formatMessage
+  //     ).run("muutospyynnot.tilanmuutos.valmisteluun", [row.id]);
+  //     history.push("?force=" + timestamp);
+  //   } else if (action === "paata") {
+  //     await onPaatettyActionClicked(row);
+  //   } else {
+  //     history.push(
+  //       localizeRouteKey(intl.locale, AppRoute.Asia, intl.formatMessage, {
+  //         koulutusmuoto: koulutusmuotoKebabCase,
+  //         uuid: row.id
+  //       })
+  //     );
+  //   }
+  // }
+
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
       <React.Fragment>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end w-4/5 py-8 mx-auto px-3 lg:px-8">
-          {/* Linkki, jolla pääsee Asiat-sivulle */}
-          <Link
-            className="cursor-pointer"
-            style={{ textDecoration: "underline" }}
-            onClick={() => {
-              history.push(
-                localizeRouteKey(
-                  intl.locale,
-                  AppRoute.AsianhallintaAvoimet,
-                  t,
-                  {
-                    koulutusmuoto: koulutusmuoto.kebabCase
-                  }
-                )
-              );
-            }}
-          >
-            <BackIcon
-              style={{
-                fontSize: 14,
-                marginBottom: "0.1rem",
-                marginRight: "0.4rem"
-              }}
-            />
-            {t(common.asiakirjatTakaisin)}
-          </Link>
-          <div className="flex-1 flex items-center pt-8 pb-2">
-            <div className="w-full flex flex-col">
-              <Typography component="h1" variant="h1">
-                {t(common["asiaTypes.lupaChange"])}
-              </Typography>
-              <p className="text-lg font-normal">{nimi}</p>
+        <div className="flex flex-col justify-end w-full py-8 mx-auto">
+          <div className="flex-1 flex flex-col w-full mx-auto">
+            <div className="mx-auto w-4/5 max-w-8xl">
+              {/* Linkki, jolla pääsee Asiat-sivulle */}
+              <Link
+                className="cursor-pointer"
+                style={{ textDecoration: "underline" }}
+                onClick={() => {
+                  history.push(
+                    localizeRouteKey(
+                      intl.locale,
+                      AppRoute.AsianhallintaAvoimet,
+                      t,
+                      {
+                        koulutusmuoto: koulutusmuoto.kebabCase
+                      }
+                    )
+                  );
+                }}
+              >
+                <BackIcon
+                  style={{
+                    fontSize: 14,
+                    marginBottom: "0.1rem",
+                    marginRight: "0.4rem"
+                  }}
+                />
+                {t(common.asiakirjatTakaisin)}
+              </Link>
+              <div className="flex-1 flex items-center pt-8 pb-2">
+                <div className="w-full flex flex-col">
+                  <Typography component="h1" variant="h1">
+                    {t(common["asiaTypes.lupaChange"])}
+                  </Typography>
+                  <p className="text-lg font-normal">{nimi}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div className="flex-1 flex w-full">
           <div className="flex-1 flex flex-col w-full mx-auto">
             <div className="mx-auto w-4/5 max-w-8xl">
+              {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
+              <div>
+                <SimpleButton
+                  variant="outlined"
+                  text="Palauta valmisteluun"
+                  onClick={palautaValmisteluun}
+                />
+                <SimpleButton
+                  text={t(common["asiaTable.actions.paatetty"])}
+                  buttonStyles={{ marginLeft: "1rem" }}
+                  onClick={onPaatettyActionClicked}
+                />
+              </div>
               <Typography
                 component="h4"
                 variant="h4"
@@ -521,6 +604,27 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 }
                 onOK={setStateOfMuutospyyntoAsEsittelyssa}
               ></PDFAndStateDialog>
+            )}
+            {isPaatettyConfirmationDialogVisible && (
+              <ConfirmDialog
+                isConfirmDialogVisible={isPaatettyConfirmationDialogVisible}
+                handleCancel={() => setPaatettyConfirmationDialogVisible(false)}
+                handleOk={triggerPaatettyActionProcedure}
+                onClose={() => setPaatettyConfirmationDialogVisible(false)}
+                messages={{
+                  content: intl.formatMessage(
+                    common.asiaPaatettyConfirmationDialogContent
+                  ),
+                  ok: intl.formatMessage(
+                    common.asiaPaatettyConfirmationDialogOk
+                  ),
+                  cancel: intl.formatMessage(common.cancel),
+                  title: intl.formatMessage(
+                    common.asiaPaatettyConfirmationDialogTitle
+                  )
+                }}
+                loadingSpinner={isLoading}
+              />
             )}
             <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
               <div className="flex mx-auto w-4/5 max-w-8xl py-12">

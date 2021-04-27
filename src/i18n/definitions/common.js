@@ -1299,5 +1299,9 @@ export default defineMessages({
   valitseLuvanKieli: {
     id: "common.valitseLuvanKieli",
     defaultMessage: "Valitse luvan kieli"
+  },
+  palautaValmisteluun: {
+    id: "common.palautaValmisteluun",
+    defaultMessage: "Palauta valmisteluun"
   }
 });

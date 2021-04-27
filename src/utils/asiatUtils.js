@@ -1,9 +1,16 @@
-import * as R from "ramda";
 import common from "../i18n/definitions/common";
 import moment from "moment";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { addIndex, find, map, path, prop, propEq } from "ramda";
+
+const labelColorClassesByTila = {
+  VALMISTELUSSA: "bg-blue-100",
+  ESITTELYSSA: "bg-yellow-100",
+  PAATETTY: "bg-gray-200",
+  KORJAUKSESSA: "bg-red-400 text-white"
+};
 
 const asiatTableColumnSetup = avoimet => {
   return [
@@ -28,7 +35,7 @@ const generateAsiatTableHeaderStructure = (t, tableColumnSetup) => {
       {
         rows: [
           {
-            cells: R.map(item => {
+            cells: map(item => {
               return {
                 isSortable: !(item.isSortable === false),
                 truncate: true,
@@ -44,8 +51,8 @@ const generateAsiatTableHeaderStructure = (t, tableColumnSetup) => {
 };
 
 const getMaakuntaNimiFromHakemus = (hakemus, locale) => {
-  const maakuntaObject = R.find(R.propEq("kieli", locale.toUpperCase()))(
-    R.path(["jarjestaja", "maakuntaKoodi", "metadata"], hakemus) || []
+  const maakuntaObject = find(propEq("kieli", locale.toUpperCase()))(
+    path(["jarjestaja", "maakuntaKoodi", "metadata"], hakemus) || []
   );
   return maakuntaObject ? maakuntaObject.nimi : "";
 };
@@ -63,7 +70,8 @@ export const generateAsiaTableRows = (
   const paatospvm = row.paatospvm
     ? moment(row.paatospvm).format("D.M.YYYY")
     : "";
-  return R.addIndex(R.map)(
+
+  return addIndex(map)(
     (col, j) => {
       return {
         truncate: false,
@@ -81,7 +89,11 @@ export const generateAsiaTableRows = (
       { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
       { text: getMaakuntaNimiFromHakemus(row, locale) },
       {
-        text: formatMessage(common[`asiaStates.esittelija.${row.tila}`]) || ""
+        text: `<span class="px-3 py-2 rounded-sm ${prop(
+          row.tila,
+          labelColorClassesByTila
+        )}">${formatMessage(common[`asiaStates.esittelija.${row.tila}`]) ||
+          ""}</span>`
       },
       { text: avoimet ? paivityspvm : paatospvm }
     ]
@@ -102,7 +114,7 @@ export const generateAvoimetAsiatTableStructure = (
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)((row, i) => {
+          rows: addIndex(map)((row, i) => {
             let actions = [];
             if (row.tila === "VALMISTELUSSA") {
               actions.push({
@@ -156,7 +168,7 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)((row, i) => {
+          rows: addIndex(map)((row, i) => {
             return {
               id: row.uuid,
               onClick: async (row, action) => {
