@@ -121,6 +121,9 @@ export const defineBackendChangeObjects = async (
     // Muodostetaan muutosobjekti, mikäli käyttöliittymässä on tehty
     // kohtaan muutoksia.
     if (changeObj) {
+      const tila = path(["properties", "isChecked"], changeObj)
+        ? "LISAYS"
+        : "POISTO";
       const muutosId = `opetustehtava-${Math.random()}`;
       let muutosobjekti = {
         generatedId: muutosId,
@@ -135,7 +138,14 @@ export const defineBackendChangeObjects = async (
             take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
           )
         },
-        tila: changeObj.properties.isChecked ? "LISAYS" : "POISTO"
+        tila,
+        maaraysUuid:
+          tila === "POISTO"
+            ? prop(
+                "uuid",
+                find(propEq("koodiarvo", opetustehtava.koodiarvo), maaraykset)
+              )
+            : null
       };
 
       // Muodostetaan tehdyistä rajoituksista objektit backendiä varten.

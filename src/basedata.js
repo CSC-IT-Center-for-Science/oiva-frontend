@@ -815,7 +815,7 @@ const BaseData = ({
       lupaUuid ? oid : id,
       koulutustyyppi,
       oppilaitostyyppi,
-      language
+      koulutustyyppi === "2" && language
     ).then(result => {
       if (isSubscribed) {
         setBaseData(result);

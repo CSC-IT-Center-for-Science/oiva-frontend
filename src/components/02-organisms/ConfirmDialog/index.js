@@ -1,12 +1,37 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
+import MuiDialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "../DialogTitle";
+import DialogTitle from "../DialogTitle/index";
 import "../../../css/tailwind.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+
+const DialogActions = withStyles(theme => ({
+  root: {
+    margin: 0,
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    paddingBottom: theme.spacing(4)
+  }
+}))(MuiDialogActions);
+
+const useStyles = makeStyles(theme => ({
+  paper: { minWidth: "360px" },
+  root: {
+    minWidth: "300px",
+    "& > *:not(:last-child)": {
+      marginBottom: "20px",
+      [theme.breakpoints.up("sm")]: {
+        marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(0)
+      }
+    }
+  }
+}));
 
 const ConfirmDialog = props => {
   const {
@@ -19,36 +44,39 @@ const ConfirmDialog = props => {
     loadingSpinner = false
   } = props;
 
+  const classes = useStyles();
+
   return (
     <Dialog
       open={isConfirmDialogVisible}
       fullWidth={true}
       aria-labelledby="confirm-dialog"
       maxWidth="sm"
+      classes={{ paper: classes.paper }}
     >
       <DialogTitle id="confirm-dialog" onClose={onClose}>
-        {messages.title}
+        <span className="mr-12">{messages.title}</span>
       </DialogTitle>
       <DialogContent>
         <div className="py-2 px-8">{messages.content}</div>
       </DialogContent>
       <DialogActions>
-        <div className="flex pr-6 pb-4">
-          <div className="mr-4">
-            <Button onClick={handleCancel} color="primary" variant="outlined">
-              {messages.cancel}
-            </Button>
-          </div>
+        <div
+          className={
+            classes.root + " flex flex-col sm:flex-row flex-grow sm:flex-grow-0"
+          }
+        >
+          <Button onClick={handleCancel} color="primary" variant="outlined">
+            {messages.cancel}
+          </Button>
           {!!handleExitAndAbandonChanges && (
-            <div className="mr-4">
-              <Button
-                onClick={handleExitAndAbandonChanges}
-                color="primary"
-                variant="outlined"
-              >
-                {messages.noSave}
-              </Button>
-            </div>
+            <Button
+              onClick={handleExitAndAbandonChanges}
+              color="primary"
+              variant="outlined"
+            >
+              {messages.noSave}
+            </Button>
           )}
           <Button
             onClick={handleOk}

@@ -7,7 +7,7 @@ import AsiakirjatItem from "./AsiakirjatItem";
 import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import Table from "components/02-organisms/Table";
+import Table from "components/02-organisms/Table/index";
 import { downloadFileFn, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
@@ -17,7 +17,7 @@ import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
-import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja";
+import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
@@ -293,9 +293,6 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLinkFn) {
                   row.fileLinkFn(true);
-                } else if (action === "download-pdf-and-change-state") {
-                  setIsDownloadPDFAndChangeStateDialogVisible(true);
-                  setDocumentIdForAction(row.uuid);
                 } else if (action === "remove") {
                   setDocumentIdForAction(row.uuid);
                   row.type === "liite"
@@ -352,27 +349,28 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   id: `simple-menu-${i}`,
                   actions: [
                     {
+                      id: "edit",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      isHidden: row.type === "liite",
+                      name: "edit",
+                      text: t(common.edit)
+                    },
+                    {
+                      id: "remove",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      name: "delete",
+                      text: t(common.poista)
+                    },
+                    {
                       id: "lataa",
+                      name: "download",
                       text:
                         row.type === "liite"
                           ? t(common["asiaTable.actions.lataaLiite"])
                           : t(common["asiaTable.actions.lataa"])
-                    },
-                    row.type !== "liite" && row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "download-pdf-and-change-state",
-                          text: t(
-                            common["asiaTable.actions.lataaPDFJaMuutaTila"]
-                          )
-                        }
-                      : null,
-                    row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "remove",
-                          text: t(common.poista)
-                        }
-                      : null
-                  ].filter(Boolean)
+                    }
+                  ].filter(Boolean),
+                  isExpanded: true
                 },
                 styleClasses: ["w-1/12 cursor-default"]
               })
@@ -421,11 +419,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
-      <div className="flex flex-col flex-1 mx-auto w-4/5 max-w-8xl">
+      <React.Fragment>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8">
+        <div className="flex flex-col justify-end w-4/5 py-8 mx-auto px-3 lg:px-8">
           {/* Linkki, jolla pääsee Asiat-sivulle */}
           <Link
             className="cursor-pointer"
@@ -462,37 +460,38 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </div>
         </div>
         <div className="flex-1 flex w-full">
-          <div className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
-            <Typography
-              component="h4"
-              variant="h4"
-              className="float-right"
-              style={{ margin: 0 }}
-            >
-              <SelectAttachment
-                attachmentAdded={handleAddPaatoskirje}
-                messages={{
-                  attachmentAdd: t(common.attachmentAddPaatoskirje),
-                  attachmentName: t(common.attachmentName),
-                  attachmentErrorName: t(common.attachmentErrorName),
-                  attachmentError: t(common.attachmentError),
-                  ok: t(common.ok),
-                  cancel: t(common.cancel)
-                }}
-                styles={{
-                  fontSize: "1em",
-                  backgroundColor: COLORS.BG_GRAY,
-                  border: "none",
-                  iconSize: "18",
-                  svgMargin: "0.1em 0.1em 0.2em 0",
-                  circleIcon: true,
-                  disableHover: true,
-                  normalCase: true
-                }}
-                fileType={"paatosKirje"}
-              />
-            </Typography>
-
+          <div className="flex-1 flex flex-col w-full mx-auto">
+            <div className="mx-auto w-4/5 max-w-8xl">
+              <Typography
+                component="h4"
+                variant="h4"
+                className="float-right"
+                style={{ margin: 0 }}
+              >
+                <SelectAttachment
+                  attachmentAdded={handleAddPaatoskirje}
+                  messages={{
+                    attachmentAdd: t(common.attachmentAddPaatoskirje),
+                    attachmentName: t(common.attachmentName),
+                    attachmentErrorName: t(common.attachmentErrorName),
+                    attachmentError: t(common.attachmentError),
+                    ok: t(common.ok),
+                    cancel: t(common.cancel)
+                  }}
+                  styles={{
+                    fontSize: "1em",
+                    backgroundColor: COLORS.BG_GRAY,
+                    border: "none",
+                    iconSize: "18",
+                    svgMargin: "0.1em 0.1em 0.2em 0",
+                    circleIcon: true,
+                    disableHover: true,
+                    normalCase: true
+                  }}
+                  fileType={"paatosKirje"}
+                />
+              </Typography>
+            </div>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog
                 isConfirmDialogVisible={isDeleteLiiteDialogVisible}
@@ -523,39 +522,43 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 onOK={setStateOfMuutospyyntoAsEsittelyssa}
               ></PDFAndStateDialog>
             )}
-            <div
-              className="flex-1 bg-white"
-              style={{ border: "0.05rem solid #E3E3E3" }}
-            >
-              <WrapTable>
-                <Media
-                  query={MEDIA_QUERIES.MOBILE}
-                  render={() => (
-                    <OldTable role="table">
-                      <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
-                    </OldTable>
-                  )}
-                />
-                <Media
-                  query={MEDIA_QUERIES.TABLET_MIN}
-                  render={() => (
-                    <div
-                      style={{
-                        borderBottom: "0.05rem solid #E3E3E3"
-                      }}
-                    >
-                      <Table
-                        structure={tableStructure}
-                        sortedBy={{ columnIndex: 3, order: "desc" }}
-                      />
-                    </div>
-                  )}
-                />
-              </WrapTable>
+            <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+              <div className="flex mx-auto w-4/5 max-w-8xl py-12">
+                <div
+                  className="flex-1 bg-white"
+                  style={{ border: "0.05rem solid #E3E3E3" }}
+                >
+                  <WrapTable>
+                    <Media
+                      query={MEDIA_QUERIES.MOBILE}
+                      render={() => (
+                        <OldTable role="table">
+                          <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
+                        </OldTable>
+                      )}
+                    />
+                    <Media
+                      query={MEDIA_QUERIES.TABLET_MIN}
+                      render={() => (
+                        <div
+                          style={{
+                            borderBottom: "0.05rem solid #E3E3E3"
+                          }}
+                        >
+                          <Table
+                            structure={tableStructure}
+                            sortedBy={{ columnIndex: 3, order: "desc" }}
+                          />
+                        </div>
+                      )}
+                    />
+                  </WrapTable>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   } else if (muutospyyntoLoaded && !muutospyynto.data) {
     return (
@@ -569,6 +572,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 };
 
 Asiakirjat.propTypes = {
+  // Asiakirjan UUID
   uuid: PropTypes.object,
   koulutusmuoto: PropTypes.object
 };

@@ -225,6 +225,13 @@ const LupanakymaA = React.memo(
         )}
 
         <Rajoitteet
+          maaraykset={filter(
+            maarays =>
+              maarays.aliMaaraykset ||
+              (maarays.koodisto === "kujalisamaareet" &&
+                path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE"),
+            maaraykset || []
+          )}
           isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           kohdevaihtoehdot={rajoitteidenKohdevaihtoehdot}

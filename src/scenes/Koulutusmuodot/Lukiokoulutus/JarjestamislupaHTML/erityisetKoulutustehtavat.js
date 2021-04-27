@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
+import rajoitteet from "../../../../i18n/definitions/rajoitteet";
 
 export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
   const intl = useIntl();
@@ -95,6 +96,7 @@ export default function ErityisetKoulutustehtavatHtml({ maaraykset }) {
                       maarays.aliMaaraykset
                     ),
                     localeUpper,
+                    intl.formatMessage(rajoitteet.ajalla),
                     "kuvaus"
                   )
                 : ""}
