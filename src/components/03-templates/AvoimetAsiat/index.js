@@ -39,11 +39,6 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
     };
   }, [koulutusmuoto.koulutustyyppi, location.search, muutospyynnotActions]);
 
-  const onPaatettyActionClicked = row => {
-    setRowActionTargetId(row.id);
-    setPaatettyConfirmationDialogVisible(true);
-  };
-
   const triggerPaatettyActionProcedure = useCallback(async () => {
     const timestamp = new Date().getTime();
     setIsLoading(true);
@@ -64,7 +59,6 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
           muutospyynnot.avoimet.data,
           intl,
           history,
-          onPaatettyActionClicked,
           koulutusmuoto.kebabCase
         )
       : [];

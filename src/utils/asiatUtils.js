@@ -1,7 +1,6 @@
 import * as R from "ramda";
 import common from "../i18n/definitions/common";
 import moment from "moment";
-import ProcedureHandler from "../components/02-organisms/procedureHandler";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
@@ -18,11 +17,6 @@ const asiatTableColumnSetup = avoimet => {
         ? common["asiaTable.headers.saapunut"]
         : common["asiaTable.headers.paatospvm"],
       widthClass: "w-1/12"
-    },
-    {
-      titleKey: common["asiaTable.headers.actions"],
-      widthClass: "w-1/12",
-      isSortable: false
     }
   ];
 };
@@ -98,7 +92,6 @@ export const generateAvoimetAsiatTableStructure = (
   hakemusList,
   intl,
   history,
-  onPaatettyActionClicked,
   koulutusmuotoKebabCase
 ) => {
   const formatMessage = intl.formatMessage;
@@ -130,46 +123,20 @@ export const generateAvoimetAsiatTableStructure = (
             }
             return {
               id: row.uuid,
-              onClick: async (row, action) => {
-                if (action === "esittelyyn") {
-                  const timestamp = new Date().getTime();
-                  await new ProcedureHandler(
-                    formatMessage
-                  ).run("muutospyynnot.tilanmuutos.esittelyyn", [row.id]);
-                  history.push("?force=" + timestamp);
-                } else if (action === "valmisteluun") {
-                  const timestamp = new Date().getTime();
-                  await new ProcedureHandler(
-                    formatMessage
-                  ).run("muutospyynnot.tilanmuutos.valmisteluun", [row.id]);
-                  history.push("?force=" + timestamp);
-                } else if (action === "paata") {
-                  await onPaatettyActionClicked(row);
-                } else {
-                  history.push(
-                    localizeRouteKey(
-                      intl.locale,
-                      AppRoute.Asia,
-                      intl.formatMessage,
-                      {
-                        koulutusmuoto: koulutusmuotoKebabCase,
-                        uuid: row.id
-                      }
-                    )
-                  );
-                }
+              onClick: async row => {
+                history.push(
+                  localizeRouteKey(
+                    intl.locale,
+                    AppRoute.Asia,
+                    intl.formatMessage,
+                    {
+                      koulutusmuoto: koulutusmuotoKebabCase,
+                      uuid: row.id
+                    }
+                  )
+                );
               },
-              cells: generateAsiaTableRows(row, intl, true).concat([
-                {
-                  menu: {
-                    id: `simple-menu-${i}`,
-                    actions
-                  },
-                  styleClasses: [
-                    tableColumnSetup[tableColumnSetup.length - 1].widthClass
-                  ]
-                }
-              ])
+              cells: generateAsiaTableRows(row, intl, true)
             };
           }, hakemusList)
         }
@@ -193,41 +160,9 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
             return {
               id: row.uuid,
               onClick: async (row, action) => {
-                if (action === "lataa") {
-                  const procedureHandler = new ProcedureHandler(
-                    intl.formatMessage
-                  );
-                  const output = await procedureHandler.run(
-                    "muutospyynto.esittelijanEsikatselu.latauspolku",
-                    [row.id]
-                  );
-                  const filePath =
-                    output.muutospyynto.esittelijanEsikatselu.latauspolku
-                      .output;
-                  procedureHandler.run(
-                    "muutospyynto.lataaminen.downloadAndShow",
-                    [filePath, true]
-                  );
-                } else {
-                  console.log("Avaa asian asiakirjat", row);
-                }
+                console.log("TODO: Avaa asian asiakirjat", row);
               },
-              cells: generateAsiaTableRows(row, intl, false).concat({
-                menu: {
-                  id: `simple-menu-${i}`,
-                  actions: [
-                    {
-                      id: "lataa",
-                      text: intl.formatMessage(
-                        common["asiaTable.actions.lataa"]
-                      )
-                    }
-                  ]
-                },
-                styleClasses: [
-                  tableColumnSetup[tableColumnSetup.length - 1].widthClass
-                ]
-              })
+              cells: generateAsiaTableRows(row, intl, false)
             };
           }, hakemusList || [])
         }
