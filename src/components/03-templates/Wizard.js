@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from "react";
 import ConfirmDialog from "components/02-organisms/ConfirmDialog/index";
 import OrganisationInfo from "components/02-organisms/OrganisationInfo/index";
 import { withStyles } from "@material-ui/styles";
@@ -56,6 +62,7 @@ const FormDialog = withStyles(() => ({
 });
 
 export const Wizard = ({
+  isSaving,
   koulutusmuoto,
   onAction,
   organisation,
@@ -91,9 +98,9 @@ export const Wizard = ({
     const rootElement = document.querySelector("div.MuiDialogContent-root");
     if (rootElement) {
       const innerElement = document.querySelector("div[attr='inner-scroll']");
-      const initialHeight = 243 // MuiDialogTitle-root height + MuiTypography-root height + MuiTypography-h2 height
+      const initialHeight = 243; // MuiDialogTitle-root height + MuiTypography-root height + MuiTypography-h2 height
       if (isPreviewModeOn) {
-        if(window.innerWidth > 1599) {
+        if (window.innerWidth > 1599) {
           rootElement.scrollTop = 183; // MuiDialogTitle-root height + MuiTypography-root height
           setScrollMemory(rootElement.scrollTop - initialHeight);
           return innerElement;
@@ -111,7 +118,7 @@ export const Wizard = ({
   useLayoutEffect(() => {
     const elem = getScrollElementAndPosition;
     if (elem) {
-      elem.scrollTo({ top: scrollMemory, behavior: 'instant' });
+      elem.scrollTo({ top: scrollMemory, behavior: "instant" });
     }
   }, [getScrollElementAndPosition, isPreviewModeOn, scrollMemory]);
 
@@ -134,7 +141,8 @@ export const Wizard = ({
     ? !isEmpty(underRemovalChangeObjects)
     : false;
 
-  const isSavingEnabled = hasUnsavedChanges || hasChangesUnderRemoval;
+  const isSavingEnabled =
+    !isSaving && (hasUnsavedChanges || hasChangesUnderRemoval);
 
   function handleCancel() {
     setIsConfirmDialogVisible(false);

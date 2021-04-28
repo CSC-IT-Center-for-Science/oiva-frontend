@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
+import rajoitteet from "../../../../i18n/definitions/rajoitteet";
 
 export default function OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml({
   maaraykset
@@ -50,7 +51,8 @@ export default function OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml({
             {length(opetuksenJarjestamismuoto.aliMaaraykset)
               ? getRajoitteetFromMaarays(
                   opetuksenJarjestamismuoto.aliMaaraykset,
-                  locale
+                  locale,
+                  intl.formatMessage(rajoitteet.ajalla)
                 )
               : ""}
           </React.Fragment>
