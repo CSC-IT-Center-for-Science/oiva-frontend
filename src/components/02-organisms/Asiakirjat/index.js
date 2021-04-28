@@ -16,7 +16,7 @@ import { Helmet } from "react-helmet";
 import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
@@ -94,12 +94,17 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     isPaatettyConfirmationDialogVisible,
     setPaatettyConfirmationDialogVisible
   ] = useState(false);
+  const [
+    isKorjaaLupaaConfirmationDialogVisible,
+    setKorjaaLupaaConfirmationDialogVisible
+  ] = useState(false);
   const [rowActionTargetId, setRowActionTargetId] = useState(null);
   const [documentIdForAction, setDocumentIdForAction] = useState();
   const [, muutospyynnotActions] = useMuutospyynnot();
+  const location = useLocation();
 
   const muutospyynnonTila = path(["data", "tila"], muutospyynto);
-  console.info(muutospyynnonTila);
+
   // Let's fetch MUUTOSPYYNTÖ and MUUTOSPYYNNÖN LIITTEET
   useEffect(() => {
     let abortControllers = [];
@@ -116,7 +121,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         }
       }, abortControllers);
     };
-  }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
+  }, [location.search, muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const jarjestaja = useMemo(
     () => muutospyynto.data && muutospyynto.data.jarjestaja,
@@ -448,6 +453,19 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     history.push("?force=" + timestamp);
   }, [rowActionTargetId, history, t]);
 
+  const triggerKorjaaLupaaActionProcedure = useCallback(async () => {
+    const timestamp = new Date().getTime();
+    setIsLoading(true);
+    await new ProcedureHandler(t).run(
+      "muutospyynnot.tilanmuutos.korjattavaksi",
+      [rowActionTargetId]
+    );
+    setIsLoading(false);
+    setKorjaaLupaaConfirmationDialogVisible(false);
+    setRowActionTargetId(null);
+    history.push("?force=" + timestamp);
+  }, [rowActionTargetId, history, t]);
+
   /* TILANVAIHTOPAINIKKEIDEN TOIMINNOT */
 
   async function vieEsittelyyn() {
@@ -472,13 +490,17 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     setPaatettyConfirmationDialogVisible(true);
   };
 
+  const onKorjaaLupaaActionClicked = () => {
+    setRowActionTargetId(uuid);
+    setKorjaaLupaaConfirmationDialogVisible(true);
+  };
+
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
       <React.Fragment>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-<<<<<<< HEAD
         <div className="flex flex-col justify-end w-full py-8 mx-auto">
           <div className="flex-1 flex flex-col w-full mx-auto">
             <div className="mx-auto w-4/5 max-w-8xl">
@@ -516,41 +538,6 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   <p className="text-lg font-normal">{nimi}</p>
                 </div>
               </div>
-=======
-        <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
-          {/* Linkki, jolla pääsee Asiat-sivulle */}
-          <Link
-            className="cursor-pointer"
-            style={{ textDecoration: "underline" }}
-            onClick={() => {
-              history.push(
-                localizeRouteKey(
-                  intl.locale,
-                  AppRoute.AsianhallintaAvoimet,
-                  t,
-                  {
-                    koulutusmuoto: koulutusmuoto.kebabCase
-                  }
-                )
-              );
-            }}
-          >
-            <BackIcon
-              style={{
-                fontSize: 14,
-                marginBottom: "0.1rem",
-                marginRight: "0.4rem"
-              }}
-            />
-            {t(common.asiakirjatTakaisin)}
-          </Link>
-          <div className="flex-1 flex items-center pt-8 pb-2">
-            <div className="w-full flex flex-col">
-              <Typography component="h1" variant="h1">
-                {t(common["asiaTypes.lupaChange"])}
-              </Typography>
-              <p className="text-lg font-normal">{nimi}</p>
->>>>>>> 3.0
             </div>
           </div>
         </div>
@@ -561,9 +548,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               <div>
                 {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
                   <SimpleButton
-                    variant="outlined"
                     text={t(common.palautaValmisteluun)}
                     onClick={palautaValmisteluun}
+                    variant="outlined"
                   />
                 )}
                 {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
@@ -577,6 +564,13 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   <SimpleButton
                     text={t(common.vieEsittelyyn)}
                     onClick={vieEsittelyyn}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.PAATETTY && (
+                  <SimpleButton
+                    text={t(common.korjaaLupaa)}
+                    onClick={onKorjaaLupaaActionClicked}
+                    variant="outlined"
                   />
                 )}
               </div>
@@ -656,6 +650,29 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   cancel: intl.formatMessage(common.cancel),
                   title: intl.formatMessage(
                     common.asiaPaatettyConfirmationDialogTitle
+                  )
+                }}
+                loadingSpinner={isLoading}
+              />
+            )}
+            {isKorjaaLupaaConfirmationDialogVisible && (
+              <ConfirmDialog
+                isConfirmDialogVisible={isKorjaaLupaaConfirmationDialogVisible}
+                handleCancel={() =>
+                  setKorjaaLupaaConfirmationDialogVisible(false)
+                }
+                handleOk={triggerKorjaaLupaaActionProcedure}
+                onClose={() => setKorjaaLupaaConfirmationDialogVisible(false)}
+                messages={{
+                  content: intl.formatMessage(
+                    common.korjaaLupaaConfirmationDialogContent
+                  ),
+                  ok: intl.formatMessage(
+                    common.korjaaLupaaConfirmationDialogOk
+                  ),
+                  cancel: intl.formatMessage(common.cancel),
+                  title: intl.formatMessage(
+                    common.korjaaLupaaConfirmationDialogTitle
                   )
                 }}
                 loadingSpinner={isLoading}

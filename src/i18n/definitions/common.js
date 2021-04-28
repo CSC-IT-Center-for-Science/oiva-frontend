@@ -758,6 +758,19 @@ export default defineMessages({
     id: "common.asiaPaatettyConfirmationDialogOk",
     defaultMessage: "Merkitse päätetyksi"
   },
+  korjaaLupaaConfirmationDialogTitle: {
+    id: "common.korjaaLupaaConfirmationDialogTitle",
+    defaultMessage: "Haluatko korjata päätettyä lupaa?"
+  },
+  korjaaLupaaConfirmationDialogContent: {
+    id: "common.korjaaLupaaConfirmationDialogContent",
+    defaultMessage:
+      "Luvan korjaustilassa voi korjata luvasta mahdollisia virheitä ja korvata asiaan liittyviä liitetiedostoja."
+  },
+  korjaaLupaaConfirmationDialogOk: {
+    id: "common.korjaaLupaaConfirmationDialogOk",
+    defaultMessage: "Siirry luvan korjaustilaan"
+  },
   confirmExitMuutoshakemusWizard: {
     id: "common.confirmExitMuutoshakemus",
     defaultMessage:
@@ -1307,5 +1320,9 @@ export default defineMessages({
   vieEsittelyyn: {
     id: "common.vieEsittelyyn",
     defaultMessage: "Vie esittelyyn"
+  },
+  korjaaLupaa: {
+    id: "common.korjaaLupaa",
+    defaultMessage: "Korjaa lupaa"
   }
 });

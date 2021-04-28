@@ -12,9 +12,11 @@ import { poista as poistaMuutospyynto } from "./procedures/muutospyynnot/poisto/
 import { epaonnistui as muutospyynnonPoistoEpaonnistui } from "./procedures/muutospyynnot/poisto/epaonnistui";
 import { onnistui as muutospyynnonPoistoOnnistui } from "./procedures/muutospyynnot/poisto/onnistui";
 import { epaonnistui as muutospyynnonVieminenEsittelyssaTilaanEpaonnistui } from "./procedures/muutospyynnot/tilanmuutos/epaonnistui";
+import { korjaustilaanSiirtyminenEpaonnistui } from "./procedures/muutospyynnot/tilanmuutos/korjaustilaanSiirtyminenEpaonnistui";
 import { onnistui as muutospyynnonVieminenEsittelyssaTilaanOnnistui } from "./procedures/muutospyynnot/tilanmuutos/onnistui";
 import { esittelyyn as muutaMuutospyynnonTilaksiEsittelyssa } from "./procedures/muutospyynnot/tilanmuutos/esittelyyn";
 import { paatetyksi as muutaMuutospyynnonTilaksiPaatetty } from "./procedures/muutospyynnot/tilanmuutos/paatetyksi";
+import { korjattavaksi as muutaMuutospyynnonTilaksiKorjattavana } from "./procedures/muutospyynnot/tilanmuutos/korjattavaksi";
 import { valmisteluun as muutaMuutospyynnonTilaksiValmistelussa } from "./procedures/muutospyynnot/tilanmuutos/valmisteluun";
 import { tallennaEsittelijanToimesta } from "./procedures/muutospyynto/tallennus/tallennaEsittelijanToimesta";
 import { download as lataaMuutospyynto } from "./procedures/muutospyynto/lataaminen/download";
@@ -38,9 +40,11 @@ export const procedures = {
     },
     tilanmuutos: {
       epaonnistui: muutospyynnonVieminenEsittelyssaTilaanEpaonnistui,
+      korjaustilaanSiirtyminenEpaonnistui,
       esittelyyn: muutaMuutospyynnonTilaksiEsittelyssa,
       onnistui: muutospyynnonVieminenEsittelyssaTilaanOnnistui,
       paatetyksi: muutaMuutospyynnonTilaksiPaatetty,
+      korjattavaksi: muutaMuutospyynnonTilaksiKorjattavana,
       valmisteluun: muutaMuutospyynnonTilaksiValmistelussa
     }
   },
