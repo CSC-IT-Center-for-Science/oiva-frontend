@@ -543,7 +543,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         </div>
         <div className="flex-1 flex w-full">
           <div className="flex-1 flex flex-col w-full mx-auto">
-            <div className="mx-auto w-4/5 max-w-8xl">
+            <div className="mx-auto w-4/5 max-w-8xl pb-4">
               {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
               <div>
                 {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
@@ -574,35 +574,39 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   />
                 )}
               </div>
-              <Typography
-                component="h4"
-                variant="h4"
-                className="float-right"
-                style={{ margin: 0 }}
-              >
-                <SelectAttachment
-                  attachmentAdded={handleAddPaatoskirje}
-                  messages={{
-                    attachmentAdd: t(common.attachmentAddPaatoskirje),
-                    attachmentName: t(common.attachmentName),
-                    attachmentErrorName: t(common.attachmentErrorName),
-                    attachmentError: t(common.attachmentError),
-                    ok: t(common.ok),
-                    cancel: t(common.cancel)
-                  }}
-                  styles={{
-                    fontSize: "1em",
-                    backgroundColor: COLORS.BG_GRAY,
-                    border: "none",
-                    iconSize: "18",
-                    svgMargin: "0.1em 0.1em 0.2em 0",
-                    circleIcon: true,
-                    disableHover: true,
-                    normalCase: true
-                  }}
-                  fileType={"paatosKirje"}
-                />
-              </Typography>
+              {/* Liitteitä voi lisätä vain, kun  */}
+              {(muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA ||
+                muutospyynnonTila === FIELDS.TILA.VALUES.KORJATTAVANA) && (
+                <Typography
+                  component="h4"
+                  variant="h4"
+                  className="float-right"
+                  style={{ margin: 0, padding: 0 }}
+                >
+                  <SelectAttachment
+                    attachmentAdded={handleAddPaatoskirje}
+                    messages={{
+                      attachmentAdd: t(common.attachmentAddPaatoskirje),
+                      attachmentName: t(common.attachmentName),
+                      attachmentErrorName: t(common.attachmentErrorName),
+                      attachmentError: t(common.attachmentError),
+                      ok: t(common.ok),
+                      cancel: t(common.cancel)
+                    }}
+                    styles={{
+                      fontSize: "1em",
+                      backgroundColor: COLORS.BG_GRAY,
+                      border: "none",
+                      iconSize: "18",
+                      svgMargin: "0.1em 0.1em 0.2em 0",
+                      circleIcon: true,
+                      disableHover: true,
+                      normalCase: true
+                    }}
+                    fileType={"paatosKirje"}
+                  />
+                </Typography>
+              )}
             </div>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog
