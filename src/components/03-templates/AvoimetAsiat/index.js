@@ -1,13 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import Table from "../../02-organisms/Table";
-import ConfirmDialog from "../../02-organisms/ConfirmDialog/index";
 import { generateAvoimetAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useLocation, useHistory } from "react-router-dom";
 import Loading from "../../../modules/Loading";
 import { useMuutospyynnot } from "../../../stores/muutospyynnot";
 import common from "../../../i18n/definitions/common";
-import ProcedureHandler from "../../02-organisms/procedureHandler";
 import { includes, length, path } from "ramda";
 
 const AvoimetAsiat = ({ koulutusmuoto }) => {
@@ -15,12 +13,6 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
   const intl = useIntl();
   const location = useLocation();
   const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();
-  const [
-    isPaatettyConfirmationDialogVisible,
-    setPaatettyConfirmationDialogVisible
-  ] = useState(false);
-  const [rowActionTargetId, setRowActionTargetId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const isForced = includes("force=", location.search);
@@ -38,18 +30,6 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
       }
     };
   }, [koulutusmuoto.koulutustyyppi, location.search, muutospyynnotActions]);
-
-  const triggerPaatettyActionProcedure = useCallback(async () => {
-    const timestamp = new Date().getTime();
-    setIsLoading(true);
-    await new ProcedureHandler(
-      intl.formatMessage
-    ).run("muutospyynnot.tilanmuutos.paatetyksi", [rowActionTargetId]);
-    setIsLoading(false);
-    setPaatettyConfirmationDialogVisible(false);
-    setRowActionTargetId(null);
-    history.push("?force=" + timestamp);
-  }, [rowActionTargetId, history, intl.formatMessage]);
 
   const tableStructure = useMemo(() => {
     return muutospyynnot.avoimet &&
@@ -79,23 +59,6 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
         <Table
           structure={tableStructure}
           sortedBy={{ columnIndex: 5, order: "desc" }}
-        />
-        <ConfirmDialog
-          isConfirmDialogVisible={isPaatettyConfirmationDialogVisible}
-          handleCancel={() => setPaatettyConfirmationDialogVisible(false)}
-          handleOk={triggerPaatettyActionProcedure}
-          onClose={() => setPaatettyConfirmationDialogVisible(false)}
-          messages={{
-            content: intl.formatMessage(
-              common.asiaPaatettyConfirmationDialogContent
-            ),
-            ok: intl.formatMessage(common.asiaPaatettyConfirmationDialogOk),
-            cancel: intl.formatMessage(common.cancel),
-            title: intl.formatMessage(
-              common.asiaPaatettyConfirmationDialogTitle
-            )
-          }}
-          loadingSpinner={isLoading}
         />
       </div>
     );

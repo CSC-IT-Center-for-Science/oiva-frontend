@@ -25,12 +25,22 @@ import error from "i18n/definitions/error";
 import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "../ConfirmDialog";
-import * as R from "ramda";
 import Typography from "@material-ui/core/Typography";
 import { AppRoute } from "const/index";
 import moment from "moment";
 import languages from "i18n/definitions/languages";
 import SimpleButton from "components/00-atoms/SimpleButton/index";
+import { FIELDS } from "locales/uusiHakemusFormConstants";
+import {
+  addIndex,
+  append,
+  find,
+  forEach,
+  map,
+  path,
+  prop,
+  sortBy
+} from "ramda";
 
 const WrapTable = styled.div``;
 
@@ -88,6 +98,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const [documentIdForAction, setDocumentIdForAction] = useState();
   const [, muutospyynnotActions] = useMuutospyynnot();
 
+  const muutospyynnonTila = path(["data", "tila"], muutospyynto);
+  console.info(muutospyynnonTila);
   // Let's fetch MUUTOSPYYNTÖ and MUUTOSPYYNNÖN LIITTEET
   useEffect(() => {
     let abortControllers = [];
@@ -98,7 +110,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       ];
     }
     return function cancel() {
-      R.forEach(abortController => {
+      forEach(abortController => {
         if (abortController) {
           abortController.abort();
         }
@@ -159,7 +171,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   };
 
   const baseRow = {
-    tila: R.path(["data", "tila"], muutospyynto),
+    tila: path(["data", "tila"], muutospyynto),
     localizedTila:
       muutospyynto &&
       muutospyynto.data &&
@@ -174,12 +186,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   const liitteetRowItems = useMemo(() => {
     if (muutospyynnonLiitteet.fetchedAt) {
-      return R.map(
+      return map(
         liite => ({
           uuid: liite.uuid,
           type: "liite",
           items: [
-            R.prop("nimi", liite),
+            prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
             liite.luoja,
             liite.luontipvm ? moment(liite.luontipvm).format("D.M.YYYY") : ""
@@ -198,7 +210,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             }
           }
         }),
-        R.sortBy(R.prop("nimi"), muutospyynnonLiitteet.data || [])
+        sortBy(prop("nimi"), muutospyynnonLiitteet.data || [])
       );
     }
     return [];
@@ -248,7 +260,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
   const asiakirjatList = () => {
-    return R.addIndex(R.map)(
+    return addIndex(map)(
       (row, idx) => (
         <AsiakirjatItem
           onClick={() => {
@@ -272,7 +284,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         {
           rows: [
             {
-              cells: R.addIndex(R.map)((title, ii) => {
+              cells: addIndex(map)((title, ii) => {
                 return {
                   isSortable: ii !== 4,
                   truncate: false,
@@ -290,7 +302,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)((row, i) => {
+          rows: addIndex(map)((row, i) => {
             return {
               isClickable: !row.isEsittelyssa,
               isHoverable: !row.isEsittelyssa,
@@ -331,7 +343,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   }
                 }
               },
-              cells: R.addIndex(R.map)(
+              cells: addIndex(map)(
                 (col, ii) => {
                   return {
                     truncate: true,
@@ -399,7 +411,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   const handleAddPaatoskirje = async attachment => {
     // Search for existing paatoskirje in muutospyynto
-    let paatoskirje = R.find(
+    let paatoskirje = find(
       pk => pk.tyyppi === "paatosKirje",
       muutospyynto.data.liitteet || []
     );
@@ -410,7 +422,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       paatoskirje.tiedosto = attachment.tiedosto;
       paatoskirje.filename = attachment.filename;
     } else {
-      muutospyynto.data.liitteet = R.append(attachment, muutospyynto.liitteet);
+      muutospyynto.data.liitteet = append(attachment, muutospyynto.liitteet);
       paatoskirje = attachment;
     }
 
@@ -436,13 +448,15 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     history.push("?force=" + timestamp);
   }, [rowActionTargetId, history, t]);
 
-  /*
-  
-  
-  TILANVAIHTOPAINIKKEIDEN TOIMINNOT
-  
-  
-   */
+  /* TILANVAIHTOPAINIKKEIDEN TOIMINNOT */
+
+  async function vieEsittelyyn() {
+    const timestamp = new Date().getTime();
+    await new ProcedureHandler(t).run("muutospyynnot.tilanmuutos.esittelyyn", [
+      uuid
+    ]);
+    history.push("?force=" + timestamp);
+  }
 
   async function palautaValmisteluun() {
     const timestamp = new Date().getTime();
@@ -453,35 +467,10 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     history.push("?force=" + timestamp);
   }
 
-  const onPaatettyActionClicked = row => {
-    setRowActionTargetId(row.id);
+  const onPaatettyActionClicked = () => {
+    setRowActionTargetId(uuid);
     setPaatettyConfirmationDialogVisible(true);
   };
-
-  // async function palautaValmisteluun() {
-  //   if (action === "esittelyyn") {
-  //     const timestamp = new Date().getTime();
-  //     await new ProcedureHandler(
-  //       formatMessage
-  //     ).run("muutospyynnot.tilanmuutos.esittelyyn", [row.id]);
-  //     history.push("?force=" + timestamp);
-  //   } else if (action === "valmisteluun") {
-  //     const timestamp = new Date().getTime();
-  //     await new ProcedureHandler(
-  //       formatMessage
-  //     ).run("muutospyynnot.tilanmuutos.valmisteluun", [row.id]);
-  //     history.push("?force=" + timestamp);
-  //   } else if (action === "paata") {
-  //     await onPaatettyActionClicked(row);
-  //   } else {
-  //     history.push(
-  //       localizeRouteKey(intl.locale, AppRoute.Asia, intl.formatMessage, {
-  //         koulutusmuoto: koulutusmuotoKebabCase,
-  //         uuid: row.id
-  //       })
-  //     );
-  //   }
-  // }
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
@@ -534,16 +523,26 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             <div className="mx-auto w-4/5 max-w-8xl">
               {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
               <div>
-                <SimpleButton
-                  variant="outlined"
-                  text="Palauta valmisteluun"
-                  onClick={palautaValmisteluun}
-                />
-                <SimpleButton
-                  text={t(common["asiaTable.actions.paatetty"])}
-                  buttonStyles={{ marginLeft: "1rem" }}
-                  onClick={onPaatettyActionClicked}
-                />
+                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
+                  <SimpleButton
+                    variant="outlined"
+                    text={t(common.palautaValmisteluun)}
+                    onClick={palautaValmisteluun}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
+                  <SimpleButton
+                    text={t(common["asiaTable.actions.paatetty"])}
+                    buttonStyles={{ marginLeft: "1rem" }}
+                    onClick={onPaatettyActionClicked}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA && (
+                  <SimpleButton
+                    text={t(common.vieEsittelyyn)}
+                    onClick={vieEsittelyyn}
+                  />
+                )}
               </div>
               <Typography
                 component="h4"

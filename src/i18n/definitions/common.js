@@ -1303,5 +1303,9 @@ export default defineMessages({
   palautaValmisteluun: {
     id: "common.palautaValmisteluun",
     defaultMessage: "Palauta valmisteluun"
+  },
+  vieEsittelyyn: {
+    id: "common.vieEsittelyyn",
+    defaultMessage: "Vie esittelyyn"
   }
 });

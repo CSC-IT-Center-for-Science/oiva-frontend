@@ -114,7 +114,7 @@ export const generateAvoimetAsiatTableStructure = (
       role: "tbody",
       rowGroups: [
         {
-          rows: addIndex(map)((row, i) => {
+          rows: addIndex(map)(row => {
             let actions = [];
             if (row.tila === "VALMISTELUSSA") {
               actions.push({
@@ -168,7 +168,7 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
       role: "tbody",
       rowGroups: [
         {
-          rows: addIndex(map)((row, i) => {
+          rows: addIndex(map)(row => {
             return {
               id: row.uuid,
               onClick: async (row, action) => {
