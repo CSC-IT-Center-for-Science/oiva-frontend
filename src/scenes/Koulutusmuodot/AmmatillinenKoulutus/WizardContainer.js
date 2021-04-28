@@ -50,6 +50,7 @@ const WizardContainer = ({
 
   const [lomakedata] = useAllSections();
   const [muutospyynto, setMuutospyynto] = useState();
+  const [isSaving, setIsSaving] = useState();
 
   // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
   const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -164,11 +165,13 @@ const WizardContainer = ({
    */
   const onSave = useCallback(
     async formData => {
+      setIsSaving(true);
       const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallennaEsittelijanToimesta",
         [formData]
       );
+      setIsSaving(false);
       return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
         .result;
     },
@@ -330,6 +333,7 @@ const WizardContainer = ({
           />
         ) : null
       }
+      isSaving={isSaving}
       koulutusmuoto={koulutusmuoto}
       onAction={onAction}
       organisation={organisaatio}
