@@ -2,7 +2,9 @@ import {
   append,
   compose,
   addIndex,
+  concat,
   endsWith,
+  filter,
   find,
   findIndex,
   flatten,
@@ -21,10 +23,12 @@ import {
   split,
   test,
   toLower,
-  uniqBy
+  uniqBy,
+  pathEq
 } from "ramda";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { getAnchorPart } from "../utils/common";
 
 const koodistoMapping = {
   maaraaika: "kujalisamaareet",
@@ -53,6 +57,12 @@ export const createAlimaarayksetBEObjects = (
   kohdennuksenKohdeNumber = 0,
   insideMulti = false
 ) => {
+  const rajoiteId = compose(
+    last,
+    split("_"),
+    cObj => getAnchorPart(cObj.anchor, 0),
+    head
+  )(asetukset);
   let offset = 2;
   const asetusChangeObj = nth(index, asetukset);
   const valueChangeObj = nth(index + 1, asetukset);
@@ -201,7 +211,8 @@ export const createAlimaarayksetBEObjects = (
             : null),
           ...(multiSelectUuid ? { multiselectUuid: multiSelectUuid } : null),
           changeObjects: changeObjects.filter(Boolean),
-          kuvaus: prop("label", multiselectValue)
+          kuvaus: prop("label", multiselectValue),
+          rajoiteId
         },
         orgOid:
           koodisto === "oppilaitos"
@@ -240,4 +251,102 @@ export const createAlimaarayksetBEObjects = (
   )(multiSelectValues);
 
   return result;
+};
+
+export const createBeObjsForRajoitepoistot = (
+  rajoitepoistot,
+  maaraykset,
+  kohteet,
+  maaraystyypit
+) => {
+  /** Haetaan opiskelijamäärärajoitteet erikseen, koska niiltä pitää poistaa parent määräys */
+  const opiskelijamaararajoitteet = filter(
+    maarays =>
+      maarays.koodisto === "kujalisamaareet" &&
+      path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE",
+    maaraykset || []
+  );
+
+  /** Haetaan loput rajoitemääräykset */
+  const muutRajoitemaaraykset = filter(
+    maarays =>
+      length(prop("aliMaaraykset", maarays) || []) &&
+      maarays.koodisto !== "kujalisamaareet",
+    maaraykset || []
+  );
+
+  /** Luodaan poisto muutos-objektit opiskelijamäärärajoitteille */
+  const poistoCobjsOpiskelijamaararajoitteet = map(
+    maarays =>
+      createRajoitepoistoBEObjs(
+        [maarays],
+        rajoitepoistot,
+        kohteet,
+        maaraystyypit
+      ),
+    opiskelijamaararajoitteet
+  ).filter(Boolean);
+
+  /** Luodaan poisto muutos-objektit muille rajoitteille */
+  const poistoCobjsMuutrajoitteet = map(
+    maarays =>
+      createRajoitepoistoBEObjs(
+        maarays.aliMaaraykset,
+        rajoitepoistot,
+        kohteet,
+        maaraystyypit
+      ),
+    muutRajoitemaaraykset
+  ).filter(Boolean);
+
+  return filter(
+    arr => length(arr),
+    concat(poistoCobjsMuutrajoitteet, poistoCobjsOpiskelijamaararajoitteet)
+  );
+};
+
+export const createRajoitepoistoBEObjs = (
+  alimaaraykset,
+  rajoitepoistot,
+  kohteet,
+  maaraystyypit
+) => {
+  return length(alimaaraykset)
+    ? map(alimaarays => {
+        if (
+          find(
+            poisto =>
+              pathEq(
+                ["properties", "rajoiteId"],
+                path(["meta", "rajoiteId"], alimaarays),
+                poisto
+              ),
+            rajoitepoistot
+          )
+        ) {
+          return {
+            kohde: find(
+              propEq("tunniste", path(["kohde", "tunniste"], alimaarays)),
+              kohteet
+            ),
+            koodiarvo: alimaarays.koodiarvo,
+            koodisto: alimaarays.koodisto,
+            maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
+            tila: "POISTO",
+            maaraysUuid: alimaarays.uuid,
+            meta: {
+              changeObjects: [
+                {
+                  anchor: `rajoitepoistot.${alimaarays.uuid}`,
+                  properties: {
+                    rajoiteId: path(["meta", "rajoiteId"], alimaarays)
+                  }
+                }
+              ]
+            }
+          };
+        }
+        return null;
+      }, alimaaraykset).filter(Boolean)
+    : null;
 };
