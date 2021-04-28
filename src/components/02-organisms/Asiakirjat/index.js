@@ -478,6 +478,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
+<<<<<<< HEAD
         <div className="flex flex-col justify-end w-full py-8 mx-auto">
           <div className="flex-1 flex flex-col w-full mx-auto">
             <div className="mx-auto w-4/5 max-w-8xl">
@@ -515,6 +516,41 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   <p className="text-lg font-normal">{nimi}</p>
                 </div>
               </div>
+=======
+        <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
+          {/* Linkki, jolla pääsee Asiat-sivulle */}
+          <Link
+            className="cursor-pointer"
+            style={{ textDecoration: "underline" }}
+            onClick={() => {
+              history.push(
+                localizeRouteKey(
+                  intl.locale,
+                  AppRoute.AsianhallintaAvoimet,
+                  t,
+                  {
+                    koulutusmuoto: koulutusmuoto.kebabCase
+                  }
+                )
+              );
+            }}
+          >
+            <BackIcon
+              style={{
+                fontSize: 14,
+                marginBottom: "0.1rem",
+                marginRight: "0.4rem"
+              }}
+            />
+            {t(common.asiakirjatTakaisin)}
+          </Link>
+          <div className="flex-1 flex items-center pt-8 pb-2">
+            <div className="w-full flex flex-col">
+              <Typography component="h1" variant="h1">
+                {t(common["asiaTypes.lupaChange"])}
+              </Typography>
+              <p className="text-lg font-normal">{nimi}</p>
+>>>>>>> 3.0
             </div>
           </div>
         </div>
