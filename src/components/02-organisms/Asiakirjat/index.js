@@ -424,6 +424,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
         <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
+          {/* Linkki, jolla pääsee Asiat-sivulle */}
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
