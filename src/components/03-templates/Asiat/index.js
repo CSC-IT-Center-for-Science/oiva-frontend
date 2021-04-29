@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
+import KorjattavatAsiat from "../KorjattavatAsiat";
 import PaatetytAsiat from "../PaatetytAsiat";
 import { Route, useHistory, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
@@ -77,12 +78,26 @@ const Asiat = props => {
       koulutusmuoto: koulutusmuoto.kebabCase
     }
   );
+  const korjauksessaPath = localizeRouteKey(
+    locale,
+    AppRoute.AsianhallintaKorjattavat,
+    formatMessage,
+    {
+      koulutusmuoto: koulutusmuoto.kebabCase
+    }
+  );
+
+  console.info(paatetytPath, korjauksessaPath);
 
   const tabKey = startsWith(avoimetPath, location.pathname)
     ? avoimetPath
     : startsWith(paatetytPath, location.pathname)
     ? paatetytPath
+    : startsWith(korjauksessaPath, location.pathname)
+    ? korjauksessaPath
     : null;
+
+  console.info(tabKey);
 
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = formatMessage;
@@ -215,6 +230,12 @@ const Asiat = props => {
                     to={paatetytPath}
                     value={paatetytPath}
                   />
+                  <OivaTab
+                    label={t(common.asiatKorjauksessa)}
+                    aria-label={t(common.asiatKorjauksessa)}
+                    to={korjauksessaPath}
+                    value={korjauksessaPath}
+                  />
                 </OivaTabs>
               </div>
             </div>
@@ -236,6 +257,13 @@ const Asiat = props => {
                     path={AppRoute.AsianhallintaPaatetyt}
                     render={() => (
                       <PaatetytAsiat koulutusmuoto={koulutusmuoto} />
+                    )}
+                  />
+                  <Route
+                    authenticated={!!user}
+                    path={AppRoute.AsianhallintaKorjattavat}
+                    render={() => (
+                      <KorjattavatAsiat koulutusmuoto={koulutusmuoto} />
                     )}
                   />
                 </LocalizedSwitch>

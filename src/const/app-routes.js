@@ -3,7 +3,7 @@ export const AppRoute = {
   Asia: "routes.asia",
   Asianhallinta: "routes.asianhallinta",
   AsianhallintaAvoimet: "routes.asianhallintaAvoimet",
-  AsianhallintaAvoimetPath: "routes.asianhallintaAvoimetPath",
+  AsianhallintaKorjattavat: "routes.asianhallintaKorjattavat",
   AsianhallintaPaatetyt: "routes.asianhallintaPaatetyt",
   CasAuth: "routes.casAuth",
   CasLogOut: "routes.casLogOut",

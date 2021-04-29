@@ -553,7 +553,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                     variant="outlined"
                   />
                 )}
-                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
+                {(muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA ||
+                  muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
                   <SimpleButton
                     text={t(common["asiaTable.actions.paatetty"])}
                     buttonStyles={{ marginLeft: "1rem" }}
@@ -576,7 +577,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               </div>
               {/* Liitteitä voi lisätä vain, kun  */}
               {(muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA ||
-                muutospyynnonTila === FIELDS.TILA.VALUES.KORJATTAVANA) && (
+                muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
                 <Typography
                   component="h4"
                   variant="h4"
