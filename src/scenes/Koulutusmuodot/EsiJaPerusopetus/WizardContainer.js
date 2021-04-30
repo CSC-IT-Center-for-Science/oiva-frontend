@@ -72,6 +72,9 @@ const WizardContainer = ({
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
   });
+  const [rajoitepoistotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitepoistot"
+  });
 
   useEffect(() => {
     const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
@@ -116,6 +119,7 @@ const WizardContainer = ({
       const url = localizeRouteKey(locale, AppRoute.Hakemus, formatMessage, {
         id,
         koulutusmuoto: koulutusmuoto.kebabCase,
+        language: "fi",
         page: 1,
         uuid
       });
@@ -165,6 +169,7 @@ const WizardContainer = ({
             opetustehtavat: opetustehtavatCo,
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
+            rajoitepoistot: rajoitepoistotCO,
             rajoitteet: rajoitteetCO,
             toimintaalue: toimintaalueCO
           },
@@ -219,6 +224,7 @@ const WizardContainer = ({
       organisaatio,
       paatoksentiedotCo,
       rajoitteetCO,
+      rajoitepoistotCO,
       toimintaalueCO,
       uuid
     ]
@@ -233,6 +239,7 @@ const WizardContainer = ({
           koulutustyyppi={koulutusmuoto.koulutustyyppi}
           lupakohteet={lupakohteet}
           maaraykset={viimeisinLupa.maaraykset}
+          rajoitemaaraykset={viimeisinLupa.rajoitteet}
           valtakunnallinenMaarays={valtakunnallinenMaarays}
         />
       }

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -339,46 +339,42 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
+function getTableData(vstTyypit, locale, luvat) {
+  return sort(
+    descend(prop("yllapitaja")),
+    map(lupa => {
+      const oppilaitostyyppiKoodistosta = find(
+        tyyppi => tyyppi.koodiarvo === lupa.oppilaitostyyppi,
+        vstTyypit
+      );
+      const localeUpper = toUpper(locale);
+      return {
+        yllapitaja: lupa.jarjestaja
+          ? lupa.jarjestaja.nimi[locale] ||
+          head(values(lupa.jarjestaja.nimi))
+          : "",
+        oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, locale),
+        oppilaitostyyppi: oppilaitostyyppiKoodistosta
+          ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi
+          : "",
+        toiminnot: ["info"],
+        ytunnus: lupa.jarjestajaYtunnus,
+        lupaUuid: lupa.uuid
+      };
+    }, luvat)
+  );
+}
+
 function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   const intl = useIntl();
 
-  const byYllapitaja = descend(prop("yllapitaja"));
-
-  const tableData = useMemo(
-    () =>
-      sort(
-        byYllapitaja,
-        map(lupa => {
-          const oppilaitostyyppiKoodistosta = find(
-            tyyppi => tyyppi.koodiarvo === lupa.oppilaitostyyppi,
-            vstTyypit
-          );
-          const localeUpper = toUpper(intl.locale);
-          return {
-            yllapitaja: lupa.jarjestaja
-              ? lupa.jarjestaja.nimi[intl.locale] ||
-                head(values(lupa.jarjestaja.nimi))
-              : "",
-            oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, intl.locale),
-            oppilaitostyyppi: oppilaitostyyppiKoodistosta
-              ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi
-              : "",
-            toiminnot: ["info"],
-            ytunnus: lupa.jarjestajaYtunnus,
-            lupaUuid: lupa.uuid
-          };
-        }, luvat)
-      ),
-    [byYllapitaja, intl.locale, luvat, vstTyypit]
+  const [data, setData] = useState(
+    getTableData(vstTyypit, intl.locale, luvat)
   );
-
-  const [data, setData] = useState(tableData);
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
   const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
     ""
   );
-
-  const initialData = useRef(tableData);
 
   useEffect(() => {
     setData(
@@ -387,10 +383,10 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
           vstOppilaitostyyppiFilter
             ? vstOppilaitostyyppiFilter === item.oppilaitostyyppi
             : true,
-        initialData.current
+        getTableData(vstTyypit, intl.locale, luvat)
       )
     );
-  }, [vstOppilaitostyyppiFilter]);
+  }, [vstOppilaitostyyppiFilter, vstTyypit, intl.locale, luvat]);
 
   useEffect(() => {
     const vstOptions = [];
@@ -405,6 +401,7 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
       });
     });
     setvstTypeOptions(vstOptions);
+    setVstOppilaitostyyppiFilter("");
   }, [vstTyypit, intl]);
 
   const onOppilaitostyyppiSelectionChange = (_, { selectedOption }) => {

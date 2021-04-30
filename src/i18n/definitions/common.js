@@ -1292,6 +1292,10 @@ export default defineMessages({
     id: "common.onVoimassa",
     defaultMessage: "Järjestämislupa on voimassa {loppupvm} asti"
   },
+  mainNavigation: {
+    id: "common.mainNavigation",
+    defaultMessage: "Päänavigaatio"
+  },
   valitseLuvanKieli: {
     id: "common.valitseLuvanKieli",
     defaultMessage: "Valitse luvan kieli"

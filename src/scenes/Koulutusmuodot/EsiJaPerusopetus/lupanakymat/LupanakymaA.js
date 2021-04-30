@@ -16,12 +16,14 @@ import {
   find,
   flatten,
   groupBy,
-  isEmpty,
+  includes,
   isNil,
+  keys,
   last,
   length,
   map,
   mapObjIndexed,
+  mergeAll,
   nth,
   path,
   pathEq,
@@ -103,9 +105,14 @@ const LupanakymaA = React.memo(
     koulutustyyppi,
     lupakohteet,
     maaraykset,
-    valtakunnallinenMaarays
+    valtakunnallinenMaarays,
+    rajoitemaaraykset
   }) => {
     const intl = useIntl();
+
+    const [rajoitepoistot] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "rajoitepoistot"
+    });
 
     const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
 
@@ -122,7 +129,8 @@ const LupanakymaA = React.memo(
       )
     );
 
-    // TODO: Näytetään rajoitteet oikein, jos on sekä määräyksiä että muutosobjekteja.
+    // TODO: Näytetään rajoitemääräykset siten että ei käytetä parent-määräyksen sisällä olevia changeObjekteja.
+    // TODO: Käytetään niiden sijaan rajoitemääräyksiä
     const rajoitteetFromMaarayksetByRajoiteId = map(
       cObjs => {
         return { changeObjects: cObjs };
@@ -136,7 +144,6 @@ const LupanakymaA = React.memo(
               cObj => {
                 return path(["meta", "changeObjects"], cObj);
               },
-              // maaraykset || []
               filter(
                 maarays => length(maarays.meta.changeObjects),
                 maaraykset || []
@@ -173,12 +180,25 @@ const LupanakymaA = React.memo(
     );
 
     // Rajoitteet
-    // TODO: Toistaiseksi näytetään määräyksiltä saadut rajoitteet, jos niitä on. Muutoin
-    // TODO: näytetään muutosobjekteilta saadut rajoitteet. Tämä pitää korjata kun lupamuutoksia
-    // TODO: aletaan tekemään esi- ja perusopetukselle.
-    const rajoitteet = !isEmpty(rajoitteetFromMaarayksetByRajoiteId)
-      ? rajoitteetFromMaarayksetByRajoiteId
-      : rajoitteetByRajoiteId;
+    const rajoitepoistoIds = map(
+      rajoitepoisto => path(["properties", "rajoiteId"], rajoitepoisto),
+      rajoitepoistot
+    );
+
+    // Ei oteta mukaan poistettuja rajoitemääräyksiä
+    const rajoiteMaarayksetPoistotFiltered = mergeAll(
+      map(key => {
+        return includes(key, rajoitepoistoIds)
+          ? null
+          : { [key]: rajoitteetFromMaarayksetByRajoiteId[key] };
+      }, keys(rajoitteetFromMaarayksetByRajoiteId)).filter(Boolean)
+    );
+
+    const rajoitteet = Object.assign(
+      {},
+      rajoiteMaarayksetPoistotFiltered,
+      rajoitteetByRajoiteId
+    );
 
     const opetustehtavatRajoitteet = getRajoitteetBySection(
       "opetustehtavat",
@@ -225,6 +245,14 @@ const LupanakymaA = React.memo(
         )}
 
         <Rajoitteet
+          maaraykset={filter(
+            maarays =>
+              maarays.aliMaaraykset ||
+              (maarays.koodisto === "kujalisamaareet" &&
+                path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE"),
+            maaraykset || []
+          )}
+          rajoitemaaraykset={rajoitemaaraykset}
           isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           kohdevaihtoehdot={rajoitteidenKohdevaihtoehdot}
