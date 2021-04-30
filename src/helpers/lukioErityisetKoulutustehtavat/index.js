@@ -504,7 +504,8 @@ export const defineBackendChangeObjects = async (
         checkboxBEchangeObject,
         uncheckedCheckBoxPoistot,
         onlyValtakunnallinenMuutosBeCobjs,
-        alimaaraykset
+        alimaaraykset,
+        maarayksiaVastenLuodutRajoitteet
       ];
     }
     return [
