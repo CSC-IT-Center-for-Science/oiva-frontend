@@ -17,7 +17,6 @@ export function rajoitteet(
   changeObjects,
   { onAddRestriction, onModifyRestriction, onRemoveRestriction }
 ) {
-  // data.restrictions = luvalta tulevat rajoitteet
   const changeObjectsByRajoiteId = groupBy(
     compose(last, split("_"), nth(0), split("."), prop("anchor")),
     changeObjects
@@ -72,8 +71,8 @@ export function rajoitteet(
               locale,
               onModifyRestriction,
               onRemoveRestriction,
-              rajoitteet: rajoitteetGrouped,
-              rajoiteMaaraykset: data.restrictions
+              rajoitteet: rajoitteetGrouped, // rajoite muutosobjektit
+              rajoitemaaraykset: data.rajoitemaaraykset // määräykset joihin liittyy rajoitteita. Rajoitteet groupattuna rajoiteId:n mukaan aliMaaraykset propertyyn
             }
           }
         ]

@@ -16,11 +16,14 @@ import {
   find,
   flatten,
   groupBy,
+  includes,
   isNil,
+  keys,
   last,
   length,
   map,
   mapObjIndexed,
+  mergeAll,
   nth,
   path,
   pathEq,
@@ -34,6 +37,7 @@ import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
 import AsianumeroYmsKentat from "../lomakeosiot/0-AsianumeroYmsKentat";
 import Rajoitteet from "components/02-organisms/Rajoitteet/index";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../../stores/muutokset";
 
 // Kohdevaihtoehtoja käytetään rajoitteita tehtäessä.
 // Kohteet vaihtelevat koulutusmuodoittain.
@@ -101,14 +105,18 @@ const LupanakymaA = React.memo(
     koulutustyyppi,
     lupakohteet,
     maaraykset,
-    valtakunnallinenMaarays
+    valtakunnallinenMaarays,
+    rajoitemaaraykset
   }) => {
     const intl = useIntl();
 
+    const [rajoitepoistot] = useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "rajoitepoistot"
+    });
+
     const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
 
-    // TODO: Näytetään rajoitteet oikein, jos on sekä määräyksiä että muutosobjekteja.
-    // TODO: Näytetään rajoitteet oikein, jos sama asia on usean rajoitteen kohteena?
+    // TODO: Näytetään rajoitemääräykset siten että ei käytetä parent määräyksen cObjeja
     const rajoitteetFromMaarayksetByRajoiteId = map(
       cObjs => {
         return { changeObjects: cObjs };
@@ -154,9 +162,23 @@ const LupanakymaA = React.memo(
     );
 
     // Rajoitteet
+    const rajoitepoistoIds = map(
+      rajoitepoisto => path(["properties", "rajoiteId"], rajoitepoisto),
+      rajoitepoistot
+    );
+
+    // Ei oteta mukaan poistettuja rajoitemääräyksiä
+    const rajoiteMaarayksetPoistotFiltered = mergeAll(
+      map(key => {
+        return includes(key, rajoitepoistoIds)
+          ? null
+          : { [key]: rajoitteetFromMaarayksetByRajoiteId[key] };
+      }, keys(rajoitteetFromMaarayksetByRajoiteId)).filter(Boolean)
+    );
+
     const rajoitteet = Object.assign(
       {},
-      rajoitteetFromMaarayksetByRajoiteId,
+      rajoiteMaarayksetPoistotFiltered,
       rajoitteetByRajoiteId
     );
 
@@ -208,6 +230,7 @@ const LupanakymaA = React.memo(
                 path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE"),
             maaraykset || []
           )}
+          rajoitemaaraykset={rajoitemaaraykset}
           isPreviewModeOn={isPreviewModeOn}
           isRestrictionsModeOn={isRestrictionsModeOn}
           kohdevaihtoehdot={rajoitteidenKohdevaihtoehdot}

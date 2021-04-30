@@ -2,10 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import {
   addIndex,
+  find,
   flatten,
   isEmpty,
   values,
   path,
+  pathEq,
   split,
   last,
   replace
@@ -21,6 +23,7 @@ import { useIntl } from "react-intl";
 import rajoitteetMessages from "i18n/definitions/rajoitteet";
 import { map } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
+import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../stores/muutokset";
 
 const koodistoNaytettavaArvoMap = koodisto => {
   switch (koodisto) {
@@ -40,33 +43,55 @@ const RajoitteetList = ({
   locale,
   onRemoveRestriction,
   rajoitteet,
-  rajoiteMaaraykset = []
+  rajoitemaaraykset
 }) => {
   const { formatMessage } = useIntl();
+  const [rajoitepoistot] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitepoistot"
+  });
 
-  const rajoiteMaarayksetListamuodossa = map(rajoiteMaarays => {
-    const naytettavaArvo = koodistoNaytettavaArvoMap(rajoiteMaarays.koodisto);
+  const rajoitemaarayksetListamuodossa = map(maarays => {
+    const naytettavaArvo = koodistoNaytettavaArvoMap(maarays.koodisto);
 
-    const rajoiteListamuodossa = getRajoitteetFromMaarays(
-      rajoiteMaarays.aliMaaraykset,
-      locale,
-      formatMessage(rajoitteetMessages.ajalla),
-      naytettavaArvo ? naytettavaArvo : "nimi",
-      true,
-      rajoiteMaarays
-    );
+    return map(key => {
+      /** Jos rajoitepoistoista löytyy rajoitteen id, ei näytetä sitä listalla */
+      if (
+        find(
+          pathEq(
+            ["properties", "rajoiteId"],
+            path(["aliMaaraykset", key, "0", "meta", "rajoiteId"], maarays)
+          ),
+          rajoitepoistot
+        )
+      ) {
+        return null;
+      }
 
-    /**  Poistetaan list-disc luokat ensimmäisestä ul ja li elementistä.
-     *   Lomakkeen rajoitelaatikossa ei haluta bullettia ensimmäiselle riville **/
-    return {
-      rajoiteId: rajoiteMaarays.uuid,
-      htmlContent: replace(
-        '<ul class="list-disc"><li class="list-disc">',
-        "<ul><li>",
-        rajoiteListamuodossa
-      )
-    };
-  }, rajoiteMaaraykset);
+      const rajoiteListamuodossa = getRajoitteetFromMaarays(
+        maarays.aliMaaraykset[key],
+        locale,
+        formatMessage(rajoitteetMessages.ajalla),
+        naytettavaArvo ? naytettavaArvo : "nimi",
+        true,
+        maarays
+      );
+
+      /**  Poistetaan list-disc luokat ensimmäisestä ul ja li elementistä.
+       *   Lomakkeen rajoitelaatikossa ei haluta bullettia ensimmäiselle riville **/
+      return {
+        isMaarays: true,
+        rajoiteId: path(
+          ["aliMaaraykset", key, "0", "meta", "rajoiteId"],
+          maarays
+        ),
+        htmlContent: replace(
+          '<ul class="list-disc"><li class="list-disc">',
+          "<ul><li>",
+          rajoiteListamuodossa
+        )
+      };
+    }, Object.keys(maarays.aliMaaraykset)).filter(Boolean);
+  }, rajoitemaaraykset || []).filter(Boolean);
 
   const rajoiteChangeObjsListamuodossa = map(rajoite => {
     const rajoiteId = last(
@@ -87,12 +112,12 @@ const RajoitteetList = ({
     };
   }, values(rajoitteet));
 
-  const rajoiteMaarayksetAndCobjsListamuodossa = flatten([
-    rajoiteMaarayksetListamuodossa,
+  const rajoitemaarayksetAndCobjsListamuodossa = flatten([
+    rajoitemaarayksetListamuodossa,
     rajoiteChangeObjsListamuodossa
   ]);
 
-  if (isEmpty(rajoiteMaarayksetAndCobjsListamuodossa)) {
+  if (isEmpty(rajoitemaarayksetAndCobjsListamuodossa)) {
     return (
       <p className="mt-6">{formatMessage(rajoitteetMessages.eiRajoitteita)} </p>
     );
@@ -119,7 +144,9 @@ const RajoitteetList = ({
                       padding: 0
                     }}
                     text={formatMessage(rajoitteetMessages.poistaRajoite)}
-                    onClick={() => onRemoveRestriction(rajoite.rajoiteId)}
+                    onClick={() =>
+                      onRemoveRestriction(rajoite.rajoiteId, rajoite.isMaarays)
+                    }
                     icon={"Delete"}
                     iconStyles={{ fontSize: "24px" }}
                     iconContainerStyles={{ marginRight: "0.5rem" }}
@@ -128,7 +155,7 @@ const RajoitteetList = ({
                 </div>
               </div>
             );
-          }, rajoiteMaarayksetAndCobjsListamuodossa)
+          }, rajoitemaarayksetAndCobjsListamuodossa)
         )}
       </div>
     );
