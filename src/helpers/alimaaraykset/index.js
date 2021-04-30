@@ -12,7 +12,6 @@ import {
   omit,
   filter
 } from "ramda";
-import React from "react";
 
 export const initializeRajoitteet = (maaraykset = []) => {
   /** Groupataan alimääräykset rajoiteId:n mukaan ja asetetaan grouppauksen tulos aliMaaraykset propertyyn */
