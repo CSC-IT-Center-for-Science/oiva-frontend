@@ -27,19 +27,9 @@ import { useMuutospyynto } from "stores/muutospyynto";
 import PropTypes from "prop-types";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/app-routes";
+import { FIELDS } from "locales/uusiHakemusFormConstants";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
-
-const DialogTitleWithStyles = withStyles(() => ({
-  root: {
-    backgroundColor: "#c8dcc3",
-    paddingBottom: "1rem",
-    paddingTop: "1rem",
-    width: "100%"
-  }
-}))(props => {
-  return <DialogTitle {...props}>{props.children}</DialogTitle>;
-});
 
 const DialogContentWithStyles = withStyles(() => ({
   root: {
@@ -71,6 +61,7 @@ export const Wizard = ({
   page3,
   page4,
   steps,
+  tila,
   title,
   urlOnClose
 }) => {
@@ -93,6 +84,19 @@ export const Wizard = ({
   const [, muutospyyntoActions] = useMuutospyynto();
 
   const [scrollMemory, setScrollMemory] = useState();
+
+  const DialogTitleWithStyles = withStyles(() => ({
+    root: {
+      backgroundColor:
+        tila === FIELDS.TILA.VALUES.KORJAUKSESSA ? "#B66011" : "#c8dcc3",
+      color: tila === FIELDS.TILA.VALUES.KORJAUKSESSA ? "#ffffff" : "#000000",
+      paddingBottom: "1rem",
+      paddingTop: "1rem",
+      width: "100%"
+    }
+  }))(props => {
+    return <DialogTitle {...props}>{props.children}</DialogTitle>;
+  });
 
   const getScrollElementAndPosition = useMemo(() => {
     const rootElement = document.querySelector("div.MuiDialogContent-root");
@@ -199,6 +203,11 @@ export const Wizard = ({
               <div className="flex-1 text-lg font-normal">{title}</div>
               <div>
                 <SimpleButton
+                  buttonStyles={
+                    tila === FIELDS.TILA.VALUES.KORJAUKSESSA
+                      ? { color: "#ffffff" }
+                      : {}
+                  }
                   text={`${intl.formatMessage(wizard.getOut)} X`}
                   onClick={leaveOrOpenCancelModal}
                   variant={"text"}
