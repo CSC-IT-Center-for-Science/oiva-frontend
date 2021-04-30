@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { PropTypes } from "prop-types";
-import KorjattavatAsiat from "../KorjattavatAsiat";
+import KorjattavatAsiat from "../KorjattavatAsiat/index";
 import PaatetytAsiat from "../PaatetytAsiat";
 import { Route, useHistory, useLocation } from "react-router-dom";
 import { useIntl } from "react-intl";
@@ -19,8 +19,10 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
 import AvoimetAsiat from "../AvoimetAsiat/index";
-import { prop, startsWith } from "ramda";
+import { includes, isEmpty, path, prop, startsWith } from "ramda";
 import Asiakirjat from "components/02-organisms/Asiakirjat/index";
+import { useMuutospyynnot } from "stores/muutospyynnot";
+import Loading from "modules/Loading";
 
 const OivaTab = withStyles(theme => ({
   root: {
@@ -61,6 +63,24 @@ const Asiat = props => {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
   const location = useLocation();
+  const [muutospyynnot, muutospyynnotActions] = useMuutospyynnot();
+
+  useEffect(() => {
+    const isForced = includes("force=", location.search);
+    let abortController = muutospyynnotActions.loadByStates(
+      ["KORJAUKSESSA"],
+      ["korjauksessa"],
+      false,
+      isForced,
+      koulutusmuoto.koulutustyyppi
+    );
+
+    return function cancel() {
+      if (abortController) {
+        abortController.abort();
+      }
+    };
+  }, [koulutusmuoto.koulutustyyppi, location.search, muutospyynnotActions]);
 
   const avoimetPath = localizeRouteKey(
     locale,
@@ -87,8 +107,6 @@ const Asiat = props => {
     }
   );
 
-  console.info(paatetytPath, korjauksessaPath);
-
   const tabKey = startsWith(avoimetPath, location.pathname)
     ? avoimetPath
     : startsWith(paatetytPath, location.pathname)
@@ -96,8 +114,6 @@ const Asiat = props => {
     : startsWith(korjauksessaPath, location.pathname)
     ? korjauksessaPath
     : null;
-
-  console.info(tabKey);
 
   const [isEsidialogVisible, setIsEsidialogVisible] = useState(false);
   const t = formatMessage;
@@ -109,56 +125,37 @@ const Asiat = props => {
     { koulutusmuoto: koulutusmuoto.kebabCase }
   );
 
-  return (
-    <React.Fragment>
-      <BreadcrumbsItem to={asianhallintaUrl}>
-        {formatMessage(commonMessages.asianhallinta)}
-      </BreadcrumbsItem>
+  const korjauksessaOlevatAsiat = prop("korjauksessa", muutospyynnot);
 
-      <Helmet htmlAttributes={{ lang: locale }}>
-        <title>{`Oiva | ${t(common.asiat)}`}</title>
-      </Helmet>
+  if (prop("fetchedAt", korjauksessaOlevatAsiat)) {
+    return (
+      <React.Fragment>
+        <BreadcrumbsItem to={asianhallintaUrl}>
+          {formatMessage(commonMessages.asianhallinta)}
+        </BreadcrumbsItem>
 
-      {isEsidialogVisible && (
-        <BaseData
-          keys={esidialoginHakuavaimet}
-          locale={locale}
-          koulutustyyppi={koulutusmuoto.koulutustyyppi}
-          render={_props => {
-            // Voi olla, että esidialogi on annettu koulutusmuodon
-            // tiedoissa (src/scenes/Koulutusmuodot/[koulutusmuoto]/index),
-            // jolloin käytetään annettua esidialogia. Muutoin käytetään
-            // koulutusmuodoille yhteistä esidialogia.
-            return ParametrinaAnnettuEsidialog ? (
-              <ParametrinaAnnettuEsidialog
-                isVisible={isEsidialogVisible}
-                koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                onClose={() => setIsEsidialogVisible(false)}
-                organisations={_props.organisaatiot}
-                onSelect={(selectedItem, selectedLanguage) => {
-                  const url = localizeRouteKey(
-                    locale,
-                    AppRoute.UusiHakemus,
-                    formatMessage,
-                    {
-                      id: selectedItem.value,
-                      koulutusmuoto: koulutusmuoto.kebabCase,
-                      page: 1,
-                      language: prop("value", selectedLanguage)
-                    }
-                  );
-                  history.push(url);
-                }}
-              ></ParametrinaAnnettuEsidialog>
-            ) : (
-              <UusiAsiaEsidialog
-                isVisible={isEsidialogVisible}
-                koulutustyyppi={koulutusmuoto.koulutustyyppi}
-                onClose={() => setIsEsidialogVisible(false)}
-                organisations={_props.organisaatiot}
-                onSelect={selectedItem =>
-                  history.push(
-                    localizeRouteKey(
+        <Helmet htmlAttributes={{ lang: locale }}>
+          <title>{`Oiva | ${t(common.asiat)}`}</title>
+        </Helmet>
+
+        {isEsidialogVisible && (
+          <BaseData
+            keys={esidialoginHakuavaimet}
+            locale={locale}
+            koulutustyyppi={koulutusmuoto.koulutustyyppi}
+            render={_props => {
+              // Voi olla, että esidialogi on annettu koulutusmuodon
+              // tiedoissa (src/scenes/Koulutusmuodot/[koulutusmuoto]/index),
+              // jolloin käytetään annettua esidialogia. Muutoin käytetään
+              // koulutusmuodoille yhteistä esidialogia.
+              return ParametrinaAnnettuEsidialog ? (
+                <ParametrinaAnnettuEsidialog
+                  isVisible={isEsidialogVisible}
+                  koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                  onClose={() => setIsEsidialogVisible(false)}
+                  organisations={_props.organisaatiot}
+                  onSelect={(selectedItem, selectedLanguage) => {
+                    const url = localizeRouteKey(
                       locale,
                       AppRoute.UusiHakemus,
                       formatMessage,
@@ -166,114 +163,150 @@ const Asiat = props => {
                         id: selectedItem.value,
                         koulutusmuoto: koulutusmuoto.kebabCase,
                         page: 1,
-                        language: "fi"
+                        language: prop("value", selectedLanguage)
                       }
+                    );
+                    history.push(url);
+                  }}
+                ></ParametrinaAnnettuEsidialog>
+              ) : (
+                <UusiAsiaEsidialog
+                  isVisible={isEsidialogVisible}
+                  koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                  onClose={() => setIsEsidialogVisible(false)}
+                  organisations={_props.organisaatiot}
+                  onSelect={selectedItem =>
+                    history.push(
+                      localizeRouteKey(
+                        locale,
+                        AppRoute.UusiHakemus,
+                        formatMessage,
+                        {
+                          id: selectedItem.value,
+                          koulutusmuoto: koulutusmuoto.kebabCase,
+                          page: 1,
+                          language: "fi"
+                        }
+                      )
                     )
-                  )
-                }
-              ></UusiAsiaEsidialog>
-            );
-          }}
-        />
-      )}
-
-      <LocalizedSwitch>
-        {!tabKey && (
-          <Route
-            path={AppRoute.Asia}
-            render={() => <Asiakirjat koulutusmuoto={koulutusmuoto} />}
+                  }
+                ></UusiAsiaEsidialog>
+              );
+            }}
           />
         )}
-        <Route path="*">
-          <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
-            <div className="flex items-center">
-              <div className="flex-1">
-                <Typography component="h1" variant="h1">
-                  {t(common.asianhallinta)}
-                </Typography>
-                <div className="w-full flex flex-row justify-between">
-                  <Typography
-                    component="h2"
-                    variant="h2"
-                    style={{ fontSize: "1.25rem", padding: 0, fontWeight: 400 }}
-                  >
-                    {koulutusmuoto.paasivunOtsikko}
-                  </Typography>
-                  <div>
-                    <SimpleButton
-                      aria-label={t(common.luoUusiAsia)}
-                      color="primary"
-                      variant="contained"
-                      text={t(common.luoUusiAsia)}
-                      size="large"
-                      onClick={() => setIsEsidialogVisible(true)}
-                    />
-                  </div>
-                </div>
-                <OivaTabs
-                  value={tabKey}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  onChange={(e, val) => {
-                    history.push(val);
-                  }}
-                >
-                  <OivaTab
-                    label={t(common.asiatOpen)}
-                    aria-label={t(common.asiatReady)}
-                    to={avoimetPath}
-                    value={avoimetPath}
-                  />
-                  <OivaTab
-                    label={t(common.asiatReady)}
-                    aria-label={t(common.asiatReady)}
-                    to={paatetytPath}
-                    value={paatetytPath}
-                  />
-                  <OivaTab
-                    label={t(common.asiatKorjauksessa)}
-                    aria-label={t(common.asiatKorjauksessa)}
-                    to={korjauksessaPath}
-                    value={korjauksessaPath}
-                  />
-                </OivaTabs>
-              </div>
-            </div>
-          </div>
 
-          <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
-            <div className="flex mx-auto w-4/5 max-w-8xl py-12">
-              <div className="flex-1 bg-white">
-                <LocalizedSwitch>
-                  <Route
-                    authenticated={!!user}
-                    path={AppRoute.AsianhallintaAvoimet}
-                    render={() => (
-                      <AvoimetAsiat koulutusmuoto={koulutusmuoto} />
+        <LocalizedSwitch>
+          {!tabKey && (
+            <Route
+              path={AppRoute.Asia}
+              render={() => <Asiakirjat koulutusmuoto={koulutusmuoto} />}
+            />
+          )}
+          <Route path="*">
+            <div className="flex flex-col justify-end mx-auto w-4/5 max-w-8xl mt-12">
+              <div className="flex items-center">
+                <div className="flex-1">
+                  <Typography component="h1" variant="h1">
+                    {t(common.asianhallinta)}
+                  </Typography>
+                  <div className="w-full flex flex-row justify-between">
+                    <Typography
+                      component="h2"
+                      variant="h2"
+                      style={{
+                        fontSize: "1.25rem",
+                        padding: 0,
+                        fontWeight: 400
+                      }}
+                    >
+                      {koulutusmuoto.paasivunOtsikko}
+                    </Typography>
+                    <div>
+                      <SimpleButton
+                        aria-label={t(common.luoUusiAsia)}
+                        color="primary"
+                        variant="contained"
+                        text={t(common.luoUusiAsia)}
+                        size="large"
+                        onClick={() => setIsEsidialogVisible(true)}
+                      />
+                    </div>
+                  </div>
+                  <OivaTabs
+                    value={tabKey}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    onChange={(e, val) => {
+                      history.push(val);
+                    }}
+                  >
+                    <OivaTab
+                      label={t(common.asiatOpen)}
+                      aria-label={t(common.asiatReady)}
+                      to={avoimetPath}
+                      value={avoimetPath}
+                    />
+                    <OivaTab
+                      label={t(common.asiatReady)}
+                      aria-label={t(common.asiatReady)}
+                      to={paatetytPath}
+                      value={paatetytPath}
+                    />
+                    {!isEmpty(
+                      path(["korjauksessa", "data"], muutospyynnot)
+                    ) && (
+                      <OivaTab
+                        label={t(common.asiatKorjauksessa)}
+                        aria-label={t(common.asiatKorjauksessa)}
+                        to={korjauksessaPath}
+                        value={korjauksessaPath}
+                      />
                     )}
-                  />
-                  <Route
-                    authenticated={!!user}
-                    path={AppRoute.AsianhallintaPaatetyt}
-                    render={() => (
-                      <PaatetytAsiat koulutusmuoto={koulutusmuoto} />
-                    )}
-                  />
-                  <Route
-                    authenticated={!!user}
-                    path={AppRoute.AsianhallintaKorjattavat}
-                    render={() => (
-                      <KorjattavatAsiat koulutusmuoto={koulutusmuoto} />
-                    )}
-                  />
-                </LocalizedSwitch>
+                  </OivaTabs>
+                </div>
               </div>
             </div>
-          </div>
-        </Route>
-      </LocalizedSwitch>
-    </React.Fragment>
-  );
+
+            <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+              <div className="flex mx-auto w-4/5 max-w-8xl py-12">
+                <div className="flex-1 bg-white">
+                  <LocalizedSwitch>
+                    <Route
+                      authenticated={!!user}
+                      path={AppRoute.AsianhallintaAvoimet}
+                      render={() => (
+                        <AvoimetAsiat koulutusmuoto={koulutusmuoto} />
+                      )}
+                    />
+                    <Route
+                      authenticated={!!user}
+                      path={AppRoute.AsianhallintaPaatetyt}
+                      render={() => (
+                        <PaatetytAsiat koulutusmuoto={koulutusmuoto} />
+                      )}
+                    />
+                    <Route
+                      authenticated={!!user}
+                      path={AppRoute.AsianhallintaKorjattavat}
+                      render={() => (
+                        <KorjattavatAsiat
+                          korjauksessaOlevatAsiat={korjauksessaOlevatAsiat}
+                          koulutusmuoto={koulutusmuoto}
+                        />
+                      )}
+                    />
+                  </LocalizedSwitch>
+                </div>
+              </div>
+            </div>
+          </Route>
+        </LocalizedSwitch>
+      </React.Fragment>
+    );
+  } else {
+    return <Loading />;
+  }
 };
 
 Asiat.propTypes = {

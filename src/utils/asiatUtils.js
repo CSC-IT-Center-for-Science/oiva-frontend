@@ -5,7 +5,7 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { addIndex, find, map, path, prop, propEq } from "ramda";
 
-const labelColorClassesByTila = {
+export const labelColorClassesByTila = {
   VALMISTELUSSA: "bg-blue-100",
   ESITTELYSSA: "bg-yellow-100",
   PAATETTY: "bg-gray-200",

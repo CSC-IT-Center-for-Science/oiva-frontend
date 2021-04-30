@@ -20,7 +20,6 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
-import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
 import error from "i18n/definitions/error";
 import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
@@ -31,6 +30,7 @@ import moment from "moment";
 import languages from "i18n/definitions/languages";
 import SimpleButton from "components/00-atoms/SimpleButton/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
+import { labelColorClassesByTila } from "../../../utils/asiatUtils";
 import {
   addIndex,
   append,
@@ -68,7 +68,8 @@ const states = [
   "TAYDENNETTAVA",
   "PAATETTY",
   "PASSIVOITU",
-  "ESITTELYSSA"
+  "ESITTELYSSA",
+  "KORJAUKSESSA"
 ];
 
 const Asiakirjat = ({ koulutusmuoto }) => {
@@ -176,16 +177,14 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   };
 
   const baseRow = {
-    tila: path(["data", "tila"], muutospyynto),
+    tila: muutospyynnonTila,
     localizedTila:
-      muutospyynto &&
-      muutospyynto.data &&
-      states.includes(muutospyynto.data.tila)
-        ? intl.formatMessage(
-            common[
-              asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
-            ]
-          )
+      muutospyynto && muutospyynto.data && states.includes(muutospyynnonTila)
+        ? `<span class="px-3 py-2 rounded-sm ${prop(
+            muutospyynto.data.tila,
+            labelColorClassesByTila
+          )}">${t(common[`asiaStates.esittelija.${muutospyynto.data.tila}`]) ||
+            ""}</span>`
         : ""
   };
 
@@ -557,7 +556,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
                   <SimpleButton
                     text={t(common["asiaTable.actions.paatetty"])}
-                    buttonStyles={{ marginLeft: "1rem" }}
+                    buttonStyles={
+                      muutospyynnonTila !== FIELDS.TILA.VALUES.KORJAUKSESSA
+                        ? { marginLeft: "1rem" }
+                        : {}
+                    }
                     onClick={onPaatettyActionClicked}
                   />
                 )}

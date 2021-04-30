@@ -37,7 +37,8 @@ export async function createObjectToSave(
   kohteet,
   maaraystyypit,
   language, // Luvan kieli
-  alkupera = "KJ"
+  alkupera = "KJ",
+  muutospyynnonTila
 ) {
   const allAttachmentsRaw = [];
   const koulutustyyppi = koulutustyypitMap.LUKIO;
@@ -252,7 +253,9 @@ export async function createObjectToSave(
     luontipvm: moment().format("YYYY-MM-DD"),
     lupaUuid: lupa.uuid,
     // uuid: lupa.asiatyyppi.uuid,
-    tila: alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS",
+    tila:
+      muutospyynnonTila ||
+      (alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS"),
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: null,

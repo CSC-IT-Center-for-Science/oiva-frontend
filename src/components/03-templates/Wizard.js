@@ -316,7 +316,7 @@ export const Wizard = ({
               return onAction("preview");
             }}
             onSave={() => {
-              return onAction("save");
+              return onAction("save", false, tila);
             }}
           />
         </DialogContentWithStyles>
@@ -335,7 +335,7 @@ export const Wizard = ({
           )
         }}
         handleOk={async () => {
-          await onAction("save", true);
+          await onAction("save", false, tila);
           closeWizard();
         }}
         handleCancel={handleCancel}

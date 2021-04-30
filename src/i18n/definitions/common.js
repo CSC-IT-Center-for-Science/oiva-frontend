@@ -1305,6 +1305,10 @@ export default defineMessages({
     id: "common.eiAvoimiaAsioita",
     defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
   },
+  eiKorjattaviaAsioita: {
+    id: "common.eiKorjattaviaAsioita",
+    defineMessage: "Taulukossa ei ole yhtään korjauksessa olevaa asiaa"
+  },
   sulje: {
     id: "common.sulje",
     defaultMessage: "Sulje"
