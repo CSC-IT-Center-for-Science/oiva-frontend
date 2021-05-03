@@ -6,15 +6,26 @@ import langMessages from "i18n/definitions/languages";
 import { assoc, head, includes, or, prop, tail, toPairs } from "ramda";
 import common from "i18n/definitions/common";
 import { AppRoute } from "const/index";
-import { localizeRoutePath } from "modules/i18n/components/LocalizedSwitch";
+import { localizeRoutePath } from "modules/i18n/components/LocalizedSwitchUtils";
 import { Breadcrumbs } from "react-breadcrumbs-dynamic";
 import { NavLink, useLocation } from "react-router-dom";
 import { COLORS } from "modules/styles";
 import { localizeRouteKey } from "utils/common";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 import Footer from "components/03-templates/Footer";
+import { LocalesByLang, Organisation, OrganisationName, User } from "types";
 
-export const App = ({ localesByLang, children, organisation, user }) => {
+export const App = ({
+  localesByLang,
+  children,
+  organisation,
+  user
+}: {
+  children: object;
+  localesByLang: LocalesByLang;
+  organisation: Organisation;
+  user: User;
+}) => {
   const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
 
@@ -31,7 +42,9 @@ export const App = ({ localesByLang, children, organisation, user }) => {
     let result = {};
 
     if (user && user.oid && organisation) {
-      const orgNimi = user && organisation ? prop("nimi", organisation) : "";
+      const orgNimi: OrganisationName =
+        user && organisation ? prop("nimi", organisation) : { fi: "s" };
+      console.info(organisation, orgNimi);
       const isEsittelija = user
         ? includes("OIVA_APP_ESITTELIJA", user.roles)
         : false;
@@ -65,7 +78,7 @@ export const App = ({ localesByLang, children, organisation, user }) => {
     pathname !== `${localizeRouteKey(locale, AppRoute.Home, formatMessage)}`;
 
   const getHeader = useCallback(
-    template => {
+    (template?) => {
       const organisationLink = getOrganisationLink();
       return (
         <Header
@@ -100,12 +113,12 @@ export const App = ({ localesByLang, children, organisation, user }) => {
       <main className="flex-1 flex flex-col">
         {isBreadcrumbVisible && (
           <nav
-            tabIndex="0"
+            tabIndex={0}
             className="breadcumbs-nav py-4 border-b pl-8"
             aria-label={formatMessage(common.breadCrumbs)}
           >
             <Breadcrumbs
-              hideIfEmpty={true}
+              // hideIfEmpty={true}
               separator={<b> / </b>}
               item={NavLink}
               finalItem={"b"}

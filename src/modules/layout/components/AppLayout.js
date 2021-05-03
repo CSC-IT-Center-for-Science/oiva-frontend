@@ -9,7 +9,7 @@ import SessionDialog from "SessionDialog";
 import { useHistory } from "react-router-dom";
 import { useIdleTimer } from "react-idle-timer";
 import { sessionTimeoutInMinutes } from "modules/constants";
-import { App } from "App";
+import { App } from "App.tsx";
 
 import "react-toastify/dist/ReactToastify.css";
 
