@@ -49,6 +49,17 @@ export type Kielet = Array<Kieli>;
 
 export type KieletRaw = Array<KieliRaw>;
 
+export type Koulutusmuoto = {
+  genetiivi: string;
+  kebabCase: string;
+  kortinOtsikko: string;
+  kuvausteksti: string;
+  lyhytKuvaus: string;
+  paasivunOtsikko: string;
+  pascalCase: string;
+  jarjestajatOtsikko: string;
+};
+
 export type LocalesByLang = {
   [key: string]: string;
 };

@@ -509,14 +509,14 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 style={{ textDecoration: "underline" }}
                 onClick={() => {
                   history.push(
-                    localizeRouteKey(
+                    `${localizeRouteKey(
                       intl.locale,
                       AppRoute.AsianhallintaAvoimet,
                       t,
                       {
                         koulutusmuoto: koulutusmuoto.kebabCase
                       }
-                    )
+                    )}?force=${new Date().getTime()}`
                   );
                 }}
               >

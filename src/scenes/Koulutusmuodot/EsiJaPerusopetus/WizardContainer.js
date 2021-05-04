@@ -10,7 +10,7 @@ import {
   useChangeObjects,
   useChangeObjectsByAnchorWithoutUnderRemoval
 } from "stores/muutokset";
-import { Wizard } from "components/03-templates/Wizard";
+import { Wizard } from "components/03-templates/Wizard/index";
 import LupanakymaA from "./lupanakymat/LupanakymaA";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
@@ -19,6 +19,7 @@ import { find, prop, propEq, toUpper } from "ramda";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
+import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -244,6 +245,15 @@ const WizardContainer = ({
     ]
   );
 
+  const urlOnClose = getUrlOnClose(
+    role,
+    locale,
+    formatMessage,
+    organisaatio,
+    koulutusmuoto,
+    uuid
+  );
+
   return (
     <Wizard
       page1={
@@ -263,18 +273,7 @@ const WizardContainer = ({
       steps={steps}
       tila={muutospyynnonTila}
       title={title}
-      urlOnClose={
-        role === "KJ"
-          ? `../../../${id}/jarjestamislupa-asiat`
-          : `${localizeRouteKey(
-              locale,
-              AppRoute.AsianhallintaAvoimet,
-              formatMessage,
-              {
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )}?force=true`
-      }
+      urlOnClose={urlOnClose}
     />
   );
 };
