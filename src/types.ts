@@ -47,7 +47,7 @@ export type KieliRaw = {
 
 export type Kielet = Array<Kieli>;
 
-// export type KieletRaw = Array<KieliRaw>;
+export type KieletRaw = Array<KieliRaw>;
 
 export type LocalesByLang = {
   [key: string]: string;

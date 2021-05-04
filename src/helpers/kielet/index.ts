@@ -4,6 +4,7 @@ import {
   flatten,
   groupBy,
   head,
+  isNil,
   lensIndex,
   map,
   mapObjIndexed,
@@ -11,6 +12,7 @@ import {
   path,
   prop,
   propEq,
+  reject,
   uniq,
   view
 } from "ramda";
@@ -19,36 +21,31 @@ import { Kieli, Kielet, KieliRaw } from "types";
 import { LocaleUpper } from "enums";
 import { sortLanguagesByName } from "./utils";
 
-const ensisijaisetOPHKielet = ["FI", "SV", "SE", "RI", "VK"];
-
-const toissijaisetOPHKielet = ["EN", "FR", "DE", "RU"];
-
-export const filterEnsisijaisetOpetuskieletOPH = (
-  kielet: Kielet,
+/**
+ * Järjestää OPH-koodiston kielet järjestykseen siten, että
+ * arrangeOpetuskieletOPH-funktiolle 1. parametrinä annettuja
+ * lyhenteitä vastaavat kielet ovat funktion palauttamassa
+ * taulukossa ensimmäisinä.
+ * @param kielet - Kielet-tyyppinen objekti.
+ * @param localeUpper - Käyttöliittymän kieli kokonaan isoilla kirjaimilla kirjoitettuna.
+ * @returns Kielet-tyyppinen objekti järjestettynä yllä kuvatulla tavalla.
+ */
+export const arrangeOpetuskieletOPH = (
+  kieltenLyhenteet: Array<String>,
+  ophKielet: Kielet,
   localeUpper: LocaleUpper
 ) => {
-  return uniq(
-    concat(
-      map(
-        kielikoodi => find(propEq("koodiarvo", kielikoodi), kielet),
-        ensisijaisetOPHKielet
-      ),
-      sortLanguagesByName(kielet, localeUpper)
+  const listanKarkeenAsetettavat: Kielet = reject(
+    isNil,
+    map(
+      kielikoodi => find(propEq("koodiarvo", kielikoodi), ophKielet)!,
+      kieltenLyhenteet
     )
   );
-};
-
-export const filterToissijaisetOpetuskieletOPH = (
-  kielet: Kielet,
-  localeUpper: LocaleUpper
-) => {
   return uniq(
     concat(
-      map(
-        kielikoodi => find(propEq("koodiarvo", kielikoodi), kielet),
-        toissijaisetOPHKielet
-      ),
-      sortLanguagesByName(kielet, localeUpper)
+      listanKarkeenAsetettavat,
+      sortLanguagesByName(ophKielet, localeUpper)
     )
   );
 };

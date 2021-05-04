@@ -25,11 +25,7 @@ import localforage from "localforage";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { useLocation, useParams } from "react-router-dom";
 import { initializeMaakunta } from "helpers/maakunnat";
-import {
-  filterEnsisijaisetOpetuskieletOPH,
-  filterToissijaisetOpetuskieletOPH,
-  initializeKieli
-} from "helpers/kielet/index";
+import { arrangeOpetuskieletOPH, initializeKieli } from "helpers/kielet/index";
 import { sortLanguages } from "utils/kieliUtil";
 import { initializeKoulutusala } from "helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "helpers/koulutustyypit";
@@ -387,7 +383,8 @@ const fetchBaseData = async (
   result.ensisijaisetOpetuskieletOPH = raw.kieletOPH
     ? await localforage.setItem(
         "ensisijaisetOpetuskieletOPH",
-        filterEnsisijaisetOpetuskieletOPH(
+        arrangeOpetuskieletOPH(
+          ["FI", "SV", "SE", "RI", "VK"],
           map(kieli => {
             return initializeKieli(kieli);
           }, raw.kieletOPH),
@@ -729,7 +726,8 @@ const fetchBaseData = async (
   result.toissijaisetOpetuskieletOPH = raw.kieletOPH
     ? await localforage.setItem(
         "toissijaisetOpetuskieletOPH",
-        filterToissijaisetOpetuskieletOPH(
+        arrangeOpetuskieletOPH(
+          ["EN", "FR", "DE", "RU"],
           map(kieli => {
             return initializeKieli(kieli);
           }, raw.kieletOPH),
