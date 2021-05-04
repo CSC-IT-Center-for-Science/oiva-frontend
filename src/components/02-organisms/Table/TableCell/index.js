@@ -4,6 +4,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import SimpleMenu from "../../SimpleMenu/index";
 import PropTypes from "prop-types";
 import { map, path } from "ramda";
+import HtmlContent from "components/01-molecules/HtmlContent/index";
 
 /**
  * TableCell component. Used  by the Table component.
@@ -72,7 +73,11 @@ const TableCell = ({
     <MaterialUITableCell className={isHeaderCell ? "cursor-default" : ""}>
       {(properties.text || properties.menu) && (
         <span className={`${properties.truncate ? "truncate" : ""}`}>
-          {properties.text}
+          {typeof properties.text === "string" ? (
+            <HtmlContent content={properties.text} />
+          ) : (
+            properties.text
+          )}
           {properties.menu && (
             <SimpleMenu
               actions={menuActions}

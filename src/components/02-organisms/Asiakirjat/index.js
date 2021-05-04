@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Media from "react-media";
 import styled from "styled-components";
 import { Table as OldTable, Tbody } from "modules/Table";
@@ -16,20 +16,31 @@ import { Helmet } from "react-helmet";
 import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
-import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
 import error from "i18n/definitions/error";
 import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import ConfirmDialog from "../ConfirmDialog";
-import * as R from "ramda";
 import Typography from "@material-ui/core/Typography";
 import { AppRoute } from "const/index";
 import moment from "moment";
 import languages from "i18n/definitions/languages";
+import SimpleButton from "components/00-atoms/SimpleButton/index";
+import { FIELDS } from "locales/uusiHakemusFormConstants";
+import { labelColorClassesByTila } from "../../../utils/asiatUtils";
+import {
+  addIndex,
+  append,
+  find,
+  forEach,
+  map,
+  path,
+  prop,
+  sortBy
+} from "ramda";
 
 const WrapTable = styled.div``;
 
@@ -57,7 +68,8 @@ const states = [
   "TAYDENNETTAVA",
   "PAATETTY",
   "PASSIVOITU",
-  "ESITTELYSSA"
+  "ESITTELYSSA",
+  "KORJAUKSESSA"
 ];
 
 const Asiakirjat = ({ koulutusmuoto }) => {
@@ -78,8 +90,21 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const [isDeleteLiiteDialogVisible, setIsDeleteLiiteDialogVisible] = useState(
     false
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const [
+    isPaatettyConfirmationDialogVisible,
+    setPaatettyConfirmationDialogVisible
+  ] = useState(false);
+  const [
+    isKorjaaLupaaConfirmationDialogVisible,
+    setKorjaaLupaaConfirmationDialogVisible
+  ] = useState(false);
+  const [rowActionTargetId, setRowActionTargetId] = useState(null);
   const [documentIdForAction, setDocumentIdForAction] = useState();
   const [, muutospyynnotActions] = useMuutospyynnot();
+  const location = useLocation();
+
+  const muutospyynnonTila = path(["data", "tila"], muutospyynto);
 
   // Let's fetch MUUTOSPYYNTÖ and MUUTOSPYYNNÖN LIITTEET
   useEffect(() => {
@@ -91,13 +116,13 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       ];
     }
     return function cancel() {
-      R.forEach(abortController => {
+      forEach(abortController => {
         if (abortController) {
           abortController.abort();
         }
       }, abortControllers);
     };
-  }, [muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
+  }, [location.search, muutospyyntoActions, muutospyynnonLiitteetAction, uuid]);
 
   const jarjestaja = useMemo(
     () => muutospyynto.data && muutospyynto.data.jarjestaja,
@@ -152,27 +177,25 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   };
 
   const baseRow = {
-    tila: R.path(["data", "tila"], muutospyynto),
+    tila: muutospyynnonTila,
     localizedTila:
-      muutospyynto &&
-      muutospyynto.data &&
-      states.includes(muutospyynto.data.tila)
-        ? intl.formatMessage(
-            common[
-              asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
-            ]
-          )
+      muutospyynto && muutospyynto.data && states.includes(muutospyynnonTila)
+        ? `<span class="px-3 py-2 rounded-sm ${prop(
+            muutospyynto.data.tila,
+            labelColorClassesByTila
+          )}">${t(common[`asiaStates.esittelija.${muutospyynto.data.tila}`]) ||
+            ""}</span>`
         : ""
   };
 
   const liitteetRowItems = useMemo(() => {
     if (muutospyynnonLiitteet.fetchedAt) {
-      return R.map(
+      return map(
         liite => ({
           uuid: liite.uuid,
           type: "liite",
           items: [
-            R.prop("nimi", liite),
+            prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
             liite.luoja,
             liite.luontipvm ? moment(liite.luontipvm).format("D.M.YYYY") : ""
@@ -191,7 +214,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             }
           }
         }),
-        R.sortBy(R.prop("nimi"), muutospyynnonLiitteet.data || [])
+        sortBy(prop("nimi"), muutospyynnonLiitteet.data || [])
       );
     }
     return [];
@@ -241,7 +264,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const rows = [muutospyyntoRowItem, ...liitteetRowItems];
 
   const asiakirjatList = () => {
-    return R.addIndex(R.map)(
+    return addIndex(map)(
       (row, idx) => (
         <AsiakirjatItem
           onClick={() => {
@@ -265,7 +288,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         {
           rows: [
             {
-              cells: R.addIndex(R.map)((title, ii) => {
+              cells: addIndex(map)((title, ii) => {
                 return {
                   isSortable: ii !== 4,
                   truncate: false,
@@ -283,7 +306,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)((row, i) => {
+          rows: addIndex(map)((row, i) => {
             return {
               isClickable: !row.isEsittelyssa,
               isHoverable: !row.isEsittelyssa,
@@ -324,7 +347,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   }
                 }
               },
-              cells: R.addIndex(R.map)(
+              cells: addIndex(map)(
                 (col, ii) => {
                   return {
                     truncate: true,
@@ -392,7 +415,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   const handleAddPaatoskirje = async attachment => {
     // Search for existing paatoskirje in muutospyynto
-    let paatoskirje = R.find(
+    let paatoskirje = find(
       pk => pk.tyyppi === "paatosKirje",
       muutospyynto.data.liitteet || []
     );
@@ -403,7 +426,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       paatoskirje.tiedosto = attachment.tiedosto;
       paatoskirje.filename = attachment.filename;
     } else {
-      muutospyynto.data.liitteet = R.append(attachment, muutospyynto.liitteet);
+      muutospyynto.data.liitteet = append(attachment, muutospyynto.liitteet);
       paatoskirje = attachment;
     }
 
@@ -417,80 +440,177 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     muutospyynnonLiitteetAction.load(muutospyynto.data.uuid, true);
   };
 
+  const triggerPaatettyActionProcedure = useCallback(async () => {
+    const timestamp = new Date().getTime();
+    setIsLoading(true);
+    await new ProcedureHandler(t).run("muutospyynnot.tilanmuutos.paatetyksi", [
+      rowActionTargetId
+    ]);
+    setIsLoading(false);
+    setPaatettyConfirmationDialogVisible(false);
+    setRowActionTargetId(null);
+    history.push("?force=" + timestamp);
+  }, [rowActionTargetId, history, t]);
+
+  const triggerKorjaaLupaaActionProcedure = useCallback(async () => {
+    const timestamp = new Date().getTime();
+    setIsLoading(true);
+    await new ProcedureHandler(t).run(
+      "muutospyynnot.tilanmuutos.korjattavaksi",
+      [rowActionTargetId]
+    );
+    setIsLoading(false);
+    setKorjaaLupaaConfirmationDialogVisible(false);
+    setRowActionTargetId(null);
+    history.push("?force=" + timestamp);
+  }, [rowActionTargetId, history, t]);
+
+  /* TILANVAIHTOPAINIKKEIDEN TOIMINNOT */
+
+  async function vieEsittelyyn() {
+    const timestamp = new Date().getTime();
+    await new ProcedureHandler(t).run("muutospyynnot.tilanmuutos.esittelyyn", [
+      uuid
+    ]);
+    history.push("?force=" + timestamp);
+  }
+
+  async function palautaValmisteluun() {
+    const timestamp = new Date().getTime();
+    await new ProcedureHandler(t).run(
+      "muutospyynnot.tilanmuutos.valmisteluun",
+      [uuid]
+    );
+    history.push("?force=" + timestamp);
+  }
+
+  const onPaatettyActionClicked = () => {
+    setRowActionTargetId(uuid);
+    setPaatettyConfirmationDialogVisible(true);
+  };
+
+  const onKorjaaLupaaActionClicked = () => {
+    setRowActionTargetId(uuid);
+    setKorjaaLupaaConfirmationDialogVisible(true);
+  };
+
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
       <React.Fragment>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
-          {/* Linkki, jolla pääsee Asiat-sivulle */}
-          <Link
-            className="cursor-pointer"
-            style={{ textDecoration: "underline" }}
-            onClick={() => {
-              history.push(
-                localizeRouteKey(
-                  intl.locale,
-                  AppRoute.AsianhallintaAvoimet,
-                  t,
-                  {
-                    koulutusmuoto: koulutusmuoto.kebabCase
-                  }
-                )
-              );
-            }}
-          >
-            <BackIcon
-              style={{
-                fontSize: 14,
-                marginBottom: "0.1rem",
-                marginRight: "0.4rem"
-              }}
-            />
-            {t(common.asiakirjatTakaisin)}
-          </Link>
-          <div className="flex-1 flex items-center pt-8 pb-2">
-            <div className="w-full flex flex-col">
-              <Typography component="h1" variant="h1">
-                {t(common["asiaTypes.lupaChange"])}
-              </Typography>
-              <p className="text-lg font-normal">{nimi}</p>
+        <div className="flex flex-col justify-end w-full py-8 mx-auto">
+          <div className="flex-1 flex flex-col w-full mx-auto">
+            <div className="mx-auto w-4/5 max-w-8xl">
+              {/* Linkki, jolla pääsee Asiat-sivulle */}
+              <Link
+                className="cursor-pointer"
+                style={{ textDecoration: "underline" }}
+                onClick={() => {
+                  history.push(
+                    localizeRouteKey(
+                      intl.locale,
+                      AppRoute.AsianhallintaAvoimet,
+                      t,
+                      {
+                        koulutusmuoto: koulutusmuoto.kebabCase
+                      }
+                    )
+                  );
+                }}
+              >
+                <BackIcon
+                  style={{
+                    fontSize: 14,
+                    marginBottom: "0.1rem",
+                    marginRight: "0.4rem"
+                  }}
+                />
+                {t(common.asiakirjatTakaisin)}
+              </Link>
+              <div className="flex-1 flex items-center pt-8 pb-2">
+                <div className="w-full flex flex-col">
+                  <Typography component="h1" variant="h1">
+                    {t(common["asiaTypes.lupaChange"])}
+                  </Typography>
+                  <p className="text-lg font-normal">{nimi}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div className="flex-1 flex w-full">
           <div className="flex-1 flex flex-col w-full mx-auto">
-            <div className="mx-auto w-4/5 max-w-8xl">
-              <Typography
-                component="h4"
-                variant="h4"
-                className="float-right"
-                style={{ margin: 0 }}
-              >
-                <SelectAttachment
-                  attachmentAdded={handleAddPaatoskirje}
-                  messages={{
-                    attachmentAdd: t(common.attachmentAddPaatoskirje),
-                    attachmentName: t(common.attachmentName),
-                    attachmentErrorName: t(common.attachmentErrorName),
-                    attachmentError: t(common.attachmentError),
-                    ok: t(common.ok),
-                    cancel: t(common.cancel)
-                  }}
-                  styles={{
-                    fontSize: "1em",
-                    backgroundColor: COLORS.BG_GRAY,
-                    border: "none",
-                    iconSize: "18",
-                    svgMargin: "0.1em 0.1em 0.2em 0",
-                    circleIcon: true,
-                    disableHover: true,
-                    normalCase: true
-                  }}
-                  fileType={"paatosKirje"}
-                />
-              </Typography>
+            <div className="mx-auto w-4/5 max-w-8xl pb-4">
+              {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
+              <div>
+                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
+                  <SimpleButton
+                    text={t(common.palautaValmisteluun)}
+                    onClick={palautaValmisteluun}
+                    variant="outlined"
+                  />
+                )}
+                {(muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA ||
+                  muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
+                  <SimpleButton
+                    text={t(common["asiaTable.actions.paatetty"])}
+                    buttonStyles={
+                      muutospyynnonTila !== FIELDS.TILA.VALUES.KORJAUKSESSA
+                        ? { marginLeft: "1rem" }
+                        : {}
+                    }
+                    onClick={onPaatettyActionClicked}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA && (
+                  <SimpleButton
+                    text={t(common.vieEsittelyyn)}
+                    onClick={vieEsittelyyn}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.PAATETTY && (
+                  <SimpleButton
+                    text={t(common.korjaaLupaa)}
+                    onClick={onKorjaaLupaaActionClicked}
+                    variant="outlined"
+                  />
+                )}
+              </div>
+              {/* Liitteitä voi lisätä vain, kun  */}
+              {(muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA ||
+                muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
+                <Typography
+                  component="h4"
+                  variant="h4"
+                  className="float-right"
+                  style={{ margin: 0, padding: 0 }}
+                >
+                  <SelectAttachment
+                    attachmentAdded={handleAddPaatoskirje}
+                    messages={{
+                      attachmentAdd: t(common.attachmentAddPaatoskirje),
+                      attachmentName: t(common.attachmentName),
+                      attachmentErrorName: t(common.attachmentErrorName),
+                      attachmentError: t(common.attachmentError),
+                      ok: t(common.ok),
+                      cancel: t(common.cancel)
+                    }}
+                    styles={{
+                      fontSize: "1em",
+                      backgroundColor: COLORS.BG_GRAY,
+                      border: "none",
+                      iconSize: "18",
+                      svgMargin: "0.1em 0.1em 0.2em 0",
+                      circleIcon: true,
+                      disableHover: true,
+                      normalCase: true
+                    }}
+                    fileType={"paatosKirje"}
+                  />
+                </Typography>
+              )}
             </div>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog
@@ -521,6 +641,50 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 }
                 onOK={setStateOfMuutospyyntoAsEsittelyssa}
               ></PDFAndStateDialog>
+            )}
+            {isPaatettyConfirmationDialogVisible && (
+              <ConfirmDialog
+                isConfirmDialogVisible={isPaatettyConfirmationDialogVisible}
+                handleCancel={() => setPaatettyConfirmationDialogVisible(false)}
+                handleOk={triggerPaatettyActionProcedure}
+                onClose={() => setPaatettyConfirmationDialogVisible(false)}
+                messages={{
+                  content: intl.formatMessage(
+                    common.asiaPaatettyConfirmationDialogContent
+                  ),
+                  ok: intl.formatMessage(
+                    common.asiaPaatettyConfirmationDialogOk
+                  ),
+                  cancel: intl.formatMessage(common.cancel),
+                  title: intl.formatMessage(
+                    common.asiaPaatettyConfirmationDialogTitle
+                  )
+                }}
+                loadingSpinner={isLoading}
+              />
+            )}
+            {isKorjaaLupaaConfirmationDialogVisible && (
+              <ConfirmDialog
+                isConfirmDialogVisible={isKorjaaLupaaConfirmationDialogVisible}
+                handleCancel={() =>
+                  setKorjaaLupaaConfirmationDialogVisible(false)
+                }
+                handleOk={triggerKorjaaLupaaActionProcedure}
+                onClose={() => setKorjaaLupaaConfirmationDialogVisible(false)}
+                messages={{
+                  content: intl.formatMessage(
+                    common.korjaaLupaaConfirmationDialogContent
+                  ),
+                  ok: intl.formatMessage(
+                    common.korjaaLupaaConfirmationDialogOk
+                  ),
+                  cancel: intl.formatMessage(common.cancel),
+                  title: intl.formatMessage(
+                    common.korjaaLupaaConfirmationDialogTitle
+                  )
+                }}
+                loadingSpinner={isLoading}
+              />
             )}
             <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
               <div className="flex mx-auto w-4/5 max-w-8xl py-12">
