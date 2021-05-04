@@ -23,6 +23,7 @@ import {
 } from "ramda";
 import localforage from "localforage";
 import { fillForBackend } from "../../services/lomakkeet/backendMappings";
+import moment from "moment";
 
 export const initializeMuu = muuData => {
   return omit(["koodiArvo"], {
@@ -228,3 +229,24 @@ const removalObjectsShouldBeCreated = (
       cObj.anchor === textFieldAnchor,
     muutokset
   );
+
+export const onkoMaaraysVoimassa = (maarays) => {
+  const aliMaaraykset = [];
+  if (propEq("koodisto", "kujalisamaareetlisaksiajalla", maarays)) {
+    if (moment(maarays.meta.loppupvm) > moment()) {
+      return maarays;
+    }
+  } else if (maarays.aliMaaraykset) {
+    map(x => {
+      if (onkoMaaraysVoimassa(x)) {
+        aliMaaraykset.push(x);
+      }
+    }, maarays.aliMaaraykset);
+    if (length(aliMaaraykset) > 0) {
+      maarays.aliMaaraykset = aliMaaraykset;
+      return maarays;
+    }
+  } else {
+    return maarays;
+  }
+};

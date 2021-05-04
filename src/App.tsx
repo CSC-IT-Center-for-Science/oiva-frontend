@@ -113,12 +113,12 @@ export const App = ({
         {isBreadcrumbVisible && (
           <nav
             tabIndex={0}
-            className="breadcumbs-nav py-4 border-b pl-8"
+            className="breadcumbs-nav py-2 border-b pl-8 text-sm"
             aria-label={formatMessage(common.breadCrumbs)}
           >
             <Breadcrumbs
-              // hideIfEmpty={true}
-              separator={<b> / </b>}
+              hideIfEmpty={true}
+              separator={<span> / </span>}
               item={NavLink}
               finalItem={"b"}
               finalProps={{

@@ -7,7 +7,7 @@ import AsiakirjatItem from "./AsiakirjatItem";
 import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
-import Table from "components/02-organisms/Table";
+import Table from "components/02-organisms/Table/index";
 import { downloadFileFn, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
@@ -17,7 +17,7 @@ import Loading from "modules/Loading";
 import Link from "@material-ui/core/Link";
 import BackIcon from "@material-ui/icons/ArrowBack";
 import { useHistory, useParams } from "react-router-dom";
-import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja";
+import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
 import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
@@ -151,15 +151,19 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     );
   };
 
-  const baseRow = [
-    muutospyynto && muutospyynto.data && states.includes(muutospyynto.data.tila)
-      ? intl.formatMessage(
-          common[
-            asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
-          ]
-        )
-      : ""
-  ];
+  const baseRow = {
+    tila: R.path(["data", "tila"], muutospyynto),
+    localizedTila:
+      muutospyynto &&
+      muutospyynto.data &&
+      states.includes(muutospyynto.data.tila)
+        ? intl.formatMessage(
+            common[
+              asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
+            ]
+          )
+        : ""
+  };
 
   const liitteetRowItems = useMemo(() => {
     if (muutospyynnonLiitteet.fetchedAt) {
@@ -173,11 +177,18 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             liite.luoja,
             liite.luontipvm ? moment(liite.luontipvm).format("D.M.YYYY") : ""
           ],
-          fileLinkFn: () => {
-            muutospyyntoActions.download(
-              `/liitteet/${liite.uuid}/raw`,
-              intl.formatMessage
-            );
+          fileLinkFn: (isGoingToDownload = false) => {
+            if (isGoingToDownload) {
+              muutospyyntoActions.download(
+                `/liitteet/${liite.uuid}/raw?inline=false`,
+                intl.formatMessage
+              );
+            } else {
+              muutospyyntoActions.downloadAndShowInAnotherWindow(
+                `/liitteet/${liite.uuid}/raw?inline=true`,
+                intl.formatMessage
+              );
+            }
           }
         }),
         R.sortBy(R.prop("nimi"), muutospyynnonLiitteet.data || [])
@@ -196,18 +207,18 @@ const Asiakirjat = ({ koulutusmuoto }) => {
       return { items: [] };
     }
     return {
-      uuid,
       fileLinkFn: async () => {
         const path = await muutospyyntoActions.getLupaPreviewDownloadPath(uuid);
         if (path) {
           muutospyyntoActions.download(path, intl.formatMessage);
         }
       },
+      isEsittelyssa: baseRow.tila === "ESITTELYSSA",
       kieli: muutospyynto.data.kieli,
       openInNewWindow: true,
       items: [
         intl.formatMessage(common.application),
-        ...baseRow,
+        baseRow.localizedTila,
         muutospyynto.data.luoja,
         muutospyynto.data.luontipvm ? (
           <Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>
@@ -215,7 +226,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           ""
         )
       ],
-      tila: muutospyynto.data ? muutospyynto.data.tila : ""
+      tila: muutospyynto.data ? muutospyynto.data.tila : "",
+      uuid
     };
   }, [
     baseRow,
@@ -232,10 +244,12 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     return R.addIndex(R.map)(
       (row, idx) => (
         <AsiakirjatItem
-          onClick={downloadFileFn({
-            url: row.fileLink,
-            openInNewWindow: row.openInNewWindow
-          })}
+          onClick={() => {
+            downloadFileFn({
+              url: row.fileLink,
+              openInNewWindow: row.openInNewWindow
+            });
+          }}
           rowItems={row.items}
           key={idx}
         />
@@ -244,7 +258,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
     );
   };
 
-  const table = [
+  const tableStructure = [
     {
       role: "thead",
       rowGroups: [
@@ -271,35 +285,43 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         {
           rows: R.addIndex(R.map)((row, i) => {
             return {
+              isClickable: !row.isEsittelyssa,
+              isHoverable: !row.isEsittelyssa,
               uuid: row.uuid,
               type: row.type,
               fileLinkFn: row.fileLinkFn,
               onClick: (row, action) => {
                 if (action === "lataa" && row.fileLinkFn) {
-                  row.fileLinkFn();
-                } else if (action === "download-pdf-and-change-state") {
-                  setIsDownloadPDFAndChangeStateDialogVisible(true);
-                  setDocumentIdForAction(row.uuid);
-                } else if (action === "edit") {
-                  history.push(
-                    localizeRouteKey(
-                      intl.locale,
-                      AppRoute.Hakemus,
-                      intl.formatMessage,
-                      {
-                        id: jarjestaja.oid,
-                        koulutusmuoto: koulutusmuoto.kebabCase,
-                        language: row.kieli || "fi",
-                        page: 1,
-                        uuid: row.uuid
-                      }
-                    )
-                  );
+                  row.fileLinkFn(true);
                 } else if (action === "remove") {
                   setDocumentIdForAction(row.uuid);
                   row.type === "liite"
                     ? setIsDeleteLiiteDialogVisible(true)
                     : setIsRemovalDialogVisible(true);
+                } else {
+                  // Tässä on listattu rivin klikkaamisen oletustoiminnot.
+                  if (row.type === "liite") {
+                    // Liitteen tapauksessa oletustoiminto on liitteen
+                    // lataaminen.
+                    row.fileLinkFn();
+                  } else {
+                    // Muutospyynnön tapauksessa oletustoiminto on sen
+                    // avaaminen muokkaustilaan.
+                    history.push(
+                      localizeRouteKey(
+                        intl.locale,
+                        AppRoute.Hakemus,
+                        intl.formatMessage,
+                        {
+                          id: jarjestaja.oid,
+                          koulutusmuoto: koulutusmuoto.kebabCase,
+                          language: row.kieli || "fi",
+                          page: 1,
+                          uuid: row.uuid
+                        }
+                      )
+                    );
+                  }
                 }
               },
               cells: R.addIndex(R.map)(
@@ -326,34 +348,29 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 menu: {
                   id: `simple-menu-${i}`,
                   actions: [
-                    row.type !== "liite" && row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "edit",
-                          text: t(common["asiaTable.actions.muokkaa"])
-                        }
-                      : null,
+                    {
+                      id: "edit",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      isHidden: row.type === "liite",
+                      name: "edit",
+                      text: t(common.edit)
+                    },
+                    {
+                      id: "remove",
+                      isDisabled: row.tila === "ESITTELYSSA",
+                      name: "delete",
+                      text: t(common.poista)
+                    },
                     {
                       id: "lataa",
+                      name: "download",
                       text:
                         row.type === "liite"
                           ? t(common["asiaTable.actions.lataaLiite"])
                           : t(common["asiaTable.actions.lataa"])
-                    },
-                    row.type !== "liite" && row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "download-pdf-and-change-state",
-                          text: t(
-                            common["asiaTable.actions.lataaPDFJaMuutaTila"]
-                          )
-                        }
-                      : null,
-                    row.tila !== "ESITTELYSSA"
-                      ? {
-                          id: "remove",
-                          text: t(common.poista)
-                        }
-                      : null
-                  ].filter(Boolean)
+                    }
+                  ].filter(Boolean),
+                  isExpanded: true
                 },
                 styleClasses: ["w-1/12 cursor-default"]
               })
@@ -407,6 +424,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
         <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
+          {/* Linkki, jolla pääsee Asiat-sivulle */}
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
@@ -435,20 +453,15 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           <div className="flex-1 flex items-center pt-8 pb-2">
             <div className="w-full flex flex-col">
               <Typography component="h1" variant="h1">
-                {nimi}
+                {t(common["asiaTypes.lupaChange"])}
               </Typography>
-              <Typography component="h5" variant="h5">
-                {jarjestaja.ytunnus}
-              </Typography>
+              <p className="text-lg font-normal">{nimi}</p>
             </div>
           </div>
         </div>
         <div className="flex-1 flex w-full">
           <div className="flex-1 flex flex-col w-full mx-auto">
             <div className="mx-auto w-4/5 max-w-8xl">
-              <Typography component="h4" variant="h4" className="float-left">
-                {t(common.asianAsiakirjat)}
-              </Typography>
               <Typography
                 component="h4"
                 variant="h4"
@@ -533,7 +546,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                           }}
                         >
                           <Table
-                            structure={table}
+                            structure={tableStructure}
                             sortedBy={{ columnIndex: 3, order: "desc" }}
                           />
                         </div>

@@ -12,6 +12,7 @@ import ErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtavat";
 import OpetuksenMuutEhdotHtml from "./muutEhdot";
 import OikeusSisaoppilaitosmuotoiseenKoulutukseenHtml from "./oikeusSisaoppilaitosmuotoiseenKoulutukseen";
 import ValtakunnallisetKehittamistehtavatHtml from "./valtakunnallisetKehittamistehtavat";
+import { onkoMaaraysVoimassa } from "../../../../helpers/muut";
 
 /**
  * Funktio rakentaa lukiokoulutuksen HTML-lupanäkymän.
@@ -19,6 +20,10 @@ import ValtakunnallisetKehittamistehtavatHtml from "./valtakunnallisetKehittamis
  */
 const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
+
+  lupa.maaraykset = lupa.maaraykset.map(maarays => {
+    return onkoMaaraysVoimassa(maarays);
+  }).filter(Boolean);
 
   return (
     <React.Fragment>
