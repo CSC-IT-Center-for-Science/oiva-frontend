@@ -117,7 +117,6 @@ export const App = ({
             aria-label={formatMessage(common.breadCrumbs)}
           >
             <Breadcrumbs
-              hideIfEmpty={true}
               separator={<span> / </span>}
               item={NavLink}
               finalItem={"b"}
