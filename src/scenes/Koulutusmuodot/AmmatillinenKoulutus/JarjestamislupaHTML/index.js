@@ -11,7 +11,7 @@ import {
 import PropTypes from "prop-types";
 import common from "i18n/definitions/common";
 import moment from "moment";
-import { getKieletFromStorage } from "helpers/kielet";
+import { getKieletFromStorage } from "helpers/kielet/index";
 
 const TopSectionWrapper = styled.div`
   border-bottom: 1px solid ${COLORS.BORDER_GRAY};

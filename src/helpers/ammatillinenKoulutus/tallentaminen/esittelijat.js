@@ -3,7 +3,7 @@ import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
 import * as muutHelper from "../../../helpers/muut";
-import * as kieletHelper from "../../../helpers/kielet";
+import * as kieletHelper from "../../../helpers/kielet/index";
 import * as koulutuksetHelper from "../../../helpers/koulutukset";
 import * as R from "ramda";
 

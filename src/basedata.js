@@ -29,7 +29,7 @@ import {
   filterEnsisijaisetOpetuskieletOPH,
   filterToissijaisetOpetuskieletOPH,
   initializeKieli
-} from "helpers/kielet";
+} from "helpers/kielet/index";
 import { sortLanguages } from "utils/kieliUtil";
 import { initializeKoulutusala } from "helpers/koulutusalat";
 import { initializeKoulutustyyppi } from "helpers/koulutustyypit";

@@ -10,7 +10,7 @@ import {
   split,
   toUpper
 } from "ramda";
-import { getKieletFromStorage } from "helpers/kielet";
+import { getKieletFromStorage } from "helpers/kielet/index";
 import { getKoulutustyypitFromStorage } from "helpers/koulutustyypit";
 import { getAnchorPart } from "utils/common";
 import { getTutkinnotFromStorage } from "helpers/tutkinnot";

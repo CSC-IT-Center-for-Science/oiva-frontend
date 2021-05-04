@@ -43,8 +43,7 @@ export const App = ({
 
     if (user && user.oid && organisation) {
       const orgNimi: OrganisationName =
-        user && organisation ? prop("nimi", organisation) : { fi: "s" };
-      console.info(organisation, orgNimi);
+        user && organisation ? prop("nimi", organisation) : {};
       const isEsittelija = user
         ? includes("OIVA_APP_ESITTELIJA", user.roles)
         : false;

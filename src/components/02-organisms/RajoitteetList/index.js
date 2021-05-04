@@ -129,7 +129,7 @@ const RajoitteetList = ({
             return (
               <div
                 className="flex flex-col p-6 border border-gray-300"
-                key={rajoite.rajoiteId}
+                key={index}
               >
                 <Typography component="h3" variant="h3">
                   Rajoite {index + 1}
