@@ -1,14 +1,17 @@
 import {
   addIndex,
+  any,
   append,
   assocPath,
   concat,
+  defaultTo,
   filter,
   find,
   flatten,
   forEach,
   head,
   includes,
+  isEmpty,
   join,
   keys,
   last,
@@ -84,15 +87,17 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
-function getTarkentimenArvo(tarkennin) {
-  let tarkentimenArvo =
+function getTarkentimenArvo(tarkennin, useKuvaus = false) {
+  let kuvaus = path(["properties", "value", "kuvaus"], tarkennin);
+  let useKuvausInRajoite = path(["properties", "value", "useKuvausInRajoite"], tarkennin);
+  let tarkentimenArvo = (useKuvaus || useKuvausInRajoite) && kuvaus ? kuvaus :
     path(["properties", "value", "label"], tarkennin) ||
     path(["properties", "value"], tarkennin);
   return Array.isArray(tarkentimenArvo)
     ? pipe(
-        map(arvo => arvo.label),
-        join(", ")
-      )(tarkentimenArvo)
+      map(arvo => arvo.label),
+      join(", ")
+    )(tarkentimenArvo)
     : tarkentimenArvo;
 }
 
@@ -123,11 +128,11 @@ function kayLapiKohdennus(
                 asetus
               )
                 ? moment(
-                    path(
-                      ["tarkennin", tarkenninavain, "properties", "value"],
-                      asetus
-                    )
-                  ).format("DD.MM.YYYY")
+                  path(
+                    ["tarkennin", tarkenninavain, "properties", "value"],
+                    asetus
+                  )
+                ).format("DD.MM.YYYY")
                 : "";
 
               const paattymispaivaValue = path(
@@ -135,11 +140,11 @@ function kayLapiKohdennus(
                 asetus
               )
                 ? moment(
-                    path(
-                      ["tarkennin", "paattymispaiva", "properties", "value"],
-                      asetus
-                    )
-                  ).format("DD.MM.YYYY")
+                  path(
+                    ["tarkennin", "paattymispaiva", "properties", "value"],
+                    asetus
+                  )
+                ).format("DD.MM.YYYY")
                 : "";
 
               return `<ul><li>${__(
@@ -154,9 +159,9 @@ function kayLapiKohdennus(
                 : "";
             const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
               ? {
-                  pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
-                  post: "henkilöä"
-                }
+                pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
+                post: "henkilöä"
+              }
               : null;
 
             const tarkentimenArvo = getTarkentimenArvo(
@@ -219,7 +224,8 @@ function kayLapiKohdennus(
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
-  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin));
+  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin),
+    isEmpty(lista));
   const taydennyssana = null;
 
   let item = tarkentimenArvo;
@@ -552,9 +558,10 @@ export const handleAlimaarays = (
       ) {
         modifiedString = `${modifiedString}<li class="list-disc">${alimaarays
           .meta.arvo ||
-          value[naytettavaArvo] ||
-          value.nimi ||
-          value.kuvaus} ${alimaarays.arvo || ""}</li>`;
+        path(["meta", naytettavaArvo], alimaarays) ||
+        value[naytettavaArvo] ||
+        value.nimi ||
+        value.kuvaus} ${alimaarays.arvo || ""}</li>`;
       } else {
         modifiedString = htmlString;
       }
@@ -593,13 +600,17 @@ const handleAlimaaraykset = (
       const multiselectAlimaaraykset = multiselectUuid
         ? getMultiselectAlimaaraykset(multiselectUuid, alimaaraykset)
         : null;
-
+      const isKayttoohjeKuvaus = pipe(
+        path(["koodi", "metadata"]),
+        defaultTo([]),
+        any(meta => meta.kayttoohje === "Kuvaus")
+      )(alimaarays);
       modifiedString = handleAlimaarays(
         alimaarays,
         modifiedString,
         locale,
         ajallaText,
-        naytettavaArvo,
+        isKayttoohjeKuvaus ? "kuvaus" : naytettavaArvo,
         multiselectAlimaaraykset
       );
       if (multiselectUuid) {
@@ -632,6 +643,7 @@ const getValueFromMultiselectAlimaarays = (
   ) {
     const arvo =
       alimaarays.meta.arvo ||
+      path(["meta", naytettavaArvo], alimaarays) ||
       value[naytettavaArvo] ||
       value.nimi ||
       alimaarays.meta.kuvaus;
