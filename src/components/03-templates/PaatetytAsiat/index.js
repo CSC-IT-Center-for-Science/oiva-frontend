@@ -35,10 +35,11 @@ const PaatetytAsiat = ({ koulutusmuoto }) => {
       ? generatePaatetytAsiatTableStructure(
           muutospyynnot.paatetyt.data,
           intl,
-          history
+          history,
+          koulutusmuoto.kebabCase
         )
       : [];
-  }, [history, intl, muutospyynnot.paatetyt]);
+  }, [history, intl, koulutusmuoto.kebabCase, muutospyynnot.paatetyt]);
 
   if (
     muutospyynnot.paatetyt &&

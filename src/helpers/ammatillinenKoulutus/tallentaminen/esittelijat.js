@@ -32,7 +32,8 @@ export async function createObjectToSave(
   maaraystyypit,
   muut,
   lupaKohteet,
-  lomakedata
+  lomakedata,
+  muutospyynnonTila
 ) {
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
@@ -135,7 +136,7 @@ export async function createObjectToSave(
     luoja: sessionStorage.getItem("username"),
     luontipvm: moment().format("YYYY-MM-DD"),
     lupaUuid: lupa.uuid,
-    tila: uuid ? "VALMISTELUSSA" : "LUONNOS",
+    tila: muutospyynnonTila || (uuid ? "VALMISTELUSSA" : "LUONNOS"),
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: null,

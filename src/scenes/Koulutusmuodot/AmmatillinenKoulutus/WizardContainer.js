@@ -201,7 +201,7 @@ const WizardContainer = ({
   );
 
   const onAction = useCallback(
-    async (action, fromDialog = false) => {
+    async (action, fromDialog = false, muutospyynnonTila) => {
       const formData = createMuutospyyntoOutput(
         await createObjectToSave(
           toUpper(locale),
@@ -222,7 +222,8 @@ const WizardContainer = ({
           maaraystyypit,
           muut,
           lupaKohteet,
-          lomakedata
+          lomakedata,
+          muutospyynnonTila
         )
       );
 

@@ -283,5 +283,9 @@ export default defineMessages({
   closePreview: {
     id: "wizard.closePreview",
     defaultMessage: "Sulje esikatselu"
+  },
+  luvanKorjaustilaJarjestamisluvanMuutos: {
+    id: "wizard.luvanKorjaustilaJarjestamisluvanMuutos",
+    defaultMessage: "LUVAN KORJAUSTILA: Järjestämisluvan muutos"
   }
 });
