@@ -145,7 +145,8 @@ export const defineBackendChangeObjects = async (
     );
 
     const maarays = find(
-      maarays => maarays.koodiarvo.toLowerCase() === opetuskieli.koodiarvo.toLowerCase(),
+      maarays =>
+        maarays.koodiarvo.toLowerCase() === opetuskieli.koodiarvo.toLowerCase(),
       maaraykset
     );
 
@@ -171,7 +172,11 @@ export const defineBackendChangeObjects = async (
             [changeObj],
             take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
           ),
-          ...(changeObj ? { valikko: path(["properties", "metadata", "valikko"], changeObj) } : null)
+          ...(changeObj
+            ? {
+                valikko: path(["properties", "metadata", "valikko"], changeObj)
+              }
+            : null)
         },
         tila: "LISAYS"
       };
@@ -185,7 +190,11 @@ export const defineBackendChangeObjects = async (
         maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
         meta: {
           changeObjects: opetuskieletChangeObjs,
-          ...(changeObj ? { valikko: path(["properties", "metadata", "valikko"], changeObj) } : null)
+          ...(changeObj
+            ? {
+                valikko: path(["properties", "metadata", "valikko"], changeObj)
+              }
+            : null)
         },
         maaraysUuid: maarays.uuid,
         tila: "POISTO"

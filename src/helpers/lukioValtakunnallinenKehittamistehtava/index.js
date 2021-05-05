@@ -24,25 +24,23 @@ export const defineBackendChangeObjects = async (
 
   const lisatiedotBEchangeObject = lisatiedotChangeObj
     ? {
-      kohde,
-      koodiarvo: path(
-        ["properties", "metadata", "koodiarvo"],
-        lisatiedotChangeObj
-      ),
-      koodisto: path(
-        ["properties", "metadata", "koodisto", "koodistoUri"],
-        lisatiedotChangeObj
-      ),
-      maaraystyyppi,
-      meta: {
-        arvo: path(["properties", "value"], lisatiedotChangeObj),
-        changeObjects: [lisatiedotChangeObj]
-      },
-      tila: "LISAYS"
-    }
+        kohde,
+        koodiarvo: path(
+          ["properties", "metadata", "koodiarvo"],
+          lisatiedotChangeObj
+        ),
+        koodisto: path(
+          ["properties", "metadata", "koodisto", "koodistoUri"],
+          lisatiedotChangeObj
+        ),
+        maaraystyyppi,
+        meta: {
+          arvo: path(["properties", "value"], lisatiedotChangeObj),
+          changeObjects: [lisatiedotChangeObj]
+        },
+        tila: "LISAYS"
+      }
     : null;
 
-  return flatten([lisatiedotBEchangeObject]).filter(
-    Boolean
-  );
+  return flatten([lisatiedotBEchangeObject]).filter(Boolean);
 };

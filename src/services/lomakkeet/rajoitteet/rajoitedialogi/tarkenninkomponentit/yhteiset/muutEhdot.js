@@ -21,7 +21,6 @@ export default async function getMuutEhdot(
   inputId,
   koulutustyyppi
 ) {
-
   const muutEhdot =
     koulutustyyppi === "2"
       ? await getLukioMuutEhdotFromStorage()

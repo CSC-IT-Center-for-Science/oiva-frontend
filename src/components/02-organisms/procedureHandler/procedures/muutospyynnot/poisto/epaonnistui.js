@@ -12,4 +12,3 @@ export const epaonnistui = formatMessage => ({
     return true;
   }
 });
-

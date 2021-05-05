@@ -10,8 +10,14 @@ export const tallennaPaatoskirje = formatMessage => ({
       type: "application/json"
     });
     formData.append("muutospyynto", muutos);
-    formData.append(paatoskirje.tiedostoId, paatoskirje.tiedosto, paatoskirje.filename);
-    const response = await postData("tallennaPaatoskirje", formData, {urlEnding: muutospyynto.uuid});
+    formData.append(
+      paatoskirje.tiedostoId,
+      paatoskirje.tiedosto,
+      paatoskirje.filename
+    );
+    const response = await postData("tallennaPaatoskirje", formData, {
+      urlEnding: muutospyynto.uuid
+    });
     const json = await response.json();
     return {
       inform,

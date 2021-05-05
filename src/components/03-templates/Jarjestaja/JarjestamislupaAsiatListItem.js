@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Td, Tr, TdButton, Td2 } from "modules/Table";
 import { MEDIA_QUERIES } from "modules/styles";
-import {asiaStateToLocalizationKeyMap} from "./constants";
+import { asiaStateToLocalizationKeyMap } from "./constants";
 import Button from "@material-ui/core/Button";
 import Edit from "@material-ui/icons/Edit";
 import { Typography } from "@material-ui/core";
@@ -36,7 +36,9 @@ const JarjestamislupaAsiaListItem = props => {
             <TextPartial>
               {intl.formatMessage(common.stateAsia)}:&nbsp;
               {tila && states.includes(tila)
-                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[tila]])
+                ? intl.formatMessage(
+                    common[asiaStateToLocalizationKeyMap[tila]]
+                  )
                 : tila}
             </TextPartial>
           </LupaText>
@@ -54,7 +56,8 @@ const JarjestamislupaAsiaListItem = props => {
       <Tr
         className="hidden lg:block"
         role="row"
-        onClick={() => props.setOpened(uuid)}>
+        onClick={() => props.setOpened(uuid)}
+      >
         <Td role="cell" size="small">
           <Typography component="span">{}</Typography>
         </Td>

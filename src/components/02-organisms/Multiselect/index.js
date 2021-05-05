@@ -132,7 +132,8 @@ const Multiselect = React.memo(props => {
             selected,
             params.key
           );
-        }}>
+        }}
+      >
         <span>{params.key}</span>
         {selected && <CheckIcon />}
       </div>,

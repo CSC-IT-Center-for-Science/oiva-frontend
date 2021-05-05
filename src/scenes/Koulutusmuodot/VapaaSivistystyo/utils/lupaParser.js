@@ -23,10 +23,7 @@ import { path } from "ramda";
  */
 export const parseVSTLupa = (lupa, formatMessage, locale) => {
   if (lupa) {
-    const organizerSectionData = generateOrganizerSectionData(
-      lupa,
-      locale
-    );
+    const organizerSectionData = generateOrganizerSectionData(lupa, locale);
     organizerSectionData.heading = formatMessage(
       common.VSTLupaSectionTitleOrganizer
     );

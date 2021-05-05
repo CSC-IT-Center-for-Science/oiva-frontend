@@ -88,10 +88,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      Lisatiedot(lisatiedotNode.properties.value),
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;

@@ -75,18 +75,21 @@ const AlertMessage = props => {
                 display: "flex",
                 justifyContent: "space-between",
                 width: "100%"
-              }}>
+              }}
+            >
               {props.linkUrl && props.linkText && (
                 <Link
                   href={props.linkUrl}
-                  style={{ cursor: "pointer", textDecoration: "underline" }}>
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                >
                   {props.linkText}
                 </Link>
               )}
               {!props.linkUrl && props.handleLinkClick && props.linkText && (
                 <Link
                   onClick={clickCallback}
-                  style={{ cursor: "pointer", textDecoration: "underline" }}>
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                >
                   {props.linkText}
                 </Link>
               )}
@@ -95,11 +98,13 @@ const AlertMessage = props => {
                 aria-label="close"
                 color="inherit"
                 size="small"
-                onClick={() => setVisible(false)}>
+                onClick={() => setVisible(false)}
+              >
                 <CloseIcon fontSize="inherit" />
               </IconButton>
             </div>
-          }>
+          }
+        >
           {props.title && <AlertTitle>{props.title}</AlertTitle>}
           <p className="p-0">{props.message && props.message}</p>
         </Alert>

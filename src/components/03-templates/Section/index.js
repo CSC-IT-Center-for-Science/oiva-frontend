@@ -15,7 +15,11 @@ const Section = ({
   const fullTitle = `${code ? `${code}. ` : ""}${title}`;
   return (
     <div>
-      {fullTitle && <Typography component="h2" variant="h2" className="pt-8">{fullTitle}</Typography>}
+      {fullTitle && (
+        <Typography component="h2" variant="h2" className="pt-8">
+          {fullTitle}
+        </Typography>
+      )}
       <div className="pb-4">{children}</div>
     </div>
   );

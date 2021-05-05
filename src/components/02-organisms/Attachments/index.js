@@ -321,7 +321,8 @@ const Attachments = React.memo(
               <React.Fragment
                 key={
                   props.id + liite.tiedostoId ? liite.tiedostoId : liite.uuid
-                }>
+                }
+              >
                 <LiiteListItem>
                   {liite.new ? <FaFile /> : <FaRegFile />}
                   <input
@@ -340,7 +341,8 @@ const Attachments = React.memo(
                   <button
                     title={props.messages.attachmentDownload}
                     onClick={downloadFileFn(addLiiteUrl(liite))}
-                    className="ml-2">
+                    className="ml-2"
+                  >
                     <FaDownload />
                   </button>
                   <Checkbox
@@ -348,7 +350,8 @@ const Attachments = React.memo(
                       liite.salainen
                         ? props.messages.attachmentSecretUnselect
                         : props.messages.attachmentSecretSelect
-                    }>
+                    }
+                  >
                     <input
                       type="checkbox"
                       checked={liite.salainen}
@@ -366,7 +369,8 @@ const Attachments = React.memo(
                         liite.tiedostoId
                           ? "c" + liite.tiedostoId
                           : "c" + liite.uuid
-                      }>
+                      }
+                    >
                       {liite.salainen && <FaLock />}
                     </label>
                   </Checkbox>
@@ -374,7 +378,8 @@ const Attachments = React.memo(
                     title={props.messages.attachmentRemove}
                     onClick={e =>
                       removeAttachment(e, liite.tiedostoId, liite.uuid)
-                    }>
+                    }
+                  >
                     <FaTimes />
                   </button>
                 </LiiteListItem>
@@ -398,7 +403,8 @@ const Attachments = React.memo(
               <React.Fragment
                 key={
                   props.id + liite.tiedostoId ? liite.tiedostoId : liite.uuid
-                }>
+                }
+              >
                 <LiiteListItem>
                   {liite.new ? <FaFile /> : <FaRegFile />}
                   <span className="w-full pl-2">{liite.nimi}</span>
@@ -407,13 +413,15 @@ const Attachments = React.memo(
                   <button
                     title={props.messages.attachmentDownload}
                     onClick={downloadFileFn(addLiiteUrl(liite))}
-                    className="ml-2">
+                    className="ml-2"
+                  >
                     <FaDownload />
                   </button>
                   <span
                     title={
                       liite.salainen ? props.messages.attachmentSecret : ""
-                    }>
+                    }
+                  >
                     {liite.salainen && <FaLock />}
                   </span>
                 </LiiteListItem>
@@ -450,7 +458,8 @@ const Attachments = React.memo(
                 marginTop: "0.1em",
                 marginBottom: "0.5em",
                 color: COLORS.OIVA_ORANGE_TEXT
-              }}>
+              }}
+            >
               <Incomplete
                 style={{
                   fontSize: 24,
@@ -467,7 +476,8 @@ const Attachments = React.memo(
           open={isNameModalOpen}
           aria-labelledby="name-dialog"
           fullWidth={true}
-          maxWidth="sm">
+          maxWidth="sm"
+        >
           <DialogTitle id="name-dialog">
             {props.messages.attachmentName}
           </DialogTitle>
@@ -507,7 +517,8 @@ const Attachments = React.memo(
             <Button
               onClick={cancelAttachment}
               color="secondary"
-              variant="outlined">
+              variant="outlined"
+            >
               {props.messages.cancel}
             </Button>
           </DialogActions>

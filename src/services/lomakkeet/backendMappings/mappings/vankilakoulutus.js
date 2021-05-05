@@ -47,7 +47,7 @@ export function getMapping(koodiarvo) {
         if (filteredChangeObjects.length) {
           return map(vankila => {
             return { nimi: vankila.label };
-          }, path([0, "properties", "value"], filteredChangeObjects) || []);
+          }, path([0, "properties", "value"], filteredChangeObjects) || []);
         }
         return null;
       }

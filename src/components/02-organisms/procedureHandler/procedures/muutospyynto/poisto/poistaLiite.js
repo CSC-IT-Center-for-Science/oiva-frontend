@@ -1,5 +1,5 @@
 import { deleteDocument } from "../../../delete";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import informUser from "../../../../../../i18n/definitions/informUser";
 
 // muutospyynto.poisto.poistaLiite
@@ -7,8 +7,7 @@ export const poistaLiite = formatMessage => ({
   label: "Liitteen poistaminen",
   input: ["uuid", "inform"],
   run: async ({ uuid, inform }) => {
-
-    const response = await deleteDocument("poistaLiite", {urlEnding: uuid});
+    const response = await deleteDocument("poistaLiite", { urlEnding: uuid });
     return {
       inform,
       status: response.status

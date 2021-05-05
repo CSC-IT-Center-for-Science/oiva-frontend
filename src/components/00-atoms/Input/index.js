@@ -152,7 +152,8 @@ const Input = ({
             paddingLeft: "1.2em",
             marginBottom: "0.5em",
             color: COLORS.OIVA_ORANGE_TEXT
-          }}>
+          }}
+        >
           {value !== "" && requiredMessage}
         </FormHelperText>
       )}

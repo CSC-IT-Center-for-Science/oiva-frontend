@@ -23,7 +23,8 @@ const JarjestajaluetteloFiltteroinnilla = ({ koulutusmuoto, luvat }) => {
           <Jarjestajaluettelo
             koulutusmuoto={koulutusmuoto}
             luvat={luvat}
-            vstTyypit={_props.vstTyypit} />
+            vstTyypit={_props.vstTyypit}
+          />
         )}
       />
     </React.Fragment>

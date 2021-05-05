@@ -14,7 +14,6 @@ import PoOpetuksenErityisetKoulutustehtavatHtml from "./erityisetKoulutustehtava
 import PoOpetuksenMuutEhdotHtml from "./muutEhdot";
 import { onkoMaaraysVoimassa } from "../../../../helpers/muut";
 
-
 /**
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
@@ -22,16 +21,20 @@ import { onkoMaaraysVoimassa } from "../../../../helpers/muut";
 const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
 
-  lupa.maaraykset = lupa.maaraykset.map(maarays => {
-    return onkoMaaraysVoimassa(maarays);
-  }).filter(Boolean);
+  lupa.maaraykset = lupa.maaraykset
+    .map(maarays => {
+      return onkoMaaraysVoimassa(maarays);
+    })
+    .filter(Boolean);
 
   return (
     <React.Fragment>
       <Typography component="h2" variant="h2">
         {formatMessage(common.htmlLuvanOtsikko, {
           date: moment().format("DD.MM.YYYY"),
-          koulutusmuodon: formatMessage(esiJaPerusopetus.genetiivi).toLowerCase()
+          koulutusmuodon: formatMessage(
+            esiJaPerusopetus.genetiivi
+          ).toLowerCase()
         })}
       </Typography>
       {lupa.loppupvm && (

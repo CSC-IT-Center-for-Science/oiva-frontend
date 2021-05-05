@@ -34,10 +34,12 @@ const Store = createStore({
           key: "muutospyynnot",
           urlEnding: `?tilat=${tilat.map(tila =>
             tila.toUpperCase()
-          )}&vainOmat=${vainOmat}${koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""}`,
+          )}&vainOmat=${vainOmat}${
+            koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
+          }`,
           path
         },
-        {koulutustyyppi},
+        { koulutustyyppi },
         isForceReloadRequested ? 0 : undefined
       );
     },

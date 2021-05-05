@@ -34,21 +34,24 @@ export const Navigation = ({ routes }) => {
                 onMouseLeave={() => setVisibleSubMenuRoute(null)}
               >
                 <div
-                  className={`flex flex-col justify-center text-white px-2 h-20 uppercase font-medium hover:text-white ${ location.pathname.indexOf(routeKey) !== -1 && 'bg-green-700' }`}
+                  className={`flex flex-col justify-center text-white px-2 h-20 uppercase font-medium hover:text-white ${location.pathname.indexOf(
+                    routeKey
+                  ) !== -1 && "bg-green-700"}`}
                   style={{
-                    fontSize: "0.9375rem"}}
-                  >
+                    fontSize: "0.9375rem"
+                  }}
+                >
                   <div className="flex flex-row justify-center hover:text-white h-full">
                     <NavLink
                       to={routeKey}
                       activeClassName={"bg-green-700 bg-opacity-75"}
                       className="flex flex-col justify-center text-white hover:text-white px-3"
                     >
-                    <span>
-                      {routeObj.titleKey
-                        ? formatMessage({ id: routeObj.titleKey })
-                        : routeObj.title}
-                    </span>
+                      <span>
+                        {routeObj.titleKey
+                          ? formatMessage({ id: routeObj.titleKey })
+                          : routeObj.title}
+                      </span>
                     </NavLink>
                     {length(routeObj.routes) ? (
                       <button
@@ -57,10 +60,13 @@ export const Navigation = ({ routes }) => {
                             visibleSubMenuRoute === null ? routeObj.key : null
                           );
                         }}
-                        className="flex flex-col justify-center text-white">
-                        {visibleSubMenuRoute === routeObj.key
-                          ? <ExpandLessIcon className="align-bottom" />
-                          : <ExpandMoreIcon className="align-bottom" /> }
+                        className="flex flex-col justify-center text-white"
+                      >
+                        {visibleSubMenuRoute === routeObj.key ? (
+                          <ExpandLessIcon className="align-bottom" />
+                        ) : (
+                          <ExpandMoreIcon className="align-bottom" />
+                        )}
                       </button>
                     ) : null}
                   </div>

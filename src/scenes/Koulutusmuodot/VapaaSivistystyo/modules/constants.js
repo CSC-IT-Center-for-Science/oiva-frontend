@@ -1,14 +1,14 @@
-import common from '../../../../i18n/definitions/common'
+import common from "../../../../i18n/definitions/common";
 
 export const GENERIC_LUPA_SECTIONS = [
-  'kunnat',
-  'kielet',
-  'tarkoitus',
-  'koulutustehtava',
-  'opiskelijavuodet',
-  'oppilaitos',
-  'opiskelijamaara',
-  'muut'
+  "kunnat",
+  "kielet",
+  "tarkoitus",
+  "koulutustehtava",
+  "opiskelijavuodet",
+  "oppilaitos",
+  "opiskelijamaara",
+  "muut"
 ];
 
 export const VST_LUPA_STRUCTURE = [
@@ -18,44 +18,44 @@ export const VST_LUPA_STRUCTURE = [
     // 2. Sopimuskunnat
     // exceptional case requiring special parsing
     titleMessageKey: common.VSTLupaSectionTitleMunicipality,
-    kohdeTunniste: 'kunnat'
+    kohdeTunniste: "kunnat"
   },
   {
     // 3. Oppilaitoksen nimi ja sijainti
     // exceptional case requiring special parsing
     titleMessageKey: common.VSTLupaSectionTitleSchoolNameAndLocation,
-    kohdeTunniste: 'oppilaitos'
+    kohdeTunniste: "oppilaitos"
   },
   {
     // 4. Oppilaitoksen toiminta-alue
     // exceptional case requiring special parsing
     titleMessageKey: common.VSTLupaSectionTitleOperationalArea,
-    koodisto: 'vstoppilaitoksenalueellisuusjavaltakunnallisuus'
+    koodisto: "vstoppilaitoksenalueellisuusjavaltakunnallisuus"
   },
   {
     // 5. Opetuskieli
     titleMessageKey: common.VSTLupaSectionTitleTeachingLanguage,
-    kohdeTunniste: 'kielet'
+    kohdeTunniste: "kielet"
   },
   {
     // 6. Oppilaitoksen tarkoitus
     titleMessageKey: common.VSTLupaSectionTitleSchoolPurpose,
-    kohdeTunniste: 'tarkoitus'
+    kohdeTunniste: "tarkoitus"
   },
   {
     // 7. Koulutustehtävä
     titleMessageKey: common.VSTLupaSectionTitleSchoolMission,
-    kohdeTunniste: 'koulutustehtava'
+    kohdeTunniste: "koulutustehtava"
   },
   {
     // 8. Koulutustehtävä
     titleMessageKey: common.VSTLupaSectionTitleSchoolMissionSpecial,
-    kohdeTunniste: 'erityinenkoulutustehtava'
+    kohdeTunniste: "erityinenkoulutustehtava"
   },
   {
     // 9. Muut koulutuksen järjestämiseen liittyvät ehdot
     // exceptional case requiring special parsing
     titleMessageKey: common.VSTLupaSectionTitleOther,
-    koodisto: 'kujamuutoikeudetmaarayksetjarajoitukset'
+    koodisto: "kujamuutoikeudetmaarayksetjarajoitukset"
   }
 ];

@@ -56,12 +56,15 @@ export default function PoOpetusJotaLupaKoskeeHtml({
       });
   }, []);
 
-  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(filter(
-    maarays =>
-      pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
-      maarays.koodisto === "opetustehtava",
-    maaraykset
-  ), locale);
+  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(
+    filter(
+      maarays =>
+        pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
+        maarays.koodisto === "opetustehtava",
+      maaraykset
+    ),
+    locale
+  );
 
   const lisatietomaarays = find(
     maarays =>

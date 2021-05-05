@@ -16,7 +16,8 @@ const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
         {...getTooltipProps({
           ref: tooltipRef,
           className: "tooltip-container max-w-xxs"
-        })}>
+        })}
+      >
         {!hideArrow && (
           <div
             {...getArrowProps({
@@ -28,13 +29,15 @@ const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
         )}
         {tooltip}
       </div>
-    )}>
+    )}
+  >
     {({ getTriggerProps, triggerRef }) => (
       <span
         {...getTriggerProps({
           ref: triggerRef,
           className: "trigger"
-        })}>
+        })}
+      >
         {children}
       </span>
     )}

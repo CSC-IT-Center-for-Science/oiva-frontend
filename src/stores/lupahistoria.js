@@ -4,13 +4,19 @@ import { execute } from "./utils/loadFromBackend";
 const Store = createStore({
   initialState: {},
   actions: {
-    load: (jarjestajaOid, koulutusmuoto, oppilaitostyyppi) => ({ getState, setState }) => {
+    load: (jarjestajaOid, koulutusmuoto, oppilaitostyyppi) => ({
+      getState,
+      setState
+    }) => {
       const params = [];
       if (koulutusmuoto.koulutustyyppi) {
-        params.push({key: "koulutustyyppi", value: koulutusmuoto.koulutustyyppi})
+        params.push({
+          key: "koulutustyyppi",
+          value: koulutusmuoto.koulutustyyppi
+        });
       }
       if (oppilaitostyyppi) {
-        params.push({key: "oppilaitostyyppi", value: oppilaitostyyppi})
+        params.push({ key: "oppilaitostyyppi", value: oppilaitostyyppi });
       }
       return execute(
         { getState, setState },

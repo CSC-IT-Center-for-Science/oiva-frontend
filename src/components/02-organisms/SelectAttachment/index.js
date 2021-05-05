@@ -91,7 +91,8 @@ const SelectAttachment = React.memo(props => {
         open={isNameModalOpen}
         aria-labelledby="name-dialog"
         fullWidth={true}
-        maxWidth="sm">
+        maxWidth="sm"
+      >
         <DialogTitle id="name-dialog">
           {props.messages.attachmentName}
         </DialogTitle>
@@ -123,7 +124,8 @@ const SelectAttachment = React.memo(props => {
           <Button
             onClick={cancelAttachment}
             color="secondary"
-            variant="outlined">
+            variant="outlined"
+          >
             {props.messages.cancel}
           </Button>
         </DialogActions>

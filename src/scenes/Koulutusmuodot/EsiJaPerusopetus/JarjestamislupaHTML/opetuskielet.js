@@ -95,7 +95,11 @@ const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale, intl) => {
           </li>,
           <div key={"div-" + index}>
             {length(opetuskieli.aliMaaraykset)
-              ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale, intl.formatMessage(rajoitteet.ajalla))
+              ? getRajoitteetFromMaarays(
+                  opetuskieli.aliMaaraykset,
+                  locale,
+                  intl.formatMessage(rajoitteet.ajalla)
+                )
               : ""}
           </div>
         ],

@@ -3,13 +3,22 @@ import PropTypes from "prop-types";
 import { useLupahistoria } from "stores/lupahistoria";
 import LupapaatoksetTable from "./LupapaatoksetTable";
 
-const Lupapaatokset = ({ koulutusmuoto, jarjestajaOid, tulevatLuvat, voimassaOlevaLupa }) => {
+const Lupapaatokset = ({
+  koulutusmuoto,
+  jarjestajaOid,
+  tulevatLuvat,
+  voimassaOlevaLupa
+}) => {
   const [lupahistoria, actions] = useLupahistoria();
 
   // Let's fetch LUPAHISTORIA
   useEffect(() => {
     if (jarjestajaOid) {
-      actions.load(jarjestajaOid, koulutusmuoto, voimassaOlevaLupa ? voimassaOlevaLupa.oppilaitostyyppi : null);
+      actions.load(
+        jarjestajaOid,
+        koulutusmuoto,
+        voimassaOlevaLupa ? voimassaOlevaLupa.oppilaitostyyppi : null
+      );
     }
   }, [actions, jarjestajaOid, koulutusmuoto, voimassaOlevaLupa]);
 
@@ -18,7 +27,8 @@ const Lupapaatokset = ({ koulutusmuoto, jarjestajaOid, tulevatLuvat, voimassaOle
       koulutusmuoto={koulutusmuoto}
       data={lupahistoria.data || []}
       tulevatLuvat={tulevatLuvat}
-      voimassaOlevaLupa={voimassaOlevaLupa}></LupapaatoksetTable>
+      voimassaOlevaLupa={voimassaOlevaLupa}
+    ></LupapaatoksetTable>
   ) : null;
 };
 

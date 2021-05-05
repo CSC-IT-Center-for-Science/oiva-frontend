@@ -350,8 +350,7 @@ function getTableData(vstTyypit, locale, luvat) {
       const localeUpper = toUpper(locale);
       return {
         yllapitaja: lupa.jarjestaja
-          ? lupa.jarjestaja.nimi[locale] ||
-          head(values(lupa.jarjestaja.nimi))
+          ? lupa.jarjestaja.nimi[locale] || head(values(lupa.jarjestaja.nimi))
           : "",
         oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, locale),
         oppilaitostyyppi: oppilaitostyyppiKoodistosta
@@ -368,9 +367,7 @@ function getTableData(vstTyypit, locale, luvat) {
 function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   const intl = useIntl();
 
-  const [data, setData] = useState(
-    getTableData(vstTyypit, intl.locale, luvat)
-  );
+  const [data, setData] = useState(getTableData(vstTyypit, intl.locale, luvat));
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
   const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
     ""

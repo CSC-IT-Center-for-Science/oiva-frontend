@@ -39,7 +39,8 @@
 * Paina näppäintä "Enter"
 * Vieritä alas "100"
 * Valitse asetuksen kohteen "asetuksenKohde-0" arvoksi "Opetus, jota lupa koskee"
-* Valitse asetuksen tarkentimen "0-asetuksenKohde-0" arvoksi "esiopetus"
+* Kirjoita kenttään, jonka parametri "id" on "0-asetuksenKohde-0" arvo "esiopetus"
+* Paina näppäintä "Enter"
 * Klikkaa elementtiä, jossa on teksti "HYVÄKSY"
 * Klikkaa elementtiä, jossa on teksti "TALLENNA LUONNOS"
 * Varmista, ettei auki olevalle hakemukselle pääse kirjautumattomana
