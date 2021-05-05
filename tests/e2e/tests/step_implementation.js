@@ -86,7 +86,7 @@ step(
 );
 
 step(
-  "Valitse asetuksen kohde <asetuksenAutocompletenId> kohteeksi <teksti>",
+  "Valitse asetuksen kohteen <asetuksenAutocompletenId> arvoksi <teksti>",
   async (asetuksenAutocompletenId, teksti) => {
     await click($(`input[id="${asetuksenAutocompletenId}"]`));
     await click(teksti);
@@ -94,7 +94,7 @@ step(
 );
 
 step(
-  "Valitse asetuksen tarkennin <asetuksenTarkentimenAutocompletenId> kohteeksi <teksti>",
+  "Valitse asetuksen tarkentimen <asetuksenTarkentimenAutocompletenId> arvoksi <teksti>",
   async (asetuksenTarkentimenAutocompletenId, teksti) => {
     await click($(`input[id="${asetuksenTarkentimenAutocompletenId}"]`));
     await click(teksti);

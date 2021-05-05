@@ -561,6 +561,9 @@ const CategorizedList = props => {
                               );
                             }
                           }
+
+                          const inputId = propsObj.inputId || fullAnchor;
+
                           return (
                             <div className={styleClassesStr}>
                               <Input
@@ -568,7 +571,7 @@ const CategorizedList = props => {
                                   component.properties.forChangeObject
                                 }
                                 fullAnchor={fullAnchor}
-                                id={fullAnchor}
+                                id={inputId}
                                 isDisabled={isDisabled}
                                 isHidden={propsObj.isHidden}
                                 isPreviewModeOn={propsObj.isPreviewModeOn}
@@ -876,6 +879,7 @@ const CategorizedList = props => {
                           forChangeObject={component.properties.forChangeObject}
                           fullAnchor={fullAnchor}
                           fullWidth={propsObj.fullWidth}
+                          inputId={propsObj.inputId}
                           isDisabled={propsObj.isDisabled}
                           isHidden={propsObj.isHidden}
                           isReadOnly={propsObj.isReadOnly}

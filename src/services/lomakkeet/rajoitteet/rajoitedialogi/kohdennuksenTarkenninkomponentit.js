@@ -17,7 +17,8 @@ const kohdennuksenTarkenninkomponentit = {
 export const getKohdennuksenTarkenninkomponentit = (
   kohdennuksenKohdeavain,
   locale,
-  isReadOnly
+  inputId,
+  isReadOnly = false
 ) => {
   if (!kohdennuksenKohdeavain) {
     return false;
@@ -26,5 +27,5 @@ export const getKohdennuksenTarkenninkomponentit = (
     kohdennuksenKohdeavain,
     kohdennuksenTarkenninkomponentit
   );
-  return tarkenninFn(isReadOnly, locale) || [];
+  return tarkenninFn(isReadOnly, {}, locale, false, inputId) || [];
 };

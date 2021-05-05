@@ -1,6 +1,12 @@
 import { __ } from "i18n-for-browser";
 
-export const getMaaraaikalomake = async locale => {
+export const getMaaraaikalomake = async (
+  isReadOnly,
+  osionData,
+  locale,
+  isMulti,
+  inputId
+) => {
   return {
     anchor: "rajoitus",
     components: [
@@ -14,6 +20,8 @@ export const getMaaraaikalomake = async locale => {
             koodisto: "kujalisamaareet",
             section: "maaraaika"
           },
+          inputId: `${inputId}-alkamispaiva`,
+          isReadOnly,
           label: "Alkamispäivä",
           value: "",
           onChanges: () => {},
@@ -40,6 +48,8 @@ export const getMaaraaikalomake = async locale => {
             koodisto: "kujalisamaareet",
             section: "maaraaika"
           },
+          inputId: `${inputId}-paattymispaiva`,
+          isReadOnly,
           label: "Päättymispäivä",
           value: "",
           onChanges: () => {},

@@ -6,13 +6,20 @@ yksittäisen asetuksen (rajoitekriteerin), tarkenninkentän/-kentät.
 On olennaista, että palautettavilla lomakerakenteilla on sama ankkuri,
 koska siihen luotetaan, kun rajoitteen rakennetta käydään läpi.
  */
-export const getLukumaarakomponentit = isReadOnly => {
+export const getLukumaarakomponentit = (
+  isReadOnly,
+  osionData = [],
+  locale,
+  voidaankoValitaUseita,
+  inputId
+) => {
   return [
     {
       anchor: "lukumaara",
       name: "Input",
       styleClasses: ["w-4/5", "xl:w-2/3", "mb-6"],
       properties: {
+        inputId,
         isReadOnly,
         placeholder: "Lukumäärä",
         value: ""
@@ -21,7 +28,13 @@ export const getLukumaarakomponentit = isReadOnly => {
   ];
 };
 
-export const getMaaraaikakomponentit = (isReadOnly, osionData, locale) => {
+export const getMaaraaikakomponentit = (
+  isReadOnly,
+  osionData,
+  locale,
+  voidaankoValitaUseita,
+  inputId
+) => {
   return [
     {
       anchor: "alkamispaiva",
@@ -33,6 +46,7 @@ export const getMaaraaikakomponentit = (isReadOnly, osionData, locale) => {
           koodisto: "kujalisamaareet",
           section: "maaraaika"
         },
+        inputId: `${inputId}-alkamispaiva`,
         isReadOnly,
         label: "Alkamispäivä",
         value: "",
@@ -68,6 +82,7 @@ export const getMaaraaikakomponentit = (isReadOnly, osionData, locale) => {
           koodisto: "kujalisamaareet",
           section: "maaraaika"
         },
+        inputId: `${inputId}-paattymispaiva`,
         isReadOnly,
         label: "Päättymispäivä",
         value: "",

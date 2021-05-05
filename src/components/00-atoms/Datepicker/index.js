@@ -64,6 +64,7 @@ const Datepicker = ({
   forChangeObject,
   fullAnchor,
   fullWidth,
+  inputId,
   invalidLabel,
   isDisabled,
   isHidden,
@@ -135,7 +136,8 @@ const Datepicker = ({
           style={width ? { width } : {}}
           fullWidth={width ? false : fullWidth}
           InputProps={{
-            className: classes.input
+            className: classes.input,
+            id: inputId
           }}
           value={selectedDate || null}
           inputVariant="outlined"
@@ -207,6 +209,7 @@ Datepicker.propTypes = {
   ariaLabel: PropTypes.string,
   label: PropTypes.string,
   id: PropTypes.string,
+  inputId: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,
   /** Is called with the payload and the value. */
