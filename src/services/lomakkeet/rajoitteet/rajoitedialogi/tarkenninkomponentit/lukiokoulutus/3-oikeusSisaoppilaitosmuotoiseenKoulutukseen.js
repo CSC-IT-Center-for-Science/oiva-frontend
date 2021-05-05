@@ -60,24 +60,21 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                 /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
                  * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
-                const options =
-                  path(["metadata", "FI", "kayttoohje"], item) === "Kuvaus"
-                    ? map(stateObj => {
-                        const option = {
-                          value: `${getAnchorPart(
-                            stateObj.anchor,
-                            1
-                          )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                          label: stateObj.properties.value
-                        };
-                        return option;
-                      }, kuvausStateObjects)
-                    : {
+                return map(stateObj => {
+                    return path(["metadata", "FI", "kayttoohje"], item) === "Kuvaus" ? {
+                      value: `${getAnchorPart(
+                        stateObj.anchor,
+                        1
+                      )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                      label: stateObj.properties.value,
+                      useKuvausInRajoite: true
+                    } : {
                         label: item.metadata[localeUpper].nimi,
-                        value: `${item.koodiarvo}`
-                      };
-
-                return options;
+                        value: `${item.koodiarvo}`,
+                        kuvaus: stateObj.properties.value,
+                        useKuvausInRajoite: false
+                    };
+                  }, kuvausStateObjects);
               }
 
               return null;
