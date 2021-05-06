@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 import StepperNavigation from "./index";
 import { withInfo } from "@storybook/addon-info";
-import { withState } from "@dump247/storybook-state";
 
 const props = [
   {
@@ -18,9 +17,9 @@ const props = [
 
 storiesOf("StepperNavigation", module)
   .addDecorator(withInfo)
-  .add(
-    "Stepper example",
-    withState({ currentStep: 0 })(({ store }) => (
+  .add("Stepper example", () => {
+    const [state, setState] = useState({ currentStep: 0 });
+    return (
       <React.Fragment>
         <div
           style={{
@@ -31,23 +30,23 @@ storiesOf("StepperNavigation", module)
           <StepperNavigation
             name="example"
             stepProps={props}
-            activeStep={store.state.currentStep}
-            handleStepChange={step => store.set({ currentStep: step - 1 })}
+            activeStep={0}
+            handleStepChange={() => {}}
           />
         </div>
         <button
           onClick={() => {
-            store.set({ currentStep: store.state.currentStep - 1 });
+            setState({ currentStep: state.currentStep - 1 });
           }}>
           - Prev
         </button>
         |
         <button
           onClick={() => {
-            store.set({ currentStep: store.state.currentStep + 1 });
+            setState({ currentStep: state.currentStep + 1 });
           }}>
           Next +
         </button>
       </React.Fragment>
-    ))
-  );
+    );
+  });

@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
 import ConfirmDialog from "./index";
-import { withState } from "@dump247/storybook-state";
 
 const messages = {
   ok: "Merkitse päätetyksi",
@@ -15,30 +14,34 @@ const messages = {
 
 storiesOf("Confirm Dialog", module)
   .addDecorator(withInfo)
-  .add(
-    "Example 1",
-    withState({ clicked: false })(({ store }) => (
+  .add("Example 1", () => {
+    const [state, setState] = useState({
+      clicked: false
+    });
+    return (
       <ConfirmDialog
         isConfirmDialogVisible={true}
         handleCancel={() => console.log("cancel")}
-        handleOk={() => store.set({ clicked: true })}
+        handleOk={() => setState({ clicked: true })}
         onClose={() => console.log("onClose clicked!")}
         messages={messages}
-        loadingSpinner={store.state.clicked}
+        loadingSpinner={state.clicked}
       />
-    ))
-  )
-  .add(
-    "With abandon changes",
-    withState({ clicked: false })(({ store }) => (
+    );
+  })
+  .add("With abandon changes", () => {
+    const [state, setState] = useState({
+      clicked: false
+    });
+    return (
       <ConfirmDialog
         isConfirmDialogVisible={true}
         handleCancel={() => console.log("cancel")}
-        handleOk={() => store.set({ clicked: true })}
+        handleOk={() => setState({ clicked: true })}
         handleExitAndAbandonChanges={() => console.log("exit not saving")}
         onClose={() => console.log("onClose clicked!")}
         messages={messages}
-        loadingSpinner={store.state.clicked}
+        loadingSpinner={state.clicked}
       />
-    ))
-  );
+    );
+  });
