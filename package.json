@@ -92,7 +92,7 @@
     "manage:translations": "node ./translationRunner.js",
     "get-translations": "node ./getTranslations.js",
     "docs": "jsdoc -c ./jsdoc.json",
-    "prettier": "npx prettier --write src/**/*.js",
+    "prettier": "npx prettier --config .prettierrc 'src/**/*.js' --write",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "devDependencies": {
