@@ -80,6 +80,9 @@ const WizardContainer = ({
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "valtakunnallisetKehittamistehtavat"
   });
+  const [rajoitepoistotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitepoistot"
+  });
 
   useEffect(() => {
     if (muutospyynto) {
@@ -185,6 +188,7 @@ const WizardContainer = ({
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
             rajoitteet: rajoitteetCO,
+            rajoitepoistot: rajoitepoistotCO,
             toimintaalue: toimintaalueCO,
             valtakunnallisetKehittamistehtavat: valtakunnallisetKehittamistehtavatCO
           },
@@ -242,6 +246,7 @@ const WizardContainer = ({
       organisaatio,
       paatoksentiedotCo,
       rajoitteetCO,
+      rajoitepoistotCO,
       toimintaalueCO,
       valtakunnallisetKehittamistehtavatCO,
       uuid
@@ -258,6 +263,7 @@ const WizardContainer = ({
           lupakohteet={lupakohteet}
           maaraykset={viimeisinLupa.maaraykset}
           valtakunnallinenMaarays={valtakunnallinenMaarays}
+          rajoitemaaraykset={viimeisinLupa.rajoitteet}
         />
       }
       isSaving={isSaving}

@@ -27,6 +27,7 @@ import * as opetuskieletHelper from "helpers/opetuskielet/index";
 import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat/index";
 import * as valtakunnallinenKehittamistehtavaHelper from "helpers/lukioValtakunnallinenKehittamistehtava";
 import { koulutustyypitMap } from "../../../utils/constants";
+import { createBeObjsForRajoitepoistot } from "../../../helpers/rajoitteetHelper";
 
 export async function createObjectToSave(
   locale,
@@ -241,6 +242,14 @@ export async function createObjectToSave(
     kohteet
   );
 
+  /** Luodaan rajoitepoistoihin liittyvät Backend muutosobjektit */
+  const rajoitepoistot = createBeObjsForRajoitepoistot(
+    changeObjects.rajoitepoistot,
+    lupa.maaraykset,
+    kohteet,
+    maaraystyypit
+  );
+
   let objectToSave = {
     alkupera,
     kieli: language,
@@ -269,7 +278,8 @@ export async function createObjectToSave(
       opetuskielet,
       opetustaAntavatKunnat,
       opiskelijamaarat,
-      valtakunnallinenKehittamistehtava
+      valtakunnallinenKehittamistehtava,
+      rajoitepoistot
     ]),
     uuid
   };
