@@ -9,5 +9,4 @@ reports
 
 # Gauge - JavaScript node dependencies
 node_modules
-
-.env
+.DS_Store

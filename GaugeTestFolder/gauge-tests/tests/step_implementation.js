@@ -130,7 +130,7 @@ step("Log in as <username>", async username => {
 
 step("Log out", async () => {
   try {
-    await click(link({ href: "/cas-logout" }));
+    await click(link({ href: "/fi/cas-logout" }));
   } catch (e) {
     console.error(e);
   }
@@ -170,6 +170,7 @@ step("Klikkaa elementtiä, jossa on teksti <teksti>", async teksti => {
 
 step("Varmista, että hakulomake on avattu otsikolla <teksti>", async teksti => {
   try {
+    await waitFor(async () => !(await $("h1").exists()));
     assert.equal(await $("h1").text(), teksti);
   } catch (e) {
     console.error(e);

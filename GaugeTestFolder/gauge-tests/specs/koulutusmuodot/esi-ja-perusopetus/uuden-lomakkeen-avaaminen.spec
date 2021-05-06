@@ -21,7 +21,7 @@
 * Varmista, että hakulomake on avattu otsikolla "Lappeenrannan kaupunki"
 * Päivitä selainikkuna
 * Varmista, että hakulomake on avattu otsikolla "Lappeenrannan kaupunki"
-* Klikkaa elementtiä, jossa on teksti "esiopetus"
+* Lomakeoperaatio "esiopetus" valitse "esiopetus"
 * Lomakeoperaatio "perusopetus" valitse "perusopetus"
 * Lomakeoperaatio "VALITSE KUNNAT" valitse "VALITSE KUNNAT"
 * Kirjoita kenttään, jonka parametri "id" on "maakunnat-ja-kunnat-filter" arvo "Kemi"

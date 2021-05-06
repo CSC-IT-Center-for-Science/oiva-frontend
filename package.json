@@ -7,7 +7,7 @@
     "@amcharts/amcharts4-geodata": "^4.1.14",
     "@date-io/date-fns": "^1.3.11",
     "@formatjs/intl-pluralrules": "^4.0.17",
-    "@getgauge/cli": "1.1.6",
+    "@getgauge/cli": "1.1.8",
     "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.28",
