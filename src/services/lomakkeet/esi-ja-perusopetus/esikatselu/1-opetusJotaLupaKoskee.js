@@ -1,14 +1,14 @@
-import { append, endsWith, find, isEmpty, map } from "ramda";
+import { append, endsWith, find, map } from "ramda";
 import { getAnchorPart } from "utils/common";
-import { getRajoitteet } from "utils/rajoitteetUtils";
 import Lisatiedot from "../../lisatiedot";
+import { createEsikatseluHTML } from "../../../../helpers/esikatselu";
 
-export async function previewOfOpetusJotaLupaKoskee({
-  lomakedata,
-  rajoitteet
-}) {
+export async function previewOfOpetusJotaLupaKoskee(
+  { lomakedata, rajoitteet, maaraykset },
+  booleans,
+  locale
+) {
   let structure = [];
-
   if (!lomakedata || !lomakedata.length) {
     return structure;
   }
@@ -19,31 +19,32 @@ export async function previewOfOpetusJotaLupaKoskee({
    */
   const listItems = map(opetustehtava => {
     const koodiarvo = getAnchorPart(opetustehtava.anchor, 2);
-    const kohdistuvatRajoitteet = getRajoitteet(koodiarvo, rajoitteet);
+    const maarays = find(
+      maarays =>
+        maarays.koodiarvo === koodiarvo && maarays.koodisto === "opetustehtava",
+      maaraykset
+    );
 
-    // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
-    // valittuja arvoja (ilman rajoittteita)
+    const html = createEsikatseluHTML(
+      maarays,
+      koodiarvo,
+      rajoitteet,
+      locale,
+      "nimi",
+      opetustehtava.properties.title
+    );
+
     if (opetustehtava.properties.isChecked) {
       return {
         anchor: koodiarvo,
         components: [
-          !isEmpty(kohdistuvatRajoitteet)
-            ? {
-                anchor: "rajoite",
-                name: "Rajoite",
-                properties: {
-                  areTitlesVisible: false,
-                  isReadOnly: true,
-                  rajoite: kohdistuvatRajoitteet
-                }
-              }
-            : {
-                anchor: "opetustehtava",
-                name: "HtmlContent",
-                properties: {
-                  content: opetustehtava.properties.title
-                }
-              }
+          {
+            anchor: "opetustehtava",
+            name: "HtmlContent",
+            properties: {
+              content: html
+            }
+          }
         ]
       };
     }
@@ -74,10 +75,7 @@ export async function previewOfOpetusJotaLupaKoskee({
   );
 
   if (lisatiedotNode && lisatiedotNode.properties.value) {
-    structure = append(
-      Lisatiedot(lisatiedotNode.properties.value),
-      structure
-    );
+    structure = append(Lisatiedot(lisatiedotNode.properties.value), structure);
   }
 
   return structure;

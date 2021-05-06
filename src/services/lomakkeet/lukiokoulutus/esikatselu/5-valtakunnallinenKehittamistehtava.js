@@ -1,14 +1,14 @@
-import { append, endsWith, find, map } from "ramda";
+import { append, endsWith, find, map, pathEq } from "ramda";
 import { getAnchorPart } from "utils/common";
-import { getRajoite } from "utils/rajoitteetUtils";
 import Lisatiedot from "../../lisatiedot";
+import { createEsikatseluHTML } from "../../../../helpers/esikatselu";
 
-export async function previewOfValtakunnallinenKehittamistehtava({
-  lomakedata,
-  rajoitteet
-}) {
+export async function previewOfValtakunnallinenKehittamistehtava(
+  { lomakedata, rajoitteet, maaraykset },
+  booleans,
+  locale
+) {
   let structure = [];
-
   if (!lomakedata || !lomakedata.length) {
     return structure;
   }
@@ -17,38 +17,34 @@ export async function previewOfValtakunnallinenKehittamistehtava({
    * Huomioidaan vain opetustehtävät, jotka ovat aktivoituina lomakkeella
    * (!!isChecked = true).
    */
-  const listItems = map(opetustehtava => {
-    const koodiarvo = getAnchorPart(opetustehtava.anchor, 1);
-    const index = getAnchorPart(opetustehtava.anchor, 2);
-    const { rajoiteId, rajoite } = getRajoite(
-      `${koodiarvo}-${index}`,
-      rajoitteet
+  const listItems = map(kehittamistehtava => {
+    const koodiarvo = getAnchorPart(kehittamistehtava.anchor, 1);
+    const kuvausnumero = getAnchorPart(kehittamistehtava.anchor, 2);
+
+    const maarays = find(
+      maarays =>
+        maarays.koodiarvo === koodiarvo &&
+        pathEq(["meta", "ankkuri"], kuvausnumero, maarays),
+      maaraykset
     );
 
-    // Listaus voi pitää sisällään joko rajoitteita tai päälomakkeelta
-    // valittuja arvoja (ilman rajoittteita)
-    if (opetustehtava.properties.isChecked) {
+    const html = createEsikatseluHTML(
+      maarays,
+      `${koodiarvo}-${kuvausnumero}`,
+      rajoitteet,
+      locale,
+      "nimi",
+      kehittamistehtava.properties.title
+    );
+    if (kehittamistehtava.properties.isChecked) {
       return {
         anchor: koodiarvo,
         components: [
-          rajoite
-            ? {
-                anchor: "rajoite",
-                name: "Rajoite",
-                properties: {
-                  areTitlesVisible: false,
-                  isReadOnly: true,
-                  rajoiteId,
-                  rajoite
-                }
-              }
-            : {
-                anchor: "opetustehtava",
-                name: "HtmlContent",
-                properties: {
-                  content: opetustehtava.properties.title
-                }
-              }
+          {
+            anchor: kuvausnumero,
+            name: "HtmlContent",
+            properties: { content: html }
+          }
         ]
       };
     }

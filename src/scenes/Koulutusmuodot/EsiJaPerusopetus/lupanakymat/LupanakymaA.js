@@ -11,27 +11,17 @@ import ErityisetKoulutustehtavat from "../lomakeosiot/5-ErityisetKoulutustehtava
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import {
-  compose,
+  assoc,
   filter,
   find,
-  flatten,
-  groupBy,
   includes,
   isNil,
-  keys,
-  last,
-  length,
   map,
   mapObjIndexed,
-  mergeAll,
-  nth,
   path,
   pathEq,
-  prop,
   propEq,
-  reject,
-  split,
-  startsWith
+  reject
 } from "ramda";
 import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
@@ -114,6 +104,30 @@ const LupanakymaA = React.memo(
       anchor: "rajoitepoistot"
     });
 
+    const rajoitepoistoIds = map(
+      rajoitepoisto => path(["properties", "rajoiteId"], rajoitepoisto),
+      rajoitepoistot
+    );
+
+    const maarayksetRajoitepoistotFiltered = map(maarays => {
+      /** Opiskelijamäärärajoitteen poisto poistaa koko määräyksen */
+      if (
+        maarays.koodisto === "kujalisamaareet" &&
+        path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE" &&
+        includes(path(["meta", "rajoiteId"], maarays), rajoitepoistoIds)
+      ) {
+        return null;
+      }
+
+      /** Muissa tapauksissa poistetaan vain alimääräykset */
+      const alimaaraykset = filter(
+        alimaarays =>
+          !includes(path(["meta", "rajoiteId"], alimaarays), rajoitepoistoIds),
+        maarays.aliMaaraykset || []
+      );
+      return assoc("aliMaaraykset", alimaaraykset, maarays);
+    }, maaraykset || []).filter(Boolean);
+
     const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
 
     const paattymispvm = path(
@@ -129,108 +143,65 @@ const LupanakymaA = React.memo(
       )
     );
 
-    // TODO: Näytetään rajoitemääräykset siten että ei käytetä parent-määräyksen sisällä olevia changeObjekteja.
-    // TODO: Käytetään niiden sijaan rajoitemääräyksiä
-    const rajoitteetFromMaarayksetByRajoiteId = map(
-      cObjs => {
-        return { changeObjects: cObjs };
-      },
-      groupBy(
-        compose(last, split("_"), nth(0), split("."), prop("anchor")),
-        filter(
-          changeObj => startsWith("rajoitteet_", changeObj.anchor),
-          flatten(
-            map(
-              cObj => {
-                return path(["meta", "changeObjects"], cObj);
-              },
-              filter(
-                maarays => length(maarays.meta.changeObjects),
-                maaraykset || []
-              )
-            )
-          )
-        )
-      )
-    );
-
     const rajoitteetListausChangeObj = find(
       propEq("anchor", "rajoitteet.listaus.A"),
       rajoitteetStateObj
     );
 
-    const rajoitteetByRajoiteId = path(
+    const rajoiteChangeObjsByRajoiteId = path(
       ["properties", "rajoitteet"],
       rajoitteetListausChangeObj
     );
 
     const opetustehtavamaaraykset = filterByTunniste(
       "opetusjotalupakoskee",
-      maaraykset
+      maarayksetRajoitepoistotFiltered
     );
 
     const toimintaaaluemaaraykset = filterByTunniste(
       "kunnatjoissaopetustajarjestetaan",
-      maaraykset
+      maarayksetRajoitepoistotFiltered
     );
 
     const opetuksenJarjestamismuotomaaraykset = filterByTunniste(
       "opetuksenjarjestamismuoto",
-      maaraykset
-    );
-
-    // Rajoitteet
-    const rajoitepoistoIds = map(
-      rajoitepoisto => path(["properties", "rajoiteId"], rajoitepoisto),
-      rajoitepoistot
-    );
-
-    // Ei oteta mukaan poistettuja rajoitemääräyksiä
-    const rajoiteMaarayksetPoistotFiltered = mergeAll(
-      map(key => {
-        return includes(key, rajoitepoistoIds)
-          ? null
-          : { [key]: rajoitteetFromMaarayksetByRajoiteId[key] };
-      }, keys(rajoitteetFromMaarayksetByRajoiteId)).filter(Boolean)
-    );
-
-    const rajoitteet = Object.assign(
-      {},
-      rajoiteMaarayksetPoistotFiltered,
-      rajoitteetByRajoiteId
+      maarayksetRajoitepoistotFiltered
     );
 
     const opetustehtavatRajoitteet = getRajoitteetBySection(
       "opetustehtavat",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const opetuskieletRajoitteet = getRajoitteetBySection(
       "opetuskielet",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const opetuksenJarjestamismuodotRajoitteet = getRajoitteetBySection(
       "opetuksenJarjestamismuodot",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
       "erityisetKoulutustehtavat",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const toimintaalueRajoitteet = getRajoitteetBySection(
       "toimintaalue",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const opiskelijamaaraRajoitteet = getRajoitteetBySection(
       "opiskelijamaarat",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
-    const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
+    const muutEhdotRajoitteet = getRajoitteetBySection(
+      "muutEhdot",
+      rajoiteChangeObjsByRajoiteId
+    );
 
     const asianumeroYmsClasses = isPreviewModeOn
       ? "md:w-1/2 xxl:w-1/3 pr-6 mb-6 mt-3"
@@ -285,7 +256,10 @@ const LupanakymaA = React.memo(
                   <Opetuskieli
                     code="3"
                     isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste("opetuskieli", maaraykset)}
+                    maaraykset={filterByTunniste(
+                      "opetuskieli",
+                      maarayksetRajoitepoistotFiltered
+                    )}
                     rajoitteet={opetuskieletRajoitteet}
                     sectionId={"opetuskielet"}
                     title={intl.formatMessage(common.opetuskieli)}
@@ -309,7 +283,7 @@ const LupanakymaA = React.memo(
                     isPreviewModeOn={isPreviewModeOn}
                     maaraykset={filterByTunniste(
                       "erityinenkoulutustehtava",
-                      maaraykset
+                      maarayksetRajoitepoistotFiltered
                     )}
                     rajoitteet={erityisetKoulutustehtavatRajoitteet}
                     sectionId={"erityisetKoulutustehtavat"}
@@ -324,7 +298,7 @@ const LupanakymaA = React.memo(
                     isPreviewModeOn={isPreviewModeOn}
                     maaraykset={filterByTunniste(
                       "oppilasopiskelijamaara",
-                      maaraykset
+                      maarayksetRajoitepoistotFiltered
                     )}
                     rajoitteet={opiskelijamaaraRajoitteet}
                     sectionId={"opiskelijamaarat"}
@@ -339,7 +313,7 @@ const LupanakymaA = React.memo(
                     isPreviewModeOn={isPreviewModeOn}
                     maaraykset={filterByTunniste(
                       "muutkoulutuksenjarjestamiseenliittyvatehdot",
-                      maaraykset
+                      maarayksetRajoitepoistotFiltered
                     )}
                     rajoitteet={muutEhdotRajoitteet}
                     sectionId={"muutEhdot"}
