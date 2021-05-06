@@ -1,12 +1,22 @@
+import { postData } from "../../../fetch";
+
 // muutospyynnot.tilanmuutos.korjattavaksi
 export const korjattavaksi = {
   label: "Muutospyynnön asettaminen korjaustilaan",
   input: ["id"],
-  run: async () => {
-    // TODO: Tee backendiin kutsu, jonka myötä muutospyynnön tila vaihtuu
-    // tilaksi KORJATTAVANA. Voit katsoa mallia paatetyksi.js:stä.
+  run: async ({ id }) => {
+    const response = await postData(
+      "muutospyyntoKorjattavaksi",
+      {},
+      {
+        urlEnding: id,
+        credentials: "include"
+      }
+    );
+    const json = await response.json();
     return {
-      inform: true
+      result: json,
+      status: response.status
     };
   },
   next: output => {

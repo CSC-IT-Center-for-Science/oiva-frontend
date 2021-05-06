@@ -56,6 +56,7 @@ export const backendRoutes = {
   muutospyyntoPaatetyksi: { path: "muutospyynnot/tila/paatetty/" },
   muutospyyntoEsittelyyn: { path: "muutospyynnot/tila/esittelyssa/" },
   muutospyyntoValmisteluun: { path: "muutospyynnot/tila/valmistelussa/" },
+  muutospyyntoKorjattavaksi: { path: "muutospyynnot//tila/korjauksessa/" },
   poistaMuutospyynto: { path: "muutospyynnot/" },
   tallennaMuutospyynto: { path: "muutospyynnot/tallenna" },
   tallennaMuutospyyntoEsittelijanToimesta: {

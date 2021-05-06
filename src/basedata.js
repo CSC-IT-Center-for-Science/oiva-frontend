@@ -45,6 +45,7 @@ import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
 import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
 import { initializeOikeudet } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
+import { initializeRajoitteet } from "./helpers/alimaaraykset";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -774,7 +775,11 @@ const fetchBaseData = async (
       )
     : undefined;
 
-  result.viimeisinLupa = raw.viimeisinLupa || {};
+  result.viimeisinLupa = assoc(
+    "rajoitteet",
+    initializeRajoitteet(prop("maaraykset", raw.viimeisinLupa)),
+    raw.viimeisinLupa
+  );
 
   result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByOid;
 

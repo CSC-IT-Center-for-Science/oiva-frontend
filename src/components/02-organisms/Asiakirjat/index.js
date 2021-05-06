@@ -20,7 +20,6 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import RemovalDialogOfAsiakirja from "./RemovalDialogOfAsiakirja/index";
 import { useMuutospyynnot } from "stores/muutospyynnot";
 import PDFAndStateDialog from "./PDFAndStateDialog";
-import { asiaEsittelijaStateToLocalizationKeyMap } from "utils/constants";
 import error from "i18n/definitions/error";
 import SelectAttachment from "components/02-organisms/SelectAttachment";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
@@ -31,6 +30,7 @@ import moment from "moment";
 import languages from "i18n/definitions/languages";
 import SimpleButton from "components/00-atoms/SimpleButton/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
+import { labelColorClassesByTila } from "../../../utils/asiatUtils";
 import {
   addIndex,
   append,
@@ -68,7 +68,8 @@ const states = [
   "TAYDENNETTAVA",
   "PAATETTY",
   "PASSIVOITU",
-  "ESITTELYSSA"
+  "ESITTELYSSA",
+  "KORJAUKSESSA"
 ];
 
 const Asiakirjat = ({ koulutusmuoto }) => {
@@ -176,16 +177,14 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   };
 
   const baseRow = {
-    tila: path(["data", "tila"], muutospyynto),
+    tila: muutospyynnonTila,
     localizedTila:
-      muutospyynto &&
-      muutospyynto.data &&
-      states.includes(muutospyynto.data.tila)
-        ? intl.formatMessage(
-            common[
-              asiaEsittelijaStateToLocalizationKeyMap[muutospyynto.data.tila]
-            ]
-          )
+      muutospyynto && muutospyynto.data && states.includes(muutospyynnonTila)
+        ? `<span class="px-3 py-2 rounded-sm ${prop(
+            muutospyynto.data.tila,
+            labelColorClassesByTila
+          )}">${t(common[`asiaStates.esittelija.${muutospyynto.data.tila}`]) ||
+            ""}</span>`
         : ""
   };
 
@@ -580,29 +579,97 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 className="float-right"
                 style={{ margin: 0 }}
               >
-                <SelectAttachment
-                  attachmentAdded={handleAddPaatoskirje}
-                  messages={{
-                    attachmentAdd: t(common.attachmentAddPaatoskirje),
-                    attachmentName: t(common.attachmentName),
-                    attachmentErrorName: t(common.attachmentErrorName),
-                    attachmentError: t(common.attachmentError),
-                    ok: t(common.ok),
-                    cancel: t(common.cancel)
+                <BackIcon
+                  style={{
+                    fontSize: 14,
+                    marginBottom: "0.1rem",
+                    marginRight: "0.4rem"
                   }}
-                  styles={{
-                    fontSize: "1em",
-                    backgroundColor: COLORS.BG_GRAY,
-                    border: "none",
-                    iconSize: "18",
-                    svgMargin: "0.1em 0.1em 0.2em 0",
-                    circleIcon: true,
-                    disableHover: true,
-                    normalCase: true
-                  }}
-                  fileType={"paatosKirje"}
                 />
-              </Typography>
+                {t(common.asiakirjatTakaisin)}
+              </Link>
+              <div className="flex-1 flex items-center pt-8 pb-2">
+                <div className="w-full flex flex-col">
+                  <Typography component="h1" variant="h1">
+                    {t(common["asiaTypes.lupaChange"])}
+                  </Typography>
+                  <p className="text-lg font-normal">{nimi}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 flex w-full">
+          <div className="flex-1 flex flex-col w-full mx-auto">
+            <div className="mx-auto w-4/5 max-w-8xl pb-4">
+              {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
+              <div>
+                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
+                  <SimpleButton
+                    text={t(common.palautaValmisteluun)}
+                    onClick={palautaValmisteluun}
+                    variant="outlined"
+                  />
+                )}
+                {(muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA ||
+                  muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
+                  <SimpleButton
+                    text={t(common["asiaTable.actions.paatetty"])}
+                    buttonStyles={
+                      muutospyynnonTila !== FIELDS.TILA.VALUES.KORJAUKSESSA
+                        ? { marginLeft: "1rem" }
+                        : {}
+                    }
+                    onClick={onPaatettyActionClicked}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA && (
+                  <SimpleButton
+                    text={t(common.vieEsittelyyn)}
+                    onClick={vieEsittelyyn}
+                  />
+                )}
+                {muutospyynnonTila === FIELDS.TILA.VALUES.PAATETTY && (
+                  <SimpleButton
+                    text={t(common.korjaaLupaa)}
+                    onClick={onKorjaaLupaaActionClicked}
+                    variant="outlined"
+                  />
+                )}
+              </div>
+              {/* Liitteitä voi lisätä vain, kun  */}
+              {(muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA ||
+                muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA) && (
+                <Typography
+                  component="h4"
+                  variant="h4"
+                  className="float-right"
+                  style={{ margin: 0, padding: 0 }}
+                >
+                  <SelectAttachment
+                    attachmentAdded={handleAddPaatoskirje}
+                    messages={{
+                      attachmentAdd: t(common.attachmentAddPaatoskirje),
+                      attachmentName: t(common.attachmentName),
+                      attachmentErrorName: t(common.attachmentErrorName),
+                      attachmentError: t(common.attachmentError),
+                      ok: t(common.ok),
+                      cancel: t(common.cancel)
+                    }}
+                    styles={{
+                      fontSize: "1em",
+                      backgroundColor: COLORS.BG_GRAY,
+                      border: "none",
+                      iconSize: "18",
+                      svgMargin: "0.1em 0.1em 0.2em 0",
+                      circleIcon: true,
+                      disableHover: true,
+                      normalCase: true
+                    }}
+                    fileType={"paatosKirje"}
+                  />
+                </Typography>
+              )}
             </div>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog

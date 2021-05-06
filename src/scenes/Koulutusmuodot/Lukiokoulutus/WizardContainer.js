@@ -18,6 +18,7 @@ import { createObjectToSave } from "./saving";
 import { find, prop, propEq, toUpper } from "ramda";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { FIELDS } from "locales/uusiHakemusFormConstants";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -36,6 +37,7 @@ const WizardContainer = ({
   const { formatMessage, locale } = useIntl();
   const { id, language, uuid } = useParams();
   const [isSaving, setIsSaving] = useState(false);
+  const [muutospyynnonTila, setMuutospyynnonTila] = useState();
   const [
     { isPreviewModeOn },
     { initializeChanges, setPreviewMode }
@@ -78,10 +80,16 @@ const WizardContainer = ({
   ] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "valtakunnallisetKehittamistehtavat"
   });
+  const [rajoitepoistotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitepoistot"
+  });
 
   useEffect(() => {
-    const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-    initializeChanges(changeObjectsFromBackend);
+    if (muutospyynto) {
+      const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+      initializeChanges(changeObjectsFromBackend);
+      setMuutospyynnonTila(prop("tila", muutospyynto));
+    }
   }, [muutospyynto, initializeChanges]);
 
   useEffect(() => {
@@ -113,6 +121,11 @@ const WizardContainer = ({
   );
 
   const steps = null;
+
+  const title =
+    muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA
+      ? formatMessage(wizard.luvanKorjaustilaJarjestamisluvanMuutos)
+      : formatMessage(wizard.esittelijatMuutospyyntoDialogTitle);
 
   const onNewDocSave = useCallback(
     (uuid, language) => {
@@ -160,7 +173,7 @@ const WizardContainer = ({
   );
 
   const onAction = useCallback(
-    async (action, fromDialog = false) => {
+    async (action, fromDialog = false, muutospyynnonTila) => {
       const formData = createMuutospyyntoOutput(
         await createObjectToSave(
           toUpper(locale),
@@ -175,6 +188,7 @@ const WizardContainer = ({
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
             rajoitteet: rajoitteetCO,
+            rajoitepoistot: rajoitepoistotCO,
             toimintaalue: toimintaalueCO,
             valtakunnallisetKehittamistehtavat: valtakunnallisetKehittamistehtavatCO
           },
@@ -182,7 +196,8 @@ const WizardContainer = ({
           kohteet,
           maaraystyypit,
           language,
-          "ESITTELIJA"
+          "ESITTELIJA",
+          muutospyynnonTila
         )
       );
 
@@ -231,6 +246,7 @@ const WizardContainer = ({
       organisaatio,
       paatoksentiedotCo,
       rajoitteetCO,
+      rajoitepoistotCO,
       toimintaalueCO,
       valtakunnallisetKehittamistehtavatCO,
       uuid
@@ -247,13 +263,14 @@ const WizardContainer = ({
           lupakohteet={lupakohteet}
           maaraykset={viimeisinLupa.maaraykset}
           valtakunnallinenMaarays={valtakunnallinenMaarays}
+          rajoitemaaraykset={viimeisinLupa.rajoitteet}
         />
       }
       isSaving={isSaving}
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}
-      title={formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
+      title={title}
       urlOnClose={
         role === "KJ"
           ? `../../../${id}/jarjestamislupa-asiat`

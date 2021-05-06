@@ -14,17 +14,16 @@ const constants = {
 };
 
 const Rajoitteet = ({
-  maaraykset,
   isPreviewModeOn,
   isRestrictionsModeOn,
   kohdevaihtoehdot,
   koulutustyyppi,
   onChangesUpdate,
   render,
-  sectionId
+  sectionId,
+  rajoitemaaraykset
 }) => {
   const dialogSectionId = "rajoitelomake";
-
   const { formatMessage } = useIntl();
   const [{ isRestrictionDialogVisible }] = useChangeObjects();
   const [osioidenData] = useAllSections();
@@ -51,8 +50,21 @@ const Rajoitteet = ({
   );
 
   const onRemoveRestriction = useCallback(
-    rajoiteId => {
-      setChanges([], `${sectionId}_${rajoiteId}`);
+    (rajoiteId, isMaarays) => {
+      const baseAnchor = `${sectionId}_${rajoiteId}`;
+      /** Jos poistettava rajoite on määräys, luodaan siitä muutosobjekti storeen */
+      if (isMaarays) {
+        const changeObj = {
+          anchor: baseAnchor,
+          properties: {
+            rajoiteId: rajoiteId,
+            tila: "POISTO"
+          }
+        };
+        setChanges([changeObj], `rajoitepoistot_${rajoiteId}`);
+      } else {
+        setChanges([], baseAnchor);
+      }
     },
     [sectionId, setChanges]
   );
@@ -77,7 +89,9 @@ const Rajoitteet = ({
             isInExpandableRow={false}
             anchor={sectionId}
             changeObjects={changeObjects}
-            data={{ restrictions: maaraykset }}
+            data={{
+              rajoitemaaraykset
+            }}
             formTitle={formatMessage(rajoitteetMessages.rajoitteet)}
             functions={{
               onAddRestriction,

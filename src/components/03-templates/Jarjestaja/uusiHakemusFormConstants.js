@@ -4,7 +4,7 @@ export const FIELDS = {
   TILA: {
     NAME: "tila",
     VALUES: {
-      KORJATTAVANA: "KORJATTAVANA",
+      KORJAUKSESSA: "KORJAUKSESSA",
       LUONNOS: "LUONNOS",
       AVOIN: "AVOIN",
       VALMISTELUSSA: "VALMISTELUSSA",

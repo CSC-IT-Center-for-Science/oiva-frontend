@@ -27,6 +27,7 @@ import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
 import * as opetuskieletHelper from "helpers/opetuskielet/index";
 import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat/index";
 import { koulutustyypitMap } from "../../../utils/constants";
+import { createBeObjsForRajoitepoistot } from "../../../helpers/rajoitteetHelper";
 
 export async function createObjectToSave(
   locale,
@@ -36,7 +37,8 @@ export async function createObjectToSave(
   uuid,
   kohteet,
   maaraystyypit,
-  alkupera = "KJ"
+  alkupera = "KJ",
+  muutospyynnonTila
 ) {
   const allAttachmentsRaw = [];
   const koulutustyyppi = koulutustyypitMap.ESI_JA_PERUSOPETUS;
@@ -237,6 +239,14 @@ export async function createObjectToSave(
     locale
   );
 
+  /** Luodaan rajoitepoistoihin liittyvät Backend muutosobjektit */
+  const rajoitepoistot = createBeObjsForRajoitepoistot(
+    changeObjects.rajoitepoistot,
+    lupa.maaraykset,
+    kohteet,
+    maaraystyypit
+  );
+
   let objectToSave = {
     alkupera,
     koulutustyyppi,
@@ -248,7 +258,9 @@ export async function createObjectToSave(
     luontipvm: moment().format("YYYY-MM-DD"),
     lupaUuid: lupa.uuid,
     // uuid: lupa.asiatyyppi.uuid,
-    tila: alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS",
+    tila:
+      muutospyynnonTila ||
+      (alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS"),
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: null,
@@ -262,7 +274,8 @@ export async function createObjectToSave(
       opetus,
       opetuskielet,
       opetustaAntavatKunnat,
-      opiskelijamaarat
+      opiskelijamaarat,
+      rajoitepoistot
     ]),
     uuid
   };

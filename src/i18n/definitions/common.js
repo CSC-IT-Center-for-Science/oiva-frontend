@@ -171,6 +171,10 @@ export default defineMessages({
     id: "common.asiatReady",
     defaultMessage: "Päätetyt"
   },
+  asiatKorjauksessa: {
+    id: "common.asiatKorjauksessa",
+    defaultMessage: "Korjauksessa"
+  },
   document: {
     id: "common.document",
     defaultMessage: "Asiakirja"
@@ -386,6 +390,10 @@ export default defineMessages({
   "asiaStates.esittelija.PAATETTY": {
     id: "asiaStates.esittelija.PAATETTY",
     defaultMessage: "Päätetty"
+  },
+  "asiaStates.esittelija.KORJAUKSESSA": {
+    id: "asiaStates.esittelija.KORJAUKSESSA",
+    defaultMessage: "Korjauksessa"
   },
   "asiaStates.esittelija.PASSIVOITU": {
     id: "asiaStates.esittelija.PASSIVOITU",
@@ -1296,6 +1304,10 @@ export default defineMessages({
   eiAvoimiaAsioita: {
     id: "common.eiAvoimiaAsioita",
     defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
+  },
+  eiKorjattaviaAsioita: {
+    id: "common.eiKorjattaviaAsioita",
+    defineMessage: "Taulukossa ei ole yhtään korjauksessa olevaa asiaa"
   },
   sulje: {
     id: "common.sulje",

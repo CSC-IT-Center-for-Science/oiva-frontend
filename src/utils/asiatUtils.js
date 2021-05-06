@@ -5,7 +5,7 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { addIndex, find, map, path, prop, propEq } from "ramda";
 
-const labelColorClassesByTila = {
+export const labelColorClassesByTila = {
   VALMISTELUSSA: "bg-blue-100",
   ESITTELYSSA: "bg-yellow-100",
   PAATETTY: "bg-gray-200",
@@ -160,7 +160,12 @@ export const generateAvoimetAsiatTableStructure = (
   ];
 };
 
-export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
+export const generatePaatetytAsiatTableStructure = (
+  hakemusList,
+  intl,
+  history,
+  koulutusmuotoKebabCase
+) => {
   const tableColumnSetup = asiatTableColumnSetup(false);
   return [
     generateAsiatTableHeaderStructure(intl.formatMessage, tableColumnSetup),
@@ -171,8 +176,18 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
           rows: addIndex(map)(row => {
             return {
               id: row.uuid,
-              onClick: async (row, action) => {
-                console.log("TODO: Avaa asian asiakirjat", row);
+              onClick: async row => {
+                history.push(
+                  localizeRouteKey(
+                    intl.locale,
+                    AppRoute.Asia,
+                    intl.formatMessage,
+                    {
+                      koulutusmuoto: koulutusmuotoKebabCase,
+                      uuid: row.id
+                    }
+                  )
+                );
               },
               cells: generateAsiaTableRows(row, intl, false)
             };
