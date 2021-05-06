@@ -151,6 +151,14 @@ export const defineBackendChangeObjects = async (
     kohde
   );
 
+  const maarayksiaVastenLuodutValtakunnalisetRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
+  );
+
   const muutokset = map(koulutustehtava => {
     // Checkbox-kenttien muutokset
     const checkboxChangeObj = find(
@@ -488,7 +496,8 @@ export const defineBackendChangeObjects = async (
         checkboxBEchangeObject,
         uncheckedCheckBoxPoistot,
         onlyValtakunnallinenMuutosBeCobjs,
-        alimaaraykset
+        alimaaraykset,
+        maarayksiaVastenLuodutRajoitteet
       ];
     }
     return [
@@ -526,6 +535,7 @@ export const defineBackendChangeObjects = async (
 
   return flatten([
     maarayksiaVastenLuodutRajoitteet,
+    maarayksiaVastenLuodutValtakunnalisetRajoitteet,
     muutokset,
     lisatiedotBEchangeObject
   ]).filter(Boolean);
