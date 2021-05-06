@@ -247,8 +247,7 @@ const JarjestamislupaAsiatList = ({
             className="mb-2"
             to={newApplicationRouteItem.path}
             exact={newApplicationRouteItem.exact}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
+            style={{ textDecoration: "none", color: "inherit" }}>
             <Button color="primary" className="newHakemus">
               <Add />
               <span className="pl-2">{newApplicationRouteItem.text}</span>

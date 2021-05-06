@@ -26,8 +26,7 @@ const List = ({ items }) => {
               return (
                 <HtmlContent
                   key={index}
-                  content={properties.content}
-                ></HtmlContent>
+                  content={properties.content}></HtmlContent>
               );
             } else {
               return <div key={index}>[komponenttia ei osata käsitellä]</div>;

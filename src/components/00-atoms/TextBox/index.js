@@ -215,8 +215,9 @@ const TextBox = ({
                         ((!value && showValidationErrors) || isVisited)
                       ? classes.cssLabelRequired
                       : classes.cssLabel
-                  } ${isReadOnly && value && classes.inputLabelReadonlyShrink}`}
-                >
+                  } ${
+                    isReadOnly && value && classes.inputLabelReadonlyShrink
+                  }`}>
                   <span style={{ padding: "0 0.3em", background: "white" }}>
                     {title}
                     {!isReadOnly && isRequired && "*"}
@@ -278,8 +279,7 @@ const TextBox = ({
                     paddingLeft: "0.5em",
                     marginBottom: "0.5em",
                     color: COLORS.OIVA_ORANGE_TEXT
-                  }}
-                >
+                  }}>
                   {!value && requiredMessage}
                 </FormHelperText>
               )}
@@ -287,8 +287,7 @@ const TextBox = ({
             {!isReadOnly && isRemovable && !isHidden && (
               <div
                 className="ml-8 mr-1 mt-4"
-                style={{ position: "relative", right: "32px", top: "7px" }}
-              >
+                style={{ position: "relative", right: "32px", top: "7px" }}>
                 <SimpleButton
                   ariaLabel={"Remove text area"}
                   icon={"ClearIcon"}

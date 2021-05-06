@@ -37,8 +37,7 @@ const Koulutusala = ({
   return (
     <ExpandableRowRoot
       code={koodi}
-      title={`${nimi} (${amountOfTutkinnot} kpl)`}
-    >
+      title={`${nimi} (${amountOfTutkinnot} kpl)`}>
       {_.map(koulutusalat, (ala, i) => (
         <SubAla
           {...ala}

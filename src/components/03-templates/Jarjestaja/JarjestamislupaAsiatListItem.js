@@ -56,8 +56,7 @@ const JarjestamislupaAsiaListItem = props => {
       <Tr
         className="hidden lg:block"
         role="row"
-        onClick={() => props.setOpened(uuid)}
-      >
+        onClick={() => props.setOpened(uuid)}>
         <Td role="cell" size="small">
           <Typography component="span">{}</Typography>
         </Td>

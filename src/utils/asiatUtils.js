@@ -92,8 +92,9 @@ export const generateAsiaTableRows = (
         text: `<span class="px-3 py-2 rounded-sm ${prop(
           row.tila,
           labelColorClassesByTila
-        )}">${formatMessage(common[`asiaStates.esittelija.${row.tila}`]) ||
-          ""}</span>`
+        )}">${
+          formatMessage(common[`asiaStates.esittelija.${row.tila}`]) || ""
+        }</span>`
       },
       { text: avoimet ? paivityspvm : paatospvm }
     ]

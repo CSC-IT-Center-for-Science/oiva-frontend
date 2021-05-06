@@ -29,8 +29,7 @@ const DialogTitle = withStyles(theme => ({
         <IconButton
           aria-label="Close"
           className={classes.closeButton}
-          onClick={onClose}
-        >
+          onClick={onClose}>
           <CloseIcon />
         </IconButton>
       ) : null}

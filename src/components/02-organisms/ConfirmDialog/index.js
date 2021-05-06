@@ -52,8 +52,7 @@ const ConfirmDialog = props => {
       fullWidth={true}
       aria-labelledby="confirm-dialog"
       maxWidth="sm"
-      classes={{ paper: classes.paper }}
-    >
+      classes={{ paper: classes.paper }}>
       <DialogTitle id="confirm-dialog" onClose={onClose}>
         <span className="mr-12">{messages.title}</span>
       </DialogTitle>
@@ -64,8 +63,7 @@ const ConfirmDialog = props => {
         <div
           className={
             classes.root + " flex flex-col sm:flex-row flex-grow sm:flex-grow-0"
-          }
-        >
+          }>
           <Button onClick={handleCancel} color="primary" variant="outlined">
             {messages.cancel}
           </Button>
@@ -73,8 +71,7 @@ const ConfirmDialog = props => {
             <Button
               onClick={handleExitAndAbandonChanges}
               color="primary"
-              variant="outlined"
-            >
+              variant="outlined">
               {messages.noSave}
             </Button>
           )}
@@ -82,8 +79,7 @@ const ConfirmDialog = props => {
             onClick={handleOk}
             color="primary"
             variant="contained"
-            disabled={loadingSpinner}
-          >
+            disabled={loadingSpinner}>
             {loadingSpinner ? <CircularProgress size={20} /> : messages.ok}
           </Button>
         </div>

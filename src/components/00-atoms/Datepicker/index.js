@@ -118,8 +118,7 @@ const Datepicker = ({
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={localeMap[locale]}>
       <div
         className="flex-col"
-        style={!width && fullWidth ? { display: "flex" } : {}}
-      >
+        style={!width && fullWidth ? { display: "flex" } : {}}>
         {/* https://material-ui-pickers.dev/api/DatePicker */}
         <DatePicker
           format="d.M.yyyy" // Always is Finnish format
@@ -178,8 +177,7 @@ const Datepicker = ({
               paddingLeft: "1.2em",
               marginBottom: "0.5em",
               color: COLORS.OIVA_ORANGE_TEXT
-            }}
-          >
+            }}>
             {isVisited && !selectedDate && requiredMessage}
           </FormHelperText>
         )}

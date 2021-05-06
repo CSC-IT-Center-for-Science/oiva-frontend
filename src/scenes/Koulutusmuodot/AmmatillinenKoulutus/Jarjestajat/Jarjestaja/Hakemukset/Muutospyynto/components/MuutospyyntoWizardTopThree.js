@@ -32,8 +32,7 @@ const MuutospyyntoWizardTopThree = React.memo(() => {
       isInExpandableRow={false}
       isReadOnly={false}
       mode="addition"
-      path={formLocations.kolmeEnsimmaistaKenttaa}
-    ></Lomake>
+      path={formLocations.kolmeEnsimmaistaKenttaa}></Lomake>
   );
 });
 

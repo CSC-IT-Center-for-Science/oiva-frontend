@@ -34,8 +34,7 @@ const MuutospyyntoWizardOpiskelijavuodet = React.memo(
         isRowExpanded={true}
         mode={mode}
         path={constants.formLocation}
-        showCategoryTitles={true}
-      ></Lomake>
+        showCategoryTitles={true}></Lomake>
     ) : null;
   },
   (cp, np) => isEqual(cp, np)

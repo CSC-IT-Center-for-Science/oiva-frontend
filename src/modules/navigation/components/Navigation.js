@@ -31,22 +31,19 @@ export const Navigation = ({ routes }) => {
                 key={routeObj.key}
                 className="flex flex-col items-center hover:bg-green-600 hover:text-white hover:bg-opacity-50"
                 onMouseEnter={() => setVisibleSubMenuRoute(routeObj.key)}
-                onMouseLeave={() => setVisibleSubMenuRoute(null)}
-              >
+                onMouseLeave={() => setVisibleSubMenuRoute(null)}>
                 <div
-                  className={`flex flex-col justify-center text-white px-2 h-20 uppercase font-medium hover:text-white ${location.pathname.indexOf(
-                    routeKey
-                  ) !== -1 && "bg-green-700"}`}
+                  className={`flex flex-col justify-center text-white px-2 h-20 uppercase font-medium hover:text-white ${
+                    location.pathname.indexOf(routeKey) !== -1 && "bg-green-700"
+                  }`}
                   style={{
                     fontSize: "0.9375rem"
-                  }}
-                >
+                  }}>
                   <div className="flex flex-row justify-center hover:text-white h-full">
                     <NavLink
                       to={routeKey}
                       activeClassName={"bg-green-700 bg-opacity-75"}
-                      className="flex flex-col justify-center text-white hover:text-white px-3"
-                    >
+                      className="flex flex-col justify-center text-white hover:text-white px-3">
                       <span>
                         {routeObj.titleKey
                           ? formatMessage({ id: routeObj.titleKey })
@@ -60,8 +57,7 @@ export const Navigation = ({ routes }) => {
                             visibleSubMenuRoute === null ? routeObj.key : null
                           );
                         }}
-                        className="flex flex-col justify-center text-white"
-                      >
+                        className="flex flex-col justify-center text-white">
                         {visibleSubMenuRoute === routeObj.key ? (
                           <ExpandLessIcon className="align-bottom" />
                         ) : (
@@ -77,8 +73,7 @@ export const Navigation = ({ routes }) => {
                   visibleSubMenuRoute === routeObj.key && (
                     <ul
                       className={"flex left-0 w-full fixed bg-green-600 h12"}
-                      style={{ top: "4.5rem" }}
-                    >
+                      style={{ top: "4.5rem" }}>
                       {map(routeObj => {
                         return (
                           <li
@@ -87,8 +82,7 @@ export const Navigation = ({ routes }) => {
                             onClick={e => {
                               e.stopPropagation();
                               setVisibleSubMenuRoute(null);
-                            }}
-                          >
+                            }}>
                             <NavLink
                               to={localizeRouteKey(
                                 locale,
@@ -98,8 +92,7 @@ export const Navigation = ({ routes }) => {
                               activeClassName={"bg-green-700"}
                               aria-current="page"
                               className="flex flex-col justify-center text-white px-5 h-20 font-medium hover:text-white hover:bg-green-600 hover:bg-opacity-50"
-                              style={{ fontSize: "0.9375rem" }}
-                            >
+                              style={{ fontSize: "0.9375rem" }}>
                               <span>
                                 {routeObj.titleKey
                                   ? formatMessage({ id: routeObj.titleKey })

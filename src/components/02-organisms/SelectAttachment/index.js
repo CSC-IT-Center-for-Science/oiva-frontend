@@ -28,10 +28,7 @@ const SelectAttachment = React.memo(props => {
 
     if (e.target.files.length === 0) return;
 
-    const type = e.target.files[0].name
-      .split(".")
-      .pop()
-      .toLowerCase();
+    const type = e.target.files[0].name.split(".").pop().toLowerCase();
 
     // Rajoitetaan max kooksi 25MB ja vain pdf, word, excel, jpeg ja gif on sallittuja
     if (checkFiletypeAndSize(type, e.target.files[0].size)) {
@@ -91,8 +88,7 @@ const SelectAttachment = React.memo(props => {
         open={isNameModalOpen}
         aria-labelledby="name-dialog"
         fullWidth={true}
-        maxWidth="sm"
-      >
+        maxWidth="sm">
         <DialogTitle id="name-dialog">
           {props.messages.attachmentName}
         </DialogTitle>
@@ -124,8 +120,7 @@ const SelectAttachment = React.memo(props => {
           <Button
             onClick={cancelAttachment}
             color="secondary"
-            variant="outlined"
-          >
+            variant="outlined">
             {props.messages.cancel}
           </Button>
         </DialogActions>

@@ -10,7 +10,7 @@ import {
   SEND_MUUTOSPYYNTO_SUCCESS
 } from "./actionTypes";
 
-export default function(state, action) {
+export default function (state, action) {
   switch (action.type) {
     case SET_BACKEND_CHANGES:
       return {

@@ -27,8 +27,7 @@ const Lupapaatokset = ({
       koulutusmuoto={koulutusmuoto}
       data={lupahistoria.data || []}
       tulevatLuvat={tulevatLuvat}
-      voimassaOlevaLupa={voimassaOlevaLupa}
-    ></LupapaatoksetTable>
+      voimassaOlevaLupa={voimassaOlevaLupa}></LupapaatoksetTable>
   ) : null;
 };
 

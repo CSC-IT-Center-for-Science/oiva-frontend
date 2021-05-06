@@ -70,8 +70,7 @@ const YhteenvetoKooste = ({
         <React.Fragment>
           <Section
             code={lupaKohteet[1].headingNumber}
-            title={lupaKohteet[1].heading}
-          >
+            title={lupaKohteet[1].heading}>
             {!R.isEmpty(changeObjects.tutkinnot) && (
               <PerustelutTutkinnot
                 changeObjects={{

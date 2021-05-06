@@ -80,8 +80,7 @@ const Rajoitteet = ({
           onChangesUpdate={onChangesUpdate}
           parentSectionId={sectionId}
           restrictionId={restrictionId}
-          sectionId={dialogSectionId}
-        ></Rajoitedialogi>
+          sectionId={dialogSectionId}></Rajoitedialogi>
       )}
       {isRestrictionsModeOn && !isPreviewModeOn && (
         <div className="pt-8">
@@ -102,8 +101,7 @@ const Rajoitteet = ({
             noPadding={true}
             onChangesUpdate={onChangesUpdate}
             path={constants.formLocations}
-            showCategoryTitles={true}
-          ></Lomake>
+            showCategoryTitles={true}></Lomake>
         </div>
       )}
     </React.Fragment>

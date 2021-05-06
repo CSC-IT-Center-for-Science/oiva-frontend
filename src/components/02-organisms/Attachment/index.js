@@ -96,8 +96,7 @@ const Attachment = React.memo(props => {
               props.styles.normalCase
                 ? "justify-center"
                 : "uppercase justify-center"
-            }
-          >
+            }>
             &nbsp;{props.messages.attachmentAdd}
           </span>
         </div>

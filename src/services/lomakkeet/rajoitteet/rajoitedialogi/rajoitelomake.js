@@ -24,12 +24,12 @@ import { getAnchorPart } from "utils/common";
 import { __ } from "i18n-for-browser";
 
 const bgColorClassesByIndex = {
-  "0": "bg-gray-100",
-  "1": "bg-blue-100",
-  "2": "bg-green-100",
-  "3": "bg-gray-200",
-  "4": "bg-blue-200",
-  "5": "bg-green-200"
+  0: "bg-gray-100",
+  1: "bg-blue-100",
+  2: "bg-green-100",
+  3: "bg-gray-200",
+  4: "bg-blue-200",
+  5: "bg-green-200"
 };
 
 async function getAsetuslomakekokonaisuus(

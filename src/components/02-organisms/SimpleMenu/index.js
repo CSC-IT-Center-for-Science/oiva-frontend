@@ -71,8 +71,7 @@ function SimpleMenu({ actions = [], id, isExpanded }) {
               onClick={e => {
                 handleClose(e, action);
                 return false;
-              }}
-            >
+              }}>
               {action.name === "delete" ? (
                 <Delete color={action.isDisabled ? "disabled" : "action"} />
               ) : action.name === "edit" ? (
@@ -90,8 +89,7 @@ function SimpleMenu({ actions = [], id, isExpanded }) {
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
-        onClick={handleClick}
-      >
+        onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
 
@@ -100,8 +98,7 @@ function SimpleMenu({ actions = [], id, isExpanded }) {
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
+        onClose={handleClose}>
         {R.addIndex(R.map)((action, i) => {
           return (
             <MenuItem
@@ -109,8 +106,7 @@ function SimpleMenu({ actions = [], id, isExpanded }) {
               onClick={e => {
                 handleClose(e, action);
                 return false;
-              }}
-            >
+              }}>
               {action.text}
             </MenuItem>
           );

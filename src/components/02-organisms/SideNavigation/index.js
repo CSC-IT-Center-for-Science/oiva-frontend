@@ -41,14 +41,12 @@ const SideNavigation = ({
         onClose={toggleDrawer(false)}
         variant="temporary"
         onEscapeKeyDown={() => setIsMobileMenuVisible(false)}
-        onBackdropClick={() => setIsMobileMenuVisible(false)}
-      >
+        onBackdropClick={() => setIsMobileMenuVisible(false)}>
         <div
           tabIndex={0}
           role="presentation"
           onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
+          onKeyDown={toggleDrawer(false)}>
           {children}
         </div>
       </Drawer>

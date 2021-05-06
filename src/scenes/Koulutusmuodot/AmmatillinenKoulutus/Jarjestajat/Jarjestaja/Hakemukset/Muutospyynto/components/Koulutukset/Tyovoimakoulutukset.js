@@ -42,8 +42,7 @@ const Tyovoimakoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.workforceTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

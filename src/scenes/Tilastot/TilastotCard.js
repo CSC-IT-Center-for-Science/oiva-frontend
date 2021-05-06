@@ -20,8 +20,7 @@ export default function TilastotCard() {
           history.push(
             localizeRouteKey(locale, AppRoute.Tilastot, formatMessage)
           );
-        }}
-      >
+        }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {formatMessage(commonMessages.statistics)}

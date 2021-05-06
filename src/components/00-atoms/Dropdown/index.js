@@ -110,8 +110,7 @@ const Dropdown = props => {
         required={props.isRequired}
         error={props.error}
         fullWidth={props.fullWidth}
-        margin="dense"
-      >
+        margin="dense">
         {props.label && (
           <InputLabel id="select-label">{props.label}</InputLabel>
         )}
@@ -130,8 +129,7 @@ const Dropdown = props => {
             }
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            placeholder={props.placeholder}
-          >
+            placeholder={props.placeholder}>
             {addIndex(map)((item, i) => {
               return item ? (
                 <MenuItem key={i} value={item.value}>
@@ -150,8 +148,7 @@ const Dropdown = props => {
             paddingLeft: "1.2em",
             marginBottom: "0.5em",
             color: COLORS.OIVA_ORANGE_TEXT
-          }}
-        >
+          }}>
           {isVisited && !props.value && props.requiredMessage}
         </FormHelperText>
       )}

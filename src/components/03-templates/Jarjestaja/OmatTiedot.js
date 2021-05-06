@@ -98,8 +98,7 @@ const OmatTiedot = ({ kunnat, maakunnat, organisation }) => {
                     <p>
                       <a
                         title={`Call to number ${numero}`}
-                        href={`tel:${numero}`}
-                      >
+                        href={`tel:${numero}`}>
                         {numero}
                       </a>
                     </p>

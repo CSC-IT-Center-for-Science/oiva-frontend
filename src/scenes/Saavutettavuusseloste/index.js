@@ -170,8 +170,7 @@ const contentFi = (
       <a
         href={"https://www.avi.fi/web/avi/avi-etela-suomi"}
         rel="noopener noreferrer"
-        target={"_blank"}
-      >
+        target={"_blank"}>
         voit tehdä ilmoituksen Etelä-Suomen aluehallintovirastoon
       </a>
       . Etelä-Suomen aluehallintoviraston sivulla kerrotaan tarkasti, miten

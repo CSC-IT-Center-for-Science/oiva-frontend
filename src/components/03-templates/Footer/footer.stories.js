@@ -5,6 +5,4 @@ import { withInfo } from "@storybook/addon-info";
 
 storiesOf("Footer", module)
   .addDecorator(withInfo)
-  .add("Renders with the correct layout", () => (
-    <Footer />
-  ));
+  .add("Renders with the correct layout", () => <Footer />);

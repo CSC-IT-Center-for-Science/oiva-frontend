@@ -28,8 +28,7 @@ const JarjestamisJaYllapitamisluvat = () => {
           locale,
           AppRoute.JarjestamisJaYllapitamisluvat,
           formatMessage
-        )}
-      >
+        )}>
         {formatMessage(common.jarjestamisJaYllapitamisluvat)}
       </BreadcrumbsItem>
       <LocalizedSwitch>

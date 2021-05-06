@@ -183,8 +183,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         ? `<span class="px-3 py-2 rounded-sm ${prop(
             muutospyynto.data.tila,
             labelColorClassesByTila
-          )}">${t(common[`asiaStates.esittelija.${muutospyynto.data.tila}`]) ||
-            ""}</span>`
+          )}">${
+            t(common[`asiaStates.esittelija.${muutospyynto.data.tila}`]) || ""
+          }</span>`
         : ""
   };
 
@@ -518,8 +519,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       }
                     )}?force=${new Date().getTime()}`
                   );
-                }}
-              >
+                }}>
                 <BackIcon
                   style={{
                     fontSize: 14,
@@ -585,8 +585,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   component="h4"
                   variant="h4"
                   className="float-right"
-                  style={{ margin: 0, padding: 0 }}
-                >
+                  style={{ margin: 0, padding: 0 }}>
                   <SelectAttachment
                     attachmentAdded={handleAddPaatoskirje}
                     messages={{
@@ -630,8 +629,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 isVisible={isRemovalDialogVisible}
                 removeAsia={rows.length === 1}
                 onClose={() => setIsRemovalDialogVisible(false)}
-                onOK={removeAsiakirja}
-              ></RemovalDialogOfAsiakirja>
+                onOK={removeAsiakirja}></RemovalDialogOfAsiakirja>
             )}
             {isDownloadPDFAndChangeStateDialogVisible && (
               <PDFAndStateDialog
@@ -639,8 +637,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 onClose={() =>
                   setIsDownloadPDFAndChangeStateDialogVisible(false)
                 }
-                onOK={setStateOfMuutospyyntoAsEsittelyssa}
-              ></PDFAndStateDialog>
+                onOK={setStateOfMuutospyyntoAsEsittelyssa}></PDFAndStateDialog>
             )}
             {isPaatettyConfirmationDialogVisible && (
               <ConfirmDialog
@@ -690,8 +687,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
               <div className="flex mx-auto w-4/5 max-w-8xl py-12">
                 <div
                   className="flex-1 bg-white"
-                  style={{ border: "0.05rem solid #E3E3E3" }}
-                >
+                  style={{ border: "0.05rem solid #E3E3E3" }}>
                   <WrapTable>
                     <Media
                       query={MEDIA_QUERIES.MOBILE}
@@ -707,8 +703,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                         <div
                           style={{
                             borderBottom: "0.05rem solid #E3E3E3"
-                          }}
-                        >
+                          }}>
                           <Table
                             structure={tableStructure}
                             sortedBy={{ columnIndex: 3, order: "desc" }}

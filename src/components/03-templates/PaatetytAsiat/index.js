@@ -50,8 +50,7 @@ const PaatetytAsiat = ({ koulutusmuoto }) => {
       <div
         style={{
           borderBottom: "0.05rem solid #E3E3E3"
-        }}
-      >
+        }}>
         <Table
           structure={tableStructure}
           sortedBy={{ columnIndex: 5, order: "desc" }}

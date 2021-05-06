@@ -59,8 +59,7 @@ const PerustelutTutkintokielet = React.memo(props => {
                 sectionId={fullSectionId}
                 showCategoryTitles={true}
                 title={title}
-                isExpanded={true}
-              >
+                isExpanded={true}>
                 <Lomake
                   action="reasoning"
                   anchor={`${sectionId}_${areaCode}`}
@@ -79,8 +78,7 @@ const PerustelutTutkintokielet = React.memo(props => {
                   onChangesUpdate={onChangesUpdate}
                   path={["perustelut", "kielet", "tutkintokielet"]}
                   rulesFn={getRules}
-                  showCategoryTitles={true}
-                ></Lomake>
+                  showCategoryTitles={true}></Lomake>
               </ExpandableRowRoot>
             );
           }

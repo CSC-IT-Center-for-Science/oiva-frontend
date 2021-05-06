@@ -28,8 +28,7 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
               { koulutusmuoto: koulutusmuoto.kebabCase }
             )
           );
-        }}
-      >
+        }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {koulutusmuoto.kortinOtsikko}
@@ -55,8 +54,7 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
                   }
                 )
               );
-            }}
-          >
+            }}>
             {formatMessage(common.asianhallinta)}
           </Button>
         </CardActions>

@@ -170,8 +170,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
     <React.Fragment>
       <MaUTable
         {...getTableProps()}
-        className="border border-solid border-gray-400"
-      >
+        className="border border-solid border-gray-400">
         <caption>
           {intl.formatMessage(
             vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa,
@@ -189,8 +188,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
-                      })}
-                    >
+                      })}>
                       {column.render("Header")}
                       {/* Add a sort direction indicator */}
                       {column.isSorted ? (
@@ -239,8 +237,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
       <nav
         role="navigation"
         aria-label={intl.formatMessage(common.navigationBetweenTablePages)}
-        className="flex justify-evenly items-center"
-      >
+        className="flex justify-evenly items-center">
         <div>
           <StyledButton
             onClick={() => gotoPage(0)}
@@ -250,8 +247,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             <FirstPageIcon /> {intl.formatMessage(common.ensimmainenSivu)}
           </StyledButton>
           <StyledButton
@@ -262,8 +258,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             <ArrowLeftIcon /> {intl.formatMessage(common.edellinen)}
           </StyledButton>
           <StyledButton
@@ -274,8 +269,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             {intl.formatMessage(common.seuraava)} <ArrowRightIcon />
           </StyledButton>
           <StyledButton
@@ -285,8 +279,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             )}
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(common.viimeinenSivu)} <LastPageIcon />
           </StyledButton>
         </div>
@@ -325,8 +318,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             inputProps={{
               name: "rows-per-page",
               id: "rows-per-page"
-            }}
-          >
+            }}>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
@@ -424,8 +416,7 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
             )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
-            })}
-          >
+            })}>
             {row.values.yllapitaja}
           </Link>
         );

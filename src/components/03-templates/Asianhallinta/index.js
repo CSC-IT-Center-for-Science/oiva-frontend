@@ -131,8 +131,7 @@ const Asianhallinta = ({
                         }
                       )}
                       exact={true}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
+                      style={{ textDecoration: "none", color: "inherit" }}>
                       {formatMessage(education.preAndBasicEducation)}
                       <ArrowForwardIcon className="ml-4" />
                     </NavLink>
@@ -147,8 +146,7 @@ const Asianhallinta = ({
                         }
                       )}
                       exact={true}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
+                      style={{ textDecoration: "none", color: "inherit" }}>
                       {formatMessage(education.highSchoolEducation)}
                       <ArrowForwardIcon className="ml-4" />
                     </NavLink>
@@ -165,8 +163,7 @@ const Asianhallinta = ({
                         }
                       )}
                       exact={true}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
+                      style={{ textDecoration: "none", color: "inherit" }}>
                       {formatMessage(education.vocationalEducation)}
                       <ArrowForwardIcon className="ml-4" />
                     </NavLink>

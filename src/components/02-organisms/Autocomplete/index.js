@@ -176,8 +176,7 @@ const Autocomplete = React.memo(
             {props.title && (
               <InputLabel
                 required={props.isRequired}
-                style={{ marginBottom: "0.2em" }}
-              >
+                style={{ marginBottom: "0.2em" }}>
                 {props.title}
               </InputLabel>
             )}

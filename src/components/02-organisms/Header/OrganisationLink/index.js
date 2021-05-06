@@ -19,8 +19,7 @@ const OrganisationLink = ({
       }}
       className={classes}
       to={organisationLink.path}
-      exact={false}
-    >
+      exact={false}>
       {formatMessage(common.omaSivu)}
     </NavLink>
   );

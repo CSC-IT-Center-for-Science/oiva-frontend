@@ -58,17 +58,17 @@ const mapping = {
   "07": "FI-16",
   "08": "FI-09",
   "09": "FI-02",
-  "10": "FI-04",
-  "11": "FI-15",
-  "12": "FI-13",
-  "14": "FI-03",
-  "16": "FI-07",
-  "13": "FI-08",
-  "15": "FI-12",
-  "17": "FI-14",
-  "18": "FI-05",
-  "19": "FI-10",
-  "21": "FI-01"
+  10: "FI-04",
+  11: "FI-15",
+  12: "FI-13",
+  14: "FI-03",
+  16: "FI-07",
+  13: "FI-08",
+  15: "FI-12",
+  17: "FI-14",
+  18: "FI-05",
+  19: "FI-10",
+  21: "FI-01"
 };
 
 const countyNamesFinnish = {
@@ -378,14 +378,14 @@ const Modify = React.memo(
         polygonSeries.current.useGeodata = true;
 
         // Add expectancy data
-        polygonSeries.current.events.on("beforedatavalidated", function(ev) {
+        polygonSeries.current.events.on("beforedatavalidated", function (ev) {
           var source = ev.target.data;
           if (source.maybe) {
             ev.target.data = source.maybe.here.values;
           }
         });
 
-        polygonSeries.current.events.on("inited", function(ev) {
+        polygonSeries.current.events.on("inited", function (ev) {
           forEachObjIndexed(instance => {
             instance.setMap(kartta.current);
             instance.setPolygonSeries(polygonSeries.current);
@@ -402,7 +402,7 @@ const Modify = React.memo(
         const activeState = polygonTemplate.current.states.create("active");
         activeState.properties.stroke = am4core.color("#367B25");
 
-        polygonTemplate.current.events.on("hit", function(e) {
+        polygonTemplate.current.events.on("hit", function (e) {
           if (e.target.dataItem.dataContext.id !== "FI-01") {
             activePolygon.current = e.target;
             // FI-01 = Ahvenanmaa
@@ -773,8 +773,7 @@ const Modify = React.memo(
                 setCos(nextChanges);
                 setQuickFilterChanges(changes);
                 setProvinceId(null);
-              }}
-            ></CategorizedListRoot>
+              }}></CategorizedListRoot>
           </div>
         </fieldset>
 
@@ -796,8 +795,7 @@ const Modify = React.memo(
             <div
               id="finland_map"
               className="w-2/5"
-              style={{ height: "500px" }}
-            ></div>
+              style={{ height: "500px" }}></div>
             <div className="w-3/5">
               {provinceCategories.length > 0 ? (
                 <CategorizedListRoot
@@ -805,8 +803,9 @@ const Modify = React.memo(
                   categories={provinceCategories}
                   changes={provinceChanges}
                   onUpdate={updateChangeObjects}
-                  uncheckParentWithoutActiveChildNodes={true}
-                ></CategorizedListRoot>
+                  uncheckParentWithoutActiveChildNodes={
+                    true
+                  }></CategorizedListRoot>
               ) : null}
             </div>
           </div>
@@ -815,14 +814,12 @@ const Modify = React.memo(
               <SimpleButton
                 variant={"outlined"}
                 onClick={() => onClose(quickFilterChanges)}
-                text={localizations.cancel}
-              ></SimpleButton>
+                text={localizations.cancel}></SimpleButton>
             </div>
             <div>
               <SimpleButton
                 onClick={() => onClose(quickFilterChanges, cos)}
-                text={localizations.accept}
-              ></SimpleButton>
+                text={localizations.accept}></SimpleButton>
             </div>
           </div>
         </div>

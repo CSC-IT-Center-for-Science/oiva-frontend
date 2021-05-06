@@ -40,8 +40,7 @@ const ATVKoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.vocationalTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

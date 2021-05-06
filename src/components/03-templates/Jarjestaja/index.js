@@ -169,8 +169,7 @@ const Jarjestaja = React.memo(
             textColor="primary"
             onChange={(e, val) => {
               history.push(val);
-            }}
-          >
+            }}>
             {tabNavRoutes
               ? R.addIndex(R.map)((route, index) => {
                   return (

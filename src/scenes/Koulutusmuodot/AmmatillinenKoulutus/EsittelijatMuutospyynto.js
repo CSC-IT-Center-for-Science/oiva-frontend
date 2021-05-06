@@ -162,8 +162,7 @@ const EsittelijatMuutospyynto = React.memo(
           mode={mode}
           sectionHeadingsOpetusJaTutkintokieli={
             sectionHeadings.opetusJaTutkintokieli
-          }
-        ></MuutospyyntoWizardOpetuskielet>
+          }></MuutospyyntoWizardOpetuskielet>
 
         <Tutkintokielet
           koulutusalat={koulutusalat}

@@ -74,8 +74,7 @@ const SimpleButton = ({
           onClick={handleClick}
           ref={simpleButtonRef}
           size={size}
-          variant={variant}
-        >
+          variant={variant}>
           {icon && (
             <span style={iconContainerStyles}>
               {icon === "FaPlus" && <FaPlus style={iconStyles} />}

@@ -39,8 +39,7 @@ const Tilastot = () => {
     <SivupohjaA>
       <Helmet height="50px" title={title}></Helmet>
       <BreadcrumbsItem
-        to={localizeRouteKey(locale, AppRoute.Tilastot, formatMessage)}
-      >
+        to={localizeRouteKey(locale, AppRoute.Tilastot, formatMessage)}>
         {formatMessage(common.statistics)}
       </BreadcrumbsItem>
       <Typography component="h1" variant="h1">
@@ -52,8 +51,7 @@ const Tilastot = () => {
           className="underline"
           href={links[0]}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           {formatMessage(common.ammatillisenKoulutuksenJarjestamisluvat)}
         </a>
       </Linkki>
@@ -62,8 +60,7 @@ const Tilastot = () => {
           className="underline"
           href={links[1]}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           {formatMessage(common.vaestoennuste)}
         </a>
       </Linkki>
@@ -72,8 +69,7 @@ const Tilastot = () => {
           className="underline"
           href={links[2]}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           {formatMessage(common.vaestoAidinkielenMukaan)}
         </a>
       </Linkki>
@@ -82,8 +78,7 @@ const Tilastot = () => {
           className="underline"
           href={links[3]}
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           {formatMessage(common.koulutusJaPaaasiallinenToiminta)}
         </a>
       </Linkki>

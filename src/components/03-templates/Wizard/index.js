@@ -195,8 +195,7 @@ export const Wizard = ({
         onClose={leaveOrOpenCancelModal}
         maxWidth={"lg"}
         fullScreen={true}
-        aria-labelledby="simple-dialog-title"
-      >
+        aria-labelledby="simple-dialog-title">
         <div className={"w-full m-auto"}>
           <DialogTitleWithStyles id="customized-dialog-title">
             <div className="flex items-baseline">
@@ -225,8 +224,7 @@ export const Wizard = ({
             {!isEmpty(organisation) ? (
               <div
                 id="wizard-content"
-                className={`mx-auto ${isPreviewModeOn ? "" : "max-w-7xl"}`}
-              >
+                className={`mx-auto ${isPreviewModeOn ? "" : "max-w-7xl"}`}>
                 <div className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
                   {steps && (
                     <div className="px-8 xxl:px-0">
@@ -245,13 +243,11 @@ export const Wizard = ({
                       style={{
                         transform: "translate3d(0, 0, 0)",
                         height: isPreviewModeOn ? "100vh" : "84vh"
-                      }}
-                    >
+                      }}>
                       <section
                         className={`px-8 xxl:px-0 pb-32 fixed w-full ${
                           isPreviewModeOn ? "border-r border-gray-300" : ""
-                        }`}
-                      >
+                        }`}>
                         <div className={`border-b border-gray-300`}>
                           <Typography component="h2" variant="h2">
                             {intl.formatMessage(common.decisionDetails)}
@@ -262,8 +258,7 @@ export const Wizard = ({
                           className={`${
                             isPreviewModeOn ? "overflow-auto" : "pb-32"
                           }`}
-                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
-                        >
+                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}>
                           {page === 1 && page1}
                           {page === 2 && page2}
                           {page === 3 && page3}
@@ -277,13 +272,11 @@ export const Wizard = ({
                         style={{
                           transform: "translate3d(0, 0, 0)",
                           height: "100vh"
-                        }}
-                      >
+                        }}>
                         <section
                           className={`fixed w-full ${
                             isPreviewModeOn ? "border-l border-gray-300" : ""
-                          }`}
-                        >
+                          }`}>
                           <div className="border-b border-gray-300 px-6">
                             <Typography component="h2" variant="h2">
                               {intl.formatMessage(common.esikatselu)}
@@ -293,8 +286,7 @@ export const Wizard = ({
                             className="pt-6 px-6 pb-32 overflow-auto"
                             style={{
                               height: isPreviewModeOn ? "86vh" : "auto"
-                            }}
-                          >
+                            }}>
                             {page === 1 && previews.page1}
                             {page === 2 && previews.page2}
                             {page === 3 && previews.page3}

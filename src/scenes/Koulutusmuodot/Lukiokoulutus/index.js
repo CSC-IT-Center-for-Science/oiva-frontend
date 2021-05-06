@@ -44,7 +44,6 @@ export default function Lukio() {
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
       UusiAsiaEsidialog={UusiAsiaEsidialog}
-      WizardContainer={WizardContainer}
-    ></KoulutusmuodonEtusivu>
+      WizardContainer={WizardContainer}></KoulutusmuodonEtusivu>
   );
 }

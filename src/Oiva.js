@@ -107,13 +107,11 @@ export const Oiva = () => {
     <LocalizedRouter
       languages={AppLanguage}
       localesByLang={messages}
-      RouterComponent={BrowserRouter}
-    >
+      RouterComponent={BrowserRouter}>
       <AppLayout
         localesByLang={messages}
         organisation={organisation}
-        user={user}
-      >
+        user={user}>
         <LocalizedSwitch>
           <Route exact path={AppRoute.CasAuth} component={AuthWithLocale} />
           <Route exact path={AppRoute.CasLogOut} component={LogOutWithLocale} />

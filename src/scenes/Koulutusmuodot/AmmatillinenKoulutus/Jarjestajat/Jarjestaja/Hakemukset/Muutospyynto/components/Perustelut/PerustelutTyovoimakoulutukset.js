@@ -38,7 +38,11 @@ const PerustelutTyovoimakoulutukset = React.memo(props => {
                 key={code}
                 isReadOnly={props.isReadOnly}
                 onChangesUpdate={onChangesUpdate}
-                path={["perustelut", "koulutukset", "tyovoimakoulutukset"]}></Lomake>
+                path={[
+                  "perustelut",
+                  "koulutukset",
+                  "tyovoimakoulutukset"
+                ]}></Lomake>
             ) : (
               <Lomake
                 action="removal"

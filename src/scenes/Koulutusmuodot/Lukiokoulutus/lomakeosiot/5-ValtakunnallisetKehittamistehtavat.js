@@ -72,8 +72,7 @@ const ValtakunnallisetKehittamistehtavat = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.valtakunnallinenKehittamistehtava)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

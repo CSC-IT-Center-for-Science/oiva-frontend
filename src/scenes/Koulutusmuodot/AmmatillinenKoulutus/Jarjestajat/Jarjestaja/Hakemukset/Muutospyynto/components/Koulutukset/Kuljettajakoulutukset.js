@@ -47,8 +47,7 @@ const Kuljettajakoulutukset = ({
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.driverTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

@@ -46,33 +46,41 @@ const createMuutospyyntoOutput = (muutospyynto, attachments) => {
     });
   }
   return data;
-}
+};
 
-const save = (data) => {
+const save = data => {
   return axios.post(`${API_BASE_URL}/muutospyynnot/tallenna`, data, {
     withCredentials: true
   });
-}
+};
 
-const submitMuutospyynto = (uuid) => {
-  return axios
-    .post(`${API_BASE_URL}/muutospyynnot/tila/avoin/${uuid}`,{}, {
+const submitMuutospyynto = uuid => {
+  return axios.post(
+    `${API_BASE_URL}/muutospyynnot/tila/avoin/${uuid}`,
+    {},
+    {
       withCredentials: true
-    })
-}
+    }
+  );
+};
 
-export const saveAndSubmitMuutospyynto = (muutospyynto, attachments) => async (dispatch) => {
+export const saveAndSubmitMuutospyynto = (
+  muutospyynto,
+  attachments
+) => async dispatch => {
   const data = createMuutospyyntoOutput(muutospyynto, attachments);
 
   try {
     const intermediateResponse = await save(data);
     await submitMuutospyynto(intermediateResponse.data.uuid);
-    dispatch({type: SAVE_MUUTOSPYYNTO_SUCCESS, payload: { response: intermediateResponse, triggerPreview: false }});
+    dispatch({
+      type: SAVE_MUUTOSPYYNTO_SUCCESS,
+      payload: { response: intermediateResponse, triggerPreview: false }
+    });
+  } catch (err) {
+    dispatch({ type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err });
   }
-  catch(err) {
-    dispatch({type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err})
-  }
-}
+};
 
 export function downloadAttachment(uuid) {
   return dispatch => {

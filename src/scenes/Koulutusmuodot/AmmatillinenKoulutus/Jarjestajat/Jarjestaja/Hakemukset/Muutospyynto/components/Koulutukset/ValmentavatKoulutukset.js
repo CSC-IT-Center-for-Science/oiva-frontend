@@ -45,8 +45,7 @@ const ValmentavatKoulutukset = ({
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.preparatoryTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

@@ -462,8 +462,7 @@ export const getRajoitteetFromMaarays = (
   ) : (
     <ul
       className="htmlContent ml-8"
-      dangerouslySetInnerHTML={{ __html: htmlString }}
-    ></ul>
+      dangerouslySetInnerHTML={{ __html: htmlString }}></ul>
   );
 };
 
@@ -550,11 +549,12 @@ export const handleAlimaarays = (
         (hasAlimaarays && alimaarays.meta.arvo) ||
         alimaarays.meta.arvo
       ) {
-        modifiedString = `${modifiedString}<li class="list-disc">${alimaarays
-          .meta.arvo ||
+        modifiedString = `${modifiedString}<li class="list-disc">${
+          alimaarays.meta.arvo ||
           value[naytettavaArvo] ||
           value.nimi ||
-          value.kuvaus} ${alimaarays.arvo || ""}</li>`;
+          value.kuvaus
+        } ${alimaarays.arvo || ""}</li>`;
       } else {
         modifiedString = htmlString;
       }

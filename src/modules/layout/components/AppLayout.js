@@ -41,8 +41,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   return (
     <React.Fragment>
       <BreadcrumbsItem
-        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-      >
+        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}>
         Oiva
       </BreadcrumbsItem>
 
@@ -61,8 +60,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
           <div
             id="cy"
             className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
-            style={{ zIndex: 9000 }}
-          ></div>
+            style={{ zIndex: 9000 }}></div>
           <div className="w-2/3 relative">
             {
               <App

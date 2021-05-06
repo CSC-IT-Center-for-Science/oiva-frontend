@@ -58,8 +58,7 @@ const MobileMenu = ({
         <Button
           className={classes.root}
           style={{ fontSize: "0.9375rem" }}
-          onClick={onCloseMenu}
-        >
+          onClick={onCloseMenu}>
           <img
             className="mb-1 inline-block"
             style={{ paddingRight: "0.625rem" }}
@@ -76,8 +75,7 @@ const MobileMenu = ({
       <NavLink
         onClick={onCloseMenu}
         to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-        className="block"
-      >
+        className="block">
         <img
           alt={`${formatMessage(common.opetusJaKulttuuriministerio)} logo`}
           src={locale === "sv" ? logo_sv : logo_fi}
@@ -97,8 +95,7 @@ const MobileMenu = ({
           }}
           onClick={() => {
             setjarjestamisluvatMenuVisible(!jarjestamisluvatMenuVisible);
-          }}
-        >
+          }}>
           <div className="flex py-2">
             <NavLink
               onClick={onCloseMenu}
@@ -110,8 +107,7 @@ const MobileMenu = ({
                 AppRoute.JarjestamisJaYllapitamisluvat,
                 formatMessage
               )}
-              className="text-white font-medium block"
-            >
+              className="text-white font-medium block">
               <span className="pl-5 pr-3">
                 {formatMessage(common.jarjestamisJaYllapitamisluvat)}
               </span>
@@ -150,8 +146,7 @@ const MobileMenu = ({
                   to={routeToKoulutusmuodonEtusivu}
                   className="text-white pl-10 pr-5 font-medium block"
                   activeClassName="bg-green-700"
-                  onClick={onCloseMenu}
-                >
+                  onClick={onCloseMenu}>
                   {koulutusmuoto.paasivunOtsikko}
                 </NavLink>
               );
@@ -174,8 +169,7 @@ const MobileMenu = ({
               to={localizeRouteKey(locale, route.route, formatMessage)}
               className="text-white px-5 block"
               activeClassName="bg-green-700"
-              onClick={onCloseMenu}
-            >
+              onClick={onCloseMenu}>
               {formatMessage(common[last(split(".", route.translationKey))])}
             </NavLink>
           );

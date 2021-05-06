@@ -17,8 +17,7 @@ const PDFAndStateDialog = ({ isVisible, onClose, onOK }) => {
     <Dialog
       open={isVisible}
       aria-labelledby="simple-dialog-title"
-      PaperProps={{ style: { overflowY: "visible" } }}
-    >
+      PaperProps={{ style: { overflowY: "visible" } }}>
       <DialogTitle id="customized-dialog-title" onClose={onClose}>
         {intl.formatMessage(common.titleOfPDFAndStateDialog)}
       </DialogTitle>
@@ -37,8 +36,7 @@ const PDFAndStateDialog = ({ isVisible, onClose, onOK }) => {
               return onOK();
             }}
             color="primary"
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(common.downloadPDFAndChangeState)}
           </Button>
         </div>

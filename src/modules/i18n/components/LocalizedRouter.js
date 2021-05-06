@@ -41,8 +41,7 @@ export const LocalizedRouter = ({
             <IntlProvider
               otherKey={lang}
               locale={lang}
-              messages={localesByLang[lang]}
-            >
+              messages={localesByLang[lang]}>
               {children}
             </IntlProvider>
           );

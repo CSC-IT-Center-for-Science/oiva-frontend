@@ -116,8 +116,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_01`}
-          ></Laajennettu>
+            sectionId={`${sectionId}_01`}></Laajennettu>
         ) : null}
 
         {(!!items.vaativa_1 && items.vaativa_1.length > 0) ||
@@ -128,8 +127,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_02`}
-          ></VaativaTuki>
+            sectionId={`${sectionId}_02`}></VaativaTuki>
         ) : null}
 
         {!!items.sisaoppilaitos && items.sisaoppilaitos.length > 0 ? (
@@ -139,8 +137,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_03`}
-          ></Sisaoppilaitos>
+            sectionId={`${sectionId}_03`}></Sisaoppilaitos>
         ) : null}
 
         {!!items.vankila && items.vankila.length > 0 ? (
@@ -150,8 +147,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_04`}
-          ></Vankila>
+            sectionId={`${sectionId}_04`}></Vankila>
         ) : null}
 
         {!!items.urheilu && items.urheilu.length > 0 ? (
@@ -161,8 +157,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_05`}
-          ></Urheilu>
+            sectionId={`${sectionId}_05`}></Urheilu>
         ) : null}
 
         {!!items.yhteistyo && items.yhteistyo.length > 0 ? (
@@ -172,8 +167,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_06`}
-          ></Yhteistyo>
+            sectionId={`${sectionId}_06`}></Yhteistyo>
         ) : null}
 
         {!!items.yhteistyosopimus && items.yhteistyosopimus.length > 0 ? (
@@ -183,8 +177,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_08`}
-          ></Yhteistyosopimus>
+            sectionId={`${sectionId}_08`}></Yhteistyosopimus>
         ) : null}
 
         {!!items.selvitykset && items.selvitykset.length > 0 ? (
@@ -194,8 +187,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_09`}
-          ></Selvitykset>
+            sectionId={`${sectionId}_09`}></Selvitykset>
         ) : null}
 
         {!!items.muumaarays && items.muumaarays.length > 0 ? (
@@ -205,8 +197,7 @@ const MuutospyyntoWizardMuut = React.memo(
             localeUpper={localeUpper}
             maarayksetByKoodiarvo={maarayksetByKoodiarvo}
             mode={mode}
-            sectionId={`${sectionId}_07`}
-          ></MuuMaarays>
+            sectionId={`${sectionId}_07`}></MuuMaarays>
         ) : null}
       </React.Fragment>
     );

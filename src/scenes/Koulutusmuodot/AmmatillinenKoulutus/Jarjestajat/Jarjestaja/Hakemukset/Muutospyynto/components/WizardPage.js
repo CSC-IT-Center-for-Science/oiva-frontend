@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
  * WizardPage renders the given content and passes the related actions forward
  * for proper handling.
  *
- * @param {*} props 
+ * @param {*} props
  */
 const WizardPage = props => {
   function preview() {

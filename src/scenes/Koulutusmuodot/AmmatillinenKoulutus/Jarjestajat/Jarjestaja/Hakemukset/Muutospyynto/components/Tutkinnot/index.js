@@ -61,8 +61,9 @@ const Tutkinnot = ({
               mode={mode}
               sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
               title={title}
-              tutkinnot={tutkinnotByKoulutusala[koulutusala.koodiarvo]}
-            ></Koulutusala>
+              tutkinnot={
+                tutkinnotByKoulutusala[koulutusala.koodiarvo]
+              }></Koulutusala>
           );
         }
         return null;

@@ -158,8 +158,7 @@ export default function KoulutusmuodonEtusivu({
                           koulutusmuoto: koulutusmuoto.kebabCase
                         }
                       )}
-                      className="block underline"
-                    >
+                      className="block underline">
                       {formatMessage(common.asianhallinta)}
                     </NavLink>
                   </p>

@@ -167,8 +167,7 @@ const Asiat = props => {
                       }
                     );
                     history.push(url);
-                  }}
-                ></ParametrinaAnnettuEsidialog>
+                  }}></ParametrinaAnnettuEsidialog>
               ) : (
                 <UusiAsiaEsidialog
                   isVisible={isEsidialogVisible}
@@ -189,8 +188,7 @@ const Asiat = props => {
                         }
                       )
                     )
-                  }
-                ></UusiAsiaEsidialog>
+                  }></UusiAsiaEsidialog>
               );
             }}
           />
@@ -218,8 +216,7 @@ const Asiat = props => {
                         fontSize: "1.25rem",
                         padding: 0,
                         fontWeight: 400
-                      }}
-                    >
+                      }}>
                       {koulutusmuoto.paasivunOtsikko}
                     </Typography>
                     <div>
@@ -239,8 +236,7 @@ const Asiat = props => {
                     textColor="primary"
                     onChange={(e, val) => {
                       history.push(val);
-                    }}
-                  >
+                    }}>
                     <OivaTab
                       label={t(common.asiatOpen)}
                       aria-label={t(common.asiatReady)}

@@ -309,7 +309,7 @@ const checkTerm = (term, lomake, changeObjects) => {
 export const ifOne = R.includes(true);
 export const ifAll = R.all(R.equals(true));
 export const ifAllTerms = R.compose(ifAll, checkTerms);
-export const ifOneTerm = async function(terms, lomake, changeObjects) {
+export const ifOneTerm = async function (terms, lomake, changeObjects) {
   const validationResult = await checkTerms(terms, lomake, changeObjects);
   return validationResult;
 };

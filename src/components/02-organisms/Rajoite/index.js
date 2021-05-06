@@ -31,8 +31,7 @@ const Rajoite = ({
       isReadOnly={isReadOnly}
       isSavingState={false}
       path={constants.formLocation}
-      showCategoryTitles={areTitlesVisible}
-    ></Lomake>
+      showCategoryTitles={areTitlesVisible}></Lomake>
   ) : (
     <p>Jokin meni pieleen rajoitteen näyttämisessä.</p>
   );

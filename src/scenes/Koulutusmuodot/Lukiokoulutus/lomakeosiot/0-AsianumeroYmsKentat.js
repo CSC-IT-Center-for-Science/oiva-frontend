@@ -24,8 +24,7 @@ const AsianumeroYmsKentat = ({ isPreviewModeOn, mode = constants.mode }) => {
       isPreviewModeOn={isPreviewModeOn}
       mode={mode}
       noPadding={true}
-      path={constants.formLocations.paatoksenTiedot}
-    ></Lomake>
+      path={constants.formLocations.paatoksenTiedot}></Lomake>
   );
 };
 

@@ -61,8 +61,7 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
     <Dialog
       open={true}
       aria-labelledby="simple-dialog-title"
-      PaperProps={{ style: { overflowY: "visible" } }}
-    >
+      PaperProps={{ style: { overflowY: "visible" } }}>
       <DialogTitle id="customized-dialog-title" onClose={continueAsLoggedIn}>
         {intl.formatMessage(auth.sessionDialogTitle)}
       </DialogTitle>
@@ -81,8 +80,7 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
             <Button
               onClick={() => logout(false)}
               color="primary"
-              variant="outlined"
-            >
+              variant="outlined">
               {intl.formatMessage(auth.logOut)}
             </Button>
           </div>
@@ -91,8 +89,7 @@ const SessionDialog = ({ isVisible, onLogout, onOK }) => {
               return continueAsLoggedIn();
             }}
             color="primary"
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(auth.jatkaKirjautuneena)}
           </Button>
         </div>

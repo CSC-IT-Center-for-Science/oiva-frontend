@@ -48,8 +48,7 @@ const Logout = () => {
         <div>
           <SimpleButton
             text={formatMessage(auth.logIn)}
-            onClick={() => history.push(`/${locale}/cas-auth`)}
-          ></SimpleButton>
+            onClick={() => history.push(`/${locale}/cas-auth`)}></SimpleButton>
         </div>
       </MessageWrapper>
     </div>

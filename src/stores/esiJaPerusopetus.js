@@ -112,7 +112,7 @@ const Store = createStore({
       ) {
         setState(dissocPath(split("_", sectionId), getState().changeObjects));
       }
-    },
+    }
   },
   name: "Esi- ja perusopetus"
 });

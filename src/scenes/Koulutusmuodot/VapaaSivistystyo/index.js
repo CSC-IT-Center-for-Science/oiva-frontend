@@ -25,7 +25,8 @@ export default function VapaaSivistystyo() {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
-      jarjestajatOtsikko={koulutusmuoto.jarjestajatOtsikko}
-    ></KoulutusmuodonEtusivu>
+      jarjestajatOtsikko={
+        koulutusmuoto.jarjestajatOtsikko
+      }></KoulutusmuodonEtusivu>
   );
 }

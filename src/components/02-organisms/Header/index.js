@@ -62,8 +62,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
           <Toolbar className="bg-green-500 px-5 justify-between overflow-hidden">
             <NavLink
               to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-              className="flex items-center no-underline text-white hover:text-gray-100 pr-10"
-            >
+              className="flex items-center no-underline text-white hover:text-gray-100 pr-10">
               <img
                 alt={`${formatMessage(
                   common.opetusJaKulttuuriministerio
@@ -125,8 +124,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
         <React.Fragment>
           <SideNavigation
             isVisible={isMobileMenuVisible}
-            setIsMobileMenuVisible={setIsMobileMenuVisible}
-          >
+            setIsMobileMenuVisible={setIsMobileMenuVisible}>
             <MobileMenu
               localesByLang={localesByLang}
               onCloseMenu={toggleMobileMenu}
@@ -140,15 +138,13 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                 aria-label="open-main-menu"
                 color="inherit"
                 onClick={toggleMobileMenu}
-                className={classes.margin}
-              >
+                className={classes.margin}>
                 <MenuIcon />
               </IconButton>
 
               <NavLink
                 to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-                className="flex items-center no-underline text-white hover:text-gray-100 mr-16"
-              >
+                className="flex items-center no-underline text-white hover:text-gray-100 mr-16">
                 {mediumSizedScreen ? (
                   <img
                     alt={`${formatMessage(

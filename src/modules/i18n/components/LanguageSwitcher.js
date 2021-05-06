@@ -137,8 +137,7 @@ export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
             key={lang}
             className={
               index === 0 && !breakpointDesktopLargeMin ? "mr-3" : "mr-1"
-            }
-          >
+            }>
             <NavLink
               to={getMatchingRoute(
                 locale,
@@ -154,8 +153,7 @@ export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
                 width: "1.625rem",
                 height: "1.625rem",
                 borderColor: "white"
-              }}
-            >
+              }}>
               <span>{AppLanguage[lang]}</span>
             </NavLink>
           </li>

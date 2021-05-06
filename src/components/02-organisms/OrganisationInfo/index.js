@@ -24,8 +24,7 @@ const OrganisationInfo = React.memo(
         <div
           className={`pt-4 pb-12 ${
             isPreviewModeOn ? "xxl:w-4/5 xxl:max-w-9/10" : "max-w-7xl"
-          } m-auto px-8 xxl:px-0`}
-        >
+          } m-auto px-8 xxl:px-0`}>
           <Typography component="h1" variant="h1">
             {organisation.nimi[intl.locale] || last(values(organisation.nimi))}
           </Typography>
@@ -39,8 +38,7 @@ const OrganisationInfo = React.memo(
               <React.Fragment>
                 <a
                   href={`tel:${organisationPhoneNumber}`}
-                  className="underline"
-                >
+                  className="underline">
                   {organisationPhoneNumber}
                 </a>{" "}
                 |{" "}

@@ -114,8 +114,7 @@ const MuutospyyntoWizardYhteenveto = ({
         mode="modification"
         path={["yhteenveto", "yleisetTiedot"]}
         rowTitle="Hakemuksen yleiset tiedot"
-        showCategoryTitles={true}
-      ></Lomake>
+        showCategoryTitles={true}></Lomake>
 
       <EsittelijatMuutospyynto
         isReadOnly={true}
@@ -145,8 +144,7 @@ const MuutospyyntoWizardYhteenveto = ({
         mode="modification"
         path={["yhteenveto", "liitteet"]}
         rowTitle={intl.formatMessage(wizard.otherAttachments)}
-        showCategoryTitles={true}
-      ></Lomake>
+        showCategoryTitles={true}></Lomake>
     </React.Fragment>
   );
 };

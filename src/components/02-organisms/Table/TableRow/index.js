@@ -37,8 +37,7 @@ const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
           return isClickable ? onRowClick() : false;
         }
       }}
-      tabIndex={0}
-    >
+      tabIndex={0}>
       {children}
     </MaterialUITableRow>
   );
