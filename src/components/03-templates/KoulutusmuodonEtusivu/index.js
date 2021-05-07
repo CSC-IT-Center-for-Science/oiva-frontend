@@ -190,13 +190,13 @@ export default function KoulutusmuodonEtusivu({
 
 KoulutusmuodonEtusivu.propTypes = {
   hakuavaimet: PropTypes.array,
-  Jarjestajaluettelo: PropTypes.object,
+  Jarjestajaluettelo: PropTypes.func,
   jarjestajatOtsikko: PropTypes.string,
-  JarjestamislupaJSX: PropTypes.object,
+  JarjestamislupaJSX: PropTypes.func,
   koulutusmuoto: PropTypes.object,
   kuvausteksti: PropTypes.string,
   match: PropTypes.object,
   paasivunOtsikko: PropTypes.string,
-  UusiAsiaEsidialog: PropTypes.object,
-  WizardContainer: PropTypes.object
+  UusiAsiaEsidialog: PropTypes.func,
+  WizardContainer: PropTypes.func
 };

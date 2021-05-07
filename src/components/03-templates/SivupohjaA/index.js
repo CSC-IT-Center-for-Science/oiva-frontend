@@ -10,7 +10,7 @@ const SivupohjaA = ({ children }) => {
 };
 
 SivupohjaA.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.array
 };
 
 export default SivupohjaA;

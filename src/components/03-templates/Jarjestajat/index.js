@@ -56,7 +56,7 @@ const Jarjestajat = ({
 };
 
 Jarjestajat.propTypes = {
-  Jarjestajaluettelo: PropTypes.object,
+  Jarjestajaluettelo: PropTypes.func,
   koulutusmuoto: PropTypes.object,
   paasivunOtsikko: PropTypes.string
 };

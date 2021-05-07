@@ -67,5 +67,5 @@ LocalizedRouter.propTypes = {
   children: PropTypes.object,
   defaultLanguage: PropTypes.string,
   localesByLang: PropTypes.object,
-  RouterComponent: PropTypes.object
+  RouterComponent: PropTypes.func
 };

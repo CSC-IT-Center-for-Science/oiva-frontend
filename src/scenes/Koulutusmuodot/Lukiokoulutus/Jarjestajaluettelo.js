@@ -322,10 +322,10 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
 
 Table.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.object,
+  data: PropTypes.array,
   intl: PropTypes.object,
   luvat: PropTypes.array,
-  skipReset: PropTypes.object,
+  skipReset: PropTypes.bool,
   updateMyData: PropTypes.func
 };
 function Jarjestajaluettelo({ koulutusmuoto, luvat }) {

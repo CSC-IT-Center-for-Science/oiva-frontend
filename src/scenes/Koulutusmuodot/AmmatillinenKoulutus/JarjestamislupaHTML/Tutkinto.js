@@ -61,7 +61,6 @@ class Tutkinto extends Component {
           {renderCheckbox ? (
             <input
               type="checkbox"
-              ref="tutkintoInput"
               defaultValue="off"
               onChange={this.handleInputOnChange.bind(this)}
             />
@@ -78,7 +77,7 @@ class Tutkinto extends Component {
   }
 
   getInputValue() {
-    return this.refs.tutkintoInput.checked;
+    return ""; // TODO: Korvaa tämä vanhentunut koodi: this.refs.tutkintoInput.checked;
   }
 
   handleInputOnChange() {

@@ -42,5 +42,5 @@ export const LocalizedSwitch = ({ children }) => {
 };
 
 LocalizedSwitch.propTypes = {
-  children: PropTypes.object
+  children: PropTypes.array
 };
