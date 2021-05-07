@@ -337,6 +337,7 @@ TextBox.defaultProps = {
 
 TextBox.propTypes = {
   ariaLabel: PropTypes.string,
+  classes: PropTypes.object,
   delay: PropTypes.number,
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
@@ -345,6 +346,7 @@ TextBox.propTypes = {
   isDisabled: PropTypes.bool,
   isErroneous: PropTypes.bool,
   isHidden: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRemovable: PropTypes.bool,
   isRequired: PropTypes.bool,

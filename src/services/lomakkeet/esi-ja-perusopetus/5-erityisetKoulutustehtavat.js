@@ -70,7 +70,7 @@ export async function erityisetKoulutustehtavat(
                   addition: isAdded,
                   custom: Object.assign(
                     {},
-                    !!tehtavaanLiittyvatMaaraykset.length ? isInLupa : {}
+                    tehtavaanLiittyvatMaaraykset.length ? isInLupa : {}
                   ),
                   removal: isRemoved
                 },

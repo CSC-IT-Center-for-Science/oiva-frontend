@@ -220,7 +220,7 @@ export const defineBackendChangeObjects = async (
     /** Muutos ainoastaan osiossa 5 */
     const onlyValtakunnallinenChanges = filter(
       valtakunnallinenChange =>
-        !!!find(kuvausCobj => {
+        !find(kuvausCobj => {
           return (
             pathEq(
               ["properties", "metadata", "ankkuri"],

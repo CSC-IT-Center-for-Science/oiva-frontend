@@ -77,7 +77,7 @@ export async function opetuksenJarjestamismuoto(
                 isReadOnly: _isReadOnly,
                 labelStyles: {
                   addition: isAdded,
-                  custom: Object.assign({}, !!maarays ? isInLupa : {}),
+                  custom: Object.assign({}, maarays ? isInLupa : {}),
                   removal: isRemoved
                 },
                 title: getLocalizedProperty(muoto.metadata, locale, "nimi")

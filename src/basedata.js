@@ -840,7 +840,7 @@ const BaseData = ({
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData, lupaUuid, oid: id }) : null}
+        {render ? render({ ...baseData, lupaUuid, oid: id }) : null}
       </React.Fragment>
     );
   }
@@ -852,6 +852,7 @@ BaseData.propTypes = {
   locale: PropTypes.string,
   render: PropTypes.func,
   koulutustyyppi: PropTypes.string,
+  oid: PropTypes.string,
   oppilaitostyyppi: PropTypes.string
 };
 

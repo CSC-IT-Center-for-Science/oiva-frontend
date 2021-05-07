@@ -95,7 +95,7 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
 }
 
 const getKieletPreview = (kielet, rajoitteet) => {
-  return !!kielet
+  return kielet
     ? sortBy(
         prop("content"),
         map(opetuskieli => {

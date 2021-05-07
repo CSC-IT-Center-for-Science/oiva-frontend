@@ -63,7 +63,7 @@ export async function getErityisetKoulutustehtavatLukio(
                   addition: isAdded,
                   custom: Object.assign(
                     {},
-                    !!tehtavaanLiittyvatMaaraykset.length ? isInLupa : {}
+                    tehtavaanLiittyvatMaaraykset.length ? isInLupa : {}
                   ),
                   removal: isRemoved
                 },

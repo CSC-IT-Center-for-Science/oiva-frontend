@@ -534,4 +534,6 @@ Attachments.propTypes = {
   isRequired: PropTypes.bool
 };
 
+Attachments.displayName = "Attachments";
+
 export default Attachments;

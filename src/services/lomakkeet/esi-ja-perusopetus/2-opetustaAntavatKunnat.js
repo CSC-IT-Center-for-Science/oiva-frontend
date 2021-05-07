@@ -248,7 +248,7 @@ export const opetustaAntavatKunnat = async (
           }
         ]
       },
-      !!ulkomaa
+      ulkomaa
         ? flatten([
             {
               anchor: ulkomaa.koodiarvo,

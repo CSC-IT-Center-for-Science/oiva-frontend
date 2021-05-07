@@ -205,8 +205,10 @@ Datepicker.defaultProps = {
 
 Datepicker.propTypes = {
   ariaLabel: PropTypes.string,
+  classes: PropTypes.object,
   label: PropTypes.string,
   id: PropTypes.string,
+  isReadOnly: PropTypes.bool,
   inputId: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,

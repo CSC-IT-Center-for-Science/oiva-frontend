@@ -21,7 +21,7 @@ export const App = ({
   organisation,
   user
 }: {
-  children: object;
+  children: Object;
   localesByLang: LocalesByLang;
   organisation: Organisation;
   user: User;

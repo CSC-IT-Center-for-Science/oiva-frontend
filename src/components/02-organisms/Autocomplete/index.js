@@ -81,7 +81,7 @@ const Autocomplete = React.memo(
             }
           };
         },
-        indicatorSeparator: styles => ({ display: "none" }),
+        indicatorSeparator: () => ({ display: "none" }),
         menu: styles => ({ ...styles, zIndex: 999 }),
         multiValue: styles => {
           const color = chroma("#c3dafe");
@@ -276,6 +276,7 @@ Autocomplete.propTypes = {
   fullAnchor: PropTypes.string,
   inputId: PropTypes.string,
   isMulti: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,

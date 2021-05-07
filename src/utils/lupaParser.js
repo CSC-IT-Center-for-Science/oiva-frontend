@@ -2,7 +2,7 @@ import _ from "lodash";
 import { KOHTEET, KOODISTOT, LUPA_SECTIONS } from "./constants";
 import { parseLocalizedField } from "../modules/helpers";
 import common from "../i18n/definitions/common";
-import { length, path, prop, toUpper } from "ramda";
+import { length, mapObjIndexed, path, prop, toUpper } from "ramda";
 
 /**
  *
@@ -16,21 +16,19 @@ export const parseLupa = (lupa, formatMessage, locale) => {
     let lupaObj = {};
     let tyovoimaMaarays = checkTyovoima(lupa.maaraykset);
 
-    for (const key in LUPA_SECTIONS) {
-      if (LUPA_SECTIONS.hasOwnProperty(key)) {
-        const { tunniste, headingNumber } = LUPA_SECTIONS[key];
-        const currentMaaraykset = parseMaaraykset(lupa.maaraykset, tunniste);
+    mapObjIndexed((value, key) => {
+      const { tunniste, headingNumber } = value;
+      const currentMaaraykset = parseMaaraykset(lupa.maaraykset, tunniste);
 
-        lupaObj[key] = parseSectionData(
-          tunniste,
-          currentMaaraykset,
-          headingNumber,
-          tyovoimaMaarays,
-          formatMessage,
-          localeUpper
-        );
-      }
-    }
+      lupaObj[key] = parseSectionData(
+        tunniste,
+        currentMaaraykset,
+        headingNumber,
+        tyovoimaMaarays,
+        formatMessage,
+        localeUpper
+      );
+    }, LUPA_SECTIONS);
     return lupaObj;
   }
 };
@@ -624,7 +622,7 @@ function getToimintaalueArvoArray(maaraykset, locale) {
 function sortTutkinnot(tutkintoArray) {
   let obj = {};
 
-  _.map(tutkintoArray, (tutkinto, i) => {
+  _.map(tutkintoArray, tutkinto => {
     const {
       alakoodi,
       alanimi,

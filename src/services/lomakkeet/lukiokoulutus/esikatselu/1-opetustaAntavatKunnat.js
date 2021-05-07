@@ -29,7 +29,7 @@ import Lisatiedot from "../../lisatiedot";
  * lupalomakkeelle valituista kunnista. Maakuntien nimiä ei esikatselun
  * puolella tarvita, joten eri maakuntiin kuuluvien kuntien taulukot
  * yhdistetään ja kunnat näytetään samassa listassa. Käytössä on List-
- * komponentti, jota varten luodaan { content: kunnan_nimi } -muotoisia
+ * komponentti, jota varten luodaan { content: kunnan_nimi } -muotoisia
  * lista-alkoita.
  * @param {*} param0
  */

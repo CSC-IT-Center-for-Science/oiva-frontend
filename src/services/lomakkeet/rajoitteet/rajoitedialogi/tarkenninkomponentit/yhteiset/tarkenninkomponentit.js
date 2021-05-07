@@ -8,7 +8,7 @@ koska siihen luotetaan, kun rajoitteen rakennetta käydään läpi.
  */
 export const getLukumaarakomponentit = (
   isReadOnly,
-  osionData = [],
+  osionData,
   locale,
   voidaankoValitaUseita,
   inputId
