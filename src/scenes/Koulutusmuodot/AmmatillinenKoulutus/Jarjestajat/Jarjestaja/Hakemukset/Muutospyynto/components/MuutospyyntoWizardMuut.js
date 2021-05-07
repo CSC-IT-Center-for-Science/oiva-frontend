@@ -205,11 +205,16 @@ const MuutospyyntoWizardMuut = React.memo(
 );
 
 MuutospyyntoWizardMuut.propTypes = {
+  code: PropTypes.string,
   headingNumber: PropTypes.number,
   isReadOnly: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
-  muut: PropTypes.array
+  muut: PropTypes.array,
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
+
+MuutospyyntoWizardMuut.displayName = "MuutospyyntoWizardMuut";
 
 export default MuutospyyntoWizardMuut;

@@ -58,6 +58,11 @@ const VaativaTuki = ({
 };
 
 VaativaTuki.propTypes = {
+  isReadOnly: PropTypes.bool,
+  items: PropTypes.array,
+  localeUpper: PropTypes.string,
+  maarayksetByKoodiarvo: PropTypes.object,
+  mode: PropTypes.string,
   opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string

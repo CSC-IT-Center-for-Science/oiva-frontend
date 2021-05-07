@@ -41,6 +41,8 @@ const Koulutusala = ({
 Koulutusala.propTypes = {
   aktiivisetTutkinnot: PropTypes.array,
   koodiarvo: PropTypes.string,
+  koulutusalakoodiarvo: PropTypes.string,
+  maaraykset: PropTypes.array,
   mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string

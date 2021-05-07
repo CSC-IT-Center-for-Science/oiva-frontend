@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { PropTypes } from "prop-types";
 
 const VTWrapper = styled.div`
   margin: 6px 0 0 0;
@@ -19,6 +20,11 @@ const VT = props => {
       </Nimi>
     </VTWrapper>
   );
+};
+
+VT.propTypes = {
+  koodi: PropTypes.string,
+  nimi: PropTypes.string
 };
 
 export default VT;

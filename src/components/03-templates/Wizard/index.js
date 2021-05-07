@@ -338,5 +338,17 @@ export const Wizard = ({
 };
 
 Wizard.propTypes = {
-  page1: PropTypes.object
+  children: PropTypes.object,
+  isSaving: PropTypes.bool,
+  koulutusmuoto: PropTypes.object,
+  onAction: PropTypes.func,
+  organisation: PropTypes.object,
+  page1: PropTypes.object,
+  page2: PropTypes.object,
+  page3: PropTypes.object,
+  page4: PropTypes.object,
+  steps: PropTypes.array,
+  tila: PropTypes.string,
+  title: PropTypes.string,
+  urlOnClose: PropTypes.func
 };

@@ -113,6 +113,7 @@ function LupapaatoksetTableHead(props) {
 
 LupapaatoksetTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
+  headCells: PropTypes.array,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
@@ -473,3 +474,10 @@ export default function LupapaatoksetTable({
     </div>
   );
 }
+
+LupapaatoksetTable.propTypes = {
+  data: PropTypes.object,
+  koulutusmuoto: PropTypes.object,
+  tulevatLuvat: PropTypes.array,
+  voimassaOlevaLupa: PropTypes.object
+};

@@ -148,7 +148,10 @@ const Rajoitedialogi = ({
 Rajoitedialogi.propTypes = {
   kohdevaihtoehdot: PropTypes.array,
   koulutustyyppi: PropTypes.string,
-  parentSectionId: PropTypes.string
+  osioidenData: PropTypes.object,
+  parentSectionId: PropTypes.string,
+  restrictionId: PropTypes.string,
+  sectionId: PropTypes.string
 };
 
 export default Rajoitedialogi;

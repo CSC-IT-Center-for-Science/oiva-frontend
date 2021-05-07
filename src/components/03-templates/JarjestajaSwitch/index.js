@@ -17,10 +17,7 @@ const JarjestajaSwitch = ({
   lupa,
   lupaUuid,
   organisation,
-  path,
   user,
-  ytunnus,
-  kielet,
   tulevatLuvat,
   voimassaOlevaLupa,
   WizardContainer
@@ -97,7 +94,6 @@ const JarjestajaSwitch = ({
                   lupa={lupa}
                   organisation={organisation}
                   user={user}
-                  kielet={kielet}
                   tulevatLuvat={tulevatLuvat}
                   voimassaOlevaLupa={voimassaOlevaLupa}
                 />
@@ -112,8 +108,16 @@ const JarjestajaSwitch = ({
 };
 
 JarjestajaSwitch.propTypes = {
-  path: PropTypes.string,
-  user: PropTypes.object
+  JarjestamislupaJSX: PropTypes.object,
+  kohteet: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  lupa: PropTypes.object,
+  lupaUuid: PropTypes.string,
+  organisation: PropTypes.object,
+  tulevatLuvat: PropTypes.array,
+  user: PropTypes.object,
+  voimassaOlevaLupa: PropTypes.object,
+  WizardContainer: PropTypes.object
 };
 
 export default JarjestajaSwitch;

@@ -9,6 +9,7 @@ import {
 } from "./constants";
 
 import moment from "moment";
+import { PropTypes } from "prop-types";
 
 const TutkintoWrapper = styled.div`
   margin: 6px 0 6px 30px;
@@ -44,12 +45,13 @@ const Rajoite = props => {
   );
 };
 
-class Tutkinto extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   // this.handleOnChange = this.handleOnChange.bind(this)
-  // }
+Rajoite.propTypes = {
+  koodi: PropTypes.string,
+  koodisto: PropTypes.string,
+  nimi: PropTypes.string
+};
 
+class Tutkinto extends Component {
   render() {
     const { koodi, nimi, rajoitteet, renderCheckbox, lupaAlkuPvm } = this.props;
 
@@ -109,5 +111,16 @@ class Tutkinto extends Component {
     }
   }
 }
+
+Tutkinto.propTypes = {
+  koodi: PropTypes.string,
+  lupaAlkuPvm: PropTypes.string,
+  maaraysId: PropTypes.string,
+  nimi: PropTypes.string,
+  rajoitteet: PropTypes.array,
+  removeTutkinto: PropTypes.func,
+  renderCheckbox: PropTypes.bool,
+  undoRemoveTutkinto: PropTypes.func
+};
 
 export default Tutkinto;

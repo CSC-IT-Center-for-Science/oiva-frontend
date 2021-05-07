@@ -45,7 +45,11 @@ const Laajennettu = React.memo(
 );
 
 Laajennettu.propTypes = {
+  isReadOnly: PropTypes.bool,
+  items: PropTypes.array,
   koodiarvo: PropTypes.string,
+  localeUpper: PropTypes.string,
+  maarayksetByKoodiarvo: PropTypes.string,
   mode: PropTypes.string,
   opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,

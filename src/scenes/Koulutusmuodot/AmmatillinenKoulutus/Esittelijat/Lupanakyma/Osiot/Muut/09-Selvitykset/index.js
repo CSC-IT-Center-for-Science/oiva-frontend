@@ -42,6 +42,7 @@ const Selvitykset = ({
 };
 
 Selvitykset.propTypes = {
+  isReadOnly: PropTypes.bool,
   items: PropTypes.array,
   localeUpper: PropTypes.string,
   maarayksetByKoodiarvo: PropTypes.object,

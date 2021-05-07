@@ -164,10 +164,13 @@ MuutospyyntoWizardToimintaalue.defaultProps = {
 };
 
 MuutospyyntoWizardToimintaalue.propTypes = {
+  code: PropTypes.string,
   lupakohde: PropTypes.object,
   kuntamaaraykset: PropTypes.array,
+  mode: PropTypes.string,
   valtakunnallinenMaarays: PropTypes.object,
-  sectionId: PropTypes.string
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default MuutospyyntoWizardToimintaalue;

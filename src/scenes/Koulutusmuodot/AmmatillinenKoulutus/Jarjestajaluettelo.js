@@ -40,6 +40,7 @@ import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
+import { PropTypes } from "prop-types";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -61,6 +62,11 @@ function DefaultColumnFilter({ column, intl }) {
     </React.Fragment>
   );
 }
+
+DefaultColumnFilter.propTypes = {
+  column: PropTypes.object,
+  intl: PropTypes.object
+};
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [row => row.values[id]] });
@@ -162,11 +168,11 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
           })}
         </caption>
         <TableHead>
-          {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => {
+          {headerGroups.map((headerGroup, i) => (
+            <TableRow key={i} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, ii) => {
                 return (
-                  <TableCell {...column.getHeaderProps()}>
+                  <TableCell key={ii} {...column.getHeaderProps()}>
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
@@ -199,10 +205,10 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => {
+              <TableRow key={i} {...row.getRowProps()}>
+                {row.cells.map((cell, ii) => {
                   return (
-                    <TableCell {...cell.getCellProps()}>
+                    <TableCell key={ii} {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </TableCell>
                   );
@@ -313,6 +319,15 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
   );
 }
 
+Table.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.object,
+  intl: PropTypes.object,
+  luvat: PropTypes.array,
+  skipReset: PropTypes.object,
+  updateMyData: PropTypes.func
+};
+
 function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
   const intl = useIntl();
   const [data, setData] = useState(() =>
@@ -333,27 +348,33 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
     }, luvat)
   );
 
+  const Cell = ({ row }) => {
+    return (
+      <Link
+        className="underline"
+        to={localizeRouteKey(
+          intl.locale,
+          AppRoute.Jarjestamislupa,
+          intl.formatMessage,
+          { id: row.original.oid, koulutusmuoto: koulutusmuoto.kebabCase }
+        )}
+        title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
+          nimi: row.values.nimi
+        })}>
+        {row.values.nimi}
+      </Link>
+    );
+  };
+
+  Cell.propTypes = {
+    row: PropTypes.object
+  };
+
   const columns = [
     {
       accessor: "nimi",
       Header: intl.formatMessage(common.jarjestaja),
-      Cell: ({ row }) => {
-        return (
-          <Link
-            className="underline"
-            to={localizeRouteKey(
-              intl.locale,
-              AppRoute.Jarjestamislupa,
-              intl.formatMessage,
-              { id: row.original.oid, koulutusmuoto: koulutusmuoto.kebabCase }
-            )}
-            title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
-              nimi: row.values.nimi
-            })}>
-            {row.values.nimi}
-          </Link>
-        );
-      }
+      Cell
     },
     {
       accessor: "maakunta",
@@ -411,5 +432,10 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
     </div>
   );
 }
+
+Jarjestajaluettelo.propTypes = {
+  koulutusmuoto: PropTypes.object,
+  luvat: PropTypes.array
+};
 
 export default Jarjestajaluettelo;

@@ -1,4 +1,5 @@
 import React from "react";
+import { PropTypes } from "prop-types";
 
 const SivupohjaA = ({ children }) => {
   return (
@@ -6,6 +7,10 @@ const SivupohjaA = ({ children }) => {
       {children}
     </div>
   );
+};
+
+SivupohjaA.propTypes = {
+  children: PropTypes.object
 };
 
 export default SivupohjaA;

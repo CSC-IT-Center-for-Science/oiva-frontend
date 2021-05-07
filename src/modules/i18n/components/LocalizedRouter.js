@@ -6,6 +6,7 @@ import { isEmpty } from "ramda";
 import Login from "scenes/Login/Login";
 import DestroyCasAuth from "scenes/Logout/services/DestroyCasAuth";
 import RequireCasAuth from "scenes/Login/services/RequireCasAuth";
+import { PropTypes } from "prop-types";
 
 export const LocalizedRouter = ({
   children,
@@ -60,4 +61,11 @@ export const LocalizedRouter = ({
   ) : (
     <div>Ladataan käännöksiä...</div>
   );
+};
+
+LocalizedRouter.propTypes = {
+  children: PropTypes.object,
+  defaultLanguage: PropTypes.string,
+  localesByLang: PropTypes.object,
+  RouterComponent: PropTypes.object
 };

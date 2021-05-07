@@ -19,6 +19,7 @@ import {
 } from "ramda";
 import { useMediaQuery } from "@material-ui/core";
 import { MEDIA_QUERIES } from "../../../components/02-organisms/Header";
+import { PropTypes } from "prop-types";
 
 export const calculateRouteParts = (
   locale,
@@ -161,4 +162,9 @@ export const LanguageSwitcher = ({ localesByLang, ulClasses = "" }) => {
       })}
     </ul>
   );
+};
+
+LanguageSwitcher.propTypes = {
+  localesByLang: PropTypes.object,
+  ulClasses: PropTypes.string
 };

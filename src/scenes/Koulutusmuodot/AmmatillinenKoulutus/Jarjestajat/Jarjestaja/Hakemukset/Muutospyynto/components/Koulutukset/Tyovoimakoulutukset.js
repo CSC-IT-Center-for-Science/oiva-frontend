@@ -47,6 +47,7 @@ const Tyovoimakoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
 };
 
 Tyovoimakoulutukset.propTypes = {
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array,
   mode: PropTypes.string

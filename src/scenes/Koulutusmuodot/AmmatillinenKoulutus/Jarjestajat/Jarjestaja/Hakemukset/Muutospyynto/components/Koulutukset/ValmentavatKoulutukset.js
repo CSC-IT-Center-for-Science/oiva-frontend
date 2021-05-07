@@ -50,7 +50,10 @@ const ValmentavatKoulutukset = ({
 };
 
 ValmentavatKoulutukset.propTypes = {
-  koulutukset: PropTypes.object
+  isReadOnly: PropTypes.bool,
+  koulutukset: PropTypes.object,
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default ValmentavatKoulutukset;

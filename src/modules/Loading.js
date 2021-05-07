@@ -32,7 +32,8 @@ const Loading = ({ notReadyList = [], percentage, text }) => {
 
 Loading.propTypes = {
   notReadyList: PropTypes.array,
-  percentage: PropTypes.number
+  percentage: PropTypes.number,
+  text: PropTypes.string
 };
 
 export default Loading;

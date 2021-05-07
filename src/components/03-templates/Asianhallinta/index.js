@@ -15,6 +15,7 @@ import { ROLE_ESITTELIJA } from "modules/constants";
 import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import lukiokoulutus from "i18n/definitions/lukiokoulutus";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import { PropTypes } from "prop-types";
 
 const Asianhallinta = ({
   koulutusmuoto,
@@ -176,6 +177,13 @@ const Asianhallinta = ({
       </Router>
     </React.Fragment>
   );
+};
+
+Asianhallinta.propTypes = {
+  koulutusmuoto: PropTypes.object,
+  user: PropTypes.object,
+  UusiAsiaEsidialog: PropTypes.object,
+  WizardContainer: PropTypes.object
 };
 
 export default Asianhallinta;

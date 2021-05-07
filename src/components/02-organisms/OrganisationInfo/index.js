@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 import { find, head, last, prop, values } from "ramda";
 import { Typography } from "@material-ui/core";
 import isEqual from "react-fast-compare";
+import { PropTypes } from "prop-types";
 
 const OrganisationInfo = React.memo(
   ({ isPreviewModeOn, organisation }) => {
@@ -65,5 +66,12 @@ const OrganisationInfo = React.memo(
   },
   (cp, np) => isEqual(cp, np)
 );
+
+OrganisationInfo.propTypes = {
+  isPreviewModeOn: PropTypes.bool,
+  organisation: PropTypes.object
+};
+
+OrganisationInfo.displayName = "OrganisationInfo";
 
 export default OrganisationInfo;

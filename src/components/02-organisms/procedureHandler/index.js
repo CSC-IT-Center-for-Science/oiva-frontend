@@ -61,7 +61,7 @@ function ProcedureHandler(formatMessage) {
         p1.setAttribute("class", `absolute`);
         p1.textContent = `Date: ${moment().format(
           "DD:MM:YYYY"
-        )} | Time: ${moment().format("HH:mm:ss")}`;
+        )} | Time: ${moment().format("HH:mm:ss")}`;
         canvas.appendChild(p1);
 
         const canvases = container.childNodes;

@@ -13,6 +13,7 @@ import { includes } from "ramda";
 import { LocalizedSwitch } from "modules/i18n/index";
 import { AppRoute } from "const/index";
 import { localizeRouteKey } from "utils/common";
+import { PropTypes } from "prop-types";
 
 const keys2 = ["organisaatio", "tulevatLuvat"];
 
@@ -186,3 +187,16 @@ export default function KoulutusmuodonEtusivu({
     </div>
   );
 }
+
+KoulutusmuodonEtusivu.propTypes = {
+  hakuavaimet: PropTypes.array,
+  Jarjestajaluettelo: PropTypes.object,
+  jarjestajatOtsikko: PropTypes.string,
+  JarjestamislupaJSX: PropTypes.object,
+  koulutusmuoto: PropTypes.object,
+  kuvausteksti: PropTypes.string,
+  match: PropTypes.object,
+  paasivunOtsikko: PropTypes.string,
+  UusiAsiaEsidialog: PropTypes.object,
+  WizardContainer: PropTypes.object
+};

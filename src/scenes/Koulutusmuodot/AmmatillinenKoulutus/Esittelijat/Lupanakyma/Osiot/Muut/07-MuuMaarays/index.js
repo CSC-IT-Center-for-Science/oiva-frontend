@@ -42,9 +42,11 @@ const MuuMaarays = ({
 };
 
 MuuMaarays.propTypes = {
+  isReadOnly: PropTypes.bool,
   items: PropTypes.array,
   localeUpper: PropTypes.string,
   maarayksetByKoodiarvo: PropTypes.object,
+  mode: PropTypes.string,
   sectionId: PropTypes.string
 };
 

@@ -12,6 +12,7 @@ import { sessionTimeoutInMinutes } from "modules/constants";
 import { App } from "App.tsx";
 
 import "react-toastify/dist/ReactToastify.css";
+import { PropTypes } from "prop-types";
 
 export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   const history = useHistory();
@@ -64,28 +65,35 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
           <div className="w-2/3 relative">
             {
               <App
-                children={children}
                 isSessionDialogVisible={isSessionDialogVisible}
                 localesByLang={localesByLang}
                 onLogout={onSessionDialogOK}
                 onSessionDialogOK={onSessionDialogOK}
                 organisation={organisation}
-                user={user}
-              />
+                user={user}>
+                {children}
+              </App>
             }
           </div>
         </div>
       ) : (
         <App
-          children={children}
           isSessionDialogVisible={isSessionDialogVisible}
           localesByLang={localesByLang}
           onLogout={onSessionDialogOK}
           onSessionDialogOK={onSessionDialogOK}
           organisation={organisation}
-          user={user}
-        />
+          user={user}>
+          {children}
+        </App>
       )}
     </React.Fragment>
   );
+};
+
+AppLayout.propTypes = {
+  localesByLang: PropTypes.object,
+  children: PropTypes.object,
+  organisation: PropTypes.object,
+  user: PropTypes.object
 };

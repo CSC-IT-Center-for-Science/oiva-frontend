@@ -210,16 +210,20 @@ const EsittelijatMuutospyynto = React.memo(
 );
 
 EsittelijatMuutospyynto.propTypes = {
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   opiskelijavuodet: PropTypes.array,
-  role: PropTypes.string
+  role: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default EsittelijatMuutospyynto;
