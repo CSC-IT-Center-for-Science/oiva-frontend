@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "../../../../i18n/definitions/rajoitteet";
+import { PropTypes } from "prop-types";
 
 export default function OpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
@@ -106,4 +107,8 @@ const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale, intl) => {
       )}
     </ul>
   );
+};
+
+OpetuskieletHtml.propTypes = {
+  maaraykset: PropTypes.array
 };

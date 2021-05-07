@@ -160,4 +160,6 @@ CategorizedListRoot.propTypes = {
   uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
 
+CategorizedListRoot.displayName = "CategorizedListRoot";
+
 export default CategorizedListRoot;

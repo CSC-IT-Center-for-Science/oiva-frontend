@@ -196,8 +196,10 @@ const MobileMenu = ({
 };
 
 MobileMenu.propTypes = {
+  authenticationLink: PropTypes.object,
   localesByLang: PropTypes.object,
-  onCloseMenu: PropTypes.func
+  onCloseMenu: PropTypes.func,
+  organisationLink: PropTypes.object
 };
 
 export default MobileMenu;

@@ -20,6 +20,7 @@ import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import Typography from "@material-ui/core/Typography";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "../../../../i18n/definitions/rajoitteet";
+import { PropTypes } from "prop-types";
 
 export default function OpetustaAntavatKunnatHtml({ maaraykset }) {
   const intl = useIntl();
@@ -100,3 +101,7 @@ export default function OpetustaAntavatKunnatHtml({ maaraykset }) {
     </div>
   ) : null;
 }
+
+OpetustaAntavatKunnatHtml.propTypes = {
+  maaraykset: PropTypes.array
+};

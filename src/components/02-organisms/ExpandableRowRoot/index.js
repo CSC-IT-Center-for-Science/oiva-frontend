@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import UndoIcon from "@material-ui/icons/Undo";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import { compose, filter, not, pathEq } from "ramda";
+import { compose, filter, not, pathEq, prop } from "ramda";
 import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
@@ -52,7 +52,7 @@ const ExpandableRowRoot = ({
   const [isToggledOpen, setIsToggleOpen] = useState(false);
 
   const onToggle = (...props) => {
-    setIsToggleOpen(props[1]);
+    setIsToggleOpen(prop(1, props));
   };
 
   const amountOfRelevantChanges = filter(
@@ -134,6 +134,7 @@ const ExpandableRowRoot = ({
 ExpandableRowRoot.propTypes = {
   anchor: PropTypes.string,
   categories: PropTypes.array,
+  children: PropTypes.object,
   changes: PropTypes.array,
   code: PropTypes.string,
   disableReverting: PropTypes.bool,

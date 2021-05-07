@@ -46,6 +46,7 @@ Opiskelijamaarat.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.array,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

@@ -385,7 +385,7 @@ const Modify = React.memo(
           }
         });
 
-        polygonSeries.current.events.on("inited", function (ev) {
+        polygonSeries.current.events.on("inited", function () {
           forEachObjIndexed(instance => {
             instance.setMap(kartta.current);
             instance.setPolygonSeries(polygonSeries.current);
@@ -846,5 +846,7 @@ Modify.propTypes = {
   localizations: PropTypes.object,
   quickFilterChangeObjects: PropTypes.array
 };
+
+Modify.displayName = "Modify";
 
 export default Modify;

@@ -20,6 +20,7 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
+import { PropTypes } from "prop-types";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -276,6 +277,15 @@ const WizardContainer = ({
       urlOnClose={urlOnClose}
     />
   );
+};
+
+WizardContainer.propTypes = {
+  kohteet: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  maaraystyypit: PropTypes.array,
+  organisaatio: PropTypes.object,
+  role: PropTypes.string,
+  viimeisinLupa: PropTypes.object
 };
 
 export default WizardContainer;

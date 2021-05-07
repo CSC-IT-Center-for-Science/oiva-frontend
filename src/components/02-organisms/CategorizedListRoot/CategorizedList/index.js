@@ -77,7 +77,7 @@ const defaultCategoryStyles = {
   /**
    * Default layout strategy is set here. You can change the strategy by
    * giving the category a layout property with desired strategy.
-   * E.g. layout: { strategy: { key: "groups" }}
+   * E.g. layout: { strategy: { key: "groups" }}
    **/
   layoutStrategy: R.find(R.propEq("key", "default"), layoutStrategies),
   margins: {
@@ -637,7 +637,7 @@ const CategorizedList = props => {
                                     attachments: attachments
                                   }}
                                   messages={component.messages}
-                                  placement={props.placement}
+                                  placement={propsObj.placement}
                                   isReadOnly={propsObj.isReadOnly}
                                   isRequired={propsObj.isRequired}
                                   requiredMessage={propsObj.requiredMessage}
@@ -1022,15 +1022,22 @@ CategorizedList.propTypes = {
   categories: PropTypes.array,
   changes: PropTypes.array,
   debug: PropTypes.bool,
+  id: PropTypes.string,
+  isVisible: PropTypes.bool,
+  level: PropTypes.number,
+  parent: PropTypes.object,
   parentCategory: PropTypes.object,
   path: PropTypes.array,
+  requiredMessage: PropTypes.string,
+  rootPath: PropTypes.string,
   runRootOperations: PropTypes.func,
   showCategoryTitles: PropTypes.bool,
   onChangesUpdate: PropTypes.func,
   onChangesRemove: PropTypes.func,
-  onFocus: PropTypes.func
+  onFocus: PropTypes.func,
+  showValidationErrors: PropTypes.bool
 };
 
-CategorizedList.displayName = "CategorizedList222";
+CategorizedList.displayName = "CategorizedList";
 
 export default CategorizedList;

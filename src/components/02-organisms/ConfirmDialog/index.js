@@ -94,7 +94,8 @@ ConfirmDialog.propTypes = {
   handleCancel: PropTypes.func,
   handleExitAndAbandonChanges: PropTypes.func,
   messages: PropTypes.object,
-  loadingSpinner: PropTypes.bool
+  loadingSpinner: PropTypes.bool,
+  onClose: PropTypes.func
 };
 
 export default ConfirmDialog;
