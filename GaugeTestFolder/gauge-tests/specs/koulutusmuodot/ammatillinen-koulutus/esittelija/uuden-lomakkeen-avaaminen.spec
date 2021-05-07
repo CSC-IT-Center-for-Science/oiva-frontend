@@ -1,4 +1,4 @@
-# Ammatillinen koulutus
+# Ammatillinen koulutus - ESITTELIJÄ
 
 * Siirry osoitteeseen "localhost"
 * Log in as "oiva-essi"
@@ -17,7 +17,7 @@
 * Varmista, että hakulomake on avattu otsikolla "Lappeenrannan kaupunki"
 
 ---
-* Sulje lomake (ei muutoksia)
+* Sulje lomake tallentamatta
 
 ---
 * Log out

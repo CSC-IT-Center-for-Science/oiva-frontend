@@ -40,7 +40,7 @@
 * Assert if text exists "Työvoimakoulutuksen tehtävä"
 
 ___
-* Sulje lomake
+* Sulje lomake tallentaen muutokset
 
 ___
 * Log out

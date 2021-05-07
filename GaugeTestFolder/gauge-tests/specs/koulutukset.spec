@@ -26,7 +26,7 @@
 * Avaa ExpandableRow "koulutukset_kuljettajakoulutukset"
 * Assert if "radio" "koulutukset_kuljettajakoulutukset.2" is checked
 ___
-* Sulje lomake
+* Sulje lomake tallentaen muutokset
 
 ___
 * Log out

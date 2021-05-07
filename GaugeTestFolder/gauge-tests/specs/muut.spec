@@ -21,7 +21,7 @@
 
 ### Log in as a different user and open new muutospyyntolomake
 
-* Sulje lomake
+* Sulje lomake tallentaen muutokset
 * Log out
 * Siirry osoitteeseen "localhost"
 * Log in as "oiva-mikki"
@@ -49,7 +49,7 @@
 * Assert if text exists "Koulutuksen järjestäjällä on velvollisuus järjestää järjestämisluvan kohdassa 1 mainittuja tutkintoja vaativaan erityiseen tukeen oikeutetuille opiskelijoille."
 
 ___
-* Sulje lomake
+* Sulje lomake tallentaen muutokset
 
 ___
 * Log out

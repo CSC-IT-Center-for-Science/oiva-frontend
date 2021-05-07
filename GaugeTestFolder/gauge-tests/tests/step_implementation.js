@@ -125,7 +125,7 @@ step("Log in as <username>", async username => {
   await focus(textBox({ type: "password" }));
   await write(process.env[username]);
   await click(button({ type: "submit" }));
-  assert.ok(await text("Kirjaudu ulos").exists());
+  await assert.ok(await text("Kirjaudu ulos").exists(100, 20000));
 });
 
 step("Log out", async () => {
@@ -170,8 +170,8 @@ step("Klikkaa elementtiä, jossa on teksti <teksti>", async teksti => {
 
 step("Varmista, että hakulomake on avattu otsikolla <teksti>", async teksti => {
   try {
-    await waitFor(async () => !(await $("h1").exists()));
-    assert.equal(await $("h1").text(), teksti);
+    await $("h1").exists(100, 20000);
+    await assert.equal(await $("h1").text(), teksti);
   } catch (e) {
     console.error(e);
   }
@@ -181,7 +181,7 @@ step(
   "Varmista, että uuden asian esidialogi aukesi otsikolla <teksti>",
   async teksti => {
     try {
-      assert.equal(await $("h6").text(), teksti);
+      await assert.equal(await $("h6").text(), teksti);
     } catch (e) {
       console.error(e);
     }
@@ -257,11 +257,27 @@ step("Lomakeoperaatio <sectionId> valitse <item>", async (sectionId, item) => {
   }
 });
 
-step("Sulje lomake", async () => {
+step("Sulje lomake tallentaen muutokset", async () => {
   try {
-    await click($('button[aria-label="Close"]'));
-    await click("Kyllä");
-    assert.notInclude(await currentURL(), "hakemukset-ja-paatokset");
+    await click("Poistu");
+    const exists = await text("Tallenna").exists();
+    if (exists) {
+      await click("Tallenna");
+    }
+    await assert.notInclude(await currentURL(), "hakemukset-ja-paatokset");
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+step("Sulje lomake tallentamatta", async () => {
+  try {
+    await click("Poistu");
+    const exists = await text("Poistu tallentamatta").exists();
+    if (exists) {
+      await click("Poistu tallentamatta");
+    }
+    await assert.notInclude(await currentURL(), "hakemukset-ja-paatokset");
   } catch (e) {
     console.error(e);
   }
@@ -277,8 +293,8 @@ step("Assert if text exists <string>", async string => {
 
 step("Klikkaa päänavigaation linkkiä <linkinTeksti>", async linkinTeksti => {
   await click(linkinTeksti);
-  assert.ok(await text(linkinTeksti).exists());
-  assert.equal(await $("h1").text(), linkinTeksti);
+  await assert.ok(await text(linkinTeksti).exists());
+  await assert.equal(await $("h1").text(), linkinTeksti);
 });
 
 step(

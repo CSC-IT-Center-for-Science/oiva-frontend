@@ -26,7 +26,7 @@ tags: muutoshakemus, taloudelliset
 * Tarkista taloudelliset
 
 ___
-* Sulje lomake
+* Sulje lomake tallentaen muutokset
 
 ___
 * Log out
