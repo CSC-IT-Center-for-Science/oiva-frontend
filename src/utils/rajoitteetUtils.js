@@ -1,14 +1,17 @@
 import {
   addIndex,
+  any,
   append,
   assocPath,
   concat,
+  defaultTo,
   filter,
   find,
   flatten,
   forEach,
   head,
   includes,
+  isEmpty,
   join,
   keys,
   last,
@@ -84,10 +87,17 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
-function getTarkentimenArvo(tarkennin) {
+function getTarkentimenArvo(tarkennin, useKuvaus = false) {
+  let kuvaus = path(["properties", "value", "kuvaus"], tarkennin);
+  let useKuvausInRajoite = path(
+    ["properties", "value", "useKuvausInRajoite"],
+    tarkennin
+  );
   let tarkentimenArvo =
-    path(["properties", "value", "label"], tarkennin) ||
-    path(["properties", "value"], tarkennin);
+    (useKuvaus || useKuvausInRajoite) && kuvaus
+      ? kuvaus
+      : path(["properties", "value", "label"], tarkennin) ||
+        path(["properties", "value"], tarkennin);
   return Array.isArray(tarkentimenArvo)
     ? pipe(
         map(arvo => arvo.label),
@@ -219,7 +229,10 @@ function kayLapiKohdennus(
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
-  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin));
+  const tarkentimenArvo = getTarkentimenArvo(
+    prop(tarkenninavain, tarkennin),
+    isEmpty(lista)
+  );
   const taydennyssana = null;
 
   let item = tarkentimenArvo;
@@ -551,6 +564,7 @@ export const handleAlimaarays = (
       ) {
         modifiedString = `${modifiedString}<li class="list-disc">${
           alimaarays.meta.arvo ||
+          path(["meta", naytettavaArvo], alimaarays) ||
           value[naytettavaArvo] ||
           value.nimi ||
           value.kuvaus
@@ -593,13 +607,17 @@ const handleAlimaaraykset = (
       const multiselectAlimaaraykset = multiselectUuid
         ? getMultiselectAlimaaraykset(multiselectUuid, alimaaraykset)
         : null;
-
+      const isKayttoohjeKuvaus = pipe(
+        path(["koodi", "metadata"]),
+        defaultTo([]),
+        any(meta => meta.kayttoohje === "Kuvaus")
+      )(alimaarays);
       modifiedString = handleAlimaarays(
         alimaarays,
         modifiedString,
         locale,
         ajallaText,
-        naytettavaArvo,
+        isKayttoohjeKuvaus ? "kuvaus" : naytettavaArvo,
         multiselectAlimaaraykset
       );
       if (multiselectUuid) {
@@ -632,6 +650,7 @@ const getValueFromMultiselectAlimaarays = (
   ) {
     const arvo =
       alimaarays.meta.arvo ||
+      path(["meta", naytettavaArvo], alimaarays) ||
       value[naytettavaArvo] ||
       value.nimi ||
       alimaarays.meta.kuvaus;

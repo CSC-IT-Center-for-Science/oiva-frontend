@@ -69,24 +69,21 @@ export default async function getMuutEhdot(
                 /** Näytetään kuvaukset muille koulutuksenjärjestämiseen liittyville ehdoille, joille on koodistoon
                  * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
-                const options =
-                  path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus"
-                    ? map(stateObj => {
-                        const option = {
-                          value: `${getAnchorPart(
-                            stateObj.anchor,
-                            1
-                          )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                          label: stateObj.properties.value
-                        };
-                        return option;
-                      }, kuvausStateObjects)
-                    : {
-                        label: muuEhto.metadata[localeUpper].nimi,
-                        value: `${muuEhto.koodiarvo}-0`
-                      };
-
-                return options;
+                return map(stateObj => {
+                    return path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus" ? {
+                      value: `${getAnchorPart(
+                        stateObj.anchor,
+                        1
+                      )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                      label: stateObj.properties.value,
+                      useKuvausInRajoite: true
+                    } : {
+                      label: muuEhto.metadata[localeUpper].nimi,
+                      value: `${muuEhto.koodiarvo}-0`,
+                      kuvaus: stateObj.properties.value,
+                      useKuvausInRajoite: false
+                    };
+                  }, kuvausStateObjects)
               }
 
               return null;
