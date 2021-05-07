@@ -180,12 +180,12 @@ export const createAlimaarayksetBEObjects = (
       if (koodisto === "oppilaitos") {
         codeValue = koodiarvo;
       } else {
-        if (path(["value"], multiselectValue)) {
+        if (prop("value", multiselectValue)) {
           /** Dynaamisilla tekstikentillä multiselectValue->value on muotoa koodiarvo-kuvausnumero.
            * Muutokselle halutaan tallentaa pelkkä koodiarvo, joten otetaan se talteen */
-          codeValue = includes("-", path(["value"], multiselectValue))
-            ? head(split("-", path(["value"], multiselectValue)))
-            : path(["value"], multiselectValue);
+          codeValue = includes("-", prop("value", multiselectValue))
+            ? head(split("-", prop("value", multiselectValue)))
+            : prop("value", multiselectValue);
         } else {
           codeValue = koodiarvo;
         }
