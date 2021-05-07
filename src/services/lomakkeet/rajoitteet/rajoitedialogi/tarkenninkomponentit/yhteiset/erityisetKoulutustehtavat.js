@@ -77,24 +77,26 @@ export default async function getErityisetKoulutustehtavat(
                  * muuttujassa metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 return map(stateObj => {
-                    return path(
-                      ["metadata", "FI", "kayttoohje"],
-                      erityinenKoulutustehtava
-                    ) === "Kuvaus" ? {
-                      value: `${getAnchorPart(
-                        stateObj.anchor,
-                        1
-                      )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                      label: stateObj.properties.value,
-                      useKuvausInRajoite: true
-                    } : {
-                      label:
-                      erityinenKoulutustehtava.metadata[localeUpper].nimi,
-                      value: `${erityinenKoulutustehtava.koodiarvo}-0`,
-                      kuvaus: stateObj.properties.value,
-                      useKuvausInRajoite: false
-                    }
-                  }, kuvausStateObjects);
+                  return path(
+                    ["metadata", "FI", "kayttoohje"],
+                    erityinenKoulutustehtava
+                  ) === "Kuvaus"
+                    ? {
+                        value: `${getAnchorPart(
+                          stateObj.anchor,
+                          1
+                        )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                        label: stateObj.properties.value,
+                        useKuvausInRajoite: true
+                      }
+                    : {
+                        label:
+                          erityinenKoulutustehtava.metadata[localeUpper].nimi,
+                        value: `${erityinenKoulutustehtava.koodiarvo}-0`,
+                        kuvaus: stateObj.properties.value,
+                        useKuvausInRajoite: false
+                      };
+                }, kuvausStateObjects);
               }
 
               return null;
