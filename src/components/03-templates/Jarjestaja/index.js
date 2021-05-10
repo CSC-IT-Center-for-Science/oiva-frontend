@@ -274,7 +274,7 @@ const Jarjestaja = React.memo(
 
 Jarjestaja.propTypes = {
   history: PropTypes.object,
-  JarjestamislupaJSX: PropTypes.object,
+  JarjestamislupaJSX: PropTypes.func,
   kohteet: PropTypes.array,
   koulutusmuoto: PropTypes.object,
   location: PropTypes.object,

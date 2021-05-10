@@ -121,10 +121,10 @@ const StepIcons = React.memo(({ active, completed, error, icon }) => {
 StepIcons.displayName = "StepIcons";
 
 StepIcons.propTypes = {
-  active: PropTypes.object,
-  completed: PropTypes.object,
-  error: PropTypes.object,
-  icon: PropTypes.object
+  active: PropTypes.bool,
+  completed: PropTypes.bool,
+  error: PropTypes.bool,
+  icon: PropTypes.number
 };
 
 const StepperNavigation = React.memo(

@@ -108,7 +108,7 @@ const JarjestajaSwitch = ({
 };
 
 JarjestajaSwitch.propTypes = {
-  JarjestamislupaJSX: PropTypes.object,
+  JarjestamislupaJSX: PropTypes.func,
   kohteet: PropTypes.array,
   koulutusmuoto: PropTypes.object,
   lupa: PropTypes.object,

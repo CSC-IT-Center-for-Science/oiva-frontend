@@ -218,18 +218,21 @@ export const Wizard = ({
           </DialogTitleWithStyles>
         </div>
         <DialogContentWithStyles>
-          <div className="grid grid-cols-2">
+          <div
+            className={`grid ${isPreviewModeOn ? "xxl:w-1/2" : "grid-cols-2"}`}>
             {steps && (
-              <div className="col-span-2 text-center px-8 xxl:px-0">
-                <StepperNavigation
-                  activeStep={page - 1}
-                  stepProps={steps}
-                  handleStepChange={handleStep}
-                />
+              <div className="bg-white fixed col-span-2 px-8 xxl:px-0 w-full z-10 shadow-xl">
+                <div className="flex justify-center max-w-7xl w-4/5 m-auto">
+                  <StepperNavigation
+                    activeStep={page - 1}
+                    stepProps={steps}
+                    handleStepChange={handleStep}
+                  />
+                </div>
               </div>
             )}
             <div className={`${isPreviewModeOn ? "" : "col-span-2"}`}>
-              {!isEmpty(steps) && (
+              {!steps && (
                 <OrganisationInfo
                   isPreviewModeOn={isPreviewModeOn}
                   organisation={organisation}
@@ -240,7 +243,7 @@ export const Wizard = ({
                   isPreviewModeOn
                     ? "border-r border-gray-300"
                     : "max-w-7xl m-auto"
-                }`}>
+                } ${steps ? "pt-20" : ""}`}>
                 <div
                   className={`${
                     isPreviewModeOn ? "px-8" : ""
