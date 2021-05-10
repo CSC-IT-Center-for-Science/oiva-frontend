@@ -23,9 +23,9 @@ const OrganisationInfo = React.memo(
     return (
       <div className="bg-vaalenharmaa w-full m-auto border-b border-xs border-harmaa">
         <div
-          className={`pt-4 pb-12 ${
-            isPreviewModeOn ? "xxl:w-4/5 xxl:max-w-9/10" : "max-w-7xl"
-          } m-auto px-8 xxl:px-0`}>
+          className={`pt-4 pb-12 px-8 ${
+            isPreviewModeOn ? "" : "xxl:px-0 max-w-7xl m-auto"
+          }`}>
           <Typography component="h1" variant="h1">
             {organisation.nimi[intl.locale] || last(values(organisation.nimi))}
           </Typography>

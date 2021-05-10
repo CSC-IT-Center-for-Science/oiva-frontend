@@ -234,7 +234,7 @@ const LupanakymaA = React.memo(
 
     const asianumeroYmsClasses = isPreviewModeOn
       ? "md:w-1/2 xxl:w-1/3 pr-6 mb-6 mt-3"
-      : "md:w-1/2 xxl:w-1/3 px-6 my-12";
+      : "md:w-1/2 xxl:w-1/3 my-12";
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
