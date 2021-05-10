@@ -707,47 +707,42 @@ export const createMaarayksiaVastenLuodutRajoitteetBEObjects = (
 
 // Alimääräysten luonti rajoitteille, jotka on kytketty olemassa
 // oleviin dynaamisia tekstikenttiä koskeviin määräyksiin.
-export const createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects = (
-  maaraykset,
-  rajoitteetByRajoiteId,
-  kohteet,
-  maaraystyypit,
-  kohde
-) => {
-  return flatten(
-    map(maarays => {
-      const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
-        /** Tekstikentän id on muotoa koodiarvo-ankkuri */
-        const rajoiteTekstikenttaId = path(
-          ["1", "properties", "value", "value"],
-          rajoite
-        );
-        const rajoitteenTekstikentanAnkkuri = last(
-          split("-", rajoiteTekstikenttaId)
-        );
-        const rajoitteenTekstikentanKoodiarvo = head(
-          split("-", rajoiteTekstikenttaId)
-        );
-        if (
-          rajoitteenTekstikentanKoodiarvo === maarays.koodiarvo &&
-          /** Määräyksen ankkuri on null jos tekstikenttiä ei voi lisätä */
-          (path(["meta", "ankkuri"], maarays) == null ||
-            rajoitteenTekstikentanAnkkuri ===
-              path(["meta", "ankkuri"], maarays))
-        ) {
-          return createAlimaarayksetBEObjects(
-            kohteet,
-            maaraystyypit,
-            {
-              isMaarays: true,
-              generatedId: maarays.uuid,
-              kohde
-            },
+export const createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects =
+  (maaraykset, rajoitteetByRajoiteId, kohteet, maaraystyypit, kohde) => {
+    return flatten(
+      map(maarays => {
+        const maaraystaKoskevatRajoitteet = mapObjIndexed(rajoite => {
+          /** Tekstikentän id on muotoa koodiarvo-ankkuri */
+          const rajoiteTekstikenttaId = path(
+            ["1", "properties", "value", "value"],
             rajoite
           );
-        }
-      }, rajoitteetByRajoiteId);
-      return values(maaraystaKoskevatRajoitteet);
-    }, maaraykset)
-  ).filter(Boolean);
-};
+          const rajoitteenTekstikentanAnkkuri = last(
+            split("-", rajoiteTekstikenttaId)
+          );
+          const rajoitteenTekstikentanKoodiarvo = head(
+            split("-", rajoiteTekstikenttaId)
+          );
+          if (
+            rajoitteenTekstikentanKoodiarvo === maarays.koodiarvo &&
+            /** Määräyksen ankkuri on null jos tekstikenttiä ei voi lisätä */
+            (path(["meta", "ankkuri"], maarays) == null ||
+              rajoitteenTekstikentanAnkkuri ===
+                path(["meta", "ankkuri"], maarays))
+          ) {
+            return createAlimaarayksetBEObjects(
+              kohteet,
+              maaraystyypit,
+              {
+                isMaarays: true,
+                generatedId: maarays.uuid,
+                kohde
+              },
+              rajoite
+            );
+          }
+        }, rajoitteetByRajoiteId);
+        return values(maaraystaKoskevatRajoitteet);
+      }, maaraykset)
+    ).filter(Boolean);
+  };

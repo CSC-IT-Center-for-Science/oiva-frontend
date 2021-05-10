@@ -77,19 +77,16 @@ const Asiakirjat = ({ koulutusmuoto }) => {
   const { uuid } = useParams();
   const intl = useIntl();
   const t = intl.formatMessage;
-  const [
-    muutospyynnonLiitteet,
-    muutospyynnonLiitteetAction
-  ] = useMuutospyynnonLiitteet();
+  const [muutospyynnonLiitteet, muutospyynnonLiitteetAction] =
+    useMuutospyynnonLiitteet();
   const [muutospyynto, muutospyyntoActions] = useMuutospyynto();
   const [isRemovalDialogVisible, setIsRemovalDialogVisible] = useState(false);
   const [
     isDownloadPDFAndChangeStateDialogVisible,
     setIsDownloadPDFAndChangeStateDialogVisible
   ] = useState(false);
-  const [isDeleteLiiteDialogVisible, setIsDeleteLiiteDialogVisible] = useState(
-    false
-  );
+  const [isDeleteLiiteDialogVisible, setIsDeleteLiiteDialogVisible] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [
     isPaatettyConfirmationDialogVisible,

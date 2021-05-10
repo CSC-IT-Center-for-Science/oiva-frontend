@@ -40,10 +40,8 @@ const WizardContainer = ({
   const { id, uuid } = useParams();
   const [isSaving, setIsSaving] = useState(false);
   const [muutospyynnonTila, setMuutospyynnonTila] = useState();
-  const [
-    { isPreviewModeOn },
-    { initializeChanges, setPreviewMode }
-  ] = useChangeObjects();
+  const [{ isPreviewModeOn }, { initializeChanges, setPreviewMode }] =
+    useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -58,16 +56,14 @@ const WizardContainer = ({
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
-  const [
-    opetuksenJarjestamismuodotCo
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "opetuksenJarjestamismuodot"
-  });
-  const [
-    erityisetKoulutustehtavatCO
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "erityisetKoulutustehtavat"
-  });
+  const [opetuksenJarjestamismuodotCo] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opetuksenJarjestamismuodot"
+    });
+  const [erityisetKoulutustehtavatCO] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "erityisetKoulutustehtavat"
+    });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
   });
@@ -214,9 +210,8 @@ const WizardContainer = ({
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
              * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
              **/
-            const changeObjectsFromBackend = getSavedChangeObjects(
-              muutospyynto
-            );
+            const changeObjectsFromBackend =
+              getSavedChangeObjects(muutospyynto);
             initializeChanges(changeObjectsFromBackend);
           }
         }

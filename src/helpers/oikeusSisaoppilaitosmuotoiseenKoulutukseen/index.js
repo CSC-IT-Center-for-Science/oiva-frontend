@@ -61,7 +61,8 @@ export const defineBackendChangeObjects = async (
 ) => {
   const { rajoitteetByRajoiteId } = changeObjects;
 
-  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen =
+    await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
 
   const kohde = find(
     propEq("tunniste", "sisaoppilaitosmuotoinenkoulutus"),
@@ -145,13 +146,14 @@ export const defineBackendChangeObjects = async (
     )
   ).filter(Boolean);
 
-  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetBEObjects(
-    maaraykset,
-    rajoitteetByRajoiteId,
-    kohteet,
-    maaraystyypit,
-    kohde
-  );
+  const maarayksiaVastenLuodutRajoitteet =
+    createMaarayksiaVastenLuodutRajoitteetBEObjects(
+      maaraykset,
+      rajoitteetByRajoiteId,
+      kohteet,
+      maaraystyypit,
+      kohde
+    );
 
   /**
    * Lisätiedot-kenttä tulee voida tallentaa ilman, että osioon on tehty muita

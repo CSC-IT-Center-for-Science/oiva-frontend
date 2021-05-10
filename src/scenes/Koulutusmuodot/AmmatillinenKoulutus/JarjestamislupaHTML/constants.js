@@ -406,8 +406,7 @@ export const LUPA_LISAKOULUTTAJAT = {
     pdflink: "Nokia.pdf"
   },
   "0201789-3": {
-    nimi:
-      "Opintotoiminnan Keskusliitto ry, Centralförbundet för Studieverksamhet rf",
+    nimi: "Opintotoiminnan Keskusliitto ry, Centralförbundet för Studieverksamhet rf",
     diaarinumero: "178/530/2006",
     pvm: "2006-05-08",
     pdflink: "Opintotoimikunnan_Keskusliitto.pdf"

@@ -104,9 +104,8 @@ export const parseGenericKujaLupa = (lupa, locale) => {
       let sectionData = {};
 
       if (maarayksetByTunniste.length > 0) {
-        const generateSectionData = getSectionDataGeneratorForGeneric(
-          sectionKey
-        );
+        const generateSectionData =
+          getSectionDataGeneratorForGeneric(sectionKey);
         sectionData = generateSectionData(maarayksetByTunniste, locale);
       }
 

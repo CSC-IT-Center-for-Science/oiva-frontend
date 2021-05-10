@@ -12,7 +12,8 @@ export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
-  const oikeudet = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
+  const oikeudet =
+    await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),

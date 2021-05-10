@@ -141,9 +141,8 @@ export const createAlimaarayksetBEObjects = (
 
   const tunniste = path(["kohde", "tunniste"], paalomakkeenBEMuutos);
 
-  const isKohdennuksenKohdennus = isAsetusKohdennuksenKohdennus(
-    asetusChangeObj
-  );
+  const isKohdennuksenKohdennus =
+    isAsetusKohdennuksenKohdennus(asetusChangeObj);
   if (isKohdennuksenKohdennus) {
     kohdennuksenKohdeNumber += 1;
     insideMulti = false;

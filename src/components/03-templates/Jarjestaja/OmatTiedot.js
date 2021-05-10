@@ -29,12 +29,13 @@ const OmatTiedot = ({ kunnat, maakunnat, organisation }) => {
       const koodiarvo = organisation.kotipaikkaUri.substr(6);
       const source = koodiarvo.length === 3 ? kunnat : maakunnat;
       const kotipaikkaObj = R.find(R.propEq("koodiArvo", koodiarvo), source);
-      values.kotipaikka = (kotipaikkaObj
-        ? R.find(
-            R.propEq("kieli", R.toUpper(intl.locale)),
-            kotipaikkaObj.metadata
-          )
-        : {}
+      values.kotipaikka = (
+        kotipaikkaObj
+          ? R.find(
+              R.propEq("kieli", R.toUpper(intl.locale)),
+              kotipaikkaObj.metadata
+            )
+          : {}
       ).nimi;
     }
     return values;
@@ -44,14 +45,8 @@ const OmatTiedot = ({ kunnat, maakunnat, organisation }) => {
     return (
       <React.Fragment>
         {(() => {
-          const {
-            email,
-            kotipaikka,
-            numero,
-            postinumero,
-            ppostinumero,
-            www
-          } = yhteystiedot;
+          const { email, kotipaikka, numero, postinumero, ppostinumero, www } =
+            yhteystiedot;
           return (
             <React.Fragment>
               <Typography component="h2" variant="h5" className="pb-4">

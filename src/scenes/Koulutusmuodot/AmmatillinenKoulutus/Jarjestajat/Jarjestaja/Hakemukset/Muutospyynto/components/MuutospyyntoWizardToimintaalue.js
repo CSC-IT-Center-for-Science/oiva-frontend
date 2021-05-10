@@ -13,12 +13,10 @@ const constants = {
 
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const intl = useIntl();
-  const [
-    changeObjects,
-    { setChanges }
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "toimintaalue"
-  });
+  const [changeObjects, { setChanges }] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "toimintaalue"
+    });
 
   const [isEditViewActive, toggleEditView] = useState(false);
 
@@ -63,8 +61,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         changeObjects
       );
 
-      const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
-        .length;
+      const amountOfChanges = R.flatten(
+        R.values(changes.changesByProvince)
+      ).length;
       const amountOfQuickFilterChanges = R.flatten(
         R.values(changes.quickFilterChanges)
       ).length;

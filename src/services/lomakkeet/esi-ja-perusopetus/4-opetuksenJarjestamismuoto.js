@@ -12,7 +12,8 @@ export async function opetuksenJarjestamismuoto(
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
-  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const opetuksenJarjestamismuodot =
+    await getOpetuksenJarjestamismuodotFromStorage();
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),

@@ -64,23 +64,21 @@ const submitMuutospyynto = uuid => {
   );
 };
 
-export const saveAndSubmitMuutospyynto = (
-  muutospyynto,
-  attachments
-) => async dispatch => {
-  const data = createMuutospyyntoOutput(muutospyynto, attachments);
+export const saveAndSubmitMuutospyynto =
+  (muutospyynto, attachments) => async dispatch => {
+    const data = createMuutospyyntoOutput(muutospyynto, attachments);
 
-  try {
-    const intermediateResponse = await save(data);
-    await submitMuutospyynto(intermediateResponse.data.uuid);
-    dispatch({
-      type: SAVE_MUUTOSPYYNTO_SUCCESS,
-      payload: { response: intermediateResponse, triggerPreview: false }
-    });
-  } catch (err) {
-    dispatch({ type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err });
-  }
-};
+    try {
+      const intermediateResponse = await save(data);
+      await submitMuutospyynto(intermediateResponse.data.uuid);
+      dispatch({
+        type: SAVE_MUUTOSPYYNTO_SUCCESS,
+        payload: { response: intermediateResponse, triggerPreview: false }
+      });
+    } catch (err) {
+      dispatch({ type: SAVE_MUUTOSPYYNTO_FAILURE, payload: err });
+    }
+  };
 
 export function downloadAttachment(uuid) {
   return dispatch => {

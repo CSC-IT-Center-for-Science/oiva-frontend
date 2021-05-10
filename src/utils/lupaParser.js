@@ -374,15 +374,8 @@ const parseSectionData = (
     let rajoitukset = [];
 
     _.forEach(maaraykset, maarays => {
-      const {
-        arvo,
-        koodisto,
-        kohde,
-        maaraystyyppi,
-        uuid,
-        koodiarvo,
-        koodi
-      } = maarays;
+      const { arvo, koodisto, kohde, maaraystyyppi, uuid, koodiarvo, koodi } =
+        maarays;
 
       if (koodisto === KOODISTOT.OIVA_MUUT) {
         rajoitukset.push({
@@ -437,15 +430,8 @@ const parseSectionData = (
     let muutCombined = [];
 
     _.forEach(maaraykset, maarays => {
-      const {
-        koodi,
-        meta,
-        koodiarvo,
-        koodisto,
-        uuid,
-        kohde,
-        maaraystyyppi
-      } = maarays;
+      const { koodi, meta, koodiarvo, koodisto, uuid, kohde, maaraystyyppi } =
+        maarays;
       const { metadata } = koodi;
 
       if (koodi && metadata) {

@@ -19,7 +19,8 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
   isMulti,
   inputId
 ) {
-  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen =
+    await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
   const localeUpper = toUpper(locale);
 
   if (oikeusSisaoppilaitosmuotoiseenKoulutukseen.length) {

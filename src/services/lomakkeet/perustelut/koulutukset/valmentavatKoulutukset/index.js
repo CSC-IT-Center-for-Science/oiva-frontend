@@ -6,9 +6,8 @@ import { __ } from "i18n-for-browser";
 import * as R from "ramda";
 
 function getAdditionForm(koulutusdata, changeObjectsPage1, isReadOnly) {
-  const getAnchorPartsByIndex = curriedGetAnchorPartsByIndex(
-    changeObjectsPage1
-  );
+  const getAnchorPartsByIndex =
+    curriedGetAnchorPartsByIndex(changeObjectsPage1);
   const categories = R.map(item => {
     let structure = null;
     if (R.includes(item.code, getAnchorPartsByIndex(1))) {

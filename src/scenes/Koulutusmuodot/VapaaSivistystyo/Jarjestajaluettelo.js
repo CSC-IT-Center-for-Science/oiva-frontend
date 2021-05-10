@@ -376,9 +376,8 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
 
   const [data, setData] = useState(getTableData(vstTyypit, intl.locale, luvat));
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
-  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
-    ""
-  );
+  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] =
+    useState("");
 
   useEffect(() => {
     setData(

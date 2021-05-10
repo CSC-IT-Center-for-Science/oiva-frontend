@@ -43,20 +43,24 @@ const Store = createStore({
 
       return outputs.muutospyynto.esittelijanEsikatselu.latauspolku.output;
     },
-    load: (uuid, isForceReloadRequested) => ({ getState, setState }) => {
-      return execute(
-        { getState, setState },
-        {
-          key: "muutospyynto",
-          urlEnding: uuid
-        },
-        { uuid },
-        isForceReloadRequested ? 0 : refreshIntervalInSeconds
-      );
-    },
-    reset: () => ({ setState }) => {
-      setState(initialState);
-    }
+    load:
+      (uuid, isForceReloadRequested) =>
+      ({ getState, setState }) => {
+        return execute(
+          { getState, setState },
+          {
+            key: "muutospyynto",
+            urlEnding: uuid
+          },
+          { uuid },
+          isForceReloadRequested ? 0 : refreshIntervalInSeconds
+        );
+      },
+    reset:
+      () =>
+      ({ setState }) => {
+        setState(initialState);
+      }
   },
   name: "Muutospyyntö"
 });

@@ -14,7 +14,8 @@ export async function erityisetKoulutustehtavat(
   { onAddButtonClick }
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
-  const poErityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const poErityisetKoulutustehtavat =
+    await getPOErityisetKoulutustehtavatFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
 
   const lisatiedotObj = find(

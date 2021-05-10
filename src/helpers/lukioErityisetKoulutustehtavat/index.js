@@ -34,34 +34,38 @@ import { getAnchorPart } from "../../utils/common";
 import { getMaarayksetByTunniste } from "helpers/lupa/index";
 import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "utils/rajoitteetUtils";
 
-export const initializeLukioErityinenKoulutustehtava = erityinenKoulutustehtava => {
-  return omit(["koodiArvo"], {
-    ...erityinenKoulutustehtava,
-    koodiarvo: erityinenKoulutustehtava.koodiArvo,
-    metadata: mapObjIndexed(
-      head,
-      groupBy(prop("kieli"), erityinenKoulutustehtava.metadata)
-    )
-  });
-};
+export const initializeLukioErityinenKoulutustehtava =
+  erityinenKoulutustehtava => {
+    return omit(["koodiArvo"], {
+      ...erityinenKoulutustehtava,
+      koodiarvo: erityinenKoulutustehtava.koodiArvo,
+      metadata: mapObjIndexed(
+        head,
+        groupBy(prop("kieli"), erityinenKoulutustehtava.metadata)
+      )
+    });
+  };
 
-export const initializeLukioErityisetKoulutustehtavat = erityisetKoulutustehtavat => {
-  return sort(
-    (a, b) => {
-      const aInt = parseInt(a.koodiarvo, 10);
-      const bInt = parseInt(b.koodiarvo, 10);
-      if (aInt < bInt) {
-        return -1;
-      } else if (aInt > bInt) {
-        return 1;
-      }
-      return 0;
-    },
-    map(erityinenKoulutustehtava => {
-      return initializeLukioErityinenKoulutustehtava(erityinenKoulutustehtava);
-    }, erityisetKoulutustehtavat)
-  );
-};
+export const initializeLukioErityisetKoulutustehtavat =
+  erityisetKoulutustehtavat => {
+    return sort(
+      (a, b) => {
+        const aInt = parseInt(a.koodiarvo, 10);
+        const bInt = parseInt(b.koodiarvo, 10);
+        if (aInt < bInt) {
+          return -1;
+        } else if (aInt > bInt) {
+          return 1;
+        }
+        return 0;
+      },
+      map(erityinenKoulutustehtava => {
+        return initializeLukioErityinenKoulutustehtava(
+          erityinenKoulutustehtava
+        );
+      }, erityisetKoulutustehtavat)
+    );
+  };
 
 const getAlimaaraykset = (
   kuvausnro,
@@ -141,23 +145,26 @@ export const defineBackendChangeObjects = async (
     lupaMaaraykset
   );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
-  const erityisetKoulutustehtavat = await getLukioErityisetKoulutustehtavatFromStorage();
+  const erityisetKoulutustehtavat =
+    await getLukioErityisetKoulutustehtavatFromStorage();
 
-  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-    maaraykset,
-    rajoitteetByRajoiteId,
-    kohteet,
-    maaraystyypit,
-    kohde
-  );
+  const maarayksiaVastenLuodutRajoitteet =
+    createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+      maaraykset,
+      rajoitteetByRajoiteId,
+      kohteet,
+      maaraystyypit,
+      kohde
+    );
 
-  const maarayksiaVastenLuodutValtakunnalisetRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-    maaraykset,
-    valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
-    kohteet,
-    maaraystyypit,
-    kohde
-  );
+  const maarayksiaVastenLuodutValtakunnalisetRajoitteet =
+    createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+      maaraykset,
+      valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
+      kohteet,
+      maaraystyypit,
+      kohde
+    );
 
   const muutokset = map(koulutustehtava => {
     // Checkbox-kenttien muutokset
@@ -205,17 +212,18 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    const valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo = reject(
-      isNil,
-      mapObjIndexed(rajoite => {
-        return startsWith(
-          `${koulutustehtava.koodiarvo}-`,
-          path([1, "properties", "value", "value"], rajoite)
-        )
-          ? rajoite
-          : null;
-      }, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId)
-    );
+    const valtakunnallisetKehittamistehtavaRajoitteetByRajoiteIdAndKoodiarvo =
+      reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return startsWith(
+            `${koulutustehtava.koodiarvo}-`,
+            path([1, "properties", "value", "value"], rajoite)
+          )
+            ? rajoite
+            : null;
+        }, valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId)
+      );
 
     /** Muutos ainoastaan osiossa 5 */
     const onlyValtakunnallinenChanges = filter(
@@ -492,13 +500,14 @@ export const defineBackendChangeObjects = async (
           }, tehtavaanLiittyvatMaaraykset)
         : null;
 
-      const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-        maaraykset,
-        valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
-        kohteet,
-        maaraystyypit,
-        kohde
-      );
+      const maarayksiaVastenLuodutRajoitteet =
+        createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+          maaraykset,
+          valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId,
+          kohteet,
+          maaraystyypit,
+          kohde
+        );
 
       return [
         checkboxBEchangeObject,

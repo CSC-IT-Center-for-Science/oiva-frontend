@@ -215,12 +215,11 @@ const CategorizedList = props => {
 
           const categoryLayout = {
             margins: {
-              top:
-                layoutStrategyMapping.margins.top[
-                  strategy
-                    ? strategy.key
-                    : defaultCategoryStyles.layoutStrategy.key
-                ]
+              top: layoutStrategyMapping.margins.top[
+                strategy
+                  ? strategy.key
+                  : defaultCategoryStyles.layoutStrategy.key
+              ]
             }
           };
 

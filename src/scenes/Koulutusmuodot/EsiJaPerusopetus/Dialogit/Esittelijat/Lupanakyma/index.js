@@ -69,16 +69,14 @@ const UusiAsiaDialog = ({
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
-  const [
-    opetuksenJarjestamismuodotCo
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "opetuksenJarjestamismuodot"
-  });
-  const [
-    erityisetKoulutustehtavatCO
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "erityisetKoulutustehtavat"
-  });
+  const [opetuksenJarjestamismuodotCo] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opetuksenJarjestamismuodot"
+    });
+  const [erityisetKoulutustehtavatCO] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "erityisetKoulutustehtavat"
+    });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
   });
@@ -225,9 +223,8 @@ const UusiAsiaDialog = ({
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
              * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
              **/
-            const changeObjectsFromBackend = getSavedChangeObjects(
-              muutospyynto
-            );
+            const changeObjectsFromBackend =
+              getSavedChangeObjects(muutospyynto);
             initializeChanges(changeObjectsFromBackend);
           }
         }

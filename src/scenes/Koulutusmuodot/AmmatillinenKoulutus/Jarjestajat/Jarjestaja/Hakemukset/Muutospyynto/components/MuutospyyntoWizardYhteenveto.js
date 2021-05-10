@@ -21,16 +21,14 @@ const MuutospyyntoWizardYhteenveto = ({
   mode,
   muut
 }) => {
-  const [
-    changeObjectsYleisetTiedot
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "yhteenveto_yleisettiedot"
-  });
-  const [
-    changeObjectsHakemuksenLiiteet
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "yhteenveto_hakemuksenLiitteet"
-  });
+  const [changeObjectsYleisetTiedot] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "yhteenveto_yleisettiedot"
+    });
+  const [changeObjectsHakemuksenLiiteet] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "yhteenveto_hakemuksenLiitteet"
+    });
 
   const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "tutkinnot"

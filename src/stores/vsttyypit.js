@@ -4,14 +4,16 @@ import { execute } from "./utils/loadFromBackend";
 const Store = createStore({
   initialState: [],
   actions: {
-    load: () => ({ getState, setState }) => {
-      return execute(
-        { getState, setState },
-        {
-          key: "vsttyypit"
-        }
-      );
-    }
+    load:
+      () =>
+      ({ getState, setState }) => {
+        return execute(
+          { getState, setState },
+          {
+            key: "vsttyypit"
+          }
+        );
+      }
   },
   name: "vsttyypit"
 });
