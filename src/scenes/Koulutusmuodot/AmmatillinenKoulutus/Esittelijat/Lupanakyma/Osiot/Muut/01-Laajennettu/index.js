@@ -49,7 +49,7 @@ Laajennettu.propTypes = {
   items: PropTypes.array,
   koodiarvo: PropTypes.string,
   localeUpper: PropTypes.string,
-  maarayksetByKoodiarvo: PropTypes.string,
+  maarayksetByKoodiarvo: PropTypes.object,
   mode: PropTypes.string,
   opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,

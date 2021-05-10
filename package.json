@@ -92,7 +92,6 @@
     "manage:translations": "node ./translationRunner.js",
     "get-translations": "node ./getTranslations.js",
     "docs": "jsdoc -c ./jsdoc.json",
-    "prettier": "prettier --write 'src/**/*.{js,ts,tsx}'",
     "format": "prettier-eslint --write 'src/**/*.{js,ts,tsx}'"
   },
   "devDependencies": {

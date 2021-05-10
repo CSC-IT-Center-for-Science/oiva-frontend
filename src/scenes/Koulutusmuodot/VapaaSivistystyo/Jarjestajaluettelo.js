@@ -339,9 +339,9 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
 
 Table.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.object,
+  data: PropTypes.array,
   intl: PropTypes.object,
-  skipReset: PropTypes.object,
+  skipReset: PropTypes.bool,
   updateMyData: PropTypes.func,
   luvat: PropTypes.array
 };

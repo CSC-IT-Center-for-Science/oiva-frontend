@@ -1029,7 +1029,7 @@ CategorizedList.propTypes = {
   parentCategory: PropTypes.object,
   path: PropTypes.array,
   requiredMessage: PropTypes.string,
-  rootPath: PropTypes.string,
+  rootPath: PropTypes.array,
   runRootOperations: PropTypes.func,
   showCategoryTitles: PropTypes.bool,
   onChangesUpdate: PropTypes.func,

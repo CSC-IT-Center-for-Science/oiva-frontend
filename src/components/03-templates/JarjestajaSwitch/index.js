@@ -117,7 +117,7 @@ JarjestajaSwitch.propTypes = {
   tulevatLuvat: PropTypes.array,
   user: PropTypes.object,
   voimassaOlevaLupa: PropTypes.object,
-  WizardContainer: PropTypes.object
+  WizardContainer: PropTypes.func
 };
 
 export default JarjestajaSwitch;

@@ -182,8 +182,8 @@ const Asianhallinta = ({
 Asianhallinta.propTypes = {
   koulutusmuoto: PropTypes.object,
   user: PropTypes.object,
-  UusiAsiaEsidialog: PropTypes.object,
-  WizardContainer: PropTypes.object
+  UusiAsiaEsidialog: PropTypes.func,
+  WizardContainer: PropTypes.func
 };
 
 export default Asianhallinta;

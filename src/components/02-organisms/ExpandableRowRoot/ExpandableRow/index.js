@@ -74,7 +74,7 @@ ExpandableRow.defaultProps = {
 };
 
 ExpandableRow.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.array,
   id: PropTypes.string,
   onToggle: PropTypes.func,
   /**

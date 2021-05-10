@@ -151,7 +151,7 @@ export const generateAvoimetAsiatTableStructure = (
               },
               cells: generateAsiaTableRows(row, intl, true)
             };
-          }, hakemusList)
+          }, hakemusList || [])
         }
       ]
     },

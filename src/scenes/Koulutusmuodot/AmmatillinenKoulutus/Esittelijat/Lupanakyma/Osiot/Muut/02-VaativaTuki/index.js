@@ -59,7 +59,7 @@ const VaativaTuki = ({
 
 VaativaTuki.propTypes = {
   isReadOnly: PropTypes.bool,
-  items: PropTypes.array,
+  items: PropTypes.object,
   localeUpper: PropTypes.string,
   maarayksetByKoodiarvo: PropTypes.object,
   mode: PropTypes.string,

@@ -112,7 +112,7 @@ Rajoitteet.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   isRestrictionsModeOn: PropTypes.bool,
   kohdevaihtoehdot: PropTypes.array.isRequired,
-  koulutustyyppi: PropTypes.object,
+  koulutustyyppi: PropTypes.string,
   onChangesUpdate: PropTypes.func,
   render: PropTypes.func,
   sectionId: PropTypes.string,

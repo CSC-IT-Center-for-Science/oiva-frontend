@@ -361,7 +361,7 @@ const LupanakymaA = React.memo(
 LupanakymaA.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   isRestrictionsModeOn: PropTypes.bool,
-  koulutustyyppi: PropTypes.object,
+  koulutustyyppi: PropTypes.string,
   lupakohteet: PropTypes.object,
   maaraykset: PropTypes.array,
   OpetustaAntavatKunnatJSX: PropTypes.func,

@@ -358,7 +358,7 @@ const WizardContainer = ({
 
 WizardContainer.propTypes = {
   kohteet: PropTypes.array,
-  koulutukset: PropTypes.array,
+  koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutusmuoto: PropTypes.object,
   koulutustyypit: PropTypes.array,

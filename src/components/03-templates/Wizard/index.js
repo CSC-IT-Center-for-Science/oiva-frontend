@@ -350,5 +350,5 @@ Wizard.propTypes = {
   steps: PropTypes.array,
   tila: PropTypes.string,
   title: PropTypes.string,
-  urlOnClose: PropTypes.func
+  urlOnClose: PropTypes.string
 };
