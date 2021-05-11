@@ -1,12 +1,13 @@
-import { append, endsWith, find, isEmpty, path, pathEq, propEq } from "ramda";
+import { append, endsWith, find, path, pathEq, propEq } from "ramda";
 import { replaceAnchorPartWith } from "utils/common";
-import { getRajoitteet } from "../../../../utils/rajoitteetUtils";
 import Lisatiedot from "../../lisatiedot";
+import { createEsikatseluHTML } from "../../../../helpers/esikatselu";
 
-export const previewOfOpetuksenJarjestamismuoto = ({
-  lomakedata,
-  rajoitteet
-}) => {
+export const previewOfOpetuksenJarjestamismuoto = (
+  { lomakedata, rajoitteet, maaraykset },
+  booleans,
+  locale
+) => {
   let structure = [];
   const checkedNode = find(
     pathEq(["properties", "isChecked"], true),
@@ -23,10 +24,27 @@ export const previewOfOpetuksenJarjestamismuoto = ({
     );
 
     if (kuvausNode) {
-      const kohdistuvatRajoitteet = getRajoitteet(
-        path(["properties", "forChangeObject", "koodiarvo"], kuvausNode),
-        rajoitteet
+      const koodiarvo = path(
+        ["properties", "forChangeObject", "koodiarvo"],
+        kuvausNode
       );
+
+      const maarays = find(
+        maarays =>
+          maarays.koodiarvo === koodiarvo &&
+          maarays.koodisto === "opetuksenjarjestamismuoto",
+        maaraykset
+      );
+
+      const html = createEsikatseluHTML(
+        maarays,
+        koodiarvo,
+        rajoitteet,
+        locale,
+        "nimi",
+        kuvausNode.properties.value
+      );
+
       structure = append(
         {
           anchor: "valittu",
@@ -39,21 +57,11 @@ export const previewOfOpetuksenJarjestamismuoto = ({
                   {
                     anchor: "muoto",
                     components: [
-                      !isEmpty(kohdistuvatRajoitteet)
-                        ? {
-                            anchor: "rajoite",
-                            name: "Rajoite",
-                            properties: {
-                              areTitlesVisible: false,
-                              isReadOnly: true,
-                              rajoite: kohdistuvatRajoitteet
-                            }
-                          }
-                        : {
-                            anchor: "kuvaus",
-                            name: "HtmlContent",
-                            properties: { content: kuvausNode.properties.value }
-                          }
+                      {
+                        anchor: "kuvaus",
+                        name: "HtmlContent",
+                        properties: { content: html }
+                      }
                     ]
                   }
                 ]

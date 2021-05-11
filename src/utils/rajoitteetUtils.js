@@ -366,15 +366,30 @@ export function getRajoiteListamuodossa(
   return listamuotoWithEndings;
 }
 
-export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
+/**
+ * Muodostaa rajoitteisiin kohdistuvista muutosobjekteista html-muotoisen merkkijonon
+ * @param rajoiteChangeObjsByRajoiteId
+ * @param locale
+ * @param format
+ * @returns {string}
+ */
+export function getKohdistuvatRajoitteet(
+  rajoiteChangeObjsByRajoiteId,
+  locale,
+  format = "list"
+) {
   let listamuotoWithEndings = "";
   let listamuoto = "";
   let rakenne = {};
   addIndex(forEach)((key, index) => {
-    for (let i = 0; i < rajoitteet[key].changeObjects.length; i += 1) {
+    for (
+      let i = 0;
+      i < rajoiteChangeObjsByRajoiteId[key].changeObjects.length;
+      i += 1
+    ) {
       rakenne = assocPath(
-        split(".", rajoitteet[key].changeObjects[i].anchor),
-        rajoitteet[key].changeObjects[i],
+        split(".", rajoiteChangeObjsByRajoiteId[key].changeObjects[i].anchor),
+        rajoiteChangeObjsByRajoiteId[key].changeObjects[i],
         rakenne
       );
     }
@@ -412,7 +427,7 @@ export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
 
       listamuoto = concat(listamuoto, listamuotoWithEndings);
     }
-  }, keys(rajoitteet));
+  }, keys(rajoiteChangeObjsByRajoiteId));
   return listamuoto;
 }
 
@@ -432,7 +447,11 @@ export const getRajoite = (value, rajoitteet) => {
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
 };
 
-export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
+export const getRajoitteet = (
+  value,
+  rajoiteChangeObjsByRajoiteId,
+  valueAttr = "value"
+) => {
   return filter(
     rajoite =>
       pathEq(
@@ -440,7 +459,7 @@ export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
         value,
         rajoite
       ),
-    rajoitteet
+    rajoiteChangeObjsByRajoiteId
   );
 };
 
