@@ -1,60 +1,8 @@
 import React from "react";
 import { Redirect, Switch } from "react-router";
 import { useIntl } from "react-intl";
-import { has, replace } from "ramda";
-
-function getLocalizedPath(path, locale, formatMessage) {
-  let localizedPath = "";
-  switch (typeof path) {
-    case "undefined":
-      localizedPath = undefined;
-      break;
-    case "object":
-      localizedPath = path.map(
-        key => `/${locale}` + formatMessage({ id: key })
-      );
-      break;
-    default:
-      const isFallbackRoute = path === "*";
-      if (isFallbackRoute) {
-        localizedPath = path;
-      } else {
-        localizedPath = `/${locale}${replace(
-          /}/g,
-          "",
-          replace(/{/g, ":", path)
-        )}`;
-      }
-  }
-
-  return localizedPath;
-}
-
-/**
- *
- * @param path
- * @returns Lokalisoitu merkkijono tai taulukko
- */
-export function localizeRoutePath(path, locale, formatMessage, params) {
-  let localizedPath = "";
-  switch (typeof path) {
-    case "undefined":
-      localizedPath = undefined;
-      break;
-    case "object":
-      localizedPath = path.map(
-        key => `/${locale}` + formatMessage({ id: key })
-      );
-      break;
-    default:
-      const isFallbackRoute = path === "*";
-      localizedPath = isFallbackRoute
-        ? path
-        : `/${locale}` + formatMessage({ id: path }, params);
-  }
-
-  return localizedPath;
-}
+import { has } from "ramda";
+import { getLocalizedPath } from "./LocalizedSwitchUtils";
 
 export const LocalizedSwitch = ({ children }) => {
   const { formatMessage, locale, messages } = useIntl();

@@ -509,75 +509,16 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 style={{ textDecoration: "underline" }}
                 onClick={() => {
                   history.push(
-                    localizeRouteKey(
+                    `${localizeRouteKey(
                       intl.locale,
                       AppRoute.AsianhallintaAvoimet,
                       t,
                       {
                         koulutusmuoto: koulutusmuoto.kebabCase
                       }
-                    )
+                    )}?force=${new Date().getTime()}`
                   );
                 }}
-              >
-                <BackIcon
-                  style={{
-                    fontSize: 14,
-                    marginBottom: "0.1rem",
-                    marginRight: "0.4rem"
-                  }}
-                />
-                {t(common.asiakirjatTakaisin)}
-              </Link>
-              <div className="flex-1 flex items-center pt-8 pb-2">
-                <div className="w-full flex flex-col">
-                  <Typography component="h1" variant="h1">
-                    {t(common["asiaTypes.lupaChange"])}
-                  </Typography>
-                  <p className="text-lg font-normal">{nimi}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex-1 flex w-full">
-          <div className="flex-1 flex flex-col w-full mx-auto">
-            <div className="mx-auto w-4/5 max-w-8xl">
-              {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
-              <div>
-                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
-                  <SimpleButton
-                    text={t(common.palautaValmisteluun)}
-                    onClick={palautaValmisteluun}
-                    variant="outlined"
-                  />
-                )}
-                {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (
-                  <SimpleButton
-                    text={t(common["asiaTable.actions.paatetty"])}
-                    buttonStyles={{ marginLeft: "1rem" }}
-                    onClick={onPaatettyActionClicked}
-                  />
-                )}
-                {muutospyynnonTila === FIELDS.TILA.VALUES.VALMISTELUSSA && (
-                  <SimpleButton
-                    text={t(common.vieEsittelyyn)}
-                    onClick={vieEsittelyyn}
-                  />
-                )}
-                {muutospyynnonTila === FIELDS.TILA.VALUES.PAATETTY && (
-                  <SimpleButton
-                    text={t(common.korjaaLupaa)}
-                    onClick={onKorjaaLupaaActionClicked}
-                    variant="outlined"
-                  />
-                )}
-              </div>
-              <Typography
-                component="h4"
-                variant="h4"
-                className="float-right"
-                style={{ margin: 0 }}
               >
                 <BackIcon
                   style={{

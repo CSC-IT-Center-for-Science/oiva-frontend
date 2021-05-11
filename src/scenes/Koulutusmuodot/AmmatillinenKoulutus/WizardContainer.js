@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../../utils/lupaParser";
 import { isEmpty, prop, toUpper } from "ramda";
-import { Wizard } from "components/03-templates/Wizard";
+import { Wizard } from "components/03-templates/Wizard/index";
 import wizard from "i18n/definitions/wizard";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import common from "i18n/definitions/common";
@@ -23,6 +23,7 @@ import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
 //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/0208201-1/jarjestamislupa-asiat
 // https: //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/0208201-1/jarjestamislupa-asiat
 /**
@@ -274,6 +275,15 @@ const WizardContainer = ({
     ]
   );
 
+  const urlOnClose = getUrlOnClose(
+    role,
+    locale,
+    formatMessage,
+    organisaatio,
+    koulutusmuoto,
+    uuid
+  );
+
   return (
     <Wizard
       page1={
@@ -340,26 +350,7 @@ const WizardContainer = ({
       organisation={organisaatio}
       steps={steps}
       title={formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
-      urlOnClose={
-        role === "KJ"
-          ? localizeRouteKey(
-              locale,
-              AppRoute.Jarjestamislupaasiat,
-              formatMessage,
-              {
-                id: organisaatio.oid,
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )
-          : localizeRouteKey(
-              locale,
-              AppRoute.AsianhallintaAvoimet,
-              formatMessage,
-              {
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )
-      }
+      urlOnClose={urlOnClose}
     />
   );
 };
