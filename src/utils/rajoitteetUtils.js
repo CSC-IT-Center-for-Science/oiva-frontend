@@ -1,10 +1,8 @@
 import {
   addIndex,
-  any,
   append,
   assocPath,
   concat,
-  defaultTo,
   filter,
   find,
   flatten,
@@ -484,7 +482,6 @@ export const getRajoitteetFromMaarays = (
   const htmlString = handleAlimaaraykset(
     maaraysHtmlString,
     alimaaraykset,
-    naytettavaArvo,
     locale,
     ajallaText
   );
@@ -519,7 +516,9 @@ const getRajoiteFromParentMaarays = (parentMaarays, locale, naytettavaArvo) => {
     /** Dynaamiset tekstikentät */
   } else if (naytettavaArvo === "kuvaus") {
     maaraysHtmlString = `<ul><li>${prop("kuvaus", value)}`;
-
+    /** Ulkomaat */
+  } else if (naytettavaArvo === "ulkomaa") {
+    maaraysHtmlString = `<ul><li>${path(["meta", "arvo"], parentMaarays)}`;
     /** Muut */
   } else {
     const metadata = find(
@@ -536,61 +535,31 @@ export const handleAlimaarays = (
   htmlString,
   locale,
   ajallaText,
-  naytettavaArvo = "nimi",
   multiselectAlimaaraykset = null
 ) => {
+  const arvo = getValueFromAlimaarays(alimaarays, toUpper(locale));
   let modifiedString = `${htmlString}<ul class="list-disc">`;
-
   const hasAlimaarays = !!length(alimaarays.aliMaaraykset);
-
   const isMaaraaikaRajoite =
     alimaarays.koodisto === "kujalisamaareetlisaksiajalla";
 
   if (isMaaraaikaRajoite) {
-    const alkupvm = moment(
-      path(["meta", "alkupvm"], alimaarays),
-      "YYYY-MM-DD"
-    ).format("DD.MM.YYYY");
-
-    const loppupvm = moment(
-      path(["meta", "loppupvm"], alimaarays),
-      "YYYY-MM-DD"
-    ).format("DD.MM.YYYY");
-
-    modifiedString = `${modifiedString}<li class="list-disc">${ajallaText} ${alkupvm} - ${loppupvm}</li>`;
+    modifiedString = `${modifiedString}<li class="list-disc">${ajallaText} ${prop(
+      "alkupvm",
+      arvo
+    )} - ${prop("loppupvm", arvo)}</li>`;
   } else {
     if (multiselectAlimaaraykset) {
       modifiedString = `${modifiedString}<li class="list-disc">`;
       addIndex(forEach)((alimaarays, index) => {
-        modifiedString = `${modifiedString}${getValueFromMultiselectAlimaarays(
-          alimaarays,
-          naytettavaArvo,
-          hasAlimaarays,
-          locale,
-          index === length(multiselectAlimaaraykset) - 1
-        )}`;
+        const last = index === length(multiselectAlimaaraykset) - 1;
+        const arvo = getValueFromAlimaarays(alimaarays, toUpper(locale));
+        const naytettavaArvo = `${arvo}${last ? "" : ", "}`;
+        modifiedString = `${modifiedString}${naytettavaArvo}`;
       }, multiselectAlimaaraykset);
       modifiedString = `${modifiedString}</li>`;
     } else {
-      const value =
-        find(
-          metadata => toUpper(metadata.kieli) === toUpper(locale),
-          path(["koodi", "metadata"], alimaarays) || []
-        ) || prop("meta", alimaarays);
-      if (
-        value.nimi !== "Ulkomaa" ||
-        (hasAlimaarays && alimaarays.meta.arvo) ||
-        alimaarays.meta.arvo
-      ) {
-        modifiedString = `${modifiedString}<li class="list-disc">${alimaarays
-          .meta.arvo ||
-          path(["meta", naytettavaArvo], alimaarays) ||
-          value[naytettavaArvo] ||
-          value.nimi ||
-          value.kuvaus} ${alimaarays.arvo || ""}</li>`;
-      } else {
-        modifiedString = htmlString;
-      }
+      modifiedString = `${modifiedString}<li class="list-disc">${arvo}`;
     }
   }
 
@@ -598,7 +567,6 @@ export const handleAlimaarays = (
     modifiedString = handleAlimaaraykset(
       modifiedString,
       alimaarays.aliMaaraykset,
-      naytettavaArvo,
       locale,
       ajallaText
     );
@@ -611,7 +579,6 @@ export const handleAlimaarays = (
 const handleAlimaaraykset = (
   modifiedString,
   alimaaraykset,
-  naytettavaArvo,
   locale,
   ajallaText
 ) => {
@@ -626,17 +593,11 @@ const handleAlimaaraykset = (
       const multiselectAlimaaraykset = multiselectUuid
         ? getMultiselectAlimaaraykset(multiselectUuid, alimaaraykset)
         : null;
-      const isKayttoohjeKuvaus = pipe(
-        path(["koodi", "metadata"]),
-        defaultTo([]),
-        any(meta => meta.kayttoohje === "Kuvaus")
-      )(alimaarays);
       modifiedString = handleAlimaarays(
         alimaarays,
         modifiedString,
         locale,
         ajallaText,
-        isKayttoohjeKuvaus ? "kuvaus" : naytettavaArvo,
         multiselectAlimaaraykset
       );
       if (multiselectUuid) {
@@ -647,39 +608,6 @@ const handleAlimaaraykset = (
     }
   }, alimaaraykset);
   return modifiedString;
-};
-
-const getValueFromMultiselectAlimaarays = (
-  alimaarays,
-  naytettavaArvo,
-  hasAlimaarays,
-  locale,
-  last
-) => {
-  const value =
-    find(
-      metadata => metadata.kieli === locale,
-      path(["koodi", "metadata"], alimaarays) || []
-    ) || prop("meta", alimaarays);
-
-  if (
-    value.nimi !== "Ulkomaa" ||
-    (hasAlimaarays && alimaarays.meta.arvo) ||
-    alimaarays.meta.arvo
-  ) {
-    const arvo =
-      alimaarays.meta.arvo ||
-      path(["meta", naytettavaArvo], alimaarays) ||
-      value[naytettavaArvo] ||
-      value.nimi ||
-      alimaarays.meta.kuvaus;
-    const arvo2 = alimaarays.arvo;
-    return arvo2
-      ? `${arvo} ${arvo2}${last ? "" : ", "}`
-      : `${arvo}${last ? "" : ", "}`;
-  } else {
-    return "";
-  }
 };
 
 const getMultiselectAlimaaraykset = (multiselectUuid, alimaaraykset) => {
@@ -769,4 +697,82 @@ export const createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEO
       return values(maaraystaKoskevatRajoitteet);
     }, maaraykset)
   ).filter(Boolean);
+};
+
+/** Palauttaa rajoitekriteerin arvon */
+const getValueFromAlimaarays = (alimaarays, locale) => {
+  /** Ulkomaa */
+  if (alimaarays.koodisto === "kunta" && alimaarays.koodiarvo === "200") {
+    return path(["meta", "kuvaus"], alimaarays);
+
+    /** Määräaika on erikoistapaus. Palauttaa objektin, joka sisältää alkupvm:n sekä loppupvm:n */
+  } else if (alimaarays.koodisto === "kujalisamaareetlisaksiajalla") {
+    return {
+      alkupvm: moment(
+        path(["meta", "alkupvm"], alimaarays),
+        "YYYY-MM-DD"
+      ).format("DD.MM.YYYY"),
+      loppupvm: moment(
+        path(["meta", "loppupvm"], alimaarays),
+        "YYYY-MM-DD"
+      ).format("DD.MM.YYYY")
+    };
+
+    /** Opetustehtävä, Kieli, Oppilaitos, Kunnat, Opetuksen järjestämismuoto, Oikeus sisäoppilaitosmuotoiseen koulutukseen */
+  } else if (
+    includes(alimaarays.koodisto, [
+      "opetustehtava",
+      "kielikoodistoopetushallinto",
+      "oppilaitos",
+      "kunta",
+      "opetuksenjarjestamismuoto",
+      "lukiooikeussisaooppilaitosmuotoiseenkoulutukseen"
+    ])
+  ) {
+    return (
+      getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale) ||
+      path(["meta", "kuvaus"], alimaarays)
+    );
+
+    /** Dynaamiset tekstikentät: Jos koodistosta tulevan kayttoohje-kentan arvo on Kuvaus tai koodistosta ei saada nimeä
+     * koodiarvolle, näytetään rajoitekriteerin arvona tekstikenttään syötetty kuvaus. Muutoin nimi koodistosta */
+  } else if (
+    includes(alimaarays.koodisto, [
+      "lukioerityinenkoulutustehtavauusi",
+      "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
+      "poerityinenkoulutustehtava",
+      "pomuutkoulutuksenjarjestamiseenliittyvatehdot"
+    ])
+  ) {
+    return getMetadataByLocaleAndPropertyFromMaarays(
+      alimaarays,
+      "kayttoohje",
+      "FI"
+    ) === "Kuvaus" ||
+      !getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale)
+      ? path(["meta", "kuvaus"], alimaarays)
+      : getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale);
+
+    /** Joista enintään, Joista vähintään etc. */
+  } else if (alimaarays.koodisto === "kujalisamaareetjoistalisaksi") {
+    return `${getMetadataByLocaleAndPropertyFromMaarays(
+      alimaarays,
+      "nimi",
+      locale
+    )} ${alimaarays.arvo}`;
+  }
+};
+
+const getMetadataByLocaleAndPropertyFromMaarays = (
+  maarays,
+  propertyName,
+  locale
+) => {
+  return prop(
+    propertyName,
+    find(
+      metadata => toUpper(prop("kieli", metadata)) === toUpper(locale),
+      path(["koodi", "metadata"], maarays) || []
+    )
+  );
 };

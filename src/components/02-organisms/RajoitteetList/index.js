@@ -51,7 +51,11 @@ const RajoitteetList = ({
   });
 
   const rajoitemaarayksetListamuodossa = map(maarays => {
-    const naytettavaArvo = koodistoNaytettavaArvoMap(maarays.koodisto);
+    const naytettavaArvo =
+      /** Ulkomaan kuvaus haetaan eri tavalla kuin muiden kuntien */
+      maarays.koodisto === "kunta" && maarays.koodiarvo === "200"
+        ? "ulkomaa"
+        : koodistoNaytettavaArvoMap(maarays.koodisto);
 
     return map(key => {
       /** Jos rajoitepoistoista löytyy rajoitteen id, ei näytetä sitä listalla */
