@@ -279,7 +279,7 @@ export const createAlimaarayksetBEObjects = (
           kohteet,
           maaraystyypit,
           paalomakkeenBEMuutos,
-          asetukset,
+          isMaarays ? asetuksetFromMaarays : asetukset,
           updatedMuutosobjektit,
           start,
           kohdennuksenKohdeNumber,
