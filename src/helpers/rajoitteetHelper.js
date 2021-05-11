@@ -72,7 +72,7 @@ export const createAlimaarayksetBEObjects = (
   kohdennuksenKohdeNumber = 0,
   insideMulti = false
 ) => {
-  const isMaarays = prop("isMaarays", paalomakkeenBEMuutos);
+  const isMaarays = prop("isMaarays", paalomakkeenBEMuutos) || false;
   let asetuksetFromMaarays = null;
   if(isMaarays) {
     asetuksetFromMaarays = clone(asetukset);
@@ -110,7 +110,7 @@ export const createAlimaarayksetBEObjects = (
   // Käsittele aikamääre rajoite
   let alkupvm = null;
   let loppupvm = null;
-  if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
+  if (valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
     alkupvm =
       path(
@@ -171,7 +171,7 @@ export const createAlimaarayksetBEObjects = (
       ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
-  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj))
+  let arvo = valueChangeObj && endsWith("lukumaara", path(["anchor"], valueChangeObj))
     ? valueOfValueChangeObj
     : null;
 
@@ -206,7 +206,7 @@ export const createAlimaarayksetBEObjects = (
         ] : null,
         asetusChangeObj,
         nth(index + 1, asetukset),
-        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
+        valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
           ? [
               find(
                 compose(endsWith(".alkamispaiva"), prop("anchor")),
