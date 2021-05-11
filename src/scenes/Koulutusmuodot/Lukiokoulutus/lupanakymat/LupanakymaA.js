@@ -187,7 +187,9 @@ const LupanakymaA = React.memo(
     );
 
     const erityisetKoulutustehtavatMaaraykset = map(maarays => {
-      /** Suodatetaan pois alimääräykset (rajoitteet), jotka koskevat valtakunnallisia kehittämistehtäviä */
+      /** Suodatetaan pois alimääräykset (rajoitteet), jotka koskevat valtakunnallisia kehittämistehtäviä
+       * koska erityinenkoulutustehtava tunnisteen alla on sekä valtakunnallisten kehittämistehtävisen rajoitteet, että
+       * erityisien koulutustehtävien rajoitteet */
       const alimaaraykset = filter(
         alimaarays =>
           !path(["meta", "valtakunnallinenKehittamistehtava"], alimaarays),

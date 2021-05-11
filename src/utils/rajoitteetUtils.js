@@ -89,15 +89,20 @@ const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
 function getTarkentimenArvo(tarkennin, useKuvaus = false) {
   let kuvaus = path(["properties", "value", "kuvaus"], tarkennin);
-  let useKuvausInRajoite = path(["properties", "value", "useKuvausInRajoite"], tarkennin);
-  let tarkentimenArvo = (useKuvaus || useKuvausInRajoite) && kuvaus ? kuvaus :
-    path(["properties", "value", "label"], tarkennin) ||
-    path(["properties", "value"], tarkennin);
+  let useKuvausInRajoite = path(
+    ["properties", "value", "useKuvausInRajoite"],
+    tarkennin
+  );
+  let tarkentimenArvo =
+    (useKuvaus || useKuvausInRajoite) && kuvaus
+      ? kuvaus
+      : path(["properties", "value", "label"], tarkennin) ||
+        path(["properties", "value"], tarkennin);
   return Array.isArray(tarkentimenArvo)
     ? pipe(
-      map(arvo => arvo.label),
-      join(", ")
-    )(tarkentimenArvo)
+        map(arvo => arvo.label),
+        join(", ")
+      )(tarkentimenArvo)
     : tarkentimenArvo;
 }
 
@@ -128,11 +133,11 @@ function kayLapiKohdennus(
                 asetus
               )
                 ? moment(
-                  path(
-                    ["tarkennin", tarkenninavain, "properties", "value"],
-                    asetus
-                  )
-                ).format("DD.MM.YYYY")
+                    path(
+                      ["tarkennin", tarkenninavain, "properties", "value"],
+                      asetus
+                    )
+                  ).format("DD.MM.YYYY")
                 : "";
 
               const paattymispaivaValue = path(
@@ -140,11 +145,11 @@ function kayLapiKohdennus(
                 asetus
               )
                 ? moment(
-                  path(
-                    ["tarkennin", "paattymispaiva", "properties", "value"],
-                    asetus
-                  )
-                ).format("DD.MM.YYYY")
+                    path(
+                      ["tarkennin", "paattymispaiva", "properties", "value"],
+                      asetus
+                    )
+                  ).format("DD.MM.YYYY")
                 : "";
 
               return `<ul><li>${__(
@@ -159,9 +164,9 @@ function kayLapiKohdennus(
                 : "";
             const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
               ? {
-                pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
-                post: "henkilöä"
-              }
+                  pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
+                  post: "henkilöä"
+                }
               : null;
 
             const tarkentimenArvo = getTarkentimenArvo(
@@ -224,8 +229,10 @@ function kayLapiKohdennus(
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
-  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin),
-    isEmpty(lista));
+  const tarkentimenArvo = getTarkentimenArvo(
+    prop(tarkenninavain, tarkennin),
+    isEmpty(lista)
+  );
   const taydennyssana = null;
 
   let item = tarkentimenArvo;
@@ -361,15 +368,30 @@ export function getRajoiteListamuodossa(
   return listamuotoWithEndings;
 }
 
-export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
+/**
+ * Muodostaa rajoitteisiin kohdistuvista muutosobjekteista html-muotoisen merkkijonon
+ * @param rajoiteChangeObjsByRajoiteId
+ * @param locale
+ * @param format
+ * @returns {string}
+ */
+export function getKohdistuvatRajoitteet(
+  rajoiteChangeObjsByRajoiteId,
+  locale,
+  format = "list"
+) {
   let listamuotoWithEndings = "";
   let listamuoto = "";
   let rakenne = {};
   addIndex(forEach)((key, index) => {
-    for (let i = 0; i < rajoitteet[key].changeObjects.length; i += 1) {
+    for (
+      let i = 0;
+      i < rajoiteChangeObjsByRajoiteId[key].changeObjects.length;
+      i += 1
+    ) {
       rakenne = assocPath(
-        split(".", rajoitteet[key].changeObjects[i].anchor),
-        rajoitteet[key].changeObjects[i],
+        split(".", rajoiteChangeObjsByRajoiteId[key].changeObjects[i].anchor),
+        rajoiteChangeObjsByRajoiteId[key].changeObjects[i],
         rakenne
       );
     }
@@ -407,7 +429,7 @@ export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
 
       listamuoto = concat(listamuoto, listamuotoWithEndings);
     }
-  }, keys(rajoitteet));
+  }, keys(rajoiteChangeObjsByRajoiteId));
   return listamuoto;
 }
 
@@ -427,7 +449,11 @@ export const getRajoite = (value, rajoitteet) => {
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
 };
 
-export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
+export const getRajoitteet = (
+  value,
+  rajoiteChangeObjsByRajoiteId,
+  valueAttr = "value"
+) => {
   return filter(
     rajoite =>
       pathEq(
@@ -435,7 +461,7 @@ export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
         value,
         rajoite
       ),
-    rajoitteet
+    rajoiteChangeObjsByRajoiteId
   );
 };
 
@@ -558,10 +584,10 @@ export const handleAlimaarays = (
       ) {
         modifiedString = `${modifiedString}<li class="list-disc">${alimaarays
           .meta.arvo ||
-        path(["meta", naytettavaArvo], alimaarays) ||
-        value[naytettavaArvo] ||
-        value.nimi ||
-        value.kuvaus} ${alimaarays.arvo || ""}</li>`;
+          path(["meta", naytettavaArvo], alimaarays) ||
+          value[naytettavaArvo] ||
+          value.nimi ||
+          value.kuvaus} ${alimaarays.arvo || ""}</li>`;
       } else {
         modifiedString = htmlString;
       }

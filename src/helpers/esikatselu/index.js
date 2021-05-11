@@ -5,15 +5,28 @@ import {
 } from "../../utils/rajoitteetUtils";
 import { __ } from "i18n-for-browser";
 
+/**
+ * Palauttaa html-muotoisen merkkijonon osion tietylle koodiarvolle esikatselua varten
+ * @param maarays
+ * @param koodiarvo - Koodistopalvelusta tuleva arvo, johon voi kohdistua määräyksiä ja muutoksia
+ * @param rajoiteChangeObjs
+ * @param locale
+ * @param naytettavaArvo
+ * @param parentMaaraysArvo -
+ * @returns {string}
+ */
 export const createEsikatseluHTML = (
   maarays,
   koodiarvo,
-  rajoitteet,
+  rajoiteChangeObjs,
   locale,
   naytettavaArvo,
   parentMaaraysArvo
 ) => {
-  const kohdistuvatRajoitemuutosobjektit = getRajoitteet(koodiarvo, rajoitteet);
+  const koodiarvoonKohdistuvatRajoitemuutosobjektit = getRajoitteet(
+    koodiarvo,
+    rajoiteChangeObjs
+  );
 
   /** Luodaan html-muotoinen listaesitys rajoitteita sisältäviltä määräyksiltä */
   const rajoitteetFromMaaraysHtml = maarays
@@ -26,9 +39,9 @@ export const createEsikatseluHTML = (
       )
     : null;
 
-  /** Luodaan html-muotoinen listaesitys rajoite-muutosobjekteista */
+  /** Luodaan html-muotoinen listaesitys rajoitemuutosobjekteista */
   let rajoitteetFromChangeObjectsHtml = getKohdistuvatRajoitteet(
-    kohdistuvatRajoitemuutosobjektit,
+    koodiarvoonKohdistuvatRajoitemuutosobjektit,
     locale
   );
 
@@ -40,7 +53,7 @@ export const createEsikatseluHTML = (
   /** Parent-määräys */
   const titlehtml = `<ul><li>${parentMaaraysArvo}`;
 
-  /** Yhdistetty html parent-määräys, rajoite muutos-objektit sekä rajoitemääräykset */
+  /** Yhdistetty html: parent-määräys, rajoite muutosobjektit sekä rajoitemääräykset */
   return `${titlehtml}${
     rajoitteetFromChangeObjectsHtml ? rajoitteetFromChangeObjectsHtml : ""
   }${rajoitteetFromMaaraysHtml ? rajoitteetFromMaaraysHtml : ""}`;
