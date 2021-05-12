@@ -33,9 +33,13 @@ const JarjestamislupaAsiat = React.memo(
 JarjestamislupaAsiat.propTypes = {
   history: PropTypes.object,
   isForceReloadRequested: PropTypes.bool,
+  koulutusmuoto: PropTypes.object,
+  lupa: PropTypes.object,
   match: PropTypes.object,
   newApplicationRouteItem: PropTypes.object,
   organisation: PropTypes.object
 };
+
+JarjestamislupaAsiat.displayName = "JarjestamislupaAsiat";
 
 export default JarjestamislupaAsiat;

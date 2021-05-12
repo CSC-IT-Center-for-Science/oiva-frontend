@@ -1,7 +1,7 @@
 import { postData } from "../../../fetch";
 
 // muutospyynto.tallennus.tallennaPaatoskirje
-export const tallennaPaatoskirje = formatMessage => ({
+export const tallennaPaatoskirje = () => ({
   label: "Päätöskirjeen tallennus",
   input: ["paatoskirje", "muutospyynto", "inform"],
   run: async ({ paatoskirje, muutospyynto, inform }) => {

@@ -397,54 +397,57 @@ const fetchBaseData = async (
     ? await localforage.setItem("kohteet", raw.kohteet)
     : [];
 
-  result.lukioErityinenKoulutustehtavaUusi = raw.lukioErityinenKoulutustehtavaUusi
-    ? await localforage.setItem(
-        "lukioErityinenKoulutustehtavaUusi",
-        map(
-          omit(["koodiarvoInt"]),
-          sortBy(
-            prop("koodiarvoInt"),
-            map(koulutustehtava => {
-              return omit(["koodiArvo"], {
-                ...koulutustehtava,
-                koodiarvo: koulutustehtava.koodiArvo,
-                koodiarvoInt: parseInt(koulutustehtava.koodiArvo, 10),
-                metadata: mapObjIndexed(
-                  head,
-                  groupBy(prop("kieli"), koulutustehtava.metadata)
-                )
-              });
-            }, raw.lukioErityinenKoulutustehtavaUusi)
+  result.lukioErityinenKoulutustehtavaUusi =
+    raw.lukioErityinenKoulutustehtavaUusi
+      ? await localforage.setItem(
+          "lukioErityinenKoulutustehtavaUusi",
+          map(
+            omit(["koodiarvoInt"]),
+            sortBy(
+              prop("koodiarvoInt"),
+              map(koulutustehtava => {
+                return omit(["koodiArvo"], {
+                  ...koulutustehtava,
+                  koodiarvo: koulutustehtava.koodiArvo,
+                  koodiarvoInt: parseInt(koulutustehtava.koodiArvo, 10),
+                  metadata: mapObjIndexed(
+                    head,
+                    groupBy(prop("kieli"), koulutustehtava.metadata)
+                  )
+                });
+              }, raw.lukioErityinenKoulutustehtavaUusi)
+            )
           )
         )
-      )
-    : null;
+      : null;
 
-  result.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot = raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot
-    ? await localforage.setItem(
-        "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
-        sortBy(
-          prop("koodiarvo"),
-          map(muuData => {
-            return omit(["koodiArvo"], {
-              ...muuData,
-              koodiarvo: muuData.koodiArvo,
-              metadata: mapObjIndexed(
-                head,
-                groupBy(prop("kieli"), muuData.metadata)
-              )
-            });
-          }, raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot)
+  result.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot =
+    raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot
+      ? await localforage.setItem(
+          "lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot",
+          sortBy(
+            prop("koodiarvo"),
+            map(muuData => {
+              return omit(["koodiArvo"], {
+                ...muuData,
+                koodiarvo: muuData.koodiArvo,
+                metadata: mapObjIndexed(
+                  head,
+                  groupBy(prop("kieli"), muuData.metadata)
+                )
+              });
+            }, raw.lukioMuutKoulutuksenJarjestamiseenLiittyvatEhdot)
+          )
         )
-      )
-    : null;
+      : null;
 
-  result.oikeusSisaoppilaitosmuotoiseenKoulutukseen = raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen
-    ? await localforage.setItem(
-        "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
-        initializeOikeudet(raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen)
-      )
-    : null;
+  result.oikeusSisaoppilaitosmuotoiseenKoulutukseen =
+    raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen
+      ? await localforage.setItem(
+          "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+          initializeOikeudet(raw.oikeusSisaoppilaitosmuotoiseenKoulutukseen)
+        )
+      : null;
 
   result.oppilaitoksetByOid = raw.oppilaitoksetByOid
     ? await localforage.setItem(
@@ -461,14 +464,15 @@ const fetchBaseData = async (
     raw.poikkeus999903
       ? await localforage.setItem("koulutukset", {
           muut: {
-            ammatilliseentehtavaanvalmistavakoulutus: raw.ammatilliseentehtavaanvalmistavakoulutus
-              ? sortBy(
-                  prop("koodiarvo"),
-                  map(koulutus => {
-                    return initializeKoulutus(koulutus);
-                  }, raw.ammatilliseentehtavaanvalmistavakoulutus)
-                )
-              : undefined,
+            ammatilliseentehtavaanvalmistavakoulutus:
+              raw.ammatilliseentehtavaanvalmistavakoulutus
+                ? sortBy(
+                    prop("koodiarvo"),
+                    map(koulutus => {
+                      return initializeKoulutus(koulutus);
+                    }, raw.ammatilliseentehtavaanvalmistavakoulutus)
+                  )
+                : undefined,
             kuljettajakoulutus: raw.kuljettajakoulutus
               ? sortBy(
                   prop("koodiarvo"),
@@ -840,7 +844,7 @@ const BaseData = ({
   if (!isEmpty(baseData)) {
     return (
       <React.Fragment>
-        {!!render ? render({ ...baseData, lupaUuid, oid: id }) : null}
+        {render ? render({ ...baseData, lupaUuid, oid: id }) : null}
       </React.Fragment>
     );
   }
@@ -852,6 +856,7 @@ BaseData.propTypes = {
   locale: PropTypes.string,
   render: PropTypes.func,
   koulutustyyppi: PropTypes.string,
+  oid: PropTypes.string,
   oppilaitostyyppi: PropTypes.string
 };
 

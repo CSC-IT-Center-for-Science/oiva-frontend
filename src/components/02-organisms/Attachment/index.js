@@ -128,4 +128,6 @@ Attachment.defaultProps = {
   styles: {}
 };
 
+Attachment.displayName = "Attachment";
+
 export default Attachment;

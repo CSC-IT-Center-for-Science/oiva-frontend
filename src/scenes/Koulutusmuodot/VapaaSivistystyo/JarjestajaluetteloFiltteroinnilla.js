@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import education from "../../../i18n/definitions/education";
 import { useIntl } from "react-intl";
 import BaseData from "basedata";
+import { PropTypes } from "prop-types";
 
 const keys = ["vstTyypit"];
 
@@ -29,6 +30,11 @@ const JarjestajaluetteloFiltteroinnilla = ({ koulutusmuoto, luvat }) => {
       />
     </React.Fragment>
   );
+};
+
+JarjestajaluetteloFiltteroinnilla.propTypes = {
+  koulutusmuoto: PropTypes.object,
+  luvat: PropTypes.array
 };
 
 export default JarjestajaluetteloFiltteroinnilla;

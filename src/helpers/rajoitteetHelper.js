@@ -74,7 +74,7 @@ export const createAlimaarayksetBEObjects = (
 ) => {
   const isMaarays = prop("isMaarays", paalomakkeenBEMuutos) || false;
   let asetuksetFromMaarays = null;
-  if(isMaarays) {
+  if (isMaarays) {
     asetuksetFromMaarays = clone(asetukset);
     asetukset = drop(2, asetukset);
   }
@@ -110,7 +110,10 @@ export const createAlimaarayksetBEObjects = (
   // Käsittele aikamääre rajoite
   let alkupvm = null;
   let loppupvm = null;
-  if (valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
+  if (
+    valueValueOfAsetusChangeObj &&
+    includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
+  ) {
     offset = 3;
     alkupvm =
       path(
@@ -149,9 +152,8 @@ export const createAlimaarayksetBEObjects = (
 
   const tunniste = path(["kohde", "tunniste"], paalomakkeenBEMuutos);
 
-  const isKohdennuksenKohdennus = isAsetusKohdennuksenKohdennus(
-    asetusChangeObj
-  );
+  const isKohdennuksenKohdennus =
+    isAsetusKohdennuksenKohdennus(asetusChangeObj);
   if (isKohdennuksenKohdennus) {
     kohdennuksenKohdeNumber += 1;
     insideMulti = false;
@@ -171,9 +173,10 @@ export const createAlimaarayksetBEObjects = (
       ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
-  let arvo = valueChangeObj && endsWith("lukumaara", path(["anchor"], valueChangeObj))
-    ? valueOfValueChangeObj
-    : null;
+  let arvo =
+    valueChangeObj && endsWith("lukumaara", path(["anchor"], valueChangeObj))
+      ? valueOfValueChangeObj
+      : null;
 
   const multiSelectValues = Array.isArray(valueOfValueChangeObj)
     ? valueOfValueChangeObj
@@ -200,13 +203,16 @@ export const createAlimaarayksetBEObjects = (
       }
 
       const changeObjects = [
-        isMaarays ? [
-          nth(index, asetuksetFromMaarays),
-          nth(index + 1, asetuksetFromMaarays)
-        ] : null,
+        isMaarays
+          ? [
+              nth(index, asetuksetFromMaarays),
+              nth(index + 1, asetuksetFromMaarays)
+            ]
+          : null,
         asetusChangeObj,
         nth(index + 1, asetukset),
-        valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
+        valueValueOfAsetusChangeObj &&
+        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
           ? [
               find(
                 compose(endsWith(".alkamispaiva"), prop("anchor")),

@@ -109,7 +109,7 @@ export async function previewOfOpetuskielet(
 }
 
 const getKieletPreview = (kielet, rajoitteet, maaraykset, locale) => {
-  return !!kielet
+  return kielet
     ? sortBy(
         prop("content"),
         map(opetuskieli => {

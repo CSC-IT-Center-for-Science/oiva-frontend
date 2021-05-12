@@ -7,20 +7,22 @@ const Store = createStore({
     }
   },
   actions: {
-    registerLomakeLoad: lomakeId => ({ getState, setState }) => {
-      const state = getState();
-      const nextState = {
-        ...state,
-        lomakkeet: {
-          ...state.lomakkeet,
-          latauskerrat: {
-            ...state.lomakkeet.latauskerrat,
-            [lomakeId]: (state.lomakkeet.latauskerrat[lomakeId] || 0) + 1
+    registerLomakeLoad:
+      lomakeId =>
+      ({ getState, setState }) => {
+        const state = getState();
+        const nextState = {
+          ...state,
+          lomakkeet: {
+            ...state.lomakkeet,
+            latauskerrat: {
+              ...state.lomakkeet.latauskerrat,
+              [lomakeId]: (state.lomakkeet.latauskerrat[lomakeId] || 0) + 1
+            }
           }
-        }
-      };
-      setState(nextState);
-    }
+        };
+        setState(nextState);
+      }
   },
   name: "Metadata"
 });

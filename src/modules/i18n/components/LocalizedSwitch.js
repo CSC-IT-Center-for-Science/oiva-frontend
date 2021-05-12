@@ -3,6 +3,7 @@ import { Redirect, Switch } from "react-router";
 import { useIntl } from "react-intl";
 import { has } from "ramda";
 import { getLocalizedPath } from "./LocalizedSwitchUtils";
+import { PropTypes } from "prop-types";
 
 export const LocalizedSwitch = ({ children }) => {
   const { formatMessage, locale, messages } = useIntl();
@@ -38,4 +39,8 @@ export const LocalizedSwitch = ({ children }) => {
       })}
     </Switch>
   );
+};
+
+LocalizedSwitch.propTypes = {
+  children: PropTypes.array
 };

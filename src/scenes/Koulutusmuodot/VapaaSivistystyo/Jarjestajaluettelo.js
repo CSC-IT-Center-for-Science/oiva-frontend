@@ -53,6 +53,7 @@ import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
 import vapaaSivistystyo from "../../../i18n/definitions/vapaaSivistystyo";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
+import { PropTypes } from "prop-types";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -74,6 +75,11 @@ function DefaultColumnFilter({ column, intl }) {
     </React.Fragment>
   );
 }
+
+DefaultColumnFilter.propTypes = {
+  column: PropTypes.object,
+  intl: PropTypes.object
+};
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [row => row.values[id]] });
@@ -180,11 +186,11 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
           )}
         </caption>
         <TableHead>
-          {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => {
+          {headerGroups.map((headerGroup, i) => (
+            <TableRow key={i} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, ii) => {
                 return (
-                  <TableCell {...column.getHeaderProps()}>
+                  <TableCell key={ii} {...column.getHeaderProps()}>
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
@@ -217,10 +223,10 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => {
+              <TableRow key={i} {...row.getRowProps()}>
+                {row.cells.map((cell, ii) => {
                   return (
-                    <TableCell {...cell.getCellProps()}>
+                    <TableCell key={ii} {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </TableCell>
                   );
@@ -331,6 +337,15 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
+Table.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array,
+  intl: PropTypes.object,
+  skipReset: PropTypes.bool,
+  updateMyData: PropTypes.func,
+  luvat: PropTypes.array
+};
+
 function getTableData(vstTyypit, locale, luvat) {
   return sort(
     descend(prop("yllapitaja")),
@@ -361,9 +376,8 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
 
   const [data, setData] = useState(getTableData(vstTyypit, intl.locale, luvat));
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
-  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
-    ""
-  );
+  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] =
+    useState("");
 
   useEffect(() => {
     setData(
@@ -397,30 +411,36 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
     setVstOppilaitostyyppiFilter(selectedOption);
   };
 
+  const Cell = ({ row }) => {
+    return (
+      <Link
+        className="underline"
+        to={localizeRouteKey(
+          intl.locale,
+          AppRoute.Jarjestamislupa,
+          intl.formatMessage,
+          {
+            id: row.values.lupaUuid,
+            koulutusmuoto: koulutusmuoto.kebabCase
+          }
+        )}
+        title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
+          nimi: row.values.yllapitaja
+        })}>
+        {row.values.yllapitaja}
+      </Link>
+    );
+  };
+
+  Cell.propTypes = {
+    row: PropTypes.object
+  };
+
   const columns = [
     {
       accessor: "yllapitaja",
       Header: intl.formatMessage(common.yllapitaja),
-      Cell: ({ row }) => {
-        return (
-          <Link
-            className="underline"
-            to={localizeRouteKey(
-              intl.locale,
-              AppRoute.Jarjestamislupa,
-              intl.formatMessage,
-              {
-                id: row.values.lupaUuid,
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )}
-            title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
-              nimi: row.values.yllapitaja
-            })}>
-            {row.values.yllapitaja}
-          </Link>
-        );
-      }
+      Cell
     },
     {
       accessor: "oppilaitos",
@@ -503,5 +523,11 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
     </div>
   );
 }
+
+Jarjestajaluettelo.propTypes = {
+  koulutusmuoto: PropTypes.object,
+  vstTyypit: PropTypes.array,
+  luvat: PropTypes.array
+};
 
 export default Jarjestajaluettelo;

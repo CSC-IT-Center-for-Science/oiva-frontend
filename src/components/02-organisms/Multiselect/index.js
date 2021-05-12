@@ -227,4 +227,6 @@ Multiselect.propTypes = {
   isDisabled: PropTypes.bool
 };
 
+Multiselect.displayName = "Multiselect";
+
 export default Multiselect;

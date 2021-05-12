@@ -119,6 +119,8 @@ function SimpleMenu({ actions = [], id, isExpanded }) {
 SimpleMenu.propTypes = {
   // Identifier of menu instance
   id: PropTypes.string.isRequired,
+  // Is the menu expanded in the beginning
+  isExpanded: PropTypes.bool,
   // List of menu actions
   actions: PropTypes.array
 };

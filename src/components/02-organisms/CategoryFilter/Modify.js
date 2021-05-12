@@ -385,7 +385,7 @@ const Modify = React.memo(
           }
         });
 
-        polygonSeries.current.events.on("inited", function (ev) {
+        polygonSeries.current.events.on("inited", function () {
           forEachObjIndexed(instance => {
             instance.setMap(kartta.current);
             instance.setPolygonSeries(polygonSeries.current);
@@ -438,9 +438,10 @@ const Modify = React.memo(
       const shouldBeSelected = filter(location => {
         const provinceInstance = provinceInstances[location.provinceKey];
         if (provinceInstance) {
-          const areAllMunicipalitiesActive = provinceInstance.areAllMunicipalitiesActive(
-            cos[location.provinceKey]
-          );
+          const areAllMunicipalitiesActive =
+            provinceInstance.areAllMunicipalitiesActive(
+              cos[location.provinceKey]
+            );
           if (location.isKunta) {
             return (
               !areAllMunicipalitiesActive &&
@@ -464,13 +465,13 @@ const Modify = React.memo(
         map(province => {
           const provinceInstance = provinceInstances[province.anchor];
           if (provinceInstance) {
-            const activeMunicipalities = provinceInstance.getActiveMunicipalities(
-              cos[province.anchor]
-            );
-            const areAllMunicipalitiesActive = provinceInstance.areAllMunicipalitiesActive(
-              cos[province.anchor],
-              activeMunicipalities
-            );
+            const activeMunicipalities =
+              provinceInstance.getActiveMunicipalities(cos[province.anchor]);
+            const areAllMunicipalitiesActive =
+              provinceInstance.areAllMunicipalitiesActive(
+                cos[province.anchor],
+                activeMunicipalities
+              );
             if (areAllMunicipalitiesActive) {
               return {
                 label: province.components[0].properties.title,
@@ -846,5 +847,7 @@ Modify.propTypes = {
   localizations: PropTypes.object,
   quickFilterChangeObjects: PropTypes.array
 };
+
+Modify.displayName = "Modify";
 
 export default Modify;

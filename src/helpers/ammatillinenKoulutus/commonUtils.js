@@ -15,7 +15,7 @@ import { findObjectWithKey, getAnchorPart } from "utils/common";
 import { setAttachmentUuids } from "utils/muutospyyntoUtil";
 
 const getSavedFiles = muutospyynto => {
-  if (!!muutospyynto) {
+  if (muutospyynto) {
     const attachments = prop("liitteet", muutospyynto);
     const muutospyyntoData = setAttachmentUuids(attachments, muutospyynto);
     const backendMuutokset = prop("muutokset")(muutospyyntoData);
@@ -42,7 +42,7 @@ const getUpdatedC = (muutospyynto, filesFromMuutokset) => {
 };
 
 export const getSavedChangeObjects = muutospyynto => {
-  if (!!muutospyynto) {
+  if (muutospyynto) {
     let changesBySection = {};
 
     const savedFiles = getSavedFiles(muutospyynto);

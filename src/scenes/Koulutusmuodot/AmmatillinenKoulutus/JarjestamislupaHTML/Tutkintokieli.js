@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { PropTypes } from "prop-types";
 
 const TutkintoWrapper = styled.div`
   margin: 6px 0 6px 30px;
@@ -30,5 +31,10 @@ class Tutkintokieli extends Component {
     );
   }
 }
+
+Tutkintokieli.propTypes = {
+  nimi: PropTypes.string,
+  tutkintokoodi: PropTypes.string
+};
 
 export default Tutkintokieli;

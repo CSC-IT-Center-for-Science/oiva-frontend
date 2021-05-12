@@ -143,7 +143,7 @@ export async function createObjectToSave(
          * Next step is to go through all the Toiminta-alue related "change objects" of the first
          * page of the wizard and generate change objects based on them.
          */
-        return !!sourceObject
+        return sourceObject
           ? R.map(changeObject => {
               return {
                 anchor: `perustelut_toimintaalue`,

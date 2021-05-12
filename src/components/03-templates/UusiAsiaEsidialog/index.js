@@ -296,7 +296,9 @@ UusiAsiaEsidialog.propTypes = {
   // Function that will be called when the dialog is going to be closed / hided.
   onClose: PropTypes.func.isRequired,
   // Function that will be called when user selects a koulutuksen järjestäjä
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
+  // List of organisations
+  organisations: PropTypes.array
 };
 
 export default UusiAsiaEsidialog;

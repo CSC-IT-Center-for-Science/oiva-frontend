@@ -86,31 +86,31 @@ const EsittelijatMuutospyynto = React.memo(
     const sectionHeadings = useMemo(
       () => ({
         tutkinnotJaKoulutukset: {
-          number: R.path(["1", "headingNumber"], lupaKohteet) || "1",
+          number: String(R.path(["1", "headingNumber"], lupaKohteet)) || "1",
           title:
             R.path(["1", "heading"], lupaKohteet) ||
             intl.formatMessage(common.lupaSectionTutkinnotMainTitle)
         },
         opetusJaTutkintokieli: {
-          number: R.path(["2", "headingNumber"], lupaKohteet) || "2",
+          number: String(R.path(["2", "headingNumber"], lupaKohteet)) || "2",
           title:
             R.path(["2", "heading"], lupaKohteet) ||
             intl.formatMessage(common.lupaSectionOpetuskieliMainTitle)
         },
         toimintaalue: {
-          number: R.path(["3", "headingNumber"], lupaKohteet) || "3",
+          number: String(R.path(["3", "headingNumber"], lupaKohteet)) || "3",
           title:
             R.path(["3", "heading"], lupaKohteet) ||
             intl.formatMessage(common.lupaSectionToimintaAlueMainTitle)
         },
         opiskelijavuodet: {
-          number: R.path(["4", "headingNumber"], lupaKohteet) || "4",
+          number: String(R.path(["4", "headingNumber"], lupaKohteet)) || "4",
           title:
             R.path(["4", "heading"], lupaKohteet) ||
             intl.formatMessage(common.lupaSectionOpiskelijavuodetMainTitle)
         },
         muut: {
-          number: R.path(["5", "headingNumber"], lupaKohteet) || "5",
+          number: String(R.path(["5", "headingNumber"], lupaKohteet)) || "5",
           title:
             R.path(["5", "heading"], lupaKohteet) ||
             intl.formatMessage(common.lupaSectionMuutMainTitle)
@@ -210,16 +210,20 @@ const EsittelijatMuutospyynto = React.memo(
 );
 
 EsittelijatMuutospyynto.propTypes = {
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
   koulutustyypit: PropTypes.array,
   maaraykset: PropTypes.array,
+  mode: PropTypes.string,
   lupaKohteet: PropTypes.object,
   maaraystyypit: PropTypes.array,
   muut: PropTypes.array,
   opiskelijavuodet: PropTypes.array,
-  role: PropTypes.string
+  role: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default EsittelijatMuutospyynto;

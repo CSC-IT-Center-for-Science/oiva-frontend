@@ -123,6 +123,7 @@ CheckboxWithLabel.defaultProps = {
 };
 
 CheckboxWithLabel.propTypes = {
+  children: PropTypes.object,
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
@@ -140,5 +141,7 @@ CheckboxWithLabel.propTypes = {
    */
   labelStyles: PropTypes.object
 };
+
+CheckboxWithLabel.displayName = "CheckboxWithLabel";
 
 export default CheckboxWithLabel;

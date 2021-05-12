@@ -45,6 +45,7 @@ const ATVKoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
 };
 
 ATVKoulutukset.propTypes = {
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array,
   mode: PropTypes.string

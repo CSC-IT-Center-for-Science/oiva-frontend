@@ -17,7 +17,7 @@ export const initializeLisatieto = ({
   };
 };
 
-export const initializeLisatiedot = (lisatiedotData, maaraykset = []) => {
+export const initializeLisatiedot = lisatiedotData => {
   return lisatiedotData
     ? map(lisatietodata => {
         let lisatieto = initializeLisatieto(lisatietodata);

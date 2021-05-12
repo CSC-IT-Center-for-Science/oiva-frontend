@@ -22,7 +22,7 @@ const isFieldEmpty = (anchor, defaultValue, changeObjects) => {
  */
 export default async function getPaatoksenTiedot(
   data,
-  { isPreviewModeOn, isReadOnly },
+  { isReadOnly },
   locale,
   changeObjects
 ) {

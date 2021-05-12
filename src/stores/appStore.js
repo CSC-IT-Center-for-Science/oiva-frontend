@@ -7,12 +7,16 @@ const Store = createStore({
     locale: "fi"
   },
   actions: {
-    getCurrentLocale: () => ({ getState }) => {
-      return getState().locale;
-    },
-    setLocale: locale => ({ getState, setState }) => {
-      setState(assoc("locale", locale, getState()));
-    }
+    getCurrentLocale:
+      () =>
+      ({ getState }) => {
+        return getState().locale;
+      },
+    setLocale:
+      locale =>
+      ({ getState, setState }) => {
+        setState(assoc("locale", locale, getState()));
+      }
   },
   name: "App store - Global settings"
 });

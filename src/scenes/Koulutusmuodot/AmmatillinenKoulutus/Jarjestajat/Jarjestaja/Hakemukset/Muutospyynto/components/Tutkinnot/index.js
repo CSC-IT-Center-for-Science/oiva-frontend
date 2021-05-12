@@ -73,8 +73,11 @@ const Tutkinnot = ({
 };
 
 Tutkinnot.propTypes = {
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   koulutusalat: PropTypes.array,
-  koulutustyypit: PropTypes.array
+  koulutustyypit: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default Tutkinnot;

@@ -194,7 +194,8 @@ const JarjestamislupaAsiakirjat = ({ muutospyynto, organisation }) => {
 };
 
 JarjestamislupaAsiakirjat.propTypes = {
-  muutospyynto: PropTypes.object
+  muutospyynto: PropTypes.object,
+  organisation: PropTypes.object
 };
 
 export default JarjestamislupaAsiakirjat;

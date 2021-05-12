@@ -26,10 +26,12 @@ export default async function getErityisetKoulutustehtavat(
 
   if (koulutustyyppi === "1") {
     // 1 = esi- ja perusopetus
-    erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+    erityisetKoulutustehtavat =
+      await getPOErityisetKoulutustehtavatFromStorage();
   } else if (koulutustyyppi === "2") {
     // 2 = lukiokoulutus
-    erityisetKoulutustehtavat = await getLukioErityisetKoulutustehtavatFromStorage();
+    erityisetKoulutustehtavat =
+      await getLukioErityisetKoulutustehtavatFromStorage();
   }
 
   if (erityisetKoulutustehtavat.length) {

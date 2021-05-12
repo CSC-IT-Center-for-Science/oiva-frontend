@@ -22,7 +22,7 @@ const SideNavigation = ({
     }
   };
 
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles(() => ({
     paper: {
       backgroundColor: "#4c7a61",
       color: "white",
@@ -55,6 +55,7 @@ const SideNavigation = ({
 };
 
 SideNavigation.propTypes = {
+  children: PropTypes.object,
   handleDrawerToggle: PropTypes.func,
   isVisible: PropTypes.bool,
   setIsMobileMenuVisible: PropTypes.func.isRequired

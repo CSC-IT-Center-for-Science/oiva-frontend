@@ -142,4 +142,6 @@ SelectAttachment.defaultProps = {
   styles: {}
 };
 
+SelectAttachment.displayName = "SelectAttachment";
+
 export default SelectAttachment;

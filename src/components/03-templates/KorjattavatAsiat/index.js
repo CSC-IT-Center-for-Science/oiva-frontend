@@ -3,6 +3,7 @@ import Table from "../../02-organisms/Table";
 import { generateAvoimetAsiatTableStructure } from "../../../utils/asiatUtils";
 import { useIntl } from "react-intl";
 import { useHistory } from "react-router-dom";
+import { PropTypes } from "prop-types";
 
 const KorjattavatAsiat = ({ korjauksessaOlevatAsiat, koulutusmuoto }) => {
   const history = useHistory();
@@ -28,6 +29,11 @@ const KorjattavatAsiat = ({ korjauksessaOlevatAsiat, koulutusmuoto }) => {
       />
     </div>
   );
+};
+
+KorjattavatAsiat.propTypes = {
+  korjauksessaOlevatAsiat: PropTypes.object,
+  koulutusmuoto: PropTypes.object
 };
 
 export default KorjattavatAsiat;

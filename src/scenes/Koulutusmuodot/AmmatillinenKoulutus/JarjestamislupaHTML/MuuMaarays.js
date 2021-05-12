@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { PropTypes } from "prop-types";
 
 const MuuMaaraysWrapper = styled.div`
   margin: 6px 0 20px 0;
@@ -20,6 +21,12 @@ const MuuMaarays = props => {
       </Nimi>
     </MuuMaaraysWrapper>
   );
+};
+
+MuuMaarays.propTypes = {
+  koodi: PropTypes.string,
+  nimi: PropTypes.string,
+  selite: PropTypes.string
 };
 
 export default MuuMaarays;

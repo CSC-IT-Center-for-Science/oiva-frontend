@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 // muutospyynnot.tilanmuutos.korjaustilaanSiirtyminenEpaonnistui
-export const korjaustilaanSiirtyminenEpaonnistui = formatMessage => ({
+export const korjaustilaanSiirtyminenEpaonnistui = () => ({
   label: "Ilmoitus epäonnistumisesta",
   run: async () => {
     toast.error(

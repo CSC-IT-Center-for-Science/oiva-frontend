@@ -118,6 +118,15 @@ const StepIcons = React.memo(({ active, completed, error, icon }) => {
   );
 });
 
+StepIcons.displayName = "StepIcons";
+
+StepIcons.propTypes = {
+  active: PropTypes.bool,
+  completed: PropTypes.bool,
+  error: PropTypes.bool,
+  icon: PropTypes.number
+};
+
 const StepperNavigation = React.memo(
   ({ activeStep, handleStepChange, stepProps }) => {
     const classes = useStyles();
@@ -169,5 +178,7 @@ StepperNavigation.propTypes = {
   activeStep: PropTypes.number,
   handleStepChange: PropTypes.func
 };
+
+StepperNavigation.displayName = "StepperNavigation";
 
 export default StepperNavigation;

@@ -13,8 +13,7 @@ export function getLocalizedPath(
       );
       break;
     default:
-      const isFallbackRoute = path === "*";
-      if (isFallbackRoute) {
+      if (path === "*") {
         localizedPath = path;
       } else {
         localizedPath = `/${locale}${replace(
@@ -37,7 +36,7 @@ export function localizeRoutePath(
   path: any,
   locale: string,
   formatMessage: Function,
-  params?: object
+  params?: Object
 ) {
   let localizedPath = "";
   switch (typeof path) {
@@ -47,10 +46,10 @@ export function localizeRoutePath(
       );
       break;
     default:
-      const isFallbackRoute = path === "*";
-      localizedPath = isFallbackRoute
-        ? path
-        : `/${locale}` + formatMessage({ id: path }, params);
+      localizedPath =
+        path === "*"
+          ? path
+          : `/${locale}` + formatMessage({ id: path }, params);
   }
 
   return localizedPath;

@@ -1,8 +1,7 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 import common from "../../../../i18n/definitions/common";
-import React from "react";
 import PropTypes from "prop-types";
-import AuthenticationLink from "../AuthenticationLink";
 
 const OrganisationLink = ({
   organisationLink,
@@ -25,7 +24,8 @@ const OrganisationLink = ({
   );
 };
 
-AuthenticationLink.propTypes = {
+OrganisationLink.propTypes = {
+  formatMessage: PropTypes.func,
   organisationLink: PropTypes.object,
   navLinkClasses: PropTypes.string
 };

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
 import { join, replace, split } from "ramda";
+import { PropTypes } from "prop-types";
 
 const LargeParagraph = styled.p`
   font-size: 20px;
@@ -29,6 +30,10 @@ const JarjestajaBasicInfo = ({ jarjestaja }) => {
       )}
     </React.Fragment>
   );
+};
+
+JarjestajaBasicInfo.propTypes = {
+  jarjestaja: PropTypes.object
 };
 
 export default JarjestajaBasicInfo;

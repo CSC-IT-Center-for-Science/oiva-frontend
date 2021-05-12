@@ -237,20 +237,25 @@ const Lomake = React.memo(
 
 Lomake.propTypes = {
   anchor: PropTypes.string,
+  changeObjects: PropTypes.array,
   code: PropTypes.string,
   data: PropTypes.object,
+  formTitle: PropTypes.string,
   functions: PropTypes.object,
   isInExpandableRow: PropTypes.bool,
   isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRowExpanded: PropTypes.bool,
+  isSavingState: PropTypes.bool,
   lomakedataAnchor: PropTypes.string,
   mode: PropTypes.string,
+  noPadding: PropTypes.bool,
   path: PropTypes.array,
   prefix: PropTypes.string,
   rowMessages: PropTypes.object,
   rowTitle: PropTypes.string,
-  isSavingState: PropTypes.bool,
+  showCategoryTitles: PropTypes.bool,
+  showValidationErrors: PropTypes.bool,
   uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
 

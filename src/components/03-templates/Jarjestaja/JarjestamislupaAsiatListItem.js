@@ -10,6 +10,7 @@ import { NavLink } from "react-router-dom";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { injectIntl } from "react-intl";
 import common from "i18n/definitions/common";
+import { PropTypes } from "prop-types";
 
 const LupaText = styled.span`
   margin: 10px;
@@ -94,6 +95,13 @@ const JarjestamislupaAsiaListItem = props => {
       /> */}
     </React.Fragment>
   );
+};
+
+JarjestamislupaAsiaListItem.propTypes = {
+  intl: PropTypes.object,
+  muutospyynto: PropTypes.object,
+  setOpened: PropTypes.func,
+  states: PropTypes.array
 };
 
 export default injectIntl(JarjestamislupaAsiaListItem);

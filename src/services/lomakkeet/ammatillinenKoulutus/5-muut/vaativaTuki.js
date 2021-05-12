@@ -53,7 +53,7 @@ export function getModificationForm(
                 labelStyles: {
                   addition: isAdded,
                   removal: isRemoved,
-                  custom: !!maarays ? isInLupa : {}
+                  custom: maarays ? isInLupa : {}
                 },
                 title:
                   item.metadata[localeUpper].kuvaus ||
@@ -120,7 +120,7 @@ export function getModificationForm(
                 labelStyles: {
                   addition: isAdded,
                   removal: isRemoved,
-                  custom: !!maarays ? isInLupa : {}
+                  custom: maarays ? isInLupa : {}
                 },
                 title:
                   item.metadata[localeUpper].kuvaus ||
@@ -180,7 +180,7 @@ export function getReasoningForm(
                 labelStyles: {
                   addition: isAdded,
                   removal: isRemoved,
-                  custom: !!maarays ? isInLupa : {}
+                  custom: maarays ? isInLupa : {}
                 },
                 title:
                   item.metadata[localeUpper].kuvaus ||

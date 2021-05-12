@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { addIndex, map } from "ramda";
 import Rajoite from "components/02-organisms/Rajoite";
 import HtmlContent from "../HtmlContent";
@@ -41,6 +42,10 @@ const List = ({ items }) => {
   );
 
   return <ul className="list-disc px-6">{itemsToRender}</ul>;
+};
+
+List.propTypes = {
+  items: PropTypes.array
 };
 
 export default List;

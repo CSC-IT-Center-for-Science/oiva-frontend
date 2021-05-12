@@ -20,8 +20,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
     SV: "På svenska"
   },
   PERUSTELUT_OHJE: {
-    FI:
-      "<Tähän tulee lyhyt perusteluohje eli suuntaviivat sille mitä pitää tehdä.>",
+    FI: "<Tähän tulee lyhyt perusteluohje eli suuntaviivat sille mitä pitää tehdä.>",
     SV: "På svenska"
   },
   TAUSTA_SYYT_OTSIKKO: {
@@ -45,13 +44,11 @@ export const MUUTOS_WIZARD_TEKSTIT = {
     SV: "På svenska"
   },
   MUUTOS_LISAYS_OHJE: {
-    FI:
-      "Perustele lyhyesti miksi tälle tutkinnolle tai koulutukselle olisi tarvetta",
+    FI: "Perustele lyhyesti miksi tälle tutkinnolle tai koulutukselle olisi tarvetta",
     SV: "På svenska"
   },
   MUUTOS_POISTO_OHJE: {
-    FI:
-      "Perustele miksi tämä tutkinto tai koulutus tulisi poistaa järjestämisluvasta",
+    FI: "Perustele miksi tämä tutkinto tai koulutus tulisi poistaa järjestämisluvasta",
     SV: "På svenska"
   },
   MUUTOS_OPETUSKIELET: {
@@ -166,13 +163,11 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       SV: "Utbildningsanordnarens minimiantal studerandeår"
     },
     VAATIVA_TUKI: {
-      FI:
-        "Vähimmäisopiskelijavuosimäärän rajoitus koskien vaativaa erityistä tukea (65 §)",
+      FI: "Vähimmäisopiskelijavuosimäärän rajoitus koskien vaativaa erityistä tukea (65 §)",
       SV: "På svenska"
     },
     SISAOPPILAITOS: {
-      FI:
-        "Vähimmäisopiskelijavuosimäärän rajoitus koskien sisäoppilaitosmuotoista koulutusta (27 §)",
+      FI: "Vähimmäisopiskelijavuosimäärän rajoitus koskien sisäoppilaitosmuotoista koulutusta (27 §)",
       SV: "På svenska"
     },
     ENINTAAN: {
@@ -209,13 +204,11 @@ export const MUUTOS_WIZARD_TEKSTIT = {
     },
     PERUSTELU: {
       HEADING_LISAYS: {
-        FI:
-          "Muut oikeudet, velvollisuudet, ehdot ja tehtävät: ehdotetut lisäykset",
+        FI: "Muut oikeudet, velvollisuudet, ehdot ja tehtävät: ehdotetut lisäykset",
         SV: "På svenska"
       },
       HEADING_POISTO: {
-        FI:
-          "Muut oikeudet, velvollisuudet, ehdot ja tehtävät: ehdotetut poistot",
+        FI: "Muut oikeudet, velvollisuudet, ehdot ja tehtävät: ehdotetut poistot",
         SV: "På svenska"
       },
       FI: "Perustele lyhyesti miksi tälle muutokselle olisi tarvetta",
@@ -307,8 +300,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: "På svenska"
       },
       OPISKELIJAVUOSIARVIO: {
-        FI:
-          "Arvio koulutukseen suunnattavista opiskelijavuosista seuraavana kolmena vuotena",
+        FI: "Arvio koulutukseen suunnattavista opiskelijavuosista seuraavana kolmena vuotena",
         SV: "På svenska"
       },
       HENKILOSTO: {
@@ -334,43 +326,36 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: "På svenska"
       },
       JARJESTAMISEDELLYTYKSET: {
-        FI:
-          "Toiminnalliset edellytykset laajennetun oppisopimustehtävän järjestämiseksi",
+        FI: "Toiminnalliset edellytykset laajennetun oppisopimustehtävän järjestämiseksi",
         SV: "På svenska"
       },
       OHJEET: {
         // tehdään oppisopimuskohtaisiksi mikäli tarvetta, tarkistettava ovatko nämä samat kaikilla lomakkeilla.
         TARPEELLISUUS: {
-          FI:
-            "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+          FI: "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
           SV: "sv"
         },
         HENKILOSTO: {
-          FI:
-            "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
+          FI: "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
           SV: ""
         },
         OSAAMINEN: {
-          FI:
-            "Haetun tehtävän järjestämisen edellyttämä osaaminen (mm. palveluprosessi, hankintaosaaminen, johtaminen ja sopimusten valvonta).",
+          FI: "Haetun tehtävän järjestämisen edellyttämä osaaminen (mm. palveluprosessi, hankintaosaaminen, johtaminen ja sopimusten valvonta).",
           SV: "sv"
         },
         SIDOSRYHMA: {
-          FI:
-            "Haetun tehtävän edellyttämät toimivat ja kokonaisvaltaiset työelämäyhteydet ja -palvelut ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
+          FI: "Haetun tehtävän edellyttämät toimivat ja kokonaisvaltaiset työelämäyhteydet ja -palvelut ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
           SV: "sv"
         },
         OPISKELIJAVUOSIARVIO: {
-          FI:
-            "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina.",
+          FI: "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina.",
           SV: ""
         }
       }
     },
     VAATIVA: {
       OTSIKKO: {
-        FI:
-          "Vaativan erityisen tuen tehtävää on haettu seuraaviin koulutuksiin:",
+        FI: "Vaativan erityisen tuen tehtävää on haettu seuraaviin koulutuksiin:",
         SV: ""
       },
       KUVAUS: {
@@ -378,8 +363,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: "På svenska"
       },
       JARJESTAMISEDELLYTYKSET: {
-        FI:
-          "Toiminnalliset edellytykset vaativan erityisen tuen tehtävän järjestämiseksi",
+        FI: "Toiminnalliset edellytykset vaativan erityisen tuen tehtävän järjestämiseksi",
         SV: "På svenska"
       },
       SUUNNITELMA: {
@@ -388,8 +372,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       },
       KOULUTUKSET: {
         HAETTU: {
-          FI:
-            "Vaativan erityisen tuen tehtävää on haettu seuraaviin koulutuksiin",
+          FI: "Vaativan erityisen tuen tehtävää on haettu seuraaviin koulutuksiin",
           SV: "På svenska"
         },
         TUTKINTO: {
@@ -407,38 +390,31 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       },
       OHJEET: {
         TARPEELLISUUS: {
-          FI:
-            "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+          FI: "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
           SV: "sv"
         },
         HENKILOSTO: {
-          FI:
-            "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. kelpoisuusehdot täyttävän opetushenkilöstön tai muu tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
+          FI: "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. kelpoisuusehdot täyttävän opetushenkilöstön tai muu tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
           SV: "på svenska"
         },
         OSAAMINEN: {
-          FI:
-            "Haetun tehtävän järjestämisen edellyttämä osaaminen vaativasta erityisestä tuesta (mm. HOKS-prosessi, tuki- ja ohjauspalvelut).",
+          FI: "Haetun tehtävän järjestämisen edellyttämä osaaminen vaativasta erityisestä tuesta (mm. HOKS-prosessi, tuki- ja ohjauspalvelut).",
           SV: "på svenska"
         },
         PEDAGOGISET: {
-          FI:
-            "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
+          FI: "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
           SV: ""
         },
         SIDOSRYHMA: {
-          FI:
-            "Haetun tehtävän edellyttämä työelämäpalvelu ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
+          FI: "Haetun tehtävän edellyttämä työelämäpalvelu ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
           SV: ""
         },
         SUUNNITELMA: {
-          FI:
-            "Toimintamalli vaativan erityisen tuen tehtävän järjestämisen suunnittelusta ja toteutuksesta (strateginen suunnitelma, käytännön toteutusmalli ja laadun seuranta).",
+          FI: "Toimintamalli vaativan erityisen tuen tehtävän järjestämisen suunnittelusta ja toteutuksesta (strateginen suunnitelma, käytännön toteutusmalli ja laadun seuranta).",
           SV: "på svenska"
         },
         VUODET: {
-          FI:
-            "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina. ",
+          FI: "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina. ",
           SV: ""
         }
       }
@@ -462,43 +438,35 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       },
       OHJEET: {
         TARPEELLISUUS: {
-          FI:
-            "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+          FI: "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
           SV: "sv"
         },
         HENKILOSTO: {
-          FI:
-            "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. kelpoisuusehdot täyttävän opetushenkilöstön tai muu tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
+          FI: "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. kelpoisuusehdot täyttävän opetushenkilöstön tai muu tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
           SV: "på svenska"
         },
         OSAAMINEN: {
-          FI:
-            "Haetun tehtävän järjestämisen edellyttämä osaaminen vaativasta erityisestä tuesta (mm. HOKS-prosessi, tuki- ja ohjauspalvelut).",
+          FI: "Haetun tehtävän järjestämisen edellyttämä osaaminen vaativasta erityisestä tuesta (mm. HOKS-prosessi, tuki- ja ohjauspalvelut).",
           SV: "på svenska"
         },
         PEDAGOGISET: {
-          FI:
-            "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
+          FI: "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
           SV: ""
         },
         SIDOSRYHMA: {
-          FI:
-            "Haetun tehtävän edellyttämä työelämäpalvelu ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
+          FI: "Haetun tehtävän edellyttämä työelämäpalvelu ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
           SV: ""
         },
         SUUNNITELMA: {
-          FI:
-            "Toimintamalli työvoimakoulutuksen suunnittelusta ja toteutuksesta (mm. koulutusalat, joille työvoimakoulutusta aiotaan järjestää).",
+          FI: "Toimintamalli työvoimakoulutuksen suunnittelusta ja toteutuksesta (mm. koulutusalat, joille työvoimakoulutusta aiotaan järjestää).",
           SV: "på svenska"
         },
         YHTEISTYO: {
-          FI:
-            "Valitkaa listasta ne ELY-keskukset joiden kanssa suunnittelette tekevänne yhteistyötä työvoimakoulutuksen järjestämisessä.",
+          FI: "Valitkaa listasta ne ELY-keskukset joiden kanssa suunnittelette tekevänne yhteistyötä työvoimakoulutuksen järjestämisessä.",
           SV: "på svenska"
         },
         VUODET: {
-          FI:
-            "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina.",
+          FI: "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina.",
           SV: ""
         }
       }
@@ -522,46 +490,38 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       },
       OHJEET: {
         TARPEELLISUUS: {
-          FI:
-            "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+          FI: "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
           SV: "sv"
         },
         HENKILOSTO: {
-          FI:
-            "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. kelpoisuusehdot täyttävän opetushenkilöstön tai muu tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
+          FI: "Haetun tehtävän edellyttämät henkilöstöresurssit (mm. kelpoisuusehdot täyttävän opetushenkilöstön tai muu tehtävän edellyttämä henkilöstön määrä, sekä rekrytoitavien määrä). Huom. Henkilötietoja ei tule antaa lomakkeella.",
           SV: "på svenska"
         },
         OSAAMINEN: {
-          FI:
-            "Haetun tehtävän järjestämisen edellyttämä osaaminen vaativasta erityisestä tuesta (mm. HOKS-prosessi, tuki- ja ohjauspalvelut).",
+          FI: "Haetun tehtävän järjestämisen edellyttämä osaaminen vaativasta erityisestä tuesta (mm. HOKS-prosessi, tuki- ja ohjauspalvelut).",
           SV: "på svenska"
         },
         PEDAGOGISET: {
-          FI:
-            "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
+          FI: "Haetun tehtävän edellyttämät pedagogiset järjestelyt (mm. opetusjärjestelyt, oppimisympäristöt, tilat ja välineet).",
           SV: ""
         },
         SIDOSRYHMA: {
-          FI:
-            "Haetun tehtävän edellyttämä työelämäpalvelu ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
+          FI: "Haetun tehtävän edellyttämä työelämäpalvelu ja muu sidosryhmäyhteistyö (mm. toimijat, toiminta- ja yhteistyömuodot).",
           SV: ""
         },
         SUUNNITELMA: {
-          FI:
-            "Valitkaa listasta ne vankilat, joissa suunnittelette järjestävänne vankilaopetusta.",
+          FI: "Valitkaa listasta ne vankilat, joissa suunnittelette järjestävänne vankilaopetusta.",
           SV: "på svenska"
         },
         VUODET: {
-          FI:
-            "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina. ",
+          FI: "Merkitkää arvionne tehtävään kohdistettavista opiskelijavuosista po. vuosina. ",
           SV: ""
         }
       }
     },
     KULJETTAJAKOULUTUS: {
       PERUS: {
-        FI:
-          "Perustason ammattipätevyyskoulutusta antavan koulutuskeskuksen tehtävä",
+        FI: "Perustason ammattipätevyyskoulutusta antavan koulutuskeskuksen tehtävä",
         SV: "på svenska"
       },
       JATKO: {
@@ -573,8 +533,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: ""
       },
       VOIMASSAOLEVA: {
-        FI:
-          "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?",
+        FI: "Onko hakijalla voimassa olevaa Liikenne- ja turvallisuusviraston (Trafi) myöntämää lupaa järjestää ammattipätevyyskoulutusta?",
         SV: "På svenska"
       },
       VOIMASSAOLEVA_PVM: {
@@ -614,8 +573,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: "på svenska"
       },
       KOKEMUS: {
-        FI:
-          "a) vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvonpäätoimisena kuljettajana:",
+        FI: "a) vähintään 1 vuoden kokemus johonkin seuraavista luokista kuuluvan ajoneuvonpäätoimisena kuljettajana:",
         SV: "på svenska"
       },
       KOKEMUS_C: {
@@ -647,8 +605,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: "på svenska"
       },
       TUTKINTO_KULJETUSPALVELU: {
-        FI:
-          "kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto",
+        FI: "kuljetuspalvelujen koulutusohjelmassa suoritettu logistiikan perustutkinto",
         SV: "på svenska"
       },
       TUTKINTO_KULJETUSALA: {
@@ -684,8 +641,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
         SV: "på svenska"
       },
       OPETUSVALINEET_ASETUS: {
-        FI:
-          "Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)",
+        FI: "Asetuksen mukaiset opetus- ja havaintovälineet (VnAsetus 434/2018, 11 § 1 ja 2 mom.)",
         SV: "på svenska"
       },
       OPETUSVALINEET_MUUT: {
@@ -702,8 +658,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       },
       OHJEET: {
         TARPEELLISUUS: {
-          FI:
-            "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
+          FI: "Perustelkaa tehtävän tarpeellisuus ensisijaisella toiminta-alueellanne",
           SV: "sv"
         },
         VOIMASSAOLEVA: {
@@ -711,8 +666,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
           SV: "på svenska"
         },
         SUUNNITELMA: {
-          FI:
-            "Toimintamalli ammattipätevyyskoulutuksen suunnittelusta ja toteutuksesta.",
+          FI: "Toimintamalli ammattipätevyyskoulutuksen suunnittelusta ja toteutuksesta.",
           SV: "på svenska"
         },
         JOHTAJA_TARKENNUS: {
@@ -720,18 +674,15 @@ export const MUUTOS_WIZARD_TEKSTIT = {
           SV: "på svenska"
         },
         JOHTAJA: {
-          FI:
-            "Selvitys opetuksesta vastaavan johtajan/johtajien kelpoisuudesta ja työkokemuksesta toimipisteittäin.",
+          FI: "Selvitys opetuksesta vastaavan johtajan/johtajien kelpoisuudesta ja työkokemuksesta toimipisteittäin.",
           SV: ""
         },
         OPETTAJA: {
-          FI:
-            "Selvitys perustason ammattipätevyyskoulutusen opettajien kelpoisuuksista ja työkokemuksista",
+          FI: "Selvitys perustason ammattipätevyyskoulutusen opettajien kelpoisuuksista ja työkokemuksista",
           SV: ""
         },
         OPETTAJA_JATKO: {
-          FI:
-            "Selvitys jatkokoulutuksen opettajien kelpoisuuksista ja työkokemuksista",
+          FI: "Selvitys jatkokoulutuksen opettajien kelpoisuuksista ja työkokemuksista",
           SV: ""
         },
         OPETTAJA_TARKENNUS: {
@@ -739,13 +690,11 @@ export const MUUTOS_WIZARD_TEKSTIT = {
           SV: ""
         },
         KANTA: {
-          FI:
-            "Selvitys opetuksessa käytettävästä ajoneuvokannasta ja opetusvälineistä ja niiden soveltuvuudesta ammattipätevyyskoulutukseen",
+          FI: "Selvitys opetuksessa käytettävästä ajoneuvokannasta ja opetusvälineistä ja niiden soveltuvuudesta ammattipätevyyskoulutukseen",
           SV: ""
         },
         OPETUSVALINEET: {
-          FI:
-            "Muut oppilaitoksen oppimisympäristöissä tapahtuvaan osaamisen hankkimiseen liittyvät välineet",
+          FI: "Muut oppilaitoksen oppimisympäristöissä tapahtuvaan osaamisen hankkimiseen liittyvät välineet",
           SV: ""
         }
       }
@@ -757,8 +706,7 @@ export const MUUTOS_WIZARD_TEKSTIT = {
       SV: "På svenska"
     },
     EI_LISATTYJA_TUTKINTOJA: {
-      FI:
-        "Taloudelliset edellytykset ilmoitetaan vain, kun järjestämislupaan haetaan uusia tutkintoja tai koulutuksia. Jatka seuraavalle välilehdelle Seuraava-painikkeella.",
+      FI: "Taloudelliset edellytykset ilmoitetaan vain, kun järjestämislupaan haetaan uusia tutkintoja tai koulutuksia. Jatka seuraavalle välilehdelle Seuraava-painikkeella.",
       SV: "På svenska"
     },
     EDELLYTYKSET: {

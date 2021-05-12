@@ -52,8 +52,10 @@ const Kuljettajakoulutukset = ({
 };
 
 Kuljettajakoulutukset.propTypes = {
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
-  maaraykset: PropTypes.array
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default Kuljettajakoulutukset;

@@ -41,7 +41,12 @@ const Vankila = ({
 };
 
 Vankila.propTypes = {
+  isReadOnly: PropTypes.bool,
+  items: PropTypes.array,
   koodiarvo: PropTypes.string,
+  localeUpper: PropTypes.string,
+  maarayksetByKoodiarvo: PropTypes.object,
+  mode: PropTypes.string,
   opiskelijavuodetData: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string

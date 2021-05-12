@@ -38,10 +38,8 @@ const MobileMenu = ({
   const classes = useStyles();
   const { formatMessage, locale } = useIntl();
   const koulutusmuodot = getKoulutusmuodot(formatMessage);
-  const [
-    jarjestamisluvatMenuVisible,
-    setjarjestamisluvatMenuVisible
-  ] = useState(true);
+  const [jarjestamisluvatMenuVisible, setjarjestamisluvatMenuVisible] =
+    useState(true);
 
   const AppRouteTitlesMobile = [
     { route: AppRoute.Tilastot, translationKey: "common.statistics" },
@@ -196,8 +194,10 @@ const MobileMenu = ({
 };
 
 MobileMenu.propTypes = {
+  authenticationLink: PropTypes.object,
   localesByLang: PropTypes.object,
-  onCloseMenu: PropTypes.func
+  onCloseMenu: PropTypes.func,
+  organisationLink: PropTypes.object
 };
 
 export default MobileMenu;

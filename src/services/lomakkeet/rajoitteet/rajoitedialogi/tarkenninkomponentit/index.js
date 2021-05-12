@@ -27,7 +27,8 @@ const tarkenninlomakkeet = {
   erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
   valtakunnallisetKehittamistehtavat: getValtakunnallisetKehittamistehtavat,
   muutEhdot: getMuutEhdot,
-  oikeusSisaoppilaitosmuotoiseenKoulutukseen: getOikeusSisaoppilaitosmuotoiseenKoulutukseen,
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+    getOikeusSisaoppilaitosmuotoiseenKoulutukseen,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
   opetuskielet: getOpetuskielikomponentit,
   opetustehtavat: getOpetustehtavakomponentit,

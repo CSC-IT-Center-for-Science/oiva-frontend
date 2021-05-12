@@ -1,6 +1,7 @@
 import React from "react";
 import TooltipTrigger from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
+import { PropTypes } from "prop-types";
 
 const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
   <TooltipTrigger
@@ -40,5 +41,11 @@ const Tooltip = ({ children, tooltip, hideArrow, ...props }) => (
     )}
   </TooltipTrigger>
 );
+
+Tooltip.propTypes = {
+  children: PropTypes.object,
+  hideArrow: PropTypes.bool,
+  tooltip: PropTypes.string
+};
 
 export default Tooltip;

@@ -195,13 +195,14 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
 };
 
 Header.propTypes = {
+  authenticationLink: PropTypes.object,
   inFinnish: PropTypes.string,
   inSwedish: PropTypes.string,
   isAuthenticated: PropTypes.bool,
   locale: PropTypes.string,
+  localesByLang: PropTypes.object,
   logIn: PropTypes.string,
   logo: PropTypes.object,
-  authenticationLink: PropTypes.object,
   onLoginButtonClick: PropTypes.func,
   onMenuClick: PropTypes.func,
   organisationLink: PropTypes.object,

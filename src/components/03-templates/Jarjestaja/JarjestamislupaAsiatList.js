@@ -22,7 +22,7 @@ import { Typography } from "@material-ui/core";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
     overflowX: "auto",
@@ -286,6 +286,9 @@ const JarjestamislupaAsiatList = ({
 
 JarjestamislupaAsiatList.propTypes = {
   history: PropTypes.object,
+  isForceReloadRequested: PropTypes.bool,
+  koulutusmuoto: PropTypes.object,
+  lupa: PropTypes.object,
   lupahistory: PropTypes.array,
   match: PropTypes.object,
   muutospyynnot: PropTypes.array,

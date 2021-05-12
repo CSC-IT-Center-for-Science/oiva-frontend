@@ -21,16 +21,14 @@ const MuutospyyntoWizardYhteenveto = ({
   mode,
   muut
 }) => {
-  const [
-    changeObjectsYleisetTiedot
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "yhteenveto_yleisettiedot"
-  });
-  const [
-    changeObjectsHakemuksenLiiteet
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "yhteenveto_hakemuksenLiitteet"
-  });
+  const [changeObjectsYleisetTiedot] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "yhteenveto_yleisettiedot"
+    });
+  const [changeObjectsHakemuksenLiiteet] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "yhteenveto_hakemuksenLiitteet"
+    });
 
   const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "tutkinnot"
@@ -154,7 +152,10 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
+  koulutustyypit: PropTypes.array,
+  maaraykset: PropTypes.array,
   maaraystyypit: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,

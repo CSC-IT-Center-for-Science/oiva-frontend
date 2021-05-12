@@ -45,11 +45,13 @@ MuutospyyntoWizardOpiskelijavuodet.defaultProps = {
 };
 
 MuutospyyntoWizardOpiskelijavuodet.propTypes = {
+  code: PropTypes.string,
   lupaKohteet: PropTypes.object,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
   muut: PropTypes.array,
-  sectionId: PropTypes.string
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default MuutospyyntoWizardOpiskelijavuodet;

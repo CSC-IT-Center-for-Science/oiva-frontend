@@ -1,6 +1,6 @@
 import { path, map } from "ramda";
 
-export function getMapping(koodiarvo) {
+export function getMapping() {
   return [
     {
       path: ["tarpeellisuus"],

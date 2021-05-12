@@ -47,7 +47,7 @@ const SimpleButton = ({
     "inline-block no-underline text-white hover:text-gray-100 normal-case font-normal";
 
   const handleClick = event => {
-    if (!!onClick) {
+    if (onClick) {
       onClick({ forChangeObject, fullAnchor }, {}, event);
     } else {
       console.warn("SimpleButton: käsittelijä 'onClick' puuttuu", fullAnchor);
@@ -96,6 +96,7 @@ SimpleButton.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
+  isHidden: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   onClick: PropTypes.func,
   text: PropTypes.string,
@@ -103,7 +104,9 @@ SimpleButton.propTypes = {
   icon: PropTypes.string,
   iconStyles: PropTypes.object,
   iconContainerStyles: PropTypes.object,
+  size: PropTypes.string,
   shouldHaveFocusAt: PropTypes.number,
+  styleAsALink: PropTypes.bool,
   buttonStyles: PropTypes.object
 };
 

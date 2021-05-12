@@ -9,7 +9,7 @@ import * as R from "ramda";
 const PerustelutKoulutukset = React.memo(props => {
   return (
     <div className="py-4">
-      {!!R.path(
+      {R.path(
         ["koulutukset", "valmentavatKoulutukset"],
         props.changeObjects
       ) ? (
@@ -64,7 +64,7 @@ const PerustelutKoulutukset = React.memo(props => {
         />
       ) : null}
 
-      {!!R.path(["koulutukset", "tyovoimakoulutukset"], props.changeObjects) ? (
+      {R.path(["koulutukset", "tyovoimakoulutukset"], props.changeObjects) ? (
         <PerustelutTyovoimakoulutukset
           changeObjects={{
             koulutukset: {

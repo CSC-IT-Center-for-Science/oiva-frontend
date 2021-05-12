@@ -110,7 +110,13 @@ const Rajoitteet = ({
 
 Rajoitteet.propTypes = {
   isPreviewModeOn: PropTypes.bool,
-  kohdevaihtoehdot: PropTypes.array.isRequired
+  isRestrictionsModeOn: PropTypes.bool,
+  kohdevaihtoehdot: PropTypes.array.isRequired,
+  koulutustyyppi: PropTypes.string,
+  onChangesUpdate: PropTypes.func,
+  render: PropTypes.func,
+  sectionId: PropTypes.string,
+  rajoitemaaraykset: PropTypes.array
 };
 
 export default Rajoitteet;

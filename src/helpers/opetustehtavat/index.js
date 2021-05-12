@@ -98,7 +98,7 @@ export const defineBackendChangeObjects = async (
         }
       : [];
 
-  const opetusMuutokset = addIndex(map)((opetustehtava, index) => {
+  const opetusMuutokset = addIndex(map)(opetustehtava => {
     const rajoitteetByRajoiteIdAndKoodiarvo = reject(
       isNil,
       mapObjIndexed(rajoite => {

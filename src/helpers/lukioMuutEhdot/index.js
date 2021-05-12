@@ -190,13 +190,14 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-    maaraykset,
-    rajoitteetByRajoiteId,
-    kohteet,
-    maaraystyypit,
-    kohde
-  );
+  const maarayksiaVastenLuodutRajoitteet =
+    createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+      maaraykset,
+      rajoitteetByRajoiteId,
+      kohteet,
+      maaraystyypit,
+      kohde
+    );
 
   const objects = flatten([
     maarayksiaVastenLuodutRajoitteet,

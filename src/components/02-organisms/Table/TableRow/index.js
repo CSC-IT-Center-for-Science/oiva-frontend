@@ -44,6 +44,7 @@ const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
 };
 
 TableRow.propTypes = {
+  children: PropTypes.array,
   onClick: PropTypes.func,
   row: PropTypes.object,
   tableLevel: PropTypes.number
