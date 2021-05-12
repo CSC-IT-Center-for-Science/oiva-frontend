@@ -159,6 +159,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
      * After calling esittelyyn function the state of muutospyyntö should be as
      * Esittelyssä.
      **/
+
     muutospyynnotActions.esittelyyn(documentIdForAction, intl.formatMessage);
     // To download the path of the document must be known.
     const path = await muutospyyntoActions.getLupaPreviewDownloadPath(
@@ -519,7 +520,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       }
                     )}?force=${new Date().getTime()}`
                   );
-                }}>
+                }}
+              >
                 <BackIcon
                   style={{
                     fontSize: 14,
@@ -542,7 +544,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         </div>
         <div className="flex-1 flex w-full">
           <div className="flex-1 flex flex-col w-full mx-auto">
-            <div className="mx-auto w-4/5 max-w-8xl">
+            <div className="mx-auto w-4/5 max-w-8xl pb-4">
               {/* Painikkeet, joilla voidaan muutta dokumenttien tilaa. */}
               <div>
                 {muutospyynnonTila === FIELDS.TILA.VALUES.ESITTELYSSA && (

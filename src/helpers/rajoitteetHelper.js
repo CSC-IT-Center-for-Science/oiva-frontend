@@ -24,20 +24,35 @@ import {
   test,
   toLower,
   uniqBy,
-  pathEq
+  pathEq,
+  drop,
+  clone
 } from "ramda";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
 import { getAnchorPart } from "../utils/common";
+import { koulutustyypitMap } from "../utils/constants";
 
-const koodistoMapping = {
+const koodistoMappingLukio = {
   maaraaika: "kujalisamaareet",
-  opetustehtavat: "opetustehtava",
-  opiskelijamaarat: "oppilasopiskelijamaara",
   oppilaitokset: "oppilaitos",
   toimintaalue: "kunta",
   opetuskielet: "kielikoodistoopetushallinto",
-  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto"
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+    "lukiooikeussisaooppilaitosmuotoiseenkoulutukseen",
+  erityisetKoulutustehtavat: "lukioerityinenkoulutustehtavauusi",
+  muutEhdot: "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot"
+};
+
+const koodistoMappingPo = {
+  maaraaika: "kujalisamaareet",
+  opetustehtavat: "opetustehtava",
+  oppilaitokset: "oppilaitos",
+  toimintaalue: "kunta",
+  opetuskielet: "kielikoodistoopetushallinto",
+  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto",
+  erityisetKoulutustehtavat: "poerityinenkoulutustehtava",
+  muutEhdot: "pomuutkoulutuksenjarjestamiseenliittyvatehdot"
 };
 
 function isAsetusKohdennuksenKohdennus(asetusChangeObj) {
@@ -57,6 +72,19 @@ export const createAlimaarayksetBEObjects = (
   kohdennuksenKohdeNumber = 0,
   insideMulti = false
 ) => {
+  const isMaarays = prop("isMaarays", paalomakkeenBEMuutos) || false;
+  let asetuksetFromMaarays = null;
+  if(isMaarays) {
+    asetuksetFromMaarays = clone(asetukset);
+    asetukset = drop(2, asetukset);
+  }
+  /** Haetaan kohteista koulutustyyppi. Tämän perusteella käytetään oikeata koodistoMappingia */
+  const koodistoMapping =
+    path(["0", "koulutustyyppi"], kohteet) ===
+    koulutustyypitMap.ESI_JA_PERUSOPETUS
+      ? koodistoMappingPo
+      : koodistoMappingLukio;
+
   const rajoiteId = compose(
     last,
     split("_"),
@@ -82,7 +110,7 @@ export const createAlimaarayksetBEObjects = (
   // Käsittele aikamääre rajoite
   let alkupvm = null;
   let loppupvm = null;
-  if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
+  if (valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
     alkupvm =
       path(
@@ -143,7 +171,7 @@ export const createAlimaarayksetBEObjects = (
       ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
-  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj))
+  let arvo = valueChangeObj && endsWith("lukumaara", path(["anchor"], valueChangeObj))
     ? valueOfValueChangeObj
     : null;
 
@@ -156,15 +184,29 @@ export const createAlimaarayksetBEObjects = (
 
   const result = pipe(
     mapIndex((multiselectValue, multiIndex) => {
-      const codeValue =
-        koodisto === "oppilaitos"
-          ? koodiarvo
-          : path(["value"], multiselectValue) || koodiarvo;
+      let codeValue = "";
+      if (koodisto === "oppilaitos") {
+        codeValue = koodiarvo;
+      } else {
+        if (prop("value", multiselectValue)) {
+          /** Dynaamisilla tekstikentillä multiselectValue->value on muotoa koodiarvo-kuvausnumero.
+           * Muutokselle halutaan tallentaa pelkkä koodiarvo, joten otetaan se talteen */
+          codeValue = includes("-", prop("value", multiselectValue))
+            ? head(split("-", prop("value", multiselectValue)))
+            : prop("value", multiselectValue);
+        } else {
+          codeValue = koodiarvo;
+        }
+      }
 
       const changeObjects = [
+        isMaarays ? [
+          nth(index, asetuksetFromMaarays),
+          nth(index + 1, asetuksetFromMaarays)
+        ] : null,
         asetusChangeObj,
         nth(index + 1, asetukset),
-        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
+        valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
           ? [
               find(
                 compose(endsWith(".alkamispaiva"), prop("anchor")),
@@ -180,12 +222,12 @@ export const createAlimaarayksetBEObjects = (
 
       const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
-        parent: prop("isMaarays", paalomakkeenBEMuutos)
+        parent: isMaarays
           ? index !== 0
             ? alimaarayksenParent
             : null
           : alimaarayksenParent,
-        parentMaaraysUuid: prop("isMaarays", paalomakkeenBEMuutos)
+        parentMaaraysUuid: isMaarays
           ? index === 0
             ? alimaarayksenParent
             : null
@@ -237,7 +279,7 @@ export const createAlimaarayksetBEObjects = (
           kohteet,
           maaraystyypit,
           paalomakkeenBEMuutos,
-          asetukset,
+          isMaarays ? asetuksetFromMaarays : asetukset,
           updatedMuutosobjektit,
           start,
           kohdennuksenKohdeNumber,

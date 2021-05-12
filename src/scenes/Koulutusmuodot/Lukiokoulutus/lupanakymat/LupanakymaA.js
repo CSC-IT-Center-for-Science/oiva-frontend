@@ -11,27 +11,18 @@ import ValtakunnallisetKehittamistehtavat from "../lomakeosiot/5-Valtakunnallise
 import Opiskelijamaarat from "../lomakeosiot/6-Opiskelijamaarat";
 import MuutEhdot from "../lomakeosiot/7-MuutEhdot";
 import {
-  compose,
+  assoc,
   filter,
   find,
-  flatten,
-  groupBy,
   includes,
   isNil,
-  keys,
-  last,
-  length,
   map,
   mapObjIndexed,
-  mergeAll,
-  nth,
   path,
   pathEq,
   prop,
   propEq,
-  reject,
-  split,
-  startsWith
+  reject
 } from "ramda";
 import equal from "react-fast-compare";
 import { useLomakedata } from "stores/lomakedata";
@@ -114,105 +105,108 @@ const LupanakymaA = React.memo(
       anchor: "rajoitepoistot"
     });
 
-    const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
-
-    // TODO: Näytetään rajoitemääräykset siten että ei käytetä parent määräyksen cObjeja
-    const rajoitteetFromMaarayksetByRajoiteId = map(
-      cObjs => {
-        return { changeObjects: cObjs };
-      },
-      groupBy(
-        compose(last, split("_"), nth(0), split("."), prop("anchor")),
-        filter(
-          changeObj => startsWith("rajoitteet_", changeObj.anchor),
-          flatten(
-            map(
-              cObj => {
-                return path(["meta", "changeObjects"], cObj);
-              },
-              // maaraykset || []
-              filter(
-                maarays => length(maarays.meta.changeObjects),
-                maaraykset || []
-              )
-            )
-          )
-        )
-      )
+    const rajoitepoistoIds = map(
+      rajoitepoisto => path(["properties", "rajoiteId"], rajoitepoisto),
+      rajoitepoistot
     );
+
+    const maarayksetRajoitepoistotFiltered = map(maarays => {
+      /** Opiskelijamäärärajoitteen poisto poistaa koko määräyksen */
+      if (
+        maarays.koodisto === "kujalisamaareet" &&
+        path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE" &&
+        includes(path(["meta", "rajoiteId"], maarays), rajoitepoistoIds)
+      ) {
+        return null;
+      }
+      /** Muissa tapauksissa poistetaan vain alimääräykset */
+      const alimaaraykset = filter(
+        alimaarays =>
+          !includes(path(["meta", "rajoiteId"], alimaarays), rajoitepoistoIds),
+        maarays.aliMaaraykset || []
+      );
+      return assoc("aliMaaraykset", alimaaraykset, maarays);
+    }, maaraykset || []).filter(Boolean);
+
+    const [rajoitteetStateObj] = useLomakedata({ anchor: "rajoitteet" });
 
     const rajoitteetListausChangeObj = find(
       propEq("anchor", "rajoitteet.listaus.A"),
       rajoitteetStateObj
     );
 
-    const rajoitteetByRajoiteId = path(
+    const rajoiteChangeObjsByRajoiteId = path(
       ["properties", "rajoitteet"],
       rajoitteetListausChangeObj
     );
 
     const toimintaaaluemaaraykset = filterByTunniste(
       "kunnatjoissaopetustajarjestetaan",
-      maaraykset
+      maarayksetRajoitepoistotFiltered
     );
 
     const oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset = filterByTunniste(
       "sisaoppilaitosmuotoinenkoulutus",
-      maaraykset
+      maarayksetRajoitepoistotFiltered
     );
 
     // Rajoitteet
-    const rajoitepoistoIds = map(
-      rajoitepoisto => path(["properties", "rajoiteId"], rajoitepoisto),
-      rajoitepoistot
-    );
-
-    // Ei oteta mukaan poistettuja rajoitemääräyksiä
-    const rajoiteMaarayksetPoistotFiltered = mergeAll(
-      map(key => {
-        return includes(key, rajoitepoistoIds)
-          ? null
-          : { [key]: rajoitteetFromMaarayksetByRajoiteId[key] };
-      }, keys(rajoitteetFromMaarayksetByRajoiteId)).filter(Boolean)
-    );
-
-    const rajoitteet = Object.assign(
-      {},
-      rajoiteMaarayksetPoistotFiltered,
-      rajoitteetByRajoiteId
-    );
-
     const opetuskieletRajoitteet = getRajoitteetBySection(
       "opetuskielet",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet = getRajoitteetBySection(
       "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
       "erityisetKoulutustehtavat",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const valtakunnallisetKehittamistehtavatRajoitteet = getRajoitteetBySection(
       "valtakunnallisetKehittamistehtavat",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const toimintaalueRajoitteet = getRajoitteetBySection(
       "toimintaalue",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
     const opiskelijamaaraRajoitteet = getRajoitteetBySection(
       "opiskelijamaarat",
-      rajoitteet
+      rajoiteChangeObjsByRajoiteId
     );
 
-    const muutEhdotRajoitteet = getRajoitteetBySection("muutEhdot", rajoitteet);
+    const muutEhdotRajoitteet = getRajoitteetBySection(
+      "muutEhdot",
+      rajoiteChangeObjsByRajoiteId
+    );
+
+    const erityisetKoulutustehtavatMaaraykset = map(maarays => {
+      /** Suodatetaan pois alimääräykset (rajoitteet), jotka koskevat valtakunnallisia kehittämistehtäviä
+       * koska erityinenkoulutustehtava tunnisteen alla on sekä valtakunnallisten kehittämistehtävisen rajoitteet, että
+       * erityisien koulutustehtävien rajoitteet */
+      const alimaaraykset = filter(
+        alimaarays =>
+          !path(["meta", "valtakunnallinenKehittamistehtava"], alimaarays),
+        prop("aliMaaraykset", maarays) || []
+      );
+      return assoc("aliMaaraykset", alimaaraykset, maarays);
+    }, filterByTunniste("erityinenkoulutustehtava", maarayksetRajoitepoistotFiltered));
+
+    const valtakunnallisetKehittamistehtavatMaaraykset = map(maarays => {
+      /** Suodatetaan pois alimääräykset (rajoitteet), jotka koskevat erityisiä koulutustehtäviä */
+      const alimaaraykset = filter(
+        alimaarays =>
+          path(["meta", "valtakunnallinenKehittamistehtava"], alimaarays),
+        prop("aliMaaraykset", maarays) || []
+      );
+      return assoc("aliMaaraykset", alimaaraykset, maarays);
+    }, filterByTunniste("erityinenkoulutustehtava", maarayksetRajoitepoistotFiltered));
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
@@ -239,108 +233,89 @@ const LupanakymaA = React.memo(
           render={() => {
             return (
               <React.Fragment>
-                <div className="pt-8">
-                  <OpetustaAntavatKunnat
-                    code="1"
-                    isPreviewModeOn={isPreviewModeOn}
-                    lupakohde={lupakohteet[2]}
-                    maaraykset={toimintaaaluemaaraykset}
-                    rajoitteet={toimintaalueRajoitteet}
-                    sectionId="toimintaalue"
-                    title={intl.formatMessage(education.opetustaAntavatKunnat)}
-                    valtakunnallinenMaarays={valtakunnallinenMaarays}
-                  />
-                </div>
+                <OpetustaAntavatKunnat
+                  code="1"
+                  isPreviewModeOn={isPreviewModeOn}
+                  lupakohde={lupakohteet[2]}
+                  maaraykset={toimintaaaluemaaraykset}
+                  rajoitteet={toimintaalueRajoitteet}
+                  sectionId="toimintaalue"
+                  title={intl.formatMessage(education.opetustaAntavatKunnat)}
+                  valtakunnallinenMaarays={valtakunnallinenMaarays}
+                />
 
-                <div className="pt-8">
-                  <Opetuskieli
-                    code="2"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste("opetuskieli", maaraykset)}
-                    rajoitteet={opetuskieletRajoitteet}
-                    sectionId={"opetuskielet"}
-                    title={intl.formatMessage(common.opetuskieli)}
-                  />
-                </div>
+                <Opetuskieli
+                  code="2"
+                  isPreviewModeOn={isPreviewModeOn}
+                  maaraykset={filterByTunniste(
+                    "opetuskieli",
+                    maarayksetRajoitepoistotFiltered
+                  )}
+                  rajoitteet={opetuskieletRajoitteet}
+                  sectionId={"opetuskielet"}
+                  title={intl.formatMessage(common.opetuskieli)}
+                />
 
-                <div className="pt-8">
-                  <OikeusSisaoppilaitosmuotoiseenKoulutukseen
-                    code="3"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={
-                      oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset
-                    }
-                    rajoitteet={
-                      oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet
-                    }
-                    sectionId={"oikeusSisaoppilaitosmuotoiseenKoulutukseen"}
-                    title={intl.formatMessage(
-                      education.oikeusSisaoppilaitosmuotoiseenKoulutukseen
-                    )}
-                  />
-                </div>
+                <OikeusSisaoppilaitosmuotoiseenKoulutukseen
+                  code="3"
+                  isPreviewModeOn={isPreviewModeOn}
+                  maaraykset={
+                    oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset
+                  }
+                  rajoitteet={
+                    oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet
+                  }
+                  sectionId={"oikeusSisaoppilaitosmuotoiseenKoulutukseen"}
+                  title={intl.formatMessage(
+                    education.oikeusSisaoppilaitosmuotoiseenKoulutukseen
+                  )}
+                />
 
-                <div className="pt-8">
-                  <ErityisetKoulutustehtavat
-                    code="4"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste(
-                      "erityinenkoulutustehtava",
-                      maaraykset
-                    )}
-                    rajoitteet={erityisetKoulutustehtavatRajoitteet}
-                    sectionId={"erityisetKoulutustehtavat"}
-                    title={intl.formatMessage(
-                      common.VSTLupaSectionTitleSchoolMissionSpecial
-                    )}
-                  />
-                </div>
+                <ErityisetKoulutustehtavat
+                  code="4"
+                  isPreviewModeOn={isPreviewModeOn}
+                  maaraykset={erityisetKoulutustehtavatMaaraykset}
+                  rajoitteet={erityisetKoulutustehtavatRajoitteet}
+                  sectionId={"erityisetKoulutustehtavat"}
+                  title={intl.formatMessage(
+                    common.VSTLupaSectionTitleSchoolMissionSpecial
+                  )}
+                />
 
-                <div className="pt-8">
-                  <ValtakunnallisetKehittamistehtavat
-                    code="5"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste(
-                      "erityinenkoulutustehtava",
-                      maaraykset
-                    )}
-                    rajoitteet={valtakunnallisetKehittamistehtavatRajoitteet}
-                    sectionId={"valtakunnallisetKehittamistehtavat"}
-                    title={intl.formatMessage(
-                      education.valtakunnallinenKehittamistehtava
-                    )}
-                  />
-                </div>
+                <ValtakunnallisetKehittamistehtavat
+                  code="5"
+                  isPreviewModeOn={isPreviewModeOn}
+                  maaraykset={valtakunnallisetKehittamistehtavatMaaraykset}
+                  rajoitteet={valtakunnallisetKehittamistehtavatRajoitteet}
+                  sectionId={"valtakunnallisetKehittamistehtavat"}
+                  title={intl.formatMessage(
+                    education.valtakunnallinenKehittamistehtava
+                  )}
+                />
 
-                <div className="pt-8">
-                  <Opiskelijamaarat
-                    code="6"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste(
-                      "oppilasopiskelijamaara",
-                      maaraykset
-                    )}
-                    rajoitteet={opiskelijamaaraRajoitteet}
-                    sectionId={"opiskelijamaarat"}
-                    title={intl.formatMessage(
-                      education.oppilasOpiskelijamaarat
-                    )}
-                  />
-                </div>
+                <Opiskelijamaarat
+                  code="6"
+                  isPreviewModeOn={isPreviewModeOn}
+                  maaraykset={filterByTunniste(
+                    "opiskelijamaarat",
+                    maarayksetRajoitepoistotFiltered
+                  )}
+                  rajoitteet={opiskelijamaaraRajoitteet}
+                  sectionId={"opiskelijamaarat"}
+                  title={intl.formatMessage(education.oppilasOpiskelijamaarat)}
+                />
 
-                <div className="pt-8">
-                  <MuutEhdot
-                    code="7"
-                    isPreviewModeOn={isPreviewModeOn}
-                    maaraykset={filterByTunniste(
-                      "muutkoulutuksenjarjestamiseenliittyvatehdot",
-                      maaraykset
-                    )}
-                    rajoitteet={muutEhdotRajoitteet}
-                    sectionId={"muutEhdot"}
-                    title={intl.formatMessage(education.muutEhdotTitle)}
-                  />
-                </div>
+                <MuutEhdot
+                  code="7"
+                  isPreviewModeOn={isPreviewModeOn}
+                  maaraykset={filterByTunniste(
+                    "muutkoulutuksenjarjestamiseenliittyvatehdot",
+                    maarayksetRajoitepoistotFiltered
+                  )}
+                  rajoitteet={muutEhdotRajoitteet}
+                  sectionId={"muutEhdot"}
+                  title={intl.formatMessage(education.muutEhdotTitle)}
+                />
               </React.Fragment>
             );
           }}
