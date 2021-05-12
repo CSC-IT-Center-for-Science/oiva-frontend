@@ -5,16 +5,20 @@ import {
   concat,
   endsWith,
   find,
-  isEmpty,
   map,
   path,
   prop,
-  sortBy
+  sortBy,
+  toLower
 } from "ramda";
-import { getRajoitteet } from "utils/rajoitteetUtils";
 import Lisatiedot from "../../lisatiedot";
+import { createEsikatseluHTML } from "../../../../helpers/esikatselu";
 
-export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
+export async function previewOfOpetuskielet(
+  { lomakedata, rajoitteet, maaraykset },
+  booleans,
+  locale
+) {
   let structure = [];
 
   const ensisijaiset = find(
@@ -22,14 +26,24 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
     lomakedata
   );
 
-  const ensisijaisetListItems = getKieletPreview(ensisijaiset, rajoitteet);
+  const ensisijaisetListItems = getKieletPreview(
+    ensisijaiset,
+    rajoitteet,
+    maaraykset,
+    locale
+  );
 
   const toissijaiset = find(
     compose(endsWith(".toissijaiset"), prop("anchor")),
     lomakedata
   );
 
-  const toissijaisetListItems = getKieletPreview(toissijaiset, rajoitteet);
+  const toissijaisetListItems = getKieletPreview(
+    toissijaiset,
+    rajoitteet,
+    maaraykset,
+    locale
+  );
 
   if (ensisijaisetListItems.length) {
     structure = append(
@@ -94,44 +108,40 @@ export async function previewOfOpetuskielet({ lomakedata, rajoitteet }) {
   return structure;
 }
 
-const getKieletPreview = (kielet, rajoitteet) => {
-  return kielet
+const getKieletPreview = (kielet, rajoitteet, maaraykset, locale) => {
+  return !!kielet
     ? sortBy(
         prop("content"),
         map(opetuskieli => {
-          const kohdistuvatRajoitteet = getRajoitteet(
-            opetuskieli.value,
-            rajoitteet
+          const koodiarvo = opetuskieli.value;
+          const maarays = find(
+            maarays =>
+              toLower(maarays.koodiarvo) === toLower(koodiarvo) &&
+              maarays.koodisto === "kielikoodistoopetushallinto",
+            maaraykset
           );
-          if (!isEmpty(kohdistuvatRajoitteet)) {
-            return {
-              anchor: opetuskieli.value,
-              components: [
-                {
-                  anchor: "rajoite",
-                  name: "Rajoite",
-                  properties: {
-                    areTitlesVisible: false,
-                    isReadOnly: true,
-                    rajoite: kohdistuvatRajoitteet
-                  }
+
+          const html = createEsikatseluHTML(
+            maarays,
+            koodiarvo,
+            rajoitteet,
+            locale,
+            "nimi",
+            opetuskieli.label
+          );
+
+          return {
+            anchor: "opetuskieli",
+            components: [
+              {
+                anchor: opetuskieli.value,
+                name: "HtmlContent",
+                properties: {
+                  content: html
                 }
-              ]
-            };
-          } else {
-            return {
-              anchor: "opetuskieli",
-              components: [
-                {
-                  anchor: opetuskieli.value,
-                  name: "HtmlContent",
-                  properties: {
-                    content: opetuskieli.label
-                  }
-                }
-              ]
-            };
-          }
+              }
+            ]
+          };
         }, path(["properties", "value"], kielet).filter(Boolean) || []).filter(
           Boolean
         )

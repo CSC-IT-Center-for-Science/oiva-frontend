@@ -4,7 +4,6 @@ import {
   filter,
   find,
   flatten,
-  isEmpty,
   map,
   nth,
   pathEq,
@@ -13,10 +12,14 @@ import {
   startsWith
 } from "ramda";
 import { getAnchorPart, removeAnchorPart } from "utils/common";
-import { getRajoitteet } from "utils/rajoitteetUtils";
 import Lisatiedot from "../../lisatiedot";
+import { createEsikatseluHTML } from "../../../../helpers/esikatselu";
 
-export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
+export const previewOfDynaamisetTekstikentat = (
+  { lomakedata, rajoitteet, maaraykset },
+  booleans,
+  locale
+) => {
   let structure = [];
 
   const checkedNodes = filter(
@@ -54,29 +57,31 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
                 items: map(node => {
                   const anchorParts = split(".", node.anchor);
                   const koodiarvo = getAnchorPart(node.anchor, 1);
-                  const index = getAnchorPart(node.anchor, 2);
-                  const kohdistuvatRajoitteet = getRajoitteet(
-                    `${koodiarvo}-${index}`,
-                    rajoitteet
+                  const kuvausnumero = getAnchorPart(node.anchor, 2);
+                  const maarays = find(
+                    maarays =>
+                      maarays.koodiarvo === koodiarvo &&
+                      pathEq(["meta", "ankkuri"], kuvausnumero, maarays),
+                    maaraykset
                   );
+
+                  const html = createEsikatseluHTML(
+                    maarays,
+                    `${koodiarvo}-${kuvausnumero}`,
+                    rajoitteet,
+                    locale,
+                    "nimi",
+                    node.properties.value
+                  );
+
                   return {
                     anchor: koodiarvo,
                     components: [
-                      !isEmpty(kohdistuvatRajoitteet)
-                        ? {
-                            anchor: "rajoite",
-                            name: "Rajoite",
-                            properties: {
-                              areTitlesVisible: false,
-                              isReadOnly: true,
-                              rajoite: kohdistuvatRajoitteet
-                            }
-                          }
-                        : {
-                            anchor: nth(2, anchorParts),
-                            name: "HtmlContent",
-                            properties: { content: node.properties.value }
-                          }
+                      {
+                        anchor: nth(2, anchorParts),
+                        name: "HtmlContent",
+                        properties: { content: html }
+                      }
                     ]
                   };
                 }, kuvausNodes)
@@ -90,7 +95,6 @@ export const previewOfMuutEhdot = ({ lomakedata, rajoitteet }) => {
   }
 
   const lisatiedotNode = find(
-    // 1 = koodiston koodiarvo
     node => endsWith(".lisatiedot.1", node.anchor),
     lomakedata
   );

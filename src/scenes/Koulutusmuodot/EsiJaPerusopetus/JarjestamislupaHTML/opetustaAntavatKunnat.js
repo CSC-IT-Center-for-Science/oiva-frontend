@@ -11,7 +11,10 @@ import {
   pipe,
   groupBy,
   mergeDeepWithKey,
-  pathEq
+  pathEq,
+  addIndex,
+  length,
+  prop
 } from "ramda";
 import { useIntl } from "react-intl";
 import education from "../../../../i18n/definitions/education";
@@ -101,16 +104,33 @@ export default function PoOpetustaAntavatKunnatHtml({ maaraykset }) {
       <Typography component="h3" variant="h3">
         {intl.formatMessage(education.opetustaAntavatKunnat)}
       </Typography>
-      <ul className="list-disc mb-4">
-        {getRajoitteetFromMaarays(
-          concat(
-            kuntaMaaraykset,
-            opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset
-          ).filter(Boolean),
-          locale,
-          intl.formatMessage(rajoitteet.ajalla),
-          "arvo"
-        )}
+      <ul className="list-disc mb-4 ml-8">
+        {addIndex(map)((maarays, index) => {
+          return (
+            <React.Fragment key={`${maarays.koodiarvo}-${index}`}>
+              <li className="leading-bulletList">
+                {/* Ulkomaat */}
+                {maarays.koodiarvo === "200"
+                  ? path(["meta", "arvo"], maarays)
+                  : // Muut kunnat
+                    prop(
+                      "nimi",
+                      find(
+                        maarays => prop("kieli", maarays) === toUpper(locale),
+                        path(["koodi", "metadata"], maarays) || []
+                      )
+                    )}
+              </li>
+              {length(maarays.aliMaaraykset)
+                ? getRajoitteetFromMaarays(
+                    maarays.aliMaaraykset,
+                    locale,
+                    intl.formatMessage(rajoitteet.ajalla)
+                  )
+                : ""}
+            </React.Fragment>
+          );
+        }, concat(kuntaMaaraykset, opetustaJarjestetaanUlkomaillaLisatiedotMaaraykset).filter(Boolean))}
       </ul>
       <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
