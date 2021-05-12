@@ -749,12 +749,17 @@ const getValueFromAlimaarays = (alimaarays, locale) => {
       : getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale);
 
     /** Joista enintään, Joista vähintään etc. */
-  } else if (alimaarays.koodisto === "kujalisamaareetjoistalisaksi") {
+  } else if (
+    alimaarays.koodisto === "kujalisamaareetjoistalisaksi" ||
+    alimaarays.koodisto === "kujalisamaareet"
+  ) {
     return `${getMetadataByLocaleAndPropertyFromMaarays(
       alimaarays,
       "nimi",
       locale
     )} ${alimaarays.arvo}`;
+  } else {
+    return "Virhetilanne.";
   }
 };
 

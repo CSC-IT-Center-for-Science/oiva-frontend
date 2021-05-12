@@ -10,13 +10,13 @@ import {
   pathEq,
   split,
   last,
-  replace
+  replace,
 } from "ramda";
 import SimpleButton from "components/00-atoms/SimpleButton";
 import { Typography } from "@material-ui/core";
 import {
   getRajoiteListamuodossa,
-  getRajoitteetFromMaarays
+  getRajoitteetFromMaarays,
 } from "utils/rajoitteetUtils";
 import HtmlContent from "components/01-molecules/HtmlContent";
 import { useIntl } from "react-intl";
@@ -25,7 +25,7 @@ import { map } from "ramda";
 import { getAnchorPart } from "../../../utils/common";
 import { useChangeObjectsByAnchorWithoutUnderRemoval } from "../../../stores/muutokset";
 
-const koodistoNaytettavaArvoMap = koodisto => {
+const koodistoNaytettavaArvoMap = (koodisto) => {
   switch (koodisto) {
     case "poerityinenkoulutustehtava":
     case "pomuutkoulutuksenjarjestamiseenliittyvatehdot":
@@ -43,21 +43,21 @@ const RajoitteetList = ({
   locale,
   onRemoveRestriction,
   rajoitteet,
-  rajoitemaaraykset
+  rajoitemaaraykset,
 }) => {
   const { formatMessage } = useIntl();
   const [rajoitepoistot] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "rajoitepoistot"
+    anchor: "rajoitepoistot",
   });
 
-  const rajoitemaarayksetListamuodossa = map(maarays => {
+  const rajoitemaarayksetListamuodossa = map((maarays) => {
     const naytettavaArvo =
       /** Ulkomaan kuvaus haetaan eri tavalla kuin muiden kuntien */
       maarays.koodisto === "kunta" && maarays.koodiarvo === "200"
         ? "ulkomaa"
         : koodistoNaytettavaArvoMap(maarays.koodisto);
 
-    return map(key => {
+    return map((key) => {
       /** Jos rajoitepoistoista löytyy rajoitteen id, ei näytetä sitä listalla */
       if (
         find(
@@ -70,7 +70,6 @@ const RajoitteetList = ({
       ) {
         return null;
       }
-
       const rajoiteListamuodossa = getRajoitteetFromMaarays(
         maarays.aliMaaraykset[key],
         locale,
@@ -92,12 +91,12 @@ const RajoitteetList = ({
           '<ul class="list-disc"><li class="list-disc">',
           "<ul><li>",
           rajoiteListamuodossa
-        )
+        ),
       };
     }, Object.keys(maarays.aliMaaraykset)).filter(Boolean);
   }, rajoitemaaraykset || []).filter(Boolean);
 
-  const rajoiteChangeObjsListamuodossa = map(rajoite => {
+  const rajoiteChangeObjsListamuodossa = map((rajoite) => {
     const rajoiteId = last(
       split(
         "_",
@@ -112,13 +111,13 @@ const RajoitteetList = ({
         rajoiteId,
         "list",
         rajoitteet
-      )
+      ),
     };
   }, values(rajoitteet));
 
   const rajoitemaarayksetAndCobjsListamuodossa = flatten([
     rajoitemaarayksetListamuodossa,
-    rajoiteChangeObjsListamuodossa
+    rajoiteChangeObjsListamuodossa,
   ]);
 
   if (isEmpty(rajoitemaarayksetAndCobjsListamuodossa)) {
@@ -145,7 +144,7 @@ const RajoitteetList = ({
                   <SimpleButton
                     buttonStyles={{
                       justifyContent: "start",
-                      padding: 0
+                      padding: 0,
                     }}
                     text={formatMessage(rajoitteetMessages.poistaRajoite)}
                     onClick={() =>
@@ -169,7 +168,7 @@ const RajoitteetList = ({
 RajoitteetList.propTypes = {
   onModifyRestriction: PropTypes.func,
   onRemoveRestriction: PropTypes.func,
-  rajoitteet: PropTypes.object
+  rajoitteet: PropTypes.object,
 };
 
 export default RajoitteetList;
