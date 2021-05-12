@@ -31,7 +31,7 @@ import { getKunnatFromStorage } from "../../../../helpers/kunnat";
 /**
  * Funktio luo lomakerakenteen, jonka myötä käyttäjälle näytetään lista
  * lupalomakkeelle valituista kunnista. Käytössä on List-
- * komponentti, jota varten luodaan { content: kunnan_nimi } -muotoisia
+ * komponentti, jota varten luodaan { content: kunnan_nimi } -muotoisia
  * lista-alkoita. Maakuntamääräyksiä / muutoksia ei ole tässä otettu huomioon,
  * koska kokonaisia maakuntia ei pitäisi olla valittuna
  * Esi- ja perusopetuksen puolella.
@@ -132,9 +132,10 @@ export async function previewOfOpetustaAntavaKunnat(
       );
 
       /** getKohdistuvatRajoitteet - funktion luoma html sisältää parent-määräyksen. Otetaan tämä pois. */
-      rajoitteetFromChangeObjectsHtml = rajoitteetFromChangeObjectsHtml.substring(
-        rajoitteetFromChangeObjectsHtml.indexOf("<ul>", 8)
-      );
+      rajoitteetFromChangeObjectsHtml =
+        rajoitteetFromChangeObjectsHtml.substring(
+          rajoitteetFromChangeObjectsHtml.indexOf("<ul>", 8)
+        );
 
       /** Parent-määräys */
       const titlehtml = `<ul class="list-disc"><li class="list-disc">${prop(
@@ -207,12 +208,14 @@ export async function previewOfOpetustaAntavaKunnat(
     );
 
     /** Parent-määräys */
-    const titlehtml = `<div><ul class="list-disc"><li class="list-disc">${(kunta.metadata &&
-      getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
+    const titlehtml = `<div><ul class="list-disc"><li class="list-disc">${
+      (kunta.metadata &&
+        getLocalizedProperty(kunta.metadata, locale, "nimi")) ||
       (kunta.koodi &&
         find(propEq("kieli", locale.toUpperCase()), kunta.koodi.metadata)
           .nimi) ||
-      (kunta.properties && kunta.properties.metadata.title)}<div>`;
+      (kunta.properties && kunta.properties.metadata.title)
+    }<div>`;
 
     /** Yhdistetty html parent-määräys, rajoite muutos-objektit sekä rajoitemääräykset */
     const html = `${titlehtml}${

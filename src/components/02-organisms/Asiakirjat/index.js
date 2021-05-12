@@ -516,8 +516,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       }
                     )}?force=${new Date().getTime()}`
                   );
-                }}
-              >
+                }}>
                 <BackIcon
                   style={{
                     fontSize: 14,

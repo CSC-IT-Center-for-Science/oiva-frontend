@@ -145,10 +145,11 @@ const LupanakymaA = React.memo(
       maarayksetRajoitepoistotFiltered
     );
 
-    const oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset = filterByTunniste(
-      "sisaoppilaitosmuotoinenkoulutus",
-      maarayksetRajoitepoistotFiltered
-    );
+    const oikeusSisaoppilaitosmuotoiseenKoulutukseenMaaraykset =
+      filterByTunniste(
+        "sisaoppilaitosmuotoinenkoulutus",
+        maarayksetRajoitepoistotFiltered
+      );
 
     // Rajoitteet
     const opetuskieletRajoitteet = getRajoitteetBySection(
@@ -156,10 +157,11 @@ const LupanakymaA = React.memo(
       rajoiteChangeObjsByRajoiteId
     );
 
-    const oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet = getRajoitteetBySection(
-      "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
-      rajoiteChangeObjsByRajoiteId
-    );
+    const oikeusSisaoppilaitosmuotoiseenKoulutukseenRajoitteet =
+      getRajoitteetBySection(
+        "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+        rajoiteChangeObjsByRajoiteId
+      );
 
     const erityisetKoulutustehtavatRajoitteet = getRajoitteetBySection(
       "erityisetKoulutustehtavat",
