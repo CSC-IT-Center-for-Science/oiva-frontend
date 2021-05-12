@@ -168,7 +168,7 @@ const Lomake = React.memo(
 
     if (Array.isArray(lomake) && lomake.length) {
       return (
-        <div>
+        <div className="pt-8">
           {code || formTitle ? (
             <FormTitle
               code={isPreviewModeOn || !code ? null : code}
