@@ -99,7 +99,9 @@ export const Oiva = () => {
     // Let's fetch the current user from backend
     const abortController = userActions.load();
     return function cancel() {
-      abortController.abort();
+      if (abortController) {
+        abortController.abort();
+      }
     };
   }, [userActions]);
 
