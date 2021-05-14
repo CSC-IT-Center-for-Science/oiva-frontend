@@ -9,10 +9,11 @@ import { story3 } from "./storyData/story3";
 storiesOf("Difference", module)
   .addDecorator(withInfo)
   .add("Modifiable and not required", () => {
-    const [state, setState] = useState({
+    const [, setState] = useState({
       applyForValue: 0
     });
     const onChanges = (payload, { applyForValue }) => {
+      console.info(payload);
       setState({ applyForValue });
     };
 
@@ -25,10 +26,11 @@ storiesOf("Difference", module)
     );
   })
   .add("Modifiable and required", () => {
-    const [state, setState] = useState({
+    const [, setState] = useState({
       applyForValue: 0
     });
     const onChanges = (payload, { applyForValue }) => {
+      console.info(payload);
       setState({ applyForValue });
     };
 

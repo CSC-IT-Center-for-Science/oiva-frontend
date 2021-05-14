@@ -42,7 +42,7 @@ storiesOf("Dropdown", module).add("default, contained", () => {
       <br />
       <hr />
 
-      <p>Doesn't fill container</p>
+      <p>Ei täytä kontaineria</p>
       <Dropdown
         options={options}
         value={state.value}

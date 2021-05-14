@@ -16,7 +16,9 @@ const FormSection = ({ children, code, render, sectionId, title }) => {
 };
 
 FormSection.propTypes = {
+  children: PropTypes.array,
   code: PropTypes.number,
+  render: PropTypes.func,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

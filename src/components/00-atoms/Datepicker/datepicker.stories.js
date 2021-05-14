@@ -6,12 +6,12 @@ import { withInfo } from "@storybook/addon-info";
 storiesOf("Datepicker", module)
   .addDecorator(withInfo)
   .add("Simple example", () => {
-    const [state, setState] = useState({
+    const [state] = useState({
       value: new Date(Date.now()),
       payload: {}
     });
 
-    const onChanges = (payload, { value }) => {};
+    const onChanges = () => {};
 
     const messages = {
       ok: "ok",
