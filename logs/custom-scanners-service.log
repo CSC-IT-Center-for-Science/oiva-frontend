@@ -145,3 +145,413 @@
 2021-05-14 11:26:10.095 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice$ErrorMessage@553aa42 (truncated)...]
 2021-05-14 11:26:10.096 DEBUG 20451 --- [http-nio-9221-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: The following file extension is not supported: json]
 2021-05-14 11:26:10.096 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 422 UNPROCESSABLE_ENTITY
+2021-05-14 11:31:08.382 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 11:31:08.384 DEBUG 20451 --- [http-nio-9221-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 11:31:08.385 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 11:31:08.385 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 11:31:08.386 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 11:31:08.386 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 11:31:08.386 DEBUG 20451 --- [http-nio-9221-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 11:31:08.390 DEBUG 20451 --- [http-nio-9221-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice#handleInvalidArgument(IllegalArgumentException)
+2021-05-14 11:31:08.390 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json, application/*+json, application/json, application/*+json]
+2021-05-14 11:31:08.390 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice$ErrorMessage@6e3bd4b (truncated)...]
+2021-05-14 11:31:08.391 DEBUG 20451 --- [http-nio-9221-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: The following file extension is not supported: json]
+2021-05-14 11:31:08.391 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 422 UNPROCESSABLE_ENTITY
+2021-05-14 11:31:11.825 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 11:31:11.826 DEBUG 20451 --- [http-nio-9221-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 11:31:11.827 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 11:31:11.827 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 11:31:11.828 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 11:31:11.828 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 11:31:11.829 DEBUG 20451 --- [http-nio-9221-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 11:31:11.830 DEBUG 20451 --- [http-nio-9221-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice#handleInvalidArgument(IllegalArgumentException)
+2021-05-14 11:31:11.830 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json, application/*+json, application/json, application/*+json]
+2021-05-14 11:31:11.830 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice$ErrorMessage@26c58c2 (truncated)...]
+2021-05-14 11:31:11.831 DEBUG 20451 --- [http-nio-9221-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: The following file extension is not supported: json]
+2021-05-14 11:31:11.831 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 422 UNPROCESSABLE_ENTITY
+2021-05-14 11:31:13.805 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 11:31:13.806 DEBUG 20451 --- [http-nio-9221-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 11:31:13.806 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 11:31:13.806 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 11:31:13.807 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 11:31:13.809 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 11:31:13.810 DEBUG 20451 --- [http-nio-9221-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 11:31:13.811 DEBUG 20451 --- [http-nio-9221-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice#handleInvalidArgument(IllegalArgumentException)
+2021-05-14 11:31:13.811 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json, application/*+json, application/json, application/*+json]
+2021-05-14 11:31:13.811 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice$ErrorMessage@1f7d780 (truncated)...]
+2021-05-14 11:31:13.812 DEBUG 20451 --- [http-nio-9221-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: The following file extension is not supported: json]
+2021-05-14 11:31:13.813 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 422 UNPROCESSABLE_ENTITY
+2021-05-14 11:31:18.034 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 11:31:18.035 DEBUG 20451 --- [http-nio-9221-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 11:31:18.035 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 11:31:18.035 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 11:31:18.036 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 11:31:18.036 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 11:31:18.037 DEBUG 20451 --- [http-nio-9221-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 11:31:18.037 DEBUG 20451 --- [http-nio-9221-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice#handleInvalidArgument(IllegalArgumentException)
+2021-05-14 11:31:18.038 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json, application/*+json, application/json, application/*+json]
+2021-05-14 11:31:18.038 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice$ErrorMessage@3576329 (truncated)...]
+2021-05-14 11:31:18.038 DEBUG 20451 --- [http-nio-9221-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: The following file extension is not supported: json]
+2021-05-14 11:31:18.039 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 422 UNPROCESSABLE_ENTITY
+2021-05-14 11:31:19.200 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 11:31:19.200 DEBUG 20451 --- [http-nio-9221-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 11:31:19.201 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 11:31:19.201 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 11:31:19.202 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 11:31:19.204 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 11:31:19.205 DEBUG 20451 --- [http-nio-9221-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 11:31:19.209 DEBUG 20451 --- [http-nio-9221-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice#handleInvalidArgument(IllegalArgumentException)
+2021-05-14 11:31:19.210 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json, application/*+json, application/json, application/*+json]
+2021-05-14 11:31:19.210 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hcl.appscan.customscannersservice.controller.CustomScannersControllerAdvice$ErrorMessage@5bfd50f (truncated)...]
+2021-05-14 11:31:19.211 DEBUG 20451 --- [http-nio-9221-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalArgumentException: The following file extension is not supported: json]
+2021-05-14 11:31:19.212 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 422 UNPROCESSABLE_ENTITY
+2021-05-14 12:36:40.351 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:36:40.359 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:36:40.359 DEBUG 20451 --- [http-nio-9221-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:36:40.360 DEBUG 20451 --- [http-nio-9221-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:36:40.366 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:36:40.367 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:36:40.370 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:36:40.505  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.505  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.505  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.506  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.507  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:40.508  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:40.508 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:36:40.509 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:36:40.530 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:36:41.440 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:36:41.440 DEBUG 20451 --- [http-nio-9221-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:36:41.441 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:36:41.441 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:36:41.442 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:36:41.444 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:36:41.444 DEBUG 20451 --- [http-nio-9221-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:36:41.555  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.555  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.555  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.555  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.558  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.558  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.558  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.558  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.558  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.559  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:41.560  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:41.561 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:36:41.561 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:36:41.578 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:36:41.823 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:36:41.824 DEBUG 20451 --- [http-nio-9221-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:36:41.825 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:36:41.825 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:36:41.826 DEBUG 20451 --- [http-nio-9221-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:36:41.827 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:36:41.828 DEBUG 20451 --- [http-nio-9221-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.917  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.918  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:41.919  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:41.920  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:36:41.920  WARN 20451 --- [http-nio-9221-exec-10] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:36:41.920 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:36:41.921 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:36:41.943 DEBUG 20451 --- [http-nio-9221-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:24.169 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:37:24.170 DEBUG 20451 --- [http-nio-9221-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:37:24.171 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:24.172 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:37:24.173 DEBUG 20451 --- [http-nio-9221-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:24.174 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:37:24.175 DEBUG 20451 --- [http-nio-9221-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:37:24.270  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.270  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.270  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.270  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.270  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.271  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.274  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.274  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.274  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.274  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.274  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.275  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:24.276  WARN 20451 --- [http-nio-9221-exec-2] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:24.277 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:24.277 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:37:24.295 DEBUG 20451 --- [http-nio-9221-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:24.789 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:37:24.790 DEBUG 20451 --- [http-nio-9221-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:37:24.790 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:24.791 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:37:24.791 DEBUG 20451 --- [http-nio-9221-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:24.793 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:37:24.794 DEBUG 20451 --- [http-nio-9221-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.882  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.883  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.884  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.885  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.885  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:24.886  WARN 20451 --- [http-nio-9221-exec-4] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:24.887 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:24.887 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:37:24.898 DEBUG 20451 --- [http-nio-9221-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:25.378 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:37:25.379 DEBUG 20451 --- [http-nio-9221-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:37:25.379 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:25.379 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:37:25.380 DEBUG 20451 --- [http-nio-9221-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:25.381 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:37:25.382 DEBUG 20451 --- [http-nio-9221-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:37:25.463  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.464  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.465  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:25.466  WARN 20451 --- [http-nio-9221-exec-6] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:25.466 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:25.467 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:37:25.479 DEBUG 20451 --- [http-nio-9221-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:25.793 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/v1/ignore/ruleName", parameters={}
+2021-05-14 12:37:25.794 DEBUG 20451 --- [http-nio-9221-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#getRuleNameIgnoreRules()
+2021-05-14 12:37:25.794 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:25.795 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[]]
+2021-05-14 12:37:25.795 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/v1/scanFile", parameters={masked}
+2021-05-14 12:37:25.795 DEBUG 20451 --- [http-nio-9221-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2021-05-14 12:37:25.795 DEBUG 20451 --- [http-nio-9221-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hcl.appscan.customscannersservice.controller.CustomScannersController#runScanFile(MultipartFile, String, int[])
+2021-05-14 12:37:25.875  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.876  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.877  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.877  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.877  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.877  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.878  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.878  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.878  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.878  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.879  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Private Data Logged Sink
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Logging.RevealsDetails.SensitiveData
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: Dynamically constructed href attribute
+2021-05-14 12:37:25.880  WARN 20451 --- [http-nio-9221-exec-8] c.h.a.c.service.ArticleProvider          : No article found for vulnName: CrossSiteScripting
+2021-05-14 12:37:25.881 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json] and supported [application/json]
+2021-05-14 12:37:25.883 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [CustomScannerServiceResult{findings=[CustomScannersServiceFinding{file='step_implementation.js', lin (truncated)...]
+2021-05-14 12:37:25.903 DEBUG 20451 --- [http-nio-9221-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK

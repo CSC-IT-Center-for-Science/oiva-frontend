@@ -83,7 +83,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
-    "e2e": "cd tests/e2e; gauge run specs; cd -",
+    "e2e": "cd GaugeTestFolder/gauge-tests; gauge run specs; cd -",
     "coverage": "npm t -- --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
