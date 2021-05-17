@@ -368,8 +368,7 @@ module.exports = {
       "10/12": "83.33333%",
       "11/12": "91.66667%",
       full: "100%",
-      screen: "100vw",
-      "fit-content": "fit-content"
+      screen: "100vw"
     }),
     zIndex: {
       auto: "auto",

@@ -68,7 +68,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                   common.opetusJaKulttuuriministerio
                 )} logo`}
                 src={locale === "sv" ? logo_sv : logo_fi}
-                className="lg:w-fit-content max-w-sm"
+                className="max-w-sm"
               />
             </NavLink>
             <div id="navigation-level-1">
@@ -151,7 +151,7 @@ const Header = ({ localesByLang, authenticationLink, organisationLink }) => {
                       common.opetusJaKulttuuriministerio
                     )} logo`}
                     src={locale === "sv" ? logo_sv : logo_fi}
-                    className="lg:w-fit-content max-w-sm"
+                    className="max-w-sm"
                   />
                 ) : (
                   <img

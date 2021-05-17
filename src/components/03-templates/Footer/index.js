@@ -40,7 +40,7 @@ const Footer = () => {
           <img
             alt={`${formatMessage(common.opetusJaKulttuuriministerio)} logo`}
             src={locale === "sv" ? logo_sv : logo_fi}
-            className="lg:w-fit-content max-w-sm"
+            className="max-w-sm"
           />
           {/* Visible on mobile screen size */}
           <div className="sm:hidden">

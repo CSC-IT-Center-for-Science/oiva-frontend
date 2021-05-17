@@ -22,8 +22,7 @@ export const autocompleteShortStyles = {
   control: styles => {
     return {
       ...styles,
-      backgroundColor: "white",
-      minHeight: "fit-content"
+      backgroundColor: "white"
     };
   }
 };

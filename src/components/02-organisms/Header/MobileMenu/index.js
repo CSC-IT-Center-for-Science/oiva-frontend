@@ -77,7 +77,7 @@ const MobileMenu = ({
         <img
           alt={`${formatMessage(common.opetusJaKulttuuriministerio)} logo`}
           src={locale === "sv" ? logo_sv : logo_fi}
-          className="lg:w-fit-content max-w-sm py-6 px-5"
+          className="max-w-sm py-6 px-5"
         />
       </NavLink>
       <div className={jarjestamisluvatMenuVisible ? "bg-green-600" : ""}>
