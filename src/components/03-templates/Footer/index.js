@@ -1,7 +1,7 @@
 import React from "react";
 import { useIntl } from "react-intl";
-import logo_fi from "../../../static/images/okm-logo.svg";
-import logo_sv from "../../../static/images/OKM_Sve_1rivi_logot_ISO.jpg";
+import logo_fi from "../../../static/images/okm-logo-fi.svg";
+import logo_sv from "../../../static/images/okm-logo-sv.svg";
 import common from "../../../i18n/definitions/common";
 import { Link } from "react-router-dom";
 import { localizeRouteKey } from "utils/common";
@@ -42,7 +42,7 @@ const Footer = () => {
           <img
             alt={`${formatMessage(common.opetusJaKulttuuriministerio)} logo`}
             src={locale === "sv" ? logo_sv : logo_fi}
-            className="lg:w-fit-content max-w-sm"
+            className="lg:w-fit-content max-w-sm mb-4"
           />
           {/* Visible on mobile screen size */}
           <div className="sm:hidden">
