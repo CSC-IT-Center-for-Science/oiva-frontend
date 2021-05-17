@@ -17,6 +17,12 @@ const useStyles = makeStyles({
   },
 });
 
+const defaultValues = {
+  level: 0,
+  sortedBy: {},
+  structure: []
+};
+
 /**
  *
  * @param {object} props - Properties object.
@@ -26,7 +32,11 @@ const useStyles = makeStyles({
  * @param {number} props.sortedBy.columnIndex - Column index.
  * @param {string} props.order - Valid values: asc, desc.
  */
-const Table = ({ structure, level = 0, sortedBy = {} }) => {
+const Table = ({
+  structure = defaultValues.structure,
+  level = defaultValues.level,
+  sortedBy = defaultValues.sortedBy
+}) => {
   const classes = useStyles();
 
   const [sortingHistory, setSortingHistory] = useState({});

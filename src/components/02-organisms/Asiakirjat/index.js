@@ -6,8 +6,7 @@ import { COLORS, MEDIA_QUERIES } from "modules/styles";
 import AsiakirjatItem from "./AsiakirjatItem";
 import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
-import Moment from "react-moment";
-import Table from "components/02-organisms/Table";
+import Table from "components/02-organisms/Table/index";
 import { downloadFileFn, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
@@ -209,11 +208,9 @@ const Asiakirjat = ({ koulutusmuoto }) => {
         intl.formatMessage(common.application),
         ...baseRow,
         muutospyynto.data.luoja,
-        muutospyynto.data.luontipvm ? (
-          <Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>
-        ) : (
-          ""
-        )
+        muutospyynto.data.luontipvm
+          ? moment(muutospyynto.data.luontipvm).format("D.M.YYYY")
+          : ""
       ],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
