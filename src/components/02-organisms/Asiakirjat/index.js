@@ -30,6 +30,7 @@ import languages from "i18n/definitions/languages";
 import SimpleButton from "components/00-atoms/SimpleButton/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { labelColorClassesByTila } from "../../../utils/asiatUtils";
+import attachments from "i18n/definitions/attachments";
 import {
   addIndex,
   append,
@@ -588,7 +589,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       attachmentName: t(common.attachmentName),
                       attachmentErrorName: t(common.attachmentErrorName),
                       attachmentError: t(common.attachmentError),
-                      ok: t(common.ok),
+                      infoText: t(attachments.nimeaLiiteTarvittaessa),
+                      ok: t(common.accept),
                       cancel: t(common.cancel)
                     }}
                     styles={{

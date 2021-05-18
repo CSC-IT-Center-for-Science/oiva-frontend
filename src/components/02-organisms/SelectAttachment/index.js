@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 import Attachment from "../Attachment";
 import DialogTitle from "../DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
+import MuiDialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import { Input } from "../Attachments";
 import styled from "styled-components";
 import { COLORS } from "../Attachments/styles";
 import { checkFiletypeAndSize } from "../Attachments/utils";
+import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const Error = styled.div`
   color: ${COLORS.OIVA_RED};
@@ -17,7 +19,32 @@ const Error = styled.div`
   min-height: 20px;
 `;
 
+const DialogActions = withStyles(theme => ({
+  root: {
+    margin: 0,
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+    paddingBottom: theme.spacing(4)
+  }
+}))(MuiDialogActions);
+
+const useStyles = makeStyles(theme => ({
+  paper: { minWidth: "360px" },
+  root: {
+    minWidth: "300px",
+    "& > *:not(:last-child)": {
+      marginBottom: "20px",
+      [theme.breakpoints.up("sm")]: {
+        marginRight: theme.spacing(2),
+        marginBottom: theme.spacing(0)
+      }
+    }
+  }
+}));
+
 const SelectAttachment = React.memo(props => {
+  const classes = useStyles();
+
   const [nameMissing, setNameMissing] = useState(false);
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [selectedAttachment, setSelectedAttachment] = useState([]);
@@ -93,36 +120,47 @@ const SelectAttachment = React.memo(props => {
           {props.messages.attachmentName}
         </DialogTitle>
         <DialogContent>
-          <Input
-            defaultValue={selectedAttachment.nimi}
-            autoFocus
-            onFocus={e => {
-              var val = e.target.value;
-              e.target.value = "";
-              e.target.value = val;
-            }}
-            onBlur={e => {
-              setAttachmentName(e);
-            }}
-            onKeyUp={e => {
-              if (e.keyCode === 13) {
+          <p className="pt-4 px-8">{props.messages.infoText}</p>
+          <div className="pb-6 pt-8 px-8">
+            <Input
+              defaultValue={selectedAttachment.nimi}
+              autoFocus
+              onFocus={e => {
+                var val = e.target.value;
+                e.target.value = "";
+                e.target.value = val;
+              }}
+              onBlur={e => {
                 setAttachmentName(e);
-                addAttachment();
-              }
-            }}
-          />
-          <Error>{nameMissing && props.messages.attachmentErrorName}</Error>
+              }}
+              onKeyUp={e => {
+                if (e.keyCode === 13) {
+                  setAttachmentName(e);
+                  addAttachment();
+                }
+              }}
+            />
+            {nameMissing && props.messages.attachmentErrorName && (
+              <Error>{props.messages.attachmentErrorName}</Error>
+            )}
+          </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={addAttachment} color="primary" variant="contained">
-            {props.messages.ok}
-          </Button>
-          <Button
-            onClick={cancelAttachment}
-            color="secondary"
-            variant="outlined">
-            {props.messages.cancel}
-          </Button>
+          <div
+            className={
+              classes.root +
+              " flex flex-col w-full sm:flex-row flex-grow sm:justify-end sm:flex-grow-0"
+            }>
+            <Button
+              onClick={cancelAttachment}
+              color="secondary"
+              variant="outlined">
+              {props.messages.cancel}
+            </Button>
+            <Button onClick={addAttachment} color="primary" variant="contained">
+              {props.messages.ok}
+            </Button>
+          </div>
         </DialogActions>
       </Dialog>
     </React.Fragment>

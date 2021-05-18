@@ -13,5 +13,10 @@ export default defineMessages({
   dropAreaInfo3: {
     id: "common.dropAreaInfo3",
     defaultMessage: "Pudota tiedostot tähän ..."
+  },
+  nimeaLiiteTarvittaessa: {
+    id: "attachments.nimeaLiiteTarvittaessa",
+    defaultMessage:
+      "Nimeä liite tarvittaessa uudelleen sisältöä paremmin kuvaavaksi."
   }
 });

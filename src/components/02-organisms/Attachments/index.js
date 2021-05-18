@@ -126,15 +126,14 @@ const LiiteListItem = styled.div`
   }
 `;
 export const Input = styled.input`
-  font-size: 1em;
-  padding: 0.2em 0.4em;
+  font-size: 1rem;
+  padding: 0.8em 0.8em;
   width: 100%;
-  margin: 0.5em 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   border: 1px solid #aaa;
-  border-radius: 0.2em;
+  border-radius: 0.1rem;
 `;
 
 const Attachments = React.memo(
