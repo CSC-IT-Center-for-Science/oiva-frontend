@@ -37,8 +37,7 @@ const OpetuksenJarjestamismuoto = ({
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.opetuksenJarjestamismuodot)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

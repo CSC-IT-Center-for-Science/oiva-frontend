@@ -21,9 +21,11 @@ import { onkoMaaraysVoimassa } from "../../../../helpers/muut";
 const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
 
-  lupa.maaraykset = lupa.maaraykset.map(maarays => {
-    return onkoMaaraysVoimassa(maarays);
-  }).filter(Boolean);
+  lupa.maaraykset = lupa.maaraykset
+    .map(maarays => {
+      return onkoMaaraysVoimassa(maarays);
+    })
+    .filter(Boolean);
 
   return (
     <React.Fragment>

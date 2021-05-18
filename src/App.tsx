@@ -21,7 +21,7 @@ export const App = ({
   organisation,
   user
 }: {
-  children: object;
+  children: Object;
   localesByLang: LocalesByLang;
   organisation: Organisation;
   user: User;
@@ -91,8 +91,9 @@ export const App = ({
           organisationLink={organisationLink}
           shortDescription={shortDescription}
           template={template}
-          languageSelectionAriaLabel={formatMessage(langMessages.selection)}
-        ></Header>
+          languageSelectionAriaLabel={formatMessage(
+            langMessages.selection
+          )}></Header>
       );
     },
     [
@@ -114,8 +115,7 @@ export const App = ({
           <nav
             tabIndex={0}
             className="breadcumbs-nav py-2 border-b pl-8 text-sm"
-            aria-label={formatMessage(common.breadCrumbs)}
-          >
+            aria-label={formatMessage(common.breadCrumbs)}>
             <Breadcrumbs
               separator={<span> / </span>}
               item={NavLink}

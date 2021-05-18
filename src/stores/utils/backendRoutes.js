@@ -1,7 +1,7 @@
 /**
  * The comprehensive list of the backend routes.
- * Format: { key: url, ... }
- * Example: { luvat: api/luvat/jarjestajilla, ... }
+ * Format: { key: url, ... }
+ * Example: { luvat: api/luvat/jarjestajilla, ... }
  */
 export const backendRoutes = {
   elykeskukset: { path: `koodistot/koodit/elykeskukset` },

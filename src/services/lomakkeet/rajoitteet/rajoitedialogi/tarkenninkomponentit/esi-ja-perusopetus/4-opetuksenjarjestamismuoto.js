@@ -8,7 +8,8 @@ export default async function getOpetuksenJarjestamismuotokomponentit(
   isMulti,
   inputId
 ) {
-  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const opetuksenJarjestamismuodot =
+    await getOpetuksenJarjestamismuodotFromStorage();
 
   const valittuJarjestamismuoto = find(
     pathEq(["properties", "isChecked"], true),

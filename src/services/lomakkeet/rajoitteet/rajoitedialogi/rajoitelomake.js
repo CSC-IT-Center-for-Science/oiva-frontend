@@ -24,12 +24,12 @@ import { getAnchorPart } from "utils/common";
 import { __ } from "i18n-for-browser";
 
 const bgColorClassesByIndex = {
-  "0": "bg-gray-100",
-  "1": "bg-blue-100",
-  "2": "bg-green-100",
-  "3": "bg-gray-200",
-  "4": "bg-blue-200",
-  "5": "bg-green-200"
+  0: "bg-gray-100",
+  1: "bg-blue-100",
+  2: "bg-green-100",
+  3: "bg-gray-200",
+  4: "bg-blue-200",
+  5: "bg-green-200"
 };
 
 async function getAsetuslomakekokonaisuus(
@@ -45,7 +45,7 @@ async function getAsetuslomakekokonaisuus(
   index = 0,
   lomakerakenne = []
 ) {
-  const inputId = `${asetuksenKohdeavain}-${index}`;
+  const inputId = `asetuksenKohde-${index}`;
   const asetuksenKohdekomponentti = await getAsetuksenKohdekomponentti(
     asetuksenKohdeavain,
     kohdevaihtoehdot,
@@ -53,7 +53,7 @@ async function getAsetuslomakekokonaisuus(
     isReadOnly,
     locale,
     index,
-    `asetuksenKohde-${inputId}`
+    inputId
   );
 
   const asetuksenTarkenninlomakkeenAvain =
@@ -70,7 +70,7 @@ async function getAsetuslomakekokonaisuus(
         isReadOnly,
         koulutustyyppi,
         true, // Käyttäjä voi valita useita tarkentimen arvoja samaan kenttään
-        `asetuksenTarkennin-${inputId}`
+        `${index}-${inputId}`
       )
     : [];
 
@@ -137,6 +137,23 @@ async function getAsetuslomakekokonaisuus(
   return updatedLomakerakenne;
 }
 
+/**
+ *
+ * @param {*} kohdennustaso
+ * @param {*} kohdennuksenKohdeavain
+ * @param {*} data
+ * @param {*} param3
+ * @param {*} locale
+ * @param {*} changeObjects
+ * @param {*} param6
+ * @param {*} kohdennuksetChangeObjects
+ * @param {*} parentKohdennuksetChangeObjects
+ * @param {*} kohdennusindeksipolku
+ * @param {*} index
+ * @param {*} ensimmaisenKohdennuksenKohteenTarkenninavain
+ * @param {*} lomakerakenne
+ * @returns
+ */
 const getKohdennuksetRecursively = async (
   kohdennustaso = 0,
   kohdennuksenKohdeavain,
@@ -154,11 +171,19 @@ const getKohdennuksetRecursively = async (
 ) => {
   const { kohdevaihtoehdot, koulutustyyppi, osioidenData, rajoiteId } = data;
   const kohdennuksenKohdekomponentti = kohdennuksenKohdeavain
-    ? await getKohdennuksenKohdekomponentti(isReadOnly, locale)
+    ? await getKohdennuksenKohdekomponentti(
+        isReadOnly,
+        locale,
+        `kohdennuksenKohde-${join("_", kohdennusindeksipolku)}`
+      )
     : null;
 
   const kohdennuksenTarkenninKomponentit = kohdennuksenKohdekomponentti
-    ? getKohdennuksenTarkenninkomponentit("joistaEnintaan", locale)
+    ? getKohdennuksenTarkenninkomponentit(
+        "joistaEnintaan",
+        locale,
+        `kohdennuksenTarkennin-${join("_", kohdennusindeksipolku)}`
+      )
     : [];
 
   /**
@@ -186,13 +211,15 @@ const getKohdennuksetRecursively = async (
     ],
     rajoiteChangeObjects
   );
+
   const kohteenTarkenninkomponentit = await getTarkenninkomponentit(
     kohteenTarkenninavain,
     locale,
     osioidenData,
     isReadOnly,
     koulutustyyppi,
-    false // false = käyttäjä voi valita kenttään vain yhden tarkentimen arvon
+    false, // false = käyttäjä voi valita kenttään vain yhden tarkentimen arvon
+    `kohteenTarkennin-${join("_", kohdennusindeksipolku)}`
   );
 
   let ensimmaisenAsetuksenKohdeavain =

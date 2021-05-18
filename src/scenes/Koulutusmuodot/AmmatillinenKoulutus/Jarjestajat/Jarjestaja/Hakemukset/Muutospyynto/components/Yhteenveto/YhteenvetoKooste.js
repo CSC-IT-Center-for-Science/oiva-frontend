@@ -70,8 +70,7 @@ const YhteenvetoKooste = ({
         <React.Fragment>
           <Section
             code={lupaKohteet[1].headingNumber}
-            title={lupaKohteet[1].heading}
-          >
+            title={lupaKohteet[1].heading}>
             {!R.isEmpty(changeObjects.tutkinnot) && (
               <PerustelutTutkinnot
                 changeObjects={{
@@ -136,7 +135,7 @@ const YhteenvetoKooste = ({
               id="perustelut_kielet"
               render={_props => (
                 <React.Fragment>
-                  {!!R.path(["kielet", "opetuskielet"], changeObjects) ? (
+                  {R.path(["kielet", "opetuskielet"], changeObjects) ? (
                     <PerustelutOpetuskielet
                       changeObjects={{
                         opetuskielet:
@@ -160,7 +159,7 @@ const YhteenvetoKooste = ({
                     />
                   ) : null}
 
-                  {!!R.path(["kielet", "tutkintokielet"], changeObjects) ? (
+                  {R.path(["kielet", "tutkintokielet"], changeObjects) ? (
                     <PerustelutTutkintokielet
                       changeObjects={{
                         tutkintokielet:
@@ -200,7 +199,7 @@ const YhteenvetoKooste = ({
               id="perustelut_toimintaalue"
               render={_props => (
                 <React.Fragment>
-                  {!!R.path(["toimintaalue"], changeObjects) ? (
+                  {R.path(["toimintaalue"], changeObjects) ? (
                     <PerustelutToimintaalue
                       lupakohde={lupaKohteet[3]}
                       changeObjects={{
@@ -241,7 +240,7 @@ const YhteenvetoKooste = ({
               id="perustelut_muut"
               render={_props => (
                 <React.Fragment>
-                  {!!R.path(["muut"], changeObjects) ? (
+                  {R.path(["muut"], changeObjects) ? (
                     <PerustelutMuut
                       changeObjects={{
                         muut: R.path(["muut"], changeObjects),

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FaPlus } from "react-icons/fa";
-import { MdAddCircleOutline } from "react-icons/md"
+import { MdAddCircleOutline } from "react-icons/md";
 import { COLORS, TRANSITIONS } from "../Attachments/styles";
 
 const FileInput = styled.div`
@@ -12,13 +12,15 @@ const FileInput = styled.div`
       : props.color
       ? props.textColor
       : COLORS.OIVA_GREEN};
-  background-color: ${props => 
-    props.styles.backgroundColor ? props.styles.backgroundColor : props.disabled
+  background-color: ${props =>
+    props.styles.backgroundColor
+      ? props.styles.backgroundColor
+      : props.disabled
       ? COLORS.LIGHT_GRAY
       : props.bgColor
       ? props.bgColor
       : COLORS.WHITE};
-  border: ${props => props.styles.border ? props.styles.border : '1px solid'}
+  border: ${props => (props.styles.border ? props.styles.border : "1px solid")}
     ${props =>
       props.disabled
         ? COLORS.LIGHT_GRAY
@@ -26,7 +28,8 @@ const FileInput = styled.div`
         ? props.bgColor
         : COLORS.OIVA_GREEN};
   margin: 0.5em 0;
-  font-size: ${props => props.styles.fontSize ? props.styles.fontSize : '0.9em'};
+  font-size: ${props =>
+    props.styles.fontSize ? props.styles.fontSize : "0.9em"};
   transition: ${TRANSITIONS.EASE_IN_OUT_QUICK};
   width: 10em;
   cursor: pointer;
@@ -41,19 +44,26 @@ const FileInput = styled.div`
     margin: 0 auto;
     cursor: pointer;
     svg {
-      margin: ${props => props.styles.svgMargin ? props.styles.svgMargin : '0.2em 0.2em 0.3em 0'};
-      cursor: pointer
+      margin: ${props =>
+        props.styles.svgMargin
+          ? props.styles.svgMargin
+          : "0.2em 0.2em 0.3em 0"};
+      cursor: pointer;
     }
   }
   &:hover {
     color: ${props =>
-      props.styles.disableHover ? '' : props.disabled
+      props.styles.disableHover
+        ? ""
+        : props.disabled
         ? COLORS.WHITE
         : props.bgColor
         ? props.bgColor
         : COLORS.WHITE};
     background-color: ${props =>
-      props.styles.disableHover ? '' : props.disabled
+      props.styles.disableHover
+        ? ""
+        : props.disabled
         ? COLORS.LIGHT_GRAY
         : props.textColor
         ? props.textColor
@@ -62,7 +72,7 @@ const FileInput = styled.div`
     cursor: pointer;
   }
   input[type="file"],
-  input[type=file]::-webkit-file-upload-button {
+  input[type="file"]::-webkit-file-upload-button {
     opacity: 0;
     cursor: pointer;
     width: 100%;
@@ -74,12 +84,21 @@ const Attachment = React.memo(props => {
     <React.Fragment>
       <FileInput styles={props.styles}>
         <div className="flex flex-row">
-          {props.styles.circleIcon ?
-            <MdAddCircleOutline size={props.styles.iconSize ? props.styles.iconSize : 14}/> :
-            <FaPlus size={props.styles.iconSize ? props.styles.iconSize : 14}/>}
-            <span className={props.styles.normalCase ? "justify-center" : "uppercase justify-center"}>
-              &nbsp;{props.messages.attachmentAdd}
-            </span>
+          {props.styles.circleIcon ? (
+            <MdAddCircleOutline
+              size={props.styles.iconSize ? props.styles.iconSize : 14}
+            />
+          ) : (
+            <FaPlus size={props.styles.iconSize ? props.styles.iconSize : 14} />
+          )}
+          <span
+            className={
+              props.styles.normalCase
+                ? "justify-center"
+                : "uppercase justify-center"
+            }>
+            &nbsp;{props.messages.attachmentAdd}
+          </span>
         </div>
         <input
           id={props.id}
@@ -108,5 +127,7 @@ Attachment.propTypes = {
 Attachment.defaultProps = {
   styles: {}
 };
+
+Attachment.displayName = "Attachment";
 
 export default Attachment;

@@ -20,6 +20,7 @@ import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
+import { PropTypes } from "prop-types";
 
 export default function PoOpetuskieletHtml({ maaraykset }) {
   const intl = useIntl();
@@ -79,6 +80,10 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
   );
 }
 
+PoOpetuskieletHtml.propTypes = {
+  maaraykset: PropTypes.array
+};
+
 const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale, intl) => {
   return (
     <ul className="ml-8 list-disc mb-4">
@@ -95,7 +100,11 @@ const getOpetuskieletHtml = (opetuskielet, kieletOPH, locale, intl) => {
           </li>,
           <div key={"div-" + index}>
             {length(opetuskieli.aliMaaraykset)
-              ? getRajoitteetFromMaarays(opetuskieli.aliMaaraykset, locale, intl.formatMessage(rajoitteet.ajalla))
+              ? getRajoitteetFromMaarays(
+                  opetuskieli.aliMaaraykset,
+                  locale,
+                  intl.formatMessage(rajoitteet.ajalla)
+                )
               : ""}
           </div>
         ],

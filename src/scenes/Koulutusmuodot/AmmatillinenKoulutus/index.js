@@ -37,7 +37,6 @@ export default function AmmatillinenKoulutus() {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
-      WizardContainer={WizardContainer}
-    ></KoulutusmuodonEtusivu>
+      WizardContainer={WizardContainer}></KoulutusmuodonEtusivu>
   );
 }

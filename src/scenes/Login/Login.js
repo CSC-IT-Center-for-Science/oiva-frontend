@@ -37,8 +37,7 @@ const Login = () => {
         <title>Oiva | {formatMessage(auth.logIn)}</title>
       </Helmet>
       <BreadcrumbsItem
-        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-      >
+        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}>
         {formatMessage(common.frontpage)}
       </BreadcrumbsItem>
       <BreadcrumbsItem to="/kirjaudu">

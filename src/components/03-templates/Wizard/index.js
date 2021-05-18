@@ -21,21 +21,20 @@ import { useHistory, useParams } from "react-router-dom";
 import SimpleButton from "components/00-atoms/SimpleButton/index";
 import wizard from "i18n/definitions/wizard";
 import StepperNavigation from "components/01-molecules/Stepper/index";
-import WizardActions from "components/02-organisms/WizardActions/index";
 import common from "i18n/definitions/common";
 import { useMuutospyynto } from "stores/muutospyynto";
 import PropTypes from "prop-types";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/app-routes";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
+import Button from "@material-ui/core/Button";
 
 const isDebugOn = process.env.REACT_APP_DEBUG === "true";
 
 const DialogContentWithStyles = withStyles(() => ({
   root: {
     backgroundColor: "#ffffff",
-    padding: 0,
-    scrollBehavior: "smooth"
+    padding: 0
   }
 }))(props => {
   return <DialogContent {...props}>{props.children}</DialogContent>;
@@ -195,9 +194,11 @@ export const Wizard = ({
         onClose={leaveOrOpenCancelModal}
         maxWidth={"lg"}
         fullScreen={true}
-        aria-labelledby="simple-dialog-title"
-      >
-        <div className={"w-full m-auto"}>
+        aria-labelledby="simple-dialog-title">
+        <div
+          className={`${
+            isPreviewModeOn ? "w-full xxl:w-1/2" : "w-full m-auto"
+          }`}>
           <DialogTitleWithStyles id="customized-dialog-title">
             <div className="flex items-baseline">
               <div className="flex-1 text-lg font-normal">{title}</div>
@@ -217,108 +218,118 @@ export const Wizard = ({
           </DialogTitleWithStyles>
         </div>
         <DialogContentWithStyles>
-          <OrganisationInfo
-            isPreviewModeOn={isPreviewModeOn}
-            organisation={organisation}
-          />
-          <div className="w-full xxl:w-4/5 xxl:max-w-9/10 m-auto mb-32">
-            {!isEmpty(organisation) ? (
-              <div
-                id="wizard-content"
-                className={`mx-auto ${isPreviewModeOn ? "" : "max-w-7xl"}`}
-              >
-                <div className={isPreviewModeOn ? "" : "max-w-7xl mx-auto"}>
-                  {steps && (
-                    <div className="px-8 xxl:px-0">
-                      <StepperNavigation
-                        activeStep={page - 1}
-                        stepProps={steps}
-                        handleStepChange={handleStep}
-                      />
-                    </div>
-                  )}
-                  <div className="flex">
-                    <div
-                      className={`${
-                        isPreviewModeOn ? "hidden xxl:block" : ""
-                      } flex-1`}
-                      style={{
-                        transform: "translate3d(0, 0, 0)",
-                        height: isPreviewModeOn ? "100vh" : "84vh"
-                      }}
-                    >
-                      <section
-                        className={`px-8 xxl:px-0 pb-32 fixed w-full ${
-                          isPreviewModeOn ? "border-r border-gray-300" : ""
-                        }`}
-                      >
-                        <div className={`border-b border-gray-300`}>
-                          <Typography component="h2" variant="h2">
-                            {intl.formatMessage(common.decisionDetails)}
-                          </Typography>
-                        </div>
-                        <div
-                          attr="inner-scroll"
-                          className={`${
-                            isPreviewModeOn ? "overflow-auto" : "pb-32"
-                          }`}
-                          style={{ height: isPreviewModeOn ? "86vh" : "auto" }}
-                        >
-                          {page === 1 && page1}
-                          {page === 2 && page2}
-                          {page === 3 && page3}
-                          {page === 4 && page4}
-                        </div>
-                      </section>
-                    </div>
-                    {isPreviewModeOn ? (
-                      <div
-                        className="flex-1"
-                        style={{
-                          transform: "translate3d(0, 0, 0)",
-                          height: "100vh"
-                        }}
-                      >
-                        <section
-                          className={`fixed w-full ${
-                            isPreviewModeOn ? "border-l border-gray-300" : ""
-                          }`}
-                        >
-                          <div className="border-b border-gray-300 px-6">
-                            <Typography component="h2" variant="h2">
-                              {intl.formatMessage(common.esikatselu)}
-                            </Typography>
-                          </div>
-                          <div
-                            className="pt-6 px-6 pb-32 overflow-auto"
-                            style={{
-                              height: isPreviewModeOn ? "86vh" : "auto"
-                            }}
-                          >
-                            {page === 1 && previews.page1}
-                            {page === 2 && previews.page2}
-                            {page === 3 && previews.page3}
-                            {page === 4 && previews.page4}
-                          </div>
-                        </section>
-                      </div>
-                    ) : null}
-                  </div>
+          <div
+            className={`grid ${isPreviewModeOn ? "xxl:w-1/2" : "grid-cols-2"}`}>
+            {steps && (
+              <div className="bg-white fixed col-span-2 px-8 xxl:px-0 w-full z-10 shadow-xl">
+                <div className="flex justify-center max-w-7xl w-4/5 m-auto">
+                  <StepperNavigation
+                    activeStep={page - 1}
+                    stepProps={steps}
+                    handleStepChange={handleStep}
+                  />
                 </div>
+              </div>
+            )}
+            <div className={`${isPreviewModeOn ? "" : "col-span-2"}`}>
+              {!steps && (
+                <OrganisationInfo
+                  isPreviewModeOn={isPreviewModeOn}
+                  organisation={organisation}
+                />
+              )}
+              <section
+                className={`px-8 xxl:px-0 pb-32 ${
+                  isPreviewModeOn
+                    ? "border-r border-gray-300"
+                    : "max-w-7xl m-auto"
+                } ${steps ? "pt-20" : ""}`}>
+                <div
+                  className={`${
+                    isPreviewModeOn ? "px-8" : ""
+                  } pt-8 border-b border-gray-300`}>
+                  <Typography component="h2" variant="h2">
+                    {intl.formatMessage(common.decisionDetails)}
+                  </Typography>
+                </div>
+                <div
+                  attr="inner-scroll"
+                  className={`${
+                    isPreviewModeOn ? "px-8 overflow-auto" : "pb-32"
+                  }`}>
+                  {page === 1 && page1}
+                  {page === 2 && page2}
+                  {page === 3 && page3}
+                  {page === 4 && page4}
+                </div>
+              </section>
+            </div>
+            {isPreviewModeOn ? (
+              <div
+                className={`h-screen overflow-auto fixed z-10 ${
+                  isPreviewModeOn ? "w-full xxl:w-1/2 bg-white" : "w-full"
+                } right-0 w-1/2 top-0 border-l-2`}>
+                <section
+                  className={`w-full overflow-auto ${
+                    isPreviewModeOn ? "border-l border-gray-300" : ""
+                  }`}>
+                  <div className="border-b border-gray-300 px-6 pt-2">
+                    <Typography component="h2" variant="h2">
+                      {intl.formatMessage(common.esikatselu)}
+                    </Typography>
+                  </div>
+                  <div className="pt-6 px-6 pb-32 overflow-auto">
+                    {page === 1 && previews.page1}
+                    {page === 2 && previews.page2}
+                    {page === 3 && previews.page3}
+                    {page === 4 && previews.page4}
+                  </div>
+                </section>
               </div>
             ) : null}
           </div>
-          <WizardActions
-            isPreviewModeOn={isPreviewModeOn}
-            isSavingEnabled={isSavingEnabled}
-            onClose={leaveOrOpenCancelModal}
-            onPreview={() => {
-              return onAction("preview");
-            }}
-            onSave={() => {
-              return onAction("save", false, tila);
-            }}
-          />
+          <div
+            className={`z-10 ${
+              isPreviewModeOn ? "w-full px-8 xxl:w-1/2" : "w-full"
+            } fixed bottom-0 bg-gray-100 border-t-2 border-gray-200 ${
+              isDebugOn ? "w-2/3" : ""
+            } py-4 mx-auto`}>
+            <div
+              className={`flex justify-between px-8 xxl:px-0 max-w-7xl m-auto`}>
+              <div className={`inline-flex ${isPreviewModeOn ? "m-auto" : ""}`}>
+                <div
+                  className={`inline-flex mr-4 ${
+                    isPreviewModeOn ? "hidden xxl:block" : ""
+                  }`}>
+                  <Button
+                    color="secondary"
+                    className="save"
+                    onClick={leaveOrOpenCancelModal}
+                    variant="outlined">
+                    {intl.formatMessage(wizard.getOut)}
+                  </Button>
+                </div>
+                <Button
+                  color="secondary"
+                  className="preview"
+                  onClick={() => onAction("preview")}
+                  variant="outlined">
+                  {isPreviewModeOn
+                    ? intl.formatMessage(wizard.closePreview)
+                    : intl.formatMessage(wizard.previewAndPrint)}
+                </Button>
+              </div>
+              <div className={isPreviewModeOn ? "hidden xxl:block" : ""}>
+                <SimpleButton
+                  color="primary"
+                  isDisabled={!isSavingEnabled}
+                  className="button-right save"
+                  onClick={() => onAction("save", false, tila)}
+                  text={intl.formatMessage(wizard.saveDraft)}
+                />
+              </div>
+            </div>
+          </div>
         </DialogContentWithStyles>
       </FormDialog>
       <ConfirmDialog
@@ -346,5 +357,17 @@ export const Wizard = ({
 };
 
 Wizard.propTypes = {
-  page1: PropTypes.object
+  children: PropTypes.object,
+  isSaving: PropTypes.bool,
+  koulutusmuoto: PropTypes.object,
+  onAction: PropTypes.func,
+  organisation: PropTypes.object,
+  page1: PropTypes.object,
+  page2: PropTypes.object,
+  page3: PropTypes.object,
+  page4: PropTypes.object,
+  steps: PropTypes.array,
+  tila: PropTypes.string,
+  title: PropTypes.string,
+  urlOnClose: PropTypes.string
 };

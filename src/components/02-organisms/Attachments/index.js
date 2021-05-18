@@ -191,10 +191,7 @@ const Attachments = React.memo(
 
       if (e.target.files.length === 0) return;
 
-      const type = e.target.files[0].name
-        .split(".")
-        .pop()
-        .toLowerCase();
+      const type = e.target.files[0].name.split(".").pop().toLowerCase();
 
       // Rajoitetaan max kooksi 25MB ja vain pdf, word, excel, jpeg ja gif on sallittuja
       if (checkFiletypeAndSize(type, e.target.files[0].size)) {
@@ -536,5 +533,7 @@ Attachments.propTypes = {
   showValidationErrors: PropTypes.bool,
   isRequired: PropTypes.bool
 };
+
+Attachments.displayName = "Attachments";
 
 export default Attachments;

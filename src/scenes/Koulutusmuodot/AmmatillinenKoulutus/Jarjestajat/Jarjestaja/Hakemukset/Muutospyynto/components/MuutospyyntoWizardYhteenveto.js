@@ -21,16 +21,14 @@ const MuutospyyntoWizardYhteenveto = ({
   mode,
   muut
 }) => {
-  const [
-    changeObjectsYleisetTiedot
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "yhteenveto_yleisettiedot"
-  });
-  const [
-    changeObjectsHakemuksenLiiteet
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "yhteenveto_hakemuksenLiitteet"
-  });
+  const [changeObjectsYleisetTiedot] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "yhteenveto_yleisettiedot"
+    });
+  const [changeObjectsHakemuksenLiiteet] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "yhteenveto_hakemuksenLiitteet"
+    });
 
   const [tutkinnotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "tutkinnot"
@@ -114,8 +112,7 @@ const MuutospyyntoWizardYhteenveto = ({
         mode="modification"
         path={["yhteenveto", "yleisetTiedot"]}
         rowTitle="Hakemuksen yleiset tiedot"
-        showCategoryTitles={true}
-      ></Lomake>
+        showCategoryTitles={true}></Lomake>
 
       <EsittelijatMuutospyynto
         isReadOnly={true}
@@ -145,8 +142,7 @@ const MuutospyyntoWizardYhteenveto = ({
         mode="modification"
         path={["yhteenveto", "liitteet"]}
         rowTitle={intl.formatMessage(wizard.otherAttachments)}
-        showCategoryTitles={true}
-      ></Lomake>
+        showCategoryTitles={true}></Lomake>
     </React.Fragment>
   );
 };
@@ -156,7 +152,10 @@ MuutospyyntoWizardYhteenveto.propTypes = {
   kohteet: PropTypes.array,
   koulutukset: PropTypes.object,
   koulutusalat: PropTypes.array,
+  koulutustyypit: PropTypes.array,
+  maaraykset: PropTypes.array,
   maaraystyypit: PropTypes.array,
+  mode: PropTypes.string,
   muut: PropTypes.array,
   lupa: PropTypes.object,
   lupaKohteet: PropTypes.object,

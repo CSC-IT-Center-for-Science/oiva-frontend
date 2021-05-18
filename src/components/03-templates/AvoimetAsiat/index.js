@@ -54,8 +54,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
       <div
         style={{
           borderBottom: "0.05rem solid #E3E3E3"
-        }}
-      >
+        }}>
         <Table
           structure={tableStructure}
           sortedBy={{ columnIndex: 5, order: "desc" }}
@@ -71,8 +70,7 @@ const AvoimetAsiat = ({ koulutusmuoto }) => {
     return (
       <div
         className="flex justify-center text-tummanharmaa text-base items-center"
-        style={{ height: "100%" }}
-      >
+        style={{ height: "100%" }}>
         {intl.formatMessage(common.eiAvoimiaAsioita)}
       </div>
     );

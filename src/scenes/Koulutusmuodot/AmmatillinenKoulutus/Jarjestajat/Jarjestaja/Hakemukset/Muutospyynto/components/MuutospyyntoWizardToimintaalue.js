@@ -13,12 +13,10 @@ const constants = {
 
 const MuutospyyntoWizardToimintaalue = React.memo(props => {
   const intl = useIntl();
-  const [
-    changeObjects,
-    { setChanges }
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "toimintaalue"
-  });
+  const [changeObjects, { setChanges }] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "toimintaalue"
+    });
 
   const [isEditViewActive, toggleEditView] = useState(false);
 
@@ -63,8 +61,9 @@ const MuutospyyntoWizardToimintaalue = React.memo(props => {
         changeObjects
       );
 
-      const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
-        .length;
+      const amountOfChanges = R.flatten(
+        R.values(changes.changesByProvince)
+      ).length;
       const amountOfQuickFilterChanges = R.flatten(
         R.values(changes.quickFilterChanges)
       ).length;
@@ -164,10 +163,13 @@ MuutospyyntoWizardToimintaalue.defaultProps = {
 };
 
 MuutospyyntoWizardToimintaalue.propTypes = {
+  code: PropTypes.string,
   lupakohde: PropTypes.object,
   kuntamaaraykset: PropTypes.array,
+  mode: PropTypes.string,
   valtakunnallinenMaarays: PropTypes.object,
-  sectionId: PropTypes.string
+  sectionId: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default MuutospyyntoWizardToimintaalue;

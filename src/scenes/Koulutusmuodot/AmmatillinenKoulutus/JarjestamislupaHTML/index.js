@@ -41,7 +41,7 @@ const JarjestamislupaJSX = ({ lupa, lupakohteet }) => {
       });
   }, []);
 
-  return !!kielet ? (
+  return kielet ? (
     <div>
       {lupaException ? (
         <TopSectionWrapper className="pb-4">

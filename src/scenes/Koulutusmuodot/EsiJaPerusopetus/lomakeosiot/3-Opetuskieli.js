@@ -35,8 +35,7 @@ const Opetuskieli = ({
       mode={mode}
       path={constants.formLocation}
       showCategoryTitles={true}
-      rowTitle={intl.formatMessage(common.kielet)}
-    ></Lomake>
+      rowTitle={intl.formatMessage(common.kielet)}></Lomake>
   );
 };
 

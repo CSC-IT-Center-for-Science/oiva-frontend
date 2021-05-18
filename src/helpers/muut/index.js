@@ -230,7 +230,7 @@ const removalObjectsShouldBeCreated = (
     muutokset
   );
 
-export const onkoMaaraysVoimassa = (maarays) => {
+export const onkoMaaraysVoimassa = maarays => {
   const aliMaaraykset = [];
   if (propEq("koodisto", "kujalisamaareetlisaksiajalla", maarays)) {
     if (moment(maarays.meta.loppupvm) > moment()) {

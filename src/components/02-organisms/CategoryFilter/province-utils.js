@@ -10,7 +10,7 @@ function HexToRgb(hexstr) {
       "invalid input, hex string must be in the format #FFFFFF or #FFF"
     );
   }
-  return a.map(function(x) {
+  return a.map(function (x) {
     return parseInt(x, 16);
   });
 }

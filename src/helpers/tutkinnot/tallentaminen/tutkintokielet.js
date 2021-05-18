@@ -91,7 +91,7 @@ export function createBEOofTutkintokielet(
           const koodiarvoUpper = toUpper(tutkintokielimaarays.koodiarvo);
           const hasLanguageBeenRemoved =
             !listOfActiveLanguages ||
-            !!!find(propEq("value", koodiarvoUpper), listOfActiveLanguages);
+            !find(propEq("value", koodiarvoUpper), listOfActiveLanguages);
           if (hasLanguageBeenRemoved) {
             return {
               generatedId: `${changeObj.anchor}-${koodiarvoUpper}`,

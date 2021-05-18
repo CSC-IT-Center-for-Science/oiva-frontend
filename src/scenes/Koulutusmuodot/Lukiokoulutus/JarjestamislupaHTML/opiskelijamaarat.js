@@ -17,6 +17,7 @@ import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
 import { __ } from "i18n-for-browser";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "../../../../i18n/definitions/rajoitteet";
+import { PropTypes } from "prop-types";
 
 export default function OpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
@@ -92,3 +93,7 @@ export default function OpiskelijamaaratHtml({ maaraykset }) {
     </div>
   ) : null;
 }
+
+OpiskelijamaaratHtml.propTypes = {
+  maaraykset: PropTypes.array
+};

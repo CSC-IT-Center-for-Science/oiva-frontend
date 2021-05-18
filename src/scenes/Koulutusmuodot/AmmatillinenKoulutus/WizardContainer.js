@@ -24,6 +24,7 @@ import { backendRoutes } from "stores/utils/backendRoutes";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
+import { PropTypes } from "prop-types";
 //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/0208201-1/jarjestamislupa-asiat
 // https: //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/0208201-1/jarjestamislupa-asiat
 /**
@@ -353,6 +354,19 @@ const WizardContainer = ({
       urlOnClose={urlOnClose}
     />
   );
+};
+
+WizardContainer.propTypes = {
+  kohteet: PropTypes.array,
+  koulutukset: PropTypes.object,
+  koulutusalat: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  koulutustyypit: PropTypes.array,
+  maaraystyypit: PropTypes.array,
+  muut: PropTypes.array,
+  organisaatio: PropTypes.object,
+  role: PropTypes.string,
+  viimeisinLupa: PropTypes.object
 };
 
 export default WizardContainer;

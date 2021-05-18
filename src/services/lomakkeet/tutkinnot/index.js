@@ -176,7 +176,7 @@ async function getModificationForm(
                           removal: isRemoved,
                           custom: Object.assign(
                             {},
-                            !!tutkinto.maarays ? isInLupa : {}
+                            tutkinto.maarays ? isInLupa : {}
                           )
                         }
                       }

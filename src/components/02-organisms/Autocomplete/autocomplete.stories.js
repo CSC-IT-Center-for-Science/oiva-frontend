@@ -56,7 +56,7 @@ storiesOf("Autocomplete", module)
   ))
   .add("Short width", () => (
     <div>
-      <br/>
+      <br />
       <Autocomplete
         name="example"
         options={[

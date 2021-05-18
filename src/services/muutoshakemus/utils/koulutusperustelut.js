@@ -6,7 +6,7 @@ const handleClickOfAddPeople = payload => {
 
 export const getKuljettajakoulutusPerustelulomakeByCode = code => {
   const forms = {
-    "3": [
+    3: [
       {
         anchor: `${code}`,
         title: "",
@@ -27,7 +27,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
         ]
       }
     ],
-    "4": [
+    4: [
       {
         anchor: `${code}-1`,
         title: "Jatkokoulutusta antavan koulutuskeskuksen tehtävä",
@@ -296,8 +296,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "C-luokka"
+                    fieldName: "C-luokka"
                   }
                 }
               }
@@ -315,8 +314,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "CE-luokka"
+                    fieldName: "CE-luokka"
                   }
                 }
               }
@@ -334,8 +332,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "D-luokka"
+                    fieldName: "D-luokka"
                   }
                 }
               }
@@ -367,8 +364,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "Linja-auton kuljettajan ammattitutkinto"
+                    fieldName: "Linja-auton kuljettajan ammattitutkinto"
                   }
                 }
               }
@@ -386,8 +382,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "Yhdistelmäajoneuvonkuljettajan ammattitutkinto"
+                    fieldName: "Yhdistelmäajoneuvonkuljettajan ammattitutkinto"
                   }
                 }
               }
@@ -405,8 +400,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "Puutavaran autonkuljetuksen ammattitutkinto"
+                    fieldName: "Puutavaran autonkuljetuksen ammattitutkinto"
                   }
                 }
               }
@@ -444,8 +438,7 @@ export const getKuljettajakoulutusPerustelulomakeByCode = code => {
                   labelStyles: {},
                   isChecked: false,
                   forChangeObject: {
-                    fieldName:
-                      "Kuljetusalan ammattitutkinto"
+                    fieldName: "Kuljetusalan ammattitutkinto"
                   }
                 }
               }

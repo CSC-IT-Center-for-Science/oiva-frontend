@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { addIndex, map } from "ramda";
 import Rajoite from "components/02-organisms/Rajoite";
 import HtmlContent from "../HtmlContent";
@@ -26,8 +27,7 @@ const List = ({ items }) => {
               return (
                 <HtmlContent
                   key={index}
-                  content={properties.content}
-                ></HtmlContent>
+                  content={properties.content}></HtmlContent>
               );
             } else {
               return <div key={index}>[komponenttia ei osata käsitellä]</div>;
@@ -42,6 +42,10 @@ const List = ({ items }) => {
   );
 
   return <ul className="list-disc px-6">{itemsToRender}</ul>;
+};
+
+List.propTypes = {
+  items: PropTypes.array
 };
 
 export default List;

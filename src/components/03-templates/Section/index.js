@@ -26,6 +26,7 @@ const Section = ({
 };
 
 Section.propTypes = {
+  children: PropTypes.object,
   code: PropTypes.number,
   title: PropTypes.string
 };

@@ -120,8 +120,7 @@ const UusiAsiaEsidialog = ({
                           aria-label={intl.formatMessage(
                             common.suoritaYtunnushaku
                           )}
-                          onClick={searchById}
-                        >
+                          onClick={searchById}>
                           <SearchIcon />
                         </IconButton>
                       ),
@@ -138,8 +137,7 @@ const UusiAsiaEsidialog = ({
                     setOrganisation(null);
                     setIsSearchFieldVisible(false);
                   }}
-                  style={{ marginLeft: "auto" }}
-                >
+                  style={{ marginLeft: "auto" }}>
                   {intl.formatMessage(common.suljeHaku)}
                 </StyledButton>
               </div>
@@ -164,8 +162,7 @@ const UusiAsiaEsidialog = ({
                     <a
                       href={`mailto:${intl.formatMessage(
                         common.yhteisetpalvelutEmailAddress
-                      )}`}
-                    >
+                      )}`}>
                       {intl.formatMessage(common.yhteisetpalvelutEmailAddress)}
                     </a>
                   </p>
@@ -243,8 +240,7 @@ const UusiAsiaEsidialog = ({
                   setSelectedKJ(null);
                   setIsSearchFieldVisible(true);
                 }}
-                startIcon={<SearchIcon />}
-              >
+                startIcon={<SearchIcon />}>
                 {intl.formatMessage(common.haeKJ)}
               </StyledButton>
               {isKJMissing && !selectedKJ ? (
@@ -285,8 +281,7 @@ const UusiAsiaEsidialog = ({
               return false;
             }}
             color="primary"
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(common.accept)}
           </Button>
         </div>
@@ -301,7 +296,9 @@ UusiAsiaEsidialog.propTypes = {
   // Function that will be called when the dialog is going to be closed / hided.
   onClose: PropTypes.func.isRequired,
   // Function that will be called when user selects a koulutuksen järjestäjä
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
+  // List of organisations
+  organisations: PropTypes.array
 };
 
 export default UusiAsiaEsidialog;

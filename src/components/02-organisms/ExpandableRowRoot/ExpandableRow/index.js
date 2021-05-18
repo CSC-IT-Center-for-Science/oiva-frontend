@@ -53,12 +53,10 @@ const ExpandableRow = props => {
   return (
     <Accordion
       defaultExpanded={props.shouldBeExpanded}
-      onChange={props.onToggle}
-    >
+      onChange={props.onToggle}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        id={`${props.id}-summary`}
-      >
+        id={`${props.id}-summary`}>
         <div className="flex-1">
           <Slot slot="title">{props.children}</Slot>
         </div>
@@ -76,6 +74,7 @@ ExpandableRow.defaultProps = {
 };
 
 ExpandableRow.propTypes = {
+  children: PropTypes.array,
   id: PropTypes.string,
   onToggle: PropTypes.func,
   /**

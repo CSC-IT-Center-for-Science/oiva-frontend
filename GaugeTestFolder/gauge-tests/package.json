@@ -1,0 +1,15 @@
+{
+  "name": "gauge-taiko-template",
+  "description": "Starter template for writing JavaScript tests for Gauge",
+  "scripts": {
+    "test": "gauge run specs/"
+  },
+  "dependencies": {
+    "chai": "^4.3.4",
+    "dotenv": "^9.0.0",
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "taiko": "^1.2.5"
+  }
+}

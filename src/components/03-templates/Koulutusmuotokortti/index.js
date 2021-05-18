@@ -11,6 +11,7 @@ import { ROLE_ESITTELIJA } from "modules/constants";
 import { useHistory } from "react-router-dom";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
+import { PropTypes } from "prop-types";
 
 export default function Koulutusmuotokortti({ koulutusmuoto }) {
   const history = useHistory();
@@ -28,8 +29,7 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
               { koulutusmuoto: koulutusmuoto.kebabCase }
             )
           );
-        }}
-      >
+        }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {koulutusmuoto.kortinOtsikko}
@@ -55,8 +55,7 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
                   }
                 )
               );
-            }}
-          >
+            }}>
             {formatMessage(common.asianhallinta)}
           </Button>
         </CardActions>
@@ -64,3 +63,7 @@ export default function Koulutusmuotokortti({ koulutusmuoto }) {
     </Card>
   );
 }
+
+Koulutusmuotokortti.propTypes = {
+  koulutusmuoto: PropTypes.object
+};

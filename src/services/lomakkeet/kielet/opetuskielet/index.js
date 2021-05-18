@@ -30,7 +30,7 @@ async function getModificationForm(locale) {
             labelStyles: {
               addition: isAdded,
               removal: isRemoved,
-              custom: Object.assign({}, !!opetuskieli.maarays ? isInLupa : {})
+              custom: Object.assign({}, opetuskieli.maarays ? isInLupa : {})
             }
           }
         }

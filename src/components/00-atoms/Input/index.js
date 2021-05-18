@@ -182,6 +182,7 @@ Input.defaultProps = {
 
 Input.propTypes = {
   ariaLabel: PropTypes.string,
+  classes: PropTypes.object,
   delay: PropTypes.number,
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,

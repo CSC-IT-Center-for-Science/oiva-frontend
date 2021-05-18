@@ -35,12 +35,11 @@ export const arrangeOpetuskieletOPH = (
   ophKielet: Kielet,
   localeUpper: LocaleUpper
 ) => {
-  const listanKarkeenAsetettavat: Kielet = reject(
+  const listanKarkeenAsetettavat = reject(
     isNil,
-    map(
-      kielikoodi => find(propEq("koodiarvo", kielikoodi), ophKielet)!,
-      kieltenLyhenteet
-    )
+    map((kielikoodi: String) => {
+      return find(propEq("koodiarvo", kielikoodi), ophKielet);
+    }, kieltenLyhenteet)
   );
   return uniq(
     concat(

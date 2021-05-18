@@ -120,8 +120,9 @@ const Multiselect = React.memo(props => {
     return [
       <div
         key={params.key}
-        className={`pl-3 pr-4 py-2 w-full flex flex-row justify-between cursor-pointer hover:bg-gray-100 ${selected &&
-          "bg-gray-200"}`}
+        className={`pl-3 pr-4 py-2 w-full flex flex-row justify-between cursor-pointer hover:bg-gray-100 ${
+          selected && "bg-gray-200"
+        }`}
         onClick={() => {
           handleSelectChange(
             null,
@@ -225,5 +226,7 @@ Multiselect.propTypes = {
   /** If disabled as boolean */
   isDisabled: PropTypes.bool
 };
+
+Multiselect.displayName = "Multiselect";
 
 export default Multiselect;

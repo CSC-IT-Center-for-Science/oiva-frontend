@@ -45,7 +45,7 @@ export async function opetusJotaLupaKoskee(
               labelStyles: {
                 addition: isAdded,
                 removal: isRemoved,
-                custom: Object.assign({}, !!maarays ? isInLupa : {})
+                custom: Object.assign({}, maarays ? isInLupa : {})
               },
               isChecked: !!maarays,
               isIndeterminate: false,

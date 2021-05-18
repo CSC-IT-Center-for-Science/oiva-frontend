@@ -22,6 +22,7 @@ import { sortArticlesByHuomioitavaKoodi } from "../../../../services/lomakkeet/u
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
 import common from "i18n/definitions/common";
+import { PropTypes } from "prop-types";
 
 const defaultProps = {
   maaraykset: []
@@ -56,12 +57,15 @@ export default function PoOpetusJotaLupaKoskeeHtml({
       });
   }, []);
 
-  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(filter(
-    maarays =>
-      pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
-      maarays.koodisto === "opetustehtava",
-    maaraykset
-  ), locale);
+  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(
+    filter(
+      maarays =>
+        pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
+        maarays.koodisto === "opetustehtava",
+      maaraykset
+    ),
+    locale
+  );
 
   const lisatietomaarays = find(
     maarays =>
@@ -109,3 +113,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({
     )
   );
 }
+
+PoOpetusJotaLupaKoskeeHtml.propTypes = {
+  maaraykset: PropTypes.array
+};

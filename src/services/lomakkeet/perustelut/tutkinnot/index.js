@@ -166,7 +166,7 @@ async function getCategoriesForPerustelut(
                         removal: isRemoved,
                         custom: Object.assign(
                           {},
-                          !!tutkinto.maarays ? isInLupa : {}
+                          tutkinto.maarays ? isInLupa : {}
                         )
                       }
                     }

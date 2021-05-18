@@ -53,6 +53,7 @@ import { resolveVSTOppilaitosNameFromLupa } from "modules/helpers";
 import vapaaSivistystyo from "../../../i18n/definitions/vapaaSivistystyo";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
+import { PropTypes } from "prop-types";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -74,6 +75,11 @@ function DefaultColumnFilter({ column, intl }) {
     </React.Fragment>
   );
 }
+
+DefaultColumnFilter.propTypes = {
+  column: PropTypes.object,
+  intl: PropTypes.object
+};
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [row => row.values[id]] });
@@ -170,8 +176,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
     <React.Fragment>
       <MaUTable
         {...getTableProps()}
-        className="border border-solid border-gray-400"
-      >
+        className="border border-solid border-gray-400">
         <caption>
           {intl.formatMessage(
             vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa,
@@ -181,16 +186,15 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
           )}
         </caption>
         <TableHead>
-          {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => {
+          {headerGroups.map((headerGroup, i) => (
+            <TableRow key={i} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, ii) => {
                 return (
-                  <TableCell {...column.getHeaderProps()}>
+                  <TableCell key={ii} {...column.getHeaderProps()}>
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
-                      })}
-                    >
+                      })}>
                       {column.render("Header")}
                       {/* Add a sort direction indicator */}
                       {column.isSorted ? (
@@ -219,10 +223,10 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => {
+              <TableRow key={i} {...row.getRowProps()}>
+                {row.cells.map((cell, ii) => {
                   return (
-                    <TableCell {...cell.getCellProps()}>
+                    <TableCell key={ii} {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </TableCell>
                   );
@@ -239,8 +243,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
       <nav
         role="navigation"
         aria-label={intl.formatMessage(common.navigationBetweenTablePages)}
-        className="flex justify-evenly items-center"
-      >
+        className="flex justify-evenly items-center">
         <div>
           <StyledButton
             onClick={() => gotoPage(0)}
@@ -250,8 +253,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             <FirstPageIcon /> {intl.formatMessage(common.ensimmainenSivu)}
           </StyledButton>
           <StyledButton
@@ -262,8 +264,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             <ArrowLeftIcon /> {intl.formatMessage(common.edellinen)}
           </StyledButton>
           <StyledButton
@@ -274,8 +275,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             {intl.formatMessage(common.seuraava)} <ArrowRightIcon />
           </StyledButton>
           <StyledButton
@@ -285,8 +285,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             )}
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(common.viimeinenSivu)} <LastPageIcon />
           </StyledButton>
         </div>
@@ -325,8 +324,7 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             inputProps={{
               name: "rows-per-page",
               id: "rows-per-page"
-            }}
-          >
+            }}>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
@@ -339,6 +337,15 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
+Table.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array,
+  intl: PropTypes.object,
+  skipReset: PropTypes.bool,
+  updateMyData: PropTypes.func,
+  luvat: PropTypes.array
+};
+
 function getTableData(vstTyypit, locale, luvat) {
   return sort(
     descend(prop("yllapitaja")),
@@ -350,8 +357,7 @@ function getTableData(vstTyypit, locale, luvat) {
       const localeUpper = toUpper(locale);
       return {
         yllapitaja: lupa.jarjestaja
-          ? lupa.jarjestaja.nimi[locale] ||
-          head(values(lupa.jarjestaja.nimi))
+          ? lupa.jarjestaja.nimi[locale] || head(values(lupa.jarjestaja.nimi))
           : "",
         oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, locale),
         oppilaitostyyppi: oppilaitostyyppiKoodistosta
@@ -368,13 +374,10 @@ function getTableData(vstTyypit, locale, luvat) {
 function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   const intl = useIntl();
 
-  const [data, setData] = useState(
-    getTableData(vstTyypit, intl.locale, luvat)
-  );
+  const [data, setData] = useState(getTableData(vstTyypit, intl.locale, luvat));
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
-  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
-    ""
-  );
+  const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] =
+    useState("");
 
   useEffect(() => {
     setData(
@@ -408,31 +411,36 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
     setVstOppilaitostyyppiFilter(selectedOption);
   };
 
+  const Cell = ({ row }) => {
+    return (
+      <Link
+        className="underline"
+        to={localizeRouteKey(
+          intl.locale,
+          AppRoute.Jarjestamislupa,
+          intl.formatMessage,
+          {
+            id: row.values.lupaUuid,
+            koulutusmuoto: koulutusmuoto.kebabCase
+          }
+        )}
+        title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
+          nimi: row.values.yllapitaja
+        })}>
+        {row.values.yllapitaja}
+      </Link>
+    );
+  };
+
+  Cell.propTypes = {
+    row: PropTypes.object
+  };
+
   const columns = [
     {
       accessor: "yllapitaja",
       Header: intl.formatMessage(common.yllapitaja),
-      Cell: ({ row }) => {
-        return (
-          <Link
-            className="underline"
-            to={localizeRouteKey(
-              intl.locale,
-              AppRoute.Jarjestamislupa,
-              intl.formatMessage,
-              {
-                id: row.values.lupaUuid,
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )}
-            title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
-              nimi: row.values.yllapitaja
-            })}
-          >
-            {row.values.yllapitaja}
-          </Link>
-        );
-      }
+      Cell
     },
     {
       accessor: "oppilaitos",
@@ -515,5 +523,11 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
     </div>
   );
 }
+
+Jarjestajaluettelo.propTypes = {
+  koulutusmuoto: PropTypes.object,
+  vstTyypit: PropTypes.array,
+  luvat: PropTypes.array
+};
 
 export default Jarjestajaluettelo;

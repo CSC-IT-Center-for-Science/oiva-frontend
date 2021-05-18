@@ -37,14 +37,14 @@ const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
           return isClickable ? onRowClick() : false;
         }
       }}
-      tabIndex={0}
-    >
+      tabIndex={0}>
       {children}
     </MaterialUITableRow>
   );
 };
 
 TableRow.propTypes = {
+  children: PropTypes.array,
   onClick: PropTypes.func,
   row: PropTypes.object,
   tableLevel: PropTypes.number

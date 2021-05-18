@@ -29,12 +29,10 @@ const OpetustaAntavatKunnat = React.memo(
     valtakunnallinenMaarays
   }) => {
     const intl = useIntl();
-    const [
-      changeObjects,
-      { setChanges }
-    ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-      anchor: "toimintaalue"
-    });
+    const [changeObjects, { setChanges }] =
+      useChangeObjectsByAnchorWithoutUnderRemoval({
+        anchor: "toimintaalue"
+      });
     const [, { createTextBoxChangeObject }] = useChangeObjects();
 
     const maakuntamaaraykset = R.filter(
@@ -57,8 +55,9 @@ const OpetustaAntavatKunnat = React.memo(
           changeObjects
         );
 
-        const amountOfChanges = R.flatten(R.values(changes.changesByProvince))
-          .length;
+        const amountOfChanges = R.flatten(
+          R.values(changes.changesByProvince)
+        ).length;
         const amountOfQuickFilterChanges = R.flatten(
           R.values(changes.quickFilterChanges)
         ).length;

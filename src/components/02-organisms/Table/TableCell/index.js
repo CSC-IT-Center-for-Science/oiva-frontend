@@ -56,8 +56,7 @@ const TableCell = ({
         <TableSortLabel
           active={columnIndex === orderOfBodyRows.columnIndex}
           direction={orderOfBodyRows.order}
-          onClick={sort}
-        >
+          onClick={sort}>
           {properties.text}
           {columnIndex === orderOfBodyRows.columnIndex ? (
             <span className="visuallyHidden">
@@ -82,8 +81,7 @@ const TableCell = ({
             <SimpleMenu
               actions={menuActions}
               id={properties.menu.id}
-              isExpanded={isExpanded}
-            ></SimpleMenu>
+              isExpanded={isExpanded}></SimpleMenu>
           )}
         </span>
       )}

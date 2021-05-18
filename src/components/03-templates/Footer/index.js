@@ -15,8 +15,7 @@ const Footer = () => {
       <p className="lg:mr-10">
         <Link
           to={localizeRouteKey(locale, AppRoute.Yhteydenotto, formatMessage)}
-          className="underline text-green-500"
-        >
+          className="underline text-green-500">
           {formatMessage(common.yhteydenotto)}
         </Link>
       </p>
@@ -27,8 +26,7 @@ const Footer = () => {
             AppRoute.Saavutettavuusseloste,
             formatMessage
           )}
-          className="underline text-green-500"
-        >
+          className="underline text-green-500">
           {formatMessage(common.saavutettavuusseloste)}
         </Link>
       </p>
@@ -51,8 +49,7 @@ const Footer = () => {
               {formatMessage(common.phoneNumber)} |{" "}
               <a
                 href={formatMessage(common.okmLinkUrl)}
-                className="text-green-500"
-              >
+                className="text-green-500">
                 www.minedu.fi
               </a>
             </p>
@@ -64,8 +61,7 @@ const Footer = () => {
               {formatMessage(common.phoneNumber)} |{" "}
               <a
                 href={formatMessage(common.okmLinkUrl)}
-                className="text-green-500 underline"
-              >
+                className="text-green-500 underline">
                 {formatMessage(common.okmLinkText)}
               </a>
             </p>

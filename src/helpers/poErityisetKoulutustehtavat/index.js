@@ -28,34 +28,36 @@ import {
   createBECheckboxChangeObjectsForDynamicTextBoxes
 } from "../../services/lomakkeet/dynamic";
 
-export const initializePOErityinenKoulutustehtava = erityinenKoulutustehtava => {
-  return omit(["koodiArvo"], {
-    ...erityinenKoulutustehtava,
-    koodiarvo: erityinenKoulutustehtava.koodiArvo,
-    metadata: mapObjIndexed(
-      head,
-      groupBy(prop("kieli"), erityinenKoulutustehtava.metadata)
-    )
-  });
-};
+export const initializePOErityinenKoulutustehtava =
+  erityinenKoulutustehtava => {
+    return omit(["koodiArvo"], {
+      ...erityinenKoulutustehtava,
+      koodiarvo: erityinenKoulutustehtava.koodiArvo,
+      metadata: mapObjIndexed(
+        head,
+        groupBy(prop("kieli"), erityinenKoulutustehtava.metadata)
+      )
+    });
+  };
 
-export const initializePOErityisetKoulutustehtavat = erityisetKoulutustehtavat => {
-  return sort(
-    (a, b) => {
-      const aInt = parseInt(a.koodiarvo, 10);
-      const bInt = parseInt(b.koodiarvo, 10);
-      if (aInt < bInt) {
-        return -1;
-      } else if (aInt > bInt) {
-        return 1;
-      }
-      return 0;
-    },
-    map(erityinenKoulutustehtava => {
-      return initializePOErityinenKoulutustehtava(erityinenKoulutustehtava);
-    }, erityisetKoulutustehtavat)
-  );
-};
+export const initializePOErityisetKoulutustehtavat =
+  erityisetKoulutustehtavat => {
+    return sort(
+      (a, b) => {
+        const aInt = parseInt(a.koodiarvo, 10);
+        const bInt = parseInt(b.koodiarvo, 10);
+        if (aInt < bInt) {
+          return -1;
+        } else if (aInt > bInt) {
+          return 1;
+        }
+        return 0;
+      },
+      map(erityinenKoulutustehtava => {
+        return initializePOErityinenKoulutustehtava(erityinenKoulutustehtava);
+      }, erityisetKoulutustehtavat)
+    );
+  };
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
@@ -72,15 +74,17 @@ export const defineBackendChangeObjects = async (
     lupaMaaraykset
   );
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
-  const erityisetKoulutustehtavat = await getPOErityisetKoulutustehtavatFromStorage();
+  const erityisetKoulutustehtavat =
+    await getPOErityisetKoulutustehtavatFromStorage();
 
-  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-    maaraykset,
-    rajoitteetByRajoiteId,
-    kohteet,
-    maaraystyypit,
-    kohde
-  );
+  const maarayksiaVastenLuodutRajoitteet =
+    createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+      maaraykset,
+      rajoitteetByRajoiteId,
+      kohteet,
+      maaraystyypit,
+      kohde
+    );
 
   const muutokset = map(koulutustehtava => {
     // Checkbox-kenttien muutokset

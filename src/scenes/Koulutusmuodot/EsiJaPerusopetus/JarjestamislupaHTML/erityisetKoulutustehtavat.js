@@ -20,6 +20,7 @@ import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
+import { PropTypes } from "prop-types";
 
 export default function PoOpetuksenErityisetKoulutustehtavatHtml({
   maaraykset
@@ -104,3 +105,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
     </div>
   ) : null;
 }
+
+PoOpetuksenErityisetKoulutustehtavatHtml.propTypes = {
+  maaraykset: PropTypes.array
+};

@@ -169,8 +169,7 @@ const Jarjestaja = React.memo(
             textColor="primary"
             onChange={(e, val) => {
               history.push(val);
-            }}
-          >
+            }}>
             {tabNavRoutes
               ? R.addIndex(R.map)((route, index) => {
                   return (
@@ -274,14 +273,18 @@ const Jarjestaja = React.memo(
 );
 
 Jarjestaja.propTypes = {
+  history: PropTypes.object,
+  JarjestamislupaJSX: PropTypes.func,
+  kohteet: PropTypes.array,
   koulutusmuoto: PropTypes.object,
+  location: PropTypes.object,
   lupakohteet: PropTypes.object,
   lupa: PropTypes.object,
+  match: PropTypes.object,
   organisation: PropTypes.object,
   path: PropTypes.string,
   url: PropTypes.string,
   user: PropTypes.object,
-  kielet: PropTypes.array,
   tulevatLuvat: PropTypes.array,
   voimassaOlevaLupa: PropTypes.object
 };

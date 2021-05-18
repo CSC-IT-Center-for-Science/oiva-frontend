@@ -12,7 +12,8 @@ export async function opetuksenJarjestamismuoto(
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
-  const opetuksenJarjestamismuodot = await getOpetuksenJarjestamismuodotFromStorage();
+  const opetuksenJarjestamismuodot =
+    await getOpetuksenJarjestamismuodotFromStorage();
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -77,7 +78,7 @@ export async function opetuksenJarjestamismuoto(
                 isReadOnly: _isReadOnly,
                 labelStyles: {
                   addition: isAdded,
-                  custom: Object.assign({}, !!maarays ? isInLupa : {}),
+                  custom: Object.assign({}, maarays ? isInLupa : {}),
                   removal: isRemoved
                 },
                 title: getLocalizedProperty(muoto.metadata, locale, "nimi")

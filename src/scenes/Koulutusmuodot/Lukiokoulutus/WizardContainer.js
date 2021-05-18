@@ -20,6 +20,7 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
+import { PropTypes } from "prop-types";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -39,10 +40,8 @@ const WizardContainer = ({
   const { id, language, uuid } = useParams();
   const [isSaving, setIsSaving] = useState(false);
   const [muutospyynnonTila, setMuutospyynnonTila] = useState();
-  const [
-    { isPreviewModeOn },
-    { initializeChanges, setPreviewMode }
-  ] = useChangeObjects();
+  const [{ isPreviewModeOn }, { initializeChanges, setPreviewMode }] =
+    useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -57,16 +56,14 @@ const WizardContainer = ({
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
-  const [
-    oikeusSisaoppilaitosmuotoiseenKoulutukseenCo
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
-  });
-  const [
-    erityisetKoulutustehtavatCO
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "erityisetKoulutustehtavat"
-  });
+  const [oikeusSisaoppilaitosmuotoiseenKoulutukseenCo] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "oikeusSisaoppilaitosmuotoiseenKoulutukseen"
+    });
+  const [erityisetKoulutustehtavatCO] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "erityisetKoulutustehtavat"
+    });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
   });
@@ -76,11 +73,10 @@ const WizardContainer = ({
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
   });
-  const [
-    valtakunnallisetKehittamistehtavatCO
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "valtakunnallisetKehittamistehtavat"
-  });
+  const [valtakunnallisetKehittamistehtavatCO] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "valtakunnallisetKehittamistehtavat"
+    });
   const [rajoitepoistotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitepoistot"
   });
@@ -183,7 +179,8 @@ const WizardContainer = ({
           {
             erityisetKoulutustehtavat: erityisetKoulutustehtavatCO,
             muutEhdot: muutEhdotCo,
-            oikeusSisaoppilaitosmuotoiseenKoulutukseen: oikeusSisaoppilaitosmuotoiseenKoulutukseenCo,
+            oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+              oikeusSisaoppilaitosmuotoiseenKoulutukseenCo,
             opetuskielet: opetuskieletCO,
             opetustehtavat: opetustehtavatCo,
             opiskelijamaarat: opiskelijamaaratCo,
@@ -191,7 +188,8 @@ const WizardContainer = ({
             rajoitteet: rajoitteetCO,
             rajoitepoistot: rajoitepoistotCO,
             toimintaalue: toimintaalueCO,
-            valtakunnallisetKehittamistehtavat: valtakunnallisetKehittamistehtavatCO
+            valtakunnallisetKehittamistehtavat:
+              valtakunnallisetKehittamistehtavatCO
           },
           uuid,
           kohteet,
@@ -220,9 +218,8 @@ const WizardContainer = ({
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
              * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
              **/
-            const changeObjectsFromBackend = getSavedChangeObjects(
-              muutospyynto
-            );
+            const changeObjectsFromBackend =
+              getSavedChangeObjects(muutospyynto);
             initializeChanges(changeObjectsFromBackend);
           }
         }
@@ -284,6 +281,15 @@ const WizardContainer = ({
       urlOnClose={urlOnClose}
     />
   );
+};
+
+WizardContainer.propTypes = {
+  kohteet: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  maaraystyypit: PropTypes.array,
+  organisaatio: PropTypes.object,
+  role: PropTypes.string,
+  viimeisinLupa: PropTypes.object
 };
 
 export default WizardContainer;

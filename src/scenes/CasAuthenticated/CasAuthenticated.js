@@ -9,6 +9,7 @@ import { Typography } from "@material-ui/core";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
+import { PropTypes } from "prop-types";
 
 const Successful = styled.div`
   padding-left: 20px;
@@ -52,6 +53,10 @@ const CasAuthenticated = ({ organisation = {} }) => {
       </Typography>
     </Successful>
   );
+};
+
+CasAuthenticated.propTypes = {
+  organisation: PropTypes.object
 };
 
 export default CasAuthenticated;

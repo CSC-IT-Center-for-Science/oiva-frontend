@@ -89,8 +89,7 @@ const Rajoitedialogi = ({
           width: "80%",
           maxWidth: "88rem"
         }
-      }}
-    >
+      }}>
       <DialogTitle onClose={actions.closeRestrictionDialog}>
         Lisää rajoite luvalle
       </DialogTitle>
@@ -119,8 +118,7 @@ const Rajoitedialogi = ({
             isSavingState={false}
             mode={"modification"}
             path={constants.formLocation}
-            showCategoryTitles={true}
-          ></Lomake>
+            showCategoryTitles={true}></Lomake>
         </div>
       </DialogContent>
       <DialogActions>
@@ -129,8 +127,7 @@ const Rajoitedialogi = ({
             <Button
               onClick={() => revertChangesAndCloseDialog()}
               color="primary"
-              variant="outlined"
-            >
+              variant="outlined">
               {intl.formatMessage(common.cancel)}
             </Button>
           </div>
@@ -139,8 +136,7 @@ const Rajoitedialogi = ({
               acceptChangesAndCloseDialog(rajoitelomakeChangeObjs);
             }}
             color="primary"
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(common.accept)}
           </Button>
         </div>
@@ -152,7 +148,10 @@ const Rajoitedialogi = ({
 Rajoitedialogi.propTypes = {
   kohdevaihtoehdot: PropTypes.array,
   koulutustyyppi: PropTypes.string,
-  parentSectionId: PropTypes.string
+  osioidenData: PropTypes.object,
+  parentSectionId: PropTypes.string,
+  restrictionId: PropTypes.string,
+  sectionId: PropTypes.string
 };
 
 export default Rajoitedialogi;

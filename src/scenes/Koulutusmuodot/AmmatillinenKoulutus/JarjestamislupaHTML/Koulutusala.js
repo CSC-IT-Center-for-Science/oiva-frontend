@@ -24,6 +24,13 @@ const SubAla = props => {
   );
 };
 
+SubAla.propTypes = {
+  lupaAlkuPvm: PropTypes.string,
+  nimi: PropTypes.string,
+  koulutukset: PropTypes.array,
+  renderCheckbox: PropTypes.bool
+};
+
 const Koulutusala = ({
   koodi,
   koulutusalat,
@@ -51,7 +58,11 @@ const Koulutusala = ({
 };
 
 Koulutusala.propTypes = {
-  koulutusalat: PropTypes.object
+  koodi: PropTypes.string,
+  koulutusalat: PropTypes.object,
+  lupaAlkuPvm: PropTypes.string,
+  nimi: PropTypes.string,
+  renderCheckbox: PropTypes.bool
 };
 
 export default Koulutusala;

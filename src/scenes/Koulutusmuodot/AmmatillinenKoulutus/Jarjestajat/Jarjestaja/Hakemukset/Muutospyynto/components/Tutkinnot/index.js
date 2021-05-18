@@ -61,8 +61,9 @@ const Tutkinnot = ({
               mode={mode}
               sectionId={`${sectionId}_${koulutusala.koodiarvo}`}
               title={title}
-              tutkinnot={tutkinnotByKoulutusala[koulutusala.koodiarvo]}
-            ></Koulutusala>
+              tutkinnot={
+                tutkinnotByKoulutusala[koulutusala.koodiarvo]
+              }></Koulutusala>
           );
         }
         return null;
@@ -72,8 +73,11 @@ const Tutkinnot = ({
 };
 
 Tutkinnot.propTypes = {
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
   koulutusalat: PropTypes.array,
-  koulutustyypit: PropTypes.array
+  koulutustyypit: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default Tutkinnot;

@@ -157,7 +157,7 @@ const getReasoningForm = async (
         const isAdded = !isSelectedByDefault;
         const isRemoved =
           isSelectedByDefault &&
-          !!!find(
+          !find(
             propEq("value", language.value),
             changeObj.properties.value || []
           );

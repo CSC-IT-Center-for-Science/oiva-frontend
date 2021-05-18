@@ -42,7 +42,6 @@ export default function EsiJaPerusopetus() {
       koulutusmuoto={koulutusmuoto}
       kuvausteksti={koulutusmuoto.kuvausteksti}
       paasivunOtsikko={koulutusmuoto.paasivunOtsikko}
-      WizardContainer={WizardContainer}
-    ></KoulutusmuodonEtusivu>
+      WizardContainer={WizardContainer}></KoulutusmuodonEtusivu>
   );
 }

@@ -20,6 +20,7 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
+import { PropTypes } from "prop-types";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -39,10 +40,8 @@ const WizardContainer = ({
   const { id, uuid } = useParams();
   const [isSaving, setIsSaving] = useState(false);
   const [muutospyynnonTila, setMuutospyynnonTila] = useState();
-  const [
-    { isPreviewModeOn },
-    { initializeChanges, setPreviewMode }
-  ] = useChangeObjects();
+  const [{ isPreviewModeOn }, { initializeChanges, setPreviewMode }] =
+    useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -57,16 +56,14 @@ const WizardContainer = ({
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
-  const [
-    opetuksenJarjestamismuodotCo
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "opetuksenJarjestamismuodot"
-  });
-  const [
-    erityisetKoulutustehtavatCO
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "erityisetKoulutustehtavat"
-  });
+  const [opetuksenJarjestamismuodotCo] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opetuksenJarjestamismuodot"
+    });
+  const [erityisetKoulutustehtavatCO] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "erityisetKoulutustehtavat"
+    });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
   });
@@ -213,9 +210,8 @@ const WizardContainer = ({
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
              * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
              **/
-            const changeObjectsFromBackend = getSavedChangeObjects(
-              muutospyynto
-            );
+            const changeObjectsFromBackend =
+              getSavedChangeObjects(muutospyynto);
             initializeChanges(changeObjectsFromBackend);
           }
         }
@@ -276,6 +272,15 @@ const WizardContainer = ({
       urlOnClose={urlOnClose}
     />
   );
+};
+
+WizardContainer.propTypes = {
+  kohteet: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  maaraystyypit: PropTypes.array,
+  organisaatio: PropTypes.object,
+  role: PropTypes.string,
+  viimeisinLupa: PropTypes.object
 };
 
 export default WizardContainer;

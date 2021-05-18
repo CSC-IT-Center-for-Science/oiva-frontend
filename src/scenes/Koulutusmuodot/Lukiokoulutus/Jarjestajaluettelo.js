@@ -40,7 +40,8 @@ import { styled } from "@material-ui/styles";
 import { spacing } from "@material-ui/system";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const";
-import languages from "i18n/definitions/languages"
+import languages from "i18n/definitions/languages";
+import { PropTypes } from "prop-types";
 
 const StyledButton = styled(Button)(spacing);
 
@@ -62,6 +63,11 @@ function DefaultColumnFilter({ column, intl }) {
     </React.Fragment>
   );
 }
+
+DefaultColumnFilter.propTypes = {
+  column: PropTypes.object,
+  intl: PropTypes.object
+};
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [row => row.values[id]] });
@@ -156,24 +162,22 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
     <React.Fragment>
       <MaUTable
         {...getTableProps()}
-        className="border border-solid border-gray-400"
-      >
+        className="border border-solid border-gray-400">
         <caption>
           {intl.formatMessage(common.voimassaOlevatJarjestamisluvat, {
             amount: `${rows.length} / ${luvat.length}`
           })}
         </caption>
         <TableHead>
-          {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => {
+          {headerGroups.map((headerGroup, i) => (
+            <TableRow key={i} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, ii) => {
                 return (
-                  <TableCell {...column.getHeaderProps()}>
+                  <TableCell key={ii} {...column.getHeaderProps()}>
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
-                      })}
-                    >
+                      })}>
                       {column.render("Header")}
                       {/* Add a sort direction indicator */}
                       {column.isSorted ? (
@@ -202,10 +206,10 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map(cell => {
+              <TableRow key={i} {...row.getRowProps()}>
+                {row.cells.map((cell, ii) => {
                   return (
-                    <TableCell {...cell.getCellProps()}>
+                    <TableCell key={ii} {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </TableCell>
                   );
@@ -222,8 +226,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
       <nav
         role="navigation"
         aria-label={intl.formatMessage(common.navigationBetweenTablePages)}
-        className="flex justify-evenly items-center"
-      >
+        className="flex justify-evenly items-center">
         <div>
           <StyledButton
             onClick={() => gotoPage(0)}
@@ -233,8 +236,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             <FirstPageIcon /> {intl.formatMessage(common.ensimmainenSivu)}
           </StyledButton>
           <StyledButton
@@ -245,8 +247,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             <ArrowLeftIcon /> {intl.formatMessage(common.edellinen)}
           </StyledButton>
           <StyledButton
@@ -257,8 +258,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}
-          >
+            mr={2}>
             {intl.formatMessage(common.seuraava)} <ArrowRightIcon />
           </StyledButton>
           <StyledButton
@@ -268,8 +268,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
             )}
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
-            variant="contained"
-          >
+            variant="contained">
             {intl.formatMessage(common.viimeinenSivu)} <LastPageIcon />
           </StyledButton>
         </div>
@@ -308,8 +307,7 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
             inputProps={{
               name: "rows-per-page",
               id: "rows-per-page"
-            }}
-          >
+            }}>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
@@ -322,6 +320,14 @@ function Table({ columns, data, intl, luvat, skipReset, updateMyData }) {
   );
 }
 
+Table.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array,
+  intl: PropTypes.object,
+  luvat: PropTypes.array,
+  skipReset: PropTypes.bool,
+  updateMyData: PropTypes.func
+};
 function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
   const intl = useIntl();
 
@@ -345,31 +351,39 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
     }, luvat)
   );
 
+  const Cell = ({ row }) => {
+    return (
+      <Link
+        className="underline"
+        to={localizeRouteKey(
+          intl.locale,
+          AppRoute.Jarjestamislupa,
+          intl.formatMessage,
+          {
+            id: row.original.lupaUuid,
+            koulutusmuoto: koulutusmuoto.kebabCase
+          }
+        )}
+        title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
+          nimi: row.values.nimi
+        })}>
+        {row.values.nimi}{" "}
+        {row.original.kieli && row.original.kieli === "sv"
+          ? `(${intl.formatMessage(languages.ruotsinkielinen)})`
+          : null}
+      </Link>
+    );
+  };
+
+  Cell.propTypes = {
+    row: PropTypes.object
+  };
+
   const columns = [
     {
       accessor: "nimi",
       Header: intl.formatMessage(common.jarjestaja),
-      Cell: ({ row }) => {
-        return (
-          <Link
-            className="underline"
-            to={localizeRouteKey(
-              intl.locale,
-              AppRoute.Jarjestamislupa,
-              intl.formatMessage,
-              {
-                id: row.original.lupaUuid,
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )}
-            title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
-              nimi: row.values.nimi
-            })}>
-            {row.values.nimi}{" "}
-            {row.original.kieli && row.original.kieli === "sv" ? `(${intl.formatMessage(languages.ruotsinkielinen)})` : null}
-          </Link>
-        );
-      }
+      Cell
     },
     {
       accessor: "maakunta",
@@ -428,5 +442,10 @@ function Jarjestajaluettelo({ koulutusmuoto, luvat }) {
     </div>
   );
 }
+
+Jarjestajaluettelo.propTypes = {
+  koulutusmuoto: PropTypes.object,
+  luvat: PropTypes.array
+};
 
 export default Jarjestajaluettelo;

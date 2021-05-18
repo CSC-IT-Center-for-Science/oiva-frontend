@@ -103,8 +103,7 @@ const StepIcons = React.memo(({ active, completed, error, icon }) => {
         [classes.active]: active,
         [classes.error]: error,
         [classes.completed]: completed
-      })}
-    >
+      })}>
       {error ? (
         <Incomplete style={styles4} className={classes.error} />
       ) : completed ? (
@@ -119,6 +118,15 @@ const StepIcons = React.memo(({ active, completed, error, icon }) => {
   );
 });
 
+StepIcons.displayName = "StepIcons";
+
+StepIcons.propTypes = {
+  active: PropTypes.bool,
+  completed: PropTypes.bool,
+  error: PropTypes.bool,
+  icon: PropTypes.number
+};
+
 const StepperNavigation = React.memo(
   ({ activeStep, handleStepChange, stepProps }) => {
     const classes = useStyles();
@@ -132,8 +140,7 @@ const StepperNavigation = React.memo(
             backgroundColor: "transparent",
             paddingLeft: 0,
             paddingRight: 0
-          }}
-        >
+          }}>
           {stepProps.map((item, index) => {
             const labelProps = {};
 
@@ -149,13 +156,11 @@ const StepperNavigation = React.memo(
                 <StepButton
                   onClick={() => handleStepChange(index + 1)}
                   disabled={index === activeStep}
-                  completed={item.isCompleted}
-                >
+                  completed={item.isCompleted}>
                   <StepLabel
                     style={{ marginBottom: "0.1em" }}
                     StepIconComponent={StepIcons}
-                    {...labelProps}
-                  >
+                    {...labelProps}>
                     {item.title}
                   </StepLabel>
                 </StepButton>
@@ -173,5 +178,7 @@ StepperNavigation.propTypes = {
   activeStep: PropTypes.number,
   handleStepChange: PropTypes.func
 };
+
+StepperNavigation.displayName = "StepperNavigation";
 
 export default StepperNavigation;

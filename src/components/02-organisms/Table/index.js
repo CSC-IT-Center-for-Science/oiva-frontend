@@ -159,8 +159,7 @@ const Table = ({
               key={`row-${iii}`}
               row={row}
               onClick={onRowClick}
-              tableLevel={level}
-            >
+              tableLevel={level}>
               {addIndex(map)((cell, iiii) => {
                 return (
                   <TableCell

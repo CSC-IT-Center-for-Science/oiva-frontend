@@ -19,6 +19,7 @@ import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
 import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "../../../../i18n/definitions/rajoitteet";
+import { PropTypes } from "prop-types";
 
 export default function OpetuksenMuutEhdotHtml({ maaraykset }) {
   const intl = useIntl();
@@ -96,3 +97,7 @@ export default function OpetuksenMuutEhdotHtml({ maaraykset }) {
     </div>
   ) : null;
 }
+
+OpetuksenMuutEhdotHtml.propTypes = {
+  maaraykset: PropTypes.array
+};

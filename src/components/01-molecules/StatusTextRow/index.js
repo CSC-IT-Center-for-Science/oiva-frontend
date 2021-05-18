@@ -84,4 +84,6 @@ StatusTextRow.propTypes = {
   title: PropTypes.string
 };
 
+StatusTextRow.displayName = "StatusTextRow";
+
 export default StatusTextRow;

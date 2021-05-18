@@ -3,7 +3,7 @@ import localforage from "localforage";
 
 export default async function getOppilaitokset(
   isReadOnly,
-  osionData = [],
+  osionData,
   locale,
   isMulti,
   inputId

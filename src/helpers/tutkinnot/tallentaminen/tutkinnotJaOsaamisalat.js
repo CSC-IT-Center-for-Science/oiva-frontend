@@ -121,7 +121,7 @@ export function createBEOofTutkinnotJaOsaamisalat(
       }
     : null;
 
-  if (!!tutkintomuutos) {
+  if (tutkintomuutos) {
     // GenratedId on tarpeellinen vain lisättäessä tutkintoa lupaan.
     if (tutkintomuutos.tila === "LISAYS") {
       tutkintomuutos.generatedId = tutkintoChangeObj.properties.isChecked

@@ -36,8 +36,7 @@ const ContentFi = (
         href="https://minedu.fi/yhteystiedot"
         className="underline"
         target="_blank"
-        rel="noopener noreferrer"
-      >
+        rel="noopener noreferrer">
         Opetus- ja kulttuuriministeriön yhteystiedot
       </a>
     </p>
@@ -80,8 +79,7 @@ const ContentSv = (
         href="https://minedu.fi/sv/kontaktinformation"
         className="underline"
         target="_blank"
-        rel="noopener noreferrer"
-      >
+        rel="noopener noreferrer">
         Undervisnings- och kulturministeriets kontaktuppgifter
       </a>
     </p>

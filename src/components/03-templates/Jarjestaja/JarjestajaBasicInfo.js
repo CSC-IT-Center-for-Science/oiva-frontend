@@ -2,11 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import common from "i18n/definitions/common";
 import { useIntl } from "react-intl";
-import {
-  join,
-  replace,
-  split
-} from "ramda";
+import { join, replace, split } from "ramda";
+import { PropTypes } from "prop-types";
 
 const LargeParagraph = styled.p`
   font-size: 20px;
@@ -26,13 +23,17 @@ const JarjestajaBasicInfo = ({ jarjestaja }) => {
 
   return (
     <React.Fragment>
-      {jarjestaja.ytunnus &&
-      <LargeParagraph aria-label={ariaLabel} role="text">
-        {ytunnusTitle} {jarjestaja.ytunnus}
-      </LargeParagraph>
-      }
+      {jarjestaja.ytunnus && (
+        <LargeParagraph aria-label={ariaLabel} role="text">
+          {ytunnusTitle} {jarjestaja.ytunnus}
+        </LargeParagraph>
+      )}
     </React.Fragment>
   );
+};
+
+JarjestajaBasicInfo.propTypes = {
+  jarjestaja: PropTypes.object
 };
 
 export default JarjestajaBasicInfo;

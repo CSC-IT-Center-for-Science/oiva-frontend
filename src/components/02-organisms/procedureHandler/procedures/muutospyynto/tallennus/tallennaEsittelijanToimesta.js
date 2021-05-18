@@ -1,7 +1,7 @@
 import { postData } from "../../../fetch";
 
 // muutospyynto.tallennus.tallennaEsittelijanToimesta
-export const tallennaEsittelijanToimesta = formatMessage => ({
+export const tallennaEsittelijanToimesta = () => ({
   label: "Muutospyynnön tallennus (by Esittelijä)",
   input: ["formData", "inform"],
   run: async ({ formData, inform }) => {

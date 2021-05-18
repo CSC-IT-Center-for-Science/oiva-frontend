@@ -92,8 +92,7 @@ export const muutokset = {
                 metadata: {
                   SV: {
                     kieli: "SV",
-                    nimi:
-                      "Utbildning som handleder för arbete och ett självständigt liv (TELMA)",
+                    nimi: "Utbildning som handleder för arbete och ett självständigt liv (TELMA)",
                     kuvaus: "",
                     kasite: "",
                     huomioitavaKoodi: "",
@@ -102,8 +101,7 @@ export const muutokset = {
                   },
                   FI: {
                     kieli: "FI",
-                    nimi:
-                      "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+                    nimi: "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
                     kuvaus: "",
                     kasite: "",
                     huomioitavaKoodi: "",
@@ -127,8 +125,7 @@ export const muutokset = {
                 metadata: {
                   FI: {
                     kieli: "FI",
-                    nimi:
-                      "Ammatilliseen koulutukseen valmentava koulutus (VALMA)",
+                    nimi: "Ammatilliseen koulutukseen valmentava koulutus (VALMA)",
                     kuvaus: "",
                     kasite: "",
                     huomioitavaKoodi: "",
@@ -311,8 +308,7 @@ export const muutokset = {
                 metadata: {
                   SV: {
                     kieli: "SV",
-                    nimi:
-                      "Förarutbildning, utbildning för grundläggande yrkeskompetens",
+                    nimi: "Förarutbildning, utbildning för grundläggande yrkeskompetens",
                     kuvaus:
                       "Utbildningsanordnaren har med stöd av 23 § 2 mom. i lagen om yrkesutbildning (531/2017) rätt att vara ett utbildningscentrum som ger utbildning för grundläggande yrkeskompetens för lastbils- och bussförare. Utbildningsanordnaren får ge även fortbildning, om anordnaren för fortbildningen har ett giltigt utbildningsprogram som godkänts av Transport- och kommunikationsverket (Traficom).",
                     kasite: "",
@@ -322,8 +318,7 @@ export const muutokset = {
                   },
                   FI: {
                     kieli: "FI",
-                    nimi:
-                      "Kuljettajakoulutus, perustason ammattipätevyyskoulutus ja jatkokoulutus",
+                    nimi: "Kuljettajakoulutus, perustason ammattipätevyyskoulutus ja jatkokoulutus",
                     kuvaus:
                       "Koulutuksen järjestäjällä on oikeus ammatillisesta koulutuksesta annetun lain (531/2017) 23 §:n 2 momentin nojalla toimia kuorma- ja linja-auton kuljettajan perustason ammattipätevyyskoulutusta antavana koulutuskeskuksena. Koulutuksen järjestäjä saa antaa myös jatkokoulutusta, jos koulutuksen järjestäjällä on voimassa oleva Liikenne- ja viestintäviraston (Traficom) hyväksymä jatkokoulutuksessa käytettävä koulutusohjelma.",
                     kasite: "",

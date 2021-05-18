@@ -45,13 +45,15 @@ const ValmentavatKoulutukset = ({
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.preparatoryTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 ValmentavatKoulutukset.propTypes = {
-  koulutukset: PropTypes.object
+  isReadOnly: PropTypes.bool,
+  koulutukset: PropTypes.object,
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default ValmentavatKoulutukset;

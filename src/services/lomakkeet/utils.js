@@ -2,12 +2,7 @@ import * as R from "ramda";
 import "./i18n-config";
 import { __ } from "i18n-for-browser";
 import { removeAnchorPart } from "../../utils/common";
-import {
-  groupBy,
-  head,
-  mapObjIndexed,
-  prop
-} from "ramda";
+import { groupBy, head, mapObjIndexed, prop } from "ramda";
 
 export function getMessages(key) {
   const messages = {
@@ -314,7 +309,7 @@ const checkTerm = (term, lomake, changeObjects) => {
 export const ifOne = R.includes(true);
 export const ifAll = R.all(R.equals(true));
 export const ifAllTerms = R.compose(ifAll, checkTerms);
-export const ifOneTerm = async function(terms, lomake, changeObjects) {
+export const ifOneTerm = async function (terms, lomake, changeObjects) {
   const validationResult = await checkTerms(terms, lomake, changeObjects);
   return validationResult;
 };
@@ -326,20 +321,16 @@ export const getLocalizedProperty = (metadata, locale, propertyName) => {
    * Convert it to object first.
    **/
   if (Array.isArray(metadata)) {
-    metadata = mapObjIndexed(
-      head,
-      groupBy(prop("kieli"), metadata)
-    );
+    metadata = mapObjIndexed(head, groupBy(prop("kieli"), metadata));
   }
   const localeUpper = R.toUpper(locale);
   if (R.path([localeUpper, propertyName], metadata)) {
     return R.path([localeUpper, propertyName], metadata);
-  }
-  /** If localization is not found, try to return localization in finnish **/
-  else {
+  } else {
+    /** If localization is not found, try to return localization in finnish **/
     if (R.path(["FI", propertyName], metadata)) {
       return R.path(["FI", propertyName], metadata);
     }
     return "";
   }
-}
+};
