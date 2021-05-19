@@ -112,13 +112,12 @@ const TextBox = ({
   isValid,
   label,
   onChanges,
-  onFocus,
   placeholder,
   requiredMessage,
   rows,
   rowsMax,
   showValidationErrors,
-  shouldHaveFocus,
+  shouldHaveFocusAt,
   title,
   tooltip,
   value
@@ -174,17 +173,17 @@ const TextBox = ({
         fullAnchor
       },
       {
-        deleteElement: true
+        isDeleted: true,
+        dateOfRemoval: new Date().getTime()
       }
     );
   }, [forChangeObject, fullAnchor, onChanges]);
 
   useEffect(() => {
-    if (shouldHaveFocus) {
+    if (shouldHaveFocusAt) {
       textBoxRef.current.focus();
-      onFocus();
     }
-  }, [onFocus, shouldHaveFocus]);
+  }, [shouldHaveFocusAt]);
 
   return (
     <React.Fragment>
@@ -294,9 +293,6 @@ const TextBox = ({
                   ariaLabel={"Remove text area"}
                   icon={"ClearIcon"}
                   color={"default"}
-                  iconStyles={{
-                    fontSize: 20
-                  }}
                   variant={"text"}
                   text={""}
                   onClick={deleteTextBox}
@@ -346,6 +342,7 @@ TextBox.propTypes = {
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
+  isDeleted: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isErroneous: PropTypes.bool,
   isHidden: PropTypes.bool,
@@ -361,7 +358,7 @@ TextBox.propTypes = {
   requiredMessage: PropTypes.string,
   rows: PropTypes.number,
   rowsMax: PropTypes.number,
-  shouldHaveFocus: PropTypes.bool,
+  shouldHaveFocusAt: PropTypes.number,
   showValidationErrors: PropTypes.bool,
   title: PropTypes.string,
   tooltip: PropTypes.object,

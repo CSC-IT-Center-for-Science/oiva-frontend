@@ -166,10 +166,11 @@ const CategoryFilter = ({
       />
     );
   } else {
-    const isEsiJaPerusopetus = koulutustyyppi === "esiJaPerusopetus";
-
     /** Esi- ja perusopetuksen layout */
-    if (isEsiJaPerusopetus) {
+    if (
+      koulutustyyppi === "esiJaPerusopetus" ||
+      koulutustyyppi === "lukiokoulutus"
+    ) {
       return (
         <React.Fragment>
           {!nothingInLupa && (
@@ -192,7 +193,8 @@ const CategoryFilter = ({
               <SimpleButton
                 variant="outlined"
                 onClick={() => toggleEditView(true)}
-                text={localizations.editButtonText}></SimpleButton>
+                text={localizations.editButtonText}
+              ></SimpleButton>
             </div>
           )}
         </React.Fragment>
@@ -219,7 +221,8 @@ const CategoryFilter = ({
               <SimpleButton
                 variant="outlined"
                 onClick={() => toggleEditView(true)}
-                text={localizations.editButtonText}></SimpleButton>
+                text={localizations.editButtonText}
+              ></SimpleButton>
             </div>
           )}
         </React.Fragment>

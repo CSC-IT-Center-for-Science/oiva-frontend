@@ -13,14 +13,14 @@ import {
   pathEq,
   prop,
   propEq,
-  endsWith
+  hasPath
 } from "ramda";
 import { isAdded, isRemoved, isInLupa } from "css/label";
 import kuntaProvinceMapping from "utils/kuntaProvinceMapping";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getLocalizedProperty } from "../utils";
-import { getAnchorPart } from "../../../utils/common";
+import { createDynamicTextFields } from "../dynamic";
 
 const labelStyles = {
   addition: isAdded,
@@ -59,6 +59,7 @@ export const opetustaAntavatKunnat = async (
     maakuntamaaraykset,
     maaraykset,
     quickFilterChanges = [],
+    sectionId,
     valtakunnallinenMaarays
   },
   { isPreviewModeOn, isReadOnly },
@@ -71,13 +72,18 @@ export const opetustaAntavatKunnat = async (
   const maakunnat = await getMaakunnat();
   const maakuntakunnat = await getMaakuntakunnat();
   const lisatiedot = await getLisatiedotFromStorage();
-
   const ulkomaa = find(propEq("koodiarvo", "200"), kunnat);
 
   const kunnatIlmanUlkomaata = filter(
     // 200 = Ulkomaa
     compose(not, propEq("koodiarvo", "200")),
     kunnat
+  );
+
+  const ulkomaillaSijaitsevatKunnat = filter(
+    maarays =>
+      propEq("koodiarvo", "200", maarays) && hasPath(["meta", "arvo"], maarays),
+    kuntamaaraykset
   );
 
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
@@ -107,7 +113,7 @@ export const opetustaAntavatKunnat = async (
       const kunnanNimi = getLocalizedProperty(kunta.metadata, locale, "nimi");
 
       const isKuntaInLupa = !!find(
-        pathEq(["metadata", "koodiarvo"], kunta.koodiarvo),
+        propEq("koodiarvo", kunta.koodiarvo),
         kuntamaaraykset
       );
 
@@ -204,9 +210,11 @@ export const opetustaAntavatKunnat = async (
   const noSelectionsInLupa =
     isEmpty(maakuntamaaraykset) && isEmpty(kuntamaaraykset) && fiCode !== "FI1";
 
-  const ulkomaaCheckbox = find(
-    propEq("anchor", "toimintaalue.ulkomaa.200"),
-    changeObjects
+  const isUlkomaaCheckedByDefault = !!find(
+    maarays =>
+      propEq("koodiarvo", "200", maarays) &&
+      !hasPath(["meta", "arvo"], maarays),
+    kuntamaaraykset
   );
 
   const lomakerakenne = flatten(
@@ -235,132 +243,71 @@ export const opetustaAntavatKunnat = async (
               showCategoryTitles: false,
               quickFilterChanges: quickFilterChanges,
               nothingInLupa: noSelectionsInLupa,
-              koulutustyyppi: "esiJaPerusopetus"
+              koulutustyyppi: "lukiokoulutus"
             }
           }
         ]
       },
       !!ulkomaa
-        ? {
-            anchor: "ulkomaa",
-            components: [
-              {
-                anchor: ulkomaa.koodiarvo,
-                name: "CheckboxWithLabel",
-                properties: {
-                  forChangeObject: {
-                    koodiarvo: ulkomaa.koodiarvo,
-                    koodisto: ulkomaa.koodisto,
-                    versio: ulkomaa.versio,
-                    voimassaAlkuPvm: ulkomaa.voimassaAlkuPvm
-                  },
-                  labelStyles: {
-                    addition: isAdded,
-                    removal: isRemoved,
-                    // TODO: määritä oikea ehto ja arvo
-                    custom: Object.assign({}, !!false ? isInLupa : {})
-                  },
-                  isChecked: false,
-                  isIndeterminate: false,
-                  isReadOnly,
-                  title: __("education.opetustaJarjestetaanSuomenUlkopuolella")
-                },
-                styleClasses: ["mt-8"]
-              }
-            ],
-            categories: flatten([
-              {
-                anchor: ulkomaa.koodiarvo,
-                components: [
-                  {
-                    anchor: "lisatiedot",
-                    name: "TextBox",
-                    properties: {
-                      forChangeObject: {
-                        koodiarvo: ulkomaa.koodiarvo,
-                        koodisto: ulkomaa.koodisto,
-                        versio: ulkomaa.versio,
-                        voimassaAlkuPvm: ulkomaa.voimassaAlkuPvm
-                      },
-                      isReadOnly,
-                      placeholder: __("common.maaJaPaikkakunta"),
-                      title: __("common.maaJaPaikkakunta")
-                    }
-                  },
-                  ...map(
-                    changeObj => {
-                      const anchor = getAnchorPart(changeObj.anchor, 3);
-                      return {
-                        anchor: anchor + ".lisatiedot",
-                        name: "TextBox",
-                        properties: {
-                          forChangeObject: {
-                            ankkuri: anchor,
-                            koodiarvo: ulkomaa.koodiarvo,
-                            koodisto: ulkomaa.koodisto
-                          },
-                          isPreviewModeOn,
-                          isReadOnly: _isReadOnly,
-                          placeholder: __("common.maaJaPaikkakunta"),
-                          title: __("common.maaJaPaikkakunta"),
-                          isRemovable: true,
-                          value: changeObj.properties.value
-                        }
-                      };
+        ? flatten([
+            {
+              anchor: ulkomaa.koodiarvo,
+              components: [
+                {
+                  anchor: "valintaelementti",
+                  name: "CheckboxWithLabel",
+                  properties: {
+                    forChangeObject: {
+                      koodiarvo: ulkomaa.koodiarvo,
+                      koodisto: ulkomaa.koodisto,
+                      versio: ulkomaa.versio,
+                      voimassaAlkuPvm: ulkomaa.voimassaAlkuPvm
                     },
-                    filter(changeObj => {
-                      return (
-                        endsWith(".lisatiedot", changeObj.anchor) &&
-                        includes(`.${ulkomaa.koodiarvo}`, changeObj.anchor) &&
-                        !includes(`${ulkomaa.koodiarvo}.0`, changeObj.anchor) &&
-                        !includes(
-                          `${ulkomaa.koodiarvo}.lisatiedot`,
-                          changeObj.anchor
-                        )
-                      );
-                    }, changeObjects)
-                  ),
-                  {
-                    anchor: "A",
-                    name: "SimpleButton",
-                    onClick: () =>
-                      onAddButtonClick("ulkomaa." + ulkomaa.koodiarvo),
-                    properties: {
-                      isReadOnly: _isReadOnly,
-                      isVisible: ulkomaaCheckbox
-                        ? ulkomaaCheckbox.properties.isChecked
-                        : false,
-                      text: "Lisää uusi paikkakunta ja maa",
-                      icon: "FaPlus",
-                      iconContainerStyles: {
-                        width: "15px"
-                      },
-                      iconStyles: {
-                        fontSize: 10
-                      },
-                      variant: "text"
-                    }
-                  }
-                ]
-              }
-            ])
-          }
+                    labelStyles: {
+                      addition: isAdded,
+                      removal: isRemoved,
+                      custom: Object.assign(
+                        {},
+                        isUlkomaaCheckedByDefault ? isInLupa : {}
+                      )
+                    },
+                    isChecked: isUlkomaaCheckedByDefault,
+                    isIndeterminate: false,
+                    isReadOnly,
+                    title: __(
+                      "education.opetustaJarjestetaanSuomenUlkopuolella"
+                    )
+                  },
+                  styleClasses: ["mt-8"]
+                }
+              ],
+              categories: createDynamicTextFields(
+                sectionId,
+                ulkomaillaSijaitsevatKunnat,
+                changeObjects,
+                ulkomaa.koodiarvo,
+                onAddButtonClick,
+                isPreviewModeOn,
+                isReadOnly
+              )
+            }
+          ])
         : null,
       lisatiedotObj
         ? [
             {
               anchor: "lisatiedotTitle",
-              layout: { margins: { top: "large" } },
               components: [
                 {
                   anchor: lisatiedotObj.koodiarvo,
                   name: "StatusTextRow",
-                  styleClasses: ["pt-8", "border-t"],
                   properties: {
                     title: __("common.lisatiedotInfo")
                   }
                 }
-              ]
+              ],
+              layout: { margins: { top: "large" } },
+              styleClasses: ["mt-10", "pt-10", "border-t"]
             },
             {
               anchor: "lisatiedot",

@@ -41,6 +41,31 @@ const MuutospyyntoWizardMuut = React.memo(
     const intl = useIntl();
     const localeUpper = toUpper(intl.locale);
 
+    /** Yhteistyösopimus ja muu määräys määräyksistä otetaan mukaan määräys
+    joka sisältää tekstikentän arvon */
+    const maarayksetFiltered = filter(
+      maarays =>
+        !(
+          propEq(
+            "koodisto",
+            "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+            maarays
+          ) &&
+          propEq("koodiarvo", "22", maarays) &&
+          !path(["meta", "value"], maarays)
+        ) &&
+        !(
+          propEq(
+            "koodisto",
+            "oivamuutoikeudetvelvollisuudetehdotjatehtavat",
+            maarays
+          ) &&
+          propEq("koodiarvo", "8", maarays) &&
+          !path(["meta", "yhteistyosopimus"], maarays)
+        ),
+      maaraykset
+    );
+
     const maarayksetByKoodiarvo = useMemo(
       () =>
         pipe(
@@ -51,8 +76,8 @@ const MuutospyyntoWizardMuut = React.memo(
             maaraysByKoodiarvo[maarays.koodiarvo] = maarays;
             return maaraysByKoodiarvo;
           }, {})
-        )(maaraykset),
-      [maaraykset]
+        )(maarayksetFiltered),
+      [maarayksetFiltered]
     );
 
     const items = useMemo(() => {

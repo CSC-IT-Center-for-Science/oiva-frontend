@@ -18,6 +18,8 @@ import {
 } from "../../../../helpers/opetustehtavat";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import { sortArticlesByHuomioitavaKoodi } from "../../../../services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
 import common from "i18n/definitions/common";
 
@@ -54,12 +56,12 @@ export default function PoOpetusJotaLupaKoskeeHtml({
       });
   }, []);
 
-  const opetustehtavaMaaraykset = filter(
+  const opetustehtavaMaaraykset = sortArticlesByHuomioitavaKoodi(filter(
     maarays =>
       pathEq(["kohde", "tunniste"], "opetusjotalupakoskee", maarays) &&
       maarays.koodisto === "opetustehtava",
     maaraykset
-  );
+  ), locale);
 
   const lisatietomaarays = find(
     maarays =>
@@ -102,7 +104,7 @@ export default function PoOpetusJotaLupaKoskeeHtml({
             return result;
           }, opetustehtavaMaaraykset)}
         </ul>
-        {lisatietomaarays && lisatietomaarays.meta.arvo}
+        <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
       </div>
     )
   );

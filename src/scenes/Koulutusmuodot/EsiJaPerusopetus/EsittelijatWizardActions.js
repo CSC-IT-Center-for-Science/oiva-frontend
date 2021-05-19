@@ -20,14 +20,16 @@ const EsittelijatWizardActions = ({
       <div
         className={`flex flex-col md:flex-row justify-between ${
           isDebugOn ? "w-2/3" : "w-full"
-        }  max-w-5xl p-4 mx-auto`}>
+        }  max-w-5xl p-4 mx-auto`}
+      >
         <div className="inline-flex">
           <div className="inline-flex mr-4">
             <Button
               color="secondary"
               className="save"
               onClick={onClose}
-              variant="outlined">
+              variant="outlined"
+            >
               {intl.formatMessage(wizardMessages.getOut)}
             </Button>
           </div>
@@ -35,13 +37,14 @@ const EsittelijatWizardActions = ({
             color="secondary"
             className="preview"
             onClick={onPreview}
-            variant="outlined">
+            variant="outlined"
+          >
             {intl.formatMessage(wizardMessages.previewAndPrint)}
           </Button>
         </div>
         <SimpleButton
           color="primary"
-          disabled={!isSavingEnabled}
+          isDisabled={!isSavingEnabled}
           className="button-right save"
           onClick={onSave}
           text={intl.formatMessage(wizardMessages.saveDraft)}

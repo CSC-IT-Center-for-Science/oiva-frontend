@@ -2,7 +2,9 @@ import {
   append,
   compose,
   addIndex,
+  concat,
   endsWith,
+  filter,
   find,
   findIndex,
   flatten,
@@ -21,19 +23,36 @@ import {
   split,
   test,
   toLower,
-  uniqBy
+  uniqBy,
+  pathEq,
+  drop,
+  clone
 } from "ramda";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { getAnchorPart } from "../utils/common";
+import { koulutustyypitMap } from "../utils/constants";
 
-const koodistoMapping = {
+const koodistoMappingLukio = {
   maaraaika: "kujalisamaareet",
-  opetustehtavat: "opetustehtava",
-  opiskelijamaarat: "oppilasopiskelijamaara",
   oppilaitokset: "oppilaitos",
   toimintaalue: "kunta",
   opetuskielet: "kielikoodistoopetushallinto",
-  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto"
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+    "lukiooikeussisaooppilaitosmuotoiseenkoulutukseen",
+  erityisetKoulutustehtavat: "lukioerityinenkoulutustehtavauusi",
+  muutEhdot: "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot"
+};
+
+const koodistoMappingPo = {
+  maaraaika: "kujalisamaareet",
+  opetustehtavat: "opetustehtava",
+  oppilaitokset: "oppilaitos",
+  toimintaalue: "kunta",
+  opetuskielet: "kielikoodistoopetushallinto",
+  opetuksenJarjestamismuodot: "opetuksenjarjestamismuoto",
+  erityisetKoulutustehtavat: "poerityinenkoulutustehtava",
+  muutEhdot: "pomuutkoulutuksenjarjestamiseenliittyvatehdot"
 };
 
 function isAsetusKohdennuksenKohdennus(asetusChangeObj) {
@@ -53,6 +72,25 @@ export const createAlimaarayksetBEObjects = (
   kohdennuksenKohdeNumber = 0,
   insideMulti = false
 ) => {
+  const isMaarays = prop("isMaarays", paalomakkeenBEMuutos) || false;
+  let asetuksetFromMaarays = null;
+  if(isMaarays) {
+    asetuksetFromMaarays = clone(asetukset);
+    asetukset = drop(2, asetukset);
+  }
+  /** Haetaan kohteista koulutustyyppi. Tämän perusteella käytetään oikeata koodistoMappingia */
+  const koodistoMapping =
+    path(["0", "koulutustyyppi"], kohteet) ===
+    koulutustyypitMap.ESI_JA_PERUSOPETUS
+      ? koodistoMappingPo
+      : koodistoMappingLukio;
+
+  const rajoiteId = compose(
+    last,
+    split("_"),
+    cObj => getAnchorPart(cObj.anchor, 0),
+    head
+  )(asetukset);
   let offset = 2;
   const asetusChangeObj = nth(index, asetukset);
   const valueChangeObj = nth(index + 1, asetukset);
@@ -72,7 +110,7 @@ export const createAlimaarayksetBEObjects = (
   // Käsittele aikamääre rajoite
   let alkupvm = null;
   let loppupvm = null;
-  if (includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
+  if (valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)) {
     offset = 3;
     alkupvm =
       path(
@@ -133,7 +171,7 @@ export const createAlimaarayksetBEObjects = (
       ? prop("generatedId", head(muutosobjektit))
       : prop("generatedId", last(muutosobjektit));
 
-  let arvo = endsWith("lukumaara", path(["anchor"], valueChangeObj))
+  let arvo = valueChangeObj && endsWith("lukumaara", path(["anchor"], valueChangeObj))
     ? valueOfValueChangeObj
     : null;
 
@@ -146,15 +184,29 @@ export const createAlimaarayksetBEObjects = (
 
   const result = pipe(
     mapIndex((multiselectValue, multiIndex) => {
-      const codeValue =
-        koodisto === "oppilaitos"
-          ? koodiarvo
-          : path(["value"], multiselectValue) || koodiarvo;
+      let codeValue = "";
+      if (koodisto === "oppilaitos") {
+        codeValue = koodiarvo;
+      } else {
+        if (prop("value", multiselectValue)) {
+          /** Dynaamisilla tekstikentillä multiselectValue->value on muotoa koodiarvo-kuvausnumero.
+           * Muutokselle halutaan tallentaa pelkkä koodiarvo, joten otetaan se talteen */
+          codeValue = includes("-", prop("value", multiselectValue))
+            ? head(split("-", prop("value", multiselectValue)))
+            : prop("value", multiselectValue);
+        } else {
+          codeValue = koodiarvo;
+        }
+      }
 
       const changeObjects = [
+        isMaarays ? [
+          nth(index, asetuksetFromMaarays),
+          nth(index + 1, asetuksetFromMaarays)
+        ] : null,
         asetusChangeObj,
         nth(index + 1, asetukset),
-        includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
+        valueValueOfAsetusChangeObj && includes("kujalisamaareetlisaksiajalla", valueValueOfAsetusChangeObj)
           ? [
               find(
                 compose(endsWith(".alkamispaiva"), prop("anchor")),
@@ -170,7 +222,16 @@ export const createAlimaarayksetBEObjects = (
 
       const alimaarays = reject(isNil, {
         generatedId: `alimaarays-${Math.random()}`,
-        parent: alimaarayksenParent,
+        parent: isMaarays
+          ? index !== 0
+            ? alimaarayksenParent
+            : null
+          : alimaarayksenParent,
+        parentMaaraysUuid: isMaarays
+          ? index === 0
+            ? alimaarayksenParent
+            : null
+          : null,
         kohde: find(propEq("tunniste", tunniste), kohteet),
         koodiarvo:
           koodisto === "kielikoodistoopetushallinto"
@@ -187,9 +248,13 @@ export const createAlimaarayksetBEObjects = (
           ...(loppupvm
             ? { loppupvm: moment(loppupvm).format("YYYY-MM-DD") }
             : null),
+          ...(prop("isValtakunnallinenKehittamistehtava", paalomakkeenBEMuutos)
+            ? { valtakunnallinenKehittamistehtava: true }
+            : null),
           ...(multiSelectUuid ? { multiselectUuid: multiSelectUuid } : null),
           changeObjects: changeObjects.filter(Boolean),
-          kuvaus: prop("label", multiselectValue)
+          kuvaus: prop("label", multiselectValue),
+          rajoiteId
         },
         orgOid:
           koodisto === "oppilaitos"
@@ -214,7 +279,7 @@ export const createAlimaarayksetBEObjects = (
           kohteet,
           maaraystyypit,
           paalomakkeenBEMuutos,
-          asetukset,
+          isMaarays ? asetuksetFromMaarays : asetukset,
           updatedMuutosobjektit,
           start,
           kohdennuksenKohdeNumber,
@@ -228,4 +293,102 @@ export const createAlimaarayksetBEObjects = (
   )(multiSelectValues);
 
   return result;
+};
+
+export const createBeObjsForRajoitepoistot = (
+  rajoitepoistot,
+  maaraykset,
+  kohteet,
+  maaraystyypit
+) => {
+  /** Haetaan opiskelijamäärärajoitteet erikseen, koska niiltä pitää poistaa parent määräys */
+  const opiskelijamaararajoitteet = filter(
+    maarays =>
+      maarays.koodisto === "kujalisamaareet" &&
+      path(["maaraystyyppi", "tunniste"], maarays) === "RAJOITE",
+    maaraykset || []
+  );
+
+  /** Haetaan loput rajoitemääräykset */
+  const muutRajoitemaaraykset = filter(
+    maarays =>
+      length(prop("aliMaaraykset", maarays) || []) &&
+      maarays.koodisto !== "kujalisamaareet",
+    maaraykset || []
+  );
+
+  /** Luodaan poisto muutos-objektit opiskelijamäärärajoitteille */
+  const poistoCobjsOpiskelijamaararajoitteet = map(
+    maarays =>
+      createRajoitepoistoBEObjs(
+        [maarays],
+        rajoitepoistot,
+        kohteet,
+        maaraystyypit
+      ),
+    opiskelijamaararajoitteet
+  ).filter(Boolean);
+
+  /** Luodaan poisto muutos-objektit muille rajoitteille */
+  const poistoCobjsMuutrajoitteet = map(
+    maarays =>
+      createRajoitepoistoBEObjs(
+        maarays.aliMaaraykset,
+        rajoitepoistot,
+        kohteet,
+        maaraystyypit
+      ),
+    muutRajoitemaaraykset
+  ).filter(Boolean);
+
+  return filter(
+    arr => length(arr),
+    concat(poistoCobjsMuutrajoitteet, poistoCobjsOpiskelijamaararajoitteet)
+  );
+};
+
+export const createRajoitepoistoBEObjs = (
+  alimaaraykset,
+  rajoitepoistot,
+  kohteet,
+  maaraystyypit
+) => {
+  return length(alimaaraykset)
+    ? map(alimaarays => {
+        if (
+          find(
+            poisto =>
+              pathEq(
+                ["properties", "rajoiteId"],
+                path(["meta", "rajoiteId"], alimaarays),
+                poisto
+              ),
+            rajoitepoistot
+          )
+        ) {
+          return {
+            kohde: find(
+              propEq("tunniste", path(["kohde", "tunniste"], alimaarays)),
+              kohteet
+            ),
+            koodiarvo: alimaarays.koodiarvo,
+            koodisto: alimaarays.koodisto,
+            maaraystyyppi: find(propEq("tunniste", "RAJOITE"), maaraystyypit),
+            tila: "POISTO",
+            maaraysUuid: alimaarays.uuid,
+            meta: {
+              changeObjects: [
+                {
+                  anchor: `rajoitepoistot.${alimaarays.uuid}`,
+                  properties: {
+                    rajoiteId: path(["meta", "rajoiteId"], alimaarays)
+                  }
+                }
+              ]
+            }
+          };
+        }
+        return null;
+      }, alimaaraykset).filter(Boolean)
+    : null;
 };

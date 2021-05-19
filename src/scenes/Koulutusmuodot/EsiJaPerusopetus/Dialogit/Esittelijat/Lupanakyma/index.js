@@ -447,7 +447,7 @@ const UusiAsiaDialog = ({
               {isPreviewModeOn ? null : (
                 <SimpleButton
                   color="primary"
-                  disabled={!isSavingEnabled}
+                  isDisabled={!isSavingEnabled}
                   className="button-right save"
                   onClick={() => {
                     return onAction("save");

@@ -1,7 +1,5 @@
 import {
   compose,
-  concat,
-  drop,
   endsWith,
   filter,
   find,
@@ -9,25 +7,26 @@ import {
   groupBy,
   head,
   includes,
-  isEmpty,
   isNil,
   length,
   map,
   mapObjIndexed,
-  nth,
   omit,
   path,
+  pathEq,
   prop,
   propEq,
   reject,
   sort,
-  split,
-  startsWith,
-  take,
-  values
+  startsWith
 } from "ramda";
+import { getMaarayksetByTunniste } from "../lupa/index";
 import localforage from "localforage";
-import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
+import { createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects } from "../../utils/rajoitteetUtils";
+import {
+  createDynamicTextBoxBeChangeObjects,
+  createBECheckboxChangeObjectsForDynamicTextBoxes
+} from "../../services/lomakkeet/dynamic";
 
 export const initializeLukioMuuEhto = ehto => {
   return omit(["koodiArvo"], {
@@ -64,9 +63,15 @@ export function getLukioMuutEhdotFromStorage() {
 export const defineBackendChangeObjects = async (
   changeObjects = [],
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
+  const maaraykset = await getMaarayksetByTunniste(
+    "muutkoulutuksenjarjestamiseenliittyvatehdot",
+    lupaMaaraykset
+  );
+
   const { rajoitteetByRajoiteId } = changeObjects;
 
   const kohde = find(
@@ -107,102 +112,49 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    if (length(kuvausChangeObjects)) {
-      kuvausBEchangeObjects = map(changeObj => {
-        const ankkuri = path(["properties", "metadata", "ankkuri"], changeObj);
-        const kuvausBEChangeObject = {
-          generatedId: changeObj.anchor,
-          kohde,
-          koodiarvo: ehto.koodiarvo,
-          koodisto: ehto.koodisto.koodistoUri,
-          kuvaus: changeObj.properties.value,
-          maaraystyyppi,
-          meta: {
-            ankkuri,
-            kuvaus: changeObj.properties.value,
-            changeObjects: flatten(
-              concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
-                checkboxChangeObj,
-                changeObj
-              ])
-            ).filter(Boolean)
-          },
-          tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
-        };
+    const ehtoonLiittyvatMaaraykset = filter(
+      m =>
+        propEq("koodiarvo", ehto.koodiarvo, m) &&
+        propEq(
+          "koodisto",
+          "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
+          m
+        ),
+      maaraykset
+    );
 
-        let alimaaraykset = [];
+    const isCheckboxChecked =
+      (!!ehtoonLiittyvatMaaraykset.length && !checkboxChangeObj) ||
+      (checkboxChangeObj &&
+        pathEq(["properties", "isChecked"], true, checkboxChangeObj));
 
-        const kohteenTarkentimenArvo = path(
-          [1, "properties", "value", "value"],
-          head(values(rajoitteetByRajoiteIdAndKoodiarvo))
-        );
-
-        const rajoitevalinnanAnkkuriosa = kohteenTarkentimenArvo
-          ? nth(1, split("-", kohteenTarkentimenArvo))
-          : null;
-
-        if (
-          kohteenTarkentimenArvo &&
-          (rajoitevalinnanAnkkuriosa === ankkuri || !rajoitevalinnanAnkkuriosa)
-        ) {
-          // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
-          // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
-          // loput toisiinsa "alenevassa polvessa".
-          alimaaraykset = values(
-            mapObjIndexed(asetukset => {
-              return createAlimaarayksetBEObjects(
-                kohteet,
-                maaraystyypit,
-                kuvausBEChangeObject,
-                drop(2, asetukset)
-              );
-            }, rajoitteetByRajoiteIdAndKoodiarvo)
-          );
-        }
-
-        return [kuvausBEChangeObject, alimaaraykset];
-      }, kuvausChangeObjects);
+    if (length(kuvausChangeObjects) && isCheckboxChecked) {
+      kuvausBEchangeObjects = createDynamicTextBoxBeChangeObjects(
+        kuvausChangeObjects,
+        ehtoonLiittyvatMaaraykset,
+        isCheckboxChecked,
+        ehto,
+        maaraystyyppi,
+        maaraystyypit,
+        rajoitteetByRajoiteIdAndKoodiarvo,
+        checkboxChangeObj,
+        kohde,
+        kohteet
+      );
     } else {
-      // Jos muokattuja kuvauksia ei kyseiselle koodiarvolle löydy, tarkistetaan
-      // löytyykö checkbox-muutos. Jos löytyy, niin luodaan sille backend-muotoinen
-      // muutosobjekti.
-      checkboxBEchangeObject = checkboxChangeObj
-        ? {
-            generatedId: `muuEhto-${Math.random()}`,
-            kohde,
-            koodiarvo: ehto.koodiarvo,
-            koodisto: ehto.koodisto.koodistoUri,
-            kuvaus: ehto.metadata[locale].kuvaus,
-            maaraystyyppi,
-            meta: {
-              changeObjects: flatten(
-                concat(take(2, values(rajoitteetByRajoiteIdAndKoodiarvo)), [
-                  checkboxChangeObj
-                ])
-              ).filter(Boolean)
-            },
-            tila: checkboxChangeObj.properties.isChecked ? "LISAYS" : "POISTO"
-          }
-        : null;
-
-      // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
-      // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
-      // loput toisiinsa "alenevassa polvessa".
-      const alimaaraykset =
-        checkboxBEchangeObject && !isEmpty(rajoitteetByRajoiteIdAndKoodiarvo)
-          ? values(
-              mapObjIndexed(asetukset => {
-                return createAlimaarayksetBEObjects(
-                  kohteet,
-                  maaraystyypit,
-                  checkboxBEchangeObject,
-                  drop(2, asetukset)
-                );
-              }, rajoitteetByRajoiteIdAndKoodiarvo)
-            )
-          : null;
-
-      return [checkboxBEchangeObject, alimaaraykset];
+      return createBECheckboxChangeObjectsForDynamicTextBoxes(
+        checkboxChangeObj,
+        ehto,
+        rajoitteetByRajoiteIdAndKoodiarvo,
+        kohteet,
+        kohde,
+        maaraystyypit,
+        maaraystyyppi,
+        ehtoonLiittyvatMaaraykset,
+        isCheckboxChecked,
+        locale,
+        "muuEhto"
+      );
     }
 
     return [checkboxBEchangeObject, kuvausBEchangeObjects];
@@ -238,9 +190,19 @@ export const defineBackendChangeObjects = async (
       }
     : null;
 
-  const objects = flatten([muutokset, lisatiedotBEchangeObject]).filter(
-    Boolean
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
   );
+
+  const objects = flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    muutokset,
+    lisatiedotBEchangeObject
+  ]).filter(Boolean);
 
   return objects;
 };

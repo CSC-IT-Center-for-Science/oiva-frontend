@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import MaUTable from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -170,11 +170,15 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
     <React.Fragment>
       <MaUTable
         {...getTableProps()}
-        className="border border-solid border-gray-400">
+        className="border border-solid border-gray-400"
+      >
         <caption>
-          {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa, {
-            amount: `${rows.length} / ${luvat.length}`
-          })}
+          {intl.formatMessage(
+            vapaaSivistystyo.voimassaOlevatYllapitamisluvatSuluissa,
+            {
+              amount: `${rows.length} / ${luvat.length}`
+            }
+          )}
         </caption>
         <TableHead>
           {headerGroups.map(headerGroup => (
@@ -185,7 +189,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
                     <span
                       {...column.getSortByToggleProps({
                         title: column.Header
-                      })}>
+                      })}
+                    >
                       {column.render("Header")}
                       {/* Add a sort direction indicator */}
                       {column.isSorted ? (
@@ -234,7 +239,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
       <nav
         role="navigation"
         aria-label={intl.formatMessage(common.navigationBetweenTablePages)}
-        className="flex justify-evenly items-center">
+        className="flex justify-evenly items-center"
+      >
         <div>
           <StyledButton
             onClick={() => gotoPage(0)}
@@ -244,7 +250,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}>
+            mr={2}
+          >
             <FirstPageIcon /> {intl.formatMessage(common.ensimmainenSivu)}
           </StyledButton>
           <StyledButton
@@ -255,7 +262,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}>
+            mr={2}
+          >
             <ArrowLeftIcon /> {intl.formatMessage(common.edellinen)}
           </StyledButton>
           <StyledButton
@@ -266,7 +274,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
               { pageIndex: pageIndex + 1 }
             )}
             variant="contained"
-            mr={2}>
+            mr={2}
+          >
             {intl.formatMessage(common.seuraava)} <ArrowRightIcon />
           </StyledButton>
           <StyledButton
@@ -276,7 +285,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             )}
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
-            variant="contained">
+            variant="contained"
+          >
             {intl.formatMessage(common.viimeinenSivu)} <LastPageIcon />
           </StyledButton>
         </div>
@@ -315,7 +325,8 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
             inputProps={{
               name: "rows-per-page",
               id: "rows-per-page"
-            }}>
+            }}
+          >
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
@@ -328,45 +339,42 @@ function Table({ columns, data, intl, skipReset, updateMyData, luvat }) {
   );
 }
 
+function getTableData(vstTyypit, locale, luvat) {
+  return sort(
+    descend(prop("yllapitaja")),
+    map(lupa => {
+      const oppilaitostyyppiKoodistosta = find(
+        tyyppi => tyyppi.koodiarvo === lupa.oppilaitostyyppi,
+        vstTyypit
+      );
+      const localeUpper = toUpper(locale);
+      return {
+        yllapitaja: lupa.jarjestaja
+          ? lupa.jarjestaja.nimi[locale] ||
+          head(values(lupa.jarjestaja.nimi))
+          : "",
+        oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, locale),
+        oppilaitostyyppi: oppilaitostyyppiKoodistosta
+          ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi
+          : "",
+        toiminnot: ["info"],
+        ytunnus: lupa.jarjestajaYtunnus,
+        lupaUuid: lupa.uuid
+      };
+    }, luvat)
+  );
+}
+
 function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   const intl = useIntl();
 
-  const byYllapitaja = descend(prop("yllapitaja"));
-
-  const tableData = useMemo(
-    () =>
-      sort(
-        byYllapitaja,
-        map(lupa => {
-          const oppilaitostyyppiKoodistosta = find(
-            tyyppi => tyyppi.koodiarvo === lupa.oppilaitostyyppi,
-            vstTyypit
-          );
-          const localeUpper = toUpper(intl.locale);
-          return {
-            yllapitaja:
-              lupa.jarjestaja ? lupa.jarjestaja.nimi[intl.locale] ||
-              head(values(lupa.jarjestaja.nimi)) : "",
-            oppilaitos: resolveVSTOppilaitosNameFromLupa(lupa, intl.locale),
-            oppilaitostyyppi: oppilaitostyyppiKoodistosta
-              ? oppilaitostyyppiKoodistosta.metadata[localeUpper].nimi
-              : "",
-            toiminnot: ["info"],
-            ytunnus: lupa.jarjestajaYtunnus,
-            lupaUuid: lupa.uuid
-          };
-        }, luvat)
-      ),
-    [byYllapitaja, intl.locale, luvat, vstTyypit]
+  const [data, setData] = useState(
+    getTableData(vstTyypit, intl.locale, luvat)
   );
-
-  const [data, setData] = useState(tableData);
   const [vstTypeOptions, setvstTypeOptions] = useState([]);
   const [vstOppilaitostyyppiFilter, setVstOppilaitostyyppiFilter] = useState(
     ""
   );
-
-  const initialData = useRef(tableData);
 
   useEffect(() => {
     setData(
@@ -375,10 +383,10 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
           vstOppilaitostyyppiFilter
             ? vstOppilaitostyyppiFilter === item.oppilaitostyyppi
             : true,
-        initialData.current
+        getTableData(vstTyypit, intl.locale, luvat)
       )
     );
-  }, [vstOppilaitostyyppiFilter]);
+  }, [vstOppilaitostyyppiFilter, vstTyypit, intl.locale, luvat]);
 
   useEffect(() => {
     const vstOptions = [];
@@ -393,6 +401,7 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
       });
     });
     setvstTypeOptions(vstOptions);
+    setVstOppilaitostyyppiFilter("");
   }, [vstTyypit, intl]);
 
   const onOppilaitostyyppiSelectionChange = (_, { selectedOption }) => {
@@ -411,11 +420,15 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
               intl.locale,
               AppRoute.Jarjestamislupa,
               intl.formatMessage,
-              { id: row.values.lupaUuid, koulutusmuoto: koulutusmuoto.kebabCase }
+              {
+                id: row.values.lupaUuid,
+                koulutusmuoto: koulutusmuoto.kebabCase
+              }
             )}
             title={intl.formatMessage(common.siirryKJnTarkempiinTietoihin, {
               nimi: row.values.yllapitaja
-            })}>
+            })}
+          >
             {row.values.yllapitaja}
           </Link>
         );
@@ -471,7 +484,9 @@ function Jarjestajaluettelo({ koulutusmuoto, vstTyypit = [], luvat = [] }) {
   return (
     <div className="mx-auto w-full mb-16">
       <p className="mt-4 mb-8">
-        {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvat, { count: luvat.length })}
+        {intl.formatMessage(vapaaSivistystyo.voimassaOlevatYllapitamisluvat, {
+          count: luvat.length
+        })}
       </p>
 
       <div className="mt-2 lg:mt-0 lg:mr-2 w-2/6">

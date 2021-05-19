@@ -9,6 +9,7 @@ import {
   path,
   pathEq,
   propEq,
+  sortBy,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -17,6 +18,7 @@ import { getPOErityisetKoulutustehtavatFromStorage } from "helpers/poErityisetKo
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetuksenErityisetKoulutustehtavatHtml({
@@ -40,11 +42,14 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
       });
   }, []);
 
-  const erityisetKoulutustehtavatMaaraykset = filter(
-    maarays =>
-      pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
-      maarays.koodisto === "poerityinenkoulutustehtava",
-    maaraykset
+  const erityisetKoulutustehtavatMaaraykset = sortBy(
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
+    filter(
+      maarays =>
+        pathEq(["kohde", "tunniste"], "erityinenkoulutustehtava", maarays) &&
+        maarays.koodisto === "poerityinenkoulutustehtava",
+      maaraykset
+    )
   );
 
   const lisatietomaarays = find(
@@ -95,7 +100,7 @@ export default function PoOpetuksenErityisetKoulutustehtavatHtml({
           return result;
         }, erityisetKoulutustehtavatMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

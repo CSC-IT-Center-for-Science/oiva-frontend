@@ -17,8 +17,7 @@ import PoOpetuksenMuutEhdotHtml from "./muutEhdot";
  * Funktio rakentaa esi- ja perusopetuksen HTML-lupanäkymän.
  * @param {*} lupa - Lupa, jonka tietoja hyödyntäen lupanäkymä muodostetaan.
  */
-const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
-  //const JarjestamislupaJSX = ({ lupa }) => {
+const JarjestamislupaJSX = ({ lupa }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -29,9 +28,13 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
           koulutusmuodon: formatMessage(esiJaPerusopetus.genetiivi).toLowerCase()
         })}
       </Typography>
-      {lupa.loppupvm &&
-      <p className="mb-4">{formatMessage(esiJaPerusopetus.onVoimassa, {loppupvm: moment(lupa.loppupvm).format("D.M.YYYY")})}</p>
-      }
+      {lupa.loppupvm && (
+        <p className="mb-4">
+          {formatMessage(common.onVoimassa, {
+            loppupvm: moment(lupa.loppupvm).format("D.M.YYYY")
+          })}
+        </p>
+      )}
       <p className="mb-4">{formatMessage(esiJaPerusopetus.esittelyteksti)}</p>
 
       <PoOpetusJotaLupaKoskeeHtml maaraykset={lupa.maaraykset} />
@@ -41,14 +44,6 @@ const JarjestamislupaJSX = ({ kohteet, lupa, lupakohteet }) => {
       <PoOpiskelijamaaratHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenErityisetKoulutustehtavatHtml maaraykset={lupa.maaraykset} />
       <PoOpetuksenMuutEhdotHtml maaraykset={lupa.maaraykset} />
-
-      {/*<LupanakymaA*/}
-      {/*  isPreviewModeOn={true}*/}
-      {/*  kohteet={kohteet}*/}
-      {/*  lupakohteet={lupakohteet}*/}
-      {/*  maaraykset={lupa.maaraykset}*/}
-      {/*  valtakunnallinenMaarays={valtakunnallinenMaarays}*/}
-      {/*/>*/}
     </React.Fragment>
   );
 };

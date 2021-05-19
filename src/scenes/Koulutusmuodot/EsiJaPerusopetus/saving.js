@@ -19,14 +19,15 @@ import {
   reject,
   split
 } from "ramda";
-import * as muutEhdotHelper from "helpers/poMuutEhdot";
-import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot";
+import * as muutEhdotHelper from "helpers/poMuutEhdot/index";
+import * as opetuksenJarjestamismuodotHelper from "helpers/opetuksenJarjestamismuodot/index";
 import * as opetusHelper from "helpers/opetustehtavat";
-import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
+import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
-import * as opetuskieletHelper from "helpers/opetuskielet";
-import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat";
+import * as opetuskieletHelper from "helpers/opetuskielet/index";
+import * as erityinenKoulutustehtavaHelper from "helpers/poErityisetKoulutustehtavat/index";
 import { koulutustyypitMap } from "../../../utils/constants";
+import { createBeObjsForRajoitepoistot } from "../../../helpers/rajoitteetHelper";
 
 export async function createObjectToSave(
   locale,
@@ -39,6 +40,7 @@ export async function createObjectToSave(
   alkupera = "KJ"
 ) {
   const allAttachmentsRaw = [];
+  const koulutustyyppi = koulutustyypitMap.ESI_JA_PERUSOPETUS;
 
   // ... without tiedosto-property
   const allAttachments = map(attachment => {
@@ -67,7 +69,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetusjotalupakoskee"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
@@ -94,7 +98,7 @@ export async function createObjectToSave(
         changeObjects.toimintaalue || []
       ),
       ulkomaa: filter(
-        compose(includes(".ulkomaa."), prop("anchor")),
+        compose(includes(".200."), prop("anchor")),
         changeObjects.toimintaalue || []
       ),
       rajoitteetByRajoiteId: reject(
@@ -114,7 +118,8 @@ export async function createObjectToSave(
     maaraystyypit,
     lupa.maaraykset,
     locale,
-    kohteet
+    kohteet,
+    "kunnatjoissaopetustajarjestetaan"
   );
 
   // 3. OPETUSKIELET
@@ -134,7 +139,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetuskieli"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
@@ -157,6 +164,7 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
@@ -180,6 +188,7 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
+    lupa.maaraykset,
     kohteet
   );
 
@@ -202,7 +211,8 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
-    kohteet
+    kohteet,
+    koulutustyyppi
   );
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
@@ -223,13 +233,22 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
-    locale,
-    kohteet
+    lupa.maaraykset,
+    kohteet,
+    locale
+  );
+
+  /** Luodaan rajoitepoistoihin liittyvät Backend muutosobjektit */
+  const rajoitepoistot = createBeObjsForRajoitepoistot(
+    changeObjects.rajoitepoistot,
+    lupa.maaraykset,
+    kohteet,
+    maaraystyypit
   );
 
   let objectToSave = {
     alkupera,
-    koulutustyyppi: koulutustyypitMap.ESI_JA_PERUSOPETUS,
+    koulutustyyppi,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,
@@ -252,7 +271,8 @@ export async function createObjectToSave(
       opetus,
       opetuskielet,
       opetustaAntavatKunnat,
-      opiskelijamaarat
+      opiskelijamaarat,
+      rajoitepoistot
     ]),
     uuid
   };

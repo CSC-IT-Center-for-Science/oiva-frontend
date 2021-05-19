@@ -1,5 +1,5 @@
 import { isAdded, isRemoved } from "css/label";
-import { find, flatten, map, path, pathEq, propEq } from "ramda";
+import { find, flatten, map, path, pathEq, propEq, concat } from "ramda";
 import { __ } from "i18n-for-browser";
 import { getLisatiedotFromStorage } from "helpers/lisatiedot";
 import { getAnchorPart } from "utils/common";
@@ -14,71 +14,127 @@ export async function getValtakunnallinenKehittamistehtavalomake(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
     lisatiedot || []
   );
-
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);
-
-  return flatten(
-    [
-      map(checkboxObjSection4 => {
-        return {
-          anchor: getAnchorPart(checkboxObjSection4.anchor, 1),
-          components: [
-            {
-              anchor: "valintaelementti",
-              name: "CheckboxWithLabel",
-              properties: {
-                // TODO: huomioidaan määräys asetettaessa oletusarvoa isChecked
-                isChecked: false,
-                isIndeterminate: false,
-                isPreviewModeOn,
-                isReadOnly: _isReadOnly,
-                labelStyles: {
-                  addition: isAdded,
-                  removal: isRemoved
-                },
-                title: path(["properties", "title"], checkboxObjSection4)
-              }
-            }
-          ]
-        };
-      }, checkboxStatesSection4),
-      {
-        anchor: "valtakunnalliset-kehittamistehtavat",
-        layout: { margins: { top: "large" } },
-        components: [
-          {
-            anchor: "lisatiedot-info",
-            name: "StatusTextRow",
-            styleClasses: ["pt-8", "border-t"],
-            properties: {
-              title: __("common.lisatiedotInfo")
-            }
+  let kehittamistehtavatStructure = [
+    {
+      anchor: "info",
+      components: [
+        {
+          anchor: "valinta",
+          layout: { margins: { top: "large" } },
+          name: "StatusTextRow",
+          styleClasses: ["font-medium", "pb-2"],
+          properties: {
+            title: __("education.valtakunnallinenKehittamistehtavaInfo")
           }
-        ]
-      },
-      lisatiedotObj
-        ? {
-            anchor: "lisatiedot",
+        }
+      ]
+    }
+  ];
+  if (checkboxStatesSection4.length > 0) {
+    kehittamistehtavatStructure = flatten(
+      concat(kehittamistehtavatStructure, [
+        map(checkboxObjSection4 => {
+          const anchor = `${getAnchorPart(
+            checkboxObjSection4.anchor,
+            1
+          )}.${getAnchorPart(checkboxObjSection4.anchor, 2)}`;
+          const kuvausNro = getAnchorPart(checkboxObjSection4.anchor, 2);
+
+          const hasMaarays = !!find(
+            maarays =>
+              path(["meta", "isValtakunnallinenKehitystehtava"], maarays) &&
+              path(["meta", "ankkuri"], maarays) === kuvausNro &&
+              pathEq(
+                ["properties", "forChangeObject", "koodiarvo"],
+                maarays.koodiarvo,
+                checkboxObjSection4
+              ),
+            maaraykset
+          );
+
+          return {
+            anchor,
             components: [
               {
-                anchor: lisatiedotObj.koodiarvo,
-                name: "TextBox",
+                anchor: "valintaelementti",
+                name: "CheckboxWithLabel",
                 properties: {
-                  forChangeObject: {
-                    koodiarvo: lisatiedotObj.koodiarvo,
-                    koodisto: lisatiedotObj.koodisto,
-                    versio: lisatiedotObj.versio,
-                    voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
-                  },
+                  isChecked: hasMaarays,
+                  isIndeterminate: false,
                   isPreviewModeOn,
                   isReadOnly: _isReadOnly,
-                  title: __("common.lisatiedot"),
-                  value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
+                  labelStyles: {
+                    addition: isAdded,
+                    removal: isRemoved
+                  },
+                  title: path(["properties", "value"], checkboxObjSection4)
                 }
               }
             ]
+          };
+        }, checkboxStatesSection4)
+      ])
+    );
+  } else {
+    kehittamistehtavatStructure = flatten(
+      concat(kehittamistehtavatStructure, [
+        {
+          anchor: "info",
+          components: [
+            {
+              anchor: "valinta",
+              name: "StatusTextRow",
+              properties: {
+                title: __("education.valtakunnallinenKehittamistehtavaInfo2")
+              }
+            }
+          ]
+        }
+      ])
+    );
+  }
+  let lisatiedotStructure = flatten([
+    {
+      anchor: "valtakunnalliset-kehittamistehtavat",
+      components: [
+        {
+          anchor: "lisatiedot-info",
+          name: "StatusTextRow",
+          properties: {
+            title: __("common.lisatiedotInfo")
           }
-        : null
-    ].filter(Boolean)
+        }
+      ],
+      layout: { margins: { top: "large" } },
+      styleClasses: ["mt-10", "pt-10", "border-t"]
+    },
+    lisatiedotObj
+      ? {
+          anchor: "lisatiedot",
+          components: [
+            {
+              anchor: lisatiedotObj.koodiarvo,
+              name: "TextBox",
+              properties: {
+                forChangeObject: {
+                  koodiarvo: lisatiedotObj.koodiarvo,
+                  koodisto: lisatiedotObj.koodisto,
+                  versio: lisatiedotObj.versio,
+                  voimassaAlkuPvm: lisatiedotObj.voimassaAlkuPvm
+                },
+                isPreviewModeOn,
+                isReadOnly: _isReadOnly,
+                title: __("common.lisatiedot"),
+                value: lisatietomaarays ? lisatietomaarays.meta.arvo : ""
+              }
+            }
+          ]
+        }
+      : null
+  ]);
+
+  return flatten([kehittamistehtavatStructure, lisatiedotStructure]).filter(
+    Boolean
   );
 }

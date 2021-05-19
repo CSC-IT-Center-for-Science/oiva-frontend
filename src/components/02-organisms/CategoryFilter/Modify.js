@@ -543,7 +543,7 @@ const Modify = React.memo(
           }
           return okToList
             ? {
-                label: metadata.nimi,
+                label: metadata ? metadata.nimi : "No name",
                 value: option.koodiarvo,
                 provinceKey,
                 isKunta
@@ -551,6 +551,7 @@ const Modify = React.memo(
             : null;
         }, options).filter(Boolean);
       }
+
       const valittavissaOlevat = {
         kunnat: getValittavissaOlevat(municipalities, true, selectedLocations),
         maakunnat: getValittavissaOlevat(provincesWithoutMunicipalities, false)

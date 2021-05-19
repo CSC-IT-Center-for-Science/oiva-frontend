@@ -9,6 +9,7 @@ import {
   path,
   pathEq,
   propEq,
+  sortBy,
   toUpper
 } from "ramda";
 import { useIntl } from "react-intl";
@@ -17,6 +18,7 @@ import { getPOMuutEhdotFromStorage } from "helpers/poMuutEhdot";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "utils/rajoitteetUtils";
 import { getLocalizedProperty } from "services/lomakkeet/utils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
@@ -33,14 +35,18 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
       });
   }, []);
 
-  const muutEhdotMaaraykset = filter(
-    maarays =>
-      pathEq(
-        ["kohde", "tunniste"],
-        "muutkoulutuksenjarjestamiseenliittyvatehdot",
-        maarays
-      ) && maarays.koodisto === "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
-    maaraykset
+  const muutEhdotMaaraykset = sortBy(
+    m => parseFloat(`${m.koodiarvo}.${path(["meta", "ankkuri"], m)}`),
+    filter(
+      maarays =>
+        pathEq(
+          ["kohde", "tunniste"],
+          "muutkoulutuksenjarjestamiseenliittyvatehdot",
+          maarays
+        ) &&
+        maarays.koodisto === "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
+      maaraykset
+    )
   );
 
   const lisatietomaarays = find(
@@ -92,7 +98,7 @@ export default function PoOpetuksenMuutEhdotHtml({ maaraykset }) {
           return result;
         }, muutEhdotMaaraykset)}
       </ul>
-      {lisatietomaarays ? lisatietomaarays.meta.arvo : null}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

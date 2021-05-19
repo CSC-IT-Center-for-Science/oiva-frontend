@@ -53,7 +53,7 @@ const WizardActions = ({
         </div>
         <SimpleButton
           color="primary"
-          disabled={!isSavingEnabled}
+          isDisabled={!isSavingEnabled}
           className="button-right save"
           onClick={onSave}
           text={formatMessage(wizardMessages.saveDraft)}

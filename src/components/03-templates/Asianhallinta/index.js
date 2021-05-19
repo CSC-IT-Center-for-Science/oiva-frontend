@@ -16,7 +16,12 @@ import esiJaPerusopetus from "i18n/definitions/esiJaPerusopetus";
 import lukiokoulutus from "i18n/definitions/lukiokoulutus";
 import ammatillinenKoulutus from "i18n/definitions/ammatillinenKoulutus";
 
-const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
+const Asianhallinta = ({
+  koulutusmuoto,
+  user,
+  UusiAsiaEsidialog,
+  WizardContainer
+}) => {
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
 
@@ -95,7 +100,13 @@ const Asianhallinta = ({ koulutusmuoto, user, WizardContainer }) => {
             <Route
               authenticated={!!user}
               path={AppRoute.Asianhallinta}
-              render={() => <Asiat koulutusmuoto={koulutusmuoto} user={user} />}
+              render={() => (
+                <Asiat
+                  koulutusmuoto={koulutusmuoto}
+                  user={user}
+                  UusiAsiaEsidialog={UusiAsiaEsidialog}
+                />
+              )}
             />
           )}
           <Route path="*">

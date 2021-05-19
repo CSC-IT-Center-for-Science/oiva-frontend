@@ -34,7 +34,7 @@ const WizardContainer = ({
 }) => {
   let history = useHistory();
   const { formatMessage, locale } = useIntl();
-  const { id, uuid } = useParams();
+  const { id, language, uuid } = useParams();
   const [
     { isPreviewModeOn },
     { initializeChanges, setPreviewMode }
@@ -71,6 +71,14 @@ const WizardContainer = ({
   });
   const [rajoitteetCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "rajoitteet"
+  });
+  const [
+    valtakunnallisetKehittamistehtavatCO
+  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "valtakunnallisetKehittamistehtavat"
+  });
+  const [rajoitepoistotCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
+    anchor: "rajoitepoistot"
   });
 
   useEffect(() => {
@@ -109,13 +117,14 @@ const WizardContainer = ({
   const steps = null;
 
   const onNewDocSave = useCallback(
-    uuid => {
+    (uuid, language) => {
       /**
        * User is redirected to the url of the saved document.
        */
       const url = localizeRouteKey(locale, AppRoute.Hakemus, formatMessage, {
         id,
         koulutusmuoto: koulutusmuoto.kebabCase,
+        language,
         page: 1,
         uuid
       });
@@ -166,11 +175,14 @@ const WizardContainer = ({
             opiskelijamaarat: opiskelijamaaratCo,
             paatoksentiedot: paatoksentiedotCo,
             rajoitteet: rajoitteetCO,
-            toimintaalue: toimintaalueCO
+            rajoitepoistot: rajoitepoistotCO,
+            toimintaalue: toimintaalueCO,
+            valtakunnallisetKehittamistehtavat: valtakunnallisetKehittamistehtavatCO
           },
           uuid,
           kohteet,
           maaraystyypit,
+          language,
           "ESITTELIJA"
         )
       );
@@ -187,7 +199,7 @@ const WizardContainer = ({
         if (!!muutospyynto && prop("uuid", muutospyynto)) {
           if (!uuid && !fromDialog) {
             // Jos kyseessä on ensimmäinen tallennus...
-            onNewDocSave(muutospyynto.uuid);
+            onNewDocSave(muutospyynto.uuid, language);
           } else {
             /**
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
@@ -204,6 +216,7 @@ const WizardContainer = ({
     [
       erityisetKoulutustehtavatCO,
       initializeChanges,
+      language,
       locale,
       kohteet,
       viimeisinLupa,
@@ -219,7 +232,9 @@ const WizardContainer = ({
       organisaatio,
       paatoksentiedotCo,
       rajoitteetCO,
+      rajoitepoistotCO,
       toimintaalueCO,
+      valtakunnallisetKehittamistehtavatCO,
       uuid
     ]
   );
@@ -230,9 +245,11 @@ const WizardContainer = ({
         <LupanakymaA
           isPreviewModeOn={false}
           isRestrictionsModeOn={true}
+          koulutustyyppi={koulutusmuoto.koulutustyyppi}
           lupakohteet={lupakohteet}
           maaraykset={viimeisinLupa.maaraykset}
           valtakunnallinenMaarays={valtakunnallinenMaarays}
+          rajoitemaaraykset={viimeisinLupa.rajoitteet}
         />
       }
       onAction={onAction}

@@ -45,6 +45,7 @@ import { initializeKunta } from "helpers/kunnat";
 import { initializeLisamaare } from "helpers/kujalisamaareet";
 import { sortArticlesByHuomioitavaKoodi } from "services/lomakkeet/utils";
 import { initializeOikeudet } from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
+import { initializeRajoitteet } from "./helpers/alimaaraykset";
 
 const acceptJSON = {
   headers: { Accept: "application/json" }
@@ -104,7 +105,8 @@ const fetchBaseData = async (
   lupaUuid,
   oid,
   koulutustyyppi,
-  oppilaitostyyppi
+  oppilaitostyyppi,
+  language
 ) => {
   const localeUpper = toUpper(locale);
   /**
@@ -274,7 +276,8 @@ const fetchBaseData = async (
       koulutustyyppi
         ? `${backendRoutes.organisaatiot.path}?koulutustyyppi=${koulutustyyppi}`
         : backendRoutes.organisaatiot.path,
-      keys
+      keys,
+      backendRoutes.organisaatiot.minimumTimeBetweenFetchingInMinutes
     ),
     poErityisetKoulutustehtavat: await getRaw(
       "poErityisetKoulutustehtavat",
@@ -303,8 +306,8 @@ const fetchBaseData = async (
       `${backendRoutes.viimeisinLupa.path}${oid}${
         backendRoutes.viimeisinLupa.postfix
       }?with=all&useKoodistoVersions=false${
-        koulutustyyppi ? "&koulutustyyppi=" + koulutustyyppi : ""
-      }`,
+        koulutustyyppi ? `&koulutustyyppi=${koulutustyyppi}` : ""
+      }${language ? `&kieli=${language}` : ""}`,
       keys,
       backendRoutes.viimeisinLupa.minimumTimeBetweenFetchingInMinutes
     )
@@ -772,7 +775,11 @@ const fetchBaseData = async (
       )
     : undefined;
 
-  result.viimeisinLupa = raw.viimeisinLupa || {};
+  result.viimeisinLupa = assoc(
+    "rajoitteet",
+    initializeRajoitteet(prop("maaraykset", raw.viimeisinLupa)),
+    raw.viimeisinLupa
+  );
 
   result.voimassaOlevaLupa = raw.lupaByUuid || raw.lupaByOid;
 
@@ -791,7 +798,7 @@ const BaseData = ({
   oppilaitostyyppi,
   oid
 }) => {
-  const { id } = useParams();
+  const { id, language } = useParams();
   const [baseData, setBaseData] = useState({});
   const location = useLocation();
   const lupaUuid =
@@ -812,7 +819,8 @@ const BaseData = ({
       lupaUuid,
       lupaUuid ? oid : id,
       koulutustyyppi,
-      oppilaitostyyppi
+      oppilaitostyyppi,
+      koulutustyyppi === "2" && language
     ).then(result => {
       if (isSubscribed) {
         setBaseData(result);
@@ -824,6 +832,7 @@ const BaseData = ({
     locale,
     lupaUuid,
     id,
+    language,
     location.pathname,
     koulutustyyppi,
     oppilaitostyyppi,

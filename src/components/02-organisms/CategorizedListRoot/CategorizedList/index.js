@@ -6,13 +6,13 @@ import StatusTextRow from "../../../01-molecules/StatusTextRow";
 import Autocomplete from "../../../02-organisms/Autocomplete";
 import Multiselect from "../../../02-organisms/Multiselect";
 import Difference from "../../../02-organisms/Difference";
-import SimpleButton from "../../../00-atoms/SimpleButton";
+import SimpleButton from "../../../00-atoms/SimpleButton/index";
 import { heights } from "../../../../css/autocomplete";
 import { flattenObj, removeAnchorPart } from "../../../../utils/common";
 import Datepicker from "../../../00-atoms/Datepicker";
 import Dropdown from "../../../00-atoms/Dropdown";
 import AlertMessage from "../../../00-atoms/Alert";
-import TextBox from "../../../00-atoms/TextBox";
+import TextBox from "../../../00-atoms/TextBox/index";
 import Input from "../../../00-atoms/Input";
 import Attachments from "../../Attachments";
 import * as R from "ramda";
@@ -513,7 +513,12 @@ const CategorizedList = props => {
                                 onChanges={handleChanges}
                                 onFocus={onFocus}
                                 placeholder={propsObj.placeholder}
-                                shouldHaveFocus={props.focusOn === fullAnchor}
+                                shouldHaveFocusAt={
+                                  props.focusOn &&
+                                  R.propEq("anchor", fullAnchor, props.focusOn)
+                                    ? R.prop("focusSetAt", props.focusOn)
+                                    : undefined
+                                }
                                 title={propsObj.title}
                                 tooltip={propsObj.tooltip}
                                 value={propsObj.value}
@@ -810,30 +815,57 @@ const CategorizedList = props => {
                     {component.name === "HtmlContent" && (
                       <HtmlContent content={propsObj.content} />
                     )}
-                    {component.name === "SimpleButton" && (
-                      <div className={`${styleClassesStr} flex-2`}>
-                        <SimpleButton
-                          forChangeObject={component.properties.forChangeObject}
-                          fullAnchor={fullAnchor}
-                          id={fullAnchor}
-                          isReadOnly={propsObj.isReadOnly}
-                          text={propsObj.text}
-                          variant={propsObj.variant}
-                          icon={propsObj.icon}
-                          iconContainerStyles={propsObj.iconContainerStyles}
-                          iconStyles={propsObj.iconStyles}
-                          onClick={component.onClick}
-                          payload={{
-                            anchor,
-                            categories: category.categories,
-                            component,
-                            fullPath,
-                            parent: props.parent,
-                            rootPath: props.rootPath
-                          }}
-                        />
-                      </div>
-                    )}
+                    {component.name === "SimpleButton"
+                      ? (() => {
+                          const isDisabled =
+                            parentComponent &&
+                            R.includes(parentComponent.name, [
+                              "CheckboxWithLabel",
+                              "RadioButtonWithLabel"
+                            ]) &&
+                            ((!parentComponent.properties.isChecked &&
+                              R.isEmpty(parentChangeObj.properties)) ||
+                              parentChangeObj.properties.isChecked === false);
+                          return (
+                            <div className={`${styleClassesStr} flex-2`}>
+                              <SimpleButton
+                                forChangeObject={
+                                  component.properties.forChangeObject
+                                }
+                                fullAnchor={fullAnchor}
+                                id={fullAnchor}
+                                isDisabled={isDisabled}
+                                isHidden={isDisabled}
+                                isReadOnly={propsObj.isReadOnly}
+                                color={propsObj.color}
+                                text={propsObj.text}
+                                variant={propsObj.variant}
+                                buttonStyles={propsObj.buttonStyles}
+                                icon={propsObj.icon}
+                                iconContainerStyles={
+                                  propsObj.iconContainerStyles
+                                }
+                                iconStyles={propsObj.iconStyles}
+                                onClick={component.onClick}
+                                payload={{
+                                  anchor,
+                                  categories: category.categories,
+                                  component,
+                                  fullPath,
+                                  parent: props.parent,
+                                  rootPath: props.rootPath
+                                }}
+                                shouldHaveFocusAt={
+                                  props.focusOn &&
+                                  R.propEq("anchor", fullAnchor, props.focusOn)
+                                    ? R.prop("focusSetAt", props.focusOn)
+                                    : undefined
+                                }
+                              />
+                            </div>
+                          );
+                        })()
+                      : null}
                     {component.name === "Datepicker" && (
                       <div className={styleClassesStr}>
                         <Datepicker
@@ -912,6 +944,7 @@ const CategorizedList = props => {
                         isBorderVisible={propsObj.isBorderVisible}
                         locale={propsObj.locale}
                         rajoitteet={propsObj.rajoitteet}
+                        rajoitemaaraykset={propsObj.rajoitemaaraykset}
                         onModifyRestriction={propsObj.onModifyRestriction}
                         onRemoveRestriction={propsObj.onRemoveRestriction}
                       />
@@ -965,7 +998,7 @@ CategorizedList.defaultProps = {
 
 CategorizedList.propTypes = {
   anchor: PropTypes.string,
-  focusOn: PropTypes.string,
+  focusOn: PropTypes.object,
   categories: PropTypes.array,
   changes: PropTypes.array,
   debug: PropTypes.bool,

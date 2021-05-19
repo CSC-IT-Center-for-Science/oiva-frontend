@@ -7,14 +7,13 @@ import {
   compose,
   concat,
   difference,
-  endsWith,
   filter,
   flatten,
   groupBy,
-  head,
   includes,
   isNil,
   join,
+  last,
   length,
   map,
   max,
@@ -27,6 +26,7 @@ import {
   propEq,
   reduce,
   reject,
+  sortBy,
   split,
   startsWith,
   values
@@ -37,7 +37,6 @@ import {
   recursiveTreeShake,
   replaceAnchorPartWith
 } from "utils/common";
-// import { muutokset } from "scenes/Koulutusmuodot/AmmatillinenKoulutus/sivun1tietojaTaytettyKattavasti";
 
 const removeUnderRemoval = () => ({ getState, setState }) => {
   const currentState = getState();
@@ -56,7 +55,9 @@ const removeUnsavedChanges = () => ({ getState, setState }) => {
 };
 
 const setFocusOn = anchor => ({ getState, setState }) => {
-  setState(assoc("focusOn", anchor, getState()));
+  setState(
+    assoc("focusOn", { anchor, focusSetAt: new Date().getTime() }, getState())
+  );
 };
 
 const setLatestChanges = changeObjects => ({ getState, setState }) => {
@@ -93,7 +94,6 @@ const suljeAlirajoitedialogi = () => ({ getState, setState }) => {
 };
 
 const Store = createStore({
-  // initialState: muutokset,
   initialState: {
     changeObjects: {
       saved: {},
@@ -204,7 +204,7 @@ const Store = createStore({
     /**
      * -------------------- DYNAMIC TEXTBOXES --------------------
      */
-    createTextBoxChangeObject: (sectionId, koodiarvo) => ({
+    createTextBoxChangeObject: (sectionId, koodiarvo, ankkuri, value = "") => ({
       getState,
       dispatch,
       setState
@@ -212,44 +212,21 @@ const Store = createStore({
       if (sectionId) {
         const splittedSectionId = split("_", sectionId);
         const currentChangeObjects = getState().changeObjects;
-        const textBoxChangeObjects = filter(
-          changeObj =>
-            startsWith(`${sectionId}.${koodiarvo}`, changeObj.anchor) &&
-            endsWith(sectionId === 'toimintaalue' ? ".lisatiedot" : ".kuvaus", changeObj.anchor) &&
-            !startsWith(`${sectionId}.${koodiarvo}.0`, changeObj.anchor),
-          concat(
-            (currentChangeObjects.unsaved && currentChangeObjects.unsaved[sectionId]) || [],
-            (currentChangeObjects.saved && currentChangeObjects.saved[sectionId]) || []
-          ) || []
-        );
-
-        const textBoxNumber =
-          length(textBoxChangeObjects) > 0
-            ? reduce(
-                max,
-                -Infinity,
-                map(changeObj => {
-                  if(sectionId === 'toimintaalue') {
-                    return getAnchorPart(changeObj.anchor, 3) === "lisatiedot" ? 0 : parseInt(getAnchorPart(changeObj.anchor, 3), 10);
-                  }
-                  return parseInt(getAnchorPart(changeObj.anchor, 2), 10);
-                }, textBoxChangeObjects)
-              ) + 1
-            : 1;
 
         /**
          * Luodaan uusi muutosobjekti ja annetaan sille focus-ominaisuus,
          * jotta muutosobjektin pohjalta lomakepalvelun puolella luotava
          * kenttä olisi automaattisesti fokusoitu.
          */
-        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`;
+        const anchorOfTextBoxChangeObj = `${sectionId}.${koodiarvo}.${ankkuri}.kuvaus`;
         let nextChangeObjects = assocPath(
           prepend("unsaved", splittedSectionId),
           append(
             {
-              anchor: `${sectionId}.${koodiarvo}.${textBoxNumber}.${sectionId === 'toimintaalue' ? "lisatiedot" : "kuvaus"}`,
+              anchor: `${sectionId}.${koodiarvo}.${ankkuri}.kuvaus`,
               properties: {
-                value: ""
+                metadata: { ankkuri, koodiarvo },
+                value: value ? value : ""
               }
             },
             path(splittedSectionId, currentChangeObjects.unsaved) || []
@@ -413,17 +390,35 @@ const Store = createStore({
         dispatch
       );
 
-      const focusWhenDeleted = head(
-        map(changeObj => {
+      const changeObjectsSortedByRemovalDate = sortBy(
+        path(["properties", "dateOfRemoval"]),
+        filter(changeObj => {
           const anchor = path(
             ["properties", "metadata", "focusWhenDeleted"],
             changeObj
           );
-          return changeObj.properties.deleteElement && anchor ? anchor : null;
-        }, changeObjects).filter(Boolean)
+          return changeObj.properties.isDeleted && anchor;
+        }, changeObjects)
       );
 
-      if (focusWhenDeleted) {
+      const theMostRecentChangeObjWithFocusWhenDeleted = last(
+        changeObjectsSortedByRemovalDate
+      );
+
+      const focusWhenDeleted = path(
+        ["properties", "metadata", "focusWhenDeleted"],
+        theMostRecentChangeObjWithFocusWhenDeleted
+      );
+
+      const latestFocusSetAt = prop("focusSetAt", getState().focusOn);
+
+      if (
+        !latestFocusSetAt ||
+        path(
+          ["properties", "dateOfRemoval"],
+          theMostRecentChangeObjWithFocusWhenDeleted
+        ) > latestFocusSetAt
+      ) {
         dispatch(setFocusOn(focusWhenDeleted));
       }
 

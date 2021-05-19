@@ -6,8 +6,7 @@ import { COLORS, MEDIA_QUERIES } from "modules/styles";
 import AsiakirjatItem from "./AsiakirjatItem";
 import common from "i18n/definitions/common";
 import PropTypes from "prop-types";
-import Moment from "react-moment";
-import Table from "components/02-organisms/Table";
+import Table from "components/02-organisms/Table/index";
 import { downloadFileFn, localizeRouteKey } from "utils/common";
 import { useIntl } from "react-intl";
 import { useMuutospyynnonLiitteet } from "stores/muutospyynnonLiitteet";
@@ -28,6 +27,8 @@ import ConfirmDialog from "../ConfirmDialog";
 import * as R from "ramda";
 import Typography from "@material-ui/core/Typography";
 import { AppRoute } from "const/index";
+import moment from "moment";
+import languages from "i18n/definitions/languages";
 
 const WrapTable = styled.div``;
 
@@ -169,11 +170,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
             R.prop("nimi", liite),
             intl.formatMessage(common.tilaValmis),
             liite.luoja,
-            liite.luontipvm ? (
-              <Moment format="D.M.YYYY">{liite.luontipvm}</Moment>
-            ) : (
-              ""
-            )
+            liite.luontipvm ? moment(liite.luontipvm).format("D.M.YYYY") : ""
           ],
           fileLinkFn: () => {
             muutospyyntoActions.download(
@@ -205,16 +202,15 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           muutospyyntoActions.download(path, intl.formatMessage);
         }
       },
+      kieli: muutospyynto.data.kieli,
       openInNewWindow: true,
       items: [
         intl.formatMessage(common.application),
         ...baseRow,
         muutospyynto.data.luoja,
-        muutospyynto.data.luontipvm ? (
-          <Moment format="D.M.YYYY">{muutospyynto.data.luontipvm}</Moment>
-        ) : (
-          ""
-        )
+        muutospyynto.data.luontipvm
+          ? moment(muutospyynto.data.luontipvm).format("D.M.YYYY")
+          : ""
       ],
       tila: muutospyynto.data ? muutospyynto.data.tila : ""
     };
@@ -290,6 +286,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                       {
                         id: jarjestaja.oid,
                         koulutusmuoto: koulutusmuoto.kebabCase,
+                        language: row.kieli || "fi",
                         page: 1,
                         uuid: row.uuid
                       }
@@ -311,7 +308,13 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   };
                 },
                 [
-                  { text: row.items[0] },
+                  {
+                    text:
+                      row.items[0] +
+                      (row.kieli
+                        ? ` (${intl.formatMessage(languages.ruotsinkielinen)})`
+                        : "")
+                  },
                   { text: row.items[1] },
                   { text: row.items[2] },
                   { text: row.items[3] }
@@ -396,11 +399,11 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 
   if (muutospyyntoLoaded && muutospyynto.data) {
     return (
-      <div className="flex flex-col flex-1">
+      <React.Fragment>
         <Helmet htmlAttributes={{ lang: intl.locale }}>
           <title>{`Oiva | ${t(common.asianAsiakirjat)}`}</title>
         </Helmet>
-        <div className="flex flex-col justify-end w-full py-8 mx-auto px-3 lg:px-8">
+        <div className="flex flex-col justify-end py-8 mx-auto w-4/5 max-w-8xl">
           <Link
             className="cursor-pointer"
             style={{ textDecoration: "underline" }}
@@ -438,8 +441,8 @@ const Asiakirjat = ({ koulutusmuoto }) => {
           </div>
         </div>
         <div className="flex-1 flex w-full">
-          <div className="flex-1 flex flex-col w-full mx-auto px-3 lg:px-8 pb-12">
-            <span>
+          <div className="flex-1 flex flex-col w-full mx-auto">
+            <div className="mx-auto w-4/5 max-w-8xl">
               <Typography component="h4" variant="h4" className="float-left">
                 {t(common.asianAsiakirjat)}
               </Typography>
@@ -472,7 +475,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                   fileType={"paatosKirje"}
                 />
               </Typography>
-            </span>
+            </div>
             {isDeleteLiiteDialogVisible && (
               <ConfirmDialog
                 isConfirmDialogVisible={isDeleteLiiteDialogVisible}
@@ -503,39 +506,43 @@ const Asiakirjat = ({ koulutusmuoto }) => {
                 onOK={setStateOfMuutospyyntoAsEsittelyssa}
               ></PDFAndStateDialog>
             )}
-            <div
-              className="flex-1 bg-white"
-              style={{ border: "0.05rem solid #E3E3E3" }}
-            >
-              <WrapTable>
-                <Media
-                  query={MEDIA_QUERIES.MOBILE}
-                  render={() => (
-                    <OldTable role="table">
-                      <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
-                    </OldTable>
-                  )}
-                />
-                <Media
-                  query={MEDIA_QUERIES.TABLET_MIN}
-                  render={() => (
-                    <div
-                      style={{
-                        borderBottom: "0.05rem solid #E3E3E3"
-                      }}
-                    >
-                      <Table
-                        structure={table}
-                        sortedBy={{ columnIndex: 3, order: "descending" }}
-                      />
-                    </div>
-                  )}
-                />
-              </WrapTable>
+            <div className="flex-1 flex bg-gray-100 border-t border-solid border-gray-300">
+              <div className="flex mx-auto w-4/5 max-w-8xl py-12">
+                <div
+                  className="flex-1 bg-white"
+                  style={{ border: "0.05rem solid #E3E3E3" }}
+                >
+                  <WrapTable>
+                    <Media
+                      query={MEDIA_QUERIES.MOBILE}
+                      render={() => (
+                        <OldTable role="table">
+                          <Tbody role="rowgroup">{asiakirjatList()}</Tbody>
+                        </OldTable>
+                      )}
+                    />
+                    <Media
+                      query={MEDIA_QUERIES.TABLET_MIN}
+                      render={() => (
+                        <div
+                          style={{
+                            borderBottom: "0.05rem solid #E3E3E3"
+                          }}
+                        >
+                          <Table
+                            structure={table}
+                            sortedBy={{ columnIndex: 3, order: "desc" }}
+                          />
+                        </div>
+                      )}
+                    />
+                  </WrapTable>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   } else if (muutospyyntoLoaded && !muutospyynto.data) {
     return (
@@ -549,6 +556,7 @@ const Asiakirjat = ({ koulutusmuoto }) => {
 };
 
 Asiakirjat.propTypes = {
+  // Asiakirjan UUID
   uuid: PropTypes.object,
   koulutusmuoto: PropTypes.object
 };

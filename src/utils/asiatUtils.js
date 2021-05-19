@@ -72,14 +72,18 @@ export const generateAsiaTableRows = (
   return R.addIndex(R.map)(
     (col, j) => {
       return {
-        truncate: true,
+        truncate: false,
         styleClasses: [tableColumnSetup[j].widthClass],
         text: col.text
       };
     },
     [
       { text: row.asianumero || row.diaarinumero },
-      { text: formatMessage(common["asiaTypes.lupaChange"]) }, // Only one type known in system at this juncture
+      {
+        text:
+          formatMessage(common["asiaTypes.lupaChange"]) +
+          (row.kieli && row.kieli === "sv" ? " (SV)" : "")
+      }, // Only one type known in system at this juncture
       { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
       { text: getMaakuntaNimiFromHakemus(row, locale) },
       {

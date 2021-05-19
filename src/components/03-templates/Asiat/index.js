@@ -18,7 +18,7 @@ import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
 import { LocalizedSwitch } from "modules/i18n/index";
 import AvoimetAsiat from "../AvoimetAsiat/index";
-import { startsWith } from "ramda";
+import { prop, startsWith } from "ramda";
 import Asiakirjat from "components/02-organisms/Asiakirjat/index";
 
 const OivaTab = withStyles(theme => ({
@@ -51,7 +51,12 @@ const OivaTabs = withStyles(() => ({
 
 const esidialoginHakuavaimet = ["organisaatiot"];
 
-const Asiat = ({ koulutusmuoto, user }) => {
+const Asiat = props => {
+  const {
+    koulutusmuoto,
+    user,
+    UusiAsiaEsidialog: ParametrinaAnnettuEsidialog
+  } = props;
   const history = useHistory();
   const { formatMessage, locale } = useIntl();
   const location = useLocation();
@@ -105,9 +110,35 @@ const Asiat = ({ koulutusmuoto, user }) => {
           locale={locale}
           koulutustyyppi={koulutusmuoto.koulutustyyppi}
           render={_props => {
-            return (
+            // Voi olla, että esidialogi on annettu koulutusmuodon
+            // tiedoissa (src/scenes/Koulutusmuodot/[koulutusmuoto]/index),
+            // jolloin käytetään annettua esidialogia. Muutoin käytetään
+            // koulutusmuodoille yhteistä esidialogia.
+            return ParametrinaAnnettuEsidialog ? (
+              <ParametrinaAnnettuEsidialog
+                isVisible={isEsidialogVisible}
+                koulutustyyppi={koulutusmuoto.koulutustyyppi}
+                onClose={() => setIsEsidialogVisible(false)}
+                organisations={_props.organisaatiot}
+                onSelect={(selectedItem, selectedLanguage) => {
+                  const url = localizeRouteKey(
+                    locale,
+                    AppRoute.UusiHakemus,
+                    formatMessage,
+                    {
+                      id: selectedItem.value,
+                      koulutusmuoto: koulutusmuoto.kebabCase,
+                      page: 1,
+                      language: prop("value", selectedLanguage)
+                    }
+                  );
+                  history.push(url);
+                }}
+              ></ParametrinaAnnettuEsidialog>
+            ) : (
               <UusiAsiaEsidialog
                 isVisible={isEsidialogVisible}
+                koulutustyyppi={koulutusmuoto.koulutustyyppi}
                 onClose={() => setIsEsidialogVisible(false)}
                 organisations={_props.organisaatiot}
                 onSelect={selectedItem =>
@@ -119,7 +150,8 @@ const Asiat = ({ koulutusmuoto, user }) => {
                       {
                         id: selectedItem.value,
                         koulutusmuoto: koulutusmuoto.kebabCase,
-                        page: 1
+                        page: 1,
+                        language: "fi"
                       }
                     )
                   )

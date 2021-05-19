@@ -4,9 +4,13 @@ import { useIntl } from "react-intl";
 import common from "i18n/definitions/common";
 import wizard from "i18n/definitions/wizard";
 import Lomake from "components/02-organisms/Lomake";
-import { useChangeObjects, useChangeObjectsByAnchorWithoutUnderRemoval } from "stores/muutokset";
+import {
+  useChangeObjects,
+  useChangeObjectsByAnchorWithoutUnderRemoval
+} from "stores/muutokset";
 import equal from "react-fast-compare";
 import * as R from "ramda";
+import { getAnchorPart } from "utils/common";
 
 const constants = {
   formLocation: ["esiJaPerusopetus", "opetustaAntavatKunnat"],
@@ -39,9 +43,7 @@ const OpetustaAntavatKunnat = React.memo(
     );
 
     const kuntamaaraykset = R.filter(maarays => {
-      return (
-        maarays.koodisto === "kunta"
-      );
+      return maarays.koodisto === "kunta";
     }, maaraykset);
 
     const [isEditViewActive, toggleEditView] = useState(false);
@@ -103,8 +105,12 @@ const OpetustaAntavatKunnat = React.memo(
       fiCode !== "FI1";
 
     const onAddButtonClick = useCallback(
-      koodiarvo => {
-        createTextBoxChangeObject(sectionId, koodiarvo);
+      (fromComponent, index) => {
+        createTextBoxChangeObject(
+          sectionId,
+          getAnchorPart(fromComponent.fullAnchor, 1),
+          index
+        );
       },
       [createTextBoxChangeObject, sectionId]
     );
@@ -148,6 +154,7 @@ const OpetustaAntavatKunnat = React.memo(
           maaraykset,
           quickFilterChanges,
           rajoitteet,
+          sectionId,
           valtakunnallinenMaarays
         }}
         functions={{

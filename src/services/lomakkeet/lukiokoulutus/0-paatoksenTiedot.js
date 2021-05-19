@@ -27,6 +27,7 @@ export default async function getPaatoksenTiedot(
   changeObjects
 ) {
   const defaultAsianumero = "";
+  const defaultDiaarinumero = "";
 
   const isAsianumeroFieldEmpty = await isFieldEmpty(
     "paatoksentiedot.asianumero.A",
@@ -63,6 +64,7 @@ export default async function getPaatoksenTiedot(
           {
             anchor: "A",
             name: "Input",
+            styleClasses: ["w-full"],
             properties: {
               isReadOnly,
               isRequired: isDiaarinumeroFieldEmpty,
@@ -75,11 +77,30 @@ export default async function getPaatoksenTiedot(
         ]
       },
       {
+        anchor: "diaarinumero",
+        components: [
+          {
+            anchor: "A",
+            name: "Input",
+            styleClasses: ["w-full"],
+            properties: {
+              isReadOnly,
+              isRequired: isAsianumeroFieldEmpty,
+              isValid,
+              label: __("common.diaarinumero"),
+              type: "text",
+              value: defaultDiaarinumero
+            }
+          }
+        ]
+      },
+      {
         anchor: "paatospaiva",
         components: [
           {
             anchor: "A",
             name: "Datepicker",
+            styleClasses: [""],
             properties: {
               fullWidth: true,
               label: __("common.paatospaiva"),
@@ -105,6 +126,7 @@ export default async function getPaatoksenTiedot(
           {
             anchor: "A",
             name: "Datepicker",
+            styleClasses: [""],
             properties: {
               fullWidth: true,
               label: __("common.voimaantulopaiva"),

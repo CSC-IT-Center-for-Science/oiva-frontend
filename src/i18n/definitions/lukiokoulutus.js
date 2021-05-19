@@ -22,5 +22,10 @@ export default defineMessages({
   paasivunOtsikko: {
     id: "lukiokoulutus.paasivunOtsikko",
     defaultMessage: "Lukiokoulutuksen järjestäjät"
+  },
+  esittelyteksti: {
+    id: "lukiokoulutus.esittelyteksti",
+    defaultMessage:
+      "Tälle sivulle on koottu opetuksen järjestäjän järjestämisluvan perustiedot. Jos järjestäjällä on useampia voimassaolevia lukiokoulutuksen järjestämislupia, on niiden tiedot yhdistetty tälle sivulle. Järjestäjän luvat löytyvät alkuperäisinä kokonaisuudessaan Päätökset-välilehdeltä."
   }
 });

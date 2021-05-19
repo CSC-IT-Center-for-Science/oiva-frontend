@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-  equals,
   filter,
   find,
+  includes,
   map,
   toUpper,
   isEmpty,
@@ -18,6 +18,7 @@ import education from "../../../../i18n/definitions/education";
 import { getKieletOPHFromStorage } from "../../../../helpers/opetuskielet";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
 
 export default function PoOpetuskieletHtml({ maaraykset }) {
@@ -38,7 +39,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
     maarays =>
       pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
-      equals("ensisijaiset", maarays.meta.valikko),
+      includes("ensisijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset
   );
 
@@ -46,7 +47,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
     maarays =>
       pathEq(["kohde", "tunniste"], "opetuskieli", maarays) &&
       maarays.koodisto === "kielikoodistoopetushallinto" &&
-      equals("toissijaiset", maarays.meta.valikko),
+      includes("toissijaiset", maarays.meta.changeObjects[0].anchor),
     maaraykset
   );
 
@@ -72,7 +73,7 @@ export default function PoOpetuskieletHtml({ maaraykset }) {
           </Typography>
         )}
         {getOpetuskieletHtml(toissijaisetOpetuskielet, kieletOPH, locale, intl)}
-        {lisatietomaarays && lisatietomaarays.meta.arvo}
+        <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
       </div>
     )
   );

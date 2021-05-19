@@ -1,4 +1,5 @@
 import {
+  any,
   mapObjIndexed,
   groupBy,
   prop,
@@ -20,12 +21,15 @@ import {
   concat,
   take,
   toLower,
-  drop
+  drop,
+  equals
 } from "ramda";
 import localforage from "localforage";
 import { getLisatiedotFromStorage } from "../lisatiedot";
 import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 import { getLocalizedProperty } from "../../services/lomakkeet/utils";
+import { createMaarayksiaVastenLuodutRajoitteetBEObjects } from "utils/rajoitteetUtils";
+import { getMaarayksetByTunniste } from "helpers/lupa/index";
 
 export const initializeMaarays = (tutkinto, maarays) => {
   return { ...tutkinto, maarays: head(dissoc("aliMaaraykset", maarays)) };
@@ -67,10 +71,16 @@ export const initializeOpetuskielet = (opetuskieletData, maaraykset = []) => {
 
 export const defineBackendChangeObjects = async (
   changeObjects = {},
+  kohde,
   maaraystyypit,
+  lupaMaaraykset,
   locale,
   kohteet
 ) => {
+  const maaraykset = await getMaarayksetByTunniste(
+    kohde.tunniste,
+    lupaMaaraykset
+  );
   const opetuskielet = await getEnsisijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
   const { rajoitteetByRajoiteId } = changeObjects;
@@ -134,45 +144,86 @@ export const defineBackendChangeObjects = async (
       }, rajoitteetByRajoiteId)
     );
 
-    const muutosobjekti = changeObj
-      ? {
-          generatedId: `opetuskielet-${Math.random()}`,
-          kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
-          koodiarvo: toLower(opetuskieli.koodiarvo),
-          koodisto: opetuskieli.koodisto.koodistoUri,
-          kuvaus: getLocalizedProperty(changeObj.metadata, locale, "kuvaus"),
-          maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
-          meta: {
-            changeObjects: concat(
-              [changeObj],
-              take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
-            ),
-            valikko: path(["properties", "metadata", "valikko"], changeObj)
-          },
-          tila: "LISAYS"
-        }
-      : null;
+    const maarays = find(
+      maarays => maarays.koodiarvo.toLowerCase() === opetuskieli.koodiarvo.toLowerCase(),
+      maaraykset
+    );
+
+    const isValikkoChanged = any(change => {
+      return equals(
+        path(["properties", "metadata", "valikko"], change),
+        path(["meta", "valikko"], maarays)
+      );
+    }, opetuskieletChangeObjs);
+
+    let muutosobjekti = null;
+
+    if (changeObj && !maarays) {
+      // Kokonaan uusi kielivalinta
+      muutosobjekti = {
+        generatedId: `opetuskielet-${Math.random()}`,
+        kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
+        koodiarvo: toLower(opetuskieli.koodiarvo),
+        koodisto: opetuskieli.koodisto.koodistoUri,
+        maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+        meta: {
+          changeObjects: concat(
+            [changeObj],
+            take(2, values(rajoitteetByRajoiteIdAndKoodiarvo))
+          ),
+          ...(changeObj ? { valikko: path(["properties", "metadata", "valikko"], changeObj) } : null)
+        },
+        tila: "LISAYS"
+      };
+    } else if (maarays && !changeObj && isValikkoChanged) {
+      // Luvalta löytyvä kielivalinta jonka valikko on muuttunut, mutta ei ole muutosobjektia.
+      muutosobjekti = {
+        generatedId: `opetuskielet-${Math.random()}`,
+        kohde: find(propEq("tunniste", "opetuskieli"), kohteet),
+        koodiarvo: toLower(opetuskieli.koodiarvo),
+        koodisto: opetuskieli.koodisto.koodistoUri,
+        maaraystyyppi: find(propEq("tunniste", "OIKEUS"), maaraystyypit),
+        meta: {
+          changeObjects: opetuskieletChangeObjs,
+          ...(changeObj ? { valikko: path(["properties", "metadata", "valikko"], changeObj) } : null)
+        },
+        maaraysUuid: maarays.uuid,
+        tila: "POISTO"
+      };
+    }
 
     // Muodostetaan tehdyistä rajoittuksista objektit backendiä varten.
     // Linkitetään ensimmäinen rajoitteen osa yllä luotuun muutokseen ja
     // loput toisiinsa "alenevassa polvessa".
-    const alimaaraykset = values(
-      mapObjIndexed(asetukset => {
-        return createAlimaarayksetBEObjects(
-          kohteet,
-          maaraystyypit,
-          muutosobjekti,
-          drop(2, asetukset)
-        );
-      }, rajoitteetByRajoiteIdAndKoodiarvo)
-    );
+    const alimaaraykset = muutosobjekti
+      ? values(
+          mapObjIndexed(asetukset => {
+            return createAlimaarayksetBEObjects(
+              kohteet,
+              maaraystyypit,
+              muutosobjekti,
+              drop(2, asetukset)
+            );
+          }, rajoitteetByRajoiteIdAndKoodiarvo)
+        )
+      : [];
 
     return [muutosobjekti, alimaaraykset];
   }, opetuskielet);
 
-  return flatten([opetuskieliBeChangeObjects, lisatiedotBeChangeObj]).filter(
-    Boolean
+  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetBEObjects(
+    maaraykset,
+    rajoitteetByRajoiteId,
+    kohteet,
+    maaraystyypit,
+    kohde
   );
+
+  return flatten([
+    maarayksiaVastenLuodutRajoitteet,
+    lisatiedotBeChangeObj,
+    opetuskieliBeChangeObjects
+  ]).filter(Boolean);
 };
 
 export function getEnsisijaisetOpetuskieletOPHFromStorage() {

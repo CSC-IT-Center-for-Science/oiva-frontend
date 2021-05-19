@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import { FaPlus } from "react-icons/fa";
 import ClearIcon from "@material-ui/icons/Clear";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const defaultProps = {
   forChangeObject: {},
-  isReadOnly: false,
   text: "[text is missing]",
   variant: "contained",
   color: "primary",
@@ -14,26 +14,35 @@ const defaultProps = {
   disabled: false,
   icon: null,
   iconStyles: {},
-  iconContainerStyles: {}
+  iconContainerStyles: {},
+  isDisabled: false,
+  isHidden: false,
+  isReadOnly: false,
+  shouldHaveFocusAt: null
 };
 
 const SimpleButton = ({
   ariaLabel,
   color = defaultProps.color,
-  disabled = defaultProps.disabled,
   forChangeObject = defaultProps.forChangeObject,
   fullAnchor,
   icon = defaultProps.icon,
   iconContainerStyles = defaultProps.iconContainerStyles,
   iconStyles = defaultProps.iconStyles,
   id,
+  isDisabled = defaultProps.isDisabled,
+  isHidden = defaultProps.isHidden,
   isReadOnly = defaultProps.isReadOnly,
   onClick,
+  shouldHaveFocusAt = defaultProps.shouldHaveFocusAt,
   size = defaultProps.size,
   styleAsALink,
   text = defaultProps.text,
-  variant = defaultProps.variant
+  variant = defaultProps.variant,
+  buttonStyles = defaultProps.buttonStyles
 }) => {
+  const simpleButtonRef = useRef(null);
+
   const baseClasses =
     "inline-block no-underline text-white hover:text-gray-100 normal-case font-normal";
 
@@ -45,24 +54,33 @@ const SimpleButton = ({
     }
   };
 
+  useEffect(() => {
+    if (shouldHaveFocusAt) {
+      simpleButtonRef.current.focus();
+    }
+  }, [shouldHaveFocusAt]);
+
   return (
     <React.Fragment>
-      {!isReadOnly && (
+      {!isReadOnly && !isHidden && (
         <Button
-          id={id}
-          size={size}
-          onClick={handleClick}
-          variant={variant}
+          style={buttonStyles}
+          aria-label={ariaLabel}
           color={color}
+          disabled={isDisabled}
           disableElevation
           disableRipple
-          disabled={disabled}
-          aria-label={ariaLabel}
+          id={id}
+          onClick={handleClick}
+          ref={simpleButtonRef}
+          size={size}
+          variant={variant}
         >
           {icon && (
             <span style={iconContainerStyles}>
               {icon === "FaPlus" && <FaPlus style={iconStyles} />}
               {icon === "ClearIcon" && <ClearIcon style={iconStyles} />}
+              {icon === "Delete" && <DeleteIcon style={iconStyles} />}
             </span>
           )}
           {styleAsALink ? <span className={baseClasses}>{text}</span> : text}
@@ -75,7 +93,7 @@ const SimpleButton = ({
 SimpleButton.propTypes = {
   ariaLabel: PropTypes.string,
   color: PropTypes.string,
-  disabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
@@ -85,7 +103,9 @@ SimpleButton.propTypes = {
   variant: PropTypes.string,
   icon: PropTypes.string,
   iconStyles: PropTypes.object,
-  iconContainerStyles: PropTypes.object
+  iconContainerStyles: PropTypes.object,
+  shouldHaveFocusAt: PropTypes.number,
+  buttonStyles: PropTypes.object
 };
 
 export default SimpleButton;

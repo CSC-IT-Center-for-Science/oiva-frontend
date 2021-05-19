@@ -5,13 +5,13 @@ const Lisatiedot = title => {
       {
         anchor: "A",
         name: "StatusTextRow",
-        styleClasses: ["pt-2"],
+        styleClasses: ["pt-2 whitespace-pre-wrap"],
         properties: {
           title
         }
       }
     ]
-  }
+  };
 };
 
 export default Lisatiedot;

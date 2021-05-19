@@ -15,8 +15,8 @@ import education from "../../../../i18n/definitions/education";
 import Typography from "@material-ui/core/Typography";
 import { getRajoitteetFromMaarays } from "../../../../utils/rajoitteetUtils";
 import opiskelijamaara from "../../../../i18n/definitions/opiskelijamaara";
+import LisatiedotHtmlLupa from "../../../LisatiedotHtmlLupa";
 import rajoitteet from "i18n/definitions/rajoitteet";
-
 
 export default function PoOpiskelijamaaratHtml({ maaraykset }) {
   const intl = useIntl();
@@ -55,7 +55,7 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
       )}
       {addIndex(map)(
         (maarays, index) => [
-          <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc">
+          <ul key={"opiskelijamaara-" + index} className="ml-8 list-disc mb-4">
             <li className="leading-bulletList">
               {maarays.meta.tyyppi === "yksittainen"
                 ? intl.formatMessage(
@@ -76,7 +76,11 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
             <ul key={maarays.arvo + "-" + index} className="list-disc">
               <React.Fragment>
                 {length(maarays.aliMaaraykset)
-                  ? getRajoitteetFromMaarays(maarays.aliMaaraykset, locale, intl.formatMessage(rajoitteet.ajalla))
+                  ? getRajoitteetFromMaarays(
+                      maarays.aliMaaraykset,
+                      locale,
+                      intl.formatMessage(rajoitteet.ajalla)
+                    )
                   : ""}
               </React.Fragment>
             </ul>
@@ -84,7 +88,7 @@ export default function PoOpiskelijamaaratHtml({ maaraykset }) {
         ],
         opiskelijamaaraMaaraykset || []
       )}
-      {lisatietomaarays && lisatietomaarays.meta.arvo}
+      <LisatiedotHtmlLupa lisatietomaarays={lisatietomaarays} />
     </div>
   ) : null;
 }

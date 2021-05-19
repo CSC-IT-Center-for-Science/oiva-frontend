@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import MaterialUITableRow from '@material-ui/core/TableRow';
 
 /**
  * TableRow component. Used by the Table component.
@@ -19,9 +20,8 @@ const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
   const hoverBgClass = `hover:bg-gray-${tableLevel + 1}00`;
 
   return (
-    <div
+    <MaterialUITableRow
       key={`key-${Math.random()}`}
-      role="row"
       tabIndex={0}
       className={`${hoverBgClass} cursor-pointer flex`}
       onClick={() => {
@@ -33,7 +33,7 @@ const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
         }
       }}>
       {children}
-    </div>
+    </MaterialUITableRow>
   );
 };
 

@@ -9,8 +9,10 @@ import {
   forEach,
   head,
   includes,
+  isEmpty,
   join,
   keys,
+  last,
   length,
   map,
   mapObjIndexed,
@@ -22,12 +24,14 @@ import {
   sortBy,
   split,
   toLower,
+  toUpper,
   unnest,
-  values
+  values,
 } from "ramda";
 import moment from "moment";
 import { __ } from "i18n-for-browser";
 import React from "react";
+import { createAlimaarayksetBEObjects } from "helpers/rajoitteetHelper";
 
 const pisteytys = {
   rajoite: 0,
@@ -35,7 +39,7 @@ const pisteytys = {
   valikko: 2,
   tarkennin: 3,
   kohdennukset: 1000,
-  asetukset: 5
+  asetukset: 5,
 };
 
 const calculateAnchorValue = (anchorParts, index = 0, score = 0) => {
@@ -52,14 +56,14 @@ const calculateAnchorValue = (anchorParts, index = 0, score = 0) => {
 };
 
 export function sortRestrictions(rajoitteetByRajoiteId) {
-  return mapObjIndexed(rajoite => {
+  return mapObjIndexed((rajoite) => {
     return sortBy(
       prop("score"),
-      map(changeObj => {
+      map((changeObj) => {
         const { anchor } = changeObj;
         return {
           ...changeObj,
-          score: calculateAnchorValue(split(".", anchor))
+          score: calculateAnchorValue(split(".", anchor)),
         };
       }, rajoite)
     );
@@ -81,13 +85,20 @@ function addEnding(ending, string, amountOfEndings = 0, index = 0) {
 
 const kohteenTarkentimet = ["enintaan", "vahintaan"];
 
-function getTarkentimenArvo(tarkennin) {
+function getTarkentimenArvo(tarkennin, useKuvaus = false) {
+  let kuvaus = path(["properties", "value", "kuvaus"], tarkennin);
+  let useKuvausInRajoite = path(
+    ["properties", "value", "useKuvausInRajoite"],
+    tarkennin
+  );
   let tarkentimenArvo =
-    path(["properties", "value", "label"], tarkennin) ||
-    path(["properties", "value"], tarkennin);
+    (useKuvaus || useKuvausInRajoite) && kuvaus
+      ? kuvaus
+      : path(["properties", "value", "label"], tarkennin) ||
+        path(["properties", "value"], tarkennin);
   return Array.isArray(tarkentimenArvo)
     ? pipe(
-        map(arvo => arvo.label),
+        map((arvo) => arvo.label),
         join(", ")
       )(tarkentimenArvo)
     : tarkentimenArvo;
@@ -103,13 +114,13 @@ function kayLapiKohdennus(
   const asetukset = join(
     " ",
     flatten(
-      map(asetus => {
+      map((asetus) => {
         const tarkenninkomponentit = Object.keys(
           prop("tarkennin", asetus) || {}
         );
         return `${join(
           " ",
-          map(tarkenninavain => {
+          map((tarkenninavain) => {
             /** Skipataan päättymispäiväobjekti, ja käsitellään se yhdessä alkamispäiväobjektin kanssa **/
             if (tarkenninavain === "paattymispaiva") {
               return null;
@@ -152,7 +163,7 @@ function kayLapiKohdennus(
             const taydennyssana = includes(tarkenninValue, kohteenTarkentimet)
               ? {
                   pre: `on ${toLower(asetus.kohde.properties.value.label)}`,
-                  post: "henkilöä"
+                  post: "henkilöä",
                 }
               : null;
 
@@ -174,7 +185,7 @@ function kayLapiKohdennus(
                 [
                   taydennyssana.pre,
                   muokattuTarkentimenArvo,
-                  taydennyssana.post
+                  taydennyssana.post,
                 ].filter(Boolean)
               );
               if (format === "list") {
@@ -216,7 +227,10 @@ function kayLapiKohdennus(
   }
   const tarkennin = path(["rajoite", "kohde", "tarkennin"], kohdennus);
   const tarkenninavain = head(keys(tarkennin || {}));
-  const tarkentimenArvo = getTarkentimenArvo(prop(tarkenninavain, tarkennin));
+  const tarkentimenArvo = getTarkentimenArvo(
+    prop(tarkenninavain, tarkennin),
+    isEmpty(lista)
+  );
   const taydennyssana = null;
 
   let item = tarkentimenArvo;
@@ -328,7 +342,7 @@ export function getRajoiteListamuodossa(
 
     const kohdennusLista = pipe(
       values,
-      map(kohdennus =>
+      map((kohdennus) =>
         Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
       ),
       unnest
@@ -343,7 +357,7 @@ export function getRajoiteListamuodossa(
         return addEnding(
           "</li></ul>",
           s,
-          index === 0 ? amountOfInstances - 2 : amountOfInstances
+          index === 0 ? amountOfInstances - 1 : amountOfInstances
         );
       }, kohdennusLista)
     );
@@ -352,15 +366,30 @@ export function getRajoiteListamuodossa(
   return listamuotoWithEndings;
 }
 
-export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
+/**
+ * Muodostaa rajoitteisiin kohdistuvista muutosobjekteista html-muotoisen merkkijonon
+ * @param rajoiteChangeObjsByRajoiteId
+ * @param locale
+ * @param format
+ * @returns {string}
+ */
+export function getKohdistuvatRajoitteet(
+  rajoiteChangeObjsByRajoiteId,
+  locale,
+  format = "list"
+) {
   let listamuotoWithEndings = "";
   let listamuoto = "";
   let rakenne = {};
   addIndex(forEach)((key, index) => {
-    for (let i = 0; i < rajoitteet[key].changeObjects.length; i += 1) {
+    for (
+      let i = 0;
+      i < rajoiteChangeObjsByRajoiteId[key].changeObjects.length;
+      i += 1
+    ) {
       rakenne = assocPath(
-        split(".", rajoitteet[key].changeObjects[i].anchor),
-        rajoitteet[key].changeObjects[i],
+        split(".", rajoiteChangeObjsByRajoiteId[key].changeObjects[i].anchor),
+        rajoiteChangeObjsByRajoiteId[key].changeObjects[i],
         rakenne
       );
     }
@@ -380,7 +409,7 @@ export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
 
       const kohdennusLista = pipe(
         values,
-        map(kohdennus =>
+        map((kohdennus) =>
           Array.isArray(kohdennus) ? append(kohdennus, []) : values(kohdennus)
         ),
         unnest
@@ -388,7 +417,7 @@ export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
 
       listamuotoWithEndings = join(
         "",
-        map(kohdennus => {
+        map((kohdennus) => {
           const s = join("", kohdennus);
           const amountOfInstances = getAmountOfInstances("<ul>", s);
 
@@ -398,13 +427,13 @@ export function getKohdistuvatRajoitteet(rajoitteet, locale, format = "list") {
 
       listamuoto = concat(listamuoto, listamuotoWithEndings);
     }
-  }, keys(rajoitteet));
+  }, keys(rajoiteChangeObjsByRajoiteId));
   return listamuoto;
 }
 
 export const getRajoite = (value, rajoitteet) => {
   const rajoiteId = head(
-    filter(key => {
+    filter((key) => {
       return pathEq(
         ["changeObjects", 1, "properties", "value", "value"],
         value,
@@ -418,37 +447,48 @@ export const getRajoite = (value, rajoitteet) => {
   return { rajoiteId, rajoite: rajoitteet[rajoiteId] };
 };
 
-export const getRajoitteet = (value, rajoitteet, valueAttr = "value") => {
+export const getRajoitteet = (
+  value,
+  rajoiteChangeObjsByRajoiteId,
+  valueAttr = "value"
+) => {
   return filter(
-    rajoite =>
+    (rajoite) =>
       pathEq(
         ["changeObjects", 1, "properties", "value", valueAttr],
         value,
         rajoite
       ),
-    rajoitteet
+    rajoiteChangeObjsByRajoiteId
   );
 };
 
 /**
- *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa varten
+ *  Palauttaa html merkkauksen rajoitemääräyksistä html-lupaa / lomaketta varten
  *
  */
 export const getRajoitteetFromMaarays = (
   alimaaraykset = [],
   locale,
   ajallaText,
-  naytettavaArvo
+  naytettavaArvo,
+  returnAsString = false,
+  parentMaarays = null // Näyttää myös parent-määräyksen, jos se annetaan parametrina
 ) => {
+  const maaraysHtmlString = parentMaarays
+    ? getRajoiteFromParentMaarays(parentMaarays, locale, naytettavaArvo)
+    : "";
+
   const htmlString = handleAlimaaraykset(
-    "",
+    maaraysHtmlString,
     alimaaraykset,
-    naytettavaArvo,
     locale,
     ajallaText
   );
 
-  return (
+  return returnAsString ? (
+    htmlString
+  ) : (
     <ul
       className="htmlContent ml-8"
       dangerouslySetInnerHTML={{ __html: htmlString }}
@@ -456,66 +496,70 @@ export const getRajoitteetFromMaarays = (
   );
 };
 
+/** Rajoitemääräyksen parent-osan näyttäminen. (käytetään ainakin lomakkeen rajoitelaatikossa) */
+const getRajoiteFromParentMaarays = (parentMaarays, locale, naytettavaArvo) => {
+  let maaraysHtmlString = "";
+  const value =
+    find(
+      (metadata) => metadata.kieli === locale,
+      path(["koodi", "metadata"], parentMaarays) || []
+    ) || prop("meta", parentMaarays);
+
+  /** Opiskelijamäärämääräykset */
+  if (naytettavaArvo === "tyyppi") {
+    const tyyppiString =
+      value[naytettavaArvo] === "yksittainen"
+        ? __("opiskelijamaara.yksittainenKohdennus")
+        : __("opiskelijamaara.kokonaismaara");
+    maaraysHtmlString = `<ul><li>${tyyppiString}: ${parentMaarays.arvo}`;
+
+    /** Dynaamiset tekstikentät */
+  } else if (naytettavaArvo === "kuvaus") {
+    maaraysHtmlString = `<ul><li>${prop("kuvaus", value)}`;
+    /** Ulkomaat */
+  } else if (naytettavaArvo === "ulkomaa") {
+    maaraysHtmlString = `<ul><li>${path(["meta", "arvo"], parentMaarays)}`;
+    /** Muut */
+  } else {
+    const metadata = find(
+      (maarays) => prop("kieli", maarays) === toUpper(locale),
+      path(["koodi", "metadata"], parentMaarays) || []
+    );
+    maaraysHtmlString = `<ul><li>${prop(naytettavaArvo, metadata)}`;
+  }
+  return maaraysHtmlString;
+};
+
 export const handleAlimaarays = (
   alimaarays,
   htmlString,
   locale,
   ajallaText,
-  naytettavaArvo = "nimi",
   multiselectAlimaaraykset = null
 ) => {
+  const arvo = getValueFromAlimaarays(alimaarays, toUpper(locale));
   let modifiedString = `${htmlString}<ul class="list-disc">`;
-
   const hasAlimaarays = !!length(alimaarays.aliMaaraykset);
-
   const isMaaraaikaRajoite =
     alimaarays.koodisto === "kujalisamaareetlisaksiajalla";
 
   if (isMaaraaikaRajoite) {
-    const alkupvm = moment(
-      path(["meta", "alkupvm"], alimaarays),
-      "YYYY-MM-DD"
-    ).format("DD.MM.YYYY");
-
-    const loppupvm = moment(
-      path(["meta", "loppupvm"], alimaarays),
-      "YYYY-MM-DD"
-    ).format("DD.MM.YYYY");
-
-    modifiedString = `${modifiedString}<li class="list-disc">${ajallaText} ${alkupvm} - ${loppupvm}</li>`;
+    modifiedString = `${modifiedString}<li class="list-disc">${ajallaText} ${prop(
+      "alkupvm",
+      arvo
+    )} - ${prop("loppupvm", arvo)}</li>`;
   } else {
     if (multiselectAlimaaraykset) {
       modifiedString = `${modifiedString}<li class="list-disc">`;
       addIndex(forEach)((alimaarays, index) => {
-        modifiedString = `${modifiedString}${getValueFromMultiselectAlimaarays(
-          alimaarays,
-          naytettavaArvo,
-          hasAlimaarays,
-          locale,
-          index === length(multiselectAlimaaraykset) - 1
-        )}`;
+        const last = index === length(multiselectAlimaaraykset) - 1;
+        const arvo = getValueFromAlimaarays(alimaarays, toUpper(locale));
+        const naytettavaArvo = `${arvo}${last ? "" : ", "}`;
+        modifiedString = `${modifiedString}${naytettavaArvo}`;
       }, multiselectAlimaaraykset);
       modifiedString = `${modifiedString}</li>`;
     } else {
-      const value =
-        find(
-          metadata => metadata.kieli === locale,
-          path(["koodi", "metadata"], alimaarays) || []
-        ) || prop("meta", alimaarays);
-
-      if (
-        value.nimi !== "Ulkomaa" ||
-        (hasAlimaarays && alimaarays.meta.arvo) ||
-        alimaarays.meta.arvo
-      ) {
-        modifiedString = `${modifiedString}<li class="list-disc">${alimaarays
-          .meta.arvo ||
-          value[naytettavaArvo] ||
-          value.nimi ||
-          value.kuvaus} ${alimaarays.arvo || ""}</li>`;
-      } else {
-        modifiedString = htmlString;
-      }
+      modifiedString = `${modifiedString}<li class="list-disc">${arvo}`;
     }
   }
 
@@ -523,7 +567,6 @@ export const handleAlimaarays = (
     modifiedString = handleAlimaaraykset(
       modifiedString,
       alimaarays.aliMaaraykset,
-      naytettavaArvo,
       locale,
       ajallaText
     );
@@ -536,12 +579,11 @@ export const handleAlimaarays = (
 const handleAlimaaraykset = (
   modifiedString,
   alimaaraykset,
-  naytettavaArvo,
   locale,
   ajallaText
 ) => {
   let lapikaydytMultiselectit = [];
-  forEach(alimaarays => {
+  forEach((alimaarays) => {
     const multiselectUuid = path(["meta", "multiselectUuid"], alimaarays);
     /** Käydään vain yksi alimääräys läpi, joka sisältää tietyn multiselectUuid:n */
     if (
@@ -551,18 +593,16 @@ const handleAlimaaraykset = (
       const multiselectAlimaaraykset = multiselectUuid
         ? getMultiselectAlimaaraykset(multiselectUuid, alimaaraykset)
         : null;
-
       modifiedString = handleAlimaarays(
         alimaarays,
         modifiedString,
         locale,
         ajallaText,
-        naytettavaArvo,
         multiselectAlimaaraykset
       );
       if (multiselectUuid) {
         lapikaydytMultiselectit = append(lapikaydytMultiselectit, [
-          multiselectUuid
+          multiselectUuid,
         ]);
       }
     }
@@ -570,44 +610,169 @@ const handleAlimaaraykset = (
   return modifiedString;
 };
 
-const getValueFromMultiselectAlimaarays = (
-  alimaarays,
-  naytettavaArvo,
-  hasAlimaarays,
-  locale,
-  last
-) => {
-  const value =
-    find(
-      metadata => metadata.kieli === locale,
-      path(["koodi", "metadata"], alimaarays) || []
-    ) || prop("meta", alimaarays);
-
-  if (
-    value.nimi !== "Ulkomaa" ||
-    (hasAlimaarays && alimaarays.meta.arvo) ||
-    alimaarays.meta.arvo
-  ) {
-    const arvo =
-      alimaarays.meta.arvo ||
-      value[naytettavaArvo] ||
-      value.nimi ||
-      alimaarays.meta.kuvaus;
-    const arvo2 = alimaarays.arvo;
-    return arvo2
-      ? `${arvo} ${arvo2}${last ? "" : ", "}`
-      : `${arvo}${last ? "" : ", "}`;
-  } else {
-    return "";
-  }
-};
-
 const getMultiselectAlimaaraykset = (multiselectUuid, alimaaraykset) => {
   return multiselectUuid
     ? filter(
-        alimaarays =>
+        (alimaarays) =>
           pathEq(["meta", "multiselectUuid"], multiselectUuid, alimaarays),
         alimaaraykset
       )
     : null;
+};
+
+// Alimääräysten luonti rajoitteille, jotka on kytketty olemassa
+// oleviin määräyksiin.
+export const createMaarayksiaVastenLuodutRajoitteetBEObjects = (
+  maaraykset,
+  rajoitteetByRajoiteId,
+  kohteet,
+  maaraystyypit,
+  kohde
+) => {
+  return flatten(
+    map((maarays) => {
+      const maaraysKoodiarvoUpper = toUpper(maarays.koodiarvo);
+      const maaraystaKoskevatRajoitteet = mapObjIndexed((rajoite) => {
+        const koodiarvo = path(["1", "properties", "value", "value"], rajoite);
+        if (koodiarvo && toUpper(koodiarvo) === maaraysKoodiarvoUpper) {
+          return createAlimaarayksetBEObjects(
+            kohteet,
+            maaraystyypit,
+            {
+              isMaarays: true,
+              generatedId: maarays.uuid,
+              kohde,
+            },
+            rajoite
+          );
+        }
+      }, rajoitteetByRajoiteId);
+      return values(maaraystaKoskevatRajoitteet);
+    }, maaraykset)
+  ).filter(Boolean);
+};
+
+// Alimääräysten luonti rajoitteille, jotka on kytketty olemassa
+// oleviin dynaamisia tekstikenttiä koskeviin määräyksiin.
+export const createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects =
+  (maaraykset, rajoitteetByRajoiteId, kohteet, maaraystyypit, kohde) => {
+    return flatten(
+      map((maarays) => {
+        const maaraystaKoskevatRajoitteet = mapObjIndexed((rajoite) => {
+          /** Tekstikentän id on muotoa koodiarvo-ankkuri */
+          const rajoiteTekstikenttaId = path(
+            ["1", "properties", "value", "value"],
+            rajoite
+          );
+          const rajoitteenTekstikentanAnkkuri = last(
+            split("-", rajoiteTekstikenttaId)
+          );
+          const rajoitteenTekstikentanKoodiarvo = head(
+            split("-", rajoiteTekstikenttaId)
+          );
+          if (
+            rajoitteenTekstikentanKoodiarvo === maarays.koodiarvo &&
+            /** Määräyksen ankkuri on null jos tekstikenttiä ei voi lisätä */
+            (path(["meta", "ankkuri"], maarays) == null ||
+              rajoitteenTekstikentanAnkkuri ===
+                path(["meta", "ankkuri"], maarays))
+          ) {
+            return createAlimaarayksetBEObjects(
+              kohteet,
+              maaraystyypit,
+              {
+                isMaarays: true,
+                generatedId: maarays.uuid,
+                kohde,
+              },
+              rajoite
+            );
+          }
+        }, rajoitteetByRajoiteId);
+        return values(maaraystaKoskevatRajoitteet);
+      }, maaraykset)
+    ).filter(Boolean);
+  };
+
+/** Palauttaa rajoitekriteerin arvon */
+const getValueFromAlimaarays = (alimaarays, locale) => {
+  /** Ulkomaa */
+  if (alimaarays.koodisto === "kunta" && alimaarays.koodiarvo === "200") {
+    return path(["meta", "kuvaus"], alimaarays);
+
+    /** Määräaika on erikoistapaus. Palauttaa objektin, joka sisältää alkupvm:n sekä loppupvm:n */
+  } else if (alimaarays.koodisto === "kujalisamaareetlisaksiajalla") {
+    return {
+      alkupvm: moment(
+        path(["meta", "alkupvm"], alimaarays),
+        "YYYY-MM-DD"
+      ).format("DD.MM.YYYY"),
+      loppupvm: moment(
+        path(["meta", "loppupvm"], alimaarays),
+        "YYYY-MM-DD"
+      ).format("DD.MM.YYYY"),
+    };
+
+    /** Opetustehtävä, Kieli, Oppilaitos, Kunnat, Opetuksen järjestämismuoto, Oikeus sisäoppilaitosmuotoiseen koulutukseen */
+  } else if (
+    includes(alimaarays.koodisto, [
+      "opetustehtava",
+      "kielikoodistoopetushallinto",
+      "oppilaitos",
+      "kunta",
+      "opetuksenjarjestamismuoto",
+      "lukiooikeussisaooppilaitosmuotoiseenkoulutukseen",
+    ])
+  ) {
+    return (
+      getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale) ||
+      path(["meta", "kuvaus"], alimaarays)
+    );
+
+    /** Dynaamiset tekstikentät: Jos koodistosta tulevan kayttoohje-kentan arvo on Kuvaus tai koodistosta ei saada nimeä
+     * koodiarvolle, näytetään rajoitekriteerin arvona tekstikenttään syötetty kuvaus. Muutoin nimi koodistosta */
+  } else if (
+    includes(alimaarays.koodisto, [
+      "lukioerityinenkoulutustehtavauusi",
+      "lukiomuutkoulutuksenjarjestamiseenliittyvatehdot",
+      "poerityinenkoulutustehtava",
+      "pomuutkoulutuksenjarjestamiseenliittyvatehdot",
+    ])
+  ) {
+    return getMetadataByLocaleAndPropertyFromMaarays(
+      alimaarays,
+      "kayttoohje",
+      "FI"
+    ) === "Kuvaus" ||
+      !getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale)
+      ? path(["meta", "kuvaus"], alimaarays)
+      : getMetadataByLocaleAndPropertyFromMaarays(alimaarays, "nimi", locale);
+
+    /** Joista enintään, Joista vähintään etc. */
+  } else if (
+    alimaarays.koodisto === "kujalisamaareetjoistalisaksi" ||
+    alimaarays.koodisto === "kujalisamaareet"
+  ) {
+    return `${getMetadataByLocaleAndPropertyFromMaarays(
+      alimaarays,
+      "nimi",
+      locale
+    )} ${alimaarays.arvo}`;
+  } else {
+    return "Virhetilanne.";
+  }
+};
+
+const getMetadataByLocaleAndPropertyFromMaarays = (
+  maarays,
+  propertyName,
+  locale
+) => {
+  return prop(
+    propertyName,
+    find(
+      (metadata) => toUpper(prop("kieli", metadata)) === toUpper(locale),
+      path(["koodi", "metadata"], maarays) || []
+    )
+  );
 };

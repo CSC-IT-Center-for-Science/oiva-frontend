@@ -20,12 +20,14 @@ import {
   split
 } from "ramda";
 import * as muutEhdotHelper from "helpers/lukioMuutEhdot";
-import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen";
-import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat";
+import * as oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper from "helpers/oikeusSisaoppilaitosmuotoiseenKoulutukseen/index";
+import * as opetustaAntavatKunnatHelper from "helpers/opetustaAntavatKunnat/index";
 import * as opiskelijamaaratHelper from "helpers/opiskelijamaarat";
-import * as opetuskieletHelper from "helpers/opetuskielet";
-import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat";
+import * as opetuskieletHelper from "helpers/opetuskielet/index";
+import * as erityinenKoulutustehtavaHelper from "helpers/lukioErityisetKoulutustehtavat/index";
+import * as valtakunnallinenKehittamistehtavaHelper from "helpers/lukioValtakunnallinenKehittamistehtava";
 import { koulutustyypitMap } from "../../../utils/constants";
+import { createBeObjsForRajoitepoistot } from "../../../helpers/rajoitteetHelper";
 
 export async function createObjectToSave(
   locale,
@@ -35,10 +37,11 @@ export async function createObjectToSave(
   uuid,
   kohteet,
   maaraystyypit,
+  language, // Luvan kieli
   alkupera = "KJ"
 ) {
-  console.info(kohteet, changeObjects);
   const allAttachmentsRaw = [];
+  const koulutustyyppi = koulutustyypitMap.LUKIO;
 
   // ... without tiedosto-property
   const allAttachments = map(attachment => {
@@ -72,7 +75,7 @@ export async function createObjectToSave(
         changeObjects.toimintaalue || []
       ),
       ulkomaa: filter(
-        compose(includes(".ulkomaa."), prop("anchor")),
+        compose(includes(".200."), prop("anchor")),
         changeObjects.toimintaalue || []
       ),
       rajoitteetByRajoiteId: reject(
@@ -92,7 +95,8 @@ export async function createObjectToSave(
     maaraystyypit,
     lupa.maaraykset,
     locale,
-    kohteet
+    kohteet,
+    "kunnatjoissaopetustajarjestetaan"
   );
 
   // 2. OPETUSKIELET
@@ -112,7 +116,9 @@ export async function createObjectToSave(
         }, rajoitteetByRajoiteId)
       )
     },
+    find(propEq("tunniste", "opetuskieli"), kohteet),
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
@@ -136,13 +142,15 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
-    locale,
-    kohteet
+    kohteet,
+    lupa.maaraykset
   );
 
   // 4. ERITYINEN KOULUTUSTEHTÄVÄ
   const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
     {
+      valtakunnallisetKehittamistehtavat:
+        changeObjects.valtakunnallisetKehittamistehtavat,
       erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
       rajoitteetByRajoiteId: reject(
         isNil,
@@ -155,7 +163,32 @@ export async function createObjectToSave(
             ? rajoite
             : null;
         }, rajoitteetByRajoiteId)
+      ),
+      valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId: reject(
+        isNil,
+        mapObjIndexed(rajoite => {
+          return pathEq(
+            ["0", "properties", "value", "value"],
+            "valtakunnallisetKehittamistehtavat",
+            rajoite
+          )
+            ? rajoite
+            : null;
+        }, rajoitteetByRajoiteId)
       )
+    },
+    maaraystyypit,
+    lupa.maaraykset,
+    locale,
+    kohteet
+  );
+
+  // 5. VALTAKUNNALLINEN KEHITTÄMISTEHTÄVÄ
+  const valtakunnallinenKehittamistehtava = await valtakunnallinenKehittamistehtavaHelper.defineBackendChangeObjects(
+    {
+      valtakunnallisetKehittamistehtavat:
+        changeObjects.valtakunnallisetKehittamistehtavat,
+      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat
     },
     maaraystyypit,
     locale,
@@ -181,7 +214,8 @@ export async function createObjectToSave(
     },
     maaraystyypit,
     locale,
-    kohteet
+    kohteet,
+    koulutustyyppi
   );
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
@@ -202,13 +236,23 @@ export async function createObjectToSave(
       )
     },
     maaraystyypit,
+    lupa.maaraykset,
     locale,
     kohteet
   );
 
+  /** Luodaan rajoitepoistoihin liittyvät Backend muutosobjektit */
+  const rajoitepoistot = createBeObjsForRajoitepoistot(
+    changeObjects.rajoitepoistot,
+    lupa.maaraykset,
+    kohteet,
+    maaraystyypit
+  );
+
   let objectToSave = {
     alkupera,
-    koulutustyyppi: koulutustyypitMap.LUKIO,
+    kieli: language,
+    koulutustyyppi,
     diaarinumero: lupa.diaarinumero,
     jarjestajaOid: organisation.oid,
     jarjestajaYtunnus: organisation.ytunnus,
@@ -230,7 +274,9 @@ export async function createObjectToSave(
       oikeusSisaoppilaitosmuotoiseenKoulutukseen,
       opetuskielet,
       opetustaAntavatKunnat,
-      opiskelijamaarat
+      opiskelijamaarat,
+      valtakunnallinenKehittamistehtava,
+      rajoitepoistot
     ]),
     uuid
   };

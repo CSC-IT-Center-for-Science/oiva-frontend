@@ -86,9 +86,12 @@ const Lomake = React.memo(
       [setChanges]
     );
 
-    const onFocus = useCallback(() => {
-      setFocusOn(null);
-    }, [setFocusOn]);
+    const onFocus = useCallback(
+      (anchor = null) => {
+        setFocusOn(anchor);
+      },
+      [setFocusOn]
+    );
 
     useEffect(() => {
       (async () => {
@@ -165,7 +168,7 @@ const Lomake = React.memo(
 
     if (Array.isArray(lomake) && lomake.length) {
       return (
-        <div>
+        <div className="pt-8">
           {code || formTitle ? (
             <FormTitle
               code={isPreviewModeOn || !code ? null : code}
