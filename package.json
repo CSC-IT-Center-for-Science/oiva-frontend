@@ -31,7 +31,7 @@
     "match-sorter": "^4.2.0",
     "material-table": "^1.68.1",
     "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "postcss-import": "^12.0.1",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
