@@ -10,7 +10,7 @@ import {
   useChangeObjects,
   useChangeObjectsByAnchorWithoutUnderRemoval
 } from "stores/muutokset";
-import { Wizard } from "components/03-templates/Wizard";
+import { Wizard } from "components/03-templates/Wizard/index";
 import LupanakymaA from "./lupanakymat/LupanakymaA";
 import ProcedureHandler from "components/02-organisms/procedureHandler";
 import { createMuutospyyntoOutput } from "services/muutoshakemus/utils/common";
@@ -18,6 +18,9 @@ import { createObjectToSave } from "./saving";
 import { find, prop, propEq, toUpper } from "ramda";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { FIELDS } from "locales/uusiHakemusFormConstants";
+import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
+import { PropTypes } from "prop-types";
 
 /**
  * Container component of UusiaAsiaDialog.
@@ -35,10 +38,10 @@ const WizardContainer = ({
   let history = useHistory();
   const { formatMessage, locale } = useIntl();
   const { id, uuid } = useParams();
-  const [
-    { isPreviewModeOn },
-    { initializeChanges, setPreviewMode }
-  ] = useChangeObjects();
+  const [isSaving, setIsSaving] = useState(false);
+  const [muutospyynnonTila, setMuutospyynnonTila] = useState();
+  const [{ isPreviewModeOn }, { initializeChanges, setPreviewMode }] =
+    useChangeObjects();
   const [muutospyynto, setMuutospyynto] = useState();
 
   const [paatoksentiedotCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -53,16 +56,14 @@ const WizardContainer = ({
   const [opetustehtavatCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opetustehtavat"
   });
-  const [
-    opetuksenJarjestamismuodotCo
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "opetuksenJarjestamismuodot"
-  });
-  const [
-    erityisetKoulutustehtavatCO
-  ] = useChangeObjectsByAnchorWithoutUnderRemoval({
-    anchor: "erityisetKoulutustehtavat"
-  });
+  const [opetuksenJarjestamismuodotCo] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "opetuksenJarjestamismuodot"
+    });
+  const [erityisetKoulutustehtavatCO] =
+    useChangeObjectsByAnchorWithoutUnderRemoval({
+      anchor: "erityisetKoulutustehtavat"
+    });
   const [opiskelijamaaratCo] = useChangeObjectsByAnchorWithoutUnderRemoval({
     anchor: "opiskelijamaarat"
   });
@@ -77,8 +78,11 @@ const WizardContainer = ({
   });
 
   useEffect(() => {
-    const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
-    initializeChanges(changeObjectsFromBackend);
+    if (muutospyynto) {
+      const changeObjectsFromBackend = getSavedChangeObjects(muutospyynto);
+      initializeChanges(changeObjectsFromBackend);
+      setMuutospyynnonTila(prop("tila", muutospyynto));
+    }
   }, [muutospyynto, initializeChanges]);
 
   useEffect(() => {
@@ -110,6 +114,11 @@ const WizardContainer = ({
   );
 
   const steps = null;
+
+  const title =
+    muutospyynnonTila === FIELDS.TILA.VALUES.KORJAUKSESSA
+      ? formatMessage(wizard.luvanKorjaustilaJarjestamisluvanMuutos)
+      : formatMessage(wizard.esittelijatMuutospyyntoDialogTitle);
 
   const onNewDocSave = useCallback(
     uuid => {
@@ -143,11 +152,13 @@ const WizardContainer = ({
    */
   const onSave = useCallback(
     async formData => {
+      setIsSaving(true);
       const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallennaEsittelijanToimesta",
         [formData]
       );
+      setIsSaving(false);
       return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
         .result;
     },
@@ -155,7 +166,7 @@ const WizardContainer = ({
   );
 
   const onAction = useCallback(
-    async (action, fromDialog = false) => {
+    async (action, fromDialog = false, muutospyynnonTila) => {
       const formData = createMuutospyyntoOutput(
         await createObjectToSave(
           toUpper(locale),
@@ -176,7 +187,8 @@ const WizardContainer = ({
           uuid,
           kohteet,
           maaraystyypit,
-          "ESITTELIJA"
+          "ESITTELIJA",
+          muutospyynnonTila
         )
       );
 
@@ -198,9 +210,8 @@ const WizardContainer = ({
              * Kun muutospyyntolomakkeen tilaa muokataan tässä vaiheessa,
              * vältytään tarpeelta tehdä sivun täydellistä uudelleen latausta.
              **/
-            const changeObjectsFromBackend = getSavedChangeObjects(
-              muutospyynto
-            );
+            const changeObjectsFromBackend =
+              getSavedChangeObjects(muutospyynto);
             initializeChanges(changeObjectsFromBackend);
           }
         }
@@ -230,6 +241,15 @@ const WizardContainer = ({
     ]
   );
 
+  const urlOnClose = getUrlOnClose(
+    role,
+    locale,
+    formatMessage,
+    organisaatio,
+    koulutusmuoto,
+    uuid
+  );
+
   return (
     <Wizard
       page1={
@@ -243,24 +263,24 @@ const WizardContainer = ({
           valtakunnallinenMaarays={valtakunnallinenMaarays}
         />
       }
+      isSaving={isSaving}
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}
-      title={formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
-      urlOnClose={
-        role === "KJ"
-          ? `../../../${id}/jarjestamislupa-asiat`
-          : `${localizeRouteKey(
-              locale,
-              AppRoute.AsianhallintaAvoimet,
-              formatMessage,
-              {
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )}?force=true`
-      }
+      tila={muutospyynnonTila}
+      title={title}
+      urlOnClose={urlOnClose}
     />
   );
+};
+
+WizardContainer.propTypes = {
+  kohteet: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  maaraystyypit: PropTypes.array,
+  organisaatio: PropTypes.object,
+  role: PropTypes.string,
+  viimeisinLupa: PropTypes.object
 };
 
 export default WizardContainer;

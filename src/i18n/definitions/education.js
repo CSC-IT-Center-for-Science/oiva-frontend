@@ -124,7 +124,8 @@ export default defineMessages({
   },
   valtakunnallinenKehittamistehtavaInfo: {
     id: "education.valtakunnallinenKehittamistehtavaInfo",
-    defaultMessage: "Erityisiin koulutustehtäviin sisältyvät valtakunnalliset kehittämistehtävät seuraavissa opetuspainotuksissa:"
+    defaultMessage:
+      "Erityisiin koulutustehtäviin sisältyvät valtakunnalliset kehittämistehtävät seuraavissa opetuspainotuksissa:"
   },
   valtakunnallinenKehittamistehtavaInfo2: {
     id: "education.valtakunnallinenKehittamistehtavaInfo2",

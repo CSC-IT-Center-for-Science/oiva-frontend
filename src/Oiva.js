@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { AppRoute, AppLanguage } from "const";
 import { LocalizedRouter, LocalizedSwitch } from "modules/i18n/index";
 import Home from "scenes/Home/index";
-import { getRaw } from "basedata";
+import { getRaw } from "./basedata";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import translations from "i18n/locales";
 import { AppLayout } from "modules/layout";
@@ -19,9 +19,9 @@ import {
 } from "modules/constants";
 import { indexOf, isEmpty, mergeDeepRight } from "ramda";
 import { setLocalizations } from "services/lomakkeet/i18n-config";
-import AuthWithLocale from "AuthWithLocale";
+import AuthWithLocale from "./AuthWithLocale";
 import CasAuthenticated from "scenes/CasAuthenticated/CasAuthenticated";
-import LogOutWithLocale from "LogOutWithLocale";
+import LogOutWithLocale from "./LogOutWithLocale";
 import Logout from "scenes/Logout/Logout";
 import { defaults } from "react-sweet-state";
 import Yhteydenotto from "./scenes/Yhteydenotto";
@@ -109,13 +109,11 @@ export const Oiva = () => {
     <LocalizedRouter
       languages={AppLanguage}
       localesByLang={messages}
-      RouterComponent={BrowserRouter}
-    >
+      RouterComponent={BrowserRouter}>
       <AppLayout
         localesByLang={messages}
         organisation={organisation}
-        user={user}
-      >
+        user={user}>
         <LocalizedSwitch>
           <Route exact path={AppRoute.CasAuth} component={AuthWithLocale} />
           <Route exact path={AppRoute.CasLogOut} component={LogOutWithLocale} />

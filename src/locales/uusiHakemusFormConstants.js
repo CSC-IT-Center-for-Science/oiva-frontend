@@ -4,11 +4,14 @@ export const FIELDS = {
   TILA: {
     NAME: "tila",
     VALUES: {
+      KORJATTAVANA: "KORJATTAVANA",
       LUONNOS: "LUONNOS",
       AVOIN: "AVOIN",
+      ESITTELYSSA: "ESITTELYSSA",
       VALMISTELUSSA: "VALMISTELUSSA",
       TAYDENNETTAVA: "TAYDENNETTAVA",
       PAATETTY: "PAATETTY",
+      KORJAUKSESSA: "KORJAUKSESSA",
       PASSIVOITU: "PASSIVOITU"
     }
   }
@@ -71,8 +74,7 @@ export const HAKEMUS_OTSIKOT = {
     SV: "På Svenska"
   },
   LIITE_OHJE: {
-    FI:
-      "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muista merkitä salassa pidettävät liitteet.",
+    FI: "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muista merkitä salassa pidettävät liitteet.",
     SV: "På Svenska"
   },
   LISAA_LIITE: {

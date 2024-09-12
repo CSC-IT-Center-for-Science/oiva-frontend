@@ -64,6 +64,7 @@ const Datepicker = ({
   forChangeObject,
   fullAnchor,
   fullWidth,
+  inputId,
   invalidLabel,
   isDisabled,
   isHidden,
@@ -117,8 +118,7 @@ const Datepicker = ({
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={localeMap[locale]}>
       <div
         className="flex-col"
-        style={!width && fullWidth ? { display: "flex" } : {}}
-      >
+        style={!width && fullWidth ? { display: "flex" } : {}}>
         {/* https://material-ui-pickers.dev/api/DatePicker */}
         <DatePicker
           format="d.M.yyyy" // Always is Finnish format
@@ -135,7 +135,8 @@ const Datepicker = ({
           style={width ? { width } : {}}
           fullWidth={width ? false : fullWidth}
           InputProps={{
-            className: classes.input
+            className: classes.input,
+            id: inputId
           }}
           value={selectedDate || null}
           inputVariant="outlined"
@@ -176,8 +177,7 @@ const Datepicker = ({
               paddingLeft: "1.2em",
               marginBottom: "0.5em",
               color: COLORS.OIVA_ORANGE_TEXT
-            }}
-          >
+            }}>
             {isVisited && !selectedDate && requiredMessage}
           </FormHelperText>
         )}
@@ -205,8 +205,11 @@ Datepicker.defaultProps = {
 
 Datepicker.propTypes = {
   ariaLabel: PropTypes.string,
+  classes: PropTypes.object,
   label: PropTypes.string,
   id: PropTypes.string,
+  isReadOnly: PropTypes.bool,
+  inputId: PropTypes.string,
   isDisabled: PropTypes.bool,
   isHidden: PropTypes.bool,
   /** Is called with the payload and the value. */

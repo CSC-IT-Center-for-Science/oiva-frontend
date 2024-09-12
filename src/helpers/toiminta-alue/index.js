@@ -46,7 +46,10 @@ export async function defineBackendChangeObjects(
    * Noudetaan toiminta-alueeseen liittyvät määräykset. Määräysten uuid-arvoja
    * tarvitaan lupaan kuuluvien alueiden poistamisen yhteydessä.
    */
-  const maaraykset = await getMaarayksetByTunniste("toimintaalue", lupaMaaraykset);
+  const maaraykset = await getMaarayksetByTunniste(
+    "toimintaalue",
+    lupaMaaraykset
+  );
   const maakuntakunnat = await getMaakuntakunnat();
 
   /**
@@ -209,41 +212,66 @@ export async function defineBackendChangeObjects(
   // Jos nuts-1 koodiston koodiarvon FI1-mukainen muutosobjekti ollaan poistamassa
   // luodaan lisäysobjektit kaikista maakunnista ja kunnista joita ei ole poistettu
   if (muutosFI1 && muutosFI1.tila === "POISTO") {
-    const filteredMaakuntaKunnat = filter(m => m.koodiarvo !== "99" && m.koodiarvo !== "21", maakuntakunnat);
+    const filteredMaakuntaKunnat = filter(
+      m => m.koodiarvo !== "99" && m.koodiarvo !== "21",
+      maakuntakunnat
+    );
     // MAAKUNTIEN LISÄYSOBJEKTIEN LUOMINEN
-   const addedProvinceChangeObjects = reject(isNil)(map(maakunta => {
-      return includes(maakunta.koodiarvo, map(province => province.koodiarvo, provinces)) ? null :
-        {
-          tila: "LISAYS",
-          kohde,
-          koodisto: "maakunta",
-          koodiarvo: maakunta.koodiarvo,
-          maaraystyyppi
-        }
-    },
-      filteredMaakuntaKunnat));
+    const addedProvinceChangeObjects = reject(isNil)(
+      map(maakunta => {
+        return includes(
+          maakunta.koodiarvo,
+          map(province => province.koodiarvo, provinces)
+        )
+          ? null
+          : {
+              tila: "LISAYS",
+              kohde,
+              koodisto: "maakunta",
+              koodiarvo: maakunta.koodiarvo,
+              maaraystyyppi
+            };
+      }, filteredMaakuntaKunnat)
+    );
 
     // KUNTIEN LISÄYSOBJEKTIEN LUOMINEN
-    const provincesNotAdded = filter(maakuntakunta =>
-      !includes(maakuntakunta.koodiarvo, map(province => province.koodiarvo, addedProvinceChangeObjects)), filteredMaakuntaKunnat);
+    const provincesNotAdded = filter(
+      maakuntakunta =>
+        !includes(
+          maakuntakunta.koodiarvo,
+          map(province => province.koodiarvo, addedProvinceChangeObjects)
+        ),
+      filteredMaakuntaKunnat
+    );
 
-    const addedMunicipalityChangeObjects = flatten(map(province => {
-      return reject(isNil)(map(kunta => {
-        return includes(kunta.koodiarvo, map(co => path(['properties', 'metadata', 'koodiarvo'], co), provinceChangeObjects)) ?
-          null : {
-            tila: "LISAYS",
-            kohde,
-            koodisto: "kunta",
-            koodiarvo: kunta.koodiarvo,
-            maaraystyyppi
-          };
-      }, province.kunnat))
-    }, provincesNotAdded));
-    provinceBEchangeObjects.lisaykset =
-      append(concat(addedProvinceChangeObjects, addedMunicipalityChangeObjects), provinceBEchangeObjects.lisaykset);
-  }
-
-  else if (!muutosFI1 || (muutosFI1 && muutosFI1.tila !== "LISAYS")) {
+    const addedMunicipalityChangeObjects = flatten(
+      map(province => {
+        return reject(isNil)(
+          map(kunta => {
+            return includes(
+              kunta.koodiarvo,
+              map(
+                co => path(["properties", "metadata", "koodiarvo"], co),
+                provinceChangeObjects
+              )
+            )
+              ? null
+              : {
+                  tila: "LISAYS",
+                  kohde,
+                  koodisto: "kunta",
+                  koodiarvo: kunta.koodiarvo,
+                  maaraystyyppi
+                };
+          }, province.kunnat)
+        );
+      }, provincesNotAdded)
+    );
+    provinceBEchangeObjects.lisaykset = append(
+      concat(addedProvinceChangeObjects, addedMunicipalityChangeObjects),
+      provinceBEchangeObjects.lisaykset
+    );
+  } else if (!muutosFI1 || (muutosFI1 && muutosFI1.tila !== "LISAYS")) {
     /**
      * Käydään muutoksia sisältävät maakunnat ja niiden kunnat läpi
      * tarkoituksena löytää kunnat, jotka on lisättävä lupaan.

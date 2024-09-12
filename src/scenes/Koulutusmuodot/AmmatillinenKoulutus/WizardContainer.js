@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { useHistory, useParams } from "react-router-dom";
 import { parseLupa } from "../../../utils/lupaParser";
 import { isEmpty, prop, toUpper } from "ramda";
-import { Wizard } from "components/03-templates/Wizard";
+import { Wizard } from "components/03-templates/Wizard/index";
 import wizard from "i18n/definitions/wizard";
 import EsittelijatMuutospyynto from "./EsittelijatMuutospyynto";
 import common from "i18n/definitions/common";
@@ -23,6 +23,8 @@ import { API_BASE_URL } from "modules/constants";
 import { backendRoutes } from "stores/utils/backendRoutes";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { getUrlOnClose } from "components/03-templates/Wizard/wizardUtils";
+import { PropTypes } from "prop-types";
 //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/0208201-1/jarjestamislupa-asiat
 // https: //localhost/fi/jarjestamis-ja-yllapitamisluvat/ammatillinen-koulutus/koulutustoimijat/0208201-1/jarjestamislupa-asiat
 /**
@@ -50,6 +52,7 @@ const WizardContainer = ({
 
   const [lomakedata] = useAllSections();
   const [muutospyynto, setMuutospyynto] = useState();
+  const [isSaving, setIsSaving] = useState();
 
   // Relevantit muutosobjektit osioittain (tarvitaan tallennettaessa)
   const [topThreeCO] = useChangeObjectsByAnchorWithoutUnderRemoval({
@@ -164,11 +167,13 @@ const WizardContainer = ({
    */
   const onSave = useCallback(
     async formData => {
+      setIsSaving(true);
       const procedureHandler = new ProcedureHandler(formatMessage);
       const outputs = await procedureHandler.run(
         "muutospyynto.tallennus.tallennaEsittelijanToimesta",
         [formData]
       );
+      setIsSaving(false);
       return outputs.muutospyynto.tallennus.tallennaEsittelijanToimesta.output
         .result;
     },
@@ -198,7 +203,7 @@ const WizardContainer = ({
   );
 
   const onAction = useCallback(
-    async (action, fromDialog = false) => {
+    async (action, fromDialog = false, muutospyynnonTila) => {
       const formData = createMuutospyyntoOutput(
         await createObjectToSave(
           toUpper(locale),
@@ -219,7 +224,8 @@ const WizardContainer = ({
           maaraystyypit,
           muut,
           lupaKohteet,
-          lomakedata
+          lomakedata,
+          muutospyynnonTila
         )
       );
 
@@ -268,6 +274,15 @@ const WizardContainer = ({
       tutkintokieletCO,
       uuid
     ]
+  );
+
+  const urlOnClose = getUrlOnClose(
+    role,
+    locale,
+    formatMessage,
+    organisaatio,
+    koulutusmuoto,
+    uuid
   );
 
   return (
@@ -330,33 +345,28 @@ const WizardContainer = ({
           />
         ) : null
       }
+      isSaving={isSaving}
       koulutusmuoto={koulutusmuoto}
       onAction={onAction}
       organisation={organisaatio}
       steps={steps}
       title={formatMessage(wizard.esittelijatMuutospyyntoDialogTitle)}
-      urlOnClose={
-        role === "KJ"
-          ? localizeRouteKey(
-              locale,
-              AppRoute.Jarjestamislupaasiat,
-              formatMessage,
-              {
-                id: organisaatio.oid,
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )
-          : localizeRouteKey(
-              locale,
-              AppRoute.AsianhallintaAvoimet,
-              formatMessage,
-              {
-                koulutusmuoto: koulutusmuoto.kebabCase
-              }
-            )
-      }
+      urlOnClose={urlOnClose}
     />
   );
+};
+
+WizardContainer.propTypes = {
+  kohteet: PropTypes.array,
+  koulutukset: PropTypes.object,
+  koulutusalat: PropTypes.array,
+  koulutusmuoto: PropTypes.object,
+  koulutustyypit: PropTypes.array,
+  maaraystyypit: PropTypes.array,
+  muut: PropTypes.array,
+  organisaatio: PropTypes.object,
+  role: PropTypes.string,
+  viimeisinLupa: PropTypes.object
 };
 
 export default WizardContainer;

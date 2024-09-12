@@ -205,7 +205,7 @@ const LupanakymaA = React.memo(
 
     const asianumeroYmsClasses = isPreviewModeOn
       ? "md:w-1/2 xxl:w-1/3 pr-6 mb-6 mt-3"
-      : "md:w-1/2 xxl:w-1/3 px-6 my-12";
+      : "md:w-1/2 xxl:w-1/3 my-12";
 
     return (
       <div className={`bg-white ${isPreviewModeOn ? "" : ""}`}>
@@ -326,9 +326,11 @@ const LupanakymaA = React.memo(
 LupanakymaA.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   isRestrictionsModeOn: PropTypes.bool,
+  koulutustyyppi: PropTypes.string,
   lupakohteet: PropTypes.object,
   maaraykset: PropTypes.array,
   OpetustaAntavatKunnatJSX: PropTypes.func,
+  rajoitemaaraykset: PropTypes.array,
   valtakunnallinenMaarays: PropTypes.object
 };
 

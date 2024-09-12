@@ -38,6 +38,7 @@ const MuutospyyntoWizardOpetuskielet = ({
 };
 
 MuutospyyntoWizardOpetuskielet.propTypes = {
+  isReadOnly: PropTypes.bool,
   mode: PropTypes.string,
   sectionHeadingsOpetusJaTutkintokieli: PropTypes.object
 };

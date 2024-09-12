@@ -1,10 +1,16 @@
-import * as R from "ramda";
 import common from "../i18n/definitions/common";
 import moment from "moment";
-import ProcedureHandler from "../components/02-organisms/procedureHandler";
 import { resolveLocalizedOrganizationName } from "../modules/helpers";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { addIndex, find, map, path, prop, propEq } from "ramda";
+
+export const labelColorClassesByTila = {
+  VALMISTELUSSA: "bg-blue-100",
+  ESITTELYSSA: "bg-yellow-100",
+  PAATETTY: "bg-gray-200",
+  KORJAUKSESSA: "bg-red-400 text-white"
+};
 
 const asiatTableColumnSetup = avoimet => {
   return [
@@ -18,11 +24,6 @@ const asiatTableColumnSetup = avoimet => {
         ? common["asiaTable.headers.saapunut"]
         : common["asiaTable.headers.paatospvm"],
       widthClass: "w-1/12"
-    },
-    {
-      titleKey: common["asiaTable.headers.actions"],
-      widthClass: "w-1/12",
-      isSortable: false
     }
   ];
 };
@@ -34,7 +35,7 @@ const generateAsiatTableHeaderStructure = (t, tableColumnSetup) => {
       {
         rows: [
           {
-            cells: R.map(item => {
+            cells: map(item => {
               return {
                 isSortable: !(item.isSortable === false),
                 truncate: true,
@@ -50,8 +51,8 @@ const generateAsiatTableHeaderStructure = (t, tableColumnSetup) => {
 };
 
 const getMaakuntaNimiFromHakemus = (hakemus, locale) => {
-  const maakuntaObject = R.find(R.propEq("kieli", locale.toUpperCase()))(
-    R.path(["jarjestaja", "maakuntaKoodi", "metadata"], hakemus) || []
+  const maakuntaObject = find(propEq("kieli", locale.toUpperCase()))(
+    path(["jarjestaja", "maakuntaKoodi", "metadata"], hakemus) || []
   );
   return maakuntaObject ? maakuntaObject.nimi : "";
 };
@@ -69,7 +70,8 @@ export const generateAsiaTableRows = (
   const paatospvm = row.paatospvm
     ? moment(row.paatospvm).format("D.M.YYYY")
     : "";
-  return R.addIndex(R.map)(
+
+  return addIndex(map)(
     (col, j) => {
       return {
         truncate: false,
@@ -87,7 +89,12 @@ export const generateAsiaTableRows = (
       { text: resolveLocalizedOrganizationName(row.jarjestaja, locale) },
       { text: getMaakuntaNimiFromHakemus(row, locale) },
       {
-        text: formatMessage(common[`asiaStates.esittelija.${row.tila}`]) || ""
+        text: `<span class="px-3 py-2 rounded-sm ${prop(
+          row.tila,
+          labelColorClassesByTila
+        )}">${
+          formatMessage(common[`asiaStates.esittelija.${row.tila}`]) || ""
+        }</span>`
       },
       { text: avoimet ? paivityspvm : paatospvm }
     ]
@@ -98,7 +105,6 @@ export const generateAvoimetAsiatTableStructure = (
   hakemusList,
   intl,
   history,
-  onPaatettyActionClicked,
   koulutusmuotoKebabCase
 ) => {
   const formatMessage = intl.formatMessage;
@@ -109,7 +115,7 @@ export const generateAvoimetAsiatTableStructure = (
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)((row, i) => {
+          rows: addIndex(map)(row => {
             let actions = [];
             if (row.tila === "VALMISTELUSSA") {
               actions.push({
@@ -130,48 +136,22 @@ export const generateAvoimetAsiatTableStructure = (
             }
             return {
               id: row.uuid,
-              onClick: async (row, action) => {
-                if (action === "esittelyyn") {
-                  const timestamp = new Date().getTime();
-                  await new ProcedureHandler(
-                    formatMessage
-                  ).run("muutospyynnot.tilanmuutos.esittelyyn", [row.id]);
-                  history.push("?force=" + timestamp);
-                } else if (action === "valmisteluun") {
-                  const timestamp = new Date().getTime();
-                  await new ProcedureHandler(
-                    formatMessage
-                  ).run("muutospyynnot.tilanmuutos.valmisteluun", [row.id]);
-                  history.push("?force=" + timestamp);
-                } else if (action === "paata") {
-                  await onPaatettyActionClicked(row);
-                } else {
-                  history.push(
-                    localizeRouteKey(
-                      intl.locale,
-                      AppRoute.Asia,
-                      intl.formatMessage,
-                      {
-                        koulutusmuoto: koulutusmuotoKebabCase,
-                        uuid: row.id
-                      }
-                    )
-                  );
-                }
+              onClick: async row => {
+                history.push(
+                  localizeRouteKey(
+                    intl.locale,
+                    AppRoute.Asia,
+                    intl.formatMessage,
+                    {
+                      koulutusmuoto: koulutusmuotoKebabCase,
+                      uuid: row.id
+                    }
+                  )
+                );
               },
-              cells: generateAsiaTableRows(row, intl, true).concat([
-                {
-                  menu: {
-                    id: `simple-menu-${i}`,
-                    actions
-                  },
-                  styleClasses: [
-                    tableColumnSetup[tableColumnSetup.length - 1].widthClass
-                  ]
-                }
-              ])
+              cells: generateAsiaTableRows(row, intl, true)
             };
-          }, hakemusList)
+          }, hakemusList || [])
         }
       ]
     },
@@ -181,7 +161,12 @@ export const generateAvoimetAsiatTableStructure = (
   ];
 };
 
-export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
+export const generatePaatetytAsiatTableStructure = (
+  hakemusList,
+  intl,
+  history,
+  koulutusmuotoKebabCase
+) => {
   const tableColumnSetup = asiatTableColumnSetup(false);
   return [
     generateAsiatTableHeaderStructure(intl.formatMessage, tableColumnSetup),
@@ -189,45 +174,23 @@ export const generatePaatetytAsiatTableStructure = (hakemusList, intl) => {
       role: "tbody",
       rowGroups: [
         {
-          rows: R.addIndex(R.map)((row, i) => {
+          rows: addIndex(map)(row => {
             return {
               id: row.uuid,
-              onClick: async (row, action) => {
-                if (action === "lataa") {
-                  const procedureHandler = new ProcedureHandler(
-                    intl.formatMessage
-                  );
-                  const output = await procedureHandler.run(
-                    "muutospyynto.esittelijanEsikatselu.latauspolku",
-                    [row.id]
-                  );
-                  const filePath =
-                    output.muutospyynto.esittelijanEsikatselu.latauspolku
-                      .output;
-                  procedureHandler.run(
-                    "muutospyynto.lataaminen.downloadAndShow",
-                    [filePath, true]
-                  );
-                } else {
-                  console.log("Avaa asian asiakirjat", row);
-                }
-              },
-              cells: generateAsiaTableRows(row, intl, false).concat({
-                menu: {
-                  id: `simple-menu-${i}`,
-                  actions: [
+              onClick: async row => {
+                history.push(
+                  localizeRouteKey(
+                    intl.locale,
+                    AppRoute.Asia,
+                    intl.formatMessage,
                     {
-                      id: "lataa",
-                      text: intl.formatMessage(
-                        common["asiaTable.actions.lataa"]
-                      )
+                      koulutusmuoto: koulutusmuotoKebabCase,
+                      uuid: row.id
                     }
-                  ]
-                },
-                styleClasses: [
-                  tableColumnSetup[tableColumnSetup.length - 1].widthClass
-                ]
-              })
+                  )
+                );
+              },
+              cells: generateAsiaTableRows(row, intl, false)
             };
           }, hakemusList || [])
         }

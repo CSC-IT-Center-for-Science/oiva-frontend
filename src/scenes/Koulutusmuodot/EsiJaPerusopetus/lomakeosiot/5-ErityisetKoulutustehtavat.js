@@ -57,8 +57,7 @@ const ErityisetKoulutustehtavat = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.erityisetKoulutustehtavat)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

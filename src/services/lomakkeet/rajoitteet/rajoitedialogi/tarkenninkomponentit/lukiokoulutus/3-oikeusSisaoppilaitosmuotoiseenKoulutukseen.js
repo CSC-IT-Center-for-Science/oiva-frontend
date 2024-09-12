@@ -19,7 +19,8 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
   isMulti,
   inputId
 ) {
-  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen =
+    await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
   const localeUpper = toUpper(locale);
 
   if (oikeusSisaoppilaitosmuotoiseenKoulutukseen.length) {
@@ -61,20 +62,23 @@ export default async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                  * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 return map(stateObj => {
-                    return path(["metadata", "FI", "kayttoohje"], item) === "Kuvaus" ? {
-                      value: `${getAnchorPart(
-                        stateObj.anchor,
-                        1
-                      )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                      label: stateObj.properties.value,
-                      useKuvausInRajoite: true
-                    } : {
+                  return path(["metadata", "FI", "kayttoohje"], item) ===
+                    "Kuvaus"
+                    ? {
+                        value: `${getAnchorPart(
+                          stateObj.anchor,
+                          1
+                        )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                        label: stateObj.properties.value,
+                        useKuvausInRajoite: true
+                      }
+                    : {
                         label: item.metadata[localeUpper].nimi,
                         value: `${item.koodiarvo}`,
                         kuvaus: stateObj.properties.value,
                         useKuvausInRajoite: false
-                    };
-                  }, kuvausStateObjects);
+                      };
+                }, kuvausStateObjects);
               }
 
               return null;

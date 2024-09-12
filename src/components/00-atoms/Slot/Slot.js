@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function Slot({ children, slot }) {
   let slottedChild = null; // Default to null since react can render null if a slot isn't found

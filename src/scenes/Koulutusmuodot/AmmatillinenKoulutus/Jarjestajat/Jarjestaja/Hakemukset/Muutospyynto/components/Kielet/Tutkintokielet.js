@@ -56,7 +56,9 @@ const Tutkintokielet = ({ koulutusalat, maaraykset, mode }) => {
 };
 
 Tutkintokielet.propTypes = {
-  koulutusalat: PropTypes.array
+  koulutusalat: PropTypes.array,
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default Tutkintokielet;

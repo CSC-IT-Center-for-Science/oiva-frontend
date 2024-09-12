@@ -132,4 +132,4 @@ export const resolveKoodiLocalization = (messageObjects, locale = "FI") => {
 
 export const userHasAnyOfRoles = (user, roles) => {
   return user && any(role => includes(role, user.roles), roles);
-}
+};

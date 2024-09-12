@@ -301,19 +301,20 @@ const LupaSection = props => {
 
       // Kohde 5: Muut määräykset
       case KOHTEET.MUUT: {
-        const {
-          muutCombined,
-          ...rest
-        } = kohde;
+        const { muutCombined, ...rest } = kohde;
 
-
-        const muut = groupBy(prop("tyyppi"), sortBy(compose(parseInt, prop("koodiarvo")), flatten(Object.keys(filter(Array.isArray, rest)).map(x => rest[x]))));
+        const muut = groupBy(
+          prop("tyyppi"),
+          sortBy(
+            compose(parseInt, prop("koodiarvo")),
+            flatten(Object.keys(filter(Array.isArray, rest)).map(x => rest[x]))
+          )
+        );
         return (
           <div>
             <Section code={headingNumber} title={heading}>
-
               {_.map(muut, muu => {
-                return (section(muu))
+                return section(muu);
               })}
 
               {muutCombined.length === 0 ? (

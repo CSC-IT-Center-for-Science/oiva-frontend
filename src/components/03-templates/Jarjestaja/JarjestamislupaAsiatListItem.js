@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Td, Tr, TdButton, Td2 } from "modules/Table";
 import { MEDIA_QUERIES } from "modules/styles";
-import {asiaStateToLocalizationKeyMap} from "./constants";
+import { asiaStateToLocalizationKeyMap } from "./constants";
 import Button from "@material-ui/core/Button";
 import Edit from "@material-ui/icons/Edit";
 import { Typography } from "@material-ui/core";
@@ -10,6 +10,7 @@ import { NavLink } from "react-router-dom";
 import { FIELDS } from "locales/uusiHakemusFormConstants";
 import { injectIntl } from "react-intl";
 import common from "i18n/definitions/common";
+import { PropTypes } from "prop-types";
 
 const LupaText = styled.span`
   margin: 10px;
@@ -36,7 +37,9 @@ const JarjestamislupaAsiaListItem = props => {
             <TextPartial>
               {intl.formatMessage(common.stateAsia)}:&nbsp;
               {tila && states.includes(tila)
-                ? intl.formatMessage(common[asiaStateToLocalizationKeyMap[tila]])
+                ? intl.formatMessage(
+                    common[asiaStateToLocalizationKeyMap[tila]]
+                  )
                 : tila}
             </TextPartial>
           </LupaText>
@@ -92,6 +95,13 @@ const JarjestamislupaAsiaListItem = props => {
       /> */}
     </React.Fragment>
   );
+};
+
+JarjestamislupaAsiaListItem.propTypes = {
+  intl: PropTypes.object,
+  muutospyynto: PropTypes.object,
+  setOpened: PropTypes.func,
+  states: PropTypes.array
 };
 
 export default injectIntl(JarjestamislupaAsiaListItem);

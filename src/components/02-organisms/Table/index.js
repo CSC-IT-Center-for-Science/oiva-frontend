@@ -1,20 +1,31 @@
 import React, { useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
 import TableRow from "./TableRow/index";
 import TableCell from "./TableCell/index";
 import { sortObjectsByProperty } from "../../../utils/common";
-import Paper from '@material-ui/core/Paper';
-import TableContainer from '@material-ui/core/TableContainer';
-import MaterialUITable from '@material-ui/core/Table';
-import { makeStyles } from '@material-ui/core/styles';
-import { addIndex, assocPath, findIndex, is, map, path, prop, propEq, reverse, sort } from "ramda";
+import Paper from "@material-ui/core/Paper";
+import TableContainer from "@material-ui/core/TableContainer";
+import MaterialUITable from "@material-ui/core/Table";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  addIndex,
+  assocPath,
+  findIndex,
+  is,
+  map,
+  path,
+  prop,
+  propEq,
+  reverse,
+  sort
+} from "ramda";
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
-  },
+    minWidth: 650
+  }
 });
 
 const defaultValues = {
@@ -138,33 +149,35 @@ const Table = ({
    * @param {array} part.rowGroups - Array of rowgroup objects.
    * @param {array} rows - Array of row objects.
    */
-   const getRowsToRender = (part, rows = []) => {
+  const getRowsToRender = (part, rows = []) => {
     const ParentOfRow = part.role === "thead" ? TableHead : TableBody;
-    const jsx = <ParentOfRow key={Math.random()}>{
-      addIndex(map)((row, iii) => {      
-      return (
-        <TableRow
-          key={`row-${iii}`}
-          row={row}
-          onClick={onRowClick}
-          tableLevel={level}
-        >
-          {addIndex(map)((cell, iiii) => {
-            return (
-              <TableCell
-                columnIndex={iiii}
-                isHeaderCell={part.role === "thead"}
-                key={`cell-${iiii}`}
-                onClick={onCellClick}
-                orderOfBodyRows={orderOfBodyRows}
-                properties={cell}
-                row={row}
-              />
-            );
-          }, row.cells || [])}
-        </TableRow>
-      );
-    }, rows)}</ParentOfRow>
+    const jsx = (
+      <ParentOfRow key={Math.random()}>
+        {addIndex(map)((row, iii) => {
+          return (
+            <TableRow
+              key={`row-${iii}`}
+              row={row}
+              onClick={onRowClick}
+              tableLevel={level}>
+              {addIndex(map)((cell, iiii) => {
+                return (
+                  <TableCell
+                    columnIndex={iiii}
+                    isHeaderCell={part.role === "thead"}
+                    key={`cell-${iiii}`}
+                    onClick={onCellClick}
+                    orderOfBodyRows={orderOfBodyRows}
+                    properties={cell}
+                    row={row}
+                  />
+                );
+              }, row.cells || [])}
+            </TableRow>
+          );
+        }, rows)}
+      </ParentOfRow>
+    );
     return jsx;
   };
 
@@ -174,19 +187,22 @@ const Table = ({
    */
   const table = addIndex(map)((part, i) => {
     return (
-          <React.Fragment key={i}>
-            {map(rowGroup => {
-              return getRowsToRender(part, rowGroup.rows);  
-            }, part.rowGroups || [])}
-          </React.Fragment>
+      <React.Fragment key={i}>
+        {map(rowGroup => {
+          return getRowsToRender(part, rowGroup.rows);
+        }, part.rowGroups || [])}
+      </React.Fragment>
     );
   }, sortedStructure);
 
   // The table will is rendered.
   return (
     <TableContainer component={Paper}>
-      <MaterialUITable className={classes.table} aria-label="simple table">{table}</MaterialUITable>
-    </TableContainer>);
+      <MaterialUITable className={classes.table} aria-label="simple table">
+        {table}
+      </MaterialUITable>
+    </TableContainer>
+  );
 };
 
 Table.propTypes = {

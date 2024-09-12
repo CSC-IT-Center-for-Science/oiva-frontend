@@ -52,7 +52,7 @@ export async function muutEhdot(
                 removal: isRemoved,
                 custom: Object.assign(
                   {},
-                  !!ehtoonLiittyvatMaaraykset.length ? isInLupa : {}
+                  ehtoonLiittyvatMaaraykset.length ? isInLupa : {}
                 )
               },
               isChecked: !!ehtoonLiittyvatMaaraykset.length,

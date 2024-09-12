@@ -85,10 +85,12 @@ const RadioButtonWithLabel = React.memo(
 );
 
 RadioButtonWithLabel.propTypes = {
+  children: PropTypes.object,
   forChangeObject: PropTypes.object,
   fullAnchor: PropTypes.string,
   id: PropTypes.string,
   isChecked: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   name: PropTypes.string,
@@ -96,5 +98,7 @@ RadioButtonWithLabel.propTypes = {
   labelStyles: PropTypes.object,
   value: PropTypes.string
 };
+
+RadioButtonWithLabel.displayName = "RadioButtonWithLabel";
 
 export default RadioButtonWithLabel;

@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import UndoIcon from "@material-ui/icons/Undo";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import { compose, filter, not, pathEq } from "ramda";
+import { compose, filter, not, pathEq, prop } from "ramda";
 import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
@@ -52,7 +52,7 @@ const ExpandableRowRoot = ({
   const [isToggledOpen, setIsToggleOpen] = useState(false);
 
   const onToggle = (...props) => {
-    setIsToggleOpen(props[1]);
+    setIsToggleOpen(prop(1, props));
   };
 
   const amountOfRelevantChanges = filter(
@@ -66,14 +66,12 @@ const ExpandableRowRoot = ({
         <ExpandableRow
           shouldBeExpanded={isExpanded}
           onToggle={onToggle}
-          id={anchor}
-        >
+          id={anchor}>
           <Typography
             component="h4"
             variant="h4"
             classes={{ root: classes.noPadding }}
-            data-slot="title"
-          >
+            data-slot="title">
             {code && <span className="pr-6">{code}</span>}
             <span>{title}</span>
           </Typography>
@@ -99,8 +97,7 @@ const ExpandableRowRoot = ({
                           e.stopPropagation();
                           return onChangesRemove(sectionId, anchor, index);
                         }}
-                        size="small"
-                      >
+                        size="small">
                         {messages.undo}
                       </Button>
                     </Tooltip>
@@ -111,8 +108,7 @@ const ExpandableRowRoot = ({
           </div>
           <div
             data-slot="content"
-            className={`w-full ${!children ? "p-8" : ""}`}
-          >
+            className={`w-full ${!children ? "p-8" : ""}`}>
             {!children && (isExpanded || isToggledOpen) ? (
               <CategorizedListRoot
                 anchor={anchor}
@@ -138,6 +134,7 @@ const ExpandableRowRoot = ({
 ExpandableRowRoot.propTypes = {
   anchor: PropTypes.string,
   categories: PropTypes.array,
+  children: PropTypes.object,
   changes: PropTypes.array,
   code: PropTypes.string,
   disableReverting: PropTypes.bool,

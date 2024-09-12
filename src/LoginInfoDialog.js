@@ -18,8 +18,7 @@ const LoginInfoDialog = ({ linkToExternalLogInPage, onCancel }) => {
     <Dialog
       open={true}
       aria-labelledby="simple-dialog-title"
-      PaperProps={{ style: { overflowY: "visible" } }}
-    >
+      PaperProps={{ style: { overflowY: "visible" } }}>
       <DialogTitle id="customized-dialog-title" onClose={onCancel}>
         {formatMessage(auth.loginInfoDialogTitle)}
       </DialogTitle>
@@ -38,8 +37,7 @@ const LoginInfoDialog = ({ linkToExternalLogInPage, onCancel }) => {
               window.location.href = linkToExternalLogInPage;
             }}
             color="primary"
-            variant="contained"
-          >
+            variant="contained">
             {formatMessage(auth.jatkaKirjautumiseen)}
           </Button>
         </div>

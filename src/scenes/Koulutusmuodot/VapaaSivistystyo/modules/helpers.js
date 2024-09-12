@@ -12,9 +12,9 @@ import * as R from "ramda";
  * @return {any}
  */
 export const resolveLocalizedOrganizerName = (lupa, primaryLocale) => {
-  const altLocale = primaryLocale === 'fi' ? 'sv' : 'fi';
+  const altLocale = primaryLocale === "fi" ? "sv" : "fi";
   let retval = R.path(["jarjestaja", "nimi", primaryLocale])(lupa);
-  if(!retval) {
+  if (!retval) {
     retval = R.path(["jarjestaja", "nimi", altLocale])(lupa);
   }
   return retval;
@@ -27,13 +27,14 @@ export const resolveLocalizedOrganizerName = (lupa, primaryLocale) => {
  * @return {string|*}
  */
 export const resolveVSTOppilaitosNameFromLupa = (lupa, locale) => {
-  const maarays = lupa.maaraykset.find(item => item.koodisto = "oppilaitos");
-  if(maarays) {
-    const fakelupa = { jarjestaja: { nimi: R.path(["organisaatio", "nimi"])(maarays)}};
+  const maarays = lupa.maaraykset.find(item => (item.koodisto = "oppilaitos"));
+  if (maarays) {
+    const fakelupa = {
+      jarjestaja: { nimi: R.path(["organisaatio", "nimi"])(maarays) }
+    };
     return resolveLocalizedOrganizerName(fakelupa, locale);
-  }
-  else return "";
-}
+  } else return "";
+};
 
 /**
  * Given a koodisto koodi metadata array, return the localized message contained in given primaryLocale, or
@@ -42,14 +43,17 @@ export const resolveVSTOppilaitosNameFromLupa = (lupa, locale) => {
  * @param primaryLocale
  * @return {*}
  */
-export const resolveKoodiLocalization = (
-  messageObjects,
-  locale = "FI",
-
-) => {
+export const resolveKoodiLocalization = (messageObjects, locale = "FI") => {
   const primaryLocale = locale.toUpperCase();
   const altLocale = primaryLocale === "FI" ? "SV" : "FI";
-  const primaryObject = R.find(item => item.kieli === primaryLocale, messageObjects);
+  const primaryObject = R.find(
+    item => item.kieli === primaryLocale,
+    messageObjects
+  );
   const altObject = R.find(item => item.kieli === altLocale, messageObjects);
-  return primaryObject ? primaryObject.nimi : altObject ? altObject.nimi : undefined;
+  return primaryObject
+    ? primaryObject.nimi
+    : altObject
+    ? altObject.nimi
+    : undefined;
 };

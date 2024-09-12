@@ -52,8 +52,7 @@ const Opetustehtavat = React.memo(
         isRowExpanded={true}
         path={constants.formLocation}
         rowTitle={intl.formatMessage(esiJaPerusopetus.poOpetustehtava)}
-        showCategoryTitles={true}
-      ></Lomake>
+        showCategoryTitles={true}></Lomake>
     ) : null;
   },
   (cp, np) => {

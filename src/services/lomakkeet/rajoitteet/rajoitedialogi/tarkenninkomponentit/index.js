@@ -11,7 +11,7 @@ import getKunnat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkom
 import getOpetuskielikomponentit from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/opetuskielet";
 import getErityisetKoulutustehtavat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/erityisetKoulutustehtavat";
 import getOppilaitokset from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/oppilaitokset";
-import getValtakunnallisetKehittamistehtavat from 'services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/lukiokoulutus/5-valtakunnallinenKehittamistehtava'
+import getValtakunnallisetKehittamistehtavat from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/lukiokoulutus/5-valtakunnallinenKehittamistehtava";
 import { getMaaraaikalomake } from "services/lomakkeet/rajoitteet/rajoitedialogi/tarkenninkomponentit/yhteiset/maaraaika";
 import { __ } from "i18n-for-browser";
 import getMuutEhdot from "./yhteiset/muutEhdot";
@@ -27,14 +27,15 @@ const tarkenninlomakkeet = {
   erityisetKoulutustehtavat: getErityisetKoulutustehtavat,
   valtakunnallisetKehittamistehtavat: getValtakunnallisetKehittamistehtavat,
   muutEhdot: getMuutEhdot,
-  oikeusSisaoppilaitosmuotoiseenKoulutukseen: getOikeusSisaoppilaitosmuotoiseenKoulutukseen,
+  oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+    getOikeusSisaoppilaitosmuotoiseenKoulutukseen,
   opetuksenJarjestamismuodot: getOpetuksenJarjestamismuotokomponentit,
   opetuskielet: getOpetuskielikomponentit,
   opetustehtavat: getOpetustehtavakomponentit,
   oppilaitokset: getOppilaitokset,
   toimintaalue: getKunnat,
   maaraaika: getMaaraaikalomake,
-  opiskelijamaarat: () => [
+  opiskelijamaarat: (isReadOnly, osionData, locale, isMulti, inputId) => [
     {
       anchor: "komponentti",
       name: "Autocomplete",
@@ -43,7 +44,9 @@ const tarkenninlomakkeet = {
         forChangeObject: {
           section: "opiskelijamaarat"
         },
-        isMulti: false,
+        inputId,
+        isMulti,
+        isReadOnly,
         options: [
           {
             value: "kokonaismaara",

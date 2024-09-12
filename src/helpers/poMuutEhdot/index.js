@@ -77,13 +77,14 @@ export const defineBackendChangeObjects = async (
     lupaMaaraykset
   );
 
-  const maarayksiaVastenLuodutRajoitteet = createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
-    maaraykset,
-    rajoitteetByRajoiteId,
-    kohteet,
-    maaraystyypit,
-    kohde
-  );
+  const maarayksiaVastenLuodutRajoitteet =
+    createMaarayksiaVastenLuodutRajoitteetDynaamisilleTekstikentilleBEObjects(
+      maaraykset,
+      rajoitteetByRajoiteId,
+      kohteet,
+      maaraystyypit,
+      kohde
+    );
 
   const maaraystyyppi = find(propEq("tunniste", "OIKEUS"), maaraystyypit);
   const muutEhdot = await getPOMuutEhdotFromStorage();

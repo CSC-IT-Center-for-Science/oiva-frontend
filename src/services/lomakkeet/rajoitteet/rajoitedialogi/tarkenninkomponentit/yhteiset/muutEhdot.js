@@ -21,7 +21,6 @@ export default async function getMuutEhdot(
   inputId,
   koulutustyyppi
 ) {
-
   const muutEhdot =
     koulutustyyppi === "2"
       ? await getLukioMuutEhdotFromStorage()
@@ -71,20 +70,23 @@ export default async function getMuutEhdot(
                  * asetettu muuttujaan metadata.FI.kayttoohje arvo "Kuvaus". Muille näytetään nimi
                  */
                 return map(stateObj => {
-                    return path(["metadata", "FI", "kayttoohje"], muuEhto) === "Kuvaus" ? {
-                      value: `${getAnchorPart(
-                        stateObj.anchor,
-                        1
-                      )}-${getAnchorPart(stateObj.anchor, 2)}`,
-                      label: stateObj.properties.value,
-                      useKuvausInRajoite: true
-                    } : {
-                      label: muuEhto.metadata[localeUpper].nimi,
-                      value: `${muuEhto.koodiarvo}-0`,
-                      kuvaus: stateObj.properties.value,
-                      useKuvausInRajoite: false
-                    };
-                  }, kuvausStateObjects)
+                  return path(["metadata", "FI", "kayttoohje"], muuEhto) ===
+                    "Kuvaus"
+                    ? {
+                        value: `${getAnchorPart(
+                          stateObj.anchor,
+                          1
+                        )}-${getAnchorPart(stateObj.anchor, 2)}`,
+                        label: stateObj.properties.value,
+                        useKuvausInRajoite: true
+                      }
+                    : {
+                        label: muuEhto.metadata[localeUpper].nimi,
+                        value: `${muuEhto.koodiarvo}-0`,
+                        kuvaus: stateObj.properties.value,
+                        useKuvausInRajoite: false
+                      };
+                }, kuvausStateObjects);
               }
 
               return null;

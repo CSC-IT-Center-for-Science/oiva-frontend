@@ -3,7 +3,7 @@ import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
 import * as muutHelper from "../../../helpers/muut";
-import * as kieletHelper from "../../../helpers/kielet";
+import * as kieletHelper from "../../../helpers/kielet/index";
 import * as koulutuksetHelper from "../../../helpers/koulutukset";
 import * as R from "ramda";
 
@@ -32,7 +32,8 @@ export async function createObjectToSave(
   maaraystyypit,
   muut,
   lupaKohteet,
-  lomakedata
+  lomakedata,
+  muutospyynnonTila
 ) {
   // TUTKINNOT, OSAAMISALAT JA TUKINTOKIELET
   const tutkinnot = await tutkinnotHelper.defineBackendChangeObjects(
@@ -135,7 +136,7 @@ export async function createObjectToSave(
     luoja: sessionStorage.getItem("username"),
     luontipvm: moment().format("YYYY-MM-DD"),
     lupaUuid: lupa.uuid,
-    tila: uuid ? "VALMISTELUSSA" : "LUONNOS",
+    tila: muutospyynnonTila || (uuid ? "VALMISTELUSSA" : "LUONNOS"),
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: null,

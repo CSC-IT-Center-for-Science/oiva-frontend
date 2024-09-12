@@ -12,7 +12,8 @@ export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
   const lisatiedot = await getLisatiedotFromStorage();
-  const oikeudet = await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
+  const oikeudet =
+    await getOikeusSisaoppilaitosmuotoiseenKoulutukseenFromStorage();
 
   const lisatiedotObj = find(
     pathEq(["koodisto", "koodistoUri"], "lisatietoja"),
@@ -76,7 +77,7 @@ export async function getOikeusSisaoppilaitosmuotoiseenKoulutukseen(
                 isReadOnly: _isReadOnly,
                 labelStyles: {
                   addition: isAdded,
-                  custom: Object.assign({}, !!maarays ? isInLupa : {}),
+                  custom: Object.assign({}, maarays ? isInLupa : {}),
                   removal: isRemoved
                 },
                 title: getLocalizedProperty(oikeus.metadata, locale, "nimi")

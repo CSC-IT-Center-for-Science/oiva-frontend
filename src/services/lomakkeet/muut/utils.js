@@ -11,7 +11,7 @@ export function scrollToOpiskelijavuodet() {
   /**
    * head takes the first element of an array which in this use case will
    * be fulfilled with HTMLElements returned by querySelectorAll function.
-   * The idea is to calculate the height of { position: fixed } elements. With
+   * The idea is to calculate the height of { position: fixed } elements. With
    * that knowledge the amount of srolling can be set correctly.
    **/
   const muiDialogTitle = head(

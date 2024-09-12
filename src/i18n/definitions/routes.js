@@ -20,10 +20,10 @@ export default defineMessages({
     defaultMessage:
       "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/avoimet"
   },
-  AsianhallintaAvoimetPath: {
-    id: "routes.asianhallintaAvoimetPath",
+  asianhallintaKorjattavat: {
+    id: "routes.asianhallintaKorjattavat",
     defaultMessage:
-      "/jarjestamis-ja-yllapitamisluvat/:koulutusmuoto/asianhallinta/avoimet"
+      "/jarjestamis-ja-yllapitamisluvat/{koulutusmuoto}/asianhallinta/korjattavat"
   },
   asianhallintaPaatetyt: {
     id: "routes.asianhallintaPaatetyt",

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import MaterialUITableRow from '@material-ui/core/TableRow';
+import MaterialUITableRow from "@material-ui/core/TableRow";
 
 /**
  * TableRow component. Used by the Table component.
@@ -11,33 +11,40 @@ import MaterialUITableRow from '@material-ui/core/TableRow';
  * @param {number} props.tableLevel - Indicates the deepness of nesting.
  */
 const TableRow = ({ children, onClick, row, tableLevel = 0 }) => {
+  const { isClickable = true, isHoverable = true } = row;
   function onRowClick(action = "click") {
     if (onClick) {
       onClick(action, row, tableLevel);
+    } else {
+      console.warn("onClick handler function is missing!");
     }
   }
 
-  const hoverBgClass = `hover:bg-gray-${tableLevel + 1}00`;
+  const hoverBgClass = isHoverable
+    ? `hover:bg-gray-${tableLevel + 1}00 cursor-pointer`
+    : "";
 
   return (
     <MaterialUITableRow
+      className={`${hoverBgClass} flex`}
+      hover={isHoverable}
       key={`key-${Math.random()}`}
-      tabIndex={0}
-      className={`${hoverBgClass} cursor-pointer flex`}
       onClick={() => {
-        onRowClick();
+        return isClickable ? onRowClick() : false;
       }}
       onKeyDown={e => {
         if (e.key === "Enter") {
-          onRowClick();
+          return isClickable ? onRowClick() : false;
         }
-      }}>
+      }}
+      tabIndex={0}>
       {children}
     </MaterialUITableRow>
   );
 };
 
 TableRow.propTypes = {
+  children: PropTypes.array,
   onClick: PropTypes.func,
   row: PropTypes.object,
   tableLevel: PropTypes.number

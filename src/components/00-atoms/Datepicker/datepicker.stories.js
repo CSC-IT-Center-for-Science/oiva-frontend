@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Datepicker from "./index";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
-import {withState} from "@dump247/storybook-state";
-
-let initialState = {value: new Date(Date.now()), payload: {}};
 
 storiesOf("Datepicker", module)
   .addDecorator(withInfo)
-  .add("Simple example",  withState(initialState)(({store}) => {
-    const onChanges = (payload, { value }) => {
-      store.set({value, payload});
-    };
+  .add("Simple example", () => {
+    const [state] = useState({
+      value: new Date(Date.now()),
+      payload: {}
+    });
+
+    const onChanges = () => {};
 
     const messages = {
       ok: "ok",
@@ -27,8 +27,8 @@ storiesOf("Datepicker", module)
       <div>
         <p>Normal</p>
         <Datepicker
-          value={store.state.value}
-          payload={store.state.payload}
+          value={state.value}
+          payload={state.payload}
           onChanges={onChanges}
           messages={messages}
           locale={"fi"}
@@ -36,8 +36,8 @@ storiesOf("Datepicker", module)
         <p>Error + clearable</p>
         <Datepicker
           label="Datepicker"
-          value={store.state.value}
-          payload={store.state.payload}
+          value={state.value}
+          payload={state.payload}
           onChanges={onChanges}
           error={true}
           clearable={true}
@@ -48,8 +48,8 @@ storiesOf("Datepicker", module)
         <p>Read only</p>
         <Datepicker
           label="Datepicker"
-          value={store.state.value}
-          payload={store.state.payload}
+          value={state.value}
+          payload={state.payload}
           showTodayButton={false}
           messages={messages}
           locale={"fi"}
@@ -76,7 +76,7 @@ storiesOf("Datepicker", module)
         <p>Wide given</p>
         <Datepicker
           label="Datepicker"
-          value={store.state.value}
+          value={state.value}
           onChanges={onChanges}
           messages={messages}
           locale={"fi"}
@@ -84,4 +84,4 @@ storiesOf("Datepicker", module)
         />
       </div>
     );
-  }));
+  });

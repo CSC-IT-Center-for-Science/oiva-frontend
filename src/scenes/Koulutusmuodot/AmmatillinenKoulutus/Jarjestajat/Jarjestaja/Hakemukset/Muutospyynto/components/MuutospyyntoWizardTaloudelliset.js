@@ -64,8 +64,7 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly }) => {
             mode="yleisettiedot"
             path={["taloudelliset"]}
             rowTitle={intl.formatMessage(wizard.yleisetTiedot)}
-            showCategoryTitles={true}
-          ></Lomake>
+            showCategoryTitles={true}></Lomake>
 
           <Lomake
             anchor={sectionIds[1]}
@@ -75,8 +74,7 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly }) => {
             mode="investoinnit"
             path={["taloudelliset"]}
             rowTitle={intl.formatMessage(wizard.taloudellisetInvestoinnit)}
-            showCategoryTitles={true}
-          ></Lomake>
+            showCategoryTitles={true}></Lomake>
 
           <Lomake
             anchor={sectionIds[2]}
@@ -86,8 +84,7 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly }) => {
             mode="tilinpaatostiedot"
             path={["taloudelliset"]}
             rowTitle={intl.formatMessage(wizard.taloudellisetTilinpaatostiedot)}
-            showCategoryTitles={true}
-          ></Lomake>
+            showCategoryTitles={true}></Lomake>
 
           <Lomake
             anchor={sectionIds[3]}
@@ -97,8 +94,7 @@ const MuutospyyntoWizardTaloudelliset = ({ isReadOnly }) => {
             mode="liitteet"
             path={["taloudelliset"]}
             rowTitle={intl.formatMessage(wizard.liitteet)}
-            showCategoryTitles={true}
-          ></Lomake>
+            showCategoryTitles={true}></Lomake>
         </div>
       )}
     </form>

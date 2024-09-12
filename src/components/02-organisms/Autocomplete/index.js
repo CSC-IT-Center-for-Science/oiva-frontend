@@ -81,7 +81,7 @@ const Autocomplete = React.memo(
             }
           };
         },
-        indicatorSeparator: styles => ({ display: "none" }),
+        indicatorSeparator: () => ({ display: "none" }),
         menu: styles => ({ ...styles, zIndex: 999 }),
         multiValue: styles => {
           const color = chroma("#c3dafe");
@@ -176,8 +176,7 @@ const Autocomplete = React.memo(
             {props.title && (
               <InputLabel
                 required={props.isRequired}
-                style={{ marginBottom: "0.2em" }}
-              >
+                style={{ marginBottom: "0.2em" }}>
                 {props.title}
               </InputLabel>
             )}
@@ -277,6 +276,7 @@ Autocomplete.propTypes = {
   fullAnchor: PropTypes.string,
   inputId: PropTypes.string,
   isMulti: PropTypes.bool,
+  isPreviewModeOn: PropTypes.bool,
   isReadOnly: PropTypes.bool,
   isRequired: PropTypes.bool,
   isValid: PropTypes.bool,

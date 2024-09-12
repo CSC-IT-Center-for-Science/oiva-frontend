@@ -5,7 +5,7 @@ import Section from "components/03-templates/Section";
 const FormSection = ({ children, code, render, sectionId, title }) => {
   return (
     <Section code={code} title={title}>
-      {!!render
+      {render
         ? render({
             sectionId
           })
@@ -16,7 +16,9 @@ const FormSection = ({ children, code, render, sectionId, title }) => {
 };
 
 FormSection.propTypes = {
+  children: PropTypes.array,
   code: PropTypes.number,
+  render: PropTypes.func,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

@@ -37,8 +37,7 @@ const Opiskelijamaarat = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.oppilasOpiskelijamaarat)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 
@@ -47,6 +46,7 @@ Opiskelijamaarat.propTypes = {
   isPreviewModeOn: PropTypes.bool,
   maaraykset: PropTypes.array,
   mode: PropTypes.string,
+  rajoitteet: PropTypes.object,
   sectionId: PropTypes.string,
   title: PropTypes.string
 };

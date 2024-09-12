@@ -40,12 +40,12 @@ const ATVKoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.vocationalTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 ATVKoulutukset.propTypes = {
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array,
   mode: PropTypes.string

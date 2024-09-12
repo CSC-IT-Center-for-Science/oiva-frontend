@@ -55,8 +55,7 @@ const MuutEhdot = ({
       isRowExpanded={true}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(education.muutEhdotTitle)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

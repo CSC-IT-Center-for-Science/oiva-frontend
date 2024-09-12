@@ -21,8 +21,7 @@ it("renders input as checked", () => {
     <CheckboxWithLabel
       name="test-checkbox"
       isChecked={true}
-      onChanges={jest.fn()}
-    >
+      onChanges={jest.fn()}>
       {labelText}
     </CheckboxWithLabel>,
     div
@@ -35,8 +34,7 @@ it("handles the click", () => {
     <CheckboxWithLabel
       name="test-checkbox"
       isChecked={false}
-      onChanges={jest.fn()}
-    >
+      onChanges={jest.fn()}>
       Label text
     </CheckboxWithLabel>
   );

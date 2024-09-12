@@ -4,7 +4,7 @@ import ExpandableRowRoot from "../../../../../../../../../components/02-organism
 import Lomake from "../../../../../../../../../components/02-organisms/Lomake";
 
 const PerustelutLiitteet = React.memo(props => {
-  const sectionId = 'perustelut_liitteet';
+  const sectionId = "perustelut_liitteet";
   return (
     <React.Fragment>
       <div className="mt-4">

@@ -179,7 +179,7 @@ export const downloadFileFn = ({
     if (tiedosto && tiedosto instanceof Blob) {
       const reader = new FileReader();
       reader.readAsDataURL(tiedosto);
-      reader.onload = function() {
+      reader.onload = function () {
         a.href = reader.result;
         a.download = filename;
         a.click();

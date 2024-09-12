@@ -23,10 +23,7 @@ import { path } from "ramda";
  */
 export const parseVSTLupa = (lupa, formatMessage, locale) => {
   if (lupa) {
-    const organizerSectionData = generateOrganizerSectionData(
-      lupa,
-      locale
-    );
+    const organizerSectionData = generateOrganizerSectionData(lupa, locale);
     organizerSectionData.heading = formatMessage(
       common.VSTLupaSectionTitleOrganizer
     );
@@ -107,9 +104,8 @@ export const parseGenericKujaLupa = (lupa, locale) => {
       let sectionData = {};
 
       if (maarayksetByTunniste.length > 0) {
-        const generateSectionData = getSectionDataGeneratorForGeneric(
-          sectionKey
-        );
+        const generateSectionData =
+          getSectionDataGeneratorForGeneric(sectionKey);
         sectionData = generateSectionData(maarayksetByTunniste, locale);
       }
 
@@ -157,7 +153,7 @@ const generateMetaAttributeBasedData = (maaraykset, attributes) => {
   return retval;
 };
 
-const generateKoulutustehtavaData = (maaraykset, locale) => {
+const generateKoulutustehtavaData = maaraykset => {
   const attributes = [
     "koulutustehtävämääräys-0",
     "koulutustehtävämääräys-1",
@@ -167,7 +163,7 @@ const generateKoulutustehtavaData = (maaraykset, locale) => {
   return generateMetaAttributeBasedData(maaraykset, attributes);
 };
 
-const generateErityinenKoulutustehtavaData = (maaraykset, locale) => {
+const generateErityinenKoulutustehtavaData = maaraykset => {
   const attributes = [
     "erityinenkoulutustehtävämääräys-0",
     "erityinenkoulutustehtävämääräys-1",
@@ -177,7 +173,7 @@ const generateErityinenKoulutustehtavaData = (maaraykset, locale) => {
   return generateMetaAttributeBasedData(maaraykset, attributes);
 };
 
-const generateOppilaitoksetData = (maaraykset, locale) => {
+const generateOppilaitoksetData = maaraykset => {
   const attributes = [
     "oppilaitosmääräys-0",
     "oppilaitosmääräys-1",
@@ -187,7 +183,7 @@ const generateOppilaitoksetData = (maaraykset, locale) => {
   return generateMetaAttributeBasedData(maaraykset, attributes);
 };
 
-const generateMuutData = (maaraykset, locale) => {
+const generateMuutData = maaraykset => {
   const attributes = [
     "urn:muumääräys-1",
     "urn:muumääräys-2",
@@ -197,7 +193,7 @@ const generateMuutData = (maaraykset, locale) => {
   return generateMetaAttributeBasedData(maaraykset, attributes);
 };
 
-const generateTarkoitusData = (maaraykset, locale) => {
+const generateTarkoitusData = maaraykset => {
   const attributes = ["oppilaitoksentarkoitus-0"];
 
   return generateMetaAttributeBasedData(maaraykset, attributes);
@@ -243,10 +239,10 @@ const generateSopimuskunnatDataForVST = (maaraykset, locale) => {
 const generateOppilaitoksetDataForVST = (maaraykset, locale, diaarinumero) => {
   let values = [];
   for (const maarays of maaraykset) {
-    if (!!maarays.organisaatio) {
+    if (maarays.organisaatio) {
       const schoolName = maarays.organisaatio.nimi[locale];
       const municipalities = [];
-      if (!!maarays.organisaatio.muutKuntaKoodit) {
+      if (maarays.organisaatio.muutKuntaKoodit) {
         for (const other of maarays.organisaatio.muutKuntaKoodit) {
           municipalities.push(resolveKoodiLocalization(other.metadata, locale));
         }
@@ -290,7 +286,7 @@ const generateRegionalDataForVST = (maaraykset, locale) => {
   return { values };
 };
 
-const generateOtherDataForVST = (maaraykset, locale) => {
+const generateOtherDataForVST = maaraykset => {
   let values = [];
   for (const maarays of maaraykset) {
     if (maarays.meta["urn:muumääräys-0"].length > 0)

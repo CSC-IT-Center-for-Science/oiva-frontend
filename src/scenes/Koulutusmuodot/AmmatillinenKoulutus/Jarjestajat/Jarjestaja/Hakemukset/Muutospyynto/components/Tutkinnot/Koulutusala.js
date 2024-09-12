@@ -38,6 +38,9 @@ const Koulutusala = ({
 
 Koulutusala.propTypes = {
   data: PropTypes.object,
+  isPreviewModeOn: PropTypes.bool,
+  isReadOnly: PropTypes.bool,
+  mode: PropTypes.string,
   sectionId: PropTypes.string,
   title: PropTypes.string,
   tutkinnot: PropTypes.array

@@ -17,7 +17,9 @@ import { COLORS } from "../../../modules/styles";
  * The component is able to show the number of changes. If there aren't any changes it renders nothing.
  */
 const NumberOfChanges = props => {
-  const changesText = props.messages ? props.messages.changesText : 'Muutokset:';
+  const changesText = props.messages
+    ? props.messages.changesText
+    : "Muutokset:";
   return (
     <React.Fragment>
       {props.changes && props.changes.length ? (

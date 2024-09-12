@@ -237,7 +237,7 @@ export const createDynamicTextFields = (
 
           const anchor = getAnchorPart(changeObj.anchor, 2);
 
-          return !!maarays
+          return maarays
             ? null
             : {
                 anchor,

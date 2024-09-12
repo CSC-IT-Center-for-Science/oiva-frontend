@@ -5,7 +5,7 @@ import * as tutkinnotHelper from "../../../helpers/tutkinnot/";
 import * as toimintaalueHelper from "../../../helpers/toiminta-alue/";
 import * as opiskelijavuodetHelper from "../../../helpers/opiskelijavuodet";
 import * as muutHelper from "../../../helpers/muut";
-import * as kieletHelper from "../../../helpers/kielet";
+import * as kieletHelper from "../../../helpers/kielet/index";
 import * as koulutuksetHelper from "../../../helpers/koulutukset";
 
 export async function createObjectToSave(
@@ -143,7 +143,7 @@ export async function createObjectToSave(
          * Next step is to go through all the Toiminta-alue related "change objects" of the first
          * page of the wizard and generate change objects based on them.
          */
-        return !!sourceObject
+        return sourceObject
           ? R.map(changeObject => {
               return {
                 anchor: `perustelut_toimintaalue`,

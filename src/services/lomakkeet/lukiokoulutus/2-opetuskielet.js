@@ -27,8 +27,10 @@ export async function getOpetuskieletOPHLomake(
   changeObjects
 ) {
   const _isReadOnly = isPreviewModeOn || isReadOnly;
-  const ensisijaisetOpetuskieletOPH = await getEnsisijaisetOpetuskieletOPHFromStorage();
-  const toissijaisetOpetuskieletOPH = await getToissijaisetOpetuskieletOPHFromStorage();
+  const ensisijaisetOpetuskieletOPH =
+    await getEnsisijaisetOpetuskieletOPHFromStorage();
+  const toissijaisetOpetuskieletOPH =
+    await getToissijaisetOpetuskieletOPHFromStorage();
   const lisatiedot = await getLisatiedotFromStorage();
 
   const lisatietomaarays = find(propEq("koodisto", "lisatietoja"), maaraykset);

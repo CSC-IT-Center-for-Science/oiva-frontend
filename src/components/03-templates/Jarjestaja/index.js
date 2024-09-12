@@ -154,7 +154,7 @@ const Jarjestaja = React.memo(
           </title>
         </Helmet>
         <BreadcrumbsItem to={breadcrumb}>{jarjestaja.nimi}</BreadcrumbsItem>
-        <div className="sm:w-4/5 mx-auto max-w-8xl">
+        <div className="sm:w-4/5 mx-auto max-w-8xl px-8 sm:px-0">
           <section className="my-8">
             <Typography component="h1" variant="h1">
               {jarjestaja.nimi}
@@ -169,8 +169,7 @@ const Jarjestaja = React.memo(
             textColor="primary"
             onChange={(e, val) => {
               history.push(val);
-            }}
-          >
+            }}>
             {tabNavRoutes
               ? R.addIndex(R.map)((route, index) => {
                   return (
@@ -198,7 +197,7 @@ const Jarjestaja = React.memo(
                     locale={intl.locale}
                     render={_props =>
                       !R.isEmpty(organisation) ? (
-                        <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
+                        <div className="border my-8 p-8 sm:p-12 bg-white mx-8 sm:w-4/5 sm:mx-auto max-w-8xl">
                           <div className="max-w-5xl m-auto">
                             <OmatTiedot
                               organisation={organisation}
@@ -215,7 +214,7 @@ const Jarjestaja = React.memo(
             <Route
               path={AppRoute.Jarjestamislupa}
               render={() => (
-                <div className="border m-12 p-20 bg-white mx-auto w-4/5 max-w-8xl">
+                <div className="border my-8 p-8 sm:p-12 bg-white mx-8 sm:w-4/5 sm:mx-auto max-w-8xl">
                   {JarjestamislupaJSX ? (
                     <div className="max-w-5xl m-auto">
                       <JarjestamislupaJSX
@@ -274,14 +273,18 @@ const Jarjestaja = React.memo(
 );
 
 Jarjestaja.propTypes = {
+  history: PropTypes.object,
+  JarjestamislupaJSX: PropTypes.func,
+  kohteet: PropTypes.array,
   koulutusmuoto: PropTypes.object,
+  location: PropTypes.object,
   lupakohteet: PropTypes.object,
   lupa: PropTypes.object,
+  match: PropTypes.object,
   organisation: PropTypes.object,
   path: PropTypes.string,
   url: PropTypes.string,
   user: PropTypes.object,
-  kielet: PropTypes.array,
   tulevatLuvat: PropTypes.array,
   voimassaOlevaLupa: PropTypes.object
 };

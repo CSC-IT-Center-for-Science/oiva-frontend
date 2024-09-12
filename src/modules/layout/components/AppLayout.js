@@ -9,9 +9,10 @@ import SessionDialog from "SessionDialog";
 import { useHistory } from "react-router-dom";
 import { useIdleTimer } from "react-idle-timer";
 import { sessionTimeoutInMinutes } from "modules/constants";
-import { App } from "App";
+import { App } from "App.tsx";
 
 import "react-toastify/dist/ReactToastify.css";
+import { PropTypes } from "prop-types";
 
 export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   const history = useHistory();
@@ -41,8 +42,7 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
   return (
     <React.Fragment>
       <BreadcrumbsItem
-        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}
-      >
+        to={localizeRouteKey(locale, AppRoute.Home, formatMessage)}>
         Oiva
       </BreadcrumbsItem>
 
@@ -61,33 +61,39 @@ export const AppLayout = ({ localesByLang, children, organisation, user }) => {
           <div
             id="cy"
             className="z-50 r-0 t-0 bg-gray-100 w-1/3 h-auto border border-black"
-            style={{ zIndex: 9000 }}
-          ></div>
+            style={{ zIndex: 9000 }}></div>
           <div className="w-2/3 relative">
             {
               <App
-                children={children}
                 isSessionDialogVisible={isSessionDialogVisible}
                 localesByLang={localesByLang}
                 onLogout={onSessionDialogOK}
                 onSessionDialogOK={onSessionDialogOK}
                 organisation={organisation}
-                user={user}
-              />
+                user={user}>
+                {children}
+              </App>
             }
           </div>
         </div>
       ) : (
         <App
-          children={children}
           isSessionDialogVisible={isSessionDialogVisible}
           localesByLang={localesByLang}
           onLogout={onSessionDialogOK}
           onSessionDialogOK={onSessionDialogOK}
           organisation={organisation}
-          user={user}
-        />
+          user={user}>
+          {children}
+        </App>
       )}
     </React.Fragment>
   );
+};
+
+AppLayout.propTypes = {
+  localesByLang: PropTypes.object,
+  children: PropTypes.object,
+  organisation: PropTypes.object,
+  user: PropTypes.object
 };

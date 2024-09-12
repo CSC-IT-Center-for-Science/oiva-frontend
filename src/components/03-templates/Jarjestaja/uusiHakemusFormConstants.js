@@ -4,6 +4,7 @@ export const FIELDS = {
   TILA: {
     NAME: "tila",
     VALUES: {
+      KORJAUKSESSA: "KORJAUKSESSA",
       LUONNOS: "LUONNOS",
       AVOIN: "AVOIN",
       VALMISTELUSSA: "VALMISTELUSSA",
@@ -47,8 +48,7 @@ export const HAKEMUS_VIESTI = {
     SV: "På Svenska"
   },
   VARMISTUS: {
-    FI:
-      "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta.",
+    FI: "Oletko varma, että haluat poistua muutoshakemuksen luonnista? Tekemiäsi muutoksia ei tallenneta.",
     SV: "På Svenska"
   },
   VARMISTUS_LÄHETÄ_HEADER: {
@@ -123,8 +123,7 @@ export const HAKEMUS_OTSIKOT = {
     SV: "På Svenska"
   },
   LIITE_OHJE: {
-    FI:
-      "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muista merkitä salassa pidettävät liitteet.",
+    FI: "Liitteen koko saa olla korkeintaan 25 MB ja tyypiltään pdf, word, excel, jpeg tai gif. Muista merkitä salassa pidettävät liitteet.",
     SV: "På Svenska"
   },
   LISAA_LIITE: {

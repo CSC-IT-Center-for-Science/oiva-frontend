@@ -16,8 +16,7 @@ storiesOf("FormSection", module)
     <FormSection
       id="tutkinnot-ja-koulutukset"
       code={1}
-      title="Title of a section"
-    >
+      title="Title of a section">
       Cupidatat excepteur Lorem cupidatat nulla dolore nulla ex. Voluptate amet
       anim nisi ipsum. Consectetur tempor consequat in quis elit culpa
       reprehenderit aliqua ut deserunt dolor. Reprehenderit cillum elit laborum

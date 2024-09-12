@@ -6,17 +6,19 @@ const refreshIntervalInSeconds = 0;
 const Store = createStore({
   initialState: {},
   actions: {
-    load: (queryParameters = []) => ({ getState, setState }) => {
-      return execute(
-        { getState, setState },
-        {
-          key: "luvat",
-          queryParameters
-        },
-        {},
-        refreshIntervalInSeconds
-      );
-    }
+    load:
+      (queryParameters = []) =>
+      ({ getState, setState }) => {
+        return execute(
+          { getState, setState },
+          {
+            key: "luvat",
+            queryParameters
+          },
+          {},
+          refreshIntervalInSeconds
+        );
+      }
   },
   name: "Luvat"
 });

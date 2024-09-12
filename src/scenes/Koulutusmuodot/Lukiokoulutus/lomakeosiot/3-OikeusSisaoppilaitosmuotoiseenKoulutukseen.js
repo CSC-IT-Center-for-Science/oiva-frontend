@@ -39,8 +39,7 @@ const OikeusSisaoppilaitosmuotoiseenKoulutukseen = ({
       rowTitle={intl.formatMessage(
         education.oikeusSisaoppilaitosmuotoiseenKoulutukseen
       )}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 

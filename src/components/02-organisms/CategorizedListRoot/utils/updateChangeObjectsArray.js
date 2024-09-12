@@ -61,13 +61,15 @@ export function updateChangeObjectsArray(node, properties, changeObjects) {
       changeObjects = append(
         {
           anchor: node.fullAnchor,
-          properties: reject(isNil)(Object.assign(
-            {},
-            {
-              ...properties,
-              metadata: node.properties.forChangeObject
-            }
-          ))
+          properties: reject(isNil)(
+            Object.assign(
+              {},
+              {
+                ...properties,
+                metadata: node.properties.forChangeObject
+              }
+            )
+          )
         },
         changeObjects
       );

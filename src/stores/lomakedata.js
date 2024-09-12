@@ -8,17 +8,21 @@ const Store = createStore({
     validity: {}
   },
   actions: {
-    setLomakedata: (data, anchor) => ({ getState, setState }) => {
-      const anchorParts = prepend("sections", split("_", anchor));
-      const nextStateCandidate = assocPath(anchorParts, data, getState());
-      const shakedTree = recursiveTreeShake(anchorParts, nextStateCandidate);
-      if (!equal(getState(), shakedTree)) {
-        setState(shakedTree);
+    setLomakedata:
+      (data, anchor) =>
+      ({ getState, setState }) => {
+        const anchorParts = prepend("sections", split("_", anchor));
+        const nextStateCandidate = assocPath(anchorParts, data, getState());
+        const shakedTree = recursiveTreeShake(anchorParts, nextStateCandidate);
+        if (!equal(getState(), shakedTree)) {
+          setState(shakedTree);
+        }
+      },
+    setValidity:
+      (status, anchor) =>
+      ({ getState, setState }) => {
+        setState(assocPath(["validity", anchor], status, getState()));
       }
-    },
-    setValidity: (status, anchor) => ({ getState, setState }) => {
-      setState(assocPath(["validity", anchor], status, getState()));
-    }
   },
   name: "Lomakedata"
 });
@@ -42,7 +46,9 @@ export const useAllSections = createHook(Store, {
 });
 
 export const LomakedataContainer = createContainer(Store, {
-  onInit: () => ({ setState }, initialState) => {
-    setState(initialState);
-  }
+  onInit:
+    () =>
+    ({ setState }, initialState) => {
+      setState(initialState);
+    }
 });

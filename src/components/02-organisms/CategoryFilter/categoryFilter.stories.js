@@ -1,27 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import CategoryFilter from "./index";
 import { storiesOf } from "@storybook/react";
 import { withInfo } from "@storybook/addon-info";
-import { withState } from "@dump247/storybook-state";
 import osaMaastaValittu from "./storydata/osaMaastaValittu";
 import kokoMaaValittu from "./storydata/kokoMaaValittu";
 import eiMaariteltyaToimintaaluetta from "./storydata/eiMaariteltyaToimintaaluetta";
 import kunnat from "./storydata/kunnat";
 import maakunnat from "./storydata/maakunnat";
 
-const initialState = {
-  isEditViewActive: false,
-  changes: osaMaastaValittu.changes
-};
-
 storiesOf("CategoryFilter", module)
   .addDecorator(withInfo)
-  .add(
-    "Osa maasta",
-    withState(initialState)(({ store }) => (
+  .add("Osa maasta", () => {
+    const [state, setState] = useState({
+      isEditViewActive: false,
+      changes: osaMaastaValittu.changes
+    });
+
+    return (
       <CategoryFilter
         anchor={"maakuntakunnat"}
-        isEditViewActive={store.state.isEditViewActive}
+        isEditViewActive={state.isEditViewActive}
         localizations={{
           accept: "Hyväksy",
           areaOfActionIsUndefined: "Ei määritettyä toiminta-aluetta",
@@ -37,23 +35,26 @@ storiesOf("CategoryFilter", module)
         municipalities={kunnat}
         provinces={osaMaastaValittu.categories}
         provincesWithoutMunicipalities={maakunnat}
-        changeObjectsByProvince={store.state.changes}
+        changeObjectsByProvince={state.changes}
         showCategoryTitles={false}
         onChanges={changeObjectsByMaakunta => {
           return changeObjectsByMaakunta;
         }}
         toggleEditView={_isEditViewActive => {
-          store.set({ isEditViewActive: _isEditViewActive });
+          setState({ isEditViewActive: _isEditViewActive });
         }}
       />
-    ))
-  )
-  .add(
-    "Koko maa - pois lukien ahvenanmaa",
-    withState(initialState)(({ store }) => (
+    );
+  })
+  .add("Koko maa - pois lukien ahvenanmaa", () => {
+    const [state, setState] = useState({
+      isEditViewActive: false,
+      changes: kokoMaaValittu.changes
+    });
+    return (
       <CategoryFilter
         anchor={"maakuntakunnat"}
-        isEditViewActive={store.state.isEditViewActive}
+        isEditViewActive={state.isEditViewActive}
         localizations={{
           accept: "Hyväksy",
           areaOfActionIsUndefined: "Ei määritettyä toiminta-aluetta",
@@ -75,17 +76,20 @@ storiesOf("CategoryFilter", module)
           return changeObjectsByMaakunta;
         }}
         toggleEditView={_isEditViewActive => {
-          store.set({ isEditViewActive: _isEditViewActive });
+          setState({ isEditViewActive: _isEditViewActive });
         }}
       />
-    ))
-  )
-  .add(
-    "Ei määriteltyä toiminta-aluetta",
-    withState(initialState)(({ store }) => (
+    );
+  })
+  .add("Ei määriteltyä toiminta-aluetta", () => {
+    const [state, setState] = useState({
+      isEditViewActive: false,
+      changes: eiMaariteltyaToimintaaluetta.changes
+    });
+    return (
       <CategoryFilter
         anchor={"maakuntakunnat"}
-        isEditViewActive={store.state.isEditViewActive}
+        isEditViewActive={state.isEditViewActive}
         localizations={{
           accept: "Hyväksy",
           areaOfActionIsUndefined: "Ei määritettyä toiminta-aluetta",
@@ -107,8 +111,8 @@ storiesOf("CategoryFilter", module)
           return changeObjectsByMaakunta;
         }}
         toggleEditView={_isEditViewActive => {
-          store.set({ isEditViewActive: _isEditViewActive });
+          setState({ isEditViewActive: _isEditViewActive });
         }}
       />
-    ))
-  );
+    );
+  });

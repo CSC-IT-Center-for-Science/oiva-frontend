@@ -38,7 +38,8 @@ export async function createObjectToSave(
   kohteet,
   maaraystyypit,
   language, // Luvan kieli
-  alkupera = "KJ"
+  alkupera = "KJ",
+  muutospyynnonTila
 ) {
   const allAttachmentsRaw = [];
   const koulutustyyppi = koulutustyypitMap.LUKIO;
@@ -60,44 +61,45 @@ export async function createObjectToSave(
       changeObjects.toimintaalue || []
     ) || {};
 
-  const opetustaAntavatKunnat = await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
-    {
-      quickFilterChanges: path(
-        ["properties", "quickFilterChanges"],
-        categoryFilterChangeObj
-      ),
-      changesByProvince: path(
-        ["properties", "changesByProvince"],
-        categoryFilterChangeObj
-      ),
-      lisatiedot: find(
-        compose(includes(".lisatiedot."), prop("anchor")),
-        changeObjects.toimintaalue || []
-      ),
-      ulkomaa: filter(
-        compose(includes(".200."), prop("anchor")),
-        changeObjects.toimintaalue || []
-      ),
-      rajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "toimintaalue",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      )
-    },
-    find(propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
-    maaraystyypit,
-    lupa.maaraykset,
-    locale,
-    kohteet,
-    "kunnatjoissaopetustajarjestetaan"
-  );
+  const opetustaAntavatKunnat =
+    await opetustaAntavatKunnatHelper.defineBackendChangeObjects(
+      {
+        quickFilterChanges: path(
+          ["properties", "quickFilterChanges"],
+          categoryFilterChangeObj
+        ),
+        changesByProvince: path(
+          ["properties", "changesByProvince"],
+          categoryFilterChangeObj
+        ),
+        lisatiedot: find(
+          compose(includes(".lisatiedot."), prop("anchor")),
+          changeObjects.toimintaalue || []
+        ),
+        ulkomaa: filter(
+          compose(includes(".200."), prop("anchor")),
+          changeObjects.toimintaalue || []
+        ),
+        rajoitteetByRajoiteId: reject(
+          isNil,
+          mapObjIndexed(rajoite => {
+            return pathEq(
+              ["0", "properties", "value", "value"],
+              "toimintaalue",
+              rajoite
+            )
+              ? rajoite
+              : null;
+          }, rajoitteetByRajoiteId)
+        )
+      },
+      find(propEq("tunniste", "kunnatjoissaopetustajarjestetaan"), kohteet),
+      maaraystyypit,
+      lupa.maaraykset,
+      locale,
+      kohteet,
+      "kunnatjoissaopetustajarjestetaan"
+    );
 
   // 2. OPETUSKIELET
   const opetuskielet = await opetuskieletHelper.defineBackendChangeObjects(
@@ -124,99 +126,103 @@ export async function createObjectToSave(
   );
 
   // 3. OIKEUS SISÄOPPILAITOSMUOTOISEEN KOULUTUKSEEN
-  const oikeusSisaoppilaitosmuotoiseenKoulutukseen = await oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper.defineBackendChangeObjects(
-    {
-      oikeusSisaoppilaitosmuotoiseenKoulutukseen:
-        changeObjects.oikeusSisaoppilaitosmuotoiseenKoulutukseen,
-      rajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      )
-    },
-    maaraystyypit,
-    kohteet,
-    lupa.maaraykset
-  );
+  const oikeusSisaoppilaitosmuotoiseenKoulutukseen =
+    await oikeusSisaoppilaitosmuotoiseenKoulutukseeenHelper.defineBackendChangeObjects(
+      {
+        oikeusSisaoppilaitosmuotoiseenKoulutukseen:
+          changeObjects.oikeusSisaoppilaitosmuotoiseenKoulutukseen,
+        rajoitteetByRajoiteId: reject(
+          isNil,
+          mapObjIndexed(rajoite => {
+            return pathEq(
+              ["0", "properties", "value", "value"],
+              "oikeusSisaoppilaitosmuotoiseenKoulutukseen",
+              rajoite
+            )
+              ? rajoite
+              : null;
+          }, rajoitteetByRajoiteId)
+        )
+      },
+      maaraystyypit,
+      kohteet,
+      lupa.maaraykset
+    );
 
   // 4. ERITYINEN KOULUTUSTEHTÄVÄ
-  const erityisetKoulutustehtavat = await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
-    {
-      valtakunnallisetKehittamistehtavat:
-        changeObjects.valtakunnallisetKehittamistehtavat,
-      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
-      rajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "erityisetKoulutustehtavat",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      ),
-      valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "valtakunnallisetKehittamistehtavat",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      )
-    },
-    maaraystyypit,
-    lupa.maaraykset,
-    locale,
-    kohteet
-  );
+  const erityisetKoulutustehtavat =
+    await erityinenKoulutustehtavaHelper.defineBackendChangeObjects(
+      {
+        valtakunnallisetKehittamistehtavat:
+          changeObjects.valtakunnallisetKehittamistehtavat,
+        erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat,
+        rajoitteetByRajoiteId: reject(
+          isNil,
+          mapObjIndexed(rajoite => {
+            return pathEq(
+              ["0", "properties", "value", "value"],
+              "erityisetKoulutustehtavat",
+              rajoite
+            )
+              ? rajoite
+              : null;
+          }, rajoitteetByRajoiteId)
+        ),
+        valtakunnallisetKehittamistehtavaRajoitteetByRajoiteId: reject(
+          isNil,
+          mapObjIndexed(rajoite => {
+            return pathEq(
+              ["0", "properties", "value", "value"],
+              "valtakunnallisetKehittamistehtavat",
+              rajoite
+            )
+              ? rajoite
+              : null;
+          }, rajoitteetByRajoiteId)
+        )
+      },
+      maaraystyypit,
+      lupa.maaraykset,
+      locale,
+      kohteet
+    );
 
   // 5. VALTAKUNNALLINEN KEHITTÄMISTEHTÄVÄ
-  const valtakunnallinenKehittamistehtava = await valtakunnallinenKehittamistehtavaHelper.defineBackendChangeObjects(
-    {
-      valtakunnallisetKehittamistehtavat:
-        changeObjects.valtakunnallisetKehittamistehtavat,
-      erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat
-    },
-    maaraystyypit,
-    locale,
-    kohteet
-  );
+  const valtakunnallinenKehittamistehtava =
+    await valtakunnallinenKehittamistehtavaHelper.defineBackendChangeObjects(
+      {
+        valtakunnallisetKehittamistehtavat:
+          changeObjects.valtakunnallisetKehittamistehtavat,
+        erityisetKoulutustehtavat: changeObjects.erityisetKoulutustehtavat
+      },
+      maaraystyypit,
+      locale,
+      kohteet
+    );
 
   // 6. OPPILAS-/OPISKELIJAMÄÄRÄT
-  const opiskelijamaarat = await opiskelijamaaratHelper.defineBackendChangeObjects(
-    {
-      opiskelijamaarat: changeObjects.opiskelijamaarat,
-      rajoitteetByRajoiteId: reject(
-        isNil,
-        mapObjIndexed(rajoite => {
-          return pathEq(
-            ["0", "properties", "value", "value"],
-            "opiskelijamaarat",
-            rajoite
-          )
-            ? rajoite
-            : null;
-        }, rajoitteetByRajoiteId)
-      )
-    },
-    maaraystyypit,
-    locale,
-    kohteet,
-    koulutustyyppi
-  );
+  const opiskelijamaarat =
+    await opiskelijamaaratHelper.defineBackendChangeObjects(
+      {
+        opiskelijamaarat: changeObjects.opiskelijamaarat,
+        rajoitteetByRajoiteId: reject(
+          isNil,
+          mapObjIndexed(rajoite => {
+            return pathEq(
+              ["0", "properties", "value", "value"],
+              "opiskelijamaarat",
+              rajoite
+            )
+              ? rajoite
+              : null;
+          }, rajoitteetByRajoiteId)
+        )
+      },
+      maaraystyypit,
+      locale,
+      kohteet,
+      koulutustyyppi
+    );
 
   // 7. MUUT KOULUTUKSEN JÄRJESTÄMISEEN LIITTYVÄT EHDOT
   const muutEhdot = await muutEhdotHelper.defineBackendChangeObjects(
@@ -261,7 +267,9 @@ export async function createObjectToSave(
     luontipvm: moment().format("YYYY-MM-DD"),
     lupaUuid: lupa.uuid,
     // uuid: lupa.asiatyyppi.uuid,
-    tila: alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS",
+    tila:
+      muutospyynnonTila ||
+      (alkupera === "ESITTELIJA" && uuid ? "VALMISTELUSSA" : "LUONNOS"),
     paivittaja: "string",
     paivityspvm: null,
     voimassaalkupvm: null,

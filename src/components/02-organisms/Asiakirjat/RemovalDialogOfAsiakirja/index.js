@@ -24,7 +24,7 @@ const RemovalDialogOfAsiakirja = ({ isVisible, onClose, onOK, removeAsia }) => {
           : intl.formatMessage(common.titleOfPoistetaankoAsiakirja)}
       </DialogTitle>
       <DialogContent style={{ overflowY: "visible" }}>
-        <p>
+        <p className="p-8">
           {removeAsia
             ? intl.formatMessage(common.poistetaankoKokoAsia)
             : intl.formatMessage(common.poistetaankoAsiakirja)}

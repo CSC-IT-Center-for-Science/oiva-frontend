@@ -171,6 +171,10 @@ export default defineMessages({
     id: "common.asiatReady",
     defaultMessage: "Päätetyt"
   },
+  asiatKorjauksessa: {
+    id: "common.asiatKorjauksessa",
+    defaultMessage: "Korjauksessa"
+  },
   document: {
     id: "common.document",
     defaultMessage: "Asiakirja"
@@ -386,6 +390,10 @@ export default defineMessages({
   "asiaStates.esittelija.PAATETTY": {
     id: "asiaStates.esittelija.PAATETTY",
     defaultMessage: "Päätetty"
+  },
+  "asiaStates.esittelija.KORJAUKSESSA": {
+    id: "asiaStates.esittelija.KORJAUKSESSA",
+    defaultMessage: "Korjauksessa"
   },
   "asiaStates.esittelija.PASSIVOITU": {
     id: "asiaStates.esittelija.PASSIVOITU",
@@ -757,6 +765,19 @@ export default defineMessages({
   asiaPaatettyConfirmationDialogOk: {
     id: "common.asiaPaatettyConfirmationDialogOk",
     defaultMessage: "Merkitse päätetyksi"
+  },
+  korjaaLupaaConfirmationDialogTitle: {
+    id: "common.korjaaLupaaConfirmationDialogTitle",
+    defaultMessage: "Haluatko korjata päätettyä lupaa?"
+  },
+  korjaaLupaaConfirmationDialogContent: {
+    id: "common.korjaaLupaaConfirmationDialogContent",
+    defaultMessage:
+      "Luvan korjaustilassa voi korjata luvasta mahdollisia virheitä ja korvata asiaan liittyviä liitetiedostoja."
+  },
+  korjaaLupaaConfirmationDialogOk: {
+    id: "common.korjaaLupaaConfirmationDialogOk",
+    defaultMessage: "Siirry luvan korjaustilaan"
   },
   confirmExitMuutoshakemusWizard: {
     id: "common.confirmExitMuutoshakemus",
@@ -1284,6 +1305,10 @@ export default defineMessages({
     id: "common.eiAvoimiaAsioita",
     defaultMessage: "Taulukossa ei ole yhtään avoinna olevaa asiaa"
   },
+  eiKorjattaviaAsioita: {
+    id: "common.eiKorjattaviaAsioita",
+    defineMessage: "Taulukossa ei ole yhtään korjauksessa olevaa asiaa"
+  },
   sulje: {
     id: "common.sulje",
     defaultMessage: "Sulje"
@@ -1299,5 +1324,17 @@ export default defineMessages({
   valitseLuvanKieli: {
     id: "common.valitseLuvanKieli",
     defaultMessage: "Valitse luvan kieli"
+  },
+  palautaValmisteluun: {
+    id: "common.palautaValmisteluun",
+    defaultMessage: "Palauta valmisteluun"
+  },
+  vieEsittelyyn: {
+    id: "common.vieEsittelyyn",
+    defaultMessage: "Vie esittelyyn"
+  },
+  korjaaLupaa: {
+    id: "common.korjaaLupaa",
+    defaultMessage: "Korjaa lupaa"
   }
 });

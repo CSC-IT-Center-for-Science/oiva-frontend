@@ -28,10 +28,7 @@ const SelectAttachment = React.memo(props => {
 
     if (e.target.files.length === 0) return;
 
-    const type = e.target.files[0].name
-      .split(".")
-      .pop()
-      .toLowerCase();
+    const type = e.target.files[0].name.split(".").pop().toLowerCase();
 
     // Rajoitetaan max kooksi 25MB ja vain pdf, word, excel, jpeg ja gif on sallittuja
     if (checkFiletypeAndSize(type, e.target.files[0].size)) {
@@ -144,5 +141,7 @@ SelectAttachment.propTypes = {
 SelectAttachment.defaultProps = {
   styles: {}
 };
+
+SelectAttachment.displayName = "SelectAttachment";
 
 export default SelectAttachment;

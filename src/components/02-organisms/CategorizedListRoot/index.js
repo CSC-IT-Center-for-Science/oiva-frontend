@@ -94,33 +94,35 @@ const CategorizedListRoot = React.memo(
 
     return (
       <React.Fragment>
-        {/**
-         * If the first change object is not null (default) the CategorizedList
-         * will be created.
-         **/
-        !equals(head(changes), null)
-          ? (() => {
-              /**
-               * This is the first instance of CategorizedList. The component
-               * will create more instances on it's own.
-               **/
-              return (
-                <CategorizedList
-                  anchor={anchor}
-                  focusOn={focusOn}
-                  categories={categories}
-                  changes={changes}
-                  rootPath={[]}
-                  showCategoryTitles={showCategoryTitles}
-                  onChangesUpdate={onChangesUpdate}
-                  onFocus={onFocus}
-                  removeChangeObject={removeChangeObject}
-                  isReadOnly={isReadOnly}
-                  showValidationErrors={showValidationErrors}
-                />
-              );
-            })()
-          : null}
+        {
+          /**
+           * If the first change object is not null (default) the CategorizedList
+           * will be created.
+           **/
+          !equals(head(changes), null)
+            ? (() => {
+                /**
+                 * This is the first instance of CategorizedList. The component
+                 * will create more instances on it's own.
+                 **/
+                return (
+                  <CategorizedList
+                    anchor={anchor}
+                    focusOn={focusOn}
+                    categories={categories}
+                    changes={changes}
+                    rootPath={[]}
+                    showCategoryTitles={showCategoryTitles}
+                    onChangesUpdate={onChangesUpdate}
+                    onFocus={onFocus}
+                    removeChangeObject={removeChangeObject}
+                    isReadOnly={isReadOnly}
+                    showValidationErrors={showValidationErrors}
+                  />
+                );
+              })()
+            : null
+        }
       </React.Fragment>
     );
   },
@@ -157,5 +159,7 @@ CategorizedListRoot.propTypes = {
   // Node's predecessors will be unchecked if the node and its siblings are unchecked.
   uncheckParentWithoutActiveChildNodes: PropTypes.bool
 };
+
+CategorizedListRoot.displayName = "CategorizedListRoot";
 
 export default CategorizedListRoot;

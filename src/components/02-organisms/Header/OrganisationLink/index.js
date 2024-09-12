@@ -1,8 +1,7 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 import common from "../../../../i18n/definitions/common";
-import React from "react";
 import PropTypes from "prop-types";
-import AuthenticationLink from "../AuthenticationLink";
 
 const OrganisationLink = ({
   organisationLink,
@@ -19,14 +18,14 @@ const OrganisationLink = ({
       }}
       className={classes}
       to={organisationLink.path}
-      exact={false}
-    >
+      exact={false}>
       {formatMessage(common.omaSivu)}
     </NavLink>
   );
 };
 
-AuthenticationLink.propTypes = {
+OrganisationLink.propTypes = {
+  formatMessage: PropTypes.func,
   organisationLink: PropTypes.object,
   navLinkClasses: PropTypes.string
 };

@@ -139,8 +139,7 @@ const MuutospyyntoWizardPerustelut = ({
           {(isTutkinnotChanges || isKoulutuksetChanges) && (
             <Section
               code={lupaKohteet[1].headingNumber}
-              title={lupaKohteet[1].heading}
-            >
+              title={lupaKohteet[1].heading}>
               {isTutkinnotChanges && (
                 <PerustelutTutkinnot
                   changeObjects={{

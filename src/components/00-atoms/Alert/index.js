@@ -118,6 +118,7 @@ AlertMessage.defaultProps = {
 
 AlertMessage.propTypes = {
   id: PropTypes.string,
+  isVisible: PropTypes.bool,
   /** aria-label as string */
   ariaLabel: PropTypes.string,
   /** title as string */

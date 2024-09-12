@@ -36,8 +36,7 @@ const AuthenticationLink = ({ authenticationLink, navLinkClasses = "" }) => {
         <SimpleButton
           onClick={setLoginInfoDialogVisible}
           text={authenticationLink.text[0]}
-          styleAsALink={true}
-        ></SimpleButton>
+          styleAsALink={true}></SimpleButton>
       )}
     </React.Fragment>
   );

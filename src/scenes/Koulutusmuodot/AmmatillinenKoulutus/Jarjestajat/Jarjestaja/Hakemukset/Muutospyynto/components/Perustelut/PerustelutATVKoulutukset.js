@@ -27,7 +27,7 @@ const PerustelutATVKoulutukset = props => {
   const changesMessages = {
     undo: intl.formatMessage(common.undo),
     changesTest: intl.formatMessage(common.changesText)
-  }
+  };
 
   return (
     <ExpandableRowRoot

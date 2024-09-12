@@ -42,12 +42,12 @@ const Tyovoimakoulutukset = ({ isReadOnly, koulutukset, maaraykset, mode }) => {
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.workforceTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 Tyovoimakoulutukset.propTypes = {
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
   maaraykset: PropTypes.array,
   mode: PropTypes.string

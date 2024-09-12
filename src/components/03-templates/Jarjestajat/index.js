@@ -6,6 +6,7 @@ import Loading from "modules/Loading";
 import { useIntl } from "react-intl";
 import { localizeRouteKey } from "utils/common";
 import { AppRoute } from "const/index";
+import { PropTypes } from "prop-types";
 
 const Jarjestajat = ({
   koulutusmuoto,
@@ -52,6 +53,12 @@ const Jarjestajat = ({
       {luvat.isLoading && <Loading />}
     </React.Fragment>
   );
+};
+
+Jarjestajat.propTypes = {
+  Jarjestajaluettelo: PropTypes.func,
+  koulutusmuoto: PropTypes.object,
+  paasivunOtsikko: PropTypes.string
 };
 
 export default Jarjestajat;

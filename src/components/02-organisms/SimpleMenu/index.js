@@ -4,6 +4,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { IconButton } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
+import Delete from "@material-ui/icons/Delete";
+import Edit from "@material-ui/icons/Edit";
+import GetApp from "@material-ui/icons/GetApp";
 import * as R from "ramda";
 
 /**
@@ -13,7 +16,7 @@ import * as R from "ramda";
  * information see Material-UI's SimpleMenu component.
  * @param {object} props - properties object.
  */
-function SimpleMenu({ actions = [], id }) {
+function SimpleMenu({ actions = [], id, isExpanded }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   /**
@@ -56,7 +59,32 @@ function SimpleMenu({ actions = [], id }) {
     setAnchorEl(null);
   };
 
-  return (
+  return isExpanded ? (
+    <React.Fragment>
+      {R.addIndex(R.map)((action, i) => {
+        return (
+          <label key={i}>
+            <IconButton
+              aria-label={action.text}
+              className={action.isHidden ? "invisible" : ""}
+              disabled={action.isDisabled}
+              onClick={e => {
+                handleClose(e, action);
+                return false;
+              }}>
+              {action.name === "delete" ? (
+                <Delete color={action.isDisabled ? "disabled" : "action"} />
+              ) : action.name === "edit" ? (
+                <Edit color={action.isDisabled ? "disabled" : "action"} />
+              ) : action.name === "download" ? (
+                <GetApp color={action.isDisabled ? "disabled" : "action"} />
+              ) : null}
+            </IconButton>
+          </label>
+        );
+      }, actions)}
+    </React.Fragment>
+  ) : (
     <React.Fragment>
       <IconButton
         aria-controls="simple-menu"
@@ -64,6 +92,7 @@ function SimpleMenu({ actions = [], id }) {
         onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
+
       <Menu
         id={id}
         anchorEl={anchorEl}
@@ -90,6 +119,8 @@ function SimpleMenu({ actions = [], id }) {
 SimpleMenu.propTypes = {
   // Identifier of menu instance
   id: PropTypes.string.isRequired,
+  // Is the menu expanded in the beginning
+  isExpanded: PropTypes.bool,
   // List of menu actions
   actions: PropTypes.array
 };

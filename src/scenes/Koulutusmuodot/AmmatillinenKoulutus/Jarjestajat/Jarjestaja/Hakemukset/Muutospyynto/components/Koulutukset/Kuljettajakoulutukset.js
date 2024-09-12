@@ -47,14 +47,15 @@ const Kuljettajakoulutukset = ({
       mode={mode}
       path={constants.formLocation}
       rowTitle={intl.formatMessage(wizardMessages.driverTraining)}
-      showCategoryTitles={true}
-    ></Lomake>
+      showCategoryTitles={true}></Lomake>
   );
 };
 
 Kuljettajakoulutukset.propTypes = {
+  isReadOnly: PropTypes.bool,
   koulutukset: PropTypes.object,
-  maaraykset: PropTypes.array
+  maaraykset: PropTypes.array,
+  mode: PropTypes.string
 };
 
 export default Kuljettajakoulutukset;

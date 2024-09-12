@@ -88,13 +88,11 @@ function LupapaatoksetTableHead(props) {
               key={headCell.id}
               align={"left"}
               sortDirection={orderBy === headCell.id ? order : false}
-              className={index === 0 ? classes.firstCol : ""}
-            >
+              className={index === 0 ? classes.firstCol : ""}>
               <TableSortLabel
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
+                onClick={createSortHandler(headCell.id)}>
                 {headCell.label}
                 {orderBy === headCell.id ? (
                   <span className={classes.visuallyHidden}>
@@ -115,6 +113,7 @@ function LupapaatoksetTableHead(props) {
 
 LupapaatoksetTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
+  headCells: PropTypes.array,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
@@ -341,8 +340,7 @@ export default function LupapaatoksetTable({
             className={classes.table}
             aria-labelledby={intl.formatMessage(common.lupapaatoksetTaulukko)}
             size={dense ? "small" : "medium"}
-            aria-label={intl.formatMessage(common.lupapaatoksetTaulukko)}
-          >
+            aria-label={intl.formatMessage(common.lupapaatoksetTaulukko)}>
             <LupapaatoksetTableHead
               classes={classes}
               headCells={headCells}
@@ -363,15 +361,13 @@ export default function LupapaatoksetTable({
                       onClick={event => handleClick(event, row.diaarinumero)}
                       role="checkbox"
                       tabIndex={-1}
-                      key={`row-${index}`}
-                    >
+                      key={`row-${index}`}>
                       {headCells.some(hc => hc.id === "diaarinumero") && (
                         <TableCell
                           component="td"
                           id={labelId}
                           scope="row"
-                          className={classes.firstCol}
-                        >
+                          className={classes.firstCol}>
                           {row.diaarinumero}
                         </TableCell>
                       )}
@@ -413,8 +409,7 @@ export default function LupapaatoksetTable({
                           {row.paatoskirje && (
                             <a
                               href={row.urls.paatoskirje}
-                              className="ml-2 underline"
-                            >
+                              className="ml-2 underline">
                               {intl.formatMessage(
                                 koulutusmuoto.koulutustyyppi ===
                                   koulutustyypitMap.ESI_JA_PERUSOPETUS ||
@@ -432,8 +427,7 @@ export default function LupapaatoksetTable({
                           <GetApp />
                           <a
                             href={row.urls.jarjestamislupa}
-                            className="ml-2 underline"
-                          >
+                            className="ml-2 underline">
                             {intl.formatMessage(
                               koulutusmuoto.koulutustyyppi ===
                                 koulutustyypitMap.VAPAASIVISTYSTYO
@@ -480,3 +474,10 @@ export default function LupapaatoksetTable({
     </div>
   );
 }
+
+LupapaatoksetTable.propTypes = {
+  data: PropTypes.object,
+  koulutusmuoto: PropTypes.object,
+  tulevatLuvat: PropTypes.array,
+  voimassaOlevaLupa: PropTypes.object
+};
